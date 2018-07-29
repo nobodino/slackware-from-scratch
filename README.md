@@ -84,5 +84,9 @@ either by executing:
 On my machine the full build takes about 15 hours.
 Your connection to internet must be active.
 
+6/ at the end of the building, adjust "my_prolife.sh" to your need, and 
+execute it before rebooting. You wil have update grub so that your boot loader
+sees your new system.
+
 
 
