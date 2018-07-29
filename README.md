@@ -22,7 +22,7 @@ setupterm" in others kind of console: don't know why this particularity).
 2/ git clone the scripts of the project:
 
 # git clone https://github.com/nobodino/slackware-from-scratch.git
-# chown +x *.sh
+# chmod +x *.sh
 
 3/ edit sfs-boostrap.sh to adjust your fstab caracteristics, root partition
 and swap partition. In the example the options for the root partition are 
