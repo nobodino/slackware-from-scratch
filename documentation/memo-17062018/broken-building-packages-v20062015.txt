@@ -1,0 +1,1091 @@
+
+PACKAGES NOT BUILDING PROPERLY IN SLACKWARE ENVIRONMENT:
+
+Every package listed here doesn't build on a "pure slackware" installation.
+Some have a simple solution (cpio or tar), others need a patch (from blfs, debian, etc...) 
+or by upgrading/downgrading version.
+
+Synthetic list of non building packages:
+
+	- a: tar, cpio, isapnptools, ncompress
+	- ap: ispell, ksh, vbetool
+	- d: dev86, p2c, oprofile
+	- l: aspell, gstreamer, libical, libvncserver (downgrade), libcaca, libcap (two builds), gst-plugins-base0, libmad, qca, loudmouth
+	- n: net-tools, procmail, newspost, lynx, netatalk, ulogd
+	- xap: gv, seyon
+
+Here under is a solution for each package.
+
+
+**********************************************************
+- a: tar (modified with patch from blfs)
+-----------------------------
+# tar-1.26 error : _GL_WARN_ON_USE (gets, "gets is a security hole - use fgets instead")
+-----------------------------
+# new patch from BLFS in SlackBuild add before ./configure
+sed -i -e '/gets is a/d' gnu/stdio.in.h
+-----------------------------
+**********************************************************
+
+
+
+
+**********************************************************
+- a: cpio (modified with patch from blfs) 
+-----------------------------
+# cpio error : _GL_WARN_ON_USE (gets, "gets is a security hole - use fgets instead")
+-----------------------------
+# new patch from BLFS in SlackBuild add before ./configure
+sed -i -e '/gets is a/d' gnu/stdio.in.h
+-----------------------------
+**********************************************************
+
+
+
+
+
+**********************************************************
+- a: isapnptools (1.26 nok, but 1.27 ok)
+**********************************************************	
+- a: ncompress (4.2.4.3 nok, but 4.2.4.4 ok)
+**********************************************************
+- ap: ispell (3.2.06 nok, but 3.4.00 ok)
+**********************************************************
+- l: aspell (0.60.6 nok, but 0.60.6.1 ok)
+**********************************************************
+- ap: ksh93 (modified : replaced twice in SlackBuild /bin/ksh by /bin/sh)
+--------------------------
+Applicable only on a system without ksh already installed. 
+**********************************************************
+- ap: vbetool (modified : replace in "./configure" "autoreconf" by "automake --add-missing")
+**********************************************************
+- d: oprofile (0.97 nok, but 1.0 ok)
+**********************************************************
+- l: libical (1.0 nok, but 1.0.1 ok)
+**********************************************************
+- l: libvncserver (0.9.10 nok, but 0.9.9 ok)
+**********************************************************
+- n: netatalk (2.2.3 nok, but 3.1.7 ok)
+**********************************************************
+
+
+
+
+**********************************************************
+- d: dev86 (0.16.17 nok, 0.16.21 ok, but doesn't finish normally)
+-------------------------
+# dev86 error:
+# make[6]: Leaving directory `/tmp/dev86-0.16.17/libc/i386sys'
+# make[5]: *** No rule to make target `/tmp/dev86-0.16.17/libc/libc3.a()', needed by `all'.  Stop.
+# make[5]: Leaving directory `/tmp/dev86-0.16.17/libc/i386sys'
+# make[4]: *** [/tmp/dev86-0.16.17/libc/libc3.a] Error 1
+------------------------
+# upgrade from 0.16.17 to 0.16.21 and modify dev86.SlackBuild
+------------------------
+# modified dev86.SlackBuild (see below)
+-----------------------
+PRGNAM=dev86
+SRCNAM=Dev86src
+VERSION=0.16.21
+BUILD=${BUILD:-1}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i486 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+CWD=$(pwd)
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-$PRGNAM
+#OUTPUT=${OUTPUT:-/tmp}
+
+if [ "$ARCH" = "i486" ]; then
+  SLKCFLAGS="-O2 -march=i486 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i686" ]; then
+  SLKCFLAGS="-O2 -march=i686 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+set -e
+
+rm -rf $PKG
+mkdir -p $TMP $PKG $OUTPUT
+cd $TMP
+rm -rf $PRGNAM-$VERSION
+tar xvzf $CWD/$SRCNAM-$VERSION.tar.gz
+cd $PRGNAM-$VERSION
+if [ "$ARCH" = "x86_64" ]; then
+  zcat $CWD/dev86-x86_64.patch.gz \
+    | patch -p1 --verbose --backup --suffix=.orig -E
+  # On x86_64 elks will not build:
+  zcat $CWD/dev86-x86_64.noelks.patch.gz \
+    | patch -p1 --verbose --backup --suffix=.orig -E
+fi
+chown -R root:root .
+chmod -R u+w,go+r-w,a-s .
+
+#Does not compile with changed CFLAGS
+#CC="gcc" make CFLAGS="-Wall -Wstrict-prototypes $SLKCFLAGS -g" DIST=$PKG
+CC="gcc" make DIST=$PKG MANDIR=/usr/man LIBDIR=/usr/lib${LIBDIRSUFFIX}/bcc INCLDIR=/usr/lib${LIBDIRSUFFIX}/bcc LOCALPREFIX=/usr install 
+
+# Compress and link manpages, if any:
+if [ -d $PKG/usr/man ]; then
+  ( cd $PKG/usr/man
+    for manpagedir in $(find . -type d -name "man*") ; do
+      ( cd $manpagedir
+        for eachpage in $( find . -type l -maxdepth 1) ; do
+          ln -s $( readlink $eachpage ).gz $eachpage.gz
+          rm $eachpage
+        done
+        gzip -9 *.?
+      )
+    done
+  )
+fi
+
+mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
+cp -a Changes Contributors COPYING README $PKG/usr/doc/$PRGNAM-$VERSION
+for i in bootblocks copt dis88 elksemu unproto ; do
+  cp -a $i/README $PKG/usr/doc/$PRGNAM-$VERSION/README.$i ;
+done
+cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
+find $PKG/usr/doc -type f -exec chmod 0644 {} \;
+
+if [ "$ARCH" = "x86_64" ]; then # Remove traces of elks
+  rm -f $PKG/usr/doc/$PRGNAM-$VERSION/README.elksemu
+  find $PKG/usr/man -name "elks*.*" -exec rm -f {} \;
+fi
+
+# Strip binaries (fail to build if enabled)
+# ( cd $PKG 
+#	find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+# 	find . | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+# )
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+cd $PKG
+
+/sbin/makepkg -l y -c n /tmp/dev86-$VERSION-$ARCH-$BUILD.txz
+-------------------------
+**********************************************************
+
+
+
+
+
+**********************************************************
+- d: p2c (1.21 nok, but 1.22 ok)
+-------------------------
+# wget -c http://download.opensuse.org/repositories/home:/zhonghuaren/Fedora_21/src/p2c-1.22-25.1.src.rpm
+# rpm2tgz p2c-1.22-25.1.src.rpm
+# modify the SlackBuild to apply the patches included in the src.rpm
+# put the 3 patches in their directory ($CWD/patches)
+# and build the new p2c package
+----------------------------
+# modified SlackBuild :
+----------------------------
+VERSION=${VERSION:-1.22}
+BUILD=${BUILD:-1}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i486 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+NUMJOBS=${NUMJOBS:-" -j3 "}
+
+if [ "$ARCH" = "i486" ]; then
+  SLKCFLAGS="-O2 -march=i486 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+CWD=$(pwd)
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-p2c
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+
+# Explode the package framework:
+cd $PKG
+explodepkg $CWD/_p2c.tar.gz
+
+cd $TMP
+rm -rf p2c-1.22
+tar xvf $CWD/p2c-1.22.tar.xz || exit 1
+cd p2c-1.22 || exit 1
+
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \; -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \;
+
+zcat $CWD/patches/p2c-1.22-getline.patch.gz | patch -p0 --verbose --backup --suffix=.orig || exit 1
+zcat $CWD/patches/p2c-memcpy.patch.gz | patch -p1 --verbose --backup --suffix=.orig || exit 1
+zcat $CWD/patches/p2c-new.patch.gz | patch -p1 --verbose --backup --suffix=.orig || exit 1
+find . -name "*.orig" | xargs rm --verbose
+# Fix library paths:
+sed -i -e "s#/lib #/lib${LIBDIRSUFFIX} #g" \
+       -e "s#/lib\$#/lib${LIBDIRSUFFIX}#g" \
+       -e "s#/lib/#/lib${LIBDIRSUFFIX}/#g" \
+        $( grep -lr '/lib' * )
+
+cd src
+make OPT="$SLKCFLAGS" || exit 1
+make p2cc
+
+mv $PKG/usr/lib $PKG/usr/lib${LIBDIRSUFFIX} 2>/dev/null
+cat p2c > $PKG/usr/bin/p2c
+cat p2cc > $PKG/usr/bin/p2cc
+cat libp2c.a > $PKG/usr/lib${LIBDIRSUFFIX}/libp2c.a
+cat p2c.man | gzip -9c > $PKG/usr/man/man1/p2c.1.gz
+cat p2cc.man | gzip -9c > $PKG/usr/man/man1/p2cc.1.gz
+cat sys.p2crc > $PKG/usr/lib${LIBDIRSUFFIX}/p2c/p2crc
+cat loc.p2crc > $PKG/usr/lib${LIBDIRSUFFIX}/p2c/loc.p2crc
+cat system.imp > $PKG/usr/lib${LIBDIRSUFFIX}/p2c/system.imp
+cat system.m2 > $PKG/usr/lib${LIBDIRSUFFIX}/p2c/system.m2
+cat turbo.imp > $PKG/usr/lib${LIBDIRSUFFIX}/p2c/turbo.imp
+cat string.pas > $PKG/usr/lib${LIBDIRSUFFIX}/p2c/string.pas
+cat p2c.h > $PKG/usr/include/p2c/p2c.h
+cd ..
+
+find $PKG | xargs file | grep -e "executable" -e "shared object" \
+  | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+
+mkdir -p $PKG/usr/doc/p2c-1.22
+cp -a \
+  README ftp.README \
+  $PKG/usr/doc/p2c-1.22
+( cd src
+  for file in HISTORY NOTES COPYING INSTALL ; do
+    cp -a $file $PKG/usr/doc/p2c-1.22
+  done
+)
+cp -a src/README $PKG/usr/doc/p2c-1.22/README.src
+cp -a examples $PKG/usr/doc/p2c-1.22
+( cd $PKG/usr/doc/p2c-1.22
+  zcat $CWD/p2c.examples.diff.gz | patch -p1 --verbose || exit 1
+) || exit 1
+rm -f $PKG/usr/doc/p2c-1.22/examples/Makefile~
+rm -rf $PKG/usr/doc/p2c-1.22/examples/c
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+# Build the package:
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/p2c-$VERSION-$ARCH-$BUILD.txz
+----------------------------
+**********************************************************
+
+
+
+
+
+**********************************************************
+- l: gstreamer0 (modified SlackBuild below, and needed by xfce, patch from blfs)
+---------------------------
+# add in SlackBuild before ./configure
+# sed -i  -e '/YYLEX_PARAM/d'                                       \
+        -e '/parse-param.*scanner/i %lex-param { void *scanner }' \
+            gst/parse/grammar.y &&
+--------------------------
+**********************************************************
+
+
+
+
+**********************************************************
+- l: gst-plugins-base0 (modified SlackBuild below, patch from blfs)
+--------------------------
+# add in SlackBuild before ./configure
+# add patch from blfs
+zcat $CWD/gst-plugins-base-0.10.36-gcc_4_9_0_i686-1.patch.gz | patch -p1 --verbose || exit 1
+-------------------------
+diff -Naur a/configure b/configure
+--- a/configure	2012-02-20 23:33:09.000000000 +0000
++++ b/configure	2014-05-24 21:53:29.510695504 +0100
+@@ -21876,18 +21876,6 @@
+ done
+ 
+ 
+-for ac_header in xmmintrin.h emmintrin.h
+-do :
+-  as_ac_Header=`$as_echo "ac_cv_header_$ac_header" | $as_tr_sh`
+-ac_fn_c_check_header_mongrel "$LINENO" "$ac_header" "$as_ac_Header" "$ac_includes_default"
+-if eval test \"x\$"$as_ac_Header"\" = x"yes"; then :
+-  cat >>confdefs.h <<_ACEOF
+-#define `$as_echo "HAVE_$ac_header" | $as_tr_cpp` 1
+-_ACEOF
+-
+-fi
+-
+-done
+-------------------------
+**********************************************************
+
+
+
+
+
+**********************************************************
+- l: libcaca
+----------------------
+# libcaca error:
+# 1 words of extra memory for PDF output out of 65536
+# No pages of output.
+# make[2]: *** [stamp-latex] Error 1
+----------------------
+# libcaca: add a line to ./configure : --disable-doc \
+----------------------
+**********************************************************
+
+
+
+
+**********************************************************
+- l: libcap (modified see below, not complete): first build
+-----------------------------------
+# modify libcap.SlackBuild as above:
+# make install FAKEROOT=$PKG man_prefix=/usr || 1
+by
+# make install FAKEROOT=$PKG man_prefix=/usr
+-----------------------------------
+- l: libcap (second and normal build then upgradepkg)
+-----------------------------------
+**********************************************************
+
+
+
+
+
+**********************************************************	
+- l: libmad (modified see below)
+------------------------
+# modified  SlackBuild
+-----------------------
+zcat $CWD/libmad-0.15.1b-fixes-1.patch.gz | patch -p1 --verbose || exit 1
+sed "s@AM_CONFIG_HEADER@AC_CONFIG_HEADERS@g" -i configure.ac
+touch NEWS AUTHORS ChangeLog
+autoreconf -fi
+------------------------
+# patch from blfs:
+------------------------
+Submitted By:            Igor Živković <contact at igor hyphen zivkovic dot from dot hr>
+Date:                    2013-07-04
+Initial Package Version: 0.15.1b
+Upstream Status:         Reported
+Origin:                  Arch Linux packages repository
+Description:             Fixes compilation on x86-64 and optimization issues.
+
+diff -Naur libmad-0.15.1b.orig/configure.ac libmad-0.15.1b/configure.ac
+--- libmad-0.15.1b.orig/configure.ac	2004-01-23 10:41:32.000000000 +0100
++++ libmad-0.15.1b/configure.ac	2013-07-04 15:55:09.323764417 +0200
+@@ -124,71 +124,7 @@
+ 
+ if test "$GCC" = yes
+ then
+-    if test -z "$arch"
+-    then
+-	case "$host" in
+-	    i386-*)           ;;
+-	    i?86-*)           arch="-march=i486" ;;
+-	    arm*-empeg-*)     arch="-march=armv4 -mtune=strongarm1100" ;;
+-	    armv4*-*)         arch="-march=armv4 -mtune=strongarm" ;;
+-	    powerpc-*)        ;;
+-	    mips*-agenda-*)   arch="-mcpu=vr4100" ;;
+-	    mips*-luxsonor-*) arch="-mips1 -mcpu=r3000 -Wa,-m4010" ;;
+-	esac
+-    fi
+-
+-    case "$optimize" in
+-	-O|"-O "*)
+-	    optimize="-O"
+-	    optimize="$optimize -fforce-mem"
+-	    optimize="$optimize -fforce-addr"
+-	    : #x optimize="$optimize -finline-functions"
+-	    : #- optimize="$optimize -fstrength-reduce"
+-	    optimize="$optimize -fthread-jumps"
+-	    optimize="$optimize -fcse-follow-jumps"
+-	    optimize="$optimize -fcse-skip-blocks"
+-	    : #x optimize="$optimize -frerun-cse-after-loop"
+-	    : #x optimize="$optimize -frerun-loop-opt"
+-	    : #x optimize="$optimize -fgcse"
+-	    optimize="$optimize -fexpensive-optimizations"
+-	    optimize="$optimize -fregmove"
+-	    : #* optimize="$optimize -fdelayed-branch"
+-	    : #x optimize="$optimize -fschedule-insns"
+-	    optimize="$optimize -fschedule-insns2"
+-	    : #? optimize="$optimize -ffunction-sections"
+-	    : #? optimize="$optimize -fcaller-saves"
+-	    : #> optimize="$optimize -funroll-loops"
+-	    : #> optimize="$optimize -funroll-all-loops"
+-	    : #x optimize="$optimize -fmove-all-movables"
+-	    : #x optimize="$optimize -freduce-all-givs"
+-	    : #? optimize="$optimize -fstrict-aliasing"
+-	    : #* optimize="$optimize -fstructure-noalias"
+-
+-	    case "$host" in
+-		arm*-*)
+-		    optimize="$optimize -fstrength-reduce"
+-		    ;;
+-		mips*-*)
+-		    optimize="$optimize -fstrength-reduce"
+-		    optimize="$optimize -finline-functions"
+-		    ;;
+-		i?86-*)
+-		    optimize="$optimize -fstrength-reduce"
+-		    ;;
+-		powerpc-apple-*)
+-		    # this triggers an internal compiler error with gcc2
+-		    : #optimize="$optimize -fstrength-reduce"
+-
+-		    # this is really only beneficial with gcc3
+-		    : #optimize="$optimize -finline-functions"
+-		    ;;
+-		*)
+-		    # this sometimes provokes bugs in gcc 2.95.2
+-		    : #optimize="$optimize -fstrength-reduce"
+-		    ;;
+-	    esac
+-	    ;;
+-    esac
++    optimize="-O2"
+ fi
+ 
+ case "$host" in
+@@ -297,6 +233,7 @@
+ then
+     case "$host" in
+ 	i?86-*)     FPM="INTEL"  ;;
++	x86_64*)    FPM="64BIT"  ;;
+ 	arm*-*)     FPM="ARM"    ;;
+ 	mips*-*)    FPM="MIPS"   ;;
+ 	sparc*-*)   FPM="SPARC"  ;;
+------------------------
+**********************************************************
+
+
+
+**********************************************************
+- l: loudmouth:
+------------------------
+# g_type_init (); /* Ensure that the GLib type library is initialized */
+------------------------
+# uopgraded with a git version of loudmouth :
+# git clone https://github.com/mcabber/loudmouth.git
+# cd loudmouth
+# ./autogen.sh && ./configure && make && make clean (to verify it builds cleanly)
+# cd .. && mv loudmouth loudmouth-1.5.0.20151906
+# tar cJf loudmouth-1.5.0.20151906 loudmouth-1.5.0.20151906.tar.xz
+# modified loudmouth.SlackBuild and build the package
+**********************************************************
+
+
+
+
+**********************************************************
+- l: qca
+-------------------------------
+botantools/botan/botan/secmem.h:217:50: note: use 'this->set' instead
+make[1]: *** [big_ops2.o] Error 1
+make[1]: Leaving directory `/tmp/qca-2.0.2/src'
+----------------------------
+# modified SlackBuild :
+----------------------------
+ -exec chmod 644 {} \;
+# add patch from linuxquestion
+zcat $CWD/qca.patch.gz | patch -p1 --verbose || exit 1
+
+CFLAGS="$SLKCFLAGS" \
+----------------------------
+# patch for qca from https://www.linuxquestions.org/questions/slackware-14/qca-broken-in-stable-4175528078/
+---------------------------
+--- ./src/botantools/botan/botan/secmem.h.orig  2012-01-07 20:09:35.427999593 +0100
++++ ./src/botantools/botan/botan/secmem.h       2012-01-07 20:09:52.540001422 +0100
+@@ -214,11 +214,11 @@
+ 
+       SecureVector(u32bit n = 0) { MemoryRegion<T>::init(true, n); }
+       SecureVector(const T in[], u32bit n)
+-         { MemoryRegion<T>::init(true); set(in, n); }
++         { MemoryRegion<T>::init(true); this->set(in, n); }
+       SecureVector(const MemoryRegion<T>& in)
+-         { MemoryRegion<T>::init(true); set(in); }
++         { MemoryRegion<T>::init(true); this->set(in); }
+       SecureVector(const MemoryRegion<T>& in1, const MemoryRegion<T>& in2)
+-         { MemoryRegion<T>::init(true); set(in1); append(in2); }
++         { MemoryRegion<T>::init(true); this->set(in1); append(in2); }
+    };
+    
+**********************************************************
+
+
+
+
+**********************************************************
+- n: net-tools (modified with patch from debian to build)
+-----------------------
+# net-tools error:
+# strip.c:24:28: fatal error: linux/if_strip.h: No such file or directory
+-----------------------
+# modified  SlackBuild
+-----------------------
+# before the "chown-R root:root ." line:
+zcat $/CWD/net-tools.diff.gz > config.h
+-----------------------
+diff -pruN 1.60-24.2/debian/config.h 1.60-24.2ubuntu1/debian/config.h
+--- 1.60-24.2/debian/config.h	2012-12-04 01:05:53.000000000 +0000
++++ 1.60-24.2ubuntu1/debian/config.h	2012-12-04 01:05:54.000000000 +0000
+@@ -49,8 +49,8 @@
+ #define HAVE_HWSLIP 1
+ #define HAVE_HWPPP 1
+ #define HAVE_HWTUNNEL 1
+-#define HAVE_HWSTRIP 1
+-#define HAVE_HWTR 1
++#define HAVE_HWSTRIP 0
++#define HAVE_HWTR 0
+ #define HAVE_HWAX25 1
+ #define HAVE_HWROSE 1
+ #define HAVE_HWNETROM 1
+diff -pruN 1.60-24.2/debian/config.make 1.60-24.2ubuntu1/debian/config.make
+--- 1.60-24.2/debian/config.make	2012-12-04 01:05:53.000000000 +0000
++++ 1.60-24.2ubuntu1/debian/config.make	2012-12-04 01:05:54.000000000 +0000
+@@ -16,8 +16,8 @@ HAVE_HWARC=1
+ HAVE_HWSLIP=1
+ HAVE_HWPPP=1
+ HAVE_HWTUNNEL=1
+-HAVE_HWSTRIP=1
+-HAVE_HWTR=1
++HAVE_HWSTRIP=0
++HAVE_HWTR=0
+ HAVE_HWAX25=1
+ HAVE_HWROSE=1
+ HAVE_HWNETROM=1
+------------------
+**********************************************************
+
+
+
+
+**********************************************************
+- n: ulogd
+-----------------------
+# ulogd error:
+-----------------------
+# In file included from libipulog.c:31:0:
+# ../include/libipulog/libipulog.h:13:43: fatal error: linux/netfilter_ipv4/ipt_ULOG.h: No such file or directory
+#    #include <linux/netfilter_ipv4/ipt_ULOG.h>
+-----------------------
+# ipt_ULOG.h is part of iptables but it's not included in the headers installed by the iptables packages
+-----------------------
+includes of kernel headers (netfilter_ipv4)
+-----------------------
+-rw-r--r--  1 root root  6562 Apr  7 21:08 ip_tables.h
+-rw-r--r--  1 root root   758 Apr  7 21:08 ipt_CLUSTERIP.h
+-rw-r--r--  1 root root   838 Apr  7 21:08 ipt_ECN.h
+-rw-r--r--  1 root root   659 Apr  7 21:08 ipt_LOG.h
+-rw-r--r--  1 root root   405 Apr  7 21:08 ipt_REJECT.h
+-rw-r--r--  1 root root   312 Apr  7 21:08 ipt_TTL.h
+-rw-r--r--  1 root root   362 Apr  7 21:08 ipt_ah.h
+-rw-r--r--  1 root root   368 Apr  7 21:08 ipt_ecn.h
+-rw-r--r--  1 root root   368 Apr  7 21:08 ipt_ttl.h
+-----------------------
+includes of iptables headers (netfilter_ipv4)
+-----------------------
+-rw-r--r-- 1 root root 2331 Nov 22  2013 ip_queue.h --> missing
+-rw-r--r-- 1 root root 6592 Nov 22  2013 ip_tables.h --> missing
+-rw-r--r-- 1 root root  723 Nov 22  2013 ipt_CLUSTERIP.h 
+-rw-r--r-- 1 root root  838 Nov 22  2013 ipt_ECN.h
+-rw-r--r-- 1 root root  591 Nov 22  2013 ipt_LOG.h
+-rw-r--r-- 1 root root  405 Nov 22  2013 ipt_REJECT.h
+-rw-r--r-- 1 root root  324 Nov 22  2013 ipt_SAME.h --> missing
+-rw-r--r-- 1 root root  312 Nov 22  2013 ipt_TTL.h
+-rw-r--r-- 1 root root 1260 Nov 22  2013 ipt_ULOG.h --> missing
+-rw-r--r-- 1 root root  532 Nov 22  2013 ipt_addrtype.h --> missing
+-rw-r--r-- 1 root root  362 Nov 22  2013 ipt_ah.h
+-rw-r--r-- 1 root root  145 Nov 22  2013 ipt_realm.h --> missing
+-rw-r--r-- 1 root root  368 Nov 22  2013 ipt_ttl.h
+-----------------------
+includes of kernel headers (netfilter_ipv6)
+-----------------------
+-rw-r--r--  1 root root  7926 Apr  7 21:08 ip6_tables.h
+-rw-r--r--  1 root root   345 Apr  7 21:08 ip6t_HL.h
+-rw-r--r--  1 root root   667 Apr  7 21:08 ip6t_LOG.h
+-rw-r--r--  1 root root   337 Apr  7 21:08 ip6t_NPT.h
+-rw-r--r--  1 root root   356 Apr  7 21:08 ip6t_REJECT.h
+-rw-r--r--  1 root root   594 Apr  7 21:08 ip6t_ah.h
+-rw-r--r--  1 root root   681 Apr  7 21:08 ip6t_frag.h
+-rw-r--r--  1 root root   395 Apr  7 21:08 ip6t_hl.h
+-rw-r--r--  1 root root   582 Apr  7 21:08 ip6t_ipv6header.h
+-rw-r--r--  1 root root   376 Apr  7 21:08 ip6t_mh.h
+-rw-r--r--  1 root root   586 Apr  7 21:08 ip6t_opts.h
+-rw-r--r--  1 root root   926 Apr  7 21:08 ip6t_rt.h
+-----------------------
+includes of iptables headers (netfilter_ipv6)
+-----------------------
+-rw-r--r-- 1 root root 7861 Nov 22  2013 ip6_tables.h
+-rw-r--r-- 1 root root  345 Nov 22  2013 ip6t_HL.h
+-rw-r--r-- 1 root root  599 Nov 22  2013 ip6t_LOG.h
+-rw-r--r-- 1 root root  337 Nov 22  2013 ip6t_NPT.h
+-rw-r--r-- 1 root root  356 Nov 22  2013 ip6t_REJECT.h
+-rw-r--r-- 1 root root  594 Nov 22  2013 ip6t_ah.h
+-rw-r--r-- 1 root root  680 Nov 22  2013 ip6t_frag.h
+-rw-r--r-- 1 root root  395 Nov 22  2013 ip6t_hl.h
+-rw-r--r-- 1 root root  582 Nov 22  2013 ip6t_ipv6header.h
+-rw-r--r-- 1 root root  376 Nov 22  2013 ip6t_mh.h
+-rw-r--r-- 1 root root  586 Nov 22  2013 ip6t_opts.h
+-rw-r--r-- 1 root root  926 Nov 22  2013 ip6t_rt.h
+-----------------------
+# The ipv6 headers (kernel and iptables) are the same, but not the ipv4 headers, 
+# so I suggest we add the 6 missing headers in iptables so that ulogd can be built.
+----------------------
+# modified iptables.SlackBuild
+----------------------
+cp -a \
+  COPYING* INCOMPATIBILITIES INSTALL \
+  $PKG/usr/doc/iptables-$VERSION
+
+# add missing headers /usr/include/linux/netfilter_ipv4
+cd iptables-$VERSION
+mkdir -pv $PKG/usr/include/linux/netfilter_ipv4
+cp include/linux/netfilter_ipv4/ip_queue.h $PKG/usr/include/linux/netfilter_ipv4/
+cp include/linux/netfilter_ipv4/ip_tables.h $PKG/usr/include/linux/netfilter_ipv4/
+cp include/linux/netfilter_ipv4/ipt_SAME.h $PKG/usr/include/linux/netfilter_ipv4/
+cp include/linux/netfilter_ipv4/ipt_ULOG.h $PKG/usr/include/linux/netfilter_ipv4/
+cp include/linux/netfilter_ipv4/ipt_addrtype.h $PKG/usr/include/linux/netfilter_ipv4/
+cp include/linux/netfilter_ipv4/ipt_realm.h $PKG/usr/include/linux/netfilter_ipv4/
+
+# If there's a ChangeLog, installing at least part of the recent history
+# is useful, but don't let it get totally out of control:
+-------------------------
+# then build ulogd without modification 
+**********************************************************
+
+
+
+ 	
+**********************************************************
+- xap: gv 
+------------------
+# gv error:
+# checking for XawInitializeWidgetSet in -l ... no
+# configure: error: Unable to find a valid Xaw3d library. Please install it and rerun configure.
+------------------
+# remove the 50 first lines from the patch gv-xft.patch (check about a valid Xaw3d library)
+------------------
+diff -rc gv-3.7.4/configure gv-xft-3.7.4/configure
+*** gv-3.7.4/configure	2013-03-17 12:20:09.000000000 +0100
+--- gv-xft-3.7.4/configure	2014-05-02 14:22:59.879439785 +0200
+***************
+*** 13604,13616 ****
+  	true
+  fi
+  
+! { $as_echo "$as_me:${as_lineno-$LINENO}: checking for XawInitializeWidgetSet in -lXaw3d" >&5
+! $as_echo_n "checking for XawInitializeWidgetSet in -lXaw3d... " >&6; }
+  if test "${ac_cv_lib_Xaw3d_XawInitializeWidgetSet+set}" = set; then :
+    $as_echo_n "(cached) " >&6
+  else
+    ac_check_lib_save_LIBS=$LIBS
+! LIBS="-lXaw3d $X_LIBS $LIBS"
+  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+  /* end confdefs.h.  */
+  
+--- 13604,13616 ----
+  	true
+  fi
+  
+! { $as_echo "$as_me:${as_lineno-$LINENO}: checking for XawInitializeWidgetSet in -l$XAW3DLIB" >&5
+! $as_echo_n "checking for XawInitializeWidgetSet in -l$XAW3DLIB ... " >&6; }
+  if test "${ac_cv_lib_Xaw3d_XawInitializeWidgetSet+set}" = set; then :
+    $as_echo_n "(cached) " >&6
+  else
+    ac_check_lib_save_LIBS=$LIBS
+! LIBS="-l$XAW3DLIB $X_LIBS $LIBS"
+  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+  /* end confdefs.h.  */
+  
+***************
+*** 13645,13651 ****
+  #define HAVE_LIBXAW3D 1
+  _ACEOF
+  
+!   LIBS="-lXaw3d $LIBS"
+  
+  else
+    as_fn_error "Unable to find a valid Xaw3d library. Please install it and rerun configure." "$LINENO" 5
+--- 13645,13651 ----
+  #define HAVE_LIBXAW3D 1
+  _ACEOF
+  
+!   LIBS="-l$XAW3DLIB $LIBS"
+  
+  else
+    as_fn_error "Unable to find a valid Xaw3d library. Please install it and rerun configure." "$LINENO" 5
+Seulement dans gv-xft-3.7.4: debian
+-------------------
+**********************************************************
+
+
+
+
+**********************************************************
+- xap:seyon :
+----------------------------
+# /usr/include/stdio.h:678:20: note: previous declaration of 'getline' was here
+# extern _IO_ssize_t getline (char **__restrict __lineptr,
+----------------------------
+# getline is already used by glibc in stdio.h, it's the same problem with seyon, procmail and newspost, 
+# the same kind of solution is to be applied, change each occurence of 'getline' by a 'new_getline'
+# seyon:    getline ---> s_getline 
+# newspost: getline ---> n_getline
+# procmail: getline ---> p_getline
+----------------------------
+# modified SlackBuild, add seyon.new.diff.gz
+----------------------------
+zcat $CWD/seyon_2.20c-31.diff.gz | patch -p1 --verbose || exit 1
+# add new patch to solve 'getline' problem compilation
+zcat $CWD/seyon.new.diff.gz | patch -p1 --verbose || exit 1
+chmod 755 makever.sh
+xmkmf
+make || exit 1
+--------------------------
+# new patch 'getline' : seyon.new.diff
+----------------------------
+diff -aur seyon-2.20c/SeDecl.h seyon-2.20c-mod/SeDecl.h
+--- seyon-2.20c/SeDecl.h	2015-06-17 22:04:07.186529607 +0200
++++ seyon-2.20c-mod/SeDecl.h	2015-06-17 22:03:13.434201604 +0200
+@@ -123,7 +123,7 @@
+                 PortToTty(),
+                 do_exit(),
+                 get_line(),
+-                getline(),
++                s_getline(),
+                 lc_word(),
+                 toggle_flag(),
+                 cpmode(),
+diff -aur seyon-2.20c/SeScript.c seyon-2.20c-mod/SeScript.c
+--- seyon-2.20c/SeScript.c	2015-06-17 22:04:07.195529495 +0200
++++ seyon-2.20c-mod/SeScript.c	2015-06-17 22:03:29.567999903 +0200
+@@ -147,7 +147,7 @@
+ {
+   int             i;
+ 
+-  getline(script_fp);
++  s_getline(script_fp);
+ 
+   if (eof_flag)
+     return;
+@@ -337,7 +337,7 @@
+ 
+   rewind(script_fp);
+   while (!found) {
+-    getline(script_fp);
++    s_getline(script_fp);
+     if (eof_flag)
+       break;
+ 
+diff -aur seyon-2.20c/SeSupp.c seyon-2.20c-mod/SeSupp.c
+--- seyon-2.20c/SeSupp.c	1993-07-02 02:01:41.000000000 +0200
++++ seyon-2.20c-mod/SeSupp.c	2015-06-17 22:03:45.682798441 +0200
+@@ -27,7 +27,7 @@
+ char            word[WBSIZE];	/* Parsed word */
+ char           *wptr,
+                *lptr;		/* Word and line pointers */
+-int             eof_flag = 0;	/* Indicates EOF during getline() processing */
++int             eof_flag = 0;	/* Indicates EOF during s_getline() processing */
+ 
+ void
+ sendstr(p)			/* send a string to the port */
+@@ -198,7 +198,7 @@
+  */
+ 
+ void
+-getline(fp)
++s_getline(fp)
+      FILE           *fp;
+ {
+   int             l;
+---------------------------
+**********************************************************
+
+
+
+
+**********************************************************
+- n: procmail
+---------------
+# /usr/include/stdio.h:678:20: note: previous declaration of 'getline' was here
+# extern _IO_ssize_t getline (char **__restrict __lineptr,
+----------------------------
+# modified SlackBuild, add newspost.new.diff.gz
+----------------------------
+  -exec chmod 644 {} \;
+# add new patch to 'getline' compilation problem
+zcat $CWD/procmail.new.diff.gz | patch -p1 --verbose || exit 1
+
+make $NUMJOBS || make || exit 1
+------------------
+# new patch 'getline': procmail.new.diff
+------------------
+diff -aur procmail-3.22/src/fields.c procmail-3.22-mod/src/fields.c
+--- procmail-3.22/src/fields.c	2001-09-11 06:57:08.000000000 +0200
++++ procmail-3.22-mod/src/fields.c	2015-06-18 19:52:19.910235524 +0200
+@@ -110,16 +110,16 @@
+ 		    /* try and append one valid field to rdheader from stdin */
+ int readhead P((void))
+ { int idlen;
+-  getline();
++  p_getline();
+   if((idlen=breakfield(buf,buffilled))<=0) /* not the start of a valid field */
+      return 0;
+   if(idlen==STRLEN(FROM)&&eqFrom_(buf))			/* it's a From_ line */
+    { if(rdheader)
+ 	return 0;			       /* the From_ line was a fake! */
+-     for(;buflast=='>';getline());	    /* gather continued >From_ lines */
++     for(;buflast=='>';p_getline());	    /* gather continued >From_ lines */
+    }
+   else
+-     for(;;getline())		      /* get the rest of the continued field */
++     for(;;p_getline())		      /* get the rest of the continued field */
+       { switch(buflast)			     /* will this line be continued? */
+ 	 { case ' ':case '\t':				  /* yep, it sure is */
+ 	      continue;
+diff -aur procmail-3.22/src/formail.c procmail-3.22-mod/src/formail.c
+--- procmail-3.22/src/formail.c	2001-09-11 06:57:32.000000000 +0200
++++ procmail-3.22-mod/src/formail.c	2015-06-18 19:52:19.911235511 +0200
+@@ -819,7 +819,7 @@
+       { if(split)		       /* gobble up the next start separator */
+ 	 { buffilled=0;
+ #ifdef sMAILBOX_SEPARATOR
+-	   getline();buffilled=0;		 /* but only if it's defined */
++	   p_getline();buffilled=0;		 /* but only if it's defined */
+ #endif
+ 	   if(buflast!=EOF)					   /* if any */
+ 	      goto splitit;
+diff -aur procmail-3.22/src/formisc.c procmail-3.22-mod/src/formisc.c
+--- procmail-3.22/src/formisc.c	2001-06-29 04:20:45.000000000 +0200
++++ procmail-3.22-mod/src/formisc.c	2015-06-18 19:52:19.911235511 +0200
+@@ -115,7 +115,7 @@
+   buf[buffilled++]=c;
+ }
+ 
+-int getline P((void))			   /* read a newline-terminated line */
++int p_getline P((void))			   /* read a newline-terminated line */
+ { if(buflast==EOF)			 /* at the end of our Latin already? */
+    { loadchar('\n');					  /* fake empty line */
+      return EOF;					  /* spread the word */
+diff -aur procmail-3.22/src/formisc.h procmail-3.22-mod/src/formisc.h
+--- procmail-3.22/src/formisc.h	1999-04-19 08:42:15.000000000 +0200
++++ procmail-3.22-mod/src/formisc.h	2015-06-18 19:52:19.911235511 +0200
+@@ -17,4 +17,4 @@
+ char*
+  skipwords P((char*start));
+ int
+- getline P((void));
++ p_getline P((void));
+-----------------------------
+**********************************************************
+
+
+
+
+
+**********************************************************
+-------------------------------
+- n: newspost
+-------------------------------
+/usr/include/stdio.h:678:20: note: previous declaration of 'getline' was here
+ extern _IO_ssize_t getline (char **__restrict __lineptr,
+----------------------------
+# modified SlackBuild, add newspost.new.diff.gz
+----------------------------
+zcat $CWD/newspost.new.diff.gz | patch -p1 --verbose || exit 1
+
+make $NUMJOBS || make || exit 1
+-------------------------------
+# new patch 'getline': newspost.new.diff
+-------------------------------
+diff -aur newspost-2.1.1/base/newspost.c newspost-2.1.1-mod/base/newspost.c
+--- newspost-2.1.1/base/newspost.c	2003-04-23 17:33:23.000000000 +0200
++++ newspost-2.1.1-mod/base/newspost.c	2015-06-17 22:16:32.030217780 +0200
+@@ -342,7 +342,7 @@
+ 	file = fopen(filename, "r");
+ 	if (file != NULL) {
+ 		while (!feof(file)) {
+-			line = getline(line, file);
++			line = n_getline(line, file);
+ 			if(line == NULL){
+ 				text_buffer = buff_add(text_buffer, "\r\n");
+ 				continue;
+diff -aur newspost-2.1.1/base/utils.c newspost-2.1.1-mod/base/utils.c
+--- newspost-2.1.1/base/utils.c	2003-04-23 17:33:23.000000000 +0200
++++ newspost-2.1.1-mod/base/utils.c	2015-06-17 22:18:14.952931069 +0200
+@@ -43,7 +43,7 @@
+ 	return NULL;
+ }
+ 
+-Buff * getline(Buff *buff, FILE *file){
++Buff * n_getline(Buff *buff, FILE *file){
+ 	char c = fgetc(file);
+ 	buff = buff_free(buff);
+ 	while(TRUE){
+diff -aur newspost-2.1.1/base/utils.h newspost-2.1.1-mod/base/utils.h
+--- newspost-2.1.1/base/utils.h	2003-02-08 16:09:41.000000000 +0100
++++ newspost-2.1.1-mod/base/utils.h	2015-06-17 22:14:58.024393014 +0200
+@@ -26,7 +26,7 @@
+ file_entry * file_entry_alloc();
+ file_entry * file_entry_free(file_entry *fe);
+ 
+-Buff * getline(Buff *buff, FILE *file);
++Buff * n_getline(Buff *buff, FILE *file);
+ Buff *buff_add(Buff *buff, char *data, ... );
+ Buff * buff_free(Buff *buff);
+ Buff *buff_create(Buff *buff, char *data, ... );
+diff -aur newspost-2.1.1/ui/options.c newspost-2.1.1-mod/ui/options.c
+--- newspost-2.1.1/ui/options.c	2003-04-23 17:33:33.000000000 +0200
++++ newspost-2.1.1-mod/ui/options.c	2015-06-17 22:19:37.531898689 +0200
+@@ -332,7 +332,7 @@
+ 		file = fopen(filename->data, "r");
+ 		if (file != NULL) {
+ 			while (!feof(file)) {
+-				line = getline(line, file);
++				line = n_getline(line, file);
+ 				linenum++;
+ 				if(line == NULL) continue;
+ 
+@@ -429,7 +429,7 @@
+ 				linenum = 0;
+ 				while (linenum < 8) {
+ 					linenum++;
+-					line = getline(line, file);
++					line = n_getline(line, file);
+ 					if(line == NULL) continue;
+ 
+ 					switch (linenum) {
+
+-------------------------------
+**********************************************************
+
+
+
+
+
+
+**********************************************************
+-----------------------------
+- n: lynx : upgrade version (2.8.8) and apply modified patch so it applies cleanly on lynx2.8.8
+-----------------------------
+# lynx error:
+# ../../../WWW/Library/Implementation/HTUtils.h:710:17: fatal error: ssl.h: No such file or directory
+ #include <ssl.h>
+----------------------------
+# modified SlackBuild :
+----------------------------
+# Fix /usr/local paths and libdir paths and apply recolorizing patch in a mixed patch for 2.8.8
+zcat $CWD/lynx.new.diff.gz | \
+  sed -e "s#@SLACK_LIBDIR@#/usr/lib${LIBDIRSUFFIX}/#g" | \
+  patch -p1 --verbose || exit 1
+----------------------------
+# new patch for lynx2.8.8
+---------------------------
+diff -aur lynx2-8-8/lynx.cfg lynx2-8-8-mod/lynx.cfg
+--- lynx2-8-8/lynx.cfg	2014-03-09 22:43:10.000000000 +0100
++++ lynx2-8-8-mod/lynx.cfg	2015-06-17 21:15:33.570954814 +0200
+@@ -2969,8 +2969,19 @@
+ #COLOR:4:magenta:white
+ #COLOR:5:blue:white
+ #COLOR:6:red:white
+-COLOR:6:brightred:black
++#COLOR:6:brightred:black
+ #COLOR:7:magenta:cyan
++COLOR:0:black:white
++COLOR:1:blue:white
++COLOR:2:yellow:blue
++COLOR:3:green:white
++COLOR:4:magenta:white
++COLOR:5:blue:white
++# This makes links a *lot* more visible.  The default settings are like
++# "let's torture the color-blind" :^)
++COLOR:6:brightred:black
++COLOR:7:magenta:cyan
++
+ 
+ .h2 COLOR_STYLE
+ # Also known as "lss" (lynx style-sheet), the color-style file assigns color
+diff -aur lynx2-8-8/userdefs.h lynx2-8-8-mod/userdefs.h
+--- lynx2-8-8/userdefs.h	2014-03-09 22:43:10.000000000 +0100
++++ lynx2-8-8-mod/userdefs.h	2015-06-17 21:15:10.198247013 +0200
+@@ -301,7 +301,7 @@
+ #define LYNX_CFG_FILE "./lynx.cfg"
+ #else
+ #define LYNX_CFG_PATH "/usr/local/lib"
+-#define LYNX_CFG_FILE "/usr/local/lib/lynx.cfg"
++#define LYNX_CFG_FILE "/etc/lynx.cfg"
+ #endif /* DOSPATH */
+ #endif /* LYNX_CFG_FILE */
+ #endif /* HAVE_CONFIG_H */
+@@ -317,7 +317,7 @@
+  * Mappings in these global and personal files override any SUFFIX
+  * definitions in lynx.cfg and built-in defaults from src/HTInit.c.
+  */
+-#define GLOBAL_EXTENSION_MAP MIME_LIBDIR "mime.types"
++#define GLOBAL_EXTENSION_MAP "@SLACK_LIBDIR@/lynx/mime.types"
+ #define PERSONAL_EXTENSION_MAP "~/.mime.types"
+ 
+ /**************************
+@@ -327,7 +327,7 @@
+  * Mappings in these global and personal files override any VIEWER
+  * definitions in lynx.cfg and built-in defaults from src/HTInit.c.
+  */
+-#define GLOBAL_MAILCAP MIME_LIBDIR "mailcap"
++#define GLOBAL_MAILCAP MIME_LIBDIR "/etc/mailcap"
+ #define PERSONAL_MAILCAP "~/.mailcap"
+ 
+ /**************************
+-------------------------------
+**********************************************************
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

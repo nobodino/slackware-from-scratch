@@ -1,0 +1,735 @@
+SLACKWARE FROM SCRATCH based on LFS-BOOK-svn-20161801 : v30012016 
+
+SlackBuilds and sources up to slackware-current: 17/01/2016 
+
+#---------------------------------------------
+# BUILDING CHROOTED ENVIRONMENT FOR SLACKWARE 
+#---------------------------------------------
+-PART I: ok 
+-PART II: 
+	-up to §5.34 
+#-----------------------------
+# installation of tar-1.13 as in the tar.SlackBuild: 
+#-----------------------------
+./configure --prefix=/usr --disable-nls && zcat ../tar-1.13.bzip2.diff.gz | patch -p1 --verbose || exit 1 && make 
+cd src && mv -v tar tar-1.13 && cp -v tar-1.13 /tools/bin/tar-1.13 
+#-----------------------------
+# installation of which-2.21 as in the which.SlackBuild: 
+#-----------------------------
+./configure --prefix=/usr && make && cp -v which /tools/bin/which 
+#-----------------------------
+# Stripping 
+#-----------------------------
+strip --strip-debug /tools/lib/* 
+/usr/bin/strip --strip-unneeded /tools/{,s}bin/* 
+rm -rf /tools/{,share}/{info,man,doc} 
+#-----------------------------
+# Changing Ownership 
+#-----------------------------
+ exit && chown -R root:root $LFS/tools 
+#-----------------------------
+# make an archive with /tools: 
+ time (tar cJf tools.tar.xz tools/) 
+# store tools.tar.xz in a safe place 
+#-----------------------------
+# End of the tools building 
+#-----------------------------
+
+
+
+#-----------------------------------------------------------------
+#-----------------------------------------------------------------
+# BUILDING CHROOTED ENVIRONMENT FOR SLACKWARE (when archive of "tools" exists):
+#-----------------------------------------------------------------
+#-----------------------------------------------------------------
+# Smallest slackware installation able to boot properly. 
+#-----------------------------------------------------------------
+A series (26 p) 
+	-1/ pkgtools 
+	-2/ aaa_base 
+	-3/ xz 
+	-4/ tar 
+	-5/ bin 
+	-6/ coreutils 
+	-7/ devs 
+	-8/ etc 
+	-9/ grep 
+	-10/ sysklogd 
+	-11/ sysvinit 
+	-12/ sysvinit-scripts 
+	-13/ sed 
+	-14/ procps-ng 
+	-15/ shadow 
+	-16/ aaa_terminfo 
+	-17/ util-linux 
+	-18/ bash 
+	-19/ e2fsprogs 
+	-20/ kmod 
+	-21/ eudev 
+	-22/ libgudev 
+	-23/ glibc-solibs 
+	-24/ kernel-huge-smp 
+	-25/ kernel-modules-smp 
+	-26/ aaa_elflibs 
+#-----------------------------------------------------------------
+-26/ aaa_elflibs (collection of 47 libraries + 5 dependancy packages) 
+#-----------------------------------------------------------------
+	-a: acl 
+	-a: attr 
+	-a: bzip2 
+	-l: libcap 
+	-ap: dmapi (need xfsprogs) 
+	-l: fuse 
+	-a: gpm 
+	-a: xz 
+	-l: ncurses 
+	-l: popt 
+	-a: sysfsutils 
+	-l: libtermcap 
+	-l: zlib 
+	-l: alsa-lib 
+	-n: curl (need expat) 
+	-l: freetype 
+	-l: gdbm 
+	-l: glib2 
+	-l: gmp 
+	-l: gobject-instropection 
+	-l: glibc 
+	-l: libidn 
+	-l: libjpeg 
+	-l: libjpeg-turbo (need nasm) 
+	-n: openldap (need cyrus-asl) 
+	-l: mm 
+	-l: libmpfr 
+	-l: pcre 
+	-l: libpng 
+	-l: readline 
+	-l: slang1 
+	-l: slang 
+	-l: libtiff 
+	-l: libusb 
+	-l: libusb-compat 
+	-l: libsigsegv 
+	-l: svgalib 
+	-l: db42 
+	-l: db44 
+	-a: lvm2 
+	-ap: cups (need gnutls, gnutls need nettle) 
+	-n: libssh2 
+	-l: libpng (1.4.x from slackware-14.1): temporary building 
+	-l: libjpeg-v8a (from slackware-14.1): temporary building 
+	-l: readline-5.2 (from slackware-14.1): temporary building 
+	-l: libtiff-3.9.7 (from slackware-14.1): temporary building 
+	-l: gdbm-1.8.3 (from slackware-14.1): temporary building 
+	-l: gmp-5.1.3 (from slackware-14.1): temporary building 
+	-a: udev-182 (from slackware-14.1): temporary building 
+#-----------------------------------------------------------------
+# preparation of slackware environment: 
+#-----------------------------------------------------------------
+# cp tools.tar.xz $LFS && tar xJf tools.tar.xz 
+#-----------------------------------------------------------------
+# Preparing Virtual Kernel File Systems 
+#-----------------------------------------------------------------
+mkdir -pv $LFS/{dev,proc,sys,run} 
+mknod -m 600 $LFS/dev/console c 5 1 
+mknod -m 666 $LFS/dev/null c 1 3 
+mount -v --bind /dev $LFS/dev 
+mount -vt devpts devpts $LFS/dev/pts -o gid=5,mode=620 
+mount -vt proc proc $LFS/proc 
+mount -vt sysfs sysfs $LFS/sys 
+mount -vt tmpfs tmpfs $LFS/run 
+if [ -h $LFS/dev/shm ]; then 
+	mkdir -pv $LFS/$(readlink $LFS/dev/shm) 
+fi 
+#-----------------------------------------------------------------
+# Entering the Chroot Environment 
+#-----------------------------------------------------------------
+chroot "$LFS" /tools/bin/env -i \ 
+HOME=/root \ 
+TERM="$TERM" \ 
+PS1='\u:\w\$ ' \ 
+PATH=/bin:/usr/bin:/sbin:/usr/sbin:/tools/bin \ 
+/tools/bin/bash --login +h 
+#-----------------------------------------------------------------
+# package management: copy tools from slackware source: 
+#-----------------------------
+mkdir -v /sbin 
+cp -v /sources/pkgtools/scripts/makepkg /sbin/makepkg 
+cp -v /sources/pkgtools/scripts/installpkg /sbin/installpkg 
+#-----------------------------
+# test essential programs location: 
+#-----------------------------
+I have no name!:/# which makepkg
+/sbin/makepkg
+I have no name!:/# which installpkg 
+/sbin/installpkg
+I have no name!:/# which which      
+/tools/bin/which
+I have no name!:/# which tar-1.13
+/tools/bin/tar-1.13
+I have no name!:/# which patch   
+/tools/bin/patch
+#-----------------------------------------------------------------
+# Building Slackware installation from scratch 
+#-----------------------------------------------------------------
+# For each package and a "hand made" installation do:
+#-----------------------------------------------------------------
+cd package && ./package.SlackBuild && installpkg /tmp/package*.t?z
+#-----------------------------------------------------------------
+# if automated build: step{1,2,3,4,5,6} with slacklfs{1,2,3,4,5,6}.sh (see all-scripts.txt file)
+#----------------------------------------------------------------- 
+#-----------------------------------------------------------------
+# Creating Essential Files and Symlinks 
+#-----------------------------------------------------------------
+mkdir -pv /usr/lib && mkdir -v bin && mkdir -pv /usr/include 
+ln -sv /tools/bin/{bash,cat,echo,pwd,stty} /bin 
+ln -sv /tools/bin/perl /usr/bin 
+ln -sv /tools/lib/libgcc_s.so{,.1} /usr/lib 
+ln -sv /tools/lib/libstdc++.so{,.6} /usr/lib 
+sed 's/tools/usr/' /tools/lib/libstdc++.la > /usr/lib/libstdc++.la 
+ln -sv bash /bin/sh 
+#-----------------------------------------------------------------
+# Installation of Linux API Headers 
+#-----------------------------------------------------------------
+make mrproper 
+make INSTALL_HDR_PATH=dest headers_install 
+find dest/include \( -name .install -o -name ..install.cmd \) -delete 
+cp -rv dest/include/* /usr/include 
+#-----------------------------------------------------------------
+# time (./script0.sh 2>&1 | tee first.log): real 
+#-----------------------------------------------------------------
+	-1/ a: pkgtools 
+	-2/ a: aaa_base 
+	-8/ a: etc 
+	-23/ l: glibc
+	- a: glibc-zoneinfo
+#-----------------------------------------------------------------
+# time (./slacklfs.sh 2>&1 | tee step1.log) 
+#-----------------------------------------------------------------
+# Adjust the toolchain 
+#-----------------------------------------------------------------
+mv -v /tools/bin/{ld,ld-old} 
+mv -v /tools/$(gcc -dumpmachine)/bin/{ld,ld-old} 
+mv -v /tools/bin/{ld-new,ld} 
+ln -sv /tools/bin/ld /tools/$(gcc -dumpmachine)/bin/ld 
+#-----------------------------------------------------------------
+# you should see what's below: 
+#-----------------------------------------------------------------
+I have no name!:/sources/slackbuilds/l/glibc# mv -v /tools/bin/{ld,ld-old} 
+	'/tools/bin/ld' -> '/tools/bin/ld-old' 
+I have no name!:/sources/slackbuilds/l/glibc# mv -v /tools/$(gcc -dumpmachine)/bin/{ld,ld-old} 
+	'/tools/i686-pc-linux-gnu/bin/ld' -> '/tools/i686-pc-linux-gnu/bin/ld-old' 
+I have no name!:/sources/slackbuilds/l/glibc# mv -v /tools/bin/{ld-new,ld} 
+	'/tools/bin/ld-new' -> '/tools/bin/ld' 
+I have no name!:/sources/slackbuilds/l/glibc# ln -sv /tools/bin/ld /tools/$(gcc -dumpmachine)/bin/ld 
+	'/tools/i686-pc-linux-gnu/bin/ld' -> '/tools/bin/ld' 
+#-----------------------------------------------------------------
+# modify gcc dumpspecs: 
+#-----------------------------------------------------------------
+gcc -dumpspecs | sed -e 's@/tools@@g'                   \
+    -e '/\*startfile_prefix_spec:/{n;s@.*@/usr/lib/ @}' \
+    -e '/\*cpp:/{n;s@$@ -isystem /usr/include@}' >      \
+    `dirname $(gcc --print-libgcc-file-name)`/specs
+#-----------------------------------------------------------------
+# test glibc 
+#-----------------------------------------------------------------
+echo 'int main(){}' > dummy.c 
+cc dummy.c -v -Wl,--verbose &> dummy.log 
+readelf -l a.out | grep ': /lib' 
+grep -o '/usr/lib.*/crt[1in].*succeeded' dummy.log 
+grep -B1 '^ /usr/include' dummy.log 
+grep 'SEARCH.*/usr/lib' dummy.log |sed 's|; |\n|g' 
+grep "/lib.*/libc.so.6 " dummy.log 
+grep found dummy.log 
+#-----------------------------------------------------------------
+# you should see above: 
+#-----------------------------------------------------------------
+I have no name!:/sources# echo 'int main(){}' > dummy.c 
+I have no name!:/sources# cc dummy.c -v -Wl,--verbose &> dummy.log 
+I have no name!:/sources# readelf -l a.out | grep ': /lib' 
+	[Requesting program interpreter: /lib/ld-linux.so.2] 
+I have no name!:/sources# grep -o '/usr/lib.*/crt[1in].*succeeded' dummy.log 
+	/usr/lib/crt1.o succeeded 
+	/usr/lib/crti.o succeeded 
+	/usr/lib/crtn.o succeeded 
+I have no name!:/sources# grep -B1 '^ /usr/include' dummy.log 
+	#include <...> search starts here: 
+		/usr/include 
+I have no name!:/sources# grep 'SEARCH.*/usr/lib' dummy.log |sed 's|; |\n|g' 
+	SEARCH_DIR("=/tools/i686-pc-linux-gnu/lib32") 
+	SEARCH_DIR("/usr/lib") 
+	SEARCH_DIR("/lib") 
+	SEARCH_DIR("=/tools/i686-pc-linux-gnu/lib"); 
+I have no name!:/sources# grep "/lib.*/libc.so.6 " dummy.log 
+	attempt to open /lib/libc.so.6 succeeded 
+I have no name!:/sources# grep found dummy.log 
+	found ld-linux.so.2 at /lib/ld-linux.so.2
+#-----------------------------------------------------------------
+rm -v dummy.c a.out dummy.log 
+#-----------------------------------------------------------------
+# build_order1: real 16m46.604s 
+#-----------------------------------------------------------------
+cd /sources/slfs/step2 
+time (./slacklfs2.sh 2>&1 | tee step2.log) 
+#-----------------------------------------------------------------
+	-a: which
+	-d: help2man 
+	-a: gettext 
+	-d: gettext-tools 
+	-d: libtool 
+	-3/ a: xz 
+	-a: patch 
+	-a: gzip 
+	-4/ a: tar 
+	-d: bison 
+	-d: flex 
+	-5/ a: bin (need bison and flex) 
+	-d: autoconf 
+	-d: automake 
+	-6/ a: coreutils 
+	-7/ a: devs 
+	-l: zlib 
+	-a: bzip2 
+	-l: pcre (need bzip2 and zlib) 
+	-9/ a: grep (need pcre) 
+	-10/ a: sysklogd 
+	-11/ a: sysvinit 
+	-12/ a: sysvinit-scripts 
+	-l: popt 
+	-a: sysvinit-functions (need popt) 
+	-13/ a: sed 
+	-l: libtermcap 
+	-l: ncurses 
+	-14/ a: procps-ng (need ncurses and libtermcap) 
+	-15/ a: shadow 
+	-16/ a: aaa_terminfo 
+	-a: file 
+	-a: attr 
+	-a: acl 
+	-l: readline 
+	-a: gawk 
+	-l: gdbm 
+	-l: expat 
+	-a: less 
+	-ap: texinfo 
+	-d: m4 
+	-d: make 
+	-ap: ghostscript (need automake, autoconf) 
+	-ap: ghostscript-fonts-std 
+	-ap: groff (need ghostscript and fonts-std) 
+	-d: pkg-config (modified: --with-internal-glib, to be rebuild further): first build 
+#-----------------------------------------------------------------
+# build_order2: real 25m0.334s 
+#-----------------------------------------------------------------
+# cd /sources/slfs/step3 
+# time (./slacklfs3.sh 2>&1 | tee step3.log) 
+#-----------------------------------------------------------------
+# linuxdoc-tools subsystem: 
+#-----------------------------------------------------------------
+	-d: python : first build 
+	-d: slacktrack 
+	-l: libxml2 
+	-tcl: tcl 
+	-l: libxslt (need libxml2, tcl) 
+	-ap: itstool (need libxml2, python) 
+	-a: infozip 
+	-a: rpm2tgz 
+	-a: ed 
+	-t: tetex + tetex-doc (need ed) 
+	-n: openssl (installpkg openssl and a/openssl-solibs) 
+	-a: dcron 
+	-n: ca-certificates 
+#-----------------------------------------------------------------
+# update-ca-certificates (need openssl-solibs and dcron) 
+#-----------------------------------------------------------------
+	-l: icu4c 
+	-ap: sqlite (need icu4c, tcl) 
+	-l: mozilla-nss (need ca-certificates, sqlite, new version nok: to investigate!!!) 
+	-l: elfutils 
+	-l: db48 
+	-l: libarchive 
+	-ap: rpm (need mozilla-nss, libelf, db48, libarchive) 
+	-ap: diffutils 
+	-a: cpio 
+	-d: perl (need expat, mariaDB for DBD-mysql): first build 
+	-d: intltool (need perl) 
+	-ap: linuxdoc-tools (need slacktrack, itstool, unzip, libxml2, libxslt, python, tetex, rpm2tgz, rpm, diffutils, cpio, intltool) 
+	-17/ a: util-linux (need python, groff) 
+	-18/ a: bash 
+	-a: findutils 
+	-a: kbd (need gettext-tools, check) 
+	-19/ a: e2fsprogs 
+	-20/ a: kmod (need python, libxslt, pkg-config) ( libtool --finish /usr/lib/python2.7/site-packages/kmod) 
+#-----------------------------------------------------------------
+# libusb subsystem: circular dependancy between libusb/udev 
+#-----------------------------------------------------------------
+	-l: libusb (modified --disable-udev): first build 
+	-l: libusb-compat (need libusb) 
+	-d: python (second build after openssl installation and upgradepkg) 
+	-n: wget (need openssl) 
+	-a: usbutils (build version 007: circular dependancy with eudev/libgudev, need wget) 
+	-a: pciutils (need usbutils) 
+	-a: hwdata 
+	-l: libffi (need pciutils) 
+	-l: glib2 (need libffi) 
+	-l: gobject-introspection (need glib2) 
+	-d: gperf (need gobject-introspection) 
+	-21/ a: eudev (need gperf) 
+	-22/ a: libgudev 
+#-----------------------------------------------------------------
+# build_order3: real 72m14.259s 
+#-----------------------------------------------------------------
+# cd /sources/slfs/step4 
+# time (./slacklfs4.sh 2>&1 | tee step4.log) 
+#-----------------------------------------------------------------
+-a: usbutils (version 008, upgradepkg usbutils*.t?z) 
+-l: libusb (second build and upgradepkg) 
+#-----------------------------------------------------------------
+# binutils and gcc subsystem: 
+#-----------------------------------------------------------------
+	-d: binutils 
+	-l: gmp 
+	-l: mpfr 
+	-l: libmpc 
+	-d: gcc, g++, go and gfortran (modified gcc.SlackBuild to build gcc, g++, go and gfortran) 
+	-a: dialog : first build
+#-----------------------------------------------------------------
+# Add missing packages (LFS-BOOK-svn-20160101 from § 6.11 to § 6.70) to be able to build everything without 
+the /tools directory. 
+#-----------------------------------------------------------------
+# modify libcap.SlackBuild as above: 
+# make install FAKEROOT=$PKG man_prefix=/usr || 1 
+by 
+# make install FAKEROOT=$PKG man_prefix=/usr 
+#-----------------------------------------------------------------
+	-l: libcap (modified): first build 
+	-l: libcap (second and normal build then re-install over the first one) 
+	-n: tcp_wrapper 
+	-n: openssh (need tcp_wrapper) 
+	-ap: bc 
+	-ap: nano 
+	-n: rsync 
+	-ap: vim (need rsync) 
+	-l: slang1 
+	-l: slang 
+	-a: gpm 
+	-ap: mc (need gpm, slang) 
+	-extra: bash-completion 
+	-ap: man-pages 
+	-ap: man 
+	-d: pkg-config : second build
+	-d: help2man: second build
+#-----------------------------------------------------------------
+# 26/ aaa_elflibs: finalize the collection of libraries: 
+#-----------------------------------------------------------------
+	-a: xfsprogs 
+#-----------------------------------------------------------------
+# patch from debian 
+Description: Fix compilation by adding missing #include(s) 
+Author: Mathieu Malaterre <mathieu@debian> 
+Bug-Debian: https://bugs.debian.org/799162 
+Forwarded: no 
+---dmapi-2.2.10.orig/libdm/dm_handle2path.
+c 
++++ dmapi-2.2.10/libdm/dm_handle2path.
+c 
+@@ -22,7 +22,12 @
+@ 
+#include <mntent.h> 
+#include <dirent.h> 
++#include <string.h> 
+#ifdef linux 
++#include <sys/types.h> 
++#include <sys/stat.h> 
++#include <fcntl.h> 
++#include <unistd.h> 
+#include "getdents.h" 
+#endif 
+#-----------------------------------------------------------------
+	-ap: dmapi (modified version: add debian patch, need xfsprogs) 
+	-l: fuse 
+	-a: sysfsutils 
+	-l: alsa-lib 
+	-n: lftp 
+	-n: curl (need expat, lftp) 
+	-l: gobject-instropection (already built) 
+	-l: libidn 
+	-d: cmake (modified: add "--disable-qt-gui" to ./configure, need libarchive, curl): first build 
+	-l: openjpeg (need cmake) 
+	-d: nasm 
+	-l: libjpeg-turbo (need nasm) 
+	-n: cyrus-sasl 
+	-n: openldap-client (need cyrus-sasl) 
+	-l: mm 
+	-l: libpng (1.6.x) 
+	-l: libtiff 
+	-l: libsigsegv 
+	-l: freetype (need libpng, which): first build 
+	-l: harfbuzz (harfbuzz need freetype) (libtool --finish /usr/lib) 
+	-l: freetype (second build and installpkg) 
+#-----------------------------------------------------------------
+# add to svga.SlackBuild after line 82: 
+# zcat $CWD/svga-quickmath.patch.gz | patch -p1 --verbose || exit 1 
+#-----------------------------------------------------------------
+	-l: svgalib (need patch to be built) 
+	-l: db42 
+	-l: db44 
+	-a: lvm2 
+	-n: nettle 
+	-l: libtasn1 
+	-n: p11-kit (need libtasn1) 
+	-n: gnutls (need nettle, p11-kit, libtasn1) 
+	-ap: cups (need gnutls) 
+	-n: libssh2
+	-a: dialog : second build
+#-----------------------------------------------------------------
+# build_order4: real 87m40.524s 
+#-----------------------------------------------------------------
+# time (./slfs5.sh 2>&1 | tee step5.log): 
+#-----------------------------------------------------------------
+# Add packages to access internet: 
+#-----------------------------------------------------------------
+	-n: network-scripts
+#----------------------------------------------------------------- 
+# add patch to net-tools:
+# modify SlackBuild,  add after line 61:
+zcat $CWD/net-tools-includes.patch.gz | patch -Esp1 --verbose
+#----------------------------------------------------------------- 
+diff -aurN net-tools-1.60.20120726git/config.h net-tools-1.60-20150829git/config.h
+--- net-tools-1.60.20120726git/config.h	2016-02-07 08:08:38.920356383 +0100
++++ net-tools-1.60-20150829git/config.h	2015-12-13 09:23:01.000000000 +0100
+@@ -19,7 +19,7 @@
+  * internationalization on your system.
+  * 
+  */
+-#define I18N 1
++#define I18N 0
+ 
+ /* 
+  * 
+@@ -33,12 +33,12 @@
+ #define HAVE_AFATALK 1
+ #define HAVE_AFAX25 1
+ #define HAVE_AFNETROM 1 /tmp/net-tools-1.60.20120726git-i486-1_noob.txz
+-#define HAVE_AFROSE 0
++#define HAVE_AFROSE 1
+ #define HAVE_AFX25 1
+ #define HAVE_AFECONET 0
+ #define HAVE_AFDECnet 0
+-#define HAVE_AFASH 0
+-#define HAVE_AFBLUETOOTH 1
++#define HAVE_AFASH 1
++#define HAVE_AFBLUETOOTH 0
+ 
+ /* 
+  * 
+@@ -50,18 +50,18 @@
+ #define HAVE_HWSLIP 1
+ #define HAVE_HWPPP 1
+ #define HAVE_HWTUNNEL 1
+-#define HAVE_HWSTRIP 1
+-#define HAVE_HWTR 1
++#define HAVE_HWSTRIP 0
++#define HAVE_HWTR 0
+ #define HAVE_HWAX25 1
+-#define HAVE_HWROSE 0
++#define HAVE_HWROSE 1
+ #define HAVE_HWNETROM 1
+ #define HAVE_HWX25 1
+ #define HAVE_HWFR 1
+-#define HAVE_HWSIT 0
++#define HAVE_HWSIT 1
+ #define HAVE_HWFDDI 1
+ #define HAVE_HWHIPPI 1
+-#define HAVE_HWASH 0
+-#define HAVE_HWHDLCLAPB 0
++#define HAVE_HWASH 1
++#define HAVE_HWHDLCLAPB 1
+ #define HAVE_HWIRDA 1
+ #define HAVE_HWEC 0
+ #define HAVE_HWEUI64 1
+diff -aurN net-tools-1.60.20120726git/config.in net-tools-1.60-20150829git/config.in
+--- net-tools-1.60.20120726git/config.in	2012-06-29 17:42:48.000000000 +0200
++++ net-tools-1.60-20150829git/config.in	2015-08-29 08:59:31.000000000 +0200
+@@ -1,5 +1,5 @@
+ #
+-# config.in	Configure.sh source for the net-tools.
++# config.in	configure.sh source for the net-tools.
+ #		This file contains the definition of what the support
+ #		library contains.  Most of all, it defines which types
+ #		of address families and hardware we know of.
+@@ -46,7 +46,7 @@
+ *
+ *
+ *             Protocol Families.
+-* 
++*
+ bool 'UNIX protocol family' HAVE_AFUNIX y
+ bool 'INET (TCP/IP) protocol family' HAVE_AFINET y
+ bool 'INET6 (IPv6) protocol family' HAVE_AFINET6 y
+@@ -56,7 +56,7 @@
+ bool 'NET/ROM (packet radio) protocol family' HAVE_AFNETROM y
+ bool 'Rose (packet radio) protocol family' HAVE_AFROSE y
+ bool 'X.25 (CCITT) protocol family' HAVE_AFX25 y
+-bool 'Econet protocol family' HAVE_AFECONET y
++bool 'Econet protocol family' HAVE_AFECONET n
+ bool 'DECnet protocol family' HAVE_AFDECnet n
+ bool 'Ash protocol family' HAVE_AFASH y
+ bool 'Bluetooth protocol family' HAVE_AFBLUETOOTH n
+@@ -69,8 +69,8 @@
+ bool 'SLIP (serial line) support' HAVE_HWSLIP y
+ bool 'PPP (serial line) support' HAVE_HWPPP y
+ bool 'IPIP Tunnel support' HAVE_HWTUNNEL y
+-bool 'STRIP (Metricom radio) support' HAVE_HWSTRIP y
+-bool 'Token ring (generic) support' HAVE_HWTR y
++bool 'STRIP (Metricom radio) support' HAVE_HWSTRIP n
++bool 'Token ring (generic) support' HAVE_HWTR n
+ bool 'AX25 (packet radio) support' HAVE_HWAX25 y
+ bool 'Rose (packet radio) support' HAVE_HWROSE y
+ bool 'NET/ROM (packet radio) support' HAVE_HWNETROM y
+@@ -82,7 +82,7 @@
+ bool 'Ash hardware support' HAVE_HWASH y
+ bool '(Cisco)-HDLC/LAPB support' HAVE_HWHDLCLAPB y
+ bool 'IrDA support' HAVE_HWIRDA y
+-bool 'Econet hardware support' HAVE_HWEC y
++bool 'Econet hardware support' HAVE_HWEC n
+ bool 'Generic EUI-64 hardware support' HAVE_HWEUI64 y
+ bool 'InfiniBand hardware support' HAVE_HWIB y
+ *
+#-----------------------------------------------------------------
+	-n: net-tools (modified to build see above) 
+	-n: ncftp 
+	-n: dhcp 
+	-n: dhcpcd 
+	-n: iputils (need gnutls) 
+	-n: iproute2 
+	-n: libgpg-error 
+	-n: libgcrypt (need libgpg-error) 
+#-----------------------------------------------------------------
+# built to be integrated in aaa_elflibs and removed 
+#-----------------------------------------------------------------
+	-l: libpng (1.4.x from slackware-14.1) 
+	-l: libjpeg-v8a (from slackware-14.1) 
+	-l: readline-5.2 (from slackware-14.1) 
+	-l: libtiff-3.9.7 (from slackware-14.1) 
+	-l: gdbm-1.8.3 (from slackware-14.1) 
+	-l: gmp-5.1.3 (from slackware-14.1)
+	-a: udev-182 (from slackware-14.1): doesn't build 
+#-----------------------------------------------------------------
+# build_order5: real 6m48.446s 
+#-----------------------------------------------------------------
+# time (./slfs6.sh 2>&1 | tee step6.log):
+#----------------------------------------------------------------- 
+ installpkg cxxlibs-6.0.18-i486-1 (for libstdc++.so.5.0.17): temporary installation 
+ installpkg gcc-g++-5.3.0 libpng-1.6.20*.t?z udev-182*.t?z 
+#-----------------------------------------------------------------
+	-26/ aaa_elflibs 
+#-----------------------------------------------------------------
+# libpng14.la is necessary to some other packages: imagemagick, GConf ...). 
+#-----------------------------------------------------------------
+cd /usr/lib && cp libpng14.la libpng14.la.orig
+#----------------------------------------------------------------- 
+# remove temporary buildings: 
+#-----------------------------------------------------------------
+removepkg libpng-1.4.12-i486-1 libjpeg-v8a-i486-1 readline-5.2-i486-4 libtiff-3.9.7-i486-1 \ 
+gdbm-1.8.3-i486-4 gmp-5.1.3-i486-1 udev-182-i486-7 cxxlibs-6.0.18-i486-1 
+mv libpng14.la.orig libpng14.la 
+#-----------------------------------------------------------------
+# build_order6: real 6m48.446s 
+#-----------------------------------------------------------------
+# Compile kernel to boot in slackware 24/ and 25/ 
+#-----------------------------------------------------------------
+# time (./kernel.sh 2>&1 | tee kernel.log):
+#-----------------------------------------------------------------
+cp /proc/config.gz /mnt/lfs/sources/linux/config.gz (from outside of chroot environment) 
+cd /sources/linux && gzip -d config.gz && mv config .config && make oldconfig 
+time (make bzImage && make modules && make modules_install) 
+cp arch/x86/boot/bzImage /boot/vmlinuz-4.4 && cp System.map /boot/System.map-4.4 new-config 
+ln -sf /boot/vmlinuz-4.4 /boot/vmlinuz && ln -sf /boot/System.map-4.4 /boot/System.map 
+#-----------------------------------------------------------------
+# kernel compile time : real 44m13.474s 
+#-----------------------------------------------------------------
+# to be sure everything has been correctly installed: 
+#-----------------------------------------------------------------
+installpkg slackpkg 
+cd /tmp && upgradepkg --install-new *.t?z && exec /tools/bin/bash --login +h 
+slackpkg new-config 
+#-----------------------------------------------------------------
+# create rc.keymap 
+#-----------------------------------------------------------------
+cat > /etc/rc.d/rc.keymap << "EOF" 
+#!/bin/sh 
+# Load the keyboard map. More maps are in /usr/share/kbd/keymaps. 
+if [ -x /usr/bin/loadkeys ]; then 
+/usr/bin/loadkeys fr-latin9.map 
+fi 
+EOF 
+#-----------------------------------------------------------------
+# chmod +x /etc/rc.d/rc.keymap 
+# create /etc/fstab 
+#-----------------------------------------------------------------
+# create /etc/resolv.conf 
+cat > /etc/resolv.conf << "EOF" 
+# Begin /etc/resolv.conf 
+search free.fr 
+nameserver 192.168.11.100 
+# End /etc/resolv.conf 
+EOF 
+#-----------------------------------------------------------------
+# test internet access 
+# should see: eth0 and localhost 
+#-----------------------------------------------------------------
+# ifconfig eth0 
+# ping free.fr 
+#-----------------------------------------------------------------
+# create password for root: passwd 
+# exit chroot environment 
+# su -lfs 
+# mv .bashrc bashrc.orig 
+#-----------------------------------------------------------------
+# create /root/.profile
+#-----------------------------------------------------------------
+cat > /root/.profile << "EOF"
+#/bin/sh
+setxkbmap -model pc104 -layout fr
+EOF
+#-----------------------------------------------------------------
+# create /root/.bashrc 
+#-----------------------------------------------------------------
+cat > /root/.bashrc << "EOF" 
+#/bin/sh 
+setxkbmap -model pc104 -layout fr 
+set -o vi 
+source /etc/profile 
+source /root/.profile 
+EOF 
+#-----------------------------------------------------------------
+# create /root/.vimrc 
+#-----------------------------------------------------------------
+cat > /root/.vimrc << "EOF" 
+" Begin /etc/vimrc 
+set nocompatible 
+set backspace=2 
+syntax on 
+if (&term == "iterm") || (&term == "putty"
+) 
+set background=dark 
+endif 
+" End /root/.vimrc 
+EOF 
+#-----------------------------------------------------------------
+# modify /etc/profile 
+#-----------------------------------------------------------------
+cat >> /etc/profile << "EOF" 
+export LANG=fr_FR.ISO-8859-15@euro 
+EOF 
+#-----------------------------------------------------------------
+# exit (lfs) 
+# modify grub configuration to boot in new slackware from scratch 
+# reboot 
+#-----------------------------------------------------------------
+# once booted, configure slackware with scripts in /var/log/setup 
+#-----------------------------------------------------------------
+# END OF SLACKWARE BUILDING IN CHROOT ENVIRONMENT 
+#-----------------------------------------------------------------
+

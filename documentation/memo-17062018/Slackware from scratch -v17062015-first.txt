@@ -1,0 +1,482 @@
+
+SLACKWARE FROM SCRATCH based on LFS-BOOK-7.7.html
+
+SlackBuilds and sources up to slackware-current 17/05/2015
+
+---------------------------------------------
+# BUILDING CHROOTED ENVIRONMENT FOR SLACKWARE
+---------------------------------------------
+- PART I: ok
+- PART II: ok
+- PART III: up to § 6.10 adjust the toolchain
+------------------------------
+-------------------------------
+# STOP LFS-7.7 INSTALLATION
+-------------------------------
+-------------------------------
+# Slackware package management:
+-------------------------------
+# Tiniest slackware installation able to boot properly.
+-------------------------------
+A series (25 p)
+-1/ pkgtools
+-2/ aaa_base
+-3/ xz
+-4/ tar
+-5/ bin
+-6/ coreutils
+-7/ devs
+-8/ etc
+-9/ grep
+-10/ sysklogd
+-11/ sysvinit
+-12/ sysvinit-scripts
+-13/ sed
+-14/ procps
+-15/ shadow
+-16/ aaa_terminfo
+-17/ util-linux
+-18/ bash
+-19/ e2fsprogs
+-20/ kmod
+-21/ udev
+-22/ glibc-solibs
+-23/ kernel-huge-smp
+-24/ kernel-modules-smp
+-25/ aaa_elflibs
+-----------------------
+-----------------------
+# NOTA: 23/, 24/ and 25/ won't be built from source as packages. The aaa_elflibs package is just a 
+# collection of various libraries. The kernel and modules can be installed by your own.
+-----------------------
+-25/ aaa_elflibs (51 libraries + 6 others to build them)
+-----------------------
+	- a: acl
+	- a: attr
+	- a: bzip2
+	- l: libcap
+	- ap: dmapi (need xfsprogs)
+	- l: fuse
+	- a: gpm
+	- a: xz
+	- l: ncurses
+	- l: popt
+	- a: sysfsutils
+	- l: libtermcap
+	- l: zlib
+	- l: alsa-lib
+	- n: curl (need expat)
+	- l: freetype
+	- l: gdbm
+	- l: glib2
+	- l: gmp
+	- l: gobject-instropection
+	- l: glibc
+	- l: libidn
+	- l: libjpeg
+	- l: libjpeg-turbo (need nasm)
+	- n: openldap (need cyrus-asl)
+	- l: mm
+	- l: libmpfr
+	- l: pcre
+	- l: libpng
+	- l: readline
+	- l: slang1
+	- l: slang
+	- l: libtiff
+	- l: libusb
+	- l: libusb-compat
+	- l: svgalib
+	- l: db42
+	- l: db44
+	- a: lvm2
+	- ap: cups (need gnutls, gnutls need nettle)
+	- l: libpng-1.4.14 
+	- l: db31
+	- l: db32
+	- l: db33
+	- n: curl-7.10.3
+	- n: curl-7.12.2
+	- l: libjpeg-v8a
+	- l: readline-5.2 
+	- l: libtiff-3.9.7
+	- l: expat-1.95.7 
+	- l: gdbm-1.8.0 
+	- l: gmp-3.1.1
+---------------------------------------
+---------------------------------------
+# preparation of slackware environment:
+---------------------------------------
+---------------------------------------
+	- § 6.53 xz (then : rm -rf /usr/share/doc/* ) (clean doc directories to install slackware package)
+	- mv /bin/xz /usr/bin/xz
+	- § 6.62 patch (then : rm -rf /usr/share/man/man1/*) (clean man directories to install slackware package)
+#------------------------------
+# installation of tar-1.13 as in the tar.SlackBuild:
+#------------------------------
+	- ./configure --prefix=/usr --disable-nls && zcat ../tar-1.13.bzip2.diff.gz | patch -p1 --verbose || exit 1 && make 
+	- cd src && mv -v tar tar-1.13 && cp -v tar-1.13 /bin/tar-1.13
+#------------------------------
+# installation of which-2.20 as in the which.SlackBuild:
+#------------------------------	
+	- ./configure --prefix=/usr  && make && cp -v which /usr/bin/which
+#------------------------------	
+# package management: copy tools from slackware source:
+#------------------------------	
+	- cp -v /mnt/lfs/sources/pkgtools/scripts/makepkg /sbin/makepkg
+	- cp -v /mnt/lfs/sources/pkgtools/scripts/installpkg /sbin/installpkg
+#------------------------------	
+# remove libstdc++.*.gdb.py  not present on slackware.
+#------------------------------	
+	- rm -v /usr/lib/*gdb.py
+#------------------------------	
+# test essential programs location:
+#------------------------------
+	- which which --> /usr/bin/which
+	- which tar-1.13 --> /bin/tar1.13
+	- which xz --> /usr/bin/xz
+	- which makepkg --> /sbin/makepkg
+	- which installpkg --> /sbin/installpkg
+----------------------------------------------------
+----------------------------------------------------
+#  Building Slackware installation from scratch    #
+----------------------------------------------------
+----------------------------------------------------
+# For each package: 
+# cd package && ./package.SlackBuild && installpkg /tmp/package*.t?z
+----------------------------------------------------
+	-1/ a: pkgtools
+	-2/ a: aaa_base
+	- a: which
+	- d: help2man (not complete, no locales installed): first build
+	- a: gettext
+	- d: gettext-tools
+	- d: libtool
+	-3/ a: xz ( libtool --finish /usr/lib)
+	- a: patch 
+	- a: gzip
+	-4/ a: tar (modified with patch from blfs, idem cpio)
+-----------------------------
+# tar-1.26 error : _GL_WARN_ON_USE (gets, "gets is a security hole - use fgets instead")
+# new patch from BLFS idem cpio in SlackBuild add before ./configure
+sed -i -e '/gets is a/d' gnu/stdio.in.h
+-----------------------------
+	- d: bison
+	- d: flex
+	-5/ a: bin (need bison and flex)
+	-6/ a: coreutils
+	-7/ a: devs
+	-8/ a: etc
+	- l: zlib
+	- a: bzip2
+	- l: pcre (need bzip2 and zlib)
+	-9/ a: grep (need pcre)
+	-10/ a: sysklogd
+	-11/ a: sysvinit
+	-12/ a: sysvinit-scripts
+	- l: popt
+	- a: sysvinit-functions (need popt)
+	-13/ a: sed
+	- l: ncurses
+	- l: libtermcap
+	-14/ a: procps (need ncurses and libtermcap)
+	-15/ a: shadow
+	-16/ a: aaa_terminfo
+	- d: autoconf
+	- d: automake
+	- a: file
+	- a: attr
+	- a: acl
+	- l: readline
+	- a: gawk (libtool --finish /usr/lib/gawk)
+	- l: gdbm
+	- l: expat
+	- a: less
+	- ap: texinfo
+	- d: m4
+	- d: make			
+	- ap: ghostscript (need automake, autoconf)
+	- ap: ghostscript-fonts-std
+	- ap: groff (need ghostscript and fonts-std)
+	- d: pkg-config (modified: --with-internal-glib, to be rebuild further): first build
+-----------------------------------
+# modify the "slackware way" pkg-config is in the /usr/bin directory:
+# cd /usr/bin && mv pkg-config i486-slackware-linux-gnu-pkg-config && ln -sf i486-slackware-linux-gnu-pkg-config pkg-config
+-----------------------------------
+# linuxdoc-tools subsystem:
+-----------------------------------
+	- d: python : first build
+	- d: slacktrack
+	- l: libxml2
+	- tcl: tcl
+	- l: libxslt (need libxml2, tcl)
+	- ap: itstool (need libxml2, python)
+	- a: infozip
+	- a: rpm2tgz
+	- a: ed
+	- t: tetex + tetex-doc (need ed)
+	- n: ca-certificates
+-----------------
+# update-ca-certificates
+-----------------
+	- l: icu4c
+	- ap: sqlite (need icu4c, tcl)
+	- l: mozilla-nss (need ca-certificates, sqlite)
+	- l: libelf
+	- l: db48
+	- ap: rpm (need mozilla-nss, libelf, db48)
+	- ap: diffutils
+	- a: cpio (modified with patch from blfs, idem tar-1.26) 
+-----------------------------
+# cpio error : _GL_WARN_ON_USE (gets, "gets is a security hole - use fgets instead")
+# new patch from BLFS idem cpio in SlackBuild add before ./configure
+sed -i -e '/gets is a/d' gnu/stdio.in.h
+-----------------------------
+	- l: expat
+	- d: perl
+	- d: intltool (need perl)
+	- ap: linuxdoc-tools (need slacktrack, itstool, unzip, libxml2, libxslt, python, tetex, rpm2tgz, rpm, diffutils, cpio, intltool)
+-----------------------------------
+	-17/ a: util-linux (need python, groff)
+	-18/ a: bash
+	- a: findutils
+	- a: kbd (need gettext-tools)
+	-19/ a: e2fsprogs
+	-20/ a: kmod (need python, libxslt, pkg-config) ( libtool --finish /usr/lib/python2.7/site-packages/kmod)
+-----------------------------------
+# libusb subsystem: circular dependancy between libusb/udev 
+-----------------------------------
+	- l: libusb (modified --disable-udev): first build
+	- l: libusb-compat (need libusb)
+	- n: openssl (installpkg openssl and a/openssl-solibs)
+	- d: python (second build after openssl installation and upgradepkg)
+	- n: wget (need openssl)
+	- a: usbutils (need wget)
+	- a: pciutils (need usbutils)
+	- l: libffi (need pciutils)
+	- l: glib2 (need libffi)
+	- l: gobject-intropection (need glib2)
+	- d: gperf (need gobject-intropection)
+	-21/ a: udev (need gperf)
+	- l: libusb (second build and upgradepkg)
+------------------------------------
+# binutils, gcc and glibc subsystem:
+------------------------------------
+	- d: binutils
+	- l: gmp 
+	- l: mpfr
+	- l: libmpc
+	- d: gcc and g++ (modified gcc.SlackBuild to build only gcc and g++ )
+	-22/ l: glibc (overwrites the binaries installed during lfs § 6.9)
+	- a: dialog
+------------------
+# install kernel headers:
+	- make mrproper
+	- make INSTALL_HDR_PATH=dest headers_install
+	- find dest/include \( -name .install -o -name ..install.cmd \) -delete 
+	- cp -rv dest/include/* /usr/include
+-----------------------------------
+# Add missing packages (LFS-7.7 from § 6.11 to § 6.70) to be able to build everything without the /tools directory.
+-----------------------------------
+	- l: libcap (modified see below, not complete): first build
+-----------------------------------
+# modify libcap.SlackBuild as above:
+# make install FAKEROOT=$PKG man_prefix=/usr || 1
+by
+# make install FAKEROOT=$PKG man_prefix=/usr
+-----------------------------------
+	- l: libcap (second and normal build then upgradepkg)
+	- n: tcp_wrapper
+	- n: openssh (need tcp_wrapper)
+	- ap: bc
+	- ap: nano
+	- n: rsync
+	- a: vim (need rsync)
+	- l: slang1
+	- l: slang
+	- a: gpm
+	- ap: mc (need gpm, slang)
+	- extra: bash-completion
+	- ap: man-pages
+	- a: man
+	- d: pkg-config (second build and upgradepkg)
+	- d: help2man (second build and upgradepkg)
+----------------------------------------------------------------------------------
+-25/ aaa_elflibs: finalize the collection of libraries: 		
+			- a: acl  (already built)
+			- a: attr  (already built)
+			- a: bzip2 (already built)
+			- l: libcap (already built)
+	- a: xfsprogs
+	- ap: dmapi (need xfsprogs)
+	- l: fuse
+			- a: gpm (already built)
+			- a: xz (already built)
+			- l: ncurses (already built)
+			- l: popt (already built)
+	- a: sysfsutils
+			- l: libtermcap (already built)
+			- l: zlib (already built)
+	- l: alsa-lib
+	- n: lftp
+	- n: curl (need expat, lftp)
+			- l: gdbm (already built)
+			- l: glib2 (already built)
+			- l: gmp (already built)
+			- l: gobject-instropection (already built)
+			- l: glibc (already built)
+	- l: libidn
+	- l: libarchive
+	- d: cmake (added --disable-qt-gui to ./configure, need libarchive, curl): first build
+	- l: openjpeg (need cmake)
+	- d: nasm
+	- l: libjpeg-turbo (need nasm)
+	- n: cyrus-sasl
+	- n: openldap-client (need cyrus-sasl)
+	- l: mm
+			- l: mpfr (already built)
+			- l: pcre (already built)
+	- l: libpng (1.6.x)
+			- l: readline (already built)
+			- l: slang1 (already built)
+			- l: slang (already built)
+	- l: libtiff
+			- l: libusb (already built)
+			- l: libusb-compat (already built)
+	- l: freetype (need libpng, which): first build
+	- l: harfbuzz (harfbuzz need freetype) (libtool --finish /usr/lib)
+	- l: freetype (second build and upgradepkg)
+	- l: svgalib
+	- l: db42
+	- l: db44
+	- a: lvm2
+	- n: nettle
+	- n: gnutls (need nettle)
+	- ap: cups (need gnutls)
+----------------------------------
+# built to be integrated in aaa_elflibs and removed
+----------------------------------
+	- l: libpng (1.4.x from slackware-14.1): temporary building
+	- l: db31 (from slackware-10.2): temporary building
+	- l: db32 (adapted from db31): temporary building
+	- l: db33 (from slackware-10.2): temporary building
+	- n: curl (from slackware-10.2): temporary building
+	- l: libjpeg-v8a (from slackware-14.1): temporary building
+	- l: readline-5.2 (from slackware-14.1): temporary building
+	- l: libtiff-3.9.7 (from slackware-14.1): temporary building
+	- l: expat-1.95.7 (from slackware-10.0): temporary building
+	- l: gdbm-1.8.0 (from slackware-9.0): temporary building
+	- l: gmp-3.1.1 (from slackware-8.0): temporary building
+----------------------------------
+	-25/ aaa_elflibs
+----------------------------------
+# remove temporary buildings:
+# libpng-1.4.14, db31, db32, db33, curl-7.10.3, curl-7.12.2, gmp-3.1.1, expat-1.95.7,
+# libtiff-3.9.7, readline-5.2, libjpeg-v8a, 
+----------------------------------
+# Add packages to access internet:
+----------------------------------
+	- n: network-scripts
+	- n: net-tools (modified with patch from debian to build)
+-----------------
+# strip.c:24:28: fatal error: linux/if_strip.h: No such file or directory
+ #include <linux/if_strip.h>
+-----------------
+# patch to apply in SlackBuild before the "chown-R root:root ." line:
+zcat $/CWD/net-tools.diff.gz > config.h
+-----------------
+diff -pruN 1.60-24.2/debian/config.h 1.60-24.2ubuntu1/debian/config.h
+--- 1.60-24.2/debian/config.h	2012-12-04 01:05:53.000000000 +0000
++++ 1.60-24.2ubuntu1/debian/config.h	2012-12-04 01:05:54.000000000 +0000
+@@ -49,8 +49,8 @@
+ #define HAVE_HWSLIP 1
+ #define HAVE_HWPPP 1
+ #define HAVE_HWTUNNEL 1
+-#define HAVE_HWSTRIP 1
+-#define HAVE_HWTR 1
++#define HAVE_HWSTRIP 0
++#define HAVE_HWTR 0
+ #define HAVE_HWAX25 1
+ #define HAVE_HWROSE 1
+ #define HAVE_HWNETROM 1
+diff -pruN 1.60-24.2/debian/config.make 1.60-24.2ubuntu1/debian/config.make
+--- 1.60-24.2/debian/config.make	2012-12-04 01:05:53.000000000 +0000
++++ 1.60-24.2ubuntu1/debian/config.make	2012-12-04 01:05:54.000000000 +0000
+@@ -16,8 +16,8 @@ HAVE_HWARC=1
+ HAVE_HWSLIP=1
+ HAVE_HWPPP=1
+ HAVE_HWTUNNEL=1
+-HAVE_HWSTRIP=1
+-HAVE_HWTR=1
++HAVE_HWSTRIP=0
++HAVE_HWTR=0
+ HAVE_HWAX25=1
+ HAVE_HWROSE=1
+ HAVE_HWNETROM=1
+------------------
+	- n: ncftp
+	- n: dhcp
+	- n: dhcpcd	
+	- n: iputils (need gnutls)
+	- n: iproute2
+	- n: libgpg-error
+	- n: libgcrypt (need libgpg-error)
+------------------------
+# to be sure everything has been correctly installed:
+------------------------
+	- upgradepkg --install-new /tmp/*.t?z
+------------------------
+# Compile kernel to boot in slackware:
+	-23/ and 24/ kernel-huge-smp and kernel-modules-smp: instead we install our own kernel and modules
+	- cp /proc/config.gz from other Slackware && gzip -d config.gz && mv config .config && make oldconfig 
+	- time (make bzImage && make modules && make modules_install)
+ 	- cp arch/x86/boot/bzImage /boot/vmlinuz && cp System.map /boot/System.map
+------------------------
+# create /etc/resolv.conf
+------------------------
+cat > /etc/resolv.conf << "EOF"
+# Begin /etc/resolv.conf
+search free.fr
+nameserver 192.168.11.100
+# End /etc/resolv.conf
+EOF
+------------------------
+# test internet access
+------------------------
+# dhcpcd -t 10 eth0
+# ifconfig eth0
+# ping free.fr
+------------------------
+# create rc.keymap
+------------------------
+cat > /etc/rc.d/rc.keymap << "EOF"
+#!/bin/sh
+# Load the keyboard map.  More maps are in /usr/share/kbd/keymaps.
+if [ -x /usr/bin/loadkeys ]; then
+ /usr/bin/loadkeys fr-latin9.map
+fi
+EOF
+------------------------
+# chmod +x /etc/rc.d/rc.keymap
+# create /etc/fstab
+# create password for root: passwd
+# exit chroot environment
+# su - lfs
+# mv .bashrc bashrc.orig (to have the right $PATH once rebooted)
+# exit (lfs)
+# modify grub configuration to boot in new slackware_from_scratch
+# reboot
+------------------------
+# once booted, configure slackware with scripts in /var/log/setup:
+# setup.mouse
+# setup.netconfig
+# setup.services
+# setup.setconsolefont
+# setup.timeconfig
+--------------------------------------------------------------
+# END OF SLACKWARE BUILDING IN CHROOT ENVIRONMENT
+# THE SYSTEM IS EQUIVALENT TO LFS-7.7 FOR DEVELOPMENT
+# BUT IT WORKS AS SLACKWARE
+--------------------------------------------------------------
+
+

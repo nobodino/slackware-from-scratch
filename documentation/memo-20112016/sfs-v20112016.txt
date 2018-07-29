@@ -1,0 +1,2113 @@
+SLACKWARE FROM SCRATCH based on LFS-BOOK-7.10
+
+SlackBuilds and sources based on slackware-current
+
+version: 20/11/2016 reordered thanks to 'depfinder' tool.
+
+#--------------------------------------------------
+# INTRODUCTION TO BUILDING SLACKWARE FROM SCRATCH
+#--------------------------------------------------
+
+The aim of this memo above the proof of concept of building SFS,
+is to show that it is feasible to build from scratch a minimal Slackware system
+in a rather clean manner. 
+It is applicable to both versions 32bits and 64bits version of Slackware.
+
+The memo is divided in 3 parts.
+
+The first consists in building a 'chrooted' environment based 
+on the process described in LFS book (v:7.10)  but with the source packages
+issued from Slackware-current. So that there won't be any incompatibility
+between the 'chrooted' environment and the SFS building. We will only
+build the necessary "tools" as on LFS, except tcl/expect/dejagnu/check, 
+which are not necessary to build Slackware further on.
+
+The result of the first part will be a 'tools' archive we will
+use in the second part of the memo.
+
+The second part of the memo will build the Slackware system
+in the 'chrooted' environment.
+The version of this memo has been elaborated with the objective
+of minimal modifications to the SlackBuild scripts and packages.
+Very few packages remained modified at the end of this second part,
+only packages which don't build either under a normal Slackware
+installation.
+The order to build the packages has been established 
+by trying again and again, and this time with the help of 
+the 'depfinder' tool. 
+Very few packages are built two times.
+ 
+ The only things which are necessary to achieve this, are:
+	- the 'tools' archive or directory set in the first part,
+	- the 2 scripts 'installpkg' and 'makepkg' from the slackware source tree.
+ 
+ For sure this system will not be a complete system but:
+	- you will be able to boot in a console,
+	- you will have access to internet (dhcp, ncftp)
+	- you will able to edit configuration files (nano, vim, mc)
+	- you will be able to build your own kernel (kernel-source, gcc)
+	- by the end, you will be able to grow your distribution by building
+	every package without the help of the 'tools' directory.
+	
+The third part of the memo, will allow you to go on building your
+own Slackware distribution:
+	- with a graphical environment (xfce),
+	- with a complete set of the development packages (d set of packages),
+	- with a complete set of gcc packages,
+	- with a graphical browser picked up from SBo (Netsurf-3.3) and patched
+	to build on Slackware-current.
+	
+To understand well the process it's better to build it one time entirely by hand,  
+and then you can use the scripts provided:
+	- prep-sfs-tools: which prepares the SFS environment,
+	- sfs-tools-current: which builds the 'tools' directory.
+	- sfsinit: which sets the 'chrooted' environment, copies the source tree, patches
+	some SlackBuild scripts and packages.
+	- sfsbuild1: which builds the distribution.
+
+
+
+#----------------------------------------------------------
+# FIRST PART : BUILDING CHROOTED ENVIRONMENT FOR SLACKWARE
+#----------------------------------------------------------
+In this document, we will build a chrooted environment based
+on the process described in LFS-7.10 but with the source packages
+issued from Slackawre-current. So that there won't be any incompatibility
+between the chrooted environment and the SFS building. We will only
+build the necessary "tools" as on LFS, except tcl/expect/dejagnu/check.
+
+The aim of this memo is to rebuild Slackware-current with only
+packages issued from the Slackware source directory.
+Here is the list of the packages (29), we will use:
+
+-----------------
+-binutils: 2.27
+-gcc: 5.4.0
+-mpfr: 3.1.4 (doesn't work with 3.1.5)
+-libmpc: 1.0.3
+-gmp: 6.1.1
+-linux: 4.4.29
+-glibc: 2.24
+-ncurses: 5.9 + ncurses-5.9-20141206-patch.sh.xz
+-bash: 4.4
+-bzip2: 1.0.6
+-coreutils: 8.25
+-diffutils: 3.5
+-file: 5.28
+-findutils: 4.4.2
+-gawk: 4.1.4
+-gettext: 0.19.8.1
+-grep: 2.25
+-gzip: 1.8
+-m4: 1.4.17
+-make: 4.1
+-patch: 2.7.5
+-perl: 5.22.2
+-sed: 4.2.2
+-tar: 1.29
+-texinfo: 6.3
+-util-linux: 2.28.2
+-xz: 5.2.2
+-tar: 1.13 + tar-1.13.bzip2.diff.gz
+-which: 2.21
+-----------------
+
+Let's begin the building of SFS "tools":
+
+- Setting the $SFS variable
+-----------------
+export SFS=/mnt/sfs
+-----------------
+-  Creating the $SFS/tools Directory
+-----------------
+mkdir -v $SFS/tools
+ln -sv $SFS/tools /
+-----------------
+- Adding the SFS user
+-----------------
+groupadd sfs
+useradd -s /bin/bash -g sfs -m -k /dev/null sfs
+passwd sfs
+chown -v sfs $SFS/tools
+chown -Rv sfs:sfs $SFS/sources
+su - sfs
+-----------------
+- Setting Up the Environment
+-----------------
+cat > ~/.bash_profile << "EOF"
+exec env -i HOME=$HOME TERM=$TERM PS1='\u:\w\$ ' /bin/bash
+EOF
+-----------------
+cat > ~/.bashrc << "EOF"
+set +h
+umask 022
+SFS=/mnt/sfs
+LC_ALL=POSIX
+SFS_TGT=$(uname -m)-sfs-linux-gnu
+PATH=/tools/bin:/bin:/usr/bin
+export SFS LC_ALL SFS_TGT PATH
+EOF
+-----------------
+source ~/.bash_profile
+-----------------
+export MAKEFLAGS='-j 5'
+-----------------
+
+
+then the following instructions (LFS adapted to Slackware source packages).
+-----------------
+-binutils: 2.27 (pass 1)
+-----------------
+    tar xvf binutils-2.27.tar.xz && cd binutils-2.27
+
+    mkdir -v build && cd build
+
+    ../configure --prefix=/tools            \
+    --with-sysroot=$SFS        \
+    --with-lib-path=/tools/lib \
+    --target=$SFS_TGT          \
+    --disable-nls              \
+    --disable-werror
+
+    make
+
+    case $(uname -m) in
+        x86_64) mkdir -v /tools/lib && ln -sv lib /tools/lib64 ;;
+    esac
+
+    make install
+    cd ../..
+    rm -rf binutils-2.27
+-----------------
+-gcc: 5.4.0 (pass 1)
+-----------------
+    tar xvf gcc-5.4.0.tar.xz && cd gcc-5.4.0
+
+    tar xvf ../mpfr-3.1.4.tar.xz
+    mv -v mpfr-3.1.4 mpfr
+    tar xvf ../gmp-6.1.1.tar.xz
+    mv -v gmp-6.1.1 gmp
+    tar xvf ../mpc-1.0.3.tar.xz
+    mv -v mpc-1.0.3 mpc
+
+for file in \
+ $(find gcc/config -name linux64.h -o -name linux.h -o -name sysv4.h)
+do
+  cp -uv $file{,.orig}
+  sed -e 's@/lib\(64\)\?\(32\)\?/ld@/tools&@g' \
+      -e 's@/usr@/tools@g' $file.orig > $file
+  echo '
+#undef STANDARD_STARTFILE_PREFIX_1
+#undef STANDARD_STARTFILE_PREFIX_2
+#define STANDARD_STARTFILE_PREFIX_1 "/tools/lib/"
+#define STANDARD_STARTFILE_PREFIX_2 ""' >> $file
+  touch $file.orig
+done
+
+mkdir -v build && cd build
+
+../configure                                       \
+    --target=$SFS_TGT                              \
+    --prefix=/tools                                \
+    --with-glibc-version=2.11                      \
+    --with-sysroot=$SFS                            \
+    --with-newlib                                  \
+    --without-headers                              \
+    --with-local-prefix=/tools                     \
+    --with-native-system-header-dir=/tools/include \
+    --disable-nls                                  \
+    --disable-shared                               \
+    --disable-multilib                             \
+    --disable-decimal-float                        \
+    --disable-threads                              \
+    --disable-libatomic                            \
+    --disable-libgomp                              \
+    --disable-libmpx                               \
+    --disable-libquadmath                          \
+    --disable-libssp                               \
+    --disable-libvtv                               \
+    --disable-libstdcxx                            \
+    --enable-languages=c,c++
+
+make
+make install
+cd ../..
+rm -rf gcc-5.4.0
+-----------------
+-linux: 4.4.29
+-----------------
+tar xvf linux-4.4.29.tar.xz && cd linux-4.4.29
+make mrproper
+make INSTALL_HDR_PATH=dest headers_install
+cp -rv dest/include/* /tools/include
+cd ..
+rm -rf linux-4.4.29
+-----------------
+-glibc: 2.24
+-----------------
+tar xvf glibc-2.24.tar.xz && cd glibc-2.24
+mkdir -v build && cd build
+
+../configure                             \
+      --prefix=/tools                    \
+      --host=$SFS_TGT                    \
+      --build=$(../scripts/config.guess) \
+      --enable-kernel=2.6.32             \
+      --with-headers=/tools/include      \
+      libc_cv_forced_unwind=yes          \
+      libc_cv_c_cleanup=yes
+
+make
+make install
+cd ../..
+rm -rf glibc-2.24
+-----------------
+echo 'int main(){}' > dummy.c
+$SFS_TGT-gcc dummy.c
+readelf -l a.out | grep ': /tools'
+
+[Requesting program interpreter: /tools/lib/ld-linux.so.2]
+
+rm -v dummy.c a.out
+-----------------
+-libstdc++: 5.4.0
+-----------------
+tar xf gcc-5.4.0.tar.xz && cd gcc-5.4.0
+
+mkdir -v build && cd build
+
+../libstdc++-v3/configure           \
+    --host=$SFS_TGT                 \
+    --prefix=/tools                 \
+    --disable-multilib              \
+    --disable-nls                   \
+    --disable-libstdcxx-threads     \
+    --disable-libstdcxx-pch         \
+    --with-gxx-include-dir=/tools/$SFS_TGT/include/c++/5.4.0
+
+make
+make install
+cd ../..
+rm -rf gcc-5.4.0
+-----------------
+-binutils: 2.27 (pass 2)
+-----------------
+tar xvf binutils-2.27.tar.xz && cd binutils-2.27
+
+mkdir -v build && cd build
+
+CC=$SFS_TGT-gcc                \
+AR=$SFS_TGT-ar                 \
+RANLIB=$SFS_TGT-ranlib         \
+../configure                   \
+    --prefix=/tools            \
+    --disable-nls              \
+    --disable-werror           \
+    --with-lib-path=/tools/lib \
+    --with-sysroot
+
+make
+make install
+
+make -C ld clean|| exit 1
+cp -v ld/ld-new /tools/bin
+
+cd ../..
+rm -rf binutils-2.27
+-----------------
+-gcc: 5.4.0 (pass 2)
+-----------------
+tar xvf gcc-5.4.0.tar.xz && cd gcc-5.4.0
+
+cat gcc/limitx.h gcc/glimits.h gcc/limity.h > \
+  `dirname $($SFS_TGT-gcc -print-libgcc-file-name)`/include-fixed/limits.h
+
+for file in \
+ $(find gcc/config -name linux64.h -o -name linux.h -o -name sysv4.h)
+do
+  cp -uv $file{,.orig}
+  sed -e 's@/lib\(64\)\?\(32\)\?/ld@/tools&@g' \
+      -e 's@/usr@/tools@g' $file.orig > $file
+  echo '
+#undef STANDARD_STARTFILE_PREFIX_1
+#undef STANDARD_STARTFILE_PREFIX_2
+#define STANDARD_STARTFILE_PREFIX_1 "/tools/lib/"
+#define STANDARD_STARTFILE_PREFIX_2 ""' >> $file
+  touch $file.orig
+done
+
+    tar xvf ../mpfr-3.1.4.tar.xz
+    mv -v mpfr-3.1.4 mpfr
+    tar xvf ../gmp-6.1.1.tar.xz
+    mv -v gmp-6.1.1 gmp
+    tar xvf ../mpc-1.0.3.tar.xz
+    mv -v mpc-1.0.3 mpc
+
+    mkdir -v build && cd build
+
+	CC=$SFS_TGT-gcc                                    \
+	CXX=$SFS_TGT-g++                                   \
+	AR=$SFS_TGT-ar                                     \
+	RANLIB=$SFS_TGT-ranlib                             \
+	../configure                                       \
+    --prefix=/tools                                \
+    --with-local-prefix=/tools                     \
+    --with-native-system-header-dir=/tools/include \
+    --enable-languages=c,c++                       \
+    --disable-libstdcxx-pch                        \
+    --disable-multilib                             \
+    --disable-bootstrap                            \
+    --disable-libgomp
+
+    make
+    make install
+    ln -sv gcc /tools/bin/cc
+    cd ../..
+    rm -rf gcc-5.4.0
+-----------------
+echo 'int main(){}' > dummy.c
+cc dummy.c
+readelf -l a.out | grep ': /tools'
+
+[Requesting program interpreter: /tools/lib/ld-linux.so.2]
+
+rm -v dummy.c a.out
+-----------------
+-ncurses: 5.9 + patch from slackware (instructions from LFS-7.4)
+-----------------
+    tar xvf ncurses-5.9.tar.xz && cd ncurses-5.9
+
+    xzcat ../ncurses-5.9-20141206-patch.sh.xz | patch -Esp1
+    ./configure --prefix=/tools --with-shared \
+    --without-debug --without-ada --enable-overwrite
+
+    make
+    make install
+    cd ..
+    rm -rf ncurses-5.9
+-----------------
+-bash: 4.4
+-----------------
+    tar xvf bash-4.4.tar.xz && cd bash-4.4
+
+    ./configure --prefix=/tools --without-bash-malloc
+
+    make
+    make install
+    ln -sv bash /tools/bin/sh
+    cd ..
+    rm -rf bash-4.4
+-----------------
+-bzip2: 1.0.6
+-----------------
+    tar xvf bzip2-1.0.6.tar.gz && cd bzip2-1.0.6
+
+    make
+    make PREFIX=/tools install
+    cd ..
+    rm -rf bzip2-1.0.6
+-----------------
+-coreutils: 8.25
+-----------------
+    tar xvf coreutils-8.25.tar.xz && cd coreutils-8.25
+
+    ./configure --prefix=/tools --enable-install-program=hostname
+
+    make
+    make install
+    cd ..
+    rm -rf coreutils-8.25
+-----------------
+-diffutils: 3.5
+-----------------
+    tar xvf diffutils-3.5.tar.xz && cd diffutils-3.5
+
+    ./configure --prefix=/tools
+
+    make
+    make install
+    cd ..
+    rm -rf diffutils-3.5
+-----------------
+-file: 5.28
+-----------------
+    tar xvf file-5.28.tar.xz && cd file-5.28
+
+    ./configure --prefix=/tools
+
+    make
+    make install
+    cd ..
+    rm -rf file-5.28
+-----------------
+-findutils: 4.4.2
+-----------------
+    tar xvf findutils-4.4.2.tar.xz && cd findutils-4.4.2
+
+    ./configure --prefix=/tools
+
+    make
+    make install
+    cd ..
+    rm -rf findutils-4.4.2
+-----------------
+-gawk: 4.1.4
+-----------------
+    tar xvf gawk-4.1.4.tar.xz && cd gawk-4.1.4
+
+    ./configure --prefix=/tools
+
+    make
+    make install
+    cd ..
+    rm -rf gawk-4.1.4
+-----------------
+-gettext: 0.19.8.1
+-----------------
+    tar xvf gettext-0.19.8.1.tar.xz && cd gettext-0.19.8.1
+
+    cd gettext-tools
+    EMACS="no" ./configure --prefix=/tools --disable-shared
+
+    make -C gnulib-lib
+    make -C intl pluralx.c
+    make -C src msgfmt
+    make -C src msgmerge
+    make -C src xgettext
+
+    cp -v src/{msgfmt,msgmerge,xgettext} /tools/bin
+    cd ../..
+    rm -rf gettext-0.19.8.1
+-----------------
+-grep: 2.25
+-----------------
+    tar xvf grep-2.25.tar.xz && cd grep-2.25
+
+    ./configure --prefix=/tools
+
+    make
+    make install
+    cd ..
+    rm -rf grep-2.25
+-----------------
+-gzip: 1.8
+-----------------
+    tar xvf gzip-1.8.tar.xz && cd gzip-1.8
+
+    ./configure --prefix=/tools
+
+    make
+    make install
+    cd ..
+    rm -rf gzip-1.8
+-----------------
+-m4: 1.4.17
+-----------------
+    tar xvf m4-1.4.17.tar.xz && cd m4-1.4.17
+
+    ./configure --prefix=/tools
+
+    make
+    make install
+    cd ..
+    rm -rf m4-1.4.17
+-----------------
+-make: 4.1
+-----------------
+    tar xvf make-4.1.tar.bz2 && cd make-4.1
+
+    ./configure --prefix=/tools --without-guile
+
+    make
+    make install
+    cd ..
+    rm -rf make-4.1
+-----------------
+-patch: 2.7.5
+-----------------
+    tar xvf patch-2.7.5.tar.xz && cd patch-2.7.5
+
+    ./configure --prefix=/tools
+
+    make
+    make install
+    cd ..
+    rm -rf patch-2.7.5
+-----------------
+-perl: 5.22.2
+-----------------
+    tar xvf perl-5.22.2.tar.xz && cd perl-5.22.2
+
+    sh Configure -des -Dprefix=/tools -Dlibs=-lm
+    make
+    cp -v perl cpan/podlators/pod2man /tools/bin
+    mkdir -pv /tools/lib/perl5/5.22.2
+    cp -Rv lib/* /tools/lib/perl5/5.22.2
+    cd ..
+    rm -rf perl-5.22..2
+-----------------
+-sed: 4.2.2
+-----------------
+    tar xvf sed-4.2.2.tar.xz && cd sed-4.2.2
+
+    ./configure --prefix=/tools
+
+    make
+    make install
+    cd ..
+    rm -rf sed-4.2.2
+-----------------
+-tar: 1.29
+-----------------
+    tar xvf tar-1.29.tar.xz && cd tar-1.29
+
+    ./configure --prefix=/tools
+
+    make
+    make install
+    cd ..
+    rm -rf tar-1.29
+-----------------
+-texinfo: 6.3 (add --disable-perl-xs)
+-----------------
+    tar xvf texinfo-6.3.tar.xz && cd texinfo-6.3
+
+    ./configure --prefix=/tools --disable-perl-xs
+
+    make
+    make install
+    cd ..
+    rm -rf texinfo-6.3
+-----------------
+-util-linux: 2.28.2
+-----------------
+    tar xvf util-linux-2.28.2.tar.xz && cd util-linux-2.28.2
+
+    ./configure --prefix=/tools                \
+    --without-python               \
+    --disable-makeinstall-chown    \
+    --without-systemdsystemunitdir \
+    PKG_CONFIG=""
+
+    make
+    make install
+    cd ..
+    rm -rf util-linux-2.28.2
+-----------------
+-xz: 5.2.2
+-----------------
+    tar xvf xz-5.2.2.tar.xz && cd xz-5.2.2
+
+    ./configure --prefix=/tools
+
+    make
+    make install
+    cd ..
+    rm -rf xz-5.2.2
+-----------------
+tar: 1.13
+-----------------
+    tar xvf tar-1.13.tar.gz && cd tar-1.13
+
+    ./configure --prefix=/usr --disable-nls && zcat ../tar-1.13.bzip2.diff.gz | patch -p1
+    make
+    cd src && mv -v tar tar-1.13
+    cp -v tar-1.13 /tools/bin/tar-1.13
+    cd ../..
+    rm -rf tar-1.13
+-----------------
+which-2.21
+-----------------
+    tar xvf which-2.21.tar.gz && cd which-2.21
+
+    ./configure --prefix=/usr
+    make
+    cp -v which /tools/bin/which
+    cd ..
+    rm -rf which-2.21
+-----------------
+
+#-----------------------------
+# Stripping
+#-----------------------------
+    strip --strip-debug /tools/lib/*
+    /usr/bin/strip --strip-unneeded /tools/{,s}bin/*
+    rm -rf /tools/{,share}/{info,man,doc}
+#-----------------------------
+# Changing Ownership
+#-----------------------------
+exit
+cd .. && chown -R root:root $SFS/tools
+#-----------------------------
+# make an archive with /tools:
+#-----------------------------
+tar czf tools.tar.gz tools/
+#-----------------------------
+# store tools.tar.gz in a safe place
+#-----------------------------
+# END OF THE FIRST PART OF SLACKWARE BUILDING
+#-----------------------------
+
+
+
+#-----------------------------------------------------------------
+# SECOND PART: BUILDING SLACKWARE IN CHROOTED ENVIRONMENT
+#-----------------------------------------------------------------
+
+
+#-----------------------------------------------------------------
+# Smallest slackware installation able to boot properly.
+#-----------------------------------------------------------------
+A series (26 p)
+	-1/ pkgtools
+	-2/ aaa_base
+	-3/ xz
+	-4/ tar
+	-5/ bin
+	-6/ coreutils
+	-7/ devs
+	-8/ etc
+	-9/ grep
+	-10/ sysklogd
+	-11/ sysvinit
+	-12/ sysvinit-scripts
+	-13/ sed
+	-14/ procps-ng
+	-15/ shadow
+	-16/ aaa_terminfo
+	-17/ util-linux
+	-18/ bash
+	-19/ e2fsprogs
+	-20/ kmod
+	-21/ eudev
+	-22/ libgudev
+	-23/ glibc-solibs
+	-24/ kernel-huge-smp
+	-25/ kernel-modules-smp
+	-26/ aaa_elflibs
+#-----------------------------------------------------------------
+#-26/ aaa_elflibs (collection of 47 libraries + 5 dependancy packages)
+#-----------------------------------------------------------------
+	-a: acl
+	-a: attr
+	-a: bzip2
+	-l: libcap
+	-ap: dmapi (need xfsprogs)
+	-l: fuse
+	-a: gpm
+	-a: xz
+	-l: ncurses
+	-l: popt
+	-a: sysfsutils
+	-l: libtermcap
+	-l: zlib
+	-l: alsa-lib (need python)
+	-l: expat
+	-n: libssh2
+	-n: openssl
+	-n: cyrus-sasl (need openssl)
+	-n: openldap (need cyrus-asl)
+	-n: curl (need expat, libssh2, zlib, openssl, openldap, cyrus-sasl)
+	-l: freetype
+	-l: gdbm
+	-l: glib2
+	-l: gmp
+	-l: gobject-introspection
+	-l: glibc
+	-l: libidn
+	-d: cmake 
+	-l: openjpeg (need cmake)
+	-d: nasm
+	-l: libjpeg-turbo (need nasm)
+	-l: mm
+	-l: libmpfr
+	-l: pcre
+	-l: libpng
+	-l: readline
+	-l: slang1
+	-l: slang
+	-l: libtiff
+	-l: libusb
+	-l: libusb-compat
+	-l: libsigsegv
+	-l: svgalib
+	-l: db42
+	-l: db44
+	-a: lvm2
+	-ap: cups (need gnutls, gnutls need nettle)
+	-t: tcl
+	-l: libpng (1.4.x from slackware-14.1): not built, just installed
+	-l: libjpeg-v8a (from slackware-14.1):  not built, just installed
+	-l: readline-5.2 (from slackware-14.1):  not built, just installed
+	-l: libtiff-3.9.7 (from slackware-14.1): not built, just installed
+	-l: gdbm-1.8.3 (from slackware-14.1):  not built, just installed
+	-l: gmp-5.1.3 (from slackware-14.1):  not built, just installed
+	-a: udev-182 (from slackware-14.1):  not built, just installed
+#-----------------------------------------------------------------
+# Building the mssing packages to be self sufficient without 'tools'
+# is the aim of the following. We will add the missing packages
+# LFS-BOOK-7.10 from § 6.11 to § 6.70, to be able to build
+# everything without the 'tools' directory.
+#-----------------------------------------------------------------
+# The missing packages according to chapter 6 of the LFS
+# book, are listed below:
+#-----------------------------------------------------------------
+	-a: file
+	-l: libcap
+	-d: m4
+	-l: readline
+	-l: gdbm
+	-l: expat
+	-d: perl
+	-d: intltool
+	-d: autoconf
+	-d: automake
+	-a: gettext
+	-ap: diffutils
+	-a: gawk
+	-a: less
+	-a: gzip
+	-a: kbd
+	-d: make
+	-a: patch
+	-ap: texinfo
+#-----------------------------------------------------------------
+# To those missing packages, we will add what are the necessary
+# packages to access internet, and those necessary to build 
+# aaa_elflibs, linuxdoc-tools, and some other packages (mc, nano..) 
+#-----------------------------------------------------------------
+	-n: network-scripts
+	-n: net-tools
+	-n: ncftp
+	-n: dhcp
+	-n: dhcpcd
+	-n: iputils (need gnutls)
+	-n: libgpg-error
+	-n: libgcrypt (need libgpg-error)
+	-ap: man
+	-ap: man-pages
+	-ap: linuxdoc-tools
+#-----------------------------------------------------------------
+#-----------------------------------------------------------------
+
+
+
+
+
+#-----------------------------------------------------------------
+#-----------------------------------------------------------------
+# preparation of slackware environment:
+#-----------------------------------------------------------------
+#-----------------------------------------------------------------
+cp tools.tar.gz $SFS && tar xzf tools.tar.gz --xattrs
+#-----------------------------------------------------------------
+# Preparing Virtual Kernel File Systems
+#-----------------------------------------------------------------
+mkdir -pv $SFS/{dev,proc,sys,run}
+mknod -m 600 $SFS/dev/console c 5 1
+mknod -m 666 $SFS/dev/null c 1 3
+mount -v --bind /dev $SFS/dev
+mount -vt devpts devpts $SFS/dev/pts -o gid=5,mode=620
+mount -vt proc proc $SFS/proc
+mount -vt sysfs sysfs $SFS/sys
+mount -vt tmpfs tmpfs $SFS/run
+if [ -h $SFS/dev/shm ]; then
+	mkdir -pv $SFS/$(readlink $SFS/dev/shm)
+fi
+#-----------------------------------------------------------------
+# Entering the Chroot Environment
+#-----------------------------------------------------------------
+chroot "$SFS" /tools/bin/env -i \
+    HOME=/root                  \
+    TERM="$TERM"                \
+    PS1='\u:\w\$ '              \
+    PATH=/bin:/usr/bin:/sbin:/usr/sbin:/tools/bin \
+    /tools/bin/bash --login +h
+#-----------------------------------------------------------------
+# Creating Essential Files and Symlinks
+#-----------------------------------------------------------------
+mkdir -pv /usr/lib && mkdir -v /bin && mkdir -pv /usr/include
+mkdir -pv /var/log/setup/tmp && mkdir -pv /etc
+ln -sv /tools/bin/{bash,cat,echo,pwd,stty} /bin
+ln -sv /tools/bin/perl /usr/bin
+ln -sv /tools/lib/libgcc_s.so{,.1} /usr/lib
+ln -sv /tools/lib/libstdc++.so{,.6} /usr/lib
+sed 's/tools/usr/' /tools/lib/libstdc++.la > /usr/lib/libstdc++.la
+ln -sv bash /bin/sh
+#-----------------------------------------------------------------
+# necessary to install pkgtools (to avoid 'noise')
+#-----------------------------------------------------------------
+ln -sv /tools/bin/du /bin
+#-----------------------------------------------------------------
+# Building Slackware installation from scratch
+#-----------------------------------------------------------------
+# package management: copy tools from slackware source
+#-----------------------------------------------------------------
+mkdir -v /sbin
+cp /slacksrc/a/pkgtools/scripts/makepkg /sbin/makepkg
+cp /slacksrc/a/pkgtools/scripts/installpkg /sbin/installpkg
+chmod 755 /sbin/makepkg /sbin/installpkg
+#-----------------------------------------------------------------
+# create mini /etc/passwd and /etc/group to avoid
+# 'noise' when building pkgtools:  "chown: invalid user: 'root:root'"
+#-----------------------------------------------------------------
+mkdir -v /etc
+cat > /etc/group << "EOF"
+root:x:0:root
+EOF
+#-----------------------------------------------------------------
+cat > /etc/passwd << "EOF"
+root:x:0:0::/root:/bin/bash
+EOF
+#-----------------------------------------------------------------
+chmod 644 /etc/group /etc/passwd
+#-----------------------------------------------------------------
+# To remove the "I have no name!" prompt, start a new shell.
+exec /tools/bin/bash --login +h
+#-----------------------------------------------------------------
+# test essential programs location and existence:
+#-----------------------------------------------------------------
+root:/# which makepkg
+/sbin/makepkg
+root:/# which installpkg
+/sbin/installpkg
+root:/# which which
+/tools/bin/which
+root:/# which tar-1.13
+/tools/bin/tar-1.13
+root:/# which patch
+/tools/bin/patch
+#-----------------------------------------------------------------
+# Building Slackware from scratch
+#-----------------------------------------------------------------
+# For each package and a "hand made" installation do:
+#-----------------------------------------------------------------
+cd package && ./package.SlackBuild && installpkg /tmp/package*.t?z
+#-----------------------------------------------------------------
+
+
+
+#-----------------------------------------------------------------
+# At the early stage of this building, only the packages strictly
+# necessary to be able to boot will be built. every time it's possible
+# we'll keep the original SlackBuild, unless it doesn't build under
+# Slackware, or for circular dependancy reason.
+#-----------------------------------------------------------------
+# To avoid the following message, we'll install findutils at first.
+#-----------------------------------------------------------------
+find: warning: you have specified the -maxdepth option after a non-option argument -type,
+but options are not positional (-maxdepth affects tests specified before it as well as
+those specified after it).  Please specify options before other arguments.
+#-----------------------------------------------------------------
+	-a: findutils (1st install)
+	-a: findutils (2nd install)
+	-a: pkgtools
+	-a: aaa_base
+#-----------------------------------------------------------------
+# for etc: build 'etc' package, then remove mini /etc/group and
+# /etc/passwd before install 'etc' package
+#-----------------------------------------------------------------
+	-a: etc
+	-d: kernel-headers (see below)
+#-----------------------------------------------------------------
+make mrproper
+make INSTALL_HDR_PATH=dest headers_install
+find dest/include \( -name .install -o -name ..install.cmd \) -delete
+cp -rv dest/include/* /usr/include
+#-----------------------------------------------------------------
+	-23/ l: glibc
+#-----------------------------------------------------------------
+# Adjust the toolchain
+#-----------------------------------------------------------------
+mv -v /tools/bin/{ld,ld-old}
+mv -v /tools/$(gcc -dumpmachine)/bin/{ld,ld-old}
+mv -v /tools/bin/{ld-new,ld}
+ln -sv /tools/bin/ld /tools/$(gcc -dumpmachine)/bin/ld
+#-----------------------------------------------------------------
+# you should see what's below:
+#-----------------------------------------------------------------
+root:/sources/slackbuilds/l/glibc# mv -v /tools/bin/{ld,ld-old}
+	'/tools/bin/ld' -> '/tools/bin/ld-old'
+root:/sources/slackbuilds/l/glibc# mv -v /tools/$(gcc -dumpmachine)/bin/{ld,ld-old}
+	'/tools/i686-pc-linux-gnu/bin/ld' -> '/tools/i686-pc-linux-gnu/bin/ld-old'
+root:/sources/slackbuilds/l/glibc# mv -v /tools/bin/{ld-new,ld}
+	'/tools/bin/ld-new' -> '/tools/bin/ld'
+root:/sources/slackbuilds/l/glibc# ln -sv /tools/bin/ld /tools/$(gcc -dumpmachine)/bin/ld
+	'/tools/i686-pc-linux-gnu/bin/ld' -> '/tools/bin/ld'
+#-----------------------------------------------------------------
+# modify gcc dumpspecs:
+#-----------------------------------------------------------------
+gcc -dumpspecs | sed -e 's@/tools@@g'                   \
+    -e '/\*startfile_prefix_spec:/{n;s@.*@/usr/lib/ @}' \
+    -e '/\*cpp:/{n;s@$@ -isystem /usr/include@}' >      \
+    `dirname $(gcc --print-libgcc-file-name)`/specs
+#-----------------------------------------------------------------
+# test glibc: optional operation (see at the end of the document)
+#-----------------------------------------------------------------
+# rebuild all packages after glibc is built
+#-----------------------------------------------------------------
+	-a: findutils
+	-1/ a: pkgtools
+	-2/ a: aaa_base
+	-8/ a: etc
+	-d: kernel-headers
+	-l: zlib
+	-d: bison
+	-d: flex 
+	-d: binutils (need flex)
+	-d: help2man (not complete,no libs, 1st build)
+	-d: libtool (need help2man)
+	-l: gmp (need libtool)
+	-l: mpfr (need gmp)
+	-l: libmpc (need mpfr)
+	-d: gcc (need gmp, mpfr and libmpc, patched to build only gcc, g++ and gcc-fortran)
+#-----------------------------------------------------------------
+# 26/ aaa_elflibs (collection of 47 libraries + 5 dependancy packages)
+# we will build aaa_elflibs as soon as possible because depfinder
+# shows that a lot packages depends on what's in aaa_elflibs
+#-----------------------------------------------------------------
+	-a: which
+	-a: bzip2
+	-a: attr
+	-a: acl (need attr)
+	-3/ a: xz
+	-4/ a: tar (need acl, attr)
+-----------------------------------------------------------------
+# modify libcap.SlackBuild as above:
+ make install FAKEROOT=$PKG man_prefix=/usr || 1
+by
+make RAISE_SETFCAP=no install FAKEROOT=$PKG man_prefix=/usr || 1
+#-----------------------------------------------------------------
+	-l: libcap (modified)
+	-l: libcap (normal build and upgradepkg)
+	-l: expat
+	-n: openssl (install openssl and openssl-solibs)
+	-l: ncurses
+	-d: autoconf
+	-d: automake
+-----------------------------------------------------------------
+# install twice gpm to avoid the following message:
+ fatal error: gpm.h: No such file or directory
+-----------------------------------------------------------------
+	-a: gpm (need ncurses, autoconf): first build
+	-a: gpm (need ncurses, autoconf): second build and reinstall
+	-a: sysfsutils
+	-l: libtermcap
+	-d: python (not complete): first build
+	-ap: groff (need X11, ghostscript and fonts-std:not complete) first build
+	-l: alsa-lib (need python)
+	-n: cyrus-sasl (need openssl)
+	-n: openldap-client (need cyrus-asl)
+	-n: curl (need expat, libssh2, zlib, openssl, openldap, cyrus-sasl)
+	-l: libidn
+	-l: pcre (need bzip2 and zlib)
+	-a: hwdata
+	-a: pciutils (need hwdata, xz, eudev, zlib, kmod): first build
+-----------------------
+update-pciids
+-----------------------
+	-d: pkg-config (modified: --with-internal-glib): first build
+	-l: libffi (need pciutils)
+	-9/ a: grep (need pcre)
+	-6/ a: coreutils (need acl, attr, libcap)
+	-a: glibc-zoneinfo (need coreutils)
+	-13/ a: sed (need acl, attr)
+	-l: glib2 (need libffi, gamin, fuse): first build
+	-l: gamin (need glib2, pkg-config)
+	-l: glib2 (need libffi, gamin, fuse): second build
+	-l: gobject-instropection (need glib2, zlib, libffi)
+	-d: gperf (need gobject-introspection)
+	-21/ a: eudev (need gperf)
+	-22/ a: libgudev (need eudev)
+	-d: pkg-config (normal and second build)
+	-n: wget (need openssl, pcre, zlib, libidn, util-linux)
+	-l: libcap-ng
+	-18/ a: bash (need libtermcap)
+	-extra: bash-completion
+	-17/ a: util-linux (need python, groff, libcap-ng, eudev, ncurses, zlib, bash-completion): first build
+	-n: libgpg-error
+	-n: libgcrypt (need libgpg-error)
+	-l: libxml2 (need python, zlib, xz)
+	-tcl: tcl
+	-l: libxslt (need libxml2, tcl, xz, zlib, libgcrypt, libgpg-error, python)
+	-20/ a: kmod (modified, see patch below, not complete: no man pages, need python, libxslt, pkg-config): first build
+#-----------------------------------------------------------------
+--- kmod.SlackBuild.old	2016-06-11 09:26:54.875965621 +0000
++++ kmod.SlackBuild	2016-06-11 09:27:33.829966245 +0000
+@@ -25,7 +25,7 @@
+
+ PKGNAM=kmod
+ VERSION=${VERSION:-22}
+-BUILD=${BUILD:-1}
++BUILD=${BUILD:-1_sfs}
+
+ if [ -z "$ARCH" ]; then
+   case "$( uname -m )" in
+@@ -85,8 +85,8 @@
+   --enable-python \
+   --build=$ARCH-slackware-linux || exit 1
+
+-make || exit 1
+-make install DESTDIR=$PKG || exit 1
++make
++make install DESTDIR=$PKG
+
+ # Strip binaries:
+ ( cd $PKG
+#-----------------------------------------------------------------
+	-l: libssh2 (need openssl, zlib)
+	-l: fuse (need util-linux)
+	-a: xfsprogs
+	-d: make
+#-----------------------------------------------------------------
+# patch from debian
+Description: Fix compilation by adding missing #include(s)
+Author: Mathieu Malaterre <mathieu@debian>
+Bug-Debian: https://bugs.debian.org/799162
+Forwarded: no
+---dmapi-2.2.10.orig/libdm/dm_handle2path.
+c
++++ dmapi-2.2.10/libdm/dm_handle2path.
+c
+@@ -22,7 +22,12 @
+@
+#include <mntent.h>
+#include <dirent.h>
++#include <string.h>
+#ifdef linux
++#include <sys/types.h>
++#include <sys/stat.h>
++#include <fcntl.h>
++#include <unistd.h>
+#include "getdents.h"
+#endif
+#-----------------------------------------------------------------
+	-ap: dmapi (modified version: add debian patch, need xfsprogs, make)
+	-a: pciutils (need xz, eudev, zlib, kmod): second build
+	-l: libpng (need zlib)
+	-l: freetype (bzip2, glib2, zlib, libpng, harfbuzz, which): first build
+	-l: harfbuzz (harfbuzz need freetype, bzip2, expat, glib2, libpng, zlib, icu4c, X11, cairo,mesa, pixman, fontconfig ): first build
+	-l: freetype (second build and re-install)
+	-l: gdbm
+	-l: lzo
+	-n: nettle
+	-l: libarchive (need acl, attr, bzip2, xz, zlib, libxml2, lzo, nettle)
+	-d: cmake (modified: disable "--qt-gui" from ./configure, need libarchive, curl): first build
+	-l: openjpeg (need cmake)
+	-d: nasm
+	-l: libjpeg-turbo (need nasm)
+	-l: mm
+	-l: readline
+	-l: slang1
+	-l: slang
+	-l: libtiff
+	-l: libusb
+	-l: libusb-compat
+	-l: libsigsegv
+#-----------------------------------------------------------------
+# add to svga.SlackBuild after line 82:
+# zcat $CWD/svga-quickmath.patch.gz | patch -p1 --verbose || exit 1
+#-----------------------------------------------------------------
+	-l: svgalib (need patch to be built)
+	-l: db42
+	-l: db44
+	-a: lvm2
+	-19/ a: e2fsprogs (need pkg-config, util-linux, fuse)
+	-l: lcms2
+	-ap: ghostscript (need automake, autoconf, lcms2, libpng, libjpeg-turbo)
+	-ap: ghostscript-fonts-std
+	-ap: groff (need X11, ghostscript and fonts-std): second build
+	-l: libtasn1
+	-a: gettext
+	-d: gettext-tools
+	-a: dcron
+	-n: ca-certificates  (need openssl-solibs and dcron)
+#------------------------
+update-ca-certificates
+#------------------------
+	-n: p11-kit (need libtasn1, ca-certificates)
+	-n: gnutls (need nettle, p11-kit, libtasn1)
+	-ap: cups (need gnutls)
+	-5/ a: bin (need bison and flex)
+	-7/ a: devs
+	-10/ a: sysklogd (patch from LFS)
+#-----------------------------------------------------------------
+--- sysklogd.SlackBuild.old	2016-06-29 06:34:00.000000000 +0000
++++ sysklogd.SlackBuild	2016-08-30 14:37:52.175642827 +0000
+@@ -22,7 +22,7 @@
+
+
+ VERSION=1.5.1
+-BUILD=${BUILD:-2}
++BUILD=${BUILD:-2_sfs}
+
+ if [ -z "$ARCH" ]; then
+   case "$( uname -m )" in
+@@ -57,6 +57,10 @@
+ # Allow -c option to log all (even repeated) messages:
+ zcat $CWD/sysklogd.allow.repeated.messages.diff.gz | patch -p1 --verbose || exit 1
+
++# patch from LFS
++sed -i '/Error loading kernel symbols/{n;n;d}' ksym_mod.c
++sed -i 's/union wait/int/' syslogd.c
++
+ make all syslog_tst $NUMJOBS || make || exit 1
+
+ mkdir -p $PKG/usr/sbin
+#-----------------------------------------------------------------
+	-a: utempter
+	-11/ a: sysvinit
+	-12/ a: sysvinit-scripts
+	-l: popt
+	-a: sysvinit-functions (need popt)
+	-14/ a: procps-ng (need ncurses and libtermcap)
+	-15/ a: shadow (need attr, acl)
+	-ap: bc
+	-a: file (need autoconf)
+	-d: m4
+	-d: perl (need expat, mariaDB for DBD-mysql): first build
+	-d: intltool (need perl)
+	-a: kbd (need gettext-tools)
+	-ap: diffutils
+	-a: gawk
+	-a: less
+	-a: gzip
+	-a: patch
+	-ap: texinfo
+	-ap: man
+	-ap: man-pages
+	-d: slacktrack
+	-ap: itstool (need libxml2, python)
+	-a: infozip
+	-a: rpm2tgz
+	-a: ed
+	-t: tetex + tetex-doc (need ed)
+	-l: icu4c
+	-ap: sqlite (need icu4c, tcl)
+	-l: mozilla-nss (need ca-certificates, sqlite)
+	-l: elfutils
+	-l: db48
+	-ap: rpm (need mozilla-nss, libelf, db48, libarchive)
+	-a: cpio
+	-a: eudev: second build
+	-a: libgudev: second build
+	-a: usbutils (need libgudev)
+	-a: dialog
+	-d: help2man: second build
+	-ap: linuxdoc-tools (need slacktrack, itstool, unzip, libxml2, libxslt, python, tetex, rpm2tgz, rpm, diffutils, cpio, intltool)
+	-ap: nano
+	-n: rsync
+	-ap: vim (need rsync)
+	-ap: mc (need gpm, slang)
+	-n: tcp_wrapper
+	-n: openssh (need tcp_wrapper, zlib, openssl)
+	-n: network-scripts
+#-----------------------------------------------------------------
+# add patch to net-tools:
+# modify SlackBuild,  add after line 61:
+zcat $CWD/net-tools-includes.patch.gz | patch -Esp1 --verbose
+#-----------------------------------------------------------------
+diff -aurN net-tools-1.60.20120726git/config.h net-tools-1.60.20120726git-mod/config.h
+--- net-tools-1.60.20120726git/config.h	2016-03-09 20:22:52.281332212 +0100
++++ net-tools-1.60.20120726git-mod/config.h	2016-03-09 20:21:35.705289544 +0100
+@@ -38,7 +38,7 @@
+ #define HAVE_AFECONET 0
+ #define HAVE_AFDECnet 0
+ #define HAVE_AFASH 0
+-#define HAVE_AFBLUETOOTH 1
++#define HAVE_AFBLUETOOTH 0
+
+ /*
+  *
+@@ -50,8 +50,8 @@
+ #define HAVE_HWSLIP 1
+ #define HAVE_HWPPP 1
+ #define HAVE_HWTUNNEL 1
+-#define HAVE_HWSTRIP 1
+-#define HAVE_HWTR 1
++#define HAVE_HWSTRIP 0
++#define HAVE_HWTR 0
+ #define HAVE_HWAX25 1
+ #define HAVE_HWROSE 0
+ #define HAVE_HWNETROM 1
+#-----------------------------------------------------------------
+	-n: net-tools (modified to be built see above)
+	-n: ncftp (need ncurses)
+	-n: dhcp
+	-n: dhcpcd (need eudev)
+	-n: iputils (need attr, gmp, zlib, libcap, gnutls, libffi, libidn, nettle, p11-kit)
+#-----------------------------------------------------------------
+# to be integrated in aaa_elflibs and removed: not built, just installed
+#-----------------------------------------------------------------
+	- others: libpng (1.4.x from slackware-14.1)
+	- others: libjpeg-v8a (from slackware-14.1)
+	- others: readline-5.2 (from slackware-14.1)
+	- others: libtiff-3.9.7 (from slackware-14.1)
+	- others: gdbm-1.8.3 (from slackware-14.1)
+	- others: gmp-5.1.3 (from slackware-14.1)
+	- others: udev-182 (from slackware-14.1)
+	- others: cxxlibs-6.0.18-i486-1 (from slackware-14.1)
+#-----------------------------------------------------------------
+ reinstall gcc-g++-5.4.0 and libpng-1.6.20*.t?z
+#-----------------------------------------------------------------
+	-26/ aaa_elflibs
+#-----------------------------------------------------------------
+# libpng14.la is necessary to some other packages: (imagemagick, GConf ...).
+#-----------------------------------------------------------------
+cd /usr/lib && cp libpng14.la libpng14.la.orig
+#-----------------------------------------------------------------
+# remove temporary buildings:
+#-----------------------------------------------------------------
+removepkg libpng-1.4.12-i486-1 libjpeg-v8a-i486-1 readline-5.2-i486-4 libtiff-3.9.7-i486-1 \
+gdbm-1.8.3-i486-4 gmp-5.1.3-i486-1 udev-182-i486-7 cxxlibs-6.0.18-i486-1
+mv libpng14.la.orig libpng14.la
+#-----------------------------------------------------------------
+	-16/ a: aaa_terminfo
+	-20/ a: kmod (need python, libxslt, pkg-config): second build
+	-24/ kernel-huge-smp
+	-25/ kernel-modules-smp
+#-----------------------------------------------------------------
+
+
+#-----------------------------------------------------------------
+# create rc.keymap
+#-----------------------------------------------------------------
+cat > /etc/rc.d/rc.keymap << "EOF"
+#!/bin/sh
+# Load the keyboard map. More maps are in /usr/share/kbd/keymaps.
+if [ -x /usr/bin/loadkeys ]; then
+/usr/bin/loadkeys fr-latin9.map
+fi
+EOF
+#-----------------------------------------------------------------
+# chmod +x /etc/rc.d/rc.keymap
+# create /etc/fstab
+#-----------------------------------------------------------------
+# create /etc/resolv.conf
+cat > /etc/resolv.conf << "EOF"
+# Begin /etc/resolv.conf
+search free.fr
+nameserver 192.168.11.100
+# End /etc/resolv.conf
+EOF
+#-----------------------------------------------------------------
+# test internet access
+# should see: eth0 and localhost
+#-----------------------------------------------------------------
+# ifconfig eth0
+# ping free.fr
+#-----------------------------------------------------------------
+# create password for root: passwd
+# exit chroot environment
+# su - lfs
+# mv .bashrc bashrc.orig
+#-----------------------------------------------------------------
+# create /root/.profile
+#-----------------------------------------------------------------
+cat > /root/.profile << "EOF"
+#/bin/sh
+setxkbmap -model pc104 -layout fr
+EOF
+#-----------------------------------------------------------------
+# create /root/.bashrc
+#-----------------------------------------------------------------
+cat > /root/.bashrc << "EOF"
+#/bin/sh
+setxkbmap -model pc104 -layout fr
+set -o vi
+source /etc/profile
+source /root/.profile
+EOF
+#-----------------------------------------------------------------
+# create /root/.vimrc
+#-----------------------------------------------------------------
+cat > /root/.vimrc << "EOF"
+" Begin /etc/vimrc
+set nocompatible
+set backspace=2
+syntax on
+if (&term == "iterm") || (&term == "putty"
+)
+set background=dark
+endif
+" End /root/.vimrc
+EOF
+#-----------------------------------------------------------------
+# modify /etc/profile
+#-----------------------------------------------------------------
+cat >> /etc/profile << "EOF"
+export LANG=fr_FR.ISO-8859-15@euro
+EOF
+#-----------------------------------------------------------------
+installpkg slackpkg
+slackpkg new-config
+#-----------------------------------------------------------------
+# exit (lfs)
+# modify grub configuration to boot in new slackware from scratch
+# reboot
+#-----------------------------------------------------------------
+# once booted, configure slackware with scripts in /var/log/setup
+#-----------------------------------------------------------------
+# END OF THE SECOND PART OF SLACKWARE BUILDING
+#-----------------------------------------------------------------
+
+
+
+#-----------------------------------------------------------------
+# optional operation: test glibc (./test-glibc.sh)
+#-----------------------------------------------------------------
+echo 'int main(){}' > dummy.c
+cc dummy.c -v -Wl,--verbose &> dummy.log
+readelf -l a.out | grep ': /lib'
+grep -o '/usr/lib.*/crt[1in].*succeeded' dummy.log
+grep -B1 '^ /usr/include' dummy.log
+grep 'SEARCH.*/usr/lib' dummy.log |sed 's|; |\n|g'
+grep "/lib.*/libc.so.6 " dummy.log
+grep found dummy.log
+#-----------------------------------------------------------------
+# you should see above:
+#-----------------------------------------------------------------
+I have no name!:/sources# echo 'int main(){}' > dummy.c
+I have no name!:/sources# cc dummy.c -v -Wl,--verbose &> dummy.log
+I have no name!:/sources# readelf -l a.out | grep ': /lib'
+	[Requesting program interpreter: /lib/ld-linux.so.2]
+I have no name!:/sources# grep -o '/usr/lib.*/crt[1in].*succeeded' dummy.log
+	/usr/lib/crt1.o succeeded
+	/usr/lib/crti.o succeeded
+	/usr/lib/crtn.o succeeded
+I have no name!:/sources# grep -B1 '^ /usr/include' dummy.log
+	#include <...> search starts here:
+		/usr/include
+I have no name!:/sources# grep 'SEARCH.*/usr/lib' dummy.log |sed 's|; |\n|g'
+	SEARCH_DIR("=/tools/i686-pc-linux-gnu/lib32")
+	SEARCH_DIR("/usr/lib")
+	SEARCH_DIR("/lib")
+	SEARCH_DIR("=/tools/i686-pc-linux-gnu/lib");
+I have no name!:/sources# grep "/lib.*/libc.so.6 " dummy.log
+	attempt to open /lib/libc.so.6 succeeded
+I have no name!:/sources# grep found dummy.log
+	found ld-linux.so.2 at /lib/ld-linux.so.2
+#-----------------------------------------------------------------
+rm -v dummy.c a.out dummy.log
+#-----------------------------------------------------------------
+
+
+
+#-----------------------------------------------------------------
+# THIRD STAGE: SLACKWARE BUILDING (X11, xfce, d, n) 
+#-----------------------------------------------------------------
+
+#-----------------------------------------------------------------
+# INSTALLATION OF ALL X PACKAGES
+#-----------------------------------------------------------------
+# compile SlackBuilds from SBo to be able to build X11 proto documentation:
+# jdk, apache-ant, jai, fop from slackbuild.org
+#-----------------------------------------------------------------
+	- jdk: 8.0.112
+	- apache-ant: 1.9.7 (need jdk)
+	- jai: 1.1.3
+-------------------------
+PATH_HOLD=$PATH && export PATH=/usr/lib/java/bin:/usr/lib/jre/bin:$PATH_HOLD
+-------------------------
+	- fop: 2.1 (need apache-ant, jai)
+-------------------------
+# followed the order of BLFS-7.10 chapter 24 to compile Xorg (not exactly)
+-------------------------
+	- x: x11-skel
+	- x: libevdev
+	- x: mtdev
+	- x: xdg-user-dirs
+------------------------
+# cd x11
+ ./x11.SlackBuild doc xorg-sgml-doctools
+ ./x11.SlackBuild doc xorg-docs
+ ./x11.SlackBuild util util-macros
+ ./x11.SlackBuild proto
+ ./x11.SlackBuild util
+------------------------
+	- n: links
+	- x: xdg-utils (need links)
+------------------------
+# source /etc/profile.d/tetex.sh (to able to build fontconfig)
+------------------------
+	- x: fontconfig (need links)
+	- a: dbus (modified --disable-x11-autolaunch): first build
+------------------------
+# dbus-uuidgen --ensure (to be able to build dbus-glib and dbus-python)
+------------------------
+	- l: dbus-glib
+	- l: dbus-python
+	- ap: sudo
+	- l: sg3_utils
+-----------------------
+# touch /var/run/utmp (needed by utempter installation)
+-----------------------
+	- a: utempter
+	- d: llvm (two builds, one build with gcc and g++, the second with clang and clang++)
+-----------------------
+# first pass: modify llvm.SlackBuild to replace
+  cmake \
+    -DCMAKE_C_COMPILER="clang" \
+    -DCMAKE_CXX_COMPILER="clang++" \
+# by the following
+  cmake \
+    -DCMAKE_C_COMPILER="gcc" \
+    -DCMAKE_CXX_COMPILER="g++" \
+# second pass, normal build and upgradepkg
+-----------------------
+# cd x11 
+ ./x11.SlackBuild lib libXau
+ ./x11.SlackBuild lib libXdmcp
+ ./x11.SlackBuild xcb xcb-proto
+ ./x11.SlackBuild xcb libpthread-stubs
+ ./x11.SlackBuild xcb libxcb
+ ./x11.SlackBuild lib xtrans
+ ./x11.SlackBuild lib libX11
+ ./x11.SlackBuild lib libXext
+ ./x11.SlackBuild lib libFS
+ ./x11.SlackBuild lib libICE
+ ./x11.SlackBuild lib libSM
+ ./x11.SlackBuild lib libXScrnSaver
+ ./x11.SlackBuild lib libXt
+ ./x11.SlackBuild lib libXmu
+ ./x11.SlackBuild lib libXpm
+ ./x11.SlackBuild lib libXaw
+ ./x11.SlackBuild lib libXfixes
+ ./x11.SlackBuild lib libXcomposite
+ ./x11.SlackBuild lib libXrender
+ ./x11.SlackBuild lib libXcursor
+ ./x11.SlackBuild lib libXdamage
+ ./x11.SlackBuild lib libfontenc
+ ./x11.SlackBuild lib libXfont
+ ./x11.SlackBuild lib libXfont2
+ ./x11.SlackBuild lib libXft
+ ./x11.SlackBuild lib libXi
+ ./x11.SlackBuild lib libXinerama
+ ./x11.SlackBuild lib libXrandr
+ ./x11.SlackBuild lib libXres
+ ./x11.SlackBuild lib libXtst
+ ./x11.SlackBuild lib libXv
+ ./x11.SlackBuild lib libXvMC
+ ./x11.SlackBuild lib libXpresent
+ ./x11.SlackBuild lib libXxf86dga
+ ./x11.SlackBuild lib libXxf86vm
+ ./x11.SlackBuild lib libdmx
+ ./x11.SlackBuild lib libpciaccess
+ ./x11.SlackBuild lib libxkbfile
+ ./x11.SlackBuild lib libxshmfence
+ ./x11.SlackBuild lib libXcm
+ ./x11.SlackBuild lib libXevie
+ ./x11.SlackBuild lib libXxf86misc
+ ./x11.SlackBuild lib libXp
+ ./x11.SlackBuild lib libXfontcache
+ ./x11.SlackBuild lib libXaw3d
+ ./x11.SlackBuild xcb xcb-util
+ ./x11.SlackBuild xcb xcb-util-image
+ ./x11.SlackBuild xcb xcb-util-keysyms
+ ./x11.SlackBuild xcb xcb-util-renderutil
+ ./x11.SlackBuild xcb xcb-util-wm
+ ./x11.SlackBuild xcb xcb-util-cursor
+ ./x11.SlackBuild xcb xcb-util-errors
+ ./x11.SlackBuild xcb xpyb
+-------------------------
+	- l: startup-notification (need libX11, needed by compiz)
+	- x: libdrm (need libX11)
+	- x: libva (need libdrm)
+	- x: libva-intel-driver (modified : --without-wayland)
+	- x: libvdpau (need libX11)
+	- x: mesa (need libelf, libvdpau, libdrm, python, llvm, xdamage, glew) (two builds necessary: first build doesn't build mesa-demo: lack of GL/gl.h)
+	- x: glew (need mesa, libX11)
+	- x: glu (need mesa, libX11)
+	- x: freeglut (need mesa, libX11)
+	- x: mesa (second build, need glew, freeglut)
+	- x: libXaw3dXft (need libX11, libXmu, libXft)
+	- x: libepoxy
+	- l: cairo (need mesa, libX11, and needed by intel-gpu-tools)
+-------------------------
+# cd x11
+------------------------
+# blacklist xf86-input-aiptek (fail to build)
+# add patch to sessreg from blfs before building app (new sed behavior)
+------------------------
+zcat $CWD/patch/sessreg/sessreg.patch.gz | patch -p1 --verbose || \
+  { touch ${SLACK_X_BUILD_DIR}/${PKGNAME}.failed ; continue ; }
+------------------------
+diff -aur sessreg-1.1.0/man/Makefile.in sessreg-1.1.0-new/man/Makefile.in
+--- sessreg-1.1.0/man/Makefile.in	2015-01-20 06:01:38.000000000 +0100
++++ sessreg-1.1.0-new/man/Makefile.in	2015-12-27 14:43:24.000000000 +0100
+@@ -490,7 +490,7 @@
+ .PRECIOUS: Makefile
+ 
+ filenames.sed: filenames.sed.c
+-	$(AM_V_GEN)$(CPP) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
++	$(AM_V_GEN)$(CPP) -P $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
+ 	    $(AM_CPPFLAGS) $(CPPFLAGS) $(srcdir)/filenames.sed.c | \
+ 	    $(SED) -n -e '/s|__/ p' -e '/^\/__/ p' > $@
+-------------------------
+ ./x11.SlackBuild data xbitmaps
+ ./x11.SlackBuild app
+ ./x11.SlackBuild data xcursor-themes
+ ./x11.SlackBuild font font-util
+ ./x11.SlackBuild font encodings
+ ./x11.SlackBuild font
+ ./x11.SlackBuild data xkeyboard-config
+ ./x11.SlackBuild xserver xorg-server
+ ./x11.SlackBuild driver
+-------------------------
+	- l: gdk-pixbuf (need glib2, libpng, libtiff, libjpeg-turbo)
+	- l: pango (need harfbuzz)
+	- l: atk
+	- l: gtk+2 (need atk, pango)
+	- l: GConf (need dbus-1 and dbus-glib-1, need libpng-1.4.12-i486-1 from slackware-14.1)
+	- l: glib (need patch, incompatibility with gcc-5.x)
+------------------------------------
+# modify glib.SlackBuild after line 64 add:
+# patch from arch-linux
+sed 's,ifdef[[:space:]]*__OPTIMIZE__,if 0,' -i glib.h
+------------------------------------
+	- l: gtk+ (need libX11, glib)
+	- l: lcms (patch blfs: lcms-1.19-cve_2013_4276-1.patch)
+	- l: libcroco
+	- l: librsvg (need gdk-pixbuf, glib2, libcroco, cairo, pango)
+------------------------
+# compiz need: fuse, GConf, librsvg, startup-notification and glu:
+------------------------
+ ./x11.SlackBuild app compiz
+------------------------
+	- x: dejavu-fonts-ttf
+	- x: liberation-fonts-ttf
+	- x: motif
+	- x: xterm
+	- xap: rxvt
+	- xap: blackbox
+#-----------------------------------------------------------------
+# INSTALLATION OF ALL D PACKAGES: COMPLETE DEVELOPMENT SYSTEM
+#-----------------------------------------------------------------
+	- extra: bash-completion
+	- l: libpcap
+	- others efivar
+	- a: efibootmgr (nok, bumped version to xxx, need efivar)		
+	- l: gnu-efi
+	- a: elilo (need gnu-efi)
+	- a: dbus : second build
+	- d: ruby
+	- l: qt (need libdbus-1 0.93, libX11)
+	- d: cmake (second build and upgradepkg)
+	- l: libunistring
+	- l: gc
+	- d: guile (need gc, libunistring)
+	- d: gdb (need guile)
+	- d: mercurial
+	- d: python-setuptools
+	- d: flex
+	- xap: imagemagick (need libpng-1.4.12-i486-1 from slackware-14.1)
+	- SBo : icoutils (0.31.0)
+	- d: doxygen (nok with flex-2.6.0, new version: 1.8.11, need qt, icoutils)
+	- d: strace
+	- d: swig
+	- d: rcs (patch from debian upstream)
+---------------------
+# add to rcs.SlackBuild:
+# patch debian upstream
+zcat $CWD/upstream-260704a916.diff.gz | patch -p1 || exit 1
+---------------------
+	- d: ccache
+	- d: cvs
+	- d: yasm
+	- l: apr (need doxygen)
+	- l: apr-util (need apr)
+	- n: httpd
+	- l: neon
+	- d: subversion (need httpd, apr, neon, nok need kde4-config): first build
+-------------------------------
+# remove in subversion.SlackBuild : --with-Kwallet
+-------------------------------
+	- tcl: tk (need libX11, tcl)
+	- tcl: tclx
+	- tcl: expect (change TCLVER=8.6.4 and  "--with-tkinclude=/usr/include" and "--with-tclinclude=/usr/include")
+-------------------------------
+# add patch to tix: add tix.SlackBuild:
+zcat $CWD/tix.patch.gz | patch -Esp1
+-------------------------------
+cat > tix.patch << "EOF" 
+diff -aurN Tix8.4.3/configure Tix8.4.3-new/configure
+--- Tix8.4.3/configure	2008-02-28 05:35:01.000000000 +0100
++++ Tix8.4.3-new/configure	2016-02-04 04:52:25.113675385 +0100
+@@ -6645,7 +6645,7 @@
+ 	        ;;
+ 	esac
+     else
+-	if test ! -f "${TCL_SRC_DIR}/generic/tclInt.h" ; then
++	if test  -f "${TCL_SRC_DIR}/generic/tclInt.h" ; then
+ 	    { { echo "$as_me:$LINENO: error: Cannot find private header tclInt.h in ${TCL_SRC_DIR}" >&5
+ echo "$as_me: error: Cannot find private header tclInt.h in ${TCL_SRC_DIR}" >&2;}
+    { (exit 1); exit 1; }; }
+@@ -6700,7 +6700,7 @@
+ 	        ;;
+ 	esac
+     else
+-	if test ! -f "${TK_SRC_DIR}/generic/tkInt.h" ; then
++	if test  -f "${TK_SRC_DIR}/generic/tkInt.h" ; then
+ 	    { { echo "$as_me:$LINENO: error: Cannot find private header tkInt.h in ${TK_SRC_DIR}" >&5
+ echo "$as_me: error: Cannot find private header tkInt.h in ${TK_SRC_DIR}" >&2;}
+    { (exit 1); exit 1; }; }
+EOF
+-------------------------------
+	- tcl: tix (modified, add patch to find tcl and tk include files)
+	- t: xfig
+	- t: transfig
+	- l: libsigsegv
+	- l: libsigc++
+	- d: cscope
+	- l: gdk-pixbuf2
+	- l: atk
+	- l: at-spi2-core
+	- l: at-spi2-atk (need at-spi2-core)
+	- l: pango
+	- l: gtk+2	
+	- d: distcc
+	- d: dev86
+	- d: p2c (new version: 1.22)
+	- d: oprofile
+-----------------------------------
+# pulseaudio subsystem
+-----------------------------------
+	- l: json-c
+	- l: libsndfile
+	- l: orc
+	- l: speexdsp
+	- l: libasyncns
+	- l: pulseaudio (need json-c, libsndfile, orc, speexdsp)
+-------------------------------------
+# Installation of needed libraries to build xfce
+-------------------------------------
+	- l: poppler (need openjpeg, cairo)
+	- l: poppler-data
+	- l: boost
+	- l: judy (need glib2, popt, zlib)
+	- l: netpbm (need libtiff, libjpeg-turbo, libX11)
+	- l: libwnck (needed by xfce)
+	- l: gstreamer0 (modified SlackBuild)
+-----------------------
+# modify gstreamer0.SlackBuild after line 76 add:
+# patch from blfs
+sed -i  -e '/YYLEX_PARAM/d'                                       \
+         -e '/parse-param.*scanner/i %lex-param { void *scanner }' \
+     gst/parse/grammar.y
+-----------------------
+	- l: js185
+	- l: polkit
+-----------------------
+# ln -sf /lib/libgudev-1.0.so.0 /usr/lib/libgudev-1.0.so
+-----------------------
+	- a: upower (need libgudev in /usr/lib)
+----------------------
+# add patch lfs for gst-plugins-base0
+----------------------
+diff -Naur a/configure b/configure
+--- a/configure	2012-02-20 23:33:09.000000000 +0000
++++ b/configure	2014-05-24 21:53:29.510695504 +0100
+@@ -21876,18 +21876,6 @@
+ done
+ 
+ 
+-for ac_header in xmmintrin.h emmintrin.h
+-do :
+-  as_ac_Header=`$as_echo "ac_cv_header_$ac_header" | $as_tr_sh`
+-ac_fn_c_check_header_mongrel "$LINENO" "$ac_header" "$as_ac_Header" "$ac_includes_default"
+-if eval test \"x\$"$as_ac_Header"\" = x"yes"; then :
+-  cat >>confdefs.h <<_ACEOF
+-#define `$as_echo "HAVE_$ac_header" | $as_tr_cpp` 1
+-_ACEOF
+-
+-fi
+-
+-done
+----------------------
+	- l: gst-plugins-base0 (modified SlackBuild)
+	- l: gtk+3 (needed by xfce, need at-spi2-atk)
+	- l: vte (needed by xfce)
+	- l: libnotify (needed by xfce, need gtk+3)
+	- l: keybinder (needed by xfce)
+	- l: libproxy
+	- l: gsettings-desktop-schemas
+------------------------
+# update-ca-certificates (to build glib-networking)
+-----------------------
+	- l: glib-networking (need libproxy, gsettings-desktop-schemas)
+	- l: libsoup (needed by xfce, need glib-networking)
+	- l: libart_gpl
+	- l: hicolor-icon-theme
+	- l: libcroco
+	- l: librsvg
+	- l: gnome-theme-standard
+-----------------------
+# Installation of xfce
+-----------------------
+	- xfce: 
+------------------------
+# gcc complete building
+------------------------
+# grab gnat-gpl and remove all gcc packages
+#-----------------------
+ removepkg gcc*
+ wget -c -O gnat-gpl-2014-x86-linux-bin.tar.gz \
+ http://mirrors.cdn.adacore.com/art/564b3e9dc8e196b040fbe248
+ make ins-all prefix=/opt/gnat 
+ PATH_HOLD=$PATH && export PATH=/opt/gnat/bin:$PATH_HOLD
+ echo $PATH
+-----------------
+# /opt/gnat/bin:/bin:/usr/bin:/sbin:/usr/sbin:/tools/bin
+-----------------
+ find /opt/gnat -name ld -exec mv -v {} {}.old \;
+ find /opt/gnat -name as -exec mv -v {} {}.old \;
+ cd /opt/gnat/bin && ln -sf gcc cc
+ time (./gcc.SlackBuild 2>&1 | tee gcc.log)
+#------------------------------------------ 
+Slackware GCC package build complete.
+#------------------------------------------
+ installpkg /gcc*/gcc*.txz
+ export PATH=$PATH_HOLD
+ rm -rf /opt/gnat
+ exit
+--------------------------------------------
+# That's the end for gcc set of packages.
+--------------------------------------------
+
+
+--------------------------------------------------------------
+# option: change cairo, fontconfig and freetype for infinality,
+# netsurf browser
+--------------------------------------------------------------
+	- infinality: cairo
+	- infinality: freetype
+	- infinality: fontconfig
+	- SBo: netsurf (need patch to be built)
+--------------------------------------------------------------
+cat > netsurf.patch << "EOF"
+diff -aurN netsurf-all-3.3/libcss/Makefile netsurf-all-3.3-mod/libcss/Makefile
+--- netsurf-all-3.3/libcss/Makefile	2015-03-11 08:34:34.000000000 +0100
++++ netsurf-all-3.3-mod/libcss/Makefile	2016-03-05 15:23:21.682624900 +0100
+@@ -18,10 +18,10 @@
+ # BeOS/Haiku/AmigaOS4 standard library headers create warnings
+ ifneq ($(HOST),i586-pc-haiku)
+   ifneq ($(findstring amigaos,$(HOST)),amigaos)
+-    WARNFLAGS := $(WARNFLAGS) -Werror
++    WARNFLAGS := $(WARNFLAGS)
+   endif
+ endif
+-CFLAGS := -D_BSD_SOURCE -I$(CURDIR)/include/ \
++CFLAGS := -D_DEFAULT_SOURCE -I$(CURDIR)/include/ \
+ 	-I$(CURDIR)/src $(WARNFLAGS) $(CFLAGS)
+ ifneq ($(GCCVER),2)
+   CFLAGS := $(CFLAGS) -std=c99
+diff -aurN netsurf-all-3.3/libdom/Makefile netsurf-all-3.3-mod/libdom/Makefile
+--- netsurf-all-3.3/libdom/Makefile	2015-03-11 08:34:36.000000000 +0100
++++ netsurf-all-3.3-mod/libdom/Makefile	2016-03-05 15:22:53.757974006 +0100
+@@ -17,13 +17,13 @@
+ 	-Wmissing-declarations -Wnested-externs
+ # BeOS/Haiku standard library headers generate warnings
+ ifneq ($(HOST),i586-pc-haiku)
+-  WARNFLAGS := $(WARNFLAGS) -Werror
++  WARNFLAGS := $(WARNFLAGS)
+ endif
+ # AmigaOS needs this to avoid warnings
+ ifeq ($(findstring amigaos,$(HOST)),amigaos)
+   CFLAGS := -U__STRICT_ANSI__ $(CFLAGS)
+ endif
+-CFLAGS := -D_BSD_SOURCE -I$(CURDIR)/include/ \
++CFLAGS := -D_DEFAULT_SOURCE -I$(CURDIR)/include/ \
+ 	-I$(CURDIR)/src -I$(CURDIR)/binding $(WARNFLAGS) $(CFLAGS)
+ # Some gcc2 versions choke on -std=c99, and it doesn't know about it anyway
+ ifneq ($(GCCVER),2)
+diff -aurN netsurf-all-3.3/libhubbub/Makefile netsurf-all-3.3-mod/libhubbub/Makefile
+--- netsurf-all-3.3/libhubbub/Makefile	2015-03-11 08:34:39.000000000 +0100
++++ netsurf-all-3.3-mod/libhubbub/Makefile	2016-03-05 15:25:55.292704510 +0100
+@@ -18,10 +18,10 @@
+ # BeOS/Haiku/AmigaOS have standard library errors that issue warnings.
+ ifneq ($(BUILD),i586-pc-haiku)
+   ifneq ($(findstring amigaos,$(BUILD)),amigaos)
+-    WARNFLAGS := $(WARNFLAGS) -Werror
++    WARNFLAGS := $(WARNFLAGS)
+   endif
+ endif
+-CFLAGS := -D_BSD_SOURCE -I$(CURDIR)/include/ \
++CFLAGS := -D_DEFAULT_SOURCE -I$(CURDIR)/include/ \
+ 	-I$(CURDIR)/src $(WARNFLAGS) $(CFLAGS)
+ ifneq ($(GCCVER),2)
+   CFLAGS := $(CFLAGS) -std=c99
+diff -aurN netsurf-all-3.3/libnsbmp/Makefile netsurf-all-3.3-mod/libnsbmp/Makefile
+--- netsurf-all-3.3/libnsbmp/Makefile	2015-03-11 08:34:41.000000000 +0100
++++ netsurf-all-3.3-mod/libnsbmp/Makefile	2016-03-05 15:23:46.560313886 +0100
+@@ -15,9 +15,9 @@
+ 	-Wmissing-declarations -Wnested-externs -pedantic
+ # BeOS/Haiku standard library headers create warnings
+ ifneq ($(BUILD),i586-pc-haiku)
+-  WARNFLAGS := $(WARNFLAGS) -Werror
++  WARNFLAGS := $(WARNFLAGS)
+ endif
+-CFLAGS := -D_BSD_SOURCE -I$(CURDIR)/include/ \
++CFLAGS := -D_DEFAULT_SOURCE -I$(CURDIR)/include/ \
+ 	-I$(CURDIR)/src $(WARNFLAGS) $(CFLAGS)
+ ifneq ($(GCCVER),2)
+   CFLAGS := $(CFLAGS) -std=c99
+diff -aurN netsurf-all-3.3/libnsfb/Makefile netsurf-all-3.3-mod/libnsfb/Makefile
+--- netsurf-all-3.3/libnsfb/Makefile	2015-03-11 08:34:41.000000000 +0100
++++ netsurf-all-3.3-mod/libnsfb/Makefile	2016-03-04 20:22:51.786353854 +0100
+@@ -20,7 +20,7 @@
+ # would like these flags but gcc earlier than 4.4 fail
+ #-pedantic -Wno-overlength-strings # For nsglobe.c
+ 
+-CFLAGS := -g -std=c99 -D_BSD_SOURCE -D_POSIX_C_SOURCE=200112L \
++CFLAGS := -g -std=c99 -D_DEFAULT_SOURCE -D_POSIX_C_SOURCE=200112L \
+ 	-I$(CURDIR)/include/ -I$(CURDIR)/src $(WARNFLAGS) $(CFLAGS) -Wno-error
+ 
+ NSFB_XCB_PKG_NAMES := xcb xcb-icccm xcb-image xcb-keysyms xcb-atom
+diff -aurN netsurf-all-3.3/libnsfb/test/svgtiny.c netsurf-all-3.3-mod/libnsfb/test/svgtiny.c
+--- netsurf-all-3.3/libnsfb/test/svgtiny.c	2015-03-11 08:34:41.000000000 +0100
++++ netsurf-all-3.3-mod/libnsfb/test/svgtiny.c	2016-03-04 20:24:23.748204172 +0100
+@@ -240,7 +240,7 @@
+ 
+ /*
+ 
+-cc -g -std=c99 -D_BSD_SOURCE -I/home/vince/netsurf/libnsfb/include/ -I/home/vince/netsurf/libnsfb/src -I/usr/local/include -I/usr/include/libxml2 -Wall -Wextra -Wundef -Wpointer-arith -Wcast-align -Wwrite-strings -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -Wnested-externs -Werror -pedantic -Wno-overlength-strings   -DNDEBUG -O2 -DBUILD_TARGET_Linux -DBUILD_HOST_Linux -o build-Linux-Linux-release-lib-static/test_svgtiny.o -c test/svgtiny.c
++cc -g -std=c99 -D_DEFAULT_SOURCE -I/home/vince/netsurf/libnsfb/include/ -I/home/vince/netsurf/libnsfb/src -I/usr/local/include -I/usr/include/libxml2 -Wall -Wextra -Wundef -Wpointer-arith -Wcast-align -Wwrite-strings -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -Wnested-externs -Werror -pedantic -Wno-overlength-strings   -DNDEBUG -O2 -DBUILD_TARGET_Linux -DBUILD_HOST_Linux -o build-Linux-Linux-release-lib-static/test_svgtiny.o -c test/svgtiny.c
+ 
+ cc -o build-Linux-Linux-release-lib-static/test_svgtiny build-Linux-Linux-release-lib-static/test_svgtiny.o -Wl,--whole-archive -lnsfb -Wl,--no-whole-archive -lSDL -Lbuild-Linux-Linux-release-lib-static/ -lnsfb -lsvgtiny -lxml2
+ 
+diff -aurN netsurf-all-3.3/libnsgif/Makefile netsurf-all-3.3-mod/libnsgif/Makefile
+--- netsurf-all-3.3/libnsgif/Makefile	2015-03-11 08:34:42.000000000 +0100
++++ netsurf-all-3.3-mod/libnsgif/Makefile	2016-03-05 15:25:22.020120475 +0100
+@@ -15,9 +15,9 @@
+ 	-Wmissing-declarations -Wnested-externs -pedantic
+ # BeOS/Haiku standard library headers create warnings
+ ifneq ($(BUILD),i586-pc-haiku)
+-  WARNFLAGS := $(WARNFLAGS) -Werror
++  WARNFLAGS := $(WARNFLAGS)
+ endif
+-CFLAGS := -D_BSD_SOURCE -I$(CURDIR)/include/ \
++CFLAGS := -D_DEFAULT_SOURCE -I$(CURDIR)/include/ \
+ 	-I$(CURDIR)/src $(WARNFLAGS) $(CFLAGS)
+ ifneq ($(GCCVER),2)
+   CFLAGS := $(CFLAGS) -std=c99
+diff -aurN netsurf-all-3.3/libparserutils/Makefile netsurf-all-3.3-mod/libparserutils/Makefile
+--- netsurf-all-3.3/libparserutils/Makefile	2015-03-11 08:34:44.000000000 +0100
++++ netsurf-all-3.3-mod/libparserutils/Makefile	2016-03-05 15:24:09.556026400 +0100
+@@ -17,10 +17,10 @@
+ 	-Wmissing-declarations -Wnested-externs -pedantic
+ # BeOS/Haiku standard library headers create warnings.
+ ifneq ($(BUILD),i586-pc-haiku)
+-  WARNFLAGS := $(WARNFLAGS) -Werror
++  WARNFLAGS := $(WARNFLAGS)
+ endif
+ 
+-CFLAGS := -D_BSD_SOURCE -I$(CURDIR)/include/ \
++CFLAGS := -D_DEFAULT_SOURCE -I$(CURDIR)/include/ \
+ 	-I$(CURDIR)/src $(WARNFLAGS) $(CFLAGS)
+ ifneq ($(GCCVER),2)
+   CFLAGS := $(CFLAGS) -std=c99
+diff -aurN netsurf-all-3.3/libpencil/Makefile netsurf-all-3.3-mod/libpencil/Makefile
+--- netsurf-all-3.3/libpencil/Makefile	2015-03-11 08:34:44.000000000 +0100
++++ netsurf-all-3.3-mod/libpencil/Makefile	2016-03-05 15:21:39.369903985 +0100
+@@ -18,7 +18,7 @@
+ # BeOS/Haiku/AmigaOS4 standard library headers create warnings
+ ifneq ($(BUILD),i586-pc-haiku)
+   ifneq ($(findstring amigaos,$(BUILD)),amigaos)
+-    WARNFLAGS := $(WARNFLAGS) -Werror
++    WARNFLAGS := $(WARNFLAGS)
+   endif
+ endif
+ CFLAGS := -I$(CURDIR)/include/ -I$(CURDIR)/src $(WARNFLAGS) $(CFLAGS)
+diff -aurN netsurf-all-3.3/librosprite/Makefile netsurf-all-3.3-mod/librosprite/Makefile
+--- netsurf-all-3.3/librosprite/Makefile	2015-03-11 08:34:45.000000000 +0100
++++ netsurf-all-3.3-mod/librosprite/Makefile	2016-03-05 15:26:29.105281795 +0100
+@@ -24,7 +24,7 @@
+ 
+ # BeOS/Haiku standard library headers create warnings
+ ifneq ($(BUILD),i586-pc-haiku)
+-  WARNFLAGS := $(WARNFLAGS) -Werror
++  WARNFLAGS := $(WARNFLAGS)
+ endif
+ 
+ CFLAGS := -I$(CURDIR)/include/ $(WARNFLAGS) $(CFLAGS)
+diff -aurN netsurf-all-3.3/librufl/Makefile netsurf-all-3.3-mod/librufl/Makefile
+--- netsurf-all-3.3/librufl/Makefile	2015-03-11 08:34:45.000000000 +0100
++++ netsurf-all-3.3-mod/librufl/Makefile	2016-03-05 15:22:29.074282595 +0100
+@@ -18,7 +18,7 @@
+ # BeOS/Haiku/AmigaOS4 standard library headers create warnings
+ ifneq ($(BUILD),i586-pc-haiku)
+   ifneq ($(findstring amigaos,$(BUILD)),amigaos)
+-    WARNFLAGS := $(WARNFLAGS) -Werror
++    WARNFLAGS := $(WARNFLAGS)
+   endif
+ endif
+ CFLAGS := -I$(CURDIR)/include/ -I$(CURDIR)/src $(WARNFLAGS) $(CFLAGS)
+diff -aurN netsurf-all-3.3/libsvgtiny/Makefile netsurf-all-3.3-mod/libsvgtiny/Makefile
+--- netsurf-all-3.3/libsvgtiny/Makefile	2015-03-11 08:34:45.000000000 +0100
++++ netsurf-all-3.3-mod/libsvgtiny/Makefile	2016-03-05 15:22:04.282592534 +0100
+@@ -18,11 +18,11 @@
+ # BeOS/Haiku/AmigaOS standard library headers create warnings
+ ifneq ($(BUILD),i586-pc-haiku)
+   ifneq ($(findstring amigaos,$(BUILD)),amigaos)
+-    WARNFLAGS := $(WARNFLAGS) -Werror
++    WARNFLAGS := $(WARNFLAGS)
+   endif
+ endif
+ 
+-CFLAGS := -D_BSD_SOURCE -I$(CURDIR)/include/ \
++CFLAGS := -D_DEFAULT_SOURCE -I$(CURDIR)/include/ \
+ 	-I$(CURDIR)/src $(WARNFLAGS) $(CFLAGS)
+ ifneq ($(GCCVER),2)
+   CFLAGS := $(CFLAGS) -std=c99
+diff -aurN netsurf-all-3.3/libutf8proc/Makefile netsurf-all-3.3-mod/libutf8proc/Makefile
+--- netsurf-all-3.3/libutf8proc/Makefile	2015-03-11 08:34:46.000000000 +0100
++++ netsurf-all-3.3-mod/libutf8proc/Makefile	2016-03-05 15:21:04.642338140 +0100
+@@ -19,7 +19,7 @@
+ # Debug builds compile with error warnings
+ # BeOS/Haiku standard library headers issue warnings
+ #ifneq ($(BUILD),i586-pc-haiku)
+-#  WARNFLAGS := $(WARNFLAGS) -Werror
++#  WARNFLAGS := $(WARNFLAGS)
+ #endif
+ CFLAGS := -I$(CURDIR)/include/libutf8proc/ \
+ 	-I$(CURDIR)/src $(WARNFLAGS) $(CFLAGS)
+diff -aurN netsurf-all-3.3/libwapcaplet/Makefile netsurf-all-3.3-mod/libwapcaplet/Makefile
+--- netsurf-all-3.3/libwapcaplet/Makefile	2015-03-11 08:34:47.000000000 +0100
++++ netsurf-all-3.3-mod/libwapcaplet/Makefile	2016-03-05 15:24:34.843710261 +0100
+@@ -18,9 +18,9 @@
+ 	-Wmissing-declarations -Wnested-externs
+ # BeOS/Haiku standard library headers issue warnings
+ ifneq ($(BUILD),i586-pc-haiku)
+-  WARNFLAGS := $(WARNFLAGS) -Werror
++  WARNFLAGS := $(WARNFLAGS)
+ endif
+-CFLAGS := -D_BSD_SOURCE -I$(CURDIR)/include/ \
++CFLAGS := -D_DEFAULT_SOURCE -I$(CURDIR)/include/ \
+ 	-I$(CURDIR)/src $(WARNFLAGS) $(CFLAGS)
+ ifneq ($(GCCVER),2)
+   CFLAGS := $(CFLAGS) -std=c99
+diff -aurN netsurf-all-3.3/netsurf/atari/Makefile.target netsurf-all-3.3-mod/netsurf/atari/Makefile.target
+--- netsurf-all-3.3/netsurf/atari/Makefile.target	2015-03-11 08:34:52.000000000 +0100
++++ netsurf-all-3.3-mod/netsurf/atari/Makefile.target	2016-03-04 20:22:14.275822800 +0100
+@@ -34,7 +34,7 @@
+ # non-pkgconfig components
+ 
+ FREETYPE_FONT_CFLAGS := $(shell $(FT2CF) --cflags) -DWITH_FREETYPE_FONT_DRIVER
+-SPIDERMONKEY_CFLAGS := -DWITH_MOZJS -DXP_UNIX -DJS_HAS_FILE_OBJECT=0 -DJSOPTION_JIT=0 -DPOSIX_SOURCE -D_BSD_SOURCE
++SPIDERMONKEY_CFLAGS := -DWITH_MOZJS -DXP_UNIX -DJS_HAS_FILE_OBJECT=0 -DJSOPTION_JIT=0 -DPOSIX_SOURCE -D_DEFAULT_SOURCE
+ 
+ $(eval $(call feature_enabled,PNG,-DWITH_PNG,-lpng,PNG (libpng)))
+ $(eval $(call feature_enabled,MOZJS,$(SPIDERMONKEY_CFLAGS),-ljs,JavaScript (Spidermonkey)))
+@@ -60,7 +60,7 @@
+ $(eval $(call pkg_config_find_and_add_enabled,GIF,libnsgif,GIF))
+ 
+ CFLAGS += -U__STRICT_ANSI__ -std=c99 -Dsmall -Dnsatari \
+-		-D_BSD_SOURCE \
++		-D_DEFAULT_SOURCE \
+ 		-D_XOPEN_SOURCE=600 \
+ 		-D_POSIX_C_SOURCE=200112L \
+ 		$(shell $(PKG_CONFIG) --cflags libhubbub libcss openssl ) \
+diff -aurN netsurf-all-3.3/netsurf/beos/Makefile.target netsurf-all-3.3-mod/netsurf/beos/Makefile.target
+--- netsurf-all-3.3/netsurf/beos/Makefile.target	2015-03-11 08:34:52.000000000 +0100
++++ netsurf-all-3.3-mod/netsurf/beos/Makefile.target	2016-03-04 20:21:00.957739402 +0100
+@@ -16,8 +16,8 @@
+ COMMON_WARNFLAGS += -Wno-multichar
+ 
+ # compiler flags
+-CFLAGS += -Dnsbeos -D_BSD_SOURCE -D_POSIX_C_SOURCE -Drestrict="" -g -O0
+-CXXFLAGS += -Dnsbeos -D_BSD_SOURCE -D_POSIX_C_SOURCE -Drestrict="" -g -O0
++CFLAGS += -Dnsbeos -D_DEFAULT_SOURCE -D_POSIX_C_SOURCE -Drestrict="" -g -O0
++CXXFLAGS += -Dnsbeos -D_DEFAULT_SOURCE -D_POSIX_C_SOURCE -Drestrict="" -g -O0
+ 
+ BEOS_BERES := beres
+ BEOS_RC := rc
+diff -aurN netsurf-all-3.3/netsurf/cocoa/Makefile.target netsurf-all-3.3-mod/netsurf/cocoa/Makefile.target
+--- netsurf-all-3.3/netsurf/cocoa/Makefile.target	2015-03-11 08:34:52.000000000 +0100
++++ netsurf-all-3.3-mod/netsurf/cocoa/Makefile.target	2016-03-04 20:19:29.964876969 +0100
+@@ -10,7 +10,7 @@
+ LDFLAGS += -lm -lcurl
+ LDFLAGS += -lssl -lcrypto
+ 
+-CFLAGS += -Dnscocoa -D_BSD_SOURCE -D_POSIX_C_SOURCE -std=c99 -g -Os
++CFLAGS += -Dnscocoa -D_DEFAULT_SOURCE -D_POSIX_C_SOURCE -std=c99 -g -Os
+ 
+ CFLAGS += $(shell $(PKG_CONFIG) --cflags libhubbub libcss libdom)
+ 
+diff -aurN netsurf-all-3.3/netsurf/framebuffer/Makefile.target netsurf-all-3.3-mod/netsurf/framebuffer/Makefile.target
+--- netsurf-all-3.3/netsurf/framebuffer/Makefile.target	2015-03-11 08:34:52.000000000 +0100
++++ netsurf-all-3.3-mod/netsurf/framebuffer/Makefile.target	2016-03-04 20:18:30.618618900 +0100
+@@ -43,7 +43,7 @@
+ $(eval $(call pkg_config_find_and_add_enabled,JS,mozilla-js,JavaScript))
+ 
+ CFLAGS += -std=c99 -g -Dsmall \
+-	  -D_BSD_SOURCE \
++	  -D_DEFAULT_SOURCE \
+ 	  -D_XOPEN_SOURCE=600 \
+ 	  -D_POSIX_C_SOURCE=200112L \
+ 	  $(shell $(PKG_CONFIG) --cflags libnsfb libhubbub libcss openssl)
+diff -aurN netsurf-all-3.3/netsurf/gtk/Makefile.target netsurf-all-3.3-mod/netsurf/gtk/Makefile.target
+--- netsurf-all-3.3/netsurf/gtk/Makefile.target	2016-03-05 15:31:40.658386845 +0100
++++ netsurf-all-3.3-mod/netsurf/gtk/Makefile.target	2016-03-04 20:20:29.547132089 +0100
+@@ -47,7 +47,7 @@
+ 
+ GTKCFLAGS := -std=c99 -Dgtk -Dnsgtk -g \
+ 		$(GTKDEPFLAGS) \
+-		-D_BSD_SOURCE \
++		-D_DEFAULT_SOURCE \
+ 		-D_XOPEN_SOURCE=600 \
+ 		-D_POSIX_C_SOURCE=200809L \
+ 		-D_NETBSD_SOURCE \
+diff -aurN netsurf-all-3.3/netsurf/monkey/Makefile.target netsurf-all-3.3-mod/netsurf/monkey/Makefile.target
+--- netsurf-all-3.3/netsurf/monkey/Makefile.target	2015-03-11 08:34:52.000000000 +0100
++++ netsurf-all-3.3-mod/netsurf/monkey/Makefile.target	2016-03-05 15:27:32.213492833 +0100
+@@ -36,7 +36,7 @@
+ CWARNFLAGS += -Werror
+ 
+ CFLAGS += -std=c99 -Dmonkey -Dnsmonkey -g \
+-	  -D_BSD_SOURCE \
++	  -D_DEFAULT_SOURCE \
+ 	  -D_XOPEN_SOURCE=600 \
+ 	  -D_POSIX_C_SOURCE=200112L \
+ 	  -D_NETBSD_SOURCE \
+diff -aurN netsurf-all-3.3/netsurf/riscos/Makefile.target netsurf-all-3.3-mod/netsurf/riscos/Makefile.target
+--- netsurf-all-3.3/netsurf/riscos/Makefile.target	2015-03-11 08:34:52.000000000 +0100
++++ netsurf-all-3.3-mod/netsurf/riscos/Makefile.target	2016-03-04 20:18:59.619256342 +0100
+@@ -42,7 +42,7 @@
+ 
+ RESOURCES = $(TPD_RISCOS) split-messages
+ 
+-CFLAGS += -Driscos -std=c99 -D_BSD_SOURCE -D_POSIX_C_SOURCE \
++CFLAGS += -Driscos -std=c99 -D_DEFAULT_SOURCE -D_POSIX_C_SOURCE \
+ 	    -mpoke-function-name -fno-strict-aliasing
+ 
+ CFLAGS += -I$(GCCSDK_INSTALL_ENV)/include
+diff -aurN netsurf-all-3.3/netsurf/test/Makefile netsurf-all-3.3-mod/netsurf/test/Makefile
+--- netsurf-all-3.3/netsurf/test/Makefile	2015-03-11 08:34:53.000000000 +0100
++++ netsurf-all-3.3-mod/netsurf/test/Makefile	2016-03-04 20:20:01.865478157 +0100
+@@ -1,4 +1,4 @@
+-CFLAGS := -std=c99 -g -O0 -D_BSD_SOURCE -D_POSIX_C_SOURCE -I.. \
++CFLAGS := -std=c99 -g -O0 -D_DEFAULT_SOURCE -D_POSIX_C_SOURCE -I.. \
+ 		$(shell pkg-config --cflags libcurl)
+ LDFLAGS := $(shell pkg-config --libs libcurl) -lz
+ 
+diff -aurN netsurf-all-3.3/nsgenbind/Makefile netsurf-all-3.3-mod/nsgenbind/Makefile
+--- netsurf-all-3.3/nsgenbind/Makefile	2015-03-11 08:34:53.000000000 +0100
++++ netsurf-all-3.3-mod/nsgenbind/Makefile	2016-03-05 15:26:56.232942652 +0100
+@@ -19,10 +19,10 @@
+ # BeOS/Haiku/AmigaOS have standard library errors that issue warnings.
+ ifneq ($(BUILD),i586-pc-haiku)
+   ifneq ($(findstring amigaos,$(BUILD)),amigaos)
+-#    WARNFLAGS := $(WARNFLAGS) -Werror
++#    WARNFLAGS := $(WARNFLAGS)
+   endif
+ endif
+-CFLAGS := -D_BSD_SOURCE -D_POSIX_C_SOURCE=200809L -I$(CURDIR)/include/ \
++CFLAGS := -D_DEFAULT_SOURCE -D_POSIX_C_SOURCE=200809L -I$(CURDIR)/include/ \
+ 	-I$(CURDIR)/src $(WARNFLAGS) $(CFLAGS)
+ ifneq ($(GCCVER),2)
+   CFLAGS := $(CFLAGS) -std=c99
+EOF
+#-----------------------------------------------------------------
+# END OF THE THIRD PART OF SLACKWARE BUILDING
+#-----------------------------------------------------------------
+

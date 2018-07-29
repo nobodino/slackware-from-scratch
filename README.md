@@ -1,5 +1,7 @@
 # slackware-from-scratch
-Describe how to build SFS or slackware from scratch with a small set of scripts.
+ 
+This memo describes how to build SFS or slackware from scratch with a small set
+of scripts.
 
 To begin with, when it's the first time you use these scripts, you have to do 
 the following things.

@@ -1,0 +1,374 @@
+
+SLACKWARE FROM SCRATCH based on LFS-BOOK-svn-20151210 : v01022016
+
+SlackBuilds and sources up to slackware-current 17/01/2016
+
+--------------------------------------------------------
+# SECOND STAGE OF SLACKWARE BUILDING 
+--------------------------------------------------------
+
+--------------------------------------------------------
+# INSTALLATION OF ALL X PACKAGES
+-------------------------------------------------------------------------------
+# compile SlackBuilds from SBo to be able to build X11 proto documentation:
+# jdk, apache-ant, jai, fop from slackbuild.org
+# fop in needed to build all the doc. in proto packages.
+-------------------------------------------------------------------------------
+	- jdk: 8.0.66
+	- apache-ant: 1.9.6 (need jdk)
+	- jai: 1.1.3
+-------------------------
+# PATH_HOLD=$PATH && export PATH=/usr/lib/java/bin:/usr/lib/jre/bin:$PATH_HOLD
+-------------------------
+	- fop: 2.0 (need apache-ant, jai)
+-------------------------
+# followed the order of BLFS-7.8 chapter 24 to compile Xorg (not exactly)
+-------------------------
+	- x: x11-skel
+	- x: libevdev
+	- x: mtdev
+	- x: xdg-user-dirs
+------------------------
+# cd x11
+ ./x11.SlackBuild doc xorg-sgml-doctools
+ ./x11.SlackBuild doc xorg-docs
+ ./x11.SlackBuild util util-macros
+ ./x11.SlackBuild proto
+ ./x11.SlackBuild util
+------------------------
+	- n: links
+	- x: xdg-utils (need links)
+	- x: fontconfig (need links)
+	- a: dbus (modified --disable-x11-autolaunch): first build
+------------------------
+# dbus-uuidgen --ensure (to be able to build dbus-glib and dbus-python)
+------------------------
+	- l: dbus-glib
+	- l: dbus-python
+	- ap: sudo
+	- l: sg3_utils
+-----------------------
+# touch /var/run/utmp (needed by utempter installation)
+-----------------------
+	- a: utempter
+	- d: llvm (two builds, one build with gcc and g++, the second with clang and clang++)
+-----------------------
+# first pass: modify llvm.SlackBuild to replace
+  cmake \
+    -DCMAKE_C_COMPILER="clang" \
+    -DCMAKE_CXX_COMPILER="clang++" \
+# by the following
+  cmake \
+    -DCMAKE_C_COMPILER="gcc" \
+    -DCMAKE_CXX_COMPILER="g++" \
+# second pass, normal build and upgradepkg
+-----------------------
+# cd x11 
+ ./x11.SlackBuild lib libXau
+ ./x11.SlackBuild lib libXdmcp
+ ./x11.SlackBuild xcb xcb-proto
+ ./x11.SlackBuild xcb libpthread-stubs
+ ./x11.SlackBuild xcb libxcb
+ ./x11.SlackBuild lib xtrans
+ ./x11.SlackBuild lib libX11
+ ./x11.SlackBuild lib libXext
+ ./x11.SlackBuild lib libFS
+ ./x11.SlackBuild lib libICE
+ ./x11.SlackBuild lib libSM
+ ./x11.SlackBuild lib libXScrnSaver
+ ./x11.SlackBuild lib libXt
+ ./x11.SlackBuild lib libXmu
+ ./x11.SlackBuild lib libXpm
+ ./x11.SlackBuild lib libXaw
+ ./x11.SlackBuild lib libXfixes
+ ./x11.SlackBuild lib libXcomposite
+ ./x11.SlackBuild lib libXrender
+ ./x11.SlackBuild lib libXcursor
+ ./x11.SlackBuild lib libXdamage
+ ./x11.SlackBuild lib libfontenc
+ ./x11.SlackBuild lib libXfont
+ ./x11.SlackBuild lib libXft
+ ./x11.SlackBuild lib libXi
+ ./x11.SlackBuild lib libXinerama
+ ./x11.SlackBuild lib libXrandr
+ ./x11.SlackBuild lib libXres
+ ./x11.SlackBuild lib libXtst
+ ./x11.SlackBuild lib libXv
+ ./x11.SlackBuild lib libXvMC
+ ./x11.SlackBuild lib libXpresent
+ ./x11.SlackBuild lib
+ ./x11.SlackBuild xcb xcb-util
+ ./x11.SlackBuild xcb xcb-util-image
+ ./x11.SlackBuild xcb xcb-util-keysyms
+ ./x11.SlackBuild xcb xcb-util-renderutil
+ ./x11.SlackBuild xcb xcb-util-wm
+ ./x11.SlackBuild xcb
+-------------------------
+	- l: startup-notification (need libX11, needed by compiz)
+	- x: libdrm (need libX11)
+	- x: libva (need libdrm)
+	- x: libva-intel-driver
+	- x: libvdpau (need libX11)
+	- x: mesa (need libelf, libvdpau, libdrm, python, llvm, xdamage, glew) (two builds necessary: first build doesn't build mesa-demo: lack of GL/gl.h)
+	- x: glew (need mesa, libX11)
+	- x: glu (need mesa, libX11)
+	- x: freeglut (need mesa, libX11)
+	- x: mesa (second build, need glew, freeglut)
+	- x: libXaw3dXft (need libX11, libXmu, libXft)
+	- x: libepoxy
+	- l: cairo (need mesa, libX11, and needed by intel-gpu-tools)
+-------------------------
+# cd x11
+------------------------
+# blacklist xf86-input-aiptek (fail to build)
+# add patch to sessreg from blfs before building app (new sed behavior)
+------------------------
+zcat $CWD/patch/sessreg/sessreg.patch.gz | patch -p1 --verbose || \
+  { touch ${SLACK_X_BUILD_DIR}/${PKGNAME}.failed ; continue ; }
+------------------------
+diff -aur sessreg-1.1.0/man/Makefile.in sessreg-1.1.0-new/man/Makefile.in
+--- sessreg-1.1.0/man/Makefile.in	2015-01-20 06:01:38.000000000 +0100
++++ sessreg-1.1.0-new/man/Makefile.in	2015-12-27 14:43:24.000000000 +0100
+@@ -490,7 +490,7 @@
+ .PRECIOUS: Makefile
+ 
+ filenames.sed: filenames.sed.c
+-	$(AM_V_GEN)$(CPP) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
++	$(AM_V_GEN)$(CPP) -P $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
+ 	    $(AM_CPPFLAGS) $(CPPFLAGS) $(srcdir)/filenames.sed.c | \
+ 	    $(SED) -n -e '/s|__/ p' -e '/^\/__/ p' > $@
+-------------------------
+ ./x11.SlackBuild data xbitmaps
+ ./x11.SlackBuild app
+ ./x11.SlackBuild data xcursor-themes
+ ./x11.SlackBuild font font-util
+ ./x11.SlackBuild font encodings
+ ./x11.SlackBuild font
+ ./x11.SlackBuild data xkeyboard-config
+ ./x11.SlackBuild xserver xorg-server
+ ./x11.SlackBuild driver
+-------------------------
+	- x: dejavu-fonts-ttf
+	- x: liberation-fonts-ttf
+	- x: motif
+	- x: xterm
+	- l: gdk-pixbuf (need glib2, libpng, libtiff, libjpeg-turbo)
+	- l: pango (need harfbuzz)
+	- l: atk
+	- l: gtk+2 (need atk, pango)
+	- xap: rxvt
+	- xap: blackbox
+--------------------------------------------------------------
+# change cairo, fontconfig and freetype for infinality, more eye candy.
+--------------------------------------------------------------
+	- SBo: cairo
+	- SBo: freetype
+	- SBo: fontconfig
+--------------------------------------------------------------
+--------------------------------------------------------------
+# xwmconfig && startx
+--------------------------------------------------------------
+--------------------------------------------------------------
+# INSTALLATION OF ALL D PACKAGES: COMPLETE DEVELOPMENT SYSTEM
+--------------------------------------------------------------
+	- a: dbus : second build
+	- l: libunistring
+	- l: gc
+	- d: guile (need gc, libunistring)
+	- d: gdb (need guile)
+	- d: mercurial
+	- d: python-setuptools
+	- d: ruby
+	- l: qt (need libdbus-1 0.93, libX11)
+	- d: cmake (second build and upgradepkg)
+	- d: flex
+	- xap: imagemagick (need libpng-1.4.12-i486-1 from slackware-14.1)
+	- SBo : icoutils (0.31.0)
+	- d: doxygen (nok with flex-2.6.0, new version: 1.8.11, need qt, icoutils) : mv doxy*.txz /tmp
+	- d: strace
+	- d: swig
+	- d: rcs (patch from debian upstream)
+---------------------
+# add to rcs.SlackBuild:
+# patch debian upstream
+zcat $CWD/upstream-260704a916.diff.gz | patch -p1 || exit 1
+---------------------
+	- d: ccache
+	- d: cvs
+	- d: yasm
+	- l: apr (need doxygen)
+	- l: apr-util (need apr)
+	- n: httpd
+	- l: neon
+	- d: subversion (need httpd, apr, neon, nok need kde4-config): first build
+-------------------------------
+# remove in subversion.SlackBuild : --with-Kwallet
+-------------------------------
+	- tcl: tcl
+	- tcl: tk (need libX11, tcl)
+	- tcl: tclx
+	- tcl: expect (change TCLVER=8.6.4 and  "--with-tkinclude=/usr/include" and "--with-tclinclude=/usr/include")
+-------------------------------
+# add patch to tix: add tix.SlackBuild:
+zcat $CWD/tix.patch.gz | patch -Esp1
+-------------------------------
+cat > tix.patch << "EOF" 
+diff -aurN Tix8.4.3/configure Tix8.4.3-new/configure
+--- Tix8.4.3/configure	2008-02-28 05:35:01.000000000 +0100
++++ Tix8.4.3-new/configure	2016-02-04 04:52:25.113675385 +0100
+@@ -6645,7 +6645,7 @@
+ 	        ;;
+ 	esac
+     else
+-	if test ! -f "${TCL_SRC_DIR}/generic/tclInt.h" ; then
++	if test  -f "${TCL_SRC_DIR}/generic/tclInt.h" ; then
+ 	    { { echo "$as_me:$LINENO: error: Cannot find private header tclInt.h in ${TCL_SRC_DIR}" >&5
+ echo "$as_me: error: Cannot find private header tclInt.h in ${TCL_SRC_DIR}" >&2;}
+    { (exit 1); exit 1; }; }
+@@ -6700,7 +6700,7 @@
+ 	        ;;
+ 	esac
+     else
+-	if test ! -f "${TK_SRC_DIR}/generic/tkInt.h" ; then
++	if test  -f "${TK_SRC_DIR}/generic/tkInt.h" ; then
+ 	    { { echo "$as_me:$LINENO: error: Cannot find private header tkInt.h in ${TK_SRC_DIR}" >&5
+ echo "$as_me: error: Cannot find private header tkInt.h in ${TK_SRC_DIR}" >&2;}
+    { (exit 1); exit 1; }; }
+EOF
+-------------------------------
+	- tcl: tix (modified, add patch to find tcl and tk include files)
+	- t: xfig
+	- t: transfig
+	- l: libsigsegv
+	- l: libsigc++
+	- d: cscope
+	- d: distcc
+	- d: dev86
+	- d: p2c (new version: 1.22)
+	- d: oprofile
+-----------------------------------
+# pulseaudio subsystem
+-----------------------------------
+	- l: json-c
+	- l: libsndfile
+	- l: orc
+	- l: speexdsp
+	- l: libasyncns
+	- l: pulseaudio (need json-c, libsndfile, orc, speexdsp)
+-------------------------------------
+# Installation of needed libraries to build xfce
+-------------------------------------
+	- l: GConf (need dbus-1 and dbus-glib-1, need libpng-1.4.12-i486-1 from slackware-14.1)
+	- l: glib (need patch, incompatibility with gcc-5.x)
+------------------------------------
+# modify glib.SlackBuild after line 64 add:
+# patch from arch-linux
+sed 's,ifdef[[:space:]]*__OPTIMIZE__,if 0,' -i glib.h
+------------------------------------
+	- l: gtk+ (need libX11, glib)
+	- l: lcms (patch blfs: lcms-1.19-cve_2013_4276-1.patch)
+	- l: libcroco
+	- l: librsvg (need gdk-pixbuf, glib2, libcroco, cairo, pango)
+	- l: poppler (need openjpeg, cairo)
+	- l: poppler-data
+	- l: boost
+	- l: judy (need glib2, popt, zlib)
+	- l: netpbm (need libtiff, libjpeg-turbo, libX11)
+	- l: libwnck (needed by xfce)
+	- l: gstreamer0 (modified SlackBuild)
+-----------------------
+# modify gstreamer0.SlackBuild after line 76 add:
+# patch from blfs
+sed -i  -e '/YYLEX_PARAM/d'                                       \
+         -e '/parse-param.*scanner/i %lex-param { void *scanner }' \
+     gst/parse/grammar.y
+-----------------------
+	- l: js185
+	- l: polkit
+-----------------------
+# ln -sf /lib/libgudev-1.0.so.0 /usr/lib/libgudev-1.0.so
+-----------------------
+	- a: upower (need libgudev in /usr/lib)
+----------------------
+# add patch lfs for gst-plugins-base0
+----------------------
+diff -Naur a/configure b/configure
+--- a/configure	2012-02-20 23:33:09.000000000 +0000
++++ b/configure	2014-05-24 21:53:29.510695504 +0100
+@@ -21876,18 +21876,6 @@
+ done
+ 
+ 
+-for ac_header in xmmintrin.h emmintrin.h
+-do :
+-  as_ac_Header=`$as_echo "ac_cv_header_$ac_header" | $as_tr_sh`
+-ac_fn_c_check_header_mongrel "$LINENO" "$ac_header" "$as_ac_Header" "$ac_includes_default"
+-if eval test \"x\$"$as_ac_Header"\" = x"yes"; then :
+-  cat >>confdefs.h <<_ACEOF
+-#define `$as_echo "HAVE_$ac_header" | $as_tr_cpp` 1
+-_ACEOF
+-
+-fi
+-
+-done
+----------------------
+	- l: gst-plugins-base0 (modified SlackBuild)
+	- l: at-spi2-core
+	- l: at-spi2-atk (need at-spi2-core)
+	- l: gtk+3 (needed by xfce, need at-spi2-atk)
+	- l: vte (needed by xfce)
+	- l: libnotify (needed by xfce, need gtk+3)
+	- l: keybinder (needed by xfce)
+	- l: libproxy
+	- l: gsettings-desktop-schemas
+------------------------
+# update-ca-certificates (to build glib-networking)
+-----------------------
+	- l: glib-networking (need libproxy, gsettings-desktop-schemas)
+	- l: libsoup (needed by xfce, need glib-networking)
+	- l: libart_gpl
+	- l: hicolor-icon-theme
+	- l: gnome-theme-standard
+	- l: adwaita-icon-theme
+-----------------------
+# Installation of xfce
+-----------------------
+	- xfce: 
+------------------------
+# gcc complete building
+------------------------
+# grab gnat-gpl and remove all gcc packages
+#-----------------------
+ removepkg gcc*
+ wget -c -O gnat-gpl-2014-x86-linux-bin.tar.gz \
+ http://mirrors.cdn.adacore.com/art/564b3e9dc8e196b040fbe248
+ make ins-all prefix=/opt/gnat 
+ PATH_HOLD=$PATH && export PATH=/opt/gnat/bin:$PATH_HOLD
+ echo $PATH
+-----------------
+# /opt/gnat/bin:/bin:/usr/bin:/sbin:/usr/sbin:/tools/bin
+-----------------
+ find /opt/gnat -name ld -exec mv -v {} {}.old \;
+ find /opt/gnat -name as -exec mv -v {} {}.old \;
+ cd /opt/gnat/bin && ln -sf gcc cc
+ time (./gcc.SlackBuild 2>&1 | tee gcc.log)
+#------------------------------------------ 
+Slackware GCC package build complete!
+
+real	62m59.709s
+user	162m12.534s
+sys	10m28.435s
+#------------------------------------------
+ installpkg /gcc*/gcc*.txz
+ export PATH=$PATH_HOLD
+ rm -rf /opt/gnat
+ exit
+--------------------------------------------
+# That's the end with complete gcc packages.
+--------------------------------------------
+
+
+
+
+
+

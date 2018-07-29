@@ -1,0 +1,170 @@
+Memo to help build slackware from scratch : version 25032018
+
+
+This little memo is to help those who wants to build slackware from scratch or SFS without knowing how to do it.
+
+The main script (sfs_bootstrap-mini.sh) builds slackware-current (x86 and x86_64) by rsyncing directly from a slackware source tree mirror.
+Another option is to build from a local mirror you've performed before (see the end of this memo to see hao to do it).
+
+NOTA: to perform all the steps of this memo, you need to be root.
+
+The different scripts (8) you need to download are the following ones:
+	- sfs-bootstrap-mini.sh : it's the main core script, the only one you will directly execute
+	- prep-sfs-tools.sh : sub-script (called by the main script)
+	- chroot_sfs.sh: sub-script (called by the main script)
+	- list_generator.sh: sub-script (called by the main script)
+	- sfsbuild1.sh: main sub-script which builds every single slackware package (called by the main script)
+	- full-sfs.sh: script you may use to build the entire system in one "shot"
+	- sfs-tools-current.sh: sub-script that will build the "tools" needed to build SFS in a "chrooted" environment (called by the main script)
+	- export-variables.sh : where are stored "others" packages (you have to edit "DNDIR" and "PATDIR" to adapt to your needs)
+
+optional script (1):
+	- my-profile.sh : script you may need to create some "local" files after the first part or the end of full234.sh (you have to edit it).
+
+NOTA: 	- the RDIR1, RDIR2 and DLDIR in "export-variables" are not necessary if you bootstrap SFS. 
+		- They are necessary if you use the script "sfsinit" instead of "sfs-bootstrap" to build slackware-14.2, Dlackware or slackware-current from an existing 'tools' package (tools.tar.gz).
+#---------------------------------------	
+All theses scripts should be stored in the "mnt/sfs/sources" directory you create by issueing the following commands:
+#---------------------------------------
+# mount -t auto /dev/sdc2 /mnt/sfs (adapt it to your needs, it's just an example!!)
+# export SFS=/mnt/sfs
+# mkdir -v $SFS/sources
+# cd $SFS/sources	
+# chown +x *.sh
+root@drakstar64:/mnt/sfs/sources# ls -la
+total 332
+drwxr-xr-x  2 root root   4096 mars  25 18:46 ./
+drwxr-xr-x 12 root root  40960 mars  25 18:41 ../
+-rwxr-xr-x  1 sfs  sfs    2606 mars  24 20:10 chroot_sfs.sh*
+-rwxr-xr-x  1 sfs  sfs    4321 mars  25 15:04 export_variables.sh*
+-rwxr-xr-x  1 sfs  sfs     572 mars  25 14:57 full-sfs.sh*
+-rwxr-xr-x  1 sfs  sfs   33103 mars  25 08:54 lists_generator.sh*
+-rwxr-xr-x  1 sfs  sfs    3588 mars  25 18:29 myprofile.sh*
+-rwxr-xr-x  1 sfs  sfs    2981 mars  25 12:40 prep-sfs-tools.sh*
+-rwxr-xr-x  1 root root  33871 mars  25 18:31 sfs-bootstrap-mini.sh**
+-rwxr-xr-x  1 sfs  sfs  165554 mars  25 18:14 sfsbuild1.sh*
+-rwxr-xr-x  1 sfs  sfs   25950 mars  13 08:13 sfs-tools-current.sh*
+#----------------------------------------
+By now, the only thing you have to do is follow the instructions given by the script.
+#----------------------------------------
+#----------------------------------------
+root@drakstar64:/mnt/sfs/sources# ./sfs-bootstrap-mini.sh
+#----------------------------------------
+
+
+
+
+
+
+
+
+
+#----------------------------------------
+If you consider a local mirror, you should resync slackware and populate "others" manually with what is following:
+Then, you will have to set up a directory to store some external packages which are not provided directly by your slackware source tree.
+Those will be stored in a directory called "others", it's a different place from $SFS.
+#---------------------------------------
+ksh93 and the slackware packages are issued from slackware-14.1 (x86 and x86_64)
+readline-6.3 is issued from slackware-14.2 (x86 and x86_64)
+flex-2.5.39 source and SLckBuild is issued from slackware-14.1
+rust and jdk packages: you can get them from slackbuilds.org (jdk download will redirect you to the oracle site)
+gnat and gnat64 packages: you can get them from a "distfiles" gentoo mirror.
+#---------------------------------------
+ls -laRF in "others" directory should give you:
+#---------------------------------------
+.:
+total 8440
+drwxr-xr-x  9 root root   4096 mars  20 18:49 ./
+drwxr-xr-x 21 root root   4096 mars  20 18:47 ../
+-rw-r--r--  1 root root 386408 janv.  4  2016 cxxlibs-6.0.18-i486-1.txz
+-rw-r--r--  1 root root 873492 mai   28  2016 cxxlibs-6.0.18-x86_64-1.txz
+drwxr-xr-x  2 root root   4096 janv.  8  2017 flex/
+-rw-r--r--  1 root root  47076 janv. 31  2016 gdbm-1.8.3-i486-4.txz
+-rw-r--r--  1 root root  43824 mai   28  2016 gdbm-1.8.3-x86_64-4.txz
+-rw-r--r--  1 root root 556856 janv. 31  2016 gmp-5.1.3-i486-1.txz
+-rw-r--r--  1 root root 472624 mai   28  2016 gmp-5.1.3-x86_64-1.txz
+drwxr-xr-x  2 root root   4096 févr. 26  2016 gnuada/
+drwxr-xr-x  2 root root   4096 juin  27  2017 gnuada64/
+drwxr-xr-x  3 root root   4096 janv. 27 09:29 jdk/
+drwxr-xr-x  2 root root   4096 févr. 18 12:49 ksh93/
+-rw-r--r--  1 root root 204728 janv. 31  2016 libjpeg-v8a-i486-1.txz
+-rw-r--r--  1 root root 178868 mai   28  2016 libjpeg-v8a-x86_64-1.txz
+-rw-r--r--  1 root root 558892 janv. 31  2016 libpng-1.4.12-i486-1.txz
+-rw-r--r--  1 root root 605148 mai   28  2016 libpng-1.4.12-x86_64-1.txz
+-rw-r--r--  1 root root 520692 janv. 31  2016 libtiff-3.9.7-i486-1.txz
+-rw-r--r--  1 root root 476308 mai   28  2016 libtiff-3.9.7-x86_64-1.txz
+-rw-r--r--  1 root root 960636 sept.  8  2017 ncurses-5.9-i486-4.txz
+-rw-r--r--  1 root root 962560 sept.  8  2017 ncurses-5.9-x86_64-4.txz
+-rw-r--r--  1 root root 322296 janv. 31  2016 readline-5.2-i486-4.txz
+-rw-r--r--  1 root root 280136 mai   28  2016 readline-5.2-x86_64-4.txz
+-rw-r--r--  1 root root 275036 sept.  8  2017 readline-6.3-i586-2.txz
+-rw-r--r--  1 root root 277712 sept.  8  2017 readline-6.3-x86_64-2.txz
+drwxr-xr-x  2 root root   4096 févr. 17 16:40 rust/
+drwxr-xr-x  2 root root   4096 févr. 17 16:40 rust64/
+-rw-r--r--  1 root root 241976 janv.  4  2016 udev-182-i486-7.txz
+-rw-r--r--  1 root root 319640 mai   28  2016 udev-182-x86_64-7.txz
+
+./flex:
+total 1332
+drwxr-xr-x 2 root root    4096 janv.  8  2017 ./
+drwxr-xr-x 9 root root    4096 mars  20 18:49 ../
+-rw------- 1 root root 1347436 août   5  2016 flex-2.5.39.tar.xz
+-rwxr-xr-x 1 root root    3765 janv.  8  2017 flex.SlackBuild*
+-rw-r--r-- 1 root root     786 sept. 20  2006 slack-desc
+
+./gnuada:
+total 227596
+drwxr-xr-x 2 root root      4096 févr. 26  2016 ./
+drwxr-xr-x 9 root root      4096 mars  20 18:49 ../
+-rw-r--r-- 1 root root 233049287 mai   27  2015 gnat-gpl-2014-x86-linux-bin.tar.gz
+
+./gnuada64:
+total 484720
+drwxr-xr-x 2 root root      4096 juin  27  2017 ./
+drwxr-xr-x 9 root root      4096 mars  20 18:49 ../
+-rw------- 1 root root 496338280 juin  19  2017 gnat-gpl-2017-x86_64-linux-bin.tar.gz
+
+./jdk:
+total 481304
+drwxr-xr-x 3 root root      4096 janv. 27 09:29 ./
+drwxr-xr-x 9 root root      4096 mars  20 18:49 ../
+-rw-r--r-- 1 root root  55100252 janv. 27 09:27 jdk-8u162-linux-i586-demos.tar.gz
+-rw-r--r-- 1 root root 192733880 janv. 27 09:29 jdk-8u162-linux-i586.tar.gz
+-rw-r--r-- 1 root root  55164558 janv. 27 09:28 jdk-8u162-linux-x64-demos.tar.gz
+-rw-r--r-- 1 root root 189815615 janv. 27 09:28 jdk-8u162-linux-x64.tar.gz
+-rw-r--r-- 1 root root       528 janv. 17 13:51 jdk.info
+-rwxr-xr-x 1 root root      5075 janv. 27 09:27 jdk.SlackBuild*
+drwxr-xr-x 2 root root      4096 nov.  26  2013 profile.d/
+-rw-r--r-- 1 root root       449 nov.  26  2013 README
+-rw-r--r-- 1 root root       809 nov.  14  2016 slack-desc
+
+./jdk/profile.d:
+total 16
+drwxr-xr-x 2 root root 4096 nov.  26  2013 ./
+drwxr-xr-x 3 root root 4096 janv. 27 09:29 ../
+-rw-r--r-- 1 root root  143 nov.  26  2013 jdk.csh
+-rw-r--r-- 1 root root  146 nov.  26  2013 jdk.sh
+
+./ksh93:
+total 1416
+drwxr-xr-x 2 root root   4096 févr. 18 12:49 ./
+drwxr-xr-x 9 root root   4096 mars  20 18:49 ../
+-rw-r--r-- 1 root root 703236 mars   3  2016 ksh93-2012_08_01-i586-2.txz
+-rw-r--r-- 1 root root 736440 févr. 18 12:00 ksh93-2012_08_01-x86_64-2.txz
+
+./rust:
+total 151432
+drwxr-xr-x 2 root root     4096 févr. 17 16:40 ./
+drwxr-xr-x 9 root root     4096 mars  20 18:49 ../
+-rw-r--r-- 1 root root  5841854 févr. 17 15:12 cargo-0.24.0-i686-unknown-linux-gnu.tar.gz
+-rw-r--r-- 1 root root 65963644 févr. 17 15:15 rustc-1.23.0-i686-unknown-linux-gnu.tar.gz
+-rw-r--r-- 1 root root 83243123 févr. 17 15:14 rust-std-1.23.0-i686-unknown-linux-gnu.tar.gz
+
+./rust64:
+total 158288
+drwxr-xr-x 2 root root     4096 févr. 17 16:40 ./
+drwxr-xr-x 9 root root     4096 mars  20 18:49 ../
+-rw-r--r-- 1 root root  5839521 févr. 17 15:12 cargo-0.24.0-x86_64-unknown-linux-gnu.tar.gz
+-rw-r--r-- 1 root root 63221994 févr. 17 15:15 rustc-1.23.0-x86_64-unknown-linux-gnu.tar.gz
+-rw-r--r-- 1 root root 93009330 févr. 17 15:16 rust-std-1.23.0-x86_64-unknown-linux-gnu.tar.gz
+#---------------------------------------

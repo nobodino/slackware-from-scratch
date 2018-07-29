@@ -1,0 +1,705 @@
+
+SLACKWARE FROM SCRATCH based on LFS-BOOK-7.7.html
+
+SlackBuilds and sources up to slackware-current 17/05/2015
+
+--------------------------------------------------------
+# SECOND STAGE OF SLACKWARE BUILDING 
+--------------------------------------------------------
+
+--------------------------------------------------------
+# INSTALLATION OF ALL X PACKAGES
+--------------------------------------------------------
+On a pure slackware installation here are the results of the execution of (./x11.SlackBuild 2>&1 | tee x11.log)
+-------------------------------
+root@darkstard:/tmp/x11-build# ls -lat *.failed
+-rw-r--r-- 1 root root 0 Jun 15 19:56 xf86-video-geode.failed
+-rw-r--r-- 1 root root 0 Jun 15 19:49 xorg-docs.failed
+-rw-r--r-- 1 root root 0 Jun 15 19:35 xtrans.failed
+-rw-r--r-- 1 root root 0 Jun 15 19:34 libXtst.failed
+-rw-r--r-- 1 root root 0 Jun 15 19:34 libXt.failed
+-rw-r--r-- 1 root root 0 Jun 15 19:33 libXmu.failed
+-rw-r--r-- 1 root root 0 Jun 15 19:33 libXi.failed
+-rw-r--r-- 1 root root 0 Jun 15 19:32 libXext.failed
+-rw-r--r-- 1 root root 0 Jun 15 19:32 libXdmcp.failed
+-rw-r--r-- 1 root root 0 Jun 15 19:31 libXaw.failed
+-rw-r--r-- 1 root root 0 Jun 15 19:30 libX11.failed
+-rw-r--r-- 1 root root 0 Jun 15 19:30 libSM.failed
+-rw-r--r-- 1 root root 0 Jun 15 19:30 libICE.failed
+-rw-r--r-- 1 root root 0 Jun 15 19:24 xproto.failed
+-rw-r--r-- 1 root root 0 Jun 15 19:24 xextproto.failed
+-rw-r--r-- 1 root root 0 Jun 15 19:24 xcmiscproto.failed
+-rw-r--r-- 1 root root 0 Jun 15 19:24 scrnsaverproto.failed
+-rw-r--r-- 1 root root 0 Jun 15 19:23 recordproto.failed
+-rw-r--r-- 1 root root 0 Jun 15 19:23 kbproto.failed
+-rw-r--r-- 1 root root 0 Jun 15 19:23 fontsproto.failed
+-rw-r--r-- 1 root root 0 Jun 15 19:22 bigreqsproto.failed
+-------------------------------
+ x11.log analysis:
+-------------------------------
+checking for fop... no
+configure: WARNING: fop not found - documentation targets will be skipped
+................and...........
+warning: failed to load external entity "/usr/share/sgml/X11/xorg-xhtml.xsl"
+warning: failed to load external entity "/usr/share/sgml/X11/xorg-fo.xsl"
+warning: failed to load external entity "/usr/share/sgml/X11/xorg-chunk.xsl"
+warning: failed to load external entity "/usr/share/sgml/X11/dbs/masterdb.pdf.xml"
+------------------------------
+# xorg-sgml-tools should be the first package to be installed to avoid the failed packages
+# xf86-video-geode-2.11.16 won't compile, should replaced by 2.11.17
+# xcm-0.5.2 won't compile, should replaced by 0.5.3
+# the other libX.. failed because the order is the not right order
+# according to blfs the order should be: xtrans, libX11, libXext, libFS, libICE, libSM, libScrnSaver,
+# libXt, libXmu, libXpm, libXaw, libXfixes, ...etc
+# the xorg-server and the xf86-xxx should only be built after libdrm and mesa.
+# It would be possible the cut the (x11.SlackBuild) in two parts: 
+# x11-pre-mesa.SlackBuild and x11-post-mesa.SlackBuild 
+# compiz need fuse, gconf, librsvg, startup-notification, glu
+# xcursorgen need libpng-1.4.12-1.2.50 from slackware-14.1 (pre-x11)
+# xf86-input-evdev and xf86-input-synaptics need libevdev (pre-x11)
+-------------------------------------------------------------------------------
+# compile SlackBuilds from SBo to be able to build X11 proto documentation:
+# jdk, apache-ant, jai, fop from slackbuild.org
+# fop in needed to build all the doc. in proto packages.
+-------------------------------------------------------------------------------
+	- jdk: 8.0.45
+	- apache-ant: 1.9.4 (need jdk)
+	- jai: 1.1.3
+	- fop: 1.1 (need apache-ant, jai)
+-------------------------
+# pre-x11 building:
+-------------------------
+	- x: x11-skel
+	- x: libevdev
+	- x: mtdev
+	- x: xdg-user-dirs
+	- x: xdg-utils
+	- x: fontconfig
+-------------------------
+# installpkg xorg-sgml-tools before everything, it will be rebuilt further and upgraded through x11 building.
+-------------------------
+	- cd extra/xorg-sgml-doctools && lftp -c http://ftp.x.org/pub/individual/doc/xorg-sgml-doctools-1.11.tar.bz2
+	- ./xorg-sgml-doctools.SlackBuild && installpkg xorg-sgml-doctools-*.txz
+	- a: dbus (modified --disable-systemd, --disable-x11-autolaunch, without man-pages): first build
+------------------------
+# dbus-uuidgen --ensure (to be able to build dbus-glib and dbus-python)
+------------------------
+	- l: dbus-glib
+	- l: dbus-python
+	- ap: sudo
+	- l: sg3_utils
+-----------------------
+# touch /var/run/utmp (needed by utempter installation)
+-----------------------
+	- a: utempter
+	- d: llvm  
+	- x: x11 (pre-mesa build) : time (./x11.SlackBuild 2>&1 | tee x11-liste1.log) : first, second and third build
+-------------------------
+# three builds to converge before getting that step.
+-------------------------
+# removepkg xorg-sgml-doctools-1.11-1_nob (temporary package)
+-------------------------
+	- l: startup-notification (need libX11)
+	- x: libdrm (need libX11)
+	- x: libva (need libdrm)
+	- x: libva-intel-driver
+	- x: libvdpau (need libX11)
+	- x: mesa (need libelf, libvdpau, libdrm, python, llvm, xdamage, glew): two builds consecutive 
+	- x: glew (need libX11)
+	- x: glu (need mesa, libX11)
+	- x: freeglut (need mesa, libX11)
+	- x: libXaw3dXft (need libX11, libXmu, libXft)
+	- x: mesa (second build and upgradepkg)
+	- l: cairo (need mesa, libX11, and needed by intel-gpu-tools)
+-------------------------
+	- x: x11 (post-mesa build) : time (./x11.SlackBuild 2>&1 | tee x11-liste4.log) : fourth build
+-------------------------
+	- x: motif
+	- x: deja-vu-fonts
+	- x: liberation-fonts
+	- x: xterm
+	- l: gdk-pixbuf (need glib2, libpng, libtiff, libjpeg-turbo)
+	- l: pango (need harfbuzz)
+	- l: atk
+	- l: gtk+2 (need atk, pango)
+	- xap: rxvt
+	- xap: blackbox
+--------------------------------------------------------------
+# change fontconfig and freetype for infinality, more eye candy.
+--------------------------------------------------------------
+	- bob-infinality-bundle: upgrade fontconfig and freetype
+--------------------------------------------------------------
+--------------------------------------------------------------
+# xwmconfig && startx
+--------------------------------------------------------------
+--------------------------------------------------------------
+# INSTALLATION OF ALL D PACKAGES: COMPLETE DEVELOPMENT SYSTEM
+--------------------------------------------------------------
+	- l: libunistring
+	- l: gc
+	- d: guile (need gc, libunistring)
+	- d: gdb (need guile)
+	- d: mercurial
+	- d: python-setuptools
+	- d: ruby
+	- l: qt (need libdbus-1 0.93, libX11)
+	- d: cmake (second build and upgradepkg)
+	- d: doxygen (need qt)
+	- d: strace
+	- d: swig
+	- d: rcs
+	- d: ccache
+	- d: cvs
+	- d: yasm
+	- l: apr (need doxygen)
+	- l: apr-util (need apr)
+	- n: httpd
+	- l: neon
+	- d: subversion (need httpd, apr, neon)
+	- tcl: tk (need libX11, tcl)
+	- l: libsigsegv
+	- d: cscope
+	- d: distcc
+	- d: dev86 (0.16.17 nok, 0.16.21 ok)
+	- d: p2c (1.21 nok, but 1.22 ok)
+	- d: oprofile (0.97 nok, but 1.0 ok)
+-------------------------------------
+# Installation of some libs for xfce
+-------------------------------------
+	- l: GConf (need dbus-1 and dbus-glib-1)
+	- l: glib
+	- l: gtk+ (need libX11, glib)
+	- l: lcms
+	- l: libcroco
+	- l: librsvg (need gdk-pixbuf, glib2, libcroco, cairo, pango)
+	- l: poppler (need openjpeg, cairo)
+	- l: poppler-data
+	- l: boost
+	- l: judy (need glib2, popt, zlib)
+	- l: netpbm (need libtiff, libjpeg-turbo, libX11)
+	- l: libwnck (needed by xfce)
+	- l: vte (needed by xfce)
+	- l: gstreamer0 (modified SlackBuild)
+	- l: polkit
+	- a: upower
+	- l: gst-plugins-base0 (modified SlackBuild)
+	- l: at-spi2-core
+	- l: at-spi2-atk (need at-spi2-core)
+	- l: gtk+3 (needed by xfce, need at-spi2-atk)
+	- l: libnotify (needed by xfce, need gtk+3)
+	- l: keybinder (needed by xfce)
+	- l: libproxy
+	- l: gsettings-desktop-schemas
+------------------------
+# update-ca-certificates (to build glib-networking)
+-----------------------
+	- l: glib-networking (need libproxy, gsettings-desktop-schemas)
+	- l: libsoup (needed by xfce, need glib-networking)
+	- l: hicolor-icon-theme
+	- l: gnome-theme-standard
+	- l: js185
+-----------------------
+# Installation of xfce
+-----------------------
+	- xfce: 
+---------------------------
+# Installation of all a, ap
+---------------------------
+	- l: adwaita-icon-theme
+	- l: giflib
+	- l: gnu-efi
+	- l: parted (need lvm2 )
+	- l: libatasmart
+	- l: libnih
+	- l: lzo
+	- l: libaio
+	- l: jemalloc
+	- n: gnupg 
+	- n: libassuan
+	- n: libksba
+	- n: pth
+	- n: gnupg2 (need pth, libksba, libassuan, libgcrypt, libgpg-error)
+	- d: python (third build and upgradepkg)
+	- a: cryptsetup (need lvm2)
+	- a: inotify-tools
+	- a: logrotate
+	- ap: slackpkg (no source, installpkg)
+	- a: lrzip (need lzo)
+	- ap: enscript
+	- ap: a2ps
+	- ap: qpdf
+	- ap: cups-filters (need lcms, libjpeg-turbo, libtiff, poppler, qpdf)
+	- ap: seejpeg (need svgalib)
+	- ap: rzip
+	- ap: sc
+	- ap: screen
+	- ap: xfsdump
+	- a: ntfs-3g
+	- a: sharutils
+	- a: slocate
+	- a: time
+	- a: tree
+	- n: ethtool
+	- n: iproute2
+	- n: lftp
+	- e: emacs (need giflib)
+	- a: apcid
+	- a: apmd
+	- a: btrfs-progs
+	- a: cpufrequtils
+	- a: dcron
+	- a: dosfstools
+	- a: efibootmgr
+	- a: eject
+	- a: elilo (need gnu-efi)
+	- a: elvis
+	- a: floppy
+	- a: genpower
+	- a: gptfdisk
+	- a: grub
+	- a: hdparm
+	- a: isapnptools (1.26 nok, but 1.27 ok)
+	- a: jfsutils
+	- a: lha
+	- a: libcgroup
+	- a: lilo (need dev86)
+	- a: mcelog
+	- a: mdadm
+	- a: minicom
+	- a: mkinitrd
+	- a: mt-st
+	- a: mtx
+	- a: ncompress (4.2.4.3 nok, but 4.2.4.4 ok)
+	- a: os-prober
+	- a: sysfsutils
+	- a: pcmciautils (need sysfsutils)
+	- a: quota
+	- a: reiserfsprogs
+	- ap: sg3_utils
+	- a: sdparm (need sg3_utils)
+	- a: smartmontools
+	- a: splitvt
+	- a: syslinux (need nasm)
+	- a: tcsh
+	- a: udisks (need polkit, parted, libatasmart, sg3-utils)
+	- a: udisk2
+	- a: unarj
+	- a: upower
+	- a: zoo
+	- ap: acct
+	- ap: alsa-utils
+	- ap: amp
+	- ap: ash
+	- n: sendmail
+	- ap: at (need a MTA p.e. sendmail)
+	- ap: bpe
+	- ap: cdparanoia
+	- ap: cdrdao
+	- ap: cdrtools
+	- ap: cgmanager (need libnih)
+	- ap: dc3dd
+	- ap: ddrescue
+	- ap: diffstat
+	- ap: dmidecode
+	- ap: dvd+rw-tools
+	- ap: flac
+	- ap: foomatic-filters
+	- l: libgphoto2
+	- ap: gphoto2 (need libgphoto2)
+	- l: babl
+	- l: gegl
+	- l: pygobject
+	- l: pycairo
+	- l: pygtk (need pygboject, pycairo)
+	- xap: gimp (need babl, gegl, pygtk)
+	- ap: gutenprint (need gtk+, cups, gimp, foomatic-filters)
+	- ap: lm_sensors
+	- n: net-snmp (need lm_sensors)
+	- xap: sane
+	- xap: xsane
+	- ap: hplip (need net-snmp, sane)
+	- ap: ispell (3.2.06 nok, but 3.4.00 ok)
+	- ap: jed
+	- ap: joe:
+	- ap: jove
+	- ap: ksh93 (modified SlackBuild)
+	- ap: libx86
+	- ap: lsof
+	- ap: lsscsi
+	- ap: lxc
+	- ap: lzip
+	- l: libmad (modified SlackBuild)
+	- l: libid3tag
+	- ap: madplay (need libmad, libid3tag)
+	- ap: mariadb (need libaio, jemalloc)
+	- ap: most
+	- ap: mpg123
+	- xap: xmms
+	- ap: normalize (need xmms)
+	- ap: pm-utils
+	- l: libnl
+	- ap: powertop (need libnl)
+	- ap: radeontool
+	- ap: rzip
+	- ap: sc
+	- ap: screen
+	- ap: soma
+	- ap: sox
+	- ap: sysstat
+	- ap: terminus-font
+	- l: libevent
+	- ap: tmux (need libevent)
+	- l: libplist
+	- l: libusbmuxd
+	- l: libimobiledevice (need libusbmuxd)
+	- ap: usbmuxd (need libimobiledevice, libplist)
+	- ap: vbetool (modified SlackBuild)
+	- l: libogg
+	- l: libvorbis
+	- l: libao
+	- ap: vorbis-tools (need libogg, libvorbis, libao)
+	- ap: workbone
+	- ap: xfsdump
+	- ap: zsh
+---------------------------------------
+# Installation of xap
+---------------------------------------
+	- xap: mozilla-firefox
+	- xap: mozilla-thunderbird
+	- xap: audacious and plugins
+	- xap: ddd
+	- xap: MPlayer
+	- l: pyrex
+	- l: notify-python
+	- n: bluez
+	- xap: blueman (need bluez, pyrex, notify-python)
+	- l: libglade
+	- xap: electricsheep (need libglade)
+	- xap: fluxbox
+	- xap: geeqie
+	- xap: gkrellm
+	- xap: gimp
+	- xap: gftp
+	- xap: gkrellm
+	- xap: gnuchess
+	- xap: gnuplot
+	- l: desktop-file-utils
+	- xap: gucharmap (need desktop-file-utils)
+	- xap: gv (modified see below) 
+	- xap: imagemagick
+	- l: iso-codes
+	- l: lbnl
+	- l: libnl3
+	- n: ppp
+ 	- l: gmime
+	- xap: pan (need gmime)
+	- l: enchant
+	- l: gtkspell (need enchant)
+	- xap: pidgin (need gtkspell)
+	- xap: rdesktop
+	- xap: windowmaker
+	- xap: x11-ssh-askpass
+	- xap: x3270
+	- xap: xaos
+	- xchat
+	- xap: xfractint
+	- l: libssh
+	- l: libtheora (need libpng-1.4.xx)
+	- l: libcdio
+	- l: libcdio-paranoia
+	- l: wavpack
+	- l: libva
+	- l: libdvdread
+	- l: libdvdnav
+	- xap: xine-lib (need libssh, libtheora, libcdio, libcdiocdparanoia, wavpack, libva, libdvdread, libdvdnav)
+	- t: xfig
+	- t: transfig
+	- l: libcaca (modified SlackBuild)
+	- xap: xine-ui (need libcaca)
+	- xap: xlockmore
+	- xap: xpaint
+	- xap: xpdf
+	- xap: xscreensaver
+	- l: jasper
+	- xap: xv (need jasper)
+	- xap: xgames
+---------------------------------------
+# Installation of n
+---------------------------------------
+	- l: libmbim
+	- l: libqmi
+	- n: ModemManager (need libmbim, libqmi)
+	- n: alpine and imapd
+	- n: autofs
+	- n: biff+comsat
+	- n: idnkit
+	- n: bind (need idnkit)
+	- n: bluez-firmware
+	- n: bluez-hcidump
+	- d: clisp (need libsigsegv)
+	- d: git (need tk)
+	- n: bootp
+	- n: bridge-utils
+	- n: bsd-finger
+	- n: cifs-utils
+	- n: libmnl
+	- n: libnfnetlink
+	- n: libnetfilter_acct
+	- n: libnetfilter_conntrack
+	- n: libnetfilter_cthelper
+	- n: libnetfilter_cttimeout
+	- n: libnetfilter_log
+	- n: libnetfilter_queue
+	- n: conntrack-tools (need libmnl, libnfnetlink)
+	- l: M2crypto
+	- n: crda (need M2crypto)
+	- n: dirmngr
+	- n: dnsmasq
+	- n: ebtables
+	- n: elm
+	- n: epic5
+	- n: ethtool
+	- n: fetchmail
+	- n: getmail
+	- n: gpgme
+	- n: gpa (need gpgme)
+	- n: htdig
+	- n: icmpinfo
+	- l: libpcap
+	- n: iftop (need libpcap)
+	- n: inetd-OpenBSD
+	- n: iproute2
+	- n: iptables
+	- n: iptraf-ng
+	- n: irssi
+	- n: iw
+	- n: libndp
+	- n: libnftnl
+	- n: mailx
+	- n: metamail
+	- n: mobile-broadband-provider-info
+	- n: mtr
+	- n: mutt
+	- n: nc
+	- n: ncftp
+	- n: netdate
+	- n: netkit-bootparamd
+	- n: netkit-ftp
+	- n: netkit-netalk
+	- n: netkit-routed
+	- n: netkit-rsh
+	- n: netkit-rusers
+	- n: netkit-rwall
+	- n: netkit-rwho
+	- n: netkit-timed
+	- n: netpipes
+	- n: netwatch
+	- n: netwrite
+	- n: nfacct
+	- n: nfs-utils
+	- n: nftables
+	- n: nmap
+	- n: nn
+	- n: ntp
+	- n: openobex
+	- n: obex-data-server (need openobex)
+	- n: obexftp
+	- n: obexfs (need obexftp)
+	- n: openvpn
+	- l: libtasn1
+	- l: libvpx
+	- l: libmcrypt
+	- l: t1lib
+	- n: pidentd
+	- n: pinentry
+	- n: popa3d
+	- n: portmap
+	- n: proftpd
+	- n: pssh
+	- n: rdist
+	- n: rfkill
+	- n: rp-pppoe
+	- n: rsync
+	- n: samba
+	- n: slrn
+	- n: snownews
+	- n: stunnel
+	- n: tcp_wrappers
+	- n: tcpdump
+	- n: telnet
+	- n: tftp-hpa
+	- n: tin
+	- n: traceroute
+	- n: uucp
+	- n: vlan
+	- n: vsftpd
+	- n: whois
+	- n: wireless-tools
+	- n: wpa_supplicant
+	- n: yptools
+	- n: ytalk
+	- l: newt
+	- n: NetworkManager (need libnl3, readline, ppp, libndp, newt)
+	- l: GConf
+	- l: libgnome-keyring
+	- n: p11-kit (need libtasn1)
+	- l: gcr
+	- l: gnome-keyring (need libgnome-keyring, gcr)
+	- l: libsecret
+ 	- xap: network-manager-applet (need isocodes, NetworkManager, GConf, gnome-keyring, libsecret)
+	- ap: moc (need db33)
+	- d: gnu-cobol (need db33)
+	- n: netatalk (2.2.3 nok, but 3.1.7 ok)
+	- l: loudmouth (modified version, git version)
+	- n: mcabber (need loudmouth)	
+	- n: lynx (modified SlackBuild and upgrade to 2.8.8)
+	- n: trn
+	- n: newspost
+	- n: procmail
+	- xap:seyon :
+---------------------------------------
+# Installation of last l packages
+---------------------------------------
+	- ConsoleKit
+	- LibRaw
+	- sip
+	- PyQT (need sip)
+	- QScintilla
+	- a52dec
+	- aalib
+	- shared-mime-info
+	- akonadi (need shared-mime-info)
+	- alsa-oss
+	- aspell (0.60.6 nok, but 0.60.6.1 ok)
+	- aspell-dict
+	- attica
+	- audiofile
+	- automoc4
+	- babl
+	- chmlib
+	- clucene
+	- dconf
+	- djvulibre
+	- libzip
+	- ebook-tools (need libzip)
+	- eigen2
+	- eigen3
+	- esound
+	- exiv2
+	- fftw
+	- fribidi
+	- gamin
+	- gcr
+	- gd
+	- gegl
+	- glade3
+	- gmime
+	- gmm
+	- grantlee
+	- gst-plugins-base0
+	- gst-plugins-good0
+	- gstreamer (modified SlackBuild)
+	- gst-plugins-base (need gstreamer)
+	- gst-plugins-good (need gstreamer)
+	- gvfs
+	- herqq
+	- hunspell
+	- icon-naming-utils
+	- ilmbase
+	- keybinder
+	- keyutils
+	- lcms
+	- lcms2
+	- libart_gpl
+	- libbluedevil
+	- libcanberra
+	- libcddb
+	- liddebusmenu-qt
+	- libdiscid
+	- libexif
+	- libfakekey
+	- libgpod
+	- libgsf
+	- libical (1.0 nok, but 1.0.1 ok)
+	- libidl
+	- lididn
+	- libieee1284
+	- libiodbc
+	- taglib
+	- taglib-extra
+	- libkarma (need taglib)
+	- libsamplerate
+	- liblastfm (need libsamplerate)
+	- libmowgli
+	- libmcs (need libmowgli)
+	- libmng
+	- libmsn
+	- libmtp
+	- libnih
+	- libnjb
+	- librevenge
+	- libodfgen (need librevenge)
+	- liboggz
+	- liboil
+	- libplist
+	- libraw1394
+	- libsndfile
+	- libsoup
+	- libspectre
+	- libvisual
+	- libvisual-plugins
+	- libvncserver (0.9.10 nok, but 0.9.9 ok)
+	- libwmf
+	- libwmf-docs
+	- libwnck
+	- libwpd
+	- libxklavier
+	- libyaml
+	- media-player-info
+	- mhash
+	- openexr
+	- orc
+	- phonon
+	- phonon-gstreamer
+	- pilot-link
+	- polkit-gnome
+	- polkit-qt
+	- pycups
+	- pycurl
+	- python-pillow
+	- qca (modified SlackBuild)
+	- qca-cyrus-sasl
+	- qca-gnupg
+	- qca-ossl
+	- qimageblitz
+	- qjson
+	- qt-gstreamer
+	- qtscriptgenerator
+	- raptor2
+	- rasqal
+	- redland
+	- sdl
+	- seamonkey-solibs & seamonkey
+	- shared-desktop-ontologies
+	- soprano
+	- sound-theme-freedesktop
+	- strigi
+	- system-config-printer
+	- tango-icon-theme
+	- tango-icon-theme-extras
+	- urwid
+	- v4l-utils
+	- virtuoso-ose
+	- xapian-core	
+	- n: ulogd (modified iptables to have the ipt_ULOG.h headers)
+	- n: ipset 
+	- n: php (need libvpx, t1lib, libmcrypt)
+---------------------------------------
+# That's the end.
+---------------------------------------
+
+
+
+
+
+
