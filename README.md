@@ -72,26 +72,41 @@ works but when building SFS the system doesn't seem to see the gnat compiler,
 maybe someone will be able to make it work, so that the "pre-gcc" and "post-gcc"
 won't be necessary anymore.
 Once the tools finished you can save the "tools" built by doing what's following.
+
 In another console:
 # cd /mnt/sfs
 # chown -R root:root tools/
 # tar czf tools.tar.gz tools/
 # move it to $PATDIR/tools (for x86)  or $PATDIR/tools_64 (for x86_64)
 
-6/ from now you can build SFS either piece of software by piece or completely 
-with a sole script.
+6/ from now you can build SFS either piece of software by piece of software 
+or completely with a unique script "full-sfs.sh".
 
-either by executing:
+Either by executing:
 # time (./sfsbuild1.sh build1_s.list)
-either by executing:
+
+Either by executing:
 # time (./full-sfs.sh)
 
 On my machine the full build takes about 15 hours.
 Your connection to internet must be active.
 
-7/ at the end of the building, adjust "my_prolife.sh" to your need, and 
-execute it before rebooting. You wil have update grub so that your boot loader
-sees your new system.
+7/ at the end of the building, adjust "my_profile.sh" to your needs, and 
+execute the script before rebooting. You wil have update grub so that your boot
+loader sees your new system.
+
+8/ the 3 following scripts are for:
+- if rebooted after building the list1 to see if the system works do the
+following:
+
+# cd $SFS/sources
+# ./mount-sfs.sh
+# ./chroot1.sh
+# cd /sources
+You can go on building your system.
+
+# at the end to umount the $SFS/{dev,run,proc,sys}
+# ./umount-sfs.sh 
 
 
 
