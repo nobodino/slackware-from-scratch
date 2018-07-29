@@ -729,6 +729,11 @@ a which
 l readline
 n dhcpcd
 a kernel-all
+d help2man
+d flex
+d bison
+d autoconf
+d libtool
 a end1
 EOF
 }
