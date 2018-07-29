@@ -43,20 +43,11 @@ export PATDIR=/mnt/ext4/sda4/sfs
 # the directory where are stored everything else slackware (gnuada, SBo..)
 #*******************************************************************
 export DNDIR1=/mnt/ext4/sda4/sfs/others
-export DNDIR2=/mnt/ext4/sda4/sfs/others_14_2
-#*******************************************************************
-# the directory where are stored dlackware SlackBuilds
-# git cloned from https://github.com/Dlackware
-# just the necessary packages to build (see README-sfsd for the list)
-#*******************************************************************
-export DLDIR=/mnt/ext4/sda4/sfs/dlackware
 #*******************************************************************
 # the directory where is stored the resynced slackware sources
 #*******************************************************************
 export RDIR1=/mnt/ext4/sda4/home/ftp/pub/Linux/Slackware/slackware-current
-export RDIR2=/mnt/ext4/sda4/home/ftp/pub/Linux/Slackware/slackware-14.2
 export RDIR3=/mnt/ext4/sda4/home/ftp/pub/Linux/Slackware/slackware64-current
-export RDIR4=/mnt/ext4/sda4/home/ftp/pub/Linux/Slackware/slackware64-14.2
 #*******************************************************************
 # the rsync mirror from which you get the slackware source tree
 #*******************************************************************

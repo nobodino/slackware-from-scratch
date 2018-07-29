@@ -29,8 +29,11 @@ and swap partition. In the example the options for the root partition are
 applicable to my ssd disk "defaults,noatime,discard", it may not be applicable
 to your disk if a standard HDD.
 
-3/ edit "export_variable.sh" to adjust PATDIR, DNDIR1, DNDIR2, RDIR1 to RDRIR4, 
-RSYNCDIR, and DLDIR to build dlackware (no more available for the time beeing).
+3/ edit "export_variable.sh" to adjust PATDIR, DNDIR1, RDIR1 and RDRIR3, 
+RSYNCDIR.
+
+nota: on this version of sfs-bootsrap.sh, building slackware-14.2 is no more
+applicable.
 
 # export PATDIR=/mnt/ext4/sda4/sfs (for example)
 # mkdir -pv $PATDIR/tools (to store the "tools" build further on x86)
