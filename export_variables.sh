@@ -51,8 +51,8 @@ export RDIR3=/mnt/ext4/sda4/home/ftp/pub/Linux/Slackware/slackware64-current
 #*******************************************************************
 # the rsync mirror from which you get the slackware source tree
 #*******************************************************************
-#export RSYNCDIR=rsync://mirror.slackbuilds.org/slackware/slackware-current
-#export RSYNCDIR=rsync://mirrors.slackware.bg/slackware/slackware-current
+# export RSYNCDIR=rsync://mirror.slackbuilds.org/slackware/slackware-current
+# export RSYNCDIR=rsync://mirrors.slackware.bg/slackware/slackware-current
 # export RSYNCDIR=rsync://slackware.uk/slackware/slackware-current
 export RSYNCDIR=rsync://bear.alienbase.nl/mirrors/slackware/slackware64-current
 #*******************************************************************

@@ -477,6 +477,7 @@ l libwnck
 l adwaita-icon-theme
 xfce xfce
 xfce xfce
+xap seamonkey
 a end3
 EOF
 }
@@ -1063,7 +1064,6 @@ l ncurses
 l virtuoso-ose
 n openssl
 n snownews
-xap seamonkey
 xap mozilla-firefox
 xap mozilla-thunderbird
 # l librsvg
