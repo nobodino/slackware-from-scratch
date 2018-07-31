@@ -64,28 +64,6 @@
 # set -x
 
 
-generate_etc_fstab () {
-#*******************************************************************
-mkdir -pv $SFS/etc
-cat > $SFS/etc/fstab << "EOF"
-/dev/sdd1        swap             swap        defaults         0   0
-/dev/sdd2       /                ext4        defaults,noatime,discard  	   1   1
-/dev/fd0         /mnt/floppy      auto        noauto,owner     0   0
-devpts           /dev/pts         devpts      gid=5,mode=620   0   0
-proc             /proc            proc        defaults         0   0
-tmpfs            /dev/shm         tmpfs       nosuid,nodev,noexec 0   0
-# End /fstab
-EOF
-}
-
-
-#*******************************************************************
-# End of VARIABLES to be set by the user
-#*******************************************************************
-
-
-
-
 arch_selector () {
 #**********************************
 # architecture selector selector
@@ -329,18 +307,18 @@ if [[ "$build_arch" = "x86" ]]
 		if [ ! -f ksh93-2012_08_01-i586-2.txz ]; then
 			wget -c -v $DLDIR3/slackware/ap/ksh93-2012_08_01-i586-2.txz
 		fi
-		mkdir -pv $SRCDIR/others/isl  > /dev/null 2>&1
-		cd $SRCDIR/others/isl
-		if [ ! -f isl.tar.gz ]; then
-			curl --user user:password -o isl.tar.gz $DLDIR11/libraries/isl.tar.gz 
-			tar xf isl.tar.gz
-			cd $SRCDIR/others/isl/isl 
-			mv * ../ > /dev/null 2>&1
-			cd .. && rm -rf isl && rm isl.tar.gz
-		fi 
-		if [ ! -f isl-$ISLVER.tar.xz ]; then
-			wget -c -v $DLDIR6/isl-$ISLVER.tar.xz
-		fi
+#		mkdir -pv $SRCDIR/others/isl  > /dev/null 2>&1
+#		cd $SRCDIR/others/isl
+#		if [ ! -f isl.tar.gz ]; then
+#			curl --user user:password -o isl.tar.gz $DLDIR11/libraries/isl.tar.gz 
+#			tar xf isl.tar.gz
+#			cd $SRCDIR/others/isl/isl 
+#			mv * ../ > /dev/null 2>&1
+#			cd .. && rm -rf isl && rm isl.tar.gz
+#		fi 
+#		if [ ! -f isl-$ISLVER.tar.xz ]; then
+#			wget -c -v $DLDIR6/isl-$ISLVER.tar.xz
+#		fi
 		cd $SRCDIR/others
 		if [ ! -f $GNAT_x86 ]; then
 			wget -c -v $DLDIR6/$GNAT_x86  && chmod 644 *.tar.gz
@@ -380,18 +358,18 @@ if [[ "$build_arch" = "x86" ]]
 		if [ ! -f ksh93-2012_08_01-x86_64-2.txz ]; then
 			wget -c -v $DLDIR5/slackware64/ap/ksh93-2012_08_01-x86_64-2.txz
 		fi
-		mkdir -pv $SRCDIR/others/isl  > /dev/null 2>&1
-		cd $SRCDIR/others/isl
-		if [ ! -f isl.tar.gz ]; then
-			curl --user user:password -o isl.tar.gz $DLDIR11/libraries/isl.tar.gz 
-			tar xf isl.tar.gz
-			cd $SRCDIR/others/isl/isl 
-			mv * ../ > /dev/null 2>&1
-			cd .. && rm -rf isl && rm isl.tar.gz
-		fi 
-		if [ ! -f isl-$ISLVER.tar.xz ]; then
-			wget -c -v $DLDIR6/isl-$ISLVER.tar.xz
-		fi
+#		mkdir -pv $SRCDIR/others/isl  > /dev/null 2>&1
+#		cd $SRCDIR/others/isl
+#		if [ ! -f isl.tar.gz ]; then
+#			curl --user user:password -o isl.tar.gz $DLDIR11/libraries/isl.tar.gz 
+#			tar xf isl.tar.gz
+#			cd $SRCDIR/others/isl/isl 
+#			mv * ../ > /dev/null 2>&1
+#			cd .. && rm -rf isl && rm isl.tar.gz
+#		fi 
+#		if [ ! -f isl-$ISLVER.tar.xz ]; then
+#			wget -c -v $DLDIR6/isl-$ISLVER.tar.xz
+#		fi
 		cd $SRCDIR/others
 		if [ ! -f $GNAT_x86_64 ]; then
 			wget -c -v $DLDIR6/$GNAT_x86_64 && chmod 644 *.tar.gz
@@ -1271,7 +1249,6 @@ cd $SFS/sources
 sources_alteration_c
 
 #***********************************************************
-generate_etc_fstab
 
 cd $SFS/sources
 . lists_generator_c.sh

@@ -24,11 +24,16 @@
 #
 #--------------------------------------------------------------------------
 #
+# Note: Much of this script is inspired from the LFS manual chapter 5
+#       Copyright © 1999-2018 Gerard Beekmans and may be
+#       copied under the MIT License.
+#
+#--------------------------------------------------------------------------
+#
 # script to build 'tools' for Slackware From Scratch (SFS)
 # script to be executed once 'su - sfs' has been performed.
 #
-# This script is inspired by the Linux From Scratch book (chapter 5), created
-# by Gerard Beekmans.
+#
 # It doesn't respect exactly the list of the packages given in the LFS book.
 # Some packages needed for testing in the chapter 6 have been skipped.
 # Some other packages have been added to be able to build slackware.

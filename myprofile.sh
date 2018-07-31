@@ -41,6 +41,20 @@
 # personal settings to be adjusted to your own convenients
 #*********************************************************
 
+generate_etc_fstab () {
+#*******************************************************************
+mkdir -pv $SFS/etc
+cat > $SFS/etc/fstab << "EOF"
+/dev/sdd1        swap             swap        defaults         0   0
+/dev/sdd2       /                ext4        defaults,noatime,discard  	   1   1
+/dev/fd0         /mnt/floppy      auto        noauto,owner     0   0
+devpts           /dev/pts         devpts      gid=5,mode=620   0   0
+proc             /proc            proc        defaults         0   0
+tmpfs            /dev/shm         tmpfs       nosuid,nodev,noexec 0   0
+# End /fstab
+EOF
+}
+
 localtime () {
 #***************************************************
 cp /usr/share/zoneinfo/Europe/Paris /etc/localtime
@@ -156,7 +170,8 @@ EOF
 
 #************************************************************
 # end of personal settings
-#***********************************************************
+#************************************************************
+generate_etc_fstab
 localtime
 resolv_conf
 ntp_conf

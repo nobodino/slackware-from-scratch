@@ -819,7 +819,6 @@ link_tools_x64 () {
 #       Copyright © 1999-2015 Gerard Beekmans and may be
 #       copied under the MIT License.
 #****************************************************************
-# mkdir -pv /lib64 && mkdir -pv /usr/lib64 && mkdir -v /bin && mkdir -pv /usr/include
 mkdir -pv /usr/lib64 && mkdir -v /bin && mkdir -pv /usr/include
 mkdir -pv /usr/src && mkdir -pv /usr/bin
 ln -sv /tools/bin/{bash,cat,dd,du,echo,ln,pwd,rm,stty} /bin
@@ -4642,28 +4641,34 @@ cd /slacksrc/kde
 }
 
 
-
 message_end1 () {
 #****************************************************************
 echo
 echo "sfsbuild1.sh has finished to build the first part of SFS."
 echo "You now have a bare slackware system able to boot."
+echo
 echo "You can modify your bootloader to test your new environment."
-echo "Or you can:"
+echo "Before you test your new system, you must execute the script"
+echo "myprofile.sh to have /etc/fstab and some other conveniences."
+echo "You must edit that script to adapt to your needs and execute it:"
+echo 
+echo -e "$YELLOW"  "./myprofile.sh" "$NORMAL"
+echo
+echo "Then you can:"
 echo
 echo -e "$YELLOW"  "exit" "$NORMAL"
 echo
 echo "and:"
 echo
-echo -e "$YELLOW"  "./chroot1.sh" "$NORMAL"
+echo -e "$YELLOW"  "upgrade your boot loader and reboot in your SFS system" "$NORMAL"
 echo
-echo "to go on building slackware."
+echo "Or if you want to go on building slackware from scratch"
 echo
-echo "After chrooting, just execute the following command:"
+echo "Just execute the following command:"
 echo
-echo -e "$YELLOW" "cd /sources && time (./sfsbuild1.sh build2_s.list)" "$NORMAL"
+echo -e "$YELLOW" "time (./sfsbuild1.sh build2_s.list)" "$NORMAL"
 echo
-echo "After that you should have an X11 system with blackbox."
+echo "After that, you should have an X11 system with blackbox."
 echo
 echo
 cd /sources
@@ -4674,9 +4679,25 @@ message_end2 () {
 echo
 echo "sfsbuild1.sh has finished to build the second part of SFS."
 echo "You should now have an X11 system with just blackbox."
-echo "You can boot in your new environment or go on building SFS."
 echo
-echo "To go on building slackware, just execute the following command:"
+echo "You can modify your bootloader to test your new environment."
+echo "Before you test your new system, you must execute the script"
+echo "myprofile.sh to have /etc/fstab and some other conveniences."
+echo "You must edit that script to adapt to your needs and execute it:"
+echo 
+echo -e "$YELLOW"  "./myprofile.sh" "$NORMAL"
+echo
+echo "Then you can:"
+echo
+echo -e "$YELLOW"  "exit" "$NORMAL"
+echo
+echo "and:"
+echo
+echo -e "$YELLOW"  "upgrade your boot loader and reboot in your SFS system" "$NORMAL"
+echo
+echo "Or if you want to go on building slackware from scratch"
+echo
+echo "Just execute the following command:"
 echo
 echo -e "$YELLOW" "time (./sfsbuild1.sh build3_s.list)" "$NORMAL"
 echo
@@ -4690,10 +4711,25 @@ message_end3 () {
 #****************************************************************
 echo
 echo "sfsbuild1.sh has finished to build the third part of SFS."
-echo "You should now have an X11 system with xfce, firefox and thunderbird"
-echo "You can now reboot to test your new SFS system."
+echo "You should now have an X11 system with xfce and seamonkey."
 echo
-echo "To go on building slackware, just execute the following command:"
+echo "Before you test your new system, you must execute the script"
+echo "myprofile.sh to have /etc/fstab and some other conveniences."
+echo "You must edit that script to adapt to your needs and execute it:"
+echo 
+echo -e "$YELLOW"  "./myprofile.sh" "$NORMAL"
+echo
+echo "Then you can:"
+echo
+echo -e "$YELLOW"  "exit" "$NORMAL"
+echo
+echo "and:"
+echo
+echo -e "$YELLOW"  "upgrade your boot loader and reboot in your SFS system" "$NORMAL"
+echo
+echo "Or if you want to go on building slackware from scratch"
+echo
+echo "Just execute the following command:"
 echo
 echo -e "$YELLOW"  "time (./sfsbuild1.sh build4_s.list)" "$NORMAL"
 echo
@@ -4707,8 +4743,21 @@ message_end4 () {
 #****************************************************************
 echo
 echo "sfsbuild1.sh has finished to build the fourth part of SFS."
-echo "You should now have a complete slackware system"
-echo "You can now reboot to test your new SFS system."
+echo "You should now have a complete slackware system."
+echo
+echo "Before you test your new system, you must execute the script"
+echo "myprofile.sh to have /etc/fstab and some other conveniences."
+echo "You must edit that script to adapt to your needs and execute it:"
+echo 
+echo -e "$YELLOW"  "./myprofile.sh" "$NORMAL"
+echo
+echo "Then you can:"
+echo
+echo -e "$YELLOW"  "exit" "$NORMAL"
+echo
+echo "and:"
+echo
+echo -e "$YELLOW"  "upgrade your boot loader and reboot in your SFS system" "$NORMAL"
 echo
 echo
 cd /sources && pkill dhcpcd

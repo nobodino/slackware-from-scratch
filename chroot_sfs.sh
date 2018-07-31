@@ -21,6 +21,11 @@
 #  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
 #  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#--------------------------------------------------------------------------
+#
+# Note: Much of this script is inspired from the LFS manual chapter 5
+#       Copyright © 1999-2018 Gerard Beekmans and may be
+#       copied under the MIT License.
 #
 #--------------------------------------------------------------------------
 # 
