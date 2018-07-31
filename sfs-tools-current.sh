@@ -1,10 +1,40 @@
+####################### sfs-tools-current.sh ###################################
 #!/bin/bash
-# script to build 'tools' for Slackware From Scratch (SFS)
-# script to be executed once 'su - lfs' has been performed.
 #
-# You are at the end of § 4.4 of LFS-8.2 book.
-# The last command you executed was: source ~/.bash_profile
-# Everything will done automatically in this script
+# Copyright 2018  J. E. Garrott Sr, Puyallup, WA, USA
+# Copyright 2018  "nobodino", Bordeaux, FRANCE
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+#--------------------------------------------------------------------------
+#
+# script to build 'tools' for Slackware From Scratch (SFS)
+# script to be executed once 'su - sfs' has been performed.
+#
+# This script is inspired by the Linux From Scratch book (chapter 5), created
+# by Gerard Beekmans.
+# It doesn't respect exactly the list of the packages given in the LFS book.
+# Some packages needed for testing in the chapter 6 have been skipped.
+# Some other packages have been added to be able to build slackware.
+#
+# Everything will be done automatically in this script.
+#--------------------------------------------------------------------------
 #
 # Revision 	0 		25072016		nobodino
 # Revision	1		28072016		nobodino
@@ -175,7 +205,6 @@ copy_src () {
 	export GAWKVER=${VERSION:-$(echo gawk-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/a/gawk/gawk-$GAWKVER.tar.lz $SRCDIR || exit 1
     cd $RDIR/d/gcc
-#	export GCCVER=${VERSION:-$(echo gcc-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
 	export SRCVER=${VERSION:-$(echo gcc-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
 	export GCCVER=$(echo $SRCVER | cut -f 1 -d _)
     cp -v $RDIR/d/gcc/gcc-$SRCVER.tar.?z $SRCDIR || exit 1
