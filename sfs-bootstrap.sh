@@ -399,14 +399,14 @@ test_tools_32 () {
 #************************************************
 # test the existence of tools.tar.gz in tools_32
 #************************************************
-[ ! -f $PATDIR/$tools_dir/tools.tar.gz ] && echo "You can't build an x86 system, the directory or tools.tar.gz doesn't exist."] && exit 1
+[ ! -f $PATDIR/$tools_dir/tools.tar.?z ] && echo "You can't build an x86 system, the directory or tools.tar.?z doesn't exist."] && exit 1
 }
 
 test_tools_64 () {
 #************************************************
 # test the existence of tools.tar.gz in tools_64
 #************************************************
-[ ! -f $PATDIR/$tools_dir/tools.tar.gz ] && echo "You can't build an x86_64 system, the directory or tools.tar.gz doesn't exist."] && exit 1
+[ ! -f $PATDIR/$tools_dir/tools.tar.?z ] && echo "You can't build an x86_64 system, the directory or tools.tar.?z doesn't exist."] && exit 1
 }
 
 #*******************************************************************
@@ -1189,19 +1189,17 @@ clean_sfs
 # Upgrade the sources from local or rsync
 #*************************************
 echo
-echo "Do you want to upgrade the sources of SFS? rsync or Quit."
-# echo "Do you want to upgrade the sources of SFS? rsync, local or Quit."
+echo "Do you want to upgrade the sources of SFS? rsync, local or Quit."
 echo
 echo "rsync means: it will rsync directly from a slackware mirror defined by"
 echo 
 echo -e "$BLUE" "$RSYNCDIR" "$NORMAL"
 echo
-# echo "local means: it will rsync from a local slackware mirror you have already rsynced and defined by $RDIR1"
+echo "local means: it will rsync from a local slackware mirror you have already rsynced and defined by $RDIR1"
 echo 
 PS3="Your choice:"
 echo
-# select upgrade_type in rsync local Quit
-select upgrade_type in rsync Quit
+select upgrade_type in rsync local Quit
 do
 	if [[ "$upgrade_type" = "Quit" ]]
 	then
@@ -1222,6 +1220,7 @@ do
 		echo  -e "$RED" "You choose to rsync slacksrc from a local mirror." "$NORMAL"
 		echo 
 		upgrade_src
+		populate_others
 		copy_rust
 		break
 	fi
