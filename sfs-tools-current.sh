@@ -275,23 +275,23 @@ copy_src () {
     cd $RDIR/a/xz
 	export XZVER=${VERSION:-$(echo xz-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/a/xz/xz-$XZVER.tar.xz $SRCDIR || exit 1
-#	cd $RDIR/others/isl
-#	export ISLVER=${VERSION:-$(echo isl-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
-#   cp -v $RDIR/others/isl/isl-$ISLVER.tar.xz $SRCDIR || exit 1
-#	case $(uname -m) in
-#		i686 ) 
-#			if [ -f $RDIR/others/gnat-gpl-2014-x86-linux-bin.tar.gz ]; then
-#				cd $RDIR/others
-#				cp -v $RDIR/others/gnat-gpl-2014-x86-linux-bin.tar.gz $SRCDIR || exit 1
-#			fi
-#			[ $? != 0 ] && exit 1 ;;
-#		x86_64 )
-#			if [ -f $RDIR/others/gnat-gpl-2017-x86_64-linux-bin.tar.gz ]; then
-#				cd $RDIR/others 
-#				cp -v $RDIR/others/gnat-gpl-2017-x86_64-linux-bin.tar.gz $SRCDIR || exit 1
-#			fi
-#			[ $? != 0 ] && exit 1 ;;
-#	esac
+	cd $RDIR/others/isl
+	export ISLVER=${VERSION:-$(echo isl-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
+   cp -v $RDIR/others/isl/isl-$ISLVER.tar.xz $SRCDIR || exit 1
+	case $(uname -m) in
+		i686 ) 
+			if [ -f $RDIR/others/gnat-gpl-2014-x86-linux-bin.tar.gz ]; then
+				cd $RDIR/others
+				cp -v $RDIR/others/gnat-gpl-2014-x86-linux-bin.tar.gz $SRCDIR || exit 1
+			fi
+			[ $? != 0 ] && exit 1 ;;
+		x86_64 )
+			if [ -f $RDIR/others/gnat-gpl-2017-x86_64-linux-bin.tar.gz ]; then
+				cd $RDIR/others 
+				cp -v $RDIR/others/gnat-gpl-2017-x86_64-linux-bin.tar.gz $SRCDIR || exit 1
+			fi
+			[ $? != 0 ] && exit 1 ;;
+	esac
    
 }
 
@@ -1008,48 +1008,48 @@ glibc_build
 libstdc_build
 binutils_build_sp2
 #--------------------
-# if [[ "$ada_enable" = "yes" ]]
-# then
-#	gmp_build
-#	isl_build
-#	case $(uname -m) in
-#		x86_64)
-#			tar xf gnat-gpl-2017-x86_64-linux-bin.tar.gz
-#			if [ $? != 0 ]; then
-#				echo
-#				echo "Tar extraction of gnat-gpl-2017-x86_64-linux-bin failed."
-#				echo
-#			exit 1
-#			fi
-#			# Now prepare the environment
-#			cd gnat-gpl-2017-x86_64-linux-bin
-#
-#			[ $? != 0 ] && exit 1 ;;
-#		i686)
-#			tar xf gnat-gpl-2014-x86-linux-bin.tar.gz
-#			if [ $? != 0 ]; then
-#				echo
-#				echo "Tar extraction of gnat-gpl-2014-x86-linux-bin failed."
-#				echo
-#			exit 1
-#			fi
-#			# Now prepare the environment
-#			cd gnat-gpl-2014-x86-linux-bin
-#			[ $? != 0 ] && exit 1 ;;
-#	esac
-#	mkdir -pv /tools/opt/gnat
-#	make ins-all prefix=/tools/opt/gnat
-#	PATH_HOLD=$PATH && export PATH=/tools/opt/gnat/bin:$PATH_HOLD
-#	echo $PATH
-#	find /tools/opt/gnat -name ld -exec mv -v {} {}.old \;
-#	find /tools/opt/gnat -name ld -exec as -v {} {}.old \;
-#	gnat_build_sp2
-#	break
-# elif [[ "$ada_enable" = "no" ]]
-# then
-#	echo
-#	break
-# fi
+ if [[ "$ada_enable" = "yes" ]]
+ then
+	gmp_build
+	isl_build
+	case $(uname -m) in
+		x86_64)
+			tar xf gnat-gpl-2017-x86_64-linux-bin.tar.gz
+			if [ $? != 0 ]; then
+				echo
+				echo "Tar extraction of gnat-gpl-2017-x86_64-linux-bin failed."
+				echo
+			exit 1
+			fi
+			# Now prepare the environment
+			cd gnat-gpl-2017-x86_64-linux-bin
+
+			[ $? != 0 ] && exit 1 ;;
+		i686)
+			tar xf gnat-gpl-2014-x86-linux-bin.tar.gz
+			if [ $? != 0 ]; then
+				echo
+				echo "Tar extraction of gnat-gpl-2014-x86-linux-bin failed."
+				echo
+			exit 1
+			fi
+			# Now prepare the environment
+			cd gnat-gpl-2014-x86-linux-bin
+			[ $? != 0 ] && exit 1 ;;
+	esac
+	mkdir -pv /tools/opt/gnat
+	make ins-all prefix=/tools/opt/gnat
+	PATH_HOLD=$PATH && export PATH=/tools/opt/gnat/bin:$PATH_HOLD
+	echo $PATH
+	find /tools/opt/gnat -name ld -exec mv -v {} {}.old \;
+	find /tools/opt/gnat -name ld -exec as -v {} {}.old \;
+	gnat_build_sp2
+	break
+ elif [[ "$ada_enable" = "no" ]]
+ then
+	echo
+	break
+ fi
 #--------------------
 gcc_build_sp2
 m4_build
