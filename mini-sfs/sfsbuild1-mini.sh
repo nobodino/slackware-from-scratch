@@ -368,7 +368,7 @@ echo "You can do it by hand, by building packages, one by one."
 echo "./package.SlackBuild && installpkg /tmp/package*.t?z"
 echo
 echo "You can also do it with only one script, by executing the"
-echo "following command, there will be 4 steps:"
+echo "following command:"
 echo
 echo -e "$YELLOW" "time (./sfsbuild1.sh build1_s.list)" "$NORMAL"
 echo
@@ -693,8 +693,15 @@ message_end1 () {
 echo
 echo "sfsbuild1.sh has finished to build the first part of SFS."
 echo "You now have a bare slackware system able to boot."
+echo
 echo "You can modify your bootloader to test your new environment."
-echo "Or you can:"
+echo "Before you test your new system, you must execute the script"
+echo "myprofile.sh to have /etc/fstab and some other conveniences."
+echo "You must edit that script to adapt to your needs and execute it:"
+echo 
+echo -e "$YELLOW"  "./myprofile.sh" "$NORMAL"
+echo
+echo "Then you can:"
 echo
 echo -e "$YELLOW"  "exit" "$NORMAL"
 echo
