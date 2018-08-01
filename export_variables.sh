@@ -71,6 +71,7 @@ export DNDIR1=/mnt/ext4/sda4/sfs/others
 #*******************************************************************
 export RDIR1=/mnt/ext4/sda4/home/ftp/pub/Linux/Slackware/slackware-current
 export RDIR3=/mnt/ext4/sda4/home/ftp/pub/Linux/Slackware/slackware64-current
+export RDIR5=/mnt/dvd
 #*******************************************************************
 # the rsync mirror from which you get the slackware source tree
 #*******************************************************************

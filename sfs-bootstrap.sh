@@ -102,6 +102,18 @@ done
 echo
 echo -e "$BLUE"  "You choose $build_arch." "$NORMAL"
 echo
+#**********************************************
+# defines RDIR according to x86 or x86_64:
+#**********************************************
+	if [[ "$distribution" = "slackware" ]]; then
+		if [[ "$build_arch" = "x86" ]]; then
+			export RDIR="$RDIR1"
+		elif [[ "$build_arch" = "x86_64" ]]; then
+			export RDIR="$RDIR3"
+		fi
+	fi
+	echo "****** $RDIR ******"
+
 
 }
 
@@ -140,17 +152,7 @@ do
 done
 echo -e "$BLUE" "You choose $distribution."  "$NORMAL" 
 export $distribution
-if [[ "$distribution" = "slackware" ]]
-	then
-		if [[ "$build_arch" = "x86" ]]
-		then
-			export RDIR="$RDIR1"
-		elif [[ "$build_arch" = "x86_64" ]]
-		then
-			export RDIR="$RDIR3"
-		fi
-fi
-echo $RDIR
+echo
 
 }
 
@@ -262,20 +264,48 @@ export $upgrade_sources
 
 }
 
-copy_rust () {
+upgrade_dvd () {
 #*************************************
-# rust can't be built without previous version
+# Upgrade the sources from local dvd (blu-ray disc)
 #*************************************
+	echo "Do you want to upgrade the sources of SFS? No, Yes or Quit."
+	PS3="Your choice: "
+	select upgrade_sources in Yes No Quit
+	do
+		if [[ "$upgrade_sources" = "Quit" ]]; then
+			echo
+			echo -e "$RED" "You have decided to quit. Goodbye." "$NORMAL" && exit 1
+		elif [[ "$upgrade_sources" = "Yes" ]]; then
+			echo
+			echo "You chose to upgrade the sources of SFS from DVD."
+			# Check that dvd has been mounted
+			[ ! -d "$RDIR5" ] && mkdir $RDIR5
+			mount -l |grep "$RDIR5" >/dev/null
+			[ $? != 0 ] && mount /dev/sr0 $RDIR5
 
-if [[ "$build_arch" = "x86" ]]
-	then
-		cp -rv $SRCDIR/others/rust/* $SRCDIR/d/rust
-	elif [[ "$build_arch" = "x86_64" ]]
-	then
-		cp -rv $SRCDIR/others/rust64/* $SRCDIR/d/rust
-fi
+			echo "Removing old slacksrc."
+			[ -d $SRCDIR ] && rm -rf $SRCDIR
+			echo "Installing new sources."
+			cp -r --preserve=timestamps $RDIR5/source $SRCDIR
+			mkdir -pv $SRCDIR/others  > /dev/null 2>&1
+			mkdir -pv $SRCDIR/extra > /dev/null 2>&1
+			cp -r --preserve=timestamps $DNDIR1/* $SRCDIR/others
+			cp -r --preserve=timestamps $RDIR5/extra/source/* $SRCDIR/extra
+			cd $SFS/sources
+			rm end* > /dev/null 2>&1
+			rm *.t?z > /dev/null 2>&1
+			rm -rf $SFS/sources/extra && rm -rf $SFS/sources/others
+			break
+		elif [[ "$upgrade_sources" = "No" ]]
+		then
+			echo
+			echo "You chose to keep the sources of SFS as they are."
+			break
+		fi
+	done
+	export $upgrade_sources
+	return
 }
-
 
 populate_others () {
 #*************************************
@@ -1121,7 +1151,7 @@ sources_alteration_c () {
 #**********************************
 PS3="Your choice:"
 echo
-echo -e "$BLUE" "Do you want to alter the slackware sources: yes, no or quit." "$NORMAL" && echo
+echo -e "$BLUE" "Do you want to alter the slackware sources: yes or quit." "$NORMAL" && echo
 echo
 select sources_alteration in yes quit
 do
@@ -1200,17 +1230,23 @@ clean_sfs
 # Upgrade the sources from local or rsync
 #*************************************
 echo
-echo "Do you want to upgrade the sources of SFS? rsync, local or Quit."
+echo "Do you want to upgrade the sources of SFS? rsync, local, DVD or Quit."
 echo
 echo "rsync means: it will rsync directly from a slackware mirror defined by"
 echo 
 echo -e "$BLUE" "$RSYNCDIR" "$NORMAL"
 echo
-echo "local means: it will rsync from a local slackware mirror you have already rsynced and defined by $RDIR1"
+echo "local means: it will rsync from a local slackware mirror you have already rsynced and defined by"
+echo
+echo -e "$BLUE" "$RDIR1" "$NORMAL"
+echo
+echo "DVD means: it will rsync from a local slackware DVD (double layer) or BluRay you have already burnt and defined by"
+echo
+echo -e "$BLUE" "$RDIR5" "$NORMAL"
 echo 
 PS3="Your choice:"
 echo
-select upgrade_type in rsync local Quit
+select upgrade_type in rsync local DVD Quit
 do
 	if [[ "$upgrade_type" = "Quit" ]]
 	then
@@ -1232,8 +1268,17 @@ do
 		echo 
 		upgrade_src
 		populate_others
-		copy_rust
 		break
+	elif [[ "$upgrade_type" = "DVD" ]]
+	then
+		echo
+		echo  -e "$RED" "You choose to rsync slacksrc from a local DVD or BluRay." "$NORMAL"
+		echo 
+		mount -t auto /dev/sr0 /mnt/dvd && sleep 5 && echo -e "$RED" "DVD mounted on /mnt/DVD" "$NORMAL"
+		upgrade_dvd
+		populate_others
+		umount /mnt/dvd && sleep 3 && eject && echo -e "$RED" "DVD unmounted from /mnt/DVD and ejected." "$NORMAL"
+ 		break
 	fi
 done
 #*************************************
@@ -1264,6 +1309,9 @@ cd $SFS/sources
 . lists_generator_c.sh
 
 . prep-sfs-tools.sh
+#***********************************************************
+# Make sure evreything under sources is owned by root:root
+#***********************************************************
 cd $SFS/ && chown -R root:root sources && cd $SFS/sources
 #*************************************
 # finally chroot in $SFS environment
