@@ -329,10 +329,19 @@ if [[ "$build_arch" = "x86" ]]
 			curl -C - -LR#OH "Cookie: oraclelicense=accept-securebackup-cookie" -k $DLDIR9 && mv AutoDL?Bundle* jre-$JDK-linux-i586.tar.gz
 		fi
 		cp -v jre-$JDK-linux-i586.tar.gz $SRCDIR/extra/java
-		cd $SRCDIR/d/rust
+		cd $SRCDIR/others
+		if [ ! -f cargo-$CARGO-i686-unknown-linux-gnu.tar.gz ]; then
 		curl --user user:password -o cargo-$CARGO-i686-unknown-linux-gnu.tar.gz $DLDIR8/$DATE/cargo-$CARGO-i686-unknown-linux-gnu.tar.gz
+		fi
+		cp -rv cargo-$CARGO-i686-unknown-linux-gnu.tar.gz $SRCDIR/d/rust
+		if [ ! -f rust-std-$RUST-i386-unknown-linux-gnu.tar.gz ]; then
 		curl --user user:password -o rust-std-$RUST-i386-unknown-linux-gnu.tar.gz $DLDIR8/$DATE/rust-std-$RUST-i686-unknown-linux-gnu.tar.gz
+		fi
+		cp -rv rust-std-$RUST-i386-unknown-linux-gnu.tar.gz $SRCDIR/d/rust
+		if [ ! -f rustc-$RUSTC-i686-unknown-linux-gnu.tar.gz ]; then
 		curl --user user:password -o rustc-$RUSTC-i686-unknown-linux-gnu.tar.gz $DLDIR8/$DATE/rustc-$RUSTC-i686-unknown-linux-gnu.tar.gz
+		fi
+		cp -rv rustc-$RUSTC-i686-unknown-linux-gnu.tar.gz $SRCDIR/d/rust	
 	elif [[ "$build_arch" = "x86_64" ]]
 	then
 		mkdir $SRCDIR/others > /dev/null 2>&1
@@ -379,11 +388,20 @@ if [[ "$build_arch" = "x86" ]]
 			# from https://gist.github.com/P7h/9741922
 			curl -C - -LR#OH "Cookie: oraclelicense=accept-securebackup-cookie" -k $DLDIR10 && mv AutoDL?Bundle* jre-$JDK-linux-x64.tar.gz
 		fi
-		cp -v jre-$JDK-linux-x64.tar.gz $SRCDIR/extra/java
-		cd $SRCDIR/d/rust
+		cp -rv jre-$JDK-linux-x64.tar.gz $SRCDIR/extra/java
+		cd $SRCDIR/others
+		if [ ! -f cargo-$CARGO-x86_64-unknown-linux-gnu.tar.gz ]; then
 		curl --user user:password -o cargo-$CARGO-x86_64-unknown-linux-gnu.tar.gz $DLDIR8/$DATE/cargo-$CARGO-x86_64-unknown-linux-gnu.tar.gz
+		fi
+		cp -rv cargo-$CARGO-x86_64-unknown-linux-gnu.tar.gz $SRCDIR/d/rust
+		if [ ! -f rust-std-$RUST-x86_64-unknown-linux-gnu.tar.gz ]; then
 		curl --user user:password -o rust-std-$RUST-x86_64-unknown-linux-gnu.tar.gz $DLDIR8/$DATE/rust-std-$RUST-x86_64-unknown-linux-gnu.tar.gz
-		curl --user user:password -o rustc-$RUSTC-x86_64-unknown-linux-gnu.tar.gz $DLDIR8/$DATE/rustc-$RUSTC-x86_64-unknown-linux-gnu.tar.gz		 	
+		fi
+		cp -rv rust-std-$RUST-x86_64-unknown-linux-gnu.tar.gz $SRCDIR/d/rust
+		if [ ! -f rustc-$RUSTC-x86_64-unknown-linux-gnu.tar.gz ]; then
+		curl --user user:password -o rustc-$RUSTC-x86_64-unknown-linux-gnu.tar.gz $DLDIR8/$DATE/rustc-$RUSTC-x86_64-unknown-linux-gnu.tar.gz
+		fi
+		cp -rv rustc-$RUSTC-x86_64-unknown-linux-gnu.tar.gz $SRCDIR/d/rust		 	
 fi
 }
 
@@ -1105,7 +1123,7 @@ PS3="Your choice:"
 echo
 echo -e "$BLUE" "Do you want to alter the slackware sources: yes, no or quit." "$NORMAL" && echo
 echo
-select sources_alteration in yes no quit
+select sources_alteration in yes quit
 do
 	if [[ "$sources_alteration" = "yes" ]]
 	then
@@ -1128,13 +1146,6 @@ do
 		execute_subversion # 2 pass
 		execute_texlive # 2 pass
 		execute_xfce
-		break
-	elif [[ "$sources_alteration" = "no" ]]
-	then
-		echo
-		echo "You decided to keep the slackware sources."
-		echo "The building of slackware won't build completely"
-		echo
 		break
 	elif [[ "$sources_alteration" = "quit" ]]
 	then
