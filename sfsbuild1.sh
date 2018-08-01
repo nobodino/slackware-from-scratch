@@ -24,8 +24,8 @@
 #
 #--------------------------------------------------------------------------
 #
-# Note: Some parts of this script is inspired from the LFS manual chapter 5
-#		(adjust_i686 and adjust_x86_64)	
+# Note: The adjust_i686 and adjust_x86_64 procedures of this script are 
+#       inspired from the LFS manual chapter 6.10
 #       Copyright © 1999-2018 Gerard Beekmans and may be
 #       copied under the MIT License.
 #
@@ -79,7 +79,7 @@ echo 	"Usage: sfsbuild1.sh build1.list"
 echo
 echo	"The build.list of programs to build, and their source directories is required."
 echo
-echo	"The packages will not be processed until the end of the build.list."
+echo	"The packages will not be processed until the end of the build{1,4}.list."
 echo
 exit -1
 }
@@ -124,7 +124,7 @@ ln -sv /tools/bin/ld /tools/$(uname -m)-pc-linux-gnu/bin/ld
 # '/tools' should leave us with the correct path to the
 # dynamic linker. Also adjust the specs file so that GCC
 # knows where to find the correct headers and Glibc start
-# files. A sed command accomplishes this:build1d.list
+# files. A sed command accomplishes this:
 #***********************************************************
 gcc -dumpspecs | sed -e 's@/tools@@g'                   \
     -e '/\*startfile_prefix_spec:/{n;s@.*@/usr/lib64/ @}' \
@@ -567,8 +567,9 @@ clean_tmp () {
 #*************************
 cd / && [ -f localtime ] && rm localtime
 cd /tmp
-rm *
-rm -rf /tmp/*
+for i in *; do
+    [ -d "$i" ] && rm -rf $i
+done
 cd /sources
 }
 
