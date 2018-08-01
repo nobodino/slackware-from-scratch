@@ -997,7 +997,7 @@ echo_end () {
 #*****************************
 
 echo_begin
-# ada_choice
+ada_choice
 copy_src
 test_to_go
 cd $SRCDIR
