@@ -28,7 +28,7 @@
 #		-script issued from sfs-boostrap.sh to build slackware from scratch
 #		-trimmed to build only list1
 #		-no local upgrade
-#		-inetgrated list1 generation
+#		-integrated list1 generation
 #
 ################################################################################
 # set -x
@@ -109,7 +109,6 @@ do
 	then
 		if [[ "$distribution" = "slackware" ]]
 		then
-#			tools_dir='tools' && test_tools_32
 			tools_dir='tools'
 			echo
 			echo -e "$BLUE" "You choose $tools_dir" "$NORMAL"
@@ -121,7 +120,6 @@ do
 	then
 		if [[ "$distribution" = "slackware" ]]
 		then
-#			tools_dir='tools_64' && test_tools_64
 			tools_dir='tools_64'
 			echo
 			echo -e "$BLUE" "You choose $tools_dir" "$NORMAL"
