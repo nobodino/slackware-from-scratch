@@ -24,7 +24,7 @@
 #
 #--------------------------------------------------------------------------
 #
-# Note: The adjust_i686 and adjust_x86_64 procedures of this script are 
+# Note: The adjust and link_tools procedures of this script are 
 #       inspired from the LFS manual chapter 6.10
 #       Copyright © 1999-2018 Gerard Beekmans and may be
 #       copied under the MIT License.
@@ -89,6 +89,10 @@ adjust_i686 () {
 # First, backup the /tools linker, and replace it with the
 # adjusted linker we made in chapter 5. We'll also create a
 # link to its counterpart in /tools/$(gcc -dumpmachine)/bin:
+#
+# Note: Much of this script is copied from the LFS manual.
+#       Copyright © 1999-2018 Gerard Beekmans and may be
+#       copied under the MIT License.
 #***********************************************************
 mv -v /tools/bin/{ld,ld-old}
 mv -v /tools/$(uname -m)-pc-linux-gnu/bin/{ld,ld-old}
@@ -113,6 +117,10 @@ adjust_x86_64 () {
 # First, backup the /tools linker, and replace it with the
 # adjusted linker we made in chapter 5. We'll also create a
 # link to its counterpart in /tools/$(gcc -dumpmachine)/bin:
+#
+# Note: Much of this script is copied from the LFS manual.
+#       Copyright © 1999-2018 Gerard Beekmans and may be
+#       copied under the MIT License.
 #***********************************************************
 mv -v /tools/bin/{ld,ld-old}
 mv -v /tools/$(uname -m)-pc-linux-gnu/bin/{ld,ld-old}
@@ -787,8 +795,8 @@ link_tools () {
 # We added a link to /tools/bin/du to avoid 'noise' during
 # pkgtools building, which is not in LFS of course.
 #
-# Note: Much of this script is copied from the LFS-8.1 manual.
-#       Copyright © 1999-2015 Gerard Beekmans and may be
+# Note: Much of this script is copied from the LFS manual.
+#       Copyright © 1999-2018 Gerard Beekmans and may be
 #       copied under the MIT License.
 #****************************************************************
 mkdir -pv /usr/lib && mkdir -v /bin && mkdir -pv /usr/include
@@ -813,8 +821,8 @@ link_tools_x64 () {
 # We added a link to /tools/bin/du to avoid 'noise' during
 # pkgtools building, which is not in LFS of course.
 #
-# Note: Much of this script is copied from the LFS-8.1 manual.
-#       Copyright © 1999-2015 Gerard Beekmans and may be
+# Note: Much of this script is copied from the LFS manual.
+#       Copyright © 1999-2018 Gerard Beekmans and may be
 #       copied under the MIT License.
 #****************************************************************
 mkdir -pv /usr/lib64 && mkdir -v /bin && mkdir -pv /usr/include
@@ -881,7 +889,13 @@ cd /sources
 }
 
 pre_gcc () {
-#***************************************************************
+#******************************************************************
+# Install gnat-gpl to be able to build gnat-ada package
+#
+# Note: Much of this script is copied from the LFS manual.
+#       Copyright © 1999-2018 Gerard Beekmans and may be
+#       copied under the MIT License.
+#******************************************************************
 cd /tmp
 case $(uname -m) in
 	x86_64)
@@ -4557,59 +4571,6 @@ cd /sources
 
 }
 
-build_post_kde1 () {
-#****************************************************************
-# this part exist because some kde packages don't build directly
-#****************************************************************
-cd /slacksrc/kde
-
-export UPGRADE_PACKAGES=always
-
-./kde.SlackBuild kdeartwork
-[ $? != 0 ] && touch /tmp/kde_build/kdeartwork.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegraphics:kgamma
-[ $? != 0 ] && touch /tmp/kde_build/kgamma.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdeadmin:kuser
-[ $? != 0 ] && touch /tmp/kde_build/kuser.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdesdk:kdesdk-kioslaves
-[ $? != 0 ] && touch /tmp/kde_build/kuser.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdebindings:pykde4
-[ $? != 0 ] && touch /tmp/kde_build/pykde4.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild extragear:amarok
-[ $? != 0 ] && touch /tmp/kde_build/amarok.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild extragear:calligra
-[ $? != 0 ] && touch /tmp/kde_build/calligra.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-}
-
-
 build_post_kde2 () {
 #****************************************************************
 # this part exist because some kde packages don't build directly
@@ -4915,7 +4876,7 @@ while (( LINE < $FILELEN )); do
 					clean_tmp ;;
 
 				esound )
-					dhcpcd -t 10 eth0 && updatedb
+					dhcpcd -t 10 eth0 && echo
 					build $SRCDIR $PACKNAME
 					[ $? != 0 ] && exit 1 ;;
 
@@ -5147,7 +5108,7 @@ while (( LINE < $FILELEN )); do
 					continue ;;
 
 				linux-faqs )
-					dhcpcd -t 10 eth0 && updatedb
+					dhcpcd -t 10 eth0 && echo
 					build_linux_faqs
 					[ $? != 0 ] && exit 1 ;;
 
