@@ -24,6 +24,13 @@
 #
 #--------------------------------------------------------------------------
 #
+# Note: Some parts of this script is inspired from the LFS manual chapter 5
+#		(adjust_i686 and adjust_x86_64)	
+#       Copyright © 1999-2018 Gerard Beekmans and may be
+#       copied under the MIT License.
+#
+#--------------------------------------------------------------------------
+#
 #	sfsbuild1.sh
 #
 #	This script builds part of the Slackware from Scratch system using the
@@ -554,21 +561,11 @@ rm -rf $PKG
 cd /sources
 }
 
-clean_tmp1 () {
-#*************************
-# cleanup /tmp directory
-#*************************
-cd / && rm localtime
-cd /tmp
-rm *
-rm -rf /tmp/*
-cd /sources
-}
-
 clean_tmp () {
 #*************************
 # cleanup /tmp directory
 #*************************
+cd / && [ -f localtime ] && rm localtime
 cd /tmp
 rm *
 rm -rf /tmp/*
@@ -4662,7 +4659,7 @@ echo "and:"
 echo
 echo -e "$YELLOW"  "upgrade your boot loader and reboot in your SFS system" "$NORMAL"
 echo
-echo "Or if you want to go on building slackware from scratch"
+echo -e "$RED" "Or if you want to go on building slackware from scratch" "$NORMAL"
 echo
 echo "Just execute the following command:"
 echo
@@ -4695,7 +4692,7 @@ echo "and:"
 echo
 echo -e "$YELLOW"  "upgrade your boot loader and reboot in your SFS system" "$NORMAL"
 echo
-echo "Or if you want to go on building slackware from scratch"
+echo -e "$RED" "Or if you want to go on building slackware from scratch" "$NORMAL"
 echo
 echo "Just execute the following command:"
 echo
@@ -4727,7 +4724,7 @@ echo "and:"
 echo
 echo -e "$YELLOW"  "upgrade your boot loader and reboot in your SFS system" "$NORMAL"
 echo
-echo "Or if you want to go on building slackware from scratch"
+echo -e "$RED" "Or if you want to go on building slackware from scratch" "$NORMAL"
 echo
 echo "Just execute the following command:"
 echo
@@ -4902,7 +4899,7 @@ while (( LINE < $FILELEN )); do
 
 				end1 )
 					message_end1
-					clean_tmp1 ;;
+					clean_tmp ;;
 
 				end2 )
 					message_end2
