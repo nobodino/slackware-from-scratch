@@ -4630,7 +4630,7 @@ echo
 echo "After that, you should have an X11 system with blackbox."
 echo
 echo
-cd /sources
+cd /sources && pkill dhcpcd
 }
 
 message_end2 () {
@@ -4663,7 +4663,7 @@ echo
 echo "After that you should have an X11 system with xfce."
 echo
 echo
-cd /sources
+cd /sources && pkill dhcpcd
 }
 
 message_end3 () {
@@ -4695,7 +4695,7 @@ echo
 echo "After that you should have a complete Slackware system"
 echo
 echo
-cd /sources
+cd /sources && pkill dhcpcd
 }
 
 message_end4 () {
@@ -4875,9 +4875,8 @@ while (( LINE < $FILELEN )); do
 					message_end4
 					clean_tmp ;;
 
-				esound )
+				dhcpcd_up )
 					dhcpcd -t 10 eth0 && echo
-					build $SRCDIR $PACKNAME
 					[ $? != 0 ] && exit 1 ;;
 
 				fontconfig )
@@ -4923,7 +4922,7 @@ while (( LINE < $FILELEN )); do
 					[ $? != 0 ] && exit 1 ;;
 
 				gucharmap )
-					dhcpcd -t 10 eth0 && update-ca-certificates --fresh
+					update-ca-certificates --fresh
 					build $SRCDIR $PACKNAME
 					[ $? != 0 ] && exit 1 ;;
 
@@ -5108,7 +5107,6 @@ while (( LINE < $FILELEN )); do
 					continue ;;
 
 				linux-faqs )
-					dhcpcd -t 10 eth0 && echo
 					build_linux_faqs
 					[ $? != 0 ] && exit 1 ;;
 

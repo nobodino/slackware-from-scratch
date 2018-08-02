@@ -204,6 +204,7 @@ EOF
 generate_slackware_build_list2_c () {
 #******************************************
 cat > $SFS/sources/build2_s.list << "EOF"
+a dhcpcd_up
 d re2c
 d ninja
 d meson
@@ -382,6 +383,7 @@ EOF
 generate_slackware_build_list3_c () {
 #******************************************
 cat > $SFS/sources/build3_s.list << "EOF"
+a dhcpcd_up
 ap linuxdoc-tools
 l libpcap
 a efivar
@@ -508,6 +510,7 @@ EOF
 generate_slackware_build_list4_c () {
 #******************************************
 cat > $SFS/sources/build4_s.list << "EOF"
+a dhcpcd_up
 l python-six
 d opencl-headers
 l ocl-icd
@@ -1089,14 +1092,6 @@ n openssl
 n snownews
 xap mozilla-firefox
 xap mozilla-thunderbird
-# l librsvg
-# l gdk-pixbuf2
-# l adwaita-icon-theme
-# l libxml2
-# l ncurses
-# l virtuoso-ose
-# n openssl
-# n snownews
 a end4
 EOF
 }
