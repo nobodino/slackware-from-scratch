@@ -575,9 +575,8 @@ clean_tmp () {
 #*************************
 cd / && [ -f localtime ] && rm localtime
 cd /tmp
-for i in *; do
-    [ -d "$i" ] && rm -rf $i
-done
+rm *
+rm -rf /tmp/*
 cd /sources
 }
 
@@ -4859,6 +4858,10 @@ while (( LINE < $FILELEN )); do
 					esac
 					continue ;;
 
+				dhcpcd_up )
+					dhcpcd -t 10 eth0 && echo
+					[ $? != 0 ] && exit 1 ;;
+
 				end1 )
 					message_end1
 					clean_tmp ;;
@@ -4874,10 +4877,6 @@ while (( LINE < $FILELEN )); do
 				end4 )
 					message_end4
 					clean_tmp ;;
-
-				dhcpcd_up )
-					dhcpcd -t 10 eth0 && echo
-					[ $? != 0 ] && exit 1 ;;
 
 				fontconfig )
 					case $LISTFILE in
