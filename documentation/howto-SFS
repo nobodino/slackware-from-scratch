@@ -1,92 +1,124 @@
-This memo describes how to build SFS or slackware from scratch with a small set
-of scripts.
+This memo describes how to build SFS or slackware from scratch using
+a small set of scripts.
 
-To begin with, when it's the first time you use these scripts, you have to do 
-the following things.
+The first time you use these scripts, you have to do the following:
 
-nota, you need to:
-- be root to execute the main operations below, 
-- work in konsole otherwise you won't be able to build firefox/thunderbird 
-("unable to setupterm" in any other type of console, why ?).
+                                     NOTE:
+	  You need to:
+	- be root to execute the main operations below, 
+	- work in konsole otherwise you won't be able to build firefox/thunderbird 
+      ("unable to setupterm" in any other type of console, why ?).
 
-1/ create a partition where your system will be built on:
+1) This step assumes you know how to create a disk partition and have
+   already done so.  The following instructions assume this is /dev/sdb2,
+   substitute your actual partition.
+
+   Create and mount a partition for your system to be built on:
 
 # mount -t auto /dev/sdb2 /mnt/sfs 
-(for example see your "generate_fstab" in "sfs-bootstraps.sh")
 # export SFS=/mnt/sfs
 # mkdir -pv $SFS/sources
 # mkdir -pv $SFS/tools
 # cd $SFS/sources
 
-2/ git clone the scripts of the project:
+2) git clone the scripts of the project:
 
 # git clone https://github.com/nobodino/slackware-from-scratch.git
+# cd slackware-from-scratch
+# mv * ..
+# cd ..; rm -rf slackware-from-scratch
 # chmod +x *.sh
 
-3/ edit "sfs-boostrap.sh" to adjust to your fstab caracteristics, root partition
-and swap partition. In the example the options for the root partition are 
-applicable to my ssd disk "defaults,noatime,discard", it may not be applicable
-to your disk if a standard HDD.
+3) Edit "sfs-boostrap.sh" to adjust to your fstab characteristics,
+   root partition, and swap partition. In the example the options for
+   the root partition are applicable to my ssd disk.
+   "defaults,noatime,discard", may not be applicable to your disk if
+   it is a standard HDD.
 
-3/ edit "export_variable.sh" to adjust PATDIR, DNDIR1, RDIR1 and RDRIR3, 
-RSYNCDIR.
-- PATDIR: the directory where you store eveything about sfs (tools, others...)
-- DNDIR1: the directory where are stored everything else slackware (gnuada, SBo)
-- RDIR1/3: the directory where is stored the resynced slackware sources
-- RSYNCDIR: the rsync mirror from which you get the slackware source tree
+							   SAMPLE FSTAB SETUP
+		   (Only the first two lines need modifying for your setup.)
+
+   /dev/sdb1    swap           swap     defaults                    0   0
+   /dev/sdb2    /              ext4     defaults,noatime,discard  	1   1
+   /dev/fd0     /mnt/floppy    auto     noauto,owner                0   0
+   devpts       /dev/pts       devpts   gid=5,mode=620              0   0
+   proc         /proc          proc     defaults                    0   0
+   tmpfs        /dev/shm       tmpfs    nosuid,nodev,noexec         0   0
+   # End /fstab
+
+
+3) Edit "export_variable.sh" to adjust PATDIR, DNDIR1, RDIR1 and RDRIR3, 
+   RSYNCDIR.
+   - PATDIR: the directory where you store eveything about sfs
+             (tools, others...)
+   - DNDIR1: the directory where are stored everything else slackware
+             (gnuada, SBo)
+   - RDIR1/3: the directory where is stored the resynced slackware sources
+   - RSYNCDIR: the rsync mirror from which you get the slackware source tree
 
 # export PATDIR=/mnt/ext4/sda4/sfs (for example)
 # mkdir -pv $PATDIR/tools (to store the "tools" build further on x86)
 # mkdir -pv $PATDIR/tools_64  (to store the "tools" build further on x86_64)
-# mkdir -pv $PATDIR/others  (to store what the sub-script of "sfs-bootstarp.sh"
-grab to "populate_others" get the different repositories)
+# mkdir -pv $PATDIR/others  (to store what the sub-script of
+                             "sfs-bootstrap.sh" grabs to "populate_others",
+							 get the different repositories)
 
-4/ now you are ready to begin to build slackware from scratch, just execute
+4) Now you are ready to begin building slackware from scratch. Just execute
 the following command:
 
 # ./sfs-bootsrap.sh
 
-Two kinds of choice: "slackware" or "quit"
-Three kinds of choice: "x86", "x86_64" or "quit"
-It will generates the different patches.
-Then it will clean up the previous installation building if you built one.
-Then two kinds of choice: "rsync" or "quit". At that moment it will rsync with a 
-slackware distant rsync repository. At the first building it can takes some time
-if your ADSL line (or other way to access internet) is not very performant (for
-me it's about 2 Mb/s).
-"Local upgrade" is not active on that version, I prefer rsyncing every time I 
-can, no more local repository on my machine.
-Then it will alter the sources with patches necessary for "two pass building" 
-packages: you'd better accept the choice than not.
-Then it will generate the 4 lists of packages which are for the following
-purpose:
-- list1 : a bare system just able to boot
-- list1+2: a bare x11 system with blackbox as DE.
-- lists1+2+3: system with xfce and seamonkey as web browser. You can build
-firefox thunderbird : everything is in, to build them.
-- list1+2+3+4: builds all the available packages of slackware.
+   You will be presented with two choices: "slackware" or "quit".
+   If you choose slackware, then you will see three more choice:
+     "x86", "x86_64" or "quit"
+   After your choice it will generate the different patches or quit.
+   Then it will clean up the previous installation building if any.
+   Then four kinds of choice: "rsync", local, dvd, or "quit". If the
+   choice is:
+      rsync) it will rsync with a slackware distant rsync repository.
+	         At the first building it can take some time if your ADSL line
+			 (or other way to access internet) is not very performant (for
+             me it's about 2 Mb/s).
+      local) it will use a local rsynced directory provided by the user.
+	  dvd)   it will use a Blu-Ray dvd provided by the user containing
+	         the slackware data.
+      quit)  is self-explanatory.
 
-5/ If it's the first time you use SFS, you will have build the "tools" which are
-compulsory to build SFS. It will use the "sfs-tools-current.sh" script.
-The "tools" have been built thanks to LFS chapter 5 (Linux From Scratch) and 
-adapted to slackware: some packages needed to perform tests in chapter 6 of LFS 
-have been skipped.
-In the available version building gnat-ada embedded is disabled, it works 
-but when building SFS the system doesn't seem to see the gnat compiler, maybe
-someone will be able to make it work, so that the "pre-gcc" and "post-gcc"
-won't be necessary anymore.
-The compilation takes about 40mn to perform.
-Once the "tools" is finished you can save the "tools" built by doing what's 
-following.
+	  Then it will alter the sources with patches necessary for "two
+	  pass building" packages: you'd better accept the choice than not.
 
-In another console:
+      Following that it will generate the 4 lists of packages which are
+	  for the following purpose:
+      - list1 : a bare system just able to boot
+      - list1+2: a bare x11 system with blackbox as DE.
+      - lists1+2+3: system with xfce and seamonkey as web browser. You can
+        build firefox thunderbird : everything is in to build them.
+      - list1+2+3+4: builds all the available packages of slackware.
+
+5) If it's your first time building SFS, you will have to build the "tools"
+   which are compulsory to build SFS. It will use the "sfs-tools-current.sh"
+   script.
+
+   The "tools" have been built thanks to LFS chapter 5 (Linux From Scratch)
+   and adapted to slackware: some packages needed to perform tests in
+   chapter 6 of LFS have been skipped.
+
+   In the available version building gnat-ada embedded is disabled, it works 
+   but when building SFS the system doesn't seem to see the gnat compiler,
+   maybe someone will be able to make it work, so that the "pre-gcc" and
+   "post-gcc" won't be necessary anymore.
+
+   Once the "tools" is finished you can save the "tools" directory by
+   doing the following.
+
+   In another console:
 # cd /mnt/sfs
 # chown -R root:root tools/
 # tar czf tools.tar.gz tools/
 # move it to $PATDIR/tools (for x86)  or $PATDIR/tools_64 (for x86_64)
 
-6/ from now you can build SFS either list by list or completely with a unique 
-script "full-sfs.sh".
+6) from now you can build SFS either list by list or completely with a unique 
+   script "full-sfs.sh".
 
 Either by executing:
 # time (./sfsbuild1.sh build1_s.list)
@@ -94,21 +126,23 @@ Either by executing:
 # time (./sfsbuild1.sh build3_s.list)
 # time (./sfsbuild1.sh build4_s.list)
 
-Either by executing:
+Or by executing:
 # time (./full-sfs.sh)
 
-On my machine the full build takes about 15 hours.
+On my machine the full build takes about 15 hours. (nobodino)
+On my machine the full build takes about 17 hours. (worsel)
 Your connection to internet must be active.
 
-7/ at the end of the building, adjust "my_profile.sh" to your needs, and 
-execute the script before rebooting. You wil have to update grub so that your 
-boot loader allow you to boot in your new system.
+7) at the end of the building, adjust "my_profile.sh" to your needs, and 
+   execute the script before rebooting. You wil have to update grub (or 
+   whatever bootloader you use) so that your boot loader allow you to
+   boot in your new system.
 
-8/ 3 scripts are not really used by the process of building SFS ("mount-sfs.sh",
-"umount-sfs.sh" and "chroot1.sh) their purpose is:
-- after building the list1, you reboot in your new system and test it.
-- if you want to go on building your system in your chrooted environment you 
-will to execute the following commands:
+8) 3 scripts are not really used by the process of building SFS
+   ("mount-sfs.sh", "umount-sfs.sh" and "chroot1.sh). Their purpose is:
+   - after building the list1, you reboot in your new system and test it.
+   - if you want to go on building your system in your chrooted environment
+     you will need to execute the following commands:
 
 # cd $SFS/sources
 # ./mount-sfs.sh
