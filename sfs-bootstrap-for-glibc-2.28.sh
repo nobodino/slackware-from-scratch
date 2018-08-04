@@ -212,6 +212,9 @@ do
 		mkdir $SRCDIR/testing > /dev/null 2>&1
 		cp -r --preserve=timestamps  $SFS/sources/testing/* $SRCDIR/testing > /dev/null 2>&1
 		rsync -arvz --stats --progress -I --delete-after $RSYNCDIR/testing/source/ $SRCDIR/testing > /dev/null 2>&1
+		rm -rf $SRCDIR/l/glibc/ && mkdir -pv $SRCDIR/l/glibc/
+		cd $SRCDIR/testing/glibc
+    	cp -r --preserve=timestamps $SRCDIR/testing/glibc/* $SRCDIR/l/glibc/
 		cd $SFS/sources 
 		rm end* > /dev/null 2>&1
 		rm *.t?z > /dev/null 2>&1
@@ -253,6 +256,9 @@ do
 		cp -r --preserve=timestamps $DNDIR1/* $SRCDIR/others
 		cp -r --preserve=timestamps $RDIR/extra/source/* $SRCDIR/extra
 		cp -r --preserve=timestamps $RDIR/testing/source/* $SRCDIR/testing
+		rm -rf $SRCDIR/l/glibc/ && mkdir -pv $SRCDIR/l/glibc/
+		cd $SRCDIR/testing/glibc
+    	cp -r --preserve=timestamps $SRCDIR/testing/glibc/* $SRCDIR/l/glibc/
 		cd $SFS/sources
 		rm end* > /dev/null 2>&1
 		rm *.t?z > /dev/null 2>&1
@@ -298,6 +304,9 @@ do
 		cp -r --preserve=timestamps $DNDIR1/* $SRCDIR/others
 		cp -r --preserve=timestamps $RDIR5/extra/source/* $SRCDIR/extra
 		cp -r --preserve=timestamps $RDIR5/testing/source/* $SRCDIR/testing
+		rm -rf $SRCDIR/l/glibc/ && mkdir -pv $SRCDIR/l/glibc/
+		cd $SRCDIR/testing/glibc
+    	cp -r --preserve=timestamps $SRCDIR/testing/glibc/* $SRCDIR/l/glibc/
 		cd $SFS/sources
 		rm end* > /dev/null 2>&1
 		rm *.t?z > /dev/null 2>&1
@@ -1218,7 +1227,7 @@ EOF
 
 patch_m4_c1 () {
 #******************************************************************
-cat > $PATCHDIR/m4-1.4.18-glibc-chnage-work-around.patch << "EOF"
+cat > $PATCHDIR/m4-1.4.18-glibc-change-work-around.patch << "EOF"
 diff -up m4-1.4.18/lib/fflush.c.orig m4-1.4.18/lib/fflush.c
 --- m4-1.4.18/lib/fflush.c.orig	2018-05-02 12:35:59.536851666 +0200
 +++ m4-1.4.18/lib/fflush.c	2018-05-02 12:37:02.768958606 +0200
@@ -1577,7 +1586,7 @@ if [ ! -f $SRCDIR/d/m4/m4.SlackBuild.old ]; then
 	cp -v $PATCHDIR/m4-1.4.18-glibc-change-work-around.patch.gz  $SRCDIR/d/m4
 	(
 		cd $SRCDIR/d/m4
-		zcat $PATCHDIR/m4SB.patch.gz |patch 34.SlackBuild --verbose
+		zcat $PATCHDIR/m4SB.patch.gz |patch m4.SlackBuild --verbose
 	)
 fi
 }
@@ -1816,11 +1825,7 @@ sources_alteration_c
 cd $SFS/sources
 . lists_generator_c.sh
 
-. prep-sfs-tools.sh
-#***********************************************************
-# Make sure evreything under sources is owned by root:root
-#***********************************************************
-cd $SFS/ && chown -R root:root sources && cd $SFS/sources
+. prep-sfs-tools-for-glibc-2.28.sh
 #*************************************
 # finally chroot in $SFS environment
 #*************************************

@@ -1324,10 +1324,6 @@ cd $SFS/sources
 . lists_generator_c.sh
 
 . prep-sfs-tools.sh
-#***********************************************************
-# Make sure evreything under sources is owned by root:root
-#***********************************************************
-cd $SFS/ && chown -R root:root sources && cd $SFS/sources
 #*************************************
 # finally chroot in $SFS environment
 #*************************************

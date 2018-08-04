@@ -206,6 +206,7 @@ copy_src () {
     cd $RDIR/a/findutils
 	export FINDVER=${VERSION:-$(echo findutils-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/a/findutils/findutils-$FINDVER.tar.?z $SRCDIR || exit 1
+	cp -v $SRCDIR/patches/findutils-glibc-2.28.patch.gz $SRCDIR || exit 1
     cd $RDIR/a/gawk
 	export GAWKVER=${VERSION:-$(echo gawk-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/a/gawk/gawk-$GAWKVER.tar.lz $SRCDIR || exit 1
@@ -216,11 +217,9 @@ copy_src () {
     cd $RDIR/a/gettext
 	export GETTVER=${VERSION:-$(echo gettext-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/a/gettext/gettext-$GETTVER.tar.?z $SRCDIR || exit 1
-	rm -rf $RDIR/l/glibc/ && mkdir -pv $RDIR/l/glibc/
-	cd $RDIR/testing/source/glibc
-	export GLIBCVER=${VERSION:-$(echo glibc-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}  
-    cp -r --preserve=timestamps $RDIR/testing/source/glibc/* $RDIR/l/glibc/
-    cp -v $RDIR/l/glibc/glibc-$GLIBCVER.tar.?z $SRCDIR || exit 1
+    cd $RDIR/l/glibc
+	export GLIBCVER=${VERSION:-$(echo glibc-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
+    cp -v $RDIR/l/glibc/glibc-$GLIBCVER.tar.xz $SRCDIR || exit 1
     cd $RDIR/l/gmp
 	export GMPVER=${VERSION:-$(echo gmp-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/l/gmp/gmp-$GMPVER.tar.?z $SRCDIR || exit 1
@@ -230,6 +229,7 @@ copy_src () {
     cd $RDIR/a/gzip
 	export GZIPVER=${VERSION:-$(echo gzip-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/a/gzip/gzip-$GZIPVER.tar.?z $SRCDIR || exit 1
+	cp -v $SRCDIR/patches/gzip-gnulib.patch.gz $SRCDIR || exit 1
     cd $RDIR/k
 	export LINUXVER=${VERSION:-$(echo linux-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/k/linux-$LINUXVER.tar.?z $SRCDIR || exit 1
@@ -239,6 +239,7 @@ copy_src () {
     cd $RDIR/d/m4
 	export M4VER=${VERSION:-$(echo m4-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/d/m4/m4-$M4VER.tar.xz $SRCDIR || exit 1
+	cp -v $SRCDIR/patches/m4-1.4.18-glibc-change-work-around.patch.gz $SRCDIR || exit 1
     cd $RDIR/d/make
 	export MAKEVER=${VERSION:-$(echo make-*.tar.?z2 | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/d/make/make-$MAKEVER.tar.bz2 $SRCDIR || exit 1
@@ -627,6 +628,8 @@ esac
 m4_build () {
 #*****************************
     tar xvf m4-$M4VER.tar.?z && cd m4-$M4VER
+	
+	zcat $CWD/m4-1.4.18-glibc-change-work-around.patch.gz | patch -Esp1 --verbose || exit 1
 
     ./configure --prefix=/tools || exit 1
 
@@ -739,6 +742,8 @@ findutils_build () {
 #*****************************
     tar xvf findutils-$FINDVER.tar.?z && cd findutils-$FINDVER
 
+	zcat $CWD/findutils-glibc-2.28.patch.gz | patch -Esp1 --verbose || exit 1
+
     ./configure --prefix=/tools || exit 1
 
     make || exit 1
@@ -797,6 +802,8 @@ grep_build () {
 gzip_build () {
 #*****************************
     tar xvf gzip-$GZIPVER.tar.?z && cd gzip-$GZIPVER
+
+	zcat $CWD/gzip-gnulib.patch.gz| patch -Esp1 --verbose || exit 1
 
     ./configure --prefix=/tools || exit 1
 
