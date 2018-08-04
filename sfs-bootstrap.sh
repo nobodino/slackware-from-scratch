@@ -1151,9 +1151,9 @@ sources_alteration_c () {
 #**********************************
 PS3="Your choice:"
 echo
-echo -e "$BLUE" "Do you want to alter the slackware sources: yes or quit." "$NORMAL" && echo
+echo -e "$BLUE" "Do you want to alter the slackware sources: yes, no or quit." "$NORMAL" && echo
 echo
-select sources_alteration in yes quit
+select sources_alteration in yes no quit
 do
 	if [[ "$sources_alteration" = "yes" ]]
 	then
@@ -1176,6 +1176,14 @@ do
 		execute_subversion # 2 pass
 		execute_texlive # 2 pass
 		execute_xfce
+		break
+	elif [[ "$sources_alteration" = "no" ]]
+	then
+		echo
+		echo "You decided to keep the slackware sources."
+		echo "The building of slackware may not build completely."
+		echo "Or you've not uograded the slacksrc it should be ok"
+		echo
 		break
 	elif [[ "$sources_alteration" = "quit" ]]
 	then
