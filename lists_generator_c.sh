@@ -92,7 +92,6 @@ d libtool
 l gmp
 l mpfr
 l libmpc
-# l libart_lgpl
 a infozip
 l expat
 d python
