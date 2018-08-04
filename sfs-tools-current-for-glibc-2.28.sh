@@ -94,7 +94,7 @@
 #
 # 
 #*******************************************************************
-# set -x
+set -x
 #*******************************************************************
 # the directory where will be built slackware from scratch
 #*******************************************************************
@@ -629,7 +629,7 @@ m4_build () {
 #*****************************
     tar xvf m4-$M4VER.tar.?z && cd m4-$M4VER
 	
-	zcat $CWD/m4-1.4.18-glibc-change-work-around.patch.gz | patch -Esp1 --verbose || exit 1
+	zcat ../m4-1.4.18-glibc-change-work-around.patch.gz | patch -Esp1 --verbose || exit 1
 
     ./configure --prefix=/tools || exit 1
 
@@ -742,7 +742,7 @@ findutils_build () {
 #*****************************
     tar xvf findutils-$FINDVER.tar.?z && cd findutils-$FINDVER
 
-	zcat $CWD/findutils-glibc-2.28.patch.gz | patch -Esp1 --verbose || exit 1
+	zcat ../findutils-glibc-2.28.patch.gz | patch -Esp1 --verbose || exit 1
 
     ./configure --prefix=/tools || exit 1
 
@@ -803,7 +803,7 @@ gzip_build () {
 #*****************************
     tar xvf gzip-$GZIPVER.tar.?z && cd gzip-$GZIPVER
 
-	zcat $CWD/gzip-gnulib.patch.gz| patch -Esp1 --verbose || exit 1
+	zcat ../gzip-gnulib.patch.gz| patch -Esp1 --verbose || exit 1
 
     ./configure --prefix=/tools || exit 1
 
