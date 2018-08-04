@@ -216,7 +216,8 @@ copy_src () {
     cd $RDIR/a/gettext
 	export GETTVER=${VERSION:-$(echo gettext-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/a/gettext/gettext-$GETTVER.tar.xz $SRCDIR || exit 1
-    cd $RDIR/l/glibc
+#    cd $RDIR/l/glibc
+	cd $RDIR/
 	export GLIBCVER=${VERSION:-$(echo glibc-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/l/glibc/glibc-$GLIBCVER.tar.xz $SRCDIR || exit 1
     cd $RDIR/l/gmp

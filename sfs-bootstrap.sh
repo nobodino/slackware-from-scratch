@@ -209,6 +209,9 @@ do
 		mkdir $SRCDIR/extra > /dev/null 2>&1
 		cp -r --preserve=timestamps  $SFS/sources/extra/* $SRCDIR/extra > /dev/null 2>&1
 		rsync -arvz --stats --progress -I --delete-after $RSYNCDIR/extra/source/ $SRCDIR/extra > /dev/null 2>&1
+		mkdir $SRCDIR/testing > /dev/null 2>&1
+		cp -r --preserve=timestamps  $SFS/sources/testing/* $SRCDIR/testing > /dev/null 2>&1
+		rsync -arvz --stats --progress -I --delete-after $RSYNCDIR/testing/source/ $SRCDIR/testing > /dev/null 2>&1
 		cd $SFS/sources 
 		rm end* > /dev/null 2>&1
 		rm *.t?z > /dev/null 2>&1
@@ -246,8 +249,10 @@ do
 		cp -r --preserve=timestamps $RDIR/source $SRCDIR
 		mkdir -pv $SRCDIR/others  > /dev/null 2>&1
 		mkdir -pv $SRCDIR/extra > /dev/null 2>&1
+		mkdir -pv $SRCDIR/testing > /dev/null 2>&1
 		cp -r --preserve=timestamps $DNDIR1/* $SRCDIR/others
 		cp -r --preserve=timestamps $RDIR/extra/source/* $SRCDIR/extra
+		cp -r --preserve=timestamps $RDIR/testing/source/* $SRCDIR/testing
 		cd $SFS/sources
 		rm end* > /dev/null 2>&1
 		rm *.t?z > /dev/null 2>&1
@@ -268,43 +273,45 @@ upgrade_dvd () {
 #*************************************
 # Upgrade the sources from local dvd (blu-ray disc)
 #*************************************
-	echo "Do you want to upgrade the sources of SFS? No, Yes or Quit."
-	PS3="Your choice: "
-	select upgrade_sources in Yes No Quit
-	do
-		if [[ "$upgrade_sources" = "Quit" ]]; then
-			echo
-			echo -e "$RED" "You have decided to quit. Goodbye." "$NORMAL" && exit 1
-		elif [[ "$upgrade_sources" = "Yes" ]]; then
-			echo
-			echo "You chose to upgrade the sources of SFS from DVD."
-			# Check that dvd has been mounted
-			[ ! -d "$RDIR5" ] && mkdir $RDIR5
-			mount -l |grep "$RDIR5" >/dev/null
-			[ $? != 0 ] && mount /dev/sr0 $RDIR5
-
-			echo "Removing old slacksrc."
-			[ -d $SRCDIR ] && rm -rf $SRCDIR
-			echo "Installing new sources."
-			cp -r --preserve=timestamps $RDIR5/source $SRCDIR
-			mkdir -pv $SRCDIR/others  > /dev/null 2>&1
-			mkdir -pv $SRCDIR/extra > /dev/null 2>&1
-			cp -r --preserve=timestamps $DNDIR1/* $SRCDIR/others
-			cp -r --preserve=timestamps $RDIR5/extra/source/* $SRCDIR/extra
-			cd $SFS/sources
-			rm end* > /dev/null 2>&1
-			rm *.t?z > /dev/null 2>&1
-			rm -rf $SFS/sources/extra && rm -rf $SFS/sources/others
-			break
-		elif [[ "$upgrade_sources" = "No" ]]
-		then
-			echo
-			echo "You chose to keep the sources of SFS as they are."
-			break
-		fi
-	done
-	export $upgrade_sources
-	return
+echo "Do you want to upgrade the sources of SFS? No, Yes or Quit."
+PS3="Your choice: "
+select upgrade_sources in Yes No Quit
+do
+	if [[ "$upgrade_sources" = "Quit" ]] 
+	then
+		echo
+		echo -e "$RED" "You have decided to quit. Goodbye." "$NORMAL" && exit 1
+	elif [[ "$upgrade_sources" = "Yes" ]]; then
+		echo
+		echo "You chose to upgrade the sources of SFS from DVD."
+		# Check that dvd has been mounted
+		[ ! -d "$RDIR5" ] && mkdir $RDIR5
+		mount -l |grep "$RDIR5" >/dev/null
+		[ $? != 0 ] && mount /dev/sr0 $RDIR5
+		echo "Removing old slacksrc."
+		[ -d $SRCDIR ] && rm -rf $SRCDIR
+		echo "Installing new sources."
+		cp -r --preserve=timestamps $RDIR5/source $SRCDIR
+		mkdir -pv $SRCDIR/others  > /dev/null 2>&1
+		mkdir -pv $SRCDIR/extra > /dev/null 2>&1
+		mkdir -pv $SRCDIR/testing > /dev/null 2>&1
+		cp -r --preserve=timestamps $DNDIR1/* $SRCDIR/others
+		cp -r --preserve=timestamps $RDIR5/extra/source/* $SRCDIR/extra
+		cp -r --preserve=timestamps $RDIR5/testing/source/* $SRCDIR/testing
+		cd $SFS/sources
+		rm end* > /dev/null 2>&1
+		rm *.t?z > /dev/null 2>&1
+		rm -rf $SFS/sources/extra && rm -rf $SFS/sources/others
+		break
+	elif [[ "$upgrade_sources" = "No" ]]
+	then
+		echo
+		echo "You chose to keep the sources of SFS as they are."
+		break
+	fi
+done
+export $upgrade_sources
+return
 }
 
 populate_others () {
