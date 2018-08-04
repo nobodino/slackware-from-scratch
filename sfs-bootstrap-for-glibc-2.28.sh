@@ -75,7 +75,8 @@ do
 	then
 		if [[ "$distribution" = "slackware" ]]
 		then
-			tools_dir='tools' && test_tools_32
+#			tools_dir='tools' && test_tools_32
+			tools_dir='tools'
 			echo
 			echo -e "$BLUE" "You choose $tools_dir" "$NORMAL"
 			echo
@@ -86,7 +87,8 @@ do
 	then
 		if [[ "$distribution" = "slackware" ]]
 		then
-			tools_dir='tools_64' && test_tools_64
+#			tools_dir='tools_64' && test_tools_64
+			tools_dir='tools_64'
 			echo
 			echo -e "$BLUE" "You choose $tools_dir" "$NORMAL"
 			echo

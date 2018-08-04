@@ -75,7 +75,8 @@ do
 	then
 		if [[ "$distribution" = "slackware" ]]
 		then
-			tools_dir='tools' && test_tools_32
+#			tools_dir='tools' && test_tools_32
+			tools_dir='tools'
 			echo
 			echo -e "$BLUE" "You choose $tools_dir" "$NORMAL"
 			echo
@@ -86,7 +87,8 @@ do
 	then
 		if [[ "$distribution" = "slackware" ]]
 		then
-			tools_dir='tools_64' && test_tools_64
+#			tools_dir='tools_64' && test_tools_64
+			tools_dir='tools_64'
 			echo
 			echo -e "$BLUE" "You choose $tools_dir" "$NORMAL"
 			echo
@@ -209,9 +211,6 @@ do
 		mkdir $SRCDIR/extra > /dev/null 2>&1
 		cp -r --preserve=timestamps  $SFS/sources/extra/* $SRCDIR/extra > /dev/null 2>&1
 		rsync -arvz --stats --progress -I --delete-after $RSYNCDIR/extra/source/ $SRCDIR/extra > /dev/null 2>&1
-		mkdir $SRCDIR/testing > /dev/null 2>&1
-		cp -r --preserve=timestamps  $SFS/sources/testing/* $SRCDIR/testing > /dev/null 2>&1
-		rsync -arvz --stats --progress -I --delete-after $RSYNCDIR/testing/source/ $SRCDIR/testing > /dev/null 2>&1
 		cd $SFS/sources 
 		rm end* > /dev/null 2>&1
 		rm *.t?z > /dev/null 2>&1
@@ -249,10 +248,8 @@ do
 		cp -r --preserve=timestamps $RDIR/source $SRCDIR
 		mkdir -pv $SRCDIR/others  > /dev/null 2>&1
 		mkdir -pv $SRCDIR/extra > /dev/null 2>&1
-		mkdir -pv $SRCDIR/testing > /dev/null 2>&1
 		cp -r --preserve=timestamps $DNDIR1/* $SRCDIR/others
 		cp -r --preserve=timestamps $RDIR/extra/source/* $SRCDIR/extra
-		cp -r --preserve=timestamps $RDIR/testing/source/* $SRCDIR/testing
 		cd $SFS/sources
 		rm end* > /dev/null 2>&1
 		rm *.t?z > /dev/null 2>&1
@@ -294,10 +291,8 @@ do
 		cp -r --preserve=timestamps $RDIR5/source $SRCDIR
 		mkdir -pv $SRCDIR/others  > /dev/null 2>&1
 		mkdir -pv $SRCDIR/extra > /dev/null 2>&1
-		mkdir -pv $SRCDIR/testing > /dev/null 2>&1
 		cp -r --preserve=timestamps $DNDIR1/* $SRCDIR/others
 		cp -r --preserve=timestamps $RDIR5/extra/source/* $SRCDIR/extra
-		cp -r --preserve=timestamps $RDIR5/testing/source/* $SRCDIR/testing
 		cd $SFS/sources
 		rm end* > /dev/null 2>&1
 		rm *.t?z > /dev/null 2>&1

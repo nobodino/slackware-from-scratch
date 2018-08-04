@@ -184,28 +184,28 @@ copy_src () {
 #*****************************
     cd $RDIR/a/bash/
 	export BASHVER=${VERSION:-$(echo bash-*.tar.?z* | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
-	cp -v $RDIR/a/bash/bash-$BASHVER.tar.?z $SRCDIR || exit 1
+	cp -v $RDIR/a/bash/bash-$BASHVER.tar.xz $SRCDIR || exit 1
     cd $RDIR/d/binutils
 	export BINUVER=${VERSION:-$(echo binutils-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
-    cp -v $RDIR/d/binutils/binutils-$BINUVER.tar.?z $SRCDIR || exit 1
+    cp -v $RDIR/d/binutils/binutils-$BINUVER.tar.lz $SRCDIR || exit 1
     cd $RDIR/d/bison
 	export BISONVER=${VERSION:-$(echo bison-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
     cp -v $RDIR/d/bison/bison-$BISONVER.tar.?z $SRCDIR || exit 1
     cd $RDIR/a/bzip2
 	export BZIP2VER=${VERSION:-$(echo bzip2-*.tar.?z* | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
-    cp -v $RDIR/a/bzip2/bzip2-$BZIP2VER.tar.?z $SRCDIR || exit 1
+    cp -v $RDIR/a/bzip2/bzip2-$BZIP2VER.tar.gz $SRCDIR || exit 1
     cd $RDIR/a/coreutils
 	export COREVER=${VERSION:-$(echo coreutils-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
-    cp -v $RDIR/a/coreutils/coreutils-$COREVER.tar.?z $SRCDIR || exit 1
+    cp -v $RDIR/a/coreutils/coreutils-$COREVER.tar.xz $SRCDIR || exit 1
     cd $RDIR/ap/diffutils
 	export DIFFVER=${VERSION:-$(echo diffutils-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
-    cp -v $RDIR/ap/diffutils/diffutils-$DIFFVER.tar.?z $SRCDIR || exit 1
+    cp -v $RDIR/ap/diffutils/diffutils-$DIFFVER.tar.xz $SRCDIR || exit 1
     cd $RDIR/a/file
 	export FILEVER=${VERSION:-$(echo file-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/a/file/file-$FILEVER.tar.?z $SRCDIR || exit 1
     cd $RDIR/a/findutils
 	export FINDVER=${VERSION:-$(echo findutils-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
-    cp -v $RDIR/a/findutils/findutils-$FINDVER.tar.?z $SRCDIR || exit 1
+    cp -v $RDIR/a/findutils/findutils-$FINDVER.tar.xz $SRCDIR || exit 1
     cd $RDIR/a/gawk
 	export GAWKVER=${VERSION:-$(echo gawk-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/a/gawk/gawk-$GAWKVER.tar.lz $SRCDIR || exit 1
@@ -215,25 +215,25 @@ copy_src () {
     cp -v $RDIR/d/gcc/gcc-$SRCVER.tar.?z $SRCDIR || exit 1
     cd $RDIR/a/gettext
 	export GETTVER=${VERSION:-$(echo gettext-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
-    cp -v $RDIR/a/gettext/gettext-$GETTVER.tar.?z $SRCDIR || exit 1
+    cp -v $RDIR/a/gettext/gettext-$GETTVER.tar.xz $SRCDIR || exit 1
     cd $RDIR/l/glibc
 	export GLIBCVER=${VERSION:-$(echo glibc-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
-    cp -v $RDIR/l/glibc/glibc-$GLIBCVER.tar.?z $SRCDIR || exit 1
+    cp -v $RDIR/l/glibc/glibc-$GLIBCVER.tar.xz $SRCDIR || exit 1
     cd $RDIR/l/gmp
 	export GMPVER=${VERSION:-$(echo gmp-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
-    cp -v $RDIR/l/gmp/gmp-$GMPVER.tar.?z $SRCDIR || exit 1
+    cp -v $RDIR/l/gmp/gmp-$GMPVER.tar.xz $SRCDIR || exit 1
     cd $RDIR/a/grep
 	export GREPVER=${VERSION:-$(echo grep-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
-    cp -v $RDIR/a/grep/grep-$GREPVER.tar.?z $SRCDIR || exit 1
+    cp -v $RDIR/a/grep/grep-$GREPVER.tar.xz $SRCDIR || exit 1
     cd $RDIR/a/gzip
 	export GZIPVER=${VERSION:-$(echo gzip-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
-    cp -v $RDIR/a/gzip/gzip-$GZIPVER.tar.?z $SRCDIR || exit 1
+    cp -v $RDIR/a/gzip/gzip-$GZIPVER.tar.xz $SRCDIR || exit 1
     cd $RDIR/k
 	export LINUXVER=${VERSION:-$(echo linux-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
-    cp -v $RDIR/k/linux-$LINUXVER.tar.?z $SRCDIR || exit 1
+    cp -v $RDIR/k/linux-$LINUXVER.tar.xz $SRCDIR || exit 1
     cd $RDIR/a/lzip
 	export LZIPVER=${VERSION:-$(echo lzip-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
-    cp -v $RDIR/a/lzip/lzip-$LZIPVER.tar.?z $SRCDIR || exit 1
+    cp -v $RDIR/a/lzip/lzip-$LZIPVER.tar.lz $SRCDIR || exit 1
     cd $RDIR/d/m4
 	export M4VER=${VERSION:-$(echo m4-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/d/m4/m4-$M4VER.tar.xz $SRCDIR || exit 1
@@ -242,42 +242,42 @@ copy_src () {
     cp -v $RDIR/d/make/make-$MAKEVER.tar.bz2 $SRCDIR || exit 1
     cd $RDIR/l/libmpc
 	export LIBMPCVER=${VERSION:-$(echo libpmc-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
-    cp -v $RDIR/l/libmpc/mpc-$LIBMPCVER.tar.?z $SRCDIR || exit 1
+    cp -v $RDIR/l/libmpc/mpc-$LIBMPCVER.tar.lz $SRCDIR || exit 1
     cd $RDIR/l/mpfr
 	export MPFRVER=${VERSION:-$(echo mpfr-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
-    cp -v $RDIR/l/mpfr/mpfr-$MPFRVER.tar.?z $SRCDIR || exit 1
+    cp -v $RDIR/l/mpfr/mpfr-$MPFRVER.tar.xz $SRCDIR || exit 1
     cd $RDIR/l/ncurses
 	PKGNAM=ncurses && export NCURVER=${VERSION:-$(echo $PKGNAM-*.tar.?z | cut -f 2- -d - | cut -f 1,2 -d .)}
 	cp -v $RDIR/l/ncurses/ncurses-$NCURVER.tar.?z $SRCDIR || exit 1
     cd $RDIR/a/patch
 	export PATCHVER=${VERSION:-$(echo patch-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
-    cp -v $RDIR/a/patch/patch-$PATCHVER.tar.?z $SRCDIR || exit 1
+    cp -v $RDIR/a/patch/patch-$PATCHVER.tar.xz $SRCDIR || exit 1
     cd $RDIR/d/perl
 	export PERLVER=${VERSION:-$(echo perl-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/d/perl/perl-$PERLVER.tar.?z $SRCDIR || exit 1
     cd $RDIR/a/sed
 	export SEDVER=${VERSION:-$(echo sed-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
-    cp -v $RDIR/a/sed/sed-$SEDVER.tar.?z $SRCDIR || exit 1
+    cp -v $RDIR/a/sed/sed-$SEDVER.tar.xz $SRCDIR || exit 1
     cd $RDIR/a/tar
-	export TARVER=${VERSION:-$(echo tar-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
-    cp -v $RDIR/a/tar/tar-$TARVER.tar.?z $SRCDIR || exit 1
-    cp -v $RDIR/a/tar/tar-1.13.tar.?z $SRCDIR || exit 1
+	export TARVER=${VERSION:-$(echo tar-*.tar.xz | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
+    cp -v $RDIR/a/tar/tar-$TARVER.tar.xz $SRCDIR || exit 1
+    cp -v $RDIR/a/tar/tar-1.13.tar.gz $SRCDIR || exit 1
     cp -v $RDIR/a/tar/tar-1.13.bzip2.diff.gz $SRCDIR || exit 1
     cd $RDIR/ap/texinfo
 	export TEXINFOVER=${VERSION:-$(echo texinfo-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
-    cp -v $RDIR/ap/texinfo/texinfo-$TEXINFOVER.tar.?z $SRCDIR || exit 1
+    cp -v $RDIR/ap/texinfo/texinfo-$TEXINFOVER.tar.xz $SRCDIR || exit 1
     cd $RDIR/a/util-linux
-	export UTILVER=${VERSION:-$(echo util-linux*.tar.?z | cut -d - -f 3  | rev | cut -f 3- -d . | rev)}
-    cp -v $RDIR/a/util-linux/util-linux-$UTILVER.tar.?z $SRCDIR || exit 1
+	export UTILVER=${VERSION:-$(echo util-linux*.tar.xz | cut -d - -f 3  | rev | cut -f 3- -d . | rev)}
+    cp -v $RDIR/a/util-linux/util-linux-$UTILVER.tar.xz $SRCDIR || exit 1
     cd $RDIR/a/which
 	export WHICHVER=${VERSION:-$(echo which-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
-    cp -v $RDIR/a/which/which-$WHICHVER.tar.?z $SRCDIR || exit 1
+    cp -v $RDIR/a/which/which-$WHICHVER.tar.gz $SRCDIR || exit 1
     cd $RDIR/a/xz
 	export XZVER=${VERSION:-$(echo xz-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/a/xz/xz-$XZVER.tar.xz $SRCDIR || exit 1
 	cd $RDIR/others/isl
 	export ISLVER=${VERSION:-$(echo isl-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
-    cp -v $RDIR/others/isl/isl-$ISLVER.tar.?z $SRCDIR || exit 1
+   cp -v $RDIR/others/isl/isl-$ISLVER.tar.xz $SRCDIR || exit 1
 	case $(uname -m) in
 		i686 ) 
 			if [ -f $RDIR/others/gnat-gpl-2014-x86-linux-bin.tar.gz ]; then
@@ -316,7 +316,7 @@ test_to_go () {
 
 binutils_build_sp1 () {
 #*****************************
-    tar xvf binutils-$BINUVER.tar.?z && cd binutils-$BINUVER
+    tar xvf binutils-$BINUVER.tar.lz && cd binutils-$BINUVER
 
     mkdir -v build && cd build
 
@@ -342,11 +342,11 @@ gcc_build_sp1 () {
 #*****************************
     tar xvf gcc-$SRCVER.tar.?z && cd gcc-$SRCVER
 
-    tar xvf ../mpfr-$MPFRVER.tar.?z
+    tar xvf ../mpfr-$MPFRVER.tar.xz
     mv -v mpfr-$MPFRVER mpfr
-    tar xvf ../gmp-$GMPVER.tar.?z
+    tar xvf ../gmp-$GMPVER.tar.xz
     mv -v gmp-$GMPVER gmp
-    tar xvf ../mpc-$LIBMPCVER.tar.?z
+    tar xvf ../mpc-$LIBMPCVER.tar.lz
     mv -v mpc-$LIBMPCVER mpc
 
 	for file in gcc/config/{linux,i386/linux{,64}}.h
@@ -402,7 +402,7 @@ gcc_build_sp1 () {
 
 linux_headers_build () {
 #*****************************
-	tar xvf linux-$LINUXVER.tar.?z && cd linux-$LINUXVER
+	tar xvf linux-$LINUXVER.tar.xz && cd linux-$LINUXVER
 	make mrproper || exit 1
 	make INSTALL_HDR_PATH=dest headers_install || exit 1
 	cp -rv dest/include/* /tools/include || exit 1
@@ -414,7 +414,7 @@ linux_headers_build () {
 
 glibc_build () {
 #*****************************
-	tar xvf glibc-$GLIBCVER.tar.?z && cd glibc-$GLIBCVER
+	tar xvf glibc-$GLIBCVER.tar.xz && cd glibc-$GLIBCVER
 
     zcat ../glibc.libc.texinfo.no.utf8.patch.gz | patch -p1 --verbose || exit 1
 
@@ -459,7 +459,7 @@ libstdc_build () {
 
 binutils_build_sp2 () {
 #*****************************
-	tar xvf binutils-$BINUVER.tar.?z && cd binutils-$BINUVER
+	tar xvf binutils-$BINUVER.tar.lz && cd binutils-$BINUVER
 
 	mkdir -v build && cd build
 
@@ -487,7 +487,7 @@ binutils_build_sp2 () {
 
 gmp_build () {
 #*****************************
-    tar xvf gmp-$GMPVER.tar.?z && cd gmp-$GMPVER
+    tar xvf gmp-$GMPVER.tar.xz && cd gmp-$GMPVER
 
     ./configure --prefix=/tools || exit 1
 
@@ -500,7 +500,7 @@ gmp_build () {
 
 isl_build () {
 #*****************************
-    tar xvf isl-$ISLVER.tar.?z && cd isl-$ISLVER
+    tar xvf isl-$ISLVER.tar.xz && cd isl-$ISLVER
 
     ./configure --prefix=/tools || exit 1
 
@@ -538,11 +538,11 @@ case $(uname -m) in
   ;;
 esac
 
-    tar xvf ../mpfr-$MPFRVER.tar.?z
+    tar xvf ../mpfr-$MPFRVER.tar.xz
     mv -v mpfr-$MPFRVER mpfr
-    tar xvf ../gmp-$GMPVER.tar.?z
+    tar xvf ../gmp-$GMPVER.tar.xz
     mv -v gmp-$GMPVER gmp
-    tar xvf ../mpc-$LIBMPCVER.tar.?z
+    tar xvf ../mpc-$LIBMPCVER.tar.lz
     mv -v mpc-$LIBMPCVER mpc
 
    mkdir -v build && cd build
@@ -572,7 +572,7 @@ esac
 gnat_build_sp2 () {
 #*****************************
 cd $SFS/sources
-tar xvf gcc-$SRCVER.tar.?z && cd gcc-$SRCVER
+tar xvf gcc-$SRCVER.tar.xz && cd gcc-$SRCVER
 
 cat gcc/limitx.h gcc/glimits.h gcc/limity.h > \
   `dirname $($SFS_TGT-gcc -print-libgcc-file-name)`/include-fixed/limits.h
@@ -624,7 +624,7 @@ esac
 
 m4_build () {
 #*****************************
-    tar xvf m4-$M4VER.tar.?z && cd m4-$M4VER
+    tar xvf m4-$M4VER.tar.xz && cd m4-$M4VER
 
     ./configure --prefix=/tools || exit 1
 
@@ -637,7 +637,7 @@ m4_build () {
 
 ncurses_build () {
 #*****************************
-    tar xvf ncurses-$NCURVER.tar.?z && cd ncurses-$NCURVER
+    tar xvf ncurses-$NCURVER.tar.lz && cd ncurses-$NCURVER
 	 
 	 sed -i s/mawk// configure
     
@@ -658,7 +658,7 @@ ncurses_build () {
 
 bash_build () {
 #*****************************
-    tar xvf bash-$BASHVER.tar.?z && cd bash-$BASHVER
+    tar xvf bash-$BASHVER.tar.xz && cd bash-$BASHVER
 
     ./configure --prefix=/tools --without-bash-malloc || exit 1
 
@@ -685,7 +685,7 @@ bison_build () {
 
 bzip2_build () {
 #*****************************
-    tar xvf bzip2-$BZIP2VER.tar.?z && cd bzip2-$BZIP2VER
+    tar xvf bzip2-$BZIP2VER.tar.gz && cd bzip2-$BZIP2VER
 
     make || exit 1
     make PREFIX=/tools install || exit 1
@@ -696,7 +696,7 @@ bzip2_build () {
 
 coreutils_build () {
 #*****************************
-    tar xvf coreutils-$COREVER.tar.?z && cd coreutils-$COREVER
+    tar xvf coreutils-$COREVER.tar.xz && cd coreutils-$COREVER
 
     ./configure --prefix=/tools --enable-install-program=hostname || exit 1
 
@@ -709,7 +709,7 @@ coreutils_build () {
 
 diffutils_build () {
 #*****************************
-    tar xvf diffutils-$DIFFVER.tar.?z && cd diffutils-$DIFFVER
+    tar xvf diffutils-$DIFFVER.tar.xz && cd diffutils-$DIFFVER
 
     ./configure --prefix=/tools || exit 1
 
@@ -735,7 +735,7 @@ file_build () {
 
 findutils_build () {
 #*****************************
-    tar xvf findutils-$FINDVER.tar.?z && cd findutils-$FINDVER
+    tar xvf findutils-$FINDVER.tar.xz && cd findutils-$FINDVER
 
     ./configure --prefix=/tools || exit 1
 
@@ -748,7 +748,7 @@ findutils_build () {
 
 gawk_build () {
 #*****************************
-    tar xvf gawk-$GAWKVER.tar.?z && cd gawk-$GAWKVER
+    tar xvf gawk-$GAWKVER.tar.lz && cd gawk-$GAWKVER
 
     ./configure --prefix=/tools || exit 1
 
@@ -781,7 +781,7 @@ gettext_build () {
 
 grep_build () {
 #*****************************
-    tar xvf grep-$GREPVER.tar.?z && cd grep-$GREPVER
+    tar xvf grep-$GREPVER.tar.xz && cd grep-$GREPVER
 
     ./configure --prefix=/tools || exit 1
 
@@ -794,7 +794,7 @@ grep_build () {
 
 gzip_build () {
 #*****************************
-    tar xvf gzip-$GZIPVER.tar.?z && cd gzip-$GZIPVER
+    tar xvf gzip-$GZIPVER.tar.xz && cd gzip-$GZIPVER
 
     ./configure --prefix=/tools || exit 1
 
@@ -809,7 +809,7 @@ make_build () {
 #*****************************
     tar xvf make-$MAKEVER.tar.bz2 && cd make-$MAKEVER
 
-# First, work around an error caused by glibc > 2.27 (from LFS):	
+# First, work around an error caused by glibc-2.27 (from LFS):	
 
 	sed -i '211,217 d; 219,229 d; 232 d' glob/glob.c
 
@@ -824,7 +824,7 @@ make_build () {
 
 patch_build () {
 #*****************************
-    tar xvf patch-$PATCHVER.tar.?z && cd patch-$PATCHVER
+    tar xvf patch-$PATCHVER.tar.xz && cd patch-$PATCHVER
 
     ./configure --prefix=/tools || exit 1
 
@@ -851,7 +851,7 @@ perl_build () {
 
 sed_build () {
 #*****************************
-    tar xvf sed-$SEDVER.tar.?z && cd sed-$SEDVER
+    tar xvf sed-$SEDVER.tar.xz && cd sed-$SEDVER
 
     ./configure --prefix=/tools || exit 1
 
@@ -864,7 +864,7 @@ sed_build () {
 
 tar_build () {
 #*****************************
-    tar xvf tar-$TARVER.tar.?z && cd tar-$TARVER
+    tar xvf tar-$TARVER.tar.xz && cd tar-$TARVER
 
     ./configure --prefix=/tools || exit 1
 
@@ -877,7 +877,7 @@ tar_build () {
 
 texinfo_build () {
 #*****************************
-    tar xvf texinfo-$TEXINFOVER.tar.?z && cd texinfo-$TEXINFOVER
+    tar xvf texinfo-$TEXINFOVER.tar.xz && cd texinfo-$TEXINFOVER
 
 	zcat ../texinfo.fix.unescaped.left.brace.diff.gz | patch -p1 --verbose || exit 1
 
@@ -892,7 +892,7 @@ texinfo_build () {
 
 util_linux_build () {
 #*****************************
-    tar xvf util-linux-$UTILVER.tar.?z && cd util-linux-$UTILVER
+    tar xvf util-linux-$UTILVER.tar.xz && cd util-linux-$UTILVER
 
     ./configure --prefix=/tools    \
     --without-python               \
@@ -910,7 +910,7 @@ util_linux_build () {
 
 xz_build () {
 #*****************************
-    tar xvf xz-$XZVER.tar.?z && cd xz-$XZVER
+    tar xvf xz-$XZVER.tar.xz && cd xz-$XZVER
 
     ./configure --prefix=/tools || exit 1
 
@@ -923,7 +923,7 @@ xz_build () {
 
 lzip_build () {
 #*****************************
-    tar xvf lzip-$LZIPVER.tar.?z && cd lzip-$LZIPVER
+    tar xvf lzip-$LZIPVER.tar.lz && cd lzip-$LZIPVER
 
     ./configure --prefix=/tools || exit 1
 
@@ -936,7 +936,7 @@ lzip_build () {
 
 tar_slack_build () {
 #*****************************
-    tar xvf tar-1.13.tar.?z && cd tar-1.13
+    tar xvf tar-1.13.tar.gz && cd tar-1.13
 
     ./configure --prefix=/usr --disable-nls && zcat ../tar-1.13.bzip2.diff.gz | patch -p1 || exit 1
     make || exit 1
@@ -950,7 +950,7 @@ tar_slack_build () {
 
 which_build () {
 #*****************************
-    tar xvf which-$WHICHVER.tar.?z && cd which-$WHICHVER
+    tar xvf which-$WHICHVER.tar.gz && cd which-$WHICHVER
 
     ./configure --prefix=/usr || exit 1
     make || exit 1
