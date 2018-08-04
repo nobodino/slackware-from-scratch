@@ -103,10 +103,10 @@ export DLDIR11=https://slackbuilds.org/slackbuilds/14.2
 #*******************************************************************
 # rust and cargo versions
 #*******************************************************************
-export CARGO="0.27.0"
-export RUST="1.26.0"
-export RUSTC="1.26.0"
-export DATE="2018-05-10"
+export CARGO="0.28.0"
+export RUST="1.27.2"
+export RUSTC="1.27.2"
+export DATE="2018-07-18"
 export ISLVER="0.18"
 export JDK="8u172"
 export GNAT_x86="gnat-gpl-2014-x86-linux-bin.tar.gz"
