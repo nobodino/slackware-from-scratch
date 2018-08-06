@@ -1,0 +1,35 @@
+diff -aurN v4l-utils-1.14.2/lib/libv4l2/libv4l2.c v4l-utils-1.14.2-mod/lib/libv4l2/libv4l2.c
+--- v4l-utils-1.14.2/lib/libv4l2/libv4l2.c	2017-12-27 13:50:55.000000000 -0000
++++ v4l-utils-1.14.2-mod/lib/libv4l2/libv4l2.c	2018-08-05 18:35:06.621187501 -0000
+@@ -70,6 +70,7 @@
+ #include <sys/types.h>
+ #include <sys/mman.h>
+ #include <sys/stat.h>
++#include <sys/sysmacros.h>
+ #include "libv4l2.h"
+ #include "libv4l2-priv.h"
+ #include "libv4l-plugin.h"
+diff -aurN v4l-utils-1.14.2/lib/libv4lconvert/control/libv4lcontrol.c v4l-utils-1.14.2-mod/lib/libv4lconvert/control/libv4lcontrol.c
+--- v4l-utils-1.14.2/lib/libv4lconvert/control/libv4lcontrol.c	2017-12-27 14:33:07.000000000 -0000
++++ v4l-utils-1.14.2-mod/lib/libv4lconvert/control/libv4lcontrol.c	2018-08-05 18:42:26.933185822 -0000
+@@ -20,9 +20,7 @@
+  */
+ 
+ #include <sys/types.h>
+-#if defined(MAJOR_IN_SYSMACROS)
+ #include <sys/sysmacros.h>
+-#endif
+ #include <sys/mman.h>
+ #include <fcntl.h>
+ #include <sys/stat.h>
+diff -aurN v4l-utils-1.14.2/utils/v4l2-ctl/v4l2-ctl.cpp v4l-utils-1.14.2-mod/utils/v4l2-ctl/v4l2-ctl.cpp
+--- v4l-utils-1.14.2/utils/v4l2-ctl/v4l2-ctl.cpp	2017-12-27 13:50:55.000000000 -0000
++++ v4l-utils-1.14.2-mod/utils/v4l2-ctl/v4l2-ctl.cpp	2018-08-05 18:53:59.486183180 -0000
+@@ -33,6 +33,7 @@
+ #include <errno.h>
+ #include <sys/ioctl.h>
+ #include <sys/time.h>
++#include <sys/sysmacros.h>
+ #include <dirent.h>
+ #include <math.h>
+ 

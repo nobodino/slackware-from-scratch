@@ -1,0 +1,71 @@
+diff -aurN findutils-4.4.2/gnulib/lib/fpurge.c findutils-4.4.2-mod/gnulib/lib/fpurge.c
+--- findutils-4.4.2/gnulib/lib/fpurge.c	2009-05-10 23:23:57.000000000 +0200
++++ findutils-4.4.2-mod/gnulib/lib/fpurge.c	2018-08-02 17:17:16.522924993 +0200
+@@ -59,7 +59,7 @@
+   /* Most systems provide FILE as a struct and the necessary bitmask in
+      <stdio.h>, because they need it for implementing getc() and putc() as
+      fast macros.  */
+-# if defined _IO_ferror_unlocked    /* GNU libc, BeOS */
++# if defined _IO_EOF_SEEN || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
+   fp->_IO_read_end = fp->_IO_read_ptr;
+   fp->_IO_write_ptr = fp->_IO_write_base;
+   /* Avoid memory leak when there is an active ungetc buffer.  */
+diff -aurN findutils-4.4.2/gnulib/lib/freadahead.c findutils-4.4.2-mod/gnulib/lib/freadahead.c
+--- findutils-4.4.2/gnulib/lib/freadahead.c	2009-05-10 23:23:57.000000000 +0200
++++ findutils-4.4.2-mod/gnulib/lib/freadahead.c	2018-08-02 17:16:10.889925243 +0200
+@@ -22,7 +22,7 @@
+ size_t
+ freadahead (FILE *fp)
+ {
+-#if defined _IO_ferror_unlocked     /* GNU libc, BeOS */
++#if defined _IO_EOF_SEEN || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
+   if (fp->_IO_write_ptr > fp->_IO_write_base)
+     return 0;
+   return fp->_IO_read_end - fp->_IO_read_ptr;
+diff -aurN findutils-4.4.2/gnulib/lib/fseeko.c findutils-4.4.2-mod/gnulib/lib/fseeko.c
+--- findutils-4.4.2/gnulib/lib/fseeko.c	2009-05-10 23:25:10.000000000 +0200
++++ findutils-4.4.2-mod/gnulib/lib/fseeko.c	2018-08-02 17:23:31.674923562 +0200
+@@ -39,7 +39,7 @@
+ #endif
+ 
+   /* These tests are based on fpurge.c.  */
+-#if defined _IO_ferror_unlocked     /* GNU libc, BeOS */
++#if defined _IO_EOF_SEEN || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
+   if (fp->_IO_read_end == fp->_IO_read_ptr
+       && fp->_IO_write_ptr == fp->_IO_write_base
+       && fp->_IO_save_base == NULL)
+@@ -108,7 +108,7 @@
+ 	}
+       else
+ 	{
+-#if defined __sferror               /* FreeBSD, NetBSD, OpenBSD, MacOS X, Cygwin */
++#if defined _IO_EOF_SEEN || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
+ 	  fp->_offset = pos;
+ 	  fp->_flags |= __SOFF;
+ 	  fp->_flags &= ~__SEOF;
+diff -aurN findutils-4.4.2/gnulib/lib/mountlist.c findutils-4.4.2-mod/gnulib/lib/mountlist.c
+--- findutils-4.4.2/gnulib/lib/mountlist.c	2009-05-10 23:23:57.000000000 +0200
++++ findutils-4.4.2-mod/gnulib/lib/mountlist.c	2018-08-02 17:10:15.851926597 +0200
+@@ -37,6 +37,12 @@
+ # include <sys/param.h>
+ #endif
+ 
++#if MAJOR_IN_MKDEV
++# include <sys/mkdev.h>
++#elif MAJOR_IN_SYSMACROS
++# include <sys/sysmacros.h>
++#endif
++
+ #if defined MOUNTED_GETFSSTAT	/* OSF_1 and Darwin1.3.x */
+ # if HAVE_SYS_UCRED_H
+ #  include <grp.h> /* needed on OSF V4.0 for definition of NGROUPS,
+diff -aurN findutils-4.4.2/gnulib/m4/mountlist.m4 findutils-4.4.2-mod/gnulib/m4/mountlist.m4
+--- findutils-4.4.2/gnulib/m4/mountlist.m4	2009-05-10 23:23:57.000000000 +0200
++++ findutils-4.4.2-mod/gnulib/m4/mountlist.m4	2018-08-02 17:10:11.265926615 +0200
+@@ -19,5 +19,6 @@
+ [
+   dnl Note gl_LIST_MOUNTED_FILE_SYSTEMS checks for mntent.h, not sys/mntent.h.
+   AC_CHECK_HEADERS(sys/mntent.h)
++  AC_HEADER_MAJOR()dnl for use of makedev ()
+   gl_FSTYPENAME
+ ])
