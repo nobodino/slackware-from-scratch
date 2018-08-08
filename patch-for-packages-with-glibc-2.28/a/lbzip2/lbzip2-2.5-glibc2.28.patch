@@ -1,0 +1,12 @@
+diff -aurN lbzip2-2.5/lib/fseterr.c lbzip2-2.5-mod/lib/fseterr.c
+--- lbzip2-2.5/lib/fseterr.c	2014-03-09 14:46:03.000000000 -0000
++++ lbzip2-2.5-mod/lib/fseterr.c	2018-08-08 13:38:46.329200014 -0000
+@@ -29,7 +29,7 @@
+   /* Most systems provide FILE as a struct and the necessary bitmask in
+      <stdio.h>, because they need it for implementing getc() and putc() as
+      fast macros.  */
+-#if defined _IO_ftrylockfile || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
++#if defined _IO_EOF_SEEN || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
+   fp->_flags |= _IO_ERR_SEEN;
+ #elif defined __sferror || defined __DragonFly__ /* FreeBSD, NetBSD, OpenBSD, DragonFly, Mac OS X, Cygwin */
+   fp_->_flags |= __SERR;
