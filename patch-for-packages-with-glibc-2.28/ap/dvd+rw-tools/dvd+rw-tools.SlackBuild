@@ -1,0 +1,99 @@
+#!/bin/bash
+
+# Copyright 2008, 2009, 2010, 2011, 2018  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=dvd+rw-tools
+VERSION=7.1
+PKGVER=7.1
+DIRVER=7.1
+BUILD=${BUILD:-4}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$PKGVER-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+NUMJOBS=${NUMJOBS:-" -j7 "}
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-dvd+rw-tools
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+
+cd $TMP
+rm -rf dvd+rw-tools-$VERSION
+tar xvf $CWD/dvd+rw-tools-$VERSION.tar.gz || exit 1
+cd dvd+rw-tools-$DIRVER
+
+# patch to compile with glibc-2.28
+zcat $CWD/dvd+rw-tools-7.1-glibc-2.28.patch.gz | patch -Esp1 --verbose || exit 1
+
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \; -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \;
+
+zcat $CWD/dvd+rw-tools.limits.h.diff.gz | patch -p1 --verbose || exit 1
+
+make $NUMJOBS || make || exit 1
+
+mkdir -p $PKG/usr/bin
+cat dvd+rw-booktype > $PKG/usr/bin/dvd+rw-booktype
+cat dvd+rw-format > $PKG/usr/bin/dvd+rw-format
+cat dvd+rw-mediainfo > $PKG/usr/bin/dvd+rw-mediainfo
+cat dvd-ram-control > $PKG/usr/bin/dvd-ram-control
+cat growisofs > $PKG/usr/bin/growisofs
+strip $PKG/usr/bin/*
+chmod 755 $PKG/usr/bin/*
+
+mkdir -p $PKG/usr/man/man1
+cat growisofs.1 | gzip -9c > $PKG/usr/man/man1/growisofs.1.gz
+
+mkdir -p $PKG/usr/doc/dvd+rw-tools-$VERSION
+cp -a \
+  index.html \
+  LICENSE \
+  $PKG/usr/doc/dvd+rw-tools-$VERSION
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/dvd+rw-tools-$PKGVER-$ARCH-$BUILD.txz
+
