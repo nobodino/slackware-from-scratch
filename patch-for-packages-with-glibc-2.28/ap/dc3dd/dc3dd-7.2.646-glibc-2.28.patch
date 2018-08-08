@@ -1,0 +1,62 @@
+diff -aurN dc3dd-7.2.646/lib/freadahead.c dc3dd-7.2.646-mod/lib/freadahead.c
+--- dc3dd-7.2.646/lib/freadahead.c	2012-11-06 11:42:58.000000000 -0000
++++ dc3dd-7.2.646-mod/lib/freadahead.c	2018-08-08 13:20:20.992204231 -0000
+@@ -24,7 +24,7 @@
+ size_t
+ freadahead (FILE *fp)
+ {
+-#if defined _IO_ferror_unlocked || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Linux libc5 */
++#if defined _IO_EOF_SEEN || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Linux libc5 */
+   if (fp->_IO_write_ptr > fp->_IO_write_base)
+     return 0;
+   return (fp->_IO_read_end - fp->_IO_read_ptr)
+diff -aurN dc3dd-7.2.646/lib/freadptr.c dc3dd-7.2.646-mod/lib/freadptr.c
+--- dc3dd-7.2.646/lib/freadptr.c	2012-11-06 11:42:58.000000000 -0000
++++ dc3dd-7.2.646-mod/lib/freadptr.c	2018-08-08 13:22:12.439203806 -0000
+@@ -29,7 +29,7 @@
+   size_t size;
+ 
+   /* Keep this code in sync with freadahead!  */
+-#if defined _IO_ferror_unlocked || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Linux libc5 */
++#if defined _IO_EOF_SEEN || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Linux libc5 */
+   if (fp->_IO_write_ptr > fp->_IO_write_base)
+     return NULL;
+   size = fp->_IO_read_end - fp->_IO_read_ptr;
+diff -aurN dc3dd-7.2.646/lib/freadseek.c dc3dd-7.2.646-mod/lib/freadseek.c
+--- dc3dd-7.2.646/lib/freadseek.c	2012-11-06 11:42:58.000000000 -0000
++++ dc3dd-7.2.646-mod/lib/freadseek.c	2018-08-08 13:22:45.389203680 -0000
+@@ -34,7 +34,7 @@
+ freadptrinc (FILE *fp, size_t increment)
+ {
+   /* Keep this code in sync with freadptr!  */
+-#if defined _IO_ferror_unlocked || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Linux libc5 */
++#if defined _IO_EOF_SEEN || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Linux libc5 */
+   fp->_IO_read_ptr += increment;
+ #elif defined __sferror || defined __DragonFly__ /* FreeBSD, NetBSD, OpenBSD, DragonFly, MacOS X, Cygwin */
+   fp_->_p += increment;
+diff -aurN dc3dd-7.2.646/lib/fseterr.c dc3dd-7.2.646-mod/lib/fseterr.c
+--- dc3dd-7.2.646/lib/fseterr.c	2012-11-06 11:42:58.000000000 -0000
++++ dc3dd-7.2.646-mod/lib/fseterr.c	2018-08-08 13:23:24.615203530 -0000
+@@ -29,7 +29,7 @@
+   /* Most systems provide FILE as a struct and the necessary bitmask in
+      <stdio.h>, because they need it for implementing getc() and putc() as
+      fast macros.  */
+-#if defined _IO_ferror_unlocked || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Linux libc5 */
++#if defined _IO_EOF_SEEN || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Linux libc5 */
+   fp->_flags |= _IO_ERR_SEEN;
+ #elif defined __sferror || defined __DragonFly__ /* FreeBSD, NetBSD, OpenBSD, DragonFly, MacOS X, Cygwin */
+   fp_->_flags |= __SERR;
+diff -aurN dc3dd-7.2.646/lib/stdio-impl.h dc3dd-7.2.646-mod/lib/stdio-impl.h
+--- dc3dd-7.2.646/lib/stdio-impl.h	2012-11-06 11:42:58.000000000 -0000
++++ dc3dd-7.2.646-mod/lib/stdio-impl.h	2018-08-08 13:20:07.859204281 -0000
+@@ -92,3 +92,10 @@
+ # endif
+ 
+ #endif
++
++/* Glibc 2.28 made _IO_IN_BACKUP private.  For now, work around this
++   problem by defining it ourselves.  FIXME: Do not rely on glibc
++   internals.  */
++#if !defined _IO_IN_BACKUP && defined _IO_EOF_SEEN
++# define _IO_IN_BACKUP 0x100
++#endif
