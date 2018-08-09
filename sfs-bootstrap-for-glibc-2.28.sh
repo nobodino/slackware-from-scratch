@@ -387,7 +387,8 @@ if [[ "$build_arch" = "x86" ]]
 		if [ ! -f rustc-$RUSTC-i686-unknown-linux-gnu.tar.gz ]; then
 		curl --user user:password -o rustc-$RUSTC-i686-unknown-linux-gnu.tar.gz $DLDIR8/$DATE/rustc-$RUSTC-i686-unknown-linux-gnu.tar.gz
 		fi
-		cp -rv rustc-$RUSTC-i686-unknown-linux-gnu.tar.gz $SRCDIR/d/rust	
+		cp -rv rustc-$RUSTC-i686-unknown-linux-gnu.tar.gz $SRCDIR/d/rust
+		cd $SRCDIR/slacksrc && wget -c -v $DLDIR12/*	
 	elif [[ "$build_arch" = "x86_64" ]]
 	then
 		mkdir $SRCDIR/others > /dev/null 2>&1
@@ -447,7 +448,8 @@ if [[ "$build_arch" = "x86" ]]
 		if [ ! -f rustc-$RUSTC-x86_64-unknown-linux-gnu.tar.gz ]; then
 		curl --user user:password -o rustc-$RUSTC-x86_64-unknown-linux-gnu.tar.gz $DLDIR8/$DATE/rustc-$RUSTC-x86_64-unknown-linux-gnu.tar.gz
 		fi
-		cp -rv rustc-$RUSTC-x86_64-unknown-linux-gnu.tar.gz $SRCDIR/d/rust		 	
+		cp -rv rustc-$RUSTC-x86_64-unknown-linux-gnu.tar.gz $SRCDIR/d/rust
+		cd $SRCDIR/slacksrc && wget -c -v $DLDIR12/*		 	
 fi
 }
 
@@ -1668,9 +1670,9 @@ do
 		execute_texlive # 2 pass
 		execute_xfce
 # new patch for glibc-2.28 testing
-		execute_gzip
-		execute_findutils
-		execute_m4
+#		execute_gzip
+#		execute_findutils
+#		execute_m4
 		break
 	elif [[ "$sources_alteration" = "no" ]]
 	then
