@@ -388,7 +388,6 @@ if [[ "$build_arch" = "x86" ]]
 		curl --user user:password -o rustc-$RUSTC-i686-unknown-linux-gnu.tar.gz $DLDIR8/$DATE/rustc-$RUSTC-i686-unknown-linux-gnu.tar.gz
 		fi
 		cp -rv rustc-$RUSTC-i686-unknown-linux-gnu.tar.gz $SRCDIR/d/rust
-		cd $SRCDIR/slacksrc && wget -c -v $DLDIR12/*	
 	elif [[ "$build_arch" = "x86_64" ]]
 	then
 		mkdir $SRCDIR/others > /dev/null 2>&1
@@ -448,8 +447,7 @@ if [[ "$build_arch" = "x86" ]]
 		if [ ! -f rustc-$RUSTC-x86_64-unknown-linux-gnu.tar.gz ]; then
 		curl --user user:password -o rustc-$RUSTC-x86_64-unknown-linux-gnu.tar.gz $DLDIR8/$DATE/rustc-$RUSTC-x86_64-unknown-linux-gnu.tar.gz
 		fi
-		cp -rv rustc-$RUSTC-x86_64-unknown-linux-gnu.tar.gz $SRCDIR/d/rust
-		cd $SRCDIR/slacksrc && wget -c -v $DLDIR12/*		 	
+		cp -rv rustc-$RUSTC-x86_64-unknown-linux-gnu.tar.gz $SRCDIR/d/rust	 	
 fi
 }
 
