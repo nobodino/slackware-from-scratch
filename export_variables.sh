@@ -100,6 +100,8 @@ export DLDIR8=https://static.rust-lang.org/dist
 export DLDIR9=http://javadl.oracle.com/webapps/download/AutoDL?BundleId=233160_512cd62ec5174c3487ac17c61aaa89e8 # jre-8u172-linux-i586.tar.gz
 export DLDIR10=http://javadl.oracle.com/webapps/download/AutoDL?BundleId=233162_512cd62ec5174c3487ac17c61aaa89e8 # jre-8u172-linux-x64.tar.gz
 export DLDIR11=https://slackbuilds.org/slackbuilds/14.2
+export DLDIR12=https://github.com/nobodino/slackware-from-scratch/
+export DLDIR13=$SRCDIR/others/slackware-from-scratch/patch-for-packages-with-glibc-2.28
 #*******************************************************************
 # rust and cargo versions
 #*******************************************************************

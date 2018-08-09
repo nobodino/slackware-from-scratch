@@ -388,6 +388,8 @@ if [[ "$build_arch" = "x86" ]]
 		curl --user user:password -o rustc-$RUSTC-i686-unknown-linux-gnu.tar.gz $DLDIR8/$DATE/rustc-$RUSTC-i686-unknown-linux-gnu.tar.gz
 		fi
 		cp -rv rustc-$RUSTC-i686-unknown-linux-gnu.tar.gz $SRCDIR/d/rust
+		cd $SRCDIR/others && git clone $DLDIR12
+		cp -r --preserve=timestamps $DLDIR13/* $SRCDIR/		
 	elif [[ "$build_arch" = "x86_64" ]]
 	then
 		mkdir $SRCDIR/others > /dev/null 2>&1
@@ -447,7 +449,9 @@ if [[ "$build_arch" = "x86" ]]
 		if [ ! -f rustc-$RUSTC-x86_64-unknown-linux-gnu.tar.gz ]; then
 		curl --user user:password -o rustc-$RUSTC-x86_64-unknown-linux-gnu.tar.gz $DLDIR8/$DATE/rustc-$RUSTC-x86_64-unknown-linux-gnu.tar.gz
 		fi
-		cp -rv rustc-$RUSTC-x86_64-unknown-linux-gnu.tar.gz $SRCDIR/d/rust	 	
+		cp -rv rustc-$RUSTC-x86_64-unknown-linux-gnu.tar.gz $SRCDIR/d/rust
+		cd $SRCDIR/others && git clone $DLDIR12
+		cp -r --preserve=timestamps $DLDIR13/* $SRCDIR/	
 fi
 }
 
@@ -516,6 +520,80 @@ cat > $PATCHDIR/fontconfigSB.patch << "EOF"
    --with-templatedir=/etc/fonts/conf.avail \
    --with-baseconfigdir=/etc/fonts \
    --with-configdir=/etc/fonts/conf.d \
+EOF
+}
+
+patch_freetype_c () {
+#******************************************************************
+cat > $PATCHDIR/freetypeSB.patch << "EOF"
+--- freetype.SlackBuild.old	2018-07-04 07:37:45.235102657 +0200
++++ freetype.SlackBuild	2018-06-24 10:59:28.375654061 +0200
+@@ -97,8 +97,14 @@
+ 
+ chown -R root:root .
+ CFLAGS="$SLKCFLAGS" make setup CFG="--prefix=/usr --libdir=/usr/lib${LIBDIRSUFFIX} --build=$ARCH-slackware-linux"
+-make $NUMJOBS || make || exit 1
+-make install DESTDIR=$PKG || exit 1
++make $NUMJOBS
++make
++make install DESTDIR=$PKG
++
++# install freetype headers to build harfbuzz
++mkdir -pv $PKG/usr/include/freetype2
++cp devel/ft2build.h $PKG/usr/include/freetype2/ft2build.h
++cp devel/ftoption.h $PKG/usr/include/freetype2/ftoption.h
+ 
+ # Don't ship .la files:
+ rm -f $PKG/{,usr/}lib${LIBDIRSUFFIX}/*.la
+EOF
+}
+
+patch_gd_c () {
+#******************************************************************
+cat > $PATCHDIR/gdSB.patch << "EOF"
+--- gd.SlackBuild.old	2018-04-23 19:20:53.924170184 +0200
++++ gd.SlackBuild	2018-07-04 20:39:26.859379010 +0200
+@@ -87,13 +87,15 @@
+   --prefix=/usr \
+   --libdir=/usr/lib${LIBDIRSUFFIX} \
+   --disable-static \
++  --without-fontconfig \
++  --without-xpm \
+   --program-prefix= \
+   --program-suffix= \
+   --build=$ARCH-slackware-linux || exit 1
+ 
+ # Build and install:
+-make $NUMJOBS || make || exit 1
+-make install DESTDIR=$PKG || exit 1
++make $NUMJOBS || make
++make install DESTDIR=$PKG
+ 
+ # Don't ship .la files:
+ rm -f $PKG/{,usr/}lib${LIBDIRSUFFIX}/*.la
+EOF
+}
+
+patch_harfbuzz_c () {
+#******************************************************************
+cat > $PATCHDIR/harfbuzzSB.patch << "EOF"
+--- harfbuzz.SlackBuild.old	2018-06-23 17:21:47.193436297 +0200
++++ harfbuzz.SlackBuild	2018-06-24 11:04:15.203652967 +0200
+@@ -90,8 +90,12 @@
+   --docdir=/usr/doc/$PKGNAM-$VERSION \
+   --build=$ARCH-slackware-linux || exit 1
+ 
+-make $NUMJOBS || make || exit 1
+-make install DESTDIR=$PKG || exit 1
++make $NUMJOBS || make
++make install DESTDIR=$PKG
++
++# install freetype headers to build freetype
++mkdir -pv $PKG/usr/include/harfbuzz
++cp src/*.h $PKG/usr/include/harfbuzz
+ 
+ # Don't ship .la files:
+ rm -f $PKG/{,usr/}lib${LIBDIRSUFFIX}/*.la
 EOF
 }
 
@@ -811,526 +889,6 @@ cat > $PATCHDIR/xfce-build-all.patch << "EOF"
 EOF
 }
 
-patch_freetype_c () {
-#******************************************************************
-cat > $PATCHDIR/freetypeSB.patch << "EOF"
---- freetype.SlackBuild.old	2018-07-04 07:37:45.235102657 +0200
-+++ freetype.SlackBuild	2018-06-24 10:59:28.375654061 +0200
-@@ -97,8 +97,14 @@
- 
- chown -R root:root .
- CFLAGS="$SLKCFLAGS" make setup CFG="--prefix=/usr --libdir=/usr/lib${LIBDIRSUFFIX} --build=$ARCH-slackware-linux"
--make $NUMJOBS || make || exit 1
--make install DESTDIR=$PKG || exit 1
-+make $NUMJOBS
-+make
-+make install DESTDIR=$PKG
-+
-+# install freetype headers to build harfbuzz
-+mkdir -pv $PKG/usr/include/freetype2
-+cp devel/ft2build.h $PKG/usr/include/freetype2/ft2build.h
-+cp devel/ftoption.h $PKG/usr/include/freetype2/ftoption.h
- 
- # Don't ship .la files:
- rm -f $PKG/{,usr/}lib${LIBDIRSUFFIX}/*.la
-EOF
-}
-
-patch_harfbuzz_c () {
-#******************************************************************
-cat > $PATCHDIR/harfbuzzSB.patch << "EOF"
---- harfbuzz.SlackBuild.old	2018-06-23 17:21:47.193436297 +0200
-+++ harfbuzz.SlackBuild	2018-06-24 11:04:15.203652967 +0200
-@@ -90,8 +90,12 @@
-   --docdir=/usr/doc/$PKGNAM-$VERSION \
-   --build=$ARCH-slackware-linux || exit 1
- 
--make $NUMJOBS || make || exit 1
--make install DESTDIR=$PKG || exit 1
-+make $NUMJOBS || make
-+make install DESTDIR=$PKG
-+
-+# install freetype headers to build freetype
-+mkdir -pv $PKG/usr/include/harfbuzz
-+cp src/*.h $PKG/usr/include/harfbuzz
- 
- # Don't ship .la files:
- rm -f $PKG/{,usr/}lib${LIBDIRSUFFIX}/*.la
-EOF
-}
-
-patch_gd_c () {
-#******************************************************************
-cat > $PATCHDIR/gdSB.patch << "EOF"
---- gd.SlackBuild.old	2018-04-23 19:20:53.924170184 +0200
-+++ gd.SlackBuild	2018-07-04 20:39:26.859379010 +0200
-@@ -87,13 +87,15 @@
-   --prefix=/usr \
-   --libdir=/usr/lib${LIBDIRSUFFIX} \
-   --disable-static \
-+  --without-fontconfig \
-+  --without-xpm \
-   --program-prefix= \
-   --program-suffix= \
-   --build=$ARCH-slackware-linux || exit 1
- 
- # Build and install:
--make $NUMJOBS || make || exit 1
--make install DESTDIR=$PKG || exit 1
-+make $NUMJOBS || make
-+make install DESTDIR=$PKG
- 
- # Don't ship .la files:
- rm -f $PKG/{,usr/}lib${LIBDIRSUFFIX}/*.la
-EOF
-}
-
-patch_gzip_c () {
-#******************************************************************
-cat > $PATCHDIR/gzipSB.patch << "EOF"
---- gzip.SlackBuild.old	2018-04-23 19:20:51.152170214 +0200
-+++ gzip.SlackBuild	2018-08-04 15:17:07.227423935 +0200
-@@ -67,6 +67,9 @@
- tar xvf $CWD/${PKGNAM}-$VERSION.tar.xz || exit 1
- cd ${PKGNAM}-$VERSION
- 
-+# patch to build with glibc-2.28
-+zcat $CWD/gzip-gnulib.patch.gz | patch -Esp1 --verbose || exit 1
-+
- # Make sure ownerships and permissions are sane:
- chown -R root:root .
- find . \
-EOF
-}
-
-patch_gzip_c1 () {
-#******************************************************************
-cat > $PATCHDIR/gzip-gnulib.patch << "EOF"
-From 1831628c0630ae96a43586b2a25ca51cbdba3e53 Mon Sep 17 00:00:00 2001
-From: Paul Eggert <address@hidden>
-Date: Mon, 5 Mar 2018 10:56:29 -0800
-Subject: [PATCH] fflush: adjust to glibc 2.28 libio.h removal
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-Problem reported by Daniel P. Berrangé in:
-https://lists.gnu.org/r/bug-gnulib/2018-03/msg00000.html
-* lib/fbufmode.c (fbufmode):
-* lib/fflush.c (clear_ungetc_buffer_preserving_position)
-(disable_seek_optimization, rpl_fflush):
-* lib/fpending.c (__fpending):
-* lib/fpurge.c (fpurge):
-* lib/freadable.c (freadable):
-* lib/freadahead.c (freadahead):
-* lib/freading.c (freading):
-* lib/freadptr.c (freadptr):
-* lib/freadseek.c (freadptrinc):
-* lib/fseeko.c (fseeko):
-* lib/fseterr.c (fseterr):
-* lib/fwritable.c (fwritable):
-* lib/fwriting.c (fwriting):
-Check _IO_EOF_SEEN instead of _IO_ftrylockfile.
-* lib/stdio-impl.h (_IO_IN_BACKUP) [_IO_EOF_SEEN]:
-Define if not already defined.
----
- ChangeLog        | 23 +++++++++++++++++++++++
- lib/fbufmode.c   |  2 +-
- lib/fflush.c     |  6 +++---
- lib/fpending.c   |  2 +-
- lib/fpurge.c     |  2 +-
- lib/freadable.c  |  2 +-
- lib/freadahead.c |  2 +-
- lib/freading.c   |  2 +-
- lib/freadptr.c   |  2 +-
- lib/freadseek.c  |  2 +-
- lib/fseeko.c     |  4 ++--
- lib/fseterr.c    |  2 +-
- lib/fwritable.c  |  2 +-
- lib/fwriting.c   |  2 +-
- lib/stdio-impl.h |  6 ++++++
- 15 files changed, 45 insertions(+), 16 deletions(-)
-
-diff --git a/ChangeLog b/ChangeLog
-index 667f91663..beb835670 100644
---- a/ChangeLog
-+++ b/ChangeLog
-@@ -1,3 +1,26 @@
-+2018-03-05  Paul Eggert  <address@hidden>
-+
-+	fflush: adjust to glibc 2.28 libio.h removal
-+	Problem reported by Daniel P. Berrangé in:
-+	https://lists.gnu.org/r/bug-gnulib/2018-03/msg00000.html
-+	* lib/fbufmode.c (fbufmode):
-+	* lib/fflush.c (clear_ungetc_buffer_preserving_position)
-+	(disable_seek_optimization, rpl_fflush):
-+	* lib/fpending.c (__fpending):
-+	* lib/fpurge.c (fpurge):
-+	* lib/freadable.c (freadable):
-+	* lib/freadahead.c (freadahead):
-+	* lib/freading.c (freading):
-+	* lib/freadptr.c (freadptr):
-+	* lib/freadseek.c (freadptrinc):
-+	* lib/fseeko.c (fseeko):
-+	* lib/fseterr.c (fseterr):
-+	* lib/fwritable.c (fwritable):
-+	* lib/fwriting.c (fwriting):
-+	Check _IO_EOF_SEEN instead of _IO_ftrylockfile.
-+	* lib/stdio-impl.h (_IO_IN_BACKUP) [_IO_EOF_SEEN]:
-+	Define if not already defined.
-+
- 2018-01-07  Jim Meyering  <meyering@fb.com>
- 
- 	version 1.9
- 	* NEWS: Record release date.
-diff --git a/lib/fflush.c b/lib/fflush.c
-index 983ade0ff..a6edfa105 100644
---- a/lib/fflush.c
-+++ b/lib/fflush.c
-@@ -33,7 +33,7 @@
- #undef fflush
- 
- 
--#if defined _IO_ftrylockfile || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
-+#if defined _IO_EOF_SEEN || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
- 
- /* Clear the stream's ungetc buffer, preserving the value of ftello (fp).  */
- static void
-@@ -72,7 +72,7 @@ clear_ungetc_buffer (FILE *fp)
- 
- #endif
- 
--#if ! (defined _IO_ftrylockfile || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */)
-+#if ! (defined _IO_EOF_SEEN || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */)
- 
- # if (defined __sferror || defined __DragonFly__ || defined __ANDROID__) && defined __SNPT
- /* FreeBSD, NetBSD, OpenBSD, DragonFly, Mac OS X, Cygwin, Minix 3, Android */
-@@ -148,7 +148,7 @@ rpl_fflush (FILE *stream)
-   if (stream == NULL || ! freading (stream))
-     return fflush (stream);
- 
--#if defined _IO_ftrylockfile || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
-+#if defined _IO_EOF_SEEN || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
- 
-   clear_ungetc_buffer_preserving_position (stream);
- 
-diff --git a/lib/fpurge.c b/lib/fpurge.c
-index b1d417c7a..3aedcc373 100644
---- a/lib/fpurge.c
-+++ b/lib/fpurge.c
-@@ -62,7 +62,7 @@ fpurge (FILE *fp)
-   /* Most systems provide FILE as a struct and the necessary bitmask in
-      <stdio.h>, because they need it for implementing getc() and putc() as
-      fast macros.  */
--# if defined _IO_ftrylockfile || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
-+# if defined _IO_EOF_SEEN || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
-   fp->_IO_read_end = fp->_IO_read_ptr;
-   fp->_IO_write_ptr = fp->_IO_write_base;
-   /* Avoid memory leak when there is an active ungetc buffer.  */
-diff --git a/lib/freading.c b/lib/freading.c
-index 73c28acdd..c24d0c88a 100644
---- a/lib/freading.c
-+++ b/lib/freading.c
-@@ -31,7 +31,7 @@ freading (FILE *fp)
-   /* Most systems provide FILE as a struct and the necessary bitmask in
-      <stdio.h>, because they need it for implementing getc() and putc() as
-      fast macros.  */
--# if defined _IO_ftrylockfile || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
-+# if defined _IO_EOF_SEEN || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
-   return ((fp->_flags & _IO_NO_WRITES) != 0
-           || ((fp->_flags & (_IO_NO_READS | _IO_CURRENTLY_PUTTING)) == 0
-               && fp->_IO_read_base != NULL));
-diff --git a/lib/fseeko.c b/lib/fseeko.c
-index 0101ab55f..193f4e8ce 100644
---- a/lib/fseeko.c
-+++ b/lib/fseeko.c
-@@ -47,7 +47,7 @@ fseeko (FILE *fp, off_t offset, int whence)
- #endif
- 
-   /* These tests are based on fpurge.c.  */
--#if defined _IO_ftrylockfile || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
-+#if defined _IO_EOF_SEEN || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
-   if (fp->_IO_read_end == fp->_IO_read_ptr
-       && fp->_IO_write_ptr == fp->_IO_write_base
-       && fp->_IO_save_base == NULL)
-@@ -123,7 +123,7 @@ fseeko (FILE *fp, off_t offset, int whence)
-           return -1;
-         }
- 
--#if defined _IO_ftrylockfile || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
-+#if defined _IO_EOF_SEEN || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
-       fp->_flags &= ~_IO_EOF_SEEN;
-       fp->_offset = pos;
- #elif defined __sferror || defined __DragonFly__ || defined __ANDROID__
-diff --git a/lib/fseterr.c b/lib/fseterr.c
-index 82649c3ac..adb637256 100644
---- a/lib/fseterr.c
-+++ b/lib/fseterr.c
-@@ -29,7 +29,7 @@ fseterr (FILE *fp)
-   /* Most systems provide FILE as a struct and the necessary bitmask in
-      <stdio.h>, because they need it for implementing getc() and putc() as
-      fast macros.  */
--#if defined _IO_ftrylockfile || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
-+#if defined _IO_EOF_SEEN || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
-   fp->_flags |= _IO_ERR_SEEN;
- #elif defined __sferror || defined __DragonFly__ || defined __ANDROID__
-   /* FreeBSD, NetBSD, OpenBSD, DragonFly, Mac OS X, Cygwin, Minix 3, Android */
-diff --git a/lib/stdio-impl.h b/lib/stdio-impl.h
-index 78d896e9f..05c5752a2 100644
---- a/lib/stdio-impl.h
-+++ b/lib/stdio-impl.h
-@@ -18,6 +18,12 @@
-    the same implementation of stdio extension API, except that some fields
-    have different naming conventions, or their access requires some casts.  */
- 
-+/* Glibc 2.28 made _IO_IN_BACKUP private.  For now, work around this
-+   problem by defining it ourselves.  FIXME: Do not rely on glibc
-+   internals.  */
-+#if !defined _IO_IN_BACKUP && defined _IO_EOF_SEEN
-+# define _IO_IN_BACKUP 0x100
-+#endif
- 
- /* BSD stdio derived implementations.  */
- 
--- 
-2.14.3
-EOF
-}
-
-patch_findutils_c () {
-#******************************************************************
-cat > $PATCHDIR/findutilsSB.patch << "EOF"
---- findutils.SlackBuild.old	2018-04-23 19:20:51.030170215 +0200
-+++ findutils.SlackBuild	2018-08-04 15:17:49.018423775 +0200
-@@ -64,6 +64,9 @@
- tar xvf $CWD/findutils-$VERSION.tar.?z* || exit 1
- cd findutils-$VERSION || exit 1
- 
-+# patch to build with glibc-2.28
-+zcat $CWD/findutils-glibc-2.28.patch.gz  | patch -Esp1 --verbose || exit 1
-+
- chown -R root:root .
- find . \
-   \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
-EOF
-}
-
-patch_findutils_c1 () {
-#******************************************************************
-cat > $PATCHDIR/findutils-glibc-2.28.patch << "EOF"
-diff -aurN findutils-4.4.2/gnulib/lib/fpurge.c findutils-4.4.2-mod/gnulib/lib/fpurge.c
---- findutils-4.4.2/gnulib/lib/fpurge.c	2009-05-10 23:23:57.000000000 +0200
-+++ findutils-4.4.2-mod/gnulib/lib/fpurge.c	2018-08-02 17:17:16.522924993 +0200
-@@ -59,7 +59,7 @@
-   /* Most systems provide FILE as a struct and the necessary bitmask in
-      <stdio.h>, because they need it for implementing getc() and putc() as
-      fast macros.  */
--# if defined _IO_ferror_unlocked    /* GNU libc, BeOS */
-+# if defined _IO_EOF_SEEN || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
-   fp->_IO_read_end = fp->_IO_read_ptr;
-   fp->_IO_write_ptr = fp->_IO_write_base;
-   /* Avoid memory leak when there is an active ungetc buffer.  */
-diff -aurN findutils-4.4.2/gnulib/lib/freadahead.c findutils-4.4.2-mod/gnulib/lib/freadahead.c
---- findutils-4.4.2/gnulib/lib/freadahead.c	2009-05-10 23:23:57.000000000 +0200
-+++ findutils-4.4.2-mod/gnulib/lib/freadahead.c	2018-08-02 17:16:10.889925243 +0200
-@@ -22,7 +22,7 @@
- size_t
- freadahead (FILE *fp)
- {
--#if defined _IO_ferror_unlocked     /* GNU libc, BeOS */
-+#if defined _IO_EOF_SEEN || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
-   if (fp->_IO_write_ptr > fp->_IO_write_base)
-     return 0;
-   return fp->_IO_read_end - fp->_IO_read_ptr;
-diff -aurN findutils-4.4.2/gnulib/lib/fseeko.c findutils-4.4.2-mod/gnulib/lib/fseeko.c
---- findutils-4.4.2/gnulib/lib/fseeko.c	2009-05-10 23:25:10.000000000 +0200
-+++ findutils-4.4.2-mod/gnulib/lib/fseeko.c	2018-08-02 17:23:31.674923562 +0200
-@@ -39,7 +39,7 @@
- #endif
- 
-   /* These tests are based on fpurge.c.  */
--#if defined _IO_ferror_unlocked     /* GNU libc, BeOS */
-+#if defined _IO_EOF_SEEN || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
-   if (fp->_IO_read_end == fp->_IO_read_ptr
-       && fp->_IO_write_ptr == fp->_IO_write_base
-       && fp->_IO_save_base == NULL)
-@@ -108,7 +108,7 @@
- 	}
-       else
- 	{
--#if defined __sferror               /* FreeBSD, NetBSD, OpenBSD, MacOS X, Cygwin */
-+#if defined _IO_EOF_SEEN || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
- 	  fp->_offset = pos;
- 	  fp->_flags |= __SOFF;
- 	  fp->_flags &= ~__SEOF;
-diff -aurN findutils-4.4.2/gnulib/lib/mountlist.c findutils-4.4.2-mod/gnulib/lib/mountlist.c
---- findutils-4.4.2/gnulib/lib/mountlist.c	2009-05-10 23:23:57.000000000 +0200
-+++ findutils-4.4.2-mod/gnulib/lib/mountlist.c	2018-08-02 17:10:15.851926597 +0200
-@@ -37,6 +37,12 @@
- # include <sys/param.h>
- #endif
- 
-+#if MAJOR_IN_MKDEV
-+# include <sys/mkdev.h>
-+#elif MAJOR_IN_SYSMACROS
-+# include <sys/sysmacros.h>
-+#endif
-+
- #if defined MOUNTED_GETFSSTAT	/* OSF_1 and Darwin1.3.x */
- # if HAVE_SYS_UCRED_H
- #  include <grp.h> /* needed on OSF V4.0 for definition of NGROUPS,
-diff -aurN findutils-4.4.2/gnulib/m4/mountlist.m4 findutils-4.4.2-mod/gnulib/m4/mountlist.m4
---- findutils-4.4.2/gnulib/m4/mountlist.m4	2009-05-10 23:23:57.000000000 +0200
-+++ findutils-4.4.2-mod/gnulib/m4/mountlist.m4	2018-08-02 17:10:11.265926615 +0200
-@@ -19,5 +19,6 @@
- [
-   dnl Note gl_LIST_MOUNTED_FILE_SYSTEMS checks for mntent.h, not sys/mntent.h.
-   AC_CHECK_HEADERS(sys/mntent.h)
-+  AC_HEADER_MAJOR()dnl for use of makedev ()
-   gl_FSTYPENAME
- ])
-EOF
-}
-
-patch_m4_c () {
-#******************************************************************
-cat > $PATCHDIR/m4SB.patch << "EOF"
---- m4.SlackBuild.old	2018-04-23 19:20:52.986170194 +0200
-+++ m4.SlackBuild	2018-08-04 15:18:17.724423666 +0200
-@@ -70,6 +70,10 @@
- rm -rf m4-$VERSION
- tar xvf $CWD/m4-$VERSION.tar.xz || exit 1
- cd m4-$VERSION || exit 1
-+
-+# patch to build with glibc-2.28
-+zcat $CWD/m4-1.4.18-glibc-change-work-around.patch.gz | patch -Esp1 --verbose || exit1
-+
- chown -R root:root .
- find . \
-   \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
-EOF
-}
-
-patch_m4_c1 () {
-#******************************************************************
-cat > $PATCHDIR/m4-1.4.18-glibc-change-work-around.patch << "EOF"
-diff -up m4-1.4.18/lib/fflush.c.orig m4-1.4.18/lib/fflush.c
---- m4-1.4.18/lib/fflush.c.orig	2018-05-02 12:35:59.536851666 +0200
-+++ m4-1.4.18/lib/fflush.c	2018-05-02 12:37:02.768958606 +0200
-@@ -33,7 +33,7 @@
- #undef fflush
- 
- 
--#if defined _IO_ftrylockfile || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
-+#if defined _IO_EOF_SEEN || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
- 
- /* Clear the stream's ungetc buffer, preserving the value of ftello (fp).  */
- static void
-@@ -72,7 +72,7 @@ clear_ungetc_buffer (FILE *fp)
- 
- #endif
- 
--#if ! (defined _IO_ftrylockfile || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */)
-+#if ! (defined _IO_EOF_SEEN || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */)
- 
- # if (defined __sferror || defined __DragonFly__ || defined __ANDROID__) && defined __SNPT
- /* FreeBSD, NetBSD, OpenBSD, DragonFly, Mac OS X, Cygwin, Android */
-@@ -148,7 +148,7 @@ rpl_fflush (FILE *stream)
-   if (stream == NULL || ! freading (stream))
-     return fflush (stream);
- 
--#if defined _IO_ftrylockfile || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
-+#if defined _IO_EOF_SEEN || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
- 
-   clear_ungetc_buffer_preserving_position (stream);
- 
-diff -up m4-1.4.18/lib/fpending.c.orig m4-1.4.18/lib/fpending.c
---- m4-1.4.18/lib/fpending.c.orig	2018-05-02 12:35:32.305806774 +0200
-+++ m4-1.4.18/lib/fpending.c	2018-05-02 12:35:44.944827347 +0200
-@@ -32,7 +32,7 @@ __fpending (FILE *fp)
-   /* Most systems provide FILE as a struct and the necessary bitmask in
-      <stdio.h>, because they need it for implementing getc() and putc() as
-      fast macros.  */
--#if defined _IO_ftrylockfile || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
-+#if defined _IO_EOF_SEEN || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
-   return fp->_IO_write_ptr - fp->_IO_write_base;
- #elif defined __sferror || defined __DragonFly__ || defined __ANDROID__
-   /* FreeBSD, NetBSD, OpenBSD, DragonFly, Mac OS X, Cygwin, Android */
-diff -up m4-1.4.18/lib/fpurge.c.orig m4-1.4.18/lib/fpurge.c
---- m4-1.4.18/lib/fpurge.c.orig	2018-05-02 12:38:13.586078669 +0200
-+++ m4-1.4.18/lib/fpurge.c	2018-05-02 12:38:38.785121867 +0200
-@@ -62,7 +62,7 @@ fpurge (FILE *fp)
-   /* Most systems provide FILE as a struct and the necessary bitmask in
-      <stdio.h>, because they need it for implementing getc() and putc() as
-      fast macros.  */
--# if defined _IO_ftrylockfile || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
-+# if defined _IO_EOF_SEEN || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
-   fp->_IO_read_end = fp->_IO_read_ptr;
-   fp->_IO_write_ptr = fp->_IO_write_base;
-   /* Avoid memory leak when there is an active ungetc buffer.  */
-diff -up m4-1.4.18/lib/freadahead.c.orig m4-1.4.18/lib/freadahead.c
---- m4-1.4.18/lib/freadahead.c.orig	2016-12-31 14:54:41.000000000 +0100
-+++ m4-1.4.18/lib/freadahead.c	2018-05-02 11:43:19.570336724 +0200
-@@ -25,7 +25,7 @@
- size_t
- freadahead (FILE *fp)
- {
--#if defined _IO_ftrylockfile || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
-+#if defined _IO_EOF_SEEN || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
-   if (fp->_IO_write_ptr > fp->_IO_write_base)
-     return 0;
-   return (fp->_IO_read_end - fp->_IO_read_ptr)
-diff -up m4-1.4.18/lib/freading.c.orig m4-1.4.18/lib/freading.c
---- m4-1.4.18/lib/freading.c.orig	2018-05-02 12:37:33.970011368 +0200
-+++ m4-1.4.18/lib/freading.c	2018-05-02 12:37:59.393054359 +0200
-@@ -31,7 +31,7 @@ freading (FILE *fp)
-   /* Most systems provide FILE as a struct and the necessary bitmask in
-      <stdio.h>, because they need it for implementing getc() and putc() as
-      fast macros.  */
--# if defined _IO_ftrylockfile || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
-+# if defined _IO_EOF_SEEN || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
-   return ((fp->_flags & _IO_NO_WRITES) != 0
-           || ((fp->_flags & (_IO_NO_READS | _IO_CURRENTLY_PUTTING)) == 0
-               && fp->_IO_read_base != NULL));
-diff -up m4-1.4.18/lib/fseeko.c.orig m4-1.4.18/lib/fseeko.c
---- m4-1.4.18/lib/fseeko.c.orig	2018-05-02 11:44:17.947460233 +0200
-+++ m4-1.4.18/lib/fseeko.c	2018-05-02 12:39:49.537216897 +0200
-@@ -47,7 +47,7 @@ fseeko (FILE *fp, off_t offset, int when
- #endif
- 
-   /* These tests are based on fpurge.c.  */
--#if defined _IO_ftrylockfile || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
-+#if defined _IO_EOF_SEEN || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
-   if (fp->_IO_read_end == fp->_IO_read_ptr
-       && fp->_IO_write_ptr == fp->_IO_write_base
-       && fp->_IO_save_base == NULL)
-@@ -123,7 +123,7 @@ fseeko (FILE *fp, off_t offset, int when
-           return -1;
-         }
- 
--#if defined _IO_ftrylockfile || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
-+#if defined _IO_EOF_SEEN || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
-       fp->_flags &= ~_IO_EOF_SEEN;
-       fp->_offset = pos;
- #elif defined __sferror || defined __DragonFly__ || defined __ANDROID__
-diff -up m4-1.4.18/lib/stdio-impl.h.orig m4-1.4.18/lib/stdio-impl.h
---- m4-1.4.18/lib/stdio-impl.h.orig	2016-12-31 14:54:42.000000000 +0100
-+++ m4-1.4.18/lib/stdio-impl.h	2018-05-02 11:43:19.570336724 +0200
-@@ -18,6 +18,12 @@
-    the same implementation of stdio extension API, except that some fields
-    have different naming conventions, or their access requires some casts.  */
- 
-+/* Glibc 2.28 made _IO_IN_BACKUP private.  For now, work around this
-+   problem by defining it ourselves.  FIXME: Do not rely on glibc
-+   internals.  */
-+#if !defined _IO_IN_BACKUP && defined _IO_EOF_SEEN
-+# define _IO_IN_BACKUP 0x100
-+#endif
- 
- /* BSD stdio derived implementations.  */
-EOF
-}
-
 #*******************************************************************
 # End of sub-system of patches
 #*******************************************************************
@@ -1541,43 +1099,6 @@ if [ ! -f $SRCDIR/xfce/xfce-build-all.sh.old ]; then
 fi
 }
 
-execute_gzip () {
-#******************************************************************
-if [ ! -f $SRCDIR/a/gzip/gzip.SlackBuild.old ]; then
-	cp -v $SRCDIR/a/gzip/gzip.SlackBuild $SRCDIR/a/gzip/gzip.SlackBuild.old
-	cp -v $PATCHDIR/gzip-gnulib.patch.gz  $SRCDIR/a/gzip
-	(
-		cd $SRCDIR/a/gzip
-		zcat $PATCHDIR/gzipSB.patch.gz |patch gzip.SlackBuild --verbose
-	)
-fi
-}
-
-execute_findutils () {
-#******************************************************************
-if [ ! -f $SRCDIR/a/findutils/findutils.SlackBuild.old ]; then
-	cp -v $SRCDIR/a/findutils/findutils.SlackBuild $SRCDIR/a/findutils/findutils.SlackBuild.old
-	cp -v $PATCHDIR/findutils-glibc-2.28.patch.gz  $SRCDIR/a/findutils
-	(
-		cd $SRCDIR/a/findutils
-		zcat $PATCHDIR/findutilsSB.patch.gz |patch findutils.SlackBuild --verbose
-	)
-fi
-}
-
-execute_m4 () {
-#******************************************************************
-if [ ! -f $SRCDIR/d/m4/m4.SlackBuild.old ]; then
-	cp -v $SRCDIR/d/m4/m4.SlackBuild $SRCDIR/d/m4/m4.SlackBuild.old
-	cp -v $PATCHDIR/m4-1.4.18-glibc-change-work-around.patch.gz  $SRCDIR/d/m4
-	(
-		cd $SRCDIR/d/m4
-		zcat $PATCHDIR/m4SB.patch.gz |patch m4.SlackBuild --verbose
-	)
-fi
-}
-
-
 #*******************************************************************
 # End of sub-system of execution of patches
 #*******************************************************************
@@ -1613,13 +1134,6 @@ do
 		patch_subversion_c
 		patch_texlive_c
 		patch_xfce_c
-# new patch for glibc-2.28 testing
-		patch_gzip_c
-		patch_gzip_c1
-		patch_findutils_c
-		patch_findutils_c1
-		patch_m4_c
-		patch_m4_c1
 		gzip -9 $PATCHDIR/*.patch
 		break
 	elif [[ "$build_patches" = "no" ]]
@@ -1667,10 +1181,6 @@ do
 		execute_subversion # 2 pass
 		execute_texlive # 2 pass
 		execute_xfce
-# new patch for glibc-2.28 testing
-#		execute_gzip
-#		execute_findutils
-#		execute_m4
 		break
 	elif [[ "$sources_alteration" = "no" ]]
 	then
