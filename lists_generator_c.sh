@@ -196,6 +196,7 @@ d flex
 d bison
 d autoconf
 d libtool
+a findutils
 a end1
 EOF
 }
