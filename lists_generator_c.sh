@@ -443,6 +443,7 @@ l libsigsegv
 l libsigc++
 d cscope
 d distcc
+d icecream
 d dev86
 d p2c
 d oprofile
