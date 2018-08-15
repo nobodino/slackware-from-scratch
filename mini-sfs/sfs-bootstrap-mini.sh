@@ -649,7 +649,6 @@ d libtool
 l gmp
 l mpfr
 l libmpc
-l libart_lgpl
 a infozip
 l expat
 d python
@@ -754,6 +753,8 @@ d flex
 d bison
 d autoconf
 d libtool
+a findutils
+a end1
 a end1
 EOF
 }
