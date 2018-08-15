@@ -97,8 +97,8 @@ export DLDIR5=ftp://slackware.uk/slackware/slackware64-14.2
 export DLDIR6=http://mirror.eu.oneandone.net/linux/distributions/gentoo/gentoo/distfiles
 export DLDIR7=https://slackbuilds.org/repository/14.2/development
 export DLDIR8=https://static.rust-lang.org/dist
-export DLDIR9=http://javadl.oracle.com/webapps/download/AutoDL?BundleId=233160_512cd62ec5174c3487ac17c61aaa89e8 # jre-8u172-linux-i586.tar.gz
-export DLDIR10=http://javadl.oracle.com/webapps/download/AutoDL?BundleId=233162_512cd62ec5174c3487ac17c61aaa89e8 # jre-8u172-linux-x64.tar.gz
+export DLDIR9=http://download.oracle.com/otn-pub/java/jdk/8u181-b13/96a7b8442fe848ef90c96a2fad6ed6d1/jre-$JDK-linux-i586.tar.gz
+export DLDIR10=http://download.oracle.com/otn-pub/java/jdk/8u181-b13/96a7b8442fe848ef90c96a2fad6ed6d1/jre-$JDK-linux-x64.tar.gz
 export DLDIR11=https://slackbuilds.org/slackbuilds/14.2
 export DLDIR12=https://github.com/nobodino/slackware-from-scratch/
 export DLDIR13=$SRCDIR/others/slackware-from-scratch/patch-for-packages-with-glibc-2.28
@@ -110,7 +110,7 @@ export RUST="1.27.2"
 export RUSTC="1.27.2"
 export DATE="2018-07-18"
 export ISLVER="0.18"
-export JDK="8u172"
+export JDK="8u181"
 export GNAT_x86="gnat-gpl-2014-x86-linux-bin.tar.gz"
 export GNAT_x86_64="gnat-gpl-2017-x86_64-linux-bin.tar.gz"
 export GREEN="\\033[1;32m"

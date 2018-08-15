@@ -75,6 +75,7 @@ do
 	then
 		if [[ "$distribution" = "slackware" ]]
 		then
+#			tools_dir='tools' && test_tools_32
 			tools_dir='tools'
 			echo
 			echo -e "$BLUE" "You choose $tools_dir" "$NORMAL"
@@ -86,6 +87,7 @@ do
 	then
 		if [[ "$distribution" = "slackware" ]]
 		then
+#			tools_dir='tools_64' && test_tools_64
 			tools_dir='tools_64'
 			echo
 			echo -e "$BLUE" "You choose $tools_dir" "$NORMAL"
@@ -356,7 +358,7 @@ if [[ "$build_arch" = "x86" ]]
 		cd $SRCDIR/others 
 		if [ ! -f jre-$JDK-linux-i586.tar.gz ]; then
 			# from https://gist.github.com/P7h/9741922
-			curl -C - -LR#OH "Cookie: oraclelicense=accept-securebackup-cookie" -k $DLDIR9 && mv AutoDL?Bundle* jre-$JDK-linux-i586.tar.gz
+			curl -C - -LR#OH "Cookie: oraclelicense=accept-securebackup-cookie" -k $DLDIR9
 		fi
 		cp -v jre-$JDK-linux-i586.tar.gz $SRCDIR/extra/java
 		cd $SRCDIR/others
@@ -416,7 +418,7 @@ if [[ "$build_arch" = "x86" ]]
 		cd $SRCDIR/others 
 		if [ ! -f jre-$JDK-linux-x64.tar.gz ]; then
 			# from https://gist.github.com/P7h/9741922
-			curl -C - -LR#OH "Cookie: oraclelicense=accept-securebackup-cookie" -k $DLDIR10 && mv AutoDL?Bundle* jre-$JDK-linux-x64.tar.gz
+			curl -C - -LR#OH "Cookie: oraclelicense=accept-securebackup-cookie" -k $DLDIR10
 		fi
 		cp -rv jre-$JDK-linux-x64.tar.gz $SRCDIR/extra/java
 		cd $SRCDIR/others
@@ -441,6 +443,20 @@ test_root () {
 # test if user is ROOT, if not exit
 #*************************************
 [ "$UID" != "0" ] && error "You must be ROOT to execute that script."
+}
+
+test_tools_32 () {
+#************************************************
+# test the existence of tools.tar.gz in tools_32
+#************************************************
+[ ! -f $PATDIR/$tools_dir/tools.tar.?z ] && echo "You can't build an x86 system, the directory or tools.tar.?z doesn't exist."] && exit 1
+}
+
+test_tools_64 () {
+#************************************************
+# test the existence of tools.tar.gz in tools_64
+#************************************************
+[ ! -f $PATDIR/$tools_dir/tools.tar.?z ] && echo "You can't build an x86_64 system, the directory or tools.tar.?z doesn't exist."] && exit 1
 }
 
 #*******************************************************************
