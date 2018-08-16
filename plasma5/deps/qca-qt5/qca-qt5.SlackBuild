@@ -63,9 +63,6 @@ rm -rf $SRCNAM-$VERSION
 tar xvf $CWD/$SRCNAM-$VERSION.tar.?z* || exit 1
 cd $SRCNAM-$VERSION || exit 1
 
-# Support OpenSSL-1.1.x:
-zcat $CWD/Add_support_for_OpenSSL_1.1.0.diff.gz | patch -p1 --verbose || exit 1
-
 chown -R root:root .
 find . \
  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
@@ -84,6 +81,9 @@ cd build
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DMAN_INSTALL_DIR=/usr/man \
     -DQCA_MAN_INSTALL_DIR=/usr/man \
+	-DOPENSSL_INCLUDE_DIR=/usr/include/openssl-1.0             \
+    -DOPENSSL_SSL_LIBRARY=/usr/lib$LIBDIRSUFFIX/openssl-1.0/libssl.so       \
+    -DOPENSSL_CRYPTO_LIBRARY=/usr/lib$LIBDIRSUFFIX/openssl-1.0/libcrypto.so \
     -DQCA_INSTALL_IN_QT_PREFIX:BOOL=ON \
     -DLIB_SUFFIX=${LIBDIRSUFFIX} \
     -DBUILD_TESTS:BOOL=OFF \
