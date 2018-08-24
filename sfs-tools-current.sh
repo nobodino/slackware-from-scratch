@@ -205,7 +205,7 @@ copy_src () {
     cp -v $RDIR/a/file/file-$FILEVER.tar.?z $SRCDIR || exit 1
     cd $RDIR/a/findutils
 	export FINDVER=${VERSION:-$(echo findutils-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
-    cp -v $RDIR/a/findutils/findutils-$FINDVER.tar.xz $SRCDIR || exit 1
+    cp -v $RDIR/a/findutils/findutils-$FINDVER.tar.lz $SRCDIR || exit 1
     cd $RDIR/a/gawk
 	export GAWKVER=${VERSION:-$(echo gawk-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/a/gawk/gawk-$GAWKVER.tar.lz $SRCDIR || exit 1
@@ -735,7 +735,7 @@ file_build () {
 
 findutils_build () {
 #*****************************
-    tar xvf findutils-$FINDVER.tar.xz && cd findutils-$FINDVER
+    tar xvf findutils-$FINDVER.tar.lz && cd findutils-$FINDVER
 
     ./configure --prefix=/tools || exit 1
 

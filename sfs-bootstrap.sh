@@ -75,6 +75,7 @@ do
 	then
 		if [[ "$distribution" = "slackware" ]]
 		then
+#			tools_dir='tools' && test_tools_32
 			tools_dir='tools'
 			echo
 			echo -e "$BLUE" "You choose $tools_dir" "$NORMAL"
@@ -86,6 +87,7 @@ do
 	then
 		if [[ "$distribution" = "slackware" ]]
 		then
+#			tools_dir='tools_64' && test_tools_64
 			tools_dir='tools_64'
 			echo
 			echo -e "$BLUE" "You choose $tools_dir" "$NORMAL"
@@ -443,6 +445,20 @@ test_root () {
 [ "$UID" != "0" ] && error "You must be ROOT to execute that script."
 }
 
+test_tools_32 () {
+#************************************************
+# test the existence of tools.tar.gz in tools_32
+#************************************************
+[ ! -f $PATDIR/$tools_dir/tools.tar.?z ] && echo "You can't build an x86 system, the directory or tools.tar.?z doesn't exist."] && exit 1
+}
+
+test_tools_64 () {
+#************************************************
+# test the existence of tools.tar.gz in tools_64
+#************************************************
+[ ! -f $PATDIR/$tools_dir/tools.tar.?z ] && echo "You can't build an x86_64 system, the directory or tools.tar.?z doesn't exist."] && exit 1
+}
+
 #*******************************************************************
 # sub-system of generation of patches
 #*******************************************************************
@@ -468,6 +484,37 @@ cat > $PATCHDIR/cmakeSB.patch << "EOF"
    --system-curl \
    --system-expat \
    --no-system-jsoncpp \
+EOF
+}
+
+patch_findutils_c () {
+#******************************************************************
+cat > $PATCHDIR/findutilsSB.patch << "EOF"
+--- findutils.SlackBuild.old	2018-08-23 01:11:29.861123485 +0200
++++ findutils.SlackBuild	2018-08-23 17:40:53.260735799 +0200
+@@ -97,22 +97,6 @@
+ # like to be yelled at.
+ zcat $CWD/findutils.no.default.options.warnings.diff.gz | patch -p1 --verbose || exit 1
+ 
+-# Add patches from Fedora to finally make findutils-4.6.0 usable:
+-zcat $CWD/patches/findutils-4.4.2-xautofs.patch.gz | patch -p1 --verbose || exit 1
+-zcat $CWD/patches/findutils-4.5.13-warnings.patch.gz | patch -p1 --verbose || exit 1
+-zcat $CWD/patches/findutils-4.5.15-no-locate.patch.gz | patch -p1 --verbose || exit 1
+-zcat $CWD/patches/findutils-4.6.0-exec-args.patch.gz | patch -p1 --verbose || exit 1
+-zcat $CWD/patches/findutils-4.6.0-fts-update.patch.gz | patch -p1 --verbose || exit 1
+-zcat $CWD/patches/findutils-4.6.0-gnulib-fflush.patch.gz | patch -p1 --verbose || exit 1
+-zcat $CWD/patches/findutils-4.6.0-gnulib-makedev.patch.gz | patch -p1 --verbose || exit 1
+-zcat $CWD/patches/findutils-4.6.0-internal-noop.patch.gz | patch -p1 --verbose || exit 1
+-zcat $CWD/patches/findutils-4.6.0-leaf-opt.patch.gz | patch -p1 --verbose || exit 1
+-zcat $CWD/patches/findutils-4.6.0-man-exec.patch.gz | patch -p1 --verbose || exit 1
+-zcat $CWD/patches/findutils-4.6.0-mbrtowc-tests.patch.gz | patch -p1 --verbose || exit 1
+-zcat $CWD/patches/findutils-4.6.0-test-lock.patch.gz | patch -p1 --verbose || exit 1
+-
+-autoreconf -vif
+-
+ CFLAGS="$SLKCFLAGS" \
+ ./configure \
+   --prefix=/usr \
 EOF
 }
 
@@ -730,8 +777,8 @@ EOF
 patch_texlive_c () {
 #******************************************************************
 cat > $PATCHDIR/texliveSB.patch << "EOF"
---- texlive.SlackBuild.old	2018-06-30 08:05:49.000000000 +0200
-+++ texlive.SlackBuild	2018-07-06 18:22:38.176580424 +0200
+--- texlive.SlackBuild.old	2018-08-22 21:43:16.000000000 +0200
++++ texlive.SlackBuild	2018-08-23 17:18:51.751740840 +0200
 @@ -71,7 +71,7 @@
  # recompiled with pretty much every poppler update, as they almost always
  # bump the shared library version. But sometimes you do what you have
@@ -741,10 +788,10 @@ cat > $PATCHDIR/texliveSB.patch << "EOF"
  if [ "$SYSTEMPOPPLER" = "NO" ]; then
    POPPLER="--without-system-poppler --without-system-xpdf"
  else
-@@ -129,8 +129,11 @@
-     --disable-missing \
-     --disable-multiplatform \
-     --disable-debug \
+@@ -134,8 +134,11 @@
+     --disable-dialog \
+     --disable-bibtexu \
+     --disable-xz \
 -    --with-x \
 -    --enable-xindy \
 +    --disable-web2c \
@@ -755,7 +802,7 @@ cat > $PATCHDIR/texliveSB.patch << "EOF"
      --disable-xindy-docs \
      --disable-xindy-rules \
      --with-clisp-runtime=system \
-@@ -142,11 +145,12 @@
+@@ -147,11 +150,12 @@
      --with-system-freetype2 \
      --with-system-libgs \
      --with-system-icu \
@@ -766,10 +813,10 @@ cat > $PATCHDIR/texliveSB.patch << "EOF"
 -    --with-system-fontconfig \
 +    --without-system-pixman \
 +    --without-system-cairo \
-+    --without-system-poppler \
 +    --without-system-gmp \
 +    --without-system-mpfr \
 +    --without-system-fontconfig \
++    --without-system-poppler \ 
      --with-system-ncurses \
      --without-system-harfbuzz \
      --disable-aleph \
@@ -894,6 +941,17 @@ if [ ! -f $SRCDIR/a/dbus/dbus.SlackBuild.old ]; then
 	(
 		cd $SRCDIR/a/dbus
 		zcat $PATCHDIR/dbusSB.patch.gz |patch dbus.SlackBuild --verbose
+	)
+fi
+}
+
+execute_findutils() {
+#******************************************************************
+if [ ! -f $SRCDIR/a/findutils/findutils.SlackBuild.old ]; then
+	cp -v $SRCDIR/a/findutils/findutils.SlackBuild $SRCDIR/a/findutils/findutils.SlackBuild.old
+	(
+		cd $SRCDIR/a/findutils
+		zcat $PATCHDIR/findutilsSB.patch.gz |patch findutils.SlackBuild --verbose
 	)
 fi
 }
@@ -1099,6 +1157,7 @@ do
 		rm -rvf $PATCHDIR && mkdir -pv $PATCHDIR
 		patch_cmake_c
 		patch_dbus_c
+		patch_findutils_c
 		patch_fontconfig_c
 		patch_freetype_c
 		patch_gd_c
@@ -1146,6 +1205,7 @@ do
 
 		execute_cmake # 2 pass
 		execute_dbus # 2 pass
+		execute_findutils # 2 pass
 		execute_fontconfig # 2 pass
 		execute_freetype # 2 pass
 		execute_gd # 2 pass

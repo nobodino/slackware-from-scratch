@@ -510,31 +510,33 @@ EOF
 patch_findutils_c () {
 #******************************************************************
 cat > $PATCHDIR/findutilsSB.patch << "EOF"
---- findutils.SlackBuild.old	2018-08-23 01:11:29.861123485 +0200
-+++ findutils.SlackBuild	2018-08-23 17:40:53.260735799 +0200
-@@ -97,22 +97,6 @@
- # like to be yelled at.
+--- findutils.SlackBuild.old	2018-08-24 08:43:25.841915070 +0200
++++ findutils.SlackBuild	2018-08-24 08:55:48.494912237 +0200
+@@ -98,20 +98,12 @@
  zcat $CWD/findutils.no.default.options.warnings.diff.gz | patch -p1 --verbose || exit 1
  
--# Add patches from Fedora to finally make findutils-4.6.0 usable:
+ # Add patches from Fedora to finally make findutils-4.6.0 usable:
 -zcat $CWD/patches/findutils-4.4.2-xautofs.patch.gz | patch -p1 --verbose || exit 1
 -zcat $CWD/patches/findutils-4.5.13-warnings.patch.gz | patch -p1 --verbose || exit 1
 -zcat $CWD/patches/findutils-4.5.15-no-locate.patch.gz | patch -p1 --verbose || exit 1
 -zcat $CWD/patches/findutils-4.6.0-exec-args.patch.gz | patch -p1 --verbose || exit 1
 -zcat $CWD/patches/findutils-4.6.0-fts-update.patch.gz | patch -p1 --verbose || exit 1
--zcat $CWD/patches/findutils-4.6.0-gnulib-fflush.patch.gz | patch -p1 --verbose || exit 1
+ zcat $CWD/patches/findutils-4.6.0-gnulib-fflush.patch.gz | patch -p1 --verbose || exit 1
 -zcat $CWD/patches/findutils-4.6.0-gnulib-makedev.patch.gz | patch -p1 --verbose || exit 1
 -zcat $CWD/patches/findutils-4.6.0-internal-noop.patch.gz | patch -p1 --verbose || exit 1
 -zcat $CWD/patches/findutils-4.6.0-leaf-opt.patch.gz | patch -p1 --verbose || exit 1
 -zcat $CWD/patches/findutils-4.6.0-man-exec.patch.gz | patch -p1 --verbose || exit 1
 -zcat $CWD/patches/findutils-4.6.0-mbrtowc-tests.patch.gz | patch -p1 --verbose || exit 1
 -zcat $CWD/patches/findutils-4.6.0-test-lock.patch.gz | patch -p1 --verbose || exit 1
--
+ 
 -autoreconf -vif
--
++# patch to build with glibc-2.28 (from LFS)
++sed -i 's/IO_ftrylockfile/IO_EOF_SEEN/' gl/lib/*.c
++sed -i '/unistd/a #include <sys/sysmacros.h>' gl/lib/mountlist.c
++echo "#define _IO_IN_BACKUP 0x100" >> gl/lib/stdio-impl.h1
+ 
  CFLAGS="$SLKCFLAGS" \
  ./configure \
-   --prefix=/usr \
 EOF
 }
 
