@@ -197,6 +197,7 @@ d bison
 d autoconf
 d libtool
 a findutils
+n lynx
 a end1
 EOF
 }
@@ -320,7 +321,6 @@ x xdg-user-dirs
 x x11-doc
 x x11-proto
 x x11-util
-n lynx
 x xdg-utils
 x fontconfig
 ap ghostscript

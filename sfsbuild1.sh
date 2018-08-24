@@ -4604,6 +4604,7 @@ message_end1 () {
 echo
 echo "sfsbuild1.sh has finished to build the first part of SFS."
 echo "You now have a bare slackware system able to boot."
+echo "You can even go on internet with the lynx browser." 
 echo
 echo "You can modify your bootloader to test your new environment."
 echo "Before you test your new system, you must execute the script"

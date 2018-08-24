@@ -761,17 +761,8 @@ EOF
 patch_texlive_c () {
 #******************************************************************
 cat > $PATCHDIR/texliveSB.patch << "EOF"
---- texlive.SlackBuild.old	2018-08-22 21:43:16.000000000 +0200
-+++ texlive.SlackBuild	2018-08-23 17:18:51.751740840 +0200
-@@ -71,7 +71,7 @@
- # recompiled with pretty much every poppler update, as they almost always
- # bump the shared library version. But sometimes you do what you have
- # to do...
--SYSTEMPOPPLER=${SYSTEMPOPPLER:-YES}
-+SYSTEMPOPPLER=${SYSTEMPOPPLER:-NO}
- if [ "$SYSTEMPOPPLER" = "NO" ]; then
-   POPPLER="--without-system-poppler --without-system-xpdf"
- else
+--- texlive.SlackBuild.old	2018-08-24 08:43:25.986915070 +0200
++++ texlive.SlackBuild	2018-08-24 14:16:36.398904387 +0200
 @@ -134,8 +134,11 @@
      --disable-dialog \
      --disable-bibtexu \
@@ -786,7 +777,7 @@ cat > $PATCHDIR/texliveSB.patch << "EOF"
      --disable-xindy-docs \
      --disable-xindy-rules \
      --with-clisp-runtime=system \
-@@ -147,11 +150,12 @@
+@@ -147,12 +150,11 @@
      --with-system-freetype2 \
      --with-system-libgs \
      --with-system-icu \
@@ -795,15 +786,15 @@ cat > $PATCHDIR/texliveSB.patch << "EOF"
 -    --with-system-gmp \
 -    --with-system-mpfr \
 -    --with-system-fontconfig \
+-    --with-system-ncurses \
 +    --without-system-pixman \
 +    --without-system-cairo \
 +    --without-system-gmp \
 +    --without-system-mpfr \
 +    --without-system-fontconfig \
-+    --without-system-poppler \ 
-     --with-system-ncurses \
      --without-system-harfbuzz \
      --disable-aleph \
+     --disable-dump-share \
 EOF
 }
 
