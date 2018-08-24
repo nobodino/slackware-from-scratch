@@ -4771,6 +4771,8 @@ LHAR=1
 LGD=1
 # init QScintilla variable
 LQSC=1
+# init findutils variable
+LFIN=1
 
 #**************************************************************
 # read the length of build.list and affect SRCDIR and PACKNAME
@@ -4877,6 +4879,18 @@ while (( LINE < $FILELEN )); do
 				end4 )
 					message_end4
 					clean_tmp ;;
+
+				findutils )
+					case $LFIN in
+						1 )
+							build $SRCDIR $PACKNAME
+							[ $? != 0 ] && exit 1
+							LFIN=2 ;;
+						2 )
+							build1 $SRCDIR $PACKNAME
+							[ $? != 0 ] && exit 1 ;;
+					esac
+					continue ;;
 
 				fontconfig )
 					case $LISTFILE in
@@ -5248,12 +5262,12 @@ while (( LINE < $FILELEN )); do
 					case $ARCH in
 						x86_64 )
 							# remove temporaly openssl-1.1.x to enable building
-							removepkg openssl-1.1.0h-x86_64-2 openssl-solibs-1.1.0h-x86_64-2
+							removepkg openssl-1.1.0i-x86_64-2 openssl-solibs-1.1.0i-x86_64-2
 							build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 ;;
 						* )
 							# remove temporaly openssl-1.1.x to enable building
-							removepkg openssl-1.1.0h-i586-2 openssl-solibs-1.1.0h-i586-2
+							removepkg openssl-1.1.0i-i586-2 openssl-solibs-1.1.0i-i586-2
 							build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 ;;
 					esac

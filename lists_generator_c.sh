@@ -514,6 +514,7 @@ cat > $SFS/sources/build4_s.list << "EOF"
 a dhcpcd_up
 l python-six
 d opencl-headers
+l jmtpfs
 l ocl-icd
 l giflib
 l parted

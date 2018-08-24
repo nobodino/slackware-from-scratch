@@ -206,7 +206,7 @@ copy_src () {
     cd $RDIR/a/findutils
 	export FINDVER=${VERSION:-$(echo findutils-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/a/findutils/findutils-$FINDVER.tar.?z $SRCDIR || exit 1
-	cp -v $RDIR/a/findutils/findutils-glibc-2.28.patch.gz $SRCDIR || exit 1
+#	cp -v $RDIR/a/findutils/findutils-glibc-2.28.patch.gz $SRCDIR || exit 1
     cd $RDIR/a/gawk
 	export GAWKVER=${VERSION:-$(echo gawk-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/a/gawk/gawk-$GAWKVER.tar.?z $SRCDIR || exit 1
@@ -262,9 +262,9 @@ copy_src () {
 	export SEDVER=${VERSION:-$(echo sed-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/a/sed/sed-$SEDVER.tar.?z $SRCDIR || exit 1
     cd $RDIR/a/tar
-	export TARVER=${VERSION:-$(echo tar-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
-    cp -v $RDIR/a/tar/tar-$TARVER.tar.?z $SRCDIR || exit 1
-    cp -v $RDIR/a/tar/tar-1.13.tar.?z $SRCDIR || exit 1
+	export TARVER=${VERSION:-$(echo tar-*.tar.xz | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
+    cp -v $RDIR/a/tar/tar-$TARVER.tar.xz $SRCDIR || exit 1
+    cp -v $RDIR/a/tar/tar-1.13.tar.gz $SRCDIR || exit 1
     cp -v $RDIR/a/tar/tar-1.13.bzip2.diff.gz $SRCDIR || exit 1
     cd $RDIR/ap/texinfo
 	export TEXINFOVER=${VERSION:-$(echo texinfo-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
@@ -742,7 +742,10 @@ findutils_build () {
 #*****************************
     tar xvf findutils-$FINDVER.tar.?z && cd findutils-$FINDVER
 
-	zcat ../findutils-glibc-2.28.patch.gz | patch -Esp1 --verbose || exit 1
+# 	patch to build with glibc-2.28 (from LFS)
+	sed -i 's/IO_ftrylockfile/IO_EOF_SEEN/' gl/lib/*.c
+	sed -i '/unistd/a #include <sys/sysmacros.h>' gl/lib/mountlist.c
+	echo "#define _IO_IN_BACKUP 0x100" >> gl/lib/stdio-impl.h
 
     ./configure --prefix=/tools || exit 1
 
@@ -945,7 +948,7 @@ lzip_build () {
 
 tar_slack_build () {
 #*****************************
-    tar xvf tar-1.13.tar.?z && cd tar-1.13
+    tar xvf tar-1.13.tar.gz && cd tar-1.13
 
     ./configure --prefix=/usr --disable-nls && zcat ../tar-1.13.bzip2.diff.gz | patch -p1 || exit 1
     make || exit 1
