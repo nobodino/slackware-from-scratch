@@ -514,7 +514,6 @@ cat > $SFS/sources/build4_s.list << "EOF"
 a dhcpcd_up
 l python-six
 d opencl-headers
-l jmtpfs
 l ocl-icd
 l giflib
 l parted
@@ -941,6 +940,7 @@ l libsamplerate
 l liblastfm
 l libmng
 l libmtp
+l jmtpfs
 l libnih
 l libnjb
 l libodfgen
