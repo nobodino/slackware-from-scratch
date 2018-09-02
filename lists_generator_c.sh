@@ -290,7 +290,6 @@ n tcp_wrappers
 n openssh
 n ncftp
 n bind
-n dhcpcd 
 n dhcp
 l gmp
 n gnutls
