@@ -1,0 +1,133 @@
+Submitted By:            Douglas R. Reno <renodr at linuxfromscratch dot org>
+Date:                    2018-08-08
+Initial Package Version: 1.42
+Upstream Status:         Unknown
+Origin:                  Self
+Description:             Fixes building sg3_utils with glibc-2.28 due to major and minor.
+
+diff -Naurp sg3_utils-1.42.orig/lib/sg_pt_linux.c sg3_utils-1.42/lib/sg_pt_linux.c
+--- sg3_utils-1.42.orig/lib/sg_pt_linux.c	2015-12-20 10:23:44.000000000 -0600
++++ sg3_utils-1.42/lib/sg_pt_linux.c	2018-08-08 15:14:35.934759325 -0500
+@@ -17,9 +17,11 @@
+ #include <errno.h>
+ #include <fcntl.h>
+ #include <sys/ioctl.h>
+-#include <sys/types.h>
+ #include <sys/stat.h>
+-
++#include <sys/sysmacros.h> /* to define the 'major' macro */
++#ifndef major
++#include <sys/types.h>
++#endif
+ 
+ #ifdef HAVE_CONFIG_H
+ #include "config.h"
+diff -Naurp sg3_utils-1.42.orig/src/sg_dd.c sg3_utils-1.42/src/sg_dd.c
+--- sg3_utils-1.42.orig/src/sg_dd.c	2016-01-27 09:13:35.000000000 -0600
++++ sg3_utils-1.42/src/sg_dd.c	2018-08-08 15:15:56.521685377 -0500
+@@ -42,13 +42,15 @@
+ #define __STDC_FORMAT_MACROS 1
+ #include <inttypes.h>
+ #include <sys/ioctl.h>
+-#include <sys/types.h>
+ #include <sys/stat.h>
+-#include <sys/sysmacros.h>
+ #include <sys/time.h>
+ #include <sys/file.h>
+-#include <linux/major.h>
++#include <sys/sysmacros.h>
++#ifndef major
++#include <sys/types.h>
++#endif
+ #include <linux/fs.h>   /* <sys/mount.h> */
++#include <linux/major.h>
+ 
+ #ifdef HAVE_CONFIG_H
+ #include "config.h"
+diff -Naurp sg3_utils-1.42.orig/src/sg_map26.c sg3_utils-1.42/src/sg_map26.c
+--- sg3_utils-1.42.orig/src/sg_map26.c	2016-01-27 09:13:35.000000000 -0600
++++ sg3_utils-1.42/src/sg_map26.c	2018-08-08 15:16:54.596911428 -0500
+@@ -31,8 +31,11 @@
+ #include <dirent.h>
+ #include <libgen.h>
+ #include <sys/ioctl.h>
+-#include <sys/types.h>
+ #include <sys/stat.h>
++#include <sys/sysmacros.h> /* new location for both major and minor */
++#ifndef major
++#include <sys/types.h>
++#endif
+ #include <linux/major.h>
+ 
+ #ifdef HAVE_CONFIG_H
+diff -Naurp sg3_utils-1.42.orig/src/sgm_dd.c sg3_utils-1.42/src/sgm_dd.c
+--- sg3_utils-1.42.orig/src/sgm_dd.c	2016-01-27 09:13:35.000000000 -0600
++++ sg3_utils-1.42/src/sgm_dd.c	2018-08-08 15:19:26.338889216 -0500
+@@ -46,11 +46,13 @@
+ #define __STDC_FORMAT_MACROS 1
+ #include <inttypes.h>
+ #include <sys/ioctl.h>
+-#include <sys/types.h>
+ #include <sys/stat.h>
+-#include <sys/sysmacros.h>
+-#include <sys/mman.h>
+ #include <sys/time.h>
++#include <sys/mman.h>
++#include <sys/sysmacros.h>
++#ifndef major
++#include <sys/types.h>
++#endif
+ #include <linux/major.h>
+ #include <linux/fs.h>   /* <sys/mount.h> */
+ 
+diff -Naurp sg3_utils-1.42.orig/src/sgp_dd.c sg3_utils-1.42/src/sgp_dd.c
+--- sg3_utils-1.42.orig/src/sgp_dd.c	2016-01-27 09:13:35.000000000 -0600
++++ sg3_utils-1.42/src/sgp_dd.c	2018-08-08 15:19:57.430474875 -0500
+@@ -41,9 +41,11 @@
+ #define __STDC_FORMAT_MACROS 1
+ #include <inttypes.h>
+ #include <sys/ioctl.h>
+-#include <sys/types.h>
+ #include <sys/stat.h>
+ #include <sys/sysmacros.h>
++#ifndef major
++#include <sys/types.h>
++#endif
+ #include <sys/time.h>
+ #include <linux/major.h>
+ #include <linux/fs.h>   /* <sys/mount.h> */
+diff -Naurp sg3_utils-1.42.orig/src/sg_read.c sg3_utils-1.42/src/sg_read.c
+--- sg3_utils-1.42.orig/src/sg_read.c	2016-01-27 09:13:35.000000000 -0600
++++ sg3_utils-1.42/src/sg_read.c	2018-08-08 15:17:37.140344463 -0500
+@@ -34,9 +34,11 @@
+ #define __STDC_FORMAT_MACROS 1
+ #include <inttypes.h>
+ #include <sys/ioctl.h>
+-#include <sys/types.h>
+ #include <sys/stat.h>
+ #include <sys/sysmacros.h>
++#ifndef major
++#include <sys/types.h>
++#endif
+ #include <sys/mman.h>
+ #include <sys/time.h>
+ #include <linux/major.h>
+diff -Naurp sg3_utils-1.42.orig/src/sg_xcopy.c sg3_utils-1.42/src/sg_xcopy.c
+--- sg3_utils-1.42.orig/src/sg_xcopy.c	2016-02-01 22:21:27.000000000 -0600
++++ sg3_utils-1.42/src/sg_xcopy.c	2018-08-08 15:18:31.835615563 -0500
+@@ -45,11 +45,13 @@
+ #define __STDC_FORMAT_MACROS 1
+ #include <inttypes.h>
+ #include <sys/ioctl.h>
+-#include <sys/types.h>
+ #include <sys/stat.h>
+-#include <sys/sysmacros.h>
+ #include <sys/time.h>
+ #include <sys/file.h>
++#include <sys/sysmacros.h>
++#ifndef major
++#include <sys/types.h>
++#endif
+ #include <linux/major.h>
+ #include <linux/fs.h>   /* <sys/mount.h> */
+ 
