@@ -611,10 +611,12 @@ esac
 	../configure \
 		--prefix=/tools \
 		--disable-multilib \
-		--enable-languages=ada || exit 1
+		--enable-languages=c,c++,ada || exit 1
 
     make || exit 1
-    make gnattools || exit 1
+	make bootstrap || exit 1
+    make -C gcc gnatlib || exit 1
+    make -C gcc gnattools || exit 1
     make install || exit 1
 	export PATH=$PATH_HOLD
     cd ../..
