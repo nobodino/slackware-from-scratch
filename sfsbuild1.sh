@@ -5263,12 +5263,12 @@ while (( LINE < $FILELEN )); do
 					case $ARCH in
 						x86_64 )
 							# remove temporaly openssl-1.1.x to enable building
-							removepkg openssl-1.1.0i-x86_64-2 openssl-solibs-1.1.0i-x86_64-2
+							removepkg openssl-1.1.1-x86_64-1 openssl-solibs-1.1.1-x86_64-1
 							build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 ;;
 						* )
 							# remove temporaly openssl-1.1.x to enable building
-							removepkg openssl-1.1.0i-i586-2 openssl-solibs-1.1.0i-i586-2
+							removepkg openssl-1.1.1-i586-1 openssl-solibs-1.1.1-i586-1
 							build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 ;;
 					esac
