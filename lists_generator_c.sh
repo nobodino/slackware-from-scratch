@@ -339,6 +339,7 @@ x x11-lib
 l gd
 x x11-xcb
 l startup-notification
+l zstd
 x libdrm
 x libva
 x libva-utils
