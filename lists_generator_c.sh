@@ -332,6 +332,7 @@ l sg3_utils
 a utempter
 d swig
 l libedit
+d oprofile
 d llvm
 d llvm
 l icu4c
