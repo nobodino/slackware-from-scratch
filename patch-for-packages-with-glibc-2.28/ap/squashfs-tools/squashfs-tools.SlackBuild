@@ -1,6 +1,5 @@
 #!/bin/bash
-
-# Copyright 2015  Eric Hameleers, Eindhoven, NL
+# Copyright 2015, 2018  Eric Hameleers, Eindhoven, NL
 # Copyright 2017, 2018  Patrick J. Volkerding, Sebeka, Minnesota, USA
 # All rights reserved.
 #
@@ -24,8 +23,8 @@
 cd $(dirname $0) ; CWD=$(pwd)
 
 PKGNAM=squashfs-tools
-VERSION=${VERSION:-$(echo squashfs*.tar.xz | cut -b9- | rev | cut -f3- -d . | rev)}
-BUILD=${BUILD:-4}
+VERSION=${VERSION:-$( echo squashfs-tools*.tar.?z | cut -d- -f3- | rev | cut -f3- -d . | rev )}
+BUILD=${BUILD:-1}
 
 # Automatically determine the architecture we're building on:
 if [ -z "$ARCH" ]; then
@@ -75,16 +74,9 @@ rm -rf $PKG
 mkdir -p $TMP $PKG
 
 cd $TMP
-rm -rf squashfs${VERSION}
-tar xvf $CWD/squashfs${VERSION}.tar.xz || exit 1
-cd squashfs${VERSION} || exit 1
-
-zcat $CWD/0001-kfreebsd.patch.gz | patch -p1 --verbose || exit 1
-zcat $CWD/0002-fix_phys_mem_calculation.patch.gz | patch -p1 --verbose || exit 1
-zcat $CWD/0003-CVE-2015-4645_and_CVE-2015-4646.patch.gz | patch -p1 --verbose || exit 1
-zcat $CWD/0004-unsquashfs-add-support-for-LZMA-magics.patch.gz | patch -p1 --verbose || exit 1
-zcat $CWD/0006-uptream-fix-race.patch.gz | patch -p1 --verbose || exit 1
-zcat $CWD/0007-fix-2GB-limit-in-mksquashfs.patch.gz | patch -p1 --verbose || exit 1
+rm -rf ${PKGNAM}-${VERSION}
+tar xvf $CWD/${PKGNAM}-${VERSION}.tar.?z || exit 1
+cd ${PKGNAM}-${VERSION} || exit 1
 
 # patch to build with glibc-2.28
 zcat $CWD/squashfs4.3-glibc-2.28.patch.gz | patch -Esp1 --verbose || exit 1
@@ -105,6 +97,7 @@ make $NUMJOBS \
   XZ_SUPPORT="1" \
   LZO_SUPPORT="1" \
   LZMA_XZ_SUPPORT="1" \
+  ZSTD_SUPPORT="1" \
   COMP_DEFAULT="xz" || exit 1
 
 # Install:
@@ -117,13 +110,11 @@ make install INSTALL_DIR=$PKG/usr/bin || exit 1
 )
 
 # Add a documentation directory:
+cd ..
 mkdir -p $PKG/usr/doc/${PKGNAM}-$VERSION
-( cd ..
-  cp -a \
-    ACKNOWLEDGEMENTS CHANGES COPYING DONATIONS INSTALL \
-    README* PERFORMANCE.README *.example \
-    $PKG/usr/doc/${PKGNAM}-$VERSION
-)
+cp -a \
+  ACKNOWLEDGEMENTS CHANGES COPYING* INSTALL *README* \
+  $PKG/usr/doc/${PKGNAM}-$VERSION
 
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
