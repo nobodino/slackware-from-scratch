@@ -757,6 +757,7 @@ l fribidi
 l talloc
 l tdb
 l tevent
+l lmdb
 n samba
 l v4l-utils
 l libpng
