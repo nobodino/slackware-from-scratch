@@ -758,6 +758,7 @@ l talloc
 l tdb
 l tevent
 l lmdb
+n gpgme
 n samba
 l v4l-utils
 l libpng
@@ -801,7 +802,6 @@ n epic5
 n ethtool
 n fetchmail
 n getmail
-n gpgme
 n htdig
 n icmpinfo
 n iftop
