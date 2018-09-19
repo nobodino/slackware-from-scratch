@@ -1,0 +1,383 @@
+#!/bin/bash
+
+# Copyright 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2018  Patrick J. Volkerding, Sebeka, Minnesota, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# Thanks to the folks at the Mozilla Foundation for permission to
+# distribute this, and for all the great work!  :-)
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=mozilla-firefox
+VERSION=$(basename $(ls firefox-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev) .source)
+RELEASEVER=$(echo $VERSION | cut -f 1 -d r | cut -f 1 -d b | cut -f 1 -d e)
+BUILD=${BUILD:-2}
+
+# Specify this variable for a localized build.
+# For example, to build a version of Firefox with Italian support, run
+# the build script like this:
+#
+# MOZLOCALIZE=it ./mozilla-firefox.SlackBuild
+#
+MOZLOCALIZE=${MOZLOCALIZE:-}
+
+# Without LANG=C, building the Python environment may fail with:
+# "UnicodeDecodeError: 'ascii' codec can't decode byte 0xe2 in position 36: ordinal not in range(128)"
+LANG=C
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i686 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  if [ -z $MOZLOCALIZE ]; then
+    echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  else
+    echo "$PKGNAM-$VERSION-$ARCH-${BUILD}_$MOZLOCALIZE.txz"
+  fi
+  exit 0
+fi
+
+# Firefox has been requiring more and more memory, especially while linking
+# libxul. If it fails to build natively on x86 32-bit, it can be useful to
+# attempt the build using an x86_64 kernel and a 32-bit userspace. Detect this
+# situation and set the ARCH to i686. Later in the script we'll add some
+# options to the .mozconfig so that the compile will do the right thing.
+if [ "$(uname -m)" = "x86_64" -a "$(file -L /usr/bin/gcc | grep 80386 | grep 32-bit)" != "" ]; then
+  COMPILE_X86_UNDER_X86_64=true
+  ARCH=i686
+  # Also use the gold linker for this:
+  PATH="$(pwd)/gold:$PATH"
+  export CC=${CC:-"gcc -B$(pwd)/gold"}
+  export CXX=${CXX:-"g++ -B$(pwd)/gold"}
+elif [ "$ARCH" = "i686" ]; then
+  # This might also help with the linker memory situation on some $ARCH. Feel free
+  # to match any other $ARCH that could benefit from this.
+  SLKLDFLAGS=" -Wl,--as-needed -Wl,--reduce-memory-overheads -Wl,--no-keep-memory -Wl,--stats"
+  export LDFLAGS="$SLKLDFLAGS"
+  export MOZ_LINK_FLAGS="$SLKLDFLAGS"
+else
+  # Link using gold.  This also helps prevent running out of memory on 32-bit
+  # systems, and avoids a recurring build failure with GNU ld on other systems.
+  PATH="$(pwd)/gold:$PATH"
+  export CC=${CC:-"gcc -B$(pwd)/gold"}
+  export CXX=${CXX:-"g++ -B$(pwd)/gold"}
+fi
+
+# Put Rust objects on a diet to keep the linker from running into memory
+# issues (especially on 32-bit):
+export RUSTFLAGS="-Cdebuginfo=0"
+
+# Use PGO?  Doubles the time and drive space requirements for the build,
+# but should provide a performance increase.  How much depends on which
+# benchmarks you believe, but I've typically seen around 2.5%.  I've also
+# seen some which say it can be negligably (a fraction of a percent) slower
+# with this enganged.  The anecdotal reports usually say there's a noticable
+# improvement in overall responsiveness.  Seems like a good bet if you have
+# the time and your system is able to handle it.  Set the variable to
+# anything else prior to the build to compile Firefox in less time (but
+# without the possible benefits of Profile-Guided Optimization).
+#
+# NOTE:  The 23.0 release fails to compile with a GLib assert error if PGO
+# is enabled, so it is being disabled by default.  I can't say I ever noticed
+# a lot of difference with this anyway (other than a much, much longer compile
+# time.  But pass PGO=yes to the SlackBuild if you want to try it.
+#if [ "$ARCH" = "x86_64" ]; then
+#  PGO=${PGO:-yes}
+#else
+#  # 32-bit systems have problems compiling with PGO, as the per-process
+#  # memory requirements are too large.  Possibly compiling with a 64-bit
+#  # kernel could be a workaround for this, but for now we will default to
+#  # using PGO only for x86_64.
+#  PGO=${PGO:-no}
+#fi
+#
+# PGO is disabled by default:
+PGO=${PGO:-no}
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS=""
+  LIBDIRSUFFIX=""
+  OPTIMIZE=${OPTIMIZE:-"-O1"}
+elif [ "$ARCH" = "i686" ]; then
+  SLKCFLAGS=""
+  LIBDIRSUFFIX=""
+  OPTIMIZE=${OPTIMIZE:-"-O1"}
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS=""
+  LIBDIRSUFFIX=""
+  OPTIMIZE=${OPTIMIZE:-"-O1"}
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-fPIC"
+  LIBDIRSUFFIX="64"
+  OPTIMIZE=${OPTIMIZE:-"-O1"}
+elif [ "$ARCH" = "arm" ]; then
+  SLKCFLAGS="-march=armv4 -mtune=xscale"
+  LIBDIRSUFFIX=""
+  OPTIMIZE=${OPTIMIZE:-"-O1"}
+elif [ "$ARCH" = "armel" ]; then
+  SLKCFLAGS="-march=armv4t"
+  LIBDIRSUFFIX=""
+  OPTIMIZE=${OPTIMIZE:-"-O1"}
+else
+  SLKCFLAGS=""
+  LIBDIRSUFFIX=""
+  OPTIMIZE=${OPTIMIZE:-"-O1"}
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-mozilla-firefox
+
+# If there is a private Google API key available at compile time, use
+# it to enable support for Google Safe Browsing. For Slackware builds,
+# we use a private key issued for the Slackware project. If you are
+# rebuilding and need this support, or you are producing your own
+# distribution, you may obtain your own Google API key at no charge by
+# following these instructions:
+# https://bugzilla.mozilla.org/show_bug.cgi?id=1377987#c0
+if [ -r /root/google-api-key ]; then
+  GOOGLE_API_KEY="--with-google-api-keyfile=/root/google-api-key"
+fi
+
+# If not specified, figure out if this is a beta or a release
+MOZVERS=${MOZVERS:-release}
+if echo $VERSION | grep -q b ; then MOZVERS=beta ; fi
+
+NUMJOBS=${NUMJOBS:-" -j7 "}
+
+rm -rf $PKG
+mkdir -p $TMP $PKG/usr/lib${LIBDIRSUFFIX}
+
+# We need to use the incredibly ancient autoconf-2.13 for this  :/
+( cd $CWD/autoconf ; ./autoconf.build )
+PATH=$TMP/autoconf-tmp/usr/bin:$PATH
+
+cd $TMP
+rm -rf firefox-$RELEASEVER
+# Unpack this in a subdirectory to prevent changing permissions on /tmp:
+rm -rf firefox-unpack
+mkdir firefox-unpack
+cd firefox-unpack
+tar xvf $CWD/firefox-$VERSION.source.tar.?z || exit 1
+mv * ..
+cd ..
+rm -rf firefox-unpack
+cd firefox-$RELEASEVER || exit 1
+
+# Prevent failures building gkrust by suppressing useless warnings:
+sed -i.allow-warnings -e '/#!\[deny(warnings)\]/a #![allow(unused_imports)]' \
+  servo/components/style/lib.rs
+
+# Retain GTK+ v2 scrolling behavior:
+zcat $CWD/ff.ui.scrollToClick.diff.gz | patch -p1 --verbose || exit 1
+
+# Fetch localization, if requested
+# https://bugzilla.mozilla.org/show_bug.cgi?id=1256955
+if [ ! -z $MOZLOCALIZE ]; then
+  LOC_URL="http://ftp.mozilla.org/pub/firefox/candidates/$RELEASEVER-candidates/build1/l10n_changesets.txt"
+  LOC_COMMIT=$(wget -q -O - $LOC_URL | grep ^$MOZLOCALIZE | cut -d\  -f2)
+  hg clone https://hg.mozilla.org/l10n-central/$MOZLOCALIZE -r $LOC_COMMIT
+fi
+
+# Patch mimeTypes.rdf
+# Uncomment this if you want to use the patch; otherwise, we overwrite the
+# mimeTypes.rdf inside the package directory later
+# zcat $CWD/mozilla-firefox-mimeTypes-fix.diff.gz | patch -p1 || exit 1
+
+# patch to build with rust-1.29.0
+zcat $CWD/firefox.patch.gz | patch -Esp1 --verbose || exit 1
+
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \; -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \;
+
+# Our building options, in a configure-like display ;)
+OPTIONS="\
+  --enable-official-branding \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --with-system-zlib \
+  --enable-alsa \
+  --enable-application=browser \
+  --enable-default-toolkit=cairo-gtk3 \
+  --enable-startup-notification \
+  $GOOGLE_API_KEY \
+  --enable-strip \
+  --enable-cpp-rtti \
+  --enable-accessibility \
+  --disable-crashreporter \
+  --disable-debug"
+# Complains about missing APNG support in Slackware's libpng:
+# --with-system-png \
+# This option breaks mozilla-12.0:
+# --enable-system-cairo \
+# NOTE:  It probably reduces bugs to use the bundled library versions,
+# so in general we will not --enable-system-libraries.
+# But since system zlib has been used for a long time and isn't a moving
+# target, we'll leave that one as-is.
+if [ ! -z $MOZLOCALIZE ]; then
+  OPTIONS=$OPTIONS" \
+  --enable-ui-locale=$MOZLOCALIZE
+  --with-l10n-base=.."
+  # There are no dictionaries in localized builds
+  sed -i \
+    -e "/@BINPATH@\/dictionaries\/\*/d" \
+    -e "/@RESPATH@\/dictionaries\/\*/d" \
+    browser/installer/package-manifest.in || exit 1
+fi
+
+export MOZILLA_OFFICIAL="1"
+export BUILD_OFFICIAL="1"
+export MOZ_PHOENIX="1"
+export MOZ_PACKAGE_JSSHELL="1"
+export CFLAGS="$SLKCFLAGS"
+export CXXFLAGS="$SLKCFLAGS"
+export MOZ_MAKE_FLAGS="$NUMJOBS"
+
+# Clear some variables that could break the build
+unset DBUS_SESSION_BUS_ADDRESS ORBIT_SOCKETDIR SESSION_MANAGER \
+  XDG_SESSION_COOKIE XAUTHORITY MAKEFLAGS
+
+# Assemble our .mozconfig, we use this method for building, seems
+# needed for PGO.
+echo ". \$topsrcdir/browser/config/mozconfig" > .mozconfig
+
+# Mozilla devs enforce using an objdir for building
+# https://developer.mozilla.org/en/Configuring_Build_Options#Building_with_an_objdir
+mkdir obj
+echo "mk_add_options MOZ_OBJDIR=$(pwd)/obj" >> .mozconfig
+
+if [ "$MOZLOCALIZE" ]; then
+  echo "mk_add_options MOZ_CO_LOCALES=\"$MOZLOCALIZE\"" >> .mozconfig
+fi
+
+# Tell .mozconfig about the selected compiler:
+echo "export CC=\"${CC}\"" >> .mozconfig
+echo "export CXX=\"${CXX}\"" >> .mozconfig
+
+# Set options for $OPTIMIZE:
+echo "ac_add_options --enable-optimize=\"${OPTIMIZE}\"" >> .mozconfig
+
+if [ "$COMPILE_X86_UNDER_X86_64" = "true" ]; then
+  # Compile for i686 under an x86_64 kernel:
+  echo "ac_add_options --host=i686-pc-linux-gnu" >> .mozconfig
+  echo "ac_add_options --target=i686-pc-linux-gnu" >> .mozconfig
+fi
+
+# Add the $OPTIONS above to .mozconfig:
+for option in $OPTIONS; do echo "ac_add_options $option" >> .mozconfig; done
+
+# https://developer.mozilla.org/en-US/docs/Building_with_Profile-Guided_Optimization
+# Thanks to ArchLinux and Gentoo for the additional hints.
+if [ "$PGO" = "yes" ]; then
+  # Do a PGO build, double time and disk space but worth it.
+  export MOZ_PGO=1
+  echo "mk_add_options PROFILE_GEN_SCRIPT='EXTRA_TEST_ARGS=10 \$(MAKE) -C \$(MOZ_OBJDIR) pgo-profile-run'" >> .mozconfig
+  export DISPLAY=:99
+  # Launch Xvfb to let the profile scripts run in a X session.
+  # Ugly note: if the build breaks you may want to do a "killall Xvfb".
+  Xvfb -nolisten tcp -extension GLX -screen 0 1280x1024x24 $DISPLAY &
+  dbus-launch --exit-with-session ./mach build || exit 1
+  kill $! || true
+else
+  # Do a normal build
+  echo "ac_add_options --disable-tests" >> .mozconfig
+  ./mach build || exit 1
+fi
+
+./mach buildsymbols || exit 1
+DESTDIR=$PKG ./mach install || exit 1
+
+# We don't need these (just symlinks anyway):
+rm -rf $PKG/usr/lib${LIBDIRSUFFIX}/firefox-devel-$RELEASEVER
+
+# Nor these:
+rm -rf $PKG/usr/include
+
+( cd $PKG/usr/lib${LIBDIRSUFFIX}/firefox-$RELEASEVER
+  #mv defaults/profile/mimeTypes.rdf defaults/profile/mimeTypes.rdf.orig || exit 1
+  if [ -d defaults/profile ]; then
+    zcat $CWD/mimeTypes.rdf > defaults/profile/mimeTypes.rdf || exit 1
+  fi
+  # OK, this patch is useless on 7.x.  We'll float without it and see what happens.
+  # Perhaps it won't make a difference or should be worked around elsewhere.
+  #zcat $CWD/firefox.moz_plugin_path.diff.gz \
+  #  | sed -e "s#usr/lib#usr/lib${LIBDIRSUFFIX}#g" \
+  #  | patch -p1 --verbose --backup --suffix=.orig || exit 1
+  # Clean up if the above patch was successful:
+  #rm -f firefox.orig
+) || exit
+
+mkdir -p $PKG/usr/lib${LIBDIRSUFFIX}/mozilla/plugins
+mkdir -p $PKG/usr/share/applications
+cat $CWD/mozilla-firefox.desktop > $PKG/usr/share/applications/mozilla-firefox.desktop
+
+# These files/directories are usually created if Firefox is run as root,
+# which on many systems might (and possibly should) be never.  Therefore, if we
+# don't see them we'll put stubs in place to prevent startup errors.
+( cd $PKG/usr/lib${LIBDIRSUFFIX}/firefox-$RELEASEVER
+  if [ -d extensions/talkback\@mozilla.org ]; then
+    if [ ! -r extensions/talkback\@mozilla.org/chrome.manifest ]; then
+      echo > extensions/talkback\@mozilla.org/chrome.manifest
+    fi
+  fi
+  if [ ! -d updates ]; then
+    mkdir -p updates/0
+  fi
+)
+
+# Need some default icons in the right place:
+for i in 16 22 24 32 48 256; do
+  install -m 0644 -D browser/branding/official/default${i}.png \
+    $PKG/usr/share/icons/hicolor/${i}x${i}/apps/firefox.png
+done
+mkdir -p $PKG/usr/share/pixmaps
+( cd $PKG/usr/share/pixmaps ; ln -sf /usr/share/icons/hicolor/256x256/apps/firefox.png . )
+mkdir -p $PKG/usr/lib$LIBDIRSUFFIX/firefox-$RELEASEVER/chrome/icons/default
+install -m 644 browser/branding/official/default16.png \
+  $PKG/usr/lib$LIBDIRSUFFIX/firefox-$RELEASEVER/icons/
+install -m 644 browser/branding/official/default16.png \
+  $PKG/usr/lib$LIBDIRSUFFIX/firefox-$RELEASEVER/chrome/icons/default/
+
+# Copy over the LICENSE
+install -p -c -m 644 LICENSE $PKG/usr/lib${LIBDIRSUFFIX}/firefox-$RELEASEVER/
+
+mkdir $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+if [ -z $MOZLOCALIZE ]; then
+  /sbin/makepkg -l y -c n $TMP/mozilla-firefox-$VERSION-$ARCH-$BUILD.txz
+else
+  /sbin/makepkg -l y -c n $TMP/mozilla-firefox-$VERSION-$ARCH-${BUILD}_$MOZLOCALIZE.txz
+fi
+
