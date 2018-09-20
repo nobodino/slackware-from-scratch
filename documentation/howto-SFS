@@ -103,7 +103,7 @@ the following command:
    and adapted to slackware: some packages needed to perform tests in
    chapter 6 of LFS have been skipped.
 
-   In the available version building gnat-ada embedded is disabled, it works 
+   In the available version building gnat-ada embedded is enabled, it works 
    but when building SFS the system doesn't seem to see the gnat compiler,
    maybe someone will be able to make it work, so that the "pre-gcc" and
    "post-gcc" won't be necessary anymore.
@@ -133,6 +133,12 @@ On my machine the full build takes about 15 hours. (nobodino)
 On my machine the full build takes about 17 hours. (worsel)
 Your connection to internet must be active.
 
+notice: if you build SFS on slackware-14.2, you won't be able to build ipset, I 
+think while building you need to have the same kernel, which is generally not 
+the case with SFS (4.14.x series) and slackware-14.2 (4.4.x series). You may 
+disable it in build4_s.list by adding '#' in front of 'n ipset' line. You will
+able to build it in real environment, after you reboot your new SFS system. 
+
 7) at the end of the building, adjust "my_profile.sh" to your needs, and 
    execute the script before rebooting. You wil have to update grub (or 
    whatever bootloader you use) so that your boot loader allow you to
@@ -148,6 +154,7 @@ Your connection to internet must be active.
 # ./mount-sfs.sh
 # ./chroot1.sh
 # cd /sources
+
 You can go on building your system.
 
 # at the end to umount the $SFS/{dev,run,proc,sys}

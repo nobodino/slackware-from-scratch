@@ -735,6 +735,8 @@ LCAP=1
 LKMO=1
 # init readline variable
 LREA=1
+# init findutils variable
+LFIN=1
 
 #**************************************************************
 # read the length of build.list and affect SRCDIR and PACKNAME
@@ -776,6 +778,18 @@ while (( LINE < $FILELEN )); do
 				end1 )
 					message_end1
 					clean_tmp1 ;;
+
+				findutils )
+					case $LFIN in
+						1 )
+							build $SRCDIR $PACKNAME
+							[ $? != 0 ] && exit 1
+							LFIN=2 ;;
+						2 )
+							build1 $SRCDIR $PACKNAME
+							[ $? != 0 ] && exit 1 ;;
+					esac
+					continue ;;
 
 				kernel-all )
 					kernel_build_all

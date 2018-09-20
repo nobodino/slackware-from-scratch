@@ -388,6 +388,37 @@ cat > $PATCHDIR/cmakeSB.patch << "EOF"
 EOF
 }
 
+patch_findutils_c () {
+#******************************************************************
+cat > $PATCHDIR/findutilsSB.patch << "EOF"
+--- findutils.SlackBuild.old	2018-08-23 01:11:29.861123485 +0200
++++ findutils.SlackBuild	2018-08-23 17:40:53.260735799 +0200
+@@ -97,22 +97,6 @@
+ # like to be yelled at.
+ zcat $CWD/findutils.no.default.options.warnings.diff.gz | patch -p1 --verbose || exit 1
+ 
+-# Add patches from Fedora to finally make findutils-4.6.0 usable:
+-zcat $CWD/patches/findutils-4.4.2-xautofs.patch.gz | patch -p1 --verbose || exit 1
+-zcat $CWD/patches/findutils-4.5.13-warnings.patch.gz | patch -p1 --verbose || exit 1
+-zcat $CWD/patches/findutils-4.5.15-no-locate.patch.gz | patch -p1 --verbose || exit 1
+-zcat $CWD/patches/findutils-4.6.0-exec-args.patch.gz | patch -p1 --verbose || exit 1
+-zcat $CWD/patches/findutils-4.6.0-fts-update.patch.gz | patch -p1 --verbose || exit 1
+-zcat $CWD/patches/findutils-4.6.0-gnulib-fflush.patch.gz | patch -p1 --verbose || exit 1
+-zcat $CWD/patches/findutils-4.6.0-gnulib-makedev.patch.gz | patch -p1 --verbose || exit 1
+-zcat $CWD/patches/findutils-4.6.0-internal-noop.patch.gz | patch -p1 --verbose || exit 1
+-zcat $CWD/patches/findutils-4.6.0-leaf-opt.patch.gz | patch -p1 --verbose || exit 1
+-zcat $CWD/patches/findutils-4.6.0-man-exec.patch.gz | patch -p1 --verbose || exit 1
+-zcat $CWD/patches/findutils-4.6.0-mbrtowc-tests.patch.gz | patch -p1 --verbose || exit 1
+-zcat $CWD/patches/findutils-4.6.0-test-lock.patch.gz | patch -p1 --verbose || exit 1
+-
+-autoreconf -vif
+-
+ CFLAGS="$SLKCFLAGS" \
+ ./configure \
+   --prefix=/usr \
+EOF
+}
+
 patch_kmod_c () {
 #******************************************************************
 cat > $PATCHDIR/kmodSB.patch << "EOF"
@@ -495,6 +526,17 @@ if [ ! -f $SRCDIR/d/cmake/cmake.SlackBuild.old ]; then
 fi
 }
 
+execute_findutils() {
+#******************************************************************
+if [ ! -f $SRCDIR/a/findutils/findutils.SlackBuild.old ]; then
+	cp -v $SRCDIR/a/findutils/findutils.SlackBuild $SRCDIR/a/findutils/findutils.SlackBuild.old
+	(
+		cd $SRCDIR/a/findutils
+		zcat $PATCHDIR/findutilsSB.patch.gz |patch findutils.SlackBuild --verbose
+	)
+fi
+}
+
 execute_kmod () {
 #******************************************************************
 if [ ! -f $SRCDIR/a/kmod/kmod.SlackBuild.old ]; then
@@ -560,6 +602,7 @@ do
 	then
 		rm -rvf $PATCHDIR && mkdir -pv $PATCHDIR
 		patch_cmake_c
+		patch_findutils_c
 		patch_kmod_c
 		patch_libcap_c
 		patch_pkg_config_c
@@ -594,6 +637,7 @@ do
 	then
 
 		execute_cmake # 2 pass
+		execute_findutils # 2 pass
 		execute_kmod # 2 pass
 		execute_libcap # 2 pass
 		execute_pkg_config # 2 pass
@@ -754,7 +798,7 @@ d bison
 d autoconf
 d libtool
 a findutils
-a end1
+n lynx
 a end1
 EOF
 }
