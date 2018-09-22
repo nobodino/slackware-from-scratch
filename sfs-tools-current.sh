@@ -279,7 +279,7 @@ copy_src () {
     cp -v $RDIR/a/xz/xz-$XZVER.tar.xz $SRCDIR || exit 1
 	cd $RDIR/others/isl
 	export ISLVER=${VERSION:-$(echo isl-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
-   cp -v $RDIR/others/isl/isl-$ISLVER.tar.xz $SRCDIR || exit 1
+    cp -v $RDIR/others/isl/isl-$ISLVER.tar.xz $SRCDIR || exit 1
 	case $(uname -m) in
 		i686 ) 
 			if [ -f $RDIR/others/gnat-gpl-2014-x86-linux-bin.tar.gz ]; then

@@ -180,7 +180,7 @@ copy_src () {
     cp -v $RDIR/a/file/file-$FILEVER.tar.?z $SRCDIR || exit 1
     cd $RDIR/a/findutils
 	export FINDVER=${VERSION:-$(echo findutils-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
-    cp -v $RDIR/a/findutils/findutils-$FINDVER.tar.xz $SRCDIR || exit 1
+    cp -v $RDIR/a/findutils/findutils-$FINDVER.tar.lz $SRCDIR || exit 1
     cd $RDIR/a/gawk
 	export GAWKVER=${VERSION:-$(echo gawk-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/a/gawk/gawk-$GAWKVER.tar.lz $SRCDIR || exit 1
@@ -203,6 +203,7 @@ copy_src () {
     cd $RDIR/a/gzip
 	export GZIPVER=${VERSION:-$(echo gzip-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/a/gzip/gzip-$GZIPVER.tar.xz $SRCDIR || exit 1
+	cp -v $RDIR/a/gzip/gzip.glibc228.diff.gz $SRCDIR || exit 1
     cd $RDIR/k
 	export LINUXVER=${VERSION:-$(echo linux-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/k/linux-$LINUXVER.tar.xz $SRCDIR || exit 1
@@ -212,6 +213,7 @@ copy_src () {
     cd $RDIR/d/m4
 	export M4VER=${VERSION:-$(echo m4-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/d/m4/m4-$M4VER.tar.xz $SRCDIR || exit 1
+	cp -v $RDIR/d/m4/m4.glibc228.diff.gz $SRCDIR || exit 1
     cd $RDIR/d/make
 	export MAKEVER=${VERSION:-$(echo make-*.tar.?z2 | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/d/make/make-$MAKEVER.tar.bz2 $SRCDIR || exit 1
@@ -517,6 +519,8 @@ esac
 m4_build () {
 #*****************************
     tar xvf m4-$M4VER.tar.xz && cd m4-$M4VER
+	
+	zcat ../m4.glibc228.diff.gz | patch -Esp1 --verbose || exit 1
 
     ./configure --prefix=/tools || exit 1
 
@@ -627,7 +631,12 @@ file_build () {
 
 findutils_build () {
 #*****************************
-    tar xvf findutils-$FINDVER.tar.xz && cd findutils-$FINDVER
+    tar xvf findutils-$FINDVER.tar.lz && cd findutils-$FINDVER
+
+# 	patch to build with glibc-2.28 (from LFS)
+	sed -i 's/IO_ftrylockfile/IO_EOF_SEEN/' gl/lib/*.c
+	sed -i '/unistd/a #include <sys/sysmacros.h>' gl/lib/mountlist.c
+	echo "#define _IO_IN_BACKUP 0x100" >> gl/lib/stdio-impl.h
 
     ./configure --prefix=/tools || exit 1
 
@@ -686,6 +695,8 @@ grep_build () {
 gzip_build () {
 #*****************************
     tar xvf gzip-$GZIPVER.tar.xz && cd gzip-$GZIPVER
+	
+	zcat ../gzip.glibc228.diff.gz | patch -Esp1 --verbose || exit 1
 
     ./configure --prefix=/tools || exit 1
 

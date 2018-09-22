@@ -391,9 +391,21 @@ EOF
 patch_findutils_c () {
 #******************************************************************
 cat > $PATCHDIR/findutilsSB.patch << "EOF"
---- findutils.SlackBuild.old	2018-08-23 01:11:29.861123485 +0200
-+++ findutils.SlackBuild	2018-08-23 17:40:53.260735799 +0200
-@@ -97,22 +97,6 @@
+--- findutils.SlackBuild.old	2018-09-22 15:27:07.594932088 +0200
++++ findutils.SlackBuild	2018-09-22 16:05:48.038923236 +0200
+@@ -67,6 +67,11 @@
+ tar xvf $CWD/findutils-$VERSION.tar.?z* || exit 1
+ cd findutils-$VERSION || exit 1
+ 
++# patch to build with glibc-2.28 (from LFS)
++sed -i 's/IO_ftrylockfile/IO_EOF_SEEN/' gl/lib/*.c
++sed -i '/unistd/a #include <sys/sysmacros.h>' gl/lib/mountlist.c
++echo "#define _IO_IN_BACKUP 0x100" >> gl/lib/stdio-impl.h
++
+ chown -R root:root .
+ find . \
+   \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+@@ -79,22 +84,6 @@
  # like to be yelled at.
  zcat $CWD/findutils.no.default.options.warnings.diff.gz | patch -p1 --verbose || exit 1
  
