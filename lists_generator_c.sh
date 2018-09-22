@@ -679,6 +679,7 @@ l libogg
 l id3lib
 l opus
 l opusfile
+l libopusenc
 ap opus-tools
 l speex
 l libvorbis
@@ -1091,7 +1092,6 @@ kde kdepim
 d subversion
 l libxml2
 l ncurses
-l virtuoso-ose
 n openssl
 n snownews
 xap mozilla-firefox

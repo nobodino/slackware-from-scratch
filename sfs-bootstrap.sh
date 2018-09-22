@@ -474,9 +474,9 @@ EOF
 patch_findutils_c () {
 #******************************************************************
 cat > $PATCHDIR/findutilsSB.patch << "EOF"
---- findutils.SlackBuild.old	2018-08-23 01:11:29.861123485 +0200
-+++ findutils.SlackBuild	2018-08-23 17:40:53.260735799 +0200
-@@ -97,22 +97,6 @@
+--- findutils.SlackBuild.old	2018-09-22 15:10:51.272935812 +0200
++++ findutils.SlackBuild	2018-09-22 15:10:51.275935812 +0200
+@@ -79,22 +79,6 @@
  # like to be yelled at.
  zcat $CWD/findutils.no.default.options.warnings.diff.gz | patch -p1 --verbose || exit 1
  
@@ -629,9 +629,9 @@ EOF
 patch_llvm_c () {
 #******************************************************************
 cat > $PATCHDIR/llvmSB.patch << "EOF"
---- llvm.SlackBuild.old	2018-03-22 13:14:35.027878398 +0100
-+++ llvm.SlackBuild	2018-03-22 13:14:35.034881641 +0100
-@@ -123,8 +123,8 @@
+--- llvm.SlackBuild.old	2018-09-22 15:10:51.319935812 +0200
++++ llvm.SlackBuild	2018-09-22 15:10:51.322935812 +0200
+@@ -127,8 +127,8 @@
  mkdir build
  cd build
    cmake \
@@ -648,8 +648,8 @@ EOF
 patch_mesa_c () {
 #******************************************************************
 cat > $PATCHDIR/mesaSB.patch << "EOF"
---- mesa.SlackBuild.old	2018-04-20 03:37:08.456444178 +0200
-+++ mesa.SlackBuild	2018-04-20 03:37:08.466444178 +0200
+--- mesa.SlackBuild.old	2018-09-22 15:10:51.323935812 +0200
++++ mesa.SlackBuild	2018-09-22 15:10:51.326935812 +0200
 @@ -178,7 +178,7 @@
    done
    # Remove cruft:
@@ -658,7 +658,7 @@ cat > $PATCHDIR/mesaSB.patch << "EOF"
 +)
  
  # Strip binaries:
- find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \ \
+ find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
 EOF
 }
 
@@ -820,12 +820,12 @@ EOF
 patch_freetype_c () {
 #******************************************************************
 cat > $PATCHDIR/freetypeSB.patch << "EOF"
---- freetype.SlackBuild.old	2018-07-04 07:37:45.235102657 +0200
-+++ freetype.SlackBuild	2018-06-24 10:59:28.375654061 +0200
-@@ -97,8 +97,14 @@
- 
- chown -R root:root .
- CFLAGS="$SLKCFLAGS" make setup CFG="--prefix=/usr --libdir=/usr/lib${LIBDIRSUFFIX} --build=$ARCH-slackware-linux"
+--- freetype.SlackBuild.old	2018-09-22 12:50:49.615967862 +0200
++++ freetype.SlackBuild	2018-09-22 12:54:20.173967059 +0200
+@@ -117,8 +117,14 @@
+   --with-png=yes \
+   --enable-freetype-config \
+   --build=$ARCH-slackware-linux || exit 1
 -make $NUMJOBS || make || exit 1
 -make install DESTDIR=$PKG || exit 1
 +make $NUMJOBS
