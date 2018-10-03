@@ -4630,7 +4630,7 @@ echo
 echo "After that, you should have an X11 system with blackbox."
 echo
 echo
-cd /sources && pkill dhcpcd
+cd /sources && killall -9 dhcpcd
 }
 
 message_end2 () {
@@ -4663,7 +4663,7 @@ echo
 echo "After that you should have an X11 system with xfce."
 echo
 echo
-cd /sources && pkill dhcpcd
+cd /sources && killall -9 dhcpcd
 }
 
 message_end3 () {
@@ -4695,7 +4695,7 @@ echo
 echo "After that you should have a complete Slackware system"
 echo
 echo
-cd /sources && pkill dhcpcd
+cd /sources && killall -9 dhcpcd
 }
 
 message_end4 () {
@@ -4719,7 +4719,7 @@ echo
 echo -e "$YELLOW"  "upgrade your boot loader and reboot in your SFS system" "$NORMAL"
 echo
 echo
-cd /sources && pkill dhcpcd
+cd /sources && killall -9 dhcpcd
 }
 
 #****************************************************************
