@@ -1095,6 +1095,8 @@ l libxml2
 l ncurses
 n openssl
 n snownews
+d python
+d python3
 xap mozilla-firefox
 xap mozilla-thunderbird
 a end4
