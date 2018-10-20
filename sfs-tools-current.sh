@@ -239,9 +239,14 @@ copy_src () {
 	export M4VER=${VERSION:-$(echo m4-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/d/m4/m4-$M4VER.tar.xz $SRCDIR || exit 1
 	cp -v $RDIR/d/m4/m4.glibc228.diff.gz $SRCDIR || exit 1
+    cd $RDIR/d/automake
+	export AUTOMAKEVER=${VERSION:-$(echo automake-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
+    cp -v $RDIR/d/automake/automake-$AUTOMAKEVER.tar.xz $SRCDIR || exit 1
     cd $RDIR/d/make
 	export MAKEVER=${VERSION:-$(echo make-*.tar.?z2 | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/d/make/make-$MAKEVER.tar.bz2 $SRCDIR || exit 1
+    cp -v $RDIR/d/make/make.glibc-2.27.glob.diff.gz $SRCDIR || exit 1
+    cp -v $RDIR/d/make/b552b05251980f693c729e251f93f5225b400714.patch.gz $SRCDIR || exit 1
     cd $RDIR/l/libmpc
 	export LIBMPCVER=${VERSION:-$(echo libpmc-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/l/libmpc/mpc-$LIBMPCVER.tar.lz $SRCDIR || exit 1
@@ -279,7 +284,7 @@ copy_src () {
     cp -v $RDIR/a/xz/xz-$XZVER.tar.xz $SRCDIR || exit 1
 	cd $RDIR/others/isl
 	export ISLVER=${VERSION:-$(echo isl-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
-    cp -v $RDIR/others/isl/isl-$ISLVER.tar.xz $SRCDIR || exit 1
+   	cp -v $RDIR/others/isl/isl-$ISLVER.tar.xz $SRCDIR || exit 1
 	case $(uname -m) in
 		i686 ) 
 			if [ -f $RDIR/others/gnat-gpl-2014-x86-linux-bin.tar.gz ]; then
@@ -612,12 +617,12 @@ esac
 		--prefix=/tools \
 		--disable-multilib \
 		--enable-bootstrap \
-		--enable-languages=c,c++,ada || exit 1
+		--enable-languages=ada,c,c++ || exit 1
 
     make || exit 1
 	make bootstrap || exit 1
-    make -C gcc gnatlib || exit 1
-    make -C gcc gnattools || exit 1
+	make -C gcc gnatlib || exit 1
+	make -C gcc gnattools || exit 1
     make install || exit 1
 	export PATH=$PATH_HOLD
     cd ../..
@@ -819,13 +824,30 @@ gzip_build () {
 	echo gzip-$GZIPVER >> $SFS/tools/etc/tools_version
 }
 
+automake_build () {
+#*****************************
+    tar xvf automake-$AUTOMAKEVER.tar.xz && cd automake-$AUTOMAKEVER
+
+    ./configure --prefix=/tools || exit 1
+
+    make || exit 1
+    make install || exit 1
+
+# links necessary to build "make" with patches
+
+	ln -sf /tools/bin/aclocal /tools/bin/aclocal-1.15
+	ln -sf /tools/bin/automake /tools/bin/automake-1.15
+    cd ..
+    rm -rf automake-$AUTOMAKEVER
+	echo automake-$AUTOMAKEVER >> $SFS/tools/etc/tools_version
+}
+
 make_build () {
 #*****************************
     tar xvf make-$MAKEVER.tar.bz2 && cd make-$MAKEVER
 
-# First, work around an error caused by glibc-2.27 (from LFS):	
-
-	sed -i '211,217 d; 219,229 d; 232 d' glob/glob.c
+	zcat ../make.glibc-2.27.glob.diff.gz | patch -p1 --verbose || exit 1
+	zcat ../b552b05251980f693c729e251f93f5225b400714.patch.gz | patch -p1 --verbose || exit 1
 
     ./configure --prefix=/tools --without-guile || exit 1
 
@@ -959,7 +981,6 @@ tar_slack_build () {
     cd ../..
     rm -rf tar-1.13
 	echo tar-1.13 >> $SFS/tools/etc/tools_version
-	echo tar-1.13.bzip2.diff.gz >> $SFS/tools/etc/tools_version
 }
 
 which_build () {
@@ -1079,6 +1100,7 @@ gawk_build
 gettext_build
 grep_build
 gzip_build
+automake_build
 make_build
 patch_build
 perl_build
