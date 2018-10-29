@@ -95,13 +95,10 @@ export DLDIR3=ftp://slackware.uk/slackware/slackware-14.2
 export DLDIR4=ftp://slackware.uk/slackware/slackware64-14.1
 export DLDIR5=ftp://slackware.uk/slackware/slackware64-14.2
 export DLDIR6=http://mirror.eu.oneandone.net/linux/distributions/gentoo/gentoo/distfiles
-export DLDIR7=https://slackbuilds.org/repository/14.2/development
 export DLDIR8=https://static.rust-lang.org/dist
 export DLDIR9=http://download.oracle.com/otn-pub/java/jdk/8u192-b12/750e1c8617c5452694857ad95c3ee230/jre-8u192-linux-i586.tar.gz
 export DLDIR10=http://download.oracle.com/otn-pub/java/jdk/8u192-b12/750e1c8617c5452694857ad95c3ee230/jre-8u192-linux-x64.tar.gz
 export DLDIR11=https://slackbuilds.org/slackbuilds/14.2
-export DLDIR12=https://github.com/nobodino/slackware-from-scratch/
-export DLDIR13=$SRCDIR/others/slackware-from-scratch/patch-for-packages-with-glibc-2.28
 #*******************************************************************
 # rust and cargo versions
 #*******************************************************************
