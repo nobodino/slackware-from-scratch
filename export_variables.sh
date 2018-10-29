@@ -105,10 +105,10 @@ export DLDIR13=$SRCDIR/others/slackware-from-scratch/patch-for-packages-with-gli
 #*******************************************************************
 # rust and cargo versions
 #*******************************************************************
-export CARGO="0.29.0"
-export RUST="1.28.0"
-export RUSTC="1.28.0"
-export DATE="2018-08-02"
+export CARGO="0.30.0"
+export RUST="1.29.2"
+export RUSTC="1.29.2"
+export DATE="2018-10-12"
 export ISLVER="0.18"
 export JDK="8u192"
 export GNAT_x86="gnat-gpl-2014-x86-linux-bin.tar.gz"
