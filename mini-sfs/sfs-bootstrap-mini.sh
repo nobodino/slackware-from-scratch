@@ -1,6 +1,28 @@
-#######################  sfs-bootstrap-mini.sh ###################################################
+#######################  sfs-bootstrap-mini.sh #################################
 #!/bin/bash
 #
+# Copyright 2018  J. E. Garrott Sr, Puyallup, WA, USA
+# Copyright 2018  "nobodino", Bordeaux, FRANCE
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+#--------------------------------------------------------------------------
 # 
 #  Revision 0 			13072018				nobodino
 #		-script issued from sfs-boostrap.sh to build slackware from scratch
@@ -10,7 +32,7 @@
 #
 #	Above july 2018, revisions made through github project: https://github.com/nobodino/slackware-from-scratch 
 #
-#############################################################################################
+################################################################################
 # set -x
 
 #*******************************************************************
@@ -89,7 +111,6 @@ do
 	then
 		if [[ "$distribution" = "slackware" ]]
 		then
-#			tools_dir='tools' && test_tools_32
 			tools_dir='tools'
 			echo
 			echo -e "$BLUE" "You choose $tools_dir" "$NORMAL"
@@ -101,7 +122,6 @@ do
 	then
 		if [[ "$distribution" = "slackware" ]]
 		then
-#			tools_dir='tools_64' && test_tools_64
 			tools_dir='tools_64'
 			echo
 			echo -e "$BLUE" "You choose $tools_dir" "$NORMAL"
@@ -370,6 +390,49 @@ cat > $PATCHDIR/cmakeSB.patch << "EOF"
 EOF
 }
 
+patch_findutils_c () {
+#******************************************************************
+cat > $PATCHDIR/findutilsSB.patch << "EOF"
+--- findutils.SlackBuild.old	2018-09-22 15:27:07.594932088 +0200
++++ findutils.SlackBuild	2018-09-22 16:05:48.038923236 +0200
+@@ -67,6 +67,11 @@
+ tar xvf $CWD/findutils-$VERSION.tar.?z* || exit 1
+ cd findutils-$VERSION || exit 1
+ 
++# patch to build with glibc-2.28 (from LFS)
++sed -i 's/IO_ftrylockfile/IO_EOF_SEEN/' gl/lib/*.c
++sed -i '/unistd/a #include <sys/sysmacros.h>' gl/lib/mountlist.c
++echo "#define _IO_IN_BACKUP 0x100" >> gl/lib/stdio-impl.h
++
+ chown -R root:root .
+ find . \
+   \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+@@ -79,22 +84,6 @@
+ # like to be yelled at.
+ zcat $CWD/findutils.no.default.options.warnings.diff.gz | patch -p1 --verbose || exit 1
+ 
+-# Add patches from Fedora to finally make findutils-4.6.0 usable:
+-zcat $CWD/patches/findutils-4.4.2-xautofs.patch.gz | patch -p1 --verbose || exit 1
+-zcat $CWD/patches/findutils-4.5.13-warnings.patch.gz | patch -p1 --verbose || exit 1
+-zcat $CWD/patches/findutils-4.5.15-no-locate.patch.gz | patch -p1 --verbose || exit 1
+-zcat $CWD/patches/findutils-4.6.0-exec-args.patch.gz | patch -p1 --verbose || exit 1
+-zcat $CWD/patches/findutils-4.6.0-fts-update.patch.gz | patch -p1 --verbose || exit 1
+-zcat $CWD/patches/findutils-4.6.0-gnulib-fflush.patch.gz | patch -p1 --verbose || exit 1
+-zcat $CWD/patches/findutils-4.6.0-gnulib-makedev.patch.gz | patch -p1 --verbose || exit 1
+-zcat $CWD/patches/findutils-4.6.0-internal-noop.patch.gz | patch -p1 --verbose || exit 1
+-zcat $CWD/patches/findutils-4.6.0-leaf-opt.patch.gz | patch -p1 --verbose || exit 1
+-zcat $CWD/patches/findutils-4.6.0-man-exec.patch.gz | patch -p1 --verbose || exit 1
+-zcat $CWD/patches/findutils-4.6.0-mbrtowc-tests.patch.gz | patch -p1 --verbose || exit 1
+-zcat $CWD/patches/findutils-4.6.0-test-lock.patch.gz | patch -p1 --verbose || exit 1
+-
+-autoreconf -vif
+-
+ CFLAGS="$SLKCFLAGS" \
+ ./configure \
+   --prefix=/usr \
+EOF
+}
+
 patch_kmod_c () {
 #******************************************************************
 cat > $PATCHDIR/kmodSB.patch << "EOF"
@@ -477,6 +540,17 @@ if [ ! -f $SRCDIR/d/cmake/cmake.SlackBuild.old ]; then
 fi
 }
 
+execute_findutils() {
+#******************************************************************
+if [ ! -f $SRCDIR/a/findutils/findutils.SlackBuild.old ]; then
+	cp -v $SRCDIR/a/findutils/findutils.SlackBuild $SRCDIR/a/findutils/findutils.SlackBuild.old
+	(
+		cd $SRCDIR/a/findutils
+		zcat $PATCHDIR/findutilsSB.patch.gz |patch findutils.SlackBuild --verbose
+	)
+fi
+}
+
 execute_kmod () {
 #******************************************************************
 if [ ! -f $SRCDIR/a/kmod/kmod.SlackBuild.old ]; then
@@ -542,6 +616,7 @@ do
 	then
 		rm -rvf $PATCHDIR && mkdir -pv $PATCHDIR
 		patch_cmake_c
+		patch_findutils_c
 		patch_kmod_c
 		patch_libcap_c
 		patch_pkg_config_c
@@ -576,6 +651,7 @@ do
 	then
 
 		execute_cmake # 2 pass
+		execute_findutils # 2 pass
 		execute_kmod # 2 pass
 		execute_libcap # 2 pass
 		execute_pkg_config # 2 pass
@@ -631,7 +707,6 @@ d libtool
 l gmp
 l mpfr
 l libmpc
-l libart_lgpl
 a infozip
 l expat
 d python
@@ -731,6 +806,13 @@ a which
 l readline
 n dhcpcd
 a kernel-all
+d help2man
+d flex
+d bison
+d autoconf
+d libtool
+a findutils
+n lynx
 a end1
 EOF
 }
