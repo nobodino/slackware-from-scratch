@@ -92,6 +92,7 @@
 #		-disabled ada build
 #		-modified GCCVER for gcc-8.1.1
 #
+#	Above july 2018, revisions made through github project: https://github.com/nobodino/slackware-from-scratch 
 # 
 #*******************************************************************
 # set -x

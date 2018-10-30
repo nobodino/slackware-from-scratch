@@ -1,45 +1,10 @@
-####################### sfs-tools-current-mini.sh ##############################
 #!/bin/bash
-#
-# Copyright 2018  J. E. Garrott Sr, Puyallup, WA, USA
-# Copyright 2018  "nobodino", Bordeaux, FRANCE
-# All rights reserved.
-#
-# Redistribution and use of this script, with or without modification, is
-# permitted provided that the following conditions are met:
-#
-# 1. Redistributions of this script must retain the above copyright
-#    notice, this list of conditions and the following disclaimer.
-#
-#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
-#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
-#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
-#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
-#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
-#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#
-#--------------------------------------------------------------------------
-#
-# Note: Much of this script is inspired from the LFS manual chapter 5
-#       Copyright © 1999-2018 Gerard Beekmans and may be
-#       copied under the MIT License.
-#
-#--------------------------------------------------------------------------
-#
 # script to build 'tools' for Slackware From Scratch (SFS)
-# script to be executed once 'su - sfs' has been performed.
+# script to be executed once 'su - lfs' has been performed.
 #
-#
-# It doesn't respect exactly the list of the packages given in the LFS book.
-# Some packages needed for testing in the chapter 6 have been skipped.
-# Some other packages have been added to be able to build slackware.
-#
-# Everything will be done automatically in this script.
-#--------------------------------------------------------------------------
+# You are at the end of § 4.4 of LFS-8.2 book.
+# The last command you executed was: source ~/.bash_profile
+# Everything will done automatically in this script
 #
 # Revision 	0 		25072016		nobodino
 # Revision	1		28072016		nobodino
@@ -92,6 +57,7 @@
 #		-disabled ada build
 #		-modified GCCVER for gcc-8.1.1
 #
+#	Above july 2018, revisions made through github project: https://github.com/nobodino/slackware-from-scratch 
 # 
 #*******************************************************************
 # set -x
@@ -180,7 +146,7 @@ copy_src () {
     cp -v $RDIR/a/file/file-$FILEVER.tar.?z $SRCDIR || exit 1
     cd $RDIR/a/findutils
 	export FINDVER=${VERSION:-$(echo findutils-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
-    cp -v $RDIR/a/findutils/findutils-$FINDVER.tar.lz $SRCDIR || exit 1
+    cp -v $RDIR/a/findutils/findutils-$FINDVER.tar.xz $SRCDIR || exit 1
     cd $RDIR/a/gawk
 	export GAWKVER=${VERSION:-$(echo gawk-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/a/gawk/gawk-$GAWKVER.tar.lz $SRCDIR || exit 1
@@ -203,7 +169,6 @@ copy_src () {
     cd $RDIR/a/gzip
 	export GZIPVER=${VERSION:-$(echo gzip-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/a/gzip/gzip-$GZIPVER.tar.xz $SRCDIR || exit 1
-	cp -v $RDIR/a/gzip/gzip.glibc228.diff.gz $SRCDIR || exit 1
     cd $RDIR/k
 	export LINUXVER=${VERSION:-$(echo linux-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/k/linux-$LINUXVER.tar.xz $SRCDIR || exit 1
@@ -213,7 +178,6 @@ copy_src () {
     cd $RDIR/d/m4
 	export M4VER=${VERSION:-$(echo m4-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/d/m4/m4-$M4VER.tar.xz $SRCDIR || exit 1
-	cp -v $RDIR/d/m4/m4.glibc228.diff.gz $SRCDIR || exit 1
     cd $RDIR/d/make
 	export MAKEVER=${VERSION:-$(echo make-*.tar.?z2 | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/d/make/make-$MAKEVER.tar.bz2 $SRCDIR || exit 1
@@ -519,8 +483,6 @@ esac
 m4_build () {
 #*****************************
     tar xvf m4-$M4VER.tar.xz && cd m4-$M4VER
-	
-	zcat ../m4.glibc228.diff.gz | patch -Esp1 --verbose || exit 1
 
     ./configure --prefix=/tools || exit 1
 
@@ -631,12 +593,7 @@ file_build () {
 
 findutils_build () {
 #*****************************
-    tar xvf findutils-$FINDVER.tar.lz && cd findutils-$FINDVER
-
-# 	patch to build with glibc-2.28 (from LFS)
-	sed -i 's/IO_ftrylockfile/IO_EOF_SEEN/' gl/lib/*.c
-	sed -i '/unistd/a #include <sys/sysmacros.h>' gl/lib/mountlist.c
-	echo "#define _IO_IN_BACKUP 0x100" >> gl/lib/stdio-impl.h
+    tar xvf findutils-$FINDVER.tar.xz && cd findutils-$FINDVER
 
     ./configure --prefix=/tools || exit 1
 
@@ -695,8 +652,6 @@ grep_build () {
 gzip_build () {
 #*****************************
     tar xvf gzip-$GZIPVER.tar.xz && cd gzip-$GZIPVER
-	
-	zcat ../gzip.glibc228.diff.gz | patch -Esp1 --verbose || exit 1
 
     ./configure --prefix=/tools || exit 1
 

@@ -48,6 +48,8 @@
 #		-updated list1 for libart_lgpl
 #		-updated list1 to remove "tools/bin" problem (Worsel suggestion)
 #
+#	Above july 2018, revisions made through github project: https://github.com/nobodino/slackware-from-scratch 
+#
 ###########################################################################
 # set -x
 
@@ -318,9 +320,7 @@ x x11-skel
 x libevdev
 x mtdev
 x xdg-user-dirs
-x x11-doc
-x x11-proto
-x x11-util
+x x11-group1
 x xdg-utils
 x fontconfig
 ap ghostscript
@@ -362,11 +362,7 @@ a eudev
 a libgudev
 x libwacom
 l libunwind
-x x11-app
-x x11-font
-x x11-server
-x x11-driver
-x x11-app-post
+x x11-group2
 x dejavu-fonts-ttf
 x liberation-fonts-ttf
 x motif
@@ -1072,23 +1068,10 @@ l soprano
 xap MPlayer
 xap xine-lib
 xap xine-ui
-kde kdelibs
-kde kdebase
-kde kdegraphics
-kde kdebindings
-kde kdemultimedia
-kde kdeaccessibility
-kde kdeutils
-kde kdesdk
-kde kdenetwork
-kde kdeadmin
-kde kdegames
-kde kdetoys
-kde kdeedu
-kde extragear
+kde kde
 kdei kde-l10n
 kdei calligra-l10n
-kde post-kde2
+kde post-kde
 kde kdepim
 d subversion
 l libxml2

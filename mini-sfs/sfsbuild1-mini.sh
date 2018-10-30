@@ -33,6 +33,8 @@
 #		-initial release for slackware-current boostrap
 #		-only to build list1 (bare slackware system)
 #
+#	Above july 2018, revisions made through github project: https://github.com/nobodino/slackware-from-scratch 
+#
 ################################################################################
 # set -x
 #*********************************

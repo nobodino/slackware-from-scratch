@@ -36,6 +36,7 @@
 # Revision 	2 		31032018		nobodino
 #		-removed a second symlink "ln -sv $SFS/tools /" in get_tools_dir
 #
+#	Above july 2018, revisions made through github project: https://github.com/nobodino/slackware-from-scratch 
 #
 #*******************************************************************
 # set -x

@@ -48,6 +48,8 @@
 #  Revision 7 			26062018				nobodino
 #		-upgraded rust version to 1.27.0
 #
+#	Above july 2018, revisions made through github project: https://github.com/nobodino/slackware-from-scratch 
+#
 ##########################################################################
 
 # set -x

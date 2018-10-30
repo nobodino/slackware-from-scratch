@@ -60,10 +60,11 @@
 #	Revision 9			16072018		nobodino
 #		-added QScintilla  patch (two pass package)
 #
-#############################################################################################
+#	Above july 2018, revisions made through github project: https://github.com/nobodino/slackware-from-scratch 
+#
+#*******************************************************************
 # set -x
-
-
+#*******************************************************************
 arch_selector () {
 #**********************************
 # architecture selector selector
@@ -113,7 +114,6 @@ echo
 		fi
 	fi
 	echo "****** $RDIR ******"
-
 
 }
 
@@ -222,6 +222,7 @@ do
 	fi
 done
 export $upgrade_sources
+
 }
 
 upgrade_src () {
@@ -305,6 +306,7 @@ do
 done
 export $upgrade_sources
 return
+
 }
 
 populate_others () {
@@ -433,6 +435,7 @@ if [[ "$build_arch" = "x86" ]]
 		fi
 		cp -rv rustc-$RUSTC-x86_64-unknown-linux-gnu.tar.gz $SRCDIR/d/rust		 	
 fi
+
 }
 
 
@@ -868,7 +871,7 @@ cat > $PATCHDIR/harfbuzzSB.patch << "EOF"
 +make $NUMJOBS || make
 +make install DESTDIR=$PKG
 +
-+# install freetype headers to build freetype
++# install harfbuzz headers to build freetype
 +mkdir -pv $PKG/usr/include/harfbuzz
 +cp src/*.h $PKG/usr/include/harfbuzz
  
@@ -932,7 +935,7 @@ if [ ! -f $SRCDIR/a/dbus/dbus.SlackBuild.old ]; then
 fi
 }
 
-execute_findutils() {
+execute_findutils () {
 #******************************************************************
 if [ ! -f $SRCDIR/a/findutils/findutils.SlackBuild.old ]; then
 	cp -v $SRCDIR/a/findutils/findutils.SlackBuild $SRCDIR/a/findutils/findutils.SlackBuild.old
@@ -954,7 +957,7 @@ if [ ! -f $SRCDIR/x/fontconfig/fontconfig.SlackBuild.old ]; then
 fi
 }
 
-execute_freetype() {
+execute_freetype () {
 #******************************************************************
 if [ ! -f $SRCDIR/l/freetype/freetype.SlackBuild.old ]; then
 	cp -v $SRCDIR/l/freetype/freetype.SlackBuild $SRCDIR/l/freetype/freetype.SlackBuild.old
@@ -965,7 +968,7 @@ if [ ! -f $SRCDIR/l/freetype/freetype.SlackBuild.old ]; then
 fi
 }
 
-execute_gd() {
+execute_gd () {
 #******************************************************************
 if [ ! -f $SRCDIR/l/gd/gd.SlackBuild.old ]; then
 	cp -v $SRCDIR/l/gd/gd.SlackBuild $SRCDIR/l/gd/gd.SlackBuild.old
@@ -1044,7 +1047,7 @@ if [ ! -f $SRCDIR/d/llvm/llvm.SlackBuild.old ]; then
 fi
 }
 
-execute_mesa() {
+execute_mesa () {
 #******************************************************************
 if [ ! -f $SRCDIR/x/mesa/mesa.SlackBuild.old ]; then
 	cp -v $SRCDIR/x/mesa/mesa.SlackBuild $SRCDIR/x/mesa/mesa.SlackBuild.old
@@ -1102,7 +1105,7 @@ if [ ! -f $SRCDIR/d/subversion/subversion.SlackBuild.old ]; then
 fi
 }
 
-execute_texlive() {
+execute_texlive () {
 #******************************************************************
 if [ ! -f $SRCDIR/t/texlive/texlive.SlackBuild.old ]; then
 	cp -v $SRCDIR/t/texlive/texlive.SlackBuild $SRCDIR/t/texlive/texlive.SlackBuild.old
@@ -1175,6 +1178,7 @@ done
 echo
 echo -e "$RED" "You choose $build_patches." "$NORMAL" && echo
 echo 
+
 }
 
 sources_alteration_c () {
@@ -1229,8 +1233,8 @@ echo
 echo $distribution
 echo "You choose $sources_alteration."
 echo
-}
 
+}
 
 #************************************************************************
 #************************************************************************
@@ -1268,7 +1272,7 @@ echo
 clean_sfs
 
 #*************************************
-# Upgrade the sources from local or rsync
+# Upgrade the sources from local, rsync or DVD
 #*************************************
 echo
 echo "Do you want to upgrade the sources of SFS? rsync, local, DVD or Quit."
@@ -1322,8 +1326,6 @@ do
  		break
 	fi
 done
-#*************************************
-# populate_others
 
 #*************************************
 # create mini /etc/group and /etc/passwd
@@ -1332,7 +1334,6 @@ done
 #*************************************
 etc_group
 etc_passwd
-
 #***********************************************************
 # package management: copy tools from slackware source
 # before chrooting and building slackware
@@ -1343,12 +1344,9 @@ sfsprep
 #***********************************************************
 cd $SFS/sources
 sources_alteration_c
-
 #***********************************************************
-
 cd $SFS/sources
 . lists_generator_c.sh
-
 . prep-sfs-tools.sh
 #*************************************
 # finally chroot in $SFS environment

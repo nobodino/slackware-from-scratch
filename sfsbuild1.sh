@@ -61,6 +61,8 @@
 #	Revision 5			28072018		nobodino
 #		-modified message_end4 (added pkill dhcpcd)
 #
+#	Above july 2018, revisions made through github project: https://github.com/nobodino/slackware-from-scratch 
+#
 ############################################################################
 # set -x
 #*********************************
@@ -941,564 +943,117 @@ cd /tmp && rm gcc.build.log
 # X11 SUB-SYSTEM BUILDING
 #****************************************************************
 
-
-build_x11_doc () {
+build_x11_group1 () {
 #***********************
 cd /slacksrc/x/x11
 
 export UPGRADE_PACKAGES=always
 
-./x11.SlackBuild doc xorg-sgml-doctools
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild doc xorg-docs
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
+for package in \
+  xorg-sgml-doctools \
+  xorg-docs \
+  ; do
+   ./x11.SlackBuild doc $package
+ 	[ $? != 0 ] && exit 1
+	mv -v /tmp/x11-build/*.txz /sfspacks/x
+done
 
 ./x11.SlackBuild util util-macros
 [ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-cd /sources
-}
-
-build_x11_proto () {
-#***********************
-cd /slacksrc/x/x11
-
-export UPGRADE_PACKAGES=always
-
-./x11.SlackBuild proto bigreqsproto
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild proto compositeproto
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild proto damageproto
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild proto dmxproto
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild proto dri2proto
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild proto dri3proto
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild proto evieext
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild proto fixesproto
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild proto fontcacheproto
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild proto fontsproto
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild proto glproto
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild proto inputproto
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild proto kbproto
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild proto presentproto
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild proto printproto
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild proto randrproto
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild proto recordproto
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild proto renderproto
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild proto resourceproto
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild proto scrnsaverproto
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild proto videoproto
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild proto xcmiscproto
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild proto xextproto
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild proto xf86bigfontproto
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild proto xf86dgaproto
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild proto xf86driproto
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild proto xf86miscproto
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild proto xf86vidmodeproto
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild proto xineramaproto
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild proto xproto
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-cd /sources
-}
-
-build_x11_proto_c () {
-#***********************
-cd /slacksrc/x/x11
-
-export UPGRADE_PACKAGES=always
+mv -v /tmp/x11-build/*.txz /sfspacks/x
 
 ./x11.SlackBuild proto
 [ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
+mv -v /tmp/x11-build/*.txz /sfspacks/x
 
-cd /sources
-}
-
-build_x11_util () {
-#***********************
-cd /slacksrc/x/x11
-
-export UPGRADE_PACKAGES=always
-
-./x11.SlackBuild util xorg-cf-files
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild util gccmakedep
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild util imake
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild util lndir
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild util makedepend
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
+for package in \
+  xorg-cf-files \
+  gccmakedep \
+  imake \
+  lndir \
+  makedepend \
+  ; do
+   ./x11.SlackBuild util $package
+ 	[ $? != 0 ] && exit 1
+	mv -v /tmp/x11-build/*.txz /sfspacks/x
+done
 
 cd /sources
 }
 
 build_x11_lib () {
-#*************************
+#***********************
 cd /slacksrc/x/x11
 
 export UPGRADE_PACKAGES=always
 
-./x11.SlackBuild lib libXau
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
+for package in \
+  libXau \
+  libXdmcp \
+  ; do
+   ./x11.SlackBuild lib $package
+ 	[ $? != 0 ] && exit 1
+	mv -v /tmp/x11-build/*.txz /sfspacks/x
+done
 
-./x11.SlackBuild lib libXdmcp
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
+for package in \
+  xcb-proto \
+  libpthread-stubs \
+  libxcb \
+  ; do
+   ./x11.SlackBuild xcb $package
+ 	[ $? != 0 ] && exit 1
+	mv -v /tmp/x11-build/*.txz /sfspacks/x
+done
 
-./x11.SlackBuild xcb xcb-proto
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild xcb libpthread-stubs
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild xcb libxcb
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild lib xtrans
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild lib libX11
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild lib libXext
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild lib libFS
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild lib libICE
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild lib libSM
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild lib libXScrnSaver
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild lib libXt
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild lib libXmu
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild lib libXpm
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild lib libXaw
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild lib libXfixes
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild lib libXcomposite
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild lib libXrender
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild lib libXcursor
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild lib libXdamage
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild lib libXfontenc
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild lib libXft
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild lib libXi
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild lib libXinerama
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild lib libXrandr
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild lib libXres
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild lib libXtst
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild lib libXv
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild lib libXvMC
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild lib libXpresent
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild lib libXxf86dga
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild lib libXxf86vm
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild lib libdmx
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild lib libfontenc
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild lib libpciaccess
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild lib libxkbfile
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild lib libxshmfence
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild lib libXcm
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild lib libXevie
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild lib libXxf86misc
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild lib libXp
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild lib libXfontcache
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild lib libXaw3d
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild lib pixman
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild lib libXfont
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild lib libXfont2
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
+for package in \
+  xtrans \
+  libX11 \
+  libXext \
+  libFS \
+  libICE \
+  libSM \
+  libXScrnSaver \
+  libXt \
+  libXmu \
+  libXpm \
+  libXaw \
+  libXfixes \
+  libXcomposite \
+  libXrender \
+  libXcursor \
+  libXdamage \
+  libXfontenc \
+  libXft \
+  libXi \
+  libXinerama \
+  libXrandr \
+  libXres \
+  libXtst \
+  libXv \
+  libXvMC \
+  libXpresent \
+  libXxf86dga \
+  libXxf86vm \
+  libdmx \
+  libfontenc \
+  libpciaccess \
+  libxkbfile \
+  libxshmfence \
+  libXcm \
+  libXevie \
+  libXxf86misc \
+  libXp \
+  libXfontcache \
+  libXaw3d \
+  pixman \
+  libXfont \
+  libXfont2 \
+  ; do
+   ./x11.SlackBuild lib $package
+ 	[ $? != 0 ] && exit 1
+	mv -v /tmp/x11-build/*.txz /sfspacks/x
+done
 
 cd /sources
 }
@@ -1509,1194 +1064,276 @@ cd /slacksrc/x/x11
 
 export UPGRADE_PACKAGES=always
 
-./x11.SlackBuild xcb xcb-util
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
+for package in \
+  xcb-util \
+  xcb-util-image \
+  xcb-util-keysyms \
+  xcb-util-renderutil \
+  xcb-util-wm \
+  xcb-util-cursor \
+  xcb-util-errors \
+  xpyb \
+  ; do
+   ./x11.SlackBuild xcb $package
+ 	[ $? != 0 ] && exit 1
+	mv -v /tmp/x11-build/*.txz /sfspacks/x
+done
 
-./x11.SlackBuild xcb xcb-util-image
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild xcb xcb-util-keysyms
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild xcb xcb-util-renderutil
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild xcb xcb-util-wm
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild xcb xcb-util-cursor
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild xcb xcb-util-errors
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild xcb xpyb
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv  -v *.txz /sfspacks/x
-cd /slacksrc/x/x11
+cd /sources
 }
 
-build_x11_app () {
-#**********************
+build_x11_group2 () {
+#*****************************
 cd /slacksrc/x/x11
 
 export UPGRADE_PACKAGES=always
 
 ./x11.SlackBuild data xbitmaps
 [ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
+mv -v /tmp/x11-build/*.txz /sfspacks/x
 
 ./x11.SlackBuild font font-util
 [ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app bdftopcf
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app iceauth
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app mkfontdir
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app mkfontscale
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app sessreg
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app setxkbmap
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app smproxy
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app x11perf
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xauth
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xbacklight
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xcmsdb
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xcursorgen
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xdpyinfo
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xdriinfo
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xev
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xgamma
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xhost
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xinput
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xkbcomp
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xkbevd
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xkbutils
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xkill
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xlsatoms
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xlsclients
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xmessage
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xmodmap
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xpr
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xprop
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xrandr
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xrdb
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xrefresh
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xset
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xsetroot
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xvinfo
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xwd
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xwininfo
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xwud
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app appres
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app beforelight
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app bitmap
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app editres
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app fonttosfnt
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app fslsfonts
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app fstobdf
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app ico
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app listres
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app mkcomposecache
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app oclock
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app rendercheck
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app rgb
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app showfont
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app transset
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app viewres
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xbiff
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xcalc
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xclipboard
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xclock
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xcm
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xcompmgr
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xconsole
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xdbedizzy
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xditview
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xdm
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xedit
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xeyes
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xf86dga
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xfd
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xfontsel
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xfs
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xfsinfo
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xgc
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xkbprint
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xload
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xlogo
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xlsfonts
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xmag
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xman
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xmh
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xmore
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xscope
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xsm
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xstdcmap
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xvidtune
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-cd /sources
-}
-
-build_x11_font () {
-#*************************
-cd /slacksrc/x/x11
-
-export UPGRADE_PACKAGES=always
+mv -v /tmp/x11-build/*.txz /sfspacks/x
+
+for package in \
+  bdftopcf \
+  iceauth \
+  mkfontdir \
+  mkfontscale \
+  sessreg\
+  setxkbmap \
+  smproxy \
+  x11perf \
+  xauth \
+  xbacklight \
+  xcmsdb \
+  xcursorgen \
+  xdpyinfo \
+  xdriinfo \
+  xev \
+  xgamma \
+  xhost \
+  xinput \
+  xkbcomp \
+  xkbevd \
+  xkbutils \
+  xkill \
+  xlsatoms \
+  xlsclients \
+  xmessage \
+  xmodmap \
+  xpr \
+  xprop \
+  xrandr \
+  xrdb \
+  xrefresh \
+  xset \
+  xsetroot \
+  xvinfo \
+  xwd \
+  xwininfo \
+  xwud \
+  appres \
+  beforelight \
+  bitmap \
+  editres \
+  fonttosfnt \
+  fslsfonts \
+  fstobdf \
+  ico \
+  listres \
+  mkcomposecache \
+  oclock \
+  rendercheck \
+  rgb \
+  showfont \
+  transset \
+  viewres \
+  xbiff \
+  xcalc \
+  xclipboard \
+  xclock \
+  xcm \
+  xcompmgr \
+  xconsole \
+  xdbedizzy \
+  xditview \
+  xdm \
+  xedit \
+  xeyes \
+  xf86dga \
+  xfd \
+  xfontsel \
+  xfs \
+  xfsinfo \
+  xgc \
+  xkbprint \
+  xload \
+  xlogo \
+  xlsfonts \
+  xmag \
+  xman \
+  xmh \
+  xmore \
+  xscope \
+  xsm \
+  xstdcmap \
+  xvidtune \
+  ; do
+   ./x11.SlackBuild app $package
+ 	[ $? != 0 ] && exit 1
+	mv -v /tmp/x11-build/*.txz /sfspacks/x
+done
 
 ./x11.SlackBuild data xcursor-themes
 [ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
+mv -v /tmp/x11-build/*.txz /sfspacks/x
 
-./x11.SlackBuild font font-adobe-100dpi
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild font font-adobe-75dpi
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild font font-adobe-utopia-100dpi
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild font font-adobe-utopia-75dpi
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild font font-adobe-utopia-type1
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild font font-alias
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild font font-arabic-misc
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild font font-bh-100dpi
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild font font-bh-75dpi
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild font font-bh-lucidatypewriter-100dpi
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild font font-bh-lucidatypewriter-75dpi
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild font font-bh-ttf
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild font font-bh-type1
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild font font-bitstream-100dpi
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild font font-bitstream-75dpi
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild font font-bitstream-speedo
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild font font-bitstream-type1
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild font font-cronyx-cyrillic
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild font font-cursor-misc
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild font font-daewoo-misc
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild font font-dec-misc
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild font font-ibm-type1
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild font font-isas-misc
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild font font-jis-misc
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild font font-micro-misc
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild font font-misc-cyrillic
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild font font-misc-ethiopic
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild font font-misc-meltho
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild font font-misc-misc
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild font font-mutt-misc
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild font font-schumacher-misc
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild font font-screen-cyrillic
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild font font-sony-misc
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild font font-sun-misc
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild font font-winitzki-cyrillic
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild font font-xfree86-type1
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
+for package in \
+  font-adobe-100dpi \
+  font-adobe-75dpi \
+  font-adobe-utopia-100dpi \
+  font-adobe-utopia-75dpi \
+  font-adobe-utopia-type1 \
+  font-alias \
+  font-arabic-misc \
+  font-bh-100dpi \
+  font-bh-75dpi \
+  font-bh-lucidatypewriter-100dpi \
+  font-bh-lucidatypewriter-75dpi \
+  font-bh-ttf \
+  font-bh-type1 \
+  font-bitstream-100dpi \
+  font-bitstream-75dpi \
+  font-bitstream-speedo \
+  font-bitstream-type1 \
+  font-cronyx-cyrillic \
+  font-cursor-misc \
+  font-daewoo-misc \
+  font-dec-misc \
+  font-ibm-type1 \
+  font-isas-misc \
+  font-jis-misc \
+  font-micro-misc \
+  font-misc-cyrillic \
+  font-misc-ethiopic \
+  font-misc-meltho \
+  font-misc-misc \
+  font-mutt-misc \
+  font-schumacher-misc \
+  font-screen-cyrillic \
+  font-sony-misc \
+  font-sun-misc \
+  font-winitzki-cyrillic \
+  font-xfree86-type1 \
+  ; do
+   ./x11.SlackBuild font $package
+ 	[ $? != 0 ] && exit 1
+	mv -v /tmp/x11-build/*.txz /sfspacks/x
+done
 
 ./x11.SlackBuild data xkeyboard-config
 [ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-cd /sources
-}
-
-build_x11_server () {
-#**************************
-cd /slacksrc/x/x11
-
-export UPGRADE_PACKAGES=always
+mv -v /tmp/x11-build/*.txz /sfspacks/x
 
 ./x11.SlackBuild xserver xorg-server
 [ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
+mv /tmp/x11-build/*.txz /sfspacks/x
 
-cd /sources
-}
+for package in \
+  xf86-input-acecad \
+  xf86-input-aiptek \
+  xf86-input-evdev \
+  xf86-input-joystick \
+  xf86-input-keyboard \
+  xf86-input-mouse \
+  xf86-input-penmount \
+  xf86-input-synaptics \
+  xf86-input-vmmouse \
+  xf86-input-void \
+  xf86-input-wacom \
+  xf86-video-amdgpu \
+  xf86-video-apm \
+  xf86-video-ark \
+  xf86-video-ast \
+  xf86-video-ati \
+  xf86-video-chips \
+  xf86-video-cirrus \
+  xf86-video-dummy \
+  xf86-video-glint \
+  xf86-video-i128 \
+  xf86-video-i740 \
+  xf86-video-intel \
+  xf86-video-mach64 \
+  xf86-video-mga \
+  xf86-video-modesetting \
+  xf86-video-neomagic\
+  xf86-video-nouveau \
+  xf86-video-nv \
+  xf86-video-omap \
+  xf86-video-openchrome \
+  xf86-video-r128 \
+  xf86-video-rendition \
+  xf86-video-s3 \
+  xf86-video-s3virge \
+  xf86-video-savage \
+  xf86-video-siliconmotion \
+  xf86-video-sis \
+  xf86-video-sisusb \
+  xf86-video-tdfx \
+  xf86-video-tga \
+  xf86-video-trident \
+  xf86-video-tseng \
+  xf86-video-v4l \
+  xf86-video-vesa \
+  xf86-video-vmware \
+  xf86-video-voodoo \
+  xf86-video-xgi \
+  xf86-video-xgixp \
+  ; do
+   ./x11.SlackBuild driver $package
+ 	[ $? != 0 ] && exit 1
+	mv -v /tmp/x11-build/*.txz /sfspacks/x
+done
 
-
-build_x11_driver () {
-#**********************
-cd /slacksrc/x/x11
-
-export UPGRADE_PACKAGES=always
-
-./x11.SlackBuild driver xf86-input-acecad
+./x11.SlackBuild font encodings
 [ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
+mv -v /tmp/x11-build/*.txz /sfspacks/x
 
-./x11.SlackBuild driver xf86-input-aiptek
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
+for package in \
+  compiz \
+  luit \
+  igt-gpu-tools \
+  twm \
+  xinit \
+  ; do
+   ./x11.SlackBuild app $package
+ 	[ $? != 0 ] && exit 1
+	mv -v /tmp/x11-build/*.txz /sfspacks/x
+done
 
-./x11.SlackBuild driver xf86-input-evdev
+./x11.SlackBuild driver xf86-video-vboxvideo
 [ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild driver xf86-input-joystick
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild driver xf86-input-keyboard
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild driver xf86-input-mouse
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild driver xf86-input-penmount
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild driver xf86-input-synaptics
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild driver xf86-input-vmmouse
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild driver xf86-input-void
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild driver xf86-input-wacom
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild driver xf86-video-amdgpu
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild driver xf86-video-apm
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild driver xf86-video-ark
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild driver xf86-video-ast
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild driver xf86-video-ati
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild driver xf86-video-chips
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild driver xf86-video-cirrus
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild driver xf86-video-dummy
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild driver xf86-video-glint
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild driver xf86-video-i128
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild driver xf86-video-i740
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild driver xf86-video-intel
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild driver xf86-video-mach64
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild driver xf86-video-mga
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild driver  xf86-video-modesetting
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild driver xf86-video-neomagic
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild driver  xf86-video-nouveau
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild driver xf86-video-nv
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild driver xf86-video-omap
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild driver xf86-video-openchrome
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild driver xf86-video-r128
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild driver xf86-video-rendition
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild driver xf86-video-s3
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild driver xf86-video-s3virge
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild driver xf86-video-savage
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild driver xf86-video-siliconmotion
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild driver xf86-video-sis
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild driver xf86-video-sisusb
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild driver xf86-video-tdfx
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild driver xf86-video-tga
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild driver xf86-video-trident
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild driver xf86-video-tseng
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild driver xf86-video-v4l
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild driver xf86-video-vesa
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild driver  xf86-video-vmware
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild driver xf86-video-voodoo
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild driver xf86-video-xgi
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild driver xf86-video-xgixp
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
+mv -v /tmp/x11-build/*.txz /sfspacks/x
 
 cd /sources
 }
 
 build_x11_app_post () {
-#****************************************************************
+#*****************************
 cd /slacksrc/x/x11
 
 export UPGRADE_PACKAGES=always
 
-./x11.SlackBuild font encodings
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app compiz
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app luit
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app igt-gpu-tools
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app twm
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild app xinit
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
 ./x11.SlackBuild driver xf86-input-libinput
 [ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild driver xf86-video-geode
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
-
-./x11.SlackBuild driver xf86-video-vboxvideo
-[ $? != 0 ] && exit 1
-cd /tmp/x11-build
-mv *.txz /sfspacks/x
-cd /slacksrc/x/x11
+mv -v /tmp/x11-build/*.txz /sfspacks/x
 
 cd /sources
 }
 
-build_kdelibs () {
+build_kde () {
 #****************************************************************
 cd /slacksrc/kde
 
@@ -2704,1278 +1341,327 @@ export UPGRADE_PACKAGES=always
 
 ./kde.SlackBuild kdelibs
 [ $? != 0 ] && touch /tmp/kde_build/kdelibs.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
+mv -v /tmp/kde_build/*.txz /sfspacks/kde
 
-}
-
-build_kdebase () {
-#****************************************************************
-cd /slacksrc/kde
-
-export UPGRADE_PACKAGES=always
-
-./kde.SlackBuild  kdebase:nepomuk-core
-[ $? != 0 ] && touch /tmp/kde_build/nepomuk-core.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdebase:nepomuk-widgets
-[ $? != 0 ] && touch /tmp/kde_build/nepomuk-widgets.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
+for package in \
+  nepomuk-core \
+  nepomuk-widgets \
+  ; do
+   ./kde.SlackBuild kdebase:$package
+ 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
+	mv -v /tmp/kde_build/*.txz /sfspacks/kde
+done
 
 ./kde.SlackBuild kdepimlibs
 [ $? != 0 ] && touch /tmp/kde_build/kdepimlibs.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
+mv -v /tmp/kde_build/*.txz /sfspacks/kde
 
-./kde.SlackBuild kdebase:kfilemetadata
-[ $? != 0 ] && touch /tmp/kde_build/kfilemetadata.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
+for package in \
+  kfilemetadata \
+  kde-baseapps \
+  kactivities \
+  konsole \
+  kde-wallpapers \
+  kde-workspace \
+  kde-runtime \
+  kde-baseapps \
+  kde-base-artwork \
+  ; do
+   ./kde.SlackBuild kdebase:$package
+ 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
+	mv -v /tmp/kde_build/*.txz /sfspacks/kde
+done
 
-./kde.SlackBuild kdebase:kde-baseapps
-[ $? != 0 ] && touch /tmp/kde_build/kde-baseapps.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdebase:kactivities
-[ $? != 0 ] && touch /tmp/kde_build/kactivities.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdebase:konsole
-[ $? != 0 ] && touch /tmp/kde_build/konsole.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdebase:kde-wallpapers
-[ $? != 0 ] && touch /tmp/kde_build/kde-wallpapers.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdebase:kde-workspace
-[ $? != 0 ] && touch /tmp/kde_build/kde-workspace.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdebase:kde-runtime
-[ $? != 0 ] && touch /tmp/kde_build/kde-runtime.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdebase:kde-base-artwork
-[ $? != 0 ] && touch /tmp/kde_build/kde-base-artwork.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-}
-
-build_kdesdk () {
-#****************************************************************
-cd /slacksrc/kde
-
-export UPGRADE_PACKAGES=always
-
-./kde.SlackBuild kdesdk:cervisia
-[ $? != 0 ] && touch /tmp/kde_build/cervisia.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdesdk:dolphin-plugins
-[ $? != 0 ] && touch /tmp/kde_build/dolphin-plugins.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdesdk:kapptemplate
-[ $? != 0 ] && touch /tmp/kde_build/kapptemplate.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdesdk:kcachegrind
-[ $? != 0 ] && touch /tmp/kde_build/kcachegrind.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdesdk:kde-dev-scripts
-[ $? != 0 ] && touch /tmp/kde_build/kde-dev-scripts.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdesdk:kde-dev-utils
-[ $? != 0 ] && touch /tmp/kde_build/kde-dev-utils.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdesdk:kdesdk-kioslaves
-[ $? != 0 ] && touch /tmp/kde_build/kdesdk-kioslaves.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdesdk:kdesdk-strigi-analyzers
-[ $? != 0 ] && touch /tmp/kde_build/kdesdk-strigi-analyzers.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdesdk:kdesdk-thumbnailers
-[ $? != 0 ] && touch /tmp/kde_build/kdesdk-thumbnailers.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdesdk:libkomparediff2
-[ $? != 0 ] && touch /tmp/kde_build/libkomparediff2.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdesdk:kompare
-[ $? != 0 ] && touch /tmp/kde_build/kompare.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdesdk:lokalize
-[ $? != 0 ] && touch /tmp/kde_build/lokalize.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdesdk:okteta
-[ $? != 0 ] && touch /tmp/kde_build/okteta.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdesdk:poxml
-[ $? != 0 ] && touch /tmp/kde_build/poxml.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdesdk:umbrello
-[ $? != 0 ] && touch /tmp/kde_build/umbrello.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-}
-
-build_kdegraphics () {
-#****************************************************************
-cd /slacksrc/kde
-
-export UPGRADE_PACKAGES=always
+for package in \
+  cervisia \
+  dolphin-plugins \
+  kactivities \
+  kcachegrind \
+  kde-dev-scripts \
+  kde-dev-utils \
+  kdesdk-kioslaves \
+  kdesdk-strigi-analyzers \
+  kdesdk-thumbnailers \
+  libkomparediff2 \
+  kompare \
+  lokalize \
+  okteta \
+  poxml \
+  umbrello \
+  ; do
+   ./kde.SlackBuild kdesdk:$package
+ 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
+	mv -v /tmp/kde_build/*.txz /sfspacks/kde
+done
 
 ./kde.SlackBuild extragear:libkscreen
 [ $? != 0 ] && touch /tmp/kde_build/libkscreen.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegraphics:libkipi
-[ $? != 0 ] && touch /tmp/kde_build/libkipi.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegraphics:libkexiv2
-[ $? != 0 ] && touch /tmp/kde_build/libkexiv2.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegraphics:libkdcraw
-[ $? != 0 ] && touch /tmp/kde_build/libkdcraw.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegraphics:libksane
-[ $? != 0 ] && touch /tmp/kde_build/libksane.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegraphics:kdegraphics-mobipocket
-[ $? != 0 ] && touch /tmp/kde_build/kdegraphics-mobipocket.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegraphics:okular
-[ $? != 0 ] && touch /tmp/kde_build/okular.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegraphics:kdegraphics-strigi-analyzer
-[ $? != 0 ] && touch /tmp/kde_build/kdegraphics-strigi-analyzer.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegraphics:kdegraphics-thumbnailers
-[ $? != 0 ] && touch /tmp/kde_build/kdegraphics-thumbnailers.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegraphics:kamera
-[ $? != 0 ] && touch /tmp/kde_build/kamera.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegraphics:kcolorchooser
-[ $? != 0 ] && touch /tmp/kde_build/kcolorchooser.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegraphics:kgamma
-[ $? != 0 ] && touch /tmp/kde_build/kgamma.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegraphics:kolourpaint
-[ $? != 0 ] && touch /tmp/kde_build/kolourpaint.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegraphics:kruler
-[ $? != 0 ] && touch /tmp/kde_build/kruler.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegraphics:ksaneplugin
-[ $? != 0 ] && touch /tmp/kde_build/ksaneplugin.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegraphics:ksnapshot
-[ $? != 0 ] && touch /tmp/kde_build/ksnapshot.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegraphics:svgpart
-[ $? != 0 ] && touch /tmp/kde_build/svgpart.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-}
-
-build_kdebindings () {
-#****************************************************************
-cd /slacksrc/kde
-
-export UPGRADE_PACKAGES=always
-
-./kde.SlackBuild kdebindings:smokegen 
-[ $? != 0 ] && touch /tmp/kde_build/smokegen.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdebindings:smokeqt
-[ $? != 0 ] && touch /tmp/kde_build/smokeqt.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdebindings:qtruby  
-[ $? != 0 ] && touch /tmp/kde_build/qtruby.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdebindings:perlqt 
-[ $? != 0 ] && touch /tmp/kde_build/perlqt.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdebindings:smokekde 
-[ $? != 0 ] && touch /tmp/kde_build/smokekde.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdebindings:korundum
-[ $? != 0 ] && touch /tmp/kde_build/korundum.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdebindings:perlkde 
-[ $? != 0 ] && touch /tmp/kde_build/perlkde.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdebindings:pykde4 
-[ $? != 0 ] && touch /tmp/kde_build/pykde4.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdebindings:kate 
-[ $? != 0 ] && touch /tmp/kde_build/kate.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdebindings:kross-interpreters 
-[ $? != 0 ] && touch /tmp/kde_build/kross-interpreters.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-}
-
-build_kdeaccessibility () {
-#****************************************************************
-cd /slacksrc/kde
-
-export UPGRADE_PACKAGES=always
-
-./kde.SlackBuild kdeaccessibility:kaccessible 
-[ $? != 0 ] && touch /tmp/kde_build/kaccessible.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdeaccessibility:kmouth 
-[ $? != 0 ] && touch /tmp/kde_build/kmouth.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdeaccessibility:kmousetool 
-[ $? != 0 ] && touch /tmp/kde_build/kmousetool.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdeaccessibility:kmag 
-[ $? != 0 ] && touch /tmp/kde_build/kmag.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-}
-
-build_kdeutils () {
-#****************************************************************
-cd /slacksrc/kde
-
-export UPGRADE_PACKAGES=always
-
-./kde.SlackBuild kdeutils:ark 
-[ $? != 0 ] && touch /tmp/kde_build/ark.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdeutils:filelight  
-[ $? != 0 ] && touch /tmp/kde_build/filelight.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdeutils:kcalc 
-[ $? != 0 ] && touch /tmp/kde_build/kcalc.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdeutils:kcharselect  
-[ $? != 0 ] && touch /tmp/kde_build/kcharselect.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdeutils:kdf  
-[ $? != 0 ] && touch /tmp/kde_build/kdf.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdeutils:kfloppy  
-[ $? != 0 ] && touch /tmp/kde_build/kfloppy.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdeutils:kgpg  
-[ $? != 0 ] && touch /tmp/kde_build/kgpg.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdeutils:print-manager  
-[ $? != 0 ] && touch /tmp/kde_build/print-manager.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdeutils:kremotecontrol  
-[ $? != 0 ] && touch /tmp/kde_build/kremotecontrol.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdeutils:ktimer  
-[ $? != 0 ] && touch /tmp/kde_build/ktimer.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdeutils:kwalletmanager  
-[ $? != 0 ] && touch /tmp/kde_build/kwalletmanager.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdeutils:superkaramba  
-[ $? != 0 ] && touch /tmp/kde_build/superkaramba.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdeutils:sweeper  
-[ $? != 0 ] && touch /tmp/kde_build/sweeper.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-}
-
-build_kdemultimedia () {
-#****************************************************************
-cd /slacksrc/kde
-
-export UPGRADE_PACKAGES=always
-
-./kde.SlackBuild kdemultimedia:libkcddb
-[ $? != 0 ] && touch /tmp/kde_build/libkcddb.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdemultimedia:libkcompactdisc  
-[ $? != 0 ] && touch /tmp/kde_build/libkcompactdisc.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdemultimedia:audiocd-kio
-[ $? != 0 ] && touch /tmp/kde_build/audiocd-kio.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdemultimedia:dragon
-[ $? != 0 ] && touch /tmp/kde_build/dragon.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdemultimedia:mplayerthumbs  
-[ $? != 0 ] && touch /tmp/kde_build/mplayerthumbs.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdemultimedia:juk 
-[ $? != 0 ] && touch /tmp/kde_build/juk.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdemultimedia:kmix
-[ $? != 0 ] && touch /tmp/kde_build/kmix.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-}
-
-build_kdenetwork () {
-#****************************************************************
-cd /slacksrc/kde
-
-export UPGRADE_PACKAGES=always
-
-./kde.SlackBuild extragear:libktorrent
+mv -v /tmp/kde_build/*.txz /sfspacks/kde
+
+for package in \
+  libkipi \
+  libkexiv2 \
+  libkdcraw \
+  libksane\
+  kdegraphics-mobipocket \
+  okular \
+  kdegraphics-strigi-analyzer \
+  kdegraphics-thumbnailers \
+  kamera \
+  kcolorchooser \
+  kgamma \
+  kolourpaint \
+  kruler \
+  ksaneplugin \
+  ksnapshot \
+  svgpart \
+  ; do
+   ./kde.SlackBuild kdegraphics:$package
+ 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
+	mv -v /tmp/kde_build/*.txz /sfspacks/kde
+done
+
+for package in \
+  smokegen \
+  smokeqt \
+  qtruby \
+  perlqt\
+  smokekde \
+  korundum \
+  perlkde \
+  pykde4 \
+  kate \
+  kross-interpreters \
+  ; do
+   ./kde.SlackBuild kdebindings:$package
+ 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
+	mv -v /tmp/kde_build/*.txz /sfspacks/kde
+done
+
+for package in \
+  kaccessible \
+  kmouth \
+  kmousetool \
+  kmag \
+  ; do
+   ./kde.SlackBuild kdeaccessibility:$package
+ 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
+	mv -v /tmp/kde_build/*.txz /sfspacks/kde
+done
+
+for package in \
+  ark \
+  filelight \
+  kcalc  \
+  kcharselect \
+  kdf \
+  kfloppy \
+  kgpg \
+  print-manager   \
+  kremotecontrol \
+  ktimer \
+  kwalletmanager \
+  superkaramba \
+  sweeper \
+  ; do
+   ./kde.SlackBuild kdeutils:$package
+ 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
+	mv -v /tmp/kde_build/*.txz /sfspacks/kde
+done
+
+for package in \
+  libkcddb \
+  libkcompactdisc \
+  audiocd-kio \
+  dragon \
+  mplayerthumbs \
+  juk \
+  kmix \
+  ; do
+   ./kde.SlackBuild kdemultimedia:$package
+ 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
+	mv -v /tmp/kde_build/*.txz /sfspacks/kde
+done
+
+./kde.SlackBuild kdextragear:libktorrent
 [ $? != 0 ] && touch /tmp/kde_build/libktorrent.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
+mv -v /tmp/kde_build/*.txz /sfspacks/kde
 
-./kde.SlackBuild kdenetwork:kdenetwork-filesharing
-[ $? != 0 ] && touch /tmp/kde_build/kdenetwork-filesharing.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdenetwork:kdenetwork-strigi-analyzers
-[ $? != 0 ] && touch /tmp/kde_build/kdenetwork-strigi-analyzers.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdenetwork:zeroconf-ioslave
-[ $? != 0 ] && touch /tmp/kde_build/zeroconf-ioslave.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdenetwork:kget
-[ $? != 0 ] && touch /tmp/kde_build/kget.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdenetwork:kopete
-[ $? != 0 ] && touch /tmp/kde_build/kopete.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdenetwork:kppp
-[ $? != 0 ] && touch /tmp/kde_build/kppp.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdenetwork:krdc
-[ $? != 0 ] && touch /tmp/kde_build/krdc.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdenetwork:krfb
-[ $? != 0 ] && touch /tmp/kde_build/krfb.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-}
-
-build_kdeadmin () {
-#****************************************************************
-cd /slacksrc/kde
-
-export UPGRADE_PACKAGES=always
+for package in \
+  kdenetwork-filesharing \
+  kdenetwork-strigi-analyzers \
+  zeroconf-ioslave \
+  kget \
+  kopete \
+  kppp \
+  krdc \
+  krfb \
+  ; do
+   ./kde.SlackBuild kdenetwork:$package
+ 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
+	mv -v /tmp/kde_build/*.txz /sfspacks/kde
+done
 
 ./kde.SlackBuild oxygen-icons
 [ $? != 0 ] && touch /tmp/kde_build/oxygen-icons.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
+mv -v /tmp/kde_build/*.txz /sfspacks/kde
 
-./kde.SlackBuild kdeadmin:kcron
-[ $? != 0 ] && touch /tmp/kde_build/kcron.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdeadmin:ksystemlog
-[ $? != 0 ] && touch /tmp/kde_build/ksystemlog.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdeadmin:kuser
-[ $? != 0 ] && touch /tmp/kde_build/kuser.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-}
-
-build_kdegames () {
-#****************************************************************
-cd /slacksrc/kde
-
-export UPGRADE_PACKAGES=always
+for package in \
+  kcron \
+  ksystemlog \
+  kuser \
+  ; do
+   ./kde.SlackBuild kdeadmin:$package
+ 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
+	mv -v /tmp/kde_build/*.txz /sfspacks/kde
+done
 
 ./kde.SlackBuild kdeartwork
 [ $? != 0 ] && touch /tmp/kde_build/kdeartwork.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegames:libkdegames
-[ $? != 0 ] && touch /tmp/kde_build/libkdegames.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegames:libkmahjongg
-[ $? != 0 ] && touch /tmp/kde_build/libkmahjongg.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegames:klickety
-[ $? != 0 ] && touch /tmp/kde_build/klickety.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegames:ksudoku
-[ $? != 0 ] && touch /tmp/kde_build/ksudoku.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegames:ksquares
-[ $? != 0 ] && touch /tmp/kde_build/ksquares.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegames:kpat
-[ $? != 0 ] && touch /tmp/kde_build/kpat.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegames:klines
-[ $? != 0 ] && touch /tmp/kde_build/klines.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegames:ksnakeduel
-[ $? != 0 ] && touch /tmp/kde_build/ksnakeduel.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegames:kollision
-[ $? != 0 ] && touch /tmp/kde_build/kollision.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegames:kshisen
-[ $? != 0 ] && touch /tmp/kde_build/kshisen.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegames:kblocks
-[ $? != 0 ] && touch /tmp/kde_build/kblocks.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegames:lskat
-[ $? != 0 ] && touch /tmp/kde_build/lskat.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegames:kreversi
-[ $? != 0 ] && touch /tmp/kde_build/kreversi.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegames:bovo
-[ $? != 0 ] && touch /tmp/kde_build/bovo.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegames:kajongg
-[ $? != 0 ] && touch /tmp/kde_build/kajongg.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegames:granatier
-[ $? != 0 ] && touch /tmp/kde_build/granatier.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegames:kmines
-[ $? != 0 ] && touch /tmp/kde_build/kmines.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegames:kiriki
-[ $? != 0 ] && touch /tmp/kde_build/kiriki.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegames:kigo
-[ $? != 0 ] && touch /tmp/kde_build/kigo.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegames:bomber
-[ $? != 0 ] && touch /tmp/kde_build/bomber.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegames:kolf
-[ $? != 0 ] && touch /tmp/kde_build/kolf.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegames:kdiamond
-[ $? != 0 ] && touch /tmp/kde_build/kdiamond.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegames:kbounce
-[ $? != 0 ] && touch /tmp/kde_build/kbounce.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegames:konquest
-[ $? != 0 ] && touch /tmp/kde_build/konquest.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegames:kapman
-[ $? != 0 ] && touch /tmp/kde_build/kapman.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegames:knavalbattle
-[ $? != 0 ] && touch /tmp/kde_build/knavalbattle.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-./kde.SlackBuild kdegames:killbots
-[ $? != 0 ] && touch /tmp/kde_build/killbots.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegames:kubrick
-[ $? != 0 ] && touch /tmp/kde_build/kubrick.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegames:kgoldrunner
-[ $? != 0 ] && touch /tmp/kde_build/kgoldrunner.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegames:knetwalk
-[ $? != 0 ] && touch /tmp/kde_build/knetwalk.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegames:kbreakout
-[ $? != 0 ] && touch /tmp/kde_build/kbreakout.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegames:ksirk
-[ $? != 0 ] && touch /tmp/kde_build/ksirk.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegames:kfourinline
-[ $? != 0 ] && touch /tmp/kde_build/kfourinline.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegames:picmi
-[ $? != 0 ] && touch /tmp/kde_build/picmi.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegames:kblackbox
-[ $? != 0 ] && touch /tmp/kde_build/kblackbox.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegames:palapeli
-[ $? != 0 ] && touch /tmp/kde_build/kdevelop-php.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegames:katomic
-[ $? != 0 ] && touch /tmp/kde_build/katomic.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegames:ktuberling
-[ $? != 0 ] && touch /tmp/kde_build/ktuberling.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegames:kjumpingcube
-[ $? != 0 ] && touch /tmp/kde_build/kjumpingcube.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegames:kmahjongg
-[ $? != 0 ] && touch /tmp/kde_build/kmahjongg.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdegames:kspaceduel
-[ $? != 0 ] && touch /tmp/kde_build/kspaceduel.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-}
-
-build_kdetoys () {
-#****************************************************************
-cd /slacksrc/kde
-
-export UPGRADE_PACKAGES=always
-
-./kde.SlackBuild kdetoys:amor
-[ $? != 0 ] && touch /tmp/kde_build/amor.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdetoys:kteatime
-[ $? != 0 ] && touch /tmp/kde_build/kteatime.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdetoys:ktux
-[ $? != 0 ] && touch /tmp/kde_build/ktux.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-}
-
-build_kdepim () {
-#****************************************************************
-cd /slacksrc/kde
-
-export UPGRADE_PACKAGES=always
-
-./kde.SlackBuild kdepim
-[ $? != 0 ] && touch /tmp/kde_build/kdepim.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdepim-runtime
-[ $? != 0 ] && touch /tmp/kde_build/kdepim-runtime.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-}
-
-build_kdeedu () {
-#****************************************************************
-cd /slacksrc/kde
-
-export UPGRADE_PACKAGES=always
-
-./kde.SlackBuild kdeedu:libkdeedu
-[ $? != 0 ] && touch /tmp/kde_build/libkdeedu.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdeedu:analitza
-[ $? != 0 ] && touch /tmp/kde_build/analitza.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdeedu:artikulate
-[ $? != 0 ] && touch /tmp/kde_build/artikulate.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdeedu:blinken
-[ $? != 0 ] && touch /tmp/kde_build/blinken.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdeedu:cantor
-[ $? != 0 ] && touch /tmp/kde_build/cantor.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdeedu:kalgebra
-[ $? != 0 ] && touch /tmp/kde_build/kalgebra.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdeedu:kalzium
-[ $? != 0 ] && touch /tmp/kde_build/kalzium.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdeedu:kanagram
-[ $? != 0 ] && touch /tmp/kde_build/kanagram.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdeedu:kbruch
-[ $? != 0 ] && touch /tmp/kde_build/kbruch.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdeedu:kgeography
-[ $? != 0 ] && touch /tmp/kde_build/kgeography.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdeedu:khangman
-[ $? != 0 ] && touch /tmp/kde_build/khangman.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdeedu:kig
-[ $? != 0 ] && touch /tmp/kde_build/kig.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdeedu:kiten
-[ $? != 0 ] && touch /tmp/kde_build/kiten.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdeedu:klettres
-[ $? != 0 ] && touch /tmp/kde_build/klettres.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdeedu:kmplot
-[ $? != 0 ] && touch /tmp/kde_build/kmplot.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdeedu:kstars
-[ $? != 0 ] && touch /tmp/kde_build/kstars.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdeedu:kqtquickcharts
-[ $? != 0 ] && touch /tmp/kde_build/kqtquickcharts.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdeedu:ktouch
-[ $? != 0 ] && touch /tmp/kde_build/ktouch.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdeedu:kturtle
-[ $? != 0 ] && touch /tmp/kde_build/kturtle.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdeedu:kwordquiz
-[ $? != 0 ] && touch /tmp/kde_build/kwordquiz.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdeedu:marble
-[ $? != 0 ] && touch /tmp/kde_build/marble.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdeedu:parley
-[ $? != 0 ] && touch /tmp/kde_build/parley.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdeedu:pairs
-[ $? != 0 ] && touch /tmp/kde_build/pairs.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdeedu:rocs
-[ $? != 0 ] && touch /tmp/kde_build/rocs.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild kdeedu:step
-[ $? != 0 ] && touch /tmp/kde_build/step.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-}
-
-build_kdeextragear () {
-#****************************************************************
-cd /slacksrc/kde
-
-export UPGRADE_PACKAGES=always
-
-./kde.SlackBuild kdewebdev
+mv -v /tmp/kde_build/*.txz /sfspacks/kde
+
+for package in \
+  libkdegames \
+  libkmahjongg \
+  klickety \
+  ksudoku \
+  ksquares \
+  kpat \
+  klines \
+  ksnakeduel \
+  kollision \
+  kshisen \
+  kblocks \
+  lskat \
+  kreversi \
+  bovo \
+  kajongg \
+  granatier \
+  kmines \
+  kiriki \
+  kigo \
+  bomber \
+  lkolf \
+  kdiamond \
+  kbounce \
+  konquest \
+  kapman \
+  knavalbattle \
+  killbots \
+  kubrick \
+  kgoldrunner \
+  knetwalk \
+  kbreakout \
+  ksirk \
+  kfourinline \
+  picmi \
+  kblackbox \
+  palapeli \
+  katomic \
+  ktuberling \
+  kmahjongg \
+  kspaceduel \
+  ; do
+   ./kde.SlackBuild kdegames:$package
+ 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
+	mv -v /tmp/kde_build/*.txz /sfspacks/kde
+done
+
+for package in \
+  amor \
+  kteatime \
+  ktux \
+  ; do
+   ./kde.SlackBuild kdetoys:$package
+ 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
+	mv -v /tmp/kde_build/*.txz /sfspacks/kde
+done
+
+for package in \
+  libkdeedu \
+  analitza \
+  artikulate \
+  blinken \
+  cantor \
+  kalgebra \
+  kalzium \
+  kanagram \
+  kbruch \
+  kgeography \
+  khangman \
+  kig \
+  kiten \
+  klettres \
+  kmplot \
+  kstars \
+  kqtquickcharts \
+  ktouch \
+  kturtle \
+  kwordquiz \
+  marble \
+  parley \
+  pairs \
+  rocs \
+  step \
+  ; do
+   ./kde.SlackBuild kdeedu:$package
+ 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
+	mv -v /tmp/kde_build/*.txz /sfspacks/kde
+done
+
+./kde.SlackBuild  kdewebdev
 [ $? != 0 ] && touch /tmp/kde_build/kdewebdev.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
+mv -v /tmp/kde_build/*.txz /sfspacks/kde
 
-./kde.SlackBuild kdebase:kde-baseapps
+./kde.SlackBuild  kdebase:kde-baseapps
 [ $? != 0 ] && touch /tmp/kde_build/kde-baseapps.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
+mv -v /tmp/kde_build/*.txz /sfspacks/kde
 
-./kde.SlackBuild kdeplasma-addons
+./kde.SlackBuild  kdeplasma-addons
 [ $? != 0 ] && touch /tmp/kde_build/kdeplasma-addons.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
+mv -v /tmp/kde_build/*.txz /sfspacks/kde
 
-./kde.SlackBuild polkit-kde:polkit-kde-agent-1
+./kde.SlackBuild  polkit-kde:polkit-kde-agent-1
 [ $? != 0 ] && touch /tmp/kde_build/polkit-kde-agent-1.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
+mv -v /tmp/kde_build/*.txz /sfspacks/kde
 
-./kde.SlackBuild polkit-kde:polkit-kde-kcmodules-1
+./kde.SlackBuild  polkit-kde:polkit-kde-kcmodules-1
 [ $? != 0 ] && touch /tmp/kde_build/polkit-kde-kcmodules-1.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
+mv -v /tmp/kde_build/*.txz /sfspacks/kde
 
-./kde.SlackBuild extragear:bluedevil
-[ $? != 0 ] && touch /tmp/kde_build/bluedevil.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
+for package in \
+  bluedevil \
+  kaudiocreator \
+  kplayer \
+  kwebkitpart \
+  oxygen-gtk2 \
+  kdevplatform \
+  kdevelop-pg-qt \
+  kdevelop \
+  kdev-python \
+  kdevelop-php \
+  kdevelop-php-docs \
+  wicd-kde\
+  libmm-qt \
+  libnm-qt \
+  plasma-nm \
+  skanlite \
+  kio-mtp \
+  libktorrent\
+  ktorrent \
+  amarok \
+  calligra \
+  kscreen \
+  kdeconnect-kde \
+  partitionmanager \
+  k3b \
+  ; do
+   ./kde.SlackBuild extragear:$package
+ 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
+	mv -v /tmp/kde_build/*.txz /sfspacks/kde
+done
 
-./kde.SlackBuild extragear:kaudiocreator
-[ $? != 0 ] && touch /tmp/kde_build/kaudiocreator.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild extragear:kplayer
-[ $? != 0 ] && touch /tmp/kde_build/kplayer.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild extragear:kwebkitpart
-[ $? != 0 ] && touch /tmp/kde_build/kwebkitpart.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild extragear:oxygen-gtk2
-[ $? != 0 ] && touch /tmp/kde_build/oxygen-gtk2.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild extragear:kdevplatform
-[ $? != 0 ] && touch /tmp/kde_build/kdevplatform.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild extragear:kdevelop-pg-qt
-[ $? != 0 ] && touch /tmp/kde_build/kdevelop-pg-qt.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild extragear:kdevelop
-[ $? != 0 ] && touch /tmp/kde_build/kdevelop.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild extragear:kdev-python
-[ $? != 0 ] && touch /tmp/kde_build/kdev-python.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild extragear:kdevelop-php
-[ $? != 0 ] && touch /tmp/kde_build/kdevelop-php.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild extragear:kdevelop-php-docs
-[ $? != 0 ] && touch /tmp/kde_build/kdevelop-php-docs.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild extragear:wicd-kde
-[ $? != 0 ] && touch /tmp/kde_build/wicd-kde.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild extragear:libmm-qt
-[ $? != 0 ] && touch /tmp/kde_build/libmm-qt.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild extragear:libnm-qt
-[ $? != 0 ] && touch /tmp/kde_build/libnm-qt.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild extragear:plasma-nm
-[ $? != 0 ] && touch /tmp/kde_build/plasma-nm.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild extragear:skanlite
-[ $? != 0 ] && touch /tmp/kde_build/skanlite.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild extragear:kio-mtp
-[ $? != 0 ] && touch /tmp/kde_build/kio-mtp.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild extragear:libktorrent
-[ $? != 0 ] && touch /tmp/kde_build/libktorrent.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild extragear:ktorrent
-[ $? != 0 ] && touch /tmp/kde_build/ktorrent.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild extragear:amarok
-[ $? != 0 ] && touch /tmp/kde_build/amarok.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild extragear:calligra
-[ $? != 0 ] && touch /tmp/kde_build/calligra.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild extragear:libkscreen
-[ $? != 0 ] && touch /tmp/kde_build/libkscreen.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild extragear:kscreen
-[ $? != 0 ] && touch /tmp/kde_build/kscreen.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild extragear:kdeconnect-kde
-[ $? != 0 ] && touch /tmp/kde_build/kdeconnect-kde.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild extragear:partitionmanager
-[ $? != 0 ] && touch /tmp/kde_build/partitionmanager.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
-
-./kde.SlackBuild extragear:k3b
-[ $? != 0 ] && touch /tmp/kde_build/k3b.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
+cd /sources
 
 }
 
@@ -3985,376 +1671,66 @@ cd /slacksrc/kdei/kde-l10n
 
 export UPGRADE_PACKAGES=always
 
-PKGLANG=ar ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-ar.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
+for package in \
+  ar \
+  bg \
+  bs \
+  ca \
+  ca@valencia \
+  cs \
+  da \
+  de \
+  el \
+  en_GB \
+  es \
+  et \
+  eu \
+  fa \
+  fi \
+  fr \
+  ga \
+  gl \
+  he \
+  hi \
+  hr \
+  hu \
+  ia \
+  id \
+  is \
+  it \
+  ja \
+  kk \
+  km \
+  ko \
+  lt \
+  lv \
+  mr \
+  nb \
+  nds \
+  nl \
+  ns \
+  pa \
+  pl \
+  pt \
+  pt_BR \
+  ro \
+  ru \
+  sk \
+  sl \
+  sr \
+  sv \
+  tr \
+  ug \
+  uk \
+  wa \
+  zh_CN \
+  zh_TW \
+  ; do
+   PKGLANG=$package ./kde-l10n.SlackBuild
+ 	[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-$package.failed
+	mv -v /tmp/kde_build/*.txz /sfspacks/kdei
+done
 
-PKGLANG=bg ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-bg.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=bs ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-bs.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=ca ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-ca.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=ca@valencia ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-ca@valencia.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=cs ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-cs.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=da ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-da.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=de ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-de.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=el ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-el.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=en_GB ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-en_GB.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=es ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-es.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=et ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-et.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=eu ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-eu.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=fa ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-fa.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=fi ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-fi.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=fr ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-fr.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=ga ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-ga.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=gl ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-gl.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=he ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-he.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=hi ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-hi.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=hr ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-hr.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=hu ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-hu.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=ia ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-ia.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=id ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-id.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=is ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-is.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=it ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-it.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=ja ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-ja.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=kk ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-kk.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=km ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-km.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=ko ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-ko.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=lt ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-lt.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=lv ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-lv.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=mr ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-mr.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=nb ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-nb.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=nds ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-nds.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=nl ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-nl.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=nn ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-nn.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=pa ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-pa.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=pl ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-pl.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=pt ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-pt.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=pt_BR ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-pt_BR.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=ro ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-ro.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=ru ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-ru.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=sk ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-sk.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=sl ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-sl.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=sr ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-sr.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=sv ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-sv.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=tr ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-tr.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=ug ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-ug.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=uk ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-uk.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=wa ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-wa.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=zh_CN ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-zh_CN.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-cd /slacksrc/kdei/kde-l10n
-
-PKGLANG=zh_TW ./kde-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-zh_TW.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei/
-rm -rf /tmp/kde_build
 cd /sources
 
 }
@@ -4365,207 +1741,43 @@ cd /slacksrc/kdei/calligra-l10n
 
 export UPGRADE_PACKAGES=always
 
-PKGLANG=bs ./calligra-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/calligra-l10n-bs.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei
-cd /slacksrc/kdei/calligra-l10n
+for package in \
+  bs \
+  ca \
+  ca@valencia \
+  cs \
+  da \
+  de \
+  el \
+  en_GB \
+  es \
+  et \
+  fi \
+  fr \
+  gl \
+  hu \
+  it \
+  ja \
+  kk \
+  nb \
+  nl \
+  pl \
+  pt \
+  pt_BR \
+  ro \
+  ru \
+  sk \
+  sv \
+  tr \
+  uk \
+  zh_CN \
+  zh_TW \
+  ; do
+   PKGLANG=$package ./calligra-l10n.SlackBuild
+ 	[ $? != 0 ] && touch /tmp/kde_build/calligra-l10n-$package.failed
+	mv -v /tmp/kde_build/*.txz /sfspacks/kdei
+done
 
-PKGLANG=ca ./calligra-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/calligra-l10n-ca.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei
-cd /slacksrc/kdei/calligra-l10n
-
-PKGLANG=ca@valencia ./calligra-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/calligra-l10n-ca@valencia.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei
-cd /slacksrc/kdei/calligra-l10n
-
-PKGLANG=cs ./calligra-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/calligra-l10n-cs.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei
-cd /slacksrc/kdei/calligra-l10n
-
-PKGLANG=da ./calligra-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/calligra-l10n-da.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei
-cd /slacksrc/kdei/calligra-l10n
-
-PKGLANG=de ./calligra-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/calligra-l10n-de.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei
-cd /slacksrc/kdei/calligra-l10n
-
-PKGLANG=el ./calligra-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/calligra-l10n-el.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei
-cd /slacksrc/kdei/calligra-l10n
-
-PKGLANG=en_GB ./calligra-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/calligra-l10n-en_GB.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei
-cd /slacksrc/kdei/calligra-l10n
-
-PKGLANG=es ./calligra-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/calligra-l10n-es.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei
-cd /slacksrc/kdei/calligra-l10n
-
-PKGLANG=et ./calligra-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/calligra-l10n-et.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei
-cd /slacksrc/kdei/calligra-l10n
-
-PKGLANG=fi ./calligra-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/calligra-l10n-fi.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei
-cd /slacksrc/kdei/calligra-l10n
-
-PKGLANG=fr ./calligra-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/calligra-l10n-fr.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei
-cd /slacksrc/kdei/calligra-l10n
-
-PKGLANG=gl ./calligra-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/calligra-l10n-gl.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei
-cd /slacksrc/kdei/calligra-l10n
-
-PKGLANG=hu ./calligra-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/calligra-l10n-hu.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei
-cd /slacksrc/kdei/calligra-l10n
-
-PKGLANG=it ./calligra-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/calligra-l10n-fi.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei
-cd /slacksrc/kdei/calligra-l10n
-
-PKGLANG=ja ./calligra-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/calligra-l10n-ja.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei
-cd /slacksrc/kdei/calligra-l10n
-
-PKGLANG=kk ./calligra-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/calligra-l10n-kk.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei
-cd /slacksrc/kdei/calligra-l10n
-
-PKGLANG=nb ./calligra-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/calligra-l10n-nb.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei
-cd /slacksrc/kdei/calligra-l10n
-
-PKGLANG=nl ./calligra-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/calligra-l10n-nl.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei
-cd /slacksrc/kdei/calligra-l10n
-
-PKGLANG=pl ./calligra-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/calligra-l10n-pl.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-cd /slacksrc/kdei/calligra-l10n
-
-PKGLANG=pt ./calligra-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/calligra-l10n-pt.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei
-cd /slacksrc/kdei/calligra-l10n
-
-PKGLANG=pt_BR ./calligra-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/calligra-l10n-pt_BR.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei
-cd /slacksrc/kdei/calligra-l10n
-
-PKGLANG=ru ./calligra-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/calligra-l10n-sk.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei
-cd /slacksrc/kdei/calligra-l10n
-
-PKGLANG=sk ./calligra-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/calligra-l10n-sk.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei
-cd /slacksrc/kdei/calligra-l10n
-
-PKGLANG=sv ./calligra-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/calligra-l10n-sv.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei
-cd /slacksrc/kdei/calligra-l10n
-
-PKGLANG=tr ./calligra-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/calligra-l10n-tr.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei
-cd /slacksrc/kdei/calligra-l10n
-
-PKGLANG=uk ./calligra-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/calligra-l10n-uk.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei
-cd /slacksrc/kdei/calligra-l10n
-
-PKGLANG=zh_CN ./calligra-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/calligra-l10n-zh_CN.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei
-cd /slacksrc/kdei/calligra-l10n
-
-PKGLANG=zh_TW ./calligra-l10n.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/calligra-l10n-TW_CN.failed
-cd /tmp/kde_build
-upgradepkg --install-new --reinstall *.txz
-mv *.txz /sfspacks/kdei
-rm -rf /tmp/kde_build
 cd /sources
 
 }
@@ -4580,21 +1792,35 @@ export UPGRADE_PACKAGES=always
 
 ./kde.SlackBuild  kdebase:baloo
 [ $? != 0 ] && touch /tmp/kde_build/baloo.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
+mv -v /tmp/kde_build/*.txz /sfspacks/kde
 
 ./kde.SlackBuild  kdebase:baloo-widgets
 [ $? != 0 ] && touch /tmp/kde_build/baloo-widgets.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
-cd /slacksrc/kde
+mv -v /tmp/kde_build/*.txz /sfspacks/kde
 
 ./kde.SlackBuild  kdegraphics:gwenview
 [ $? != 0 ] && touch /tmp/kde_build/gwenview.failed
-cd /tmp/kde_build
-mv *.txz /sfspacks/kde
+mv -v /tmp/kde_build/*.txz /sfspacks/kde
+
+cd /sources
+
+}
+
+build_kdepim () {
+#****************************************************************
 cd /slacksrc/kde
+
+export UPGRADE_PACKAGES=always
+
+./kde.SlackBuild kdepim
+[ $? != 0 ] && touch /tmp/kde_build/kdepim.failed
+mv -v /tmp/kde_build/*.txz /sfspacks/kde
+
+./kde.SlackBuild kdepim-runtime
+[ $? != 0 ] && touch /tmp/kde_build/kdepim-runtime.failed
+mv -v /tmp/kde_build/*.txz /sfspacks/kde
+
+cd /sources
 
 }
 
@@ -4966,64 +2192,8 @@ while (( LINE < $FILELEN )); do
 					build $SRCDIR $PACKNAME
 					[ $? != 0 ] && exit 1 ;;
 
-				kdelibs )
-					build_kdelibs
-					[ $? != 0 ] && exit 1 ;;
-
-				kdebase )
-					build_kdebase
-					[ $? != 0 ] && exit 1 ;;
-
-				kdesdk )
-					build_kdesdk
-					[ $? != 0 ] && exit 1 ;;
-
-				kdegraphics )
-					build_kdegraphics
-					[ $? != 0 ] && exit 1 ;;
-
-				kdebindings )
-					build_kdebindings
-					[ $? != 0 ] && exit 1 ;;
-
-				kdemultimedia )
-					build_kdemultimedia
-					[ $? != 0 ] && exit 1 ;;
-
-				kdeaccessibility )
-					build_kdeaccessibility
-					[ $? != 0 ] && exit 1 ;;
-
-				kdeutils )
-					build_kdeutils
-					[ $? != 0 ] && exit 1 ;;
-
-				kdenetwork )
-					build_kdenetwork
-					[ $? != 0 ] && exit 1 ;;
-
-				kdeadmin )
-					build_kdeadmin
-					[ $? != 0 ] && exit 1 ;;
-
-				kdegames )
-					build_kdegames
-					[ $? != 0 ] && exit 1 ;;
-
-				kdetoys )
-					build_kdetoys
-					[ $? != 0 ] && exit 1 ;;
-
-				kdepim )
-					build_kdepim
-					[ $? != 0 ] && exit 1 ;;
-
-				kdeedu )
-					build_kdeedu
-					[ $? != 0 ] && exit 1 ;;
-
-				extragear )
-					build_kdeextragear
+				kde )
+					build_kde
 					[ $? != 0 ] && exit 1 ;;
 
 				kde-l10n )
@@ -5034,8 +2204,12 @@ while (( LINE < $FILELEN )); do
 					build_calligra
 					[ $? != 0 ] && exit 1 ;;
 
-				post-kde2 )
-					build_post_kde2
+				post-kde )
+					build_post_kde
+					[ $? != 0 ] && exit 1 ;;
+
+				kdepim )
+					build_kdepim
 					[ $? != 0 ] && exit 1 ;;
 
 				kernel-all )
@@ -5288,16 +2462,12 @@ while (( LINE < $FILELEN )); do
 					esac
 					continue ;;
 
-				x11-doc )
-					build_x11_doc
+				x11-group1 )
+					build_x11_group1
 					[ $? != 0 ] && exit 1 ;;
 
-				x11-proto )
-					build_x11_proto_c
-					[ $? != 0 ] && exit 1 ;;
-
-				x11-util )
-					build_x11_util
+				x11-group2 )
+					build_x11_group2
 					[ $? != 0 ] && exit 1 ;;
 
 				x11-lib )
@@ -5306,22 +2476,6 @@ while (( LINE < $FILELEN )); do
 
 				x11-xcb )
 					build_x11_xcb
-					[ $? != 0 ] && exit 1 ;;
-
-				x11-app )
-					build_x11_app
-					[ $? != 0 ] && exit 1 ;;
-
-				x11-font )
-					build_x11_font
-					[ $? != 0 ] && exit 1 ;;
-
-				x11-server )
-					build_x11_server
-					[ $? != 0 ] && exit 1 ;;
-
-				x11-driver )
-					build_x11_driver
 					[ $? != 0 ] && exit 1 ;;
 
 				x11-app-post )
