@@ -1375,6 +1375,7 @@ done
 for package in \
   cervisia \
   dolphin-plugins \
+  kapptemplate \
   kactivities \
   kcachegrind \
   kde-dev-scripts \
@@ -1541,7 +1542,7 @@ for package in \
   kiriki \
   kigo \
   bomber \
-  lkolf \
+  kolf \
   kdiamond \
   kbounce \
   konquest \
@@ -1559,6 +1560,7 @@ for package in \
   palapeli \
   katomic \
   ktuberling \
+  kjumpingcube \
   kmahjongg \
   kspaceduel \
   ; do
@@ -1708,6 +1710,7 @@ for package in \
   nb \
   nds \
   nl \
+  nn \
   ns \
   pa \
   pl \
