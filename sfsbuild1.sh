@@ -1782,7 +1782,7 @@ cd /sources
 
 }
 
-build_post_kde2 () {
+build_post_kde () {
 #****************************************************************
 # this part exist because some kde packages don't build directly
 #****************************************************************
