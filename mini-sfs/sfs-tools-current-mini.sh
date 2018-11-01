@@ -39,7 +39,7 @@
 # Some other packages have been added to be able to build slackware.
 #
 # Everything will be done automatically in this script.
-#--------------------------------------------------------------------------
+#-------------------------------------------------------------------------
 #
 # Revision 	0 		25072016		nobodino
 # Revision	1		28072016		nobodino

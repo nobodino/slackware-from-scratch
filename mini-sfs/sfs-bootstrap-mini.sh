@@ -1,28 +1,6 @@
-#######################  sfs-bootstrap-mini.sh #################################
+#######################  sfs-bootstrap-mini.sh ###################################################
 #!/bin/bash
 #
-# Copyright 2018  J. E. Garrott Sr, Puyallup, WA, USA
-# Copyright 2018  "nobodino", Bordeaux, FRANCE
-# All rights reserved.
-#
-# Redistribution and use of this script, with or without modification, is
-# permitted provided that the following conditions are met:
-#
-# 1. Redistributions of this script must retain the above copyright
-#    notice, this list of conditions and the following disclaimer.
-#
-#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
-#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
-#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
-#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
-#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
-#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#
-#--------------------------------------------------------------------------
 # 
 #  Revision 0 			13072018				nobodino
 #		-script issued from sfs-boostrap.sh to build slackware from scratch
@@ -32,7 +10,7 @@
 #
 #	Above july 2018, revisions made through github project: https://github.com/nobodino/slackware-from-scratch 
 #
-################################################################################
+#############################################################################################
 # set -x
 
 #*******************************************************************
@@ -111,6 +89,7 @@ do
 	then
 		if [[ "$distribution" = "slackware" ]]
 		then
+#			tools_dir='tools' && test_tools_32
 			tools_dir='tools'
 			echo
 			echo -e "$BLUE" "You choose $tools_dir" "$NORMAL"
@@ -122,6 +101,7 @@ do
 	then
 		if [[ "$distribution" = "slackware" ]]
 		then
+#			tools_dir='tools_64' && test_tools_64
 			tools_dir='tools_64'
 			echo
 			echo -e "$BLUE" "You choose $tools_dir" "$NORMAL"
@@ -540,7 +520,7 @@ if [ ! -f $SRCDIR/d/cmake/cmake.SlackBuild.old ]; then
 fi
 }
 
-execute_findutils() {
+execute_findutils () {
 #******************************************************************
 if [ ! -f $SRCDIR/a/findutils/findutils.SlackBuild.old ]; then
 	cp -v $SRCDIR/a/findutils/findutils.SlackBuild $SRCDIR/a/findutils/findutils.SlackBuild.old
@@ -649,7 +629,6 @@ select sources_alteration in yes no quit
 do
 	if [[ "$sources_alteration" = "yes" ]]
 	then
-
 		execute_cmake # 2 pass
 		execute_findutils # 2 pass
 		execute_kmod # 2 pass
@@ -806,13 +785,6 @@ a which
 l readline
 n dhcpcd
 a kernel-all
-d help2man
-d flex
-d bison
-d autoconf
-d libtool
-a findutils
-n lynx
 a end1
 EOF
 }
