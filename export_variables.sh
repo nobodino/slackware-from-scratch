@@ -67,17 +67,12 @@ export DLDIR3=ftp://slackware.uk/slackware/slackware-14.2
 export DLDIR4=ftp://slackware.uk/slackware/slackware64-14.1
 export DLDIR5=ftp://slackware.uk/slackware/slackware64-14.2
 export DLDIR6=http://mirror.eu.oneandone.net/linux/distributions/gentoo/gentoo/distfiles
-export DLDIR8=https://static.rust-lang.org/dist
 export DLDIR9=http://download.oracle.com/otn-pub/java/jdk/8u192-b12/750e1c8617c5452694857ad95c3ee230/jre-8u192-linux-i586.tar.gz
 export DLDIR10=http://download.oracle.com/otn-pub/java/jdk/8u192-b12/750e1c8617c5452694857ad95c3ee230/jre-8u192-linux-x64.tar.gz
 export DLDIR11=https://slackbuilds.org/slackbuilds/14.2
 #*******************************************************************
-# rust and cargo versions
+# jdk versions
 #*******************************************************************
-export CARGO="0.30.0"
-export RUST="1.29.2"
-export RUSTC="1.29.2"
-export DATE="2018-10-12"
 export ISLVER="0.18"
 export JDK="8u192"
 export GNAT_x86="gnat-gpl-2014-x86-linux-bin.tar.gz"

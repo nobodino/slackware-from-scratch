@@ -361,19 +361,7 @@ if [[ "$build_arch" = "x86" ]]
 			curl -C - -LR#OH "Cookie: oraclelicense=accept-securebackup-cookie" -k $DLDIR9
 		fi
 		cp -v jre-$JDK-linux-i586.tar.gz $SRCDIR/extra/java
-		cd $SRCDIR/others
-		if [ ! -f cargo-$CARGO-i686-unknown-linux-gnu.tar.gz ]; then
-		curl --user user:password -o cargo-$CARGO-i686-unknown-linux-gnu.tar.gz $DLDIR8/$DATE/cargo-$CARGO-i686-unknown-linux-gnu.tar.gz
-		fi
-		cp -rv cargo-$CARGO-i686-unknown-linux-gnu.tar.gz $SRCDIR/d/rust
-		if [ ! -f rust-std-$RUST-i386-unknown-linux-gnu.tar.gz ]; then
-		curl --user user:password -o rust-std-$RUST-i386-unknown-linux-gnu.tar.gz $DLDIR8/$DATE/rust-std-$RUST-i686-unknown-linux-gnu.tar.gz
-		fi
-		cp -rv rust-std-$RUST-i386-unknown-linux-gnu.tar.gz $SRCDIR/d/rust
-		if [ ! -f rustc-$RUSTC-i686-unknown-linux-gnu.tar.gz ]; then
-		curl --user user:password -o rustc-$RUSTC-i686-unknown-linux-gnu.tar.gz $DLDIR8/$DATE/rustc-$RUSTC-i686-unknown-linux-gnu.tar.gz
-		fi
-		cp -rv rustc-$RUSTC-i686-unknown-linux-gnu.tar.gz $SRCDIR/d/rust	
+		cd $SRCDIR/d/rust && sed -i -e '1,12d' rust.url && sed -i -e '7,11d' rust.url && source rust.url	
 	elif [[ "$build_arch" = "x86_64" ]]
 	then
 		mkdir $SRCDIR/others > /dev/null 2>&1
@@ -421,19 +409,7 @@ if [[ "$build_arch" = "x86" ]]
 			curl -C - -LR#OH "Cookie: oraclelicense=accept-securebackup-cookie" -k $DLDIR10
 		fi
 		cp -rv jre-$JDK-linux-x64.tar.gz $SRCDIR/extra/java
-		cd $SRCDIR/others
-		if [ ! -f cargo-$CARGO-x86_64-unknown-linux-gnu.tar.gz ]; then
-		curl --user user:password -o cargo-$CARGO-x86_64-unknown-linux-gnu.tar.gz $DLDIR8/$DATE/cargo-$CARGO-x86_64-unknown-linux-gnu.tar.gz
-		fi
-		cp -rv cargo-$CARGO-x86_64-unknown-linux-gnu.tar.gz $SRCDIR/d/rust
-		if [ ! -f rust-std-$RUST-x86_64-unknown-linux-gnu.tar.gz ]; then
-		curl --user user:password -o rust-std-$RUST-x86_64-unknown-linux-gnu.tar.gz $DLDIR8/$DATE/rust-std-$RUST-x86_64-unknown-linux-gnu.tar.gz
-		fi
-		cp -rv rust-std-$RUST-x86_64-unknown-linux-gnu.tar.gz $SRCDIR/d/rust
-		if [ ! -f rustc-$RUSTC-x86_64-unknown-linux-gnu.tar.gz ]; then
-		curl --user user:password -o rustc-$RUSTC-x86_64-unknown-linux-gnu.tar.gz $DLDIR8/$DATE/rustc-$RUSTC-x86_64-unknown-linux-gnu.tar.gz
-		fi
-		cp -rv rustc-$RUSTC-x86_64-unknown-linux-gnu.tar.gz $SRCDIR/d/rust		 	
+		cd $SRCDIR/d/rust && sed -i -e '1,18d' rust.url && source rust.url
 fi
 
 }
