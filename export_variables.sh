@@ -51,29 +51,7 @@
 #	Above july 2018, revisions made through github project: https://github.com/nobodino/slackware-from-scratch 
 #
 ##########################################################################
-
 # set -x
-
-#*******************************************************************
-# VARIABLES to be set by the user
-#*******************************************************************
-# the directory where will be built slackware from scratch
-#*******************************************************************
-export SFS=/mnt/sfs
-#******************************************************************
-# the directory where you store eveything about sfs (tools, others...)
-#*******************************************************************
-export PATDIR=/mnt/ext4/sda4/sfs
-#*******************************************************************
-# the directory where are stored everything else slackware (gnuada, SBo..)
-#*******************************************************************
-export DNDIR1=/mnt/ext4/sda4/sfs/others
-#*******************************************************************
-# the directory where is stored the resynced slackware sources
-#*******************************************************************
-export RDIR1=/mnt/ext4/sda4/home/ftp/pub/Linux/Slackware/slackware-current
-export RDIR3=/mnt/ext4/sda4/home/ftp/pub/Linux/Slackware/slackware64-current
-export RDIR5=/mnt/dvd
 #*******************************************************************
 # the rsync mirror from which you get the slackware source tree
 #*******************************************************************

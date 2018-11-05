@@ -1193,7 +1193,6 @@ select sources_alteration in yes no quit
 do
 	if [[ "$sources_alteration" = "yes" ]]
 	then
-
 		execute_cmake # 2 pass
 		execute_dbus # 2 pass
 		execute_findutils # 2 pass
@@ -1246,6 +1245,7 @@ echo
 # before everything we test if we are root
 #**************************************
 test_root
+. export_variables_perso.sh
 . export_variables.sh
 distribution_selector
 arch_selector
