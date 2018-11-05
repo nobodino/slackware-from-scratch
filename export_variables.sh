@@ -60,14 +60,6 @@
 # export RSYNCDIR=rsync://slackware.uk/slackware/slackware-current
 export RSYNCDIR=rsync://bear.alienbase.nl/mirrors/slackware/slackware64-current
 #*******************************************************************
-# the directory where will be copied the slackware sources from RDIR
-#*******************************************************************
-export SRCDIR=$SFS/slacksrc
-#*******************************************************************
-# the directory where will be stored the patches necessary to build SFS
-#*******************************************************************
-export PATCHDIR=$SFS/sources/patches
-#*******************************************************************
 # the mirrors from which we download files to populate "others" directly
 #*******************************************************************
 export DLDIR2=ftp://slackware.uk/slackware/slackware-14.1
