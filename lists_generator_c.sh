@@ -992,6 +992,7 @@ n ipw2100-fw
 n ipw2200-fw
 ap pamixer
 d pmake
+a quota
 n rpcbind
 d scons
 l serf

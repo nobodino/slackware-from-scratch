@@ -1711,7 +1711,6 @@ for package in \
   nds \
   nl \
   nn \
-  ns \
   pa \
   pl \
   pt \
@@ -1767,7 +1766,6 @@ for package in \
   pl \
   pt \
   pt_BR \
-  ro \
   ru \
   sk \
   sv \
