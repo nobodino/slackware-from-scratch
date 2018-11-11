@@ -483,6 +483,9 @@ ap cups
 l pcre2
 l vte
 l libnotify
+l pygobject
+l pycairo
+l pygtk
 l keybinder
 l libproxy
 l gsettings-desktop-schemas
