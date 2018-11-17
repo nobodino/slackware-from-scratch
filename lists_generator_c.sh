@@ -1081,11 +1081,12 @@ d subversion
 l libxml2
 l ncurses
 n openssl
-n snownews
+# n snownews
 d python
 d python3
 xap mozilla-firefox
 xap mozilla-thunderbird
+n snownews
 a end4
 EOF
 }
