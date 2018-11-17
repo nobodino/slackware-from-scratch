@@ -111,6 +111,9 @@ a acl
 l libcap
 l libcap
 a sed
+l libxml2
+tcl tcl
+l libxslt
 a shadow
 a grep
 l readline
