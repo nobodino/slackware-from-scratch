@@ -1040,7 +1040,6 @@ for package in \
   libpciaccess \
   libxkbfile \
   libxshmfence \
-  libXcm \
   libXevie \
   libXxf86misc \
   libXp \
@@ -1154,7 +1153,6 @@ for package in \
   xcalc \
   xclipboard \
   xclock \
-  xcm \
   xcompmgr \
   xconsole \
   xdbedizzy \
