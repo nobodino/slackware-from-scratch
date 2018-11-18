@@ -363,6 +363,8 @@ x libepoxy
 l cairo
 a eudev
 a libgudev
+x libXcm
+x xcm
 x libwacom
 l libunwind
 x x11-group2
