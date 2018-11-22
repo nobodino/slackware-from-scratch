@@ -501,6 +501,7 @@ d rust
 l librsvg
 l gdk-pixbuf2
 l gnome-themes-standard
+l libpsl
 l libsoup
 l libevent
 l libvpx
@@ -734,6 +735,7 @@ l atkmm
 l gtkmm3
 l libcanberra
 l gstreamer
+d vala
 l dconf
 l dconf-editor
 l gtkmm2
