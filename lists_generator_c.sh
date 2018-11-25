@@ -477,7 +477,7 @@ l judy
 l netpbm
 l libwnck
 l gstreamer0
-l js185
+l mozjs52
 l polkit
 a upower
 l gst-plugins-base0
