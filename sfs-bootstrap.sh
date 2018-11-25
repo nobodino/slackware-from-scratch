@@ -173,6 +173,16 @@ EOF
 chmod 644 $SFS/etc/passwd
 }
 
+root_bashrc () {
+#***************************************************
+mkdir -pv $SFS/root
+cat >  $SFS/root/.bashrc << "EOF"
+#!/bin/sh
+LC_ALL=C.UTF-8
+export LC_ALL
+EOF
+}
+
 sfsprep () {
 #***********************************************************
 # package management: copy tools from slackware source:
@@ -1310,6 +1320,7 @@ done
 #*************************************
 etc_group
 etc_passwd
+root_bashrc
 #***********************************************************
 # package management: copy tools from slackware source
 # before chrooting and building slackware

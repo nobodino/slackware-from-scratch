@@ -820,7 +820,7 @@ n irssi
 n iw
 n libndp
 n libnftnl
-n mailx
+n s-nail
 n metamail
 n mobile-broadband-provider-info
 n mtr

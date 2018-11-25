@@ -1947,15 +1947,6 @@ echo
 cd /sources && killall -9 dhcpcd
 }
 
-root_bashrc () {
-#***************************************************
-cat > /root/.bashrc << "EOF"
-#!/bin/sh
-LC_ALL=C.UTF-8
-export LC_ALL
-EOF
-}
-
 #****************************************************************
 # END OF X11 SUB-SYSTEM BUILDING
 #****************************************************************
@@ -2059,11 +2050,6 @@ while (( LINE < $FILELEN )); do
 
 					esac
 					continue ;;
-
-				atk )
-					root_bashrc
-					build $SRCDIR $PACKNAME
-					[ $? != 0 ] && exit 1 ;;
 
 				ca-certificates )
 					build $SRCDIR $PACKNAME
