@@ -486,6 +486,7 @@ x libinput
 x x11-app-post
 ap cups
 l pcre2
+d vala
 l vte
 l libnotify
 l pygobject
