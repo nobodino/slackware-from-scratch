@@ -273,6 +273,7 @@ ap itstool
 l icu4c
 a xfsprogs
 ap dmapi
+l graphite2
 l freetype
 l harfbuzz
 l freetype
@@ -389,6 +390,7 @@ cat > $SFS/sources/build3_s.list << "EOF"
 a dhcpcd_up
 ap linuxdoc-tools
 l libpcap
+a f2fs-tools
 a efivar
 a efibootmgr
 l gnu-efi
