@@ -186,6 +186,8 @@ l libarchive
 d cmake
 ap mariadb
 d perl
+n openssl
+n openssl10
 d intltool
 a ed
 ap bc
