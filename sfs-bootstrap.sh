@@ -178,11 +178,8 @@ root_bashrc () {
 mkdir -pv $SFS/root
 cat >  $SFS/root/.bashrc << "EOF"
 #!/bin/sh
-LANGUAGE=C.UTF-8
-LC_MESSAGES=C.UTF-8
 LC_ALL=C.UTF-8
-LANG=C.UTF-8
-export LC_CTYPE LANGUAGE LC_MESSAGES LC_ALL LANG
+export LC_ALL
 EOF
 }
 
