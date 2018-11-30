@@ -1981,8 +1981,6 @@ mkdir -pv /sfspacks/{others,a,ap,d,e,extra,f,k,kde,kdei,l,n,t,tcl,x,xap,xfce,y}
 LUSB=1
 # init pkg-config variable
 LPKG=1
-# init libcap variable
-LCAP=1
 # init llvm variable
 LPVM=1
 # init libcaca variable
@@ -2272,18 +2270,6 @@ while (( LINE < $FILELEN )); do
 							build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1
 							LCAC=2 ;;
-						2 )
-							build1 $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1 ;;
-					esac
-					continue ;;
-
-				libcap )
-					case $LCAP in
-						1 )
-							build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1
-							LCAP=2 ;;
 						2 )
 							build1 $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 ;;

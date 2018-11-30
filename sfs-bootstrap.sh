@@ -178,8 +178,11 @@ root_bashrc () {
 mkdir -pv $SFS/root
 cat >  $SFS/root/.bashrc << "EOF"
 #!/bin/sh
+LANGUAGE=C.UTF-8
+LC_MESSAGES=C.UTF-8
 LC_ALL=C.UTF-8
-export LC_ALL
+LANG=C.UTF-8
+export LC_CTYPE LANGUAGE LC_MESSAGES LC_ALL LANG
 EOF
 }
 
@@ -594,23 +597,6 @@ cat > $PATCHDIR/libcacaSB.patch << "EOF"
 EOF
 }
 
-patch_libcap_c () {
-#******************************************************************
-cat > $PATCHDIR/libcapSB.patch << "EOF"
---- libcap.SlackBuild.old	2018-03-22 13:14:34.951843186 +0100
-+++ libcap.SlackBuild	2018-03-22 13:14:34.958846429 +0100
-@@ -92,7 +92,7 @@
- 
- 
- make DYNAMIC=yes $NUMJOBS || make DYNAMIC=yes || exit 1
--make install FAKEROOT=$PKG man_prefix=/usr || exit 1
-+make RAISE_SETFCAP=no install FAKEROOT=$PKG man_prefix=/usr || 1
- chmod 755 $PKG/lib${LIBDIRSUFFIX}/libcap.so*
- 
- find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
-EOF
-}
-
 patch_libusb_c () {
 #******************************************************************
 cat > $PATCHDIR/libusbSB.patch << "EOF"
@@ -762,9 +748,9 @@ EOF
 patch_texlive_c () {
 #******************************************************************
 cat > $PATCHDIR/texliveSB.patch << "EOF"
---- texlive.SlackBuild.old	2018-08-24 08:43:25.986915070 +0200
-+++ texlive.SlackBuild	2018-08-24 14:16:36.398904387 +0200
-@@ -134,8 +134,11 @@
+--- texlive.SlackBuild.old	2018-11-30 16:13:43.056989837 +0100
++++ texlive.SlackBuild	2018-11-30 16:22:42.170987780 +0100
+@@ -133,8 +133,11 @@
      --disable-dialog \
      --disable-bibtexu \
      --disable-xz \
@@ -778,7 +764,7 @@ cat > $PATCHDIR/texliveSB.patch << "EOF"
      --disable-xindy-docs \
      --disable-xindy-rules \
      --with-clisp-runtime=system \
-@@ -147,12 +150,11 @@
+@@ -146,12 +149,11 @@
      --with-system-freetype2 \
      --with-system-libgs \
      --with-system-icu \
@@ -793,7 +779,7 @@ cat > $PATCHDIR/texliveSB.patch << "EOF"
 +    --without-system-gmp \
 +    --without-system-mpfr \
 +    --without-system-fontconfig \
-     --without-system-harfbuzz \
+     --with-system-harfbuzz \
      --disable-aleph \
      --disable-dump-share \
 EOF
@@ -1140,7 +1126,6 @@ do
 		patch_harfbuzz_c
 		patch_kmod_c
 		patch_libcaca_c
-		patch_libcap_c
 		patch_libusb_c
 		patch_llvm_c
 		patch_mesa_c
@@ -1188,7 +1173,6 @@ do
 		execute_harfbuzz # 2 pass
 		execute_kmod # 2 pass
 		execute_libcaca # 2 pass
-		execute_libcap # 2 pass
 		execute_libusb # 2 pass
 		execute_llvm # 2 pass
 		execute_mesa # 2 pass
