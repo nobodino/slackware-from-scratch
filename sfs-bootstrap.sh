@@ -183,16 +183,6 @@ export LC_ALL
 EOF
 }
 
-root_profile () {
-#***************************************************
-mkdir -pv $SFS/root
-cat >  $SFS/root/.profile << "EOF"
-#!/bin/sh
-setxkbmap -model pc104 -layout fr
-TZ='Europe/Paris' ; export TZ
-EOF
-}
-
 sfsprep () {
 #***********************************************************
 # package management: copy tools from slackware source:
@@ -1312,7 +1302,6 @@ done
 etc_group
 etc_passwd
 root_bashrc
-root_profile
 #***********************************************************
 # package management: copy tools from slackware source
 # before chrooting and building slackware

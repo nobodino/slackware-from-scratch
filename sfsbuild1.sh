@@ -2397,11 +2397,6 @@ while (( LINE < $FILELEN )); do
 					esac
 					continue ;;
 
-				snownews )
-					source /root/.profile
-					build $SRCDIR $PACKNAME
-					[ $? != 0 ] && exit 1 ;;
-
 				subversion )
 					case $LISTFILE in
 						build3_s.list )
