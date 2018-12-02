@@ -875,27 +875,6 @@ cat > $PATCHDIR/gdSB.patch << "EOF"
 EOF
 }
 
-patch_snownews_c () {
-#******************************************************************
-cat > $PATCHDIR/snownews.fake.destdir.diff << "EOF"
---- ./Config.mk.orig	2018-11-07 18:54:52.571283011 -0600
-+++ ./Config.mk	2018-11-07 18:56:20.898274760 -0600
-@@ -17,10 +17,10 @@
- 
- ################ Destination #########################################
- 
--PREFIX		:= /usr
-+PREFIX		:= /tmp/package-snownews/usr
- BINDIR		:= ${PREFIX}/bin
- LOCALEPATH	:= ${PREFIX}/share/locale
--MANPATH		:= /usr/man
-+MANPATH		:= ${PREFIX}/man
- BUILDDIR	:= /tmp//make/${NAME}
- PKGDIR		:= 
- O		:= .o/
-EOF
-}
-
 #*******************************************************************
 # End of sub-system of patches
 #*******************************************************************
@@ -1117,11 +1096,6 @@ if [ ! -f $SRCDIR/xfce/xfce-build-all.sh.old ]; then
 fi
 }
 
-execute_snownews () {
-#******************************************************************
-cp -v $PATCHDIR/snownews.fake.destdir.diff.gz $SRCDIR/n/snownews/
-}
-
 
 #*******************************************************************
 # End of sub-system of execution of patches
@@ -1158,9 +1132,7 @@ do
 		patch_subversion_c
 		patch_texlive_c
 		patch_xfce_c
-		patch_snownews_c
 		gzip -9 $PATCHDIR/*.patch
-		gzip -9 $PATCHDIR/*.diff
 		break
 	elif [[ "$build_patches" = "no" ]]
 	then
@@ -1207,7 +1179,6 @@ do
 		execute_subversion # 2 pass
 		execute_texlive # 2 pass
 		execute_xfce
-		execute_snownews
 		break
 	elif [[ "$sources_alteration" = "no" ]]
 	then

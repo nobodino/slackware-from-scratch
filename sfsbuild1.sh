@@ -269,6 +269,11 @@ case $PACKNAME in
 		cd /slacksrc/$SRCDIR/$PACKNAME && chmod +x *.SlackBuild && SHELL=/bin/sh ./seamonkey.SlackBuild
 		[ $? != 0 ] && exit 1 ;;
 
+	snownews )
+		cd /slacksrc/$SRCDIR/$PACKNAME && chmod +x *.SlackBuild 
+		gzip -d snownews.fake.destdir.diff.gz && sed -i 's/root//' snownews.fake.destdir.diff && gzip -9 snownews.fake.destdir.diff && ./$PACKNAME.SlackBuild
+		[ $? != 0 ] && exit 1 ;;
+
 	xfce )
 		cd /slacksrc/$SRCDIR && chmod +x xfce-build-all.sh && ./xfce-build-all.sh
 		upgradepkg --install-new /tmp/*.t?z
