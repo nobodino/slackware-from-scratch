@@ -270,8 +270,7 @@ case $PACKNAME in
 		[ $? != 0 ] && exit 1 ;;
 
 	snownews )
-		cd /slacksrc/$SRCDIR/$PACKNAME && chmod +x *.SlackBuild 
-		gzip -d snownews.fake.destdir.diff.gz && sed -i 's/root//' snownews.fake.destdir.diff && gzip -9 snownews.fake.destdir.diff && ./$PACKNAME.SlackBuild
+		cd /slacksrc/$SRCDIR/$PACKNAME && chmod +x *.SlackBuild && gzip -d *.diff.gz && sed -i 's/root//' *.diff && gzip -9 *.diff && ./$PACKNAME.SlackBuild
 		[ $? != 0 ] && exit 1 ;;
 
 	xfce )
