@@ -45,14 +45,14 @@ NOTE:
    # End /fstab
 
 
-3) Edit "export_variable.sh" to adjust PATDIR, DNDIR1, RDIR1 and RDRIR3, 
-   RSYNCDIR.
+4) Edit "export_variable_perso.sh" to adjust PATDIR, DNDIR1, RDIR1 and RDRIR3.
+This script is personal for your own convenience. If you update the script from
+github, you must keep this one unchanged. 
    - PATDIR: the directory where you store eveything about sfs
              (tools, others...)
    - DNDIR1: the directory where are stored everything else slackware
              (gnuada, SBo)
    - RDIR1/3: the directory where is stored the resynced slackware sources
-   - RSYNCDIR: the rsync mirror from which you get the slackware source tree
 
 # export PATDIR=/mnt/ext4/sda4/sfs (for example)
 # mkdir -pv $PATDIR/tools (to store the "tools" build further on x86)
@@ -61,7 +61,15 @@ NOTE:
                              "sfs-bootstrap.sh" grabs to "populate_others",
 							 get the different repositories)
 
-4) Now you are ready to begin building slackware from scratch. Just execute
+NOTE: a smart way to populate 'others' directory is to choose on your first
+SFS building, the 'rsync' option and then copy it $DNDIR1.
+
+5) Edit "export_variable.sh" to adjust RSYNCDIR.
+You can adjust the mirrors to your own convenience, this may depend on your 
+location. Choose mirrors closer to you if you're on another continent than mine.
+   - RSYNCDIR: the rsync mirror from which you get the slackware source tree
+
+6) Now you are ready to begin building slackware from scratch. Just execute
 the following command:
 
 # ./sfs-bootsrap.sh
@@ -93,7 +101,7 @@ the following command:
         build firefox thunderbird : everything is in to build them.
       - list1+2+3+4: builds all the available packages of slackware.
 
-5) If it's your first time building SFS, you will have to build the "tools"
+7) If it's your first time building SFS, you will have to build the "tools"
    which are compulsory to build SFS. It will use the "sfs-tools-current.sh"
    script.
 
@@ -115,7 +123,7 @@ the following command:
 # tar czf tools.tar.gz tools/
 # move it to $PATDIR/tools (for x86)  or $PATDIR/tools_64 (for x86_64)
 
-6) from now you can build SFS either list by list or completely with a unique 
+8) from now you can build SFS either list by list or completely with a unique 
    script "full-sfs.sh".
 
 Either by executing:
@@ -137,12 +145,12 @@ the case with SFS (4.14.x series) and slackware-14.2 (4.4.x series). You may
 disable it in build4_s.list by adding '#' in front of 'n ipset' line. You will
 able to build it in real environment, after you reboot your new SFS system. 
 
-7) at the end of the building, adjust "my_profile.sh" to your needs, and 
+9) at the end of the building, adjust "my_profile.sh" to your needs, and 
    execute the script before rebooting. You wil have to update grub (or 
    whatever bootloader you use) so that your boot loader allow you to
    boot in your new system.
 
-8) 3 scripts are not really used by the process of building SFS
+10) 3 scripts are not really used by the process of building SFS
    ("mount-sfs.sh", "umount-sfs.sh" and "chroot1.sh). Their purpose is:
    - after building the list1, you reboot in your new system and test it.
    - if you want to go on building your system in your chrooted environment
