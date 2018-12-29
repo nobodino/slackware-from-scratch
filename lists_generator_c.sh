@@ -295,6 +295,7 @@ ap nano
 n rsync
 ap mc
 n tcp_wrappers
+l libedit
 n openssh
 n ncftp
 n bind
@@ -337,7 +338,6 @@ ap sudo
 l sg3_utils
 a utempter
 d swig
-l libedit
 d oprofile
 d llvm
 d llvm
