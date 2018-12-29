@@ -1,3 +1,4 @@
+
 ################################  sfsbuild1.sh #################################
 #!/bin/bash
 #
@@ -1490,7 +1491,7 @@ for package in \
 	mv -v /tmp/kde_build/*.txz /sfspacks/kde
 done
 
-./kde.SlackBuild kdextragear:libktorrent
+./kde.SlackBuild extragear:libktorrent
 [ $? != 0 ] && touch /tmp/kde_build/libktorrent.failed
 mv -v /tmp/kde_build/*.txz /sfspacks/kde
 
