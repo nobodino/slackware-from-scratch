@@ -2281,6 +2281,11 @@ while (( LINE < $FILELEN )); do
 					esac
 					continue ;;
 
+				libsoup )
+					source /root/.bashrc
+					build $SRCDIR $PACKNAME
+					[ $? != 0 ] && exit 1 ;;
+
 				libusb )
 					case $LUSB in
 						1 )
