@@ -185,7 +185,7 @@ copy_src () {
 #*****************************
     cd $RDIR/a/bash/
 	export BASHVER=${VERSION:-$(echo bash-*.tar.?z* | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
-	cp -v $RDIR/a/bash/bash-$BASHVER.tar.xz $SRCDIR || exit 1
+	cp -v $RDIR/a/bash/bash-$BASHVER.tar.?z $SRCDIR || exit 1
     cd $RDIR/d/binutils
 	export BINUVER=${VERSION:-$(echo binutils-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
     cp -v $RDIR/d/binutils/binutils-$BINUVER.tar.lz $SRCDIR || exit 1
@@ -229,7 +229,6 @@ copy_src () {
     cd $RDIR/a/gzip
 	export GZIPVER=${VERSION:-$(echo gzip-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/a/gzip/gzip-$GZIPVER.tar.xz $SRCDIR || exit 1
-	cp -v $RDIR/a/gzip/gzip.glibc228.diff.gz $SRCDIR || exit 1
     cd $RDIR/k
 	export LINUXVER=${VERSION:-$(echo linux-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/k/linux-$LINUXVER.tar.xz $SRCDIR || exit 1
@@ -671,9 +670,9 @@ ncurses_build () {
 
 bash_build () {
 #*****************************
-    tar xvf bash-$BASHVER.tar.xz && cd bash-$BASHVER
+    tar xvf bash-$BASHVER.tar.?z && cd bash-$BASHVER
 
-    ./configure --prefix=/tools --without-bash-malloc || exit 1
+    ./configure --prefix=/tools --without-bash-malloc  || exit 1
 
     make || exit 1
     make install || exit 1
@@ -813,8 +812,6 @@ grep_build () {
 gzip_build () {
 #*****************************
     tar xvf gzip-$GZIPVER.tar.xz && cd gzip-$GZIPVER
-	
-	zcat ../gzip.glibc228.diff.gz | patch -Esp1 --verbose || exit 1
 
     ./configure --prefix=/tools || exit 1
 

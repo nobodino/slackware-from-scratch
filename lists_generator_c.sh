@@ -1076,6 +1076,7 @@ l libwmf
 l libwnck
 l polkit-gnome
 l libsodium
+l argon2
 n php
 n nfs-utils
 n libgcrypt

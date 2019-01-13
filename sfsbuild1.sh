@@ -2006,6 +2006,8 @@ LGD=1
 LQSC=1
 # init findutils variable
 LFIN=1
+# init NUMJOBS variable
+NUMJOBS="-j$(( $(nproc) * 2 )) -l$(( $(nproc) + 1 ))"
 
 #**************************************************************
 # read the length of build.list and affect SRCDIR and PACKNAME
