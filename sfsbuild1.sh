@@ -153,38 +153,26 @@ fi
 echo
 }
 
+kernel_source_build_c () {
+#********************************************************
+cd /slacksrc/k
+cp -v kernel-source.SlackBuild kernel-source.SlackBuild.old
+sed -i -e '52,89d' kernel-source.SlackBuild && sed -i -e '70,72d' kernel-source.SlackBuild && sed -i -e '97,122d' kernel-source.SlackBuild
+./kernel-source.SlackBuild 
+upgradepkg --install-new --reinstall /tmp/kernel-source*.txz && mv -v /tmp/kernel-source*.txz /sfspacks/k
+rm -rf /tmp/package-kernel-source/
+mv kernel-source.SlackBuild.old kernel-source.SlackBuild
+}
+
 kernel_headers_build_c () {
 #********************************************************
-# build kernel_headers
-#********************************************************
-PKGNAM=linux
-VERSION=${VERSION:-$(echo /slacksrc/k/$PKGNAM-*.tar.xz | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
-BUILD=${BUILD:-1}
-CWD=$(pwd)
-TMP=${TMP:-/tmp}
-PKG=$TMP/kernel-headers
-cd /usr/src
-tar xf /slacksrc/k/$PKGNAM-$VERSION.tar.xz
-cd /usr/src/$PKGNAM-$VERSION
-make mrproper
-make INSTALL_HDR_PATH=dest headers_install
-find dest/include \( -name .install -o -name ..install.cmd \) -delete
-# the kernel-headers will be in $PKG
-mkdir -pv $PKG/usr/include/{asm,asm-generic,drm,linux,mtd,rdma,scsi,sound,video,xen}
-mkdir -pv $PKG/install
-cp -rv dest/include/* /tmp/kernel-headers/usr/include
-cat /slacksrc/d/kernel-headers/slack-desc > $PKG/install/slack-desc
-cd /tmp/kernel-headers
-case $(uname -m) in
-	x86_64 )
-		VERSION1=${VERSION1:-$(echo /slacksrc/k/$PKGNAM-*.tar.xz | rev | cut -f 3- -d . | cut -f 1 -d - | rev)} ;;
-	*  )
-		VERSION1=${VERSION1:-$(echo /slacksrc/k/$PKGNAM-*.tar.xz | rev | cut -f 3- -d . | cut -f 1 -d - | rev)_smp} ;;
-esac
-makepkg -l y -c n /tmp/kernel-headers-$VERSION1-x86-$BUILD.txz
-upgradepkg --install-new --reinstall /tmp/kernel-headers-$VERSION1-x86-$BUILD.t?z
-mv -v /tmp/kernel-headers-$VERSION1-x86-$BUILD.txz /sfspacks/d
-rm -rf /tmp/kernel-headers/
+cd /slacksrc/k
+cp -v kernel-headers.SlackBuild kernel-headers.SlackBuild.old
+sed -i -e '45,47d' kernel-headers.SlackBuild && sed -i -e '54,60d' kernel-headers.SlackBuild
+./kernel-headers.SlackBuild 
+upgradepkg --install-new --reinstall /tmp/kernel-headers*.txz && mv -v /tmp/kernel-headers*.txz /sfspacks/d
+rm -rf /tmp/package-kernel-headers/
+mv kernel-headers.SlackBuild.old kernel-headers.SlackBuild
 }
 
 kernel_build_all () {
@@ -2231,6 +2219,10 @@ while (( LINE < $FILELEN )); do
 
 				kernel-headers )
 					kernel_headers_build_c
+					[ $? != 0 ] && exit 1 ;;
+
+				kernel-source )
+					kernel_source_build_c
 					[ $? != 0 ] && exit 1 ;;
 
 				kmod )
