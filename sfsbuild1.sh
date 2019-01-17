@@ -157,8 +157,7 @@ kernel_source_build_c () {
 #********************************************************
 cd /slacksrc/k
 cp -v kernel-source.SlackBuild kernel-source.SlackBuild.old
-sed -i -e '52,89d' kernel-source.SlackBuild && sed -i -e '70,72d' kernel-source.SlackBuild && sed -i -e '97,122d' kernel-source.SlackBuild
-./kernel-source.SlackBuild 
+sed -i -e '52,89d;109,111d;138,163d' kernel-source.SlackBuild && ./kernel-source.SlackBuild 
 upgradepkg --install-new --reinstall /tmp/kernel-source*.txz && mv -v /tmp/kernel-source*.txz /sfspacks/k
 rm -rf /tmp/package-kernel-source/
 mv kernel-source.SlackBuild.old kernel-source.SlackBuild
@@ -168,8 +167,7 @@ kernel_headers_build_c () {
 #********************************************************
 cd /slacksrc/k
 cp -v kernel-headers.SlackBuild kernel-headers.SlackBuild.old
-sed -i -e '45,47d' kernel-headers.SlackBuild && sed -i -e '54,60d' kernel-headers.SlackBuild
-./kernel-headers.SlackBuild 
+sed -i -e '45,47d;57,64d' kernel-headers.SlackBuild && ./kernel-headers.SlackBuild 
 upgradepkg --install-new --reinstall /tmp/kernel-headers*.txz && mv -v /tmp/kernel-headers*.txz /sfspacks/d
 rm -rf /tmp/package-kernel-headers/
 mv kernel-headers.SlackBuild.old kernel-headers.SlackBuild
