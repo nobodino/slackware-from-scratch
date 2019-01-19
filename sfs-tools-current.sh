@@ -180,7 +180,6 @@ ada_choice () {
 	done
 }
 
-
 copy_src () {
 #*****************************
     cd $RDIR/a/bash/
@@ -238,7 +237,6 @@ copy_src () {
     cd $RDIR/d/m4
 	export M4VER=${VERSION:-$(echo m4-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/d/m4/m4-$M4VER.tar.xz $SRCDIR || exit 1
-	cp -v $RDIR/d/m4/m4.glibc228.diff.gz $SRCDIR || exit 1
     cd $RDIR/d/automake
 	export AUTOMAKEVER=${VERSION:-$(echo automake-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/d/automake/automake-$AUTOMAKEVER.tar.xz $SRCDIR || exit 1
@@ -635,8 +633,10 @@ esac
 m4_build () {
 #*****************************
     tar xvf m4-$M4VER.tar.xz && cd m4-$M4VER
-	
-	zcat ../m4.glibc228.diff.gz | patch -Esp1 --verbose || exit 1
+
+# patch to build with glibc-2.28 (from LFS)
+	sed -i 's/IO_ftrylockfile/IO_EOF_SEEN/' lib/*.c
+	echo "#define _IO_IN_BACKUP 0x100" >> lib/stdio-impl.h
 
     ./configure --prefix=/tools || exit 1
 
@@ -662,7 +662,7 @@ ncurses_build () {
 
     make || exit 1
     make install || exit 1
-    cd /mnt/sfs/tools/lib && ln -sf libncursesw.so libcursesw.so
+    ln -s libncursesw.so /mnt/sfs/tools/lib/libncurses.so
 	cd /mnt/sfs/sources
     rm -rf ncurses-$NCURVER
 	echo ncurses-$NCURVER >> $SFS/tools/etc/tools_version
@@ -873,7 +873,7 @@ perl_build () {
 #*****************************
     tar xvf perl-$PERLVER.tar.?z && cd perl-$PERLVER
 
-    sh Configure -des -Dprefix=/tools -Dlibs=-lm || exit 1
+    sh Configure -des -Dprefix=/tools -Dlibs=-lm -Uloclibpth -Ulocincpth || exit 1
     make || exit 1
     cp -v perl cpan/podlators/scripts/pod2man /tools/bin || exit 1
     mkdir -pv /tools/lib/perl5/$PERLVER || exit 1
