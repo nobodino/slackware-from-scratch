@@ -67,8 +67,8 @@ export DLDIR3=ftp://slackware.uk/slackware/slackware-14.2
 export DLDIR4=ftp://slackware.uk/slackware/slackware64-14.1
 export DLDIR5=ftp://slackware.uk/slackware/slackware64-14.2
 export DLDIR6=http://mirror.eu.oneandone.net/linux/distributions/gentoo/gentoo/distfiles
-export DLDIR9=http://download.oracle.com/otn-pub/java/jdk/8u192-b12/750e1c8617c5452694857ad95c3ee230/jre-8u192-linux-i586.tar.gz
-export DLDIR10=http://download.oracle.com/otn-pub/java/jdk/8u192-b12/750e1c8617c5452694857ad95c3ee230/jre-8u192-linux-x64.tar.gz
+export DLDIR9=https://download.oracle.com/otn-pub/java/jdk/8u202-b08/1961070e4c9b4e26a04e7f5a083f551e/jre-8u202-linux-i586.tar.gz
+export DLDIR10=https://download.oracle.com/otn-pub/java/jdk/8u202-b08/1961070e4c9b4e26a04e7f5a083f551e/jre-8u202-linux-x64.tar.gz
 export DLDIR11=https://slackbuilds.org/slackbuilds/14.2
 #*******************************************************************
 # jdk versions
