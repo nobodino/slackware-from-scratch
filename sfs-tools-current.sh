@@ -237,6 +237,7 @@ copy_src () {
     cd $RDIR/d/m4
 	export M4VER=${VERSION:-$(echo m4-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/d/m4/m4-$M4VER.tar.xz $SRCDIR || exit 1
+	cp -v $RDIR/d/m4/m4.glibc228.diff.gz $SRCDIR || exit 1
     cd $RDIR/d/automake
 	export AUTOMAKEVER=${VERSION:-$(echo automake-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/d/automake/automake-$AUTOMAKEVER.tar.xz $SRCDIR || exit 1
@@ -634,9 +635,7 @@ m4_build () {
 #*****************************
     tar xvf m4-$M4VER.tar.xz && cd m4-$M4VER
 
-# patch to build with glibc-2.28 (from LFS)
-	sed -i 's/IO_ftrylockfile/IO_EOF_SEEN/' lib/*.c
-	echo "#define _IO_IN_BACKUP 0x100" >> lib/stdio-impl.h
+	zcat ../m4.glibc228.diff.gz | patch -Esp1 --verbose || exit 1
 
     ./configure --prefix=/tools || exit 1
 
