@@ -96,17 +96,20 @@ EOF
 source_bash_profile () {
 #*****************************
 echo
-echo "You have prepared the environment to build tools for Slackware."
+echo "By now, you have to enter 'sfs' environment."
 echo
-echo "Execute the following commands:"
+echo "Execute the 3 following commands:"
+echo
+echo -e "$YELLOW" "su - sfs" "$NORMAL"
+echo
+echo "then:"
 echo
 echo -e "$YELLOW" "cd $SFS/sources  && source ~/.bash_profile" "$NORMAL"
 echo 
-echo "then:"
+echo "and to finish:"
 echo 
 echo -e "$YELLOW"  "./sfs-tools-current.sh"  "$NORMAL"
 echo
-su - sfs
 }
 
 tools_test () {
