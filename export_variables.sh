@@ -74,7 +74,7 @@ export DLDIR11=https://slackbuilds.org/slackbuilds/14.2
 # jdk versions
 #*******************************************************************
 export ISLVER="0.18"
-export JDK="8u192"
+export JDK="8u202"
 export GNAT_x86="gnat-gpl-2014-x86-linux-bin.tar.gz"
 export GNAT_x86_64="gnat-gpl-2017-x86_64-linux-bin.tar.gz"
 export GREEN="\\033[1;32m"
