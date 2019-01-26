@@ -613,8 +613,8 @@ EOF
 patch_llvm_c () {
 #******************************************************************
 cat > $PATCHDIR/llvmSB.patch << "EOF"
---- llvm.SlackBuild.old	2018-09-22 15:10:51.319935812 +0200
-+++ llvm.SlackBuild	2018-09-22 15:10:51.322935812 +0200
+--- llvm.SlackBuild.old	2019-01-26 13:18:28.973982826 +0100
++++ llvm.SlackBuild	2018-12-16 22:36:39.157137610 +0100
 @@ -127,8 +127,8 @@
  mkdir build
  cd build
@@ -626,6 +626,50 @@ cat > $PATCHDIR/llvmSB.patch << "EOF"
      -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
      -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
      -DCMAKE_INSTALL_PREFIX=/usr \
+@@ -145,40 +145,15 @@
+     -DLLVM_USE_OPROFILE=ON \
+     -DLLVM_BINUTILS_INCDIR=/usr/include \
+     -DCLANG_RESOURCE_DIR="../lib${LIBDIRSUFFIX}/clang/${VERSION}" \
+-    .. || exit 1
++	-Wno-dev -G Ninja ..                      &&
++  ninja || exit 1
+ 
+   # Breaks with one of the patches above. Maybe revisit later?
+   # -DBUILD_SHARED_LIBS=ON \
+ 
+-  # This seems to not like a parallel build, at least as of 7.0.0. I don't have
+-  # days to wait for the compile though, so let's just smack it with a hammer
+-  # fifty times before dropping back to a single-threaded build:
+-  for index in $(seq 1 50) ; do
+-    #make $NUMJOBS VERBOSE=1
+     make $NUMJOBS
+-    ERR_RESULT=$?
+-    if [ $ERR_RESULT = 0 ]; then
+-      break
+-    fi
+-    echo "*** PARALLEL MAKE RESTART NUMBER $index"
+-  done
+-  if [ ! $ERR_RESULT = 0 ]; then
+-    # Fifty more for the single thread:
+-    for index in $(seq 1 50) ; do
+-      #make VERBOSE=1
+-      make
+-      ERR_RESULT=$?
+-      if [ $ERR_RESULT = 0 ]; then
+-        break
+-      fi
+-      echo "*** NON-PARALLEL MAKE RESTART NUMBER $index"
+-    done
+-  fi
+-  if [ ! $ERR_RESULT = 0 ]; then
+-    exit 1
+-  fi
+ 
+-  make install DESTDIR=$PKG || exit 1
++  DESTDIR=$PKG ninja install || exit 1
+ cd ..
+ 
+ # Add symlinks for $ARCH-slackware-linux-{clang,clang++}:
 EOF
 }
 
