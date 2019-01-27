@@ -1236,7 +1236,6 @@ mv /tmp/x11-build/*.txz /sfspacks/x
 
 for package in \
   xf86-input-acecad \
-  xf86-input-aiptek \
   xf86-input-evdev \
   xf86-input-joystick \
   xf86-input-keyboard \
@@ -1260,11 +1259,9 @@ for package in \
   xf86-video-intel \
   xf86-video-mach64 \
   xf86-video-mga \
-  xf86-video-modesetting \
   xf86-video-neomagic\
   xf86-video-nouveau \
   xf86-video-nv \
-  xf86-video-omap \
   xf86-video-openchrome \
   xf86-video-r128 \
   xf86-video-rendition \
@@ -1282,8 +1279,6 @@ for package in \
   xf86-video-vesa \
   xf86-video-vmware \
   xf86-video-voodoo \
-  xf86-video-xgi \
-  xf86-video-xgixp \
   ; do
    ./x11.SlackBuild driver $package
  	[ $? != 0 ] && exit 1
