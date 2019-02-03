@@ -78,7 +78,7 @@ do
 		then
 			tools_dir='tools'
 			echo
-			echo -e "$BLUE" "You choose $tools_dir" "$NORMAL"
+			echo -e "$BLUE" "You chose $tools_dir" "$NORMAL"
 			echo
 			break
 		fi
@@ -89,7 +89,7 @@ do
 		then
 			tools_dir='tools_64'
 			echo
-			echo -e "$BLUE" "You choose $tools_dir" "$NORMAL"
+			echo -e "$BLUE" "You chose $tools_dir" "$NORMAL"
 			echo
 			break
 		fi
@@ -101,7 +101,7 @@ do
 	fi
 done
 echo
-echo -e "$BLUE"  "You choose $build_arch." "$NORMAL"
+echo -e "$BLUE"  "You chose $build_arch." "$NORMAL"
 echo
 #**********************************************
 # defines RDIR according to x86 or x86_64:
@@ -150,7 +150,7 @@ do
 	echo
 	echo -e "$RED" "You have decided to quit. Goodbye." "$NORMAL"  && exit 1
 done
-echo -e "$BLUE" "You choose $distribution."  "$NORMAL" 
+echo -e "$BLUE" "You chose $distribution."  "$NORMAL" 
 export $distribution
 echo
 
@@ -206,7 +206,7 @@ do
 		echo  -e "$RED" "You have decided to quit. Goodbye." "$NORMAL" && exit 1
 	elif [[ "$upgrade_sources" = "Yes" ]]
 	then
-		echo "You choose to upgrade the sources of SFS."
+		echo "You chose to upgrade the sources of SFS."
 		echo
 		echo "rsync the slacksrc tree from a slackware mirror"
 		mkdir $SFS/sources/others > /dev/null 2>&1
@@ -227,7 +227,7 @@ do
 		break
 	elif [[ "$upgrade_sources" = "No" ]]
 	then
-		echo  -e "$YELLOW" "You choose to keep the sources of SFS as they are." "$NORMAL" 
+		echo  -e "$YELLOW" "You chose to keep the sources of SFS as they are." "$NORMAL" 
 		break
 	fi
 done
@@ -250,7 +250,7 @@ do
 	elif [[ "$upgrade_sources" = "Yes" ]]
 	then
 		echo
-		echo "You choose to upgrade the sources of SFS."
+		echo "You chose to upgrade the sources of SFS."
 		echo "Removing old slacksrc."
 		[ -d $SRCDIR ] && rm -rf $SRCDIR
 		echo "Installing new sources."
@@ -267,7 +267,7 @@ do
 	elif [[ "$upgrade_sources" = "No" ]]
 	then
 		echo
-		echo "You choose to keep the sources of SFS as they are." 
+		echo "You chose to keep the sources of SFS as they are." 
 		break
 	fi
 done
@@ -1188,7 +1188,7 @@ do
 	fi
 done
 echo
-echo -e "$RED" "You choose $build_patches." "$NORMAL" && echo
+echo -e "$RED" "You chose $build_patches." "$NORMAL" && echo
 echo 
 
 }
@@ -1241,7 +1241,7 @@ done
 export $distribution
 echo
 echo $distribution
-echo "You choose $sources_alteration."
+echo "You chose $sources_alteration."
 echo
 
 }
@@ -1311,7 +1311,7 @@ do
 	elif [[ "$upgrade_type" = "rsync" ]]
 	then
 		echo
-		echo -e "$RED" "You choose to rsync slacksrc directly from a slackware mirror." "$NORMAL"
+		echo -e "$RED" "You chose to rsync slacksrc directly from a slackware mirror." "$NORMAL"
 		echo
 		cd $SFS/sources
 		rsync_src
@@ -1320,7 +1320,7 @@ do
 	elif [[ "$upgrade_type" = "local" ]]
 	then
 		echo
-		echo  -e "$RED" "You choose to rsync slacksrc from a local mirror." "$NORMAL"
+		echo  -e "$RED" "You chose to rsync slacksrc from a local mirror." "$NORMAL"
 		echo 
 		upgrade_src
 		populate_others
@@ -1328,7 +1328,7 @@ do
 	elif [[ "$upgrade_type" = "DVD" ]]
 	then
 		echo
-		echo  -e "$RED" "You choose to rsync slacksrc from a local DVD or BluRay." "$NORMAL"
+		echo  -e "$RED" "You chose to rsync slacksrc from a local DVD or BluRay." "$NORMAL"
 		echo 
 		mount -t auto /dev/sr0 /mnt/dvd && sleep 5 && echo -e "$RED" "DVD mounted on /mnt/DVD" "$NORMAL"
 		upgrade_dvd

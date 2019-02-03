@@ -153,7 +153,7 @@ echo_begin () {
             echo  -e "$GREEN" "You have decided to quit. Goodbye."  "$NORMAL" && exit 1
         fi
     done
-    echo -e "$RED" "You choose to build 'tools' for SFS." "$NORMAL"
+    echo -e "$RED" "You chose to build 'tools' for SFS." "$NORMAL"
 }
 
 ada_choice () {
@@ -317,7 +317,7 @@ test_to_go () {
             echo -e "$RED" "You have decided to quit. Goodbye." "$NORMAL" && exit 1
         fi
     done
-    echo -e "$GREEN" "You choose to continue the process of building 'tools' for SFS." "$NORMAL" 
+    echo -e "$GREEN" "You chose to continue the process of building 'tools' for SFS." "$NORMAL" 
 }
 
 binutils_build_sp1 () {
