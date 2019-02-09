@@ -308,12 +308,10 @@ n gnutls
 ap cups
 n iputils
 l ncurses
-others bash
 a pre-elflibs
 a aaa_elflibs
 a post-elflibs
 a aaa_terminfo
-a bash
 a kmod
 a eudev
 l libusb

@@ -372,10 +372,6 @@ if [[ "$build_arch" = "x86" ]]
 		fi
 		cp -v jre-$JDK-linux-i586.tar.gz $SRCDIR/extra/java
 		cd $SRCDIR/d/rust && sed -i -e '1,12d' rust.url && sed -i -e '7,11d' rust.url && source rust.url
-		cd $SRCDIR/others && mkdir -pv $SRCDIR/others/bash && cd $SRCDIR/others/bash
-		if [ ! -f bash-4.3.tar.xz ]; then
-			lftp -c "open http://bear.alienbase.nl/mirrors/slackware/slackware64-14.2/patches/source/bash/; mirror"
-		fi	
 	elif [[ "$build_arch" = "x86_64" ]]
 	then
 		mkdir $SRCDIR/others > /dev/null 2>&1
@@ -424,10 +420,6 @@ if [[ "$build_arch" = "x86" ]]
 		fi
 		cp -rv jre-$JDK-linux-x64.tar.gz $SRCDIR/extra/java
 		cd $SRCDIR/d/rust && sed -i -e '1,18d' rust.url && source rust.url
-		cd $SRCDIR/others && mkdir -pv $SRCDIR/others/bash && cd $SRCDIR/others/bash
-		if [ ! -f bash-4.3.tar.xz ]; then
-			lftp -c "open http://bear.alienbase.nl/mirrors/slackware/slackware64-14.2/patches/source/bash/; mirror"
-		fi
 fi
 
 }
