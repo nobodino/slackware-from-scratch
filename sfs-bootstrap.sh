@@ -428,10 +428,6 @@ if [[ "$build_arch" = "x86" ]]
 		if [ ! -f bash-4.3.tar.xz ]; then
 			lftp -c "open http://bear.alienbase.nl/mirrors/slackware/slackware64-14.2/patches/source/bash/; mirror"
 		fi
-		cd $SRCDIR/others && mkdir -pv $SRCDIR/others/bash && cd $SRCDIR/others/bash
-		if [ ! -f bash-4.3.tar.xz ]; then
-			lftp -c "open http://bear.alienbase.nl/mirrors/slackware/slackware64-14.2/patches/source/bash/; mirror"
-		fi
 fi
 
 }
