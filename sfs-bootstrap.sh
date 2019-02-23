@@ -557,12 +557,12 @@ EOF
 patch_libcaca_c () {
 #******************************************************************
 cat > $PATCHDIR/libcacaSB.patch << "EOF"
---- libcaca.SlackBuild.old	2018-04-20 03:37:08.415444179 +0200
-+++ libcaca.SlackBuild	2018-04-20 03:41:35.836443158 +0200
+--- libcaca.SlackBuild.old	2019-02-23 08:53:08.160995822 +0100
++++ libcaca.SlackBuild	2019-02-23 20:38:05.346867197 +0100
 @@ -25,6 +25,12 @@
  PKGNAM=libcaca
  VERSION=${VERSION:-$(echo $PKGNAM-*.tar.?z* | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
- BUILD=${BUILD:-3}
+ BUILD=${BUILD:-4}
 +LCAC=${LCAC:-1}
 +if [ $LCAC == 1 ]; then
 +	JAVAENABLE="disable"
