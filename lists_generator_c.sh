@@ -217,6 +217,8 @@ cat > $SFS/sources/build2_s.list << "EOF"
 a dhcpcd_up
 d re2c
 d ninja
+l libffi
+d python3
 d python-setuptools
 d meson
 a haveged
