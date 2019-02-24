@@ -384,6 +384,7 @@ x urw-core35-fonts-otf
 x ttf-tlwg
 d git
 x vulkan-sdk
+x pyxdg
 xap rxvt-unicode
 xap blackbox
 a end2
