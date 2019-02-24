@@ -1004,7 +1004,6 @@ l v4l-utils
 l xapian-core
 n ulogd
 n tcpdump
-y bsd-games
 tcl hfsutils
 d indent
 n ipw2100-fw
@@ -1103,6 +1102,7 @@ d python
 d python3
 xap mozilla-firefox
 xap mozilla-thunderbird
+y bsd-games
 a end4
 EOF
 }
