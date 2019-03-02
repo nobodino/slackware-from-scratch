@@ -303,6 +303,7 @@ n tcp_wrappers
 l libedit
 n openssh
 n ncftp
+l python-ply
 n bind
 n dhcp
 l gmp
