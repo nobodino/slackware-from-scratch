@@ -305,7 +305,6 @@ n openssh
 n ncftp
 l python-ply
 n bind
-n dhcp
 l gmp
 n gnutls
 ap cups
@@ -388,6 +387,7 @@ x vulkan-sdk
 x pyxdg
 xap rxvt-unicode
 xap blackbox
+n dhcp
 a end2
 EOF
 }
