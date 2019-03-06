@@ -2082,7 +2082,7 @@ while (( LINE < $FILELEN )); do
 					continue ;;
 
 				dhcpcd_up )
-					dhcpcd -t 10 wlan0 && echo
+					dhcpcd -t 10 eth0 && echo
 					[ $? != 0 ] && exit 1 ;;
 
 				end1 )
