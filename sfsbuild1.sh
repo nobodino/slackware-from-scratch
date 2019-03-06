@@ -1987,6 +1987,8 @@ LGD=1
 LQSC=1
 # init findutils variable
 LFIN=1
+# init glib2 variable
+LGLI=1
 # init NUMJOBS variable
 NUMJOBS="-j$(( $(nproc) * 2 )) -l$(( $(nproc) + 1 ))"
 
@@ -2037,7 +2039,6 @@ while (( LINE < $FILELEN )); do
 							rm /sfspacks/l/alsa-lib*.t?z
 							build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 ;;
-
 					esac
 					continue ;;
 
@@ -2077,12 +2078,11 @@ while (( LINE < $FILELEN )); do
 						build3_s.list )
 							build1 $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 ;;
-
 					esac
 					continue ;;
 
 				dhcpcd_up )
-					dhcpcd -t 10 eth0 && echo
+					dhcpcd -t 10 wlan0 && echo
 					[ $? != 0 ] && exit 1 ;;
 
 				end1 )
@@ -2122,7 +2122,6 @@ while (( LINE < $FILELEN )); do
 						build3_s.list )
 							build1 $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 ;;
-
 					esac
 					continue ;;
 
@@ -2145,6 +2144,18 @@ while (( LINE < $FILELEN )); do
 							[ $? != 0 ] && exit 1
 							LGD=2 ;;
 						2 )
+							build1 $SRCDIR $PACKNAME
+							[ $? != 0 ] && exit 1 ;;
+					esac
+					continue ;;
+
+				glib2 )
+					case $LISTFILE in
+						build1_s.list )
+							build $SRCDIR $PACKNAME
+							[ $? != 0 ] && exit 1 ;;
+
+						build2_s.list )
 							build1 $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 ;;
 					esac
@@ -2449,7 +2460,6 @@ while (( LINE < $FILELEN )); do
 						build4_s.list )
 							build1 $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 ;;
-
 					esac
 					continue ;;
 

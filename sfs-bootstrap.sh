@@ -535,6 +535,27 @@ cat > $PATCHDIR/fontconfigSB.patch << "EOF"
 EOF
 }
 
+patch_glib2_c () {
+#******************************************************************
+cat > $PATCHDIR/glib2SB.patch << "EOF"
+--- glib2.SlackBuild.old	2019-03-06 05:11:47.284067538 -0000
++++ glib2.SlackBuild	2019-03-06 05:21:45.159083548 -0000
+@@ -98,9 +98,9 @@
+   --localstatedir=/var \
+   --buildtype=release \
+   -Dselinux=disabled \
+-  -Dfam=true \
+-  -Dman=true \
+-  -Dgtk_doc=true \
++  -Dfam=false \
++  -Dman=false \
++  -Dgtk_doc=false \
+   -Dinstalled_tests=false \
+   .. || exit 1
+   ninja || exit 1
+EOF
+}
+
 patch_kmod_c () {
 #******************************************************************
 cat > $PATCHDIR/kmodSB.patch << "EOF"
@@ -992,6 +1013,17 @@ if [ ! -f $SRCDIR/l/gd/gd.SlackBuild.old ]; then
 fi
 }
 
+execute_glib2 () {
+#******************************************************************
+if [ ! -f $SRCDIR/l/glib2/glib2.SlackBuild.old ]; then
+	cp -v $SRCDIR/l/glib2/glib2.SlackBuild $SRCDIR/l/glib2/glib2.SlackBuild.old
+	(
+		cd $SRCDIR/l/glib2
+		zcat $PATCHDIR/glib2SB.patch.gz |patch glib2.SlackBuild --verbose
+	)
+fi
+}
+
 execute_harfbuzz() {
 #******************************************************************
 if [ ! -f $SRCDIR/l/harfbuzz/harfbuzz.SlackBuild.old ]; then
@@ -1164,6 +1196,7 @@ do
 		patch_fontconfig_c
 		patch_freetype_c
 		patch_gd_c
+		patch_glib2_c
 		patch_harfbuzz_c
 		patch_kmod_c
 		patch_libcaca_c
@@ -1211,6 +1244,7 @@ do
 		execute_fontconfig # 2 pass
 		execute_freetype # 2 pass
 		execute_gd # 2 pass
+		execute_glib2 # 2 pass
 		execute_harfbuzz # 2 pass
 		execute_kmod # 2 pass
 		execute_libcaca # 2 pass

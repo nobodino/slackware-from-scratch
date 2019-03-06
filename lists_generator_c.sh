@@ -168,9 +168,14 @@ a bin
 a devs
 n network-scripts
 l pcre
+d re2c
+d ninja
+l libffi
+d python3
+d python-setuptools
+d meson
 l glib2
 l gamin
-l glib2
 l gobject-introspection
 a eudev
 ap man-db
@@ -215,12 +220,6 @@ generate_slackware_build_list2_c () {
 #******************************************
 cat > $SFS/sources/build2_s.list << "EOF"
 a dhcpcd_up
-d re2c
-d ninja
-l libffi
-d python3
-d python-setuptools
-d meson
 a haveged
 a gpm
 a gpm
@@ -296,6 +295,7 @@ a usbutils
 a dialog
 d help2man
 ap linuxdoc-tools
+l glib2
 ap nano
 n rsync
 ap mc
