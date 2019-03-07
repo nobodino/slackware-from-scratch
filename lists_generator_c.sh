@@ -232,9 +232,7 @@ l libidn2
 a hwdata
 a pciutils
 d pkg-config
-l glib2
 l gamin
-l glib2
 a libgudev
 d pkg-config
 n wget
