@@ -953,7 +953,7 @@ if [ ! -f $SRCDIR/d/cmake/cmake.SlackBuild.old ]; then
 	cp -v $SRCDIR/d/cmake/cmake.SlackBuild $SRCDIR/d/cmake/cmake.SlackBuild.old
 	(
 		cd $SRCDIR/d/cmake
-		zcat $PATCHDIR/cmakeSB.patch.gz |patch cmake.SlackBuild  --verbose
+		zcat $PATCHDIR/cmakeSB.patch.gz |patch cmake.SlackBuild  --verbose || exit 1
 	)
 fi
 }
@@ -964,7 +964,7 @@ if [ ! -f $SRCDIR/a/dbus/dbus.SlackBuild.old ]; then
 	cp -v $SRCDIR/a/dbus/dbus.SlackBuild $SRCDIR/a/dbus/dbus.SlackBuild.old
 	(
 		cd $SRCDIR/a/dbus
-		zcat $PATCHDIR/dbusSB.patch.gz |patch dbus.SlackBuild --verbose
+		zcat $PATCHDIR/dbusSB.patch.gz |patch dbus.SlackBuild --verbose || exit 1
 	)
 fi
 }
@@ -975,7 +975,7 @@ if [ ! -f $SRCDIR/a/findutils/findutils.SlackBuild.old ]; then
 	cp -v $SRCDIR/a/findutils/findutils.SlackBuild $SRCDIR/a/findutils/findutils.SlackBuild.old
 	(
 		cd $SRCDIR/a/findutils
-		zcat $PATCHDIR/findutilsSB.patch.gz |patch findutils.SlackBuild --verbose
+		zcat $PATCHDIR/findutilsSB.patch.gz |patch findutils.SlackBuild --verbose || exit 1
 	)
 fi
 }
@@ -986,7 +986,7 @@ if [ ! -f $SRCDIR/x/fontconfig/fontconfig.SlackBuild.old ]; then
 	cp -v $SRCDIR/x/fontconfig/fontconfig.SlackBuild $SRCDIR/x/fontconfig/fontconfig.SlackBuild.old
 	(
 		cd $SRCDIR/x/fontconfig
-		zcat $PATCHDIR/fontconfigSB.patch.gz |patch fontconfig.SlackBuild --verbose
+		zcat $PATCHDIR/fontconfigSB.patch.gz |patch fontconfig.SlackBuild --verbose || exit 1
 	)
 fi
 }
@@ -997,7 +997,7 @@ if [ ! -f $SRCDIR/l/freetype/freetype.SlackBuild.old ]; then
 	cp -v $SRCDIR/l/freetype/freetype.SlackBuild $SRCDIR/l/freetype/freetype.SlackBuild.old
 	(
 		cd $SRCDIR/l/freetype
-		zcat $PATCHDIR/freetypeSB.patch.gz |patch freetype.SlackBuild --verbose
+		zcat $PATCHDIR/freetypeSB.patch.gz |patch freetype.SlackBuild --verbose || exit 1
 	)
 fi
 }
@@ -1008,7 +1008,7 @@ if [ ! -f $SRCDIR/l/gd/gd.SlackBuild.old ]; then
 	cp -v $SRCDIR/l/gd/gd.SlackBuild $SRCDIR/l/gd/gd.SlackBuild.old
 	(
 		cd $SRCDIR/l/gd
-		zcat $PATCHDIR/gdSB.patch.gz |patch gd.SlackBuild --verbose
+		zcat $PATCHDIR/gdSB.patch.gz |patch gd.SlackBuild --verbose || exit 1
 	)
 fi
 }
@@ -1019,7 +1019,7 @@ if [ ! -f $SRCDIR/l/glib2/glib2.SlackBuild.old ]; then
 	cp -v $SRCDIR/l/glib2/glib2.SlackBuild $SRCDIR/l/glib2/glib2.SlackBuild.old
 	(
 		cd $SRCDIR/l/glib2
-		zcat $PATCHDIR/glib2SB.patch.gz |patch glib2.SlackBuild --verbose
+		zcat $PATCHDIR/glib2SB.patch.gz |patch glib2.SlackBuild --verbose || exit 1
 	)
 fi
 }
@@ -1030,7 +1030,7 @@ if [ ! -f $SRCDIR/l/harfbuzz/harfbuzz.SlackBuild.old ]; then
 	cp -v $SRCDIR/l/harfbuzz/harfbuzz.SlackBuild $SRCDIR/l/harfbuzz/harfbuzz.SlackBuild.old
 	(
 		cd $SRCDIR/l/harfbuzz
-		zcat $PATCHDIR/harfbuzzSB.patch.gz |patch harfbuzz.SlackBuild --verbose
+		zcat $PATCHDIR/harfbuzzSB.patch.gz |patch harfbuzz.SlackBuild --verbose || exit 1
 	)
 fi
 }
@@ -1041,7 +1041,7 @@ if [ ! -f $SRCDIR/a/kmod/kmod.SlackBuild.old ]; then
 	cp -v $SRCDIR/a/kmod/kmod.SlackBuild $SRCDIR/a/kmod/kmod.SlackBuild.old
 	(
 		cd $SRCDIR/a/kmod
-		zcat $PATCHDIR/kmodSB.patch.gz |patch kmod.SlackBuild --verbose
+		zcat $PATCHDIR/kmodSB.patch.gz |patch kmod.SlackBuild --verbose || exit 1
 	)
 fi
 }
@@ -1052,7 +1052,7 @@ if [ ! -f $SRCDIR/l/libcaca/libcaca.SlackBuild.old ]; then
 	cp -v $SRCDIR/l/libcaca/libcaca.SlackBuild $SRCDIR/l/libcaca/libcaca.SlackBuild.old
 	(
 		cd $SRCDIR/l/libcaca
-		zcat $PATCHDIR/libcacaSB.patch.gz |patch libcaca.SlackBuild --verbose
+		zcat $PATCHDIR/libcacaSB.patch.gz |patch libcaca.SlackBuild --verbose || exit 1
 	)
 fi
 }
@@ -1064,7 +1064,7 @@ if [ ! -f $SRCDIR/l/libcap/libcap.SlackBuild.old ]; then
 		$SRCDIR/l/libcap/libcap.SlackBuild.old
 	(
 		cd $SRCDIR/l/libcap
-		zcat $PATCHDIR/libcapSB.patch.gz |patch libcap.SlackBuild  --verbose
+		zcat $PATCHDIR/libcapSB.patch.gz |patch libcap.SlackBuild  --verbose || exit 1
 	)
 fi
 }
@@ -1076,7 +1076,7 @@ if [ ! -f $SRCDIR/l/libusb/libusb.SlackBuild.old ]; then
 		$SRCDIR/l/libusb/libusb.SlackBuild.old
 	(
 		cd $SRCDIR/l/libusb
-		zcat $PATCHDIR/libusbSB.patch.gz |patch libusb.SlackBuild  --verbose
+		zcat $PATCHDIR/libusbSB.patch.gz |patch libusb.SlackBuild  --verbose || exit 1
 	)
 fi
 }
@@ -1087,7 +1087,7 @@ if [ ! -f $SRCDIR/d/llvm/llvm.SlackBuild.old ]; then
 	cp -v $SRCDIR/d/llvm/llvm.SlackBuild $SRCDIR/d/llvm/llvm.SlackBuild.old
 	(
 		cd $SRCDIR/d/llvm
-		zcat $PATCHDIR/llvmSB.patch.gz |patch llvm.SlackBuild --verbose
+		zcat $PATCHDIR/llvmSB.patch.gz |patch llvm.SlackBuild --verbose || exit 1
 	)
 fi
 }
@@ -1098,7 +1098,7 @@ if [ ! -f $SRCDIR/x/mesa/mesa.SlackBuild.old ]; then
 	cp -v $SRCDIR/x/mesa/mesa.SlackBuild $SRCDIR/x/mesa/mesa.SlackBuild.old
 	(
 		cd $SRCDIR/x/mesa
-		zcat $PATCHDIR/mesaSB.patch.gz |patch mesa.SlackBuild --verbose
+		zcat $PATCHDIR/mesaSB.patch.gz |patch mesa.SlackBuild --verbose || exit 1
 	)
 fi
 }
@@ -1110,7 +1110,7 @@ if [ ! -f $SRCDIR/d/pkg-config/pkg-config.SlackBuild.old ]; then
 		$SRCDIR/d/pkg-config/pkg-config.SlackBuild.old
 	(
 		cd $SRCDIR/d/pkg-config
-		zcat $PATCHDIR/pkg-configSB.patch.gz |patch pkg-config.SlackBuild --verbose
+		zcat $PATCHDIR/pkg-configSB.patch.gz |patch pkg-config.SlackBuild --verbose || exit 1
 	)
 fi
 }
@@ -1122,7 +1122,7 @@ if [ ! -f $SRCDIR/l/QScintilla/QScintilla.SlackBuild.old ]; then
 		$SRCDIR/l/QScintilla/QScintilla.SlackBuild.old
 	(
 		cd $SRCDIR/l/QScintilla
-		zcat $PATCHDIR/QScintillaSB.patch.gz |patch QScintilla.SlackBuild --verbose
+		zcat $PATCHDIR/QScintillaSB.patch.gz |patch QScintilla.SlackBuild --verbose || exit 1
 	)
 fi
 }
@@ -1133,7 +1133,7 @@ if [ ! -f $SRCDIR/l/readline/readline.SlackBuild.old ]; then
 	cp -v $SRCDIR/l/readline/readline.SlackBuild $SRCDIR/l/readline/readline.SlackBuild.old
 	(
 		cd $SRCDIR/l/readline
-		zcat $PATCHDIR/readlineSB.patch.gz |patch readline.SlackBuild --verbose
+		zcat $PATCHDIR/readlineSB.patch.gz |patch readline.SlackBuild --verbose || exit 1
 	)
 fi
 }
@@ -1145,7 +1145,7 @@ if [ ! -f $SRCDIR/d/subversion/subversion.SlackBuild.old ]; then
 		$SRCDIR/d/subversion/subversion.SlackBuild.old
 	(
 		cd $SRCDIR/d/subversion
-		zcat $PATCHDIR/subversionSB.patch.gz |patch subversion.SlackBuild --verbose
+		zcat $PATCHDIR/subversionSB.patch.gz |patch subversion.SlackBuild --verbose || exit 1
 	)
 fi
 }
@@ -1156,7 +1156,7 @@ if [ ! -f $SRCDIR/t/texlive/texlive.SlackBuild.old ]; then
 	cp -v $SRCDIR/t/texlive/texlive.SlackBuild $SRCDIR/t/texlive/texlive.SlackBuild.old
 	(
 		cd $SRCDIR/t/texlive
-		zcat $PATCHDIR/texliveSB.patch.gz |patch texlive.SlackBuild --verbose
+		zcat $PATCHDIR/texliveSB.patch.gz |patch texlive.SlackBuild --verbose || exit 1
 	)
 fi
 }
@@ -1167,7 +1167,7 @@ if [ ! -f $SRCDIR/xfce/xfce-build-all.sh.old ]; then
 	cp -v $SRCDIR/xfce/xfce-build-all.sh  $SRCDIR/xfce/xfce-build-all.sh.old 
 	(
 		cd $SRCDIR/xfce
-		zcat $PATCHDIR/xfce-build-all.patch.gz |patch xfce-build-all.sh --verbose
+		zcat $PATCHDIR/xfce-build-all.patch.gz |patch xfce-build-all.sh --verbose || exit 1
 	)
 fi
 }
@@ -1229,56 +1229,28 @@ echo
 sources_alteration_c () {
 #**********************************
 # alteration of the slackware sources
-#**********************************
-PS3="Your choice:"
-echo
-echo -e "$BLUE" "Do you want to alter the slackware sources: yes, no or quit." "$NORMAL" && echo
-echo
-select sources_alteration in yes no quit
-do
-	if [[ "$sources_alteration" = "yes" ]]
-	then
-		execute_cmake # 2 pass
-		execute_dbus # 2 pass
-		execute_findutils # 2 pass
-		execute_fontconfig # 2 pass
-		execute_freetype # 2 pass
-		execute_gd # 2 pass
-		execute_glib2 # 2 pass
-		execute_harfbuzz # 2 pass
-		execute_kmod # 2 pass
-		execute_libcaca # 2 pass
-		execute_libusb # 2 pass
-		execute_llvm # 2 pass
-		execute_mesa # 2 pass
-		execute_pkg_config # 2 pass
-		execute_qscint # 2 pass
-		execute_readline # 2 pass
-		execute_subversion # 2 pass
-		execute_texlive # 2 pass
-		execute_xfce
-		break
-	elif [[ "$sources_alteration" = "no" ]]
-	then
-		echo
-		echo "You decided to keep the slackware sources."
-		echo "The building of slackware may not build completely."
-		echo "Or you've not uograded the slacksrc it should be ok"
-		echo
-		break
-	elif [[ "$sources_alteration" = "quit" ]]
-	then
-		echo
-		echo -e "$RED" "You have decided to quit. Goodbye." "$NORMAL" && exit 1
-	fi
-done
-export $distribution
-echo
-echo $distribution
-echo "You chose $sources_alteration."
-echo
+	execute_cmake # 2 pass
+	execute_dbus # 2 pass
+	execute_findutils # 2 pass
+	execute_fontconfig # 2 pass
+	execute_freetype # 2 pass
+	execute_gd # 2 pass
+	execute_glib2 # 2 pass
+	execute_harfbuzz # 2 pass
+	execute_kmod # 2 pass
+	execute_libcaca # 2 pass
+	execute_libusb # 2 pass
+	execute_llvm # 2 pass
+	execute_mesa # 2 pass
+	execute_pkg_config # 2 pass
+	execute_qscint # 2 pass
+	execute_readline # 2 pass
+	execute_subversion # 2 pass
+	execute_texlive # 2 pass
+	execute_xfce
 
 }
+
 
 #************************************************************************
 #************************************************************************
