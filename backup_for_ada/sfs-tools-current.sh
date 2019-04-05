@@ -1,4 +1,4 @@
-####################### sfs-tools-current-mini.sh ##############################
+####################### sfs-tools-current.sh ###################################
 #!/bin/bash
 #
 # Copyright 2018  J. E. Garrott Sr, Puyallup, WA, USA
@@ -39,7 +39,7 @@
 # Some other packages have been added to be able to build slackware.
 #
 # Everything will be done automatically in this script.
-#-------------------------------------------------------------------------
+#--------------------------------------------------------------------------
 #
 # Revision 	0 		25072016		nobodino
 # Revision	1		28072016		nobodino
@@ -156,11 +156,35 @@ echo_begin () {
     echo -e "$RED" "You choose to build 'tools' for SFS." "$NORMAL"
 }
 
+ada_choice () {
+#*****************************
+	PS3="Your choice:"
+	echo
+	echo -e "$GREEN" "Do you want to build the tools with gnat ada: yes or no." "$NORMAL"
+	echo
+	select ada_enable in yes no
+	do
+		if [[ "$ada_enable" = "yes" ]]
+		then
+			echo
+			echo -e "$RED" "You decided to build the tools with gnat ada. It will be quiet long" "$NORMAL"
+			echo
+			break
+		elif [[ "$ada_enable" = "no" ]]
+		then
+			echo
+			echo -e "$RED" "You decided to build the tools without gnat ada." "$NORMAL"
+			echo
+			break
+		fi
+	done
+}
+
 copy_src () {
 #*****************************
     cd $RDIR/a/bash/
 	export BASHVER=${VERSION:-$(echo bash-*.tar.?z* | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
-	cp -v $RDIR/a/bash/bash-$BASHVER.tar.xz $SRCDIR || exit 1
+	cp -v $RDIR/a/bash/bash-$BASHVER.tar.?z $SRCDIR || exit 1
     cd $RDIR/d/binutils
 	export BINUVER=${VERSION:-$(echo binutils-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
     cp -v $RDIR/d/binutils/binutils-$BINUVER.tar.lz $SRCDIR || exit 1
@@ -204,7 +228,6 @@ copy_src () {
     cd $RDIR/a/gzip
 	export GZIPVER=${VERSION:-$(echo gzip-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/a/gzip/gzip-$GZIPVER.tar.xz $SRCDIR || exit 1
-	cp -v $RDIR/a/gzip/gzip.glibc228.diff.gz $SRCDIR || exit 1
     cd $RDIR/k
 	export LINUXVER=${VERSION:-$(echo linux-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/k/linux-$LINUXVER.tar.xz $SRCDIR || exit 1
@@ -258,6 +281,23 @@ copy_src () {
     cd $RDIR/a/xz
 	export XZVER=${VERSION:-$(echo xz-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/a/xz/xz-$XZVER.tar.xz $SRCDIR || exit 1
+	cd $RDIR/others/isl
+	export ISLVER=${VERSION:-$(echo isl-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
+   	cp -v $RDIR/others/isl/isl-$ISLVER.tar.xz $SRCDIR || exit 1
+	case $(uname -m) in
+		i686 ) 
+			if [ -f $RDIR/others/gnat-gpl-2014-x86-linux-bin.tar.gz ]; then
+				cd $RDIR/others
+				cp -v $RDIR/others/gnat-gpl-2014-x86-linux-bin.tar.gz $SRCDIR || exit 1
+			fi
+			[ $? != 0 ] && exit 1 ;;
+		x86_64 )
+			if [ -f $RDIR/others/gnat-gpl-2017-x86_64-linux-bin.tar.gz ]; then
+				cd $RDIR/others 
+				cp -v $RDIR/others/gnat-gpl-2017-x86_64-linux-bin.tar.gz $SRCDIR || exit 1
+			fi
+			[ $? != 0 ] && exit 1 ;;
+	esac
    
 }
 
@@ -451,6 +491,32 @@ binutils_build_sp2 () {
 	echo binutils-$BINUVER >> $SFS/tools/etc/tools_version
 }
 
+gmp_build () {
+#*****************************
+    tar xvf gmp-$GMPVER.tar.xz && cd gmp-$GMPVER
+
+    ./configure --prefix=/tools || exit 1
+
+    make || exit 1
+    make install || exit 1
+    cd ..
+    rm -rf gmp-$GMPVER
+	echo gmp-$GMPVER >> $SFS/tools/etc/tools_version
+}
+
+isl_build () {
+#*****************************
+    tar xvf isl-$ISLVER.tar.xz && cd isl-$ISLVER
+
+    ./configure --prefix=/tools || exit 1
+
+    make || exit 1
+    make install || exit 1
+    cd ..
+    rm -rf isl-$ISLVER
+	echo isl-$ISLVER >> $SFS/tools/etc/tools_version
+}
+
 gcc_build_sp2 () {
 #*****************************
 tar xvf gcc-$SRCVER.tar.?z && cd gcc-$SRCVER
@@ -509,10 +575,66 @@ esac
 	 echo gcc-$SRCVER >> $SFS/tools/etc/tools_version
 }
 
+gnat_build_sp2 () {
+#*****************************
+cd $SFS/sources
+tar xvf gcc-$SRCVER.tar.xz && cd gcc-$SRCVER
+
+cat gcc/limitx.h gcc/glimits.h gcc/limity.h > \
+  `dirname $($SFS_TGT-gcc -print-libgcc-file-name)`/include-fixed/limits.h
+
+for file in gcc/config/{linux,i386/linux{,64}}.h
+do
+  cp -uv $file{,.orig}
+  sed -e 's@/lib\(64\)\?\(32\)\?/ld@/tools&@g' \
+      -e 's@/usr@/tools@g' $file.orig > $file
+  echo '
+#undef STANDARD_STARTFILE_PREFIX_1
+#undef STANDARD_STARTFILE_PREFIX_2
+#define STANDARD_STARTFILE_PREFIX_1 "/tools/lib/"
+#define STANDARD_STARTFILE_PREFIX_2 ""' >> $file
+  touch $file.orig
+done
+
+case $(uname -m) in
+  x86_64)
+    sed -e '/m64=/s/lib64/lib/' \
+        -i.orig gcc/config/i386/t-linux64
+  ;;
+esac
+
+    tar xvf ../mpfr-$MPFRVER.tar.xz
+    mv -v mpfr-$MPFRVER mpfr
+    tar xvf ../gmp-$GMPVER.tar.xz
+    mv -v gmp-$GMPVER gmp
+    tar xvf ../mpc-$LIBMPCVER.tar.lz
+    mv -v mpc-$LIBMPCVER mpc
+
+   mkdir -v build && cd build
+
+	../configure \
+		--prefix=/tools \
+		--disable-multilib \
+		--enable-bootstrap \
+		--enable-languages=ada,c,c++ || exit 1
+
+    make || exit 1
+	make bootstrap || exit 1
+	make -C gcc gnatlib || exit 1
+	make -C gcc gnattools || exit 1
+    make install || exit 1
+	export PATH=$PATH_HOLD
+    cd ../..
+    rm -rf gcc-$GCCVER
+	rm -rf gnat-gpl*
+	rm -rf /tools/opt/gnat
+	rm -rf /tools/tmp
+}
+
 m4_build () {
 #*****************************
     tar xvf m4-$M4VER.tar.xz && cd m4-$M4VER
-	
+
 	zcat ../m4.glibc228.diff.gz | patch -Esp1 --verbose || exit 1
 
     ./configure --prefix=/tools || exit 1
@@ -539,7 +661,7 @@ ncurses_build () {
 
     make || exit 1
     make install || exit 1
-    cd /mnt/sfs/tools/lib && ln -sf libncursesw.so libcursesw.so
+    ln -s libncursesw.so /mnt/sfs/tools/lib/libncurses.so
 	cd /mnt/sfs/sources
     rm -rf ncurses-$NCURVER
 	echo ncurses-$NCURVER >> $SFS/tools/etc/tools_version
@@ -547,9 +669,9 @@ ncurses_build () {
 
 bash_build () {
 #*****************************
-    tar xvf bash-$BASHVER.tar.xz && cd bash-$BASHVER
+    tar xvf bash-$BASHVER.tar.?z && cd bash-$BASHVER
 
-    ./configure --prefix=/tools --without-bash-malloc || exit 1
+    ./configure --prefix=/tools --without-bash-malloc  || exit 1
 
     make || exit 1
     make install || exit 1
@@ -653,6 +775,7 @@ gawk_build () {
 	echo gawk-$GAWKVER >> $SFS/tools/etc/tools_version
 }
 
+
 gettext_build () {
 #*****************************
     tar xvf gettext-$GETTVER.tar.xz && cd gettext-$GETTVER
@@ -688,8 +811,6 @@ grep_build () {
 gzip_build () {
 #*****************************
     tar xvf gzip-$GZIPVER.tar.xz && cd gzip-$GZIPVER
-	
-	zcat ../gzip.glibc228.diff.gz | patch -Esp1 --verbose || exit 1
 
     ./configure --prefix=/tools || exit 1
 
@@ -751,7 +872,7 @@ perl_build () {
 #*****************************
     tar xvf perl-$PERLVER.tar.?z && cd perl-$PERLVER
 
-    sh Configure -des -Dprefix=/tools -Dlibs=-lm || exit 1
+    sh Configure -des -Dprefix=/tools -Dlibs=-lm -Uloclibpth -Ulocincpth || exit 1
     make || exit 1
     cp -v perl cpan/podlators/scripts/pod2man /tools/bin || exit 1
     mkdir -pv /tools/lib/perl5/$PERLVER || exit 1
@@ -857,7 +978,6 @@ tar_slack_build () {
     cd ../..
     rm -rf tar-1.13
 	echo tar-1.13 >> $SFS/tools/etc/tools_version
-	echo tar-1.13.bzip2.diff.gz >> $SFS/tools/etc/tools_version
 }
 
 which_build () {
@@ -871,6 +991,7 @@ which_build () {
     rm -rf which-$WHICHVER
     echo which-$WHICHVER >> $SFS/tools/etc/tools_version
 }
+
 
 strip_libs () {
 #*****************************
@@ -908,6 +1029,7 @@ echo_end () {
 #*****************************
 
 echo_begin
+ada_choice
 copy_src
 test_to_go
 cd $SRCDIR
@@ -917,6 +1039,50 @@ linux_headers_build
 glibc_build
 libstdc_build
 binutils_build_sp2
+#--------------------
+ if [[ "$ada_enable" = "yes" ]]
+ then
+	gmp_build
+	isl_build
+	case $(uname -m) in
+		x86_64)
+			tar xf gnat-gpl-2017-x86_64-linux-bin.tar.gz
+			if [ $? != 0 ]; then
+				echo
+				echo "Tar extraction of gnat-gpl-2017-x86_64-linux-bin failed."
+				echo
+			exit 1
+			fi
+			# Now prepare the environment
+			cd gnat-gpl-2017-x86_64-linux-bin
+
+			[ $? != 0 ] && exit 1 ;;
+		i686)
+			tar xf gnat-gpl-2014-x86-linux-bin.tar.gz
+			if [ $? != 0 ]; then
+				echo
+				echo "Tar extraction of gnat-gpl-2014-x86-linux-bin failed."
+				echo
+			exit 1
+			fi
+			# Now prepare the environment
+			cd gnat-gpl-2014-x86-linux-bin
+			[ $? != 0 ] && exit 1 ;;
+	esac
+	mkdir -pv /tools/opt/gnat
+	make ins-all prefix=/tools/opt/gnat
+	PATH_HOLD=$PATH && export PATH=/tools/opt/gnat/bin:$PATH_HOLD
+	echo $PATH
+	find /tools/opt/gnat -name ld -exec mv -v {} {}.old \;
+	find /tools/opt/gnat -name ld -exec as -v {} {}.old \;
+	gnat_build_sp2
+	break
+ elif [[ "$ada_enable" = "no" ]]
+ then
+	echo
+	break
+ fi
+#--------------------
 gcc_build_sp2
 m4_build
 ncurses_build

@@ -1089,10 +1089,10 @@ xap MPlayer
 xap xine-lib
 xap xine-ui
 kde kde
-kdei kde-l10n
 kdei calligra-l10n
 kde post-kde
 kde kdepim
+kdei kde-l10n
 d subversion
 l libxml2
 l ncurses
