@@ -855,8 +855,10 @@ cd /slacksrc/others
 installpkg cxxlibs-6.0.18-x86_64-1.txz
 installpkg gmp-5.1.3-x86_64-1.txz
 installpkg readline-6.3-x86_64-2.txz
+installpkg readline-7.0.005-x86_64-1.txz
 installpkg libtermcap-1.2.3-x86_64-7.txz
 installpkg ncurses-5.9-x86_64-4.txz
+installpkg icu4c-63.1-x86_64-1.txz
 installpkg libpng-1.4.12-x86_64-1.txz
 installpkg /sfspacks/l/libpng-1.6.*-x86_64*.txz
 cd /sources
@@ -869,7 +871,10 @@ post_elflibs_c () {
 #******************************************************************
 removepkg cxxlibs-6.0.18-i486-1.txz readline-6.3-i586-2 ncurses-5.9-i486-4
 removepkg gmp-5.1.3-i486-1  libtermcap-1.2.3-i486-7 libpng-1.4.12-i486-1.txz
-installpkg /sfspacks/l/libpng-1.6.*.txz
+removepkg readline-7.0.005-x86_64-1.txz icu4c-63.1-x86_64-1.txz
+upgradepkg --reinstall /sfspacks/l/libpng-1.6.*.txz
+upgradepkg --reinstall /sfspacks/l/icu4c-64.*.txz
+upgradepkg --reinstall /sfspacks/l/readline-8.0.*.txz
 cd /sources
 }
 
@@ -2082,7 +2087,7 @@ while (( LINE < $FILELEN )); do
 					continue ;;
 
 				dhcpcd_up )
-					dhcpcd -t 15 -L eth0 || dhcpcd -t 15 -L wlan0 && echo
+					dhcpcd -t 10 eth0 && echo
 					[ $? != 0 ] && exit 1 ;;
 
 				end1 )

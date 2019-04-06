@@ -420,6 +420,13 @@ if [[ "$build_arch" = "x86" ]]
 		fi
 		cp -rv jre-$JDK-linux-x64.tar.gz $SRCDIR/extra/java
 		cd $SRCDIR/d/rust && sed -i -e '1,18d' rust.url && source rust.url
+		cd $SRCDIR/others
+		if [ ! -f readline-7.0.005-x86_64-1.txz ]; then
+			wget -c -v $DLDIR12/readline-7.0.005-x86_64-1.txz
+		fi
+		if [ ! -f icu4c-63.1-x86_64-1.txz ]; then
+			wget -c v $DLDIR12/icu4c-63.1-x86_64-1.txz
+		fi
 fi
 
 }
