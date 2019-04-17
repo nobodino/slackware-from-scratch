@@ -341,25 +341,13 @@ if [[ "$build_arch" = "x86" ]]
 			wget -c -v $DLDIR3/slackware/l/ncurses-5.9-i486-4.txz
 		fi
 		if [ ! -f readline-6.3-i586-2.txz ]; then
-			wget -c -v $DLDIR2/slackware/l/readline-6.3-i586-2.txz
+			wget -c -v $DLDIR3/slackware/l/readline-6.3-i586-2.txz
 		fi
 		if [ ! -f libpng-1.4.12-i486-1.txz ]; then
 			wget -c -v $DLDIR2/slackware/l/libpng-1.4.12-i486-1.txz
 		fi
 		if [ ! -f ksh93-2012_08_01-i586-2.txz ]; then
 			wget -c -v $DLDIR3/slackware/ap/ksh93-2012_08_01-i586-2.txz
-		fi
-		mkdir -pv $SRCDIR/others/isl  > /dev/null 2>&1
-		cd $SRCDIR/others/isl
-		if [ ! -f isl.tar.gz ]; then
-			curl --user user:password -o isl.tar.gz $DLDIR11/libraries/isl.tar.gz 
-			tar xf isl.tar.gz
-			cd $SRCDIR/others/isl/isl 
-			mv * ../ > /dev/null 2>&1
-			cd .. && rm -rf isl && rm isl.tar.gz
-		fi 
-		if [ ! -f isl-$ISLVER.tar.xz ]; then
-			wget -c -v $DLDIR6/isl-$ISLVER.tar.xz
 		fi
 		cd $SRCDIR/others
 		if [ ! -f $GNAT_x86 ]; then
@@ -389,25 +377,13 @@ if [[ "$build_arch" = "x86" ]]
 			wget -c -v $DLDIR5/slackware64/l/ncurses-5.9-x86_64-4.txz
 		fi
 		if [ ! -f readline-6.3-x86_64-2.txz ]; then
-			wget -c -v $DLDIR4/slackware64/l/readline-6.3-x86_64-2.txz
+			wget -c -v $DLDIR5/slackware64/l/readline-6.3-x86_64-2.txz
 		fi
 		if [ ! -f libpng-1.4.12-x86_64-1.txz ]; then
 			wget -c -v $DLDIR4/slackware64/l/libpng-1.4.12-x86_64-1.txz
 		fi
 		if [ ! -f ksh93-2012_08_01-x86_64-2.txz ]; then
 			wget -c -v $DLDIR5/slackware64/ap/ksh93-2012_08_01-x86_64-2.txz
-		fi
-		mkdir -pv $SRCDIR/others/isl  > /dev/null 2>&1
-		cd $SRCDIR/others/isl
-		if [ ! -f isl.tar.gz ]; then
-			curl --user user:password -o isl.tar.gz $DLDIR11/libraries/isl.tar.gz 
-			tar xf isl.tar.gz
-			cd $SRCDIR/others/isl/isl 
-			mv * ../ > /dev/null 2>&1
-			cd .. && rm -rf isl && rm isl.tar.gz
-		fi 
-		if [ ! -f isl-$ISLVER.tar.xz ]; then
-			wget -c -v $DLDIR6/isl-$ISLVER.tar.xz
 		fi
 		cd $SRCDIR/others
 		if [ ! -f $GNAT_x86_64 ]; then
