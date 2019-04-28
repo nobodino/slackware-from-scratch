@@ -360,6 +360,13 @@ if [[ "$build_arch" = "x86" ]]
 		fi
 		cp -v jre-$JDK-linux-i586.tar.gz $SRCDIR/extra/java
 		cd $SRCDIR/d/rust && sed -i -e '1,12d' rust.url && sed -i -e '7,11d' rust.url && source rust.url
+		cd $SRCDIR/others
+		if [ ! -f readline-7.0.005-i586-1.txz ]; then
+			wget -c -v $DLDIR12/readline-7.0.005-i586-1.txz
+		fi
+		if [ ! -f icu4c-63.1-i586-1.txz ]; then
+			wget -c v $DLDIR12/icu4c-63.1-i586-1.txz
+		fi
 	elif [[ "$build_arch" = "x86_64" ]]
 	then
 		mkdir $SRCDIR/others > /dev/null 2>&1
