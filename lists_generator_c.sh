@@ -358,6 +358,7 @@ x libvdpau
 l libclc
 d python-setuptools
 l Mako
+x libglvnd
 x mesa
 x glew
 x glu
