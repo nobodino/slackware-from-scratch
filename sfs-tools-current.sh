@@ -230,10 +230,13 @@ copy_src () {
     cp -v $RDIR/l/mpfr/mpfr-$MPFRVER.tar.xz $SRCDIR || exit 1
     cd $RDIR/l/ncurses
 	PKGNAM=ncurses && export NCURVER=${VERSION:-$(echo $PKGNAM-*.tar.?z | cut -f 2- -d - | cut -f 1,2 -d .)}
-	cp -v $RDIR/l/ncurses/ncurses-$NCURVER.tar.?z $SRCDIR || exit 1
+    cp -v $RDIR/l/ncurses/ncurses-$NCURVER.tar.?z $SRCDIR || exit 1
     cd $RDIR/a/patch
 	export PATCHVER=${VERSION:-$(echo patch-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/a/patch/patch-$PATCHVER.tar.xz $SRCDIR || exit 1
+    cd $RDIR/d/python3
+	export PYTHVER=${VERSION:-$(echo Python-*.tar.xz | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+    cp -v $RDIR/d/python3/Python-$PYTHVER.tar.?z $SRCDIR || exit 1
     cd $RDIR/d/perl
 	export PERLVER=${VERSION:-$(echo perl-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/d/perl/perl-$PERLVER.tar.?z $SRCDIR || exit 1
@@ -754,6 +757,19 @@ perl_build () {
 	echo perl-$PERLVER >> $SFS/tools/etc/tools_version
 }
 
+python_build () {
+#*****************************
+    tar xvf Python-$PYTHVER.tar.?z && cd Python-$PYTHVER
+
+    sed -i '/def add_multiarch_paths/a \        return' setup.py || exit 1
+    ./configure --prefix=/tools --without-ensurepip || exit 1
+    make || exit 1
+    make install || exit 1
+    cd ..
+    rm -rf Python-$PYTHVER
+	echo Python-$PYTHVER >> $SFS/tools/etc/tools_version
+}
+
 sed_build () {
 #*****************************
     tar xvf sed-$SEDVER.tar.xz && cd sed-$SEDVER
@@ -928,6 +944,7 @@ automake_build
 make_build
 patch_build
 perl_build
+python_build
 sed_build
 tar_build
 texinfo_build

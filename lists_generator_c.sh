@@ -82,7 +82,6 @@ a coreutils
 k kernel-source
 d kernel-headers
 d python
-d python3
 d bison
 l glibc
 a adjust
