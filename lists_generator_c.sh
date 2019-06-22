@@ -380,6 +380,7 @@ x xterm
 x libva
 x urw-core35-fonts-otf
 x ttf-tlwg
+l pcre2
 d git
 x vulkan-sdk
 x pyxdg
