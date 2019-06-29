@@ -800,23 +800,25 @@ EOF
 patch_texlive_c () {
 #******************************************************************
 cat > $PATCHDIR/texliveSB.patch << "EOF"
---- texlive.SlackBuild.old	2018-11-30 16:13:43.056989837 +0100
-+++ texlive.SlackBuild	2018-11-30 16:22:42.170987780 +0100
-@@ -133,8 +133,11 @@
+--- texlive.SlackBuild.old	2019-06-29 10:09:09.060998512 +0200
++++ texlive.SlackBuild	2019-06-29 14:31:39.012938430 +0200
+@@ -123,11 +123,13 @@
      --disable-dialog \
      --disable-bibtexu \
      --disable-xz \
 -    --with-x \
--    --enable-xindy \
-+    --disable-web2c \
-+    --disable-xetex \
-+    --disable-dvisvgm \
 +    --without-x \
+     --disable-dvisvgm \
+-    --enable-xindy \
 +    --disable-xindy \
      --disable-xindy-docs \
      --disable-xindy-rules \
++    --disable-web2c \
++    --disable-xetex \
      --with-clisp-runtime=system \
-@@ -146,12 +149,11 @@
+     --enable-gc=system \
+     --with-system-zlib \
+@@ -137,12 +139,11 @@
      --with-system-freetype2 \
      --with-system-libgs \
      --with-system-icu \
