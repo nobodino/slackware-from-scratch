@@ -168,8 +168,8 @@ copy_src () {
 	export BISONVER=${VERSION:-$(echo bison-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
     cp -v $RDIR/d/bison/bison-$BISONVER.tar.?z $SRCDIR || exit 1
     cd $RDIR/a/bzip2
-	export BZIP2VER=${VERSION:-$(echo bzip2-*.tar.?z* | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
-    cp -v $RDIR/a/bzip2/bzip2-$BZIP2VER.tar.gz $SRCDIR || exit 1
+	export BZIP2VER=${VERSION:-$(echo bzip2-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+    cp -v $RDIR/a/bzip2/bzip2-$BZIP2VER.tar.?z $SRCDIR || exit 1
     cd $RDIR/a/coreutils
 	export COREVER=${VERSION:-$(echo coreutils-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/a/coreutils/coreutils-$COREVER.tar.xz $SRCDIR || exit 1
@@ -576,7 +576,7 @@ bison_build () {
 
 bzip2_build () {
 #*****************************
-    tar xvf bzip2-$BZIP2VER.tar.gz && cd bzip2-$BZIP2VER
+    tar xvf bzip2-$BZIP2VER.tar.lz && cd bzip2-$BZIP2VER
 
     make || exit 1
     make PREFIX=/tools install || exit 1
