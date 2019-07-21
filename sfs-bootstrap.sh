@@ -429,20 +429,12 @@ test_root () {
 patch_cmake_c () {
 #******************************************************************
 cat > $PATCHDIR/cmakeSB.patch << "EOF"
---- cmake.SlackBuild.old	2018-03-22 13:14:34.939837627 +0100
-+++ cmake.SlackBuild	2018-03-22 13:14:34.946840870 +0100
-@@ -79,7 +79,6 @@
- ../bootstrap \
+--- cmake.SlackBuild.old	2019-07-19 15:56:49.099995746 +0200
++++ cmake.SlackBuild	2019-07-19 21:08:14.298792238 +0200
+@@ -82,7 +82,6 @@
    --prefix=/usr \
    --docdir=/doc/$PKGNAM-$VERSION \
--  --qt-gui \
-   --system-curl \
-   --system-expat \
-   --no-system-jsoncpp \
-@@ -96,7 +95,6 @@
-   ../configure \
-   --prefix=/usr \
-   --docdir=/doc/$PKGNAM-$VERSION \
+   --parallel=$(echo $NUMJOBS | cut -f 2 -d j | tr -d ' ') \
 -  --qt-gui \
    --system-curl \
    --system-expat \
