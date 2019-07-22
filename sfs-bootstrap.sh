@@ -520,8 +520,8 @@ EOF
 patch_glib2_c () {
 #******************************************************************
 cat > $PATCHDIR/glib2SB.patch << "EOF"
---- glib2.SlackBuild.old	2019-03-06 05:11:47.284067538 -0000
-+++ glib2.SlackBuild	2019-03-06 05:21:45.159083548 -0000
+--- glib2.SlackBuild.old	2019-07-22 20:40:21.806143611 +0000
++++ glib2.SlackBuild	2019-07-22 20:40:21.817143611 +0000
 @@ -98,9 +98,9 @@
    --localstatedir=/var \
    --buildtype=release \
@@ -534,7 +534,7 @@ cat > $PATCHDIR/glib2SB.patch << "EOF"
 +  -Dgtk_doc=false \
    -Dinstalled_tests=false \
    .. || exit 1
-   ninja || exit 1
+   "${NINJA:=ninja}" $NUMJOBS || exit 1
 EOF
 }
 
@@ -616,9 +616,9 @@ EOF
 patch_llvm_c () {
 #******************************************************************
 cat > $PATCHDIR/llvmSB.patch << "EOF"
---- llvm.SlackBuild.old	2019-01-26 13:18:28.973982826 +0100
-+++ llvm.SlackBuild	2018-12-16 22:36:39.157137610 +0100
-@@ -127,8 +127,8 @@
+--- llvm.SlackBuild.old	2019-07-22 20:40:21.874143613 +0000
++++ llvm.SlackBuild	2019-07-22 20:40:21.883143613 +0000
+@@ -134,8 +134,8 @@
  mkdir build
  cd build
    cmake \
@@ -629,8 +629,8 @@ cat > $PATCHDIR/llvmSB.patch << "EOF"
      -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
      -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
      -DCMAKE_INSTALL_PREFIX=/usr \
-@@ -145,40 +145,15 @@
-     -DLLVM_USE_OPROFILE=ON \
+@@ -153,40 +153,15 @@
+     -DLLVM_INSTALL_UTILS=ON \
      -DLLVM_BINUTILS_INCDIR=/usr/include \
      -DCLANG_RESOURCE_DIR="../lib${LIBDIRSUFFIX}/clang/${VERSION}" \
 -    .. || exit 1
@@ -679,9 +679,9 @@ EOF
 patch_mesa_c () {
 #******************************************************************
 cat > $PATCHDIR/mesaSB.patch << "EOF"
---- mesa.SlackBuild.old	2018-09-22 15:10:51.323935812 +0200
-+++ mesa.SlackBuild	2018-09-22 15:10:51.326935812 +0200
-@@ -178,7 +178,7 @@
+--- mesa.SlackBuild.old	2019-07-22 20:40:21.888143613 +0000
++++ mesa.SlackBuild	2019-07-22 20:40:21.896143613 +0000
+@@ -176,7 +176,7 @@
    done
    # Remove cruft:
    rm -rf $PKG/cruft
@@ -739,9 +739,9 @@ EOF
 patch_readline_c () {
 #******************************************************************
 cat > $PATCHDIR/readlineSB.patch << "EOF"
---- readline.SlackBuild.old	2018-04-20 03:37:08.479444178 +0200
-+++ readline.SlackBuild	2018-04-20 16:59:57.686260427 +0200
-@@ -100,26 +100,10 @@
+--- readline.SlackBuild.old	2019-07-22 20:40:21.926143614 +0000
++++ readline.SlackBuild	2019-07-22 20:40:21.935143614 +0000
+@@ -102,26 +102,10 @@
    --build=$ARCH-slackware-linux-gnu || exit 1
  
  # Link with libtinfo:
@@ -776,9 +776,9 @@ EOF
 patch_subversion_c () {
 #******************************************************************
 cat > $PATCHDIR/subversionSB.patch << "EOF"
---- subversion.SlackBuild.old	2018-04-20 03:37:08.491444178 +0200
-+++ subversion.SlackBuild	2018-04-20 03:37:08.494444178 +0200
-@@ -93,7 +93,6 @@
+--- subversion.SlackBuild.old	2019-07-22 20:40:21.941143615 +0000
++++ subversion.SlackBuild	2019-07-22 20:40:21.949143615 +0000
+@@ -98,7 +98,6 @@
    --with-lz4=internal \
    --with-zlib=/usr \
    --with-pic \
@@ -853,9 +853,9 @@ EOF
 patch_freetype_c () {
 #******************************************************************
 cat > $PATCHDIR/freetypeSB.patch << "EOF"
---- freetype.SlackBuild.old	2018-09-22 12:50:49.615967862 +0200
-+++ freetype.SlackBuild	2018-09-22 12:54:20.173967059 +0200
-@@ -117,8 +117,14 @@
+--- freetype.SlackBuild.old	2019-07-22 20:40:21.779143610 +0000
++++ freetype.SlackBuild	2019-07-22 20:40:21.788143611 +0000
+@@ -113,8 +113,14 @@
    --with-png=yes \
    --enable-freetype-config \
    --build=$ARCH-slackware-linux || exit 1
@@ -878,9 +878,9 @@ EOF
 patch_harfbuzz_c () {
 #******************************************************************
 cat > $PATCHDIR/harfbuzzSB.patch << "EOF"
---- harfbuzz.SlackBuild.old	2018-06-23 17:21:47.193436297 +0200
-+++ harfbuzz.SlackBuild	2018-06-24 11:04:15.203652967 +0200
-@@ -90,8 +90,12 @@
+--- harfbuzz.SlackBuild.old	2019-07-22 20:40:21.822143611 +0000
++++ harfbuzz.SlackBuild	2019-07-22 20:40:21.829143612 +0000
+@@ -92,8 +92,12 @@
    --docdir=/usr/doc/$PKGNAM-$VERSION \
    --build=$ARCH-slackware-linux || exit 1
  
