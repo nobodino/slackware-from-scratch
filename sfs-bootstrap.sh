@@ -940,6 +940,10 @@ if [ ! -f $SRCDIR/d/cmake/cmake.SlackBuild.old ]; then
 		zcat $PATCHDIR/cmakeSB.patch.gz |patch cmake.SlackBuild  --verbose || exit 1
 	)
 fi
+# exit if patch is rejected
+if [ -f $SRCDIR/d/cmake/cmake.SlackBuild.rej ]; then 
+	exit 1
+fi
 }
 
 execute_dbus () {
@@ -950,6 +954,10 @@ if [ ! -f $SRCDIR/a/dbus/dbus.SlackBuild.old ]; then
 		cd $SRCDIR/a/dbus
 		zcat $PATCHDIR/dbusSB.patch.gz |patch dbus.SlackBuild --verbose || exit 1
 	)
+fi
+# exit if patch is rejected
+if [ -f $SRCDIR/a/dbus/dbus.SlackBuild.rej ]; then 
+	exit 1
 fi
 }
 
@@ -962,6 +970,10 @@ if [ ! -f $SRCDIR/a/findutils/findutils.SlackBuild.old ]; then
 		zcat $PATCHDIR/findutilsSB.patch.gz |patch findutils.SlackBuild --verbose || exit 1
 	)
 fi
+# exit if patch is rejected
+if [ -f $SRCDIR/a/findutils/findutils.SlackBuild.rej ]; then 
+	exit 1
+fi
 }
 
 execute_fontconfig() {
@@ -972,6 +984,10 @@ if [ ! -f $SRCDIR/x/fontconfig/fontconfig.SlackBuild.old ]; then
 		cd $SRCDIR/x/fontconfig
 		zcat $PATCHDIR/fontconfigSB.patch.gz |patch fontconfig.SlackBuild --verbose || exit 1
 	)
+fi
+# exit if patch is rejected
+if [ -f $SRCDIR/x/fontconfig/fontconfig.SlackBuild.rej ]; then 
+	exit 1
 fi
 }
 
@@ -984,6 +1000,10 @@ if [ ! -f $SRCDIR/l/freetype/freetype.SlackBuild.old ]; then
 		zcat $PATCHDIR/freetypeSB.patch.gz |patch freetype.SlackBuild --verbose || exit 1
 	)
 fi
+# exit if patch is rejected
+if [ -f $SRCDIR/l/freetype/freetype.SlackBuild.rej ]; then 
+	exit 1
+fi
 }
 
 execute_gd () {
@@ -994,6 +1014,10 @@ if [ ! -f $SRCDIR/l/gd/gd.SlackBuild.old ]; then
 		cd $SRCDIR/l/gd
 		zcat $PATCHDIR/gdSB.patch.gz |patch gd.SlackBuild --verbose || exit 1
 	)
+fi
+# exit if patch is rejected
+if [ -f $SRCDIR/l/gd/gd.SlackBuild.rej ]; then 
+	exit 1
 fi
 }
 
@@ -1006,6 +1030,10 @@ if [ ! -f $SRCDIR/l/glib2/glib2.SlackBuild.old ]; then
 		zcat $PATCHDIR/glib2SB.patch.gz |patch glib2.SlackBuild --verbose || exit 1
 	)
 fi
+# exit if patch is rejected
+if [ -f $SRCDIR/l/glib2/glib2.SlackBuild.rej ]; then 
+	exit 1
+fi
 }
 
 execute_harfbuzz() {
@@ -1016,6 +1044,10 @@ if [ ! -f $SRCDIR/l/harfbuzz/harfbuzz.SlackBuild.old ]; then
 		cd $SRCDIR/l/harfbuzz
 		zcat $PATCHDIR/harfbuzzSB.patch.gz |patch harfbuzz.SlackBuild --verbose || exit 1
 	)
+fi
+# exit if patch is rejected
+if [ -f $SRCDIR/l/harfbuzz/harfbuzz.SlackBuild.rej  ]; then 
+	exit 1
 fi
 }
 
@@ -1028,6 +1060,10 @@ if [ ! -f $SRCDIR/a/kmod/kmod.SlackBuild.old ]; then
 		zcat $PATCHDIR/kmodSB.patch.gz |patch kmod.SlackBuild --verbose || exit 1
 	)
 fi
+# exit if patch is rejected
+if [ -f $SRCDIR/a/kmod/kmod.SlackBuild.rej ]; then 
+	exit 1
+fi
 }
 
 execute_libcaca () {
@@ -1038,6 +1074,10 @@ if [ ! -f $SRCDIR/l/libcaca/libcaca.SlackBuild.old ]; then
 		cd $SRCDIR/l/libcaca
 		zcat $PATCHDIR/libcacaSB.patch.gz |patch libcaca.SlackBuild --verbose || exit 1
 	)
+fi
+# exit if patch is rejected
+if [ -f $SRCDIR/l/libcaca/libcaca.SlackBuild.rej ]; then 
+	exit 1
 fi
 }
 
@@ -1051,6 +1091,10 @@ if [ ! -f $SRCDIR/l/libcap/libcap.SlackBuild.old ]; then
 		zcat $PATCHDIR/libcapSB.patch.gz |patch libcap.SlackBuild  --verbose || exit 1
 	)
 fi
+# exit if patch is rejected
+if [ -f $SRCDIR/l/libcap/libcap.SlackBuild.rej ]; then 
+	exit 1
+fi
 }
 
 execute_libusb () {
@@ -1063,6 +1107,10 @@ if [ ! -f $SRCDIR/l/libusb/libusb.SlackBuild.old ]; then
 		zcat $PATCHDIR/libusbSB.patch.gz |patch libusb.SlackBuild  --verbose || exit 1
 	)
 fi
+# exit if patch is rejected
+if [ -f $SRCDIR/l/libusb/libusb.SlackBuild.rej ]; then 
+	exit 1
+fi
 }
 
 execute_llvm () {
@@ -1074,6 +1122,10 @@ if [ ! -f $SRCDIR/d/llvm/llvm.SlackBuild.old ]; then
 		zcat $PATCHDIR/llvmSB.patch.gz |patch llvm.SlackBuild --verbose || exit 1
 	)
 fi
+# exit if patch is rejected
+if [ -f $SRCDIR/d/llvm/llvm.SlackBuild.rej ]; then 
+	exit 1
+fi
 }
 
 execute_mesa () {
@@ -1084,6 +1136,10 @@ if [ ! -f $SRCDIR/x/mesa/mesa.SlackBuild.old ]; then
 		cd $SRCDIR/x/mesa
 		zcat $PATCHDIR/mesaSB.patch.gz |patch mesa.SlackBuild --verbose || exit 1
 	)
+fi
+# exit if patch is rejected
+if [ -f $SRCDIR/x/mesa/mesa.SlackBuild.rej ]; then 
+	exit 1
 fi
 }
 
@@ -1097,6 +1153,10 @@ if [ ! -f $SRCDIR/d/pkg-config/pkg-config.SlackBuild.old ]; then
 		zcat $PATCHDIR/pkg-configSB.patch.gz |patch pkg-config.SlackBuild --verbose || exit 1
 	)
 fi
+# exit if patch is rejected
+if [ -f $SRCDIR/d/pkg-config/pkg-config.SlackBuild.rej ]; then 
+	exit 1
+fi
 }
 
 execute_qscint () {
@@ -1109,6 +1169,10 @@ if [ ! -f $SRCDIR/l/QScintilla/QScintilla.SlackBuild.old ]; then
 		zcat $PATCHDIR/QScintillaSB.patch.gz |patch QScintilla.SlackBuild --verbose || exit 1
 	)
 fi
+# exit if patch is rejected
+if [ -f $SRCDIR/l/QScintilla/QScintilla.SlackBuild.rej ]; then 
+	exit 1
+fi
 }
 
 execute_readline () {
@@ -1119,6 +1183,10 @@ if [ ! -f $SRCDIR/l/readline/readline.SlackBuild.old ]; then
 		cd $SRCDIR/l/readline
 		zcat $PATCHDIR/readlineSB.patch.gz |patch readline.SlackBuild --verbose || exit 1
 	)
+fi
+# exit if patch is rejected
+if [ -f $SRCDIR/l/readline/readline.SlackBuild.rej ]; then 
+	exit 1
 fi
 }
 
@@ -1132,6 +1200,10 @@ if [ ! -f $SRCDIR/d/subversion/subversion.SlackBuild.old ]; then
 		zcat $PATCHDIR/subversionSB.patch.gz |patch subversion.SlackBuild --verbose || exit 1
 	)
 fi
+# exit if patch is rejected
+if [ -f $SRCDIR/d/subversion/subversion.SlackBuild.rej ]; then 
+	exit 1
+fi
 }
 
 execute_texlive () {
@@ -1142,6 +1214,10 @@ if [ ! -f $SRCDIR/t/texlive/texlive.SlackBuild.old ]; then
 		cd $SRCDIR/t/texlive
 		zcat $PATCHDIR/texliveSB.patch.gz |patch texlive.SlackBuild --verbose || exit 1
 	)
+fi
+# exit if patch is rejected
+if [ -f $SRCDIR/t/texlive/texlive.SlackBuild.rej ]; then 
+	exit 1
 fi
 }
 
