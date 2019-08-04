@@ -1,0 +1,22 @@
+diff -aurN sendmail-8.15.2/libmilter/sm_gethost.c sendmail-8.15.2.new/libmilter/sm_gethost.c
+--- sendmail-8.15.2/libmilter/sm_gethost.c	2014-03-05 01:59:45.000000000 +0100
++++ sendmail-8.15.2.new/libmilter/sm_gethost.c	2019-08-03 15:29:01.797164039 +0200
+@@ -55,14 +55,13 @@
+ 	if (family == AF_INET6)
+ 	{
+ 		/* From RFC2133, section 6.1 */
+-		resv6 = bitset(RES_USE_INET6, _res.options);
+-		_res.options |= RES_USE_INET6;
++/*		resv6 = bitset(RES_USE_INET6, _res.options);
++		_res.options |= RES_USE_INET6;*/
+ 	}
+ 	SM_SET_H_ERRNO(0);
+ 	h = gethostbyname(name);
+-	if (family == AF_INET6 && !resv6)
+-		_res.options &= ~RES_USE_INET6;
+-
++/*	if (family == AF_INET6 && !resv6)
++		_res.options &= ~RES_USE_INET6;*/
+ 	/* the function is supposed to return only the requested family */
+ 	if (h != NULL && h->h_addrtype != family)
+ 	{
