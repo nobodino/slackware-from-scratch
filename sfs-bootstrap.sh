@@ -712,27 +712,30 @@ EOF
 patch_qscint_c () {
 #******************************************************************
 cat > $PATCHDIR/QScintillaSB.patch << "EOF"
---- QScintilla.SlackBuild.old	2018-05-22 19:50:51.515794609 +0200
-+++ QScintilla.SlackBuild	2018-07-16 19:10:42.421411468 +0200
-@@ -108,14 +108,14 @@
+--- QScintilla.SlackBuild.old	2019-08-02 08:23:09.958969743 +0200
++++ QScintilla.SlackBuild	2019-08-02 08:28:06.846968611 +0200
+@@ -128,8 +128,8 @@
+       --pyqt=PyQt5 \
+       -n ../Qt4Qt5/ -o ../Qt4Qt5/ -c \
+       || exit 1
+-    make  || exit 1
+-    make -j1 install DESTDIR=$PKG INSTALL_ROOT=$PKG || exit 1
++    make
++    make -j1 install DESTDIR=$PKG INSTALL_ROOT=$PKG
  
- cd Python
-   python3 configure.py || exit 1
--  make $NUMJOBS || exit 1
--  make install INSTALL_ROOT=$PKG || exit 1
-+  make $NUMJOBS
-+  make install INSTALL_ROOT=$PKG
+     make clean || exit 1
  
-   make clean || exit 1
+@@ -139,8 +139,8 @@
+       --pyqt=PyQt5 \
+       -n ../Qt4Qt5/ -o ../Qt4Qt5/ -c \
+       || exit 1
+-    make  || exit 1
+-    make -j1 install DESTDIR=$PKG INSTALL_ROOT=$PKG || exit 1
++    make
++    make -j1 install DESTDIR=$PKG INSTALL_ROOT=$PKG
+   cd -
  
-   python configure.py || exit 1
--  make $NUMJOBS || exit 1
--  make install INSTALL_ROOT=$PKG || exit 1
-+  make $NUMJOBS
-+  make install INSTALL_ROOT=$PKG
- cd -
- 
- # Link the shared libraries into /usr/lib${LIBDIRSUFFIX}:
+   # In order to compile Qt4 support next, clean up first:
 EOF
 }
 

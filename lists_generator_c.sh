@@ -543,6 +543,8 @@ n libksba
 n npth
 n gnupg2
 d python
+l json-c
+l argon2
 a cryptsetup
 a inotify-tools
 a logrotate
