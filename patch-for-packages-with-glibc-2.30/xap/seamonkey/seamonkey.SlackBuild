@@ -1,0 +1,336 @@
+#!/bin/bash
+
+# Copyright 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=seamonkey
+TARBALLVER=${VERSION:-$(basename $(ls seamonkey-*.tar.* | cut -d - -f 2 | rev | cut -f 3- -d . | rev) .source)}
+# Strip the end from beta versions:
+VERSION=$(echo $TARBALLVER | cut -f 1 -d b)
+BUILD=${BUILD:-1}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$TARBALLVER-$ARCH-$BUILD.txz"
+  echo "$PKGNAM-solibs-$TARBALLVER-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+if [ "$ARCH" = "i586" ]; then
+  LIBDIRSUFFIX=""
+  OPTIMIZE_FLAG=${OPTIMIZE_FLAG:-"-O1"}
+elif [ "$ARCH" = "i686" ]; then
+  LIBDIRSUFFIX=""
+  OPTIMIZE_FLAG=${OPTIMIZE_FLAG:-"-O1"}
+elif [ "$ARCH" = "x86_64" ]; then
+  LIBDIRSUFFIX="64"
+  OPTIMIZE_FLAG=${OPTIMIZE_FLAG:-"-O1"}
+else
+  LIBDIRSUFFIX=""
+  OPTIMIZE_FLAG=${OPTIMIZE_FLAG:-"-O1"}
+fi
+
+# Link using gold.  This avoids running out of memory on 32-bit systems, and
+# avoids a recurring build failure with GNU ld on other systems.
+PATH="$(pwd)/gold:$PATH"
+export CC=${CC:-"gcc -B$(pwd)/gold"}
+export CXX=${CXX:-"g++ -B$(pwd)/gold"}
+
+# -Wformat is needed for -Werror=format-security
+# -Wno-format-overflow bypasses gcc9 build failure
+# -fno-delete-null-pointer-checks disables gcc6 optimization that
+# leads to instability
+export CFLAGS="-Wformat -Wno-format-overflow -fno-delete-null-pointer-checks"
+export CXXFLAGS="-Wformat -Wno-format-overflow -fno-delete-null-pointer-checks -fpermissive"
+
+NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-seamonkey
+
+# If there is a private Google API key available at compile time, use
+# it to enable support for Google Safe Browsing. For Slackware builds,
+# we use a private key issued for the Slackware project. If you are
+# rebuilding and need this support, or you are producing your own
+# distribution, you may obtain your own Google API key at no charge by
+# following these instructions:
+# https://bugzilla.mozilla.org/show_bug.cgi?id=1377987#c0
+if [ -r /root/google-api-key ]; then
+  GOOGLE_API_KEY="--with-google-api-keyfile=/root/google-api-key"
+fi
+
+rm -rf $PKG
+mkdir -p $TMP $PKG/usr
+
+# We need to use the incredibly ancient autoconf-2.13 for this  :/
+( cd $CWD/autoconf ; ./autoconf.build )
+PATH=$TMP/autoconf-tmp/usr/bin:$PATH
+
+cd $TMP
+rm -rf seamonkey-${TARBALLVER}
+# Unpack this in a subdirectory to prevent changing permissions on /tmp:
+rm -rf seamonkey-unpack
+mkdir seamonkey-unpack
+cd seamonkey-unpack
+tar xvf $CWD/seamonkey-${TARBALLVER}.source.tar.?z* || exit 1
+mv * ..
+cd ..
+rm -rf seamonkey-unpack
+cd seamonkey-${TARBALLVER} || exit 1
+
+# Retain GTK+ v2 scrolling behavior:
+zcat $CWD/sm.ui.scrollToClick.diff.gz | patch -p1 --verbose || exit 1
+
+# patch to build with glibc-2.30 from BLFS
+sed -i -e '/pid_t gettid/,+3 s@^@//@' mozilla/tools/profiler/core/platform.h
+
+# Make sure the perms/ownerships are sane:
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \; -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \;
+
+chown -R root:root .
+
+# Our building options, in a configure-like display ;)
+OPTIONS="\
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --enable-cpp-rtti \
+  --enable-default-toolkit=cairo-gtk3 \
+  --enable-startup-notification \
+  --enable-alsa \
+  --disable-debug \
+  --with-default-mozilla-five-home=/usr/lib${LIBDIRSUFFIX}/seamonkey-${VERSION} \
+  --enable-strip \
+  --disable-tests \
+  --disable-crashreporter \
+  --enable-accessibility \
+  $GOOGLE_API_KEY \
+  --enable-safe-browsing \
+  --disable-updater \
+  --enable-chrome-format=omni \
+  --disable-necko-wifi \
+  --enable-extensions=default,irc \
+  --without-system-nspr \
+  --with-system-zlib \
+  --enable-application=suite \
+  --with-pthreads \
+  --host=$ARCH-slackware-linux \
+  --target=$ARCH-slackware-linux"
+
+export BUILD_OFFICIAL=1
+export MOZILLA_OFFICIAL=1
+export MOZ_MAKE_FLAGS="$NUMJOBS"
+
+# Clear some variables that could break the build
+unset DBUS_SESSION_BUS_ADDRESS ORBIT_SOCKETDIR SESSION_MANAGER \
+  XDG_SESSION_COOKIE XAUTHORITY MAKEFLAGS
+
+# Assemble our .mozconfig:
+echo > .mozconfig
+
+# Tell .mozconfig about the selected compiler:
+echo "export CC=\"${CC}\"" >> .mozconfig
+echo "export CXX=\"${CXX}\"" >> .mozconfig
+
+# Mozilla devs enforce using an objdir for building
+# https://developer.mozilla.org/en/Configuring_Build_Options#Building_with_an_objdir
+mkdir obj
+echo "mk_add_options MOZ_OBJDIR=$(pwd)/obj" >> .mozconfig
+# This directory is also needed or the build will fail:
+mkdir -p mozilla/obj
+
+# Set options for $OPTIMIZE_FLAG:
+echo "ac_add_options --enable-optimize=\"${OPTIMIZE_FLAG}\"" >> .mozconfig
+
+# Add the $OPTIONS above to .mozconfig:
+for option in $OPTIONS; do echo "ac_add_options $option" >> .mozconfig; done
+
+echo "ac_add_options --disable-tests" >> .mozconfig
+make -f client.mk build || make -f client.mk build || exit 1
+make -f client.mk install DESTDIR=$PKG || exit 1
+
+# Keep the "obsolete" nspr headers:
+if [ ! -d mozilla/dist/include/nspr/obsolete ]; then
+  mkdir -p mozilla/dist/include/nspr/obsolete
+  cp -a mozilla/nsprpub/pr/include/obsolete/*.h mozilla/dist/include/nspr/obsolete
+fi
+
+# Install nspr/nss headers.
+for includedir in nspr nspr/obsolete nspr/private ; do
+  mkdir -p $PKG/usr/include/seamonkey-${VERSION}/$includedir
+  cp -aL mozilla/dist/include/${includedir}/*.h $PKG/usr/include/seamonkey-${VERSION}/$includedir
+done
+cp -aL mozilla/dist/include/*.tbl mozilla/dist/include/*.msg $PKG/usr/include/seamonkey-${VERSION}
+cp -aL mozilla/dist/include/*.h $PKG/usr/include/seamonkey-${VERSION}
+cp -aL mozilla/dist/sdk/include/* $PKG/usr/include/seamonkey-${VERSION}
+# compat symlinks
+( cd $PKG/usr/include/seamonkey-${VERSION}
+  # Relocate anything that might be in the nss directory, and replace the directory with a symlink.
+  # make install was putting an empty directory here, which was breaking other compiles.
+  if [ -d nss ]; then
+    mv nss/* .
+    rmdir nss
+  fi 
+  ln -sf . nss
+  ln -sf . plugin
+  ln -sf . xpcom
+)
+
+# We don't need this stuff in the package:
+rm -rf $PKG/usr/lib${LIBDIRSUFFIX}/seamonkey-devel-$VERSION
+
+chown -R root:root $PKG/usr/include/seamonkey-${VERSION}
+find $PKG/usr/include/seamonkey-${VERSION} -name "*.h" -type f -exec chmod 644 {} \;
+# Create a more generic include files symlink:
+( cd $PKG/usr/include
+  if [ ! -e seamonkey ]; then
+    ln -sf seamonkey-${VERSION} seamonkey
+  fi
+)
+
+# Install pkgconfig files:
+mkdir -p $PKG/usr/lib${LIBDIRSUFFIX}/pkgconfig
+for file in $CWD/pkgconfig/* ; do
+cat $file \
+  | sed -e "s/@LIB@/lib${LIBDIRSUFFIX}/" \
+  -e "s/@VERSION@/$VERSION/" \
+  > $PKG/usr/lib${LIBDIRSUFFIX}/pkgconfig/$(basename $file)
+done
+
+# Add symlinks for the pkgconfig files:
+( cd $PKG/usr/lib${LIBDIRSUFFIX}/pkgconfig
+  ln -s seamonkey-libxul.pc libxul.pc
+  ln -s seamonkey-plugin.pc plugin.pc
+  ln -s seamonkey-xpcom.pc xpcom.pc
+  # These are now provided by the mozilla-nss package:
+  #ln -s seamonkey-nspr.pc nspr.pc
+  #ln -s seamonkey-nss.pc nss.pc
+)
+
+# Compress and if needed symlink the man pages:
+if [ -d $PKG/usr/man ]; then
+  ( cd $PKG/usr/man
+    for manpagedir in $(find . -type d -name "man*") ; do
+      ( cd $manpagedir
+        for eachpage in $( find . -type l -maxdepth 1) ; do
+          ln -s $( readlink $eachpage ).gz $eachpage.gz
+          rm $eachpage
+        done
+        gzip -9 *.?
+      )
+    done
+  )
+fi
+
+# Strip files:
+find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
+  | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+
+# This remains the standard plugin directory for all browsers.
+mkdir -p $PKG/usr/lib${LIBDIRSUFFIX}/mozilla/plugins
+
+# This is traditional.
+( cd $PKG/usr/lib${LIBDIRSUFFIX}
+  if [ ! -e seamonkey ]; then
+    ln -sf seamonkey-${VERSION} seamonkey
+  fi
+)
+
+mkdir -p $PKG/usr/share/applications
+cp -a $CWD/*.desktop $PKG/usr/share/applications
+chown -R root:root $PKG/usr/share/applications
+chmod 644 $PKG/usr/share/applications/*
+mkdir -p $PKG/usr/share/pixmaps
+cp -a $CWD/*.png $PKG/usr/share/pixmaps
+chown -R root:root $PKG/usr/share/pixmaps
+chmod 644 $PKG/usr/share/pixmaps/*
+
+mkdir -p $PKG/usr/doc/seamonkey-$VERSION
+( cd mozilla
+  cp -a \
+    LEGAL LICENSE README.txt \
+    $PKG/usr/doc/seamonkey-$VERSION
+)
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+zcat $CWD/doinst.sh.gz | sed -e "s#usr/lib#usr/lib${LIBDIRSUFFIX}#g" \
+  > $PKG/install/doinst.sh
+
+cd $TMP/package-seamonkey
+/sbin/makepkg -l y -c n -p $TMP/seamonkey-$TARBALLVER-$ARCH-$BUILD.txz
+
+# Create a standalone seamonkey-solibs package for RPM, gxine, etc.
+rm -r $TMP/package-seamonkey-solibs
+mkdir -p $TMP/package-seamonkey-solibs/usr/doc
+cp -a $PKG/usr/doc/seamonkey-$VERSION $TMP/package-seamonkey-solibs/usr/doc
+mkdir -p $TMP/package-seamonkey-solibs/usr/lib${LIBDIRSUFFIX}/seamonkey-${VERSION}
+for file in libfreebl3.chk libfreebl3.so libmozsqlite3.so \
+  libnspr4.so libnss* libplc4.so libplds4.so libsmime3.so libsoftokn3.chk \
+  libsoftokn3.so libssl3.so ; do
+  cp -a $PKG/usr/lib${LIBDIRSUFFIX}/seamonkey-${VERSION}/$file \
+  $TMP/package-seamonkey-solibs/usr/lib${LIBDIRSUFFIX}/seamonkey-${VERSION}
+done
+mkdir $TMP/package-seamonkey-solibs/install
+cat << EOF | sed -e "s#usr/lib#usr/lib${LIBDIRSUFFIX}#g" > $TMP/package-seamonkey-solibs/install/doinst.sh
+( cd usr/lib ; rm -rf seamonkey )
+( cd usr/lib ; ln -sf seamonkey-$VERSION seamonkey )
+if ! grep /usr/lib/seamonkey etc/ld.so.conf 1> /dev/null 2> /dev/null ; then
+  echo "/usr/lib/seamonkey" >> etc/ld.so.conf
+fi
+if [ -x /sbin/ldconfig ]; then
+  /sbin/ldconfig 2> /dev/null
+fi
+EOF
+cat << EOF > $TMP/package-seamonkey-solibs/install/slack-desc
+                |-----handy-ruler------------------------------------------------------|
+seamonkey-solibs: seamonkey-solibs (Shared libraries from Seamonkey)
+seamonkey-solibs:
+seamonkey-solibs: This package contains a subset of the shared libraries from Seamonkey
+seamonkey-solibs: to provide runtime support for various programs.
+seamonkey-solibs: This package is built from the Seamonkey sources and is provided
+seamonkey-solibs: as a standalone runtime package for people who do not want to install
+seamonkey-solibs: the entire seamonkey package (as for server use).
+seamonkey-solibs:
+seamonkey-solibs: This package is runtime only.  The include files and other files for
+seamonkey-solibs: development can be found in the seamonkey package.
+seamonkey-solibs:
+EOF
+cd $TMP/package-seamonkey-solibs
+/sbin/makepkg -l y -c n -p $TMP/seamonkey-solibs-$TARBALLVER-$ARCH-$BUILD.txz
+
