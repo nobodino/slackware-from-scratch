@@ -1,0 +1,38 @@
+diff -aurN ypbind-mt-1.38/configure.ac ypbind-mt-1.38-mod/configure.ac
+--- ypbind-mt-1.38/configure.ac	2014-10-20 10:20:32.000000000 +0200
++++ ypbind-mt-1.38-mod/configure.ac	2019-08-29 18:50:54.000000000 +0200
+@@ -39,6 +39,9 @@
+ fi
+ AC_SUBST(SLP_LIBS)
+ 
++dnl Check for gettid wrapper
++AC_CHECK_FUNC(gettid, [AC_DEFINE(HAVE_GETTID, 1, [Define to 1 if gettid() is available])])
++
+ dnl Checks for libraries.
+ AC_CHECK_LIB(nsl, yp_get_default_domain)
+ AC_CHECK_LIB(socket, bind)
+diff -aurN ypbind-mt-1.38/src/log_msg.c ypbind-mt-1.38-mod/src/log_msg.c
+--- ypbind-mt-1.38/src/log_msg.c	2019-08-30 16:17:17.695455011 +0200
++++ ypbind-mt-1.38-mod/src/log_msg.c	2019-08-30 16:18:08.247454818 +0200
+@@ -30,9 +30,11 @@
+ #include "log_msg.h"
+ 
+ #include <sys/syscall.h>
++#include <sys/types.h>
++
++#ifndef HAVE_GETTID
+ #ifdef __NR_gettid
+-static pid_t
+-gettid (void)
++pid_t gettid (void)
+ {
+   return syscall (__NR_gettid);
+ }
+@@ -43,6 +45,7 @@
+     return getpid ();
+ }
+ #endif
++#endif /* ! HAVE_GETTID */
+ 
+ int debug_flag = 0;
+ int logfile_flag = 0;

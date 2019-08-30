@@ -1,0 +1,314 @@
+#!/bin/bash
+
+# Copyright 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2016, 2017, 2018  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+# Package version number:
+PKGNAM=yptools
+VERSION=2.14
+BUILD=${BUILD:-11}
+
+YPTOOLS=$VERSION
+YPBINDMT=1.38
+#YPMAKE=0.11
+YPSERV=2.32.1
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-yptools
+rm -rf $PKG
+mkdir -p $TMP $PKG
+
+echo "+==============+"
+echo "| yp-tools-$YPTOOLS |"
+echo "+==============+"
+cd $TMP
+mkdir -p $PKG/etc
+# Add etc/nsswitch.conf-nis as a full NIS+ example config file:
+zcat $CWD/nsswitch.conf-nis.gz > $PKG/etc/nsswitch.conf-nis.new
+rm -rf yp-tools-$YPTOOLS
+tar xvf $CWD/yp-tools-$YPTOOLS.tar.bz2 || exit 1
+cd yp-tools-$YPTOOLS || exit 1
+zcat $CWD/yp-tools-2.14-glibc217-crypt.diff.gz | patch -p1 --verbose || exit 1
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --disable-domainname \
+  $ARCH-slackware-linux
+# Don't ask
+make clean
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --disable-domainname \
+  $ARCH-slackware-linux
+make CFLAGS="$SLKCFLAGS" || exit 1
+
+mkdir -p $PKG/etc/default
+cat $CWD/yp.default > $PKG/etc/default/yp.new
+mkdir -p $PKG/var/yp
+cat etc/nicknames > $PKG/var/yp/nicknames.new
+mkdir -p $PKG/usr/share/locale/de/LC_MESSAGES
+cat po/de.gmo > $PKG/usr/share/locale/de/LC_MESSAGES/yp-tools.mo
+cd src
+mkdir -p $PKG/usr/bin
+cat ypcat > $PKG/usr/bin/ypcat
+cat ypmatch > $PKG/usr/bin/ypmatch
+cat yppasswd > $PKG/usr/bin/yppasswd
+cat ypwhich > $PKG/usr/bin/ypwhich
+( cd $PKG/usr/bin
+  chmod 755 ypcat ypmatch yppasswd ypwhich )
+( cd $PKG/usr/bin
+  rm -rf ypchfn ypchsh
+  ln -sf yppasswd ypchfn
+  ln -sf yppasswd ypchsh )
+mkdir -p $PKG/usr/sbin
+cat yppoll > $PKG/usr/sbin/yppoll
+cat ypset > $PKG/usr/sbin/ypset
+( cd $PKG/usr/sbin
+  chmod 755 yppoll ypset )
+cd ../man
+mkdir -p $PKG/usr/man/man{1,5,8}
+cat nicknames.5 | gzip -9c > $PKG/usr/man/man5/nicknames.5.gz
+for file in *.1 ; do
+  cat $file | gzip -9c > $PKG/usr/man/man1/$file.gz
+done
+for file in *.8 ; do
+  cat $file | gzip -9c > $PKG/usr/man/man8/$file.gz
+done
+cd ..
+mkdir -p $PKG/usr/doc/yp-tools-$YPTOOLS
+cp -a \
+  ABOUT-NLS AUTHORS COPYING ChangeLog INSTALL NEWS README THANKS TODO \
+  $PKG/usr/doc/yp-tools-$YPTOOLS
+chown -R root:root $PKG/usr/doc/yp-tools-$YPTOOLS
+chmod 644 $PKG/usr/doc/yp-tools-$YPTOOLS/*
+
+echo "+================+"
+echo "| ypbind-mt-$YPBINDMT |"
+echo "+================+"
+cd $TMP
+rm -rf ypbind-mt-$YPBINDMT
+tar xvf $CWD/ypbind-mt-$YPBINDMT.tar.bz2 || exit 1
+cd ypbind-mt-$YPBINDMT || exit 1
+
+# patch to build with glibc-2.30
+cat $CWD/ypbind-mt-glibc-2.30.patch | patch -Esp1 --verbose || exit 1
+autoreconf -fi
+touch aclocal.m4 configure Makefile.am Makefile.in
+
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  $ARCH-slackware-linux
+# Hard to believe how sloppy these tarballs are.  This is why I got complaints
+# that YP didn't work but it was "fixed with a simple recompile."
+make clean
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  $ARCH-slackware-linux
+make CFLAGS="$SLKCFLAGS" || exit 1
+mkdir -p $PKG/etc
+cat etc/yp.conf > $PKG/etc/yp.conf.new
+cat src/ypbind > $PKG/usr/sbin/ypbind
+chmod 755 $PKG/usr/sbin/ypbind
+cat man/yp.conf.5 | gzip -9c > $PKG/usr/man/man5/yp.conf.5.gz
+cat man/ypbind.8 | gzip -9c > $PKG/usr/man/man8/ypbind.8.gz
+mkdir -p $PKG/usr/share/locale/de/LC_MESSAGES
+cat po/de.gmo > $PKG/usr/share/locale/de/LC_MESSAGES/ypbind-mt.mo
+mkdir -p $PKG/usr/doc/ypbind-mt-$YPBINDMT
+cp -a \
+  ABOUT-NLS AUTHORS COPYING ChangeLog INSTALL NEWS README THANKS TODO \
+  $PKG/usr/doc/ypbind-mt-$YPBINDMT
+chown root:root $PKG/usr/doc/ypbind-mt-$YPBINDMT/*
+chmod 644 $PKG/usr/doc/ypbind-mt-$YPBINDMT/*
+
+# OBSOLETE (I don't see anyone packaging this anymore...  inform me if it still
+# works and you use and care about it)
+#echo "+=============+"
+#echo "| ypmake-$YPMAKE |"
+#echo "+=============+"
+#cd $TMP
+#rm -rf ypmake-$YPMAKE
+#tar xvf $CWD/ypmake-$YPMAKE.tar.bz2 || exit 1
+#cd ypmake-$YPMAKE || exit 1
+#./configure
+## I'm just not taking chances with the cleanliness of these sources anymore...
+#make clean
+#./configure
+#make
+#cat ypmake > $PKG/usr/sbin/ypmake
+#chmod 755 $PKG/usr/sbin/ypmake
+#mkdir -p $PKG/usr/lib/yp/ypmake
+#install -o root -g root -m 644 aliases arrays automount config ethers group \
+  #gshadow hosts netgroup netid networks passwd protocols publickey rpc \
+  #services shadow ypservers $PKG/usr/lib/yp/ypmake
+#cat ypmake.conf.sample > $PKG/var/yp/ypmake.conf.new
+#cat ypmake.conf.man | gzip -9c > $PKG/usr/man/man5/ypmake.conf.5.gz
+#cat ypmake.man | gzip -9c > $PKG/usr/man/man8/ypmake.8.gz
+#mkdir -p $PKG/usr/doc/ypmake-$YPMAKE
+#cp -a CHANGES README TODO $PKG/usr/doc/ypmake-$YPMAKE
+#chmod 644 $PKG/usr/doc/ypmake-$YPMAKE/*
+#chown root:root $PKG/usr/doc/ypmake-$YPMAKE/*
+
+echo "+============+"
+echo "| ypserv-$YPSERV |"
+echo "+============+"
+cd $TMP
+rm -rf ypserv-$YPSERV
+tar xvf $CWD/ypserv-$YPSERV.tar.bz2 || exit 1
+cd ypserv-$YPSERV || exit 1
+# --with-ndbm=yes 
+# Support for this was discontinued upstream
+# --enable-tcp-wrapper
+./configure \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --libexecdir=/usr/lib${LIBDIRSUFFIX}/yp \
+  --enable-fqdn \
+  --enable-yppasswd \
+  $ARCH-slackware-linux
+make clean
+./configure \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --libexecdir=/usr/lib${LIBDIRSUFFIX}/yp \
+  --enable-fqdn \
+  --enable-yppasswd \
+  $ARCH-slackware-linux
+make CFLAGS="$SLKCFLAGS" || exit 1
+mkdir -p $PKG/usr/lib${LIBDIRSUFFIX}/yp
+( cd scripts
+  for file in create_printcap match_printcap pwupdate ypinit ypxfr_1perday ypxfr_1perhour ypxfr_2perday ; do
+    cat $file | sed -e "s#/usr/lib/#/usr/lib${LIBDIRSUFFIX}/#" > $PKG/usr/lib${LIBDIRSUFFIX}/yp/$file
+    chmod 755 $PKG/usr/lib${LIBDIRSUFFIX}/yp/$file
+  done 
+  for file in pwupdate.8 ypinit.8 ; do
+    gzip -9c $file > $PKG/usr/man/man8/$file.gz
+  done )
+for FILE in makedbm mknetid revnetgroup yphelper ypxfr ; do
+  ( cd $FILE
+    cat $FILE > $PKG/usr/lib${LIBDIRSUFFIX}/yp/$FILE
+    chmod 755 $PKG/usr/lib${LIBDIRSUFFIX}/yp/$FILE
+    cat ${FILE}.8 | gzip -9c > $PKG/usr/man/man8/${FILE}.8.gz )
+done
+cat rpc.ypxfrd/ypxfrd.8 | gzip -9c > $PKG/usr/man/man8/ypxfrd.8.gz
+for FILE in ypserv rpc.yppasswdd rpc.ypxfrd yppush ; do
+  ( cd $FILE
+    cat $FILE > $PKG/usr/sbin/$FILE
+    chmod 755 $PKG/usr/sbin/$FILE
+    cat ${FILE}.8 | gzip -9c > $PKG/usr/man/man8/${FILE}.8.gz )
+done
+cat rpc.yppasswdd/yppasswdd.8 | gzip -9c > $PKG/usr/man/man8/yppasswdd.8.gz
+cat scripts/ypMakefile | sed "s,/usr/lib/yp,/usr/lib$LIBDIRSUFFIX/yp,g" > $PKG/var/yp/Makefile.new
+cat etc/securenets > $PKG/var/yp/securenets.new
+echo "# This file is part of the YP server package -- see 'man netgroup'" \
+ > $PKG/etc/netgroup.new
+cat etc/netgroup >> $PKG/etc/netgroup.new
+cat etc/netgroup.5 | gzip -9c > $PKG/usr/man/man5/netgroup.5.gz
+cat etc/ypserv.conf.5 | gzip -9c > $PKG/usr/man/man5/ypserv.conf.5.gz
+mkdir -p $PKG/usr/include/rpcsvc
+cat lib/ypxfrd.x > $PKG/usr/include/rpcsvc/ypxfrd.x
+mkdir -p $PKG/usr/doc/ypserv-$YPSERV
+cp -a \
+  AUTHORS COPYING ChangeLog INSTALL NEWS README THANKS TODO \
+  $PKG/usr/doc/ypserv-$YPSERV
+chmod 644 $PKG/usr/doc/ypserv-$YPSERV/*
+chown root:root $PKG/usr/doc/ypserv-$YPSERV/*
+
+mkdir -p $PKG/etc/rc.d
+zcat $CWD/rc.yp.gz > $PKG/etc/rc.d/rc.yp.new
+chmod 644 $PKG/etc/rc.d/rc.yp.new
+
+find $PKG | xargs file | grep -e "executable" -e "shared object" \
+  | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+
+# install script and package description:
+mkdir -p $PKG/install
+cat << EOF > $PKG/install/doinst.sh
+config() {
+  NEW="\$1"
+  OLD="\`dirname \$NEW\`/\`basename \$NEW .new\`"
+  # If there's no config file by that name, mv it over:
+  if [ ! -r \$OLD ]; then
+    mv \$NEW \$OLD
+  elif [ "\`cat \$OLD | md5sum\`" = "\`cat \$NEW | md5sum\`" ]; then # toss the redundant copy
+    rm \$NEW
+  fi
+  # Otherwise, we leave the .new copy for the admin to consider...
+}
+
+# Keep same perms on rc.yp.new:
+if [ -e etc/rc.d/rc.yp ]; then
+  cp -a etc/rc.d/rc.yp etc/rc.d/rc.yp.new.incoming
+  cat etc/rc.d/rc.yp.new > etc/rc.d/rc.yp.new.incoming
+  mv etc/rc.d/rc.yp.new.incoming etc/rc.d/rc.yp.new
+fi
+
+config etc/nsswitch.conf-nis.new
+config etc/netgroup.new
+config etc/yp.conf.new
+config etc/default/yp.new
+config etc/rc.d/rc.yp.new
+config var/yp/nicknames.new
+config var/yp/Makefile.new
+config var/yp/securenets.new
+# No, don't delete these.  They might have a few changes that need to be merged.
+#rm -f etc/nsswitch.conf-nis.new etc/netgroup.new etc/yp.conf.new var/yp/nicknames.new var/yp/Makefile.new var/yp/securenets.new
+EOF
+
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+# Build the package:
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/yptools-$VERSION-$ARCH-$BUILD.txz
+
