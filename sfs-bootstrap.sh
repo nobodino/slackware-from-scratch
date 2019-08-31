@@ -445,43 +445,24 @@ EOF
 patch_findutils_c () {
 #******************************************************************
 cat > $PATCHDIR/findutilsSB.patch << "EOF"
---- findutils.SlackBuild.old	2018-09-22 15:27:07.594932088 +0200
-+++ findutils.SlackBuild	2018-09-22 16:05:48.038923236 +0200
-@@ -67,6 +67,11 @@
- tar xvf $CWD/findutils-$VERSION.tar.?z* || exit 1
- cd findutils-$VERSION || exit 1
- 
-+# patch to build with glibc-2.28 (from LFS)
-+sed -i 's/IO_ftrylockfile/IO_EOF_SEEN/' gl/lib/*.c
-+sed -i '/unistd/a #include <sys/sysmacros.h>' gl/lib/mountlist.c
-+echo "#define _IO_IN_BACKUP 0x100" >> gl/lib/stdio-impl.h
-+
- chown -R root:root .
- find . \
-   \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
-@@ -79,22 +84,6 @@
+--- findutils.SlackBuild.old	2019-08-31 14:00:08.376145372 +0200
++++ findutils.SlackBuild	2019-08-31 15:28:02.130125255 +0200
+@@ -77,12 +77,12 @@
+ # Don't output warnings by default.  Let's make the crazy assumption that the
+ # user actually does know what they are doing, and will use -warn if they'd
  # like to be yelled at.
- zcat $CWD/findutils.no.default.options.warnings.diff.gz | patch -p1 --verbose || exit 1
+-zcat $CWD/findutils.no.default.options.warnings.diff.gz | patch -p1 --verbose || exit 1
++# zcat $CWD/findutils.no.default.options.warnings.diff.gz | patch -p1 --verbose || exit 1
  
--# Add patches from Fedora to finally make findutils-4.6.0 usable:
--zcat $CWD/patches/findutils-4.4.2-xautofs.patch.gz | patch -p1 --verbose || exit 1
--zcat $CWD/patches/findutils-4.5.13-warnings.patch.gz | patch -p1 --verbose || exit 1
--zcat $CWD/patches/findutils-4.5.15-no-locate.patch.gz | patch -p1 --verbose || exit 1
--zcat $CWD/patches/findutils-4.6.0-exec-args.patch.gz | patch -p1 --verbose || exit 1
--zcat $CWD/patches/findutils-4.6.0-fts-update.patch.gz | patch -p1 --verbose || exit 1
--zcat $CWD/patches/findutils-4.6.0-gnulib-fflush.patch.gz | patch -p1 --verbose || exit 1
--zcat $CWD/patches/findutils-4.6.0-gnulib-makedev.patch.gz | patch -p1 --verbose || exit 1
--zcat $CWD/patches/findutils-4.6.0-internal-noop.patch.gz | patch -p1 --verbose || exit 1
--zcat $CWD/patches/findutils-4.6.0-leaf-opt.patch.gz | patch -p1 --verbose || exit 1
--zcat $CWD/patches/findutils-4.6.0-man-exec.patch.gz | patch -p1 --verbose || exit 1
--zcat $CWD/patches/findutils-4.6.0-mbrtowc-tests.patch.gz | patch -p1 --verbose || exit 1
--zcat $CWD/patches/findutils-4.6.0-test-lock.patch.gz | patch -p1 --verbose || exit 1
--
+ # Don't include updatedb, locate, frcode:
+-zcat $CWD/findutils.nolocate.diff.gz | patch -p1 --verbose || exit 1
++# zcat $CWD/findutils.nolocate.diff.gz | patch -p1 --verbose || exit 1
+ 
 -autoreconf -vif
--
++# autoreconf -vif
+ 
  CFLAGS="$SLKCFLAGS" \
  ./configure \
-   --prefix=/usr \
 EOF
 }
 
