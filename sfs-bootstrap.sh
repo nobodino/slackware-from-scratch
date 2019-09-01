@@ -364,9 +364,6 @@ if [[ "$build_arch" = "x86" ]]
 		if [ ! -f readline-7.0.005-i586-1.txz ]; then
 			wget -c -v $DLDIR12/readline-7.0.005-i586-1.txz
 		fi
-		if [ ! -f icu4c-63.1-i586-1.txz ]; then
-			wget -c v $DLDIR12/icu4c-63.1-i586-1.txz
-		fi
 	elif [[ "$build_arch" = "x86_64" ]]
 	then
 		mkdir $SRCDIR/others > /dev/null 2>&1
@@ -406,9 +403,6 @@ if [[ "$build_arch" = "x86" ]]
 		cd $SRCDIR/others
 		if [ ! -f readline-7.0.005-x86_64-1.txz ]; then
 			wget -c -v $DLDIR12/readline-7.0.005-x86_64-1.txz
-		fi
-		if [ ! -f icu4c-63.1-x86_64-1.txz ]; then
-			wget -c v $DLDIR12/icu4c-63.1-x86_64-1.txz
 		fi
 fi
 
