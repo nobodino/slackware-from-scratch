@@ -307,6 +307,10 @@ n gnutls
 ap cups
 n iputils
 l ncurses
+l json-c
+l argon2
+l pcre2
+l libpsl
 a pre-elflibs
 a aaa_elflibs
 a post-elflibs
@@ -1103,6 +1107,7 @@ n openssl
 n snownews
 d python
 d python3
+xfce xfce
 xap mozilla-firefox
 xap mozilla-thunderbird
 y bsd-games
