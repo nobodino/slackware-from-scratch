@@ -88,7 +88,7 @@ sed -i -e "s#/lib/jove#/lib${LIBDIRSUFFIX}/jove#" \
   -e "s#^OPTFLAGS = .*#OPTFLAGS = $SLKCFLAGS#" Makefile
 
 # patch for glibc-2.30 (stropts.h removed)
-# ptahc from gentoo https://gitweb.gentoo.org/repo/gentoo.git/commit/?id=c6e0e902966bbf67aed4887343e38cc5a778db9e
+# patch from gentoo https://gitweb.gentoo.org/repo/gentoo.git/commit/?id=c6e0e902966bbf67aed4887343e38cc5a778db9e
 cat $CWD/jove-glibc-2.30.patch | patch -p1 --verbose --backup || exit 1
 
 make $NUMJOBS || make || exit 1

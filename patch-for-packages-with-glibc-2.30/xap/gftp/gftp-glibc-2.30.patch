@@ -1,15 +1,12 @@
-diff -aurN gftp-2.0.19/lib/pty.c gftp-2.0.19.new/lib/pty.c
---- gftp-2.0.19/lib/pty.c	2007-03-13 02:56:43.000000000 +0100
-+++ gftp-2.0.19.new/lib/pty.c	2019-08-03 15:09:08.963168590 +0200
-@@ -61,9 +61,9 @@
+diff -ruNp gftp-2.0.19.old/lib/pty.c gftp-2.0.19.new/lib/pty.c
+--- gftp-2.0.19.old/lib/pty.c	2007-03-12 22:56:43.000000000 -0300
++++ gftp-2.0.19.new/lib/pty.c	2009-03-01 10:54:39.000000000 -0300
+@@ -61,7 +61,7 @@ _gftp_ptys_open (int fdm, int fds, char 
  
  #elif HAVE_GRANTPT
  
 -#if !(defined(__FreeBSD__) || defined(__NetBSD__) || defined(__APPLE__))
-+/*#if !(defined(__FreeBSD__) || defined(__NetBSD__) || defined(__APPLE__))
++#if !(defined(__FreeBSD__) || defined(__NetBSD__) || defined(__APPLE__)|| defined(__linux__))
  #include <stropts.h>
--#endif
-+#endif*/
+ #endif
  
- char *
- gftp_get_pty_impl (void)
