@@ -103,6 +103,7 @@ zcat $CWD/postfix.only.warn.regular.files.diff.gz | patch -p1 --verbose || exit 
 zcat $CWD/postfix.script.starting.message.diff.gz | patch -p1 --verbose || exit 1
 
 # patch for glibc-2.30 (RES_USE_INET6 removed)
+# patch from fedora https://src.fedoraproject.org/rpms/postfix/blob/master/f/postfix-3.4.4-res-macros-fix.patch 
 cat $CWD/postfix-glibc-2.30.patch | patch -p1 --verbose --backup || exit 1
 
 # Postfix does not use a ./configure script (no GNU autoconf)
