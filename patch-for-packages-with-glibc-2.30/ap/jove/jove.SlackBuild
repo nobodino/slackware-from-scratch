@@ -23,8 +23,8 @@
 cd $(dirname $0) ; CWD=$(pwd)
 
 PKGNAM=jove
-VERSION=4.16.0.73
-BUILD=${BUILD:-6}
+VERSION=4.16.0.74
+BUILD=${BUILD:-1}
 
 # Automatically determine the architecture we're building on:
 if [ -z "$ARCH" ]; then
@@ -78,10 +78,6 @@ find . \
   -exec chmod 644 {} \;
 
 zcat $CWD/jove.makefile.diff.gz | patch -p1 --verbose --backup || exit 1
-
-# Avoid a glibc namespace conflict with getline(), and increase some
-# buffer sizes:
-zcat $CWD/jove.getline.buffsiz.diff.gz | patch -p1 --verbose --backup || exit 1
 
 # More patching needed now:
 sed -i -e "s#/lib/jove#/lib${LIBDIRSUFFIX}/jove#" \
