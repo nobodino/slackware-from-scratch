@@ -112,9 +112,6 @@ cd seamonkey-${TARBALLVER} || exit 1
 # Retain GTK+ v2 scrolling behavior:
 zcat $CWD/sm.ui.scrollToClick.diff.gz | patch -p1 --verbose || exit 1
 
-# patch to build with glibc-2.30 from BLFS
-sed -i -e '/pid_t gettid/,+3 s@^@//@' mozilla/tools/profiler/core/platform.h
-
 # Make sure the perms/ownerships are sane:
 chown -R root:root .
 find . \
@@ -144,7 +141,7 @@ OPTIONS="\
   --disable-updater \
   --enable-chrome-format=omni \
   --disable-necko-wifi \
-  --enable-extensions=default,irc \
+  --enable-extensions=default \
   --without-system-nspr \
   --with-system-zlib \
   --enable-application=suite \
