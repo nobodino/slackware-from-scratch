@@ -112,6 +112,10 @@ cd seamonkey-${TARBALLVER} || exit 1
 # Retain GTK+ v2 scrolling behavior:
 zcat $CWD/sm.ui.scrollToClick.diff.gz | patch -p1 --verbose || exit 1
 
+# patch for glibc-2.30 
+# patch from fedora https://src.fedoraproject.org/rpms/seamonkey/blob/master/f/seamonkey-2.49.4-gettid.patch
+cat $CWD/seamonkey-2.49.4-gettid.patch | patch -Esp2 --verbose || exit 1
+
 # Make sure the perms/ownerships are sane:
 chown -R root:root .
 find . \
