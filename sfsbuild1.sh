@@ -368,13 +368,6 @@ case $PACKNAME in
 		mv -v /tmp/$PACKNAME*.t?z /sfspacks/$SRCDIR
 		cd /sources ;;
 
-	seamonkey )
-		# don't forget to mv seamonkey-solibs in l/
-		cd /tmp
-		mv /tmp/$PACKNAME-solibs*.t?z /sfspacks/l/
-		mv -v /tmp/$PACKNAME*.t?z /sfspacks/$SRCDIR
-		cd /sources ;;
-
 	xz )
 		# package built in /tmp 
 		cd /tmp
