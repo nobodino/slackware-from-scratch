@@ -198,6 +198,9 @@ copy_src () {
     cd $RDIR/l/gmp
 	export GMPVER=${VERSION:-$(echo gmp-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/l/gmp/gmp-$GMPVER.tar.xz $SRCDIR || exit 1
+    cd $RDIR/l/isl
+	export ISLVER=${VERSION:-$(echo isl-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
+	cp -v $RDIR/l/isl/isl-$ISLVER.tar.xz $SRCDIR || exit 1
     cd $RDIR/a/grep
 	export GREPVER=${VERSION:-$(echo grep-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/a/grep/grep-$GREPVER.tar.xz $SRCDIR || exit 1
@@ -453,6 +456,32 @@ binutils_build_sp2 () {
 	echo binutils-$BINUVER >> $SFS/tools/etc/tools_version
 }
 
+gmp_build () {
+#*****************************
+    tar xvf gmp-$GMPVER.tar.xz && cd gmp-$GMPVER
+
+    ./configure --prefix=/tools || exit 1
+
+    make || exit 1
+    make install || exit 1
+    cd ..
+    rm -rf gmp-$GMPVER
+	echo gmp-$GMPVER >> $SFS/tools/etc/tools_version
+}
+
+isl_build () {
+#*****************************
+    tar xvf isl-$ISLVER.tar.xz && cd isl-$ISLVER
+
+    ./configure --prefix=/tools || exit 1
+
+    make || exit 1
+    make install || exit 1
+    cd ..
+    rm -rf isl-$ISLVER
+	echo isl-$ISLVER >> $SFS/tools/etc/tools_version
+}
+
 gcc_build_sp2 () {
 #*****************************
 tar xvf gcc-$SRCVER.tar.?z && cd gcc-$SRCVER
@@ -497,7 +526,7 @@ esac
 		 --prefix=/tools                                \
 		 --with-local-prefix=/tools                     \
 		 --with-native-system-header-dir=/tools/include \
-		 --enable-languages=c,c++                       \
+		 --enable-languages=c,c++						\
 		 --disable-libstdcxx-pch                        \
 		 --disable-multilib                             \
 		 --disable-bootstrap                            \
@@ -915,12 +944,14 @@ echo_begin
 copy_src
 test_to_go
 cd $SRCDIR
-binutils_build_sp1
-gcc_build_sp1
-linux_headers_build
-glibc_build
-libstdc_build
-binutils_build_sp2
+# binutils_build_sp1
+# gcc_build_sp1
+# linux_headers_build
+# glibc_build
+# libstdc_build
+# binutils_build_sp2
+# gmp_build
+# isl_build
 gcc_build_sp2
 m4_build
 ncurses_build

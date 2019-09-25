@@ -513,6 +513,23 @@ cat > $PATCHDIR/glib2SB.patch << "EOF"
 EOF
 }
 
+patch_gobject_c () {
+#******************************************************************
+cat > $PATCHDIR/gobject-introspectionSB.patch << "EOF"
+--- gobject-introspection.SlackBuild.old	2019-09-25 04:53:51.990319000 +0000
++++ gobject-introspection.SlackBuild	2019-09-25 04:18:36.198262779 +0000
+@@ -104,7 +104,7 @@
+   --sysconfdir=/etc \
+   --localstatedir=/var \
+   --buildtype=release \
+-  -Dgtk_doc=true \
++  -Dgtk_doc=false \
+   .. || exit 1
+   "${NINJA:=ninja}" $NUMJOBS || exit 1
+   DESTDIR=$PKG $NINJA install || exit 1
+EOF
+}
+
 patch_kmod_c () {
 #******************************************************************
 cat > $PATCHDIR/kmodSB.patch << "EOF"
@@ -1014,6 +1031,21 @@ if [ -f $SRCDIR/l/glib2/glib2.SlackBuild.rej ]; then
 fi
 }
 
+execute_gobject () {
+#******************************************************************
+if [ ! -f $SRCDIR/l/gobject-introspection/gobject-introspection.SlackBuild.old ]; then
+	cp -v $SRCDIR/l/gobject-introspection/gobject-introspection.SlackBuild $SRCDIR/l/gobject-introspection/gobject-introspection.SlackBuild.old
+	(
+		cd $SRCDIR/l/gobject-introspection
+		zcat $PATCHDIR/gobject-introspectionSB.patch.gz |patch gobject-introspection.SlackBuild --verbose || exit 1
+	)
+fi
+# exit if patch is rejected
+if [ -f $SRCDIR/l/gobject-introspection/gobject-introspection.SlackBuild.rej ]; then 
+	exit 1
+fi
+}
+
 execute_harfbuzz() {
 #******************************************************************
 if [ ! -f $SRCDIR/l/harfbuzz/harfbuzz.SlackBuild.old ]; then
@@ -1235,6 +1267,7 @@ do
 		patch_freetype_c
 		patch_gd_c
 		patch_glib2_c
+		patch_gobject_c
 		patch_harfbuzz_c
 		patch_kmod_c
 		patch_libcaca_c
@@ -1274,6 +1307,7 @@ sources_alteration_c () {
 	execute_freetype # 2 pass
 	execute_gd # 2 pass
 	execute_glib2 # 2 pass
+	execute_gobject # 2 pass
 	execute_harfbuzz # 2 pass
 	execute_kmod # 2 pass
 	execute_libcaca # 2 pass

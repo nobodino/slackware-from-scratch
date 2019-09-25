@@ -1984,8 +1984,6 @@ LGD=1
 LQSC=1
 # init findutils variable
 LFIN=1
-# init glib2 variable
-LGLI=1
 # init NUMJOBS variable
 NUMJOBS="-j$(( $(nproc) * 2 )) -l$(( $(nproc) + 1 ))"
 
@@ -2162,6 +2160,18 @@ while (( LINE < $FILELEN )); do
 					update-ca-certificates
 					build $SRCDIR $PACKNAME
 					[ $? != 0 ] && exit 1 ;;
+
+				gobject-introspection )
+					case $LISTFILE in
+						build1_s.list )
+							build $SRCDIR $PACKNAME
+							[ $? != 0 ] && exit 1 ;;
+
+						build2_s.list )
+							build1 $SRCDIR $PACKNAME
+							[ $? != 0 ] && exit 1 ;;
+					esac
+					continue ;;
 
 				gucharmap )
 					update-ca-certificates --fresh

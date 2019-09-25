@@ -94,6 +94,7 @@ d flex
 d binutils
 d libtool
 l gmp
+l isl
 l mpfr
 l libmpc
 a infozip
@@ -292,6 +293,7 @@ a usbutils
 a dialog
 d help2man
 ap linuxdoc-tools
+l gobject-introspection
 l glib2
 ap nano
 n rsync
@@ -515,6 +517,7 @@ d rust
 l librsvg
 l gdk-pixbuf2
 l gnome-themes-standard
+l gnome-themes-extra
 l libpsl
 l libsoup
 l libevent
@@ -1069,6 +1072,7 @@ l alsa-plugins
 n links
 ap vim
 n ulogd
+l fuse3
 n sshfs
 xap hexchat
 n ipset
