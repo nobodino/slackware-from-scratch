@@ -944,14 +944,14 @@ echo_begin
 copy_src
 test_to_go
 cd $SRCDIR
-# binutils_build_sp1
-# gcc_build_sp1
-# linux_headers_build
-# glibc_build
-# libstdc_build
-# binutils_build_sp2
-# gmp_build
-# isl_build
+binutils_build_sp1
+gcc_build_sp1
+linux_headers_build
+glibc_build
+libstdc_build
+binutils_build_sp2
+gmp_build
+isl_build
 gcc_build_sp2
 m4_build
 ncurses_build
