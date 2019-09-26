@@ -926,7 +926,6 @@ post_gcc () {
 #***************************************************************
 export PATH=$PATH_HOLD
 rm -rf /opt/gnat
-cd /tmp && rm gcc.build.log
 }
 
 
