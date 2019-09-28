@@ -325,6 +325,8 @@ f linux-faqs
 f linux-howtos
 d python
 d python3
+a bash
+d vala
 l libical
 a dbus
 n bluez
