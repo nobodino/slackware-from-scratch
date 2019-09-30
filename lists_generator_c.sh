@@ -516,7 +516,6 @@ l libcroco
 d rust
 l librsvg
 l gdk-pixbuf2
-l gnome-themes-standard
 l gnome-themes-extra
 l libpsl
 l libsoup
