@@ -608,12 +608,12 @@ EOF
 patch_llvm_c () {
 #******************************************************************
 cat > $PATCHDIR/llvmSB.patch << "EOF"
---- llvm.SlackBuild.old	2019-07-22 20:40:21.874143613 +0000
-+++ llvm.SlackBuild	2019-07-22 20:40:21.883143613 +0000
-@@ -134,8 +134,8 @@
+--- llvm.SlackBuild.old	2019-10-01 16:44:17.175010877 +0000
++++ llvm.SlackBuild	2019-10-01 16:47:17.085015694 +0000
+@@ -136,8 +136,8 @@
  mkdir build
  cd build
-   cmake \
+   cmake -GNinja \
 -    -DCMAKE_C_COMPILER="clang" \
 -    -DCMAKE_CXX_COMPILER="clang++" \
 +    -DCMAKE_C_COMPILER="gcc" \
@@ -621,50 +621,6 @@ cat > $PATCHDIR/llvmSB.patch << "EOF"
      -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
      -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
      -DCMAKE_INSTALL_PREFIX=/usr \
-@@ -153,40 +153,15 @@
-     -DLLVM_INSTALL_UTILS=ON \
-     -DLLVM_BINUTILS_INCDIR=/usr/include \
-     -DCLANG_RESOURCE_DIR="../lib${LIBDIRSUFFIX}/clang/${VERSION}" \
--    .. || exit 1
-+	-Wno-dev -G Ninja ..                      &&
-+  ninja || exit 1
- 
-   # Breaks with one of the patches above. Maybe revisit later?
-   # -DBUILD_SHARED_LIBS=ON \
- 
--  # This seems to not like a parallel build, at least as of 7.0.0. I don't have
--  # days to wait for the compile though, so let's just smack it with a hammer
--  # fifty times before dropping back to a single-threaded build:
--  for index in $(seq 1 50) ; do
--    #make $NUMJOBS VERBOSE=1
-     make $NUMJOBS
--    ERR_RESULT=$?
--    if [ $ERR_RESULT = 0 ]; then
--      break
--    fi
--    echo "*** PARALLEL MAKE RESTART NUMBER $index"
--  done
--  if [ ! $ERR_RESULT = 0 ]; then
--    # Fifty more for the single thread:
--    for index in $(seq 1 50) ; do
--      #make VERBOSE=1
--      make
--      ERR_RESULT=$?
--      if [ $ERR_RESULT = 0 ]; then
--        break
--      fi
--      echo "*** NON-PARALLEL MAKE RESTART NUMBER $index"
--    done
--  fi
--  if [ ! $ERR_RESULT = 0 ]; then
--    exit 1
--  fi
- 
--  make install DESTDIR=$PKG || exit 1
-+  DESTDIR=$PKG ninja install || exit 1
- cd ..
- 
- # Add symlinks for $ARCH-slackware-linux-{clang,clang++}:
 EOF
 }
 
