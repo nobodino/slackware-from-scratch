@@ -2325,11 +2325,11 @@ while (( LINE < $FILELEN )); do
 				mesa )
 					case $LMES in
 						1 )
-							build $SRCDIR $PACKNAME
+							export BUILD_DEMOS=NO && build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1
 							LMES=2 ;;
 						2 )
-							build1 $SRCDIR $PACKNAME
+							export BUILD_DEMOS=YES && build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 ;;
 					esac
 					continue ;;
