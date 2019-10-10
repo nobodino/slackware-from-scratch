@@ -624,23 +624,6 @@ cat > $PATCHDIR/llvmSB.patch << "EOF"
 EOF
 }
 
-patch_mesa_c () {
-#******************************************************************
-cat > $PATCHDIR/mesaSB.patch << "EOF"
---- mesa.SlackBuild.old	2019-07-22 20:40:21.888143613 +0000
-+++ mesa.SlackBuild	2019-07-22 20:40:21.896143613 +0000
-@@ -176,7 +176,7 @@
-   done
-   # Remove cruft:
-   rm -rf $PKG/cruft
--) || exit 1
-+)
- 
- # Strip binaries:
- find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
-EOF
-}
-
 patch_pkg_config_c () {
 #******************************************************************
 cat > $PATCHDIR/pkg-configSB.patch << "EOF"
@@ -1094,21 +1077,6 @@ if [ -f $SRCDIR/d/llvm/llvm.SlackBuild.rej ]; then
 fi
 }
 
-execute_mesa () {
-#******************************************************************
-if [ ! -f $SRCDIR/x/mesa/mesa.SlackBuild.old ]; then
-	cp -v $SRCDIR/x/mesa/mesa.SlackBuild $SRCDIR/x/mesa/mesa.SlackBuild.old
-	(
-		cd $SRCDIR/x/mesa
-		zcat $PATCHDIR/mesaSB.patch.gz |patch mesa.SlackBuild --verbose || exit 1
-	)
-fi
-# exit if patch is rejected
-if [ -f $SRCDIR/x/mesa/mesa.SlackBuild.rej ]; then 
-	exit 1
-fi
-}
-
 execute_pkg_config () {
 #******************************************************************
 if [ ! -f $SRCDIR/d/pkg-config/pkg-config.SlackBuild.old ]; then
@@ -1229,7 +1197,6 @@ do
 		patch_libcaca_c
 		patch_libusb_c
 		patch_llvm_c
-		patch_mesa_c
 		patch_pkg_config_c
 		patch_qscint_c
 		patch_readline_c
@@ -1269,7 +1236,6 @@ sources_alteration_c () {
 	execute_libcaca # 2 pass
 	execute_libusb # 2 pass
 	execute_llvm # 2 pass
-	execute_mesa # 2 pass
 	execute_pkg_config # 2 pass
 	execute_qscint # 2 pass
 	execute_readline # 2 pass
