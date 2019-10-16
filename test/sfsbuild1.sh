@@ -1933,6 +1933,13 @@ echo
 cd /sources && killall -9 dhcpcd
 }
 
+update_slackbuild () {
+#****************************************************************
+# rename SlackBuild.old to original SlackBuild
+#****************************************************************
+cd /slacksrc/$SRCDIR/$PACKNAME && mv $PACKNAME.SlackBuild.old $PACKNAME.SlackBuild && cd /sources
+}
+
 #****************************************************************
 # END OF X11 SUB-SYSTEM BUILDING
 #****************************************************************
@@ -2049,9 +2056,9 @@ while (( LINE < $FILELEN )); do
 				cmake )
 					case $LISTFILE in
 						build1_s.list )
-							build $SRCDIR $PACKNAME 
-							[ $? != 0 ] && exit 1
-							cd /slacksrc/$SRCDIR/$PACKNAME && mv $PACKNAME.SlackBuild.old $PACKNAME.SlackBuild && cd /sources ;;
+							build $SRCDIR $PACKNAME
+							[ $? != 0 ] && exit 1 
+							update_slackbuild ;;
 
 #						build3_s.list )
 						* )
@@ -2067,13 +2074,13 @@ while (( LINE < $FILELEN )); do
 				dbus )
 					case $LISTFILE in
 						build2_s.list )
-							build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1
-							dbus-uuidgen --ensure && cd /slacksrc/$SRCDIR/$PACKNAME && mv $PACKNAME.SlackBuild.old $PACKNAME.SlackBuild && cd /sources ;;
+							build $SRCDIR $PACKNAME && 
+							[ $? != 0 ] && exit 1  
+							dbus-uuidgen --ensure ;;
 
 #						build3_s.list )
 						* )
-							build $SRCDIR $PACKNAME
+							update_slackbuild && build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 ;;
 					esac
 					continue ;;
@@ -2101,9 +2108,9 @@ while (( LINE < $FILELEN )); do
 				findutils )
 					case $LFIN in
 						1 )
-							build $SRCDIR $PACKNAME && cd /slacksrc/$SRCDIR/$PACKNAME && mv $PACKNAME.SlackBuild.old $PACKNAME.SlackBuild && cd /sources
+							build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1
-							LFIN=2 ;;
+							update_slackbuild && LFIN=2 ;;
 						2 )
 							build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 ;;
@@ -2113,8 +2120,9 @@ while (( LINE < $FILELEN )); do
 				fontconfig )
 					case $LISTFILE in
 						build2_s.list )
-							build $SRCDIR $PACKNAME && cd /slacksrc/$SRCDIR/$PACKNAME && mv $PACKNAME.SlackBuild.old $PACKNAME.SlackBuild && cd /sources
-							[ $? != 0 ] && exit 1 ;;
+							build $SRCDIR $PACKNAME 
+							[ $? != 0 ] && exit 1
+							update_slackbuild ;;
 
 #						build3_s.list )
 						* )
@@ -2126,9 +2134,9 @@ while (( LINE < $FILELEN )); do
 				freetype )
 					case $LFRE in
 						1 )
-							build $SRCDIR $PACKNAME && cd /slacksrc/$SRCDIR/$PACKNAME && mv $PACKNAME.SlackBuild.old $PACKNAME.SlackBuild && cd /sources
+							build $SRCDIR $PACKNAME 
 							[ $? != 0 ] && exit 1
-							LFRE=2 ;;
+							Lupdate_slackbuild && FRE=2 ;;
 						2 )
 							build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 ;;
@@ -2138,9 +2146,9 @@ while (( LINE < $FILELEN )); do
 				gd )
 					case $LGD in
 						1 )
-							build $SRCDIR $PACKNAME && cd /slacksrc/$SRCDIR/$PACKNAME && mv $PACKNAME.SlackBuild.old $PACKNAME.SlackBuild && cd /sources 
+							build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1
-							LGD=2 ;;
+							update_slackbuild && LGD=2 ;;
 						2 )
 							build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 ;;
@@ -2150,8 +2158,9 @@ while (( LINE < $FILELEN )); do
 				glib2 )
 					case $LISTFILE in
 						build1_s.list )
-							build $SRCDIR $PACKNAME && cd /slacksrc/$SRCDIR/$PACKNAME && mv $PACKNAME.SlackBuild.old $PACKNAME.SlackBuild && cd /sources 
-							[ $? != 0 ] && exit 1 ;;
+							build $SRCDIR $PACKNAME
+							[ $? != 0 ] && exit 1 
+							update_slackbuild ;;
 
 #						build2_s.list )
 						* )
@@ -2161,15 +2170,15 @@ while (( LINE < $FILELEN )); do
 					continue ;;
 
 				glib-networking )
-					update-ca-certificates
-					build $SRCDIR $PACKNAME
+					update-ca-certificates && build $SRCDIR $PACKNAME
 					[ $? != 0 ] && exit 1 ;;
 
 				gobject-introspection )
 					case $LISTFILE in
 						build1_s.list )
-							build $SRCDIR $PACKNAME && cd /slacksrc/$SRCDIR/$PACKNAME && mv $PACKNAME.SlackBuild.old $PACKNAME.SlackBuild && cd /sources 
-							[ $? != 0 ] && exit 1 ;; 
+							build $SRCDIR $PACKNAME
+							[ $? != 0 ] && exit 1 
+							update_slackbuild ;; 
 
 #						build2_s.list )
 						* )
@@ -2179,16 +2188,15 @@ while (( LINE < $FILELEN )); do
 					continue ;;
 
 				gucharmap )
-					update-ca-certificates --fresh
-					build $SRCDIR $PACKNAME
+					update-ca-certificates --fresh && build $SRCDIR $PACKNAME
 					[ $? != 0 ] && exit 1 ;;
 
 				harfbuzz )
 					case $LHAR in
 						1 )
-							build $SRCDIR $PACKNAME &&	cd /slacksrc/$SRCDIR/$PACKNAME && mv $PACKNAME.SlackBuild.old $PACKNAME.SlackBuild && cd /sources 
+							build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1
-							LHAR=2 ;;
+							 update_slackbuild && LHAR=2 ;;
 						2 )
 							build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 ;;
@@ -2244,9 +2252,9 @@ while (( LINE < $FILELEN )); do
 				kmod )
 					case $LKMO in
 						1 )
-							build $SRCDIR  $PACKNAME && cd /slacksrc/$SRCDIR/$PACKNAME && mv $PACKNAME.SlackBuild.old $PACKNAME.SlackBuild && cd /sources 
+							build $SRCDIR  $PACKNAME
 							[ $? != 0 ] && exit 1
-							LKMO=2 ;;
+							update_slackbuild && LKMO=2 ;;
 						2 )
 							build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 ;;
@@ -2282,9 +2290,9 @@ while (( LINE < $FILELEN )); do
 				libcaca )
 					case $LCAC in
 						1 )
-							build $SRCDIR $PACKNAME && cd /slacksrc/$SRCDIR/$PACKNAME && mv $PACKNAME.SlackBuild.old $PACKNAME.SlackBuild && cd /sources 
+							build $SRCDIR $PACKNAME 
 							[ $? != 0 ] && exit 1
-							LCAC=2 ;;
+							update_slackbuild && LCAC=2 ;;
 						2 )
 							build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 ;;
@@ -2299,9 +2307,9 @@ while (( LINE < $FILELEN )); do
 				libusb )
 					case $LUSB in
 						1 )
-							build $SRCDIR $PACKNAME && cd /slacksrc/$SRCDIR/$PACKNAME && mv $PACKNAME.SlackBuild.old $PACKNAME.SlackBuild && cd /sources 
+							build $SRCDIR $PACKNAME 
 							[ $? != 0 ] && exit 1
-							LUSB=2 ;;
+							update_slackbuild && LUSB=2 ;;
 						2 )
 							build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 ;;
@@ -2319,9 +2327,9 @@ while (( LINE < $FILELEN )); do
 				llvm )
 					case $LPVM in
 						1 )
-							build $SRCDIR $PACKNAME && cd /slacksrc/$SRCDIR/$PACKNAME && mv $PACKNAME.SlackBuild.old $PACKNAME.SlackBuild && cd /sources 
+							build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1
-							LPVM=2 ;;
+							update_slackbuild && LPVM=2 ;;
 						2 )
 							build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 ;;
@@ -2348,9 +2356,9 @@ while (( LINE < $FILELEN )); do
 				pkg-config )
 					case $LPKG in
 						1 )
-							build $SRCDIR $PACKNAME && cd /slacksrc/$SRCDIR/$PACKNAME && mv $PACKNAME.SlackBuild.old $PACKNAME.SlackBuild && cd /sources
+							build $SRCDIR $PACKNAME 
 							[ $? != 0 ] && exit 1
-							LPKG=2 ;;
+							update_slackbuild && LPKG=2 ;;
 						2 )
 							build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 ;;
@@ -2390,9 +2398,9 @@ while (( LINE < $FILELEN )); do
 				QScintilla )
 					case $LQSC in
 						1 )
-							build $SRCDIR $PACKNAME && cd /slacksrc/$SRCDIR/$PACKNAME && mv $PACKNAME.SlackBuild.old $PACKNAME.SlackBuild && cd /sources 
+							build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1
-							LQSC=2 ;;
+							update_slackbuild && LQSC=2 ;;
 						2 )
 							build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 ;;
@@ -2402,26 +2410,28 @@ while (( LINE < $FILELEN )); do
 				readline )
 					case $LREA in
 						1 )
-							build $SRCDIR $PACKNAME && cd /slacksrc/$SRCDIR/$PACKNAME && mv $PACKNAME.SlackBuild.old $PACKNAME.SlackBuild && cd /sources 
+							build $SRCDIR $PACKNAME 
 							[ $? != 0 ] && exit 1
-							LREA=2 ;;
-						* )
+							update_slackbuild && LREA=2 ;;
+						2 )
 							build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1 
+							[ $? != 0 ] && exit 1
 							LREA=3 ;;
 
 #						3 )
-#							rm /sfspacks/l/readline*.t?z
-# 						build $SRCDIR $PACKNAME
-#							[ $? != 0 ] && exit 1 ;;
+						* )
+							rm /sfspacks/l/readline*.t?z
+ 							build $SRCDIR $PACKNAME
+							[ $? != 0 ] && exit 1 ;;
 					esac
 					continue ;;
 
 				subversion )
 					case $LISTFILE in
 						build3_s.list )
-							build $SRCDIR $PACKNAME && cd /slacksrc/$SRCDIR/$PACKNAME && mv $PACKNAME.SlackBuild.old $PACKNAME.SlackBuild && cd /sources 
-							[ $? != 0 ] && exit 1 ;;
+							build $SRCDIR $PACKNAME 
+							[ $? != 0 ] && exit 1 
+							update_slackbuild ;;
 
 #						build4_s.list )
 						* )
@@ -2433,8 +2443,9 @@ while (( LINE < $FILELEN )); do
 				texlive )
 					case $LISTFILE in
 						build2_s.list )
-							build $SRCDIR $PACKNAME && cd /slacksrc/$SRCDIR/$PACKNAME && mv $PACKNAME.SlackBuild.old $PACKNAME.SlackBuild && cd /sources
-							[ $? != 0 ] && exit 1 ;;
+							build $SRCDIR $PACKNAME && 
+							[ $? != 0 ] && exit 1 
+							update_slackbuild ;;
 				
 #						build3_s.list )
 						* )

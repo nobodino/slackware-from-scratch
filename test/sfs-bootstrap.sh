@@ -1176,8 +1176,7 @@ if [ ! -f $SRCDIR/l/libcaca/libcaca.SlackBuild.old ]; then
 		sed -i -e '/JAVAENABLE="enable"/a fi' libcaca.SlackBuild
 		sed -i -e '/disable-ruby/p' libcaca.SlackBuild
 		sed -i -e '0,/disable-ruby/! s/disable-ruby/$JAVAENABLE-java/' libcaca.SlackBuild
-		sed -i -e 's/python setup.py install --root=$PKG || exit 1/python setup.py install --root=$PKG/' libcaca.SlackBuild
-		sed -i -e 's/python3 setup.py install --root=$PKG || exit 1/python3 setup.py install --root=$PKG/' libcaca.SlackBuild
+		sed -i -e 's/setup.py install --root=$PKG || exit 1/setup.py install --root=$PKG/' libcaca.SlackBuild
 	)
 fi
 }
@@ -1232,8 +1231,8 @@ if [ ! -f $SRCDIR/d/llvm/llvm.SlackBuild.old ]; then
 	cp -v $SRCDIR/d/llvm/llvm.SlackBuild $SRCDIR/d/llvm/llvm.SlackBuild.old
 	(
 		cd $SRCDIR/d/llvm
-		sed -i -e 's/clang++/g++/g' llvm.SlackBuild
-		sed -i -e 's/clang/gcc/g' llvm.SlackBuild
+		sed -i -e 's/"clang++"/"g++"/' llvm.SlackBuild
+		sed -i -e 's/"clang"/"gcc"/' llvm.SlackBuild
 	)
 fi
 }
