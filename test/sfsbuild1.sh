@@ -2299,14 +2299,10 @@ while (( LINE < $FILELEN )); do
 							[ $? != 0 ] && exit 1 
 							update_slackbuild ;;
 
-#						build3_s.list )
 						* )
 							build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 ;;
 
-#						build4_s.list )
-#							build $SRCDIR $PACKNAME
-#							[ $? != 0 ] && exit 1 ;;
 					esac
 					continue ;;
 
@@ -2317,7 +2313,6 @@ while (( LINE < $FILELEN )); do
 							[ $? != 0 ] && exit 1  
 							dbus-uuidgen --ensure ;;
 
-#						build3_s.list )
 						* )
 							update_slackbuild && build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 ;;
@@ -2363,7 +2358,6 @@ while (( LINE < $FILELEN )); do
 							[ $? != 0 ] && exit 1
 							update_slackbuild ;;
 
-#						build3_s.list )
 						* )
 							build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 ;;
@@ -2401,7 +2395,6 @@ while (( LINE < $FILELEN )); do
 							[ $? != 0 ] && exit 1 
 							update_slackbuild ;;
 
-#						build2_s.list )
 						* )
 							build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 ;;
@@ -2419,7 +2412,6 @@ while (( LINE < $FILELEN )); do
 							[ $? != 0 ] && exit 1 
 							update_slackbuild ;; 
 
-#						build2_s.list )
 						* )
 							build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 ;;
@@ -2451,10 +2443,6 @@ while (( LINE < $FILELEN )); do
 							[ $? != 0 ] && exit 1 ;;
 					esac
 					continue ;;
-
-#				java )
-#					build $SRCDIR $PACKNAME
-#					[ $? != 0 ] && exit 1 ;;
 
 				kde )
 					build_kde
@@ -2657,7 +2645,6 @@ while (( LINE < $FILELEN )); do
 							[ $? != 0 ] && exit 1
 							LREA=3 ;;
 
-#						3 )
 						* )
 							rm /sfspacks/l/readline*.t?z
  							build $SRCDIR $PACKNAME
@@ -2672,7 +2659,6 @@ while (( LINE < $FILELEN )); do
 							[ $? != 0 ] && exit 1 
 							update_slackbuild ;;
 
-#						build4_s.list )
 						* )
 							build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 ;;
@@ -2686,7 +2672,6 @@ while (( LINE < $FILELEN )); do
 							[ $? != 0 ] && exit 1 
 							update_slackbuild ;;
 				
-#						build3_s.list )
 						* )
 							build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 ;;
@@ -2721,7 +2706,6 @@ while (( LINE < $FILELEN )); do
 							build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 ;;
 
-#						build4_s.list )
 						* )
 							build1 $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 ;;
