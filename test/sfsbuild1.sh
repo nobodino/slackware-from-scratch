@@ -74,6 +74,8 @@ export PINK="\\033[1;35m"
 export BLUE="\\033[1;34m"
 export YELLOW="\\033[1;33m"
 #**********************************
+export SLACKSRC=/slacksrc
+#**********************************
 on_error () {
 #***********************************************************
 # recalls the usage of the main script in case of error
@@ -152,6 +154,276 @@ if [ "$testvar" != "" ]; then
 fi
 echo
 }
+
+#*******************************************************************
+# sub-system of execution of patches
+#*******************************************************************
+
+execute_cmake_sed () {
+#******************************************************************
+if [ ! -f $SLACKSRC/d/cmake/cmake.SlackBuild.old ]; then
+	cp -v $SLACKSRC/d/cmake/cmake.SlackBuild $SLACKSRC/d/cmake/cmake.SlackBuild.old
+	(
+		cd $SLACKSRC/d/cmake
+		sed -i -e '/--qt-gui/d' cmake.SlackBuild
+	)
+fi
+}
+
+execute_dbus_sed () {
+#******************************************************************
+if [ ! -f $SLACKSRC/a/dbus/dbus.SlackBuild.old ]; then
+	cp -v $SLACKSRC/a/dbus/dbus.SlackBuild $SLACKSRC/a/dbus/dbus.SlackBuild.old
+	(
+		cd $SLACKSRC/a/dbus
+		sed -i -e '/--enable-x11-autolaunch/d' dbus.SlackBuild
+	)
+fi
+}
+
+execute_findutils_sed () {
+#******************************************************************
+if [ ! -f /slacksrc/a/findutils/findutils.SlackBuild.old ]; then
+	cp -v /slacksrc/a/findutils/findutils.SlackBuild /slacksrc/a/findutils/findutils.SlackBuild.old
+	(
+		cd /slacksrc/a/findutils
+		sed -i -e 's/zcat/# zcat/g' findutils.SlackBuild
+		sed -i -e 's/autoreconf/# autoreconf/g' findutils.SlackBuild
+	)
+fi
+}
+
+execute_fontconfig_sed () {
+#******************************************************************
+if [ ! -f $SLACKSRC/x/fontconfig/fontconfig.SlackBuild.old ]; then
+	cp -v $SLACKSRC/x/fontconfig/fontconfig.SlackBuild $SLACKSRC/x/fontconfig/fontconfig.SlackBuild.old
+	(
+		cd $SLACKSRC/x/fontconfig
+		sed -i -e '/--sysconfdir/p' fontconfig.SlackBuild
+		sed -i -e '0,/sysconfdir/ s/sysconfdir=\/\etc/disable-docs/' fontconfig.SlackBuild
+	)
+fi
+}
+
+execute_freetype_sed () {
+#******************************************************************
+if [ ! -f $SLACKSRC/l/freetype/freetype.SlackBuild.old ]; then
+	cp -v $SLACKSRC/l/freetype/freetype.SlackBuild $SLACKSRC/l/freetype/freetype.SlackBuild.old
+	(
+		cd $SLACKSRC/l/freetype
+		sed -i -e 's/make $NUMJOBS || make || exit 1/make $NUMJOBS/' freetype.SlackBuild
+		sed -i -e 's/make install DESTDIR=$PKG || exit 1/make install DESTDIR=$PKG/' freetype.SlackBuild
+		sed -i -e '/make install DESTDIR=$PKG/p' freetype.SlackBuild
+		sed -i -e '0,/make install DESTDIR=$PKG/ s/make install DESTDIR=$PKG/make/' freetype.SlackBuild
+		sed -i -e '/make install DESTDIR=$PKG/a # install freetype headers to build harfbuzz/' freetype.SlackBuild
+		sed -i -e '/# install freetype headers/a mkdir -pv $PKG/usr/include/freetype2/' freetype.SlackBuild
+		sed -i -e '/mkdir -pv/a cp devel/ft2build.h $PKG/usr/include/freetype2/ft2build.h' freetype.SlackBuild
+		sed -i -e '/cp devel\/\ft2build.h/a cp devel/ftoption.h $PKG/usr/include/freetype2/ftoption.h' freetype.SlackBuild
+		sed -i -e '/ft2build.h/a cp devel/ftoption.h $PKG/usr/include/freetype2/ftoption.h' freetype.SlackBuild
+	)
+fi
+}
+
+execute_gd_sed () {
+#******************************************************************
+if [ ! -f $SLACKSRC/l/gd/gd.SlackBuild.old ]; then
+	cp -v $SLACKSRC/l/gd/gd.SlackBuild $SLACKSRC/l/gd/gd.SlackBuild.old
+	(
+		cd $SLACKSRC/l/gd
+		sed -i -e '/--disable-static/p' gd.SlackBuild
+		sed -i -e '/--program-prefix=/p' gd.SlackBuild
+		sed -i -e '0,/disable-static/ s/disable-static/without-fontconfig/' gd.SlackBuild
+		sed -i -e '0,/program-prefix=/ s/program-prefix=/without-xpm/' gd.SlackBuild
+		sed -i -e 's/make $NUMJOBS || make || exit 1/make $NUMJOBS || make/' gd.SlackBuild
+		sed -i -e 's/make install DESTDIR=$PKG || exit 1/make install DESTDIR=$PKG/' gd.SlackBuild
+	)
+fi
+}
+
+execute_glib2_sed () {
+#******************************************************************
+if [ ! -f $SLACKSRC/l/glib2/glib2.SlackBuild.old ]; then
+	cp -v $SLACKSRC/l/glib2/glib2.SlackBuild $SLACKSRC/l/glib2/glib2.SlackBuild.old
+	(
+		cd $SLACKSRC/l/glib2
+		sed -i -e 's/true/false/g' glib2.SlackBuild
+	)
+fi
+}
+
+execute_gobject_sed () {
+#******************************************************************
+if [ ! -f $SLACKSRC/l/gobject-introspection/gobject-introspection.SlackBuild.old ]; then
+	cp -v $SLACKSRC/l/gobject-introspection/gobject-introspection.SlackBuild $SLACKSRC/l/gobject-introspection/gobject-introspection.SlackBuild.old
+	(
+		cd $SLACKSRC/l/gobject-introspection
+		sed -i -e 's/true/false/' gobject-introspection.SlackBuild
+	)
+fi
+}
+
+execute_harfbuzz_sed () {
+#******************************************************************
+if [ ! -f $SLACKSRC/l/harfbuzz/harfbuzz.SlackBuild.old ]; then
+	cp -v $SLACKSRC/l/harfbuzz/harfbuzz.SlackBuild $SLACKSRC/l/harfbuzz/harfbuzz.SlackBuild.old
+	(
+		cd $SLACKSRC/l/harfbuzz
+		sed -i -e 's/make $NUMJOBS || make || exit 1/make $NUMJOBS || make/' harfbuzz.SlackBuild
+		sed -i -e 's/make install DESTDIR=$PKG || exit 1/make install DESTDIR=$PKG/' harfbuzz.SlackBuild
+		sed -i -e '/make install DESTDIR=$PKG/a # install harfbuzz headers to build freetype/' harfbuzz.SlackBuild
+		sed -i -e '/# install harfbuzz/a mkdir -pv $PKG/usr/include/harfbuzz' harfbuzz.SlackBuild
+		sed -i -e '/mkdir -pv $PKG/a cp src/*.h $PKG/usr/include/harfbuzz' harfbuzz.SlackBuild
+	)
+fi
+}
+
+execute_kmod_sed () {
+#******************************************************************
+if [ ! -f $SLACKSRC/a/kmod/kmod.SlackBuild.old ]; then
+	cp -v $SLACKSRC/a/kmod/kmod.SlackBuild $SLACKSRC/a/kmod/kmod.SlackBuild.old
+	(
+		cd $SLACKSRC/a/kmod
+		sed -i -e 's/make || exit 1/make/' kmod.SlackBuild
+		sed -i -e 's/make install DESTDIR=$PKG || exit 1/make install DESTDIR=$PKG/' kmod.SlackBuild
+	)
+fi
+}
+
+execute_libcaca_sed () {
+#******************************************************************
+if [ ! -f $SLACKSRC/l/libcaca/libcaca.SlackBuild.old ]; then
+	cp -v $SLACKSRC/l/libcaca/libcaca.SlackBuild $SLACKSRC/l/libcaca/libcaca.SlackBuild.old
+	(
+		cd $SLACKSRC/l/libcaca
+		sed -i -e '/BUILD=${BUILD:/a LCAC=${LCAC:-1}' libcaca.SlackBuild
+		sed -i -e '/LCAC=${LCAC:-1}/a if [ $LCAC == 1 ]; then' libcaca.SlackBuild
+		sed -i -e '/$LCAC == 1/a 	JAVAENABLE="disable"' libcaca.SlackBuild
+		sed -i -e 's/JAVAENABLE="disable"/  JAVAENABLE="disable"/' libcaca.SlackBuild
+		sed -i -e '/JAVAENABLE="disable"/a 		JAVAENABLE="enable"' libcaca.SlackBuild
+		sed -i -e 's/JAVAENABLE="enable"/  JAVAENABLE="enable"/' libcaca.SlackBuild
+		sed -i -e '/JAVAENABLE="disable"/a 	else' libcaca.SlackBuild
+		sed -i -e '/JAVAENABLE="enable"/a fi' libcaca.SlackBuild
+		sed -i -e '/disable-ruby/p' libcaca.SlackBuild
+		sed -i -e '0,/disable-ruby/! s/disable-ruby/$JAVAENABLE-java/' libcaca.SlackBuild
+		sed -i -e 's/setup.py install --root=$PKG || exit 1/setup.py install --root=$PKG/' libcaca.SlackBuild
+	)
+fi
+}
+
+execute_libusb_sed () {
+#******************************************************************
+if [ ! -f $SLACKSRC/l/libusb/libusb.SlackBuild.old ]; then
+	cp -v $SLACKSRC/l/libusb/libusb.SlackBuild \
+		$SLACKSRC/l/libusb/libusb.SlackBuild.old
+	(
+		cd $SLACKSRC/l/libusb
+		sed -i -e '/--disable-static/p' libusb.SlackBuild
+		sed -i -e '0,/disable-static/ s/static/udev/' libusb.SlackBuild
+	)
+fi
+}
+
+execute_llvm_sed () {
+#******************************************************************
+if [ ! -f $SLACKSRC/d/llvm/llvm.SlackBuild.old ]; then
+	cp -v $SLACKSRC/d/llvm/llvm.SlackBuild $SLACKSRC/d/llvm/llvm.SlackBuild.old
+	(
+		cd $SLACKSRC/d/llvm
+		sed -i -e 's/"clang++"/"g++"/' llvm.SlackBuild
+		sed -i -e 's/"clang"/"gcc"/' llvm.SlackBuild
+	)
+fi
+}
+
+execute_pkg_config_sed () {
+#******************************************************************
+if [ ! -f $SLACKSRC/d/pkg-config/pkg-config.SlackBuild.old ]; then
+	cp -v $SLACKSRC/d/pkg-config/pkg-config.SlackBuild \
+		$SLACKSRC/d/pkg-config/pkg-config.SlackBuild.old
+	(
+		cd $SLACKSRC/d/pkg-config
+		sed -i -e '/--prefix=\/\usr/p' pkg-config.SlackBuild
+		sed -i -e '0,/--prefix=\/\usr/ s/--prefix=\/\usr/--with-internal-glib/' pkg-config.SlackBuild
+	)
+fi
+}
+
+execute_qscint_sed () {
+#******************************************************************
+if [ ! -f $SLACKSRC/l/QScintilla/QScintilla.SlackBuild.old ]; then
+	cp -v $SLACKSRC/l/QScintilla/QScintilla.SlackBuild \
+		$SLACKSRC/l/QScintilla/QScintilla.SlackBuild.old
+	(
+		cd $SLACKSRC/l/QScintilla
+		sed -i -e 's/make  || exit 1/make/' QScintilla.SlackBuild
+		sed -i -e 's/make -j1 install DESTDIR=$PKG INSTALL_ROOT=$PKG || exit 1/make -j1 install DESTDIR=$PKG INSTALL_ROOT=$PKG/' QScintilla.SlackBuild
+	)
+fi
+}
+
+execute_readline_sed () {
+#******************************************************************
+if [ ! -f $SLACKSRC/l/readline/readline.SlackBuild.old ]; then
+	cp -v $SLACKSRC/l/readline/readline.SlackBuild $SLACKSRC/l/readline/readline.SlackBuild.old
+	(
+		cd $SLACKSRC/l/readline
+		sed -i -e '/make $NUMJOBS static shared SHLIB_LIBS=-ltinfo/d' readline.SlackBuild
+		sed -i -e '/# Link with libtinfo:/a make $NUMJOBS static' readline.SlackBuild
+		sed -i -e '/# build rlfe/,+16d' readline.SlackBuild
+	)
+fi
+}
+
+execute_subversion_sed () {
+#******************************************************************
+if [ ! -f $SLACKSRC/d/subversion/subversion.SlackBuild.old ]; then
+	cp -v $SLACKSRC/d/subversion/subversion.SlackBuild \
+		$SLACKSRC/d/subversion/subversion.SlackBuild.old
+	(
+		cd $SLACKSRC/d/subversion
+		sed -i -e '/--with-kwallet/d' subversion.SlackBuild
+	)
+fi
+}
+
+execute_texlive_sed () {
+#******************************************************************
+if [ ! -f $SLACKSRC/t/texlive/texlive.SlackBuild.old ]; then
+	cp -v $SLACKSRC/t/texlive/texlive.SlackBuild $SLACKSRC/t/texlive/texlive.SlackBuild.old
+	(
+		cd $SLACKSRC/t/texlive
+		sed -i -e 's/with-x/without-x/' texlive.SlackBuild
+		sed -i -e 's/enable-xindy/disable-xindy/' texlive.SlackBuild
+		sed -i -e 's/with-system-pixman/without-system-pixman/' texlive.SlackBuild
+		sed -i -e 's/with-system-cairo/without-system-cairo/' texlive.SlackBuild
+		sed -i -e 's/with-system-gmp/without-system-gmp/' texlive.SlackBuild
+		sed -i -e 's/with-system-mpfr/without-system-mpfr/' texlive.SlackBuild
+		sed -i -e 's/with-system-fontconfig/without-system-fontconfig/' texlive.SlackBuild
+		sed -i -e '/disable-xindy-rules/p' texlive.SlackBuild
+		sed -i -e '0,/disable-xindy-rules/ s/disable-xindy-rules/disable-web2c/' texlive.SlackBuild
+		sed -i -e '/disable-web2c/p' texlive.SlackBuild
+		sed -i -e '0,/disable-web2c/ s/disable-web2c/disable-xetex/' texlive.SlackBuild
+	)
+fi
+}
+
+execute_xfce_sed () {
+#******************************************************************
+if [ ! -f $SLACKSRC/xfce/xfce-build-all.sh.old ]; then
+	cp -v $SLACKSRC/xfce/xfce-build-all.sh  $SLACKSRC/xfce/xfce-build-all.sh.old 
+	(
+		cd $SLACKSRC/xfce
+		sed -i -e '/cd $package || exit 1/a .\/\${package}.SlackBuild/' xfce-build-all.sh
+		sed -i -e '/{package}.failed ; exit 1 ) || exit 1/d' xfce-build-all.sh
+		sed -i -e '/${package}.SlackBuild/a [ $? != 0 ] && touch /tmp/${package}.failed' xfce-build-all.sh
+	)
+fi
+}
+
+#*******************************************************************
+# End of sub-system of execution of patches
+#*******************************************************************
+
 
 kernel_source_build_c () {
 #********************************************************
@@ -2056,7 +2328,7 @@ while (( LINE < $FILELEN )); do
 				cmake )
 					case $LISTFILE in
 						build1_s.list )
-							build $SRCDIR $PACKNAME
+							execute_cmake_sed && build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 
 							update_slackbuild ;;
 
@@ -2074,7 +2346,7 @@ while (( LINE < $FILELEN )); do
 				dbus )
 					case $LISTFILE in
 						build2_s.list )
-							build $SRCDIR $PACKNAME && 
+							execute_dbus_sed && build $SRCDIR $PACKNAME && 
 							[ $? != 0 ] && exit 1  
 							dbus-uuidgen --ensure ;;
 
@@ -2108,7 +2380,7 @@ while (( LINE < $FILELEN )); do
 				findutils )
 					case $LFIN in
 						1 )
-							build $SRCDIR $PACKNAME
+							execute_findutils_sed && build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1
 							update_slackbuild && LFIN=2 ;;
 						2 )
@@ -2120,7 +2392,7 @@ while (( LINE < $FILELEN )); do
 				fontconfig )
 					case $LISTFILE in
 						build2_s.list )
-							build $SRCDIR $PACKNAME 
+							execute_fontconfig_sed && build $SRCDIR $PACKNAME 
 							[ $? != 0 ] && exit 1
 							update_slackbuild ;;
 
@@ -2134,7 +2406,7 @@ while (( LINE < $FILELEN )); do
 				freetype )
 					case $LFRE in
 						1 )
-							build $SRCDIR $PACKNAME 
+							execute_freetype_sed && build $SRCDIR $PACKNAME 
 							[ $? != 0 ] && exit 1
 							Lupdate_slackbuild && FRE=2 ;;
 						2 )
@@ -2146,7 +2418,7 @@ while (( LINE < $FILELEN )); do
 				gd )
 					case $LGD in
 						1 )
-							build $SRCDIR $PACKNAME
+							execute_gd_sed && build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1
 							update_slackbuild && LGD=2 ;;
 						2 )
@@ -2158,7 +2430,7 @@ while (( LINE < $FILELEN )); do
 				glib2 )
 					case $LISTFILE in
 						build1_s.list )
-							build $SRCDIR $PACKNAME
+							execute_glib2_sed && build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 
 							update_slackbuild ;;
 
@@ -2176,7 +2448,7 @@ while (( LINE < $FILELEN )); do
 				gobject-introspection )
 					case $LISTFILE in
 						build1_s.list )
-							build $SRCDIR $PACKNAME
+							execute_gobject_sed && build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 
 							update_slackbuild ;; 
 
@@ -2194,7 +2466,7 @@ while (( LINE < $FILELEN )); do
 				harfbuzz )
 					case $LHAR in
 						1 )
-							build $SRCDIR $PACKNAME
+							execute_harfbuzz_sed && build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1
 							 update_slackbuild && LHAR=2 ;;
 						2 )
@@ -2252,7 +2524,7 @@ while (( LINE < $FILELEN )); do
 				kmod )
 					case $LKMO in
 						1 )
-							build $SRCDIR  $PACKNAME
+							execute_kmod_sed && build $SRCDIR  $PACKNAME
 							[ $? != 0 ] && exit 1
 							update_slackbuild && LKMO=2 ;;
 						2 )
@@ -2290,7 +2562,7 @@ while (( LINE < $FILELEN )); do
 				libcaca )
 					case $LCAC in
 						1 )
-							build $SRCDIR $PACKNAME 
+							execute_libcaca_sed && build $SRCDIR $PACKNAME 
 							[ $? != 0 ] && exit 1
 							update_slackbuild && LCAC=2 ;;
 						2 )
@@ -2307,7 +2579,7 @@ while (( LINE < $FILELEN )); do
 				libusb )
 					case $LUSB in
 						1 )
-							build $SRCDIR $PACKNAME 
+							execute_libusb_sed && build $SRCDIR $PACKNAME 
 							[ $? != 0 ] && exit 1
 							update_slackbuild && LUSB=2 ;;
 						2 )
@@ -2327,7 +2599,7 @@ while (( LINE < $FILELEN )); do
 				llvm )
 					case $LPVM in
 						1 )
-							build $SRCDIR $PACKNAME
+							execute_llvm_sed && build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1
 							update_slackbuild && LPVM=2 ;;
 						2 )
@@ -2339,7 +2611,7 @@ while (( LINE < $FILELEN )); do
 				mesa )
 					case $LMES in
 						1 )
-							export BUILD_DEMOS=NO && build $SRCDIR $PACKNAME
+							execute_mesa_sed && export BUILD_DEMOS=NO && build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1
 							LMES=2 ;;
 						2 )
@@ -2356,7 +2628,7 @@ while (( LINE < $FILELEN )); do
 				pkg-config )
 					case $LPKG in
 						1 )
-							build $SRCDIR $PACKNAME 
+							execute_pkg_config_sed && build $SRCDIR $PACKNAME 
 							[ $? != 0 ] && exit 1
 							update_slackbuild && LPKG=2 ;;
 						2 )
@@ -2398,7 +2670,7 @@ while (( LINE < $FILELEN )); do
 				QScintilla )
 					case $LQSC in
 						1 )
-							build $SRCDIR $PACKNAME
+							execute_QScintilla_sed && build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1
 							update_slackbuild && LQSC=2 ;;
 						2 )
@@ -2410,7 +2682,7 @@ while (( LINE < $FILELEN )); do
 				readline )
 					case $LREA in
 						1 )
-							build $SRCDIR $PACKNAME 
+							execute_readline_sed && build $SRCDIR $PACKNAME 
 							[ $? != 0 ] && exit 1
 							update_slackbuild && LREA=2 ;;
 						2 )
@@ -2429,7 +2701,7 @@ while (( LINE < $FILELEN )); do
 				subversion )
 					case $LISTFILE in
 						build3_s.list )
-							build $SRCDIR $PACKNAME 
+							execute_subversion_sed && build $SRCDIR $PACKNAME 
 							[ $? != 0 ] && exit 1 
 							update_slackbuild ;;
 
@@ -2443,7 +2715,7 @@ while (( LINE < $FILELEN )); do
 				texlive )
 					case $LISTFILE in
 						build2_s.list )
-							build $SRCDIR $PACKNAME && 
+							execute_texlive_sed && build $SRCDIR $PACKNAME && 
 							[ $? != 0 ] && exit 1 
 							update_slackbuild ;;
 				

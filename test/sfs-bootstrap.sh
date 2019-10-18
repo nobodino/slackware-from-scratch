@@ -1253,7 +1253,7 @@ if [ -f $SRCDIR/d/pkg-config/pkg-config.SlackBuild.rej ]; then
 fi
 }
 
-execute_pkg_config_sed() {
+execute_pkg_config_sed () {
 #******************************************************************
 if [ ! -f $SRCDIR/d/pkg-config/pkg-config.SlackBuild.old ]; then
 	cp -v $SRCDIR/d/pkg-config/pkg-config.SlackBuild \
@@ -1626,7 +1626,7 @@ sfsprep
 #***********************************************************
 cd $SFS/sources
 # sources_alteration_c
-sources_alteration_sed
+# sources_alteration_sed
 #***********************************************************
 cd $SFS/sources
 . lists_generator_c.sh
