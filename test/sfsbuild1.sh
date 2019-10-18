@@ -2,8 +2,8 @@
 ################################  sfsbuild1.sh #################################
 #!/bin/bash
 #
-# Copyright 2018  J. E. Garrott Sr, Puyallup, WA, USA
-# Copyright 2018  "nobodino", Bordeaux, FRANCE
+# Copyright 2018, 2019  J. E. Garrott Sr, Puyallup, WA, USA
+# Copyright 2018, 2019  "nobodino", Bordeaux, FRANCE
 # All rights reserved.
 #
 # Redistribution and use of this script, with or without modification, is
@@ -37,32 +37,9 @@
 #	This script builds part of the Slackware from Scratch system using the
 #	source directory from the Slackware sources
 #
-#	Revision 0				12042018					nobodino
-#		-initial release for slackware-current boostrap (can't build slackware-14.2)
-#	Revision 1				20042018					nobodino
-#		-modified for 'third mass rebuild'
-#	Revision 2				12052018					nobodino
-#		-modified build_post_kde2 (only 3 packages left)
-#		-modified jdk build: switch to extra/java
-#		-added linux-faqs treatment
-#		-added openssl10 treatment
-#		-restored libpng14.so.14
-#	Revision 3			03072018		nobodino
-#		-restored cxxlibs-6.0.18 (libstdc++.so.5)
-#		-removed end{1 to 4}		
-#		-modified readline
-#		-added harfbuzz and freetype two pass building
-#		-added alsa-lib (two pass building: without pulseaudio and with pulseaudio)
-#	Revision 4			20072018		nobodino
-#		-removed first build of baloo, baloo-widgets and gwenview
-#		-removed first build of xf86-video-geode, xf86-input-libinput and xf86-video-vboxvideo
-#		-added QScintilla two pass building
-#		-added vituoso-ose building (disable openssl-1.1. temporary))
-#		-changed intel-gpu-tools to igt-gpu-tools
-#	Revision 5			28072018		nobodino
-#		-modified message_end4 (added pkill dhcpcd)
+#	Above july 2018, revisions made through github project:
 #
-#	Above july 2018, revisions made through github project: https://github.com/nobodino/slackware-from-scratch 
+#   https://github.com/nobodino/slackware-from-scratch 
 #
 ############################################################################
 # set -x
@@ -156,7 +133,7 @@ echo
 }
 
 #*******************************************************************
-# sub-system of execution of patches
+# sub-system of execution of patches on the fly
 #*******************************************************************
 
 execute_cmake_sed () {
@@ -533,7 +510,7 @@ case $PACKNAME in
 		[ $? != 0 ] && exit 1 ;;
 
 	xfce )
-		cd /slacksrc/$SRCDIR && chmod +x xfce-build-all.sh && ./xfce-build-all.sh
+		execute_xfce_sed && cd /slacksrc/$SRCDIR && chmod +x xfce-build-all.sh && ./xfce-build-all.sh
 		upgradepkg --install-new /tmp/*.t?z
 		mv -v /tmp/*.t?z /sfspacks/$SRCDIR
 		[ $? != 0 ] && exit 1 ;;
@@ -1043,7 +1020,6 @@ echo "	/sbin/installpkg"
 
 echo
 }
-
 
 link_tools () {
 #****************************************************************
@@ -2081,7 +2057,6 @@ cd /sources
 
 }
 
-
 message_end1 () {
 #****************************************************************
 echo
@@ -2202,7 +2177,7 @@ echo
 echo -e "$YELLOW"  "upgrade your boot loader and reboot in your SFS system" "$NORMAL"
 echo
 echo
-cd /sources && killall -9 dhcpcd
+cd /slacksrc/xfce && mv xfce-build-all.sh.old xfce-build-all.sh && cd /sources && killall -9 dhcpcd
 }
 
 update_slackbuild () {
@@ -2211,14 +2186,6 @@ update_slackbuild () {
 #****************************************************************
 cd /slacksrc/$SRCDIR/$PACKNAME && mv $PACKNAME.SlackBuild.old $PACKNAME.SlackBuild && cd /sources
 }
-
-#****************************************************************
-# END OF X11 SUB-SYSTEM BUILDING
-#****************************************************************
-
-
-
-
 
 #****************************************************************
 #****************************************************************
@@ -2611,7 +2578,7 @@ while (( LINE < $FILELEN )); do
 				mesa )
 					case $LMES in
 						1 )
-							execute_mesa_sed && export BUILD_DEMOS=NO && build $SRCDIR $PACKNAME
+							export BUILD_DEMOS=NO && build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1
 							LMES=2 ;;
 						2 )
