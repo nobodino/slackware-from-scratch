@@ -583,13 +583,12 @@ a dosfstools
 a elvis
 a floppy
 a genpower
-a getty-ps
 a gptfdisk
 a grub
 a hdparm
 a isapnptools
 a jfsutils
-a lha
+a lhasa
 a libcgroup
 d dev86
 a lilo
@@ -772,7 +771,6 @@ xap windowmaker
 xap x11-ssh-askpass
 xap x3270
 xap xaos
-xap xfractint
 xap gparted
 l libtheora
 l libcdio
