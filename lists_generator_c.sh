@@ -1111,7 +1111,6 @@ n openssl
 n snownews
 d python
 d python3
-xfce xfce
 xap mozilla-firefox
 xap mozilla-thunderbird
 y bsd-games

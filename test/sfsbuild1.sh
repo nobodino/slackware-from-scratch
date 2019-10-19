@@ -390,7 +390,7 @@ if [ ! -f $SLACKSRC/xfce/xfce-build-all.sh.old ]; then
 	cp -v $SLACKSRC/xfce/xfce-build-all.sh  $SLACKSRC/xfce/xfce-build-all.sh.old 
 	(
 		cd $SLACKSRC/xfce
-		sed -i -e '/cd $package || exit 1/a .\/\${package}.SlackBuild/' xfce-build-all.sh
+		sed -i -e '/cd $package || exit 1/a .\/\${package}.SlackBuild' xfce-build-all.sh
 		sed -i -e '/{package}.failed ; exit 1 ) || exit 1/d' xfce-build-all.sh
 		sed -i -e '/${package}.SlackBuild/a [ $? != 0 ] && touch /tmp/${package}.failed' xfce-build-all.sh
 	)
@@ -510,7 +510,7 @@ case $PACKNAME in
 		[ $? != 0 ] && exit 1 ;;
 
 	xfce )
-		execute_xfce_sed && cd /slacksrc/$SRCDIR && chmod +x xfce-build-all.sh && ./xfce-build-all.sh
+		cd /slacksrc/$SRCDIR && chmod +x xfce-build-all.sh && ./xfce-build-all.sh
 		upgradepkg --install-new /tmp/*.t?z
 		mv -v /tmp/*.t?z /sfspacks/$SRCDIR
 		[ $? != 0 ] && exit 1 ;;
@@ -2177,7 +2177,7 @@ echo
 echo -e "$YELLOW"  "upgrade your boot loader and reboot in your SFS system" "$NORMAL"
 echo
 echo
-cd /slacksrc/xfce && mv xfce-build-all.sh.old xfce-build-all.sh && cd /sources && killall -9 dhcpcd
+cd /sources && killall -9 dhcpcd
 }
 
 update_slackbuild () {
@@ -2185,6 +2185,13 @@ update_slackbuild () {
 # rename SlackBuild.old to original SlackBuild
 #****************************************************************
 cd /slacksrc/$SRCDIR/$PACKNAME && mv $PACKNAME.SlackBuild.old $PACKNAME.SlackBuild && cd /sources
+}
+
+update_xfce () {
+#****************************************************************
+# rename SlackBuild.old to original SlackBuild
+#****************************************************************
+cd /slacksrc/xfce && mv xfce-build-all.sh.old xfce-build-all.sh && cd /sources
 }
 
 #****************************************************************
@@ -2731,6 +2738,11 @@ while (( LINE < $FILELEN )); do
 				x11-app-post )
 					build_x11_app_post
 					[ $? != 0 ] && exit 1 ;;
+
+				xfce )
+					execute_xfce_sed && build $SRCDIR $PACKNAME
+					[ $? != 0 ] && exit 1
+					update_xfce ;;
 	
 				* )
 					build $SRCDIR $PACKNAME
