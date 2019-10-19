@@ -508,6 +508,12 @@ case $PACKNAME in
 	snownews )
 		cd /slacksrc/$SRCDIR/$PACKNAME && chmod +x *.SlackBuild && gzip -d *.diff.gz && sed -i 's/root//' *.diff && gzip -9 *.diff && ./$PACKNAME.SlackBuild
 		[ $? != 0 ] && exit 1 ;;
+	
+	vim )
+		cd /slacksrc/$SRCDIR/$PACKNAME
+		chmod +x $PACKNAME.SlackBuild && ./$PACKNAME.SlackBuild
+		chmod +x vim-gvim.SlackBuild && ./vim-gvim.SlackBuild
+		[ $? != 0 ] && exit 1 ;;
 
 	xfce )
 		cd /slacksrc/$SRCDIR && chmod +x xfce-build-all.sh && ./xfce-build-all.sh
@@ -553,6 +559,11 @@ case $PACKNAME in
 		rm /tmp/imapd*.t?z
 		rm /tmp/alpine*.t?z
 		$INSTALLPRG /tmp/$PACKNAME*.t?z
+		[ $? != 0 ] && exit 1 ;;
+
+	vim )
+		$INSTALLPRG /tmp/vim-gvim*.t?z
+		$INSTALLPRG /tmp/$PACKNAME-*.t?z
 		[ $? != 0 ] && exit 1 ;;
 
 	xfce )
@@ -617,6 +628,11 @@ case $PACKNAME in
 		mv -v /tmp/$PACKNAME*.t?z /sfspacks/$SRCDIR
 		cd /sources ;;
 
+	vim )
+		mv -v /tmp/vim-gvim*.txz /sfspacks/xap
+		mv -v /tmp/$PACKNAME-*.txz /sfspacks/ap
+		[ $? != 0 ] && exit 1 ;;
+
 	xz )
 		# package built in /tmp 
 		cd /tmp
@@ -631,77 +647,6 @@ cd /tmp
 #***************************************************
 # Note that the following removes any SBo directory.
 #***************************************************
-for i in *; do
-    [ -d "$i" ] && rm -rf $i
-done
-cd /sources
-}
-
-build1 () {
-#*******************************************************************
-# build procedure for normal package after a first build with build
-# procedure these packages are only upgraded when built with SlackBuild.old
-#*******************************************************************
-
-INSTALLPRG="upgradepkg --install-new --reinstall"
-SRCDIR=$1
-shift
-PACKNAME=$1
-shift
-
-#******************************************************************
-# this package $PACKNAME has been already built in a
-# preliminary form, but now in its definitive form with SlackBuild.old
-#******************************************************************
-case $PACKNAME in
-#**************************
-# BUILD package treatment
-#**************************
-
-	vim )
-		cd /slacksrc/$SRCDIR/$PACKNAME
-		chmod +x $PACKNAME.SlackBuild && ./$PACKNAME.SlackBuild
-		chmod +x vim-gvim.SlackBuild && ./vim-gvim.SlackBuild
-		[ $? != 0 ] && exit 1 ;;
-
-	* )
-		# every other package treatment
-		cd /slacksrc/$SRCDIR/$PACKNAME && chmod +x $PACKNAME.SlackBuild.old && ./$PACKNAME.SlackBuild.old
-		[ $? != 0 ] && exit 1 ;;
-
-esac
-
-cd /tmp
-
-case $PACKNAME in
-	vim )
-		$INSTALLPRG /tmp/vim-gvim*.t?z
-		$INSTALLPRG /tmp/$PACKNAME-*.t?z
-		[ $? != 0 ] && exit 1 ;;
-	* )
-		$INSTALLPRG /tmp/$PACKNAME*.t?z
-		[ $? != 0 ] && exit 1 ;;
-esac
-#******************************************************************
-# remove the temporary package *_sfs and replace it with a normal one
-#******************************************************************
-rm /sfspacks/$SRCDIR/$PACKNAME*_sfs.txz
-
-case $PACKNAME in
-
-	vim )
-		mv -v /tmp/vim-gvim*.txz /sfspacks/xap
-		mv -v /tmp/$PACKNAME-*.txz /sfspacks/ap
-		[ $? != 0 ] && exit 1 ;;
-	* )
-		mv -v /tmp/$PACKNAME*.t?z /sfspacks/$SRCDIR
-		[ $? != 0 ] && exit 1 ;;
-esac
-
-cd /tmp
-#******************************************************************
-# Note that the following removes any SBo directory.
-#******************************************************************
 for i in *; do
     [ -d "$i" ] && rm -rf $i
 done
@@ -2706,18 +2651,6 @@ while (( LINE < $FILELEN )); do
 					answer
 					test_7
 					answer ;;
-
-				vim )
-					case $LISTFILE in
-						build1_s.list )
-							build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1 ;;
-
-						* )
-							build1 $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1 ;;
-					esac
-					continue ;;
 
 				x11-group1 )
 					build_x11_group1
