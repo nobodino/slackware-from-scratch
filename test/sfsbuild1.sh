@@ -2632,7 +2632,7 @@ while (( LINE < $FILELEN )); do
 				QScintilla )
 					case $LQSC in
 						1 )
-							execute_QScintilla_sed && build $SRCDIR $PACKNAME
+							execute_qscint_sed && build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1
 							update_slackbuild && LQSC=2 ;;
 						2 )
