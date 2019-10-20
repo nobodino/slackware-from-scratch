@@ -138,6 +138,8 @@ echo
 
 execute_cmake_sed () {
 #******************************************************************
+# delete "--qt-gui" line in SlackBuild
+#******************************************************************
 if [ ! -f $SLACKSRC/d/cmake/cmake.SlackBuild.old ]; then
 	cp -v $SLACKSRC/d/cmake/cmake.SlackBuild $SLACKSRC/d/cmake/cmake.SlackBuild.old
 	(
@@ -149,6 +151,8 @@ fi
 
 execute_dbus_sed () {
 #******************************************************************
+# delete "--enable-x11-autolaunch" linein SlackBuild
+#******************************************************************
 if [ ! -f $SLACKSRC/a/dbus/dbus.SlackBuild.old ]; then
 	cp -v $SLACKSRC/a/dbus/dbus.SlackBuild $SLACKSRC/a/dbus/dbus.SlackBuild.old
 	(
@@ -159,6 +163,8 @@ fi
 }
 
 execute_findutils_sed () {
+#******************************************************************
+# disable the patch and autoreconf in SlackBuild
 #******************************************************************
 if [ ! -f /slacksrc/a/findutils/findutils.SlackBuild.old ]; then
 	cp -v /slacksrc/a/findutils/findutils.SlackBuild /slacksrc/a/findutils/findutils.SlackBuild.old
@@ -172,6 +178,8 @@ fi
 
 execute_fontconfig_sed () {
 #******************************************************************
+# add "--disable-docs" to SlackBuild
+#******************************************************************
 if [ ! -f $SLACKSRC/x/fontconfig/fontconfig.SlackBuild.old ]; then
 	cp -v $SLACKSRC/x/fontconfig/fontconfig.SlackBuild $SLACKSRC/x/fontconfig/fontconfig.SlackBuild.old
 	(
@@ -183,6 +191,8 @@ fi
 }
 
 execute_freetype_sed () {
+#******************************************************************
+# remove "exit 1" code and add headers (ft2build.h and ftoption.h) to SlackBuild
 #******************************************************************
 if [ ! -f $SLACKSRC/l/freetype/freetype.SlackBuild.old ]; then
 	cp -v $SLACKSRC/l/freetype/freetype.SlackBuild $SLACKSRC/l/freetype/freetype.SlackBuild.old
@@ -203,6 +213,8 @@ fi
 
 execute_gd_sed () {
 #******************************************************************
+# add "--without-fontconfig" and "--without-xpm" to SlackBuild
+#******************************************************************
 if [ ! -f $SLACKSRC/l/gd/gd.SlackBuild.old ]; then
 	cp -v $SLACKSRC/l/gd/gd.SlackBuild $SLACKSRC/l/gd/gd.SlackBuild.old
 	(
@@ -219,6 +231,8 @@ fi
 
 execute_glib2_sed () {
 #******************************************************************
+# change all "true" options to "false" options in SlackBuild
+#******************************************************************
 if [ ! -f $SLACKSRC/l/glib2/glib2.SlackBuild.old ]; then
 	cp -v $SLACKSRC/l/glib2/glib2.SlackBuild $SLACKSRC/l/glib2/glib2.SlackBuild.old
 	(
@@ -230,6 +244,8 @@ fi
 
 execute_gobject_sed () {
 #******************************************************************
+# change all "true" options to "false" options in SlackBuild
+#******************************************************************
 if [ ! -f $SLACKSRC/l/gobject-introspection/gobject-introspection.SlackBuild.old ]; then
 	cp -v $SLACKSRC/l/gobject-introspection/gobject-introspection.SlackBuild $SLACKSRC/l/gobject-introspection/gobject-introspection.SlackBuild.old
 	(
@@ -240,6 +256,8 @@ fi
 }
 
 execute_harfbuzz_sed () {
+#******************************************************************
+# remove "exit 1" code and add harfbuzz headers to SlackBuild
 #******************************************************************
 if [ ! -f $SLACKSRC/l/harfbuzz/harfbuzz.SlackBuild.old ]; then
 	cp -v $SLACKSRC/l/harfbuzz/harfbuzz.SlackBuild $SLACKSRC/l/harfbuzz/harfbuzz.SlackBuild.old
@@ -256,6 +274,8 @@ fi
 
 execute_kmod_sed () {
 #******************************************************************
+# remove "exit 1" code in SlackBuild
+#******************************************************************
 if [ ! -f $SLACKSRC/a/kmod/kmod.SlackBuild.old ]; then
 	cp -v $SLACKSRC/a/kmod/kmod.SlackBuild $SLACKSRC/a/kmod/kmod.SlackBuild.old
 	(
@@ -267,6 +287,8 @@ fi
 }
 
 execute_libcaca_sed () {
+#******************************************************************
+# remove "exit 1" code and add "--enable-java" option to SlackBuild
 #******************************************************************
 if [ ! -f $SLACKSRC/l/libcaca/libcaca.SlackBuild.old ]; then
 	cp -v $SLACKSRC/l/libcaca/libcaca.SlackBuild $SLACKSRC/l/libcaca/libcaca.SlackBuild.old
@@ -289,6 +311,8 @@ fi
 
 execute_libusb_sed () {
 #******************************************************************
+# add "--disable-dev" to SlackBuild
+#******************************************************************
 if [ ! -f $SLACKSRC/l/libusb/libusb.SlackBuild.old ]; then
 	cp -v $SLACKSRC/l/libusb/libusb.SlackBuild \
 		$SLACKSRC/l/libusb/libusb.SlackBuild.old
@@ -302,6 +326,8 @@ fi
 
 execute_llvm_sed () {
 #******************************************************************
+# change "clang++" to "g++" and "clang" to "gcc" in SlackBuild
+#******************************************************************
 if [ ! -f $SLACKSRC/d/llvm/llvm.SlackBuild.old ]; then
 	cp -v $SLACKSRC/d/llvm/llvm.SlackBuild $SLACKSRC/d/llvm/llvm.SlackBuild.old
 	(
@@ -313,6 +339,8 @@ fi
 }
 
 execute_pkg_config_sed () {
+#******************************************************************
+# add "--with-internel-glib" to SlackBuild
 #******************************************************************
 if [ ! -f $SLACKSRC/d/pkg-config/pkg-config.SlackBuild.old ]; then
 	cp -v $SLACKSRC/d/pkg-config/pkg-config.SlackBuild \
@@ -327,6 +355,8 @@ fi
 
 execute_qscint_sed () {
 #******************************************************************
+# remove "exit 1" code in SlackBuild
+#******************************************************************
 if [ ! -f $SLACKSRC/l/QScintilla/QScintilla.SlackBuild.old ]; then
 	cp -v $SLACKSRC/l/QScintilla/QScintilla.SlackBuild \
 		$SLACKSRC/l/QScintilla/QScintilla.SlackBuild.old
@@ -339,6 +369,9 @@ fi
 }
 
 execute_readline_sed () {
+#******************************************************************
+# disable shared SHLIBS code in SlackBuild
+# delete examples/rlfe lines in SlackBuild
 #******************************************************************
 if [ ! -f $SLACKSRC/l/readline/readline.SlackBuild.old ]; then
 	cp -v $SLACKSRC/l/readline/readline.SlackBuild $SLACKSRC/l/readline/readline.SlackBuild.old
@@ -353,6 +386,8 @@ fi
 
 execute_subversion_sed () {
 #******************************************************************
+# delete "--with-kwallet" line in SlackBuild
+#******************************************************************
 if [ ! -f $SLACKSRC/d/subversion/subversion.SlackBuild.old ]; then
 	cp -v $SLACKSRC/d/subversion/subversion.SlackBuild \
 		$SLACKSRC/d/subversion/subversion.SlackBuild.old
@@ -364,6 +399,9 @@ fi
 }
 
 execute_texlive_sed () {
+#******************************************************************
+# change some options from "--with-xxx" in "--without-xxx",
+# and add "--disable-web2c" and "--disable-xetex" in SlackBuild
 #******************************************************************
 if [ ! -f $SLACKSRC/t/texlive/texlive.SlackBuild.old ]; then
 	cp -v $SLACKSRC/t/texlive/texlive.SlackBuild $SLACKSRC/t/texlive/texlive.SlackBuild.old
@@ -385,6 +423,8 @@ fi
 }
 
 execute_xfce_sed () {
+#******************************************************************
+# modify SlackBuild to avoid "exit 1" on failed package building
 #******************************************************************
 if [ ! -f $SLACKSRC/xfce/xfce-build-all.sh.old ]; then
 	cp -v $SLACKSRC/xfce/xfce-build-all.sh  $SLACKSRC/xfce/xfce-build-all.sh.old 
@@ -450,7 +490,7 @@ rm -rf *
 
 build () {
 #***********************************************************
-# main build procedure for normal package
+# main build procedure for slackware package
 #***********************************************************
 which upgradepkg 2>&1 >/dev/null
 if [ $? == 0 ]; then
@@ -485,23 +525,27 @@ case $PACKNAME in
 		cd /slacksrc/extra/java && chmod +x java.SlackBuild && ./java.SlackBuild
 		[ $? != 0 ] && exit 1 ;;
 		
-	linuxdoc-tools)
+	linuxdoc-tools )
 		cd /slacksrc/$SRCDIR/$PACKNAME && chmod +x trackbuild.linuxdoc-tools && chmod +x linuxdoc-tools.build && chmod +x $PACKNAME.SlackBuild && ./$PACKNAME.SlackBuild
 		[ $? != 0 ] && exit 1 ;;
 
 	mozilla-firefox )
+		# need sh shell to be built
 		cd /slacksrc/$SRCDIR/$PACKNAME && chmod +x *.SlackBuild && SHELL=/bin/sh ./mozilla-firefox.SlackBuild
 		[ $? != 0 ] && exit 1 ;;
 
 	mozjs52 )
+		# need sh shell to be built
 		cd /slacksrc/$SRCDIR/$PACKNAME && chmod +x *.SlackBuild && SHELL=/bin/sh ./mozjs52.SlackBuild
 		[ $? != 0 ] && exit 1 ;;
 
 	mozilla-thunderbird )
+		# need sh shell to be built
 		cd /slacksrc/$SRCDIR/$PACKNAME && chmod +x *.SlackBuild && SHELL=/bin/sh ./mozilla-thunderbird.SlackBuild
 		[ $? != 0 ] && exit 1 ;;
 
 	seamonkey )
+		# need sh shell to be built
 		cd /slacksrc/$SRCDIR/$PACKNAME && chmod +x *.SlackBuild && SHELL=/bin/sh ./seamonkey.SlackBuild
 		[ $? != 0 ] && exit 1 ;;
 
@@ -516,6 +560,7 @@ case $PACKNAME in
 		[ $? != 0 ] && exit 1 ;;
 
 	xfce )
+		# xfce doesn't build with a SlackBuild, but multiple
 		cd /slacksrc/$SRCDIR && chmod +x xfce-build-all.sh && ./xfce-build-all.sh
 		upgradepkg --install-new /tmp/*.t?z
 		mv -v /tmp/*.t?z /sfspacks/$SRCDIR
@@ -550,18 +595,19 @@ case $PACKNAME in
 		[ $? != 0 ] && exit 1 ;;
 
 	java )
-		# install aspell-en
+		# install java
 		$INSTALLPRG /tmp/j*.txz
 		[ $? != 0 ] && exit 1 ;;
 
 	php )
-		# php builds also alpine and imapd
+		# remove extra alpine and imapd packages
 		rm /tmp/imapd*.t?z
 		rm /tmp/alpine*.t?z
 		$INSTALLPRG /tmp/$PACKNAME*.t?z
 		[ $? != 0 ] && exit 1 ;;
 
 	vim )
+		# install both vim and vim-gvim packages
 		$INSTALLPRG /tmp/vim-gvim*.t?z
 		$INSTALLPRG /tmp/$PACKNAME-*.t?z
 		[ $? != 0 ] && exit 1 ;;
@@ -629,6 +675,7 @@ case $PACKNAME in
 		cd /sources ;;
 
 	vim )
+		# don't forget to mv vim-gvim in xap/ and vim in ap/
 		mv -v /tmp/vim-gvim*.txz /sfspacks/xap
 		mv -v /tmp/$PACKNAME-*.txz /sfspacks/ap
 		[ $? != 0 ] && exit 1 ;;
@@ -978,7 +1025,7 @@ link_tools () {
 # pkgtools building, which is not in LFS of course.
 #
 # Note: Much of this script is copied from the LFS manual.
-#       Copyright © 1999-2018 Gerard Beekmans and may be
+#       Copyright © 1999-2019 Gerard Beekmans and may be
 #       copied under the MIT License.
 #****************************************************************
 mkdir -pv /usr/lib && mkdir -v /bin && mkdir -pv /usr/include
@@ -1004,7 +1051,7 @@ link_tools_x64 () {
 # pkgtools building, which is not in LFS of course.
 #
 # Note: Much of this script is copied from the LFS manual.
-#       Copyright © 1999-2018 Gerard Beekmans and may be
+#       Copyright © 1999-2019 Gerard Beekmans and may be
 #       copied under the MIT License.
 #****************************************************************
 mkdir -pv /usr/lib64 && mkdir -v /bin && mkdir -pv /usr/include
@@ -1078,7 +1125,7 @@ pre_gcc () {
 # Install gnat-gpl to be able to build gnat-ada package
 #
 # Note: Much of this script is copied from the LFS manual.
-#       Copyright © 1999-2018 Gerard Beekmans and may be
+#       Copyright © 1999-2019 Gerard Beekmans and may be
 #       copied under the MIT License.
 #******************************************************************
 cd /tmp
@@ -2152,11 +2199,34 @@ define_path_lib
 #****************************************************************
 distribution="slackware"
 mkdir -pv /sfspacks/{others,a,ap,d,e,extra,f,k,kde,kdei,l,n,t,tcl,x,xap,xfce,y}
-
+#******************************************************************
+# Some packages need two pass to be built completely.
+# Alteration of the slackware sources is made "on the fly" during
+# the first build. On the second pass, the old SlackBuild is 
+# renamed to its original version, and package can be built normally. 
+#	execute_cmake_sed # 2 pass
+#	execute_dbus_sed # 2 pass
+#	execute_findutils_sed # 2 pass
+#	execute_fontconfig_sed # 2 pass
+#	execute_freetype_sed # 2 pass
+#	execute_gd_sed # 2 pass
+#	execute_glib2_sed # 2 pass
+#	execute_gobject_sed # 2 pass
+#	execute_harfbuzz_sed # 2 pass
+#	execute_kmod_sed # 2 pass
+#	execute_libcaca_sed # 2 pass
+#	execute_libusb_sed # 2 pass
+#	execute_llvm_sed # 2 pass
+#	execute_pkg_config_sed # 2 pass
+#	execute_qscint_sed # 2 pass
+#	execute_readline_sed # 2 pass
+#	execute_subversion_sed # 2 pass
+#	execute_texlive_sed # 2 pass
+#	execute_xfce_sed # 2 pass
+#
 #******************************************************************
 # BUILDN: defines if package will be installed or upgraded
 #******************************************************************
-
 # init libusb variable
 LUSB=1
 # init pkg-config variable
