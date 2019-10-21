@@ -1075,7 +1075,6 @@ n sshfs
 xap hexchat
 n ipset
 xap xscreensaver
-xap xv
 n gpa
 n libgcrypt
 l gcr
