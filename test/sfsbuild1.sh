@@ -185,7 +185,7 @@ if [ ! -f $SLACKSRC/x/fontconfig/fontconfig.SlackBuild.old ]; then
 	(
 		cd $SLACKSRC/x/fontconfig
 		sed -i -e '/--sysconfdir/p' fontconfig.SlackBuild
-		sed -i -e '0,/sysconfdir/ s/sysconfdir=\/\etc/disable-docs/' fontconfig.SlackBuild
+		sed -i -e '0,/sysconfdir/! s/sysconfdir=\/\etc/disable-docs/' fontconfig.SlackBuild
 	)
 fi
 }
