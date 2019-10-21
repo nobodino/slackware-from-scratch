@@ -560,7 +560,7 @@ case $PACKNAME in
 		[ $? != 0 ] && exit 1 ;;
 
 	xfce )
-		# xfce doesn't build with a SlackBuild, but multiple
+		# xfce doesn't build with one SlackBuild, but with multiple SlackBuilds
 		cd /slacksrc/$SRCDIR && chmod +x xfce-build-all.sh && ./xfce-build-all.sh
 		upgradepkg --install-new /tmp/*.t?z
 		mv -v /tmp/*.t?z /sfspacks/$SRCDIR
