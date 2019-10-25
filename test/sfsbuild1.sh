@@ -444,6 +444,8 @@ fi
 
 kernel_source_build_c () {
 #********************************************************
+# remove everything related to building the kernel image
+#********************************************************
 cd /slacksrc/k
 cp -v kernel-source.SlackBuild kernel-source.SlackBuild.old
 sed -i -e '52,89d;109,111d;138,163d' kernel-source.SlackBuild && ./kernel-source.SlackBuild 
@@ -453,6 +455,8 @@ mv kernel-source.SlackBuild.old kernel-source.SlackBuild
 }
 
 kernel_headers_build_c () {
+#********************************************************
+# remove everything to .config and PRINT_PACKAGE_NAME
 #********************************************************
 cd /slacksrc/k
 cp -v kernel-headers.SlackBuild kernel-headers.SlackBuild.old
@@ -2181,7 +2185,7 @@ cd /slacksrc/$SRCDIR/$PACKNAME && mv $PACKNAME.SlackBuild.old $PACKNAME.SlackBui
 
 update_xfce () {
 #****************************************************************
-# rename SlackBuild.old to original SlackBuild
+# rename xfce-build-all.sh.old to original name
 #****************************************************************
 cd /slacksrc/xfce && mv xfce-build-all.sh.old xfce-build-all.sh && cd /sources
 }
