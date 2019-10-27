@@ -1,8 +1,8 @@
 #######################  myprofile.sh ##########################################
 #!/bin/bash
 #
-# Copyright 2018  J. E. Garrott Sr, Puyallup, WA, USA
-# Copyright 2018  "nobodino", Bordeaux, FRANCE
+# Copyright 2018, 2019  J. E. Garrott Sr, Puyallup, WA, USA
+# Copyright 2018, 2019  "nobodino", Bordeaux, FRANCE
 # All rights reserved.
 #
 # Redistribution and use of this script, with or without modification, is
@@ -28,12 +28,9 @@
 #
 # This script creates several files under /etc
 #
-# Revision 0			20150918				J. E. Garrott Sr
-# Revision 1			02052016				nobodino
-#		-script made of procedures
-# Revision 2			04042017				nobodino
-#		-added ntp.conf
-#		-added SyncClock.sh
+#	Above july 2018, revisions made through github project: 
+#   https://github.com/nobodino/slackware-from-scratch 
+#
 #
 #*********************************************************
 #set -x
@@ -46,7 +43,7 @@ generate_etc_fstab () {
 mkdir -pv $SFS/etc
 cat > $SFS/etc/fstab << "EOF"
 /dev/sdd1        swap             swap        defaults         0   0
-/dev/sdd2       /                ext4        defaults,noatime,discard  	   1   1
+/dev/sdd3       /                ext4        defaults,noatime,discard  	   1   1
 /dev/fd0         /mnt/floppy      auto        noauto,owner     0   0
 devpts           /dev/pts         devpts      gid=5,mode=620   0   0
 proc             /proc            proc        defaults         0   0

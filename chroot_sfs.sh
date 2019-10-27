@@ -1,8 +1,8 @@
 #######################  chroot_sfs.sh #########################################
 #!/bin/bash
 #
-# Copyright 2018  J. E. Garrott Sr, Puyallup, WA, USA
-# Copyright 2018  "nobodino", Bordeaux, FRANCE
+# Copyright 2018, 2019  J. E. Garrott Sr, Puyallup, WA, USA
+# Copyright 2018, 2019  "nobodino", Bordeaux, FRANCE
 # All rights reserved.
 #
 # Redistribution and use of this script, with or without modification, is
@@ -24,17 +24,13 @@
 #--------------------------------------------------------------------------
 #
 # Note: Much of this script is inspired from the LFS manual chapter 5
-#       Copyright © 1999-2018 Gerard Beekmans and may be
+#       Copyright © 1999-2019 Gerard Beekmans and may be
 #       copied under the MIT License.
 #
 #--------------------------------------------------------------------------
-# 
-# new script to chroot in sfs after sfs-tools-current execution
-# to bootstrap Slackware
-#	Revision 0				18022018					nobodino
-#		-initial release
-#	Revision 1				25022018					nobodino
-#		-modified /dev/pts mounting to build clisp in one pass
+#
+#	Above july 2018, revisions made through github project: 
+#   https://github.com/nobodino/slackware-from-scratch 
 #
 #**********************************
 export GREEN="\\033[1;32m"

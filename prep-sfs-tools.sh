@@ -1,8 +1,8 @@
 #######################  prep-sfs-tools.sh #####################################
 #!/bin/bash
 #
-# Copyright 2018  J. E. Garrott Sr, Puyallup, WA, USA
-# Copyright 2018  "nobodino", Bordeaux, FRANCE
+# Copyright 2018, 2019  J. E. Garrott Sr, Puyallup, WA, USA
+# Copyright 2018, 2019  "nobodino", Bordeaux, FRANCE
 # All rights reserved.
 #
 # Redistribution and use of this script, with or without modification, is
@@ -24,19 +24,14 @@
 #--------------------------------------------------------------------------
 #
 # Note: Much of this script is inspired from the LFS manual chapter 5
-#       Copyright © 1999-2018 Gerard Beekmans and may be
+#       Copyright © 1999-2019 Gerard Beekmans and may be
 #       copied under the MIT License.
 #
 #--------------------------------------------------------------------------
 # script to prepare build 'tools' for Slackware From Scratch (SFS)
 #
-# Revision 	0 		24092016		nobodino
-# Revision 	1 		25032018		nobodino
-#		-modified with jeg version to allow to keep old "tools.tar.?z"
-# Revision 	2 		31032018		nobodino
-#		-removed a second symlink "ln -sv $SFS/tools /" in get_tools_dir
-#
-#	Above july 2018, revisions made through github project: https://github.com/nobodino/slackware-from-scratch 
+#	Above july 2018, revisions made through github project: 
+#   https://github.com/nobodino/slackware-from-scratch 
 #
 #*******************************************************************
 # set -x

@@ -1,8 +1,8 @@
 ####################### sfs-tools-current.sh ###################################
 #!/bin/bash
 #
-# Copyright 2018  J. E. Garrott Sr, Puyallup, WA, USA
-# Copyright 2018  "nobodino", Bordeaux, FRANCE
+# Copyright 2018, 2019  J. E. Garrott Sr, Puyallup, WA, USA
+# Copyright 2018, 2019  "nobodino", Bordeaux, FRANCE
 # All rights reserved.
 #
 # Redistribution and use of this script, with or without modification, is
@@ -25,7 +25,7 @@
 #--------------------------------------------------------------------------
 #
 # Note: Much of this script is inspired from the LFS manual chapter 5
-#       Copyright © 1999-2018 Gerard Beekmans and may be
+#       Copyright © 1999-2019 Gerard Beekmans and may be
 #       copied under the MIT License.
 #
 #--------------------------------------------------------------------------
@@ -41,58 +41,8 @@
 # Everything will be done automatically in this script.
 #--------------------------------------------------------------------------
 #
-# Revision 	0 		25072016		nobodino
-# Revision	1		28072016		nobodino
-#		-add dialog box before beginning to build
-#		-add md5sum for each slackware package
-#		-test integrity of each package
-#	Revision	2		30072016		nobodino
-#		-cosmetic: used 'beautify_bash' to indent
-#--------------------------------------------------------------------------
-# 	Slackware-14.2 released. New revision will be for slackware-current > 14.2
-#--------------------------------------------------------------------------
-#	Revision	3		27082016		nobodino
-#		-build tools for current (> 14.2)
-#	Revision 4		25092016		nobodino
-#		-change lfs to sfs
-#		-updated to bash-4.4, linux-4.4.22, gawk-4.1.4,
-#		texinfo-6.3, and util-linux-2.28.2
-#	Revision 5		29092016		nobodino
-#		-remove test_integrity (simplification)
-#		-update to mpfr-3.1.5 doesn't work, so keep mpfr-3.1.4)
-#	Revision 6		27022017		nobodino
-#		-updated to LFS-8.0 and most up to date packages
-#	Revision 7		27052017		nobodino
-#		-updated to LFS-8.0 and most up to date packages
-#		-glibc-2.25, gcc-7.1.0
-#		-created $PRGVER for each package
-#		-created tools_version which summurizes the packages used
-#	Revision 8		16062017		nobodino
-#		-added cmake, llvm and rust
-#	Revision 9		21012018		nobodino
-#		-modified diffutils build (removed sed line)
-#		-added patch to glibc
-#	Revision 10		02022018		nobodino
-#		-removed rust (didn't work)
-#	Revision 11		18022018		nobodino
-#		-now sub-script of sfs-bootstrap.sh
-#		-no more external variable script (self suffisant)
-#	Revision 12		22022018		nobodino
-#		-added bison and reordered according to LFS-8.1 chapter 5
-#	Revision 13		27032018		nobodino
-#		-modified for ncurses-6.1
-#		-removed date version for SFS boostrap comparison
-#	Revision 14		13042018		nobodino
-#		-added ada_build for gcc (need isl-0.19)
-#	Revision 15		09052018		nobodino
-#		-modified ada build
-#		-modified strip_libs
-#	Revision 16			03072018		nobodino
-#		-colorized the script
-#		-disabled ada build
-#		-modified GCCVER for gcc-8.1.1
-#
-#	Above july 2018, revisions made through github project: https://github.com/nobodino/slackware-from-scratch 
+#	Above july 2018, revisions made through github project: 
+#   https://github.com/nobodino/slackware-from-scratch 
 # 
 #*******************************************************************
 # set -x

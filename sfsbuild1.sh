@@ -27,7 +27,7 @@
 #
 # Note: The adjust and link_tools procedures of this script are 
 #       inspired from the LFS manual chapter 6.10
-#       Copyright © 1999-2018 Gerard Beekmans and may be
+#       Copyright © 1999-2019 Gerard Beekmans and may be
 #       copied under the MIT License.
 #
 #--------------------------------------------------------------------------

@@ -1,8 +1,8 @@
 #######################  list_generator_c.sh ###################################
 #!/bin/bash
 #
-# Copyright 2018  J. E. Garrott Sr, Puyallup, WA, USA
-# Copyright 2018  "nobodino", Bordeaux, FRANCE
+# Copyright 2018, 2019  J. E. Garrott Sr, Puyallup, WA, USA
+# Copyright 2018, 2019  "nobodino", Bordeaux, FRANCE
 # All rights reserved.
 #
 # Redistribution and use of this script, with or without modification, is
@@ -24,31 +24,8 @@
 #
 #--------------------------------------------------------------------------
 #
-#	Revision 0		13042018		nobodino
-#		-initial release for bootstrap only
-#		-added jansson to list1_e for curl
-#		-removed flex-2.5.39 to build doxygen-1.8.14 (found a patch for flex-2.6.4)
-#		-moved seamonkey, thunderbird and firefox at the end of build4_s.list
-#		-changed rxvt to rxvt-unicode
-#		-added patchelf before gcc
-#	Revision 1		20042018		nobodino
-#		-modified for 'third mass rebuild'
-#	Revision 2		25042018		nobodino
-#		-removed libmsn
-#		-added alsa-libs to list4 (modification on pulseaudio/alsa)
-#		-added parallel to list3
-#		-modified jdk build: switch to extra/java
-#	Revision 3		07072018		nobodino
-#		-removed slackware_exp
-#		-updated list1, list2, list3 and list4
-#	Revision 4		19072018		nobodino
-#		-updated list4 for QScintilla two pass package
-#		-updated list4 for gnutls and adwaita-icon-theme
-#	Revision 5		28072018		nobodino
-#		-updated list1 for libart_lgpl
-#		-updated list1 to remove "tools/bin" problem (Worsel suggestion)
-#
-#	Above july 2018, revisions made through github project: https://github.com/nobodino/slackware-from-scratch 
+#	Above july 2018, revisions made through github project: 
+#   https://github.com/nobodino/slackware-from-scratch 
 #
 ###########################################################################
 # set -x

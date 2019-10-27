@@ -1,8 +1,8 @@
 #######################  export_variables.sh ###################################
 #!/bin/bash
 #
-# Copyright 2018  J. E. Garrott Sr, Puyallup, WA, USA
-# Copyright 2018  "nobodino", Bordeaux, FRANCE
+# Copyright 2018, 2019  J. E. Garrott Sr, Puyallup, WA, USA
+# Copyright 2018, 2019  "nobodino", Bordeaux, FRANCE
 # All rights reserved.
 #
 # Redistribution and use of this script, with or without modification, is
@@ -24,31 +24,8 @@
 #
 #--------------------------------------------------------------------------
 #
-#  Revision 0 			25102017				nobodino
-#		-initial release (removed from sfsinit script)
-#  Revision 1 			04032018				nobodino
-#		-change RDIR* definition to be alble to copy extra/ 
-#  Revision 2 			20032018				nobodino
-#		-added RSYNCDIR to rsync from slackware directly without RDIR1
-#		-added DLDIRxx to populate "others" directly from mirrors
-#		-added variables for cargo, rustd, jdk and gnat to be adjustable
-#		by the user
-#  Revision 3 			01042018				nobodino
-#		-removed flex-2.5.39 to build doxygen-1.8.14 (found a patch for flex-2.6.4)
-#		-upgraded rust version to 1.25.0
-#		-added RUSTC variable
-#		-added RDIR3 and RDIR4
-#  Revision 4 			22042018				nobodino
-#		-upgraded jdk to 8u172
-#		-added ISLVER
-#  Revision 5 			29042018				nobodino
-#		-changed java to extra/java jre-8u172
-#  Revision 6 			18052018				nobodino
-#		-upgraded rust version to 1.26.0
-#  Revision 7 			26062018				nobodino
-#		-upgraded rust version to 1.27.0
-#
-#	Above july 2018, revisions made through github project: https://github.com/nobodino/slackware-from-scratch 
+#	Above july 2018, revisions made through github project: 
+#   https://github.com/nobodino/slackware-from-scratch 
 #
 ##########################################################################
 # set -x
@@ -57,8 +34,8 @@
 #*******************************************************************
 # export RSYNCDIR=rsync://mirror.slackbuilds.org/slackware/slackware-current
 # export RSYNCDIR=rsync://mirrors.slackware.bg/slackware/slackware-current
-# export RSYNCDIR=rsync://slackware.uk/slackware/slackware-current
-export RSYNCDIR=rsync://bear.alienbase.nl/mirrors/slackware/slackware64-current
+export RSYNCDIR=rsync://slackware.uk/slackware/slackware64-current
+# export RSYNCDIR=rsync://bear.alienbase.nl/mirrors/slackware/slackware64-current
 #*******************************************************************
 # the mirrors from which we download files to populate "others" directly
 #*******************************************************************
