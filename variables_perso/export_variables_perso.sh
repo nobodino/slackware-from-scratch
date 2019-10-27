@@ -1,8 +1,8 @@
 #######################  export_variables.sh ###################################
 #!/bin/bash
 #
-# Copyright 2018  J. E. Garrott Sr, Puyallup, WA, USA
-# Copyright 2018  "nobodino", Bordeaux, FRANCE
+# Copyright 2018, 2019  J. E. Garrott Sr, Puyallup, WA, USA
+# Copyright 2018, 2019  "nobodino", Bordeaux, FRANCE
 # All rights reserved.
 #
 # Redistribution and use of this script, with or without modification, is
@@ -24,7 +24,8 @@
 #
 #--------------------------------------------------------------------------
 #
-#	Above july 2018, revisions made through github project: https://github.com/nobodino/slackware-from-scratch 
+#	Above july 2018, revisions made through github project: 
+#   https://github.com/nobodino/slackware-from-scratch 
 #
 ##########################################################################
 # set -x
