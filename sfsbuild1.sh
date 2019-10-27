@@ -456,7 +456,7 @@ mv kernel-source.SlackBuild.old kernel-source.SlackBuild
 
 kernel_headers_build_c () {
 #********************************************************
-# remove everything to .config and PRINT_PACKAGE_NAME
+# remove everything related to .config and PRINT_PACKAGE_NAME
 #********************************************************
 cd /slacksrc/k
 cp -v kernel-headers.SlackBuild kernel-headers.SlackBuild.old
