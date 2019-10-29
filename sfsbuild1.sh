@@ -1332,7 +1332,6 @@ mv -v /tmp/x11-build/*.txz /sfspacks/x
 for package in \
   bdftopcf \
   iceauth \
-  mkfontdir \
   mkfontscale \
   sessreg\
   setxkbmap \
