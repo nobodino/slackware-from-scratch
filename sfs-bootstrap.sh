@@ -31,6 +31,34 @@
 #*******************************************************************
 # set -x
 #*******************************************************************
+
+test_root () {
+#*************************************
+# test if user is ROOT, if not exit
+#*************************************
+[ "$UID" != "0" ] && error "You must be ROOT to execute that script."
+}
+
+distribution_selector () {
+#**********************************
+# distribution selector
+#**********************************
+PS3="Your choice:"
+select distribution in slackware quit
+do
+	if [[ "$distribution" != "quit" ]]
+	then
+		break
+	fi
+	echo
+	echo -e "$RED" "You have decided to quit. Goodbye." "$NORMAL"  && exit 1
+done
+echo -e "$BLUE" "You chose $distribution."  "$NORMAL" 
+export $distribution
+echo
+
+}
+
 arch_selector () {
 #**********************************
 # architecture selector selector
@@ -100,63 +128,6 @@ fi
 [ -d $SFS/proc ] && rm -rf bin boot dev etc jre home lib media mnt \
 	lib64 opt proc root run sbin sfspacks srv sys tmp tools usr var font*
 
-}
-
-distribution_selector () {
-#**********************************
-# distribution selector
-#**********************************
-PS3="Your choice:"
-select distribution in slackware quit
-do
-	if [[ "$distribution" != "quit" ]]
-	then
-		break
-	fi
-	echo
-	echo -e "$RED" "You have decided to quit. Goodbye." "$NORMAL"  && exit 1
-done
-echo -e "$BLUE" "You chose $distribution."  "$NORMAL" 
-export $distribution
-echo
-
-}
-
-etc_group () {
-#***************************************************
-mkdir -pv $SFS/etc
-cat > $SFS/etc/group << "EOF"
-root:x:0:root
-EOF
-chmod 644 $SFS/etc/group
-}
-
-etc_passwd () {
-#***************************************************
-cat > $SFS/etc/passwd << "EOF"
-root:x:0:0::/root:/bin/bash
-EOF
-chmod 644 $SFS/etc/passwd
-}
-
-root_bashrc () {
-#***************************************************
-mkdir -pv $SFS/root
-cat >  $SFS/root/.bashrc << "EOF"
-#!/bin/sh
-LC_ALL=C.UTF-8
-export LC_ALL
-EOF
-}
-
-sfsprep () {
-#***********************************************************
-# package management: copy tools from slackware source:
-#***********************************************************
-mkdir -pv $SFS/sbin
-cp $SFS/slacksrc/a/pkgtools/scripts/makepkg $SFS/sbin/makepkg
-cp $SFS/slacksrc/a/pkgtools/scripts/installpkg $SFS/sbin/installpkg
-chmod 755 $SFS/sbin/makepkg $SFS/sbin/installpkg
 }
 
 rsync_src () {
@@ -374,12 +345,41 @@ fi
 
 }
 
+etc_group () {
+#***************************************************
+mkdir -pv $SFS/etc
+cat > $SFS/etc/group << "EOF"
+root:x:0:root
+EOF
+chmod 644 $SFS/etc/group
+}
 
-test_root () {
-#*************************************
-# test if user is ROOT, if not exit
-#*************************************
-[ "$UID" != "0" ] && error "You must be ROOT to execute that script."
+etc_passwd () {
+#***************************************************
+cat > $SFS/etc/passwd << "EOF"
+root:x:0:0::/root:/bin/bash
+EOF
+chmod 644 $SFS/etc/passwd
+}
+
+root_bashrc () {
+#***************************************************
+mkdir -pv $SFS/root
+cat >  $SFS/root/.bashrc << "EOF"
+#!/bin/sh
+LC_ALL=C.UTF-8
+export LC_ALL
+EOF
+}
+
+sfsprep () {
+#***********************************************************
+# package management: copy tools from slackware source:
+#***********************************************************
+mkdir -pv $SFS/sbin
+cp $SFS/slacksrc/a/pkgtools/scripts/makepkg $SFS/sbin/makepkg
+cp $SFS/slacksrc/a/pkgtools/scripts/installpkg $SFS/sbin/installpkg
+chmod 755 $SFS/sbin/makepkg $SFS/sbin/installpkg
 }
 
 #************************************************************************

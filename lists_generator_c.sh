@@ -433,7 +433,6 @@ tcl tk
 tcl tclx
 tcl expect
 tcl tix
-t xfig
 t fig2dev
 l libsigsegv
 l libsigc++
@@ -491,6 +490,7 @@ l gsettings-desktop-schemas
 l glib-networking
 l hicolor-icon-theme
 l libcroco
+t xfig
 d rust
 l librsvg
 l gdk-pixbuf2

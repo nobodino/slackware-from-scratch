@@ -430,9 +430,9 @@ if [ ! -f $SLACKSRC/xfce/xfce-build-all.sh.old ]; then
 	cp -v $SLACKSRC/xfce/xfce-build-all.sh  $SLACKSRC/xfce/xfce-build-all.sh.old 
 	(
 		cd $SLACKSRC/xfce
-		sed -i -e '/cd $package || exit 1/a .\/\${package}.SlackBuild' xfce-build-all.sh
+		sed -i -e '/cd $package || exit 1/a .\/\$package.SlackBuild' xfce-build-all.sh
 		sed -i -e '/{package}.failed ; exit 1 ) || exit 1/d' xfce-build-all.sh
-		sed -i -e '/${package}.SlackBuild/a [ $? != 0 ] && touch /tmp/${package}.failed' xfce-build-all.sh
+		sed -i -e '/$package.SlackBuild/a [ $? != 0 ] && touch /tmp/$package.failed' xfce-build-all.sh
 	)
 fi
 }
@@ -580,6 +580,13 @@ case $PACKNAME in
 #****************************
 # INSTALL package treatment
 #****************************
+
+	aaa_terminfo )
+		# remove extra ncurses packages
+		rm /tmp/ncurses*.t?z
+		$INSTALLPRG /tmp/$PACKNAME*.t?z
+		[ $? != 0 ] && exit 1 ;;
+
 	alpine )
 		# package name is not alpine but imapd
 		$INSTALLPRG /tmp/imapd*.txz
@@ -631,6 +638,7 @@ case $PACKNAME in
 #****************************
 # MOVE package treatment
 #****************************
+
 	alpine )
 		# package name is not 'alpine' but 'imapd'
 		mv /tmp/alpine*.txz /sfspacks/$SRCDIR
@@ -1193,7 +1201,7 @@ for package in \
 done
 
 ./x11.SlackBuild util util-macros
-[ $? != 0 ] && exit 1
+ [ $? != 0 ] && exit 1
 mv -v /tmp/x11-build/*.txz /sfspacks/x
 
 ./x11.SlackBuild proto
@@ -2222,7 +2230,7 @@ mkdir -pv /sfspacks/{others,a,ap,d,e,extra,f,k,kde,kdei,l,n,t,tcl,x,xap,xfce,y}
 #	execute_llvm_sed # 2 pass
 #	execute_pkg_config_sed # 2 pass
 #	execute_qscint_sed # 2 pass
-#	execute_readline_sed # 2 pass
+#	execute_readline_sed # 3 pass
 #	execute_subversion_sed # 2 pass
 #	execute_texlive_sed # 2 pass
 #	execute_xfce_sed # 2 pass
@@ -2693,7 +2701,7 @@ while (( LINE < $FILELEN )); do
 				texlive )
 					case $LISTFILE in
 						build2_s.list )
-							execute_texlive_sed && build $SRCDIR $PACKNAME && 
+							execute_texlive_sed && build $SRCDIR $PACKNAME 
 							[ $? != 0 ] && exit 1 
 							update_slackbuild ;;
 				
