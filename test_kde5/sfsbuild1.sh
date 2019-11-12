@@ -443,7 +443,7 @@ fi
 
 all_deps () {
 #********************************************************
-# remove everything related to building the kernel image
+# 
 #********************************************************
 # Note: Much of this script is inspired from the KDE Slackware script by Eric Hameleers <alien@slackware.com>
 #       Copyright © 2019 Eric Hameleers and may be copied under the MIT License.
@@ -462,31 +462,23 @@ TMP=${TMP:-/tmp}
 # This avoids compiling a version number into KDE's .la files:
 QTDIR=/usr/lib${LIBDIRSUFFIX}/qt ; export QTDIR
 
-# ALLDEPS=" \
-#  extra-cmake-modules \
-#  sni-qt \
-#  SDL_sound \
-#  OpenAL \
-#  libxkbcommon \
-#  wayland \
-#  brotli \
-#  woff2 \
-#  hyphen \
-#  qt5 \
-#  qt5-webkit \
-ALLDEPS=" \
+ ALLDEPS=" \
   extra-cmake-modules \
+  ninja \
   sni-qt \
-  SDL_sound \
-  OpenAL \
+  libwacom \
+  libinput \
   libxkbcommon \
   wayland \
+  hyphen \
   brotli \
   woff2 \
-  hyphen \
-  qca-qt5
-  libdbusmenu-qt5 \
+  qt5 \
+  qt5-webkit \
+  SDL_sound \
+  OpenAL \
   qt-gstreamer \
+  qjson \
   phonon \
   phonon-gstreamer \
   phonon-qt4 \
@@ -503,6 +495,9 @@ ALLDEPS=" \
   PyQt \
   PyQt5 \
   QScintilla \
+  qca-qt5 \
+  libdbusmenu-qt5 \
+  polkit-qt-1 \
   polkit-qt5-1 \
   grantlee \
   grantlee-qt4 \
