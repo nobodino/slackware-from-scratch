@@ -462,7 +462,10 @@ l libsndfile
 l orc
 l speexdsp
 l libasyncns
+l tdb
 d check
+l sbc
+n bluez
 l pulseaudio
 l alsa-lib
 l boost
