@@ -464,9 +464,6 @@ cd /slacksrc/deps
 CWD=$(pwd)
 TMP=${TMP:-/tmp}
 
-# Set the config option variables if they are not already set:
-[ -r ./alldeps.options ] && . ./alldeps.options
-
 # This avoids compiling a version number into KDE's .la files:
 QTDIR=/usr/lib${LIBDIRSUFFIX}/qt ; export QTDIR
 
