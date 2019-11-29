@@ -452,6 +452,14 @@ all_deps () {
 #
 #
 # Set initial variables:
+#********************************************************
+which upgradepkg 2>&1 >/dev/null
+if [ $? == 0 ]; then
+	INSTALLPRG="upgradepkg --install-new --reinstall"
+else
+	INSTALLPRG=installpkg
+fi
+
 cd /slacksrc/deps
 CWD=$(pwd)
 TMP=${TMP:-/tmp}
@@ -462,84 +470,17 @@ TMP=${TMP:-/tmp}
 # This avoids compiling a version number into KDE's .la files:
 QTDIR=/usr/lib${LIBDIRSUFFIX}/qt ; export QTDIR
 
-#  hyphen \
-#  qt5 \
-#  qt5-webkit \
-
-# ALLDEPS=" \
-#  extra-cmake-modules \
-#  ninja \
-#  sni-qt \
-#  SDL_sound \
-#  OpenAL \
-#  libwacom \
-#  libinput \
-#  libxkbcommon \
-#  wayland \ no need
-#  brotli \
-#  woff2 \
-#  hyphen \
-#  qt5 \ 
-#  qt5-webkit \
-#  qca-qt5 \
-#  libdbusmenu-qt5 \
-##  qt-gstreamer \
-##  phonon \
-#  phonon-gstreamer \
-#  phonon-qt4 \
-#  phonon-qt4-gstreamer \
-#  python-enum34 \
-#  pyxdg \ no source
-#  pcaudiolib \
-#  espeak-ng \
-#  dotconf \
-#  flite \
-#  speech-dispatcher \
-#  sip \
-#  PyQt \
-#  PyQt5 \
-#  QScintilla \
-#  polkit-qt5-1 \
-##  grantlee \
-#  grantlee-qt4 \
-#  poppler \
-#  json-glib \ no source
-##  libdbusmenu-gtk \
-##  libindicator \
-##  libappindicator \
-#  cfitsio \
-#  lmdb \ no source
-#  libdmtx \
-#  qrencode \
-#  libproxy \ no source
-#  hack-font-ttf \
-#  noto-font-ttf \
-#  noto-cjk-font-ttf \
-#  gpgme \
-#  lensfun \
-#  opencv \
-#  dvdauthor \
-#  vid.stab \
-#  frei0r-plugins \
-#  mlt \
-#  cracklib \
-#  libpwquality \
-#  accountsservice \
-#  libburn \
-#  qtav \
-##  ddcutil \
- ALLDEPS=" \
+for module in \
   extra-cmake-modules \
-  ninja \
   sni-qt \
   SDL_sound \
   OpenAL \
-  libwacom \
-  libinput \
   libxkbcommon \
   brotli \
   woff2 \
   hyphen \
+  qt5 \
+  qt5-webkit \
   qca-qt5 \
   libdbusmenu-qt5 \
   qt-gstreamer \
@@ -559,7 +500,6 @@ QTDIR=/usr/lib${LIBDIRSUFFIX}/qt ; export QTDIR
   polkit-qt5-1 \
   grantlee \
   grantlee-qt4 \
-  poppler \
   libdbusmenu-gtk \
   libindicator \
   libappindicator \
@@ -594,37 +534,21 @@ QTDIR=/usr/lib${LIBDIRSUFFIX}/qt ; export QTDIR
   sassc \
   rttr \
   quazip \
-  "
-  # Only needed when adding support for Wayland:
-  #elogind \
-  # Not needed, conflicts with qt-gstreamer files
-  #qt-gstreamer0 \
-
-# Allow for specification of individual packages to be built:
-if [ -z "$1" ]; then
-  MODQUEUE=$ALLDEPS
-else
-  MODQUEUE=$*
-fi
-
-for module in \
-  $MODQUEUE ;
-do
-  cd $module
-  ./$module.SlackBuild
+  ; do
+  cd $module && ./$module.SlackBuild
   if [ $? = 0 ]; then
-    # Yes, I will build with the fresh packages installed:
-    upgradepkg --install-new --reinstall ${TMP}/${module}-*.txz
-	mv ${TMP}/${module}-*.txz /sfspacks/deps
+    $INSTALLPRG /tmp/${module}-*.txz
     # Keep MIME database current:
     /usr/bin/update-mime-database /usr/share/mime 1> /dev/null 2> /dev/null &
-    rm -rf ${TMP}/package-${module} ${TMP}/${module}-$VERSION
+	mv -v /tmp/$module*.txz /sfspacks/deps
+	rm -rf /tmp/package-$module /tmp/$module-*
   else
     echo "${module} failed to build."
     exit 1
   fi
-  cd - ;
+cd - ;
 done
+
 }
 
 build_kde5_alien () {
