@@ -56,6 +56,7 @@ a aaa_base
 a etc
 a sed
 a coreutils
+n rsync
 k kernel-source
 d kernel-headers
 d python
