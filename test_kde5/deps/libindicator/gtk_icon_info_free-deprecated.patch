@@ -1,0 +1,19 @@
+Description: Fix FTBFS due to gtk_icon_info_free () deprecated since Gtk 3.8
+Author: Andrea Colangelo <warp10@ubuntu.com> & Sorokin Alexei <sor.alexei@meowr.ru>
+Bug-Debian: http://bugs.debian.org/713475
+Last-Update: 2013-11-06
+
+--- libindicator-0.5.0.orig/libindicator/indicator-image-helper.c
++++ libindicator-0.5.0/libindicator/indicator-image-helper.c
+@@ -69,7 +69,11 @@ refresh_image (GtkImage * image)
+ 	GdkPixbuf * pixbuf = gdk_pixbuf_new_from_file(icon_filename, &error);
+ 
+ 	if (icon_info != NULL) {
++#if GTK_MAJOR_VERSION == 2
+ 		gtk_icon_info_free(icon_info);
++#else
++		g_object_unref(icon_info);
++#endif
+ 	}
+ 
+ 	if (pixbuf == NULL) {
