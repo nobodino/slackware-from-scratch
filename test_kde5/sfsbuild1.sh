@@ -473,6 +473,8 @@ for module in \
   SDL_sound \
   OpenAL \
   libxkbcommon \
+  wayland \
+  wayland-protocols \
   brotli \
   woff2 \
   hyphen \
@@ -497,6 +499,8 @@ for module in \
   polkit-qt5-1 \
   grantlee \
   grantlee-qt4 \
+  poppler \
+  json-glib \
   libdbusmenu-gtk \
   libindicator \
   libappindicator \
@@ -548,520 +552,6 @@ done
 
 }
 
-build_kde5_alien () {
-#********************************************************
-# 
-#********************************************************
-# Note: Much of this script is inspired from the KDE Slackware script by Eric Hameleers <alien@slackware.com>
-#       Copyright © 2019 Eric Hameleers and may be copied under the MIT License.
-# 
-# 		Build (and install) all KDE dependencies
-#
-#
-# Set initial variables:
-cd /slacksrc/kde5
-CLEANUP=${CLEANUP:-"yes"} # clean up build directory after successful build.
-UPGRADE=${UPGRADE:-"yes"} # upgrade package after successful build.
-PRECHECK=${PRECHECK:-"no"} # don't let the script check the available sources.
-CHECKOUT=${CHECKOUT:-"no"} # don't let the script checkout missing sources.
-GRACETME=${GRACETME:-"10"} # grace time to change your mind before build starts
-
-KDEGITURI="git://anongit.kde.org"
-
-pkgbase() {
-  PKGEXT=$(echo $1 | rev | cut -f 1 -d . | rev)
-  case $PKGEXT in
-  'gz' )
-    PKGRETURN=$(basename $1 .tar.gz)
-    ;;
-  'bz2' )
-    PKGRETURN=$(basename $1 .tar.bz2)
-    ;;
-  'lzma' )
-    PKGRETURN=$(basename $1 .tar.lzma)
-    ;;
-  'xz' )
-    PKGRETURN=$(basename $1 .tar.xz)
-    ;;
-  *)
-    PKGRETURN=$(basename $1)
-    ;;
-  esac
-  echo $PKGRETURN
-}
-
-# Set initial variables:
-cd $(dirname $0) ; CWD=$(pwd)
-TMP=${TMP:-/tmp}
-
-# Set up a few useful functions:
-
-extract_archive() {
-  # Find the archive first:
-  local src_archive=$(find $CWD/src -name ${1})
-  if [ $(tar -tf $src_archive |grep -o '^[^/]\+' |sort -u |wc -l) -eq 1 ];
-  then
-    # Archive contains one toplevel directory, good. Make sure that
-    # this directory ends up as '$(pkgbase $1)':
-    tar -xf $src_archive || return 1
-    local topdir="$(tar -tf $src_archive |grep -o '^[^/]\+' |sort -u)"
-    if [ "${topdir}" != "$(pkgbase $1)" ]; then
-      mv ${topdir} $(pkgbase $1)
-    fi
-  else
-    # No toplevel directory found, so we create one first:
-    mkdir -p $(pkgbase $1)
-    tar -C $(pkgbase $1) -xf $src_archive || return 1
-  fi
-}
-
-fix_perms() {
-  target_dir=$1
-  [ -z "$target_dir" ] && target_dir='.'
-
-  chown -R root:root $target_dir
-  find $target_dir \
-   \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
-   -exec chmod 755 {} \; -o \
-   \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
-   -exec chmod 644 {} \;
-}
-
-strip_binaries() {
-  target_dir=$1
-  [ -z "$target_dir" ] && target_dir='.'
-
-  find $target_dir | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
-  find $target_dir | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
-  find $target_dir | xargs file | grep "current ar archive" | grep ELF | cut -f 1 -d : | xargs strip -g 2> /dev/null
-  # Also strip rpaths:
-  for file in $(find $target_dir | xargs file | grep -e "executable" -e "shared object" | grep ELF | cut -f 1 -d : 2> /dev/null) ; do
-    if [ ! "$(patchelf --print-rpath $file 2> /dev/null)" = "" ]; then
-      patchelf --remove-rpath $file
-    fi
-  done
-}
-
-process_man_pages() {
-  # Compress and if needed symlink the man pages:
-  if [ -d usr/man ]; then
-    ( cd usr/man
-      for manpagedir in $(find . -type d -name "man*") ; do
-      ( cd $manpagedir
-        for eachpage in $( find . -type l -maxdepth 1) ; do
-          ln -s $( readlink $eachpage ).gz $eachpage.gz
-          rm $eachpage
-        done
-        gzip -9 *.*
-      )
-      done
-    )
-  fi
-}
-
-process_info_pages() {
-  # Compress info pages and purge "dir" file from the package:
-  if [ -d usr/info ]; then
-    ( cd usr/info
-      rm -f dir
-      gzip -9 *
-    )
-  fi
-}
-
-no_usr_share_doc() {
-  # If there are docs, move them:
-  if [ -d usr/share/doc ]; then
-    mkdir -p usr/doc
-    mv usr/share/doc/* usr/doc
-    rmdir usr/share/doc
-  fi
-}
-
-precheck() {
-  # See if the sources we have match the module components we want to build:
-  RETVAL=0
-
-  for SRCFILE in $(find $CWD/src -name "*.tar.?z*" |grep -vE ".asc$|.sig$") ; do
-    # Check if the source tarball is mentioned in pkgsrc/
-    # meaning its package will get a different name:
-    PKGSRC=$(echo $SRCFILE |rev |cut -f2- -d- |cut -f1,2 -d/ |rev)
-    PKGBASE=$(basename $(grep -lw $PKGSRC $CWD/pkgsrc/*) 2>/dev/null)
-    if [ -z "$PKGBASE" ]; then
-      PKGBASE=$(echo $(basename $SRCFILE) |rev |cut -f2- -d- |rev)
-    fi
-    # We now have the package base name and we can start looking:
-    PKGTGT=$(grep -w ${PKGBASE}$ modules/*)
-    if [ -n "$(echo $PKGTGT |cut -d: -f2- |grep "^ *#")" ]; then
-      echo "Source file '$(basename $SRCFILE)' is commented out: ($PKGTGT) !"
-    elif cat package-blacklist |grep -v "^ *#" |grep -wq ${PKGBASE}$ ; then
-      echo "Source file '$(basename $SRCFILE)' is on the package-blacklist ($PKGBASE) !"
-    elif ! cat modules/* |grep -v "^ *#" |grep -wq ${PKGBASE}$ ; then
-      echo "Source file '$(basename $SRCFILE)' is not mentioned in 'modules' ($PKGBASE) !"
-      RETVAL=1
-    fi
-  done
-
-  # Do we have duplicate package names?
-  PKGDUP="$(cat $CWD/modules/* |grep -v "^ *#" |grep -v "^$" |sort |uniq -d)"
-  if [ -n "$PKGDUP" ] ; then
-    echo "Multiply-defined package names: '$(echo $PKGDUP)'"
-    RETVAL=1
-  fi
-  unset PKGDUP
-
-  for MODPKG in $(cat $CWD/modules/* | grep -v "^ *#") ; do
-    # First find out if the pkg source is different from the actual pkg name:
-    if [ -f $CWD/pkgsrc/$MODPKG ]; then
-      MODBASE=$(basename $(cat $CWD/pkgsrc/$MODPKG))
-      MODLOC=$(dirname $(cat $CWD/pkgsrc/$MODPKG))/
-    else
-      MODBASE=$MODPKG
-      MODLOC=""
-    fi
-    MODSRC="$(find $CWD/src/$MODLOC -name $MODBASE-*.tar.* |grep -vE ".asc$|.sig$" |grep -E "$MODBASE-[^-]+.tar.*$|$MODBASE-[0-9].+.tar.*$")"
-    if [ -z "$MODSRC" ] ; then
-      echo "Module '$MODPKG' does not have a matching source tarball ($MODLOC$MODBASE)!"
-      if [ "$CHECKOUT" = "yes" -o "$CHECKOUT" = "YES" ]; then
-        echo "Checking out KDE component at branch '$VERSION'."
-        git archive --format=tar --prefix ${MODBASE}-${VERSION}/ --remote ${KDEGITURI}/${MODBASE}.git v${VERSION} | xz -c > $CWD/src/${MODLOC}/${MODBASE}-${VERSION}.tar.xz
-        RETVAL=$?
-        if [ $RETVAL -ne 0 ]; then
-          echo "Error while checking out '$MODPKG' ($MODLOC/$MODBASE) !"
-          mv $CWD/src/$MODLOC/${MODBASE}-${VERSION}.tar.xz $CWD/src/$MODLOC/${MODBASE}-${VERSION}.tar.xz.failed
-        fi
-      else
-        RETVAL=1
-      fi
-    fi
-    # A missing slack-desc counts as fatal:
-    if [ -z "$(find $CWD/slack-desc -name ${MODPKG})" ] ; then
-      echo "Module '$MODPKG' does not have a slack-desc file !"
-      RETVAL=1
-    fi
-  done
-
-  if [ $RETVAL -eq 0 ]; then
-    echo "Check complete, build starts in ${GRACETME} seconds.."
-    sleep ${GRACETME}
-  else
-    echo "Precheck failed with error code '$RETVAL'."
-    exit 1
-  fi
-}
-
-# Support function builds one complete module (like 'frameworks'), or
-# exactly one package which is part of a module (like 'okular'):
-build_mod_pkg () {
-  kde_module=$1
-  kde_pkg=$2
-
-  cd $CWD/modules
-
-  # See if $kde_module is a module name like "frameworks":
-  if [ ! -z "$kde_module" ]; then
-    if [ ! -f "$kde_module" ]; then
-      echo "** '${kde_module}' is not an existing module."
-      return
-    fi
-  fi
-  PKG=${SLACK_KDE_BUILD_DIR}/${kde_module}/package-${kde_module}
-  rm -rf $PKG
-  mkdir -p $PKG
-  ( for PKGNAME in $(cat $kde_module |grep -v "^$" |grep -v "^ *#") ; do
-      if grep -wq "^${PKGNAME}$" ${CWD}/package-blacklist ; then
-        if [ -z "$PRINT_PACKAGE_NAME" ]; then
-          echo "** '${PKGNAME}' is on the package blacklist."
-        fi
-        continue
-      fi
-      # Find the full source filename - yeah ugly, but I had two goals:
-      # 1- source tarball can be in a random subdirectory of src/
-      # 2- differentiate between e.g. 'kdepim' and 'kdepim-runtime'
-      if [ -f $CWD/pkgsrc/$PKGNAME ]; then
-        PKGSRC=$(basename $(cat $CWD/pkgsrc/$PKGNAME))
-        PKGLOC=$(dirname $(cat $CWD/pkgsrc/$PKGNAME))
-      else
-        PKGSRC=$PKGNAME
-        PKGLOC=""
-      fi
-      kde_src=$(basename $(find $CWD/src/$PKGLOC -name "$PKGSRC-*.tar.?z*" |grep -vE ".asc$|.sig$" |grep -E "$PKGSRC-[^-]+.tar.*$|$PKGSRC-[0-9].+.tar.*$") 2>/dev/null)
-      if [ "x$kde_src" = "x" ]; then
-        if [ -z "$PRINT_PACKAGE_NAME" ]; then
-          echo "** Did not find '$PKGSRC' in src"
-        fi
-        continue
-      fi
-      # Reset $PKGARCH to its initial value:
-      PKGARCH=$ARCH
-      # Perhaps $PKGARCH should be something different:
-      if grep -wq "^${PKGNAME}$" ${CWD}/noarch ; then
-        PKGARCH=noarch
-      fi 
-      cd $SLACK_KDE_BUILD_DIR/${kde_module}
-      # If $kde_pkg is set, we only want to build one package:
-      if [ ! -z "$kde_pkg" ]; then
-        if [ "$kde_pkg" = "$PKGNAME" ]; then
-          # Set $PKG to a private dir for the modular package build:
-          PKG=$SLACK_KDE_BUILD_DIR/${kde_module}/package-$PKGNAME
-          rm -rf $PKG
-          mkdir -p $PKG
-        else
-          continue
-        fi
-      else
-        if [ -z "$PRINT_PACKAGE_NAME" ]; then
-          echo
-          echo "Building from source ${kde_src}"
-          echo
-        fi
-      fi
-
-      # Set $PKG to a private dir for the modular package build:
-      PKG=$SLACK_KDE_BUILD_DIR/${kde_module}/package-$PKGNAME
-      rm -rf $PKG
-      mkdir -p $PKG
-
-      # Let's figure out the version number on the modular package:
-      MODULAR_PACKAGE_VERSION=$(echo $kde_src | rev | cut -f 3- -d . | cut -f 1 -d - | rev)
-
-      # If this variable is passed to the script, nothing will be built.
-      # Instead, a list of packages to be built will be output.
-      if [ ! -z "$PRINT_PACKAGE_NAME" ]; then
-        if [ -r $CWD/build/${PKGNAME} ]; then
-          MODBUILD=$(cat $CWD/build/${PKGNAME})
-        else
-          MODBUILD=$BUILD
-        fi
-        echo "${PKGNAME}-${MODULAR_PACKAGE_VERSION}-${PKGARCH}-${MODBUILD}.txz"
-        continue
-      fi
-
-      rm -rf $(pkgbase $kde_src)
-      extract_archive $kde_src || exit 1
-      cd $(pkgbase $kde_src) || exit 1
-
-      fix_perms
-
-      # If any patches are needed, call this script to apply them:
-      if [ -r $CWD/patch/${PKGNAME}.patch ]; then
-        . $CWD/patch/${PKGNAME}.patch || exit 1
-      fi
-
-      # If there's any pre-install things to do, do them:
-      if [ -r $CWD/pre-install/${PKGNAME}.pre-install ]; then
-        . $CWD/pre-install/${PKGNAME}.pre-install
-      fi
-
-      if ! grep -wq "^${PKGNAME}$" ${CWD}/nomake ; then
-        # Run cmake, using custom cmake script if needed:
-        if [ -r $CWD/cmake/${PKGNAME} ]; then
-          . $CWD/cmake/${PKGNAME}
-        elif [ -r $CWD/cmake/${kde_module} ]; then
-          . $CWD/cmake/${kde_module}
-        else
-          # This is the default configure script:
-          . $CWD/cmake/cmake
-        fi
-
-        # Run make, using custom make script if needed:
-        if [ -r $CWD/make/${PKGNAME} ]; then
-          . $CWD/make/${PKGNAME}
-        elif [ -r $CWD/make/${kde_module} ]; then
-          . $CWD/make/${kde_module}
-        else
-          # This is the default make && make install routine:
-          make $NUMJOBS || make || exit 1
-          make install DESTDIR=$PKG || exit 1
-        fi
-      fi
-
-      # Back to source toplevel builddir, since cmake may have run in a subdir:
-      cd $SLACK_KDE_BUILD_DIR/${kde_module}/$(pkgbase $kde_src)
-
-      mkdir -p $PKG/usr/doc/${PKGNAME}-${MODULAR_PACKAGE_VERSION}
-      # Use specific documentation files if available, else use a default set:
-      if [ -r $CWD/docs/${PKGNAME} ]; then
-        cp -a $(cat $CWD/docs/${PKGNAME}) \
-          $PKG/usr/doc/${PKGNAME}-${MODULAR_PACKAGE_VERSION}
-      else
-        cp -a \
-          AUTHORS* CONTRIBUTING* COPYING* HACKING* \
-          INSTALL* MAINTAINERS README* NEWS* TODO* \
-          $PKG/usr/doc/${PKGNAME}-${MODULAR_PACKAGE_VERSION}
-          # If there's a ChangeLog, installing at least part of the recent
-          # history is useful, but don't let it get totally out of control:
-          if [ -r ChangeLog ]; then
-            DOCSDIR=$(echo $PKG/usr/doc/${PKGNAME}-$MODULAR_PACKAGE_VERSION)
-            cat ChangeLog | head -n 1000 > $DOCSDIR/ChangeLog
-            touch -r ChangeLog $DOCSDIR/ChangeLog
-          fi
-      fi
-
-      # Get rid of zero-length junk files:
-      find $PKG/usr/doc/${PKGNAME}-$MODULAR_PACKAGE_VERSION -type f -size 0 -exec rm --verbose "{}" \;
-      rmdir --verbose $PKG/usr/doc/${PKGNAME}-$MODULAR_PACKAGE_VERSION 2> /dev/null
-
-      # Strip binaries if needed:
-      if [ ! -r $CWD/nostrip/${PKGNAME} ]; then
-        strip_binaries $PKG
-      fi
-
-      # If there's any special post-install things to do, do them:
-      if [ -r $CWD/post-install/${PKGNAME}.post-install ]; then
-        . $CWD/post-install/${PKGNAME}.post-install
-      fi
-
-      # If this package requires some doinst.sh material, add it here:
-      if [ -r $CWD/doinst.sh/${PKGNAME} ]; then
-        mkdir -p $PKG/install
-        cat $CWD/doinst.sh/${PKGNAME} \
-          | sed -e "s#usr/lib#usr/lib${LIBDIRSUFFIX}#g" \
-          >> $PKG/install/doinst.sh
-      fi
-
-      # If this is a modular package, build it here:
-      if [ -d $SLACK_KDE_BUILD_DIR/${kde_module}/package-$PKGNAME ]; then
-        cd $PKG
-        process_man_pages
-        process_info_pages
-        no_usr_share_doc          
-        mkdir -p $PKG/install
-        if [ -r $CWD/slack-desc/${PKGNAME} ]; then
-          cat $CWD/slack-desc/${PKGNAME} > $PKG/install/slack-desc
-        else
-          touch $PKG/install/slack-desc-missing
-        fi
-        if [ -r $CWD/build/${PKGNAME} ]; then
-          MODBUILD=$(cat $CWD/build/${PKGNAME})
-        else
-          MODBUILD=$BUILD
-        fi
-        if [ -r $CWD/makepkg/${PKGNAME} ]; then
-          BUILD=$MODBUILD . $CWD/makepkg/${PKGNAME}
-        else
-          /sbin/makepkg -l y -c n ${SLACK_KDE_BUILD_DIR}/${kde_module}/${PKGNAME}-$(echo $MODULAR_PACKAGE_VERSION |tr - _)-${PKGARCH}-${MODBUILD}.txz
-        fi
-        # We will continue with the fresh packages installed:
-        if [ "$UPGRADE" = "yes" -o "$UPGRADE" = "YES" ]; then
-          upgradepkg --install-new --reinstall ${SLACK_KDE_BUILD_DIR}/${kde_module}/${PKGNAME}-${MODULAR_PACKAGE_VERSION}-${PKGARCH}-${MODBUILD}.txz
-          # Keep MIME database current:
-          /usr/bin/update-mime-database /usr/share/mime 1>/dev/null 2>/dev/null &
-        fi
-      fi
-
-    done
-
-  )
-}
-
-# Process the module queue. Format is:
-# module[:subpackage[,subpackage]] [module...]
-deterministic_build() {
-  RET=0
-  for ENTRY in $1 ; do
-    KDE_MOD=$(echo "$ENTRY": | cut -f1 -d:)
-    KDE_PKGS=$(echo "$ENTRY": | cut -f2 -d:)
-    if [ -z "$KDE_PKGS" ]; then
-      if [ -z "$PRINT_PACKAGE_NAME" ]; then
-        echo "** SlackBuild building '$KDE_MOD'"
-      fi
-      build_mod_pkg $KDE_MOD
-      let RET=$RET+$?
-    else
-      if [ "${KDE_PKGS: -1}" = "," ]; then
-        # Last character is a ','. Expand the list with all subsequent packages.
-        START_PKG=$(echo $KDE_PKGS |rev |cut -d, -f2 |rev)
-        MOD_LIST=$(cat modules/$KDE_MOD |grep -v "^ *#" |grep -v "^$" |tr '\n' ',')
-        KDE_PKGS="${KDE_PKGS}${MOD_LIST/#?*,${START_PKG},/}"
-        if [ -z "$PRINT_PACKAGE_NAME" ]; then
-          echo "** SlackBuild expanding '$ENTRY' to '$KDE_MOD:$KDE_PKGS'"
-        fi
-      fi
-      for KDE_PKG in $(echo $KDE_PKGS |tr ',' ' ') ; do
-        if [ -z "$PRINT_PACKAGE_NAME" ]; then
-          echo "** SlackBuild building '$KDE_MOD:$KDE_PKG'"
-        fi
-        build_mod_pkg $KDE_MOD $KDE_PKG
-        let RET=$RET+$?
-      done
-    fi
-  done
-
-  return $RET
-}
-
-# MAIN PART #
-
-# Import the build configuration options for as far as they are not already set:
-[ -r ./kde.options ] && . ./kde.options
-
-# This avoids compiling a version number into KDE's .la files:
-QTDIR=/usr/lib${LIBDIRSUFFIX}/qt5 ; export QTDIR
-
-# Get the KDE environment variables:
-[ -d post-install/kservice ] && eval $(sed -e "s#/lib#/lib${LIBDIRSUFFIX}#" ./post-install/kservice/profile.d/kde.sh)
-
-# Where we are going to do all the hard labour:
-SLACK_KDE_BUILD_DIR=$TMP/kde_build
-mkdir -p $SLACK_KDE_BUILD_DIR
-
-# Build/install libkdiagram before compiling kdepim:
-# Build/install libktorrent before compiling kget:
-KDEMODS=" \
-  kde4 \
-  frameworks \
-  applications-extra:kdiagram \
-  kdepim \
-  plasma \
-  plasma-extra \
-  applications-extra:libktorrent \
-  applications \
-  applications-extra \
-  applications:umbrello \
-  "
-  #telepathy \
-
-# Allow for specification of individual packages to be built:
-if [ -z "$1" ]; then
-  MODQUEUE=$KDEMODS
-else
-  MODQUEUE="$*"
-fi
-
-# If requested, check if
-# sources, module definitions and slack-desc are complete and matching:
-if [ "$PRECHECK" = "yes" -o "$PRECHECK" = "YES" ]; then
-  precheck
-fi
-
-# And finally, start working!
-for module in \
-  $MODQUEUE ;
-do
-  if [ -z "$PRINT_PACKAGE_NAME" ]; then
-    echo "SlackBuild processing module '$module'"
-  fi
-  deterministic_build $module
-  if [ $? = 0 ]; then
-    # Move the created packages up into the KDE build directory:
-    mv ${SLACK_KDE_BUILD_DIR}/$(echo $module |cut -f1 -d:)/*.t?z ${SLACK_KDE_BUILD_DIR}/ 2> /dev/null
-    if [ "$CLEANUP" = "yes" -o "$CLEANUP" = "YES" ]; then
-      # Clean out package and build directories:
-      rm -rf ${SLACK_KDE_BUILD_DIR}/$(echo $module |cut -f1 -d:)
-    fi
-  else
-    if [ -z "$PRINT_PACKAGE_NAME" ]; then
-      echo "${module} failed to build."
-    fi
-    exit 1
-  fi
-  cd - > /dev/null
-done
-
-exit 0
-}
-
 kernel_source_build_c () {
 #********************************************************
 # remove everything related to building the kernel image
@@ -1108,6 +598,58 @@ case $(uname -m) in
 		mv kernel-*.t?z /sfspacks/a
 		[ $? != 0 ] && exit 1 ;;
 esac
+cd /tmp
+rm -rf *
+}
+
+kernel_huge_build () {
+#***********************************************************
+# build kernel and modules before packaging with SlackBuild
+#***********************************************************
+cd /slacksrc/k
+
+mkdir /tmp/package-kernel-source
+
+cp -v build-all-kernels.sh build-all-kernels.sh.old
+sed -i -e '98;111;119;128;136' build-all-kernels.sh && ./build-all-kernels.sh || exit 1
+
+case $(uname -m) in
+	x86_64 )
+		cd /tmp/output-x86_64*
+		mv kernel-*.t?z /sfspacks/a
+		[ $? != 0 ] && exit 1 ;;
+	* )
+		cd /tmp/output-ia32*
+		mv kernel-*.t?z /sfspacks/a
+		[ $? != 0 ] && exit 1 ;;
+esac
+mv build-all-kernels.sh.old build-all-kernels.sh
+cd /tmp
+rm -rf *
+}
+
+kernel_modules_build () {
+#***********************************************************
+# build kernel and modules before packaging with SlackBuild
+#***********************************************************
+cd /slacksrc/k
+
+cd /slacksrc/k
+
+cp -v kernel-modules.SlackBuild kernel-modules.SlackBuild.old
+chmod +x kernel-modules.SlackBuild && ./kernel-modules.SlackBuild || exit 1
+
+case $(uname -m) in
+	x86_64 )
+		cd /tmp/output-x86_64*
+		mv kernel-*.t?z /sfspacks/a
+		[ $? != 0 ] && exit 1 ;;
+	* )
+		cd /tmp/output-ia32*
+		mv kernel-*.t?z /sfspacks/a
+		[ $? != 0 ] && exit 1 ;;
+esac
+mv kernel-modules.SlackBuild.old kernel-modules.SlackBuild
 cd /tmp
 rm -rf *
 }
@@ -2697,9 +2239,9 @@ cd /slacksrc/kde5
 
 export UPGRADE_PACKAGES=always
 
-#./kde.SlackBuild kde4:kdelibs
-#[ $? != 0 ] && touch /tmp/kde_build/kdelibs.failed
-#mv -v /tmp/kde_build/*.txz /sfspacks/kde5/kde4
+./kde.SlackBuild kde4:kdelibs
+[ $? != 0 ] && touch /tmp/kde_build/kdelibs.failed
+mv -v /tmp/kde_build/*.txz /sfspacks/kde5/kde4
 
 for package in \
 	attica \
@@ -2914,13 +2456,12 @@ for package in \
 	kstars \
 	ktorrent \
 	kwebkitpart \
-	libktorrent \
 	okteta \
 	oxygen-gtk2 \
 	partitionmanager \
 	skanlite \
   ; do
-   ./kde.SlackBuild applications:$package
+   ./kde.SlackBuild applications-extra:$package
  	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
 	mv -v /tmp/kde_build/*.txz /sfspacks/kde5/plasma-extra
 done
@@ -3556,6 +3097,14 @@ while (( LINE < $FILELEN )); do
 
 				kernel-headers )
 					kernel_headers_build_c
+					[ $? != 0 ] && exit 1 ;;
+
+				kernel-huge )
+					kernel_huge_build
+					[ $? != 0 ] && exit 1 ;;
+
+				kernel-modules )
+					kernel_modules_build
 					[ $? != 0 ] && exit 1 ;;
 
 				kernel-source )
