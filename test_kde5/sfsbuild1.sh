@@ -2225,16 +2225,6 @@ cd /sources
 
 build_kde5 () {
 #********************************************************
-# 
-#********************************************************
-# Note: this script is inspired from the KDE Slackware script 
-#		by Eric Hameleers <alien@slackware.com>
-#       Copyright © 2019 Eric Hameleers and may be copied under the MIT License.
-# 
-# 		Build (and install) all KDE dependencies
-#
-#
-# Set initial variables:
 cd /slacksrc/kde5
 
 export UPGRADE_PACKAGES=always
@@ -2244,13 +2234,13 @@ export UPGRADE_PACKAGES=always
 mv -v /tmp/kde_build/*.txz /sfspacks/kde5/kde4
 
 for package in \
-	attica \
-	baloo \
+	attica-framework \
+	baloo5 \
 	bluez-qt \
 	breeze-icons \
 	extra-cmake-modules \
 	frameworkintegration \
-	kactivities \
+	kactivities-framework \
 	kactivities-stats \
 	kapidox \
 	karchive \
@@ -2268,14 +2258,18 @@ for package in \
 	kdbusaddons \
 	kdeclarative \
 	kded \
+	kdesignerplugin \
+	kdelibs4support \
 	kdesu \
+	kdewebkit \
 	kdnssd \
 	kdoctools \
 	kemoticons \
-	kfilemetadata \
+	kfilemetadata5 \
 	kglobalaccel \
 	kguiaddons \
 	kholidays \
+	khtml \
 	ki18n \
 	kiconthemes \
 	kidletime \
@@ -2286,6 +2280,9 @@ for package in \
 	kitemmodels \
 	kitemviews \
 	kjobwidgets \
+	kjs \
+	kjsembed \
+	kmediaplayer \
 	knewstuff \
 	knotifications \
 	knotifyconfig \
@@ -2294,6 +2291,7 @@ for package in \
 	kpeople \
 	kplotting \
 	kpty \
+	kross \
 	krunner \
 	kservice \
 	ktexteditor \
@@ -2382,12 +2380,13 @@ for package in \
 	pim-data-exporter \
 	pim-sieve-editor \
   ; do
-   ./kde.SlackBuild applications:$package
+   ./kde.SlackBuild kdepim:$package
  	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
 	mv -v /tmp/kde_build/*.txz /sfspacks/kde5/kdepim
 done
 
 for package in \
+	baloo5-widgets \
 	bluedevil \
 	breeze \
 	breeze-grub \
@@ -2411,6 +2410,8 @@ for package in \
 	kwrited \
 	libkscreen2 \
 	libksysguard \
+	libmm-qt5 \
+	libm-qt5 \
 	milou \
 	oxygen \
 	plasma5-nm \
@@ -2429,7 +2430,7 @@ for package in \
 	user-manager \
 	xdg-desktop-portal-kde \
   ; do
-   ./kde.SlackBuild applications:$package
+   ./kde.SlackBuild plasma:$package
  	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
 	mv -v /tmp/kde_build/*.txz /sfspacks/kde5/plasma
 done
@@ -2463,7 +2464,7 @@ for package in \
   ; do
    ./kde.SlackBuild applications-extra:$package
  	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-	mv -v /tmp/kde_build/*.txz /sfspacks/kde5/plasma-extra
+	mv -v /tmp/kde_build/*.txz /sfspacks/kde5/applications-extra
 done
 
 ./kde.SlackBuild applications-extra:libktorrent
@@ -2630,9 +2631,9 @@ for package in \
 	sddm-qt5 \
 	wacomtablet \
   ; do
-   ./kde.SlackBuild applications:$package
+   ./kde.SlackBuild plasma-extra:$package
  	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-	mv -v /tmp/kde_build/*.txz /sfspacks/kde5/applications-extra
+	mv -v /tmp/kde_build/*.txz /sfspacks/kde5/plasma-extra
 done
 
 ./kde.SlackBuild applications:umbrello
