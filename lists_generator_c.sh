@@ -507,6 +507,7 @@ l libvpx
 l GConf
 l libwnck
 l adwaita-icon-theme
+xap ffmpegthumbnailer
 xfce xfce
 xfce xfce
 xap seamonkey
