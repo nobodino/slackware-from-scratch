@@ -540,7 +540,7 @@ case $PACKNAME in
 
 	mozjs60 )
 		# need sh shell to be built
-		cd /slacksrc/$SRCDIR/$PACKNAME && chmod +x *.SlackBuild && SHELL=/bin/sh ./mozjs52.SlackBuild
+		cd /slacksrc/$SRCDIR/$PACKNAME && chmod +x *.SlackBuild && SHELL=/bin/sh ./mozjs60.SlackBuild
 		[ $? != 0 ] && exit 1 ;;
 
 	mozilla-thunderbird )
