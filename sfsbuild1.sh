@@ -538,7 +538,7 @@ case $PACKNAME in
 		cd /slacksrc/$SRCDIR/$PACKNAME && chmod +x *.SlackBuild && SHELL=/bin/sh ./mozilla-firefox.SlackBuild
 		[ $? != 0 ] && exit 1 ;;
 
-	mozjs52 )
+	mozjs60 )
 		# need sh shell to be built
 		cd /slacksrc/$SRCDIR/$PACKNAME && chmod +x *.SlackBuild && SHELL=/bin/sh ./mozjs52.SlackBuild
 		[ $? != 0 ] && exit 1 ;;
