@@ -602,58 +602,6 @@ cd /tmp
 rm -rf *
 }
 
-kernel_huge_build () {
-#***********************************************************
-# build kernel and modules before packaging with SlackBuild
-#***********************************************************
-cd /slacksrc/k
-
-mkdir /tmp/package-kernel-source
-
-cp -v build-all-kernels.sh build-all-kernels.sh.old
-sed -i -e '98;111;119;128;136' build-all-kernels.sh && ./build-all-kernels.sh || exit 1
-
-case $(uname -m) in
-	x86_64 )
-		cd /tmp/output-x86_64*
-		mv kernel-*.t?z /sfspacks/a
-		[ $? != 0 ] && exit 1 ;;
-	* )
-		cd /tmp/output-ia32*
-		mv kernel-*.t?z /sfspacks/a
-		[ $? != 0 ] && exit 1 ;;
-esac
-mv build-all-kernels.sh.old build-all-kernels.sh
-cd /tmp
-rm -rf *
-}
-
-kernel_modules_build () {
-#***********************************************************
-# build kernel and modules before packaging with SlackBuild
-#***********************************************************
-cd /slacksrc/k
-
-cd /slacksrc/k
-
-cp -v kernel-modules.SlackBuild kernel-modules.SlackBuild.old
-chmod +x kernel-modules.SlackBuild && ./kernel-modules.SlackBuild || exit 1
-
-case $(uname -m) in
-	x86_64 )
-		cd /tmp/output-x86_64*
-		mv kernel-*.t?z /sfspacks/a
-		[ $? != 0 ] && exit 1 ;;
-	* )
-		cd /tmp/output-ia32*
-		mv kernel-*.t?z /sfspacks/a
-		[ $? != 0 ] && exit 1 ;;
-esac
-mv kernel-modules.SlackBuild.old kernel-modules.SlackBuild
-cd /tmp
-rm -rf *
-}
-
 build () {
 #***********************************************************
 # main build procedure for slackware package
@@ -2060,6 +2008,9 @@ for package in \
 	mv -v /tmp/kde_build/*.txz /sfspacks/kde
 done
 
+# Keep MIME database current:
+/usr/bin/update-mime-database /usr/share/mime 1>/dev/null 2>/dev/null &
+
 cd /sources
 
 }
@@ -2198,6 +2149,10 @@ mv -v /tmp/kde_build/*.txz /sfspacks/kde
 
 ./kde.SlackBuild  kdegraphics:gwenview
 [ $? != 0 ] && touch /tmp/kde_build/gwenview.failed
+mv -v /tmp/kde_build/*.txz /sfspacks/kde
+
+./kde.SlackBuild extragear:amarok
+[ $? != 0 ] && touch /tmp/kde_build/amarok.failed
 mv -v /tmp/kde_build/*.txz /sfspacks/kde
 
 cd /sources
@@ -3097,14 +3052,6 @@ while (( LINE < $FILELEN )); do
 
 				kernel-headers )
 					kernel_headers_build_c
-					[ $? != 0 ] && exit 1 ;;
-
-				kernel-huge )
-					kernel_huge_build
-					[ $? != 0 ] && exit 1 ;;
-
-				kernel-modules )
-					kernel_modules_build
 					[ $? != 0 ] && exit 1 ;;
 
 				kernel-source )

@@ -182,6 +182,7 @@ d m4
 a which
 l readline
 n dhcpcd
+a cpio
 a kernel-all
 d help2man
 d flex
