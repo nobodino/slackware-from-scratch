@@ -441,6 +441,116 @@ fi
 # End of sub-system of execution of patches
 #*******************************************************************
 
+all_deps () {
+#********************************************************
+# 
+#********************************************************
+# Note: Much of this script is inspired from the KDE Slackware script by Eric Hameleers <alien@slackware.com>
+#       Copyright © 2019 Eric Hameleers and may be copied under the MIT License.
+# 
+# 		Build (and install) all KDE dependencies
+#
+#
+# Set initial variables:
+#********************************************************
+which upgradepkg 2>&1 >/dev/null
+if [ $? == 0 ]; then
+	INSTALLPRG="upgradepkg --install-new --reinstall"
+else
+	INSTALLPRG=installpkg
+fi
+
+cd /slacksrc/deps
+CWD=$(pwd)
+TMP=${TMP:-/tmp}
+
+# This avoids compiling a version number into KDE's .la files:
+QTDIR=/usr/lib${LIBDIRSUFFIX}/qt ; export QTDIR
+
+for module in \
+  extra-cmake-modules \
+  sni-qt \
+  SDL_sound \
+  OpenAL \
+  libxkbcommon \
+  wayland \
+  wayland-protocols \
+  brotli \
+  woff2 \
+  hyphen \
+  qt5 \
+  qt5-webkit \
+  qca-qt5 \
+  libdbusmenu-qt5 \
+  qt-gstreamer \
+  phonon \
+  phonon-gstreamer \
+  phonon-qt4 \
+  phonon-qt4-gstreamer \
+  python-enum34 \
+  pcaudiolib \
+  espeak-ng \
+  dotconf \
+  flite \
+  sip \
+  PyQt \
+  PyQt5 \
+  QScintilla \
+  polkit-qt5-1 \
+  grantlee \
+  grantlee-qt4 \
+  poppler \
+  json-glib \
+  libdbusmenu-gtk \
+  libindicator \
+  libappindicator \
+  cfitsio \
+  libdmtx \
+  qrencode \
+  hack-font-ttf \
+  noto-font-ttf \
+  noto-cjk-font-ttf \
+  gpgme \
+  lensfun \
+  opencv \
+  dvdauthor \
+  vid.stab \
+  frei0r-plugins \
+  mlt \
+  cracklib \
+  libpwquality \
+  accountsservice \
+  libburn \
+  qtav \
+  ddcutil \
+  id3lib \
+  cryptopp \
+  cryfs \
+  python3-random2 \
+  perl-path-tiny \
+  perl-template-toolkit \
+  freecell-solver \
+  drumstick \
+  libsass \
+  sassc \
+  rttr \
+  quazip \
+  ; do
+  cd $module && ./$module.SlackBuild
+  if [ $? = 0 ]; then
+    $INSTALLPRG /tmp/${module}-*.txz
+    # Keep MIME database current:
+    /usr/bin/update-mime-database /usr/share/mime 1> /dev/null 2> /dev/null &
+	mv -v /tmp/$module*.txz /sfspacks/deps
+	rm -rf /tmp/package-$module /tmp/$module-*
+  else
+    echo "${module} failed to build."
+    exit 1
+  fi
+cd - ;
+done
+
+}
 
 kernel_source_build_c () {
 #********************************************************
@@ -1085,9 +1195,12 @@ cd /slacksrc/others
 installpkg cxxlibs-6.0.18-i486-1.txz
 installpkg gmp-5.1.3-i486-1.txz
 installpkg readline-6.3-i586-2.txz
+installpkg readline-7.0.005-i586-1.txz
 installpkg libtermcap-1.2.3-i486-7.txz
 installpkg ncurses-5.9-i486-4.txz
 installpkg libpng-1.4.12-i486-1.txz
+installpkg libffi-3.2.1-i586-2.txz
+installpkg /sfspacks/l/libpng-1.6.*.txz
 cd /sources
 }
 
@@ -1104,6 +1217,7 @@ installpkg readline-7.0.005-x86_64-1.txz
 installpkg libtermcap-1.2.3-x86_64-7.txz
 installpkg ncurses-5.9-x86_64-4.txz
 installpkg libpng-1.4.12-x86_64-1.txz
+installpkg libffi-3.2.1-x86_64-2.txz
 installpkg /sfspacks/l/libpng-1.6.*-x86_64*.txz
 cd /sources
 }
@@ -1115,7 +1229,8 @@ post_elflibs_c () {
 #******************************************************************
 removepkg cxxlibs-6.0.18-i486-1.txz readline-6.3-i586-2 ncurses-5.9-i486-4
 removepkg gmp-5.1.3-i486-1  libtermcap-1.2.3-i486-7 libpng-1.4.12-i486-1.txz
-removepkg readline-7.0.005-x86_64-1.txz
+removepkg readline-7.0.005-i586-1.txz
+removepkg libffi-3.2.1-i586-2.txz
 upgradepkg --reinstall /sfspacks/l/libpng-1.6.*.txz
 upgradepkg --reinstall /sfspacks/l/readline-8.0.*.txz
 cd /sources
@@ -1128,7 +1243,9 @@ post_elflibs64_c () {
 #******************************************************************
 removepkg cxxlibs-6.0.18-x86_64-1.txz readline-6.3-x86_64-2 ncurses-5.9-x86_64-4
 removepkg gmp-5.1.3-x86_64-1 libtermcap-1.2.3-x86_64-7 libpng-1.4.12-x86_64-1.txz
-installpkg /sfspacks/l/libpng-1.6.*.txz
+removepkg libffi-3.2.1-x86_64-2.txz
+upgradepkg --reinstall /sfspacks/l/libpng-1.6.*.txz
+upgradepkg --reinstall /sfspacks/l/readline-8.0.*.txz
 cd /sources
 }
 
@@ -1898,6 +2015,9 @@ for package in \
 	mv -v /tmp/kde_build/*.txz /sfspacks/kde
 done
 
+# Keep MIME database current:
+/usr/bin/update-mime-database /usr/share/mime 1>/dev/null 2>/dev/null &
+
 cd /sources
 
 }
@@ -2038,6 +2158,10 @@ mv -v /tmp/kde_build/*.txz /sfspacks/kde
 [ $? != 0 ] && touch /tmp/kde_build/gwenview.failed
 mv -v /tmp/kde_build/*.txz /sfspacks/kde
 
+./kde.SlackBuild extragear:amarok
+[ $? != 0 ] && touch /tmp/kde_build/amarok.failed
+mv -v /tmp/kde_build/*.txz /sfspacks/kde
+
 cd /sources
 
 }
@@ -2055,6 +2179,555 @@ mv -v /tmp/kde_build/*.txz /sfspacks/kde
 ./kde.SlackBuild kdepim-runtime
 [ $? != 0 ] && touch /tmp/kde_build/kdepim-runtime.failed
 mv -v /tmp/kde_build/*.txz /sfspacks/kde
+
+cd /sources
+
+}
+
+build_frameworks_kde5 () {
+#********************************************************
+#  kde4 \
+#  frameworks \
+#  applications-extra:kdiagram \
+#  kdepim \
+#  plasma \
+#  plasma-extra \
+#  applications-extra:libktorrent \
+#  applications \
+#  applications-extra \
+#  applications:umbrello \
+#********************************************************
+
+cd /slacksrc/kde5
+
+export UPGRADE_PACKAGES=always
+
+./kde.SlackBuild kde4:kdelibs
+[ $? != 0 ] && touch /tmp/kde_build/kdelibs.failed
+mv -v /tmp/kde_build/*.txz /sfspacks/kde5/kde4
+
+for package in \
+	attica-framework \
+	extra-cmake-modules \
+	kapidox \
+	karchive \
+	kcodecs \
+	kconfig \
+	kcoreaddons \
+	kdbusaddons \
+	kdnssd \
+	kguiaddons \
+	ki18n \
+	kidletime \
+	kimageformats \
+	kitemmodels \
+	kitemviews \
+	kplotting \
+	kwidgetsaddons \
+	kwindowsystem \
+	networkmanager-qt \
+	solid \
+	sonnet \
+	threadweaver \
+	kauth \
+	kcompletion \
+	kcrash \
+	kdoctools \
+	kpty \
+	kunitconversion \
+	kconfigwidgets \
+	kservice \
+	kglobalaccel \
+	kpackage \
+	kdesu \
+	kemoticons \
+	kiconthemes \
+	kjobwidgets \
+	knotifications \
+	ktextwidgets \
+	kxmlgui \
+	kbookmarks \
+	kwallet \
+	kio \
+	kdeclarative \
+	kcmutils \
+	kirigami2 \
+	knewstuff \
+	frameworkintegration \
+	kinit \
+	knotifyconfig \
+	kparts \
+	kactivities-framework \
+	kded \
+	kdewebkit \
+	syntax-highlighting \
+	ktexteditor \
+	kdesignerplugin \
+	kwayland \
+	plasma-framework \
+	modemmanager-qt \
+	kpeople \
+	kxmlrpcclient \
+	bluez-qt \
+	kfilemetadata5 \
+	baloo5 \
+	breeze-icons \
+	oxygen-icons5 \
+	kactivities-stats \
+	krunner \
+	prison \
+	qqc2-desktop-style \
+	kjs \
+	kdelibs4support \
+	khtml \
+	kjsembed \
+	kmediaplayer \
+	kross \
+	purpose \
+	syndication \
+	kholidays \
+	kcalendarcore \
+	kcontacts \
+  ; do
+   ./kde.SlackBuild frameworks:$package 
+ 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
+	mv -v /tmp/kde_build/*.txz /sfspacks/kde5/frameworks
+#	if [ $? = 0 ]; then
+#		mv -v /tmp/kde_build/*.txz /sfspacks/kde5/applications
+#	else
+#		touch /tmp/kde_build/$package.failed
+#		exit 1
+#	fi
+done
+
+# Keep MIME database current:
+/usr/bin/update-mime-database /usr/share/mime 1>/dev/null 2>/dev/null &
+
+cd /sources
+
+}
+
+build_kdepim_kde5 () {
+#********************************************************
+cd /slacksrc/kde5
+
+export UPGRADE_PACKAGES=always
+
+./kde.SlackBuild applications-extra:kdiagram
+[ $? != 0 ] && touch /tmp/kde_build/kdiagram.failed
+mv -v /tmp/kde_build/*.txz /sfspacks/kde5/applications-extra
+
+for package in \
+	akonadi \
+	kpimtextedit \
+	kidentitymanagement \
+	kcalutils \
+	kblog \
+	libkgapi \
+	kmime \
+	ksmtp \
+	kimap \
+	kmbox \
+	kldap \
+	kontactinterface \
+	ktnef \
+	akonadi-mime \
+	akonadi-contacts \
+	akonadi-notes \
+	akonadi-search \
+	kalarmcal \
+	kmailtransport \
+	akonadi-calendar \
+	libkleo \
+	grantleetheme \
+	libkdepim \
+	pimcommon \
+	libgravatar \
+	libksieve \
+	mailimporter \
+	kdepim-apps-libs \
+	calendarsupport \
+	eventviews \
+	incidenceeditor \
+	messagelib \
+	mailcommon \
+	kleopatra \
+	kdav \
+	kpkpass \
+	kitinerary \
+	kdepim-addons \
+	kdepim-runtime \
+	akonadi-calendar-tools \
+	akonadiconsole \
+	akonadi-import-wizard \
+	akregator \
+	grantlee-editor \
+	kaddressbook \
+	kalarm \
+	kmail \
+	kmail-account-wizard \
+	knotes \
+	kontact \
+	korganizer \
+	mbox-importer \
+	pim-data-exporter \
+	pim-sieve-editor \
+  ; do
+   ./kde.SlackBuild kdepim:$package
+ 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
+	mv -v /tmp/kde_build/*.txz /sfspacks/kde5/kdepim
+#	if [ $? = 0 ]; then
+#		mv -v /tmp/kde_build/*.txz /sfspacks/kde5/applications
+#	else
+#		touch /tmp/kde_build/$package.failed
+#		exit 1
+#	fi
+done
+
+# Keep MIME database current:
+/usr/bin/update-mime-database /usr/share/mime 1>/dev/null 2>/dev/null &
+
+cd /sources
+
+}
+
+build_plasma_kde5 () {
+#********************************************************
+cd /slacksrc/kde5
+
+export UPGRADE_PACKAGES=always
+
+for package in \
+	kgamma5 \
+	kdecoration \
+	breeze \
+	breeze-gtk \
+	breeze-grub \
+	kwayland-integration \
+	plasma-integration \
+	kinfocenter \
+	libksysguard \
+	ksysguard \
+	kscreenlocker \
+	kwin \
+	kwrited \
+	libkscreen2 \
+	milou \
+	oxygen \
+	plasma-workspace \
+	kde-cli-tools \
+	plasma-workspace \
+	systemsettings \
+	plasma-desktop \
+	kdeplasma-addons \
+	plasma-workspace-wallpapers \
+	plasma5-nm \
+	powerdevil \
+	bluedevil \
+	khotkeys \
+	kmenuedit \
+	polkit-kde-framework \
+	kscreen2 \
+	sddm-kcm \
+	kde-gtk-config \
+	ksshaskpass \
+	plasma-sdk \
+	plasma-pa \
+	kactivitymanagerd \
+	user-manager \
+	xdg-desktop-portal-kde \
+	drkonqi \
+	plasma-vault \
+	plasma-browser-integration \
+  ; do
+   ./kde.SlackBuild plasma:$package
+ 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
+	mv -v /tmp/kde_build/*.txz /sfspacks/kde5/plasma
+#	if [ $? = 0 ]; then
+#		mv -v /tmp/kde_build/*.txz /sfspacks/kde5/applications
+#	else
+#		touch /tmp/kde_build/$package.failed
+#		exit 1
+#	fi
+done
+
+# Keep MIME database current:
+/usr/bin/update-mime-database /usr/share/mime 1>/dev/null 2>/dev/null &
+
+cd /sources
+
+}
+
+build_plasma_extra_kde5 () {
+#********************************************************
+cd /slacksrc/kde5
+
+export UPGRADE_PACKAGES=always
+
+for package in \
+	sddm-qt5 \
+	kdeconnect-framework \
+	polkit-kde-kcmodules-framework \
+	kde-wallpapers \
+	latte-dock \
+	oxygen-fonts \
+	wacomtablet \
+  ; do
+   ./kde.SlackBuild plasma-extra:$package
+ 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
+	mv -v /tmp/kde_build/*.txz /sfspacks/kde5/plasma-extra
+#	if [ $? = 0 ]; then
+#		mv -v /tmp/kde_build/*.txz /sfspacks/kde5/applications
+#	else
+#		touch /tmp/kde_build/$package.failed
+#		exit 1
+#	fi
+done
+
+./kde.SlackBuild applications-extra:libktorrent
+[ $? != 0 ] && touch /tmp/kde_build/libktorrent.failed
+mv -v /tmp/kde_build/*.txz /sfspacks/kde5/applications-extra
+#	if [ $? = 0 ]; then
+#		mv -v /tmp/kde_build/*.txz /sfspacks/kde5/applications
+#	else
+#		touch /tmp/kde_build/$package.failed
+#		exit 1
+#	fi
+
+# Keep MIME database current:
+/usr/bin/update-mime-database /usr/share/mime 1>/dev/null 2>/dev/null &
+
+cd /sources
+
+}
+
+build_applications_kde5 () {
+#********************************************************
+cd /slacksrc/kde5
+
+export UPGRADE_PACKAGES=always
+
+for package in \
+	libkipi \
+	kipi-plugins \
+	libkexiv2 \
+	libkdcraw \
+	libksane \
+	gwenview \
+	kio-extras \
+	kate \
+	konsole \
+	kdialog \
+	keditbookmarks \
+	kfind \
+	konqueror \
+	ark \
+	baloo5-widgets \
+	filelight \
+	kcalc \
+	kcharselect \
+	kdf \
+	kfloppy \
+	kgpg \
+	print-manager \
+	kbackup \
+	ktimer \
+	khelpcenter \
+	kwalletmanager \
+	sweeper \
+	dolphin \
+	kdebugsettings \
+	kapptemplate \
+	cervisia \
+	dolphin-plugins \
+	kcachegrind \
+	kde-dev-scripts \
+	kde-dev-utils \
+	kdesdk-kioslaves \
+	kdesdk-thumbnailers \
+	kross-interpreters \
+	libkomparediff2 \
+	kompare \
+	lokalize \
+	poxml \
+	kdegraphics-mobipocket \
+	okular \
+	kdegraphics-thumbnailers \
+	kamera \
+	kcolorchooser \
+	kolourpaint \
+	kruler \
+	spectacle \
+	svgpart \
+	kirigami-gallery \
+	kmouth \
+	kmousetool \
+	kmag \
+	libkcddb \
+	libkcompactdisc \
+	audiocd-kio \
+	dragon \
+	juk \
+	kmix \
+	ffmpegthumbs \
+	kwave \
+	k3b \
+	kamoso \
+	kdenetwork-filesharing \
+	zeroconf-ioslave \
+	kget \
+	kopete \
+	krdc \
+	krfb \
+	kcron \
+	ksystemlog \
+	libkdegames \
+	libkmahjongg \
+	klickety \
+	ksudoku \
+	ksquares \
+	kpat \
+	klines \
+	ksnakeduel \
+	kollision \
+	kshisen \
+	kblocks \
+	lskat \
+	kreversi \
+	bovo \
+	granatier \
+	kmines \
+	kiriki \
+	kigo \
+	bomber \
+	kolf \
+	kdiamond \
+	kbounce \
+	konquest \
+	kapman \
+	knavalbattle \
+	killbots \
+	kubrick \
+	kgoldrunner \
+	knetwalk \
+	kbreakout \
+	ksirk \
+	kfourinline \
+	picmi \
+	kblackbox \
+	palapeli \
+	katomic \
+	ktuberling \
+	kjumpingcube \
+	kmahjongg \
+	kspaceduel \
+	knights \
+	kteatime \
+	kdeedu-data \
+	libkeduvocdocument \
+	analitza \
+	kalgebra \
+	kanagram \
+	khangman \
+	kig \
+	parley \
+	artikulate \
+	blinken \
+	cantor \
+	kalzium \
+ 	kbruch \
+	kgeography \
+	kiten \
+	klettres \
+	kmplot \
+	kqtquickcharts \
+	ktouch \
+	kturtle \
+	kwordquiz \
+	marble \
+	rocs \
+	step \
+	minuet \
+	libkgeomap \
+	kdenlive \
+	kimagemapeditor \
+	yakuake \
+  ; do
+   ./kde.SlackBuild applications:$package
+ 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
+	mv -v /tmp/kde_build/*.txz /sfspacks/kde5/applications
+#	if [ $? = 0 ]; then
+#		mv -v /tmp/kde_build/*.txz /sfspacks/kde5/applications
+#	else
+#		touch /tmp/kde_build/$package.failed
+#		exit 1
+#	fi
+
+done
+
+# Keep MIME database current:
+/usr/bin/update-mime-database /usr/share/mime 1>/dev/null 2>/dev/null &
+
+cd /sources
+
+}
+
+build_applications_extra_kde5 () {
+#********************************************************
+cd /slacksrc/kde5
+
+export UPGRADE_PACKAGES=always
+
+for package in \
+	calligra \
+	calligraplan \
+	digikam \
+	krita \
+	ktorrent \
+	kpmcore \
+	partitionmanager \
+	falkon \
+	skanlite \
+	kdevelop-pg-qt \
+	kdevelop \
+	kdev-php \
+	kdiagram \
+	kjots \
+	kstars \
+	krusader \
+	kile \
+	kaudiocreator \
+	kwebkitpart \
+	oxygen-gtk2 \
+	kdev-python \
+	alkimia \
+	kmymoney \
+	okteta \
+	krename \
+  ; do
+   ./kde.SlackBuild applications-extra:$package
+ 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
+	mv -v /tmp/kde_build/*.txz /sfspacks/kde5/applications-extra
+#	if [ $? = 0 ]; then
+#		mv -v /tmp/kde_build/*.txz /sfspacks/kde5/applications
+#	else
+#		touch /tmp/kde_build/$package.failed
+#		exit 1
+#	fi
+done
+
+./kde.SlackBuild applications:umbrello
+[ $? != 0 ] && touch /tmp/kde_build/umbrello.failed
+mv -v /tmp/kde_build/*.txz /sfspacks/kde5/applications
+#	if [ $? = 0 ]; then
+#		mv -v /tmp/kde_build/*.txz /sfspacks/kde5/applications
+#	else
+#		touch /tmp/kde_build/$package.failed
+#		exit 1
+#	fi 
+
+# Keep MIME database current:
+/usr/bin/update-mime-database /usr/share/mime 1>/dev/null 2>/dev/null &
 
 cd /sources
 
@@ -2209,7 +2882,8 @@ define_path_lib
 # Ensure that the /sfspacks/$SAVDIRs exists.
 #****************************************************************
 distribution="slackware"
-mkdir -pv /sfspacks/{others,a,ap,d,e,extra,f,k,kde,kdei,l,n,t,tcl,x,xap,xfce,y}
+mkdir -pv /sfspacks/{others,a,ap,d,deps,e,extra,f,k,kde,kde5,kdei,l,n,t,tcl,x,xap,xfce,y}
+mkdir -pv /sfspacks/kde5/{applications,applications-extra,frameworks,kde4,kdepim,plasma,plasma-extra}
 #******************************************************************
 # Some packages need two pass to be built completely.
 # Alteration of the slackware sources is made "on the fly" during
@@ -2302,13 +2976,17 @@ while (( LINE < $FILELEN )); do
 					esac
 					continue ;;
 
+				all-deps )
+					all_deps
+					[ $? != 0 ] && exit 1 ;;
+
 				alsa-lib )
 					case $LISTFILE in
 						build2_s.list )
 							build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 ;;
 
-						build3_s.list )
+						* )
 							rm /sfspacks/l/alsa-lib*.t?z
 							build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 ;;
@@ -2476,6 +3154,30 @@ while (( LINE < $FILELEN )); do
 							[ $? != 0 ] && exit 1 ;;
 					esac
 					continue ;;
+
+				frameworks )
+					build_frameworks_kde5
+					[ $? != 0 ] && exit 1 ;;
+
+				kdepim5 )
+					build_kdepim_kde5
+					[ $? != 0 ] && exit 1 ;;
+
+				applications )
+					build_applications_kde5
+					[ $? != 0 ] && exit 1 ;;
+
+				applications-extra )
+					build_applications_extra_kde5
+					[ $? != 0 ] && exit 1 ;;
+
+				plasma )
+					build_plasma_kde5
+					[ $? != 0 ] && exit 1 ;;
+
+				plasma-extra )
+					build_plasma_extra_kde5
+					[ $? != 0 ] && exit 1 ;;
 
 				kde )
 					build_kde
