@@ -81,7 +81,10 @@ cd $PKGNAM-$VERSION || exit 1
 
 # patch to avoid -Werror-deprecated failure
 cat $CWD/no-Werror-deprecated.patch | patch -Esp1 --verbose || exit 1
+cat $CWD/gtk_icon_info_free-deprecated.patch | patch -Esp1 --verbose || exit 1
 cat $CWD/lm_ftbfs.patch | patch -Esp1 --verbose || exit 1
+
+autoreconf -vif
 
 # Make sure ownerships and permissions are sane:
 chown -R root:root .
@@ -114,8 +117,7 @@ make install DESTDIR=$PKG || return 1
 }
 
 # configure may be missing:
-# [ ! -x configure ] && autoreconf -vif
-autoreconf -vif
+[ ! -x configure ] && autoreconf -vif
 
 # GTK+-2 support:
 mkdir -p build-gtk2
