@@ -35,7 +35,6 @@ mv phonon phonon.old && ln -sf ../deps/phonon phonon
 mv phonon-gstreamer phonon-gstreamer.old && ln -sf ../deps/phonon-gstreamer phonon-gstreamer
 mv qt-gstreamer qt-gstreamer.old && ln -sf ../deps/qt-gstreamer qt-gstreamer
 mv poppler poppler.old && ln -sf ../deps/poppler poppler
-mv qca qca.old && ln -sf ../deps/qca-qt5 qca
 mv sip sip.old && ln -sf ../deps/sip sip
 cd /slacksrc/n
 mv gpgme gpgme.old && ln -sf ../deps/gpgme gpgme
@@ -426,7 +425,6 @@ l aalib
 l alsa-oss
 l aspell
 extra aspell-word-lists 
-l attica
 l audiofile
 l automoc4
 l babl
@@ -605,7 +603,6 @@ l soprano
 xap MPlayer
 xap xine-lib
 xap xine-ui
-d subversion
 l libxml2
 l ncurses
 n openssl
@@ -619,6 +616,7 @@ kde5 plasma
 kde5 plasma-extra
 kde5 applications
 kde5 applications-extra
+d subversion
 xap mozilla-firefox
 xap mozilla-thunderbird
 y bsd-games

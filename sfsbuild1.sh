@@ -469,6 +469,7 @@ QTDIR=/usr/lib${LIBDIRSUFFIX}/qt ; export QTDIR
 
 for module in \
   extra-cmake-modules \
+  md4c \
   sni-qt \
   SDL_sound \
   OpenAL \
@@ -482,7 +483,6 @@ for module in \
   qt5-webkit \
   qca-qt5 \
   libdbusmenu-qt5 \
-  qt-gstreamer \
   phonon \
   phonon-gstreamer \
   phonon-qt4 \
@@ -492,6 +492,7 @@ for module in \
   espeak-ng \
   dotconf \
   flite \
+  speech-dispatcher \
   sip \
   PyQt \
   PyQt5 \
@@ -500,7 +501,6 @@ for module in \
   grantlee \
   grantlee-qt4 \
   poppler \
-  json-glib \
   libdbusmenu-gtk \
   libindicator \
   libappindicator \
