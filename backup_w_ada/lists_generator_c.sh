@@ -81,7 +81,9 @@ d python
 d python3
 l gc
 d patchelf
+d pre-gcc
 d gcc
+d post-gcc
 a bzip2
 d pkg-config
 l ncurses
@@ -641,7 +643,6 @@ n net-snmp
 xap sane
 xap xsane
 l python-sane
-l python-distro
 ap hplip
 ap ispell
 ap jed
@@ -843,7 +844,6 @@ n netwrite
 n nfacct
 n libtirpc
 n iptables
-l gmp
 n nftables
 n nmap
 n nn
