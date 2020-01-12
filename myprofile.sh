@@ -42,8 +42,8 @@ generate_etc_fstab () {
 #*******************************************************************
 mkdir -pv $SFS/etc
 cat > $SFS/etc/fstab << "EOF"
-/dev/sdd1        swap             swap        defaults         0   0
-/dev/sdd3       /                ext4        defaults,noatime,discard  	   1   1
+/dev/sdc2        swap             swap        defaults         0   0
+/dev/sdc12       /                ext4        defaults,noatime,discard  	   1   1
 /dev/fd0         /mnt/floppy      auto        noauto,owner     0   0
 devpts           /dev/pts         devpts      gid=5,mode=620   0   0
 proc             /proc            proc        defaults         0   0
@@ -185,7 +185,7 @@ root_bashrc
 root_vimrc
 #**********************************
 cat >> /etc/profile << "EOF"
-export LANG=fr_FR.UTF8
+# export LANG=fr_FR.UTF8
 EOF
 #**********************************
 echo

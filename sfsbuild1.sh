@@ -2,8 +2,8 @@
 ################################  sfsbuild1.sh #################################
 #!/bin/bash
 #
-# Copyright 2018, 2019  J. E. Garrott Sr, Puyallup, WA, USA
-# Copyright 2018, 2019  "nobodino", Bordeaux, FRANCE
+# Copyright 2018,2019,2020  J. E. Garrott Sr, Puyallup, WA, USA
+# Copyright 2018,2019,2020  "nobodino", Bordeaux, FRANCE
 # All rights reserved.
 #
 # Redistribution and use of this script, with or without modification, is
@@ -738,7 +738,7 @@ case $PACKNAME in
 
 	* )
 		# every other package is built in /tmp
-		cd /tmp
+		export TERM=xterm && cd /tmp
 		$INSTALLPRG /tmp/$PACKNAME*.t?z
 		[ $? != 0 ] && exit 1 ;;
 
@@ -1249,6 +1249,55 @@ upgradepkg --reinstall /sfspacks/l/readline-8.0.*.txz
 cd /sources
 }
 
+pre_gcc () {
+#******************************************************************
+# Install gnat-gpl to be able to build gnat-ada package
+#
+# Note: Much of this script is copied from the LFS manual.
+#       Copyright © 1999-2019 Gerard Beekmans and may be
+#       copied under the MIT License.
+#******************************************************************
+cd /tmp
+case $(uname -m) in
+	x86_64)
+		tar xf /slacksrc/others/gnat-gpl-2017-x86_64-linux-bin.tar.gz
+		if [ $? != 0 ]; then
+			echo
+			echo "Tar extraction of gnat-gpl-2017-x86_64-linux-bin failed."
+			echo
+		exit 1
+		fi
+		cd gnat-gpl-2017-x86_64-linux-bin
+		[ $? != 0 ] && exit 1 ;;
+	i686)
+		tar xf /slacksrc/others/gnat-gpl-2014-x86-linux-bin.tar.gz
+		if [ $? != 0 ]; then
+			echo
+			echo "Tar extraction of gnat-gpl-2014-x86-linux-bin failed."
+			echo
+		exit 1
+		fi
+		cd gnat-gpl-2014-x86-linux-bin
+		[ $? != 0 ] && exit 1 ;;
+esac
+
+mkdir -pv /tools/opt/gnat
+make ins-all prefix=/tools/opt/gnat
+PATH_HOLD=$PATH && export PATH=/tools/opt/gnat/bin:$PATH_HOLD
+echo $PATH
+find /tools/opt/gnat -name ld -exec mv -v {} {}.old \;
+find /tools/opt/gnat -name ld -exec as -v {} {}.old \;
+
+cd /sources
+}
+
+post_gcc () {
+#***************************************************************
+export PATH=$PATH_HOLD
+rm -rf /opt/gnat
+}
+
+
 #****************************************************************
 # X11 SUB-SYSTEM BUILDING
 #****************************************************************
@@ -1333,7 +1382,6 @@ for package in \
   libXrender \
   libXcursor \
   libXdamage \
-  libXfontenc \
   libXft \
   libXi \
   libXinerama \
@@ -1356,7 +1404,6 @@ for package in \
   libXfontcache \
   libXaw3d \
   pixman \
-  libXfont \
   libXfont2 \
   ; do
    ./x11.SlackBuild lib $package
@@ -1630,6 +1677,10 @@ cd /slacksrc/x/x11
 export UPGRADE_PACKAGES=always
 
 ./x11.SlackBuild driver xf86-input-libinput
+[ $? != 0 ] && exit 1
+mv -v /tmp/x11-build/*.txz /sfspacks/x
+
+./x11.SlackBuild app compiz
 [ $? != 0 ] && exit 1
 mv -v /tmp/x11-build/*.txz /sfspacks/x
 
@@ -3309,6 +3360,14 @@ while (( LINE < $FILELEN )); do
 							[ $? != 0 ] && exit 1 ;;
 					esac
 					continue ;;
+
+#				pre-gcc )
+#					pre_gcc
+#					[ $? != 0 ] && exit 1 ;;
+
+#				post-gcc )
+#					post_gcc
+#					[ $? != 0 ] && exit 1 ;;
 
 				QScintilla )
 					case $LQSC in

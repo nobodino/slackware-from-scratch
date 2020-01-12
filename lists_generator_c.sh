@@ -1,8 +1,8 @@
 #######################  list_generator_c.sh ###################################
 #!/bin/bash
 #
-# Copyright 2018, 2019  J. E. Garrott Sr, Puyallup, WA, USA
-# Copyright 2018, 2019  "nobodino", Bordeaux, FRANCE
+# Copyright 2018,2019,2020  J. E. Garrott Sr, Puyallup, WA, USA
+# Copyright 2018,2019,2020  "nobodino", Bordeaux, FRANCE
 # All rights reserved.
 #
 # Redistribution and use of this script, with or without modification, is
@@ -81,7 +81,9 @@ d python
 d python3
 l gc
 d patchelf
+# d pre-gcc
 d gcc
+# d post-gcc
 a bzip2
 d pkg-config
 l ncurses
@@ -236,8 +238,7 @@ l libusb
 l libusb-compat
 l libsigsegv
 l svgalib
-l db42
-l db44
+l db48
 a lvm2
 l lcms2
 n nettle
@@ -269,6 +270,7 @@ a libgudev
 a usbutils
 a dialog
 d help2man
+l python-pygments	
 ap linuxdoc-tools
 l gobject-introspection
 l glib2
@@ -307,7 +309,7 @@ l libical
 a dbus
 n bluez
 n net-tools
-extra java
+# extra java
 x x11-skel
 x libevdev
 x mtdev
@@ -379,6 +381,7 @@ generate_slackware_build_list3_c () {
 #******************************************
 cat > $SFS/sources/build3_s.list << "EOF"
 a dhcpcd_up
+l python-pygments
 ap linuxdoc-tools
 l libpcap
 a f2fs-tools
@@ -509,6 +512,7 @@ l adwaita-icon-theme
 xap ffmpegthumbnailer
 xfce xfce
 xfce xfce
+x x11-app-post
 xap seamonkey
 a end3
 EOF
@@ -760,6 +764,8 @@ l libcdio
 l libcdio-paranoia
 l libdvdread
 l libdvdnav
+extra java
+l libcaca
 l libcaca
 l fribidi
 l talloc
@@ -1093,6 +1099,7 @@ n openssl
 n snownews
 d python
 d python3
+x x11-app-post
 xap mozilla-firefox
 xap mozilla-thunderbird
 y bsd-games
