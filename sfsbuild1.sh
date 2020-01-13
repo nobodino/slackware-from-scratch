@@ -1603,7 +1603,6 @@ done
 mv -v /tmp/x11-build/*.txz /sfspacks/x
 
 for package in \
-  compiz \
   luit \
   igt-gpu-tools \
   twm \
@@ -1628,10 +1627,6 @@ cd /slacksrc/x/x11
 export UPGRADE_PACKAGES=always
 
 ./x11.SlackBuild driver xf86-input-libinput
-[ $? != 0 ] && exit 1
-mv -v /tmp/x11-build/*.txz /sfspacks/x
-
-./x11.SlackBuild app compiz
 [ $? != 0 ] && exit 1
 mv -v /tmp/x11-build/*.txz /sfspacks/x
 
@@ -3212,13 +3207,26 @@ while (( LINE < $FILELEN )); do
 					esac
 					continue ;;
 
+#				libcaca )
+#					case $LCAC in
+#						1 )
+#							execute_libcaca_sed && build $SRCDIR $PACKNAME 
+#							[ $? != 0 ] && exit 1
+#							update_slackbuild && LCAC=2 ;;
+#						2 )
+#							build $SRCDIR $PACKNAME
+#							[ $? != 0 ] && exit 1 ;;
+#					esac
+#					continue ;;
+
 				libcaca )
-					case $LCAC in
-						1 )
-							execute_libcaca_sed && build $SRCDIR $PACKNAME 
-							[ $? != 0 ] && exit 1
-							update_slackbuild && LCAC=2 ;;
-						2 )
+					case $ARCH in
+						x86_64 )
+							upgradepkg --install-new /slacksrc/others/libcaca-0.99.beta18-x86_64-2.txz
+							build $SRCDIR $PACKNAME
+							[ $? != 0 ] && exit 1 ;;
+						* )
+							upgradepkg --install-new /slacksrc/others/libcaca-0.99.beta18-i486-2.txz
 							build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 ;;
 					esac

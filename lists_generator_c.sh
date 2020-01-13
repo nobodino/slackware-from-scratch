@@ -359,6 +359,7 @@ x xcm
 x libwacom
 l libunwind
 x x11-group2
+x compiz
 x dejavu-fonts-ttf
 x liberation-fonts-ttf
 x motif
@@ -512,7 +513,6 @@ l adwaita-icon-theme
 xap ffmpegthumbnailer
 xfce xfce
 xfce xfce
-x x11-app-post
 xap seamonkey
 a end3
 EOF
@@ -764,8 +764,8 @@ l libcdio
 l libcdio-paranoia
 l libdvdread
 l libdvdnav
-extra java
-l libcaca
+# extra java
+# l libcaca
 l libcaca
 l fribidi
 l talloc
@@ -1099,7 +1099,6 @@ n openssl
 n snownews
 d python
 d python3
-x x11-app-post
 xap mozilla-firefox
 xap mozilla-thunderbird
 y bsd-games

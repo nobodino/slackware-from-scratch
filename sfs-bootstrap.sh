@@ -286,16 +286,19 @@ if [[ "$build_arch" = "x86" ]]
 		if [ ! -f ksh93-2012_08_01-i586-2.txz ]; then
 			wget -c -v $DLDIR3/slackware/ap/ksh93-2012_08_01-i586-2.txz
 		fi
+		if [ ! -f libcaca-0.99.beta18-i486-2.txz ]; then
+			wget -c -v $DLDIR3/slackware/l/libcaca-0.99.beta18-i486-2.txz
+		fi
 		cd $SRCDIR/others
 		if [ ! -f $GNAT_x86 ]; then
 			wget -c -v $DLDIR6/$GNAT_x86  && chmod 644 *.tar.gz
 		fi
-		cd $SRCDIR/others 
-		if [ ! -f jre-$JDK-linux-i586.tar.gz ]; then
-			# from https://gist.github.com/P7h/9741922
-			curl -C - -LR#OH "Cookie: oraclelicense=accept-securebackup-cookie" -k $DLDIR9
-		fi
-		cp -v jre-$JDK-linux-i586.tar.gz $SRCDIR/extra/java
+#		cd $SRCDIR/others 
+#		if [ ! -f jre-$JDK-linux-i586.tar.gz ]; then
+#			# from https://gist.github.com/P7h/9741922
+#			curl -C - -LR#OH "Cookie: oraclelicense=accept-securebackup-cookie" -k $DLDIR9
+#		fi
+#		cp -v jre-$JDK-linux-i586.tar.gz $SRCDIR/extra/java
 		cd $SRCDIR/d/rust && sed -i -e '1,12d' rust.url && sed -i -e '7,11d' rust.url && source rust.url
 		cd $SRCDIR/others
 		if [ ! -f readline-7.0.005-i586-1.txz ]; then
@@ -329,15 +332,18 @@ if [[ "$build_arch" = "x86" ]]
 		if [ ! -f ksh93-2012_08_01-x86_64-2.txz ]; then
 			wget -c -v $DLDIR5/slackware64/ap/ksh93-2012_08_01-x86_64-2.txz
 		fi
+		if [ ! -f libcaca-0.99.beta18-x86_64-2.txz ]; then
+			wget -c -v $DLDIR5/slackware64/l/libcaca-0.99.beta18-x86_64-2.txz
+		fi
 		cd $SRCDIR/others
 		if [ ! -f $GNAT_x86_64 ]; then
 			wget -c -v $DLDIR6/$GNAT_x86_64 && chmod 644 *.tar.gz
 		fi
-		cd $SRCDIR/others 
-		if [ ! -f jre-$JDK-linux-x64.tar.gz ]; then
-			# from https://gist.github.com/P7h/9741922
-			curl -C - -LR#OH "Cookie: oraclelicense=accept-securebackup-cookie" -k $DLDIR10
-		fi
+#		cd $SRCDIR/others 
+#		if [ ! -f jre-$JDK-linux-x64.tar.gz ]; then
+#			# from https://gist.github.com/P7h/9741922
+#			curl -C - -LR#OH "Cookie: oraclelicense=accept-securebackup-cookie" -k $DLDIR10
+#		fi
 		cp -rv jre-$JDK-linux-x64.tar.gz $SRCDIR/extra/java
 		cd $SRCDIR/d/rust && sed -i -e '1,18d' rust.url && source rust.url
 		cd $SRCDIR/others
