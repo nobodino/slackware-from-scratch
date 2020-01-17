@@ -920,7 +920,7 @@ which_build () {
     cp -v which /tools/bin/which || exit 1
     cd ..
     rm -rf which-$WHICHVER
-    echo which-$WHICHVER >> $SFS/tools/etc/tools_versionm4_build
+    echo which-$WHICHVER >> $SFS/tools/etc/tools_version
 }
 
 
