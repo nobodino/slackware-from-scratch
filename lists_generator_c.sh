@@ -81,9 +81,7 @@ d python
 d python3
 l gc
 d patchelf
-# d pre-gcc
 d gcc
-# d post-gcc
 a bzip2
 d pkg-config
 l ncurses
@@ -309,7 +307,6 @@ l libical
 a dbus
 n bluez
 n net-tools
-# extra java
 x x11-skel
 x libevdev
 x mtdev
@@ -1059,6 +1056,7 @@ l taglib
 l alsa-plugins
 n links
 ap vim
+a nvi
 n ulogd
 l fuse3
 n sshfs

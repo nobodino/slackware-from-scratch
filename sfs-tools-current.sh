@@ -126,9 +126,11 @@ copy_src () {
     cd $RDIR/ap/diffutils
 	export DIFFVER=${VERSION:-$(echo diffutils-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/ap/diffutils/diffutils-$DIFFVER.tar.xz $SRCDIR || exit 1
-    cd $RDIR/a/file
+#    cd $RDIR/a/file
+#	file-5.38 doesn't work
+	cd $SRCDIR && wget -c https://mirror.eu.oneandone.net/linux/distributions/gentoo/gentoo/distfiles/file-5.37.tar.gz
 	export FILEVER=${VERSION:-$(echo file-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
-    cp -v $RDIR/a/file/file-$FILEVER.tar.?z $SRCDIR || exit 1
+ #   cp -v $RDIR/a/file/file-$FILEVER.tar.?z $SRCDIR || exit 1
     cd $RDIR/a/findutils
 	export FINDVER=${VERSION:-$(echo findutils-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/a/findutils/findutils-$FINDVER.tar.lz $SRCDIR || exit 1
@@ -662,7 +664,7 @@ file_build () {
 #*****************************
     tar xvf file-$FILEVER.tar.?z && cd file-$FILEVER
 
-    ./configure --prefix=/tools || exit 1
+	./configure --prefix=/tools || exit 1
 
     make || exit 1
     make install || exit 1
@@ -1004,6 +1006,7 @@ lzip_build
 tar_slack_build
 which_build
 util_linux_build
+#*****************************
 case $(uname -m) in
 	x86_64)
 		tar xf gnat-gpl-2017-x86_64-linux-bin.tar.gz
@@ -1035,6 +1038,7 @@ PATH_HOLD=$PATH && export PATH=/tools/opt/gnat/bin:$PATH_HOLD
 echo $PATH
 find /tools/opt/gnat -name ld -exec mv -v {} {}.old \;
 find /tools/opt/gnat -name ld -exec as -v {} {}.old \;
+#*****************************
 gnat_build_sp2
 strip_libs
 clean_sources
