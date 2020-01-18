@@ -89,6 +89,7 @@ a attr
 a acl
 l libcap
 a sed
+a xz
 l libxml2
 tcl tcl
 l libxslt
@@ -99,7 +100,7 @@ l gdbm
 d gperf
 d autoconf
 d automake
-a xz
+# a xz
 a kmod
 a gettext
 a gettext-tools
@@ -107,6 +108,7 @@ l elfutils
 l libffi
 a procps-ng
 ap groff
+l pcre2
 a util-linux
 a e2fsprogs
 a coreutils
