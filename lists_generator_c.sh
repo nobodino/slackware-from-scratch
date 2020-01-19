@@ -100,7 +100,6 @@ l gdbm
 d gperf
 d autoconf
 d automake
-# a xz
 a kmod
 a gettext
 a gettext-tools
@@ -512,7 +511,6 @@ l adwaita-icon-theme
 xap ffmpegthumbnailer
 xfce xfce
 xfce xfce
-xap seamonkey
 a end3
 EOF
 }
@@ -1102,6 +1100,7 @@ d python3
 xap mozilla-firefox
 xap mozilla-thunderbird
 y bsd-games
+# xap seamonkey
 a end4
 EOF
 }
