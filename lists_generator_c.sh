@@ -1078,6 +1078,7 @@ l polkit-gnome
 l libsodium
 l argon2
 l oniguruma
+n krb5
 n php
 n nfs-utils
 n libgcrypt

@@ -34,8 +34,9 @@
 #*******************************************************************
 # export RSYNCDIR=rsync://mirror.slackbuilds.org/slackware/slackware-current
 # export RSYNCDIR=rsync://mirrors.slackware.bg/slackware/slackware-current
-export RSYNCDIR=rsync://slackware.uk/slackware/slackware64-current
-# export RSYNCDIR=rsync://bear.alienbase.nl/mirrors/slackware/slackware64-current
+# export RSYNCDIR=rsync://slackware.uk/slackware/slackware64-current
+# export RSYNDIR=rsync://rsync.slackware.no/slackware/slackware64-current/
+export RSYNCDIR=rsync://bear.alienbase.nl/mirrors/slackware/slackware64-current
 #*******************************************************************
 # the mirrors from which we download files to populate "others" directly
 #*******************************************************************
@@ -49,16 +50,15 @@ export DLDIR6=http://mirror.eu.oneandone.net/linux/distributions/gentoo/gentoo/d
 export DLDIR11=https://slackbuilds.org/slackbuilds/14.2
 export DLDIR12=https://github.com/nobodino/slackware-from-scratch/raw/master/packages_for_aaa_elflibs
 #*******************************************************************
-# jdk versions
+# jdk and ada versions
 #*******************************************************************
-export ISLVER="0.18"
-export JDK="8u202"
+# export ISLVER="0.18"
+# export JDK="8u202"
 export GNAT_x86="gnat-gpl-2014-x86-linux-bin.tar.gz"
 export GNAT_x86_64="gnat-gpl-2017-x86_64-linux-bin.tar.gz"
 export GREEN="\\033[1;32m"
 export NORMAL="\\033[0;39m"
 export RED="\\033[1;31m"
-export PINK="\\033[1;35m"
 export BLUE="\\033[1;34m"
 export YELLOW="\\033[1;33m"
 #*******************************************************************

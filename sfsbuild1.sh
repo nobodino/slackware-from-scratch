@@ -467,8 +467,9 @@ TMP=${TMP:-/tmp}
 # This avoids compiling a version number into KDE's .la files:
 QTDIR=/usr/lib${LIBDIRSUFFIX}/qt ; export QTDIR
 
+#  extra-cmake-modules \
+
 for module in \
-  extra-cmake-modules \
   md4c \
   sni-qt \
   SDL_sound \
@@ -2132,6 +2133,24 @@ cd /sources
 
 }
 
+build_extra_cmake_kde5 () {
+#********************************************************
+cd /slacksrc/kde5
+
+export UPGRADE_PACKAGES=always
+   ./kde.SlackBuild frameworks:extra-cmake-modules 
+ 	[ $? != 0 ] && touch /tmp/kde_build/extra-cmake-modules.failed
+	mv -v /tmp/kde_build/*.txz /sfspacks/kde5/frameworks
+#	if [ $? = 0 ]; then
+#		mv -v /tmp/kde_build/*.txz /sfspacks/kde5/frameworks
+#	else
+#		touch /tmp/kde_build/extra-cmake-modules.failed
+#		exit 1
+#	fi
+
+}
+
+
 build_frameworks_kde5 () {
 #********************************************************
 #  kde4 \
@@ -2236,6 +2255,7 @@ for package in \
 	kholidays \
 	kcalendarcore \
 	kcontacts \
+	kquickcharts \
   ; do
    ./kde.SlackBuild frameworks:$package 
  	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
@@ -2420,6 +2440,8 @@ for package in \
 	latte-dock \
 	oxygen-fonts \
 	wacomtablet \
+	kpeoplevcard \
+	pulseaudio-qt \
   ; do
    ./kde.SlackBuild plasma-extra:$package
  	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
@@ -3112,6 +3134,10 @@ while (( LINE < $FILELEN )); do
 							[ $? != 0 ] && exit 1 ;;
 					esac
 					continue ;;
+
+				extra-cmake-modules )
+					build_extra_cmake_kde5
+					[ $? != 0 ] && exit 1 ;;
 
 				frameworks )
 					build_frameworks_kde5
