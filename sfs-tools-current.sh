@@ -130,7 +130,7 @@ copy_src () {
 #	file-5.38 doesn't work
 	cd $SRCDIR && wget -c https://mirror.eu.oneandone.net/linux/distributions/gentoo/gentoo/distfiles/file-5.37.tar.gz
 	export FILEVER=${VERSION:-$(echo file-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
- #   cp -v $RDIR/a/file/file-$FILEVER.tar.?z $SRCDIR || exit 1
+#    cp -v $RDIR/a/file/file-$FILEVER.tar.?z $SRCDIR || exit 1
     cd $RDIR/a/findutils
 	export FINDVER=${VERSION:-$(echo findutils-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/a/findutils/findutils-$FINDVER.tar.lz $SRCDIR || exit 1
@@ -149,7 +149,7 @@ copy_src () {
     cp -v $RDIR/l/glibc/glibc-$GLIBCVER.tar.xz $SRCDIR || exit 1
     cd $RDIR/l/gmp
 	export GMPVER=${VERSION:-$(echo gmp-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
-    cp -v $RDIR/l/gmp/gmp-$GMPVER.tar.xz $SRCDIR || exit 1
+    cp -v $RDIR/l/gmp/gmp-$GMPVER.tar.?z $SRCDIR || exit 1
     cd $RDIR/l/isl
 	export ISLVER=${VERSION:-$(echo isl-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
 	cp -v $RDIR/l/isl/isl-$ISLVER.tar.xz $SRCDIR || exit 1
@@ -173,8 +173,8 @@ copy_src () {
 	export AUTOMAKEVER=${VERSION:-$(echo automake-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/d/automake/automake-$AUTOMAKEVER.tar.xz $SRCDIR || exit 1
     cd $RDIR/d/make
-	export MAKEVER=${VERSION:-$(echo make-*.tar.?z2 | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
-    cp -v $RDIR/d/make/make-$MAKEVER.tar.bz2 $SRCDIR || exit 1
+	export MAKEVER=${VERSION:-$(echo make-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
+    cp -v $RDIR/d/make/make-$MAKEVER.tar.?z $SRCDIR || exit 1
     cp -v $RDIR/d/make/make.glibc-2.27.glob.diff.gz $SRCDIR || exit 1
     cp -v $RDIR/d/make/b552b05251980f693c729e251f93f5225b400714.patch.gz $SRCDIR || exit 1
     cd $RDIR/l/libmpc
@@ -280,7 +280,7 @@ gcc_build_sp1 () {
 
     tar xvf ../mpfr-$MPFRVER.tar.xz
     mv -v mpfr-$MPFRVER mpfr
-    tar xvf ../gmp-$GMPVER.tar.xz
+    tar xvf ../gmp-$GMPVER.tar.?z
     mv -v gmp-$GMPVER gmp
     tar xvf ../mpc-$LIBMPCVER.tar.lz
     mv -v mpc-$LIBMPCVER mpc
@@ -423,7 +423,7 @@ binutils_build_sp2 () {
 
 gmp_build () {
 #*****************************
-    tar xvf gmp-$GMPVER.tar.xz && cd gmp-$GMPVER
+    tar xvf gmp-$GMPVER.tar.?z && cd gmp-$GMPVER
 
     ./configure --prefix=/tools || exit 1
 
@@ -476,7 +476,7 @@ esac
 
     tar xvf ../mpfr-$MPFRVER.tar.xz
     mv -v mpfr-$MPFRVER mpfr
-    tar xvf ../gmp-$GMPVER.tar.xz
+    tar xvf ../gmp-$GMPVER.tar.?z
     mv -v gmp-$GMPVER gmp
     tar xvf ../mpc-$LIBMPCVER.tar.lz
     mv -v mpc-$LIBMPCVER mpc
@@ -759,7 +759,7 @@ automake_build () {
 
 make_build () {
 #*****************************
-    tar xvf make-$MAKEVER.tar.bz2 && cd make-$MAKEVER
+    tar xvf make-$MAKEVER.tar.?z && cd make-$MAKEVER
 
 	zcat ../make.glibc-2.27.glob.diff.gz | patch -p1 --verbose || exit 1
 	zcat ../b552b05251980f693c729e251f93f5225b400714.patch.gz | patch -p1 --verbose || exit 1

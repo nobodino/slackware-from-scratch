@@ -441,7 +441,7 @@ fi
 # End of sub-system of execution of patches
 #*******************************************************************
 
-all_deps () {
+all_deps_1 () {
 #********************************************************
 # 
 #********************************************************
@@ -484,6 +484,52 @@ for module in \
   qt5-webkit \
   qca-qt5 \
   libdbusmenu-qt5 \
+  ; do
+  cd $module && ./$module.SlackBuild
+  if [ $? = 0 ]; then
+    $INSTALLPRG /tmp/${module}-*.txz
+    # Keep MIME database current:
+    /usr/bin/update-mime-database /usr/share/mime 1> /dev/null 2> /dev/null &
+	mv -v /tmp/$module*.txz /sfspacks/deps
+	rm -rf /tmp/package-$module /tmp/$module-*
+  else
+    echo "${module} failed to build."
+    exit 1
+  fi
+cd - ;
+done
+
+}
+
+all_deps_2 () {
+#********************************************************
+# 
+#********************************************************
+# Note: Much of this script is inspired from the KDE Slackware script by Eric Hameleers <alien@slackware.com>
+#       Copyright © 2019 Eric Hameleers and may be copied under the MIT License.
+# 
+# 		Build (and install) all KDE dependencies
+#
+#
+# Set initial variables:
+#********************************************************
+which upgradepkg 2>&1 >/dev/null
+if [ $? == 0 ]; then
+	INSTALLPRG="upgradepkg --install-new --reinstall"
+else
+	INSTALLPRG=installpkg
+fi
+
+cd /slacksrc/deps
+CWD=$(pwd)
+TMP=${TMP:-/tmp}
+
+# This avoids compiling a version number into KDE's .la files:
+QTDIR=/usr/lib${LIBDIRSUFFIX}/qt ; export QTDIR
+
+#  extra-cmake-modules \
+
+for module in \
   phonon \
   phonon-gstreamer \
   phonon-qt4 \
@@ -2946,8 +2992,12 @@ while (( LINE < $FILELEN )); do
 					esac
 					continue ;;
 
-				all-deps )
-					all_deps
+				all-deps-1 )
+					all_deps_1
+					[ $? != 0 ] && exit 1 ;;
+
+				all-deps-2 )
+					all_deps_2
 					[ $? != 0 ] && exit 1 ;;
 
 				alsa-lib )
@@ -2994,9 +3044,13 @@ while (( LINE < $FILELEN )); do
 							[ $? != 0 ] && exit 1  
 							dbus-uuidgen --ensure ;;
 
+#						* )
+#							update_slackbuild && build $SRCDIR $PACKNAME
+#							[ $? != 0 ] && exit 1 ;;
 						* )
-							update_slackbuild && build $SRCDIR $PACKNAME
+							build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 ;;
+
 					esac
 					continue ;;
 
