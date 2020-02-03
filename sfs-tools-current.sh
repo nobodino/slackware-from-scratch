@@ -112,6 +112,7 @@ copy_src () {
 	export BASHVER=${VERSION:-$(echo bash-*.tar.?z* | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
 	cp -v $RDIR/a/bash/bash-$BASHVER.tar.?z $SRCDIR || exit 1
     cd $RDIR/d/binutils
+#	cd $SRCDIR && wget -c https://fossies.org/linux/misc/binutils-2.34.tar.xz
 	export BINUVER=${VERSION:-$(echo binutils-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
     cp -v $RDIR/d/binutils/binutils-$BINUVER.tar.lz $SRCDIR || exit 1
     cd $RDIR/d/bison
@@ -126,11 +127,11 @@ copy_src () {
     cd $RDIR/ap/diffutils
 	export DIFFVER=${VERSION:-$(echo diffutils-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/ap/diffutils/diffutils-$DIFFVER.tar.xz $SRCDIR || exit 1
-#    cd $RDIR/a/file
+    cd $RDIR/a/file
 #	file-5.38 doesn't work
-	cd $SRCDIR && wget -c https://mirror.eu.oneandone.net/linux/distributions/gentoo/gentoo/distfiles/file-5.37.tar.gz
+#	cd $SRCDIR && wget -c https://mirror.eu.oneandone.net/linux/distributions/gentoo/gentoo/distfiles/file-5.37.tar.gz
 	export FILEVER=${VERSION:-$(echo file-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
-#    cp -v $RDIR/a/file/file-$FILEVER.tar.?z $SRCDIR || exit 1
+    cp -v $RDIR/a/file/file-$FILEVER.tar.?z $SRCDIR || exit 1
     cd $RDIR/a/findutils
 	export FINDVER=${VERSION:-$(echo findutils-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/a/findutils/findutils-$FINDVER.tar.lz $SRCDIR || exit 1
@@ -145,6 +146,7 @@ copy_src () {
 	export GETTVER=${VERSION:-$(echo gettext-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/a/gettext/gettext-$GETTVER.tar.xz $SRCDIR || exit 1
     cd $RDIR/l/glibc
+#	cd $SRCDIR && wget -c http://ftp.gnu.org/gnu/glibc/glibc-2.31.tar.xz
 	export GLIBCVER=${VERSION:-$(echo glibc-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/l/glibc/glibc-$GLIBCVER.tar.xz $SRCDIR || exit 1
     cd $RDIR/l/gmp
@@ -173,8 +175,8 @@ copy_src () {
 	export AUTOMAKEVER=${VERSION:-$(echo automake-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/d/automake/automake-$AUTOMAKEVER.tar.xz $SRCDIR || exit 1
     cd $RDIR/d/make
-	export MAKEVER=${VERSION:-$(echo make-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
-    cp -v $RDIR/d/make/make-$MAKEVER.tar.?z $SRCDIR || exit 1
+	export MAKEVER=${VERSION:-$(echo make-*.tar.?z2 | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
+    cp -v $RDIR/d/make/make-$MAKEVER.tar.bz2 $SRCDIR || exit 1
     cp -v $RDIR/d/make/make.glibc-2.27.glob.diff.gz $SRCDIR || exit 1
     cp -v $RDIR/d/make/b552b05251980f693c729e251f93f5225b400714.patch.gz $SRCDIR || exit 1
     cd $RDIR/l/libmpc
@@ -252,7 +254,7 @@ test_to_go () {
 
 binutils_build_sp1 () {
 #*****************************
-    tar xvf binutils-$BINUVER.tar.lz && cd binutils-$BINUVER
+    tar xvf binutils-$BINUVER.tar.?z && cd binutils-$BINUVER
 
     mkdir -v build && cd build
 
@@ -395,7 +397,7 @@ libstdc_build () {
 
 binutils_build_sp2 () {
 #*****************************
-	tar xvf binutils-$BINUVER.tar.lz && cd binutils-$BINUVER
+	tar xvf binutils-$BINUVER.tar.?z && cd binutils-$BINUVER
 
 	mkdir -v build && cd build
 
@@ -759,7 +761,7 @@ automake_build () {
 
 make_build () {
 #*****************************
-    tar xvf make-$MAKEVER.tar.?z && cd make-$MAKEVER
+    tar xvf make-$MAKEVER.tar.bz2 && cd make-$MAKEVER
 
 	zcat ../make.glibc-2.27.glob.diff.gz | patch -p1 --verbose || exit 1
 	zcat ../b552b05251980f693c729e251f93f5225b400714.patch.gz | patch -p1 --verbose || exit 1

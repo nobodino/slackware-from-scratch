@@ -480,10 +480,6 @@ for module in \
   brotli \
   woff2 \
   hyphen \
-  qt5 \
-  qt5-webkit \
-  qca-qt5 \
-  libdbusmenu-qt5 \
   ; do
   cd $module && ./$module.SlackBuild
   if [ $? = 0 ]; then
@@ -530,6 +526,10 @@ QTDIR=/usr/lib${LIBDIRSUFFIX}/qt ; export QTDIR
 #  extra-cmake-modules \
 
 for module in \
+  qt5 \
+  qt5-webkit \
+  qca-qt5 \
+  libdbusmenu-qt5 \
   phonon \
   phonon-gstreamer \
   phonon-qt4 \
@@ -1000,8 +1000,13 @@ echo "-------------------------------------------"
 echo
 echo "By now, you are ready to build Slackware From Scratch."
 echo "and wait a long time, a few hours."
+echo 
+echo "From now you can choose slackware-current with kde4 or with plasma aka kde5"
+echo "If you choose to kde5 you need to execute the following command:"
+echo 
+echo -e "$YELLOW" "./adapt_for_plasma.sh" "$NORMAL"
 echo
-echo "You can do it by hand, by building packages, one by one."
+echo "Now, you can build SFS by hand, by building packages, one by one."
 echo "./package.SlackBuild && installpkg /tmp/package*.t?z"
 echo
 echo "You can also do it with only one script, by executing the"
@@ -2215,6 +2220,10 @@ cd /slacksrc/kde5
 
 export UPGRADE_PACKAGES=always
 
+./kde.SlackBuild frameworks:attica-framework
+[ $? != 0 ] && touch /tmp/kde_build/attica-framework.failed
+mv -v /tmp/kde_build/*.txz /sfspacks/kde5/frameworks
+
 ./kde.SlackBuild kde4:kdelibs
 [ $? != 0 ] && touch /tmp/kde_build/kdelibs.failed
 mv -v /tmp/kde_build/*.txz /sfspacks/kde5/kde4
@@ -2898,6 +2907,8 @@ define_path_lib
 # Ensure that the /sfspacks/$SAVDIRs exists.
 #****************************************************************
 distribution="slackware"
+mkdir -pv /slacksrc/deps
+mkdir -pv /slacksrc/kde5/{applications,applications-extra,frameworks,kde4,kdepim,plasma,plasma-extra}
 mkdir -pv /sfspacks/{others,a,ap,d,deps,e,extra,f,k,kde,kde5,kdei,l,n,t,tcl,x,xap,xfce,y}
 mkdir -pv /sfspacks/kde5/{applications,applications-extra,frameworks,kde4,kdepim,plasma,plasma-extra}
 #******************************************************************

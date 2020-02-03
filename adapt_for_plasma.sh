@@ -1,8 +1,7 @@
-#######################  list_generator_c.sh ###################################
+################################ adapt_for_plasma.sh #################################
 #!/bin/bash
 #
-# Copyright 2018,2019,2020  J. E. Garrott Sr, Puyallup, WA, USA
-# Copyright 2018,2019,2020  "nobodino", Bordeaux, FRANCE
+# Copyright 2019,2020  "nobodino", Bordeaux, FRANCE
 # All rights reserved.
 #
 # Redistribution and use of this script, with or without modification, is
@@ -23,500 +22,21 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 #--------------------------------------------------------------------------
-#
-#	Above july 2018, revisions made through github project: 
-#   https://github.com/nobodino/slackware-from-scratch 
-#
-###########################################################################
-# set -x
 
-lists_generator_c () {
-#******************************************
-# generator of lists of packages
-#******************************************
-	generate_slackware_link_build_list
-	generate_slackware_build_list1_c
-	generate_slackware_build_list2_c
-	generate_slackware_build_list3_c
-	generate_slackware_build_list4_c
-}
-
-generate_slackware_link_build_list () {
-cat > $SFS/sources/link.list << "EOF"
-a link_tools_slackware
-EOF
-}
-
-generate_slackware_build_list1_c () {
-#******************************************
-cat > $SFS/sources/build1_s.list << "EOF"
-a findutils
-a pkgtools
-a aaa_base
-a etc
-a sed
-a coreutils
-n rsync
-k kernel-source
-d kernel-headers
-d python
-d bison
-l glibc
-a adjust
-# a test-glibc
-l zlib
-d bison
-d help2man
-a lzip
-d flex
-d binutils
-d libtool
-l gmp
-l isl
-l mpfr
-l libmpc
-a infozip
-l expat
-d python
-d python3
-l gc
-d patchelf
-d gcc
-a bzip2
-d pkg-config
-l ncurses
-a attr
-a acl
-l libcap
-a sed
-a xz
-l libxml2
-tcl tcl
-l libxslt
-a shadow
-a grep
-l readline
-l gdbm
-d gperf
-d autoconf
-d automake
-a kmod
-a gettext
-a gettext-tools
-l elfutils
-l libffi
-a procps-ng
-ap groff
-l pcre2
-a util-linux
-a e2fsprogs
-a coreutils
-a glibc-zoneinfo
-l readline
-l readline
-ap diffutils
-a gawk
-a less
-a gzip
-n libmnl
-l libnl
-l libnl3
-l libpcap
-n libnfnetlink
-n libnetfilter_conntrack
-n libnftnl
-n iptables
-n iproute2
-a hostname
-a kbd
-l libunistring
-l gc
-l gmp
-d guile
-d make
-a patch
-a sysklogd
-a utempter
-a sysvinit
-a sysvinit-scripts
-l popt
-a sysvinit-functions
-a bin
-a devs
-n network-scripts
-l pcre
-d re2c
-d ninja
-l libffi
-d python3
-d python-setuptools
-d meson
-l glib2
-l gamin
-l gobject-introspection
-a eudev
-ap man-db
-a bash
-a tar
-ap texinfo
-ap man-pages
-l jemalloc
-l libaio
-n openssl
-n openssl10
-l libssh2
-l jansson
-n curl
-l libarchive
-d cmake
-ap mariadb
-d perl
-n openssl
-n openssl10
-d intltool
-a ed
-ap bc
-a file
-d m4
-a which
-l readline
-n dhcpcd
-a cpio
-a kernel-all
-d help2man
-d flex
-d bison
-d autoconf
-d libtool
-a findutils
-n lynx
-a end1
-EOF
-}
-
-generate_slackware_build_list2_c () {
-#******************************************
-cat > $SFS/sources/build2_s.list << "EOF"
-a dhcpcd_up
-a haveged
-a gpm
-a gpm
-a sysfsutils
-l alsa-lib
-n cyrus-sasl
-n openldap-client
-l libidn
-l libidn2
-a hwdata
-a pciutils
-d pkg-config
-l gamin
-a libgudev
-d pkg-config
-n wget
-l libcap-ng
-extra bash-completion
-n libgpg-error
-n libgcrypt
-l libxml2
-tcl tcl
-l libxslt
-a kmod
-l fuse
-l libpng
-l gdbm
-l lzo
-l openjpeg
-d nasm
-l libjpeg-turbo
-l mm
-l slang1
-l slang
-l libtiff
-l libusb
-l libusb-compat
-l libsigsegv
-l svgalib
-l db48
-a lvm2
-l lcms2
-n nettle
-l libtasn1
-a dcron
-n ca-certificates
-n p11-kit
-l libunistring
-a dbus
-a rpm2tgz
-d slacktrack
-ap itstool
-l icu4c
-a xfsprogs
-ap dmapi
-l graphite2
-l freetype
-l harfbuzz
-l freetype
-l harfbuzz
-l gd
-t texlive
-ap sqlite
-l mozilla-nss
-l db48
-ap rpm
-a cpio
-a libgudev
-a usbutils
-a dialog
-d help2man
-l python-pygments	
-ap linuxdoc-tools
-l gobject-introspection
-l glib2
-ap nano
-n rsync
-ap mc
-n tcp_wrappers
-l libedit
-n openssh
-n ncftp
-l python-ply
-n bind
-l gmp
-n gnutls
-ap cups
-n iputils
-l ncurses
-l json-c
-l argon2
-l pcre2
-l libpsl
-n krb5
-l keyutils
-a pre-elflibs
-a aaa_elflibs
-a post-elflibs
-a aaa_terminfo
-a kmod
-a eudev
-l libusb
-a libgudev
-f linux-faqs
-f linux-howtos
-d python
-d python3
-d vala
-l libical
-a dbus
-n bluez
-n net-tools
-x x11-skel
-x libevdev
-x mtdev
-x xdg-user-dirs
-x x11-group1
-x xdg-utils
-x fontconfig
-ap ghostscript
-ap ghostscript-fonts-std
-a dialog
-l dbus-glib
-l dbus-python
-ap sudo
-l sg3_utils
-a utempter
-d swig
-d oprofile
-d llvm
-d llvm
-l icu4c
-x x11-lib
-l gd
-x x11-xcb
-l startup-notification
-l zstd
-x libdrm
-x libva
-x libva-utils
-x intel-vaapi-driver
-x libvdpau
-l libclc
-d python-setuptools
-l Mako
-x libglvnd
-x mesa
-x glew
-x glu
-x freeglut
-x mesa
-x libXaw3dXft
-x libepoxy
-l cairo
-a eudev
-a libgudev
-x libXcm
-x xcm
-x libwacom
-l libunwind
-x x11-group2
-x compiz
-x dejavu-fonts-ttf
-x liberation-fonts-ttf
-x motif
-x xterm
-x libva
-x urw-core35-fonts-otf
-x ttf-tlwg
-l pcre2
-d git
-x vulkan-sdk
-x pyxdg
-xap rxvt-unicode
-xap blackbox
-n dhcp
-a end2
-EOF
-}
-
-generate_slackware_build_list3_c () {
-#******************************************
-cat > $SFS/sources/build3_s.list << "EOF"
-a dhcpcd_up
-l python-pygments
-ap linuxdoc-tools
-a zerofree
-l libpcap
-a f2fs-tools
-a efivar
-a efibootmgr
-l gnu-efi
-a elilo
-a dbus
-d ruby
-l qt
-d cmake
-l libunistring
-l gc
-l gmp
-d guile
-d mercurial
-d python-setuptools
-l imagemagick
-l xapian-core
-l poppler
-l poppler-data
-l shared-mime-info
-l gdk-pixbuf2
-l atk
-l at-spi2-core
-l at-spi2-atk
-l fribidi
-l pango
-l gtk+2
-l libglade
-tcl expect
-d clisp
-t texlive
-x fontconfig
-d doxygen
-d strace
-d rcs
-d ccache
-d cvs
-d yasm
-l apr
-l apr-util
-l jansson
-n nghttp2
-n httpd
-n curl
-l neon
-l utf8proc
-d subversion
-d cmake
-tcl tk
-tcl tclx
-tcl expect
-tcl tix
-t fig2dev
-l libsigsegv
-l libsigc++
-d cscope
-d distcc
-d icecream
-d dev86
-d p2c
-d oprofile
-d binutils
-d python-pip
-d re2c
-d ninja
-d meson
-d patchelf
-d parallel
-l pyparsing
-l python-appdirs
-l python-certifi
-l python-chardet
-l python-docutils
-l python-idna
-l python-packaging
-l python-requests
-l python-urllib3
-l libsndfile
-l orc
-l speexdsp
-l libasyncns
-l tdb
-d check
-l sbc
-n bluez
-l pulseaudio
-l alsa-lib
-l boost
-l judy
-l netpbm
-l libwnck
-l gstreamer0
-l mozjs60
-l polkit
-a upower
-l gst-plugins-base0
-l gtk+3
-x libinput
-x x11-app-post
-ap cups
-l pcre2
-d vala
-l vte
-l libnotify
-l pygobject
-l pycairo
-l pygtk
-l keybinder
-l libproxy
-l gsettings-desktop-schemas
-l glib-networking
-l hicolor-icon-theme
-l libcroco
-t xfig
-d rust
-l librsvg
-l gdk-pixbuf2
-l gnome-themes-extra
-l libpsl
-l libsoup
-l libevent
-l libvpx
-l GConf
-l libwnck
-l adwaita-icon-theme
-xap ffmpegthumbnailer
-xfce xfce
-xfce xfce
-a end3
-EOF
-}
+cd /slacksrc/l
+mv LibRaw libRaw.old && ln -sf ../deps/LibRaw LibRaw
+mv PyQt PyQT.old && ln -sf ../deps/PyQt PyQt
+mv QScintilla QScintilla.old && ln -sf ../deps/QScintilla QScintilla
+mv exiv2 exiv2.old && ln -sf ../deps/exiv2 exiv2
+mv grantlee grantlee.old && ln -sf ../deps/grantlee grantlee
+mv id3lib id3lib.old && ln -sf ../deps/id3lib id3lib
+mv phonon phonon.old && ln -sf ../deps/phonon phonon
+mv phonon-gstreamer phonon-gstreamer.old && ln -sf ../deps/phonon-gstreamer phonon-gstreamer
+mv qt-gstreamer qt-gstreamer.old && ln -sf ../deps/qt-gstreamer qt-gstreamer
+mv poppler poppler.old && ln -sf ../deps/poppler poppler
+mv sip sip.old && ln -sf ../deps/sip sip
+cd /slacksrc/n
+mv gpgme gpgme.old && ln -sf ../deps/gpgme gpgme
 
 generate_slackware_build_list4_c () {
 #******************************************
@@ -645,7 +165,6 @@ n net-snmp
 xap sane
 xap xsane
 l python-sane
-l python-distro
 ap hplip
 ap ispell
 ap jed
@@ -764,8 +283,6 @@ l libcdio
 l libcdio-paranoia
 l libdvdread
 l libdvdnav
-# extra java
-# l libcaca
 l libcaca
 l fribidi
 l talloc
@@ -849,7 +366,6 @@ n netwrite
 n nfacct
 n libtirpc
 n iptables
-l gmp
 n nftables
 n nmap
 n nn
@@ -908,7 +424,6 @@ l aalib
 l alsa-oss
 l aspell
 extra aspell-word-lists 
-l attica
 l audiofile
 l automoc4
 l babl
@@ -1059,7 +574,6 @@ l taglib
 l alsa-plugins
 n links
 ap vim
-a nvi
 n ulogd
 l fuse3
 n sshfs
@@ -1088,31 +602,26 @@ l soprano
 xap MPlayer
 xap xine-lib
 xap xine-ui
-kde kde
-kdei calligra-l10n
-kde post-kde
-kde kdepim
-kdei kde-l10n
-d subversion
 l libxml2
 l ncurses
 n openssl
 n snownews
 d python
 d python3
+deps all-deps-1
+deps all-deps-2
+kde5 frameworks
+kde5 kdepim5
+kde5 plasma
+kde5 plasma-extra
+kde5 applications
+kde5 applications-extra
+d subversion
 xap mozilla-firefox
 xap mozilla-thunderbird
 y bsd-games
-# xap seamonkey
 a end4
 EOF
 }
-
-
-#************************************************************************
-#************************************************************************
-# MAIN CORE SCRIPT
-#************************************************************************
-#************************************************************************
-
-lists_generator_c
+#**************************
+generate_slackware_build_list4_c

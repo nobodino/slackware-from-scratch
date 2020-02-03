@@ -161,6 +161,18 @@ do
 		rm *.t?z > /dev/null 2>&1
 		rm -rf $SFS/sources/others > /dev/null 2>&1 
 		rm -rf $SFS/sources/extra > /dev/null 2>&1
+		# rsync with plasma
+		echo "rsync with plasma with bear.alien.nl"
+		mkdir -pv $SFS/sources/plasma
+		mkdir -pv $SFS/slacksrc/{deps,kde5}
+		rsync -arvz --stats --progress -I --delete-after $RSYNCDIR1/latest/ $SFS/sources/plasma
+		cd $SFS/sources/plasma
+		cp -r --preserve=timestamps  $SFS/sources/plasma/deps/* $SRCDIR/deps  > /dev/null 2>&1
+		cp -r --preserve=timestamps  $SFS/sources/plasma/kde/* $SRCDIR/kde5  > /dev/null 2>&1
+		# svn rsync with test_kde5
+		mkdir -pv $SFS/sources/test_kde5 && cd $SFS/sources
+		svn checkout $DLDIR13
+		cp -r --preserve=timestamps  $SFS/sources/test_kde5/* $SRCDIR  > /dev/null 2>&1 
 		break
 	elif [[ "$upgrade_sources" = "No" ]]
 	then
@@ -344,7 +356,7 @@ if [[ "$build_arch" = "x86" ]]
 #			# from https://gist.github.com/P7h/9741922
 #			curl -C - -LR#OH "Cookie: oraclelicense=accept-securebackup-cookie" -k $DLDIR10
 #		fi
-		cp -rv jre-$JDK-linux-x64.tar.gz $SRCDIR/extra/java
+#		cp -rv jre-$JDK-linux-x64.tar.gz $SRCDIR/extra/java
 		cd $SRCDIR/d/rust && sed -i -e '1,18d' rust.url && source rust.url
 		cd $SRCDIR/others
 		if [ ! -f readline-7.0.005-x86_64-1.txz ]; then
