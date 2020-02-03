@@ -1,4 +1,3 @@
-
 ################################ adapt_for_plasma.sh #################################
 #!/bin/bash
 #
@@ -29,10 +28,10 @@ mv LibRaw libRaw.old && ln -sf ../deps/LibRaw LibRaw
 mv PyQt PyQT.old && ln -sf ../deps/PyQt PyQt
 mv QScintilla QScintilla.old && ln -sf ../deps/QScintilla QScintilla
 mv exiv2 exiv2.old && ln -sf ../deps/exiv2 exiv2
-mv grantlee grantlee.old && ln -sf ../deps/grantlee-qt4 grantlee
+mv grantlee grantlee.old && ln -sf ../deps/grantlee grantlee
 mv id3lib id3lib.old && ln -sf ../deps/id3lib id3lib
-mv phonon phonon.old && ln -sf ../deps/phonon-qt4 phonon
-mv phonon-gstreamer phonon-gstreamer.old && ln -sf ../deps/phonon-qt4-gstreamer phonon-gstreamer
+mv phonon phonon.old && ln -sf ../deps/phonon phonon
+mv phonon-gstreamer phonon-gstreamer.old && ln -sf ../deps/phonon-gstreamer phonon-gstreamer
 mv qt-gstreamer qt-gstreamer.old && ln -sf ../deps/qt-gstreamer qt-gstreamer
 mv poppler poppler.old && ln -sf ../deps/poppler poppler
 mv sip sip.old && ln -sf ../deps/sip sip
@@ -203,7 +202,6 @@ a plzip
 a lbzip2
 l libplist
 l libusbmuxd
-d python-setuptools
 l libimobiledevice
 ap usbmuxd
 ap vbetool
@@ -610,8 +608,8 @@ n openssl
 n snownews
 d python
 d python3
-kde5 extra-cmake-modules
-deps all-deps
+deps all-deps-1
+deps all-deps-2
 kde5 frameworks
 kde5 kdepim5
 kde5 plasma
