@@ -3103,12 +3103,12 @@ while (( LINE < $FILELEN )); do
 							[ $? != 0 ] && exit 1  
 							dbus-uuidgen --ensure ;;
 
-#						* )
-#							update_slackbuild && build $SRCDIR $PACKNAME
-#							[ $? != 0 ] && exit 1 ;;
 						* )
-							build $SRCDIR $PACKNAME
+							update_slackbuild && build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 ;;
+#						* )
+#							build $SRCDIR $PACKNAME
+#							[ $? != 0 ] && exit 1 ;;
 
 					esac
 					continue ;;
