@@ -27,7 +27,7 @@ NOTE:
 # cd ..; rm -rf slackware-from-scratch
 # chmod +x *.sh
 
-3) Edit "sfs-boostrap.sh" to adjust to your fstab characteristics,
+3) Edit "myprofile.sh" to adjust to your fstab characteristics,
    root partition, and swap partition. In the example the options for
    the root partition are applicable to my ssd disk.
    "defaults,noatime,discard", may not be applicable to your disk if
@@ -45,6 +45,16 @@ NOTE:
    # End /fstab
 
 
+   In addition, several other things in "myprofile.sh" may need adjusting.
+   Time zone information in "localtime ()" and "root_profile ()", for
+   instance.  "myprofile.sh" comes with LANGUAGE (and several other 
+   variables) set to "fr_FR.UTF-8".  This may not be ideal for your
+   system.
+
+   "rc_keymap ()" may also need changing, as may the server data in
+   "ntp_conf ()".
+
+
 4) Edit "export_variable_perso.sh" to adjust PATDIR, DNDIR1, RDIR1 and RDRIR3.
 This script is personal for your own convenience. If you update the script from
 github, you must keep this one unchanged. 
@@ -52,7 +62,8 @@ github, you must keep this one unchanged.
              (tools, others...)
    - DNDIR1: the directory where are stored everything else slackware
              (gnuada, SBo)
-   - RDIR1/3: the directory where is stored the resynced slackware sources
+   - RDIR1: the directory where is stored the resynced slackware32 sources
+   - RDIR3: the directory where is stored the resynced slackware64 sources
 
 # export PATDIR=/mnt/ext4/sda4/sfs (for example)
 # mkdir -pv $PATDIR/tools (to store the "tools" build further on x86)
@@ -130,7 +141,7 @@ Or by executing:
 # time (./full-sfs.sh)
 
 On my machine the full build takes about 15 hours. (nobodino)
-On my machine the full build takes about 17 hours. (worsel)
+On my machine the full build takes about 37 hours. (worsel)
 Your connection to internet must be active.
 
 notice: if you build SFS on slackware-14.2, you won't be able to build ipset, I 
