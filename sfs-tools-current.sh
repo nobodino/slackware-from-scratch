@@ -112,7 +112,6 @@ copy_src () {
 	export BASHVER=${VERSION:-$(echo bash-*.tar.?z* | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
 	cp -v $RDIR/a/bash/bash-$BASHVER.tar.?z $SRCDIR || exit 1
     cd $RDIR/d/binutils
-#	cd $SRCDIR && wget -c https://fossies.org/linux/misc/binutils-2.34.tar.xz
 	export BINUVER=${VERSION:-$(echo binutils-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
     cp -v $RDIR/d/binutils/binutils-$BINUVER.tar.lz $SRCDIR || exit 1
     cd $RDIR/d/bison
@@ -129,9 +128,9 @@ copy_src () {
     cp -v $RDIR/ap/diffutils/diffutils-$DIFFVER.tar.xz $SRCDIR || exit 1
     cd $RDIR/a/file
 #	file-5.38 doesn't work
-#	cd $SRCDIR && wget -c https://mirror.eu.oneandone.net/linux/distributions/gentoo/gentoo/distfiles/file-5.37.tar.gz
+	cd $SRCDIR && wget -c https://mirror.eu.oneandone.net/linux/distributions/gentoo/gentoo/distfiles/file-5.37.tar.gz
 	export FILEVER=${VERSION:-$(echo file-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
-    cp -v $RDIR/a/file/file-$FILEVER.tar.?z $SRCDIR || exit 1
+#    cp -v $RDIR/a/file/file-$FILEVER.tar.?z $SRCDIR || exit 1
     cd $RDIR/a/findutils
 	export FINDVER=${VERSION:-$(echo findutils-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/a/findutils/findutils-$FINDVER.tar.lz $SRCDIR || exit 1
@@ -146,7 +145,6 @@ copy_src () {
 	export GETTVER=${VERSION:-$(echo gettext-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/a/gettext/gettext-$GETTVER.tar.xz $SRCDIR || exit 1
     cd $RDIR/l/glibc
-#	cd $SRCDIR && wget -c http://ftp.gnu.org/gnu/glibc/glibc-2.31.tar.xz
 	export GLIBCVER=${VERSION:-$(echo glibc-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/l/glibc/glibc-$GLIBCVER.tar.xz $SRCDIR || exit 1
     cd $RDIR/l/gmp
@@ -363,9 +361,10 @@ glibc_build () {
 		  --host=$SFS_TGT                    \
 		  --build=$(../scripts/config.guess) \
 		  --enable-kernel=2.6.32             \
-		  --with-headers=/tools/include      \
-		  libc_cv_forced_unwind=yes          \
-		  libc_cv_c_cleanup=yes || exit 1
+		  --with-headers=/tools/include || exit 1  
+#		  --with-headers=/tools/include      \
+#		  libc_cv_forced_unwind=yes          \
+#		  libc_cv_c_cleanup=yes || exit 1
 
 	make || exit 1
 	make install || exit 1
@@ -483,6 +482,9 @@ esac
     tar xvf ../mpc-$LIBMPCVER.tar.lz
     mv -v mpc-$LIBMPCVER mpc
 
+# fix a problem introduced by glibc-2.31
+sed -e '1161 s|^|//|' -i libsanitizer/sanitizer_common/sanitizer_platform_limits_posix.cc
+
    mkdir -v build && cd build
 
 	CC=$SFS_TGT-gcc                                    \
@@ -541,6 +543,9 @@ esac
     mv -v gmp-$GMPVER gmp
     tar xvf ../mpc-$LIBMPCVER.tar.lz
     mv -v mpc-$LIBMPCVER mpc
+
+# fix a problem introduced by glibc-2.31
+sed -e '1161 s|^|//|' -i libsanitizer/sanitizer_common/sanitizer_platform_limits_posix.cc
 
    mkdir -v build && cd build
 
@@ -629,8 +634,13 @@ bzip2_build () {
 #*****************************
     tar xvf bzip2-$BZIP2VER.tar.lz && cd bzip2-$BZIP2VER
 
+	make -f Makefile-libbz2_so
+	make clean
     make || exit 1
     make PREFIX=/tools install || exit 1
+	cp -v bzip2-shared /tools/bin/bzip2
+	cp -av libbz2.so* /tools/lib
+	ln -sv libbz2.so.1.0 /tools/lib/libbz2.so
     cd ..
     rm -rf bzip2-$BZIP2VER
 	echo bzip2-$BZIP2VER >> $SFS/tools/etc/tools_version

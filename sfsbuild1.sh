@@ -1301,6 +1301,54 @@ upgradepkg --reinstall /sfspacks/l/readline-8.0.*.txz
 cd /sources
 }
 
+pre_gcc () {
+#******************************************************************
+# Install gnat-gpl to be able to build gnat-ada package
+#
+# Note: Much of this script is copied from the LFS manual.
+#       Copyright © 1999-2019 Gerard Beekmans and may be
+#       copied under the MIT License.
+#******************************************************************
+cd /tmp
+case $(uname -m) in
+	x86_64)
+		tar xf /slacksrc/others/gnat-gpl-2017-x86_64-linux-bin.tar.gz
+		if [ $? != 0 ]; then
+			echo
+			echo "Tar extraction of gnat-gpl-2017-x86_64-linux-bin failed."
+			echo
+		exit 1
+		fi
+		cd gnat-gpl-2017-x86_64-linux-bin
+		[ $? != 0 ] && exit 1 ;;
+	i686)
+		tar xf /slacksrc/others/gnat-gpl-2014-x86-linux-bin.tar.gz
+		if [ $? != 0 ]; then
+			echo
+			echo "Tar extraction of gnat-gpl-2014-x86-linux-bin failed."
+			echo
+		exit 1
+		fi
+		cd gnat-gpl-2014-x86-linux-bin
+		[ $? != 0 ] && exit 1 ;;
+esac
+
+mkdir -pv /tools/opt/gnat
+make ins-all prefix=/tools/opt/gnat
+PATH_HOLD=$PATH && export PATH=/tools/opt/gnat/bin:$PATH_HOLD
+echo $PATH
+find /tools/opt/gnat -name ld -exec mv -v {} {}.old \;
+find /tools/opt/gnat -name ld -exec as -v {} {}.old \;
+
+cd /sources
+}
+
+post_gcc () {
+#***************************************************************
+export PATH=$PATH_HOLD
+rm -rf /opt/gnat
+}
+
 #****************************************************************
 # X11 SUB-SYSTEM BUILDING
 #****************************************************************
@@ -3410,6 +3458,14 @@ while (( LINE < $FILELEN )); do
 							[ $? != 0 ] && exit 1 ;;
 					esac
 					continue ;;
+
+				pre-gcc )
+					pre_gcc
+					[ $? != 0 ] && exit 1 ;;
+
+				post-gcc )
+					post_gcc
+					[ $? != 0 ] && exit 1 ;;
 
 				QScintilla )
 					case $LQSC in

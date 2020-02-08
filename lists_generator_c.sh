@@ -81,7 +81,9 @@ d python
 d python3
 l gc
 d patchelf
+# d pre-gcc
 d gcc
+# d post-gcc
 a bzip2
 d pkg-config
 l ncurses
@@ -166,6 +168,9 @@ n openssl
 n openssl10
 l libssh2
 l jansson
+n cyrus-sasl
+n openldap-client
+n krb5
 n curl
 l libarchive
 d cmake
@@ -291,7 +296,7 @@ l json-c
 l argon2
 l pcre2
 l libpsl
-n krb5
+# n krb5
 l keyutils
 a pre-elflibs
 a aaa_elflibs
@@ -429,7 +434,7 @@ l apr-util
 l jansson
 n nghttp2
 n httpd
-n curl
+# n curl
 l neon
 l utf8proc
 d subversion
@@ -847,7 +852,7 @@ n netpipes
 n netwatch
 n netwrite
 n nfacct
-n libtirpc
+# n libtirpc
 n iptables
 l gmp
 n nftables
