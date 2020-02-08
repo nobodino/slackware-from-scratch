@@ -483,7 +483,7 @@ esac
     mv -v mpc-$LIBMPCVER mpc
 
 # fix a problem introduced by glibc-2.31
-sed -e '1161 s|^|//|' -i libsanitizer/sanitizer_common/sanitizer_platform_limits_posix.cc
+# sed -e '1161 s|^|//|' -i libsanitizer/sanitizer_common/sanitizer_platform_limits_posix.cc
 
    mkdir -v build && cd build
 
@@ -545,7 +545,7 @@ esac
     mv -v mpc-$LIBMPCVER mpc
 
 # fix a problem introduced by glibc-2.31
-sed -e '1161 s|^|//|' -i libsanitizer/sanitizer_common/sanitizer_platform_limits_posix.cc
+# sed -e '1161 s|^|//|' -i libsanitizer/sanitizer_common/sanitizer_platform_limits_posix.cc
 
    mkdir -v build && cd build
 
