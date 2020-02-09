@@ -337,6 +337,8 @@ l sg3_utils
 a utempter
 d swig
 d oprofile
+d binutils
+d git
 d llvm
 d llvm
 l icu4c
@@ -378,12 +380,12 @@ x libva
 x urw-core35-fonts-otf
 x ttf-tlwg
 l pcre2
-d git
 x vulkan-sdk
 x pyxdg
 xap rxvt-unicode
 xap blackbox
 n dhcp
+ap nvme-cli
 a end2
 EOF
 }
@@ -456,8 +458,8 @@ d distcc
 d icecream
 d dev86
 d p2c
-d oprofile
-d binutils
+# d oprofile
+# d binutils
 d python-pip
 d re2c
 d ninja
