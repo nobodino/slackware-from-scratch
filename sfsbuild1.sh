@@ -51,6 +51,7 @@ export PINK="\\033[1;35m"
 export BLUE="\\033[1;34m"
 export YELLOW="\\033[1;33m"
 #**********************************
+export TERM=linux
 export SLACKSRC=/slacksrc
 #**********************************
 on_error () {
