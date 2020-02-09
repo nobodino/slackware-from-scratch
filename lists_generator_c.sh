@@ -171,11 +171,11 @@ l jansson
 n cyrus-sasl
 n openldap-client
 n krb5
-# a cracklib
+# l cracklib
 # a pam
-# a libpwquality
+# l libpwquality
 # a shadow
-# a pam-krb5
+# n pam-krb5
 n curl
 l libarchive
 d cmake
