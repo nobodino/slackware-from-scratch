@@ -1,0 +1,26 @@
+Index: tmp/shadow-4.1.4.2/etc/pam.d/su
+===================================================================
+--- tmp.orig/shadow-4.1.4.2/etc/pam.d/su
++++ tmp/shadow-4.1.4.2/etc/pam.d/su
+@@ -1,9 +1,9 @@
+ #%PAM-1.0
+ auth		sufficient	pam_rootok.so
+ # Uncomment the following line to implicitly trust users in the "wheel" group.
+-#auth		sufficient	pam_wheel.so trust use_uid
++auth		sufficient	pam_wheel.so trust use_uid
+ # Uncomment the following line to require a user to be in the "wheel" group.
+-auth		required	pam_wheel.so use_uid
++#auth		required	pam_wheel.so use_uid
+ auth		include		system-auth
+ account		include		system-auth
+ password	include		system-auth
+Index: tmp/shadow-4.1.4.2/etc/pam.d/login
+===================================================================
+--- tmp.orig/shadow-4.1.4.2/etc/pam.d/login
++++ tmp/shadow-4.1.4.2/etc/pam.d/login
+@@ -8,4 +8,5 @@ session		required	pam_selinux.so close
+ session		include		system-auth
+ session		required	pam_loginuid.so
+ session		optional	pam_console.so
++session		optional	pam_ck_connector.so nox11
+ session		required	pam_selinux.so open
