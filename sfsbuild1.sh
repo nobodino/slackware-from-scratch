@@ -339,6 +339,21 @@ if [ ! -f $SLACKSRC/d/llvm/llvm.SlackBuild.old ]; then
 fi
 }
 
+execute_pam_sed () {
+#******************************************************************
+# delete lines that doesn't allow build in build1_.list
+#******************************************************************
+if [ ! -f $SLACKSRC/a/pam/pam.SlackBuild.old ]; then
+	cp -v $SLACKSRC/a/pam/pam.SlackBuild $SLACKSRC/a/pam/pam.SlackBuild.old
+	(
+		cd $SLACKSRC/a/pam
+		sed -i -e '/pam-1.3.1-redhat-modules.patch.gz/d' pam.SlackBuild
+		sed -i -e '/pam-1.3.0-pwhistory-helper.patch.gz/d' pam.SlackBuild
+		sed -i -e '/xmlto man/d' pam.SlackBuild
+	)
+fi
+}
+
 execute_pkg_config_sed () {
 #******************************************************************
 # add "--with-internel-glib" to SlackBuild
@@ -3012,6 +3027,8 @@ LGD=1
 LQSC=1
 # init findutils variable
 LFIN=1
+# init pam variable
+LPAM=1
 # init NUMJOBS variable
 NUMJOBS="-j$(( $(nproc) * 2 )) -l$(( $(nproc) + 1 ))"
 
@@ -3420,6 +3437,19 @@ while (( LINE < $FILELEN )); do
 							[ $? != 0 ] && exit 1 ;;
 					esac
 					continue ;;
+
+				pam )
+					case $LISTFILE in
+						build1_s.list )
+							execute_pam_sed && build $SRCDIR $PACKNAME 
+							[ $? != 0 ] && exit 1
+							update_slackbuild && LPAM=2 ;;
+						build2_s.list )
+							build $SRCDIR $PACKNAME
+							[ $? != 0 ] && exit 1 ;;
+					esac
+					continue ;;
+
 
 				pci-utils )
 					build $SRCDIR $PACKNAME

@@ -171,11 +171,12 @@ l jansson
 n cyrus-sasl
 n openldap-client
 n krb5
-# l cracklib
-# a pam
-# l libpwquality
-# a shadow
-# n pam-krb5
+a cracklib
+a pam
+a libpwquality
+a shadow
+l libcap
+a util-linux
 n curl
 l libarchive
 d cmake
@@ -281,6 +282,7 @@ a dialog
 d help2man
 l python-pygments	
 ap linuxdoc-tools
+a pam
 l gobject-introspection
 l glib2
 ap nano
@@ -301,7 +303,6 @@ l json-c
 l argon2
 l pcre2
 l libpsl
-# n krb5
 l keyutils
 a pre-elflibs
 a aaa_elflibs
@@ -441,7 +442,6 @@ l apr-util
 l jansson
 n nghttp2
 n httpd
-# n curl
 l neon
 l utf8proc
 d subversion
@@ -458,8 +458,6 @@ d distcc
 d icecream
 d dev86
 d p2c
-# d oprofile
-# d binutils
 d python-pip
 d re2c
 d ninja
@@ -683,7 +681,6 @@ l libnl
 ap powertop
 ap radeontool
 ap rzip
-ap screen
 ap soma
 ap sox
 ap sysstat
@@ -859,7 +856,6 @@ n netpipes
 n netwatch
 n netwrite
 n nfacct
-# n libtirpc
 n iptables
 l gmp
 n nftables
