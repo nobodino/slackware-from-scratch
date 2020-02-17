@@ -431,7 +431,15 @@ tcl expect
 d clisp
 t texlive
 x fontconfig
+# d doxygen
+# kde5 extra-cmake-modules
+# l libdbusmenu-qt
+# l sdl
+l libxkbcommon
+l openal-soft
+l qt5
 d doxygen
+# deps all-deps-1
 d strace
 d rcs
 d ccache
@@ -823,6 +831,7 @@ n ebtables
 n elm
 n epic5
 n ethtool
+l python-future
 n fetchmail
 n getmail
 n htdig
@@ -1062,7 +1071,7 @@ l ffmpeg
 xap audacious-plugins
 l gst-plugins-libav
 l libtiff
-d cmake
+# d cmake
 l taglib
 l alsa-plugins
 n links
@@ -1101,6 +1110,14 @@ kdei calligra-l10n
 kde post-kde
 kde kdepim
 kdei kde-l10n
+# kde5 extra-cmake-modules
+# deps all-deps-2
+# kde5 frameworks
+# kde5 kdepim5
+# kde5 plasma
+# kde5 plasma-extra
+# kde5 applications
+# kde5 applications-extra
 d subversion
 l libxml2
 l ncurses
