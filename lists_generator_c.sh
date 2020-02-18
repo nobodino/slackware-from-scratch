@@ -434,10 +434,14 @@ x fontconfig
 # d doxygen
 # kde5 extra-cmake-modules
 # l libdbusmenu-qt
-# l sdl
-l libxkbcommon
+l sdl
 l openal-soft
+l libxkbcommon
+l brotli
+l woff2
+l hyphen
 l qt5
+l qt5-webkit
 d doxygen
 # deps all-deps-1
 d strace
@@ -678,7 +682,7 @@ l libmad
 l libid3tag
 ap madplay
 ap most
-l sdl
+# l sdl
 ap mpg123
 l glib
 l gtk+
@@ -1110,6 +1114,7 @@ kdei calligra-l10n
 kde post-kde
 kde kdepim
 kdei kde-l10n
+n socat
 # kde5 extra-cmake-modules
 # deps all-deps-2
 # kde5 frameworks
