@@ -293,6 +293,7 @@ l libedit
 n openssh
 n ncftp
 l python-ply
+l libuv
 n bind
 l gmp
 n gnutls
@@ -438,6 +439,8 @@ l sdl
 l openal-soft
 l libxkbcommon
 l brotli
+x wayland
+x wayland-protocols
 l woff2
 l hyphen
 l qt5
