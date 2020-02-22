@@ -349,6 +349,7 @@ if [ ! -f $SLACKSRC/a/pam/pam.SlackBuild.old ]; then
 		cd $SLACKSRC/a/pam
 		sed -i -e '/pam-1.3.1-redhat-modules.patch.gz/d' pam.SlackBuild
 		sed -i -e '/pam-1.3.0-pwhistory-helper.patch.gz/d' pam.SlackBuild
+		sed -i -e '/pam.pam_tally2.slackware.diff.gz/d' pam.SlackBuild
 		sed -i -e '/xmlto man/d' pam.SlackBuild
 	)
 fi
