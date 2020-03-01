@@ -1389,7 +1389,7 @@ done
  [ $? != 0 ] && exit 1
 mv -v /tmp/x11-build/*.txz /sfspacks/x
 
-./x11.SlackBuild proto
+./x11.SlackBuild proto libpthread-proto
 [ $? != 0 ] && exit 1
 mv -v /tmp/x11-build/*.txz /sfspacks/x
 
@@ -1423,17 +1423,16 @@ for package in \
 	mv -v /tmp/x11-build/*.txz /sfspacks/x
 done
 
-for package in \
-  xcb-proto \
-  libpthread-stubs \
-  libxcb \
-  ; do
-   ./x11.SlackBuild xcb $package
- 	[ $? != 0 ] && exit 1
-	mv -v /tmp/x11-build/*.txz /sfspacks/x
-done
+./x11.SlackBuild proto xcb-proto
+[ $? != 0 ] && exit 1
+mv -v /tmp/x11-build/*.txz /sfspacks/x
+
+./x11.SlackBuild xcb libpthread-stubs
+[ $? != 0 ] && exit 1
+mv -v /tmp/x11-build/*.txz /sfspacks/x
 
 for package in \
+  lib-xcb \
   xtrans \
   libX11 \
   libXext \
