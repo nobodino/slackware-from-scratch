@@ -102,6 +102,7 @@ l gdbm
 d gperf
 d autoconf
 d automake
+n openssl
 a kmod
 a gettext
 a gettext-tools
