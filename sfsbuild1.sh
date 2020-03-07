@@ -163,6 +163,23 @@ if [ ! -f $SLACKSRC/a/dbus/dbus.SlackBuild.old ]; then
 fi
 }
 
+execute_cyrus_sasl_sed () {
+#******************************************************************
+# delete "--enable-x11-autolaunch" linein SlackBuild
+#******************************************************************
+if [ ! -f $SLACKSRC/n/cyrus-sasl/cyrus-sasl.SlackBuild.old ]; then
+	cp -v $SLACKSRC/n/cyrus-sasl/cyrus-sasl.SlackBuild $SLACKSRC/n/cyrus-sasl/cyrus-sasl.SlackBuild.old
+	(
+		cd $SLACKSRC/n/cyrus-sasl
+		sed -i -e '/--enable-sql/d' cyrus-sasl.SlackBuild
+		sed -i -e '/--without-pgsql/d' cyrus-sasl.SlackBuild
+		sed -i -e '/--with-mysql/d' cyrus-sasl.SlackBuild
+		sed -i -e '/--with-sqlite3/d' cyrus-sasl.SlackBuild
+	)
+fi
+}
+
+
 execute_findutils_sed () {
 #******************************************************************
 # disable the patch and autoreconf in SlackBuild
@@ -1389,7 +1406,11 @@ done
  [ $? != 0 ] && exit 1
 mv -v /tmp/x11-build/*.txz /sfspacks/x
 
-./x11.SlackBuild proto libpthread-proto
+./x11.SlackBuild xcb libpthread-stubs
+[ $? != 0 ] && exit 1
+mv -v /tmp/x11-build/*.txz /sfspacks/x
+
+./x11.SlackBuild proto xorgproto
 [ $? != 0 ] && exit 1
 mv -v /tmp/x11-build/*.txz /sfspacks/x
 
@@ -1414,25 +1435,24 @@ cd /slacksrc/x/x11
 
 export UPGRADE_PACKAGES=always
 
+# for package in \
+#  libXau \
+#  libXdmcp \
+#  ; do
+#   ./x11.SlackBuild lib $package
+# 	[ $? != 0 ] && exit 1
+#	mv -v /tmp/x11-build/*.txz /sfspacks/x
+# done
+
+# ./x11.SlackBuild proto xcb-proto
+# [ $? != 0 ] && exit 1
+# mv -v /tmp/x11-build/*.txz /sfspacks/x
+
+# ./x11.SlackBuild xcb libpthread-stubs
+# [ $? != 0 ] && exit 1
+# mv -v /tmp/x11-build/*.txz /sfspacks/x
+
 for package in \
-  libXau \
-  libXdmcp \
-  ; do
-   ./x11.SlackBuild lib $package
- 	[ $? != 0 ] && exit 1
-	mv -v /tmp/x11-build/*.txz /sfspacks/x
-done
-
-./x11.SlackBuild proto xcb-proto
-[ $? != 0 ] && exit 1
-mv -v /tmp/x11-build/*.txz /sfspacks/x
-
-./x11.SlackBuild xcb libpthread-stubs
-[ $? != 0 ] && exit 1
-mv -v /tmp/x11-build/*.txz /sfspacks/x
-
-for package in \
-  lib-xcb \
   xtrans \
   libX11 \
   libXext \
@@ -1486,6 +1506,24 @@ build_x11_xcb () {
 cd /slacksrc/x/x11
 
 export UPGRADE_PACKAGES=always
+
+./x11.SlackBuild proto xcb-proto
+[ $? != 0 ] && exit 1
+mv -v /tmp/x11-build/*.txz /sfspacks/x
+
+./x11.SlackBuild xcb libpthread-stubs
+[ $? != 0 ] && exit 1
+mv -v /tmp/x11-build/*.txz /sfspacks/x
+
+for package in \
+  libXau \
+  libXdmcp \
+  libxcb \
+  ; do
+   ./x11.SlackBuild lib $package
+ 	[ $? != 0 ] && exit 1
+	mv -v /tmp/x11-build/*.txz /sfspacks/x
+done
 
 for package in \
   xcb-util \
@@ -2265,6 +2303,17 @@ export UPGRADE_PACKAGES=always
 
 }
 
+build_kdelibs_for_kde5 () {
+#********************************************************
+cd /slacksrc/kde5
+
+export UPGRADE_PACKAGES=always
+
+./kde.SlackBuild kde4:kdelibs
+[ $? != 0 ] && touch /tmp/kde_build/kdelibs.failed
+mv -v /tmp/kde_build/*.txz /sfspacks/kde5/kde4
+}
+
 
 build_frameworks_kde5 () {
 #********************************************************
@@ -3029,6 +3078,8 @@ LQSC=1
 LFIN=1
 # init pam variable
 LPAM=1
+# init cyrus-sasl variable
+LCYR=1
 # init NUMJOBS variable
 NUMJOBS="-j$(( $(nproc) * 2 )) -l$(( $(nproc) + 1 ))"
 
@@ -3114,6 +3165,20 @@ while (( LINE < $FILELEN )); do
 					esac
 					continue ;;
 
+				cyrus-sasl )
+					case $LCYR in
+						1 )
+							execute_cyrus_sasl_sed && build $SRCDIR $PACKNAME
+							[ $? != 0 ] && exit 1 
+							update_slackbuild ;;
+
+						* )
+							build $SRCDIR $PACKNAME
+							[ $? != 0 ] && exit 1 ;;
+
+					esac
+					continue ;;
+
 				dbus )
 					case $LISTFILE in
 						build2_s.list )
@@ -3124,9 +3189,6 @@ while (( LINE < $FILELEN )); do
 						* )
 							update_slackbuild && build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 ;;
-#						* )
-#							build $SRCDIR $PACKNAME
-#							[ $? != 0 ] && exit 1 ;;
 
 					esac
 					continue ;;
@@ -3292,6 +3354,10 @@ while (( LINE < $FILELEN )); do
 
 				plasma-extra )
 					build_plasma_extra_kde5
+					[ $? != 0 ] && exit 1 ;;
+
+				kde4 )
+					build_kdelibs_for_kde5
 					[ $? != 0 ] && exit 1 ;;
 
 				kde )

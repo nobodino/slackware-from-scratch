@@ -171,9 +171,9 @@ l jansson
 n cyrus-sasl
 n openldap-client
 n krb5
-a cracklib
-a pam
-a libpwquality
+# a cracklib
+# a pam
+# a libpwquality
 a shadow
 l libcap
 a util-linux
@@ -181,6 +181,7 @@ n curl
 l libarchive
 d cmake
 ap mariadb
+n cyrus-sasl
 d perl
 n openssl
 n openssl10
@@ -282,7 +283,7 @@ a dialog
 d help2man
 l python-pygments	
 ap linuxdoc-tools
-a pam
+# a pam
 l gobject-introspection
 l glib2
 ap nano
@@ -344,9 +345,9 @@ d git
 d llvm
 d llvm
 l icu4c
+x x11-xcb
 x x11-lib
 l gd
-x x11-xcb
 l startup-notification
 l zstd
 x libdrm
@@ -358,6 +359,10 @@ l libclc
 d python-setuptools
 l Mako
 x libglvnd
+# l sdl
+x wayland
+x wayland-protocols
+# l brotli
 x mesa
 x glew
 x glu
@@ -432,20 +437,21 @@ tcl expect
 d clisp
 t texlive
 x fontconfig
-# d doxygen
-# kde5 extra-cmake-modules
+d doxygen
+kde5 extra-cmake-modules
 # l libdbusmenu-qt
 l sdl
-l openal-soft
-l libxkbcommon
-l brotli
+# l openal-soft
+# l libxkbcommon
+# l brotli
 x wayland
 x wayland-protocols
-l woff2
-l hyphen
-l qt5
-l qt5-webkit
-d doxygen
+# l woff2
+# l hyphen
+# l qt5
+# l qt5-webkit
+# d doxygen
+# l libxkbcommon
 # deps all-deps-1
 d strace
 d rcs
@@ -539,6 +545,7 @@ l adwaita-icon-theme
 xap ffmpegthumbnailer
 xfce xfce
 xfce xfce
+xap seamonkey
 a end3
 EOF
 }
@@ -925,13 +932,14 @@ l ConsoleKit2
 l LibRaw
 l sip
 l PyQt
-l QScintilla
-l QScintilla
+# l QScintilla
+# l QScintilla
 l a52dec
 l aalib
 l alsa-oss
 l aspell
-extra aspell-word-lists 
+extra aspell-word-lists
+kde5 extra-cmake-modules 
 l attica
 l audiofile
 l automoc4
@@ -1000,8 +1008,8 @@ l media-player-info
 l mhash
 l openexr
 l orc
-l phonon
-l phonon-gstreamer
+deps phonon-qt4
+deps phonon-qt4-gstreamer
 l pilot-link
 l polkit-qt-1
 l pycups
@@ -1059,7 +1067,7 @@ ap ghostscript
 ap moc
 xap gv
 l boost
-l qt-gstreamer
+deps qt-gstreamer
 l akonadi
 ap slackpkg
 d gdb
@@ -1136,7 +1144,31 @@ d python3
 xap mozilla-firefox
 xap mozilla-thunderbird
 y bsd-games
-# xap seamonkey
+l brotli
+x wayland
+x wayland-protocols
+l woff2
+l hyphen
+l qt5
+l qt5-webkit
+l openal-soft
+d doxygen
+l libxkbcommon
+l LibRaw
+deps python-enum34
+deps PyQt5
+l QScintilla
+l QScintilla
+l exiv2
+l grantlee
+l id3lib
+deps phonon-qt4
+deps phonon-qt4-gstreamer
+deps qt-gstreamer
+l poppler
+l sip
+n gpgme
+n wpa_supplicant
 a end4
 EOF
 }
