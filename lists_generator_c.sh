@@ -916,6 +916,7 @@ n wpa_supplicant
 n yptools
 n ytalk
 l newt
+xap libnma
 n NetworkManager
 l GConf
 l libgnome-keyring
