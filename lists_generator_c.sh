@@ -514,6 +514,7 @@ l mozjs60
 l polkit
 a upower
 l gst-plugins-base0
+l libxkbcommon
 l gtk+3
 x libinput
 x x11-app-post
