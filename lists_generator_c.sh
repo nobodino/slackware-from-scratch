@@ -912,12 +912,12 @@ n vlan
 n vsftpd
 n whois
 n wireless_tools
-n wpa_supplicant
+# n wpa_supplicant
 n yptools
 n ytalk
 l newt
-xap libnma
 n NetworkManager
+# xap libnma
 l GConf
 l libgnome-keyring
 l libsecret
@@ -1105,6 +1105,7 @@ n gpa
 n libgcrypt
 l gcr
 l gnome-keyring
+xap libnma
 xap network-manager-applet
 l glade3
 l gvfs
