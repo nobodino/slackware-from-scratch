@@ -1145,8 +1145,8 @@ n openssl
 n snownews
 d python
 d python3
-xap mozilla-firefox
-xap mozilla-thunderbird
+# xap mozilla-firefox
+# xap mozilla-thunderbird
 y bsd-games
 l brotli
 x wayland
@@ -1173,6 +1173,8 @@ l poppler
 l sip
 n gpgme
 n wpa_supplicant
+xap mozilla-firefox
+xap mozilla-thunderbird
 a end4
 EOF
 }
