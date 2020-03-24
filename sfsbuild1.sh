@@ -273,6 +273,19 @@ if [ ! -f $SLACKSRC/l/gobject-introspection/gobject-introspection.SlackBuild.old
 fi
 }
 
+execute_gpgme_sed () {
+#******************************************************************
+# remove qt5 option fo the first build in SlackBuild
+#******************************************************************
+if [ ! -f $SLACKSRC/n/gpgme/gpgme.SlackBuild.old ]; then
+	cp -v $SLACKSRC/n/gpgme/gpgme.SlackBuild $SLACKSRC/n/gpgme/gpgme.SlackBuild.old
+	(
+		cd $SLACKSRC/n/gpgme
+		sed -i -e 's/python qt/python/' gpgme.SlackBuild
+	)
+fi
+}
+
 execute_harfbuzz_sed () {
 #******************************************************************
 # remove "exit 1" code and add harfbuzz headers to SlackBuild
@@ -3080,6 +3093,8 @@ LFIN=1
 LPAM=1
 # init cyrus-sasl variable
 LCYR=1
+# init gpgme variable
+LGPG=1
 # init NUMJOBS variable
 NUMJOBS="-j$(( $(nproc) * 2 )) -l$(( $(nproc) + 1 ))"
 
@@ -3297,6 +3312,18 @@ while (( LINE < $FILELEN )); do
 							update_slackbuild ;;
 
 						* )
+							build $SRCDIR $PACKNAME
+							[ $? != 0 ] && exit 1 ;;
+					esac
+					continue ;;
+
+				gpgme )
+					case $LGPG in
+						1 )
+							execute_gpgme_sed && build $SRCDIR $PACKNAME
+							[ $? != 0 ] && exit 1
+							update_slackbuild && LGPG=2 ;;
+						2 )
 							build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 ;;
 					esac
@@ -3564,17 +3591,17 @@ while (( LINE < $FILELEN )); do
 					post_gcc
 					[ $? != 0 ] && exit 1 ;;
 
-				QScintilla )
-					case $LQSC in
-						1 )
-							execute_qscint_sed && build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1
-							update_slackbuild && LQSC=2 ;;
-						2 )
-							build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1 ;;
-					esac
-					continue ;;
+#				QScintilla )
+#					case $LQSC in
+#						1 )
+#							execute_qscint_sed && build $SRCDIR $PACKNAME
+#							[ $? != 0 ] && exit 1
+#							update_slackbuild && LQSC=2 ;;
+#						2 )
+#							build $SRCDIR $PACKNAME
+#							[ $? != 0 ] && exit 1 ;;
+#					esac
+#					continue ;;
 
 				readline )
 					case $LREA in

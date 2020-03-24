@@ -172,9 +172,9 @@ l jansson
 n cyrus-sasl
 n openldap-client
 n krb5
-# a cracklib
-# a pam
-# a libpwquality
+a cracklib
+a pam
+a libpwquality
 a shadow
 l libcap
 a util-linux
@@ -284,7 +284,7 @@ a dialog
 d help2man
 l python-pygments	
 ap linuxdoc-tools
-# a pam
+a pam
 l gobject-introspection
 l glib2
 ap nano
@@ -1070,7 +1070,8 @@ ap ghostscript
 ap moc
 xap gv
 l boost
-deps qt-gstreamer
+# deps qt-gstreamer
+l qt-gstreamer
 l akonadi
 ap slackpkg
 d gdb
@@ -1086,6 +1087,7 @@ l SDL2_ttf
 l lame
 l libwebp
 l ffmpeg
+l libcue
 xap audacious-plugins
 l gst-plugins-libav
 l libtiff
@@ -1159,16 +1161,19 @@ l openal-soft
 d doxygen
 l libxkbcommon
 l LibRaw
-deps python-enum34
-deps PyQt5
-l QScintilla
+# deps python-enum34
+l PyQt5
+# l QScintilla
 l QScintilla
 l exiv2
 l grantlee
 l id3lib
 deps phonon-qt4
 deps phonon-qt4-gstreamer
-deps qt-gstreamer
+# deps qt-gstreamer
+l qt-gstreamer
+deps phonon
+deps phonon-gstreamer
 l poppler
 l sip
 n gpgme
