@@ -735,7 +735,7 @@ ap pamixer
 ap squashfs-tools
 l wavpack
 xap easytag
-xap audacious
+# xap audacious
 xap ddd
 l python-notify2
 l libical
@@ -1088,7 +1088,7 @@ l lame
 l libwebp
 l ffmpeg
 l libcue
-xap audacious-plugins
+# xap audacious-plugins
 l gst-plugins-libav
 l libtiff
 # d cmake
@@ -1163,6 +1163,8 @@ l libxkbcommon
 l LibRaw
 # deps python-enum34
 l PyQt5
+xap audacious
+xap audacious-plugins
 # l QScintilla
 l QScintilla
 l exiv2
