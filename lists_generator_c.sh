@@ -59,7 +59,7 @@ a coreutils
 n rsync
 k kernel-source
 d kernel-headers
-d python
+d python2
 d bison
 l glibc
 a adjust
@@ -77,7 +77,7 @@ l mpfr
 l libmpc
 a infozip
 l expat
-d python
+d python2
 d python3
 l gc
 d patchelf
@@ -317,7 +317,7 @@ l libusb
 a libgudev
 f linux-faqs
 f linux-howtos
-d python
+d python2
 d python3
 d vala
 l libical
@@ -569,7 +569,7 @@ n libassuan
 n libksba
 n npth
 n gnupg2
-d python
+d python2
 l json-c
 l argon2
 a cryptsetup
@@ -581,6 +581,7 @@ ap qpdf
 ap cups-filters
 ap seejpeg
 ap rzip
+ap sc
 ap sc-im
 ap screen
 a xfsprogs
@@ -1087,7 +1088,7 @@ l SDL2_ttf
 l lame
 l libwebp
 l ffmpeg
-l libcue
+# l libcue
 # xap audacious-plugins
 l gst-plugins-libav
 l libtiff
@@ -1145,7 +1146,7 @@ l libxml2
 l ncurses
 n openssl
 n snownews
-d python
+d python2
 d python3
 # xap mozilla-firefox
 # xap mozilla-thunderbird
@@ -1164,6 +1165,7 @@ l LibRaw
 # deps python-enum34
 l PyQt5
 xap audacious
+l libcue
 xap audacious-plugins
 # l QScintilla
 l QScintilla
