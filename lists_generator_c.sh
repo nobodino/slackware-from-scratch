@@ -1162,7 +1162,7 @@ l openal-soft
 d doxygen
 l libxkbcommon
 l LibRaw
-# deps python-enum34
+l python-enum34
 l PyQt5
 xap audacious
 l libcue
