@@ -80,6 +80,8 @@ l expat
 d python2
 d python3
 l gc
+d autoconf
+d automake
 d patchelf
 # d pre-gcc
 d gcc
@@ -100,8 +102,6 @@ a grep
 l readline
 l gdbm
 d gperf
-d autoconf
-d automake
 n openssl
 a kmod
 a gettext
@@ -170,7 +170,16 @@ n openssl10
 l libssh2
 l jansson
 n cyrus-sasl
-n openldap-client
+l db48
+n tcp_wrappers
+l icu4c
+l libiodbc
+n curl
+l libarchive
+d cmake
+ap mariadb
+d perl
+n openldap
 n krb5
 a cracklib
 a pam
@@ -178,12 +187,12 @@ a libpwquality
 a shadow
 l libcap
 a util-linux
-n curl
-l libarchive
-d cmake
-ap mariadb
+# n curl
+# l libarchive
+# d cmake
+# ap mariadb
 n cyrus-sasl
-d perl
+# d perl
 n openssl
 n openssl10
 d intltool
@@ -203,6 +212,8 @@ d autoconf
 d libtool
 a findutils
 n lynx
+n nss-pam-ldapd
+n pam-krb5
 a end1
 EOF
 }
@@ -217,7 +228,7 @@ a gpm
 a sysfsutils
 l alsa-lib
 n cyrus-sasl
-n openldap-client
+n openldap
 l libidn
 l libidn2
 a hwdata
@@ -274,6 +285,7 @@ l harfbuzz
 l gd
 t texlive
 ap sqlite
+d gyp
 l mozilla-nss
 l db48
 ap rpm
@@ -494,6 +506,8 @@ l python-docutils
 l python-idna
 l python-packaging
 l python-requests
+xap sane
+l python2-module-collection
 l python-urllib3
 l libsndfile
 l orc
@@ -526,7 +540,7 @@ l libnotify
 l pygobject
 l pycairo
 l pygtk
-l keybinder
+l keybinder3
 l libproxy
 l gsettings-desktop-schemas
 l glib-networking
@@ -754,7 +768,7 @@ xap gimp
 xap gftp
 xap gkrellm
 xap gnuchess
-xap gnuplot
+# xap gnuplot
 l desktop-file-utils
 xap gucharmap
 l imagemagick
@@ -924,7 +938,7 @@ l libgnome-keyring
 l libsecret
 l gmp
 d gnucobol
-n openldap-client
+n openldap
 n netatalk
 l loudmouth
 n mcabber
@@ -1112,7 +1126,7 @@ xap libnma
 xap network-manager-applet
 l glade3
 l gvfs
-l keybinder
+l keybinder3
 l libiodbc
 l libwmf
 l libwnck
@@ -1120,6 +1134,7 @@ l polkit-gnome
 l libsodium
 l argon2
 l oniguruma
+l tidy-html5
 n php
 n nfs-utils
 n libgcrypt
@@ -1128,6 +1143,7 @@ xap MPlayer
 xap xine-lib
 xap xine-ui
 kde kde
+# n php
 kdei calligra-l10n
 kde post-kde
 kde kdepim
@@ -1162,9 +1178,10 @@ l openal-soft
 d doxygen
 l libxkbcommon
 l LibRaw
-l python-enum34
+# l python-enum34
 l PyQt5
 xap audacious
+xap gnuplot
 l libcue
 xap audacious-plugins
 # l QScintilla
@@ -1182,6 +1199,7 @@ l poppler
 l sip
 n gpgme
 n wpa_supplicant
+xap NetworkManager-openvpn
 xap mozilla-firefox
 xap mozilla-thunderbird
 a end4
