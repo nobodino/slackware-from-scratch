@@ -127,10 +127,8 @@ copy_src () {
 	export DIFFVER=${VERSION:-$(echo diffutils-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/ap/diffutils/diffutils-$DIFFVER.tar.xz $SRCDIR || exit 1
     cd $RDIR/a/file
-#	file-5.38 doesn't work
-	cd $SRCDIR && wget -c https://mirror.eu.oneandone.net/linux/distributions/gentoo/gentoo/distfiles/file-5.37.tar.gz
 	export FILEVER=${VERSION:-$(echo file-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
-#    cp -v $RDIR/a/file/file-$FILEVER.tar.?z $SRCDIR || exit 1
+    cp -v $RDIR/a/file/file-$FILEVER.tar.?z $SRCDIR || exit 1
     cd $RDIR/a/findutils
 	export FINDVER=${VERSION:-$(echo findutils-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/a/findutils/findutils-$FINDVER.tar.lz $SRCDIR || exit 1
@@ -143,7 +141,7 @@ copy_src () {
     cp -v $RDIR/d/gcc/gcc-$SRCVER.tar.?z $SRCDIR || exit 1
     cd $RDIR/a/gettext
 	export GETTVER=${VERSION:-$(echo gettext-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
-    cp -v $RDIR/a/gettext/gettext-$GETTVER.tar.xz $SRCDIR || exit 1
+    cp -v $RDIR/a/gettext/gettext-$GETTVER.tar.lz $SRCDIR || exit 1
     cd $RDIR/l/glibc
 	export GLIBCVER=${VERSION:-$(echo glibc-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/l/glibc/glibc-$GLIBCVER.tar.xz $SRCDIR || exit 1
@@ -713,7 +711,7 @@ gawk_build () {
 
 gettext_build () {
 #*****************************
-    tar xvf gettext-$GETTVER.tar.xz && cd gettext-$GETTVER
+    tar xvf gettext-$GETTVER.tar.lz && cd gettext-$GETTVER
 
     ./configure --disable-shared || exit 1
 
