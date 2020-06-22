@@ -383,9 +383,9 @@ if [ ! -f $SLACKSRC/a/pam/pam.SlackBuild.old ]; then
 	cp -v $SLACKSRC/a/pam/pam.SlackBuild $SLACKSRC/a/pam/pam.SlackBuild.old
 	(
 		cd $SLACKSRC/a/pam
-		sed -i -e '/pam-1.3.1-redhat-modules.patch.gz/d' pam.SlackBuild
-		sed -i -e '/pam-1.3.0-pwhistory-helper.patch.gz/d' pam.SlackBuild
-		sed -i -e '/pam.pam_tally2.slackware.diff.gz/d' pam.SlackBuild
+#		sed -i -e '/pam-1.3.1-redhat-modules.patch.gz/d' pam.SlackBuild
+#		sed -i -e '/pam-1.3.0-pwhistory-helper.patch.gz/d' pam.SlackBuild
+#		sed -i -e '/pam.pam_tally2.slackware.diff.gz/d' pam.SlackBuild
 		sed -i -e '/xmlto man/d' pam.SlackBuild
 	)
 fi
@@ -402,6 +402,19 @@ if [ ! -f $SLACKSRC/d/pkg-config/pkg-config.SlackBuild.old ]; then
 		cd $SLACKSRC/d/pkg-config
 		sed -i -e '/--prefix=\/\usr/p' pkg-config.SlackBuild
 		sed -i -e '0,/--prefix=\/\usr/ s/--prefix=\/\usr/--with-internal-glib/' pkg-config.SlackBuild
+	)
+fi
+}
+
+execute_php_sed () {
+#******************************************************************
+# delete line that doesn't allow build in build4_.list (need libtidy)
+#******************************************************************
+if [ ! -f $SLACKSRC/n/php/php.SlackBuild.old ]; then
+	cp -v $SLACKSRC/n/php/php.SlackBuild $SLACKSRC/n/php/php.SlackBuild.old
+	(
+		cd $SLACKSRC/n/php
+		sed -i -e '/--with-tidy=shared/d' php.SlackBuild
 	)
 fi
 }
@@ -486,6 +499,19 @@ if [ ! -f $SLACKSRC/xfce/xfce-build-all.sh.old ]; then
 		sed -i -e '/cd $package || exit 1/a .\/\$package.SlackBuild' xfce-build-all.sh
 		sed -i -e '/{package}.failed ; exit 1 ) || exit 1/d' xfce-build-all.sh
 		sed -i -e '/$package.SlackBuild/a [ $? != 0 ] && touch /tmp/$package.failed' xfce-build-all.sh
+	)
+fi
+}
+
+execute_zstd_sed () {
+#******************************************************************
+# delete "zcat" patch line in SlackBuild
+#******************************************************************
+if [ ! -f $SLACKSRC/l/zstd/zstd.SlackBuild.old ]; then
+	cp -v $SLACKSRC/l/zstd/zstd.SlackBuild $SLACKSRC/l/zstd/zstd.SlackBuild.old
+	(
+		cd $SLACKSRC/l/zstd
+		sed -i -e '/zcat/d' zstd.SlackBuild
 	)
 fi
 }
@@ -1803,6 +1829,10 @@ export UPGRADE_PACKAGES=always
 [ $? != 0 ] && exit 1
 mv -v /tmp/x11-build/*.txz /sfspacks/x
 
+./x11.SlackBuild app xisxwayland
+[ $? != 0 ] && exit 1
+mv -v /tmp/x11-build/*.txz /sfspacks/x
+
 cd /sources
 }
 
@@ -3062,11 +3092,13 @@ mkdir -pv /sfspacks/kde5/{applications,applications-extra,frameworks,kde4,kdepim
 #	execute_libusb_sed # 2 pass
 #	execute_llvm_sed # 2 pass
 #	execute_pkg_config_sed # 2 pass
+#	execute_php_sed # 2 pass
 #	execute_qscint_sed # 2 pass
 #	execute_readline_sed # 3 pass
 #	execute_subversion_sed # 2 pass
 #	execute_texlive_sed # 2 pass
 #	execute_xfce_sed # 2 pass
+#	execute_zstd_sed # 2 pass
 #
 #******************************************************************
 # BUILDN: defines if package will be installed or upgraded
@@ -3091,6 +3123,8 @@ LFRE=1
 LHAR=1
 # init gd variable
 LGD=1
+# init zstd variable
+LPHP=1
 # init QScintilla variable
 LQSC=1
 # init findutils variable
@@ -3101,6 +3135,8 @@ LPAM=1
 LCYR=1
 # init gpgme variable
 LGPG=1
+# init zstd variable
+LZST=1
 # init NUMJOBS variable
 NUMJOBS="-j$(( $(nproc) * 2 )) -l$(( $(nproc) + 1 ))"
 
@@ -3264,7 +3300,7 @@ while (( LINE < $FILELEN )); do
 						1 )
 							execute_freetype_sed && build $SRCDIR $PACKNAME 
 							[ $? != 0 ] && exit 1
-							Lupdate_slackbuild && FRE=2 ;;
+							update_slackbuild && LFRE=2 ;;
 						2 )
 							build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 ;;
@@ -3555,6 +3591,18 @@ while (( LINE < $FILELEN )); do
 					[ $? != 0 ] && exit 1
 					update-pciids ;;
 
+#				php )
+#					case $LPHP in
+#						1 )
+#							execute_php_sed && build $SRCDIR $PACKNAME 
+#							[ $? != 0 ] && exit 1
+#							update_slackbuild && LPHP=2 ;;
+#						2 )
+#							build $SRCDIR $PACKNAME
+#							[ $? != 0 ] && exit 1 ;;
+#					esac
+#					continue ;;
+
 				pkg-config )
 					case $LPKG in
 						1 )
@@ -3699,6 +3747,18 @@ while (( LINE < $FILELEN )); do
 					execute_xfce_sed && build $SRCDIR $PACKNAME
 					[ $? != 0 ] && exit 1
 					update_xfce ;;
+
+				zstd )
+					case $LZST in
+						1 )
+							execute_zstd_sed && build $SRCDIR $PACKNAME 
+							[ $? != 0 ] && exit 1
+							update_slackbuild && LPKG=2 ;;
+						2 )
+							build $SRCDIR $PACKNAME
+							[ $? != 0 ] && exit 1 ;;
+					esac
+					continue ;;
 	
 				* )
 					build $SRCDIR $PACKNAME
