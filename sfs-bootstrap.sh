@@ -170,9 +170,9 @@ do
 		cp -r --preserve=timestamps  $SFS/sources/plasma/deps/* $SRCDIR/deps  > /dev/null 2>&1
 		cp -r --preserve=timestamps  $SFS/sources/plasma/kde/* $SRCDIR/kde5  > /dev/null 2>&1
 		# svn rsync with test_kde5
-		mkdir -pv $SFS/sources/test_kde5 && cd $SFS/sources
-		svn checkout $DLDIR13
-		cp -r --preserve=timestamps  $SFS/sources/test_kde5/* $SRCDIR  > /dev/null 2>&1 
+#		mkdir -pv $SFS/sources/test_kde5 && cd $SFS/sources
+#		svn checkout $DLDIR13
+#		cp -r --preserve=timestamps  $SFS/sources/test_kde5/* $SRCDIR  > /dev/null 2>&1 
 		break
 	elif [[ "$upgrade_sources" = "No" ]]
 	then

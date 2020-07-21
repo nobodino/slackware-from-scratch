@@ -383,9 +383,6 @@ if [ ! -f $SLACKSRC/a/pam/pam.SlackBuild.old ]; then
 	cp -v $SLACKSRC/a/pam/pam.SlackBuild $SLACKSRC/a/pam/pam.SlackBuild.old
 	(
 		cd $SLACKSRC/a/pam
-#		sed -i -e '/pam-1.3.1-redhat-modules.patch.gz/d' pam.SlackBuild
-#		sed -i -e '/pam-1.3.0-pwhistory-helper.patch.gz/d' pam.SlackBuild
-#		sed -i -e '/pam.pam_tally2.slackware.diff.gz/d' pam.SlackBuild
 		sed -i -e '/xmlto man/d' pam.SlackBuild
 	)
 fi
@@ -449,6 +446,28 @@ if [ ! -f $SLACKSRC/l/readline/readline.SlackBuild.old ]; then
 	)
 fi
 }
+
+execute_rsync_sed () {
+#******************************************************************
+# disable shared SHLIBS code in SlackBuild
+# delete examples/rlfe lines in SlackBuild
+#******************************************************************
+if [ ! -f $SLACKSRC/n/rsync/rsync.SlackBuild.old ]; then
+	cp -v $SLACKSRC/n/rsync/rsync.SlackBuild $SLACKSRC/n/rsync/rsync.SlackBuild.old
+	(
+		cd $SLACKSRC/n/rsync
+		sed -i -e '/--prefix=\/\usr/p' rsync.SlackBuild
+		sed -i -e '0,/--prefix=\/\usr/ s/--prefix=\/\usr/--disable-lz4/' rsync.SlackBuild
+		sed -i -e '/--prefix=\/\usr/p' rsync.SlackBuild
+		sed -i -e '0,/--prefix=\/\usr/ s/--prefix=\/\usr/--disable-zstd/' rsync.SlackBuild
+		sed -i -e '/--prefix=\/\usr/p' rsync.SlackBuild
+		sed -i -e '0,/--prefix=\/\usr/ s/--prefix=\/\usr/--disable-xxhash/' rsync.SlackBuild
+		sed -i -e '/--prefix=\/\usr/p' rsync.SlackBuild
+		sed -i -e '0,/--prefix=\/\usr/ s/--prefix=\/\usr/--disable-openssl/' rsync.SlackBuild
+	)
+fi
+}
+
 
 execute_subversion_sed () {
 #******************************************************************
@@ -1080,11 +1099,11 @@ echo
 echo "By now, you are ready to build Slackware From Scratch."
 echo "and wait a long time, a few hours."
 echo 
-echo "From now you can choose slackware-current with kde4 or with plasma aka kde5"
-echo "If you choose to kde5 you need to execute the following command:"
-echo 
-echo -e "$YELLOW" "./adapt_for_plasma.sh" "$NORMAL"
-echo
+# echo "From now you can choose slackware-current with kde4 or with plasma aka kde5"
+# echo "If you choose to kde5 you need to execute the following command:"
+# echo 
+# echo -e "$YELLOW" "./adapt_for_plasma.sh" "$NORMAL"
+# echo
 echo "Now, you can build SFS by hand, by building packages, one by one."
 echo "./package.SlackBuild && installpkg /tmp/package*.t?z"
 echo
@@ -3137,6 +3156,8 @@ LCYR=1
 LGPG=1
 # init zstd variable
 LZST=1
+# init rsync variable
+LRSY=1
 # init NUMJOBS variable
 NUMJOBS="-j$(( $(nproc) * 2 )) -l$(( $(nproc) + 1 ))"
 
@@ -3670,6 +3691,19 @@ while (( LINE < $FILELEN )); do
 
 						* )
 							rm /sfspacks/l/readline*.t?z
+ 							build $SRCDIR $PACKNAME
+							[ $? != 0 ] && exit 1 ;;
+					esac
+					continue ;;
+
+				rsync)
+					case $LRSY in
+						1 )
+							execute_rsync_sed && build $SRCDIR $PACKNAME 
+							[ $? != 0 ] && exit 1
+							update_slackbuild && LRSY=2 ;;
+
+						* )
  							build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 ;;
 					esac

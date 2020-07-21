@@ -56,6 +56,10 @@ a aaa_base
 a etc
 a sed
 a coreutils
+# l lz4
+# l xxHash
+# l zlib
+# n openssl
 n rsync
 k kernel-source
 d kernel-headers
@@ -177,6 +181,8 @@ l libiodbc
 n curl
 l libarchive
 d cmake
+n dhcpcd
+a dhcpcd_up
 ap mariadb
 d perl
 n openldap
@@ -300,6 +306,7 @@ a pam
 l gobject-introspection
 l glib2
 ap nano
+l xxHash
 n rsync
 ap mc
 n tcp_wrappers
@@ -406,6 +413,8 @@ xap rxvt-unicode
 xap blackbox
 n dhcp
 ap nvme-cli
+ap neofetch
+ap undervolt
 a end2
 EOF
 }
@@ -478,6 +487,7 @@ n nghttp2
 n httpd
 l neon
 l utf8proc
+l lz4
 d subversion
 d cmake
 tcl tk
