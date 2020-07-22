@@ -810,6 +810,8 @@ l libvisio
 l libwpg
 l sbc
 xap pavucontrol
+l libnice
+l farstream
 xap pidgin
 xap rdesktop
 xap windowmaker
