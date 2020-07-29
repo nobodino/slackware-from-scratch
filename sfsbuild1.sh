@@ -366,11 +366,12 @@ if [ ! -f $SLACKSRC/d/llvm/llvm.SlackBuild.old ]; then
 		sed -i -e 's/"clang++"/"g++"/' llvm.SlackBuild
 		sed -i -e 's/"clang"/"gcc"/' llvm.SlackBuild
 		sed -i -e 's/-GNinja/-Wno-dev -GNinja/' llvm.SlackBuild
-		sed -i -e '/-DBUILD_SHARED_LIBS=ON/d' llvm.SlackBuild
-		sed -i -e '/-DLLVM_ENABLE_ASSERTIONS=OFF/d' llvm.SlackBuild
-		sed -i -e '/-DLLVM_INSTALL_UTILS=ON/d' llvm.SlackBuild
-		sed -i -e '/-DLLDB_USE_SYSTEM_SIX=1/d' llvm.SlackBuild
-		sed -i -e '/$CLANGD/d' llvm.SlackBuild
+		sed -i -e '/-DLLVM_USE_LINKER=gold/d' llvm.SlackBuild
+#		sed -i -e '/-DBUILD_SHARED_LIBS=ON/d' llvm.SlackBuild
+#		sed -i -e '/-DLLVM_ENABLE_ASSERTIONS=OFF/d' llvm.SlackBuild
+#		sed -i -e '/-DLLVM_INSTALL_UTILS=ON/d' llvm.SlackBuild
+#		sed -i -e '/-DLLDB_USE_SYSTEM_SIX=1/d' llvm.SlackBuild
+#		sed -i -e '/$CLANGD/d' llvm.SlackBuild
 	)
 fi
 }
@@ -3625,12 +3626,12 @@ while (( LINE < $FILELEN )); do
 #					continue ;;
 
 				pkg-config )
-					case $LPKG in
-						1 )
+					case $LISTFILE in
+						build1_s.list )
 							execute_pkg_config_sed && build $SRCDIR $PACKNAME 
 							[ $? != 0 ] && exit 1
 							update_slackbuild && LPKG=2 ;;
-						2 )
+						* )
 							build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 ;;
 					esac

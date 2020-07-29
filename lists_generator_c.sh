@@ -56,10 +56,6 @@ a aaa_base
 a etc
 a sed
 a coreutils
-# l lz4
-# l xxHash
-# l zlib
-# n openssl
 n rsync
 k kernel-source
 d kernel-headers
@@ -87,6 +83,9 @@ l gc
 d autoconf
 d automake
 d patchelf
+a xz
+l lz4
+l zstd
 # d pre-gcc
 d gcc
 # d post-gcc
@@ -97,7 +96,7 @@ a attr
 a acl
 l libcap
 a sed
-a xz
+# a xz
 l libxml2
 tcl tcl
 l libxslt
@@ -193,12 +192,7 @@ a libpwquality
 a shadow
 l libcap
 a util-linux
-# n curl
-# l libarchive
-# d cmake
-# ap mariadb
 n cyrus-sasl
-# d perl
 n openssl
 n openssl10
 d intltool
@@ -207,9 +201,14 @@ ap bc
 a file
 d m4
 a which
+a cpio
 l readline
 n dhcpcd
-a cpio
+l libedit
+d llvm
+d llvm
+d ccache
+d rust
 a kernel-all
 d help2man
 d flex
@@ -362,8 +361,8 @@ d swig
 d oprofile
 d binutils
 d git
-d llvm
-d llvm
+# d llvm
+# d llvm
 l icu4c
 x x11-xcb
 x x11-lib
@@ -557,7 +556,7 @@ l glib-networking
 l hicolor-icon-theme
 l libcroco
 t xfig
-d rust
+# d rust
 l librsvg
 l gdk-pixbuf2
 l gnome-themes-extra
@@ -620,6 +619,9 @@ n ethtool
 n iproute2
 n lftp
 e emacs
+l pciaudiolib
+l espeak-ng
+e emacspeak
 a acpid
 a btrfs-progs
 a cpufrequtils

@@ -213,6 +213,9 @@ copy_src () {
     cd $RDIR/a/xz
 	export XZVER=${VERSION:-$(echo xz-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/a/xz/xz-$XZVER.tar.xz $SRCDIR || exit 1
+    cd $RDIR/l/zstd
+	export ZSTDVER=${VERSION:-$(echo zstd-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
+    cp -v $RDIR/l/zstd/zstd-$ZSTDVER.tar.?z $SRCDIR || exit 1
 	case $(uname -m) in
 		i686 ) 
 			if [ -f $RDIR/others/gnat-gpl-2014-x86-linux-bin.tar.gz ]; then
@@ -481,7 +484,7 @@ esac
     mv -v mpc-$LIBMPCVER mpc
 
 # fix a problem introduced by glibc-2.31
-# sed -e '1161 s|^|//|' -i libsanitizer/sanitizer_common/sanitizer_platform_limits_posix.cc
+ sed -e '1161 s|^|//|' -i libsanitizer/sanitizer_common/sanitizer_platform_limits_posix.cc
 
    mkdir -v build && cd build
 
@@ -543,7 +546,7 @@ esac
     mv -v mpc-$LIBMPCVER mpc
 
 # fix a problem introduced by glibc-2.31
-# sed -e '1161 s|^|//|' -i libsanitizer/sanitizer_common/sanitizer_platform_limits_posix.cc
+ sed -e '1161 s|^|//|' -i libsanitizer/sanitizer_common/sanitizer_platform_limits_posix.cc
 
    mkdir -v build && cd build
 
@@ -933,6 +936,19 @@ which_build () {
     echo which-$WHICHVER >> $SFS/tools/etc/tools_version
 }
 
+zstd_build () {
+#*****************************
+    tar xvf zstd-$ZSTDVER.tar.?z && cd zstd-$ZSTDVER
+
+	make || exit 1
+	make  -C contrib/pzstd || exit 1
+
+	make prefix=/tools install || exit 1
+#	make install -Dm755 contrib/pzstd/pzstd /tools/bin/pzstd || exit 1
+    cd ..
+    rm -rf zstd-$ZSTDVER
+    echo zstd-$ZSTDVER >> $SFS/tools/etc/tools_version
+}
 
 strip_libs () {
 #*****************************
@@ -1016,6 +1032,7 @@ lzip_build
 tar_slack_build
 which_build
 util_linux_build
+zstd_build
 #*****************************
 case $(uname -m) in
 	x86_64)
