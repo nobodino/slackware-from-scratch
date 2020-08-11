@@ -308,7 +308,7 @@ ap nano
 l xxHash
 n rsync
 ap mc
-n tcp_wrappers
+# n tcp_wrappers
 l libedit
 n openssh
 n ncftp
@@ -931,7 +931,7 @@ n rp-pppoe
 n rsync
 n slrn
 n stunnel
-n tcp_wrappers
+# n tcp_wrappers
 n telnet
 n tftp-hpa
 n tin
@@ -952,7 +952,7 @@ l libgnome-keyring
 l libsecret
 l gmp
 d gnucobol
-n openldap
+# n openldap
 n netatalk
 l loudmouth
 n mcabber
@@ -1192,7 +1192,6 @@ l openal-soft
 d doxygen
 l libxkbcommon
 l LibRaw
-# l python-enum34
 l PyQt5
 xap audacious
 xap gnuplot
