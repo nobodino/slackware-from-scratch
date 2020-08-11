@@ -1,0 +1,161 @@
+#!/bin/bash
+
+# Copyright 2008, 2009, 2010, 2013, 2014, 2018  Patrick J. Volkerding, Sebeka, Minnesota, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# by: volkerdi@slackware.com
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=gpm
+VERSION=1.20.7
+BUILD=${BUILD:-7}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-gpm
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC -fcommon"
+  LIBDIRSUFFIX="64"
+fi
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+
+cd $TMP
+rm -rf gpm-$VERSION || exit 1
+tar xvf $CWD/gpm-$VERSION.tar.xz || exit 1
+cd gpm-$VERSION || exit 1
+
+chown -R root:root .
+find . \
+  \( -perm 700 -o -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \+ -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \+
+
+zcat $CWD/gpm-1.20.1-lib-silent.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/gpm-1.20.5-close-fds.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/gpm-1.20.1-select-1.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/gpm.types.diff.gz | patch -p1 --verbose || exit 1
+zcat $CWD/gpm.gcc7.diff.gz | patch -p1 --verbose || exit 1
+
+sh autogen.sh
+
+# This is *supposed* to prevent linking libgpm.so with -lncurses,
+# but for some reason it doesn't have the desired effect here.
+# Any ideas?  The patch is supposed to resolve a circular dependency
+# between libgpm.so and libncurses.so.  I don't notice any ill effects
+# here, but perhaps the problem would occur if prelinking was used.
+# Also, ncurses has not shown an ldd link to libgpm for several releases,
+# so perhaps any problem that existed was fixed on their end.
+# NOTE:  Since this isn't preventing gpm from linking to ncurses, I'm
+# commenting this patch out until we understand better if it's even
+# useful for anything.  Half a patch seems worse than no patch.
+#zcat $CWD/gpm-1.20.1-weak-wgetch.patch.gz | patch -p1 --verbose || exit 1
+
+# Since we just patched configure.ac, run this again to carry the change
+# into configure:
+autoconf
+
+CFLAGS="$SLKCFLAGS" \
+./configure \
+  --prefix=/usr \
+  --sysconfdir=/etc \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --build=$ARCH-slackware-linux || exit 1
+
+make || exit 1
+make install DESTDIR=$PKG || exit 1
+
+# Emacs ships better versions of these:
+rm -rf $PKG/usr/share/emacs
+
+chmod 755 $PKG/usr/lib${LIBDIRSUFFIX}/libgpm.so.*
+mkdir $PKG/lib${LIBDIRSUFFIX}
+mv $PKG/usr/lib${LIBDIRSUFFIX}/libgpm.so.* $PKG/lib${LIBDIRSUFFIX}
+rm -f $PKG/usr/lib${LIBDIRSUFFIX}/libgpm.so
+( cd $PKG/usr/lib${LIBDIRSUFFIX}
+  ln -sf ../../lib${LIBDIRSUFFIX}/libgpm.so.? libgpm.so )
+
+zcat $CWD/inputattach.c.gz > inputattach.c
+gcc $SLKCFLAGS -o inputattach inputattach.c || exit
+cat inputattach > $PKG/usr/bin/inputattach
+
+mkdir -p $PKG/etc/rc.d
+
+( cd conf
+  cat gpm-root.conf > $PKG/etc/gpm-root.conf
+  cat gpm-syn.conf > $PKG/etc/gpm-syn.conf
+  cat gpm-twiddler.conf > $PKG/etc/gpm-twiddler.conf
+)
+
+mv $PKG/usr/share/{info,man} $PKG/usr
+gzip -9 $PKG/usr/man/man*/*.?
+gzip -9 $PKG/usr/info/*
+
+mkdir -p $PKG/usr/doc/gpm-$VERSION
+cp -a \
+  BUGS COPYING* Changelog Changes MANIFEST README* TODO \
+  doc/{Announce,FAQ,HACK_GPM,README*,changelog} \
+  $PKG/usr/doc/gpm-$VERSION
+
+zcat $CWD/mouseconfig.gz > $PKG/usr/sbin/mouseconfig
+chmod 755 $PKG/usr/bin/* $PKG/usr/sbin/*
+mkdir -p $PKG/var/log/setup
+zcat $CWD/setup.mouse.gz > $PKG/var/log/setup/setup.mouse
+chmod 755 $PKG/var/log/setup/setup.mouse
+
+( cd $PKG
+  find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+  find . | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+)
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+# Build the package:
+cd $PKG
+makepkg -l y -c n $TMP/gpm-$VERSION-$ARCH-$BUILD.txz
+

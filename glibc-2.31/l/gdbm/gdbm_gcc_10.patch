@@ -1,0 +1,17 @@
+Author:Filip Januš <fjanus@redhat.com>
+Date: 7.2.2020
+Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=1799391
+After upgrade gcc to version gcc version 10.0.1 20200130 (Red Hat 10.0.1-0.7) (GCC) is not possible to build GDBM
+
+diff -ur gdbm-1.18.1/src/parseopt.c gdbm-1.18.1_new/src/parseopt.c
+--- gdbm-1.18.1/src/parseopt.c	2018-05-30 11:39:15.000000000 +0200
++++ gdbm-1.18.1_new/src/parseopt.c	2020-02-07 20:36:37.226390871 +0100
+@@ -255,8 +255,6 @@
+ }
+ 
+ char *parseopt_program_name;
+-char *parseopt_program_doc;
+-char *parseopt_program_args;
+ const char *program_bug_address = "<" PACKAGE_BUGREPORT ">";
+ void (*parseopt_help_hook) (FILE *stream);
+ 
