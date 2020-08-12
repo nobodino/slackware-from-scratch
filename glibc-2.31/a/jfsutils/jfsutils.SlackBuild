@@ -1,0 +1,127 @@
+#!/bin/bash
+
+# Copyright 2008, 2009, 2010, 2011, 2018  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=jfsutils
+VERSION=${VERSION:-$(echo $PKGNAM-*.tar.?z* | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+BUILD=${BUILD:-2}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-jfsutils
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC -fcommon"
+fi
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+cd $TMP
+rm -rf jfsutils-$VERSION
+tar xvf $CWD/jfsutils-$VERSION.tar.?z* || exit 1
+cd jfsutils-$VERSION || exit 1
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \+ -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \+
+
+# Fix build with recent glibc:
+sed "s@<unistd.h>@&\n#include <sys/types.h>@g" -i fscklog/extract.c
+zcat $CWD/jfsutils.glibc228.diff.gz | patch -p1 --verbose || exit 1
+zcat $CWD/jfsutils.inttypes.h.diff.gz | patch -p1 --verbose || exit 1
+
+CFLAGS="$SLKCFLAGS" \
+./configure \
+  --prefix=/usr \
+  --disable-dependency-tracking \
+  --build=$ARCH-slackware-linux || exit 1
+
+make || exit 1
+
+mkdir -p $PKG/sbin
+cat fsck/jfs_fsck > $PKG/sbin/jfs_fsck
+( cd $PKG/sbin ; ln -sf jfs_fsck fsck.jfs )
+cat mkfs/jfs_mkfs > $PKG/sbin/jfs_mkfs
+( cd $PKG/sbin ; ln -sf jfs_mkfs mkfs.jfs )
+cat logdump/jfs_logdump > $PKG/sbin/jfs_logdump
+cat fscklog/jfs_fscklog > $PKG/sbin/jfs_fscklog
+cat xpeek/jfs_debugfs > $PKG/sbin/jfs_debugfs
+cat tune/jfs_tune > $PKG/sbin/jfs_tune
+chmod 755 $PKG/sbin/*
+
+mkdir -p $PKG/usr/man/man8
+for file in `find . -name "*.8"` ; do
+  cat $file | gzip -9c > $PKG/usr/man/man8/`basename $file`.gz
+done
+( cd $PKG/usr/man/man8
+  ln -sf jfs_fsck.8.gz fsck.jfs.8.gz
+  ln -sf jfs_mkfs.8.gz mkfs.jfs.8.gz
+)
+
+mkdir -p $PKG/usr/doc/jfsutils-$VERSION
+cp -a \
+  AUTHORS COPYING* NEWS README \
+  $PKG/usr/doc/jfsutils-$VERSION
+
+# If there's a ChangeLog, installing at least part of the recent history
+# is useful, but don't let it get totally out of control:
+if [ -r ChangeLog ]; then
+  DOCSDIR=$(echo $PKG/usr/doc/*-$VERSION)
+  cat ChangeLog | head -n 1000 > $DOCSDIR/ChangeLog
+  touch -r ChangeLog $DOCSDIR/ChangeLog
+fi
+
+( cd $PKG
+  find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+  find . | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+)
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/jfsutils-$VERSION-$ARCH-$BUILD.txz
+
