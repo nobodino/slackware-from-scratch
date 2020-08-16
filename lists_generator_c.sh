@@ -568,6 +568,7 @@ xap ffmpegthumbnailer
 xfce xfce
 xfce xfce
 xap seamonkey
+xap ssr
 a end3
 EOF
 }
