@@ -361,8 +361,6 @@ d swig
 d oprofile
 d binutils
 d git
-# d llvm
-# d llvm
 l icu4c
 x x11-xcb
 x x11-lib
@@ -526,6 +524,7 @@ l tdb
 d check
 l sbc
 n bluez
+l alsa-lib
 l pulseaudio
 l alsa-lib
 l boost
@@ -533,7 +532,7 @@ l judy
 l netpbm
 l libwnck
 l gstreamer0
-l mozjs60
+l mozjs68
 l polkit
 a upower
 l gst-plugins-base0
@@ -554,9 +553,7 @@ l libproxy
 l gsettings-desktop-schemas
 l glib-networking
 l hicolor-icon-theme
-l libcroco
 t xfig
-# d rust
 l librsvg
 l gdk-pixbuf2
 l gnome-themes-extra
@@ -619,7 +616,7 @@ n ethtool
 n iproute2
 n lftp
 e emacs
-l pciaudiolib
+l pcaudiolib
 l espeak-ng
 e emacspeak
 a acpid
@@ -813,13 +810,17 @@ l libwpg
 l sbc
 xap pavucontrol
 l libnice
+l gst-plugins-base0
+l gst-plugins-good0
+l gst-plugins-base
+l gst-plugins-base
+l gst-plugins-good
 l farstream
 xap pidgin
 xap rdesktop
 xap windowmaker
 xap x11-ssh-askpass
 xap x3270
-xap xaos
 xap gparted
 l libtheora
 l libcdio
@@ -956,7 +957,7 @@ d gnucobol
 n netatalk
 l loudmouth
 n mcabber
-n lynx
+# n lynx
 n newspost
 n procmail
 xap seyon
@@ -992,11 +993,11 @@ l gd
 l gmime
 l gmm
 l grantlee
-l gst-plugins-base0
-l gst-plugins-good0
-l gst-plugins-base
-l gst-plugins-base
-l gst-plugins-good
+# l gst-plugins-base0
+# l gst-plugins-good0
+# l gst-plugins-base
+# l gst-plugins-base
+# l gst-plugins-good
 l hunspell
 l icon-naming-utils
 l ilmbase
@@ -1061,7 +1062,6 @@ l strigi
 l system-config-printer
 l tango-icon-theme
 l tango-icon-theme-extras
-l urwid
 l v4l-utils
 l xapian-core
 n ulogd
@@ -1193,6 +1193,8 @@ d doxygen
 l libxkbcommon
 l LibRaw
 l PyQt5
+l qca-qt5
+xap xaos
 xap audacious
 xap gnuplot
 l libcue

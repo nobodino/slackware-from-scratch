@@ -27,7 +27,7 @@
 #
 # Note: The adjust and link_tools procedures of this script are 
 #       inspired from the LFS manual chapter 6.10
-#       Copyright © 1999-2019 Gerard Beekmans and may be
+#       Copyright © 1999-2020 Gerard Beekmans and may be
 #       copied under the MIT License.
 #
 #--------------------------------------------------------------------------
@@ -367,11 +367,6 @@ if [ ! -f $SLACKSRC/d/llvm/llvm.SlackBuild.old ]; then
 		sed -i -e 's/"clang"/"gcc"/' llvm.SlackBuild
 		sed -i -e 's/-GNinja/-Wno-dev -GNinja/' llvm.SlackBuild
 		sed -i -e '/-DLLVM_USE_LINKER=gold/d' llvm.SlackBuild
-#		sed -i -e '/-DBUILD_SHARED_LIBS=ON/d' llvm.SlackBuild
-#		sed -i -e '/-DLLVM_ENABLE_ASSERTIONS=OFF/d' llvm.SlackBuild
-#		sed -i -e '/-DLLVM_INSTALL_UTILS=ON/d' llvm.SlackBuild
-#		sed -i -e '/-DLLDB_USE_SYSTEM_SIX=1/d' llvm.SlackBuild
-#		sed -i -e '/$CLANGD/d' llvm.SlackBuild
 	)
 fi
 }
@@ -791,22 +786,22 @@ case $PACKNAME in
 
 	mozilla-firefox )
 		# need sh shell to be built
-		cd /slacksrc/$SRCDIR/$PACKNAME && chmod +x *.SlackBuild && SHELL=/bin/sh ./mozilla-firefox.SlackBuild
+		cd /slacksrc/$SRCDIR/$PACKNAME && chmod +x *.SlackBuild && SHELL=/bin/sh ./$PACKNAME.SlackBuild
 		[ $? != 0 ] && exit 1 ;;
 
-	mozjs60 )
+	mozjs68 )
 		# need sh shell to be built
-		cd /slacksrc/$SRCDIR/$PACKNAME && chmod +x *.SlackBuild && SHELL=/bin/sh ./mozjs60.SlackBuild
+		cd /slacksrc/$SRCDIR/$PACKNAME && chmod +x *.SlackBuild && SHELL=/bin/sh ./$PACKNAME.SlackBuild
 		[ $? != 0 ] && exit 1 ;;
 
 	mozilla-thunderbird )
 		# need sh shell to be built
-		cd /slacksrc/$SRCDIR/$PACKNAME && chmod +x *.SlackBuild && SHELL=/bin/sh ./mozilla-thunderbird.SlackBuild
+		cd /slacksrc/$SRCDIR/$PACKNAME && chmod +x *.SlackBuild && SHELL=/bin/sh ./$PACKNAME.SlackBuild
 		[ $? != 0 ] && exit 1 ;;
 
 	seamonkey )
 		# need sh shell to be built
-		cd /slacksrc/$SRCDIR/$PACKNAME && chmod +x *.SlackBuild && SHELL=/bin/sh ./seamonkey.SlackBuild
+		cd /slacksrc/$SRCDIR/$PACKNAME && chmod +x *.SlackBuild && SHELL=/bin/sh ./$PACKNAME.SlackBuild
 		[ $? != 0 ] && exit 1 ;;
 
 	snownews )
@@ -1298,7 +1293,7 @@ link_tools () {
 # pkgtools building, which is not in LFS of course.
 #
 # Note: Much of this script is copied from the LFS manual.
-#       Copyright © 1999-2019 Gerard Beekmans and may be
+#       Copyright © 1999-2020 Gerard Beekmans and may be
 #       copied under the MIT License.
 #****************************************************************
 mkdir -pv /usr/lib && mkdir -v /bin && mkdir -pv /usr/include
@@ -1324,7 +1319,7 @@ link_tools_x64 () {
 # pkgtools building, which is not in LFS of course.
 #
 # Note: Much of this script is copied from the LFS manual.
-#       Copyright © 1999-2019 Gerard Beekmans and may be
+#       Copyright © 1999-2020 Gerard Beekmans and may be
 #       copied under the MIT License.
 #****************************************************************
 mkdir -pv /usr/lib64 && mkdir -v /bin && mkdir -pv /usr/include
@@ -1405,7 +1400,7 @@ pre_gcc () {
 # Install gnat-gpl to be able to build gnat-ada package
 #
 # Note: Much of this script is copied from the LFS manual.
-#       Copyright © 1999-2019 Gerard Beekmans and may be
+#       Copyright © 1999-2020 Gerard Beekmans and may be
 #       copied under the MIT License.
 #******************************************************************
 cd /tmp
@@ -1499,23 +1494,6 @@ build_x11_lib () {
 cd /slacksrc/x/x11
 
 export UPGRADE_PACKAGES=always
-
-# for package in \
-#  libXau \
-#  libXdmcp \
-#  ; do
-#   ./x11.SlackBuild lib $package
-# 	[ $? != 0 ] && exit 1
-#	mv -v /tmp/x11-build/*.txz /sfspacks/x
-# done
-
-# ./x11.SlackBuild proto xcb-proto
-# [ $? != 0 ] && exit 1
-# mv -v /tmp/x11-build/*.txz /sfspacks/x
-
-# ./x11.SlackBuild xcb libpthread-stubs
-# [ $? != 0 ] && exit 1
-# mv -v /tmp/x11-build/*.txz /sfspacks/x
 
 for package in \
   xtrans \
@@ -2311,7 +2289,7 @@ cd /sources
 
 build_post_kde () {
 #****************************************************************
-# this part exist because some kde packages don't build directly
+# this part exists because some kde packages don't build on first pass
 #****************************************************************
 cd /slacksrc/kde
 
