@@ -402,6 +402,9 @@ x motif
 x xterm
 x libva
 x urw-core35-fonts-otf
+x hack-fonts-ttf
+x noto-cjk-fonts-ttf
+x noto-fonts-ttf
 x ttf-tlwg
 l pcre2
 x vulkan-sdk
