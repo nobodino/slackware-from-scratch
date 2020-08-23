@@ -122,7 +122,7 @@ fi
 
 # Fix path to mysql header:
 zcat $CWD/patches/qt5.mysql.h.diff.gz | patch -p1 --verbose || exit 1
-zcat $CWD/patches/qt5-gcc-10.2.patch.gz | patch -p1 --verbose || exit 1
+cat $CWD/patches/qt5-gcc-10.2.patch | patch -p1 --verbose || exit 1
 
 # CMake generates wrong -isystem /usr/include compilations flags with Qt5::Gui
 # and for it breaks KWin compilation with:
@@ -130,11 +130,17 @@ zcat $CWD/patches/qt5-gcc-10.2.patch.gz | patch -p1 --verbose || exit 1
 # See also https://bugzilla.redhat.com/1704474
 cd qtbase
   zcat $CWD/patches/qt5.qtbase_cmake_isystem_includes.patch.gz | patch -p1 --verbose || exit 1
-  zcat $CWD/patches/qtbug-74252.patch.gz | patch -p1 --verbose || exit 1
-  zcat $CWD/patches/qtbug-78966.patch.gz | patch -p1 --verbose || exit 1
-  zcat $CWD/patches/qtbug-94619.patch.gz | patch -p1 --verbose || exit 1
-  zcat $CWD/patches/qt5-base-cflags.patch.gz | patch -p1 --verbose || exit 1
-  zcat $CWD/patches/qt5-base-QTBUG-82910.patch.gz | patch -p1 --verbose || exit 1
+  cat $CWD/patches/qtbug-74252.patch | patch -p1 --verbose || exit 1
+  cat $CWD/patches/qtbug-78966.patch | patch -p1 --verbose || exit 1
+  cat $CWD/patches/qtbug-94619.patch | patch -p1 --verbose || exit 1
+  cat $CWD/patches/qt5-base-cflags.patch | patch -p1 --verbose || exit 1
+
+cd - 1>/dev/null
+
+# patch from BLFS to solve glibc > 2.31 problem:
+cd qtwebengine
+  cat $CWD/patches/qtwebengine-everywhere-src-5.15.0-consolidated_fixes-3.patch | patch -Esp1 --verbose || exit 1
+
 cd - 1>/dev/null
 
 # If PulseAudio is not found, use the _alsa $TAG and disable it in the build:

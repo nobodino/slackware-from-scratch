@@ -1,0 +1,282 @@
+Submitted By:            Thomas Trepl <thomas at linuxfromscratch dot org>
+Date:                    2020-08-19
+Initial Package Version: 5.15.0
+Upstream Status:         Partially applied
+Origin:                  Upstream, partially Thomas's qtwebengine 5.14.2 patch
+Description:             Adapts two files to build with GCC-10, and adapts
+                         V8's javascript parser to allow us to use the latest
+                         system ICU. Some portions of this patch were copied
+                         and rebased from Thomas's patch for 5.14.2. Most of the
+                         header inclusions were taken care of, but one new one was
+                         required, and one was still needed. The ICU portion was
+                         rebased from Thomas's patch.  In v2 added fix from Marty
+                         Jack for a problem with bison-3.7.1.
+                         Version 3 is based on Ken's merger to version 2. It
+                         contains fixes for some changes in glibc regarding syscalls
+                         403 and 407 ("nanosleep"). This patch is taken from
+                         https://github.com/schnitzeltony/meta-browser/blob/master/\
+                         recipes-browser/chromium/files/0003-Fix-sandbox-Aw-snap-for-\
+                         syscalls-403-and-407.patch
+
+diff -Naur qtwebengine-everywhere-src-5.15.0.orig/src/3rdparty/chromium/base/trace_event/trace_event_memory_overhead.h qtwebengine-everywhere-src-5.15.0/src/3rdparty/chromium/base/trace_event/trace_event_memory_overhead.h
+--- qtwebengine-everywhere-src-5.15.0.orig/src/3rdparty/chromium/base/trace_event/trace_event_memory_overhead.h	2020-05-06 16:21:29.000000000 +0200
++++ qtwebengine-everywhere-src-5.15.0/src/3rdparty/chromium/base/trace_event/trace_event_memory_overhead.h	2020-08-19 10:18:06.914367043 +0200
+@@ -9,6 +9,7 @@
+ #include <stdint.h>
+ 
+ #include <unordered_map>
++#include <string>
+ 
+ #include "base/base_export.h"
+ #include "base/macros.h"
+diff -Naur qtwebengine-everywhere-src-5.15.0.orig/src/3rdparty/chromium/sandbox/linux/seccomp-bpf-helpers/baseline_policy.cc qtwebengine-everywhere-src-5.15.0/src/3rdparty/chromium/sandbox/linux/seccomp-bpf-helpers/baseline_policy.cc
+--- qtwebengine-everywhere-src-5.15.0.orig/src/3rdparty/chromium/sandbox/linux/seccomp-bpf-helpers/baseline_policy.cc	2020-05-06 16:21:29.000000000 +0200
++++ qtwebengine-everywhere-src-5.15.0/src/3rdparty/chromium/sandbox/linux/seccomp-bpf-helpers/baseline_policy.cc	2020-08-19 10:18:45.868361837 +0200
+@@ -148,7 +148,14 @@
+     return Allow();
+ #endif
+ 
+-  if (sysno == __NR_clock_gettime || sysno == __NR_clock_nanosleep) {
++  if (sysno == __NR_clock_gettime || sysno == __NR_clock_nanosleep
++#if defined(__NR_clock_gettime64)
++                                  || sysno == __NR_clock_gettime64
++#endif
++#if defined(__NR_clock_nanosleep_time64)
++                                  || sysno == __NR_clock_nanosleep_time64
++#endif
++  ) {
+     return RestrictClockID();
+   }
+ 
+diff -Naur qtwebengine-everywhere-src-5.15.0.orig/src/3rdparty/chromium/sandbox/linux/seccomp-bpf-helpers/syscall_parameters_restrictions_unittests.cc qtwebengine-everywhere-src-5.15.0/src/3rdparty/chromium/sandbox/linux/seccomp-bpf-helpers/syscall_parameters_restrictions_unittests.cc
+--- qtwebengine-everywhere-src-5.15.0.orig/src/3rdparty/chromium/sandbox/linux/seccomp-bpf-helpers/syscall_parameters_restrictions_unittests.cc	2020-05-06 16:21:29.000000000 +0200
++++ qtwebengine-everywhere-src-5.15.0/src/3rdparty/chromium/sandbox/linux/seccomp-bpf-helpers/syscall_parameters_restrictions_unittests.cc	2020-08-19 10:18:45.868361837 +0200
+@@ -60,6 +60,12 @@
+       case __NR_clock_gettime:
+       case __NR_clock_getres:
+       case __NR_clock_nanosleep:
++#if defined(__NR_clock_nanosleep_time64)
++      case __NR_clock_nanosleep_time64:
++#endif
++#if defined(__NR_clock_gettime64)
++      case __NR_clock_gettime64:
++#endif
+         return RestrictClockID();
+       default:
+         return Allow();
+diff -Naur qtwebengine-everywhere-src-5.15.0.orig/src/3rdparty/chromium/sandbox/linux/seccomp-bpf-helpers/syscall_sets.cc qtwebengine-everywhere-src-5.15.0/src/3rdparty/chromium/sandbox/linux/seccomp-bpf-helpers/syscall_sets.cc
+--- qtwebengine-everywhere-src-5.15.0.orig/src/3rdparty/chromium/sandbox/linux/seccomp-bpf-helpers/syscall_sets.cc	2020-05-06 16:21:29.000000000 +0200
++++ qtwebengine-everywhere-src-5.15.0/src/3rdparty/chromium/sandbox/linux/seccomp-bpf-helpers/syscall_sets.cc	2020-08-19 10:18:45.869361837 +0200
+@@ -39,6 +39,12 @@
+                                 // filtered by RestrictClokID().
+     case __NR_clock_gettime:    // Parameters filtered by RestrictClockID().
+     case __NR_clock_nanosleep:  // Parameters filtered by RestrictClockID().
++#if defined(__NR_clock_gettime64)
++    case __NR_clock_gettime64:  // Parameters filtered by RestrictClockID().
++#endif
++#if defined(__NR_clock_nanosleep_time64)
++    case __NR_clock_nanosleep_time64:  // Parameters filtered by RestrictClockID().
++#endif
+     case __NR_clock_settime:    // Privileged.
+ #if defined(__i386__) || \
+     (defined(ARCH_CPU_MIPS_FAMILY) && defined(ARCH_CPU_32_BITS))
+diff -Naur qtwebengine-everywhere-src-5.15.0.orig/src/3rdparty/chromium/sandbox/linux/system_headers/arm_linux_syscalls.h qtwebengine-everywhere-src-5.15.0/src/3rdparty/chromium/sandbox/linux/system_headers/arm_linux_syscalls.h
+--- qtwebengine-everywhere-src-5.15.0.orig/src/3rdparty/chromium/sandbox/linux/system_headers/arm_linux_syscalls.h	2020-05-06 16:21:29.000000000 +0200
++++ qtwebengine-everywhere-src-5.15.0/src/3rdparty/chromium/sandbox/linux/system_headers/arm_linux_syscalls.h	2020-08-19 10:18:45.870361837 +0200
+@@ -1385,6 +1385,14 @@
+ #define __NR_memfd_create (__NR_SYSCALL_BASE+385)
+ #endif
+ 
++#if !defined(__NR_clock_gettime64)
++#define __NR_clock_gettime64 (__NR_SYSCALL_BASE+403)
++#endif
++
++#if !defined(__NR_clock_nanosleep_time64)
++#define __NR_clock_nanosleep_time64 (__NR_SYSCALL_BASE+407)
++#endif
++
+ // ARM private syscalls.
+ #if !defined(__ARM_NR_BASE)
+ #define __ARM_NR_BASE (__NR_SYSCALL_BASE + 0xF0000)
+diff -Naur qtwebengine-everywhere-src-5.15.0.orig/src/3rdparty/chromium/sandbox/linux/system_headers/mips_linux_syscalls.h qtwebengine-everywhere-src-5.15.0/src/3rdparty/chromium/sandbox/linux/system_headers/mips_linux_syscalls.h
+--- qtwebengine-everywhere-src-5.15.0.orig/src/3rdparty/chromium/sandbox/linux/system_headers/mips_linux_syscalls.h	2020-05-06 16:21:29.000000000 +0200
++++ qtwebengine-everywhere-src-5.15.0/src/3rdparty/chromium/sandbox/linux/system_headers/mips_linux_syscalls.h	2020-08-19 10:18:45.871361836 +0200
+@@ -1433,4 +1433,12 @@
+ #define __NR_memfd_create (__NR_Linux + 354)
+ #endif
+ 
++#if !defined(__NR_clock_gettime64)
++#define __NR_clock_gettime64 (__NR_Linux + 403)
++#endif
++
++#if !defined(__NR_clock_nanosleep_time64)
++#define __NR_clock_nanosleep_time64 (__NR_Linux + 407)
++#endif
++
+ #endif  // SANDBOX_LINUX_SYSTEM_HEADERS_MIPS_LINUX_SYSCALLS_H_
+diff -Naur qtwebengine-everywhere-src-5.15.0.orig/src/3rdparty/chromium/third_party/blink/renderer/build/scripts/rule_bison.py qtwebengine-everywhere-src-5.15.0/src/3rdparty/chromium/third_party/blink/renderer/build/scripts/rule_bison.py
+--- qtwebengine-everywhere-src-5.15.0.orig/src/3rdparty/chromium/third_party/blink/renderer/build/scripts/rule_bison.py	2020-05-06 16:21:29.000000000 +0200
++++ qtwebengine-everywhere-src-5.15.0/src/3rdparty/chromium/third_party/blink/renderer/build/scripts/rule_bison.py	2020-08-19 10:18:06.915367043 +0200
+@@ -101,7 +101,6 @@
+ outputHFile = open(outputHTmp)
+ outputHContents = outputHFile.read()
+ outputHFile.close()
+-os.unlink(outputHTmp)
+ 
+ # Rewrite the generated header with #include guards.
+ outputH = os.path.join(outputDir, inputRoot + '.h')
+diff -Naur qtwebengine-everywhere-src-5.15.0.orig/src/3rdparty/chromium/third_party/webrtc/modules/video_coding/decoding_state.h qtwebengine-everywhere-src-5.15.0/src/3rdparty/chromium/third_party/webrtc/modules/video_coding/decoding_state.h
+--- qtwebengine-everywhere-src-5.15.0.orig/src/3rdparty/chromium/third_party/webrtc/modules/video_coding/decoding_state.h	2020-05-06 16:21:29.000000000 +0200
++++ qtwebengine-everywhere-src-5.15.0/src/3rdparty/chromium/third_party/webrtc/modules/video_coding/decoding_state.h	2020-08-19 10:18:06.916367043 +0200
+@@ -11,6 +11,7 @@
+ #ifndef MODULES_VIDEO_CODING_DECODING_STATE_H_
+ #define MODULES_VIDEO_CODING_DECODING_STATE_H_
+ 
++#include <cstdint>
+ #include <map>
+ #include <set>
+ #include <vector>
+diff -Naur qtwebengine-everywhere-src-5.15.0.orig/src/3rdparty/chromium/v8/src/objects/js-number-format.cc qtwebengine-everywhere-src-5.15.0/src/3rdparty/chromium/v8/src/objects/js-number-format.cc
+--- qtwebengine-everywhere-src-5.15.0.orig/src/3rdparty/chromium/v8/src/objects/js-number-format.cc	2020-05-06 16:21:29.000000000 +0200
++++ qtwebengine-everywhere-src-5.15.0/src/3rdparty/chromium/v8/src/objects/js-number-format.cc	2020-08-19 10:18:06.918367042 +0200
+@@ -1197,42 +1197,31 @@
+ }
+ 
+ namespace {
+-Maybe<icu::UnicodeString> IcuFormatNumber(
++Maybe<bool> IcuFormatNumber(
+     Isolate* isolate,
+     const icu::number::LocalizedNumberFormatter& number_format,
+-    Handle<Object> numeric_obj, icu::FieldPositionIterator* fp_iter) {
++    Handle<Object> numeric_obj, icu::number::FormattedNumber* formatted) {
+   // If it is BigInt, handle it differently.
+   UErrorCode status = U_ZERO_ERROR;
+-  icu::number::FormattedNumber formatted;
+   if (numeric_obj->IsBigInt()) {
+     Handle<BigInt> big_int = Handle<BigInt>::cast(numeric_obj);
+     Handle<String> big_int_string;
+     ASSIGN_RETURN_ON_EXCEPTION_VALUE(isolate, big_int_string,
+                                      BigInt::ToString(isolate, big_int),
+-                                     Nothing<icu::UnicodeString>());
+-    formatted = number_format.formatDecimal(
++                                     Nothing<bool>());
++    *formatted = number_format.formatDecimal(
+         {big_int_string->ToCString().get(), big_int_string->length()}, status);
+   } else {
+     double number = numeric_obj->Number();
+-    formatted = number_format.formatDouble(number, status);
++    *formatted = number_format.formatDouble(number, status);
+   }
+   if (U_FAILURE(status)) {
+     // This happen because of icu data trimming trim out "unit".
+     // See https://bugs.chromium.org/p/v8/issues/detail?id=8641
+-    THROW_NEW_ERROR_RETURN_VALUE(isolate,
+-                                 NewTypeError(MessageTemplate::kIcuError),
+-                                 Nothing<icu::UnicodeString>());
+-  }
+-  if (fp_iter) {
+-    formatted.getAllFieldPositions(*fp_iter, status);
++    THROW_NEW_ERROR_RETURN_VALUE(
++        isolate, NewTypeError(MessageTemplate::kIcuError), Nothing<bool>());
+   }
+-  icu::UnicodeString result = formatted.toString(status);
+-  if (U_FAILURE(status)) {
+-    THROW_NEW_ERROR_RETURN_VALUE(isolate,
+-                                 NewTypeError(MessageTemplate::kIcuError),
+-                                 Nothing<icu::UnicodeString>());
+-  }
+-  return Just(result);
++  return Just(true);
+ }
+ 
+ }  // namespace
+@@ -1243,10 +1232,16 @@
+     Handle<Object> numeric_obj) {
+   DCHECK(numeric_obj->IsNumeric());
+ 
+-  Maybe<icu::UnicodeString> maybe_format =
+-      IcuFormatNumber(isolate, number_format, numeric_obj, nullptr);
++  icu::number::FormattedNumber formatted;
++  Maybe<bool> maybe_format =
++     IcuFormatNumber(isolate, number_format, numeric_obj, &formatted);
+   MAYBE_RETURN(maybe_format, Handle<String>());
+-  return Intl::ToString(isolate, maybe_format.FromJust());
++  UErrorCode status = U_ZERO_ERROR;
++  icu::UnicodeString result = formatted.toString(status);
++  if (U_FAILURE(status)) {
++     THROW_NEW_ERROR(isolate, NewTypeError(MessageTemplate::kIcuError), String);
++  }
++  return Intl::ToString(isolate, result);
+ }
+ 
+ namespace {
+@@ -1359,12 +1354,18 @@
+ }
+ 
+ namespace {
+-Maybe<int> ConstructParts(Isolate* isolate, const icu::UnicodeString& formatted,
+-                          icu::FieldPositionIterator* fp_iter,
++Maybe<int> ConstructParts(Isolate* isolate,
++                          icu::number::FormattedNumber* formatted,
+                           Handle<JSArray> result, int start_index,
+                           Handle<Object> numeric_obj, bool style_is_unit) {
++  UErrorCode status = U_ZERO_ERROR;
++  icu::UnicodeString formatted_text = formatted->toString(status);
++  if (U_FAILURE(status)) {
++     THROW_NEW_ERROR_RETURN_VALUE(
++           isolate, NewTypeError(MessageTemplate::kIcuError), Nothing<int>());
++  }
+   DCHECK(numeric_obj->IsNumeric());
+-  int32_t length = formatted.length();
++  int32_t length = formatted_text.length();
+   int index = start_index;
+   if (length == 0) return Just(index);
+ 
+@@ -1373,13 +1374,14 @@
+   // other region covers some part of the formatted string. It's possible
+   // there's another field with exactly the same begin and end as this backdrop,
+   // in which case the backdrop's field_id of -1 will give it lower priority.
+-  regions.push_back(NumberFormatSpan(-1, 0, formatted.length()));
++  regions.push_back(NumberFormatSpan(-1, 0, formatted_text.length()));
+ 
+   {
+-    icu::FieldPosition fp;
+-    while (fp_iter->next(fp)) {
+-      regions.push_back(NumberFormatSpan(fp.getField(), fp.getBeginIndex(),
+-                                         fp.getEndIndex()));
++    icu::ConstrainedFieldPosition cfp;
++    cfp.constrainCategory(UFIELD_CATEGORY_NUMBER);
++    while (formatted->nextPosition(cfp, status)) {
++       regions.push_back(
++             NumberFormatSpan(cfp.getField(), cfp.getStart(), cfp.getLimit()));
+     }
+   }
+ 
+@@ -1401,7 +1403,7 @@
+     Handle<String> substring;
+     ASSIGN_RETURN_ON_EXCEPTION_VALUE(
+         isolate, substring,
+-        Intl::ToString(isolate, formatted, part.begin_pos, part.end_pos),
++        Intl::ToString(isolate, formatted_text, part.begin_pos, part.end_pos),
+         Nothing<int>());
+     Intl::AddElement(isolate, result, index, field_type_string, substring);
+     ++index;
+@@ -1421,14 +1423,14 @@
+       number_format->icu_number_formatter().raw();
+   CHECK_NOT_NULL(fmt);
+ 
+-  icu::FieldPositionIterator fp_iter;
+-  Maybe<icu::UnicodeString> maybe_format =
+-      IcuFormatNumber(isolate, *fmt, numeric_obj, &fp_iter);
++  icu::number::FormattedNumber formatted;
++  Maybe<bool> maybe_format = 
++     IcuFormatNumber(isolate, *fmt, numeric_obj, &formatted);
+   MAYBE_RETURN(maybe_format, Handle<JSArray>());
+ 
+   Handle<JSArray> result = factory->NewJSArray(0);
+   Maybe<int> maybe_format_to_parts = ConstructParts(
+-      isolate, maybe_format.FromJust(), &fp_iter, result, 0, numeric_obj,
++      isolate, &formatted, result, 0, numeric_obj, 
+       number_format->style() == JSNumberFormat::Style::UNIT);
+   MAYBE_RETURN(maybe_format_to_parts, Handle<JSArray>());
+ 
