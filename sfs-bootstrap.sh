@@ -180,7 +180,6 @@ do
 		break
 	fi
 done
-export $upgrade_sources
 
 }
 
@@ -220,7 +219,6 @@ do
 		break
 	fi
 done
-export $upgrade_sources
 
 }
 
@@ -263,8 +261,6 @@ do
 		break
 	fi
 done
-export $upgrade_sources
-return
 
 }
 
@@ -311,7 +307,7 @@ if [[ "$build_arch" = "x86" ]]
 #			curl -C - -LR#OH "Cookie: oraclelicense=accept-securebackup-cookie" -k $DLDIR9
 #		fi
 #		cp -v jre-$JDK-linux-i586.tar.gz $SRCDIR/extra/java
-		cd $SRCDIR/d/rust && sed -i -e '1,12d' rust.url && sed -i -e '7,11d' rust.url && source rust.url
+		cd $SRCDIR/d/rust && sed -i -e '1,22d' rust.url && sed -i -e '5,10d' rust.url && source rust.url
 		cd $SRCDIR/others
 		if [ ! -f readline-7.0.005-i586-1.txz ]; then
 			wget -c -v $DLDIR12/readline-7.0.005-i586-1.txz
@@ -357,7 +353,7 @@ if [[ "$build_arch" = "x86" ]]
 #			curl -C - -LR#OH "Cookie: oraclelicense=accept-securebackup-cookie" -k $DLDIR10
 #		fi
 #		cp -rv jre-$JDK-linux-x64.tar.gz $SRCDIR/extra/java
-		cd $SRCDIR/d/rust && sed -i -e '1,18d' rust.url && source rust.url
+		cd $SRCDIR/d/rust && sed -i -e '1,27d' rust.url && source rust.url
 		cd $SRCDIR/others
 		if [ ! -f readline-7.0.005-x86_64-1.txz ]; then
 			wget -c -v $DLDIR12/readline-7.0.005-x86_64-1.txz
@@ -416,8 +412,8 @@ chmod 755 $SFS/sbin/makepkg $SFS/sbin/installpkg
 # before everything we test if we are root
 #**************************************
 test_root
-. export_variables_perso.sh
 . export_variables.sh
+. export_variables_perso.sh
 distribution_selector
 arch_selector
 
