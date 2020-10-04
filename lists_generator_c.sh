@@ -109,6 +109,8 @@ n openssl
 a kmod
 a gettext
 a gettext-tools
+l libssh2
+n curl
 l elfutils
 l libffi
 a procps-ng
@@ -182,7 +184,6 @@ l libarchive
 d cmake
 n dhcpcd
 a dhcpcd_up
-ap mariadb
 d perl
 n openldap
 n krb5
@@ -195,6 +196,9 @@ a util-linux
 n cyrus-sasl
 n openssl
 n openssl10
+ap mariadb
+d perl
+n openldap
 d intltool
 a ed
 ap bc
@@ -415,6 +419,7 @@ n dhcp
 ap nvme-cli
 ap neofetch
 ap undervolt
+ap inxi
 a end2
 EOF
 }
@@ -535,7 +540,8 @@ l judy
 l netpbm
 l libwnck
 l gstreamer0
-l mozjs68
+d autoconf-archive
+l mozjs78
 l polkit
 a upower
 l gst-plugins-base0
@@ -570,8 +576,6 @@ l adwaita-icon-theme
 xap ffmpegthumbnailer
 xfce xfce
 xfce xfce
-xap seamonkey
-xap ssr
 a end3
 EOF
 }
@@ -1120,6 +1124,7 @@ l SDL2_ttf
 l lame
 l libwebp
 l ffmpeg
+xap ssr
 # l libcue
 # xap audacious-plugins
 l gst-plugins-libav
