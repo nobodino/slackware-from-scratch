@@ -152,7 +152,7 @@ fi
 
 execute_dbus_sed () {
 #******************************************************************
-# delete "--enable-x11-autolaunch" linein SlackBuild
+# delete "--enable-x11-autolaunch" line in SlackBuild
 #******************************************************************
 if [ ! -f $SLACKSRC/a/dbus/dbus.SlackBuild.old ]; then
 	cp -v $SLACKSRC/a/dbus/dbus.SlackBuild $SLACKSRC/a/dbus/dbus.SlackBuild.old
@@ -165,7 +165,7 @@ fi
 
 execute_cyrus_sasl_sed () {
 #******************************************************************
-# delete "--enable-x11-autolaunch" linein SlackBuild
+# delete several lines in SlackBuild
 #******************************************************************
 if [ ! -f $SLACKSRC/n/cyrus-sasl/cyrus-sasl.SlackBuild.old ]; then
 	cp -v $SLACKSRC/n/cyrus-sasl/cyrus-sasl.SlackBuild $SLACKSRC/n/cyrus-sasl/cyrus-sasl.SlackBuild.old
@@ -366,7 +366,11 @@ if [ ! -f $SLACKSRC/d/llvm/llvm.SlackBuild.old ]; then
 		sed -i -e 's/"clang++"/"g++"/' llvm.SlackBuild
 		sed -i -e 's/"clang"/"gcc"/' llvm.SlackBuild
 		sed -i -e 's/-GNinja/-Wno-dev -GNinja/' llvm.SlackBuild
-		sed -i -e '/-DLLVM_USE_LINKER=gold/d' llvm.SlackBuild
+		sed -i -e 's/-DBUILD_SHARED_LIBS=ON/-DLLVM_BUILD_LLVM_DYLIB=ON/' llvm.SlackBuild
+		sed -i -e 's/-DLLVM_USE_LINKER=gold/-DLLVM_LINK_LLVM_DYLIB=ON/' llvm.SlackBuild
+		sed -i -e '/-DLLVM_ENABLE_RTTI=ON/d' llvm.SlackBuild
+		sed -i -e '/-DLLVM_ENABLE_ASSERTIONS=OFF/d' llvm.SlackBuild
+		sed -i -e '/-DLLVM_INSTALL_UTILS=ON/d' llvm.SlackBuild
 	)
 fi
 }
@@ -383,6 +387,20 @@ if [ ! -f $SLACKSRC/a/pam/pam.SlackBuild.old ]; then
 	)
 fi
 }
+
+execute_perl_sed () {
+#******************************************************************
+# delete several lines in SlackBuild
+#******************************************************************
+if [ ! -f $SLACKSRC/d/perl/perl.SlackBuild.old ]; then
+	cp -v $SLACKSRC/d/perl/perl.SlackBuild $SLACKSRC/d/perl/perl.SlackBuild.old
+	(
+		cd $SLACKSRC/d/perl
+		sed -i -e '227,240d' perl.SlackBuild
+	)
+fi
+}
+
 
 execute_pkg_config_sed () {
 #******************************************************************
@@ -789,7 +807,7 @@ case $PACKNAME in
 		cd /slacksrc/$SRCDIR/$PACKNAME && chmod +x *.SlackBuild && SHELL=/bin/sh ./$PACKNAME.SlackBuild
 		[ $? != 0 ] && exit 1 ;;
 
-	mozjs68 )
+	mozjs78 )
 		# need sh shell to be built
 		cd /slacksrc/$SRCDIR/$PACKNAME && chmod +x *.SlackBuild && SHELL=/bin/sh ./$PACKNAME.SlackBuild
 		[ $? != 0 ] && exit 1 ;;
@@ -3097,6 +3115,7 @@ mkdir -pv /sfspacks/kde5/{applications,applications-extra,frameworks,kde4,kdepim
 #	execute_texlive_sed # 2 pass
 #	execute_xfce_sed # 2 pass
 #	execute_zstd_sed # 2 pass
+#	execute_perl_sed # 2 pass
 #
 #******************************************************************
 # BUILDN: defines if package will be installed or upgraded
@@ -3137,6 +3156,8 @@ LGPG=1
 LZST=1
 # init rsync variable
 LRSY=1
+# init perl variable
+LPER=1
 # init NUMJOBS variable
 NUMJOBS="-j$(( $(nproc) * 2 )) -l$(( $(nproc) + 1 ))"
 
@@ -3590,6 +3611,18 @@ while (( LINE < $FILELEN )); do
 					build $SRCDIR $PACKNAME
 					[ $? != 0 ] && exit 1
 					update-pciids ;;
+
+				perl )
+					case $LPER in
+						1 )
+							execute_perl_sed && build $SRCDIR $PACKNAME 
+							[ $? != 0 ] && exit 1
+							update_slackbuild && LPER=2 ;;
+						2 )
+							build $SRCDIR $PACKNAME
+							[ $? != 0 ] && exit 1 ;;
+					esac
+					continue ;;
 
 #				php )
 #					case $LPHP in
