@@ -576,6 +576,7 @@ l adwaita-icon-theme
 xap ffmpegthumbnailer
 xfce xfce
 xfce xfce
+xap seamonkey
 a end3
 EOF
 }
