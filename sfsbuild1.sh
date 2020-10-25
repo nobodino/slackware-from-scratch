@@ -355,6 +355,22 @@ if [ ! -f $SLACKSRC/l/libusb/libusb.SlackBuild.old ]; then
 fi
 }
 
+execute_openldap_sed () {
+#******************************************************************
+# disable some options in SlackBuild
+#******************************************************************
+if [ ! -f $SLACKSRC/n/openldap/openldap.SlackBuild.old ]; then
+	cp -v $SLACKSRC/n/openldap/openldap.SlackBuild \
+		$SLACKSRC/n/openldap/openldap.SlackBuild.old
+	(
+		cd $SLACKSRC/n/openldap
+		sed -i -e 's/--enable-wrappers/--disable-wrappers/' openldap.SlackBuild
+		sed -i -e 's/--enable-backends=mod/--enable-backends=no/' openldap.SlackBuild
+		sed -i -e 's/--enable-perl=yes/--enable-perl=no/' openldap.SlackBuild
+	)
+fi
+}
+
 execute_llvm_sed () {
 #******************************************************************
 # change "clang++" to "g++" and "clang" to "gcc" in SlackBuild
@@ -481,7 +497,6 @@ if [ ! -f $SLACKSRC/n/rsync/rsync.SlackBuild.old ]; then
 	)
 fi
 }
-
 
 execute_subversion_sed () {
 #******************************************************************
@@ -3116,6 +3131,7 @@ mkdir -pv /sfspacks/kde5/{applications,applications-extra,frameworks,kde4,kdepim
 #	execute_xfce_sed # 2 pass
 #	execute_zstd_sed # 2 pass
 #	execute_perl_sed # 2 pass
+#	execute_openldap_sed # 2 pass
 #
 #******************************************************************
 # BUILDN: defines if package will be installed or upgraded
@@ -3158,6 +3174,8 @@ LZST=1
 LRSY=1
 # init perl variable
 LPER=1
+# init oenldap variable
+LOPE=1
 # init NUMJOBS variable
 NUMJOBS="-j$(( $(nproc) * 2 )) -l$(( $(nproc) + 1 ))"
 
@@ -3590,6 +3608,18 @@ while (( LINE < $FILELEN )); do
 							LMES=2 ;;
 						2 )
 							export BUILD_DEMOS=YES && build $SRCDIR $PACKNAME
+							[ $? != 0 ] && exit 1 ;;
+					esac
+					continue ;;
+
+				openldap )
+					case $LOPE in
+						1 )
+							execute_openldap_sed && build $SRCDIR $PACKNAME 
+							[ $? != 0 ] && exit 1
+							update_slackbuild && LOPE=2 ;;
+						* )
+							build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 ;;
 					esac
 					continue ;;
