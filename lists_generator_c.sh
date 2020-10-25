@@ -176,6 +176,12 @@ l libssh2
 l jansson
 n cyrus-sasl
 l db48
+l rpcsvc-proto
+n openldap
+n krb5
+n libtirpc
+l libnsl
+l libnss_nis
 n tcp_wrappers
 l icu4c
 l libiodbc
@@ -439,7 +445,9 @@ l gnu-efi
 a elilo
 a dbus
 d ruby
+# others bison
 l qt
+# d bison
 d cmake
 l libunistring
 l gc
