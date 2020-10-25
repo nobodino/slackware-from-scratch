@@ -1,0 +1,169 @@
+#!/bin/sh
+
+# Copyright 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015  Patrick J. Volkerding, Sebeka, MN, USA
+# Copyright 2015  Heinz Wiesinger, Amsterdam, The Netherlands
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+# Derived from the main qt SlackBuild
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=qtwebkit
+VERSION=$(ls qtwebkit-*.tar.?z* | rev | cut -f 3- -d . | cut -f 1 -d - | rev)
+BUILD=${BUILD:-1}
+
+NUMJOBS=${NUMJOBS:--j7}
+
+# Automatically determine the architecture we're building on:
+MARCH=$( uname -m )
+if [ -z "$ARCH" ]; then
+  case "$MARCH" in
+    i?86)    export ARCH=i586 ;;
+    armv7hl) export ARCH=$MARCH ;;
+    arm*)    export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+    *)       export ARCH=$MARCH ;;
+  esac
+fi
+
+if [ "$ARCH" = "i486" ]; then
+  SLKCFLAGS="-O2 -march=i486 -mtune=i686 -std=gnu++98 -fpermissive -fno-delete-null-pointer-checks"
+  LIBDIRSUFFIX=""
+  WEBKITFLAGS="--no-force-sse2"
+elif [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686 -std=gnu++98 -fpermissive -fno-delete-null-pointer-checks"
+  LIBDIRSUFFIX=""
+  WEBKITFLAGS="--no-force-sse2"
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2 -std=gnu++98 -fpermissive -fno-delete-null-pointer-checks"
+  LIBDIRSUFFIX=""
+  WEBKITFLAGS="--no-force-sse2"
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC -std=gnu++98 -fpermissive -fno-delete-null-pointer-checks"
+  LIBDIRSUFFIX="64"
+  WEBKITFLAGS=""
+elif [ "$ARCH" = "armv7hl" ]; then
+  # To prevent "qatomic_armv6.h error: output number 2 not directly addressable"
+  # More permanent solution is to patch gcc:
+  # http://bazaar.launchpad.net/~linaro-toolchain-dev/gcc-linaro/4.6/revision/106731
+  SLKCFLAGS="-O2 -march=armv7-a -mfpu=vfpv3-d16 -fno-strict-volatile-bitfields -std=gnu++98 -fpermissive -fno-delete-null-pointer-checks"
+  LIBDIRSUFFIX=""
+  WEBKITFLAGS="--no-force-sse2"
+else
+  SLKCFLAGS="-O2 -std=gnu++98 -fpermissive -fno-delete-null-pointer-checks"
+  LIBDIRSUFFIX=""
+  WEBKITFLAGS="--no-force-sse2"
+fi
+
+case "$ARCH" in
+    arm*) TARGET=$ARCH-slackware-linux-gnueabi ;;
+    *)    TARGET=$ARCH-slackware-linux ;;
+esac
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-${PKGNAM}
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+cd $TMP
+rm -rf qtwebkit-$VERSION
+tar xvf $CWD/qtwebkit-$VERSION.tar.xz
+cd qtwebkit-$VERSION || exit 1
+
+# Patch to fix compiling with gcc5:
+zcat $CWD/qtwebkit.putByIndexBeyondVectorLengthWithArrayStorage.diff.gz | patch -p1 --verbose || exit 1
+
+# patch to build with bison-3.7.x
+cat $CWD/qtwebkit-bison-3.7.x.patch | patch -Esp1 --verbose || exit 1
+
+chown -R root:root .
+find . \
+ \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+ -exec chmod 755 {} \+ -o \
+ \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+ -exec chmod 644 {} \+
+
+QTDIR="/usr/lib$LIBDIRSUFFIX/qt" \
+Tools/Scripts/build-webkit \
+  --qt \
+  --prefix=/usr/lib${LIBDIRSUFFIX}/qt \
+  --release \
+  --no-webkit2 \
+  --makeargs="$NUMJOBS" \
+  --qmakearg="CONFIG+=production_build QMAKE_CFLAGS=\"$SLKCFLAGS\" QMAKE_CXXFLAGS=\"$SLKCFLAGS\"" \
+  $WEBKITFLAGS || exit 1
+
+# To add support for WebP images add this to --qmakearg
+# DEFINES+=HAVE_LIBWEBP=1
+
+make INSTALL_ROOT=$PKG -C WebKitBuild/Release install || exit 1
+
+# libjscore is used internally.  Prevent a false dependency on this in the .pc files:
+sed -i "s,-ljscore,,g" $PKG/usr/lib${LIBDIRSUFFIX}/qt/lib/pkgconfig/*.pc
+sed -i "s,-L../JavaScriptCore/release,,g" $PKG/usr/lib${LIBDIRSUFFIX}/qt/lib/pkgconfig/*.pc
+
+# libwebcore is used internally.  Prevent a false dependency on this in the .pc files:
+sed -i \
+  -e "s#-L/usr/lib${LIBDIRSUFFIX}/qt/lib -L../../WebCore/release -L../../JavaScriptCore/release -L/usr/X11R6/lib$LIBDIRSUFFIX  -lwebcore##g" \
+  -e "s#-L/usr/lib${LIBDIRSUFFIX}/qt/lib -L../../WebCore/release -L../../JavaScriptCore/release -L/usr/X11R6/lib  -lwebcore##g" \
+  -e "s#-L$TMP/qtwebkit-$VERSION/WebKitBuild/Release/Source/WebKit/release##g" \
+  -e "s#-L$TMP/qtwebkit-$VERSION/WebKitBuild/Release/Source/WebCore/release##g" \
+  -e "s#-L$TMP/qtwebkit-$VERSION/WebKitBuild/Release/Source/ThirdParty/ANGLE/release##g" \
+  -e "s#-L$TMP/qtwebkit-$VERSION/WebKitBuild/Release/Source/JavaScriptCore/release##g" \
+  -e "s#-L$TMP/qtwebkit-$VERSION/WebKitBuild/Release/Source/WTF/release##g" \
+  -e "s# -lwebcore##g" \
+  $PKG/usr/lib${LIBDIRSUFFIX}/qt/lib/pkgconfig/QtWebKit.pc
+
+# Link the shared libraries into /usr/lib:
+( cd $PKG/usr/lib${LIBDIRSUFFIX}
+  for file in qt/lib/*.so* ; do
+    ln -sf $file .
+  done
+)
+
+find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
+  | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+
+mkdir -p $PKG/usr/lib${LIBDIRSUFFIX}/pkgconfig
+( cd $PKG/usr/lib${LIBDIRSUFFIX}/qt/lib/pkgconfig
+  for file in *.pc ; do
+    ( cd $PKG/usr/lib${LIBDIRSUFFIX}/pkgconfig ; ln -sf /usr/lib${LIBDIRSUFFIX}/qt/lib/pkgconfig/$file . )
+  done
+)
+
+# Add a documentation directory:
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION
+cp -a ChangeLog $PKG/usr/doc/$PKGNAM-$VERSION
+
+# If there's a ChangeLog, installing at least part of the recent history
+# is useful, but don't let it get totally out of control:
+if [ -r ChangeLog ]; then
+  DOCSDIR=$(echo $PKG/usr/doc/${PKGNAM}-$VERSION)
+  cat ChangeLog | head -n 1000 > $DOCSDIR/ChangeLog
+  touch -r ChangeLog $DOCSDIR/ChangeLog
+fi
+
+mkdir -p $PKG/install
+zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/$PKGNAM-$VERSION-$ARCH-$BUILD.txz
+

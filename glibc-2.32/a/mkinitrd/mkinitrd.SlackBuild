@@ -1,0 +1,173 @@
+#!/bin/bash
+
+# Copyright 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2015, 2016, 2017, 2018  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=mkinitrd
+VERSION=${VERSION:-1.4.11}
+BB=1.30.1
+BUILD=${BUILD:-15}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-mkinitrd
+
+# Write a warning to stdout if the mkinitrd script has a different version:
+eval $( grep "^MKINITRD_VERSION=" $CWD/mkinitrd )
+if [ "$VERSION" != "$MKINITRD_VERSION" ]; then
+  echo "The version of this package ($VERSION) is not equal to the version of the mkinitrd script ($MKINITRD_VERSION)."
+  sleep 5
+fi
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+cd $TMP
+rm -rf busybox-$BB
+tar xvf $CWD/busybox-$BB.tar.bz2 || tar xvf $CWD/busybox-$BB.tar.?z || exit 1
+cd busybox-$BB || exit 1
+
+if [ -d $CWD/fixes-$BB ]; then
+  for pfile in $CWD/fixes-$BB/*.patch ; do 
+    patch -p1 < $pfile || exit 1 
+  done
+fi
+
+chown -R root:root .
+# patch to build with glibc-2.31
+cat $CWD/glibc-2.31.patch | patch -Esp1 --verbose || exit 1
+sed -e \
+  's#^CONFIG_PREFIX=.*#CONFIG_PREFIX="'$PKG'/usr/share/mkinitrd/initrd-tree"#' \
+  $CWD/busybox-dot-config > .config
+make oldconfig || exit 1
+make $NUMJOBS || make || exit 1
+
+mkdir -p $PKG/usr/share/mkinitrd/initrd-tree/{bin,sbin}
+make install || exit 1
+rm -f $PKG/usr/share/mkinitrd/initrd-tree/linuxrc
+
+# Copying additional files:
+cp -a $CWD/mkinitrd_command_generator.sh $PKG/usr/share/mkinitrd
+chown root:root $PKG/usr/share/mkinitrd/mkinitrd_command_generator.sh
+chmod 755 $PKG/usr/share/mkinitrd/mkinitrd_command_generator.sh
+cp -a $CWD/keymaps.tar.gz $PKG/usr/share/mkinitrd
+chown root:root $PKG/usr/share/mkinitrd/keymaps.tar.gz
+chmod 644 $PKG/usr/share/mkinitrd/keymaps.tar.gz
+
+# Zip up the initrd-tree:
+( cd $PKG/usr/share/mkinitrd/initrd-tree
+  tar xf $CWD/_initrd-tree.tar.gz
+  cat $CWD/init > init
+
+  # Patch init:
+  zcat $CWD/0001-Fix-LUKSTRIM-with-C-T-and-UUID.patch.gz | patch -p1 --verbose || exit 1
+
+  # These are useful for ARM:
+  mknod -m 644 dev/random c 1 8
+  mknod -m 644 dev/urandom c 1 9
+
+  tar czf ../initrd-tree.tar.gz .
+) || exit 1
+rm -rf $PKG/usr/share/mkinitrd/initrd-tree
+
+# Add busybox docs:
+mkdir -p $PKG/usr/doc/busybox-$BB
+cp -a AUTHORS COPYING* INSTALL LICENSE README* TODO* \
+  $PKG/usr/doc/busybox-$BB
+cp -a e2fsprogs/README $PKG/usr/doc/busybox-$BB/README.e2fsprogs
+cp -a libbb/README $PKG/usr/doc/busybox-$BB/README.libbb
+cp -a shell/README $PKG/usr/doc/busybox-$BB/README.shell
+cp -a testsuite/README $PKG/usr/doc/busybox-$BB/README.testsuite
+
+mkdir -p $PKG/sbin
+cp -a $CWD/mkinitrd $PKG/sbin/mkinitrd
+chown root:root $PKG/sbin/mkinitrd
+chmod 755 $PKG/sbin/mkinitrd
+
+# Patch to switch to mktemp:
+( cd $PKG/sbin ; zcat $CWD/mkinitrd.tempfile.to.mktemp.patch.gz | patch --verbose || exit 1) || exit 1
+
+mkdir -p $PKG/usr/man/man{5,8}
+cat $CWD/mkinitrd.conf.5 | gzip -9c > $PKG/usr/man/man5/mkinitrd.conf.5.gz
+cat $CWD/mkinitrd.8 | gzip -9c > $PKG/usr/man/man8/mkinitrd.8.gz
+cat $CWD/mkinitrd_command_generator.8 | gzip -9c > $PKG/usr/man/man8/mkinitrd_command_generator.8.gz
+
+mkdir -p $PKG/var/lib/pkgtools/setup
+cp -a $CWD/setup.01.mkinitrd $PKG/var/lib/pkgtools/setup
+chown root:root $PKG/var/lib/pkgtools/setup/setup.01.mkinitrd
+chmod 755 $PKG/var/lib/pkgtools/setup/setup.01.mkinitrd
+
+mkdir -p $PKG/usr/sbin
+cp -a $CWD/geninitrd $PKG/usr/sbin
+chown root:root $PKG/usr/sbin/geninitrd
+chmod 755 $PKG/usr/sbin/geninitrd
+
+mkdir -p $PKG/etc
+cp -a $CWD/mkinitrd.conf.sample $PKG/etc/mkinitrd.conf.sample
+# ARM systems often need more time to find devices:
+case "$( uname -m )" in
+  arm*) sed -e 's@#WAIT="1"@#WAIT="4"@g' \
+    -i $PKG/etc/mkinitrd.conf.sample;;
+esac
+chown root:root $PKG/etc/mkinitrd.conf.sample
+chmod 644 $PKG/etc/mkinitrd.conf.sample
+
+mkdir -p $PKG/usr/doc/mkinitrd-$VERSION
+sed $CWD/README.initrd \
+  -e "s,@DATE@,$(date),g" \
+  -e "s,@KERNEL_VERSION@,$(uname -r),g" \
+  -e "s,@PACKAGE_VERSION@,$(uname -r | tr - _),g" \
+  -e "s,@LILO_KERNEL_NAME@,$(echo $(uname -r) | tr -d . | tr -d - ),g" \
+  -e "s,@MKINITRD_VERSION@,$VERSION,g" \
+  -e "s,@ARCH@,$ARCH,g" \
+  -e "s,@BUILD@,$BUILD,g" \
+  > $PKG/usr/doc/mkinitrd-$VERSION/README.initrd
+
+mkdir $PKG/boot
+ln -sf /usr/doc/mkinitrd-$VERSION/README.initrd $PKG/boot/README.initrd
+
+find $PKG | xargs file | grep -e "executable" -e "shared object" \
+  | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/mkinitrd-$VERSION-$ARCH-$BUILD.txz
+

@@ -1,0 +1,164 @@
+#!/bin/sh
+# Copyright (C) 2002, 2005  Slackware Linux, Inc.
+# Copyright 2005, 2006, 2007, 2011, 2012, 2018  Patrick J. Volkerding, Sebeka, Minnesota, USA
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# Swap glibc on the fly.
+#
+# If we're on a running system we have to handle this _very_ carefully.  :-)
+# The tricks involved here get trickier every time...
+
+# OK, now we have to be sure of a few things.  First, you do have a 2.6
+# kernel running, right?
+
+if [ -r /proc/ksyms ]; then
+  echo "FATAL: you need to be running a 2.6.x kernel in order to upgrade"
+  echo "to this version of glibc."
+  echo
+  sleep 999
+  exit 1
+fi
+
+# Next, stop using the /lib/ntpl libraries.  These are now obsolete and
+# will break the installation if present:
+if [ -d lib/tls ]; then
+  mkdir -p lib/obsolete
+  mv lib/tls lib/obsolete
+fi
+if [ -x sbin/ldconfig ]; then
+  sbin/ldconfig -r . 2> /dev/null
+fi
+
+# Install NPTL glibc libraries:
+if [ -x /sbin/ldconfig -a -d lib/incoming ]; then # swap on the fly
+  # Try to protect with flock against another installpkg/removepkg running
+  # ldconfig while we're doing the on-the-fly install:
+  mkdir -p run/lock/pkgtools
+  ( flock 9 || exit 11
+    # First create copies of the incoming libraries:
+    ( cd lib/incoming
+      for file in * ; do
+        if [ ! -r ../${file}.incoming ]; then
+          cp -a $file ../${file}.incoming
+        fi
+      done
+    )
+    # Then switch to them all at once:
+    /sbin/ldconfig -l lib/*.incoming 2> /dev/null
+    # Remove old versions of the glibc libraries. If you really don't want to
+    # do this for some reason, create a file /etc/glibc-nowipe.
+    if [ ! -r etc/glibc-nowipe ]; then
+      ( cd lib
+        for INCOMING in incoming/*-* ; do
+          LIBPREFIX=$(basename $INCOMING | cut -f 1 -d -)
+          for LIBRARY in ${LIBPREFIX}-* ; do
+            # Don't remove the library if it ends in .incoming:
+            if [ "$(echo $LIBRARY | rev | cut -f 1 -d .)" = "gnimocni" ]; then
+              continue
+            fi
+            # Don't remove symlinks:
+            if [ -L $LIBRARY ]; then
+              continue
+            fi
+            rm -f $LIBRARY
+          done
+        done
+      )
+    fi
+    # Finally, rename them and clean up:
+    ( cd lib
+      for file in *.incoming ; do
+        rm -f `basename $file .incoming`
+        cp -a $file `basename $file .incoming`
+        /sbin/ldconfig -l `basename $file .incoming` 2> /dev/null
+        rm -f $file
+      done
+    )
+  ) 9> run/lock/pkgtools/ldconfig.lock
+else # no ldconfig? This is a broken situation, but we will do what we can:
+  ( cd lib/incoming
+    for file in * ; do
+      cp -a $file ..
+    done
+  )
+fi
+# Now, get rid of the temporary directory:
+rm -rf lib/incoming
+# Done installing NPTL glibc libraries.
+
+# Handle config files:
+config() {
+  NEW="$1"
+  OLD="$(dirname $NEW)/$(basename $NEW .new)"
+  # If there's no config file by that name, mv it over:
+  if [ ! -r $OLD ]; then
+    mv $NEW $OLD
+  elif [ "$(cat $OLD | md5sum)" = "$(cat $NEW | md5sum)" ]; then # toss the redundant copy
+    rm $NEW
+  fi
+  # Otherwise, we leave the .new copy for the admin to consider...
+}
+config etc/nscd.conf.new
+config etc/profile.d/glibc.csh.new
+config etc/profile.d/glibc.sh.new
+# Clearly you already decided this issue.  :-)
+rm -f etc/profile.d/glibc.csh.new
+rm -f etc/profile.d/glibc.sh.new
+
+# This block below *should* be dead code, but it's probably safer to leave it
+# here as a fallback. It no longer has complete coverage of all the links
+# that would be needed in /lib${LIBDIRSUFFIX}, but it covers enough that if
+# we did fall back on this the machine would boot until it reached the boot
+# time call to ldconfig, which would then take care of any missing links.
+# In case there's no ldconfig, make the links manually:
+if [ ! -x /sbin/ldconfig ]; then
+( cd lib ; rm -rf libnss_nis.so.2 )
+( cd lib ; ln -sf libnss_nis-@@VERSION@@.so libnss_nis.so.2 )
+( cd lib ; rm -rf libm.so.6 )
+( cd lib ; ln -sf libm-@@VERSION@@.so libm.so.6 )
+( cd lib ; rm -rf libnss_files.so.2 )
+( cd lib ; ln -sf libnss_files-@@VERSION@@.so libnss_files.so.2 )
+( cd lib ; rm -rf libresolv.so.2 )
+( cd lib ; ln -sf libresolv-@@VERSION@@.so libresolv.so.2 )
+( cd lib ; rm -rf libnsl.so.1 )
+( cd lib ; ln -sf libnsl-@@VERSION@@.so libnsl.so.1 )
+( cd lib ; rm -rf libutil.so.1 )
+( cd lib ; ln -sf libutil-@@VERSION@@.so libutil.so.1 )
+( cd lib ; rm -rf libnss_compat.so.2 )
+( cd lib ; ln -sf libnss_compat-@@VERSION@@.so libnss_compat.so.2 )
+( cd lib ; rm -rf libthread_db.so.1 )
+( cd lib ; ln -sf libthread_db-1.0.so libthread_db.so.1 )
+( cd lib ; rm -rf libnss_hesiod.so.2 )
+( cd lib ; ln -sf libnss_hesiod-@@VERSION@@.so libnss_hesiod.so.2 )
+( cd lib ; rm -rf libanl.so.1 )
+( cd lib ; ln -sf libanl-@@VERSION@@.so libanl.so.1 )
+( cd lib ; rm -rf libcrypt.so.1 )
+( cd lib ; ln -sf libcrypt-@@VERSION@@.so libcrypt.so.1 )
+( cd lib ; rm -rf libBrokenLocale.so.1 )
+( cd lib ; ln -sf libBrokenLocale-@@VERSION@@.so libBrokenLocale.so.1 )
+( cd lib ; rm -rf ld-linux.so.2 )
+( cd lib ; ln -sf ld-@@VERSION@@.so ld-linux.so.2 )
+( cd lib ; rm -rf libdl.so.2 )
+( cd lib ; ln -sf libdl-@@VERSION@@.so libdl.so.2 )
+( cd lib ; rm -rf libnss_dns.so.2 )
+( cd lib ; ln -sf libnss_dns-@@VERSION@@.so libnss_dns.so.2 )
+( cd lib ; rm -rf libpthread.so.0 )
+( cd lib ; ln -sf libpthread-@@VERSION@@.so libpthread.so.0 )
+( cd lib ; rm -rf libnss_nisplus.so.2 )
+( cd lib ; ln -sf libnss_nisplus-@@VERSION@@.so libnss_nisplus.so.2 )
+( cd lib ; rm -rf libc.so.6 )
+( cd lib ; ln -sf libc-@@VERSION@@.so libc.so.6 )
+( cd lib ; rm -rf librt.so.1 )
+( cd lib ; ln -sf librt-@@VERSION@@.so librt.so.1 )
+fi
+
+# More links:

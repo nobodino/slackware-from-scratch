@@ -1,0 +1,30 @@
+diff -aurN qtwebkit-2.3.4/Source/WebCore/css/makegrammar.pl qtwebkit-2.3.4-mod/Source/WebCore/css/makegrammar.pl
+--- qtwebkit-2.3.4/Source/WebCore/css/makegrammar.pl	2014-09-24 13:42:05.000000000 +0200
++++ qtwebkit-2.3.4-mod/Source/WebCore/css/makegrammar.pl	2020-10-21 16:53:27.959778366 +0200
+@@ -73,23 +73,6 @@
+ }
+ 
+ my $fileBase = File::Spec->join($outputDir, $filename);
+-system("$bison -d -p $symbolsPrefix $grammarFilePath -o $fileBase.cpp");
+-
+-open HEADER, ">$fileBase.h" or die;
+-print HEADER << "EOF";
+-#ifndef CSSGRAMMAR_H
+-#define CSSGRAMMAR_H
+-EOF
+-
+-open HPP, "<$fileBase.cpp.h" or open HPP, "<$fileBase.hpp" or die;
+-while (<HPP>) {
+-    print HEADER;
+-}
+-close HPP;
+-
+-print HEADER "#endif\n";
+-close HEADER;
+-
+-unlink("$fileBase.cpp.h");
+-unlink("$fileBase.hpp");
+-
++my @bisonCommand = ($bison, "--defines=$fileBase.h", "-p", $symbolsPrefix, $grammarFilePath, "-o", "$fileBase.cpp");
++push @bisonCommand, "--no-lines" if $^O eq "MSWin32"; # Work around bug in bison >= 3.0 on Windows where it puts backslashes into #line directives.
++system(@bisonCommand) == 0 or die;

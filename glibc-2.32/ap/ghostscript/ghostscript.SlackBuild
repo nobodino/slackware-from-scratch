@@ -1,0 +1,240 @@
+#!/bin/bash
+
+# Copyright 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2016, 2017, 2018  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=ghostscript
+if [ -r gnu-ghostscript-*.tar.?z ]; then
+  SRCPREFIX="gnu-"
+fi
+VERSION=${VERSION:-$(echo $SRCPREFIX$PKGNAM-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+BUILD=${BUILD:-1}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-${PKGNAM}
+rm -rf $PKG
+mkdir -p $TMP $PKG
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+cd $TMP
+rm -rf ${SRCPREFIX}${PKGNAM}-${VERSION}
+tar xvf $CWD/${SRCPREFIX}${PKGNAM}-$VERSION.tar.?z || exit 1
+cd ${SRCPREFIX}${PKGNAM}-$VERSION || exit 1
+
+# Remove unmaintained garbage:
+rm -rf freetype jpeg lcms2 libpng libtiff png tiff zlib
+
+# patch from blfs http://www.linuxfromscratch.org/patches/blfs/svn/ghostscript-9.53.3-freetype_fix-1.patch
+cat $CWD/ghostscript-9.53.3-freetype_fix-1.patch | patch -Esp1 --verbose || exit 1
+
+# Regenerate ./configure.  Needed if patched, or to prevent libtool mismatch.
+autoreconf --force --install
+( cd jbig2dec ; autoreconf --force --install )
+( cd ijs ; autoreconf --force --install )
+
+# Make sure ownerships and permissions are sane:
+chown -R root:root .
+find . \
+ \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+ -exec chmod 755 {} \+ -o \
+ \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+ -exec chmod 644 {} \+
+
+# Build/install IJS:
+( cd ijs
+  CFLAGS="$SLKCFLAGS" \
+  ./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --sysconfdir=/etc \
+  --mandir=/usr/man \
+  --enable-shared=yes \
+  --enable-static=no \
+  --program-prefix= \
+  --program-suffix= \
+  --build=$ARCH-slackware-linux || exit 1
+  make $NUMJOBS || make || exit 1
+  make install || exit 1
+  make install DESTDIR=$PKG || exit 1
+) || exit 1
+
+# Configure:
+CFLAGS="$SLKCFLAGS" \
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --sysconfdir=/etc \
+  --mandir=/usr/man \
+  --docdir=/usr/share/ghostscript/$VERSION/tmpdoc \
+  --with-fontpath=/usr/share/fonts/TTF \
+  --with-ijs \
+  --disable-compile-inits \
+  --enable-dynamic \
+  --with-system-libtiff \
+  --enable-cups \
+  --program-prefix= \
+  --program-suffix= \
+  --build=$ARCH-slackware-linux || exit 1
+
+# Build and install:
+make $NUMJOBS || make || exit 1
+make install DESTDIR=$PKG || exit 1
+make clean || exit 1
+make $NUMJOBS so || make so || exit 1
+make soinstall DESTDIR=$PKG || exit 1
+
+# Add back ijs-config, which is needed by at least gutenprint to find IJS
+# and produce a ghostscript driver:
+cat $CWD/ijs-config | sed -e "s/lib64/lib${LIBDIRSUFFIX}/g" > $PKG/usr/bin/ijs-config
+chmod 755 $PKG/usr/bin/ijs-config
+
+# Replace the default cidfmap with one containing additional
+# support for CJK printing:
+
+if [ -r $PKG/usr/share/ghostscript/*.*/Resource/Init/cidfmap ]; then
+  SHARE_VERSION=$(echo $PKG/usr/share/ghostscript/*.*/Resource/Init/cidfmap | rev | cut -f 4 -d / | rev)
+  mv $PKG/usr/share/ghostscript/${SHARE_VERSION}/Resource/Init/cidfmap $PKG/usr/share/ghostscript/${SHARE_VERSION}/Resource/Init/cidfmap.default.ghostscript-${VERSION}
+  zcat $CWD/cidfmap.gz > $PKG/usr/share/ghostscript/${SHARE_VERSION}/Resource/Init/cidfmap.new
+fi
+
+# Strip binaries:
+( cd $PKG
+  find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+  find . | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+)
+
+# Don't ship .la files:
+pushd $PKG
+  for lafile in usr/lib${LIBDIRSUFFIX}/*.la ; do
+    rm -f ${lafile} /${lafile}
+  done
+popd
+
+# Compress manual pages:
+find $PKG/usr/man -type f -exec gzip -9 {} \+
+for i in $( find $PKG/usr/man -type l ) ; do
+  ln -s $( readlink $i ).gz $i.gz
+  rm $i
+done
+
+# Compress info files, if any:
+if [ -d $PKG/usr/info ]; then
+  ( cd $PKG/usr/info
+    rm -f dir
+    gzip -9 *
+  )
+fi
+
+# gs9.23 fails if you try to have --docdir put things in the proper place.
+# Not much choice but to have things put in the wrong place and then move them.
+# First, remove broken symlinks:
+rm -f $PKG/usr/share/ghostscript/$VERSION/doc $PKG/usr/share/ghostscript/$VERSION/tmpdoc/$VERSION/$VERSION
+# Then, move the docs to the proper location:
+mv $PKG/usr/share/ghostscript/$VERSION/tmpdoc/$VERSION $PKG/usr/share/ghostscript/$VERSION/doc
+# Remove this (probably empty) directory:
+rm -rf $PKG/usr/share/ghostscript/$VERSION/tmpdoc
+# And finally, pray for upstream to quit drinking while coding. ;-)
+
+# Add a documentation directory:
+mkdir -p $PKG/usr/doc/${PKGNAM}-$VERSION
+( cd doc
+  cp -a \
+    AUTHORS COPYING* ../LICENSE* README* \
+    $PKG/usr/doc/${PKGNAM}-$VERSION
+)
+( cd $PKG/usr/doc/${PKGNAM}-$VERSION
+  ln -sf /usr/share/ghostscript/$VERSION/doc doc
+)
+
+# Version 9.02 fails to install History9.htm, but also the full unabridged
+# history of Ghostscript is not required here.  See the source for that.
+( cd doc
+  cp -a \
+    History*.htm \
+    $PKG/usr/share/ghostscript/$VERSION/doc
+  rm -f $PKG/usr/share/ghostscript/$VERSION/doc/History{1,2,3,4,5,6,7,8}.htm
+  # More cruft:
+  rm -f $PKG/usr/share/ghostscript/$VERSION/doc/Details{1,2,3,4,5,6,7,8}.htm
+  # This is also bloat:
+  rm -f $PKG/usr/share/ghostscript/$VERSION/doc/*.pdf
+  chown root:root $PKG/usr/share/ghostscript/$VERSION/doc/History*htm
+  chmod 644 $PKG/usr/share/ghostscript/$VERSION/doc/History*htm
+)
+
+# Install example files:
+rm -rf $PKG/usr/share/ghostscript/${VERSION}/examples
+cp -a $TMP/${PKGNAM}-${VERSION}/examples $PKG/usr/share/ghostscript/${VERSION}
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+cat << EOF > $PKG/install/doinst.sh
+#!/bin/bash
+config() {
+  NEW="\$1"
+  OLD="\$(dirname \$NEW)/\$(basename \$NEW .new)"
+  # If there's no config file by that name, mv it over:
+  if [ ! -r \$OLD ]; then
+    mv \$NEW \$OLD
+  elif [ "\$(cat \$OLD | md5sum)" = "\$(cat \$NEW | md5sum)" ]; then # toss the redundant copy
+    rm \$NEW
+  fi
+  # Otherwise, we leave the .new copy for the admin to consider...
+}
+config usr/share/ghostscript/${VERSION}/Resource/Init/cidfmap.new
+EOF
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/${PKGNAM}-$VERSION-$ARCH-$BUILD.txz
+
