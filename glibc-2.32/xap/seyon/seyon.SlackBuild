@@ -1,0 +1,151 @@
+#!/bin/bash
+
+# Copyright 2002-2018  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=seyon
+VERSION=2.20c
+BUILD=${BUILD:-4}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$(uname -m)" in
+    i?86) ARCH=i586 ;;
+    arm*) readelf /usr/bin/file -A | egrep -q "Tag_CPU.*[4,5]" && ARCH=arm || ARCH=armv7hl ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+    *) ARCH=$(uname -m) ;;
+  esac
+  export ARCH
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+if [ "$ARCH" = "i386" ]; then
+  SLKCFLAGS="-O2 -march=i386 -mcpu=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i486" ]; then
+  SLKCFLAGS="-O2 -march=i486 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i686" ]; then
+  SLKCFLAGS="-O2 -march=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
+elif [ "$ARCH" = "armv7hl" ]; then
+  SLKCFLAGS="-O3 -march=armv7-a -mfpu=vfpv3-d16"
+  LIBDIRSUFFIX=""
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-seyon
+
+rm -rf $PKG
+mkdir -p $PKG $PKG
+cd $TMP
+rm -rf seyon-$VERSION
+tar xvf $CWD/seyon-$VERSION.tar.gz || exit 1
+cd seyon-$VERSION || exit 1
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \+ -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \+
+
+zcat $CWD/seyon_2.20c-16.diff.gz | patch -p1 --verbose || exit 1
+sed -i "s/getline/seyon_getline/g" *
+
+chmod 755 makever.sh
+xmkmf
+
+# patch to build with gcc-10.x
+sed -i -e 's/-fno-strict-aliasing/-fno-strict-aliasing -fcommon/' Makefile
+
+make || exit 1
+
+mkdir -p $PKG/usr/lib${LIBDIRSUFFIX}/X11
+make install DESTDIR=$PKG LIBDIR=/usr/lib${LIBDIRSUFFIX}/X11 || exit 1
+
+mkdir -p $PKG/etc/X11/seyon
+touch $PKG/etc/X11/seyon/Seyon-modem.new
+mkdir -p $PKG/etc/X11/app-defaults
+cp Seyon-co.ad $PKG/etc/X11/app-defaults/Seyon-color.new
+cp Seyon.ad $PKG/etc/X11/app-defaults/Seyon.new
+
+find $PKG | xargs file | grep -e "executable" -e "shared object" \
+  | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+
+mkdir -p $PKG/usr/doc/seyon-$VERSION/.seyon
+cp -a \
+  1-* COPYING $PKG/usr/doc/seyon-$VERSION
+cp -a \
+  phonelist protocols script.CIS script.PCBoard script.QWK script.unix startup \
+  $PKG/usr/doc/seyon-$VERSION/.seyon
+find $PKG/usr/doc/seyon-$VERSION -type f -exec chmod 644 {} \+
+find $PKG/usr/doc/seyon-$VERSION -type d -exec chmod 755 {} \+
+( cd $PKG/usr/doc/seyon-$VERSION ; ln -sf .seyon HOME.seyon.directory.example )
+
+mkdir -p $PKG/usr/man/man1
+cat seyon.man | gzip -9c > $PKG/usr/man/man1/seyon.1.gz
+
+mkdir -p $PKG/install
+cat << EOF > $PKG/install/doinst.sh
+#!/bin/bash
+config() {
+  NEW="\$1"
+  OLD="\$(dirname \$NEW)/\$(basename \$NEW .new)"
+  # If there's no config file by that name, mv it over:
+  if [ ! -r \$OLD ]; then
+    mv \$NEW \$OLD
+  elif [ "\$(cat \$OLD | md5sum)" = "\$(cat \$NEW | md5sum)" ]; then # toss the redundant copy
+    rm \$NEW
+  fi
+  # Otherwise, we leave the .new copy for the admin to consider...
+}
+config etc/X11/seyon/Seyon-modem.new
+config etc/X11/app-defaults/Seyon.new
+config etc/X11/app-defaults/Seyon-color.new
+
+EOF
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/seyon-$VERSION-$ARCH-$BUILD.txz
+
