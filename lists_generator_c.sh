@@ -672,6 +672,10 @@ a splitvt
 a syslinux
 a tcsh
 a udisks
+a ndctl
+a libbytesize
+a volume_key
+a libblockdev
 a udisks2
 a unarj
 a upower
@@ -827,10 +831,11 @@ l libwpg
 l sbc
 xap pavucontrol
 l libnice
+l graphene
 l gst-plugins-base0
 l gst-plugins-good0
 l gst-plugins-base
-l gst-plugins-base
+# l gst-plugins-base
 l gst-plugins-good
 l farstream
 xap pidgin
@@ -1017,7 +1022,7 @@ l grantlee
 # l gst-plugins-good
 l hunspell
 l icon-naming-utils
-l ilmbase
+# l ilmbase
 l keyutils
 l lcms
 l lcms2
