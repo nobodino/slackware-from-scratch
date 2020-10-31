@@ -113,7 +113,7 @@ copy_src () {
 	cp -v $RDIR/a/bash/bash-$BASHVER.tar.?z $SRCDIR || exit 1
     cd $RDIR/d/binutils
 	export BINUVER=${VERSION:-$(echo binutils-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
-    cp -v $RDIR/d/binutils/binutils-$BINUVER.tar.lz $SRCDIR || exit 1
+    cp -v $RDIR/d/binutils/binutils-$BINUVER.tar.?z $SRCDIR || exit 1
     cd $RDIR/d/bison
 	export BISONVER=${VERSION:-$(echo bison-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
     cp -v $RDIR/d/bison/bison-$BISONVER.tar.?z $SRCDIR || exit 1
@@ -363,9 +363,6 @@ glibc_build () {
 		  --build=$(../scripts/config.guess) \
 		  --enable-kernel=2.6.32             \
 		  --with-headers=/tools/include || exit 1  
-#		  --with-headers=/tools/include      \
-#		  libc_cv_forced_unwind=yes          \
-#		  libc_cv_c_cleanup=yes || exit 1
 
 	make || exit 1
 	make install || exit 1
@@ -484,7 +481,7 @@ esac
     mv -v mpc-$LIBMPCVER mpc
 
 # fix a problem introduced by glibc-2.31
- sed -e '1161 s|^|//|' -i libsanitizer/sanitizer_common/sanitizer_platform_limits_posix.cc
+# sed -e '1161 s|^|//|' -i libsanitizer/sanitizer_common/sanitizer_platform_limits_posix.cc
 
    mkdir -v build && cd build
 
