@@ -674,7 +674,9 @@ a tcsh
 a udisks
 a ndctl
 a libbytesize
+n gpgme
 a volume_key
+l libyaml
 a libblockdev
 a udisks2
 a unarj
@@ -857,7 +859,7 @@ l talloc
 l tdb
 l tevent
 l lmdb
-n gpgme
+# n gpgme
 n samba
 l v4l-utils
 l libpng
