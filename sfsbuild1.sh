@@ -3404,7 +3404,7 @@ while (( LINE < $FILELEN )); do
 							execute_gpgme_sed && build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1
 							update_slackbuild && LGPG=2 ;;
-						2 )
+						* )
 							build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 ;;
 					esac

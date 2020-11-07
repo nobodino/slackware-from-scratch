@@ -1203,8 +1203,6 @@ n openssl
 n snownews
 d python2
 d python3
-# xap mozilla-firefox
-# xap mozilla-thunderbird
 y bsd-games
 l brotli
 x wayland
