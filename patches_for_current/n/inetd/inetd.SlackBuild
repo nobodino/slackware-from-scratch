@@ -66,7 +66,7 @@ sed -i 's#(type)\([a-z]\)=(type)\([a-z]\)#\1=(type)\2#g' inetd.c
 # Fix segfault of daytime on x86_64 (thanks tfonz on LQ) 
 zcat $CWD/fix-x86_64-daytime-segfault.diff.gz | patch -p1 || exit 1
 
-# fix not building with glibc-2.32
+# fix not building with glibc-2.30 without rpc.h
 sed -i -e 's/-O2/-O2 -I\/usr\/include\/tirpc/' Makefile
 sed -i -e 's/-s/-s -ltirpc/' Makefile
 

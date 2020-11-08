@@ -57,7 +57,7 @@ chown -R root:root .
 zcat $CWD/netkit-rusers-0.17.diff.gz | patch -p1 || exit 1
 ./configure --prefix=/usr
 
-# fix not building with glibc-2.32
+# patch to fix libtirpc
 sed -i -e 's/Winline/Winline -I\/usr\/include\/tirpc/' MCONFIG
 sed -i -e 's/LDFLAGS=/LDFLAGS=-ltirpc/' MCONFIG
 

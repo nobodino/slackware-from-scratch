@@ -84,9 +84,9 @@ find . \
   \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
   -exec chmod 644 {} \+
 
-# patches from debian
-cat $CWD/patches/use-nostdlib.diff | patch -Esp1 --verbose || exit 1
-cat $CWD/patches/use-python3.diff | patch -Esp1 --verbose || exit 1
+# modification from debian because of llvm >= 11.0.x
+sed -i -e '/-fno-builtin/p' configure.py
+sed -i -e '0,/-fno-builtin/ s/-fno-builtin/-nostdlib/' configure.py
 
 CFLAGS="$SLKCFLAGS -D__extern_always_inline=inline" \
 ./configure.py \

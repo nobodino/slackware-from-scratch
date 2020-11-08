@@ -57,7 +57,7 @@ cd netkit-rwall-$VERSION
 chown -R root:root .
 ./configure --prefix=/usr
 
-# fix not building with glibc-2.32
+# patch to fix libtirpc
 sed -i -e 's/Winline/Winline -I\/usr\/include\/tirpc/' MCONFIG
 sed -i -e 's/LDFLAGS=/LDFLAGS=-ltirpc/' MCONFIG
 
