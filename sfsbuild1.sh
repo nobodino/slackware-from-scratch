@@ -650,65 +650,44 @@ TMP=${TMP:-/tmp}
 # This avoids compiling a version number into KDE's .la files:
 QTDIR=/usr/lib${LIBDIRSUFFIX}/qt ; export QTDIR
 
-#  extra-cmake-modules \
-
 for module in \
-  qt5 \
-  qt5-webkit \
-  qca-qt5 \
-  libdbusmenu-qt5 \
   phonon \
-  phonon-gstreamer \
-  phonon-qt4 \
-  phonon-qt4-gstreamer \
-  python-enum34 \
-  pcaudiolib \
-  espeak-ng \
+  phonon-backend-gstreamer \
   dotconf \
-  flite \
   speech-dispatcher \
-  sip \
-  PyQt \
-  PyQt5 \
-  QScintilla \
-  polkit-qt5-1 \
+  qtkeychain \
+  elogind \
+  polkit \
+  polkit-qt-1 \
+  dbus \
   grantlee \
-  grantlee-qt4 \
-  poppler \
-  libdbusmenu-gtk \
+  libdbusmenu \
+  libdbusmenu-qt \
   libindicator \
   libappindicator \
   cfitsio \
   libdmtx \
   qrencode \
-  hack-font-ttf \
-  noto-font-ttf \
-  noto-cjk-font-ttf \
-  gpgme \
   lensfun \
+  eigen3 \
   opencv \
   dvdauthor \
   vid.stab \
   frei0r-plugins \
   mlt \
-  cracklib \
-  libpwquality \
   accountsservice \
   libburn \
-  qtav \
-  ddcutil \
-  id3lib \
+  QtAV \
   cryptopp \
   cryfs \
-  python3-random2 \
-  perl-path-tiny \
-  perl-template-toolkit \
-  freecell-solver \
-  drumstick \
   libsass \
   sassc \
   rttr \
   quazip \
+  kdsoap \
+  quazip \
+  pipewire \
+  qrencode \
   ; do
   cd $module && ./$module.SlackBuild
   if [ $? = 0 ]; then
@@ -2373,9 +2352,9 @@ cd /slacksrc/kde5
 export UPGRADE_PACKAGES=always
    ./kde.SlackBuild frameworks:extra-cmake-modules 
  	[ $? != 0 ] && touch /tmp/kde_build/extra-cmake-modules.failed
-	mv -v /tmp/kde_build/*.txz /sfspacks/kde5/frameworks
+	mv -v /tmp/kde_build/*.txz /sfspacks/kde5
 #	if [ $? = 0 ]; then
-#		mv -v /tmp/kde_build/*.txz /sfspacks/kde5/frameworks
+#		mv -v /tmp/kde_build/*.txz /sfspacks/kde5
 #	else
 #		touch /tmp/kde_build/extra-cmake-modules.failed
 #		exit 1
@@ -2391,7 +2370,7 @@ export UPGRADE_PACKAGES=always
 
 ./kde.SlackBuild kde4:kdelibs
 [ $? != 0 ] && touch /tmp/kde_build/kdelibs.failed
-mv -v /tmp/kde_build/*.txz /sfspacks/kde5/kde4
+mv -v /tmp/kde_build/*.txz /sfspacks/kde5
 }
 
 
@@ -2408,108 +2387,108 @@ build_frameworks_kde5 () {
 #  applications-extra \
 #  applications:umbrello \
 #********************************************************
-
 cd /slacksrc/kde5
 
 export UPGRADE_PACKAGES=always
 
 ./kde.SlackBuild frameworks:attica-framework
 [ $? != 0 ] && touch /tmp/kde_build/attica-framework.failed
-mv -v /tmp/kde_build/*.txz /sfspacks/kde5/frameworks
+mv -v /tmp/kde_build/*.txz /sfspacks/kde5
 
 ./kde.SlackBuild kde4:kdelibs
 [ $? != 0 ] && touch /tmp/kde_build/kdelibs.failed
-mv -v /tmp/kde_build/*.txz /sfspacks/kde5/kde4
+mv -v /tmp/kde_build/*.txz /sfspacks/kde5
 
 for package in \
-	attica-framework \
 	extra-cmake-modules \
-	kapidox \
-	karchive \
-	kcodecs \
-	kconfig \
-	kcoreaddons \
-	kdbusaddons \
-	kdnssd \
-	kguiaddons \
-	ki18n \
-	kidletime \
-	kimageformats \
+	attica \
 	kitemmodels \
 	kitemviews \
 	kplotting \
-	kwidgetsaddons \
-	kwindowsystem \
-	networkmanager-qt \
-	solid \
-	sonnet \
 	threadweaver \
-	kauth \
-	kcompletion \
-	kcrash \
-	kdoctools \
-	kpty \
-	kunitconversion \
-	kconfigwidgets \
-	kservice \
-	kglobalaccel \
-	kpackage \
-	kdesu \
-	kemoticons \
-	kiconthemes \
-	kjobwidgets \
-	knotifications \
-	ktextwidgets \
-	kxmlgui \
-	kbookmarks \
-	kwallet \
-	kio \
-	kdeclarative \
-	kcmutils \
-	kirigami2 \
-	knewstuff \
-	frameworkintegration \
-	kinit \
-	knotifyconfig \
-	kparts \
-	kactivities-framework \
-	kded \
-	kdewebkit \
-	syntax-highlighting \
-	ktexteditor \
-	kdesignerplugin \
-	kwayland \
-	plasma-framework \
+	kcodecs \
+	kdbusaddons \
+	kcoreaddons \
+	kguiaddons \
+	kidletime \
+	kwidgetsaddons \
+	sonnet \
+	kconfig \
+	kwindowsystem \
+	solid \
+	karchive \
+	ki18n \
+	networkmanager-qt \
 	modemmanager-qt \
-	kpeople \
-	kxmlrpcclient \
 	bluez-qt \
-	kfilemetadata5 \
-	baloo5 \
-	breeze-icons \
-	oxygen-icons5 \
-	kactivities-stats \
-	krunner \
+	kwayland \
 	prison \
-	qqc2-desktop-style \
-	kjs \
-	kdelibs4support \
-	khtml \
-	kjsembed \
-	kmediaplayer \
-	kross \
-	purpose \
-	syndication \
+	kirigami2 \
+	syntax-highlighting \
 	kholidays \
 	kcalendarcore \
 	kcontacts \
+	breeze-icons \
+	kapidox \
+	kdnssd \
+	oxygen-icons5 \
+	kauth \
+	kcrash \
+	kjobwidgets \
+	kcompletion \
+	kdoctools \
+	kpackage \
+	knotifications \
+	kunitconversion \
+	kpty \
+	kimageformats \
+	kfilemetadata \
+	syndication \
 	kquickcharts \
+	kconfigwidgets \
+	kservice \
+	kglobalaccel \
+	kiconthemes \
+	kwallet \
+	kemoticons \
+	kdesu \
+	ktextwidgets \
+	kxmlgui \
+	kbookmarks \
+	kded \
+	kio \
+	knewstuff \
+	kparts \
+	kdewebkit \
+	kdesignerplugin \
+	kdeclarative \
+	kcmutils \
+	kinit \
+	knotifyconfig \
+	ktexteditor \
+	kactivities \
+	kactivities-stats \
+	plasma-framework \
+	kpeople \
+	kxmlrpcclient \
+	baloo \
+	qqc2-desktop-style \
+	purpose \
+	kjs \
+	kjsembed \
+	kross \
+	kmediaplayer \
+	krunner \
+	frameworkintegration \
+	kdelibs4support \
+	khtml \
+	kdav \
   ; do
    ./kde.SlackBuild frameworks:$package 
  	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-	mv -v /tmp/kde_build/*.txz /sfspacks/kde5/frameworks
+	mv -v /tmp/kde_build/*.txz /sfspacks/kde5
 #	if [ $? = 0 ]; then
-#		mv -v /tmp/kde_build/*.txz /sfspacks/kde5/applications
+#		mv -v /tmp/kde_build/*.txz /sfspacks/kde5
 #	else
 #		touch /tmp/kde_build/$package.failed
 #		exit 1
@@ -2531,14 +2510,13 @@ export UPGRADE_PACKAGES=always
 
 ./kde.SlackBuild applications-extra:kdiagram
 [ $? != 0 ] && touch /tmp/kde_build/kdiagram.failed
-mv -v /tmp/kde_build/*.txz /sfspacks/kde5/applications-extra
+mv -v /tmp/kde_build/*.txz /sfspacks/kde5
 
 for package in \
 	akonadi \
 	kpimtextedit \
 	kidentitymanagement \
 	kcalutils \
-	kblog \
 	libkgapi \
 	kmime \
 	ksmtp \
@@ -2568,7 +2546,6 @@ for package in \
 	messagelib \
 	mailcommon \
 	kleopatra \
-	kdav \
 	kpkpass \
 	kitinerary \
 	kdepim-addons \
@@ -2591,9 +2568,9 @@ for package in \
   ; do
    ./kde.SlackBuild kdepim:$package
  	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-	mv -v /tmp/kde_build/*.txz /sfspacks/kde5/kdepim
+	mv -v /tmp/kde_build/*.txz /sfspacks/kde5
 #	if [ $? = 0 ]; then
-#		mv -v /tmp/kde_build/*.txz /sfspacks/kde5/applications
+#		mv -v /tmp/kde_build/*.txz /sfspacks/kde5
 #	else
 #		touch /tmp/kde_build/$package.failed
 #		exit 1
@@ -2613,6 +2590,10 @@ cd /slacksrc/kde5
 
 export UPGRADE_PACKAGES=always
 
+./kde.SlackBuild frameworks:kwayland 
+[ $? != 0 ] && touch /tmp/kde_build/kwayland.failed
+mv -v /tmp/kde_build/*.txz /sfspacks/kde5
+
 for package in \
 	kgamma5 \
 	kdecoration \
@@ -2620,6 +2601,7 @@ for package in \
 	breeze-gtk \
 	breeze-grub \
 	kwayland-integration \
+	kwayland-server \
 	plasma-integration \
 	kinfocenter \
 	libksysguard \
@@ -2627,7 +2609,7 @@ for package in \
 	kscreenlocker \
 	kwin \
 	kwrited \
-	libkscreen2 \
+	libkscreen \
 	milou \
 	oxygen \
 	plasma-workspace \
@@ -2642,25 +2624,26 @@ for package in \
 	bluedevil \
 	khotkeys \
 	kmenuedit \
-	polkit-kde-framework \
-	kscreen2 \
+	polkit-kde-agent-1 \
+	kscreen \
 	sddm-kcm \
 	kde-gtk-config \
 	ksshaskpass \
 	plasma-sdk \
 	plasma-pa \
 	kactivitymanagerd \
-	user-manager \
 	xdg-desktop-portal-kde \
 	drkonqi \
 	plasma-vault \
 	plasma-browser-integration \
+	kwallet-pam \
+	plasma-disks \
   ; do
    ./kde.SlackBuild plasma:$package
  	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-	mv -v /tmp/kde_build/*.txz /sfspacks/kde5/plasma
+	mv -v /tmp/kde_build/*.txz /sfspacks/kde5
 #	if [ $? = 0 ]; then
-#		mv -v /tmp/kde_build/*.txz /sfspacks/kde5/applications
+#		mv -v /tmp/kde_build/*.txz /sfspacks/kde5
 #	else
 #		touch /tmp/kde_build/$package.failed
 #		exit 1
@@ -2681,21 +2664,19 @@ cd /slacksrc/kde5
 export UPGRADE_PACKAGES=always
 
 for package in \
-	sddm-qt5 \
-	kdeconnect-framework \
-	polkit-kde-kcmodules-framework \
-	kde-wallpapers \
-	latte-dock \
-	oxygen-fonts \
-	wacomtablet \
+	sddm \
 	kpeoplevcard \
 	pulseaudio-qt \
+	latte-dock \
+	oxygen-fonts \
+	plasma-wayland-protocols \
+	wacomtablet \
   ; do
    ./kde.SlackBuild plasma-extra:$package
  	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-	mv -v /tmp/kde_build/*.txz /sfspacks/kde5/plasma-extra
+	mv -v /tmp/kde_build/*.txz /sfspacks/kde5
 #	if [ $? = 0 ]; then
-#		mv -v /tmp/kde_build/*.txz /sfspacks/kde5/applications
+#		mv -v /tmp/kde_build/*.txz /sfspacks/kde5
 #	else
 #		touch /tmp/kde_build/$package.failed
 #		exit 1
@@ -2704,9 +2685,9 @@ done
 
 ./kde.SlackBuild applications-extra:libktorrent
 [ $? != 0 ] && touch /tmp/kde_build/libktorrent.failed
-mv -v /tmp/kde_build/*.txz /sfspacks/kde5/applications-extra
+mv -v /tmp/kde_build/*.txz /sfspacks/kde5
 #	if [ $? = 0 ]; then
-#		mv -v /tmp/kde_build/*.txz /sfspacks/kde5/applications
+#		mv -v /tmp/kde_build/*.txz /sfspacks/kde5
 #	else
 #		touch /tmp/kde_build/$package.failed
 #		exit 1
@@ -2733,14 +2714,15 @@ for package in \
 	libksane \
 	gwenview \
 	kio-extras \
-	kate \
+	kio-gdrive \
 	konsole \
+	kate \
 	kdialog \
 	keditbookmarks \
 	kfind \
 	konqueror \
 	ark \
-	baloo5-widgets \
+	baloo-widgets \
 	filelight \
 	kcalc \
 	kcharselect \
@@ -2768,6 +2750,7 @@ for package in \
 	kompare \
 	lokalize \
 	poxml \
+	umbrello \
 	kdegraphics-mobipocket \
 	okular \
 	kdegraphics-thumbnailers \
@@ -2791,6 +2774,7 @@ for package in \
 	kwave \
 	k3b \
 	kamoso \
+	elisa \
 	kdenetwork-filesharing \
 	zeroconf-ioslave \
 	kget \
@@ -2856,7 +2840,6 @@ for package in \
  	kbruch \
 	kgeography \
 	kiten \
-	klettres \
 	kmplot \
 	kqtquickcharts \
 	ktouch \
@@ -2870,12 +2853,13 @@ for package in \
 	kdenlive \
 	kimagemapeditor \
 	yakuake \
+	kdeconnect-kde \
   ; do
    ./kde.SlackBuild applications:$package
  	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-	mv -v /tmp/kde_build/*.txz /sfspacks/kde5/applications
+	mv -v /tmp/kde_build/*.txz /sfspacks/kde5
 #	if [ $? = 0 ]; then
-#		mv -v /tmp/kde_build/*.txz /sfspacks/kde5/applications
+#		mv -v /tmp/kde_build/*.txz /sfspacks/kde5
 #	else
 #		touch /tmp/kde_build/$package.failed
 #		exit 1
@@ -2901,6 +2885,7 @@ for package in \
 	calligraplan \
 	digikam \
 	krita \
+	libktorrent \
 	ktorrent \
 	kpmcore \
 	partitionmanager \
@@ -2914,20 +2899,22 @@ for package in \
 	kstars \
 	krusader \
 	kile \
-	kaudiocreator \
 	kwebkitpart \
 	oxygen-gtk2 \
 	kdev-python \
 	alkimia \
-	kmymoney \
+ 	kmymoney \
 	okteta \
 	krename \
+	ktimetracker \
+	labplot \
+	kid3 \
   ; do
    ./kde.SlackBuild applications-extra:$package
  	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-	mv -v /tmp/kde_build/*.txz /sfspacks/kde5/applications-extra
+	mv -v /tmp/kde_build/*.txz /sfspacks/kde5
 #	if [ $? = 0 ]; then
-#		mv -v /tmp/kde_build/*.txz /sfspacks/kde5/applications
+#		mv -v /tmp/kde_build/*.txz /sfspacks/kde5
 #	else
 #		touch /tmp/kde_build/$package.failed
 #		exit 1
@@ -2936,9 +2923,9 @@ done
 
 ./kde.SlackBuild applications:umbrello
 [ $? != 0 ] && touch /tmp/kde_build/umbrello.failed
-mv -v /tmp/kde_build/*.txz /sfspacks/kde5/applications
+mv -v /tmp/kde_build/*.txz /sfspacks/kde5
 #	if [ $? = 0 ]; then
-#		mv -v /tmp/kde_build/*.txz /sfspacks/kde5/applications
+#		mv -v /tmp/kde_build/*.txz /sfspacks/kde5
 #	else
 #		touch /tmp/kde_build/$package.failed
 #		exit 1
@@ -3100,10 +3087,8 @@ define_path_lib
 # Ensure that the /sfspacks/$SAVDIRs exists.
 #****************************************************************
 distribution="slackware"
-mkdir -pv /slacksrc/deps
-mkdir -pv /slacksrc/kde5/{applications,applications-extra,frameworks,kde4,kdepim,plasma,plasma-extra}
+mkdir -pv /slacksrc/{deps,kde5}
 mkdir -pv /sfspacks/{others,a,ap,d,deps,e,extra,f,k,kde,kde5,kdei,l,n,t,tcl,x,xap,xfce,y}
-mkdir -pv /sfspacks/kde5/{applications,applications-extra,frameworks,kde4,kdepim,plasma,plasma-extra}
 #******************************************************************
 # Some packages need two pass to be built completely.
 # Alteration of the slackware sources is made "on the fly" during
@@ -3464,9 +3449,9 @@ while (( LINE < $FILELEN )); do
 					build_plasma_extra_kde5
 					[ $? != 0 ] && exit 1 ;;
 
-				kde4 )
-					build_kdelibs_for_kde5
-					[ $? != 0 ] && exit 1 ;;
+#				kde4 )
+#					build_kdelibs_for_kde5
+#					[ $? != 0 ] && exit 1 ;;
 
 				kde )
 					build_kde
