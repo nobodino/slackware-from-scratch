@@ -179,6 +179,18 @@ if [ ! -f $SLACKSRC/n/cyrus-sasl/cyrus-sasl.SlackBuild.old ]; then
 fi
 }
 
+execute_elogind_sed () {
+#******************************************************************
+# change all "true" options to "false" options in SlackBuild
+#******************************************************************
+if [ ! -f $SLACKSRC/a/elogind/elogind.SlackBuild.old ]; then
+	cp -v $SLACKSRC/a/elogind/elogind.SlackBuild $SLACKSRC/a/elogind/elogind.SlackBuild.old
+	(
+		cd $SLACKSRC/a/elogind
+		sed -i -e 's/Dman=false/Dman=false/g' elogind.SlackBuild
+	)
+fi
+}
 
 execute_findutils_sed () {
 #******************************************************************
@@ -3159,8 +3171,12 @@ LZST=1
 LRSY=1
 # init perl variable
 LPER=1
-# init oenldap variable
+# init openldap variable
 LOPE=1
+# init libtirpc variable
+LRPC=1
+# init elogind variable
+LELO=1
 # init NUMJOBS variable
 NUMJOBS="-j$(( $(nproc) * 2 )) -l$(( $(nproc) + 1 ))"
 
@@ -3293,6 +3309,18 @@ while (( LINE < $FILELEN )); do
 				end4 )
 					message_end4
 					clean_tmp ;;
+
+				elogind )
+					case $LELO in
+						1 )
+							execute_elogind_sed && build $SRCDIR $PACKNAME
+							[ $? != 0 ] && exit 1
+							update_slackbuild && LELO=2 ;;
+						* )
+							build $SRCDIR $PACKNAME
+							[ $? != 0 ] && exit 1 ;;
+					esac
+					continue ;;
 
 				findutils )
 					case $LFIN in
@@ -3552,6 +3580,18 @@ while (( LINE < $FILELEN )); do
 					source /root/.bashrc
 					build $SRCDIR $PACKNAME
 					[ $? != 0 ] && exit 1 ;;
+
+				libtirpc )
+					case $LRPC in
+						1 )
+							export WITH_GSS="NO" && build $SRCDIR $PACKNAME 
+							[ $? != 0 ] && exit 1
+							export WITH_GSS="YES" && LRPC=2 ;;
+						* )
+							export WITH_GSS="YES" && build $SRCDIR $PACKNAME
+							[ $? != 0 ] && exit 1 ;;
+					esac
+					continue ;;
 
 				libusb )
 					case $LUSB in

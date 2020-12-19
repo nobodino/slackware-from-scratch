@@ -100,8 +100,10 @@ a sed
 l libxml2
 tcl tcl
 l libxslt
+ap itstool
 a shadow
 a grep
+l readline
 l readline
 l gdbm
 d gperf
@@ -113,6 +115,48 @@ l libssh2
 n curl
 l elfutils
 l libffi
+d re2c
+d ninja
+l libffi
+d python3
+d python-setuptools
+d meson
+n curl
+l libarchive
+d cmake
+n dhcpcd
+a dhcpcd_up
+# d perl
+n cyrus-sasl
+l db48
+l rpcsvc-proto
+ap groff
+ap man-db
+n libtirpc
+l libnsl
+n tcp_wrappers
+n openldap
+l pcre2
+a util-linux
+a e2fsprogs
+n krb5
+a cracklib
+a pam
+l glib2
+l gamin
+l gobject-introspection
+a eudev
+d slacktrack
+l db48
+n libgpg-error
+n libgcrypt
+a file
+l popt
+ap rpm
+a cpio
+a rpm2tgz
+ap linuxdoc-tools
+a elogind
 a procps-ng
 ap groff
 l pcre2
@@ -120,8 +164,8 @@ a util-linux
 a e2fsprogs
 a coreutils
 a glibc-zoneinfo
-l readline
-l readline
+# l readline
+# l readline
 ap diffutils
 a gawk
 a less
@@ -177,11 +221,15 @@ l jansson
 n cyrus-sasl
 l db48
 l rpcsvc-proto
+l libiodbc
+d perl
 n openldap
 n krb5
 n libtirpc
 l libnsl
 l libnss_nis
+n libtirpc
+l libnsl
 n tcp_wrappers
 l icu4c
 l libiodbc
@@ -189,7 +237,8 @@ n curl
 l libarchive
 d cmake
 n dhcpcd
-a dhcpcd_up
+# a dhcpcd_up
+ap mariadb
 d perl
 n openldap
 n krb5
@@ -202,9 +251,11 @@ a util-linux
 n cyrus-sasl
 n openssl
 n openssl10
-ap mariadb
-d perl
-n openldap
+# n dhcpcd
+# a dhcpcd_up
+# ap mariadb
+# d perl
+# n openldap
 d intltool
 a ed
 ap bc
@@ -215,8 +266,10 @@ a cpio
 l readline
 n dhcpcd
 l libedit
+a elogind
 d llvm
 d llvm
+ap linuxdoc-tools
 d ccache
 d rust
 a kernel-all
@@ -285,6 +338,7 @@ a dcron
 n ca-certificates
 n p11-kit
 l libunistring
+d autoconf-archive
 a dbus
 a rpm2tgz
 d slacktrack
@@ -448,7 +502,7 @@ d ruby
 # others bison
 l qt
 # d bison
-d cmake
+# d cmake
 l libunistring
 l gc
 l gmp
@@ -473,7 +527,7 @@ d clisp
 t texlive
 x fontconfig
 d doxygen
-kde5 extra-cmake-modules
+# kde5 extra-cmake-modules
 # l libdbusmenu-qt
 l sdl
 # l openal-soft
@@ -502,7 +556,7 @@ l neon
 l utf8proc
 l lz4
 d subversion
-d cmake
+# d cmake
 tcl tk
 tcl tclx
 tcl expect
@@ -582,6 +636,13 @@ l GConf
 l libwnck
 l adwaita-icon-theme
 xap ffmpegthumbnailer
+l libsass
+d sassc
+l gdk-pixbuf2-xlib
+l gjs
+l glade
+l gtksourceview3
+l libwnck3
 xfce xfce
 xfce xfce
 xap seamonkey
@@ -996,7 +1057,7 @@ l aalib
 l alsa-oss
 l aspell
 extra aspell-word-lists
-kde5 extra-cmake-modules 
+# kde5 extra-cmake-modules 
 l attica
 l audiofile
 l automoc4
@@ -1140,7 +1201,7 @@ l SDL2_ttf
 l lame
 l libwebp
 l ffmpeg
-xap ssr
+# xap ssr
 # l libcue
 # xap audacious-plugins
 l gst-plugins-libav
@@ -1187,6 +1248,10 @@ kdei calligra-l10n
 kde post-kde
 kde kdepim
 kdei kde-l10n
+d rinutils
+l python-pysol_cards
+l python-random2
+l freecell-solver
 n socat
 # kde5 extra-cmake-modules
 # deps all-deps-2
@@ -1217,6 +1282,8 @@ l libxkbcommon
 l LibRaw
 l PyQt5
 l qca-qt5
+d cmake
+xap ssr
 xap xaos
 xap audacious
 xap gnuplot
