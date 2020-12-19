@@ -353,13 +353,6 @@ glibc_build () {
 #*****************************
 	tar xvf glibc-$GLIBCVER.tar.xz && cd glibc-$GLIBCVER
 
-#    zcat ../glibc.libc.texinfo.no.utf8.patch.gz | patch -p1 --verbose || exit 1
-#	cat ../csu_libc-tls.c.patch | patch -p1 --verbose || exit 1
-#	cat ../nptl_db_db-symbols.h.patch | patch -p1 --verbose || exit 1
-#	cat ../nptl_db_db_info.c.patch | patch -p1 --verbose || exit 1
-#	cat ../nptl_db_structs.def.patch | patch -p1 --verbose || exit 1
-#	cat ../nptl_db_thread_dbP.h.patch | patch -p1 --verbose || exit 1
-#	cat ../sysdeps_generic_ldsodefs.h.patch | patch -p1 --verbose || exit 1
 	cat ../e1d559f.patch | patch -p1 --verbose
 	cat ../glibc.git-cba932a5a9e91cffd7f4172d7e91f9b2efb1f84b.patch | patch -p1 --verbose
 	cat ../glibc.git-84df7a4637be8ecb545df3501cc724f3a4d53c46.patch | patch -p1 --verbose
@@ -1010,9 +1003,9 @@ echo_begin
 copy_src
 test_to_go
 cd $SRCDIR
-# binutils_build_sp1
-# gcc_build_sp1
-# linux_headers_build
+binutils_build_sp1
+gcc_build_sp1
+linux_headers_build
 glibc_build
 libstdc_build
 binutils_build_sp2
