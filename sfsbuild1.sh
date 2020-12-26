@@ -187,7 +187,7 @@ if [ ! -f $SLACKSRC/a/elogind/elogind.SlackBuild.old ]; then
 	cp -v $SLACKSRC/a/elogind/elogind.SlackBuild $SLACKSRC/a/elogind/elogind.SlackBuild.old
 	(
 		cd $SLACKSRC/a/elogind
-		sed -i -e 's/Dman=false/Dman=false/g' elogind.SlackBuild
+		sed -i -e 's/Dman=true/Dman=false/g' elogind.SlackBuild
 	)
 fi
 }
@@ -3311,8 +3311,8 @@ while (( LINE < $FILELEN )); do
 					clean_tmp ;;
 
 				elogind )
-					case $LELO in
-						1 )
+					case $LISTFILE in
+						build1_s.list )
 							execute_elogind_sed && build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1
 							update_slackbuild && LELO=2 ;;
