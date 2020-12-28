@@ -367,6 +367,21 @@ if [ ! -f $SLACKSRC/l/libusb/libusb.SlackBuild.old ]; then
 fi
 }
 
+execute_libxkbcommon_sed () {
+#******************************************************************
+# add "-Denable-docs=false" to SlackBuild
+#******************************************************************
+if [ ! -f $SLACKSRC/l/libxkbcommon/libxkbcommon.SlackBuild.old ]; then
+	cp -v $SLACKSRC/l/libxkbcommon/libxkbcommon.SlackBuild \
+		$SLACKSRC/l/libxkbcommon/libxkbcommon.SlackBuild.old
+	(
+		cd $SLACKSRC/l/libxkbcommon
+		sed -i -e '/-Denable-wayland=true/p' libxkbcommon.SlackBuild
+		sed -i -e 's/wayland=true/docs=false/' libxkbcommon.SlackBuild
+	)
+fi
+}
+
 execute_openldap_sed () {
 #******************************************************************
 # disable some options in SlackBuild
@@ -3177,6 +3192,8 @@ LOPE=1
 LRPC=1
 # init elogind variable
 LELO=1
+# init libxkbcommon variable
+LXKB=1
 # init NUMJOBS variable
 NUMJOBS="-j$(( $(nproc) * 2 )) -l$(( $(nproc) + 1 ))"
 
@@ -3612,6 +3629,18 @@ while (( LINE < $FILELEN )); do
 				linux-howtos )
 					build_linux_howtos
 					[ $? != 0 ] && exit 1 ;;
+
+				libxkbcommon )
+					case $LXKB in
+						1 )
+							execute_libxkbcommon_sed && build $SRCDIR $PACKNAME
+							[ $? != 0 ] && exit 1
+							update_slackbuild && LXKB=2 ;;
+						2 )
+							build $SRCDIR $PACKNAME
+							[ $? != 0 ] && exit 1 ;;
+					esac
+					continue ;;
 
 				llvm )
 					case $LPVM in

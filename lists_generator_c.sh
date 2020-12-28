@@ -126,7 +126,6 @@ l libarchive
 d cmake
 n dhcpcd
 a dhcpcd_up
-# d perl
 n cyrus-sasl
 l db48
 l rpcsvc-proto
@@ -164,8 +163,6 @@ a util-linux
 a e2fsprogs
 a coreutils
 a glibc-zoneinfo
-# l readline
-# l readline
 ap diffutils
 a gawk
 a less
@@ -237,7 +234,6 @@ n curl
 l libarchive
 d cmake
 n dhcpcd
-# a dhcpcd_up
 ap mariadb
 d perl
 n openldap
@@ -251,11 +247,6 @@ a util-linux
 n cyrus-sasl
 n openssl
 n openssl10
-# n dhcpcd
-# a dhcpcd_up
-# ap mariadb
-# d perl
-# n openldap
 d intltool
 a ed
 ap bc
@@ -266,7 +257,6 @@ a cpio
 l readline
 n dhcpcd
 l libedit
-a elogind
 d llvm
 d llvm
 ap linuxdoc-tools
@@ -282,6 +272,7 @@ a findutils
 n lynx
 n nss-pam-ldapd
 n pam-krb5
+a elogind
 a end1
 EOF
 }
@@ -344,6 +335,7 @@ a rpm2tgz
 d slacktrack
 ap itstool
 l icu4c
+a inih
 a xfsprogs
 ap dmapi
 l graphite2
@@ -372,7 +364,6 @@ ap nano
 l xxHash
 n rsync
 ap mc
-# n tcp_wrappers
 l libedit
 n openssh
 n ncftp
@@ -440,10 +431,8 @@ l libclc
 d python-setuptools
 l Mako
 x libglvnd
-# l sdl
 x wayland
 x wayland-protocols
-# l brotli
 x mesa
 x glew
 x glu
@@ -460,9 +449,11 @@ x libwacom
 l libunwind
 x x11-group2
 x compiz
-x dejavu-fonts-ttf
+x dejavu-fonts-ttficu4c
 x liberation-fonts-ttf
+others automake
 x motif
+d automake
 x xterm
 x libva
 x urw-core35-fonts-otf
@@ -499,10 +490,6 @@ l gnu-efi
 a elilo
 a dbus
 d ruby
-# others bison
-l qt
-# d bison
-# d cmake
 l libunistring
 l gc
 l gmp
@@ -520,7 +507,11 @@ l at-spi2-core
 l at-spi2-atk
 l fribidi
 l pango
+others automake
+others autoconf
 l gtk+2
+d automake
+d autoconf
 l libglade
 tcl expect
 d clisp
@@ -1049,7 +1040,7 @@ xap seyon
 l ConsoleKit2
 l LibRaw
 l sip
-l PyQt
+# l PyQt
 # l QScintilla
 # l QScintilla
 l a52dec
@@ -1126,24 +1117,24 @@ l media-player-info
 l mhash
 l openexr
 l orc
-deps phonon-qt4
-deps phonon-qt4-gstreamer
+# deps phonon-qt4
+# deps phonon-qt4-gstreamer
 l pilot-link
 l polkit-qt-1
 l pycups
 l pycurl
 l python-pillow
 l qca
-l qimageblitz
-l qjson
-l qtscriptgenerator
-l raptor2
-l rasqal
-l redland
+# l qimageblitz
+# l qjson
+# l qtscriptgenerator
+# l raptor2
+# l rasqal
+# l redland
 l shared-desktop-ontologies
-l soprano
+# l soprano
 l sound-theme-freedesktop
-l strigi
+# l strigi
 l system-config-printer
 l tango-icon-theme
 l tango-icon-theme-extras
