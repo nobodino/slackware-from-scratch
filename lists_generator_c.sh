@@ -517,21 +517,75 @@ tcl expect
 d clisp
 t texlive
 x fontconfig
-d doxygen
+# d doxygen
 # kde5 extra-cmake-modules
 # l libdbusmenu-qt
 l sdl
-# l openal-soft
-# l libxkbcommon
-# l brotli
+l openal-soft
+l libxkbcommon
+l brotli
 x wayland
 x wayland-protocols
-# l woff2
-# l hyphen
-# l qt5
-# l qt5-webkit
-# d doxygen
-# l libxkbcommon
+l woff2
+ap flac
+l hyphen
+l libogg
+l id3lib
+l opus
+l opusfile
+l libopusenc
+ap opus-tools
+l speex
+l libvorbis
+l libao
+others automake
+others autoconf
+ap vorbis-tools
+d automake
+d autoconf
+l gstreamer
+l libbluray
+l fluidsynth
+l SDL2
+l SDL2_gfx
+l SDL2_image
+l SDL2_mixer
+l SDL2_net
+l SDL2_ttf
+l lame
+l libwebp
+l libtheora
+l libcdio
+l libcdio-paranoia
+l libdvdread
+l libdvdnav
+l libcaca
+l fribidi
+l talloc
+l tdb
+l tevent
+l lmdb
+l libnih
+l lzo
+n gnupg
+n libassuan
+n libksba
+n npth
+n gnupg2
+n gpgme
+l libssh
+n samba
+l v4l-utils
+l libvpx
+l wavpack
+l python-six
+d opencl-headers
+l ocl-icd
+l ffmpeg
+l qt5
+l qt5-webkit
+d doxygen
+l libxkbcommon
 # deps all-deps-1
 d strace
 d rcs
@@ -634,8 +688,38 @@ l gjs
 l glade
 l gtksourceview3
 l libwnck3
-xfce xfce
-xfce xfce
+l iso-codes
+l libxklavier
+xfce xfce4-dev-tools
+xfce libxfce4util
+xfce xfconf
+xfce libxfce4ui
+xfce exo
+xfce garcon
+xfce xfce4-panel
+xfce thunar
+xfce thunar-volman
+xfce tumbler
+xfce xfce4-appfinder
+xfce xfce4-power-manager
+xfce xfce4-settings
+xfce xfdesktop
+xfce xfwm4
+xfce xfce4-session
+xfce xfce4-terminal
+xfce xfce4-notifyd
+xfce xfce4-panel-profiles
+xfce xfce4-pulseaudio-plugin
+xfce xfce4-clipman-plugin
+xfce xfce4-screenshooter
+xfce mousepad
+xfce xfce4-screensaver
+xfce xfce4-systemload-plugin
+xfce xfce4-taskmanager
+xfce xfce4-weather-plugin
+xfce xfce4-whiskermenu-plugin
+xfce elementary-xfce
+xfce Greybird
 xap seamonkey
 a end3
 EOF
@@ -1233,12 +1317,12 @@ l soprano
 xap MPlayer
 xap xine-lib
 xap xine-ui
-kde kde
+# kde kde
 # n php
-kdei calligra-l10n
-kde post-kde
-kde kdepim
-kdei kde-l10n
+# kdei calligra-l10n
+# kde post-kde
+# kde kdepim
+# kdei kde-l10n
 d rinutils
 l python-pysol_cards
 l python-random2
@@ -1260,16 +1344,16 @@ n snownews
 d python2
 d python3
 y bsd-games
-l brotli
-x wayland
-x wayland-protocols
-l woff2
-l hyphen
-l qt5
-l qt5-webkit
-l openal-soft
-d doxygen
-l libxkbcommon
+# l brotli
+# x wayland
+# x wayland-protocols
+# l woff2
+# l hyphen
+# l qt5
+# l qt5-webkit
+# l openal-soft
+# d doxygen
+# l libxkbcommon
 l LibRaw
 l PyQt5
 l qca-qt5

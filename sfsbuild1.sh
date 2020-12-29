@@ -853,12 +853,12 @@ case $PACKNAME in
 		chmod +x vim-gvim.SlackBuild && ./vim-gvim.SlackBuild
 		[ $? != 0 ] && exit 1 ;;
 
-	xfce )
-		# xfce doesn't build with one SlackBuild, but with multiple SlackBuilds
-		cd /slacksrc/$SRCDIR && chmod +x xfce-build-all.sh && ./xfce-build-all.sh
-		upgradepkg --install-new /tmp/*.t?z
-		mv -v /tmp/*.t?z /sfspacks/$SRCDIR
-		[ $? != 0 ] && exit 1 ;;
+#	xfce )
+#		# xfce doesn't build with one SlackBuild, but with multiple SlackBuilds
+#		cd /slacksrc/$SRCDIR && chmod +x xfce-build-all.sh && ./xfce-build-all.sh
+#		upgradepkg --install-new /tmp/*.t?z
+#		mv -v /tmp/*.t?z /sfspacks/$SRCDIR
+#		[ $? != 0 ] && exit 1 ;;
 
 	* )
 		# every other package treatment
@@ -913,8 +913,8 @@ case $PACKNAME in
 		$INSTALLPRG /tmp/$PACKNAME-*.t?z
 		[ $? != 0 ] && exit 1 ;;
 
-	xfce )
-		echo ;;
+#	xfce )
+#		echo ;;
 
 	* )
 		# every other package is built in /tmp
@@ -3095,12 +3095,12 @@ update_slackbuild () {
 cd /slacksrc/$SRCDIR/$PACKNAME && mv $PACKNAME.SlackBuild.old $PACKNAME.SlackBuild && cd /sources
 }
 
-update_xfce () {
+# update_xfce () {
 #****************************************************************
 # rename xfce-build-all.sh.old to original name
 #****************************************************************
-cd /slacksrc/xfce && mv xfce-build-all.sh.old xfce-build-all.sh && cd /sources
-}
+# cd /slacksrc/xfce && mv xfce-build-all.sh.old xfce-build-all.sh && cd /sources
+# }
 
 #****************************************************************
 #****************************************************************
@@ -3873,10 +3873,10 @@ while (( LINE < $FILELEN )); do
 					build_x11_app_post
 					[ $? != 0 ] && exit 1 ;;
 
-				xfce )
-					execute_xfce_sed && build $SRCDIR $PACKNAME
-					[ $? != 0 ] && exit 1
-					update_xfce ;;
+#				xfce )
+#					execute_xfce_sed && build $SRCDIR $PACKNAME
+#					[ $? != 0 ] && exit 1
+#					update_xfce ;;
 
 				zstd )
 					case $LZST in
