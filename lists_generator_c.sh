@@ -831,7 +831,6 @@ ap bpe
 ap cdparanoia
 ap cdrdao
 ap cdrtools
-ap cgmanager
 ap dc3dd
 a lrzip
 ap ddrescue
@@ -883,7 +882,6 @@ l glib
 l gtk+
 xap xmms
 ap normalize
-ap pm-utils
 l libnl
 ap powertop
 ap radeontool
@@ -911,7 +909,9 @@ ap opus-tools
 l speex
 l libvorbis
 l libao
+others autoconf
 ap vorbis-tools
+d autoconf
 ap zsh
 ap htop
 ap pamixer
@@ -945,7 +945,9 @@ l libnl3
 n ppp
 l gmime
 xap pan
+others autoconf
 l hunspell
+d autoconf
 l enchant
 l gtkspell
 l libsigc++
@@ -1121,7 +1123,7 @@ n mcabber
 n newspost
 n procmail
 xap seyon
-l ConsoleKit2
+# l ConsoleKit2
 l LibRaw
 l sip
 # l PyQt
@@ -1131,11 +1133,7 @@ l a52dec
 l aalib
 l alsa-oss
 l aspell
-extra aspell-word-lists
-# kde5 extra-cmake-modules 
-l attica
 l audiofile
-l automoc4
 l babl
 l chmlib
 l djvulibre
@@ -1153,18 +1151,10 @@ l gd
 l gmime
 l gmm
 l grantlee
-# l gst-plugins-base0
-# l gst-plugins-good0
-# l gst-plugins-base
-# l gst-plugins-base
-# l gst-plugins-good
-l hunspell
 l icon-naming-utils
-# l ilmbase
 l keyutils
 l lcms
 l lcms2
-l libbluedevil
 l libcddb
 l libdbusmenu-qt
 l libdiscid
@@ -1179,7 +1169,6 @@ l taglib
 l taglib-extras
 l libkarma
 l libsamplerate
-l liblastfm
 l libmng
 l libmtp
 l jmtpfs
@@ -1209,16 +1198,8 @@ l pycups
 l pycurl
 l python-pillow
 l qca
-# l qimageblitz
-# l qjson
-# l qtscriptgenerator
-# l raptor2
-# l rasqal
-# l redland
 l shared-desktop-ontologies
-# l soprano
 l sound-theme-freedesktop
-# l strigi
 l system-config-printer
 l tango-icon-theme
 l tango-icon-theme-extras
@@ -1240,16 +1221,9 @@ d scons
 n zd1211-firmware
 x libhangul
 x anthy
-x scim
-x scim-anthy
-x scim-hangul
 l libpng
-x scim-input-pad
 l gd
 x m17n-lib
-x scim-m17n
-x scim-pinyin
-x scim-tables
 x tibmachuni-font-ttf
 x ttf-indic-fonts
 x wqy-zenhei-font-ttf
@@ -1259,9 +1233,6 @@ ap ghostscript
 ap moc
 xap gv
 l boost
-# deps qt-gstreamer
-l qt-gstreamer
-l akonadi
 ap slackpkg
 d gdb
 l gstreamer
@@ -1299,7 +1270,6 @@ l gcr
 l gnome-keyring
 xap libnma
 xap network-manager-applet
-l glade3
 l gvfs
 l keybinder3
 l libiodbc
@@ -1313,7 +1283,6 @@ l tidy-html5
 n php
 n nfs-utils
 n libgcrypt
-l soprano
 xap MPlayer
 xap xine-lib
 xap xine-ui
@@ -1328,14 +1297,48 @@ l python-pysol_cards
 l python-random2
 l freecell-solver
 n socat
-# kde5 extra-cmake-modules
-# deps all-deps-2
-# kde5 frameworks
-# kde5 kdepim5
-# kde5 plasma
-# kde5 plasma-extra
-# kde5 applications
-# kde5 applications-extra
+kde5 extra-cmake-modules
+l phonon
+l phonon-backend-gstreamer
+l dotconf
+l speech-dispatcher
+l qtkeychain
+l polkit
+l polkit-qt-1
+l grantlee
+l libdbusmenu
+l libdbusmenu-qt
+l libindicator
+l libappindicator
+l cfitsio
+l libdmtx
+l qrencode
+l lensfun
+l eigen3
+l opencv
+l dvdauthor
+l vid.stab
+l frei0r-plugins
+l mlt
+l accountsservice
+l libburn
+l QtAV
+l cryptopp
+l cryfs
+l libsass
+d sassc
+l rttr
+l quazip
+l kdsoap
+l quazip
+l pipewire
+l qrencode
+kde5 frameworks
+kde5 kdepim5
+kde5 plasma
+kde5 plasma-extra
+kde5 applications
+kde5 applications-extra
 d subversion
 l libxml2
 l ncurses
@@ -1344,19 +1347,9 @@ n snownews
 d python2
 d python3
 y bsd-games
-# l brotli
-# x wayland
-# x wayland-protocols
-# l woff2
-# l hyphen
-# l qt5
-# l qt5-webkit
-# l openal-soft
-# d doxygen
-# l libxkbcommon
 l LibRaw
 l PyQt5
-l qca-qt5
+l qca
 d cmake
 xap ssr
 xap xaos
@@ -1369,12 +1362,6 @@ l QScintilla
 l exiv2
 l grantlee
 l id3lib
-deps phonon-qt4
-deps phonon-qt4-gstreamer
-# deps qt-gstreamer
-l qt-gstreamer
-deps phonon
-deps phonon-gstreamer
 l poppler
 l sip
 n gpgme

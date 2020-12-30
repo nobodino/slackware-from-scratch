@@ -2372,16 +2372,16 @@ cd /sources
 
 }
 
-build_extra_cmake_kde5 () {
+build_extra_cmake_kde () {
 #********************************************************
-cd /slacksrc/kde5
+cd /slacksrc/kde/kde
 
 export UPGRADE_PACKAGES=always
    ./kde.SlackBuild frameworks:extra-cmake-modules 
  	[ $? != 0 ] && touch /tmp/kde_build/extra-cmake-modules.failed
-	mv -v /tmp/kde_build/*.txz /sfspacks/kde5
+	mv -v /tmp/kde_build/*.txz /sfspacks/kde
 #	if [ $? = 0 ]; then
-#		mv -v /tmp/kde_build/*.txz /sfspacks/kde5
+#		mv -v /tmp/kde_build/*.txz /sfspacks/kde
 #	else
 #		touch /tmp/kde_build/extra-cmake-modules.failed
 #		exit 1
@@ -2389,19 +2389,19 @@ export UPGRADE_PACKAGES=always
 
 }
 
-build_kdelibs_for_kde5 () {
+build_kdelibs_for_kde () {
 #********************************************************
-cd /slacksrc/kde5
+cd /slacksrc/kde/kde
 
 export UPGRADE_PACKAGES=always
 
 ./kde.SlackBuild kde4:kdelibs
 [ $? != 0 ] && touch /tmp/kde_build/kdelibs.failed
-mv -v /tmp/kde_build/*.txz /sfspacks/kde5
+mv -v /tmp/kde_build/*.txz /sfspacks/kde
 }
 
 
-build_frameworks_kde5 () {
+build_frameworks_kde () {
 #********************************************************
 #  kde4 \
 #  frameworks \
@@ -2414,17 +2414,17 @@ build_frameworks_kde5 () {
 #  applications-extra \
 #  applications:umbrello \
 #********************************************************
-cd /slacksrc/kde5
+cd /slacksrc/kde/kde
 
 export UPGRADE_PACKAGES=always
 
 ./kde.SlackBuild frameworks:attica-framework
 [ $? != 0 ] && touch /tmp/kde_build/attica-framework.failed
-mv -v /tmp/kde_build/*.txz /sfspacks/kde5
+mv -v /tmp/kde_build/*.txz /sfspacks/kde
 
 ./kde.SlackBuild kde4:kdelibs
 [ $? != 0 ] && touch /tmp/kde_build/kdelibs.failed
-mv -v /tmp/kde_build/*.txz /sfspacks/kde5
+mv -v /tmp/kde_build/*.txz /sfspacks/kde
 
 for package in \
 	extra-cmake-modules \
@@ -2513,9 +2513,9 @@ for package in \
   ; do
    ./kde.SlackBuild frameworks:$package 
  	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-	mv -v /tmp/kde_build/*.txz /sfspacks/kde5
+	mv -v /tmp/kde_build/*.txz /sfspacks/kde
 #	if [ $? = 0 ]; then
-#		mv -v /tmp/kde_build/*.txz /sfspacks/kde5
+#		mv -v /tmp/kde_build/*.txz /sfspacks/kde
 #	else
 #		touch /tmp/kde_build/$package.failed
 #		exit 1
@@ -2529,15 +2529,15 @@ cd /sources
 
 }
 
-build_kdepim_kde5 () {
+build_kdepim_kde () {
 #********************************************************
-cd /slacksrc/kde5
+cd /slacksrc/kde/kde
 
 export UPGRADE_PACKAGES=always
 
 ./kde.SlackBuild applications-extra:kdiagram
 [ $? != 0 ] && touch /tmp/kde_build/kdiagram.failed
-mv -v /tmp/kde_build/*.txz /sfspacks/kde5
+mv -v /tmp/kde_build/*.txz /sfspacks/kde
 
 for package in \
 	akonadi \
@@ -2595,9 +2595,9 @@ for package in \
   ; do
    ./kde.SlackBuild kdepim:$package
  	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-	mv -v /tmp/kde_build/*.txz /sfspacks/kde5
+	mv -v /tmp/kde_build/*.txz /sfspacks/kde
 #	if [ $? = 0 ]; then
-#		mv -v /tmp/kde_build/*.txz /sfspacks/kde5
+#		mv -v /tmp/kde_build/*.txz /sfspacks/kde
 #	else
 #		touch /tmp/kde_build/$package.failed
 #		exit 1
@@ -2611,15 +2611,15 @@ cd /sources
 
 }
 
-build_plasma_kde5 () {
+build_plasma_kde () {
 #********************************************************
-cd /slacksrc/kde5
+cd /slacksrc/kde/kde
 
 export UPGRADE_PACKAGES=always
 
 ./kde.SlackBuild frameworks:kwayland 
 [ $? != 0 ] && touch /tmp/kde_build/kwayland.failed
-mv -v /tmp/kde_build/*.txz /sfspacks/kde5
+mv -v /tmp/kde_build/*.txz /sfspacks/kde
 
 for package in \
 	kgamma5 \
@@ -2668,9 +2668,9 @@ for package in \
   ; do
    ./kde.SlackBuild plasma:$package
  	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-	mv -v /tmp/kde_build/*.txz /sfspacks/kde5
+	mv -v /tmp/kde_build/*.txz /sfspacks/kde
 #	if [ $? = 0 ]; then
-#		mv -v /tmp/kde_build/*.txz /sfspacks/kde5
+#		mv -v /tmp/kde_build/*.txz /sfspacks/kde
 #	else
 #		touch /tmp/kde_build/$package.failed
 #		exit 1
@@ -2684,9 +2684,9 @@ cd /sources
 
 }
 
-build_plasma_extra_kde5 () {
+build_plasma_extra_kde () {
 #********************************************************
-cd /slacksrc/kde5
+cd /slacksrc/kde/kde
 
 export UPGRADE_PACKAGES=always
 
@@ -2701,9 +2701,9 @@ for package in \
   ; do
    ./kde.SlackBuild plasma-extra:$package
  	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-	mv -v /tmp/kde_build/*.txz /sfspacks/kde5
+	mv -v /tmp/kde_build/*.txz /sfspacks/kde
 #	if [ $? = 0 ]; then
-#		mv -v /tmp/kde_build/*.txz /sfspacks/kde5
+#		mv -v /tmp/kde_build/*.txz /sfspacks/kde
 #	else
 #		touch /tmp/kde_build/$package.failed
 #		exit 1
@@ -2712,9 +2712,9 @@ done
 
 ./kde.SlackBuild applications-extra:libktorrent
 [ $? != 0 ] && touch /tmp/kde_build/libktorrent.failed
-mv -v /tmp/kde_build/*.txz /sfspacks/kde5
+mv -v /tmp/kde_build/*.txz /sfspacks/kde
 #	if [ $? = 0 ]; then
-#		mv -v /tmp/kde_build/*.txz /sfspacks/kde5
+#		mv -v /tmp/kde_build/*.txz /sfspacks/kde
 #	else
 #		touch /tmp/kde_build/$package.failed
 #		exit 1
@@ -2727,9 +2727,9 @@ cd /sources
 
 }
 
-build_applications_kde5 () {
+build_applications_kde () {
 #********************************************************
-cd /slacksrc/kde5
+cd /slacksrc/kde/kde
 
 export UPGRADE_PACKAGES=always
 
@@ -2884,9 +2884,9 @@ for package in \
   ; do
    ./kde.SlackBuild applications:$package
  	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-	mv -v /tmp/kde_build/*.txz /sfspacks/kde5
+	mv -v /tmp/kde_build/*.txz /sfspacks/kde
 #	if [ $? = 0 ]; then
-#		mv -v /tmp/kde_build/*.txz /sfspacks/kde5
+#		mv -v /tmp/kde_build/*.txz /sfspacks/kde
 #	else
 #		touch /tmp/kde_build/$package.failed
 #		exit 1
@@ -2901,9 +2901,9 @@ cd /sources
 
 }
 
-build_applications_extra_kde5 () {
+build_applications_extra_kde () {
 #********************************************************
-cd /slacksrc/kde5
+cd /slacksrc/kde/kde
 
 export UPGRADE_PACKAGES=always
 
@@ -2939,9 +2939,9 @@ for package in \
   ; do
    ./kde.SlackBuild applications-extra:$package
  	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-	mv -v /tmp/kde_build/*.txz /sfspacks/kde5
+	mv -v /tmp/kde_build/*.txz /sfspacks/kde
 #	if [ $? = 0 ]; then
-#		mv -v /tmp/kde_build/*.txz /sfspacks/kde5
+#		mv -v /tmp/kde_build/*.txz /sfspacks/kde
 #	else
 #		touch /tmp/kde_build/$package.failed
 #		exit 1
@@ -2950,9 +2950,9 @@ done
 
 ./kde.SlackBuild applications:umbrello
 [ $? != 0 ] && touch /tmp/kde_build/umbrello.failed
-mv -v /tmp/kde_build/*.txz /sfspacks/kde5
+mv -v /tmp/kde_build/*.txz /sfspacks/kde
 #	if [ $? = 0 ]; then
-#		mv -v /tmp/kde_build/*.txz /sfspacks/kde5
+#		mv -v /tmp/kde_build/*.txz /sfspacks/kde
 #	else
 #		touch /tmp/kde_build/$package.failed
 #		exit 1
@@ -3114,8 +3114,8 @@ define_path_lib
 # Ensure that the /sfspacks/$SAVDIRs exists.
 #****************************************************************
 distribution="slackware"
-mkdir -pv /slacksrc/{deps,kde5}
-mkdir -pv /sfspacks/{others,a,ap,d,deps,e,extra,f,k,kde,kde5,kdei,l,n,t,tcl,x,xap,xfce,y}
+# mkdir -pv /slacksrc/{deps,kde5}
+mkdir -pv /sfspacks/{others,a,ap,d,deps,e,extra,f,k,kde,l,n,t,tcl,x,xap,xfce,y}
 #******************************************************************
 # Some packages need two pass to be built completely.
 # Alteration of the slackware sources is made "on the fly" during
@@ -3467,31 +3467,31 @@ while (( LINE < $FILELEN )); do
 					continue ;;
 
 				extra-cmake-modules )
-					build_extra_cmake_kde5
+					build_extra_cmake_kde
 					[ $? != 0 ] && exit 1 ;;
 
 				frameworks )
-					build_frameworks_kde5
+					build_frameworks_kde
 					[ $? != 0 ] && exit 1 ;;
 
 				kdepim5 )
-					build_kdepim_kde5
+					build_kdepim_kde
 					[ $? != 0 ] && exit 1 ;;
 
 				applications )
-					build_applications_kde5
+					build_applications_kde
 					[ $? != 0 ] && exit 1 ;;
 
 				applications-extra )
-					build_applications_extra_kde5
+					build_applications_extra_kde
 					[ $? != 0 ] && exit 1 ;;
 
 				plasma )
-					build_plasma_kde5
+					build_plasma_kde
 					[ $? != 0 ] && exit 1 ;;
 
 				plasma-extra )
-					build_plasma_extra_kde5
+					build_plasma_extra_kde
 					[ $? != 0 ] && exit 1 ;;
 
 #				kde4 )
