@@ -1,0 +1,204 @@
+#!/bin/bash
+
+# Copyright 2008, 2009, 2010, 2011, 2013, 2015, 2017, 2018, 2020  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=gnuchess
+VERGNUCHESS=6.2.7
+VERSJENG=11.2
+VEREBOARD=1.1.1
+VERXBOARD=4.9.1
+BUILD=${BUILD:-1}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERGNUCHESS-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC -fcommon"
+else
+  SLKCFLAGS="-O2"
+fi
+
+TMP=${TMP:-/tmp}
+PKG=/tmp/package-gnuchess
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+
+### gnuchess
+cd $TMP
+rm -rf gnuchess-$VERGNUCHESS
+tar xvf $CWD/gnuchess-$VERGNUCHESS.tar.?z* || exit 1
+cd gnuchess-$VERGNUCHESS || exit 1
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \+ -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \+
+
+CFLAGS="$SLKCFLAGS" \
+./configure \
+  --prefix=/usr \
+  --mandir=/usr/man \
+  --infodir=/usr/info \
+  --build=$ARCH-slackware-linux || exit 1
+
+make $NUMJOBS || make || exit 1
+make install DESTDIR=$PKG || exit 1
+
+mkdir -p $PKG/usr/doc/gnuchess-$VERGNUCHESS
+cp -a \
+  AUTHORS COPYING* INSTALL NEWS README TODO \
+  $PKG/usr/doc/gnuchess-$VERGNUCHESS
+
+### Sjeng
+cd $TMP
+rm -rf Sjeng-Free-$VERSJENG
+tar xvf $CWD/Sjeng-Free-$VERSJENG.tar.bz2 || exit 1
+cd Sjeng-Free-$VERSJENG || exit 1
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \+ -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \+
+
+CFLAGS="$SLKCFLAGS" \
+./configure \
+  --prefix=/usr \
+  --build=$ARCH-slackware-linux || exit 1
+
+make $NUMJOBS || make || exit 1
+make install DESTDIR=$PKG || exit 1
+
+mkdir -p $PKG/usr/doc/Sjeng-Free-$VERSJENG
+cp -a \
+  AUTHORS BUGS COPYING* NEWS README* THANKS TODO \
+  $PKG/usr/doc/Sjeng-Free-$VERSJENG
+
+### eboard
+cd $TMP
+rm -rf eboard-$VEREBOARD
+tar xvf $CWD/eboard-$VEREBOARD.tar.bz2 || exit 1
+cd eboard-$VEREBOARD || exit 1
+zcat $CWD/eboard.assert.diff.gz | patch -p1 --verbose || exit 1
+zcat $CWD/eboard.ldl.diff.gz | patch -p1 --verbose || exit 1
+zcat $CWD/eboard.png16.diff.gz | patch -p1 --verbose || exit 1
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \+ -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \+
+
+./configure \
+  --prefix=/usr \
+  --extra-flags=$(echo $SLKCFLAGS | sed -e "y/ /:/") \
+  --build=$ARCH-slackware-linux || exit 1
+
+make $NUMJOBS || make || exit 1
+make install DESTDIR=$PKG || exit 1
+
+mkdir -p $PKG/usr/doc/eboard-$VEREBOARD
+cp -a \
+  AUTHORS COPYING* README* TODO Documentation/*.txt \
+  $PKG/usr/doc/eboard-$VEREBOARD
+
+### XBoard
+cd $TMP
+rm -rf xboard-$VERXBOARD
+tar xvf $CWD/xboard-$VERXBOARD.tar.?z* || exit 1
+cd xboard-$VERXBOARD || exit 1
+zcat $CWD/xboard.conf.diff.gz | patch -p1 --verbose || exit 1
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \+ -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \+
+
+CFLAGS="$SLKCFLAGS" \
+./configure \
+   --prefix=/usr \
+   --sysconfdir=/etc \
+   --infodir=/usr/info \
+   --mandir=/usr/man \
+   --with-gtk \
+   --enable-zippy \
+   --build=$ARCH-slackware-linux || exit 1
+
+make $NUMJOBS || make || exit 1
+make install DESTDIR=$PKG || exit 1
+install -c cmail $PKG/usr/bin/cmail
+#install -c -s xboard $PKG/usr/bin/xboard
+#install -c -s zic2xpm $PKG/usr/bin/zic2xpm
+#install -c ./pxboard $PKG/usr/bin/pxboard
+#install -c -m 644 ./xboard.man $PKG/usr/man/man6/xboard.6
+#install -c -m 644 ./zic2xpm.man $PKG/usr/man/man6/zic2xpm.6
+#mkdir -p $PKG/usr/info
+#install -c -m 644 xboard.info $PKG/usr/info/xboard.info
+mkdir -p $PKG/usr/doc/xboard-$VERXBOARD
+cp -a \
+  AUTHORS COPYING* COPYRIGHT FAQ.html NEWS README TODO \
+  $PKG/usr/doc/xboard-$VERXBOARD
+gzip -9 $PKG/usr/man/man?/*.?
+gzip -9 $PKG/usr/info/*.info
+mkdir -p $PKG/usr/share/pixmaps
+cat $CWD/chess.png > $PKG/usr/share/pixmaps/chess.png
+mkdir -p $PKG/usr/share/applications
+cat $CWD/eboard.desktop > $PKG/usr/share/applications/eboard.desktop
+rm -f $PKG/usr/info/dir
+mv $PKG/etc/xboard.conf $PKG/etc/xboard.conf.new
+
+# Strip binaries:
+find $PKG | xargs file | grep -e "executable" -e "shared object" \
+  | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/gnuchess-$VERGNUCHESS-$ARCH-$BUILD.txz
+

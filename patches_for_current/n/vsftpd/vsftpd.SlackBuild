@@ -1,0 +1,129 @@
+#!/bin/bash
+
+# Copyright 2008, 2009, 2010, 2011, 2012, 2016, 2018  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=vsftpd
+VERSION=${VERSION:-$(echo ${PKGNAM}-*.tar.gz | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+BUILD=${BUILD:-7}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+
+if [ "$ARCH" = "x86_64" ]; then
+  LIBDIRSUFFIX="64"
+else
+  LIBDIRSUFFIX=""
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-vsftpd
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+
+cd $TMP || exit 1
+rm -rf vsftpd-$VERSION
+tar xvf $CWD/vsftpd-$VERSION.tar.gz || exit 1
+cd vsftpd-$VERSION || exit 1
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \+ -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \+
+
+zcat $CWD/vsftpd.builddefs.diff.gz | patch -p1 --verbose || exit 1
+zcat $CWD/vsftpd.conf.diff.gz | patch -p1 --verbose || exit 1
+zcat $CWD/vsftpd.crypt.diff.gz | patch -p1 --verbose || exit 1
+
+# Support OpenSSL 1.1.x:
+zcat $CWD/0021-Introduce-support-for-DHE-based-cipher-suites.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/0035-Modify-DH-enablement-patch-to-build-with-OpenSSL-1.1.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/vsftpd.link-with-openssl-1.1.diff.gz | patch -p1 --verbose || exit 1
+
+# patch from freebsd
+cat $CWD/vsftpd-freebsd.patch | patch -Esp1 --verbose || exit 1
+
+make $NUMJOBS || make || exit 1
+
+mkdir -p $PKG/usr/sbin
+cp vsftpd $PKG/usr/sbin
+chmod 755 $PKG/usr/sbin/vsftpd
+strip --strip-unneeded $PKG/usr/sbin/vsftpd
+
+mkdir -p $PKG/usr/man/man{5,8}
+cat vsftpd.conf.5 | gzip -9c > $PKG/usr/man/man5/vsftpd.conf.5.gz
+cat vsftpd.8 | gzip -9c > $PKG/usr/man/man8/vsftpd.8.gz
+
+mkdir -p $PKG/etc
+cat vsftpd.conf > $PKG/etc/vsftpd.conf.new
+
+if [ -L /lib${LIBDIRSUFFIX}/libpam.so.? ]; then
+  mkdir -p $PKG/etc/pam.d
+  cat RedHat/vsftpd.pam > $PKG/etc/pam.d/vsftpd.new
+fi
+
+mkdir -p $PKG/etc/logrotate.d
+zcat $CWD/vsftpd.log.gz > $PKG/etc/logrotate.d/vsftpd.new
+
+mkdir -p $PKG/usr/share/empty
+mkdir -p $PKG/home/ftp
+
+mkdir -p $PKG/usr/doc/vsftpd-$VERSION
+cp -a \
+  AUDIT BENCHMARKS BUGS COPYING* COPYRIGHT EXAMPLE FAQ \
+  INSTALL LICENSE README* REFS REWARD SECURITY SIZE SPEED TODO TUNING \
+  $PKG/usr/doc/vsftpd-$VERSION
+
+# If there's a ChangeLog, installing at least part of the recent history
+# is useful, but don't let it get totally out of control:
+if [ -r Changelog ]; then
+  DOCSDIR=$(echo $PKG/usr/doc/*-$VERSION)
+  cat Changelog | head -n 1000 > $DOCSDIR/Changelog
+  touch -r Changelog $DOCSDIR/Changelog
+fi
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/vsftpd-$VERSION-$ARCH-$BUILD.txz
+
