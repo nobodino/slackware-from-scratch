@@ -517,9 +517,6 @@ tcl expect
 d clisp
 t texlive
 x fontconfig
-# d doxygen
-# kde5 extra-cmake-modules
-# l libdbusmenu-qt
 l sdl
 l openal-soft
 l libxkbcommon
@@ -1297,7 +1294,7 @@ l python-pysol_cards
 l python-random2
 l freecell-solver
 n socat
-kde5 extra-cmake-modules
+kde extra-cmake-modules
 l phonon
 l phonon-backend-gstreamer
 l dotconf
@@ -1333,12 +1330,12 @@ l kdsoap
 l quazip
 l pipewire
 l qrencode
-kde5 frameworks
-kde5 kdepim5
-kde5 plasma
-kde5 plasma-extra
-kde5 applications
-kde5 applications-extra
+kde frameworks
+kde kdepim5
+kde plasma
+kde plasma-extra
+kde applications
+kde applications-extra
 d subversion
 l libxml2
 l ncurses
