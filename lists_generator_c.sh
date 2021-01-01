@@ -96,7 +96,6 @@ a attr
 a acl
 l libcap
 a sed
-# a xz
 l libxml2
 tcl tcl
 l libxslt
@@ -583,7 +582,6 @@ l qt5
 l qt5-webkit
 d doxygen
 l libxkbcommon
-# deps all-deps-1
 d strace
 d rcs
 d ccache
@@ -598,7 +596,6 @@ l neon
 l utf8proc
 l lz4
 d subversion
-# d cmake
 tcl tk
 tcl tclx
 tcl expect
@@ -687,6 +684,35 @@ l gtksourceview3
 l libwnck3
 l iso-codes
 l libxklavier
+l libgtop
+x OpenCC
+x libgee
+x marisa
+x libkkc
+x libkkc-data
+x skkdic
+x libpinyin
+x cldr-emoji-annotation
+x ibus
+x fcitx
+x fcitx-anthy
+x fcitx-configtool
+x fcitx-hangul
+x fcitx-qt5
+x fcitx-kkc
+x fcitx-libpinyin
+x fcitx-m17n
+x fcitx-sayura
+x fcitx-table-extra
+x fcitx-table-other
+x fcitx-unikey
+x ibus-anthy
+x ibus-hangul
+x ibus-kkc
+x ibus-libpinyin
+x ibus-m17n
+x ibus-table
+x ibus-unikey
 xfce xfce4-dev-tools
 xfce libxfce4util
 xfce xfconf
@@ -873,7 +899,6 @@ l libmad
 l libid3tag
 ap madplay
 ap most
-# l sdl
 ap mpg123
 l glib
 l gtk+
@@ -915,7 +940,6 @@ ap pamixer
 ap squashfs-tools
 l wavpack
 xap easytag
-# xap audacious
 xap ddd
 l python-notify2
 l libical
@@ -933,7 +957,6 @@ xap gimp
 xap gftp
 xap gkrellm
 xap gnuchess
-# xap gnuplot
 l desktop-file-utils
 xap gucharmap
 l imagemagick
@@ -972,7 +995,6 @@ l graphene
 l gst-plugins-base0
 l gst-plugins-good0
 l gst-plugins-base
-# l gst-plugins-base
 l gst-plugins-good
 l farstream
 xap pidgin
@@ -994,7 +1016,6 @@ l talloc
 l tdb
 l tevent
 l lmdb
-# n gpgme
 n samba
 l v4l-utils
 l libpng
@@ -1008,6 +1029,7 @@ n libmbim
 n libqmi
 n ModemManager
 n alpine
+n libtirpc
 n libtirpc
 n autofs
 n biff+comsat
@@ -1091,7 +1113,6 @@ n rp-pppoe
 n rsync
 n slrn
 n stunnel
-# n tcp_wrappers
 n telnet
 n tftp-hpa
 n tin
@@ -1101,31 +1122,23 @@ n vlan
 n vsftpd
 n whois
 n wireless_tools
-# n wpa_supplicant
 n yptools
 n ytalk
 l newt
 n NetworkManager
-# xap libnma
 l GConf
 l libgnome-keyring
 l libsecret
 l gmp
 d gnucobol
-# n openldap
 n netatalk
 l loudmouth
 n mcabber
-# n lynx
 n newspost
 n procmail
 xap seyon
-# l ConsoleKit2
 l LibRaw
 l sip
-# l PyQt
-# l QScintilla
-# l QScintilla
 l a52dec
 l aalib
 l alsa-oss
@@ -1187,8 +1200,6 @@ l media-player-info
 l mhash
 l openexr
 l orc
-# deps phonon-qt4
-# deps phonon-qt4-gstreamer
 l pilot-link
 l polkit-qt-1
 l pycups
@@ -1244,12 +1255,8 @@ l SDL2_ttf
 l lame
 l libwebp
 l ffmpeg
-# xap ssr
-# l libcue
-# xap audacious-plugins
 l gst-plugins-libav
 l libtiff
-# d cmake
 l taglib
 l alsa-plugins
 n links
@@ -1278,17 +1285,16 @@ l argon2
 l oniguruma
 l tidy-html5
 n php
+a e2fsprogs
+n gpgme
+n krb5
+n libtirpc
+n libtirpc
 n nfs-utils
 n libgcrypt
 xap MPlayer
 xap xine-lib
 xap xine-ui
-# kde kde
-# n php
-# kdei calligra-l10n
-# kde post-kde
-# kde kdepim
-# kdei kde-l10n
 d rinutils
 l python-pysol_cards
 l python-random2
@@ -1317,6 +1323,7 @@ l dvdauthor
 l vid.stab
 l frei0r-plugins
 l mlt
+l libqalculate
 l accountsservice
 l libburn
 l QtAV
@@ -1330,12 +1337,18 @@ l kdsoap
 l quazip
 l pipewire
 l qrencode
+n gpgme
+# n krb5
+# n libtirpc
+# n libtirpc
+# n nfs-utils
 kde frameworks
 kde kdepim5
 kde plasma
 kde plasma-extra
 kde applications
 kde applications-extra
+# kde post-kde
 d subversion
 l libxml2
 l ncurses
@@ -1344,6 +1357,7 @@ n snownews
 d python2
 d python3
 y bsd-games
+xap xsnow
 l LibRaw
 l PyQt5
 l qca
@@ -1354,7 +1368,6 @@ xap audacious
 xap gnuplot
 l libcue
 xap audacious-plugins
-# l QScintilla
 l QScintilla
 l exiv2
 l grantlee

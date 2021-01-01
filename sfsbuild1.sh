@@ -563,21 +563,6 @@ if [ ! -f $SLACKSRC/t/texlive/texlive.SlackBuild.old ]; then
 fi
 }
 
-execute_xfce_sed () {
-#******************************************************************
-# modify SlackBuild to avoid "exit 1" on failed package building
-#******************************************************************
-if [ ! -f $SLACKSRC/xfce/xfce-build-all.sh.old ]; then
-	cp -v $SLACKSRC/xfce/xfce-build-all.sh  $SLACKSRC/xfce/xfce-build-all.sh.old 
-	(
-		cd $SLACKSRC/xfce
-		sed -i -e '/cd $package || exit 1/a .\/\$package.SlackBuild' xfce-build-all.sh
-		sed -i -e '/{package}.failed ; exit 1 ) || exit 1/d' xfce-build-all.sh
-		sed -i -e '/$package.SlackBuild/a [ $? != 0 ] && touch /tmp/$package.failed' xfce-build-all.sh
-	)
-fi
-}
-
 execute_zstd_sed () {
 #******************************************************************
 # delete "zcat" patch line in SlackBuild
@@ -594,143 +579,6 @@ fi
 #*******************************************************************
 # End of sub-system of execution of patches
 #*******************************************************************
-
-all_deps_1 () {
-#********************************************************
-# 
-#********************************************************
-# Note: Much of this script is inspired from the KDE Slackware script by Eric Hameleers <alien@slackware.com>
-#       Copyright © 2019 Eric Hameleers and may be copied under the MIT License.
-# 
-# 		Build (and install) all KDE dependencies
-#
-#
-# Set initial variables:
-#********************************************************
-which upgradepkg 2>&1 >/dev/null
-if [ $? == 0 ]; then
-	INSTALLPRG="upgradepkg --install-new --reinstall"
-else
-	INSTALLPRG=installpkg
-fi
-
-cd /slacksrc/deps
-CWD=$(pwd)
-TMP=${TMP:-/tmp}
-
-# This avoids compiling a version number into KDE's .la files:
-QTDIR=/usr/lib${LIBDIRSUFFIX}/qt ; export QTDIR
-
-#  extra-cmake-modules \
-
-for module in \
-  md4c \
-  sni-qt \
-  SDL_sound \
-  OpenAL \
-  libxkbcommon \
-  wayland \
-  wayland-protocols \
-  brotli \
-  woff2 \
-  hyphen \
-  ; do
-  cd $module && ./$module.SlackBuild
-  if [ $? = 0 ]; then
-    $INSTALLPRG /tmp/${module}-*.txz
-    # Keep MIME database current:
-    /usr/bin/update-mime-database /usr/share/mime 1> /dev/null 2> /dev/null &
-	mv -v /tmp/$module*.txz /sfspacks/deps
-	rm -rf /tmp/package-$module /tmp/$module-*
-  else
-    echo "${module} failed to build."
-    exit 1
-  fi
-cd - ;
-done
-
-}
-
-all_deps_2 () {
-#********************************************************
-# 
-#********************************************************
-# Note: Much of this script is inspired from the KDE Slackware script by Eric Hameleers <alien@slackware.com>
-#       Copyright © 2019 Eric Hameleers and may be copied under the MIT License.
-# 
-# 		Build (and install) all KDE dependencies
-#
-#
-# Set initial variables:
-#********************************************************
-which upgradepkg 2>&1 >/dev/null
-if [ $? == 0 ]; then
-	INSTALLPRG="upgradepkg --install-new --reinstall"
-else
-	INSTALLPRG=installpkg
-fi
-
-cd /slacksrc/deps
-CWD=$(pwd)
-TMP=${TMP:-/tmp}
-
-# This avoids compiling a version number into KDE's .la files:
-QTDIR=/usr/lib${LIBDIRSUFFIX}/qt ; export QTDIR
-
-for module in \
-  phonon \
-  phonon-backend-gstreamer \
-  dotconf \
-  speech-dispatcher \
-  qtkeychain \
-  elogind \
-  polkit \
-  polkit-qt-1 \
-  dbus \
-  grantlee \
-  libdbusmenu \
-  libdbusmenu-qt \
-  libindicator \
-  libappindicator \
-  cfitsio \
-  libdmtx \
-  qrencode \
-  lensfun \
-  eigen3 \
-  opencv \
-  dvdauthor \
-  vid.stab \
-  frei0r-plugins \
-  mlt \
-  accountsservice \
-  libburn \
-  QtAV \
-  cryptopp \
-  cryfs \
-  libsass \
-  sassc \
-  rttr \
-  quazip \
-  kdsoap \
-  quazip \
-  pipewire \
-  qrencode \
-  ; do
-  cd $module && ./$module.SlackBuild
-  if [ $? = 0 ]; then
-    $INSTALLPRG /tmp/${module}-*.txz
-    # Keep MIME database current:
-    /usr/bin/update-mime-database /usr/share/mime 1> /dev/null 2> /dev/null &
-	mv -v /tmp/$module*.txz /sfspacks/deps
-	rm -rf /tmp/package-$module /tmp/$module-*
-  else
-    echo "${module} failed to build."
-    exit 1
-  fi
-cd - ;
-done
-
-}
 
 kernel_source_build_c () {
 #********************************************************
@@ -853,13 +701,6 @@ case $PACKNAME in
 		chmod +x vim-gvim.SlackBuild && ./vim-gvim.SlackBuild
 		[ $? != 0 ] && exit 1 ;;
 
-#	xfce )
-#		# xfce doesn't build with one SlackBuild, but with multiple SlackBuilds
-#		cd /slacksrc/$SRCDIR && chmod +x xfce-build-all.sh && ./xfce-build-all.sh
-#		upgradepkg --install-new /tmp/*.t?z
-#		mv -v /tmp/*.t?z /sfspacks/$SRCDIR
-#		[ $? != 0 ] && exit 1 ;;
-
 	* )
 		# every other package treatment
 		cd /slacksrc/$SRCDIR/$PACKNAME && chmod +x $PACKNAME.SlackBuild && ./$PACKNAME.SlackBuild
@@ -912,9 +753,6 @@ case $PACKNAME in
 		$INSTALLPRG /tmp/vim-gvim*.t?z
 		$INSTALLPRG /tmp/$PACKNAME-*.t?z
 		[ $? != 0 ] && exit 1 ;;
-
-#	xfce )
-#		echo ;;
 
 	* )
 		# every other package is built in /tmp
@@ -1134,11 +972,6 @@ echo
 echo "By now, you are ready to build Slackware From Scratch."
 echo "and wait a long time, a few hours."
 echo 
-# echo "From now you can choose slackware-current with kde4 or with plasma aka kde5"
-# echo "If you choose to kde5 you need to execute the following command:"
-# echo 
-# echo -e "$YELLOW" "./adapt_for_plasma.sh" "$NORMAL"
-# echo
 echo "Now, you can build SFS by hand, by building packages, one by one."
 echo "./package.SlackBuild && installpkg /tmp/package*.t?z"
 echo
@@ -2326,7 +2159,7 @@ cd /sources
 
 }
 
-build_post_kde () {
+build_post_kde.old () {
 #****************************************************************
 # this part exists because some kde packages don't build on first pass
 #****************************************************************
@@ -2389,21 +2222,9 @@ export UPGRADE_PACKAGES=always
 
 }
 
-build_kdelibs_for_kde () {
-#********************************************************
-cd /slacksrc/kde/kde
-
-export UPGRADE_PACKAGES=always
-
-./kde.SlackBuild kde4:kdelibs
-[ $? != 0 ] && touch /tmp/kde_build/kdelibs.failed
-mv -v /tmp/kde_build/*.txz /sfspacks/kde
-}
-
-
 build_frameworks_kde () {
 #********************************************************
-#  kde4 \
+#  frameworks/portaingAids \
 #  frameworks \
 #  applications-extra:kdiagram \
 #  kdepim \
@@ -2418,13 +2239,32 @@ cd /slacksrc/kde/kde
 
 export UPGRADE_PACKAGES=always
 
-./kde.SlackBuild frameworks:attica-framework
-[ $? != 0 ] && touch /tmp/kde_build/attica-framework.failed
+./kde.SlackBuild frameworks:attica
+[ $? != 0 ] && touch /tmp/kde_build/attica.failed
 mv -v /tmp/kde_build/*.txz /sfspacks/kde
 
-./kde.SlackBuild kde4:kdelibs
-[ $? != 0 ] && touch /tmp/kde_build/kdelibs.failed
-mv -v /tmp/kde_build/*.txz /sfspacks/kde
+# build all frameworks/portaingAids first
+for package in \
+	kdelibs4support \
+	kdesignerplugin \
+	kdewebkit \
+	khtml \
+	kjs \
+	kjsembed \
+	kmediaplayer \
+	kross \
+	kxmlrpcclient \
+  ; do
+   ./kde.SlackBuild frameworks:$package 
+ 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
+	mv -v /tmp/kde_build/*.txz /sfspacks/kde
+#	if [ $? = 0 ]; then
+#		mv -v /tmp/kde_build/*.txz /sfspacks/kde
+#	else
+#		touch /tmp/kde_build/$package.failed
+#		exit 1
+#	fi
+done
 
 for package in \
 	extra-cmake-modules \
@@ -2710,7 +2550,7 @@ for package in \
 #	fi
 done
 
-./kde.SlackBuild applications-extra:libktorrent
+./kde.SlackBuild applications:libktorrent
 [ $? != 0 ] && touch /tmp/kde_build/libktorrent.failed
 mv -v /tmp/kde_build/*.txz /sfspacks/kde
 #	if [ $? = 0 ]; then
@@ -2722,6 +2562,11 @@ mv -v /tmp/kde_build/*.txz /sfspacks/kde
 
 # Keep MIME database current:
 /usr/bin/update-mime-database /usr/share/mime 1>/dev/null 2>/dev/null &
+
+cd /slacksrc/kde/kcm-fcitx
+./kcm-fcitx.SlackBuild
+[ $? != 0 ] && touch /tmp/kde_build/kcm-fcitx.failed
+mv -v /tmp/kcm-fcitx*.txz /sfspacks/kde
 
 cd /sources
 
@@ -2881,6 +2726,49 @@ for package in \
 	kimagemapeditor \
 	yakuake \
 	kdeconnect-kde \
+	akonadi-calendar \
+	akonadi-calendar-tools \
+	akonadiconsole \
+	akonadi-contacts \
+	akonadi-import-wizard \
+	akregator \
+	calendarsupport \
+	eventviews \
+	grantlee-editor \
+	incidenceeditor \
+	itinerary \
+	kaddressbook \
+	kalarm \
+	kdepim-addons \
+	kdepim-runtime \
+	kget \
+	kgpg \
+	kleopatra \
+	kmail \
+	kmail-account-wizard \
+	knotes \
+	kontact \
+	kontrast \
+	konversation \
+	kopete \
+	korganizer \
+	kosmindoormap \
+	kpmcore \
+	kpublictransport \
+	libktorrent \
+	ktorrent \
+	libgravatar \
+	libkleo \
+	libksieve \
+	mailcommon \
+	mailimporter \
+	markdownpart \
+	mbox-importer \
+	messagelib \
+	partitionmanager \
+	pimcommon \
+	pim-data-exporter \
+	pim-sieve-editor \
   ; do
    ./kde.SlackBuild applications:$package
  	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
@@ -2957,6 +2845,99 @@ mv -v /tmp/kde_build/*.txz /sfspacks/kde
 #		touch /tmp/kde_build/$package.failed
 #		exit 1
 #	fi 
+
+# Keep MIME database current:
+/usr/bin/update-mime-database /usr/share/mime 1>/dev/null 2>/dev/null &
+
+cd /sources
+
+}
+
+build_post_kde () {
+#****************************************************************
+# this part exists because some kde packages don't build on first pass
+#****************************************************************
+cd /slacksrc/kde/kde
+
+export UPGRADE_PACKAGES=always
+
+./kde.SlackBuild plasma:plasma-nm
+[ $? != 0 ] && touch /tmp/kde_build/plasma-nm.failed
+mv -v /tmp/kde_build/*.txz /sfspacks/kde
+#	if [ $? = 0 ]; then
+#		mv -v /tmp/kde_build/*.txz /sfspacks/kde
+#	else
+#		touch /tmp/kde_build/$package.failed
+#		exit 1
+#	fi 
+
+for package in \
+	kgpg \
+	kget \
+	kontrast \
+	konversation \
+	kosmindoormap \
+	kpmcore \
+	kpublictransport \
+	ktorrent \
+	markdownpart \
+	partitionmanager \
+	itinerary \
+	kopete \
+  ; do
+   ./kde.SlackBuild applications:$package
+ 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
+	mv -v /tmp/kde_build/*.txz /sfspacks/kde
+#	if [ $? = 0 ]; then
+#		mv -v /tmp/kde_build/*.txz /sfspacks/kde
+#	else
+#		touch /tmp/kde_build/$package.failed
+#		exit 1
+#	fi
+done
+
+for package in \
+	libkleo \
+	akonadi-contacts \
+	akonadi-calendar \
+	pimcommon \
+	akonadi-calendar-tools \
+	mailimporter \
+	libgravatar \
+	messagelib \
+	mailcommon \
+	akonadiconsole \
+	akonadi-import-wizard \
+	akregator \
+	calendarsupport \
+	eventviews \
+	grantlee-editor \
+	incidenceeditor \
+	kaddressbook \
+	kalarm \
+	libksieve \
+	pim-sieve-editor \
+	kdepim-addons \
+	kdepim-runtime \
+	kleopatra \
+	kmail \
+	kmail-account-wizard \
+	knotes \
+	kontact \
+	korganizer \
+	mbox-importer \
+	pim-data-exporter \
+  ; do
+   ./kde.SlackBuild kdepim:$package
+ 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
+	mv -v /tmp/kde_build/*.txz /sfspacks/kde
+#	if [ $? = 0 ]; then
+#		mv -v /tmp/kde_build/*.txz /sfspacks/kde
+#	else
+#		touch /tmp/kde_build/$package.failed
+#		exit 1
+#	fi
+done
 
 # Keep MIME database current:
 /usr/bin/update-mime-database /usr/share/mime 1>/dev/null 2>/dev/null &
@@ -3095,12 +3076,6 @@ update_slackbuild () {
 cd /slacksrc/$SRCDIR/$PACKNAME && mv $PACKNAME.SlackBuild.old $PACKNAME.SlackBuild && cd /sources
 }
 
-# update_xfce () {
-#****************************************************************
-# rename xfce-build-all.sh.old to original name
-#****************************************************************
-# cd /slacksrc/xfce && mv xfce-build-all.sh.old xfce-build-all.sh && cd /sources
-# }
 
 #****************************************************************
 #****************************************************************
@@ -3114,7 +3089,6 @@ define_path_lib
 # Ensure that the /sfspacks/$SAVDIRs exists.
 #****************************************************************
 distribution="slackware"
-# mkdir -pv /slacksrc/{deps,kde5}
 mkdir -pv /sfspacks/{others,a,ap,d,deps,e,extra,f,k,kde,l,n,t,tcl,x,xap,xfce,y}
 #******************************************************************
 # Some packages need two pass to be built completely.
@@ -3140,7 +3114,6 @@ mkdir -pv /sfspacks/{others,a,ap,d,deps,e,extra,f,k,kde,l,n,t,tcl,x,xap,xfce,y}
 #	execute_readline_sed # 3 pass
 #	execute_subversion_sed # 2 pass
 #	execute_texlive_sed # 2 pass
-#	execute_xfce_sed # 2 pass
 #	execute_zstd_sed # 2 pass
 #	execute_perl_sed # 2 pass
 #	execute_openldap_sed # 2 pass
@@ -3474,7 +3447,7 @@ while (( LINE < $FILELEN )); do
 					build_frameworks_kde
 					[ $? != 0 ] && exit 1 ;;
 
-				kdepim5 )
+				kdepim )
 					build_kdepim_kde
 					[ $? != 0 ] && exit 1 ;;
 
@@ -3494,29 +3467,29 @@ while (( LINE < $FILELEN )); do
 					build_plasma_extra_kde
 					[ $? != 0 ] && exit 1 ;;
 
-#				kde4 )
-#					build_kdelibs_for_kde5
-#					[ $? != 0 ] && exit 1 ;;
-
-				kde )
-					build_kde
-					[ $? != 0 ] && exit 1 ;;
-
-				kde-l10n )
-					build_kdei
-					[ $? != 0 ] && exit 1 ;;
-
-				calligra-l10n )
-					build_calligra
-					[ $? != 0 ] && exit 1 ;;
-
 				post-kde )
 					build_post_kde
 					[ $? != 0 ] && exit 1 ;;
 
-				kdepim )
-					build_kdepim
-					[ $? != 0 ] && exit 1 ;;
+#				kde )
+#					build_kde
+#					[ $? != 0 ] && exit 1 ;;
+
+#				kde-l10n )
+#					build_kdei
+#					[ $? != 0 ] && exit 1 ;;
+
+#				calligra-l10n )
+#					build_calligra
+#					[ $? != 0 ] && exit 1 ;;
+
+#				post-kde )
+#					build_post_kde
+#					[ $? != 0 ] && exit 1 ;;
+
+#				kdepim )
+#					build_kdepim
+#					[ $? != 0 ] && exit 1 ;;
 
 				kernel-all )
 					kernel_build_all
@@ -3872,11 +3845,6 @@ while (( LINE < $FILELEN )); do
 				x11-app-post )
 					build_x11_app_post
 					[ $? != 0 ] && exit 1 ;;
-
-#				xfce )
-#					execute_xfce_sed && build $SRCDIR $PACKNAME
-#					[ $? != 0 ] && exit 1
-#					update_xfce ;;
 
 				zstd )
 					case $LZST in
