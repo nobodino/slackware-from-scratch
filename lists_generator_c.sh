@@ -704,7 +704,21 @@ x libkkc-data
 x skkdic
 x libpinyin
 x cldr-emoji-annotation
+l dconf
+l dconf-editor
 x ibus
+x anthy
+l pygobject3
+x ibus-anthy
+x libhangul
+x ibus-hangul
+x ibus-kkc
+x ibus-libpinyin
+x m17n-lib
+x ibus-m17n
+x ibus-table
+x ibus-unikey
+kde extra-cmake-modules
 x fcitx
 x fcitx-anthy
 x fcitx-configtool
@@ -717,13 +731,6 @@ x fcitx-sayura
 x fcitx-table-extra
 x fcitx-table-other
 x fcitx-unikey
-x ibus-anthy
-x ibus-hangul
-x ibus-kkc
-x ibus-libpinyin
-x ibus-m17n
-x ibus-table
-x ibus-unikey
 xfce xfce4-dev-tools
 xfce libxfce4util
 xfce xfconf
@@ -741,7 +748,7 @@ xfce xfdesktop
 xfce xfwm4
 xfce xfce4-session
 xfce xfce4-terminal
-xfce xfce4-notifydSHELL=/bin/sh
+xfce xfce4-notifyd
 xfce xfce4-panel-profiles
 xfce xfce4-pulseaudio-plugin
 xfce xfce4-clipman-plugin
@@ -1311,7 +1318,7 @@ l python-pysol_cards
 l python-random2
 l freecell-solver
 n socat
-kde extra-cmake-modules
+# kde extra-cmake-modules
 l phonon
 l phonon-backend-gstreamer
 l dotconf
