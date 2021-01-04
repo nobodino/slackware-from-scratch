@@ -449,7 +449,7 @@ x libwacom
 l libunwind
 x x11-group2
 x compiz
-x dejavu-fonts-ttficu4c
+x dejavu-fonts-ttf
 x liberation-fonts-ttf
 others automake
 x motif
