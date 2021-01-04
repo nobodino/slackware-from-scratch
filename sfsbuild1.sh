@@ -306,11 +306,8 @@ if [ ! -f $SLACKSRC/l/harfbuzz/harfbuzz.SlackBuild.old ]; then
 	cp -v $SLACKSRC/l/harfbuzz/harfbuzz.SlackBuild $SLACKSRC/l/harfbuzz/harfbuzz.SlackBuild.old
 	(
 		cd $SLACKSRC/l/harfbuzz
-		sed -i -e 's/make $NUMJOBS || make || exit 1/make $NUMJOBS || make/' harfbuzz.SlackBuild
-		sed -i -e 's/make install DESTDIR=$PKG || exit 1/make install DESTDIR=$PKG/' harfbuzz.SlackBuild
-		sed -i -e '/make install DESTDIR=$PKG/a # install harfbuzz headers to build freetype/' harfbuzz.SlackBuild
-		sed -i -e '/# install harfbuzz/a mkdir -pv $PKG/usr/include/harfbuzz' harfbuzz.SlackBuild
-		sed -i -e '/mkdir -pv $PKG/a cp src/*.h $PKG/usr/include/harfbuzz' harfbuzz.SlackBuild
+		sed -i -e 's/"${NINJA:=ninja}" $NUMJOBS || exit 1/"${NINJA:=ninja}" $NUMJOBS/' harfbuzz.SlackBuild
+		sed -i -e 's/DESTDIR=$PKG $NINJA install || exit 1/DESTDIR=$PKG $NINJA install || exit 1/' harfbuzz.SlackBuild
 	)
 fi
 }
@@ -325,29 +322,6 @@ if [ ! -f $SLACKSRC/a/kmod/kmod.SlackBuild.old ]; then
 		cd $SLACKSRC/a/kmod
 		sed -i -e 's/make || exit 1/make/' kmod.SlackBuild
 		sed -i -e 's/make install DESTDIR=$PKG || exit 1/make install DESTDIR=$PKG/' kmod.SlackBuild
-	)
-fi
-}
-
-execute_libcaca_sed () {
-#******************************************************************
-# remove "exit 1" code and add "--enable-java" option to SlackBuild
-#******************************************************************
-if [ ! -f $SLACKSRC/l/libcaca/libcaca.SlackBuild.old ]; then
-	cp -v $SLACKSRC/l/libcaca/libcaca.SlackBuild $SLACKSRC/l/libcaca/libcaca.SlackBuild.old
-	(
-		cd $SLACKSRC/l/libcaca
-		sed -i -e '/BUILD=${BUILD:/a LCAC=${LCAC:-1}' libcaca.SlackBuild
-		sed -i -e '/LCAC=${LCAC:-1}/a if [ $LCAC == 1 ]; then' libcaca.SlackBuild
-		sed -i -e '/$LCAC == 1/a 	JAVAENABLE="disable"' libcaca.SlackBuild
-		sed -i -e 's/JAVAENABLE="disable"/  JAVAENABLE="disable"/' libcaca.SlackBuild
-		sed -i -e '/JAVAENABLE="disable"/a 		JAVAENABLE="enable"' libcaca.SlackBuild
-		sed -i -e 's/JAVAENABLE="enable"/  JAVAENABLE="enable"/' libcaca.SlackBuild
-		sed -i -e '/JAVAENABLE="disable"/a 	else' libcaca.SlackBuild
-		sed -i -e '/JAVAENABLE="enable"/a fi' libcaca.SlackBuild
-		sed -i -e '/disable-ruby/p' libcaca.SlackBuild
-		sed -i -e '0,/disable-ruby/! s/disable-ruby/$JAVAENABLE-java/' libcaca.SlackBuild
-		sed -i -e 's/setup.py install --root=$PKG || exit 1/setup.py install --root=$PKG/' libcaca.SlackBuild
 	)
 fi
 }
@@ -456,34 +430,6 @@ if [ ! -f $SLACKSRC/d/pkg-config/pkg-config.SlackBuild.old ]; then
 		cd $SLACKSRC/d/pkg-config
 		sed -i -e '/--prefix=\/\usr/p' pkg-config.SlackBuild
 		sed -i -e '0,/--prefix=\/\usr/ s/--prefix=\/\usr/--with-internal-glib/' pkg-config.SlackBuild
-	)
-fi
-}
-
-execute_php_sed () {
-#******************************************************************
-# delete line that doesn't allow build in build4_.list (need libtidy)
-#******************************************************************
-if [ ! -f $SLACKSRC/n/php/php.SlackBuild.old ]; then
-	cp -v $SLACKSRC/n/php/php.SlackBuild $SLACKSRC/n/php/php.SlackBuild.old
-	(
-		cd $SLACKSRC/n/php
-		sed -i -e '/--with-tidy=shared/d' php.SlackBuild
-	)
-fi
-}
-
-execute_qscint_sed () {
-#******************************************************************
-# remove "exit 1" code in SlackBuild
-#******************************************************************
-if [ ! -f $SLACKSRC/l/QScintilla/QScintilla.SlackBuild.old ]; then
-	cp -v $SLACKSRC/l/QScintilla/QScintilla.SlackBuild \
-		$SLACKSRC/l/QScintilla/QScintilla.SlackBuild.old
-	(
-		cd $SLACKSRC/l/QScintilla
-		sed -i -e 's/make  || exit 1/make/' QScintilla.SlackBuild
-		sed -i -e 's/make -j1 install DESTDIR=$PKG INSTALL_ROOT=$PKG || exit 1/make -j1 install DESTDIR=$PKG INSTALL_ROOT=$PKG/' QScintilla.SlackBuild
 	)
 fi
 }
@@ -1706,505 +1652,6 @@ mv -v /tmp/x11-build/*.txz /sfspacks/x
 cd /sources
 }
 
-build_kde () {
-#****************************************************************
-cd /slacksrc/kde
-
-export UPGRADE_PACKAGES=always
-
-./kde.SlackBuild kdelibs
-[ $? != 0 ] && touch /tmp/kde_build/kdelibs.failed
-mv -v /tmp/kde_build/*.txz /sfspacks/kde
-
-for package in \
-  nepomuk-core \
-  nepomuk-widgets \
-  ; do
-   ./kde.SlackBuild kdebase:$package
- 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-	mv -v /tmp/kde_build/*.txz /sfspacks/kde
-done
-
-./kde.SlackBuild kdepimlibs
-[ $? != 0 ] && touch /tmp/kde_build/kdepimlibs.failed
-mv -v /tmp/kde_build/*.txz /sfspacks/kde
-
-for package in \
-  kfilemetadata \
-  kde-baseapps \
-  kactivities \
-  konsole \
-  kde-wallpapers \
-  kde-workspace \
-  kde-runtime \
-  kde-baseapps \
-  kde-base-artwork \
-  ; do
-   ./kde.SlackBuild kdebase:$package
- 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-	mv -v /tmp/kde_build/*.txz /sfspacks/kde
-done
-
-for package in \
-  cervisia \
-  dolphin-plugins \
-  kapptemplate \
-  kactivities \
-  kcachegrind \
-  kde-dev-scripts \
-  kde-dev-utils \
-  kdesdk-kioslaves \
-  kdesdk-strigi-analyzers \
-  kdesdk-thumbnailers \
-  libkomparediff2 \
-  kompare \
-  lokalize \
-  okteta \
-  poxml \
-  umbrello \
-  ; do
-   ./kde.SlackBuild kdesdk:$package
- 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-	mv -v /tmp/kde_build/*.txz /sfspacks/kde
-done
-
-./kde.SlackBuild extragear:libkscreen
-[ $? != 0 ] && touch /tmp/kde_build/libkscreen.failed
-mv -v /tmp/kde_build/*.txz /sfspacks/kde
-
-for package in \
-  libkipi \
-  libkexiv2 \
-  libkdcraw \
-  libksane\
-  kdegraphics-mobipocket \
-  okular \
-  kdegraphics-strigi-analyzer \
-  kdegraphics-thumbnailers \
-  kamera \
-  kcolorchooser \
-  kgamma \
-  kolourpaint \
-  kruler \
-  ksaneplugin \
-  ksnapshot \
-  svgpart \
-  ; do
-   ./kde.SlackBuild kdegraphics:$package
- 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-	mv -v /tmp/kde_build/*.txz /sfspacks/kde
-done
-
-for package in \
-  smokegen \
-  smokeqt \
-  qtruby \
-  perlqt\
-  smokekde \
-  korundum \
-  perlkde \
-  pykde4 \
-  kate \
-  kross-interpreters \
-  ; do
-   ./kde.SlackBuild kdebindings:$package
- 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-	mv -v /tmp/kde_build/*.txz /sfspacks/kde
-done
-
-for package in \
-  kaccessible \
-  kmouth \
-  kmousetool \
-  kmag \
-  ; do
-   ./kde.SlackBuild kdeaccessibility:$package
- 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-	mv -v /tmp/kde_build/*.txz /sfspacks/kde
-done
-
-for package in \
-  ark \
-  filelight \
-  kcalc  \
-  kcharselect \
-  kdf \
-  kfloppy \
-  kgpg \
-  print-manager   \
-  kremotecontrol \
-  ktimer \
-  kwalletmanager \
-  superkaramba \
-  sweeper \
-  ; do
-   ./kde.SlackBuild kdeutils:$package
- 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-	mv -v /tmp/kde_build/*.txz /sfspacks/kde
-done
-
-for package in \
-  libkcddb \
-  libkcompactdisc \
-  audiocd-kio \
-  dragon \
-  mplayerthumbs \
-  juk \
-  kmix \
-  ; do
-   ./kde.SlackBuild kdemultimedia:$package
- 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-	mv -v /tmp/kde_build/*.txz /sfspacks/kde
-done
-
-./kde.SlackBuild extragear:libktorrent
-[ $? != 0 ] && touch /tmp/kde_build/libktorrent.failed
-mv -v /tmp/kde_build/*.txz /sfspacks/kde
-
-for package in \
-  kdenetwork-filesharing \
-  kdenetwork-strigi-analyzers \
-  zeroconf-ioslave \
-  kget \
-  kopete \
-  kppp \
-  krdc \
-  krfb \
-  ; do
-   ./kde.SlackBuild kdenetwork:$package
- 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-	mv -v /tmp/kde_build/*.txz /sfspacks/kde
-done
-
-./kde.SlackBuild oxygen-icons
-[ $? != 0 ] && touch /tmp/kde_build/oxygen-icons.failed
-mv -v /tmp/kde_build/*.txz /sfspacks/kde
-
-for package in \
-  kcron \
-  ksystemlog \
-  kuser \
-  ; do
-   ./kde.SlackBuild kdeadmin:$package
- 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-	mv -v /tmp/kde_build/*.txz /sfspacks/kde
-done
-
-./kde.SlackBuild kdeartwork
-[ $? != 0 ] && touch /tmp/kde_build/kdeartwork.failed
-mv -v /tmp/kde_build/*.txz /sfspacks/kde
-
-for package in \
-  libkdegames \
-  libkmahjongg \
-  klickety \
-  ksudoku \
-  ksquares \
-  kpat \
-  klines \
-  ksnakeduel \
-  kollision \
-  kshisen \
-  kblocks \
-  lskat \
-  kreversi \
-  bovo \
-  kajongg \
-  granatier \
-  kmines \
-  kiriki \
-  kigo \
-  bomber \
-  kolf \
-  kdiamond \
-  kbounce \
-  konquest \
-  kapman \
-  knavalbattle \
-  killbots \
-  kubrick \
-  kgoldrunner \
-  knetwalk \
-  kbreakout \
-  ksirk \
-  kfourinline \
-  picmi \
-  kblackbox \
-  palapeli \
-  katomic \
-  ktuberling \
-  kjumpingcube \
-  kmahjongg \
-  kspaceduel \
-  ; do
-   ./kde.SlackBuild kdegames:$package
- 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-	mv -v /tmp/kde_build/*.txz /sfspacks/kde
-done
-
-for package in \
-  amor \
-  kteatime \
-  ktux \
-  ; do
-   ./kde.SlackBuild kdetoys:$package
- 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-	mv -v /tmp/kde_build/*.txz /sfspacks/kde
-done
-
-for package in \
-  libkdeedu \
-  analitza \
-  artikulate \
-  blinken \
-  cantor \
-  kalgebra \
-  kalzium \
-  kanagram \
-  kbruch \
-  kgeography \
-  khangman \
-  kig \
-  kiten \
-  klettres \
-  kmplot \
-  kstars \
-  kqtquickcharts \
-  ktouch \
-  kturtle \
-  kwordquiz \
-  marble \
-  parley \
-  pairs \
-  rocs \
-  step \
-  ; do
-   ./kde.SlackBuild kdeedu:$package
- 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-	mv -v /tmp/kde_build/*.txz /sfspacks/kde
-done
-
-./kde.SlackBuild  kdewebdev
-[ $? != 0 ] && touch /tmp/kde_build/kdewebdev.failed
-mv -v /tmp/kde_build/*.txz /sfspacks/kde
-
-./kde.SlackBuild  kdebase:kde-baseapps
-[ $? != 0 ] && touch /tmp/kde_build/kde-baseapps.failed
-mv -v /tmp/kde_build/*.txz /sfspacks/kde
-
-./kde.SlackBuild  kdeplasma-addons
-[ $? != 0 ] && touch /tmp/kde_build/kdeplasma-addons.failed
-mv -v /tmp/kde_build/*.txz /sfspacks/kde
-
-./kde.SlackBuild  polkit-kde:polkit-kde-agent-1
-[ $? != 0 ] && touch /tmp/kde_build/polkit-kde-agent-1.failed
-mv -v /tmp/kde_build/*.txz /sfspacks/kde
-
-./kde.SlackBuild  polkit-kde:polkit-kde-kcmodules-1
-[ $? != 0 ] && touch /tmp/kde_build/polkit-kde-kcmodules-1.failed
-mv -v /tmp/kde_build/*.txz /sfspacks/kde
-
-for package in \
-  bluedevil \
-  kaudiocreator \
-  kplayer \
-  kwebkitpart \
-  oxygen-gtk2 \
-  kdevplatform \
-  kdevelop-pg-qt \
-  kdevelop \
-  kdev-python \
-  kdevelop-php \
-  kdevelop-php-docs \
-  wicd-kde\
-  libmm-qt \
-  libnm-qt \
-  plasma-nm \
-  skanlite \
-  kio-mtp \
-  libktorrent\
-  ktorrent \
-  amarok \
-  calligra \
-  kscreen \
-  kdeconnect-kde \
-  partitionmanager \
-  k3b \
-  ; do
-   ./kde.SlackBuild extragear:$package
- 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-	mv -v /tmp/kde_build/*.txz /sfspacks/kde
-done
-
-# Keep MIME database current:
-/usr/bin/update-mime-database /usr/share/mime 1>/dev/null 2>/dev/null &
-
-cd /sources
-
-}
-
-build_kdei () {
-#****************************************************************
-cd /slacksrc/kdei/kde-l10n
-
-export UPGRADE_PACKAGES=always
-
-for package in \
-  ar \
-  bg \
-  bs \
-  ca \
-  ca@valencia \
-  cs \
-  da \
-  de \
-  el \
-  en_GB \
-  es \
-  et \
-  eu \
-  fa \
-  fi \
-  fr \
-  ga \
-  gl \
-  he \
-  hi \
-  hr \
-  hu \
-  ia \
-  id \
-  is \
-  it \
-  ja \
-  kk \
-  km \
-  ko \
-  lt \
-  lv \
-  mr \
-  nb \
-  nds \
-  nl \
-  nn \
-  pa \
-  pl \
-  pt \
-  pt_BR \
-  ro \
-  ru \
-  sk \
-  sl \
-  sr \
-  sv \
-  tr \
-  ug \
-  uk \
-  wa \
-  zh_CN \
-  zh_TW \
-  ; do
-   PKGLANG=$package ./kde-l10n.SlackBuild
- 	[ $? != 0 ] && touch /tmp/kde_build/kdei-l10n-$package.failed
-	mv -v /tmp/kde_build/*.txz /sfspacks/kdei
-done
-
-cd /sources
-
-}
-
-build_calligra () {
-#****************************************************************
-cd /slacksrc/kdei/calligra-l10n
-
-export UPGRADE_PACKAGES=always
-
-for package in \
-  bs \
-  ca \
-  ca@valencia \
-  cs \
-  da \
-  de \
-  el \
-  en_GB \
-  es \
-  et \
-  fi \
-  fr \
-  gl \
-  hu \
-  it \
-  ja \
-  kk \
-  nb \
-  nl \
-  pl \
-  pt \
-  pt_BR \
-  ru \
-  sk \
-  sv \
-  tr \
-  uk \
-  zh_CN \
-  zh_TW \
-  ; do
-   PKGLANG=$package ./calligra-l10n.SlackBuild
- 	[ $? != 0 ] && touch /tmp/kde_build/calligra-l10n-$package.failed
-	mv -v /tmp/kde_build/*.txz /sfspacks/kdei
-done
-
-cd /sources
-
-}
-
-build_post_kde.old () {
-#****************************************************************
-# this part exists because some kde packages don't build on first pass
-#****************************************************************
-cd /slacksrc/kde
-
-export UPGRADE_PACKAGES=always
-
-./kde.SlackBuild  kdebase:baloo
-[ $? != 0 ] && touch /tmp/kde_build/baloo.failed
-mv -v /tmp/kde_build/*.txz /sfspacks/kde
-
-./kde.SlackBuild  kdebase:baloo-widgets
-[ $? != 0 ] && touch /tmp/kde_build/baloo-widgets.failed
-mv -v /tmp/kde_build/*.txz /sfspacks/kde
-
-./kde.SlackBuild  kdegraphics:gwenview
-[ $? != 0 ] && touch /tmp/kde_build/gwenview.failed
-mv -v /tmp/kde_build/*.txz /sfspacks/kde
-
-./kde.SlackBuild extragear:amarok
-[ $? != 0 ] && touch /tmp/kde_build/amarok.failed
-mv -v /tmp/kde_build/*.txz /sfspacks/kde
-
-cd /sources
-
-}
-
-build_kdepim () {
-#****************************************************************
-cd /slacksrc/kde
-
-export UPGRADE_PACKAGES=always
-
-./kde.SlackBuild kdepim
-[ $? != 0 ] && touch /tmp/kde_build/kdepim.failed
-mv -v /tmp/kde_build/*.txz /sfspacks/kde
-
-./kde.SlackBuild kdepim-runtime
-[ $? != 0 ] && touch /tmp/kde_build/kdepim-runtime.failed
-mv -v /tmp/kde_build/*.txz /sfspacks/kde
-
-cd /sources
-
-}
-
 build_extra_cmake_kde () {
 #********************************************************
 cd /slacksrc/kde/kde
@@ -3089,7 +2536,7 @@ define_path_lib
 # Ensure that the /sfspacks/$SAVDIRs exists.
 #****************************************************************
 distribution="slackware"
-mkdir -pv /sfspacks/{others,a,ap,d,deps,e,extra,f,k,kde,l,n,t,tcl,x,xap,xfce,y}
+mkdir -pv /sfspacks/{others,a,ap,d,e,extra,f,k,kde,l,n,t,tcl,x,xap,xfce,y}
 #******************************************************************
 # Some packages need two pass to be built completely.
 # Alteration of the slackware sources is made "on the fly" during
@@ -3105,18 +2552,18 @@ mkdir -pv /sfspacks/{others,a,ap,d,deps,e,extra,f,k,kde,l,n,t,tcl,x,xap,xfce,y}
 #	execute_gobject_sed # 2 pass
 #	execute_harfbuzz_sed # 2 pass
 #	execute_kmod_sed # 2 pass
-#	execute_libcaca_sed # 2 pass
 #	execute_libusb_sed # 2 pass
 #	execute_llvm_sed # 2 pass
 #	execute_pkg_config_sed # 2 pass
-#	execute_php_sed # 2 pass
-#	execute_qscint_sed # 2 pass
 #	execute_readline_sed # 3 pass
 #	execute_subversion_sed # 2 pass
 #	execute_texlive_sed # 2 pass
 #	execute_zstd_sed # 2 pass
 #	execute_perl_sed # 2 pass
 #	execute_openldap_sed # 2 pass
+# 	execute_libtirpc_sed variable # 2 pass
+# 	execute_elogind_sed variable # 2 pass
+# 	execute_libxkbcommon_sed variable # 2 pass
 #
 #******************************************************************
 # BUILDN: defines if package will be installed or upgraded
@@ -3206,14 +2653,6 @@ while (( LINE < $FILELEN )); do
 							[ $? != 0 ] && exit 1 ;;
 					esac
 					continue ;;
-
-				all-deps-1 )
-					all_deps_1
-					[ $? != 0 ] && exit 1 ;;
-
-				all-deps-2 )
-					all_deps_2
-					[ $? != 0 ] && exit 1 ;;
 
 				alsa-lib )
 					case $LISTFILE in
@@ -3471,26 +2910,6 @@ while (( LINE < $FILELEN )); do
 					build_post_kde
 					[ $? != 0 ] && exit 1 ;;
 
-#				kde )
-#					build_kde
-#					[ $? != 0 ] && exit 1 ;;
-
-#				kde-l10n )
-#					build_kdei
-#					[ $? != 0 ] && exit 1 ;;
-
-#				calligra-l10n )
-#					build_calligra
-#					[ $? != 0 ] && exit 1 ;;
-
-#				post-kde )
-#					build_post_kde
-#					[ $? != 0 ] && exit 1 ;;
-
-#				kdepim )
-#					build_kdepim
-#					[ $? != 0 ] && exit 1 ;;
-
 				kernel-all )
 					kernel_build_all
 					[ $? != 0 ] && exit 1 ;;
@@ -3540,18 +2959,6 @@ while (( LINE < $FILELEN )); do
 							echo_message_slackware && exit 1 ;;
 					esac
 					continue ;;
-
-#				libcaca )
-#					case $LCAC in
-#						1 )
-#							execute_libcaca_sed && build $SRCDIR $PACKNAME 
-#							[ $? != 0 ] && exit 1
-#							update_slackbuild && LCAC=2 ;;
-#						2 )
-#							build $SRCDIR $PACKNAME
-#							[ $? != 0 ] && exit 1 ;;
-#					esac
-#					continue ;;
 
 				libcaca )
 					case $ARCH in
@@ -3681,18 +3088,6 @@ while (( LINE < $FILELEN )); do
 					esac
 					continue ;;
 
-#				php )
-#					case $LPHP in
-#						1 )
-#							execute_php_sed && build $SRCDIR $PACKNAME 
-#							[ $? != 0 ] && exit 1
-#							update_slackbuild && LPHP=2 ;;
-#						2 )
-#							build $SRCDIR $PACKNAME
-#							[ $? != 0 ] && exit 1 ;;
-#					esac
-#					continue ;;
-
 				pkg-config )
 					case $LISTFILE in
 						build1_s.list )
@@ -3734,18 +3129,6 @@ while (( LINE < $FILELEN )); do
 				post-gcc )
 					post_gcc
 					[ $? != 0 ] && exit 1 ;;
-
-#				QScintilla )
-#					case $LQSC in
-#						1 )
-#							execute_qscint_sed && build $SRCDIR $PACKNAME
-#							[ $? != 0 ] && exit 1
-#							update_slackbuild && LQSC=2 ;;
-#						2 )
-#							build $SRCDIR $PACKNAME
-#							[ $? != 0 ] && exit 1 ;;
-#					esac
-#					continue ;;
 
 				readline )
 					case $LREA in

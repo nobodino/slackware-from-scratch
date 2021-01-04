@@ -338,6 +338,7 @@ a inih
 a xfsprogs
 ap dmapi
 l graphite2
+l python-pygments
 l freetype
 l harfbuzz
 l freetype
@@ -354,7 +355,7 @@ a libgudev
 a usbutils
 a dialog
 d help2man
-l python-pygments	
+# l python-pygments	
 ap linuxdoc-tools
 a pam
 l gobject-introspection
@@ -730,7 +731,7 @@ xfce xfdesktop
 xfce xfwm4
 xfce xfce4-session
 xfce xfce4-terminal
-xfce xfce4-notifyd
+xfce xfce4-notifydSHELL=/bin/sh
 xfce xfce4-panel-profiles
 xfce xfce4-pulseaudio-plugin
 xfce xfce4-clipman-plugin
