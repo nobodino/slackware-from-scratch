@@ -698,6 +698,7 @@ l libgtop
 x OpenCC
 x libgee
 x marisa
+l json-glib
 x libkkc
 x libkkc-data
 x skkdic
