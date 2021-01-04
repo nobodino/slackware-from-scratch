@@ -452,8 +452,10 @@ x compiz
 x dejavu-fonts-ttf
 x liberation-fonts-ttf
 others automake
+others autoconf
 x motif
 d automake
+d autoconf
 x xterm
 x libva
 x urw-core35-fonts-otf
