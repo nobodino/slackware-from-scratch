@@ -581,6 +581,13 @@ l python-six
 d opencl-headers
 l ocl-icd
 l ffmpeg
+l gstreamer0
+l gstreamer
+l gst-plugins-base0
+l gst-plugins-good0
+l gst-plugins-base
+l gst-plugins-good
+l gst-plugins-libav
 l qt5
 l qt5-webkit
 d doxygen
