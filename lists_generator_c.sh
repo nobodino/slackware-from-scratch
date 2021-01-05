@@ -1361,7 +1361,7 @@ n gpgme
 # n libtirpc
 # n nfs-utils
 kde frameworks
-kde kdepim5
+kde kdepim
 kde plasma
 kde plasma-extra
 kde applications
