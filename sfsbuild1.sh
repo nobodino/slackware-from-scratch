@@ -2841,12 +2841,12 @@ while (( LINE < $FILELEN )); do
 					continue ;;
 
 				gpgme )
-					case $LGPG in
-						1 )
+					case $LISTFILE in
+						build3_s.list )
 							execute_gpgme_sed && build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1
 							update_slackbuild && LGPG=2 ;;
-						* )
+						build4_s.list )
 							build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 ;;
 					esac
