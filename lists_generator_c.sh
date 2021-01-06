@@ -486,6 +486,7 @@ ap linuxdoc-tools
 a zerofree
 l libpcap
 a f2fs-tools
+a exfatprogs
 a efivar
 a efibootmgr
 l gnu-efi
@@ -1053,6 +1054,7 @@ n autofs
 n biff+comsat
 n bluez-firmware
 a kernel-firmware
+n dehydrated
 n iputils
 n bootp
 n bridge-utils
@@ -1340,7 +1342,9 @@ l opencv
 l dvdauthor
 l vid.stab
 l frei0r-plugins
+others opencv
 l mlt
+l opencv
 l libqalculate
 l accountsservice
 l libburn
@@ -1375,6 +1379,7 @@ n snownews
 d python2
 d python3
 y bsd-games
+y nethack
 xap xsnow
 l LibRaw
 l PyQt5
