@@ -510,11 +510,11 @@ l at-spi2-core
 l at-spi2-atk
 l fribidi
 l pango
-others automake
-others autoconf
+# others automake
+# others autoconf
 l gtk+2
-d automake
-d autoconf
+# d automake
+# d autoconf
 l libglade
 tcl expect
 d clisp
