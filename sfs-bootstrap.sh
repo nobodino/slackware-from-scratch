@@ -162,13 +162,13 @@ do
 		rm -rf $SFS/sources/others > /dev/null 2>&1 
 		rm -rf $SFS/sources/extra > /dev/null 2>&1
 		# rsync with plasma
-		echo "rsync with plasma with bear.alien.nl"
-		mkdir -pv $SFS/sources/plasma
-		mkdir -pv $SFS/slacksrc/{deps,kde5}
-		rsync -arvz --stats --progress -I --delete-after $RSYNCDIR1/latest/ $SFS/sources/plasma
-		cd $SFS/sources/plasma
-		cp -r --preserve=timestamps  $SFS/sources/plasma/deps/* $SRCDIR/deps  > /dev/null 2>&1
-		cp -r --preserve=timestamps  $SFS/sources/plasma/kde/* $SRCDIR/kde5  > /dev/null 2>&1
+#		echo "rsync with plasma with bear.alien.nl"
+#		mkdir -pv $SFS/sources/plasma
+#		mkdir -pv $SFS/slacksrc/{deps,kde5}
+#		rsync -arvz --stats --progress -I --delete-after $RSYNCDIR1/latest/ $SFS/sources/plasma
+#		cd $SFS/sources/plasma
+#		cp -r --preserve=timestamps  $SFS/sources/plasma/deps/* $SRCDIR/deps  > /dev/null 2>&1
+#		cp -r --preserve=timestamps  $SFS/sources/plasma/kde/* $SRCDIR/kde5  > /dev/null 2>&1
 		# svn rsync with test_kde5
 #		mkdir -pv $SFS/sources/test_kde5 && cd $SFS/sources
 #		svn checkout $DLDIR13

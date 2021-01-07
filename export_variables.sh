@@ -37,7 +37,7 @@
 # export RSYNCDIR=rsync://slackware.uk/slackware/slackware64-current
 # export RSYNDIR=rsync://rsync.slackware.no/slackware/slackware64-current/
 export RSYNCDIR=rsync://bear.alienbase.nl/mirrors/slackware/slackware64-current
-export RSYNCDIR1=rsync://bear.alienbase.nl/mirrors/alien-kde/source/
+# export RSYNCDIR1=rsync://bear.alienbase.nl/mirrors/alien-kde/source/
 #*******************************************************************
 # the mirrors from which we download files to populate "others" directly
 #*******************************************************************
@@ -50,7 +50,7 @@ export DLDIR6=http://mirror.eu.oneandone.net/linux/distributions/gentoo/gentoo/d
 # export DLDIR10=https://download.oracle.com/otn-pub/java/jdk/8u202-b08/1961070e4c9b4e26a04e7f5a083f551e/jre-8u202-linux-x64.tar.gz
 export DLDIR11=https://slackbuilds.org/slackbuilds/14.2
 export DLDIR12=https://github.com/nobodino/slackware-from-scratch/raw/master/packages_for_aaa_elflibs
-export DLDIR13=https://github.com/nobodino/slackware-from-scratch/trunk/test_kde5
+# export DLDIR13=https://github.com/nobodino/slackware-from-scratch/trunk/test_kde5
 #*******************************************************************
 # jdk and ada versions
 #*******************************************************************
