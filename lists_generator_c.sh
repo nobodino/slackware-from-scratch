@@ -1356,17 +1356,13 @@ l quazip
 l pipewire
 l qrencode
 n gpgme
-# n krb5
-# n libtirpc
-# n libtirpc
-# n nfs-utils
 kde frameworks
 kde kdepim
 kde plasma
 kde plasma-extra
 kde applications
 kde applications-extra
-# kde post-kde
+kde post-kde
 d subversion
 l libxml2
 l ncurses
