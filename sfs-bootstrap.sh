@@ -61,7 +61,7 @@ echo
 
 arch_selector () {
 #**********************************
-# architecture selector selector
+# architecture selector
 #**********************************
 PS3="Your choice:"
 select build_arch in x86 x86_64 quit
@@ -70,9 +70,9 @@ do
 	then
 		if [[ "$distribution" = "slackware" ]]
 		then
-			tools_dir='tools'
+			tools_dir1='tools_x86'
 			echo
-			echo -e "$BLUE" "You chose $tools_dir" "$NORMAL"
+			echo -e "$BLUE" "You chose $tools_dir1" "$NORMAL"
 			echo
 			break
 		fi
@@ -81,9 +81,9 @@ do
 	then
 		if [[ "$distribution" = "slackware" ]]
 		then
-			tools_dir='tools_64'
+			tools_dir1='tools_x86_64'
 			echo
-			echo -e "$BLUE" "You chose $tools_dir" "$NORMAL"
+			echo -e "$BLUE" "You chose $tools_dir1" "$NORMAL"
 			echo
 			break
 		fi
@@ -97,6 +97,60 @@ done
 echo
 echo -e "$BLUE"  "You chose $build_arch." "$NORMAL"
 echo
+
+}
+
+dev_selector () {
+#**********************************
+# -current or -dev selector
+#**********************************
+PS3="Your choice:"
+select dev_select in current development quit
+do
+	if [[ "$dev_select" = "current" ]]; then
+		if [[ "$build_arch" = "x86" ]]; then
+			tools_dir='tools'
+			export $tools_dir && echo $tools_dir
+			echo
+			echo -e "$BLUE" "You chose $tools_dir" "$NORMAL"
+			echo
+			break
+		elif [[ "$build_arch" = "x86_64" ]]; then
+			tools_dir='tools_64'
+			export $tools_dir && echo $tools_dir
+			echo
+			echo -e "$BLUE" "You chose $tools_dir" "$NORMAL"
+			echo
+			break
+		fi
+		break
+	elif [[ "$dev_select" = "development" ]]; then
+		if [[ "$build_arch" = "x86" ]]; then
+			tools_dir='tools_dev'
+			export $tools_dir && echo $tools_dir
+			echo
+			echo -e "$BLUE" "You chose $tools_dir" "$NORMAL"
+			echo
+			break
+		elif [[ "$build_arch" = "x86_64" ]]; then
+			tools_dir='tools_64_dev'
+			export $tools_dir && echo $tools_dir
+			echo
+			echo -e "$BLUE" "You chose $tools_dir" "$NORMAL"
+			echo
+			break
+		fi
+		break
+	elif [[ "$dev_select" = "quit" ]]
+	then
+		echo
+		echo -e "$RED" "You have decided to quit. Goodbye." "$NORMAL" && exit 1
+	fi
+done
+echo
+echo -e "$BLUE"  "You chose $dev_select." "$NORMAL"
+echo
+export $dev_select
 #**********************************************
 # defines RDIR according to x86 or x86_64:
 #**********************************************
@@ -207,6 +261,41 @@ do
 		break
 	fi
 done
+
+}
+
+rsync_dev_current () {
+#*************************************
+# download directly from source to others
+#*************************************
+# set -x
+
+if [[ "$dev_select" = "current" ]]; then
+		echo "You chose the -current branch of slackware to build SFS."
+		echo
+		rm -rf $SFS/slacksrc/current && mkdir $SFS/slacksrc/current
+		svn checkout $DLDIR13/current $SFS/slacksrc/current > /dev/null 2>&1
+		rm -rf $SFS/slacksrc/current/.svn
+		cp -r --preserve=timestamps $SFS/slacksrc/current/* $SFS/slacksrc
+		rm -rf $SFS/slacksrc/current
+	elif [[ "$dev_select" = "development" ]]; then
+		echo "You chose the -development branch of slackware to build SFS."
+		echo
+		rm -rf $SFS/slacksrc/development && mkdir $SFS/slacksrc/development
+		svn checkout $DLDIR13/development $SFS/slacksrc/development > /dev/null 2>&1
+		rm -rf $SFS/slacksrc/development/.svn
+		if find $SFS/slacksrc/development/l/glibc -mindepth 1 | read; then
+			rm -rf $SFS/slacksrc/l/glibc
+		fi
+		if find $SFS/slacksrc/development/d/binutils -mindepth 1 | read; then
+			rm -rf $SFS/slacksrc/d/binutils
+		fi
+		if find $SFS/slacksrc/development/d/gcc -mindepth 1 | read; then
+			rm -rf $SFS/slacksrc/d/gcc
+		fi
+		cp -r --preserve=timestamps $SFS/slacksrc/development/* $SFS/slacksrc
+		rm -rf $SFS/slacksrc/development
+fi
 
 }
 
@@ -404,6 +493,7 @@ test_root
 . export_variables_perso.sh
 distribution_selector
 arch_selector
+dev_selector
 
 #**************************************
 # preparation of $SFS side
@@ -453,6 +543,7 @@ do
 		echo
 		cd $SFS/sources
 		rsync_src
+		rsync_dev_current
 		populate_others
 		break
 	elif [[ "$upgrade_type" = "local" ]]
@@ -461,6 +552,7 @@ do
 		echo  -e "$RED" "You chose to rsync slacksrc from a local mirror." "$NORMAL"
 		echo 
 		upgrade_src
+		rsync_dev_current
 		populate_others
 		break
 	elif [[ "$upgrade_type" = "DVD" ]]
@@ -470,6 +562,7 @@ do
 		echo 
 		mount -t auto /dev/sr0 /mnt/dvd && sleep 5 && echo -e "$RED" "DVD mounted on /mnt/DVD" "$NORMAL"
 		upgrade_dvd
+		rsync_dev_current
 		populate_others
 		umount /mnt/dvd && sleep 3 && eject && echo -e "$RED" "DVD unmounted from /mnt/DVD and ejected." "$NORMAL"
  		break
