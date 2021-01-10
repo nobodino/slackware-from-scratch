@@ -371,7 +371,9 @@ l python-ply
 l libuv
 n bind
 l gmp
+others autoconf
 n gnutls
+d autoconf
 ap cups
 n iputils
 l ncurses
@@ -451,10 +453,8 @@ x x11-group2
 x compiz
 x dejavu-fonts-ttf
 x liberation-fonts-ttf
-others automake
 others autoconf
 x motif
-d automake
 d autoconf
 x xterm
 x libva
@@ -491,6 +491,7 @@ a efivar
 a efibootmgr
 l gnu-efi
 a elilo
+d autoconf-archive
 a dbus
 d ruby
 l libunistring
@@ -510,11 +511,9 @@ l at-spi2-core
 l at-spi2-atk
 l fribidi
 l pango
-# others automake
-# others autoconf
+others autoconf
 l gtk+2
-# d automake
-# d autoconf
+d autoconf
 l libglade
 tcl expect
 d clisp
@@ -538,10 +537,8 @@ ap opus-tools
 l speex
 l libvorbis
 l libao
-others automake
 others autoconf
 ap vorbis-tools
-d automake
 d autoconf
 l gstreamer
 l libbluray
@@ -652,7 +649,6 @@ l judy
 l netpbm
 l libwnck
 l gstreamer0
-d autoconf-archive
 l mozjs78
 l polkit
 a upower
