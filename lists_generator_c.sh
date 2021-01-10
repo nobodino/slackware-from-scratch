@@ -355,7 +355,6 @@ a libgudev
 a usbutils
 a dialog
 d help2man
-# l python-pygments	
 ap linuxdoc-tools
 a pam
 l gobject-introspection
@@ -1316,7 +1315,6 @@ l python-pysol_cards
 l python-random2
 l freecell-solver
 n socat
-# kde extra-cmake-modules
 l phonon
 l phonon-backend-gstreamer
 l dotconf
