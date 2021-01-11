@@ -88,9 +88,6 @@ zcat $CWD/nn.glibc-2.30.diff.gz | patch -p1 --verbose || exit 1
 
 cat config.h-dist | sed -e "s#m-sparc.h#${MFILE}#" > config.h
 
-# patch to solve glibc-2.32 mktemp problem
-sed -i -e 's/mktemp(buf)/mkdtemp(buf)/' global.c
-sed -i -e 's/mktemp/mkdtemp/' nntp.c
 # patch to build with gcc-10.2.x
 sed -i -e 's/-O2/-O2 -fcommon/' Makefile
 
