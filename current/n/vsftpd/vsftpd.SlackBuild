@@ -78,8 +78,8 @@ zcat $CWD/0021-Introduce-support-for-DHE-based-cipher-suites.patch.gz | patch -p
 zcat $CWD/0035-Modify-DH-enablement-patch-to-build-with-OpenSSL-1.1.patch.gz | patch -p1 --verbose || exit 1
 zcat $CWD/vsftpd.link-with-openssl-1.1.diff.gz | patch -p1 --verbose || exit 1
 
-# patch from freebsd
-cat $CWD/vsftpd-freebsd.patch | patch -Esp1 --verbose || exit 1
+# patch from BLFS due to gcc >= 10.1.x
+sed -e "s/kVSFSysStrOpenUnknown;/(enum EVSFSysUtilOpenMode)&/" -i sysstr.c
 
 make $NUMJOBS || make || exit 1
 
