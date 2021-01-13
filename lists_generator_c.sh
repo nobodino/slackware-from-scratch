@@ -370,9 +370,9 @@ l python-ply
 l libuv
 n bind
 l gmp
-others autoconf
+# others autoconf
 n gnutls
-d autoconf
+# d autoconf
 ap cups
 n iputils
 l ncurses
@@ -452,9 +452,9 @@ x x11-group2
 x compiz
 x dejavu-fonts-ttf
 x liberation-fonts-ttf
-others autoconf
+# others autoconf
 x motif
-d autoconf
+# d autoconf
 x xterm
 x libva
 x urw-core35-fonts-otf
@@ -510,9 +510,9 @@ l at-spi2-core
 l at-spi2-atk
 l fribidi
 l pango
-others autoconf
+# others autoconf
 l gtk+2
-d autoconf
+# d autoconf
 l libglade
 tcl expect
 d clisp
@@ -536,9 +536,9 @@ ap opus-tools
 l speex
 l libvorbis
 l libao
-others autoconf
+# others autoconf
 ap vorbis-tools
-d autoconf
+# d autoconf
 l gstreamer
 l libbluray
 l fluidsynth
@@ -585,10 +585,13 @@ l gst-plugins-good0
 l gst-plugins-base
 l gst-plugins-good
 l gst-plugins-libav
-l qt5
-l qt5-webkit
-d doxygen
-l libxkbcommon
+# l alsa-lib
+# l pulseaudio
+# l alsa-lib
+# l qt5
+# l qt5-webkit
+# d doxygen
+# l libxkbcommon
 d strace
 d rcs
 d ccache
@@ -639,10 +642,18 @@ l libasyncns
 l tdb
 d check
 l sbc
-n bluez
+l fftw
 l alsa-lib
 l pulseaudio
 l alsa-lib
+l qt5
+l qt5-webkit
+d doxygen
+l libxkbcommon
+n bluez
+# l alsa-lib
+# l pulseaudio
+# l alsa-lib
 l boost
 l judy
 l netpbm
@@ -945,9 +956,9 @@ ap opus-tools
 l speex
 l libvorbis
 l libao
-others autoconf
+# others autoconf
 ap vorbis-tools
-d autoconf
+# d autoconf
 ap zsh
 ap htop
 ap pamixer
@@ -979,9 +990,9 @@ l libnl3
 n ppp
 l gmime
 xap pan
-others autoconf
+# others autoconf
 l hunspell
-d autoconf
+# d autoconf
 l enchant
 l gtkspell
 l libsigc++
@@ -1169,7 +1180,7 @@ l eigen2
 l eigen3
 l esound
 l exiv2
-l fftw
+# l fftw
 l fribidi
 l gamin
 l gd
