@@ -1169,6 +1169,7 @@ l a52dec
 l aalib
 l alsa-oss
 l aspell
+extra aspell-word-lists
 l audiofile
 l babl
 l chmlib
