@@ -370,9 +370,7 @@ l python-ply
 l libuv
 n bind
 l gmp
-# others autoconf
 n gnutls
-# d autoconf
 ap cups
 n iputils
 l ncurses
@@ -452,9 +450,7 @@ x x11-group2
 x compiz
 x dejavu-fonts-ttf
 x liberation-fonts-ttf
-# others autoconf
 x motif
-# d autoconf
 x xterm
 x libva
 x urw-core35-fonts-otf
@@ -510,9 +506,7 @@ l at-spi2-core
 l at-spi2-atk
 l fribidi
 l pango
-# others autoconf
 l gtk+2
-# d autoconf
 l libglade
 tcl expect
 d clisp
@@ -536,9 +530,7 @@ ap opus-tools
 l speex
 l libvorbis
 l libao
-# others autoconf
 ap vorbis-tools
-# d autoconf
 l gstreamer
 l libbluray
 l fluidsynth
@@ -585,13 +577,6 @@ l gst-plugins-good0
 l gst-plugins-base
 l gst-plugins-good
 l gst-plugins-libav
-# l alsa-lib
-# l pulseaudio
-# l alsa-lib
-# l qt5
-# l qt5-webkit
-# d doxygen
-# l libxkbcommon
 d strace
 d rcs
 d ccache
@@ -651,9 +636,6 @@ l qt5-webkit
 d doxygen
 l libxkbcommon
 n bluez
-# l alsa-lib
-# l pulseaudio
-# l alsa-lib
 l boost
 l judy
 l netpbm
@@ -768,7 +750,7 @@ xfce xfce4-weather-plugin
 xfce xfce4-whiskermenu-plugin
 xfce elementary-xfce
 xfce Greybird
-xap seamonkey
+# xap seamonkey
 a end3
 EOF
 }
@@ -956,9 +938,7 @@ ap opus-tools
 l speex
 l libvorbis
 l libao
-# others autoconf
 ap vorbis-tools
-# d autoconf
 ap zsh
 ap htop
 ap pamixer
@@ -990,9 +970,7 @@ l libnl3
 n ppp
 l gmime
 xap pan
-# others autoconf
 l hunspell
-# d autoconf
 l enchant
 l gtkspell
 l libsigc++
@@ -1181,7 +1159,6 @@ l eigen2
 l eigen3
 l esound
 l exiv2
-# l fftw
 l fribidi
 l gamin
 l gd
@@ -1348,9 +1325,7 @@ l opencv
 l dvdauthor
 l vid.stab
 l frei0r-plugins
-others opencv
 l mlt
-l opencv
 l libqalculate
 l accountsservice
 l libburn
@@ -1404,6 +1379,7 @@ n wpa_supplicant
 xap NetworkManager-openvpn
 xap mozilla-firefox
 xap mozilla-thunderbird
+xap seamonkey
 a end4
 EOF
 }

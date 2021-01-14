@@ -1686,36 +1686,17 @@ cd /slacksrc/kde/kde
 
 export UPGRADE_PACKAGES=always
 
-./kde.SlackBuild frameworks:attica
-[ $? != 0 ] && touch /tmp/kde_build/attica.failed
-mv -v /tmp/kde_build/*.txz /sfspacks/kde
+#./kde.SlackBuild frameworks:attica
+#[ $? != 0 ] && touch /tmp/kde_build/attica.failed
+#mv -v /tmp/kde_build/*.txz /sfspacks/kde
 
-# build all frameworks/portaingAids first
-for package in \
-	kdelibs4support \
-	kdesignerplugin \
-	kdewebkit \
-	khtml \
-	kjs \
-	kjsembed \
-	kmediaplayer \
-	kross \
-	kxmlrpcclient \
-  ; do
-   ./kde.SlackBuild frameworks:$package 
- 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-	mv -v /tmp/kde_build/*.txz /sfspacks/kde
-#	if [ $? = 0 ]; then
-#		mv -v /tmp/kde_build/*.txz /sfspacks/kde
-#	else
-#		touch /tmp/kde_build/$package.failed
-#		exit 1
-#	fi
-done
+# build all frameworks first
 
 for package in \
 	extra-cmake-modules \
 	attica \
+	ki18n \
+	kconfig \
 	kitemmodels \
 	kitemviews \
 	kplotting \
@@ -1727,11 +1708,9 @@ for package in \
 	kidletime \
 	kwidgetsaddons \
 	sonnet \
-	kconfig \
 	kwindowsystem \
 	solid \
 	karchive \
-	ki18n \
 	networkmanager-qt \
 	modemmanager-qt \
 	bluez-qt \
@@ -1797,6 +1776,28 @@ for package in \
 	kdelibs4support \
 	khtml \
 	kdav \
+  ; do
+   ./kde.SlackBuild frameworks:$package 
+ 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
+	mv -v /tmp/kde_build/*.txz /sfspacks/kde
+#	if [ $? = 0 ]; then
+#		mv -v /tmp/kde_build/*.txz /sfspacks/kde
+#	else
+#		touch /tmp/kde_build/$package.failed
+#		exit 1
+#	fi
+done
+
+for package in \
+	kdelibs4support \
+	kdesignerplugin \
+	kdewebkit \
+	khtml \
+	kjs \
+	kjsembed \
+	kmediaplayer \
+	kross \
+	kxmlrpcclient \
   ; do
    ./kde.SlackBuild frameworks:$package 
  	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
@@ -1998,14 +1999,14 @@ for package in \
 done
 
 ./kde.SlackBuild applications:libktorrent
-[ $? != 0 ] && touch /tmp/kde_build/libktorrent.failed
-mv -v /tmp/kde_build/*.txz /sfspacks/kde
-#	if [ $? = 0 ]; then
-#		mv -v /tmp/kde_build/*.txz /sfspacks/kde
-#	else
-#		touch /tmp/kde_build/$package.failed
-#		exit 1
-#	fi
+#[ $? != 0 ] && touch /tmp/kde_build/libktorrent.failed
+#mv -v /tmp/kde_build/*.txz /sfspacks/kde
+	if [ $? = 0 ]; then
+		mv -v /tmp/kde_build/*.txz /sfspacks/kde
+	else
+		touch /tmp/kde_build/$package.failed
+		exit 1
+	fi
 
 # Keep MIME database current:
 /usr/bin/update-mime-database /usr/share/mime 1>/dev/null 2>/dev/null &
@@ -2226,7 +2227,6 @@ for package in \
 #		touch /tmp/kde_build/$package.failed
 #		exit 1
 #	fi
-
 done
 
 # Keep MIME database current:
@@ -2284,8 +2284,8 @@ for package in \
 done
 
 ./kde.SlackBuild applications:umbrello
-[ $? != 0 ] && touch /tmp/kde_build/umbrello.failed
-mv -v /tmp/kde_build/*.txz /sfspacks/kde
+ 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
+	mv -v /tmp/kde_build/*.txz /sfspacks/kde
 #	if [ $? = 0 ]; then
 #		mv -v /tmp/kde_build/*.txz /sfspacks/kde
 #	else
@@ -2309,14 +2309,14 @@ cd /slacksrc/kde/kde
 export UPGRADE_PACKAGES=always
 
 ./kde.SlackBuild plasma:plasma-nm
-[ $? != 0 ] && touch /tmp/kde_build/plasma-nm.failed
-mv -v /tmp/kde_build/*.txz /sfspacks/kde
+ 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
+	mv -v /tmp/kde_build/*.txz /sfspacks/kde
 #	if [ $? = 0 ]; then
 #		mv -v /tmp/kde_build/*.txz /sfspacks/kde
 #	else
 #		touch /tmp/kde_build/$package.failed
 #		exit 1
-#	fi 
+#	fi
 
 for package in \
 	kgpg \
@@ -2710,10 +2710,10 @@ while (( LINE < $FILELEN )); do
 						build2_s.list )
 							execute_dbus_sed && build $SRCDIR $PACKNAME && 
 							[ $? != 0 ] && exit 1  
-							dbus-uuidgen --ensure ;;
+							dbus-uuidgen --ensure && update_slackbuild ;;
 
 						* )
-							update_slackbuild && build $SRCDIR $PACKNAME
+							build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 ;;
 
 					esac
