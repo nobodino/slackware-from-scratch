@@ -266,9 +266,8 @@ done
 
 rsync_dev_current () {
 #*************************************
-# download directly from source to others
+# download directly from github repository
 #*************************************
-# set -x
 
 if [[ "$dev_select" = "current" ]]; then
 		echo "You chose the -current branch of slackware to build SFS."
@@ -293,8 +292,13 @@ if [[ "$dev_select" = "current" ]]; then
 		if find $SFS/slacksrc/development/d/gcc -mindepth 1 | read; then
 			rm -rf $SFS/slacksrc/d/gcc
 		fi
+		if find $SFS/slacksrc/development/d/rust -mindepth 1 | read; then
+			rm -rf $SFS/slacksrc/d/rust && mkdir -pv $SFS/slacksrc/d/rust
+			cd $SFS/slacksrc/d/rust && lftpget https://static.rust-lang.org/dist/2020-12-31/rustc-1.49.0-src.tar.xz
+		fi
 		cp -r --preserve=timestamps $SFS/slacksrc/development/* $SFS/slacksrc
 		rm -rf $SFS/slacksrc/development
+
 fi
 
 }
