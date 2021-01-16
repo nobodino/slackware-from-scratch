@@ -48,7 +48,8 @@ export DLDIR6=http://mirror.eu.oneandone.net/linux/distributions/gentoo/gentoo/d
 # export DLDIR9=https://download.oracle.com/otn-pub/java/jdk/8u202-b08/1961070e4c9b4e26a04e7f5a083f551e/jre-8u202-linux-i586.tar.gz
 # export DLDIR10=https://download.oracle.com/otn-pub/java/jdk/8u202-b08/1961070e4c9b4e26a04e7f5a083f551e/jre-8u202-linux-x64.tar.gz
 export DLDIR11=https://slackbuilds.org/slackbuilds/14.2
-export DLDIR12=https://github.com/nobodino/slackware-from-scratch/raw/master/packages_for_aaa_elflibs
+export DLDIR12=https://github.com/nobodino/slackware-from-scratch/trunk/packages_for_aaa_elflibs
+export DLDIR13=https://github.com/nobodino/slackware-from-scratch/trunk
 #*******************************************************************
 # jdk and ada versions
 #*******************************************************************

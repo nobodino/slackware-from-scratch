@@ -1695,8 +1695,6 @@ export UPGRADE_PACKAGES=always
 for package in \
 	extra-cmake-modules \
 	attica \
-	ki18n \
-	kconfig \
 	kitemmodels \
 	kitemviews \
 	kplotting \
@@ -1708,13 +1706,14 @@ for package in \
 	kidletime \
 	kwidgetsaddons \
 	sonnet \
+	kconfig \
 	kwindowsystem \
 	solid \
 	karchive \
+	ki18n \
 	networkmanager-qt \
 	modemmanager-qt \
 	bluez-qt \
-	kwayland \
 	prison \
 	kirigami2 \
 	syntax-highlighting \
@@ -1778,14 +1777,14 @@ for package in \
 	kdav \
   ; do
    ./kde.SlackBuild frameworks:$package 
- 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-	mv -v /tmp/kde_build/*.txz /sfspacks/kde
-#	if [ $? = 0 ]; then
-#		mv -v /tmp/kde_build/*.txz /sfspacks/kde
-#	else
-#		touch /tmp/kde_build/$package.failed
-#		exit 1
-#	fi
+# 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
+#	mv -v /tmp/kde_build/*.txz /sfspacks/kde
+	if [ $? = 0 ]; then
+		mv -v /tmp/kde_build/*.txz /sfspacks/kde
+	else
+		touch /tmp/kde_build/$package.failed
+		exit 1
+	fi
 done
 
 for package in \
@@ -1800,15 +1799,15 @@ for package in \
 	kxmlrpcclient \
   ; do
    ./kde.SlackBuild frameworks:$package 
- 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-	mv -v /tmp/kde_build/*.txz /sfspacks/kde
-#	if [ $? = 0 ]; then
-#		mv -v /tmp/kde_build/*.txz /sfspacks/kde
-#	else
-#		touch /tmp/kde_build/$package.failed
-#		exit 1
-#	fi
-done
+# 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
+#	mv -v /tmp/kde_build/*.txz /sfspacks/kde
+	if [ $? = 0 ]; then
+		mv -v /tmp/kde_build/*.txz /sfspacks/kde
+	else
+		touch /tmp/kde_build/$package.failed
+		exit 1
+	fi
+ done
 
 # Keep MIME database current:
 /usr/bin/update-mime-database /usr/share/mime 1>/dev/null 2>/dev/null &
@@ -1840,21 +1839,20 @@ for package in \
 	kldap \
 	kontactinterface \
 	ktnef \
+	grantleetheme \
 	akonadi-mime \
+	libkleo \
 	akonadi-contacts \
 	akonadi-notes \
 	akonadi-search \
 	kalarmcal \
 	kmailtransport \
 	akonadi-calendar \
-	libkleo \
-	grantleetheme \
 	libkdepim \
 	pimcommon \
 	libgravatar \
 	libksieve \
 	mailimporter \
-	kdepim-apps-libs \
 	calendarsupport \
 	eventviews \
 	incidenceeditor \
@@ -1882,15 +1880,19 @@ for package in \
 	pim-sieve-editor \
   ; do
    ./kde.SlackBuild kdepim:$package
- 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-	mv -v /tmp/kde_build/*.txz /sfspacks/kde
-#	if [ $? = 0 ]; then
-#		mv -v /tmp/kde_build/*.txz /sfspacks/kde
-#	else
-#		touch /tmp/kde_build/$package.failed
-#		exit 1
-#	fi
+# 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
+#	mv -v /tmp/kde_build/*.txz /sfspacks/kde
+	if [ $? = 0 ]; then
+		mv -v /tmp/kde_build/*.txz /sfspacks/kde
+	else
+		touch /tmp/kde_build/$package.failed
+		exit 1
+	fi
 done
+
+	./kde.SlackBuild plasma-extra:plasma-wayland-protocols
+	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
+	mv -v /tmp/kde_build/*.txz /sfspacks/kde
 
 # Keep MIME database current:
 /usr/bin/update-mime-database /usr/share/mime 1>/dev/null 2>/dev/null &
@@ -1904,6 +1906,10 @@ build_plasma_kde () {
 cd /slacksrc/kde/kde
 
 export UPGRADE_PACKAGES=always
+
+./kde.SlackBuild plasma-extra:plasma-wayland-protocols
+[ $? != 0 ] && touch /tmp/kde_build/$package.failed
+mv -v /tmp/kde_build/*.txz /sfspacks/kde
 
 ./kde.SlackBuild frameworks:kwayland 
 [ $? != 0 ] && touch /tmp/kde_build/kwayland.failed
@@ -1929,7 +1935,6 @@ for package in \
 	oxygen \
 	plasma-workspace \
 	kde-cli-tools \
-	plasma-workspace \
 	systemsettings \
 	plasma-desktop \
 	kdeplasma-addons \
@@ -1953,16 +1958,17 @@ for package in \
 	plasma-browser-integration \
 	kwallet-pam \
 	plasma-disks \
+	plasma-nm \
   ; do
    ./kde.SlackBuild plasma:$package
- 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-	mv -v /tmp/kde_build/*.txz /sfspacks/kde
-#	if [ $? = 0 ]; then
-#		mv -v /tmp/kde_build/*.txz /sfspacks/kde
-#	else
-#		touch /tmp/kde_build/$package.failed
-#		exit 1
-#	fi
+# 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
+#	mv -v /tmp/kde_build/*.txz /sfspacks/kde
+	if [ $? = 0 ]; then
+		mv -v /tmp/kde_build/*.txz /sfspacks/kde
+	else
+		touch /tmp/kde_build/$package.failed
+		exit 1
+	fi
 done
 
 # Keep MIME database current:
@@ -1988,14 +1994,14 @@ for package in \
 	wacomtablet \
   ; do
    ./kde.SlackBuild plasma-extra:$package
- 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-	mv -v /tmp/kde_build/*.txz /sfspacks/kde
-#	if [ $? = 0 ]; then
-#		mv -v /tmp/kde_build/*.txz /sfspacks/kde
-#	else
-#		touch /tmp/kde_build/$package.failed
-#		exit 1
-#	fi
+#	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
+#	mv -v /tmp/kde_build/*.txz /sfspacks/kde
+	if [ $? = 0 ]; then
+		mv -v /tmp/kde_build/*.txz /sfspacks/kde
+	else
+		touch /tmp/kde_build/$package.failed
+		exit 1
+	fi
 done
 
 ./kde.SlackBuild applications:libktorrent
@@ -2139,7 +2145,6 @@ for package in \
 	kblackbox \
 	palapeli \
 	katomic \
-	ktuberling \
 	kjumpingcube \
 	kmahjongg \
 	kspaceduel \
@@ -2169,64 +2174,30 @@ for package in \
 	rocs \
 	step \
 	minuet \
-	libkgeomap \
 	kdenlive \
 	kimagemapeditor \
 	yakuake \
 	kdeconnect-kde \
-	akonadi-calendar \
-	akonadi-calendar-tools \
-	akonadiconsole \
-	akonadi-contacts \
-	akonadi-import-wizard \
-	akregator \
-	calendarsupport \
-	eventviews \
-	grantlee-editor \
-	incidenceeditor \
+	markdownpart \
+	kpublictransport \
+	kosmindoormap \
 	itinerary \
-	kaddressbook \
-	kalarm \
-	kdepim-addons \
-	kdepim-runtime \
-	kget \
-	kgpg \
-	kleopatra \
-	kmail \
-	kmail-account-wizard \
-	knotes \
-	kontact \
 	kontrast \
 	konversation \
-	kopete \
-	korganizer \
-	kosmindoormap \
-	kpmcore \
-	kpublictransport \
 	libktorrent \
 	ktorrent \
-	libgravatar \
-	libkleo \
-	libksieve \
-	mailcommon \
-	mailimporter \
-	markdownpart \
-	mbox-importer \
-	messagelib \
+	kpmcore \
 	partitionmanager \
-	pimcommon \
-	pim-data-exporter \
-	pim-sieve-editor \
   ; do
    ./kde.SlackBuild applications:$package
- 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-	mv -v /tmp/kde_build/*.txz /sfspacks/kde
-#	if [ $? = 0 ]; then
-#		mv -v /tmp/kde_build/*.txz /sfspacks/kde
-#	else
-#		touch /tmp/kde_build/$package.failed
-#		exit 1
-#	fi
+#	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
+#	mv -v /tmp/kde_build/*.txz /sfspacks/kde
+	if [ $? = 0 ]; then
+		mv -v /tmp/kde_build/*.txz /sfspacks/kde
+	else
+		touch /tmp/kde_build/$package.failed
+		exit 1
+	fi
 done
 
 # Keep MIME database current:
@@ -2247,10 +2218,6 @@ for package in \
 	calligraplan \
 	digikam \
 	krita \
-	libktorrent \
-	ktorrent \
-	kpmcore \
-	partitionmanager \
 	falkon \
 	skanlite \
 	kdevelop-pg-qt \
@@ -2269,29 +2236,29 @@ for package in \
 	okteta \
 	krename \
 	ktimetracker \
-	labplot \
 	kid3 \
+	umbrello \
   ; do
    ./kde.SlackBuild applications-extra:$package
- 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-	mv -v /tmp/kde_build/*.txz /sfspacks/kde
-#	if [ $? = 0 ]; then
-#		mv -v /tmp/kde_build/*.txz /sfspacks/kde
-#	else
-#		touch /tmp/kde_build/$package.failed
-#		exit 1
-#	fi
+# 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
+#	mv -v /tmp/kde_build/*.txz /sfspacks/kde
+	if [ $? = 0 ]; then
+		mv -v /tmp/kde_build/*.txz /sfspacks/kde
+	else
+		touch /tmp/kde_build/$package.failed
+		exit 1
+	fi
 done
 
-./kde.SlackBuild applications:umbrello
- 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-	mv -v /tmp/kde_build/*.txz /sfspacks/kde
-#	if [ $? = 0 ]; then
-#		mv -v /tmp/kde_build/*.txz /sfspacks/kde
-#	else
-#		touch /tmp/kde_build/$package.failed
-#		exit 1
-#	fi 
+	./kde.SlackBuild applications:umbrello
+# 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
+#	mv -v /tmp/kde_build/*.txz /sfspacks/kde
+	if [ $? = 0 ]; then
+		mv -v /tmp/kde_build/*.txz /sfspacks/kde
+	else
+		touch /tmp/kde_build/$package.failed
+		exit 1
+	fi 
 
 # Keep MIME database current:
 /usr/bin/update-mime-database /usr/share/mime 1>/dev/null 2>/dev/null &
@@ -2309,14 +2276,14 @@ cd /slacksrc/kde/kde
 export UPGRADE_PACKAGES=always
 
 ./kde.SlackBuild plasma:plasma-nm
- 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-	mv -v /tmp/kde_build/*.txz /sfspacks/kde
-#	if [ $? = 0 ]; then
-#		mv -v /tmp/kde_build/*.txz /sfspacks/kde
-#	else
-#		touch /tmp/kde_build/$package.failed
-#		exit 1
-#	fi
+# 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
+#	mv -v /tmp/kde_build/*.txz /sfspacks/kde
+	if [ $? = 0 ]; then
+		mv -v /tmp/kde_build/*.txz /sfspacks/kde
+	else
+		touch /tmp/kde_build/$package.failed
+		exit 1
+	fi
 
 for package in \
 	kgpg \
@@ -2333,14 +2300,14 @@ for package in \
 	kopete \
   ; do
    ./kde.SlackBuild applications:$package
- 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-	mv -v /tmp/kde_build/*.txz /sfspacks/kde
-#	if [ $? = 0 ]; then
-#		mv -v /tmp/kde_build/*.txz /sfspacks/kde
-#	else
-#		touch /tmp/kde_build/$package.failed
-#		exit 1
-#	fi
+# 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
+#	mv -v /tmp/kde_build/*.txz /sfspacks/kde
+	if [ $? = 0 ]; then
+		mv -v /tmp/kde_build/*.txz /sfspacks/kde
+	else
+		touch /tmp/kde_build/$package.failed
+		exit 1
+	fi
 done
 
 for package in \
@@ -2376,14 +2343,14 @@ for package in \
 	pim-data-exporter \
   ; do
    ./kde.SlackBuild kdepim:$package
- 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-	mv -v /tmp/kde_build/*.txz /sfspacks/kde
-#	if [ $? = 0 ]; then
-#		mv -v /tmp/kde_build/*.txz /sfspacks/kde
-#	else
-#		touch /tmp/kde_build/$package.failed
-#		exit 1
-#	fi
+# 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
+#	mv -v /tmp/kde_build/*.txz /sfspacks/kde
+	if [ $? = 0 ]; then
+		mv -v /tmp/kde_build/*.txz /sfspacks/kde
+	else
+		touch /tmp/kde_build/$package.failed
+		exit 1
+	fi
 done
 
 # Keep MIME database current:
