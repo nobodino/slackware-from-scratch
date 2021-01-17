@@ -582,6 +582,7 @@ d rcs
 d ccache
 d cvs
 d yasm
+d doxygen
 l apr
 l apr-util
 l jansson

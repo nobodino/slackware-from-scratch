@@ -166,6 +166,19 @@ if [ ! -f $SLACKSRC/n/cyrus-sasl/cyrus-sasl.SlackBuild.old ]; then
 fi
 }
 
+execute_doxygen_sed () {
+#******************************************************************
+# change "-Dbuild_wizard=yes" to "no" line in SlackBuild
+#******************************************************************
+if [ ! -f $SLACKSRC/d/doxygen/doxygen.SlackBuild.old ]; then
+	cp -v $SLACKSRC/d/doxygen/doxygen.SlackBuild $SLACKSRC/d/doxygen/doxygen.SlackBuild.old
+	(
+		cd $SLACKSRC/d/doxygen
+		sed -i -e 's/Dbuild_wizard=yes/Dbuild_wizard=no/g' doxygen.SlackBuild
+	)
+fi
+}
+
 execute_dbus_sed () {
 #******************************************************************
 # delete "--enable-x11-autolaunch" line in SlackBuild
@@ -1206,6 +1219,7 @@ post_elflibs64_c () {
 #******************************************************************
 removepkg cxxlibs-6.0.18-x86_64-1.txz readline-6.3-x86_64-2 ncurses-5.9-x86_64-4
 removepkg gmp-5.1.3-x86_64-1 libtermcap-1.2.3-x86_64-7 libpng-1.4.12-x86_64-1.txz
+removepkg readline-7.0.005-x86_64-1.txz
 removepkg libffi-3.2.1-x86_64-2.txz
 upgradepkg --reinstall /sfspacks/l/libpng-1.6.*.txz
 upgradepkg --reinstall /sfspacks/l/readline-8.0.*.txz
@@ -2483,6 +2497,8 @@ LRPC=1
 LELO=1
 # init libxkbcommon variable
 LXKB=1
+# init doxygen variable
+LDOX=1
 # init NUMJOBS variable
 NUMJOBS="-j$(( $(nproc) * 2 )) -l$(( $(nproc) + 1 ))"
 
@@ -2580,6 +2596,20 @@ while (( LINE < $FILELEN )); do
 							execute_dbus_sed && build $SRCDIR $PACKNAME && 
 							[ $? != 0 ] && exit 1  
 							dbus-uuidgen --ensure && update_slackbuild ;;
+
+						* )
+							build $SRCDIR $PACKNAME
+							[ $? != 0 ] && exit 1 ;;
+
+					esac
+					continue ;;
+
+				doxygen )
+					case $LDOX in
+						1 )
+							execute_doxygen_sed && build $SRCDIR $PACKNAME
+							[ $? != 0 ] && exit 1 
+							update_slackbuild ;;
 
 						* )
 							build $SRCDIR $PACKNAME
