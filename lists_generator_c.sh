@@ -214,7 +214,7 @@ n openssl
 n openssl10
 l libssh2
 l jansson
-n cyrus-sasl
+# n cyrus-sasl
 l db48
 l rpcsvc-proto
 l libiodbc
@@ -1342,6 +1342,7 @@ l quazip
 l pipewire
 l qrencode
 n gpgme
+l poppler
 kde frameworks
 kde kdepim
 kde plasma
@@ -1372,7 +1373,7 @@ l QScintilla
 l exiv2
 l grantlee
 l id3lib
-l poppler
+# l poppler
 l sip
 n gpgme
 n wpa_supplicant

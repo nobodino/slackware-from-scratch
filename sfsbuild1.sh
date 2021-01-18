@@ -2552,10 +2552,10 @@ while (( LINE < $FILELEN )); do
 					esac
 					continue ;;
 
-				atk )
-					source /root/.bashrc
-					build $SRCDIR $PACKNAME
-					[ $? != 0 ] && exit 1 ;;
+#				atk )
+#					source /root/.bashrc
+#					build $SRCDIR $PACKNAME
+#					[ $? != 0 ] && exit 1 ;;
 
 				ca-certificates )
 					build $SRCDIR $PACKNAME
@@ -2577,11 +2577,11 @@ while (( LINE < $FILELEN )); do
 					continue ;;
 
 				cyrus-sasl )
-					case $LCYR in
-						1 )
+					case $LISTFILE in
+						build1_s.list )
 							execute_cyrus_sasl_sed && build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 
-							update_slackbuild ;;
+							update_slackbuild && LCYR=2 ;;
 
 						* )
 							build $SRCDIR $PACKNAME
@@ -2609,7 +2609,7 @@ while (( LINE < $FILELEN )); do
 						1 )
 							execute_doxygen_sed && build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 
-							update_slackbuild ;;
+							update_slackbuild && LDOX=2 ;;
 
 						* )
 							build $SRCDIR $PACKNAME
@@ -2803,10 +2803,6 @@ while (( LINE < $FILELEN )); do
 
 				plasma-extra )
 					build_plasma_extra_kde
-					[ $? != 0 ] && exit 1 ;;
-
-				post-kde )
-					build_post_kde
 					[ $? != 0 ] && exit 1 ;;
 
 				kernel-all )
