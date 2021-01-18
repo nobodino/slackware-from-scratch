@@ -353,16 +353,25 @@ glibc_build () {
 #*****************************
 	tar xvf glibc-$GLIBCVER.tar.xz && cd glibc-$GLIBCVER
 
-	cat ../e1d559f.patch | patch -p1 --verbose
-	cat ../glibc.git-cba932a5a9e91cffd7f4172d7e91f9b2efb1f84b.patch | patch -p1 --verbose
-	cat ../glibc.git-84df7a4637be8ecb545df3501cc724f3a4d53c46.patch | patch -p1 --verbose
-	cat ../glibc.git-e21a7867713c87d0b0698254685d414d811d72b2.patch | patch -p1 --verbose
-	cat ../glibc.git-70c6e15654928c603c6d24bd01cf62e7a8e2ce9b.patch | patch -p1 --verbose
-  	cat ../glibc-2.30-gcc-10.2.patch | patch -p1 --verbose
-  	cat ../glibc.8a80ee5e2bab17a1f8e1e78fab5c33ac7efa8b29.patch | patch -p1 --verbose
-  	cat ../glibc.b0f6679bcd738ea244a14acd879d974901e56c8e.patch | patch -p1 --verbose
-  	cat ../glibc.b6d2c4475d5abc05dd009575b90556bdd3c78ad0.patch | patch -p1 --verbose
-  	cat ../glibc.e1df30fbc2e2167a982c0e77a7ebee28f4dd0800.patch | patch -p1 --verbose
+	case $GLIBCVER in
+		2.30 )
+			cat ../e1d559f.patch | patch -p1 --verbose
+			cat ../glibc.git-cba932a5a9e91cffd7f4172d7e91f9b2efb1f84b.patch | patch -p1 --verbose
+			cat ../glibc.git-84df7a4637be8ecb545df3501cc724f3a4d53c46.patch | patch -p1 --verbose
+			cat ../glibc.git-e21a7867713c87d0b0698254685d414d811d72b2.patch | patch -p1 --verbose
+			cat ../glibc.git-70c6e15654928c603c6d24bd01cf62e7a8e2ce9b.patch | patch -p1 --verbose
+		  	cat ../glibc-2.30-gcc-10.2.patch | patch -p1 --verbose
+		  	cat ../glibc.8a80ee5e2bab17a1f8e1e78fab5c33ac7efa8b29.patch | patch -p1 --verbose
+		  	cat ../glibc.b0f6679bcd738ea244a14acd879d974901e56c8e.patch | patch -p1 --verbose
+		  	cat ../glibc.b6d2c4475d5abc05dd009575b90556bdd3c78ad0.patch | patch -p1 --verbose
+		  	cat ../glibc.e1df30fbc2e2167a982c0e77a7ebee28f4dd0800.patch | patch -p1 --verbose ;;
+	
+		2.31 )
+			sed -e '1161 s|^|//|' -i libsanitizer/sanitizer_common/sanitizer_platform_limits_posix.cc ;;
+
+		2.32 )
+			sed -e '1161 s|^|//|' -i libsanitizer/sanitizer_common/sanitizer_platform_limits_posix.cc ;;
+	esac
 
 	mkdir -v build && cd build
 
