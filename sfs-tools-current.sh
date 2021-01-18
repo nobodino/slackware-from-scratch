@@ -371,7 +371,8 @@ glibc_build () {
 		  --host=$SFS_TGT                    \
 		  --build=$(../scripts/config.guess) \
 		  --enable-kernel=2.6.32             \
-		  --with-headers=/tools/include || exit 1  
+		  --disable-werror                   \
+		  --with-headers=/tools/include || exit 1
 
 	make || exit 1
 	make install || exit 1
