@@ -285,6 +285,7 @@ a gpm
 a gpm
 a sysfsutils
 l alsa-lib
+ap sqlite
 n cyrus-sasl
 n openldap
 l libidn
