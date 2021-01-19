@@ -2,8 +2,8 @@
 ################################  sfsbuild1.sh #################################
 #!/bin/bash
 #
-# Copyright 2018,2019,2020  J. E. Garrott Sr, Puyallup, WA, USA
-# Copyright 2018,2019,2020  "nobodino", Bordeaux, FRANCE
+# Copyright 2018,2019,2020,2021  J. E. Garrott Sr, Puyallup, WA, USA
+# Copyright 2018,2019,2020,2021  "nobodino", Bordeaux, FRANCE
 # All rights reserved.
 #
 # Redistribution and use of this script, with or without modification, is
