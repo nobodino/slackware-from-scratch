@@ -751,7 +751,7 @@ xfce xfce4-weather-plugin
 xfce xfce4-whiskermenu-plugin
 xfce elementary-xfce
 xfce Greybird
-# xap seamonkey
+xap seamonkey
 a end3
 EOF
 }
@@ -1380,7 +1380,6 @@ n wpa_supplicant
 xap NetworkManager-openvpn
 xap mozilla-firefox
 xap mozilla-thunderbird
-xap seamonkey
 a end4
 EOF
 }
