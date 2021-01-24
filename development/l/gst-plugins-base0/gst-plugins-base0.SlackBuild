@@ -99,15 +99,14 @@ CXXFLAGS="$SLKCFLAGS" \
   --disable-static \
   --build=$ARCH-slackware-linux || exit 1
 
-# cp some files which are correctly created with make-4.2.1 and not with make-4.3 : 
-# \#include "pbutils.h" instead of #include "pbutils.h"  and others like that
-cp $CWD/audio-enumtypes.c -v gst-libs/gst/audio/audio-enumtypes.c
-cp $CWD/interfaces-enumtypes.c -v gst-libs/gst/interfaces/interfaces-enumtypes.c
-cp $CWD/pbutils-enumtypes.c -v gst-libs/gst/pbutils/pbutils-enumtypes.c
-cp $CWD/gstrtsp-enumtypes.c -v gst-libs/gst/rtsp/gstrtsp-enumtypes.c
-cp $CWD/video-enumtypes.c -v gst-libs/gst/video/video-enumtypes.c
-cp $CWD/gsttcp-enumtypes.c -v gst/tcp/gsttcp-enumtypes.c
-
+# sed some files which are correctly created with make-4.2.1 and not with make-4.3 : 
+# such as \#include "pbutils.h" instead of #include "pbutils.h"  and others like that
+make $NUMJOBS || make || sed -i -e 's/\\#include/#include/g' gst-libs/gst/interfaces/interfaces-enumtypes.c
+make $NUMJOBS || make || sed -i -e 's/\\#include/#include/g' gst-libs/gst/pbutils/pbutils-enumtypes.c
+make $NUMJOBS || make || sed -i -e 's/\\#include/#include/g' gst-libs/gst/video/video-enumtypes.c
+make $NUMJOBS || make || sed -i -e 's/\\#include/#include/g' gst-libs/gst/rtsp/gstrtsp-enumtypes.c
+make $NUMJOBS || make || sed -i -e 's/\\#include/#include/g' gst-libs/gst/audio/audio-enumtypes.c
+make $NUMJOBS || make || sed -i -e 's/\\#include/#include/g' gst/tcp/gsttcp-enumtypes.c 
 make $NUMJOBS || make || exit 1
 make install DESTDIR=$PKG || exit 1
 
