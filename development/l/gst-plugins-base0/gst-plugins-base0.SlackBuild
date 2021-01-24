@@ -97,7 +97,6 @@ CXXFLAGS="$SLKCFLAGS" \
   --mandir=/usr/man \
   --disable-debug \
   --disable-static \
-  --disable-tcp \
   --build=$ARCH-slackware-linux || exit 1
 
 # cp some files which are correctly created with make-4.2.1 and not with make-4.3 : 
@@ -107,10 +106,9 @@ cp $CWD/interfaces-enumtypes.c -v gst-libs/gst/interfaces/interfaces-enumtypes.c
 cp $CWD/pbutils-enumtypes.c -v gst-libs/gst/pbutils/pbutils-enumtypes.c
 cp $CWD/gstrtsp-enumtypes.c -v gst-libs/gst/rtsp/gstrtsp-enumtypes.c
 cp $CWD/video-enumtypes.c -v gst-libs/gst/video/video-enumtypes.c
-# tcp is not created from the beginning, need to --disable-tcp ??
-# cp $CWD/gsttcp-enumtypes.c -v gst-libs/gst/tcp/gsttcp-enumtypes.c
+cp $CWD/gsttcp-enumtypes.c -v gst/tcp/gsttcp-enumtypes.c
 
-make $NUMJOBS || exit 1 
+make $NUMJOBS || make || exit 1
 make install DESTDIR=$PKG || exit 1
 
 # Don't ship .la files:
