@@ -102,6 +102,8 @@ CXXFLAGS="$SLKCFLAGS" \
   --disable-static \
   --build=$ARCH-slackware-linux || exit 1
 
+# sed one file which is correctly created with make-4.2.1 but not with make-4.3 :
+# related to this bug  of make-dfsg from debian : https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=976335
 make || sed -i -e 's/\\#include/#include/g' gst/udp/gstudp-enumtypes.c
 make || exit 1
 make install DESTDIR=$PKG || exit 1
