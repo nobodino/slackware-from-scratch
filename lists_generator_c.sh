@@ -211,7 +211,6 @@ ap man-pages
 l jemalloc
 l libaio
 n openssl
-n openssl10
 l libssh2
 l jansson
 l db48
@@ -244,7 +243,6 @@ l libcap
 a util-linux
 n cyrus-sasl
 n openssl
-n openssl10
 d intltool
 a ed
 ap bc
