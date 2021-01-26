@@ -214,7 +214,6 @@ n openssl
 n openssl10
 l libssh2
 l jansson
-# n cyrus-sasl
 l db48
 l rpcsvc-proto
 l libiodbc
@@ -571,10 +570,7 @@ l python-six
 d opencl-headers
 l ocl-icd
 l ffmpeg
-l gstreamer0
 l gstreamer
-l gst-plugins-base0
-l gst-plugins-good0
 l gst-plugins-base
 l gst-plugins-good
 l gst-plugins-libav
@@ -642,11 +638,9 @@ l boost
 l judy
 l netpbm
 l libwnck
-l gstreamer0
 l mozjs78
 l polkit
 a upower
-l gst-plugins-base0
 l libxkbcommon
 l gtk+3
 x libinput
@@ -997,10 +991,6 @@ l sbc
 xap pavucontrol
 l libnice
 l graphene
-l gst-plugins-base0
-l gst-plugins-good0
-l gst-plugins-base
-l gst-plugins-good
 l farstream
 xap pidgin
 xap rdesktop
@@ -1374,7 +1364,6 @@ l QScintilla
 l exiv2
 l grantlee
 l id3lib
-# l poppler
 l sip
 n gpgme
 n wpa_supplicant
