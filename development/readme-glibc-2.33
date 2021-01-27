@@ -1,19 +1,22 @@
-from now -development directory is for glibc-2.33 SFS building.
+from now -development directory is for glibc-2.33 and binutils-2.36 (patched) SFS building.
 I began to clone glibc git repository and label it glibc-2.33.
 Looked at : https://sourceware.org/glibc/wiki/Release/2.33 to see what's deprecated or not working.
 -------------------
 - building tools is ok
-- list1, list2, list3 and list4 are ok (see list.diff)
-- 1557 built on 1557 and 2 failures (solved)
+- list1, list2 ok
+- 656 built on 657 and 1 failure
 -------------------
-gst-plugins-base0: root cause make-4.3, ok with make-4.2.1
+strace: root cause binutils-2.36
 -------------------
-found a solution to build gst-plugins-base0
------------------------
-gst-plugins-good0: root cause make-4.3, ok with make-4.2.1
------------------------
-found a solution to build gst-plugins-good0
---------------------
-Everything builds fine with glibc-2.33.
-Now it's time to include binutils-2.36.
+checking whether to enable symbols demangling in stack trace... yes
+checking gnu/stubs-32.h usability... no
+checking gnu/stubs-32.h presence... no
+checking for gnu/stubs-32.h... no
+configure: Created empty gnu/stubs-32.h
+checking for m32 personality compile support (using gcc  -I.  -m32)... yes
+checking for m32 personality runtime support... no
+checking whether mpers.sh m32 -m32 works... mpers-m32/sample_struct.d2: index [                ] without special
+no
+checking whether to enable m32 personality support... no
+configure: error: Cannot enable m32 personality support
 --------------------
