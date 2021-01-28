@@ -4,21 +4,16 @@ Looked at : https://sourceware.org/glibc/wiki/Release/2.33 to see what's depreca
 -------------------
 - building tools is ok
 - list1, list2 ok
-- 656 built on 657 and 1 failure
+- 656 built on 657 and 1 failure (solve)
 -------------------
-strace: root cause binutils-2.36
+strace: root cause binutils-2.36, found a solution (add "--enable-mpers=check")
 -------------------
-checking whether to enable symbols demangling in stack trace... yes
-checking gnu/stubs-32.h usability... no
-checking gnu/stubs-32.h presence... no
-checking for gnu/stubs-32.h... no
-configure: Created empty gnu/stubs-32.h
-checking for m32 personality compile support (using gcc  -I.  -m32)... yes
-checking for m32 personality runtime support... no
-checking whether mpers.sh m32 -m32 works... mpers-m32/sample_struct.d2: index [                ] without special
-no
-checking whether to enable m32 personality support... no
-configure: error: Cannot enable m32 personality support
+CFLAGS="$SLKCFLAGS" \
+./configure \
+  --prefix=/usr \
+  --enable-mpers=check \
+  --mandir=/usr/man \
+  --build=$ARCH-slackware-linux || exit 1
 --------------------
 qt5-webkit: builds ok with glibc-2.32 and binutils-2.36 with slackware, but not in SFS
 --------------------
@@ -32,3 +27,35 @@ make[2]: *** [Tools/TestWebKitAPI/CMakeFiles/TestWebCore.dir/build.make:260: bin
 make[1]: *** [CMakeFiles/Makefile2:2406: Tools/TestWebKitAPI/CMakeFiles/TestWebCore.dir/all] Error 2
 make: *** [Makefile:182: all] Error 2
 -------------------
+fcitx-libpinyin: nok with libpinyin-2.6.0-x86_64-1.txz, but ok with libpinyin-2.3.0-x86_64-2.txz
+------------------
+gen_binary_files: table_info.cpp:126: pinyin::TABLE_DATABASE_FORMAT_TYPE to_table_database_format_type(const char*): Assertion `FALSE' failed.
+make[2]: *** [data/CMakeFiles/zhuyin_data.dir/build.make:111: data/bigram.db] Aborted
+make[1]: *** [CMakeFiles/Makefile2:835: data/CMakeFiles/zhuyin_data.dir/all] Error 2
+make[1]: *** Waiting for unfinished jobs....
+[ 95%] Linking CXX shared module fcitx-libpinyin.so
+[ 95%] Built target fcitx-libpinyin
+make: *** [Makefile:149: all] Error 2
+[ 0%] Built target fcitx-addon-fcitx-libpinyin--headers-1
+[ 0%] Built target fcitx-scan-addons.target
+[ 27%] Built target fcitx-libpinyin
+Scanning dependencies of target fcitx-modules.target
+[ 27%] Built target fcitx-modules.target
+[ 63%] Built target fcitx-compile-mo.target
+[ 63%] Built target fcitx-parse-pos.target
+[ 63%] Built target fcitx-parse-pos.dependency
+[ 68%] Built target fcitx-addon-fcitx-libpinyin--addon--conf-3
+[ 72%] Built target fcitx-addon-fcitx-libpinyin--addon--conf-4
+[ 77%] Built target fcitx-addon-fcitx-libpinyin--addon--conf-1
+[ 81%] Built target fcitx-addon-fcitx-libpinyin--addon--conf-2
+[ 81%] Built target fcitx-addon-fcitx-libpinyin--addon--desc-1
+[ 81%] Built target fcitx-libpinyin--addon
+[ 81%] Built target zhuyin_data_tar
+[ 90%] Built target zhuyin-data-extract
+[ 95%] Generating bigram.db, art.bin, gb_char.bin, history.bin, nature.bin, scitech.bin, culture.bin, gbk_char.bin, life.bin, society.bin, economy.bin, geology.bin, merged.bin, sport.bin, phrase_index.bin, pinyin_index.bin, addon_phrase_index.bin, addon_pinyin_index.bin
+gen_binary_files: table_info.cpp:126: pinyin::TABLE_DATABASE_FORMAT_TYPE to_table_database_format_type(const char*): Assertion `FALSE' failed.
+make[2]: *** [data/CMakeFiles/zhuyin_data.dir/build.make:111: data/bigram.db] Aborted
+make[1]: *** [CMakeFiles/Makefile2:835: data/CMakeFiles/zhuyin_data.dir/all] Error 2
+make: *** [Makefile:149: all] Error 2
+-----------------------------
+
