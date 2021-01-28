@@ -1,12 +1,12 @@
 from now -development directory is for glibc-2.33 and binutils-2.36 (patched) SFS building.
 I began to clone glibc git repository and label it glibc-2.33.
-Looked at : https://sourceware.org/glibc/wiki/Release/2.33 to see what's deprecated or not working.
+I looked at : https://sourceware.org/glibc/wiki/Release/2.33 to see what's deprecated or not working.
 -------------------
 - building tools is ok
 - list1, list2 ok
-- 656 built on 657 and 1 failure (solve)
+- 1150 built on 1552 and 3 failures (1 solved strace)
 -------------------
-strace: root cause binutils-2.36, found a solution (add "--enable-mpers=check")
+strace: root cause binutils-2.36 (if you downgrade to binutils-2.35.1 it builds), found a solution (add "--enable-mpers=check")
 -------------------
 CFLAGS="$SLKCFLAGS" \
 ./configure \
@@ -15,7 +15,7 @@ CFLAGS="$SLKCFLAGS" \
   --mandir=/usr/man \
   --build=$ARCH-slackware-linux || exit 1
 --------------------
-qt5-webkit: builds ok with glibc-2.32 and binutils-2.36 with slackware, but not in SFS
+qt5-webkit: builds ok with glibc-2.32 and binutils-2.36 with slackware, but not in SFS with glibc-2.33
 --------------------
 [ 99%] Linking CXX executable ../../../bin/MiniBrowser
 [ 99%] Built target MiniBrowser
