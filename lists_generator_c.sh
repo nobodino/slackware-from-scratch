@@ -629,9 +629,7 @@ l pulseaudio
 l alsa-lib
 l gst-plugins-good
 l qt5
-d binutils
 l qt5-webkit
-d binutils
 d doxygen
 l libxkbcommon
 n bluez

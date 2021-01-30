@@ -137,19 +137,6 @@ echo
 # sub-system of execution of patches on the fly
 #*******************************************************************
 
-execute_binutils_sed () {
-#******************************************************************
-# disable gold line in SlackBuild
-#******************************************************************
-if [ ! -f $SLACKSRC/d/binutils/binutils.SlackBuild.old ]; then
-	cp -v $SLACKSRC/d/binutils/binutils.SlackBuild $SLACKSRC/d/binutils/binutils.SlackBuild.old
-	(
-		cd $SLACKSRC/d/binutils
-		sed -i -e 's/--enable-gold=yes/--enable-gold=no/g' binutils.SlackBuild
-	)
-fi
-}
-
 execute_cmake_sed () {
 #******************************************************************
 # delete "--qt-gui" line in SlackBuild
@@ -2521,8 +2508,6 @@ LELO=1
 LXKB=1
 # init doxygen variable
 LDOX=1
-# init binutils variable
-LBIN=1
 # init NUMJOBS variable
 NUMJOBS="-j$(( $(nproc) * 2 )) -l$(( $(nproc) + 1 ))"
 
@@ -2573,27 +2558,6 @@ while (( LINE < $FILELEN )); do
 							rm /sfspacks/l/alsa-lib*.t?z
 							build $SRCDIR $PACKNAME
 							[ $? != 0 ] && exit 1 ;;
-					esac
-					continue ;;
-
-				binutils )
-					case $LISTFILE in
-						build3_s.list )
-							case $LBIN in
-								1 )
-									execute_binutils_sed && build $SRCDIR $PACKNAME
-									[ $? != 0 ] && exit 1
-									update_slackbuild ;;
-								*)
-									build $SRCDIR $PACKNAME
-									[ $? != 0 ] && exit 1 ;;
-							esac
-							continue ;;
-
-						* )
-							build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1 ;;
-
 					esac
 					continue ;;
 
