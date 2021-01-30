@@ -8,8 +8,19 @@ I looked at : https://sourceware.org/glibc/wiki/Release/2.33 to see what's depre
 --------------------
 qt5-webkit: builds ok with glibc-2.32 and binutils-2.36 with slackware, but not in SFS with glibc-2.33
 
-solved (trick): disable gold in binutils before building qt5-webkit. Once Qt5-webkit installed, rebuild binutils with gold enabled.
-A better solution would be to be enable to change ld.gold to ld.bfd during qt5-webkit.
+Solution: disable ld.gold during qt5-webkit (add -DUSE_LD_GOLD=OFF  to cmake)
+-------------------
+# Configure, build, and install:
+mkdir qtwebkit-build
+cd qtwebkit-build
+  cmake \
+	-DUSE_LD_GOLD=OFF \
+    -DPORT=Qt \
+    -DQt5_DIR=$QTDIR \
+    ..  || exit 1
+  make $NUMJOBS || make || exit 1
+  make install DESTDIR=$PKG || exit 1
+cd ..
 -------------------
 fcitx-libpinyin: nok with libpinyin-2.6.0-x86_64-1.txz, but ok with libpinyin-2.3.0-x86_64-2.txz
 
