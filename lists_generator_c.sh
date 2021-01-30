@@ -711,7 +711,7 @@ x fcitx-configtool
 x fcitx-hangul
 x fcitx-qt5
 x fcitx-kkc
-# x fcitx-libpinyin
+x fcitx-libpinyin
 x fcitx-m17n
 x fcitx-sayura
 x fcitx-table-extra
