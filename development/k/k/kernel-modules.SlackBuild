@@ -1,0 +1,135 @@
+#!/bin/sh
+
+# Copyright 2018, 2020  Patrick J. Volkerding, Sebeka, Minnesota, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# To use this script, point it to a Linux kernel source tree and a .config
+# file by setting the appropriate environment variables:
+#
+# KERNEL_SOURCE=/usr/src/linux KERNEL_CONFIG=./kernel-configs/config-generic-4.14.23 ./kernel-modules.SlackBuild
+#
+# By default, it will use the source and .config already in /usr/src/linux (if possible).
+
+# KERNEL_NAME is optional, and we don't use it. Define it to "-name" if
+# you'd like an extra string after "kernel" in the package name
+# (i.e. "kernel-name-modules").
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+KERNEL_NAME=${KERNEL_NAME:-}
+KERNEL_SOURCE=${KERNEL_SOURCE:-/usr/src/linux}
+KERNEL_CONFIG=${KERNEL_CONFIG:-/usr/src/linux/.config}
+BUILD=${BUILD:-1}
+if [ ! -r "${KERNEL_CONFIG}" ]; then
+  echo "Error: the KERNEL_CONFIG environment variable needs to be set to the"
+  echo ".config file to be used to build these modules. Example:"
+  echo "KERNEL_SOURCE=/usr/src/linux KERNEL_CONFIG=./kernel-configs/config-generic-4.14.23 ./kernel-modules.SlackBuild"
+  exit 1
+fi
+if [ ! -d "${KERNEL_SOURCE}" ]; then
+  echo "Error: kernel source directory ${KERNEL_SOURCE} does not exist."
+  exit 1
+fi
+# Get the kernel version from the kernel Makefile:
+VERSION=$(grep "^VERSION = " ${KERNEL_SOURCE}/Makefile | rev | cut -f 1 -d ' ' | rev).$(grep "^PATCHLEVEL = " ${KERNEL_SOURCE}/Makefile | rev | cut -f 1 -d ' ' | rev).$(grep "^SUBLEVEL = " ${KERNEL_SOURCE}/Makefile | rev | cut -f 1 -d ' ' | rev)$(grep "^EXTRAVERSION = " ${KERNEL_SOURCE}/Makefile | rev | cut -f 1 -d ' ' | rev)
+# Set LOCALVERSION to the value found inside the .config:
+LOCALVERSION="$(cat ${KERNEL_SOURCE}/.config 2> /dev/null | grep CONFIG_LOCALVERSION= | cut -f 2 -d = | tr -d \")"
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  # We will need to copy the config and run make oldconfig and make
+  # prepare in order to generate kernel/bounds.s, where we can find
+  # the true $PACKAGE_ARCH.
+  if [ ! "${KERNEL_CONFIG}" = "${KERNEL_SOURCE}/.config" ]; then
+    cp -a ${KERNEL_CONFIG} ${KERNEL_SOURCE}/.config
+  fi
+  cd ${KERNEL_SOURCE}
+  make oldconfig 1> /dev/null 2> /dev/null
+  make prepare 1> /dev/null 2> /dev/null
+  PACKAGE_ARCH=$(cat kernel/bounds.s | grep -w "\-march=.*" | tr " " "\n" | grep -w "\-march=.*" | cut -f 2 -d = | tr - _)
+  echo "kernel${KERNEL_NAME}-modules${LOCALVERSION}-$(echo ${VERSION} | tr - _)$(echo ${LOCALVERSION} | tr - _)-${PACKAGE_ARCH}-$BUILD.txz"
+  exit 0
+fi
+
+NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-kernel${KERNEL_NAME}-modules
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+
+# Set the variable $KERNEL_CLEAN to anything to run "make clean" before the
+# build. Default is to start compiling in the tree as we found it.
+if [ ! -z "${KERNEL_CLEAN}" ]; then
+  ( cd ${KERNEL_SOURCE}
+    echo "Cleaning kernel source (make clean)..."
+    make clean
+    # Make sure header files aren't missing...
+    make prepare
+    # Don't package the kernel in the sources:
+    find . -name "*Image" -exec rm "{}" \+
+    # No need for these:
+    rm -f .config.old .version
+    find . -name "*.cmd" -exec rm -f "{}" \+
+    rm .*.d
+  )
+fi
+
+# Copy the .config into the kernel source directory (unless it's there already)
+if [ ! "${KERNEL_CONFIG}" = "${KERNEL_SOURCE}/.config" ]; then
+  echo "Copying the .config file to the kernel source tree:"
+  cp -a --verbose ${KERNEL_CONFIG} ${KERNEL_SOURCE}/.config
+fi
+
+( cd ${KERNEL_SOURCE}
+  echo "Running make oldconfig..."
+  make oldconfig
+  echo "Running a preliminary make (needed to create modules.builtin.modinfo)..."
+  make $NUMJOBS || exit 1
+  echo "Building kernel modules..."
+  make $NUMJOBS modules || exit 1
+  echo "Installing kernel modules to $PKG..."
+  make INSTALL_MOD_PATH=$PKG modules_install || exit 1
+  # Fix build and source symlinks if they are pointing into /tmp:
+  ( cd $PKG/lib/modules/${VERSION}${LOCALVERSION}
+    for symlink in build source ; do
+      target=$(readlink $symlink)
+      if echo $target | grep -q "^/tmp/package-kernel-source/" ; then
+        rm -f $symlink
+        ln -sf $(echo $target | sed "s|/tmp/package-kernel-source/|/|g") $symlink
+      fi
+    done
+  )
+  depmod -b $PKG -a ${VERSION}${LOCALVERSION}
+) || exit 1
+
+mkdir $PKG/install
+cat $CWD/slack-desc/slack-desc.kernel-modules-template | sed "s/%PACKAGE_NAME%/kernel${KERNEL_NAME}-modules${LOCALVERSION}/g" > $PKG/install/slack-desc
+
+# Fetch the kernel architecture from the source tree:
+cd ${KERNEL_SOURCE}
+PACKAGE_ARCH=$(cat kernel/bounds.s | grep -w "\-march=.*" | tr " " "\n" | grep -w "\-march=.*" | cut -f 2 -d = | tr - _)
+    
+# Make the package:
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/kernel${KERNEL_NAME}-modules${LOCALVERSION}-$(echo ${VERSION} | tr - _)$(echo ${LOCALVERSION} | tr - _)-${PACKAGE_ARCH}-$BUILD.txz
+
