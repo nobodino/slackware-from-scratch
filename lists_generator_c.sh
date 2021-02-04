@@ -190,7 +190,7 @@ a sysvinit-scripts
 l popt
 a sysvinit-functions
 a bin
-a devs
+ a devs
 n network-scripts
 l pcre
 d re2c
