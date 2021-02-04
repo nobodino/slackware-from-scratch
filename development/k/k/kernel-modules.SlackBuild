@@ -63,8 +63,8 @@ if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
     cp -a ${KERNEL_CONFIG} ${KERNEL_SOURCE}/.config
   fi
   cd ${KERNEL_SOURCE}
-  make oldconfig 1> /dev/null 2> /dev/null
-  make prepare 1> /dev/null 2> /dev/null
+  make CC=clang oldconfig 1> /dev/null 2> /dev/null
+  make CC=clang prepare 1> /dev/null 2> /dev/null
   PACKAGE_ARCH=$(cat kernel/bounds.s | grep -w "\-march=.*" | tr " " "\n" | grep -w "\-march=.*" | cut -f 2 -d = | tr - _)
   echo "kernel${KERNEL_NAME}-modules${LOCALVERSION}-$(echo ${VERSION} | tr - _)$(echo ${LOCALVERSION} | tr - _)-${PACKAGE_ARCH}-$BUILD.txz"
   exit 0
@@ -102,13 +102,13 @@ fi
 
 ( cd ${KERNEL_SOURCE}
   echo "Running make oldconfig..."
-  make oldconfig
+  make CC=clang oldconfig
   echo "Running a preliminary make (needed to create modules.builtin.modinfo)..."
-  make $NUMJOBS || exit 1
+  make CC=clang $NUMJOBS || exit 1
   echo "Building kernel modules..."
-  make $NUMJOBS modules || exit 1
+  make CC=clang $NUMJOBS modules || exit 1
   echo "Installing kernel modules to $PKG..."
-  make INSTALL_MOD_PATH=$PKG modules_install || exit 1
+  make CC=clang INSTALL_MOD_PATH=$PKG modules_install || exit 1
   # Fix build and source symlinks if they are pointing into /tmp:
   ( cd $PKG/lib/modules/${VERSION}${LOCALVERSION}
     for symlink in build source ; do

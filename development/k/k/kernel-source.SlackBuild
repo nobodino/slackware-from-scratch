@@ -141,14 +141,14 @@ echo "Untarring $CWD/linux-${VERSION}.tar.?z in $PKG/usr/src..."
 # to build the kernel sources first.
 ( cd $PKG/usr/src/linux-${VERSION}
   echo "Making oldconfig..."
-  make oldconfig
+  make CC=clang oldconfig
   if [ ! -r $CWD/kernel-configs/config-generic${LOCALVERSION}-${VERSION}${LOCALVERSION}${CONFIG_SUFFIX} ]; then
     echo "Saving new .config as: $CWD/kernel-configs/config-generic${LOCALVERSION}-${VERSION}${LOCALVERSION}${CONFIG_SUFFIX}"
     cp -a .config $CWD/kernel-configs/config-generic${LOCALVERSION}-${VERSION}${LOCALVERSION}${CONFIG_SUFFIX}
   fi
   echo "Building kernel and modules (needed before clean for building NVIDIA to work)..."
-  make ${NUMJOBS} || exit 1
-  make ${NUMJOBS} modules || exit 1
+  make CC=clang ${NUMJOBS} || exit 1
+  make CC=clang ${NUMJOBS} modules || exit 1
   echo "Cleaning up..."
   make clean
   # Make sure header files aren't missing...

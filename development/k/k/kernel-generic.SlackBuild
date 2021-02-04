@@ -77,8 +77,8 @@ if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
     cp -a ${KERNEL_CONFIG} ${KERNEL_SOURCE}/.config
   fi
   cd ${KERNEL_SOURCE}
-  make oldconfig 1> /dev/null 2> /dev/null
-  make prepare 1> /dev/null 2> /dev/null
+  make CC=clang oldconfig 1> /dev/null 2> /dev/null
+  make CC=clang prepare 1> /dev/null 2> /dev/null
   PACKAGE_ARCH=$(cat kernel/bounds.s | grep -w "\-march=.*" | tr " " "\n" | grep -w "\-march=.*" | cut -f 2 -d = | tr - _)
   echo "kernel-${KERNEL_NAME}${LOCALVERSION}-$(echo ${VERSION} | tr - _)$(echo ${LOCALVERSION} | tr - _)-${PACKAGE_ARCH}-$BUILD.txz"
   exit 0
@@ -116,9 +116,9 @@ fi
 
 ( cd ${KERNEL_SOURCE}
   echo "Running make oldconfig..."
-  make oldconfig
+  make CC=clang oldconfig
   echo "Building kernel..."
-  make $NUMJOBS bzImage || make bzImage || exit 1
+  make CC=clang $NUMJOBS bzImage || make CC=clang bzImage || exit 1
   # Output files to a directory, if requested:
   if [ ! -z "${KERNEL_OUTPUT_DIRECTORY}" ]; then
     echo "Copying files to ${KERNEL_OUTPUT_DIRECTORY}..."
