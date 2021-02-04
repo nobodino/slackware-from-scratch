@@ -1,0 +1,213 @@
+#!/bin/bash
+
+# Copyright 2000 BSDi, Inc. Concord, CA, USA
+# Copyright 2001, 2002, 2003, 2004  Slackware Linux, Inc. Concord, CA, USA
+# Copyright 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2018, 2020  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+# Set initial variables:
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-openssh
+
+PKGNAM=openssh
+VERSION=${VERSION:-$(echo openssh-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+BUILD=${BUILD:-4}
+
+NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
+elif [ "$ARCH" = "arm" ]; then
+  SLKCFLAGS="-O2 -march=armv4 -mtune=xscale"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "armel" ]; then
+  SLKCFLAGS="-O2 -march=armv4t"
+  LIBDIRSUFFIX=""
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+# Clean target location:
+rm -rf $PKG
+mkdir -p $PKG
+
+# Prepare the framework and extract the package:
+cd $TMP
+rm -rf $PKG openssh-$VERSION
+tar xvf $CWD/openssh-$VERSION.tar.?z || tar xvf $CWD/openssh-$VERSION.tar.bz2 || exit 1
+cd openssh-$VERSION || exit 1
+chown -R root:root .
+
+# Restore support for tcpwrappers:
+zcat $CWD/openssh.tcp_wrappers.diff.gz | patch -p1 --verbose || exit 1
+
+# Fix ssh-copy-id EOF bug:
+zcat $CWD/ssh-copy-id.diff.gz | patch -p1 --verbose || exit 1
+
+# patch from fedora to solve https://bugzilla.mindrot.org/show_bug.cgi?id=3232
+cat $CWD/openssh-8.4p1-sandbox-seccomp.patch | patch -Esp1 --verbose || exit 1
+
+
+# Choose correct options depending on whether PAM is installed:
+if [ -L /lib${LIBDIRSUFFIX}/libpam.so.? ]; then
+  PAM_OPTIONS="--with-pam --with-kerberos5"
+  unset SHADOW_OPTIONS
+  # Enable PAM in sshd_config:
+  zcat $CWD/sshd_config-pam.diff.gz | patch -p1 --verbose || exit 1
+else
+  unset PAM_OPTIONS
+  SHADOW_OPTIONS="--without-pam"
+fi
+
+autoreconf -vif
+
+# Compile package:
+CFLAGS="$SLKCFLAGS" \
+./configure \
+  --prefix=/usr \
+  --mandir=/usr/man \
+  --sysconfdir=/etc/ssh \
+  $PAM_OPTIONS \
+  $SHADOW_OPTIONS \
+  --with-md5-passwords \
+  --with-libedit \
+  --with-tcp-wrappers \
+  --with-default-path=/usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin \
+  --with-privsep-path=/var/empty \
+  --with-privsep-user=sshd \
+  --build=$ARCH-slackware-linux || exit 1
+
+make $NUMJOBS || make || exit 1
+
+# Install the package:
+make install DESTDIR=$PKG || exit 1
+
+find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
+  | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+
+# Compress and if needed symlink the man pages:
+if [ -d $PKG/usr/man ]; then
+  ( cd $PKG/usr/man
+    for manpagedir in $(find . -type d -name "man*") ; do
+      ( cd $manpagedir
+        for eachpage in $( find . -type l -maxdepth 1) ; do
+          ln -s $( readlink $eachpage ).gz $eachpage.gz
+          rm $eachpage
+        done
+        gzip -9 *.?
+      )
+    done
+  )
+fi
+
+# Install directory used with PrivilegeSeparation option:
+mkdir -p $PKG/var/empty
+chmod 755 $PKG/var/empty
+
+# Install defaults file
+mkdir -p $PKG/etc/default
+cat $CWD/sshd.default > $PKG/etc/default/sshd.new
+
+# Install docs:
+mkdir -p $PKG/usr/doc/openssh-$VERSION
+cp -a \
+  CREDITS ChangeLog INSTALL LICENCE OVERVIEW \
+  README README.privsep README.smartcard RFC.nroff TODO WARNING.RNG \
+  $PKG/usr/doc/openssh-$VERSION
+chmod 644 $PKG/usr/doc/openssh-$VERSION/*
+
+# If there's a ChangeLog, installing at least part of the recent history
+# is useful, but don't let it get totally out of control:
+if [ -r ChangeLog ]; then
+  DOCSDIR=$(echo $PKG/usr/doc/*-$VERSION)
+  cat ChangeLog | head -n 1000 > $DOCSDIR/ChangeLog
+  touch -r ChangeLog $DOCSDIR/ChangeLog
+fi
+
+# Install also 'ssh-copy-id' and its manpage from contrib:
+( cd contrib
+  cp -a ssh-copy-id $PKG/usr/bin/ssh-copy-id
+  chmod 755 $PKG/usr/bin/ssh-copy-id
+  cat ssh-copy-id.1 | gzip -9c > $PKG/usr/man/man1/ssh-copy-id.1.gz
+)
+
+( cd $PKG
+
+  # Ditch the new host keys, since these have to be uniquely prepared on each machine:
+  rm -f etc/ssh/ssh_host_dsa_key
+  rm -f etc/ssh/ssh_host_dsa_key.pub
+  rm -f etc/ssh/ssh_host_rsa_key
+  rm -f etc/ssh/ssh_host_rsa_key.pub
+  rm -f etc/ssh/ssh_host_key
+  rm -f etc/ssh/ssh_host_key.pub
+
+  # Set up the config script installation:
+  mv etc/ssh/ssh_config etc/ssh/ssh_config.new
+  mv etc/ssh/sshd_config etc/ssh/sshd_config.new
+
+  # Add the init script:
+  mkdir -p etc/rc.d
+  cat $CWD/rc.sshd > etc/rc.d/rc.sshd.new
+  chmod 755 etc/rc.d/rc.sshd.new
+
+  if [ ! -z "$PAM_OPTIONS" ]; then
+    # Add the pam stuff:
+    mkdir -p etc/pam.d
+    cat $CWD/sshd.pam > etc/pam.d/sshd.new
+  fi
+
+  # Copy runtime installation files:
+  mkdir -p install
+  zcat $CWD/doinst.sh.gz > install/doinst.sh
+  cat $CWD/slack-desc > install/slack-desc
+)
+
+# Create the package itself:
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/openssh-$VERSION-$ARCH-$BUILD.txz
+
