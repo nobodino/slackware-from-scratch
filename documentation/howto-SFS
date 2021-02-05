@@ -33,7 +33,7 @@ NOTE:
    "defaults,noatime,discard", may not be applicable to your disk if
    it is a standard HDD.
 
-							   SAMPLE FSTAB SETUP
+							   SAMPLE /etc/fstab SETUP
 		   (Only the first two lines need modifying for your setup.)
 
    /dev/sdb1    swap           swap     defaults                    0   0
@@ -61,13 +61,15 @@ github, you must keep this one unchanged.
    - PATDIR: the directory where you store eveything about sfs
              (tools, others...)
    - DNDIR1: the directory where are stored everything else slackware
-             (gnuada, SBo)
+             (gnuada, ..)
    - RDIR1: the directory where is stored the resynced slackware32 sources
    - RDIR3: the directory where is stored the resynced slackware64 sources
 
 # export PATDIR=/mnt/ext4/sda4/sfs (for example)
-# mkdir -pv $PATDIR/tools (to store the "tools" build further on x86)
-# mkdir -pv $PATDIR/tools_64  (to store the "tools" build further on x86_64)
+# mkdir -pv $PATDIR/tools (to store the "tools" build further on x86 -current branch)
+# mkdir -pv $PATDIR/tools_dev (to store the "tools" build further on x86 -development branch)
+# mkdir -pv $PATDIR/tools_64  (to store the "tools" build further on x86_64 -current branch)
+# mkdir -pv $PATDIR/tools_64_dev  (to store the "tools" build further on x86_64 -development branch)
 # mkdir -pv $PATDIR/others  (to store what the sub-script of
                              "sfs-bootstrap.sh" grabs to "populate_others",
 							 get the different repositories)
@@ -88,6 +90,7 @@ the following command:
    You will be presented with two choices: "slackware" or "quit".
    If you choose slackware, then you will see three more choice:
      "x86", "x86_64" or "quit"
+   Then you will be presented with tow choices: "current" or "developemnt".
    Then it will clean up the previous installation building if any.
    Then four kinds of choice: "rsync", local, dvd, or "quit". If the
    choice is:
@@ -126,7 +129,7 @@ the following command:
 # cd /mnt/sfs
 # chown -R root:root tools/
 # tar czf tools.tar.gz tools/
-# move it to $PATDIR/tools (for x86)  or $PATDIR/tools_64 (for x86_64)
+# move it to $PATDIR/tools or tools_dev (for x86)  or $PATDIR/tools_64 or tools_64_dev (for x86_64)
 
 8) from now you can build SFS either list by list or completely with a unique 
    script "full-sfs.sh".
@@ -140,12 +143,12 @@ Either by executing:
 Or by executing:
 # time (./full-sfs.sh)
 
-On my machine the full build takes about 18 hours. (nobodino)
+On my machine the full build takes about 26/27 hours. (nobodino)
 On my machine the full build takes about 37 hours. (worsel)
 Your connection to internet must be active.
 
-notice: if you build SFS on slackware-14.2, you won't be able to build ipset, I 
-think while building you need to have the same kernel, which is generally not 
+notice: if you build SFS on slackware-14.2, you won't be able to build ipset. 
+While building you need to have the same kernel, which is generally not 
 the case with SFS (4.14.x series) and slackware-14.2 (4.4.x series). You may 
 disable it in build4_s.list by adding '#' in front of 'n ipset' line. You will
 able to build it in real environment, after you reboot your new SFS system. 
