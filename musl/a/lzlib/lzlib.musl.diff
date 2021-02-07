@@ -1,0 +1,168 @@
+diff -ruBN /tmp/lzlib/lzlib.SlackBuild /source/a/lzlib/lzlib.SlackBuild
+--- /tmp/lzlib/lzlib.SlackBuild	2021-01-05 20:26:40.000000000 +0000
++++ /source/a/lzlib/lzlib.SlackBuild	2021-01-06 05:14:43.000000000 +0000
+@@ -64,7 +64,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "armv7hl" ]; then
+   SLKCFLAGS="-O3 -march=armv7-a -mfpu=vfpv3-d16"
+   LIBDIRSUFFIX=""
+diff -ruBN /tmp/lzlib/lzlib.SlackBuild.log /source/a/lzlib/lzlib.SlackBuild.log
+--- /tmp/lzlib/lzlib.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/a/lzlib/lzlib.SlackBuild.log	2021-01-06 05:15:04.000000000 +0000
+@@ -0,0 +1,152 @@
++lzlib-1.12/AUTHORS
++lzlib-1.12/COPYING
++lzlib-1.12/COPYING.GPL
++lzlib-1.12/ChangeLog
++lzlib-1.12/INSTALL
++lzlib-1.12/Makefile.in
++lzlib-1.12/NEWS
++lzlib-1.12/README
++lzlib-1.12/configure
++lzlib-1.12/doc/minilzip.1
++lzlib-1.12/doc/lzlib.info
++lzlib-1.12/doc/lzlib.texi
++lzlib-1.12/carg_parser.h
++lzlib-1.12/decoder.h
++lzlib-1.12/encoder.h
++lzlib-1.12/encoder_base.h
++lzlib-1.12/fast_encoder.h
++lzlib-1.12/lzip.h
++lzlib-1.12/lzlib.h
++lzlib-1.12/bbexample.c
++lzlib-1.12/carg_parser.c
++lzlib-1.12/cbuffer.c
++lzlib-1.12/decoder.c
++lzlib-1.12/encoder.c
++lzlib-1.12/encoder_base.c
++lzlib-1.12/fast_encoder.c
++lzlib-1.12/ffexample.c
++lzlib-1.12/lzcheck.c
++lzlib-1.12/lzlib.c
++lzlib-1.12/main.c
++lzlib-1.12/testsuite/check.sh
++lzlib-1.12/testsuite/test.txt
++lzlib-1.12/testsuite/fox_lf
++lzlib-1.12/testsuite/fox.lz
++lzlib-1.12/testsuite/fox_bcrc.lz
++lzlib-1.12/testsuite/fox_crc0.lz
++lzlib-1.12/testsuite/fox_das46.lz
++lzlib-1.12/testsuite/fox_de20.lz
++lzlib-1.12/testsuite/fox_mes81.lz
++lzlib-1.12/testsuite/fox_s11.lz
++lzlib-1.12/testsuite/fox_v2.lz
++lzlib-1.12/testsuite/test_sync.lz
++lzlib-1.12/testsuite/test.txt.lz
++lzlib-1.12/testsuite/test_em.txt.lz
++
++creating config.status
++creating Makefile
++VPATH = .
++prefix = /usr
++exec_prefix = $(prefix)
++bindir = $(exec_prefix)/bin
++datarootdir = $(prefix)/share
++includedir = $(prefix)/include
++infodir = /usr/info
++libdir = /usr/lib
++mandir = /usr/man
++CC = gcc
++CPPFLAGS = 
++CFLAGS = -O2 -fPIC
++LDFLAGS = 
++OK. Now you can run make.
++gcc  -O2 -fPIC -c -o carg_parser.o carg_parser.c
++gcc  -O2 -fPIC -DPROGVERSION=\"1.12\" -c -o main.o main.c
++gcc  -O2 -fPIC -fpic -fPIC -c -o lzlib_sh.o lzlib.c
++gcc  -O2 -fPIC -fpic -fPIC -shared -Wl,--soname=liblz.so.1 -o liblz.so.1.12 lzlib_sh.o
++gcc  -O2 -fPIC -o minilzip_shared carg_parser.o main.o liblz.so.1.12
++if [ ! -d "/tmp/package-lzlib/usr/include" ] ; then install -d -m 755 "/tmp/package-lzlib/usr/include" ; fi
++if [ ! -d "/tmp/package-lzlib/usr/lib" ] ; then install -d -m 755 "/tmp/package-lzlib/usr/lib" ; fi
++install -m 644 ./lzlib.h "/tmp/package-lzlib/usr/include/lzlib.h"
++if [ -n "" ] ; then \
++  install -m 644 ./liblz.a "/tmp/package-lzlib/usr/lib/liblz.a" ; \
++fi
++if [ -n "minilzip_shared" ] ; then \
++  install -m 755 ./liblz.so.1.12 "/tmp/package-lzlib/usr/lib/liblz.so.1.12" ; \
++  if [ -e "/tmp/package-lzlib/usr/lib/liblz.so.1" ] ; then \
++    run_ldconfig=no ; \
++  else run_ldconfig=yes ; \
++  fi ; \
++  rm -f "/tmp/package-lzlib/usr/lib/liblz.so" ; \
++  rm -f "/tmp/package-lzlib/usr/lib/liblz.so.1" ; \
++  cd "/tmp/package-lzlib/usr/lib" && ln -s liblz.so.1.12 liblz.so ; \
++  cd "/tmp/package-lzlib/usr/lib" && ln -s liblz.so.1.12 liblz.so.1 ; \
++  if [ "" != yes ] && [ ${run_ldconfig} = yes ] && \
++     [ -x "/sbin/ldconfig" ] ; then "/sbin/ldconfig" -n "/tmp/package-lzlib/usr/lib" || true ; fi ; \
++fi
++if [ ! -d "/tmp/package-lzlib/usr/info" ] ; then install -d -m 755 "/tmp/package-lzlib/usr/info" ; fi
++rm -f "/tmp/package-lzlib/usr/info/lzlib.info"*
++install -m 644 ./doc/lzlib.info "/tmp/package-lzlib/usr/info/lzlib.info"
++if /bin/sh -c "install-info --version" > /dev/null 2>&1 ; then \
++  install-info --info-dir="/tmp/package-lzlib/usr/info" "/tmp/package-lzlib/usr/info/lzlib.info" ; \
++fi
++cp: cannot stat 'THANKS': No such file or directory
++cp: cannot stat 'TODO': No such file or directory
++find: ‘/tmp/package-lzlib/usr/man’: No such file or directory
++find: ‘/tmp/package-lzlib/usr/man’: No such file or directory
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++usr/lib/liblz.so	liblz.so.1.12
++usr/lib/liblz.so.1	liblz.so.1.12
++
++Making symbolic link creation script:
++( cd usr/lib ; rm -rf liblz.so )
++( cd usr/lib ; ln -sf liblz.so.1.12 liblz.so )
++( cd usr/lib ; rm -rf liblz.so.1 )
++( cd usr/lib ; ln -sf liblz.so.1.12 liblz.so.1 )
++
++It is recommended that you make these lines your new installation script.
++
++Would you like to make this stuff the install script for this package
++and remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './usr/lib/liblz.so'
++removed './usr/lib/liblz.so.1'
++
++Creating your new ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/lzlib-1.12-x86_64-1.txz
++
++./
++install/
++install/doinst.sh
++install/slack-desc
++usr/
++usr/doc/
++usr/doc/lzlib-1.12/
++usr/doc/lzlib-1.12/AUTHORS
++usr/doc/lzlib-1.12/COPYING
++usr/doc/lzlib-1.12/COPYING.GPL
++usr/doc/lzlib-1.12/ChangeLog
++usr/doc/lzlib-1.12/INSTALL
++usr/doc/lzlib-1.12/NEWS
++usr/doc/lzlib-1.12/README
++usr/include/
++usr/include/lzlib.h
++usr/info/
++usr/info/lzlib.info.gz
++usr/lib/
++usr/lib/liblz.so.1.12
++
++Slackware package /tmp/lzlib-1.12-x86_64-1.txz created.
++

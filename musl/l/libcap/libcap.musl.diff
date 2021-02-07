@@ -1,0 +1,575 @@
+diff -ruBN /tmp/libcap/libcap.SlackBuild /source/l/libcap/libcap.SlackBuild
+--- /tmp/libcap/libcap.SlackBuild	2020-08-02 17:54:33.000000000 +0000
++++ /source/l/libcap/libcap.SlackBuild	2021-01-03 12:02:12.000000000 +0000
+@@ -60,7 +60,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "arm" ]; then
+   SLKCFLAGS="-O2 -march=armv4 -mtune=xscale"
+   LIBDIRSUFFIX=""
+@@ -95,8 +95,8 @@
+ # Disable broken gperf support:
+ sed -i 's@^BUILD_GPERF@#\0@' Make.Rules
+ 
+-make DYNAMIC=yes GOLANG=$GOSUPPORT || exit 1
+-make install RAISE_SETFCAP=no GOLANG=$GOSUPPORT DESTDIR=$PKG man_prefix=/usr || exit 1
++make lib=lib$LIBDIRSUFFIX DYNAMIC=yes GOLANG=$GOSUPPORT || exit 1
++make lib=lib$LIBDIRSUFFIX install RAISE_SETFCAP=no GOLANG=$GOSUPPORT DESTDIR=$PKG man_prefix=/usr || exit 1
+ chmod 755 $PKG/lib${LIBDIRSUFFIX}/libcap.so*
+ 
+ # Don't ship the static libcap.a. Leave libpsx.a alone, though - there's no
+diff -ruBN /tmp/libcap/libcap.SlackBuild.log /source/l/libcap/libcap.SlackBuild.log
+--- /tmp/libcap/libcap.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/l/libcap/libcap.SlackBuild.log	2021-01-03 12:02:18.000000000 +0000
+@@ -0,0 +1,548 @@
++libcap-2.46/cap/
++libcap-2.46/cap/convenience.go
++libcap-2.46/cap/legacy.go
++libcap-2.46/cap/flags.go
++libcap-2.46/cap/launch.go
++libcap-2.46/cap/oslocks.go
++libcap-2.46/cap/iab.go
++libcap-2.46/cap/file.go
++libcap-2.46/cap/oslockluster.go
++libcap-2.46/cap/names.go
++libcap-2.46/cap/text.go
++libcap-2.46/cap/syscalls.go
++libcap-2.46/cap/cap.go
++libcap-2.46/cap/LICENSE
++libcap-2.46/cap/cap_test.go
++libcap-2.46/cap/modern.go
++libcap-2.46/cap/README
++libcap-2.46/cap/go.mod
++libcap-2.46/CHANGELOG
++libcap-2.46/contrib/
++libcap-2.46/contrib/Makefile
++libcap-2.46/contrib/pcaps4server
++libcap-2.46/contrib/pcaps4suid0
++libcap-2.46/contrib/whypsx/
++libcap-2.46/contrib/pcaps4convenience
++libcap-2.46/contrib/bug400591/
++libcap-2.46/contrib/bug400591/bug.c
++libcap-2.46/contrib/bug400591/Makefile
++libcap-2.46/distcheck.sh
++libcap-2.46/doc/
++libcap-2.46/doc/cap_get_pid.3
++libcap-2.46/doc/cap_compare.3
++libcap-2.46/doc/cap_set_file.3
++libcap-2.46/doc/cap_size.3
++libcap-2.46/doc/psx_syscall3.3
++libcap-2.46/doc/values/
++libcap-2.46/doc/values/34.txt
++libcap-2.46/doc/values/3.txt
++libcap-2.46/doc/values/28.txt
++libcap-2.46/doc/values/23.txt
++libcap-2.46/doc/values/21.txt
++libcap-2.46/doc/values/31.txt
++libcap-2.46/doc/values/9.txt
++libcap-2.46/doc/values/39.txt
++libcap-2.46/doc/values/0.txt
++libcap-2.46/doc/values/6.txt
++libcap-2.46/doc/values/10.txt
++libcap-2.46/doc/values/26.txt
++libcap-2.46/doc/values/15.txt
++libcap-2.46/doc/values/38.txt
++libcap-2.46/doc/values/2.txt
++libcap-2.46/doc/values/37.txt
++libcap-2.46/doc/values/7.txt
++libcap-2.46/doc/values/27.txt
++libcap-2.46/doc/values/1.txt
++libcap-2.46/doc/values/24.txt
++libcap-2.46/doc/values/33.txt
++libcap-2.46/doc/values/35.txt
++libcap-2.46/doc/values/36.txt
++libcap-2.46/doc/values/32.txt
++libcap-2.46/doc/values/20.txt
++libcap-2.46/doc/values/8.txt
++libcap-2.46/doc/values/12.txt
++libcap-2.46/doc/values/4.txt
++libcap-2.46/doc/values/5.txt
++libcap-2.46/doc/values/16.txt
++libcap-2.46/doc/values/14.txt
++libcap-2.46/doc/values/11.txt
++libcap-2.46/doc/values/17.txt
++libcap-2.46/doc/values/18.txt
++libcap-2.46/doc/values/40.txt
++libcap-2.46/doc/values/19.txt
++libcap-2.46/doc/values/30.txt
++libcap-2.46/doc/values/25.txt
++libcap-2.46/doc/values/22.txt
++libcap-2.46/doc/values/13.txt
++libcap-2.46/doc/values/29.txt
++libcap-2.46/doc/cap_get_fd.3
++libcap-2.46/doc/capsh.1
++libcap-2.46/doc/psx_syscall6.3
++libcap-2.46/doc/cap_set_proc.3
++libcap-2.46/doc/libpsx.3
++libcap-2.46/doc/getcap.8
++libcap-2.46/doc/capsetp.3
++libcap-2.46/doc/cap_clear_flag.3
++libcap-2.46/doc/cap_set_fd.3
++libcap-2.46/doc/cap_drop_bound.3
++libcap-2.46/doc/old/
++libcap-2.46/doc/old/_setfilecap.2
++libcap-2.46/doc/old/_setproccap.2
++libcap-2.46/doc/old/_getfilecap.2
++libcap-2.46/doc/old/_fsetfilecap.2
++libcap-2.46/doc/old/_getproccap.2
++libcap-2.46/doc/old/_fgetfilecap.2
++libcap-2.46/doc/old/README
++libcap-2.46/doc/cap_get_flag.3
++libcap-2.46/doc/cap_set_mode.3
++libcap-2.46/doc/cap_to_name.3
++libcap-2.46/doc/capgetp.3
++libcap-2.46/doc/cap_set_secbits.3
++libcap-2.46/doc/cap_set_ambient.3
++libcap-2.46/doc/Makefile
++libcap-2.46/doc/mkmd.sh
++libcap-2.46/doc/cap_get_mode.3
++libcap-2.46/doc/capability.notes
++libcap-2.46/doc/cap_from_text.3
++libcap-2.46/doc/cap_get_proc.3
++libcap-2.46/doc/md2html.lua
++libcap-2.46/doc/cap_get_bound.3
++libcap-2.46/doc/cap_free.3
++libcap-2.46/doc/cap_get_ambient.3
++libcap-2.46/doc/cap_reset_ambient.3
++libcap-2.46/doc/setcap.8
++libcap-2.46/doc/cap_get_file.3
++libcap-2.46/doc/cap_get_secbits.3
++libcap-2.46/doc/cap_copy_int.3
++libcap-2.46/doc/cap_mode_name.3
++libcap-2.46/doc/getpcaps.8
++libcap-2.46/doc/cap_from_name.3
++libcap-2.46/doc/cap_set_flag.3
++libcap-2.46/doc/libcap.3
++libcap-2.46/doc/cap_clear.3
++libcap-2.46/doc/cap_setuid.3
++libcap-2.46/doc/cap_to_text.3
++libcap-2.46/doc/cap_dup.3
++libcap-2.46/doc/cap_setgroups.3
++libcap-2.46/doc/psx_syscall.3
++libcap-2.46/doc/cap_init.3
++libcap-2.46/doc/cap_copy_ext.3
++libcap-2.46/go/
++libcap-2.46/go/try-launching.go
++libcap-2.46/go/cgo-required.sh
++libcap-2.46/go/compare-cap.go
++libcap-2.46/go/mknames.go
++libcap-2.46/go/psx-signals.go
++libcap-2.46/go/.gitignore
++libcap-2.46/go/Makefile
++libcap-2.46/go/b210613.go
++libcap-2.46/go/go-mod-index.html
++libcap-2.46/go/ok.go
++libcap-2.46/goapps/
++libcap-2.46/goapps/gowns/
++libcap-2.46/goapps/gowns/gowns.go
++libcap-2.46/goapps/gowns/go.mod
++libcap-2.46/goapps/setid/
++libcap-2.46/goapps/setid/setid.go
++libcap-2.46/goapps/setid/go.mod
++libcap-2.46/goapps/web/
++libcap-2.46/goapps/web/web.go
++libcap-2.46/goapps/web/README
++libcap-2.46/goapps/web/go.mod
++libcap-2.46/kdebug/
++libcap-2.46/kdebug/Makefile
++libcap-2.46/kdebug/test-passwd
++libcap-2.46/kdebug/test-bash.sh
++libcap-2.46/kdebug/test-kernel.sh
++libcap-2.46/kdebug/test-init.sh
++libcap-2.46/kdebug/test-prompt.sh
++libcap-2.46/libcap/
++libcap-2.46/libcap/libcap.h
++libcap-2.46/libcap/cap_alloc.c
++libcap-2.46/libcap/include/
++libcap-2.46/libcap/include/uapi/
++libcap-2.46/libcap/include/uapi/linux/
++libcap-2.46/libcap/include/uapi/linux/securebits.h
++libcap-2.46/libcap/include/uapi/linux/prctl.h
++libcap-2.46/libcap/include/uapi/linux/capability.h
++libcap-2.46/libcap/include/sys/
++libcap-2.46/libcap/include/sys/securebits.h
++libcap-2.46/libcap/include/sys/psx_syscall.h
++libcap-2.46/libcap/include/sys/capability.h
++libcap-2.46/libcap/cap_extint.c
++libcap-2.46/libcap/.gitignore
++libcap-2.46/libcap/libpsx.pc.in
++libcap-2.46/libcap/Makefile
++libcap-2.46/libcap/cap_flag.c
++libcap-2.46/libcap/cap_test.c
++libcap-2.46/libcap/psx_syscall.h
++libcap-2.46/libcap/cap_proc.c
++libcap-2.46/libcap/cap_file.c
++libcap-2.46/libcap/_makenames.c
++libcap-2.46/libcap/cap_text.c
++libcap-2.46/libcap/libcap.pc.in
++libcap-2.46/License
++libcap-2.46/Makefile
++libcap-2.46/Make.Rules
++libcap-2.46/pam_cap/
++libcap-2.46/pam_cap/test_pam_cap.c
++libcap-2.46/pam_cap/pam_cap.c
++libcap-2.46/pam_cap/.gitignore
++libcap-2.46/pam_cap/test.c
++libcap-2.46/pam_cap/Makefile
++libcap-2.46/pam_cap/capability.conf
++libcap-2.46/pam_cap/License
++libcap-2.46/pam_cap/sudotest.conf
++libcap-2.46/pgp.keys.asc
++libcap-2.46/progs/
++libcap-2.46/progs/capsh.c
++libcap-2.46/progs/quicktest.sh
++libcap-2.46/progs/old/
++libcap-2.46/progs/old/sucap.c
++libcap-2.46/progs/old/setpcaps.c
++libcap-2.46/progs/old/execcap.c
++libcap-2.46/progs/old/README
++libcap-2.46/progs/getcap.c
++libcap-2.46/progs/.gitignore
++libcap-2.46/progs/Makefile
++libcap-2.46/progs/setcap.c
++libcap-2.46/progs/getpcaps.c
++libcap-2.46/psx/
++libcap-2.46/psx/doc.go
++libcap-2.46/psx/psx_test.go
++libcap-2.46/psx/psx_cgo.go
++libcap-2.46/psx/psx.go
++libcap-2.46/psx/psx_cgo_test.go
++libcap-2.46/psx/psx_syscall.h
++libcap-2.46/psx/psx.c
++libcap-2.46/psx/LICENSE
++libcap-2.46/psx/README
++libcap-2.46/psx/go.mod
++libcap-2.46/README
++libcap-2.46/template.c
++libcap-2.46/tests/
++libcap-2.46/tests/exploit.c
++libcap-2.46/tests/libcap_launch_test.c
++libcap-2.46/tests/noop.c
++libcap-2.46/tests/.gitignore
++libcap-2.46/tests/Makefile
++libcap-2.46/tests/psx_test.c
++libcap-2.46/tests/libcap_psx_test.c
++Hmm...  Looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|--- ./Make.Rules.orig	2020-05-03 17:56:47.000000000 -0500
++|+++ ./Make.Rules	2020-05-05 15:10:07.762983203 -0500
++--------------------------
++patching file Make.Rules
++Using Plan A...
++Hunk #1 succeeded at 40 with fuzz 1 (offset 5 lines).
++done
++make -C libcap all
++make[1]: Entering directory '/tmp/libcap-2.46/libcap'
++sed -e 's,@prefix@,/usr,' \
++	-e 's,@exec_prefix@,,' \
++	-e 's,@libdir@,/lib,' \
++	-e 's,@includedir@,/usr/include,' \
++	-e 's,@VERSION@,2.46,' \
++	-e 's,@deps@,,' \
++	libcap.pc.in >libcap.pc
++make libpsx.pc
++make[2]: Entering directory '/tmp/libcap-2.46/libcap'
++sed -e 's,@prefix@,/usr,' \
++	-e 's,@exec_prefix@,,' \
++	-e 's,@libdir@,/lib,' \
++	-e 's,@includedir@,/usr/include,' \
++	-e 's,@VERSION@,2.46,' \
++	-e 's,@deps@,,' \
++	libpsx.pc.in >libpsx.pc
++make[2]: Leaving directory '/tmp/libcap-2.46/libcap'
++=> making cap_names.list.h from /tmp/libcap-2.46/libcap/../libcap/include/uapi/linux/capability.h
++perl -e 'while ($l=<>) { if ($l =~ /^\#define[ \t](CAP[_A-Z]+)[ \t]+([0-9]+)\s+$/) { $tok=$1; $val=$2; $tok =~ tr/A-Z/a-z/; print "{\"$tok\",$val},\n"; } }' /tmp/libcap-2.46/libcap/../libcap/include/uapi/linux/capability.h | fgrep -v 0x > cap_names.list.h
++gcc -O2 -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -fPIC -I/tmp/libcap-2.46/libcap/../libcap/include/uapi -I/tmp/libcap-2.46/libcap/../libcap/include _makenames.c -o _makenames
++./_makenames > cap_names.h
++gcc -O2 -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -Dlinux -Wall -Wwrite-strings -Wpointer-arith -Wcast-qual -Wcast-align -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Winline -Wshadow -O2 -fPIC -fPIC -I/tmp/libcap-2.46/libcap/../libcap/include/uapi -I/tmp/libcap-2.46/libcap/../libcap/include -c cap_alloc.c -o cap_alloc.o
++gcc -O2 -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -Dlinux -Wall -Wwrite-strings -Wpointer-arith -Wcast-qual -Wcast-align -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Winline -Wshadow -O2 -fPIC -fPIC -I/tmp/libcap-2.46/libcap/../libcap/include/uapi -I/tmp/libcap-2.46/libcap/../libcap/include -c cap_proc.c -o cap_proc.o
++gcc -O2 -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -Dlinux -Wall -Wwrite-strings -Wpointer-arith -Wcast-qual -Wcast-align -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Winline -Wshadow -O2 -fPIC -fPIC -I/tmp/libcap-2.46/libcap/../libcap/include/uapi -I/tmp/libcap-2.46/libcap/../libcap/include -c cap_extint.c -o cap_extint.o
++gcc -O2 -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -Dlinux -Wall -Wwrite-strings -Wpointer-arith -Wcast-qual -Wcast-align -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Winline -Wshadow -O2 -fPIC -fPIC -I/tmp/libcap-2.46/libcap/../libcap/include/uapi -I/tmp/libcap-2.46/libcap/../libcap/include -c cap_flag.c -o cap_flag.o
++gcc -O2 -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -Dlinux -Wall -Wwrite-strings -Wpointer-arith -Wcast-qual -Wcast-align -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Winline -Wshadow -O2 -fPIC -fPIC -I/tmp/libcap-2.46/libcap/../libcap/include/uapi -I/tmp/libcap-2.46/libcap/../libcap/include  -c cap_text.c -o cap_text.o
++gcc -O2 -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -Dlinux -Wall -Wwrite-strings -Wpointer-arith -Wcast-qual -Wcast-align -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Winline -Wshadow -O2 -fPIC -fPIC -I/tmp/libcap-2.46/libcap/../libcap/include/uapi -I/tmp/libcap-2.46/libcap/../libcap/include -c cap_file.c -o cap_file.o
++ar rcs libcap.a cap_alloc.o cap_proc.o cap_extint.o cap_flag.o cap_text.o cap_file.o
++ranlib libcap.a
++make libcap.so
++make[2]: Entering directory '/tmp/libcap-2.46/libcap'
++gcc -Wl,-x -shared -O2 -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -Dlinux -Wall -Wwrite-strings -Wpointer-arith -Wcast-qual -Wcast-align -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Winline -Wshadow -O2 -fPIC  -L/tmp/libcap-2.46/libcap/../libcap -Wl,-soname,libcap.so.2 -o libcap.so.2.46 cap_alloc.o cap_proc.o cap_extint.o cap_flag.o cap_text.o cap_file.o
++ln -sf libcap.so.2.46 libcap.so.2
++ln -sf libcap.so.2 libcap.so
++make[2]: Leaving directory '/tmp/libcap-2.46/libcap'
++make libpsx.a
++make[2]: Entering directory '/tmp/libcap-2.46/libcap'
++gcc -O2 -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -Dlinux -Wall -Wwrite-strings -Wpointer-arith -Wcast-qual -Wcast-align -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Winline -Wshadow -O2 -fPIC -fPIC -I/tmp/libcap-2.46/libcap/../libcap/include/uapi -I/tmp/libcap-2.46/libcap/../libcap/include -c ../psx/psx.c -o ../psx/psx.o
++ar rcs libpsx.a ../psx/psx.o
++ranlib libpsx.a
++make[2]: Leaving directory '/tmp/libcap-2.46/libcap'
++make libpsx.so
++make[2]: Entering directory '/tmp/libcap-2.46/libcap'
++gcc -Wl,-x -shared -O2 -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -Dlinux -Wall -Wwrite-strings -Wpointer-arith -Wcast-qual -Wcast-align -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Winline -Wshadow -O2 -fPIC  -L/tmp/libcap-2.46/libcap/../libcap -Wl,-soname,libpsx.so.2 -o libpsx.so.2.46 ../psx/psx.o -lpthread -Wl,-wrap,pthread_create
++ln -sf libpsx.so.2.46 libpsx.so.2
++ln -sf libpsx.so.2 libpsx.so
++make[2]: Leaving directory '/tmp/libcap-2.46/libcap'
++make[1]: Leaving directory '/tmp/libcap-2.46/libcap'
++make -C pam_cap all
++make[1]: Entering directory '/tmp/libcap-2.46/pam_cap'
++gcc -O2 -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -Dlinux -Wall -Wwrite-strings -Wpointer-arith -Wcast-qual -Wcast-align -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Winline -Wshadow -O2 -fPIC -fPIC -I/tmp/libcap-2.46/pam_cap/../libcap/include/uapi -I/tmp/libcap-2.46/pam_cap/../libcap/include -c pam_cap.c -o pam_cap.o
++gcc -Wl,-x -shared -o pam_cap.so pam_cap.o -L/tmp/libcap-2.46/pam_cap/../libcap -lcap  -L/tmp/libcap-2.46/pam_cap/../libcap
++make testlink
++make[2]: Entering directory '/tmp/libcap-2.46/pam_cap'
++gcc -O2 -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -Dlinux -Wall -Wwrite-strings -Wpointer-arith -Wcast-qual -Wcast-align -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Winline -Wshadow -O2 -fPIC -o testlink test.c pam_cap.o -lpam -ldl -L/tmp/libcap-2.46/pam_cap/../libcap -lcap  -L/tmp/libcap-2.46/pam_cap/../libcap
++make[2]: Leaving directory '/tmp/libcap-2.46/pam_cap'
++make[1]: Leaving directory '/tmp/libcap-2.46/pam_cap'
++make -C tests all
++make[1]: Entering directory '/tmp/libcap-2.46/tests'
++make libcap_launch_test
++make[2]: Entering directory '/tmp/libcap-2.46/tests'
++gcc -O2 -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -Dlinux -Wall -Wwrite-strings -Wpointer-arith -Wcast-qual -Wcast-align -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Winline -Wshadow -O2 -fPIC -fPIC -I/tmp/libcap-2.46/tests/../libcap/include/uapi -I/tmp/libcap-2.46/tests/../libcap/include libcap_launch_test.c -o libcap_launch_test -Wl,-rpath,../libcap -L/tmp/libcap-2.46/tests/../libcap -lcap  -L/tmp/libcap-2.46/tests/../libcap
++make[2]: Leaving directory '/tmp/libcap-2.46/tests'
++make psx_test libcap_psx_test libcap_psx_launch_test
++make[2]: Entering directory '/tmp/libcap-2.46/tests'
++gcc -O2 -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -Dlinux -Wall -Wwrite-strings -Wpointer-arith -Wcast-qual -Wcast-align -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Winline -Wshadow -O2 -fPIC -fPIC -I/tmp/libcap-2.46/tests/../libcap/include/uapi -I/tmp/libcap-2.46/tests/../libcap/include psx_test.c -o psx_test -Wl,-rpath,../libcap -L/tmp/libcap-2.46/tests/../libcap -lpsx -lpthread -Wl,-wrap,pthread_create  -L/tmp/libcap-2.46/tests/../libcap
++gcc -O2 -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -Dlinux -Wall -Wwrite-strings -Wpointer-arith -Wcast-qual -Wcast-align -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Winline -Wshadow -O2 -fPIC -fPIC -I/tmp/libcap-2.46/tests/../libcap/include/uapi -I/tmp/libcap-2.46/tests/../libcap/include libcap_psx_test.c -o libcap_psx_test -Wl,-rpath,../libcap -L/tmp/libcap-2.46/tests/../libcap -lcap -L/tmp/libcap-2.46/tests/../libcap -lpsx -lpthread -Wl,-wrap,pthread_create  -L/tmp/libcap-2.46/tests/../libcap
++gcc -O2 -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -Dlinux -Wall -Wwrite-strings -Wpointer-arith -Wcast-qual -Wcast-align -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Winline -Wshadow -O2 -fPIC -fPIC -I/tmp/libcap-2.46/tests/../libcap/include/uapi -I/tmp/libcap-2.46/tests/../libcap/include -DWITH_PTHREADS libcap_launch_test.c -o libcap_psx_launch_test -Wl,-rpath,../libcap -L/tmp/libcap-2.46/tests/../libcap -lcap -L/tmp/libcap-2.46/tests/../libcap -lpsx -lpthread -Wl,-wrap,pthread_create  -L/tmp/libcap-2.46/tests/../libcap
++make[2]: Leaving directory '/tmp/libcap-2.46/tests'
++make[1]: Leaving directory '/tmp/libcap-2.46/tests'
++make -C progs all
++make[1]: Entering directory '/tmp/libcap-2.46/progs'
++gcc -fPIC -I/tmp/libcap-2.46/progs/../libcap/include/uapi -I/tmp/libcap-2.46/progs/../libcap/include  -O2 -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -Dlinux -Wall -Wwrite-strings -Wpointer-arith -Wcast-qual -Wcast-align -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Winline -Wshadow -O2 -fPIC -c getpcaps.c -o getpcaps.o
++gcc -O2 -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -Dlinux -Wall -Wwrite-strings -Wpointer-arith -Wcast-qual -Wcast-align -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Winline -Wshadow -O2 -fPIC -o getpcaps getpcaps.o -L/tmp/libcap-2.46/progs/../libcap -lcap  -L/tmp/libcap-2.46/progs/../libcap
++gcc -fPIC -I/tmp/libcap-2.46/progs/../libcap/include/uapi -I/tmp/libcap-2.46/progs/../libcap/include  -O2 -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -Dlinux -Wall -Wwrite-strings -Wpointer-arith -Wcast-qual -Wcast-align -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Winline -Wshadow -O2 -fPIC -c capsh.c -o capsh.o
++gcc -O2 -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -Dlinux -Wall -Wwrite-strings -Wpointer-arith -Wcast-qual -Wcast-align -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Winline -Wshadow -O2 -fPIC -o capsh capsh.o -L/tmp/libcap-2.46/progs/../libcap -lcap  -L/tmp/libcap-2.46/progs/../libcap
++gcc -fPIC -I/tmp/libcap-2.46/progs/../libcap/include/uapi -I/tmp/libcap-2.46/progs/../libcap/include  -O2 -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -Dlinux -Wall -Wwrite-strings -Wpointer-arith -Wcast-qual -Wcast-align -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Winline -Wshadow -O2 -fPIC -c getcap.c -o getcap.o
++gcc -O2 -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -Dlinux -Wall -Wwrite-strings -Wpointer-arith -Wcast-qual -Wcast-align -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Winline -Wshadow -O2 -fPIC -o getcap getcap.o -L/tmp/libcap-2.46/progs/../libcap -lcap  -L/tmp/libcap-2.46/progs/../libcap
++gcc -fPIC -I/tmp/libcap-2.46/progs/../libcap/include/uapi -I/tmp/libcap-2.46/progs/../libcap/include  -O2 -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -Dlinux -Wall -Wwrite-strings -Wpointer-arith -Wcast-qual -Wcast-align -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Winline -Wshadow -O2 -fPIC -c setcap.c -o setcap.o
++gcc -O2 -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -Dlinux -Wall -Wwrite-strings -Wpointer-arith -Wcast-qual -Wcast-align -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Winline -Wshadow -O2 -fPIC -o setcap setcap.o -L/tmp/libcap-2.46/progs/../libcap -lcap  -L/tmp/libcap-2.46/progs/../libcap
++make[1]: Leaving directory '/tmp/libcap-2.46/progs'
++make -C doc all
++make[1]: Entering directory '/tmp/libcap-2.46/doc'
++make[1]: Nothing to be done for 'all'.
++make[1]: Leaving directory '/tmp/libcap-2.46/doc'
++make -C kdebug all
++make[1]: Entering directory '/tmp/libcap-2.46/kdebug'
++cd to kdebug to test a kernel build
++make[1]: Leaving directory '/tmp/libcap-2.46/kdebug'
++make -C libcap install
++make[1]: Entering directory '/tmp/libcap-2.46/libcap'
++mkdir -p -m 0755 /tmp/package-libcap/usr/include/sys
++mkdir -p -m 0755 /tmp/package-libcap/usr//lib/pkgconfig
++mkdir -p -m 0755 /tmp/package-libcap/lib
++install -m 0644 include/sys/capability.h /tmp/package-libcap/usr/include/sys
++install -m 0644 libcap.pc /tmp/package-libcap/usr//lib/pkgconfig/libcap.pc
++install -m 0644 libcap.a /tmp/package-libcap/lib/libcap.a
++make install-static-psx
++make[2]: Entering directory '/tmp/libcap-2.46/libcap'
++mkdir -p -m 0755 /tmp/package-libcap/usr/include/sys
++mkdir -p -m 0755 /tmp/package-libcap/usr//lib/pkgconfig
++mkdir -p -m 0755 /tmp/package-libcap/lib
++install -m 0644 include/sys/psx_syscall.h /tmp/package-libcap/usr/include/sys
++install -m 0644 libpsx.pc /tmp/package-libcap/usr//lib/pkgconfig/libpsx.pc
++install -m 0644 libpsx.a /tmp/package-libcap/lib/libpsx.a
++make[2]: Leaving directory '/tmp/libcap-2.46/libcap'
++make install-shared
++make[2]: Entering directory '/tmp/libcap-2.46/libcap'
++mkdir -p -m 0755 /tmp/package-libcap/usr/include/sys
++mkdir -p -m 0755 /tmp/package-libcap/usr//lib/pkgconfig
++mkdir -p -m 0755 /tmp/package-libcap/lib
++install -m 0644 include/sys/capability.h /tmp/package-libcap/usr/include/sys
++install -m 0644 libcap.pc /tmp/package-libcap/usr//lib/pkgconfig/libcap.pc
++install -m 0644 libcap.so.2.46 /tmp/package-libcap/lib/libcap.so.2.46
++ln -sf libcap.so.2.46 /tmp/package-libcap/lib/libcap.so.2
++ln -sf libcap.so.2 /tmp/package-libcap/lib/libcap.so
++make install-shared-psx
++make[3]: Entering directory '/tmp/libcap-2.46/libcap'
++mkdir -p -m 0755 /tmp/package-libcap/usr/include/sys
++mkdir -p -m 0755 /tmp/package-libcap/usr//lib/pkgconfig
++mkdir -p -m 0755 /tmp/package-libcap/lib
++install -m 0644 include/sys/psx_syscall.h /tmp/package-libcap/usr/include/sys
++install -m 0644 libpsx.pc /tmp/package-libcap/usr//lib/pkgconfig/libpsx.pc
++install -m 0644 libpsx.so.2.46 /tmp/package-libcap/lib/libpsx.so.2.46
++ln -sf libpsx.so.2.46 /tmp/package-libcap/lib/libpsx.so.2
++ln -sf libpsx.so.2 /tmp/package-libcap/lib/libpsx.so
++make[3]: Leaving directory '/tmp/libcap-2.46/libcap'
++make[2]: Leaving directory '/tmp/libcap-2.46/libcap'
++make[1]: Leaving directory '/tmp/libcap-2.46/libcap'
++make -C pam_cap install
++make[1]: Entering directory '/tmp/libcap-2.46/pam_cap'
++make testlink
++make[2]: Entering directory '/tmp/libcap-2.46/pam_cap'
++make[2]: 'testlink' is up to date.
++make[2]: Leaving directory '/tmp/libcap-2.46/pam_cap'
++mkdir -p -m 0755 /tmp/package-libcap/lib/security
++install -m 0755 pam_cap.so /tmp/package-libcap/lib/security
++make[1]: Leaving directory '/tmp/libcap-2.46/pam_cap'
++make -C tests install
++make[1]: Entering directory '/tmp/libcap-2.46/tests'
++make libcap_launch_test
++make[2]: Entering directory '/tmp/libcap-2.46/tests'
++make[2]: 'libcap_launch_test' is up to date.
++make[2]: Leaving directory '/tmp/libcap-2.46/tests'
++make psx_test libcap_psx_test libcap_psx_launch_test
++make[2]: Entering directory '/tmp/libcap-2.46/tests'
++make[2]: 'psx_test' is up to date.
++make[2]: 'libcap_psx_test' is up to date.
++make[2]: 'libcap_psx_launch_test' is up to date.
++make[2]: Leaving directory '/tmp/libcap-2.46/tests'
++make[1]: Leaving directory '/tmp/libcap-2.46/tests'
++make -C progs install
++make[1]: Entering directory '/tmp/libcap-2.46/progs'
++mkdir -p -m 0755 /tmp/package-libcap/sbin
++for p in getpcaps capsh getcap setcap ; do \
++	install -m 0755 $p /tmp/package-libcap/sbin ; \
++done
++make[1]: Leaving directory '/tmp/libcap-2.46/progs'
++make -C doc install
++make[1]: Entering directory '/tmp/libcap-2.46/doc'
++mkdir -p -m 755 /tmp/package-libcap/usr/man/man1 /tmp/package-libcap/usr/man/man3 /tmp/package-libcap/usr/man/man8
++for man in \
++	/tmp/package-libcap/usr/man/man1 capsh.1 \
++	/tmp/package-libcap/usr/man/man3 cap_init.3 cap_free.3 cap_dup.3 cap_clear.3 cap_clear_flag.3 cap_get_flag.3 cap_set_flag.3 cap_compare.3 cap_get_proc.3 cap_get_pid.3 cap_set_proc.3 cap_get_file.3 cap_get_fd.3 cap_set_file.3 cap_set_fd.3 cap_copy_ext.3 cap_size.3 cap_copy_int.3 cap_from_text.3 cap_to_text.3 cap_from_name.3 cap_to_name.3 capsetp.3 capgetp.3 libcap.3 cap_get_bound.3 cap_drop_bound.3 cap_get_mode.3 cap_set_mode.3 cap_mode_name.3 cap_get_secbits.3 cap_set_secbits.3 cap_setuid.3 cap_setgroups.3 psx_syscall.3 psx_syscall3.3 psx_syscall6.3 libpsx.3 \
++	/tmp/package-libcap/usr/man/man8 getcap.8 setcap.8 getpcaps.8 \
++	; \
++do \
++	case $man in \
++	/*)	sub=$man ; continue ;; \
++	esac; \
++	install -m 644 $man $sub ; \
++done
++make[1]: Leaving directory '/tmp/libcap-2.46/doc'
++make -C kdebug install
++make[1]: Entering directory '/tmp/libcap-2.46/kdebug'
++make[1]: Nothing to be done for 'install'.
++make[1]: Leaving directory '/tmp/libcap-2.46/kdebug'
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++lib/libcap.so	libcap.so.2
++lib/libcap.so.2	libcap.so.2.46
++lib/libpsx.so	libpsx.so.2
++lib/libpsx.so.2	libpsx.so.2.46
++
++Making symbolic link creation script:
++( cd lib ; rm -rf libcap.so )
++( cd lib ; ln -sf libcap.so.2 libcap.so )
++( cd lib ; rm -rf libcap.so.2 )
++( cd lib ; ln -sf libcap.so.2.46 libcap.so.2 )
++( cd lib ; rm -rf libpsx.so )
++( cd lib ; ln -sf libpsx.so.2 libpsx.so )
++( cd lib ; rm -rf libpsx.so.2 )
++( cd lib ; ln -sf libpsx.so.2.46 libpsx.so.2 )
++
++It is recommended that you make these lines your new installation script.
++
++Would you like to make this stuff the install script for this package
++and remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './lib/libcap.so'
++removed './lib/libpsx.so.2'
++removed './lib/libcap.so.2'
++removed './lib/libpsx.so'
++
++Creating your new ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/libcap-2.46-x86_64-1.txz
++
++./
++install/
++install/doinst.sh
++install/slack-desc
++lib/
++lib/libcap.so.2.46
++lib/libpsx.a
++lib/libpsx.so.2.46
++lib/security/
++lib/security/pam_cap.so
++sbin/
++sbin/capsh
++sbin/getcap
++sbin/getpcaps
++sbin/setcap
++usr/
++usr/doc/
++usr/doc/libcap-2.46/
++usr/doc/libcap-2.46/CHANGELOG
++usr/doc/libcap-2.46/License
++usr/doc/libcap-2.46/README
++usr/doc/libcap-2.46/README.SLACKWARE
++usr/doc/libcap-2.46/capability.notes
++usr/doc/libcap-2.46/capfaq-0.2.txt
++usr/doc/libcap-2.46/pgp.keys.asc
++usr/doc/libcap-2.46/quicktest.sh
++usr/include/
++usr/include/sys/
++usr/include/sys/capability.h
++usr/include/sys/psx_syscall.h
++usr/lib/
++usr/lib/pkgconfig/
++usr/lib/pkgconfig/libcap.pc
++usr/lib/pkgconfig/libpsx.pc
++usr/man/
++usr/man/man1/
++usr/man/man1/capsh.1.gz
++usr/man/man3/
++usr/man/man3/cap_clear.3.gz
++usr/man/man3/cap_clear_flag.3.gz
++usr/man/man3/cap_compare.3.gz
++usr/man/man3/cap_copy_ext.3.gz
++usr/man/man3/cap_copy_int.3.gz
++usr/man/man3/cap_drop_bound.3.gz
++usr/man/man3/cap_dup.3.gz
++usr/man/man3/cap_free.3.gz
++usr/man/man3/cap_from_name.3.gz
++usr/man/man3/cap_from_text.3.gz
++usr/man/man3/cap_get_bound.3.gz
++usr/man/man3/cap_get_fd.3.gz
++usr/man/man3/cap_get_file.3.gz
++usr/man/man3/cap_get_flag.3.gz
++usr/man/man3/cap_get_mode.3.gz
++usr/man/man3/cap_get_pid.3.gz
++usr/man/man3/cap_get_proc.3.gz
++usr/man/man3/cap_get_secbits.3.gz
++usr/man/man3/cap_init.3.gz
++usr/man/man3/cap_mode_name.3.gz
++usr/man/man3/cap_set_fd.3.gz
++usr/man/man3/cap_set_file.3.gz
++usr/man/man3/cap_set_flag.3.gz
++usr/man/man3/cap_set_mode.3.gz
++usr/man/man3/cap_set_proc.3.gz
++usr/man/man3/cap_set_secbits.3.gz
++usr/man/man3/cap_setgroups.3.gz
++usr/man/man3/cap_setuid.3.gz
++usr/man/man3/cap_size.3.gz
++usr/man/man3/cap_to_name.3.gz
++usr/man/man3/cap_to_text.3.gz
++usr/man/man3/capgetp.3.gz
++usr/man/man3/capsetp.3.gz
++usr/man/man3/libcap.3.gz
++usr/man/man3/libpsx.3.gz
++usr/man/man3/psx_syscall.3.gz
++usr/man/man3/psx_syscall3.3.gz
++usr/man/man3/psx_syscall6.3.gz
++usr/man/man8/
++usr/man/man8/getcap.8.gz
++usr/man/man8/getpcaps.8.gz
++usr/man/man8/setcap.8.gz
++usr/sbin/
++usr/sbin/pcaps4convenience
++usr/sbin/pcaps4server
++usr/sbin/pcaps4suid0
++
++Slackware package /tmp/libcap-2.46-x86_64-1.txz created.
++

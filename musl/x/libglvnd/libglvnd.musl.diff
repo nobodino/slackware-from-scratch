@@ -1,0 +1,1191 @@
+Binary files /tmp/libglvnd/.libglvnd.SlackBuild.un~ and /source/x/libglvnd/.libglvnd.SlackBuild.un~ differ
+diff -ruBN /tmp/libglvnd/libglvnd.SlackBuild /source/x/libglvnd/libglvnd.SlackBuild
+--- /tmp/libglvnd/libglvnd.SlackBuild	2021-01-24 13:12:27.000000000 +0000
++++ /source/x/libglvnd/libglvnd.SlackBuild	2021-01-24 13:12:38.000000000 +0000
+@@ -53,7 +53,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ else
+   SLKCFLAGS="-O2"
+   LIBDIRSUFFIX=""
+@@ -92,7 +92,7 @@
+   --docdir=/usr/doc/$PKGNAM-$VERSION \
+   --disable-static \
+   --disable-tls \
+-  --build=$ARCH-slackware-linux || exit 1
++  --build=$ARCH-slackware-linux-musl || exit 1
+ 
+ make $NUMJOBS || make || exit 1
+ make install-strip DESTDIR=$PKG || exit 1
+diff -ruBN /tmp/libglvnd/libglvnd.SlackBuild.log /source/x/libglvnd/libglvnd.SlackBuild.log
+--- /tmp/libglvnd/libglvnd.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/x/libglvnd/libglvnd.SlackBuild.log	2021-01-24 13:17:36.000000000 +0000
+@@ -0,0 +1,1165 @@
++libglvnd-1.3.2/
++libglvnd-1.3.2/bin/
++libglvnd-1.3.2/bin/symbols-check.py
++libglvnd-1.3.2/bin/.gitignore
++libglvnd-1.3.2/README.md
++libglvnd-1.3.2/.editorconfig
++libglvnd-1.3.2/meson.build
++libglvnd-1.3.2/src/
++libglvnd-1.3.2/src/OpenGL/
++libglvnd-1.3.2/src/OpenGL/meson.build
++libglvnd-1.3.2/src/OpenGL/opengl.pc.in
++libglvnd-1.3.2/src/OpenGL/libopengl.c
++libglvnd-1.3.2/src/OpenGL/ogl-symbol-check.sh
++libglvnd-1.3.2/src/OpenGL/ogl.symbols
++libglvnd-1.3.2/src/OpenGL/Makefile.am
++libglvnd-1.3.2/src/OpenGL/.gitignore
++libglvnd-1.3.2/src/meson.build
++libglvnd-1.3.2/src/GL/
++libglvnd-1.3.2/src/GL/meson.build
++libglvnd-1.3.2/src/GL/libgl.c
++libglvnd-1.3.2/src/GL/gl-symbol-check.sh
++libglvnd-1.3.2/src/GL/gl.symbols
++libglvnd-1.3.2/src/GL/Makefile.am
++libglvnd-1.3.2/src/GL/.gitignore
++libglvnd-1.3.2/src/GL/gl.pc.in
++libglvnd-1.3.2/src/generate/
++libglvnd-1.3.2/src/generate/meson.build
++libglvnd-1.3.2/src/generate/gen_gldispatch_mapi.py
++libglvnd-1.3.2/src/generate/gen_libgl_glxstubs.py
++libglvnd-1.3.2/src/generate/genCommon.py
++libglvnd-1.3.2/src/generate/xml/
++libglvnd-1.3.2/src/generate/xml/gl.xml
++libglvnd-1.3.2/src/generate/xml/glx.xml
++libglvnd-1.3.2/src/generate/xml/gl_other.xml
++libglvnd-1.3.2/src/generate/xml/egl.xml
++libglvnd-1.3.2/src/generate/xml/glx_other.xml
++libglvnd-1.3.2/src/generate/eglFunctionList.py
++libglvnd-1.3.2/src/generate/gen_egl_dispatch.py
++libglvnd-1.3.2/src/generate/gen_libOpenGL_exports.py
++libglvnd-1.3.2/src/GLESv1/
++libglvnd-1.3.2/src/GLESv1/glesv1-symbol-check.sh
++libglvnd-1.3.2/src/GLESv1/meson.build
++libglvnd-1.3.2/src/GLESv1/glesv1_cm.pc.in
++libglvnd-1.3.2/src/GLESv1/glesv1.symbols
++libglvnd-1.3.2/src/GLESv1/Makefile.am
++libglvnd-1.3.2/src/GLESv1/.gitignore
++libglvnd-1.3.2/src/util/
++libglvnd-1.3.2/src/util/meson.build
++libglvnd-1.3.2/src/util/app_error_check.h
++libglvnd-1.3.2/src/util/cJSON/
++libglvnd-1.3.2/src/util/cJSON/LICENSE
++libglvnd-1.3.2/src/util/glvnd_pthread.h
++libglvnd-1.3.2/src/util/trace.c
++libglvnd-1.3.2/src/util/cJSON.c
++libglvnd-1.3.2/src/util/trace.h
++libglvnd-1.3.2/src/util/utils_misc.h
++libglvnd-1.3.2/src/util/winsys_dispatch.c
++libglvnd-1.3.2/src/util/glvnd_pthread.c
++libglvnd-1.3.2/src/util/uthash/
++libglvnd-1.3.2/src/util/uthash/README.md
++libglvnd-1.3.2/src/util/uthash/src/
++libglvnd-1.3.2/src/util/uthash/src/utlist.h
++libglvnd-1.3.2/src/util/uthash/src/utstring.h
++libglvnd-1.3.2/src/util/uthash/src/uthash.h
++libglvnd-1.3.2/src/util/uthash/src/utarray.h
++libglvnd-1.3.2/src/util/uthash/LICENSE
++libglvnd-1.3.2/src/util/uthash/doc/
++libglvnd-1.3.2/src/util/uthash/doc/banner.png
++libglvnd-1.3.2/src/util/uthash/doc/uthash-mini.svg
++libglvnd-1.3.2/src/util/uthash/doc/utlist.txt
++libglvnd-1.3.2/src/util/uthash/doc/utarray.html
++libglvnd-1.3.2/src/util/uthash/doc/rss.png
++libglvnd-1.3.2/src/util/uthash/doc/utlist.html
++libglvnd-1.3.2/src/util/uthash/doc/utstring.html
++libglvnd-1.3.2/src/util/uthash/doc/styles.css
++libglvnd-1.3.2/src/util/uthash/doc/uthash-mini.png
++libglvnd-1.3.2/src/util/uthash/doc/ChangeLog.txt
++libglvnd-1.3.2/src/util/uthash/doc/todo.txt
++libglvnd-1.3.2/src/util/uthash/doc/uthash.png
++libglvnd-1.3.2/src/util/uthash/doc/ChangeLog.html
++libglvnd-1.3.2/src/util/uthash/doc/utarray.txt
++libglvnd-1.3.2/src/util/uthash/doc/license.html
++libglvnd-1.3.2/src/util/uthash/doc/userguide.txt
++libglvnd-1.3.2/src/util/uthash/doc/userguide.html
++libglvnd-1.3.2/src/util/uthash/doc/google315d692c9c632ed0.html
++libglvnd-1.3.2/src/util/uthash/doc/index.html
++libglvnd-1.3.2/src/util/uthash/doc/banner.svg
++libglvnd-1.3.2/src/util/uthash/doc/utstring.txt
++libglvnd-1.3.2/src/util/uthash/tests/
++libglvnd-1.3.2/src/util/uthash/tests/test11.dat
++libglvnd-1.3.2/src/util/uthash/tests/test54.c
++libglvnd-1.3.2/src/util/uthash/tests/test25.ans
++libglvnd-1.3.2/src/util/uthash/tests/test53.c
++libglvnd-1.3.2/src/util/uthash/tests/test46.c
++libglvnd-1.3.2/src/util/uthash/tests/test51.ans
++libglvnd-1.3.2/src/util/uthash/tests/test5.ans
++libglvnd-1.3.2/src/util/uthash/tests/test49.c
++libglvnd-1.3.2/src/util/uthash/tests/test28.c
++libglvnd-1.3.2/src/util/uthash/tests/test2.ans
++libglvnd-1.3.2/src/util/uthash/tests/test76.c
++libglvnd-1.3.2/src/util/uthash/tests/test34.c
++libglvnd-1.3.2/src/util/uthash/tests/test52.c
++libglvnd-1.3.2/src/util/uthash/tests/test1.ans
++libglvnd-1.3.2/src/util/uthash/tests/test14.c
++libglvnd-1.3.2/src/util/uthash/tests/test79.ans
++libglvnd-1.3.2/src/util/uthash/tests/keystat.c
++libglvnd-1.3.2/src/util/uthash/tests/test29.c
++libglvnd-1.3.2/src/util/uthash/tests/test58.ans
++libglvnd-1.3.2/src/util/uthash/tests/test61.c
++libglvnd-1.3.2/src/util/uthash/tests/test58.c
++libglvnd-1.3.2/src/util/uthash/tests/test32.ans
++libglvnd-1.3.2/src/util/uthash/tests/test55.ans
++libglvnd-1.3.2/src/util/uthash/tests/test59.c
++libglvnd-1.3.2/src/util/uthash/tests/test19.c
++libglvnd-1.3.2/src/util/uthash/tests/test80.ans
++libglvnd-1.3.2/src/util/uthash/tests/test20.c
++libglvnd-1.3.2/src/util/uthash/tests/test40.c
++libglvnd-1.3.2/src/util/uthash/tests/test72.ans
++libglvnd-1.3.2/src/util/uthash/tests/test11.c
++libglvnd-1.3.2/src/util/uthash/tests/test37.ans
++libglvnd-1.3.2/src/util/uthash/tests/test41.c
++libglvnd-1.3.2/src/util/uthash/tests/test75.ans
++libglvnd-1.3.2/src/util/uthash/tests/test74.ans
++libglvnd-1.3.2/src/util/uthash/tests/test44.ans
++libglvnd-1.3.2/src/util/uthash/tests/test22.ans
++libglvnd-1.3.2/src/util/uthash/tests/test70.c
++libglvnd-1.3.2/src/util/uthash/tests/README
++libglvnd-1.3.2/src/util/uthash/tests/test47.ans
++libglvnd-1.3.2/src/util/uthash/tests/test20.ans
++libglvnd-1.3.2/src/util/uthash/tests/test65.c
++libglvnd-1.3.2/src/util/uthash/tests/do_tests_win32.cmd
++libglvnd-1.3.2/src/util/uthash/tests/test36.c
++libglvnd-1.3.2/src/util/uthash/tests/test42.ans
++libglvnd-1.3.2/src/util/uthash/tests/test64.ans
++libglvnd-1.3.2/src/util/uthash/tests/test33.ans
++libglvnd-1.3.2/src/util/uthash/tests/test43.c
++libglvnd-1.3.2/src/util/uthash/tests/test13.c
++libglvnd-1.3.2/src/util/uthash/tests/test77.c
++libglvnd-1.3.2/src/util/uthash/tests/test18.c
++libglvnd-1.3.2/src/util/uthash/tests/test13.ans
++libglvnd-1.3.2/src/util/uthash/tests/test6.ans
++libglvnd-1.3.2/src/util/uthash/tests/test46.ans
++libglvnd-1.3.2/src/util/uthash/tests/test52.ans
++libglvnd-1.3.2/src/util/uthash/tests/test26.ans
++libglvnd-1.3.2/src/util/uthash/tests/test50.ans
++libglvnd-1.3.2/src/util/uthash/tests/test69.c
++libglvnd-1.3.2/src/util/uthash/tests/test48.c
++libglvnd-1.3.2/src/util/uthash/tests/test54.ans
++libglvnd-1.3.2/src/util/uthash/tests/test81.c
++libglvnd-1.3.2/src/util/uthash/tests/test26.c
++libglvnd-1.3.2/src/util/uthash/tests/test39.ans
++libglvnd-1.3.2/src/util/uthash/tests/test23.ans
++libglvnd-1.3.2/src/util/uthash/tests/test61.ans
++libglvnd-1.3.2/src/util/uthash/tests/test31.ans
++libglvnd-1.3.2/src/util/uthash/tests/test68.c
++libglvnd-1.3.2/src/util/uthash/tests/test15.ans
++libglvnd-1.3.2/src/util/uthash/tests/test4.c
++libglvnd-1.3.2/src/util/uthash/tests/test9.ans
++libglvnd-1.3.2/src/util/uthash/tests/test19.ans
++libglvnd-1.3.2/src/util/uthash/tests/test51.c
++libglvnd-1.3.2/src/util/uthash/tests/mexpand
++libglvnd-1.3.2/src/util/uthash/tests/test82.c
++libglvnd-1.3.2/src/util/uthash/tests/test33.c
++libglvnd-1.3.2/src/util/uthash/tests/test28.ans
++libglvnd-1.3.2/src/util/uthash/tests/test50.c
++libglvnd-1.3.2/src/util/uthash/tests/test60.ans
++libglvnd-1.3.2/src/util/uthash/tests/test7.ans
++libglvnd-1.3.2/src/util/uthash/tests/bloom_perf.sh
++libglvnd-1.3.2/src/util/uthash/tests/test67.c
++libglvnd-1.3.2/src/util/uthash/tests/test43.ans
++libglvnd-1.3.2/src/util/uthash/tests/test30.c
++libglvnd-1.3.2/src/util/uthash/tests/test36.ans
++libglvnd-1.3.2/src/util/uthash/tests/test17.ans
++libglvnd-1.3.2/src/util/uthash/tests/test1.c
++libglvnd-1.3.2/src/util/uthash/tests/test27.c
++libglvnd-1.3.2/src/util/uthash/tests/test18.ans
++libglvnd-1.3.2/src/util/uthash/tests/test78.c
++libglvnd-1.3.2/src/util/uthash/tests/test32.c
++libglvnd-1.3.2/src/util/uthash/tests/test30.ans
++libglvnd-1.3.2/src/util/uthash/tests/test78.ans
++libglvnd-1.3.2/src/util/uthash/tests/test55.c
++libglvnd-1.3.2/src/util/uthash/tests/test49.ans
++libglvnd-1.3.2/src/util/uthash/tests/test4.ans
++libglvnd-1.3.2/src/util/uthash/tests/test76.ans
++libglvnd-1.3.2/src/util/uthash/tests/test64.c
++libglvnd-1.3.2/src/util/uthash/tests/test14.dat
++libglvnd-1.3.2/src/util/uthash/tests/test63.c
++libglvnd-1.3.2/src/util/uthash/tests/test74.c
++libglvnd-1.3.2/src/util/uthash/tests/test73.ans
++libglvnd-1.3.2/src/util/uthash/tests/test3.ans
++libglvnd-1.3.2/src/util/uthash/tests/test66.c
++libglvnd-1.3.2/src/util/uthash/tests/do_tests.cygwin
++libglvnd-1.3.2/src/util/uthash/tests/threads/
++libglvnd-1.3.2/src/util/uthash/tests/threads/README
++libglvnd-1.3.2/src/util/uthash/tests/threads/test1.c
++libglvnd-1.3.2/src/util/uthash/tests/threads/test2.c
++libglvnd-1.3.2/src/util/uthash/tests/threads/do_tests
++libglvnd-1.3.2/src/util/uthash/tests/test75.c
++libglvnd-1.3.2/src/util/uthash/tests/keystats
++libglvnd-1.3.2/src/util/uthash/tests/test45.c
++libglvnd-1.3.2/src/util/uthash/tests/test56.ans
++libglvnd-1.3.2/src/util/uthash/tests/all_funcs
++libglvnd-1.3.2/src/util/uthash/tests/test71.c
++libglvnd-1.3.2/src/util/uthash/tests/lru_cache/
++libglvnd-1.3.2/src/util/uthash/tests/lru_cache/main.c
++libglvnd-1.3.2/src/util/uthash/tests/lru_cache/cache.h
++libglvnd-1.3.2/src/util/uthash/tests/lru_cache/cache.c
++libglvnd-1.3.2/src/util/uthash/tests/test70.ans
++libglvnd-1.3.2/src/util/uthash/tests/test21.c
++libglvnd-1.3.2/src/util/uthash/tests/test12.c
++libglvnd-1.3.2/src/util/uthash/tests/test68.ans
++libglvnd-1.3.2/src/util/uthash/tests/test2.c
++libglvnd-1.3.2/src/util/uthash/tests/test48.ans
++libglvnd-1.3.2/src/util/uthash/tests/test66.ans
++libglvnd-1.3.2/src/util/uthash/tests/test80.c
++libglvnd-1.3.2/src/util/uthash/tests/test23.c
++libglvnd-1.3.2/src/util/uthash/tests/test69.ans
++libglvnd-1.3.2/src/util/uthash/tests/hashscan.c
++libglvnd-1.3.2/src/util/uthash/tests/test79.c
++libglvnd-1.3.2/src/util/uthash/tests/test35.ans
++libglvnd-1.3.2/src/util/uthash/tests/test47.c
++libglvnd-1.3.2/src/util/uthash/tests/test59.ans
++libglvnd-1.3.2/src/util/uthash/tests/test62.ans
++libglvnd-1.3.2/src/util/uthash/tests/test45.ans
++libglvnd-1.3.2/src/util/uthash/tests/test57.c
++libglvnd-1.3.2/src/util/uthash/tests/test65.dat
++libglvnd-1.3.2/src/util/uthash/tests/test73.c
++libglvnd-1.3.2/src/util/uthash/tests/test44.c
++libglvnd-1.3.2/src/util/uthash/tests/test40.ans
++libglvnd-1.3.2/src/util/uthash/tests/test38.ans
++libglvnd-1.3.2/src/util/uthash/tests/bloom_perf.c
++libglvnd-1.3.2/src/util/uthash/tests/simkeys.pl
++libglvnd-1.3.2/src/util/uthash/tests/test56.c
++libglvnd-1.3.2/src/util/uthash/tests/sleep_test.c
++libglvnd-1.3.2/src/util/uthash/tests/test82.ans
++libglvnd-1.3.2/src/util/uthash/tests/test27.ans
++libglvnd-1.3.2/src/util/uthash/tests/test9.c
++libglvnd-1.3.2/src/util/uthash/tests/test62.c
++libglvnd-1.3.2/src/util/uthash/tests/test67.ans
++libglvnd-1.3.2/src/util/uthash/tests/test22.c
++libglvnd-1.3.2/src/util/uthash/tests/test11.ans
++libglvnd-1.3.2/src/util/uthash/tests/test71.ans
++libglvnd-1.3.2/src/util/uthash/tests/test34.ans
++libglvnd-1.3.2/src/util/uthash/tests/test39.c
++libglvnd-1.3.2/src/util/uthash/tests/test16.c
++libglvnd-1.3.2/src/util/uthash/tests/test41.ans
++libglvnd-1.3.2/src/util/uthash/tests/test77.ans
++libglvnd-1.3.2/src/util/uthash/tests/test81.ans
++libglvnd-1.3.2/src/util/uthash/tests/test24.c
++libglvnd-1.3.2/src/util/uthash/tests/do_tests
++libglvnd-1.3.2/src/util/uthash/tests/test35.c
++libglvnd-1.3.2/src/util/uthash/tests/test25.c
++libglvnd-1.3.2/src/util/uthash/tests/test8.c
++libglvnd-1.3.2/src/util/uthash/tests/test63.ans
++libglvnd-1.3.2/src/util/uthash/tests/tdiff.cpp
++libglvnd-1.3.2/src/util/uthash/tests/test24.ans
++libglvnd-1.3.2/src/util/uthash/tests/example.c
++libglvnd-1.3.2/src/util/uthash/tests/test42.c
++libglvnd-1.3.2/src/util/uthash/tests/test10.ans
++libglvnd-1.3.2/src/util/uthash/tests/test31.c
++libglvnd-1.3.2/src/util/uthash/tests/emit_keys.c
++libglvnd-1.3.2/src/util/uthash/tests/test72.c
++libglvnd-1.3.2/src/util/uthash/tests/test29.ans
++libglvnd-1.3.2/src/util/uthash/tests/do_tests.mingw
++libglvnd-1.3.2/src/util/uthash/tests/test15.c
++libglvnd-1.3.2/src/util/uthash/tests/test8.ans
++libglvnd-1.3.2/src/util/uthash/tests/test57.ans
++libglvnd-1.3.2/src/util/uthash/tests/test10.c
++libglvnd-1.3.2/src/util/uthash/tests/test7.c
++libglvnd-1.3.2/src/util/uthash/tests/test38.c
++libglvnd-1.3.2/src/util/uthash/tests/test16.ans
++libglvnd-1.3.2/src/util/uthash/tests/test53.ans
++libglvnd-1.3.2/src/util/uthash/tests/test5.c
++libglvnd-1.3.2/src/util/uthash/tests/test12.ans
++libglvnd-1.3.2/src/util/uthash/tests/test14.ans
++libglvnd-1.3.2/src/util/uthash/tests/test65.ans
++libglvnd-1.3.2/src/util/uthash/tests/test3.c
++libglvnd-1.3.2/src/util/uthash/tests/test37.c
++libglvnd-1.3.2/src/util/uthash/tests/test60.c
++libglvnd-1.3.2/src/util/uthash/tests/test21.ans
++libglvnd-1.3.2/src/util/uthash/tests/test6.c
++libglvnd-1.3.2/src/util/uthash/tests/test17.c
++libglvnd-1.3.2/src/util/app_error_check.c
++libglvnd-1.3.2/src/util/utils_misc.c
++libglvnd-1.3.2/src/util/cJSON.h
++libglvnd-1.3.2/src/util/winsys_dispatch.h
++libglvnd-1.3.2/src/util/Makefile.am
++libglvnd-1.3.2/src/GLX/
++libglvnd-1.3.2/src/GLX/libglxgl.h
++libglvnd-1.3.2/src/GLX/meson.build
++libglvnd-1.3.2/src/GLX/libglxcurrent.h
++libglvnd-1.3.2/src/GLX/glx.pc.in
++libglvnd-1.3.2/src/GLX/glvnd_genentry.c
++libglvnd-1.3.2/src/GLX/glx.symbols
++libglvnd-1.3.2/src/GLX/libglxproto.c
++libglvnd-1.3.2/src/GLX/libglx.c
++libglvnd-1.3.2/src/GLX/libglxthread.h
++libglvnd-1.3.2/src/GLX/glvnd_genentry.h
++libglvnd-1.3.2/src/GLX/libglxmapping.h
++libglvnd-1.3.2/src/GLX/glx-symbol-check.sh
++libglvnd-1.3.2/src/GLX/libglxproto.h
++libglvnd-1.3.2/src/GLX/libglxabipriv.h
++libglvnd-1.3.2/src/GLX/Makefile.am
++libglvnd-1.3.2/src/GLX/.gitignore
++libglvnd-1.3.2/src/GLX/gen_glx_stubs.py
++libglvnd-1.3.2/src/GLX/libglxmapping.c
++libglvnd-1.3.2/src/GLdispatch/
++libglvnd-1.3.2/src/GLdispatch/vnd-glapi/
++libglvnd-1.3.2/src/GLdispatch/vnd-glapi/table.c
++libglvnd-1.3.2/src/GLdispatch/vnd-glapi/meson.build
++libglvnd-1.3.2/src/GLdispatch/vnd-glapi/entry_ppc64_tsd.c
++libglvnd-1.3.2/src/GLdispatch/vnd-glapi/entry_ppc64_tls.c
++libglvnd-1.3.2/src/GLdispatch/vnd-glapi/u_current_tls.c
++libglvnd-1.3.2/src/GLdispatch/vnd-glapi/entry_x86_tsd.c
++libglvnd-1.3.2/src/GLdispatch/vnd-glapi/stub.h
++libglvnd-1.3.2/src/GLdispatch/vnd-glapi/u_compiler.h
++libglvnd-1.3.2/src/GLdispatch/vnd-glapi/entry_files.mk
++libglvnd-1.3.2/src/GLdispatch/vnd-glapi/entry_x86_64_tsd.c
++libglvnd-1.3.2/src/GLdispatch/vnd-glapi/u_current.h
++libglvnd-1.3.2/src/GLdispatch/vnd-glapi/entry_armv7_tsd.c
++libglvnd-1.3.2/src/GLdispatch/vnd-glapi/mapi_tmp.h
++libglvnd-1.3.2/src/GLdispatch/vnd-glapi/entry_x86_64_tls.c
++libglvnd-1.3.2/src/GLdispatch/vnd-glapi/entry_common.h
++libglvnd-1.3.2/src/GLdispatch/vnd-glapi/entry_simple_asm.c
++libglvnd-1.3.2/src/GLdispatch/vnd-glapi/entry_aarch64_tsd.c
++libglvnd-1.3.2/src/GLdispatch/vnd-glapi/entry_pure_c.c
++libglvnd-1.3.2/src/GLdispatch/vnd-glapi/entry.h
++libglvnd-1.3.2/src/GLdispatch/vnd-glapi/entry_common.c
++libglvnd-1.3.2/src/GLdispatch/vnd-glapi/u_macros.h
++libglvnd-1.3.2/src/GLdispatch/vnd-glapi/entry_x86_tls.c
++libglvnd-1.3.2/src/GLdispatch/vnd-glapi/u_current_tsd.c
++libglvnd-1.3.2/src/GLdispatch/vnd-glapi/mapi_glapi.c
++libglvnd-1.3.2/src/GLdispatch/vnd-glapi/glapi.h
++libglvnd-1.3.2/src/GLdispatch/vnd-glapi/Makefile.am
++libglvnd-1.3.2/src/GLdispatch/vnd-glapi/stub.c
++libglvnd-1.3.2/src/GLdispatch/vnd-glapi/table.h
++libglvnd-1.3.2/src/GLdispatch/vnd-glapi/.gitignore
++libglvnd-1.3.2/src/GLdispatch/meson.build
++libglvnd-1.3.2/src/GLdispatch/export_list_tsd.ver
++libglvnd-1.3.2/src/GLdispatch/GLdispatch.c
++libglvnd-1.3.2/src/GLdispatch/export_list_tls.ver
++libglvnd-1.3.2/src/GLdispatch/GLdispatch.h
++libglvnd-1.3.2/src/GLdispatch/GLdispatchPrivate.h
++libglvnd-1.3.2/src/GLdispatch/Makefile.am
++libglvnd-1.3.2/src/Makefile.am
++libglvnd-1.3.2/src/EGL/
++libglvnd-1.3.2/src/EGL/libeglabipriv.h
++libglvnd-1.3.2/src/EGL/meson.build
++libglvnd-1.3.2/src/EGL/egldispatchstubs.c
++libglvnd-1.3.2/src/EGL/libeglerror.h
++libglvnd-1.3.2/src/EGL/libeglmapping.c
++libglvnd-1.3.2/src/EGL/egl.pc.in
++libglvnd-1.3.2/src/EGL/libeglmapping.h
++libglvnd-1.3.2/src/EGL/libeglerror.c
++libglvnd-1.3.2/src/EGL/libeglvendor.h
++libglvnd-1.3.2/src/EGL/libeglvendor.c
++libglvnd-1.3.2/src/EGL/libeglcurrent.h
++libglvnd-1.3.2/src/EGL/egldispatchstubs.h
++libglvnd-1.3.2/src/EGL/libegl.c
++libglvnd-1.3.2/src/EGL/egl.symbols
++libglvnd-1.3.2/src/EGL/egl-symbol-check.sh
++libglvnd-1.3.2/src/EGL/libeglcurrent.c
++libglvnd-1.3.2/src/EGL/Makefile.am
++libglvnd-1.3.2/src/EGL/icd_enumeration.md
++libglvnd-1.3.2/src/GLESv2/
++libglvnd-1.3.2/src/GLESv2/glesv2-symbol-check.sh
++libglvnd-1.3.2/src/GLESv2/meson.build
++libglvnd-1.3.2/src/GLESv2/glesv2.pc.in
++libglvnd-1.3.2/src/GLESv2/glesv2.symbols
++libglvnd-1.3.2/src/GLESv2/Makefile.am
++libglvnd-1.3.2/src/GLESv2/.gitignore
++libglvnd-1.3.2/autogen.sh
++libglvnd-1.3.2/m4/
++libglvnd-1.3.2/m4/ax_pthread.m4
++libglvnd-1.3.2/m4/ax_check_enable_debug.m4
++libglvnd-1.3.2/m4/ax_check_link_flag.m4
++libglvnd-1.3.2/m4/.gitignore
++libglvnd-1.3.2/.gitlab-ci/
++libglvnd-1.3.2/.gitlab-ci/run_build.sh
++libglvnd-1.3.2/.gitlab-ci/run_meson.sh
++libglvnd-1.3.2/.gitlab-ci/ubuntu_install.sh
++libglvnd-1.3.2/.gitlab-ci/i686-linux-gnu
++libglvnd-1.3.2/.gitlab-ci/run_distcheck.sh
++libglvnd-1.3.2/meson_options.txt
++libglvnd-1.3.2/configure.ac
++libglvnd-1.3.2/tests/
++libglvnd-1.3.2/tests/testgldispatch_generated_thr.sh
++libglvnd-1.3.2/tests/testeglgetprocaddress.c
++libglvnd-1.3.2/tests/testglxmcthreads.sh
++libglvnd-1.3.2/tests/meson.build
++libglvnd-1.3.2/tests/testgldispatch.c
++libglvnd-1.3.2/tests/testglxmcoldlink.sh
++libglvnd-1.3.2/tests/testeglmakecurrent.c
++libglvnd-1.3.2/tests/testglxmcbasic.sh
++libglvnd-1.3.2/tests/testegldisplay.c
++libglvnd-1.3.2/tests/testgldispatchthread.c
++libglvnd-1.3.2/tests/testglxgetprocaddress_genentry.sh
++libglvnd-1.3.2/tests/testgldispatch_patched.sh
++libglvnd-1.3.2/tests/json/
++libglvnd-1.3.2/tests/json/20_egldummy1.json
++libglvnd-1.3.2/tests/json/10_egldummy0.json
++libglvnd-1.3.2/tests/dummy/
++libglvnd-1.3.2/tests/dummy/GLX_dummy.h
++libglvnd-1.3.2/tests/dummy/meson.build
++libglvnd-1.3.2/tests/dummy/README
++libglvnd-1.3.2/tests/dummy/GLX_dummy.c
++libglvnd-1.3.2/tests/dummy/EGL_dummy.h
++libglvnd-1.3.2/tests/dummy/patchentrypoints.h
++libglvnd-1.3.2/tests/dummy/EGL_dummy.c
++libglvnd-1.3.2/tests/dummy/patchentrypoints.c
++libglvnd-1.3.2/tests/dummy/Makefile.am
++libglvnd-1.3.2/tests/test_utils.c
++libglvnd-1.3.2/tests/testeglgetprocaddress.sh
++libglvnd-1.3.2/tests/testglxcreatecontext.c
++libglvnd-1.3.2/tests/testglxmakecurrent.c
++libglvnd-1.3.2/tests/testeglerror.c
++libglvnd-1.3.2/tests/eglenv.sh
++libglvnd-1.3.2/tests/testeglmakecurrent.sh
++libglvnd-1.3.2/tests/testgldispatch_patched_thr.sh
++libglvnd-1.3.2/tests/testegldebug.c
++libglvnd-1.3.2/tests/testgldispatch_static_thr.sh
++libglvnd-1.3.2/tests/testglxqueryversion.c
++libglvnd-1.3.2/tests/testglxgetprocaddress.sh
++libglvnd-1.3.2/tests/test_utils.h
++libglvnd-1.3.2/tests/testglxmcloop.sh
++libglvnd-1.3.2/tests/testegldebug.sh
++libglvnd-1.3.2/tests/testglxgetclientstr.sh
++libglvnd-1.3.2/tests/testgldispatch_generated.sh
++libglvnd-1.3.2/tests/testgldispatch_static.sh
++libglvnd-1.3.2/tests/testeglerror.sh
++libglvnd-1.3.2/tests/testglxqueryversion.sh
++libglvnd-1.3.2/tests/testglxgetclientstr.c
++libglvnd-1.3.2/tests/testglxgetprocaddress_genentry.c
++libglvnd-1.3.2/tests/glxenv.sh
++libglvnd-1.3.2/tests/testegldevice.c
++libglvnd-1.3.2/tests/testglxcreatecontext.sh
++libglvnd-1.3.2/tests/testglxgetprocaddress.c
++libglvnd-1.3.2/tests/testegldevice.sh
++libglvnd-1.3.2/tests/Makefile.am
++libglvnd-1.3.2/tests/egl_test_utils.h
++libglvnd-1.3.2/tests/testgldispatchthread.sh
++libglvnd-1.3.2/tests/testegldisplay.sh
++libglvnd-1.3.2/tests/.gitignore
++libglvnd-1.3.2/tests/egl_test_utils.c
++libglvnd-1.3.2/.gitlab-ci.yml
++libglvnd-1.3.2/libglvnd.pc.in
++libglvnd-1.3.2/include/
++libglvnd-1.3.2/include/glvnd_list.h
++libglvnd-1.3.2/include/meson.build
++libglvnd-1.3.2/include/GL/
++libglvnd-1.3.2/include/GL/glcorearb.h
++libglvnd-1.3.2/include/GL/glext.h
++libglvnd-1.3.2/include/GL/glxext.h
++libglvnd-1.3.2/include/GL/gl.h
++libglvnd-1.3.2/include/GL/glx.h
++libglvnd-1.3.2/include/glheader.h
++libglvnd-1.3.2/include/glvnd/
++libglvnd-1.3.2/include/glvnd/libeglabi.h
++libglvnd-1.3.2/include/glvnd/libglxabi.h
++libglvnd-1.3.2/include/glvnd/GLdispatchABI.h
++libglvnd-1.3.2/include/lkdhash.h
++libglvnd-1.3.2/include/GLES/
++libglvnd-1.3.2/include/GLES/glext.h
++libglvnd-1.3.2/include/GLES/glplatform.h
++libglvnd-1.3.2/include/GLES/gl.h
++libglvnd-1.3.2/include/GLES/egl.h
++libglvnd-1.3.2/include/KHR/
++libglvnd-1.3.2/include/KHR/khrplatform.h
++libglvnd-1.3.2/include/compiler.h
++libglvnd-1.3.2/include/GLES3/
++libglvnd-1.3.2/include/GLES3/gl3.h
++libglvnd-1.3.2/include/GLES3/gl32.h
++libglvnd-1.3.2/include/GLES3/gl3ext.h
++libglvnd-1.3.2/include/GLES3/gl31.h
++libglvnd-1.3.2/include/GLES3/gl3platform.h
++libglvnd-1.3.2/include/Makefile.am
++libglvnd-1.3.2/include/EGL/
++libglvnd-1.3.2/include/EGL/eglext.h
++libglvnd-1.3.2/include/EGL/egl.h
++libglvnd-1.3.2/include/EGL/eglplatform.h
++libglvnd-1.3.2/include/GLES2/
++libglvnd-1.3.2/include/GLES2/gl2platform.h
++libglvnd-1.3.2/include/GLES2/gl2ext.h
++libglvnd-1.3.2/include/GLES2/gl2.h
++libglvnd-1.3.2/include/c99_compat.h
++libglvnd-1.3.2/Makefile.am
++libglvnd-1.3.2/.gitignore
++autoreconf: Entering directory `.'
++autoreconf: configure.ac: not using Gettext
++autoreconf: running: aclocal --force -I m4
++autoreconf: configure.ac: tracing
++autoreconf: running: libtoolize --copy --force
++libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, 'bin'.
++libtoolize: copying file 'bin/ltmain.sh'
++libtoolize: putting macros in AC_CONFIG_MACRO_DIRS, 'm4'.
++libtoolize: copying file 'm4/libtool.m4'
++libtoolize: copying file 'm4/ltoptions.m4'
++libtoolize: copying file 'm4/ltsugar.m4'
++libtoolize: copying file 'm4/ltversion.m4'
++libtoolize: copying file 'm4/lt~obsolete.m4'
++autoreconf: running: /usr/bin/autoconf --force
++autoreconf: running: /usr/bin/autoheader --force
++autoreconf: running: automake --add-missing --copy --force-missing
++configure.ac:16: installing 'bin/compile'
++configure.ac:11: installing 'bin/config.guess'
++configure.ac:11: installing 'bin/config.sub'
++configure.ac:18: installing 'bin/install-sh'
++configure.ac:18: installing 'bin/missing'
++src/EGL/Makefile.am: installing 'bin/depcomp'
++parallel-tests: installing 'bin/test-driver'
++autoreconf: Leaving directory `.'
++autoreconf: Entering directory `.'
++autoreconf: configure.ac: not using Gettext
++autoreconf: running: aclocal --force -I m4
++autoreconf: configure.ac: tracing
++autoreconf: running: libtoolize --copy --force
++libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, 'bin'.
++libtoolize: copying file 'bin/ltmain.sh'
++libtoolize: putting macros in AC_CONFIG_MACRO_DIRS, 'm4'.
++libtoolize: copying file 'm4/libtool.m4'
++libtoolize: copying file 'm4/ltoptions.m4'
++libtoolize: copying file 'm4/ltsugar.m4'
++libtoolize: copying file 'm4/ltversion.m4'
++libtoolize: copying file 'm4/lt~obsolete.m4'
++autoreconf: running: /usr/bin/autoconf --force
++autoreconf: running: /usr/bin/autoheader --force
++autoreconf: running: automake --add-missing --copy --force-missing
++configure.ac:16: installing 'bin/compile'
++configure.ac:18: installing 'bin/missing'
++src/EGL/Makefile.am: installing 'bin/depcomp'
++autoreconf: Leaving directory `.'
++checking build system type... x86_64-slackware-linux-musl
++checking host system type... x86_64-slackware-linux-musl
++checking target system type... x86_64-slackware-linux-musl
++checking whether to enable debugging... no
++checking for gcc... gcc
++checking whether the C compiler works... yes
++checking for C compiler default output file name... a.out
++checking for suffix of executables... 
++checking whether we are cross compiling... no
++checking for suffix of object files... o
++checking whether we are using the GNU C compiler... yes
++checking whether gcc accepts -g... yes
++checking for gcc option to accept ISO C89... none needed
++checking whether gcc understands -c and -o together... yes
++checking how to run the C preprocessor... gcc -E
++checking for grep that handles long lines and -e... /usr/bin/grep
++checking for egrep... /usr/bin/grep -E
++checking for ANSI C header files... yes
++checking for sys/types.h... yes
++checking for sys/stat.h... yes
++checking for stdlib.h... yes
++checking for string.h... yes
++checking for memory.h... yes
++checking for strings.h... yes
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking for unistd.h... yes
++checking minix/config.h usability... no
++checking minix/config.h presence... no
++checking for minix/config.h... no
++checking whether it is safe to define __EXTENSIONS__... yes
++checking for a BSD-compatible install... /usr/bin/ginstall -c
++checking whether build environment is sane... yes
++checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
++checking for gawk... gawk
++checking whether make sets $(MAKE)... yes
++checking whether make supports the include directive... yes (GNU style)
++checking whether make supports nested variables... yes
++checking dependency style of gcc... gcc3
++checking whether make supports nested variables... (cached) yes
++checking for gcc... (cached) gcc
++checking whether we are using the GNU C compiler... (cached) yes
++checking whether gcc accepts -g... (cached) yes
++checking for gcc option to accept ISO C89... (cached) none needed
++checking whether gcc understands -c and -o together... (cached) yes
++checking for gcc option to accept ISO C99... none needed
++checking dependency style of gcc... gcc3
++checking whether ln -s works... yes
++checking whether make sets $(MAKE)... (cached) yes
++checking how to print strings... printf
++checking for a sed that does not truncate output... /usr/bin/sed
++checking for fgrep... /usr/bin/grep -F
++checking for ld used by gcc... /usr/bin/ld
++checking if the linker (/usr/bin/ld) is GNU ld... yes
++checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
++checking the name lister (/usr/bin/nm -B) interface... BSD nm
++checking the maximum length of command line arguments... 98304
++checking how to convert x86_64-slackware-linux-musl file names to x86_64-slackware-linux-musl format... func_convert_file_noop
++checking how to convert x86_64-slackware-linux-musl file names to toolchain format... func_convert_file_noop
++checking for /usr/bin/ld option to reload object files... -r
++checking for objdump... objdump
++checking how to recognize dependent libraries... pass_all
++checking for dlltool... dlltool
++checking how to associate runtime and link libraries... printf %s\n
++checking for ar... ar
++checking for archiver @FILE support... @
++checking for strip... strip
++checking for ranlib... ranlib
++checking command to parse /usr/bin/nm -B output from gcc object... ok
++checking for sysroot... no
++checking for a working dd... /usr/bin/dd
++checking how to truncate binary pipes... /usr/bin/dd bs=4096 count=1
++checking for mt... mt
++checking if mt is a manifest tool... no
++checking for dlfcn.h... yes
++checking for objdir... .libs
++checking if gcc supports -fno-rtti -fno-exceptions... no
++checking for gcc option to produce PIC... -fPIC -DPIC
++checking if gcc PIC flag -fPIC -DPIC works... yes
++checking if gcc static flag -static works... yes
++checking if gcc supports -c -o file.o... yes
++checking if gcc supports -c -o file.o... (cached) yes
++checking whether the gcc linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
++checking whether -lc should be explicitly linked in... no
++checking dynamic linker characteristics... GNU/Linux ld.so
++checking how to hardcode library paths into programs... immediate
++checking whether stripping libraries is possible... yes
++checking if libtool supports shared libraries... yes
++checking whether to build shared libraries... yes
++checking whether to build static libraries... no
++checking pkg-config is at least version 0.9.0... yes
++checking for BSD- or MS-compatible name lister (nm)... (cached) /usr/bin/nm -B
++checking the name lister (/usr/bin/nm -B) interface... (cached) BSD nm
++checking for a Python interpreter with version >= 2.7... python
++checking for python... /usr/bin/python
++checking for python version... 2.7
++checking for python platform... linux2
++checking for python script directory... ${prefix}/lib/python2.7/site-packages
++checking for python extension module directory... ${exec_prefix}/lib/python2.7/site-packages
++checking whether to enable assembly... yes, x86_64
++checking for the pthreads library -lpthreads... no
++checking whether pthreads work without any flags... yes
++checking for joinable pthread attribute... PTHREAD_CREATE_JOINABLE
++checking if more special flags are required for pthreads... no
++checking for PTHREAD_PRIO_INHERIT... yes
++checking for x11... yes
++checking for xext... yes
++checking for glproto... yes
++checking for typeof syntax and keyword spelling... typeof
++checking for working strnlen... yes
++checking for initial-exec TLS... no
++checking for entrypoint stub type... x86_64_tsd, TLS=no
++checking for constructor attributes... yes
++checking for pthreads rwlocks... yes
++checking for sync intrinsics... yes
++checking for mincore... yes
++checking for dlopen... yes
++checking for RTLD_NOLOAD... yes
++checking for dirent.d_type... yes
++checking whether the linker accepts -Xlinker --no-undefined... yes
++checking that generated files are newer than configure... done
++configure: creating ./config.status
++config.status: creating Makefile
++config.status: creating libglvnd.pc
++config.status: creating include/Makefile
++config.status: creating src/Makefile
++config.status: creating src/GL/Makefile
++config.status: creating src/GL/gl.pc
++config.status: creating src/OpenGL/opengl.pc
++config.status: creating src/OpenGL/Makefile
++config.status: creating src/GLESv1/glesv1_cm.pc
++config.status: creating src/GLESv1/Makefile
++config.status: creating src/GLESv2/glesv2.pc
++config.status: creating src/GLESv2/Makefile
++config.status: creating src/GLX/glx.pc
++config.status: creating src/GLX/Makefile
++config.status: creating src/EGL/Makefile
++config.status: creating src/EGL/egl.pc
++config.status: creating src/GLdispatch/Makefile
++config.status: creating src/GLdispatch/vnd-glapi/Makefile
++config.status: creating src/util/Makefile
++config.status: creating tests/Makefile
++config.status: creating tests/dummy/Makefile
++config.status: creating config.h
++config.status: executing depfiles commands
++config.status: executing libtool commands
++make  all-recursive
++make[1]: Entering directory '/tmp/libglvnd-1.3.2'
++Making all in src
++make[2]: Entering directory '/tmp/libglvnd-1.3.2/src'
++Making all in util
++make[3]: Entering directory '/tmp/libglvnd-1.3.2/src/util'
++  CC       glvnd_pthread.lo
++  CC       app_error_check.lo
++  CC       utils_misc.lo
++  CC       trace.lo
++  CC       libwinsys_dispatch_la-winsys_dispatch.lo
++  CC       cJSON.lo
++  CCLD     libglvnd_pthread.la
++  CCLD     libapp_error_check.la
++  CCLD     libutils_misc.la
++  CCLD     libtrace.la
++  CCLD     libwinsys_dispatch.la
++  CCLD     libcJSON.la
++make[3]: Leaving directory '/tmp/libglvnd-1.3.2/src/util'
++Making all in GLdispatch
++make[3]: Entering directory '/tmp/libglvnd-1.3.2/src/GLdispatch'
++Making all in vnd-glapi
++make[4]: Entering directory '/tmp/libglvnd-1.3.2/src/GLdispatch/vnd-glapi'
++  GEN      glapi_mapi_tmp.h
++  GEN      g_glapi_mapi_gl_tmp.h
++  GEN      g_glapi_mapi_opengl_tmp.h
++  GEN      g_glapi_mapi_glesv1_tmp.h
++  GEN      g_glapi_mapi_glesv2_tmp.h
++make  all-am
++make[5]: Entering directory '/tmp/libglvnd-1.3.2/src/GLdispatch/vnd-glapi'
++  CC       libglapi_la-entry_x86_64_tsd.lo
++  CC       libglapi_la-entry_simple_asm.lo
++  CC       libglapi_la-entry_common.lo
++  CC       libglapi_la-mapi_glapi.lo
++  CC       libglapi_la-stub.lo
++  CC       libglapi_la-table.lo
++  CC       libglapi_la-u_current_tsd.lo
++  CC       libglapi_gl_la-entry_x86_64_tsd.lo
++  CC       libglapi_gl_la-entry_simple_asm.lo
++  CC       libglapi_gl_la-entry_common.lo
++  CC       libglapi_gl_la-stub.lo
++  CC       libglapi_opengl_la-entry_x86_64_tsd.lo
++  CC       libglapi_opengl_la-entry_simple_asm.lo
++  CC       libglapi_opengl_la-entry_common.lo
++  CC       libglapi_opengl_la-stub.lo
++  CC       libglapi_glesv1_la-entry_x86_64_tsd.lo
++  CC       libglapi_glesv1_la-entry_simple_asm.lo
++  CC       libglapi_glesv1_la-entry_common.lo
++  CC       libglapi_glesv1_la-stub.lo
++  CC       libglapi_glesv2_la-entry_x86_64_tsd.lo
++  CC       libglapi_glesv2_la-entry_simple_asm.lo
++  CC       libglapi_glesv2_la-entry_common.lo
++  CC       libglapi_glesv2_la-stub.lo
++  CCLD     libglapi.la
++  CCLD     libglapi_gl.la
++  CCLD     libglapi_opengl.la
++  CCLD     libglapi_glesv1.la
++  CCLD     libglapi_glesv2.la
++make[5]: Leaving directory '/tmp/libglvnd-1.3.2/src/GLdispatch/vnd-glapi'
++make[4]: Leaving directory '/tmp/libglvnd-1.3.2/src/GLdispatch/vnd-glapi'
++make[4]: Entering directory '/tmp/libglvnd-1.3.2/src/GLdispatch'
++  CC       libGLdispatch_la-GLdispatch.lo
++  CCLD     libGLdispatch.la
++make[4]: Leaving directory '/tmp/libglvnd-1.3.2/src/GLdispatch'
++make[3]: Leaving directory '/tmp/libglvnd-1.3.2/src/GLdispatch'
++Making all in OpenGL
++make[3]: Entering directory '/tmp/libglvnd-1.3.2/src/OpenGL'
++  CC       libopengl_main_la-libopengl.lo
++  CCLD     libopengl_main.la
++  CCLD     libOpenGL.la
++make[3]: Leaving directory '/tmp/libglvnd-1.3.2/src/OpenGL'
++Making all in EGL
++make[3]: Entering directory '/tmp/libglvnd-1.3.2/src/EGL'
++  GEN      g_egldispatchstubs.c
++  GEN      g_egldispatchstubs.h
++make  all-am
++make[4]: Entering directory '/tmp/libglvnd-1.3.2/src/EGL'
++  CC       libEGL_la-libegl.lo
++  CC       libEGL_la-libeglcurrent.lo
++  CC       libEGL_la-libeglmapping.lo
++  CC       libEGL_la-libeglvendor.lo
++  CC       libEGL_la-libeglerror.lo
++  CC       libEGL_dispatch_stubs_la-egldispatchstubs.lo
++  CC       libEGL_dispatch_stubs_la-g_egldispatchstubs.lo
++  CCLD     libEGL_dispatch_stubs.la
++  CCLD     libEGL.la
++make[4]: Leaving directory '/tmp/libglvnd-1.3.2/src/EGL'
++make[3]: Leaving directory '/tmp/libglvnd-1.3.2/src/EGL'
++Making all in GLX
++make[3]: Entering directory '/tmp/libglvnd-1.3.2/src/GLX'
++  GEN      g_glx_dispatch_stub_list.h
++make  all-am
++make[4]: Entering directory '/tmp/libglvnd-1.3.2/src/GLX'
++  CC       libGLX_la-libglx.lo
++  CC       libGLX_la-libglxmapping.lo
++  CC       libGLX_la-libglxproto.lo
++  CC       libGLX_la-glvnd_genentry.lo
++  CCLD     libGLX.la
++make[4]: Leaving directory '/tmp/libglvnd-1.3.2/src/GLX'
++make[3]: Leaving directory '/tmp/libglvnd-1.3.2/src/GLX'
++Making all in GL
++make[3]: Entering directory '/tmp/libglvnd-1.3.2/src/GL'
++  GEN      g_libglglxwrapper.c
++make  all-am
++make[4]: Entering directory '/tmp/libglvnd-1.3.2/src/GL'
++  CC       libGL_la-libgl.lo
++  CC       libGL_la-g_libglglxwrapper.lo
++  CCLD     libGL.la
++make[4]: Leaving directory '/tmp/libglvnd-1.3.2/src/GL'
++make[3]: Leaving directory '/tmp/libglvnd-1.3.2/src/GL'
++Making all in GLESv1
++make[3]: Entering directory '/tmp/libglvnd-1.3.2/src/GLESv1'
++  CCLD     libGLESv1_CM.la
++make[3]: Leaving directory '/tmp/libglvnd-1.3.2/src/GLESv1'
++Making all in GLESv2
++make[3]: Entering directory '/tmp/libglvnd-1.3.2/src/GLESv2'
++  CCLD     libGLESv2.la
++make[3]: Leaving directory '/tmp/libglvnd-1.3.2/src/GLESv2'
++make[3]: Entering directory '/tmp/libglvnd-1.3.2/src'
++make[3]: Nothing to be done for 'all-am'.
++make[3]: Leaving directory '/tmp/libglvnd-1.3.2/src'
++make[2]: Leaving directory '/tmp/libglvnd-1.3.2/src'
++Making all in tests
++make[2]: Entering directory '/tmp/libglvnd-1.3.2/tests'
++Making all in dummy
++make[3]: Entering directory '/tmp/libglvnd-1.3.2/tests/dummy'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/libglvnd-1.3.2/tests/dummy'
++make[3]: Entering directory '/tmp/libglvnd-1.3.2/tests'
++make[3]: Nothing to be done for 'all-am'.
++make[3]: Leaving directory '/tmp/libglvnd-1.3.2/tests'
++make[2]: Leaving directory '/tmp/libglvnd-1.3.2/tests'
++Making all in include
++make[2]: Entering directory '/tmp/libglvnd-1.3.2/include'
++make[2]: Nothing to be done for 'all'.
++make[2]: Leaving directory '/tmp/libglvnd-1.3.2/include'
++make[2]: Entering directory '/tmp/libglvnd-1.3.2'
++make[2]: Leaving directory '/tmp/libglvnd-1.3.2'
++make[1]: Leaving directory '/tmp/libglvnd-1.3.2'
++if test -z 'strip'; then \
++  make  INSTALL_PROGRAM="/bin/sh /tmp/libglvnd-1.3.2/bin/install-sh -c -s" \
++    install_sh_PROGRAM="/bin/sh /tmp/libglvnd-1.3.2/bin/install-sh -c -s" INSTALL_STRIP_FLAG=-s \
++      install; \
++else \
++  make  INSTALL_PROGRAM="/bin/sh /tmp/libglvnd-1.3.2/bin/install-sh -c -s" \
++    install_sh_PROGRAM="/bin/sh /tmp/libglvnd-1.3.2/bin/install-sh -c -s" INSTALL_STRIP_FLAG=-s \
++    "INSTALL_PROGRAM_ENV=STRIPPROG='strip'" install; \
++fi
++make[1]: Entering directory '/tmp/libglvnd-1.3.2'
++Making install in src
++make[2]: Entering directory '/tmp/libglvnd-1.3.2/src'
++Making install in util
++make[3]: Entering directory '/tmp/libglvnd-1.3.2/src/util'
++make[4]: Entering directory '/tmp/libglvnd-1.3.2/src/util'
++make[4]: Nothing to be done for 'install-exec-am'.
++make[4]: Nothing to be done for 'install-data-am'.
++make[4]: Leaving directory '/tmp/libglvnd-1.3.2/src/util'
++make[3]: Leaving directory '/tmp/libglvnd-1.3.2/src/util'
++Making install in GLdispatch
++make[3]: Entering directory '/tmp/libglvnd-1.3.2/src/GLdispatch'
++Making install in vnd-glapi
++make[4]: Entering directory '/tmp/libglvnd-1.3.2/src/GLdispatch/vnd-glapi'
++make  install-am
++make[5]: Entering directory '/tmp/libglvnd-1.3.2/src/GLdispatch/vnd-glapi'
++make[6]: Entering directory '/tmp/libglvnd-1.3.2/src/GLdispatch/vnd-glapi'
++make[6]: Nothing to be done for 'install-exec-am'.
++make[6]: Nothing to be done for 'install-data-am'.
++make[6]: Leaving directory '/tmp/libglvnd-1.3.2/src/GLdispatch/vnd-glapi'
++make[5]: Leaving directory '/tmp/libglvnd-1.3.2/src/GLdispatch/vnd-glapi'
++make[4]: Leaving directory '/tmp/libglvnd-1.3.2/src/GLdispatch/vnd-glapi'
++make[4]: Entering directory '/tmp/libglvnd-1.3.2/src/GLdispatch'
++make[5]: Entering directory '/tmp/libglvnd-1.3.2/src/GLdispatch'
++ /usr/bin/mkdir -p '/tmp/package-libglvnd/usr/lib'
++ /bin/sh ../../libtool   --mode=install /usr/bin/ginstall -c -s  libGLdispatch.la '/tmp/package-libglvnd/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/libGLdispatch.so.0.0.0 /tmp/package-libglvnd/usr/lib/libGLdispatch.so.0.0.0
++libtool: install: strip --strip-unneeded /tmp/package-libglvnd/usr/lib/libGLdispatch.so.0.0.0
++libtool: install: (cd /tmp/package-libglvnd/usr/lib && { ln -s -f libGLdispatch.so.0.0.0 libGLdispatch.so.0 || { rm -f libGLdispatch.so.0 && ln -s libGLdispatch.so.0.0.0 libGLdispatch.so.0; }; })
++libtool: install: (cd /tmp/package-libglvnd/usr/lib && { ln -s -f libGLdispatch.so.0.0.0 libGLdispatch.so || { rm -f libGLdispatch.so && ln -s libGLdispatch.so.0.0.0 libGLdispatch.so; }; })
++libtool: install: /usr/bin/ginstall -c .libs/libGLdispatch.lai /tmp/package-libglvnd/usr/lib/libGLdispatch.la
++libtool: warning: remember to run 'libtool --finish /usr/lib'
++make[5]: Nothing to be done for 'install-data-am'.
++make[5]: Leaving directory '/tmp/libglvnd-1.3.2/src/GLdispatch'
++make[4]: Leaving directory '/tmp/libglvnd-1.3.2/src/GLdispatch'
++make[3]: Leaving directory '/tmp/libglvnd-1.3.2/src/GLdispatch'
++Making install in OpenGL
++make[3]: Entering directory '/tmp/libglvnd-1.3.2/src/OpenGL'
++make[4]: Entering directory '/tmp/libglvnd-1.3.2/src/OpenGL'
++ /usr/bin/mkdir -p '/tmp/package-libglvnd/usr/lib'
++ /bin/sh ../../libtool   --mode=install /usr/bin/ginstall -c -s  libOpenGL.la '/tmp/package-libglvnd/usr/lib'
++libtool: warning: relinking 'libOpenGL.la'
++libtool: install: (cd /tmp/libglvnd-1.3.2/src/OpenGL; /bin/sh "/tmp/libglvnd-1.3.2/libtool"  --silent --tag CC --mode=relink gcc -O2 -fPIC -Wall -include config.h -fvisibility=hidden -DUSE_X86_64_ASM -DEGL_NO_X11 -shared -Xlinker --no-undefined -version-info 0 -o libOpenGL.la -rpath /usr/lib libopengl_main.la ../GLdispatch/libGLdispatch.la ../GLdispatch/vnd-glapi/libglapi_opengl.la ../util/libutils_misc.la -inst-prefix-dir /tmp/package-libglvnd)
++libtool: install: /usr/bin/ginstall -c .libs/libOpenGL.so.0.0.0T /tmp/package-libglvnd/usr/lib/libOpenGL.so.0.0.0
++libtool: install: strip --strip-unneeded /tmp/package-libglvnd/usr/lib/libOpenGL.so.0.0.0
++libtool: install: (cd /tmp/package-libglvnd/usr/lib && { ln -s -f libOpenGL.so.0.0.0 libOpenGL.so.0 || { rm -f libOpenGL.so.0 && ln -s libOpenGL.so.0.0.0 libOpenGL.so.0; }; })
++libtool: install: (cd /tmp/package-libglvnd/usr/lib && { ln -s -f libOpenGL.so.0.0.0 libOpenGL.so || { rm -f libOpenGL.so && ln -s libOpenGL.so.0.0.0 libOpenGL.so; }; })
++libtool: install: /usr/bin/ginstall -c .libs/libOpenGL.lai /tmp/package-libglvnd/usr/lib/libOpenGL.la
++libtool: warning: remember to run 'libtool --finish /usr/lib'
++ /usr/bin/mkdir -p '/tmp/package-libglvnd/usr/lib/pkgconfig'
++ /usr/bin/ginstall -c -m 644 opengl.pc '/tmp/package-libglvnd/usr/lib/pkgconfig'
++make[4]: Leaving directory '/tmp/libglvnd-1.3.2/src/OpenGL'
++make[3]: Leaving directory '/tmp/libglvnd-1.3.2/src/OpenGL'
++Making install in EGL
++make[3]: Entering directory '/tmp/libglvnd-1.3.2/src/EGL'
++make  install-am
++make[4]: Entering directory '/tmp/libglvnd-1.3.2/src/EGL'
++make[5]: Entering directory '/tmp/libglvnd-1.3.2/src/EGL'
++ /usr/bin/mkdir -p '/tmp/package-libglvnd/usr/lib'
++ /bin/sh ../../libtool   --mode=install /usr/bin/ginstall -c -s  libEGL.la '/tmp/package-libglvnd/usr/lib'
++libtool: warning: relinking 'libEGL.la'
++libtool: install: (cd /tmp/libglvnd-1.3.2/src/EGL; /bin/sh "/tmp/libglvnd-1.3.2/libtool"  --silent --tag CC --mode=relink gcc -I./../util/uthash/src -I./../util -I./../GLdispatch -I../../include -DDEFAULT_EGL_VENDOR_CONFIG_DIRS=\"/etc/X11/glvnd/egl_vendor.d:/usr/share/glvnd/egl_vendor.d\" -O2 -fPIC -Wall -include config.h -fvisibility=hidden -DUSE_X86_64_ASM -DEGL_NO_X11 -shared -Wl,-Bsymbolic -version-info 2:0:1 -Xlinker --no-undefined -o libEGL.la -rpath /usr/lib libEGL_la-libegl.lo libEGL_la-libeglcurrent.lo libEGL_la-libeglmapping.lo libEGL_la-libeglvendor.lo libEGL_la-libeglerror.lo -lm ../GLdispatch/libGLdispatch.la ../util/libtrace.la ../util/libglvnd_pthread.la ../util/libutils_misc.la ../util/libcJSON.la ../util/libwinsys_dispatch.la libEGL_dispatch_stubs.la -inst-prefix-dir /tmp/package-libglvnd)
++libtool: install: /usr/bin/ginstall -c .libs/libEGL.so.1.1.0T /tmp/package-libglvnd/usr/lib/libEGL.so.1.1.0
++libtool: install: strip --strip-unneeded /tmp/package-libglvnd/usr/lib/libEGL.so.1.1.0
++libtool: install: (cd /tmp/package-libglvnd/usr/lib && { ln -s -f libEGL.so.1.1.0 libEGL.so.1 || { rm -f libEGL.so.1 && ln -s libEGL.so.1.1.0 libEGL.so.1; }; })
++libtool: install: (cd /tmp/package-libglvnd/usr/lib && { ln -s -f libEGL.so.1.1.0 libEGL.so || { rm -f libEGL.so && ln -s libEGL.so.1.1.0 libEGL.so; }; })
++libtool: install: /usr/bin/ginstall -c .libs/libEGL.lai /tmp/package-libglvnd/usr/lib/libEGL.la
++libtool: warning: remember to run 'libtool --finish /usr/lib'
++ /usr/bin/mkdir -p '/tmp/package-libglvnd/usr/lib/pkgconfig'
++ /usr/bin/ginstall -c -m 644 egl.pc '/tmp/package-libglvnd/usr/lib/pkgconfig'
++make[5]: Leaving directory '/tmp/libglvnd-1.3.2/src/EGL'
++make[4]: Leaving directory '/tmp/libglvnd-1.3.2/src/EGL'
++make[3]: Leaving directory '/tmp/libglvnd-1.3.2/src/EGL'
++Making install in GLX
++make[3]: Entering directory '/tmp/libglvnd-1.3.2/src/GLX'
++make  install-am
++make[4]: Entering directory '/tmp/libglvnd-1.3.2/src/GLX'
++make[5]: Entering directory '/tmp/libglvnd-1.3.2/src/GLX'
++ /usr/bin/mkdir -p '/tmp/package-libglvnd/usr/lib'
++ /bin/sh ../../libtool   --mode=install /usr/bin/ginstall -c -s  libGLX.la '/tmp/package-libglvnd/usr/lib'
++libtool: warning: relinking 'libGLX.la'
++libtool: install: (cd /tmp/libglvnd-1.3.2/src/GLX; /bin/sh "/tmp/libglvnd-1.3.2/libtool"  --silent --tag CC --mode=relink gcc -I./../util/uthash/src -I./../util -I./../GLdispatch -I../../include -O2 -fPIC -Wall -include config.h -fvisibility=hidden -DUSE_X86_64_ASM -DEGL_NO_X11 -shared -Wl,-Bsymbolic -version-info 0 -Xlinker --no-undefined -o libGLX.la -rpath /usr/lib libGLX_la-libglx.lo libGLX_la-libglxmapping.lo libGLX_la-libglxproto.lo libGLX_la-glvnd_genentry.lo -lX11 -lXext ../GLdispatch/libGLdispatch.la ../util/libtrace.la ../util/libglvnd_pthread.la ../util/libutils_misc.la ../util/libapp_error_check.la ../util/libwinsys_dispatch.la -inst-prefix-dir /tmp/package-libglvnd)
++libtool: install: /usr/bin/ginstall -c .libs/libGLX.so.0.0.0T /tmp/package-libglvnd/usr/lib/libGLX.so.0.0.0
++libtool: install: strip --strip-unneeded /tmp/package-libglvnd/usr/lib/libGLX.so.0.0.0
++libtool: install: (cd /tmp/package-libglvnd/usr/lib && { ln -s -f libGLX.so.0.0.0 libGLX.so.0 || { rm -f libGLX.so.0 && ln -s libGLX.so.0.0.0 libGLX.so.0; }; })
++libtool: install: (cd /tmp/package-libglvnd/usr/lib && { ln -s -f libGLX.so.0.0.0 libGLX.so || { rm -f libGLX.so && ln -s libGLX.so.0.0.0 libGLX.so; }; })
++libtool: install: /usr/bin/ginstall -c .libs/libGLX.lai /tmp/package-libglvnd/usr/lib/libGLX.la
++libtool: warning: remember to run 'libtool --finish /usr/lib'
++ /usr/bin/mkdir -p '/tmp/package-libglvnd/usr/lib/pkgconfig'
++ /usr/bin/ginstall -c -m 644 glx.pc '/tmp/package-libglvnd/usr/lib/pkgconfig'
++make[5]: Leaving directory '/tmp/libglvnd-1.3.2/src/GLX'
++make[4]: Leaving directory '/tmp/libglvnd-1.3.2/src/GLX'
++make[3]: Leaving directory '/tmp/libglvnd-1.3.2/src/GLX'
++Making install in GL
++make[3]: Entering directory '/tmp/libglvnd-1.3.2/src/GL'
++make  install-am
++make[4]: Entering directory '/tmp/libglvnd-1.3.2/src/GL'
++make[5]: Entering directory '/tmp/libglvnd-1.3.2/src/GL'
++ /usr/bin/mkdir -p '/tmp/package-libglvnd/usr/lib'
++ /bin/sh ../../libtool   --mode=install /usr/bin/ginstall -c -s  libGL.la '/tmp/package-libglvnd/usr/lib'
++libtool: warning: relinking 'libGL.la'
++libtool: install: (cd /tmp/libglvnd-1.3.2/src/GL; /bin/sh "/tmp/libglvnd-1.3.2/libtool"  --silent --tag CC --mode=relink gcc -I../../include -O2 -fPIC -Wall -include config.h -fvisibility=hidden -DUSE_X86_64_ASM -DEGL_NO_X11 -shared -version-info 8:0:7 -Xlinker --no-undefined -o libGL.la -rpath /usr/lib libGL_la-libgl.lo libGL_la-g_libglglxwrapper.lo ../GLX/libGLX.la ../GLdispatch/libGLdispatch.la ../GLdispatch/vnd-glapi/libglapi_gl.la ../util/libutils_misc.la -inst-prefix-dir /tmp/package-libglvnd)
++libtool: install: /usr/bin/ginstall -c .libs/libGL.so.1.7.0T /tmp/package-libglvnd/usr/lib/libGL.so.1.7.0
++libtool: install: strip --strip-unneeded /tmp/package-libglvnd/usr/lib/libGL.so.1.7.0
++libtool: install: (cd /tmp/package-libglvnd/usr/lib && { ln -s -f libGL.so.1.7.0 libGL.so.1 || { rm -f libGL.so.1 && ln -s libGL.so.1.7.0 libGL.so.1; }; })
++libtool: install: (cd /tmp/package-libglvnd/usr/lib && { ln -s -f libGL.so.1.7.0 libGL.so || { rm -f libGL.so && ln -s libGL.so.1.7.0 libGL.so; }; })
++libtool: install: /usr/bin/ginstall -c .libs/libGL.lai /tmp/package-libglvnd/usr/lib/libGL.la
++libtool: warning: remember to run 'libtool --finish /usr/lib'
++ /usr/bin/mkdir -p '/tmp/package-libglvnd/usr/lib/pkgconfig'
++ /usr/bin/ginstall -c -m 644 gl.pc '/tmp/package-libglvnd/usr/lib/pkgconfig'
++make[5]: Leaving directory '/tmp/libglvnd-1.3.2/src/GL'
++make[4]: Leaving directory '/tmp/libglvnd-1.3.2/src/GL'
++make[3]: Leaving directory '/tmp/libglvnd-1.3.2/src/GL'
++Making install in GLESv1
++make[3]: Entering directory '/tmp/libglvnd-1.3.2/src/GLESv1'
++make[4]: Entering directory '/tmp/libglvnd-1.3.2/src/GLESv1'
++ /usr/bin/mkdir -p '/tmp/package-libglvnd/usr/lib'
++ /bin/sh ../../libtool   --mode=install /usr/bin/ginstall -c -s  libGLESv1_CM.la '/tmp/package-libglvnd/usr/lib'
++libtool: warning: relinking 'libGLESv1_CM.la'
++libtool: install: (cd /tmp/libglvnd-1.3.2/src/GLESv1; /bin/sh "/tmp/libglvnd-1.3.2/libtool"  --silent --tag CC --mode=relink gcc -O2 -fPIC -Wall -include config.h -fvisibility=hidden -DUSE_X86_64_ASM -DEGL_NO_X11 -shared -Xlinker --no-undefined -version-info 3:0:2 -o libGLESv1_CM.la -rpath /usr/lib ../OpenGL/libopengl_main.la ../GLdispatch/libGLdispatch.la ../GLdispatch/vnd-glapi/libglapi_glesv1.la ../util/libutils_misc.la -inst-prefix-dir /tmp/package-libglvnd)
++libtool: install: /usr/bin/ginstall -c .libs/libGLESv1_CM.so.1.2.0T /tmp/package-libglvnd/usr/lib/libGLESv1_CM.so.1.2.0
++libtool: install: strip --strip-unneeded /tmp/package-libglvnd/usr/lib/libGLESv1_CM.so.1.2.0
++libtool: install: (cd /tmp/package-libglvnd/usr/lib && { ln -s -f libGLESv1_CM.so.1.2.0 libGLESv1_CM.so.1 || { rm -f libGLESv1_CM.so.1 && ln -s libGLESv1_CM.so.1.2.0 libGLESv1_CM.so.1; }; })
++libtool: install: (cd /tmp/package-libglvnd/usr/lib && { ln -s -f libGLESv1_CM.so.1.2.0 libGLESv1_CM.so || { rm -f libGLESv1_CM.so && ln -s libGLESv1_CM.so.1.2.0 libGLESv1_CM.so; }; })
++libtool: install: /usr/bin/ginstall -c .libs/libGLESv1_CM.lai /tmp/package-libglvnd/usr/lib/libGLESv1_CM.la
++libtool: warning: remember to run 'libtool --finish /usr/lib'
++ /usr/bin/mkdir -p '/tmp/package-libglvnd/usr/lib/pkgconfig'
++ /usr/bin/ginstall -c -m 644 glesv1_cm.pc '/tmp/package-libglvnd/usr/lib/pkgconfig'
++make[4]: Leaving directory '/tmp/libglvnd-1.3.2/src/GLESv1'
++make[3]: Leaving directory '/tmp/libglvnd-1.3.2/src/GLESv1'
++Making install in GLESv2
++make[3]: Entering directory '/tmp/libglvnd-1.3.2/src/GLESv2'
++make[4]: Entering directory '/tmp/libglvnd-1.3.2/src/GLESv2'
++ /usr/bin/mkdir -p '/tmp/package-libglvnd/usr/lib'
++ /bin/sh ../../libtool   --mode=install /usr/bin/ginstall -c -s  libGLESv2.la '/tmp/package-libglvnd/usr/lib'
++libtool: warning: relinking 'libGLESv2.la'
++libtool: install: (cd /tmp/libglvnd-1.3.2/src/GLESv2; /bin/sh "/tmp/libglvnd-1.3.2/libtool"  --silent --tag CC --mode=relink gcc -O2 -fPIC -Wall -include config.h -fvisibility=hidden -DUSE_X86_64_ASM -DEGL_NO_X11 -shared -Xlinker --no-undefined -version-info 3:0:1 -o libGLESv2.la -rpath /usr/lib ../OpenGL/libopengl_main.la ../GLdispatch/libGLdispatch.la ../GLdispatch/vnd-glapi/libglapi_glesv2.la ../util/libutils_misc.la -inst-prefix-dir /tmp/package-libglvnd)
++libtool: install: /usr/bin/ginstall -c .libs/libGLESv2.so.2.1.0T /tmp/package-libglvnd/usr/lib/libGLESv2.so.2.1.0
++libtool: install: strip --strip-unneeded /tmp/package-libglvnd/usr/lib/libGLESv2.so.2.1.0
++libtool: install: (cd /tmp/package-libglvnd/usr/lib && { ln -s -f libGLESv2.so.2.1.0 libGLESv2.so.2 || { rm -f libGLESv2.so.2 && ln -s libGLESv2.so.2.1.0 libGLESv2.so.2; }; })
++libtool: install: (cd /tmp/package-libglvnd/usr/lib && { ln -s -f libGLESv2.so.2.1.0 libGLESv2.so || { rm -f libGLESv2.so && ln -s libGLESv2.so.2.1.0 libGLESv2.so; }; })
++libtool: install: /usr/bin/ginstall -c .libs/libGLESv2.lai /tmp/package-libglvnd/usr/lib/libGLESv2.la
++libtool: warning: remember to run 'libtool --finish /usr/lib'
++ /usr/bin/mkdir -p '/tmp/package-libglvnd/usr/lib/pkgconfig'
++ /usr/bin/ginstall -c -m 644 glesv2.pc '/tmp/package-libglvnd/usr/lib/pkgconfig'
++make[4]: Leaving directory '/tmp/libglvnd-1.3.2/src/GLESv2'
++make[3]: Leaving directory '/tmp/libglvnd-1.3.2/src/GLESv2'
++make[3]: Entering directory '/tmp/libglvnd-1.3.2/src'
++make[4]: Entering directory '/tmp/libglvnd-1.3.2/src'
++make[4]: Nothing to be done for 'install-exec-am'.
++make[4]: Nothing to be done for 'install-data-am'.
++make[4]: Leaving directory '/tmp/libglvnd-1.3.2/src'
++make[3]: Leaving directory '/tmp/libglvnd-1.3.2/src'
++make[2]: Leaving directory '/tmp/libglvnd-1.3.2/src'
++Making install in tests
++make[2]: Entering directory '/tmp/libglvnd-1.3.2/tests'
++Making install in dummy
++make[3]: Entering directory '/tmp/libglvnd-1.3.2/tests/dummy'
++make[4]: Entering directory '/tmp/libglvnd-1.3.2/tests/dummy'
++make[4]: Nothing to be done for 'install-exec-am'.
++make[4]: Nothing to be done for 'install-data-am'.
++make[4]: Leaving directory '/tmp/libglvnd-1.3.2/tests/dummy'
++make[3]: Leaving directory '/tmp/libglvnd-1.3.2/tests/dummy'
++make[3]: Entering directory '/tmp/libglvnd-1.3.2/tests'
++make[4]: Entering directory '/tmp/libglvnd-1.3.2/tests'
++make[4]: Nothing to be done for 'install-exec-am'.
++make[4]: Nothing to be done for 'install-data-am'.
++make[4]: Leaving directory '/tmp/libglvnd-1.3.2/tests'
++make[3]: Leaving directory '/tmp/libglvnd-1.3.2/tests'
++make[2]: Leaving directory '/tmp/libglvnd-1.3.2/tests'
++Making install in include
++make[2]: Entering directory '/tmp/libglvnd-1.3.2/include'
++make[3]: Entering directory '/tmp/libglvnd-1.3.2/include'
++make[3]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-libglvnd/usr/include'
++ /usr/bin/mkdir -p '/tmp/package-libglvnd/usr/include/GLES2'
++ /usr/bin/ginstall -c -m 644  GLES2/gl2ext.h GLES2/gl2.h GLES2/gl2platform.h '/tmp/package-libglvnd/usr/include/GLES2'
++ /usr/bin/mkdir -p '/tmp/package-libglvnd/usr/include/GLES3'
++ /usr/bin/ginstall -c -m 644  GLES3/gl31.h GLES3/gl32.h GLES3/gl3ext.h GLES3/gl3.h GLES3/gl3platform.h '/tmp/package-libglvnd/usr/include/GLES3'
++ /usr/bin/mkdir -p '/tmp/package-libglvnd/usr/include/glvnd'
++ /usr/bin/ginstall -c -m 644  glvnd/GLdispatchABI.h glvnd/libglxabi.h glvnd/libeglabi.h '/tmp/package-libglvnd/usr/include/glvnd'
++ /usr/bin/mkdir -p '/tmp/package-libglvnd/usr/include/GL'
++ /usr/bin/ginstall -c -m 644  GL/gl.h GL/glcorearb.h GL/glext.h GL/glx.h GL/glxext.h '/tmp/package-libglvnd/usr/include/GL'
++ /usr/bin/mkdir -p '/tmp/package-libglvnd/usr/include/KHR'
++ /usr/bin/ginstall -c -m 644  KHR/khrplatform.h '/tmp/package-libglvnd/usr/include/KHR'
++ /usr/bin/mkdir -p '/tmp/package-libglvnd/usr/include/EGL'
++ /usr/bin/ginstall -c -m 644  EGL/egl.h EGL/eglext.h EGL/eglplatform.h '/tmp/package-libglvnd/usr/include/EGL'
++ /usr/bin/mkdir -p '/tmp/package-libglvnd/usr/include/GLES'
++ /usr/bin/ginstall -c -m 644  GLES/egl.h GLES/gl.h GLES/glext.h GLES/glplatform.h '/tmp/package-libglvnd/usr/include/GLES'
++make[3]: Leaving directory '/tmp/libglvnd-1.3.2/include'
++make[2]: Leaving directory '/tmp/libglvnd-1.3.2/include'
++make[2]: Entering directory '/tmp/libglvnd-1.3.2'
++make[3]: Entering directory '/tmp/libglvnd-1.3.2'
++make[3]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-libglvnd/usr/lib/pkgconfig'
++ /usr/bin/ginstall -c -m 644 libglvnd.pc '/tmp/package-libglvnd/usr/lib/pkgconfig'
++make[3]: Leaving directory '/tmp/libglvnd-1.3.2'
++make[2]: Leaving directory '/tmp/libglvnd-1.3.2'
++make[1]: Leaving directory '/tmp/libglvnd-1.3.2'
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++usr/lib/libEGL.so	libEGL.so.1.1.0
++usr/lib/libEGL.so.1	libEGL.so.1.1.0
++usr/lib/libGL.so	libGL.so.1.7.0
++usr/lib/libGL.so.1	libGL.so.1.7.0
++usr/lib/libGLESv1_CM.so	libGLESv1_CM.so.1.2.0
++usr/lib/libGLESv1_CM.so.1	libGLESv1_CM.so.1.2.0
++usr/lib/libGLESv2.so	libGLESv2.so.2.1.0
++usr/lib/libGLESv2.so.2	libGLESv2.so.2.1.0
++usr/lib/libGLX.so	libGLX.so.0.0.0
++usr/lib/libGLX.so.0	libGLX.so.0.0.0
++usr/lib/libGLdispatch.so	libGLdispatch.so.0.0.0
++usr/lib/libGLdispatch.so.0	libGLdispatch.so.0.0.0
++usr/lib/libOpenGL.so	libOpenGL.so.0.0.0
++usr/lib/libOpenGL.so.0	libOpenGL.so.0.0.0
++
++Making symbolic link creation script:
++( cd usr/lib ; rm -rf libEGL.so )
++( cd usr/lib ; ln -sf libEGL.so.1.1.0 libEGL.so )
++( cd usr/lib ; rm -rf libEGL.so.1 )
++( cd usr/lib ; ln -sf libEGL.so.1.1.0 libEGL.so.1 )
++( cd usr/lib ; rm -rf libGL.so )
++( cd usr/lib ; ln -sf libGL.so.1.7.0 libGL.so )
++( cd usr/lib ; rm -rf libGL.so.1 )
++( cd usr/lib ; ln -sf libGL.so.1.7.0 libGL.so.1 )
++( cd usr/lib ; rm -rf libGLESv1_CM.so )
++( cd usr/lib ; ln -sf libGLESv1_CM.so.1.2.0 libGLESv1_CM.so )
++( cd usr/lib ; rm -rf libGLESv1_CM.so.1 )
++( cd usr/lib ; ln -sf libGLESv1_CM.so.1.2.0 libGLESv1_CM.so.1 )
++( cd usr/lib ; rm -rf libGLESv2.so )
++( cd usr/lib ; ln -sf libGLESv2.so.2.1.0 libGLESv2.so )
++( cd usr/lib ; rm -rf libGLESv2.so.2 )
++( cd usr/lib ; ln -sf libGLESv2.so.2.1.0 libGLESv2.so.2 )
++( cd usr/lib ; rm -rf libGLX.so )
++( cd usr/lib ; ln -sf libGLX.so.0.0.0 libGLX.so )
++( cd usr/lib ; rm -rf libGLX.so.0 )
++( cd usr/lib ; ln -sf libGLX.so.0.0.0 libGLX.so.0 )
++( cd usr/lib ; rm -rf libGLdispatch.so )
++( cd usr/lib ; ln -sf libGLdispatch.so.0.0.0 libGLdispatch.so )
++( cd usr/lib ; rm -rf libGLdispatch.so.0 )
++( cd usr/lib ; ln -sf libGLdispatch.so.0.0.0 libGLdispatch.so.0 )
++( cd usr/lib ; rm -rf libOpenGL.so )
++( cd usr/lib ; ln -sf libOpenGL.so.0.0.0 libOpenGL.so )
++( cd usr/lib ; rm -rf libOpenGL.so.0 )
++( cd usr/lib ; ln -sf libOpenGL.so.0.0.0 libOpenGL.so.0 )
++
++It is recommended that you make these lines your new installation script.
++
++Would you like to make this stuff the install script for this package
++and remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './usr/lib/libGLESv1_CM.so'
++removed './usr/lib/libGLESv1_CM.so.1'
++removed './usr/lib/libGLX.so'
++removed './usr/lib/libEGL.so'
++removed './usr/lib/libEGL.so.1'
++removed './usr/lib/libGLESv2.so'
++removed './usr/lib/libGLX.so.0'
++removed './usr/lib/libGL.so'
++removed './usr/lib/libGLESv2.so.2'
++removed './usr/lib/libOpenGL.so.0'
++removed './usr/lib/libGLdispatch.so.0'
++removed './usr/lib/libOpenGL.so'
++removed './usr/lib/libGLdispatch.so'
++removed './usr/lib/libGL.so.1'
++
++Creating your new ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/libglvnd-1.3.2-x86_64-1.txz
++
++./
++install/
++install/doinst.sh
++install/slack-desc
++usr/
++usr/doc/
++usr/doc/libglvnd-1.3.2/
++usr/doc/libglvnd-1.3.2/README.md
++usr/include/
++usr/include/EGL/
++usr/include/EGL/egl.h
++usr/include/EGL/eglext.h
++usr/include/EGL/eglplatform.h
++usr/include/GL/
++usr/include/GL/gl.h
++usr/include/GL/glcorearb.h
++usr/include/GL/glext.h
++usr/include/GL/glx.h
++usr/include/GL/glxext.h
++usr/include/GLES/
++usr/include/GLES/egl.h
++usr/include/GLES/gl.h
++usr/include/GLES/glext.h
++usr/include/GLES/glplatform.h
++usr/include/GLES2/
++usr/include/GLES2/gl2.h
++usr/include/GLES2/gl2ext.h
++usr/include/GLES2/gl2platform.h
++usr/include/GLES3/
++usr/include/GLES3/gl3.h
++usr/include/GLES3/gl31.h
++usr/include/GLES3/gl32.h
++usr/include/GLES3/gl3ext.h
++usr/include/GLES3/gl3platform.h
++usr/include/KHR/
++usr/include/KHR/khrplatform.h
++usr/include/glvnd/
++usr/include/glvnd/GLdispatchABI.h
++usr/include/glvnd/libeglabi.h
++usr/include/glvnd/libglxabi.h
++usr/lib/
++usr/lib/libEGL.so.1.1.0
++usr/lib/libGL.so.1.7.0
++usr/lib/libGLESv1_CM.so.1.2.0
++usr/lib/libGLESv2.so.2.1.0
++usr/lib/libGLX.so.0.0.0
++usr/lib/libGLdispatch.so.0.0.0
++usr/lib/libOpenGL.so.0.0.0
++usr/lib/pkgconfig/
++usr/lib/pkgconfig/egl.pc
++usr/lib/pkgconfig/gl.pc
++usr/lib/pkgconfig/glesv1_cm.pc
++usr/lib/pkgconfig/glesv2.pc
++usr/lib/pkgconfig/glx.pc
++usr/lib/pkgconfig/libglvnd.pc
++usr/lib/pkgconfig/opengl.pc
++
++Slackware package /tmp/libglvnd-1.3.2-x86_64-1.txz created.
++

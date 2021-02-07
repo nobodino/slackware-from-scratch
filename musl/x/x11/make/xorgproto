@@ -1,0 +1,13 @@
+export CFLAGS="$SLKCFLAGS"
+export CXXFLAGS="$SLKCFLAGS"
+cd build
+  ninja || exit 1
+  DESTDIR=$PKG ninja install || exit 1
+cd ..
+# meson doesn't seem to care about a docdir:
+mkdir -p $PKG/usr/doc/${PKGNAME}-${MODULAR_PACKAGE_VERSION}
+for docfile in PM_spec compositeproto.txt damageproto.txt dri2proto.txt dri3proto.txt fixesproto.txt presentproto.txt randrproto.txt renderproto.txt resproto.txt xv-protocol-v2.txt ; do
+  cp -a $docfile $PKG/usr/doc/${PKGNAME}-${MODULAR_PACKAGE_VERSION}
+  chown root:root $PKG/usr/doc/${PKGNAME}-${MODULAR_PACKAGE_VERSION}/${docfile}
+  chmod 644 $PKG/usr/doc/${PKGNAME}-${MODULAR_PACKAGE_VERSION}/${docfile}
+done

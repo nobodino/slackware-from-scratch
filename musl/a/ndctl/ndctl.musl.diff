@@ -1,0 +1,876 @@
+diff -ruBN /tmp/ndctl/ndctl.SlackBuild /source/a/ndctl/ndctl.SlackBuild
+--- /tmp/ndctl/ndctl.SlackBuild	2020-12-25 18:27:06.000000000 +0000
++++ /source/a/ndctl/ndctl.SlackBuild	2021-01-04 17:55:49.000000000 +0000
+@@ -59,7 +59,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "armv7hl" ]; then
+   SLKCFLAGS="-O3 -march=armv7-a -mfpu=vfpv3-d16"
+   LIBDIRSUFFIX=""
+@@ -107,7 +107,7 @@
+   --without-systemd \
+   --disable-asciidoctor \
+   --with-bash=no \
+-  --build=$ARCH-slackware-linux || exit 1
++  --build=$ARCH-slackware-linux-musl || exit 1
+ make $NUMJOBS || make || exit 1
+ make install DESTDIR=$PKG || exit 1
+ 
+diff -ruBN /tmp/ndctl/ndctl.SlackBuild.log /source/a/ndctl/ndctl.SlackBuild.log
+--- /tmp/ndctl/ndctl.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/a/ndctl/ndctl.SlackBuild.log	2021-01-04 17:57:19.000000000 +0000
+@@ -0,0 +1,851 @@
++ndctl-71.1/
++ndctl-71.1/README.md
++ndctl-71.1/git-version
++ndctl-71.1/Makefile.am.in
++ndctl-71.1/autogen.sh
++ndctl-71.1/sles/
++ndctl-71.1/sles/header
++ndctl-71.1/make-git-snapshot.sh
++ndctl-71.1/m4/
++ndctl-71.1/m4/.gitignore
++ndctl-71.1/LICENSES/
++ndctl-71.1/LICENSES/preferred/
++ndctl-71.1/LICENSES/preferred/GPL-2.0
++ndctl-71.1/LICENSES/preferred/LGPL-2.1
++ndctl-71.1/LICENSES/other/
++ndctl-71.1/LICENSES/other/CC0-1.0
++ndctl-71.1/LICENSES/other/MIT
++ndctl-71.1/daxctl/
++ndctl-71.1/daxctl/device.c
++ndctl-71.1/daxctl/daxctl.c
++ndctl-71.1/daxctl/builtin.h
++ndctl-71.1/daxctl/list.c
++ndctl-71.1/daxctl/libdaxctl.h
++ndctl-71.1/daxctl/acpi.c
++ndctl-71.1/daxctl/migrate.c
++ndctl-71.1/daxctl/Makefile.am
++ndctl-71.1/daxctl/lib/
++ndctl-71.1/daxctl/lib/daxctl.conf
++ndctl-71.1/daxctl/lib/libdaxctl.pc.in
++ndctl-71.1/daxctl/lib/libdaxctl.c
++ndctl-71.1/daxctl/lib/libdaxctl-private.h
++ndctl-71.1/daxctl/lib/libdaxctl.sym
++ndctl-71.1/daxctl/lib/Makefile.am
++ndctl-71.1/COPYING
++ndctl-71.1/git-version-gen
++ndctl-71.1/configure.ac
++ndctl-71.1/ccan/
++ndctl-71.1/ccan/build_assert/
++ndctl-71.1/ccan/build_assert/build_assert.h
++ndctl-71.1/ccan/array_size/
++ndctl-71.1/ccan/array_size/array_size.h
++ndctl-71.1/ccan/short_types/
++ndctl-71.1/ccan/short_types/short_types.h
++ndctl-71.1/ccan/minmax/
++ndctl-71.1/ccan/minmax/minmax.h
++ndctl-71.1/ccan/container_of/
++ndctl-71.1/ccan/container_of/container_of.h
++ndctl-71.1/ccan/list/
++ndctl-71.1/ccan/list/list.h
++ndctl-71.1/ccan/list/list.c
++ndctl-71.1/ccan/endian/
++ndctl-71.1/ccan/endian/endian.h
++ndctl-71.1/ccan/str/
++ndctl-71.1/ccan/str/str.c
++ndctl-71.1/ccan/str/str.h
++ndctl-71.1/ccan/str/debug.c
++ndctl-71.1/ccan/str/str_debug.h
++ndctl-71.1/ccan/check_type/
++ndctl-71.1/ccan/check_type/check_type.h
++ndctl-71.1/test.h
++ndctl-71.1/util/
++ndctl-71.1/util/strbuf.c
++ndctl-71.1/util/abspath.c
++ndctl-71.1/util/bitmap.c
++ndctl-71.1/util/log.c
++ndctl-71.1/util/parse-options.c
++ndctl-71.1/util/iomem.h
++ndctl-71.1/util/filter.c
++ndctl-71.1/util/size.h
++ndctl-71.1/util/usage.c
++ndctl-71.1/util/list.h
++ndctl-71.1/util/sysfs.h
++ndctl-71.1/util/util.h
++ndctl-71.1/util/parse-options.h
++ndctl-71.1/util/main.h
++ndctl-71.1/util/size.c
++ndctl-71.1/util/json.h
++ndctl-71.1/util/log.h
++ndctl-71.1/util/main.c
++ndctl-71.1/util/bitmap.h
++ndctl-71.1/util/filter.h
++ndctl-71.1/util/fletcher.h
++ndctl-71.1/util/iomem.c
++ndctl-71.1/util/sysfs.c
++ndctl-71.1/util/wrapper.c
++ndctl-71.1/util/json.c
++ndctl-71.1/util/help.c
++ndctl-71.1/util/strbuf.h
++ndctl-71.1/CONTRIBUTING.md
++ndctl-71.1/contrib/
++ndctl-71.1/contrib/prepare-release.sh
++ndctl-71.1/contrib/nfit_test_depmod.conf
++ndctl-71.1/contrib/daxctl-qemu-hmat-setup
++ndctl-71.1/contrib/do_abidiff
++ndctl-71.1/contrib/ndctl
++ndctl-71.1/contrib/nvdimm-security.conf
++ndctl-71.1/ndctl.spec.in
++ndctl-71.1/rpmbuild.sh
++ndctl-71.1/test/
++ndctl-71.1/test/btt-check.sh
++ndctl-71.1/test/blk-exhaust.sh
++ndctl-71.1/test/list-smart-dimm.c
++ndctl-71.1/test/clear.sh
++ndctl-71.1/test/ack-shutdown-count-set.c
++ndctl-71.1/test/nmem3.bin
++ndctl-71.1/test/pmem-errors.sh
++ndctl-71.1/test/blk_namespaces.c
++ndctl-71.1/test/sector-mode.sh
++ndctl-71.1/test/daxdev-errors.sh
++ndctl-71.1/test/security.sh
++ndctl-71.1/test/dpa-alloc.c
++ndctl-71.1/test/pfn-meta-errors.sh
++ndctl-71.1/test/inject-smart.sh
++ndctl-71.1/test/inject-error.sh
++ndctl-71.1/test/dax-pmd.c
++ndctl-71.1/test/monitor.sh
++ndctl-71.1/test/dax-xfs.sh
++ndctl-71.1/test/multi-dax.sh
++ndctl-71.1/test/dm.sh
++ndctl-71.1/test/track-uuid.sh
++ndctl-71.1/test/smart-listen.c
++ndctl-71.1/test/label-compat.sh
++ndctl-71.1/test/mmap.c
++ndctl-71.1/test/device-dax-fio.sh
++ndctl-71.1/test/mmap.sh
++ndctl-71.1/test/dax-errors.c
++ndctl-71.1/test/pmem_namespaces.c
++ndctl-71.1/test/nmem4.bin
++ndctl-71.1/test/revoke-devmem.c
++ndctl-71.1/test/create.sh
++ndctl-71.1/test/device-dax.c
++ndctl-71.1/test/dsm-fail.c
++ndctl-71.1/test/libndctl.c
++ndctl-71.1/test/core.c
++ndctl-71.1/test/dax-ext4.sh
++ndctl-71.1/test/btt-pad-compat.xxd
++ndctl-71.1/test/align.sh
++ndctl-71.1/test/daxctl-create.sh
++ndctl-71.1/test/hugetlb.c
++ndctl-71.1/test/multi-pmem.c
++ndctl-71.1/test/dax-dev.c
++ndctl-71.1/test/max_available_extent_ns.sh
++ndctl-71.1/test/dax.sh
++ndctl-71.1/test/nmem1.bin
++ndctl-71.1/test/btt-errors.sh
++ndctl-71.1/test/dax-poison.c
++ndctl-71.1/test/sub-section.sh
++ndctl-71.1/test/btt-pad-compat.sh
++ndctl-71.1/test/daxctl-devices.sh
++ndctl-71.1/test/smart-notify.c
++ndctl-71.1/test/common
++ndctl-71.1/test/parent-uuid.c
++ndctl-71.1/test/Makefile.am
++ndctl-71.1/test/rescan-partitions.sh
++ndctl-71.1/test/firmware-update.sh
++ndctl-71.1/test/nmem2.bin
++ndctl-71.1/test/daxdev-errors.c
++ndctl-71.1/ndctl/
++ndctl-71.1/ndctl/ndctl.c
++ndctl-71.1/ndctl/action.h
++ndctl-71.1/ndctl/namespace.h
++ndctl-71.1/ndctl/inject-smart.c
++ndctl-71.1/ndctl/bat.c
++ndctl-71.1/ndctl/firmware-update.h
++ndctl-71.1/ndctl/builtin.h
++ndctl-71.1/ndctl/list.c
++ndctl-71.1/ndctl/load-keys.c
++ndctl-71.1/ndctl/ndctl.h
++ndctl-71.1/ndctl/util/
++ndctl-71.1/ndctl/util/keys.h
++ndctl-71.1/ndctl/util/json-smart.c
++ndctl-71.1/ndctl/util/keys.c
++ndctl-71.1/ndctl/bus.c
++ndctl-71.1/ndctl/test.c
++ndctl-71.1/ndctl/dimm.c
++ndctl-71.1/ndctl/create-nfit.c
++ndctl-71.1/ndctl/libndctl-nfit.h
++ndctl-71.1/ndctl/keys.readme
++ndctl-71.1/ndctl/namespace.c
++ndctl-71.1/ndctl/region.c
++ndctl-71.1/ndctl/ndctl-monitor.service
++ndctl-71.1/ndctl/libndctl.h
++ndctl-71.1/ndctl/inject-error.c
++ndctl-71.1/ndctl/monitor.conf
++ndctl-71.1/ndctl/Makefile.am
++ndctl-71.1/ndctl/monitor.c
++ndctl-71.1/ndctl/lib/
++ndctl-71.1/ndctl/lib/hpe1.c
++ndctl-71.1/ndctl/lib/intel.c
++ndctl-71.1/ndctl/lib/nfit.c
++ndctl-71.1/ndctl/lib/intel.h
++ndctl-71.1/ndctl/lib/hyperv.c
++ndctl-71.1/ndctl/lib/smart.c
++ndctl-71.1/ndctl/lib/papr.c
++ndctl-71.1/ndctl/lib/inject.c
++ndctl-71.1/ndctl/lib/hpe1.h
++ndctl-71.1/ndctl/lib/papr_pdsm.h
++ndctl-71.1/ndctl/lib/papr.h
++ndctl-71.1/ndctl/lib/firmware.c
++ndctl-71.1/ndctl/lib/libndctl.sym
++ndctl-71.1/ndctl/lib/libndctl.c
++ndctl-71.1/ndctl/lib/msft.c
++ndctl-71.1/ndctl/lib/hyperv.h
++ndctl-71.1/ndctl/lib/dimm.c
++ndctl-71.1/ndctl/lib/private.h
++ndctl-71.1/ndctl/lib/ars.c
++ndctl-71.1/ndctl/lib/msft.h
++ndctl-71.1/ndctl/lib/Makefile.am
++ndctl-71.1/ndctl/lib/.gitignore
++ndctl-71.1/ndctl/lib/libndctl.pc.in
++ndctl-71.1/ndctl/check.c
++ndctl-71.1/Makefile.am
++ndctl-71.1/acpi.h
++ndctl-71.1/.gitignore
++ndctl-71.1/.travis.yml
++ndctl-71.1/Documentation/
++ndctl-71.1/Documentation/asciidoc.conf.in
++ndctl-71.1/Documentation/manpage-base.xsl
++ndctl-71.1/Documentation/copyright.txt
++ndctl-71.1/Documentation/daxctl/
++ndctl-71.1/Documentation/daxctl/daxctl.txt
++ndctl-71.1/Documentation/daxctl/daxctl-offline-memory.txt
++ndctl-71.1/Documentation/daxctl/daxctl-online-memory.txt
++ndctl-71.1/Documentation/daxctl/daxctl-list.txt
++ndctl-71.1/Documentation/daxctl/daxctl-create-device.txt
++ndctl-71.1/Documentation/daxctl/region-option.txt
++ndctl-71.1/Documentation/daxctl/human-option.txt
++ndctl-71.1/Documentation/daxctl/movable-options.txt
++ndctl-71.1/Documentation/daxctl/verbose-option.txt
++ndctl-71.1/Documentation/daxctl/daxctl-enable-device.txt
++ndctl-71.1/Documentation/daxctl/daxctl-destroy-device.txt
++ndctl-71.1/Documentation/daxctl/daxctl-migrate-device-model.txt
++ndctl-71.1/Documentation/daxctl/daxctl-disable-device.txt
++ndctl-71.1/Documentation/daxctl/daxctl-reconfigure-device.txt
++ndctl-71.1/Documentation/daxctl/Makefile.am
++ndctl-71.1/Documentation/COPYING
++ndctl-71.1/Documentation/asciidoctor-extensions.rb.in
++ndctl-71.1/Documentation/ndctl/
++ndctl-71.1/Documentation/ndctl/ndctl-clear-errors.txt
++ndctl-71.1/Documentation/ndctl/ndctl-disable-dimm.txt
++ndctl-71.1/Documentation/ndctl/ndctl-sanitize-dimm.txt
++ndctl-71.1/Documentation/ndctl/xable-dimm-options.txt
++ndctl-71.1/Documentation/ndctl/ars-description.txt
++ndctl-71.1/Documentation/ndctl/ndctl-check-labels.txt
++ndctl-71.1/Documentation/ndctl/ndctl.txt
++ndctl-71.1/Documentation/ndctl/ndctl-inject-smart.txt
++ndctl-71.1/Documentation/ndctl/ndctl-destroy-namespace.txt
++ndctl-71.1/Documentation/ndctl/ndctl-wait-overwrite.txt
++ndctl-71.1/Documentation/ndctl/labels-description.txt
++ndctl-71.1/Documentation/ndctl/ndctl-disable-namespace.txt
++ndctl-71.1/Documentation/ndctl/ndctl-check-namespace.txt
++ndctl-71.1/Documentation/ndctl/ndctl-write-labels.txt
++ndctl-71.1/Documentation/ndctl/ndctl-write-infoblock.txt
++ndctl-71.1/Documentation/ndctl/intel-nvdimm-security.txt
++ndctl-71.1/Documentation/ndctl/ndctl-enable-dimm.txt
++ndctl-71.1/Documentation/ndctl/ndctl-wait-scrub.txt
++ndctl-71.1/Documentation/ndctl/human-option.txt
++ndctl-71.1/Documentation/ndctl/ndctl-setup-passphrase.txt
++ndctl-71.1/Documentation/ndctl/ndctl-update-passphrase.txt
++ndctl-71.1/Documentation/ndctl/labels-options.txt
++ndctl-71.1/Documentation/ndctl/ndctl-enable-region.txt
++ndctl-71.1/Documentation/ndctl/namespace-description.txt
++ndctl-71.1/Documentation/ndctl/ndctl-remove-passphrase.txt
++ndctl-71.1/Documentation/ndctl/ndctl-inject-error.txt
++ndctl-71.1/Documentation/ndctl/ndctl-freeze-security.txt
++ndctl-71.1/Documentation/ndctl/xable-bus-options.txt
++ndctl-71.1/Documentation/ndctl/ndctl-create-namespace.txt
++ndctl-71.1/Documentation/ndctl/ndctl-update-firmware.txt
++ndctl-71.1/Documentation/ndctl/xable-namespace-options.txt
++ndctl-71.1/Documentation/ndctl/ndctl-activate-firmware.txt
++ndctl-71.1/Documentation/ndctl/ndctl-disable-region.txt
++ndctl-71.1/Documentation/ndctl/ndctl-init-labels.txt
++ndctl-71.1/Documentation/ndctl/ndctl-read-labels.txt
++ndctl-71.1/Documentation/ndctl/ndctl-start-scrub.txt
++ndctl-71.1/Documentation/ndctl/ndctl-list.txt
++ndctl-71.1/Documentation/ndctl/ndctl-enable-namespace.txt
++ndctl-71.1/Documentation/ndctl/region-description.txt
++ndctl-71.1/Documentation/ndctl/xable-region-options.txt
++ndctl-71.1/Documentation/ndctl/ndctl-read-infoblock.txt
++ndctl-71.1/Documentation/ndctl/ndctl-monitor.txt
++ndctl-71.1/Documentation/ndctl/Makefile.am
++ndctl-71.1/Documentation/ndctl/ndctl-zero-labels.txt
++ndctl-71.1/Documentation/ndctl/dimm-description.txt
++ndctl-71.1/Documentation/ndctl/ndctl-load-keys.txt
++ndctl-71.1/Documentation/manpage-normal.xsl
++GIT_VERSION = 71.1+
++libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, 'build-aux'.
++libtoolize: linking file 'build-aux/ltmain.sh'
++libtoolize: putting macros in AC_CONFIG_MACRO_DIRS, 'm4'.
++libtoolize: linking file 'm4/libtool.m4'
++libtoolize: linking file 'm4/ltoptions.m4'
++libtoolize: linking file 'm4/ltsugar.m4'
++libtoolize: linking file 'm4/ltversion.m4'
++libtoolize: linking file 'm4/lt~obsolete.m4'
++configure.ac:21: warning: The macro `AC_PROG_CC_STDC' is obsolete.
++configure.ac:21: You should run autoupdate.
++./lib/autoconf/c.m4:1628: AC_PROG_CC_STDC is expanded from...
++configure.ac:21: the top level
++configure.ac:21: installing 'build-aux/compile'
++configure.ac:26: installing 'build-aux/config.guess'
++configure.ac:26: installing 'build-aux/config.sub'
++configure.ac:10: installing 'build-aux/install-sh'
++configure.ac:10: installing 'build-aux/missing'
++Makefile.am: installing 'build-aux/depcomp'
++parallel-tests: installing 'build-aux/test-driver'
++
++----------------------------------------------------------------
++Initialized build system. For a common configuration please run:
++----------------------------------------------------------------
++
++./configure CFLAGS='-g -O2' --prefix=/usr --sysconfdir=/etc --libdir=/usr/lib
++
++checking for a BSD-compatible install... /usr/bin/ginstall -c
++checking whether build environment is sane... yes
++checking for a race-free mkdir -p... /usr/bin/mkdir -p
++checking for gawk... gawk
++checking whether make sets $(MAKE)... yes
++checking whether make supports nested variables... yes
++checking how to create a pax tar archive... gnutar
++checking whether make supports the include directive... yes (GNU style)
++checking for gcc... gcc
++checking whether the C compiler works... yes
++checking for C compiler default output file name... a.out
++checking for suffix of executables... 
++checking whether we are cross compiling... no
++checking for suffix of object files... o
++checking whether the compiler supports GNU C... yes
++checking whether gcc accepts -g... yes
++checking for gcc option to enable C11 features... none needed
++checking whether gcc understands -c and -o together... yes
++checking dependency style of gcc... gcc3
++checking for stdio.h... yes
++checking for stdlib.h... yes
++checking for string.h... yes
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking for strings.h... yes
++checking for sys/stat.h... yes
++checking for sys/types.h... yes
++checking for unistd.h... yes
++checking for wchar.h... yes
++checking for minix/config.h... no
++checking for linux/version.h... yes
++checking whether it is safe to define __EXTENSIONS__... yes
++checking whether _XOPEN_SOURCE should be defined... no
++checking for special C compiler options needed for large files... no
++checking for _FILE_OFFSET_BITS value needed for large files... no
++checking whether make supports nested variables... (cached) yes
++checking build system type... x86_64-slackware-linux-musl
++checking host system type... x86_64-slackware-linux-musl
++checking how to print strings... printf
++checking for a sed that does not truncate output... /usr/bin/sed
++checking for grep that handles long lines and -e... /usr/bin/grep
++checking for egrep... /usr/bin/grep -E
++checking for fgrep... /usr/bin/grep -F
++checking for ld used by gcc... /usr/bin/ld
++checking if the linker (/usr/bin/ld) is GNU ld... yes
++checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
++checking the name lister (/usr/bin/nm -B) interface... BSD nm
++checking whether ln -s works... yes
++checking the maximum length of command line arguments... 98304
++checking how to convert x86_64-slackware-linux-musl file names to x86_64-slackware-linux-musl format... func_convert_file_noop
++checking how to convert x86_64-slackware-linux-musl file names to toolchain format... func_convert_file_noop
++checking for /usr/bin/ld option to reload object files... -r
++checking for objdump... objdump
++checking how to recognize dependent libraries... pass_all
++checking for dlltool... dlltool
++checking how to associate runtime and link libraries... printf %s\n
++checking for ar... ar
++checking for archiver @FILE support... @
++checking for strip... strip
++checking for ranlib... ranlib
++checking command to parse /usr/bin/nm -B output from gcc object... ok
++checking for sysroot... no
++checking for a working dd... /usr/bin/dd
++checking how to truncate binary pipes... /usr/bin/dd bs=4096 count=1
++checking for mt... mt
++checking if mt is a manifest tool... no
++checking for dlfcn.h... yes
++checking for objdir... .libs
++checking if gcc supports -fno-rtti -fno-exceptions... no
++checking for gcc option to produce PIC... -fPIC -DPIC
++checking if gcc PIC flag -fPIC -DPIC works... yes
++checking if gcc static flag -static works... yes
++checking if gcc supports -c -o file.o... yes
++checking if gcc supports -c -o file.o... (cached) yes
++checking whether the gcc linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
++checking whether -lc should be explicitly linked in... no
++checking dynamic linker characteristics... GNU/Linux ld.so
++checking how to hardcode library paths into programs... immediate
++checking whether stripping libraries is possible... yes
++checking if libtool supports shared libraries... yes
++checking whether to build shared libraries... yes
++checking whether to build static libraries... no
++checking for a sed that does not truncate output... (cached) /usr/bin/sed
++checking for asciidoc... /usr/bin/asciidoc
++checking for xmlto... /usr/bin/xmlto
++checking for typeof syntax and keyword spelling... typeof
++checking whether byte ordering is bigendian... no
++checking how gcc reports undeclared, standard C functions... error
++checking whether BUS_MCEERR_AR is declared... yes
++checking whether MAP_SHARED_VALIDATE is declared... yes
++checking whether MAP_SYNC is declared... yes
++checking whether MAP_SHARED_VALIDATE is declared... yes
++checking whether MAP_SYNC is declared... yes
++checking pkg-config is at least version 0.9.0... yes
++checking for libkmod... yes
++checking for libudev... yes
++checking for uuid... yes
++checking for json-c... yes
++checking for __secure_getenv... no
++checking for secure_getenv... yes
++checking for keyutils.h... yes
++checking that generated files are newer than configure... done
++configure: creating ./config.status
++config.status: creating Makefile
++config.status: creating daxctl/lib/Makefile
++config.status: creating ndctl/lib/Makefile
++config.status: creating ndctl/Makefile
++config.status: creating daxctl/Makefile
++config.status: creating test/Makefile
++config.status: creating Documentation/ndctl/Makefile
++config.status: creating Documentation/daxctl/Makefile
++config.status: creating config.h
++config.status: executing depfiles commands
++config.status: executing libtool commands
++
++        ndctl 71.1+
++        =====
++
++        prefix:                 /usr
++        sysconfdir:             /etc
++        libdir:                 /usr/lib
++        includedir:             ${prefix}/include
++
++        compiler:               gcc
++        cflags:                 -O2 -fPIC
++        ldflags:                
++
++        logging:                yes
++        debug:                  no
++
++  GEN      version.m4
++make --no-print-directory all-recursive
++  GEN      version.m4
++Making all in .
++  GEN      version.m4
++  GEN      rhel/ndctl.spec
++  GEN      sles/ndctl.spec
++  CC       ccan/str/str.o
++  CC       ccan/str/debug.o
++  CC       ccan/list/list.o
++  CC       util/parse-options.o
++  CC       util/usage.o
++  CC       util/size.o
++  CC       util/main.o
++  CC       util/help.o
++util/help.c: In function ‘exec_man_konqueror’:
++util/help.c:56:34: warning: format ‘%s’ expects argument of type ‘char *’, but argument 3 has type ‘int’ [-Wformat=]
++   56 |   warning("failed to exec '%s': %s", path,
++      |                                 ~^
++      |                                  |
++      |                                  char *
++      |                                 %d
++   57 |    strerror_r(errno, sbuf, sizeof(sbuf)));
++      |    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++      |    |
++      |    int
++util/help.c: In function ‘exec_man_man’:
++util/help.c:68:33: warning: format ‘%s’ expects argument of type ‘char *’, but argument 3 has type ‘int’ [-Wformat=]
++   68 |  warning("failed to exec '%s': %s", path,
++      |                                ~^
++      |                                 |
++      |                                 char *
++      |                                %d
++   69 |   strerror_r(errno, sbuf, sizeof(sbuf)));
++      |   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++      |   |
++      |   int
++  CC       util/strbuf.o
++  CC       util/wrapper.o
++  CC       util/filter.o
++  CC       util/bitmap.o
++  CC       util/abspath.o
++  CC       util/iomem.o
++  AR       libccan.a
++  AR       libutil.a
++Making all in daxctl/lib
++  CC       ../../util/iomem.lo
++  CC       ../../util/sysfs.lo
++  CC       ../../util/log.lo
++  CC       libdaxctl.lo
++  GEN      libdaxctl.pc
++  CCLD     libdaxctl.la
++Making all in ndctl/lib
++  CC       dimm.lo
++  CC       inject.lo
++  CC       nfit.lo
++  CC       smart.lo
++  CC       intel.lo
++  CC       hpe1.lo
++  CC       msft.lo
++  CC       hyperv.lo
++  CC       papr.lo
++  CC       ars.lo
++  CC       firmware.lo
++  CC       libndctl.lo
++  GEN      libndctl.pc
++  CCLD     libndctl.la
++Making all in ndctl
++  GEN      config.h
++  GEN      config.h
++make --no-print-directory all-am
++  CC       ndctl.o
++  CC       bus.o
++  CC       create-nfit.o
++  CC       namespace.o
++  CC       check.o
++  CC       region.o
++  CC       dimm.o
++  CC       ../util/log.o
++  CC       list.o
++  CC       ../util/json.o
++  CC       inject-error.o
++  CC       inject-smart.o
++  CC       monitor.o
++  CC       util/keys.o
++  CC       load-keys.o
++  CC       util/json-smart.o
++  CCLD     ndctl
++Making all in daxctl
++  GEN      config.h
++make --no-print-directory all-am
++  CC       acpi.o
++  CC       daxctl.o
++  CC       list.o
++  CC       migrate.o
++  CC       device.o
++  CC       ../util/json.o
++  CCLD     daxctl
++Making all in Documentation/ndctl
++  GEN      asciidoc.conf
++  GEN      attrs.adoc
++  GEN      ndctl.xml
++  GEN      ndctl-wait-scrub.xml
++  GEN      ndctl-start-scrub.xml
++  GEN      ndctl-zero-labels.xml
++  GEN      ndctl-read-labels.xml
++  GEN      ndctl-write-labels.xml
++  GEN      ndctl-init-labels.xml
++  GEN      ndctl-check-labels.xml
++  GEN      ndctl-enable-region.xml
++  GEN      ndctl-disable-region.xml
++  GEN      ndctl-enable-dimm.xml
++  GEN      ndctl-disable-dimm.xml
++  GEN      ndctl-enable-namespace.xml
++  GEN      ndctl-disable-namespace.xml
++  GEN      ndctl-create-namespace.xml
++  GEN      ndctl-destroy-namespace.xml
++  GEN      ndctl-check-namespace.xml
++  GEN      ndctl-clear-errors.xml
++  GEN      ndctl-inject-error.xml
++  GEN      ndctl-inject-smart.xml
++  GEN      ndctl-update-firmware.xml
++  GEN      ndctl-list.xml
++  GEN      ndctl-monitor.xml
++  GEN      ndctl-setup-passphrase.xml
++  GEN      ndctl-update-passphrase.xml
++  GEN      ndctl-remove-passphrase.xml
++  GEN      ndctl-freeze-security.xml
++  GEN      ndctl-sanitize-dimm.xml
++  GEN      ndctl-load-keys.xml
++  GEN      ndctl-wait-overwrite.xml
++  GEN      ndctl-read-infoblock.xml
++  GEN      ndctl-write-infoblock.xml
++  GEN      ndctl-activate-firmware.xml
++  GEN      ndctl.1
++  GEN      ndctl-wait-scrub.1
++  GEN      ndctl-start-scrub.1
++  GEN      ndctl-zero-labels.1
++  GEN      ndctl-read-labels.1
++  GEN      ndctl-write-labels.1
++  GEN      ndctl-init-labels.1
++  GEN      ndctl-check-labels.1
++  GEN      ndctl-enable-region.1
++  GEN      ndctl-disable-region.1
++  GEN      ndctl-enable-dimm.1
++  GEN      ndctl-disable-dimm.1
++  GEN      ndctl-enable-namespace.1
++  GEN      ndctl-disable-namespace.1
++  GEN      ndctl-create-namespace.1
++  GEN      ndctl-destroy-namespace.1
++  GEN      ndctl-check-namespace.1
++  GEN      ndctl-clear-errors.1
++  GEN      ndctl-inject-error.1
++  GEN      ndctl-inject-smart.1
++  GEN      ndctl-update-firmware.1
++  GEN      ndctl-list.1
++  GEN      ndctl-monitor.1
++  GEN      ndctl-setup-passphrase.1
++  GEN      ndctl-update-passphrase.1
++  GEN      ndctl-remove-passphrase.1
++  GEN      ndctl-freeze-security.1
++  GEN      ndctl-sanitize-dimm.1
++  GEN      ndctl-load-keys.1
++  GEN      ndctl-wait-overwrite.1
++  GEN      ndctl-read-infoblock.1
++  GEN      ndctl-write-infoblock.1
++  GEN      ndctl-activate-firmware.1
++rm ndctl-activate-firmware.xml ndctl-remove-passphrase.xml ndctl-check-labels.xml ndctl-load-keys.xml ndctl-init-labels.xml ndctl-list.xml ndctl-inject-smart.xml ndctl-update-passphrase.xml ndctl-wait-scrub.xml ndctl-freeze-security.xml ndctl-write-infoblock.xml ndctl-enable-dimm.xml ndctl-zero-labels.xml ndctl-sanitize-dimm.xml ndctl-check-namespace.xml ndctl-inject-error.xml ndctl-write-labels.xml ndctl-clear-errors.xml ndctl-enable-namespace.xml ndctl-read-labels.xml ndctl-destroy-namespace.xml ndctl-wait-overwrite.xml ndctl.xml ndctl-monitor.xml ndctl-disable-region.xml ndctl-disable-namespace.xml ndctl-read-infoblock.xml ndctl-start-scrub.xml ndctl-disable-dimm.xml ndctl-create-namespace.xml ndctl-enable-region.xml ndctl-setup-passphrase.xml ndctl-update-firmware.xml
++Making all in Documentation/daxctl
++  GEN      asciidoc.conf
++  GEN      daxctl.xml
++  GEN      daxctl-migrate-device-model.xml
++  GEN      daxctl-list.xml
++  GEN      daxctl-reconfigure-device.xml
++  GEN      daxctl-online-memory.xml
++  GEN      daxctl-offline-memory.xml
++  GEN      daxctl-disable-device.xml
++  GEN      daxctl-enable-device.xml
++  GEN      daxctl-create-device.xml
++  GEN      daxctl-destroy-device.xml
++  GEN      daxctl.1
++  GEN      daxctl-list.1
++  GEN      daxctl-migrate-device-model.1
++  GEN      daxctl-reconfigure-device.1
++  GEN      daxctl-online-memory.1
++  GEN      daxctl-offline-memory.1
++  GEN      daxctl-disable-device.1
++  GEN      daxctl-enable-device.1
++  GEN      daxctl-create-device.1
++  GEN      daxctl-destroy-device.1
++rm daxctl-offline-memory.xml daxctl-list.xml daxctl-create-device.xml daxctl-reconfigure-device.xml daxctl.xml daxctl-disable-device.xml daxctl-online-memory.xml daxctl-migrate-device-model.xml daxctl-destroy-device.xml daxctl-enable-device.xml
++Making all in test
++make[2]: Nothing to be done for 'all'.
++  GEN      version.m4
++make --no-print-directory install-recursive
++  GEN      version.m4
++Making install in .
++  GEN      version.m4
++  GEN      version.m4
++make[3]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-ndctl/etc/modprobe.d/'
++ /usr/bin/ginstall -c -m 644 contrib/nvdimm-security.conf '/tmp/package-ndctl/etc/modprobe.d/'
++ /usr/bin/mkdir -p '/tmp/package-ndctl/usr/include'
++ /usr/bin/mkdir -p '/tmp/package-ndctl/usr/include/daxctl'
++ /usr/bin/ginstall -c -m 644  daxctl/libdaxctl.h '/tmp/package-ndctl/usr/include/daxctl'
++Making install in daxctl/lib
++ /usr/bin/mkdir -p '/tmp/package-ndctl/usr/lib'
++ /bin/sh ../../libtool   --mode=install /usr/bin/ginstall -c   libdaxctl.la '/tmp/package-ndctl/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/libdaxctl.so.1.5.0 /tmp/package-ndctl/usr/lib/libdaxctl.so.1.5.0
++libtool: install: (cd /tmp/package-ndctl/usr/lib && { ln -s -f libdaxctl.so.1.5.0 libdaxctl.so.1 || { rm -f libdaxctl.so.1 && ln -s libdaxctl.so.1.5.0 libdaxctl.so.1; }; })
++libtool: install: (cd /tmp/package-ndctl/usr/lib && { ln -s -f libdaxctl.so.1.5.0 libdaxctl.so || { rm -f libdaxctl.so && ln -s libdaxctl.so.1.5.0 libdaxctl.so; }; })
++libtool: install: /usr/bin/ginstall -c .libs/libdaxctl.lai /tmp/package-ndctl/usr/lib/libdaxctl.la
++libtool: warning: remember to run 'libtool --finish /usr/lib'
++ /usr/bin/mkdir -p '/tmp/package-ndctl/usr/share/daxctl'
++ /usr/bin/ginstall -c -m 644 daxctl.conf '/tmp/package-ndctl/usr/share/daxctl'
++ /usr/bin/mkdir -p '/tmp/package-ndctl/usr/lib/pkgconfig'
++ /usr/bin/ginstall -c -m 644 libdaxctl.pc '/tmp/package-ndctl/usr/lib/pkgconfig'
++ /usr/bin/mkdir -p '/tmp/package-ndctl/usr/include/ndctl'
++ /usr/bin/ginstall -c -m 644 ../libdaxctl.h '/tmp/package-ndctl/usr/include/ndctl'
++Making install in ndctl/lib
++ /usr/bin/mkdir -p '/tmp/package-ndctl/usr/lib'
++ /bin/sh ../../libtool   --mode=install /usr/bin/ginstall -c   libndctl.la '/tmp/package-ndctl/usr/lib'
++libtool: warning: relinking 'libndctl.la'
++libtool: install: (cd /tmp/ndctl-71.1/ndctl/lib; /bin/sh "/tmp/ndctl-71.1/libtool"  --silent --tag CC --mode=relink gcc -Wall -Wchar-subscripts -Wformat-security -Wmissing-declarations -Wmissing-prototypes -Wnested-externs -Wshadow -Wsign-compare -Wstrict-prototypes -Wtype-limits -Wmaybe-uninitialized -Wdeclaration-after-statement -Wunused-result -D_FORTIFY_SOURCE=2 -O2 -fvisibility=hidden -ffunction-sections -fdata-sections -O2 -fPIC -Wl,--gc-sections -Wl,--as-needed -version-info 25:1:19 -Wl,--version-script=../../ndctl/lib/libndctl.sym -o libndctl.la -rpath /usr/lib ../../util/log.lo ../../util/sysfs.lo dimm.lo inject.lo nfit.lo smart.lo intel.lo hpe1.lo msft.lo hyperv.lo papr.lo ars.lo firmware.lo libndctl.lo ../../daxctl/lib/libdaxctl.la -ludev -luuid -lkmod -inst-prefix-dir /tmp/package-ndctl)
++libtool: install: /usr/bin/ginstall -c .libs/libndctl.so.6.19.1T /tmp/package-ndctl/usr/lib/libndctl.so.6.19.1
++libtool: install: (cd /tmp/package-ndctl/usr/lib && { ln -s -f libndctl.so.6.19.1 libndctl.so.6 || { rm -f libndctl.so.6 && ln -s libndctl.so.6.19.1 libndctl.so.6; }; })
++libtool: install: (cd /tmp/package-ndctl/usr/lib && { ln -s -f libndctl.so.6.19.1 libndctl.so || { rm -f libndctl.so && ln -s libndctl.so.6.19.1 libndctl.so; }; })
++libtool: install: /usr/bin/ginstall -c .libs/libndctl.lai /tmp/package-ndctl/usr/lib/libndctl.la
++libtool: warning: remember to run 'libtool --finish /usr/lib'
++ /usr/bin/mkdir -p '/tmp/package-ndctl/usr/lib/pkgconfig'
++ /usr/bin/ginstall -c -m 644 libndctl.pc '/tmp/package-ndctl/usr/lib/pkgconfig'
++ /usr/bin/mkdir -p '/tmp/package-ndctl/usr/include/ndctl'
++ /usr/bin/ginstall -c -m 644 ../libndctl.h ../ndctl.h '/tmp/package-ndctl/usr/include/ndctl'
++Making install in ndctl
++make --no-print-directory install-am
++  CCLD     ndctl
++ /usr/bin/mkdir -p '/tmp/package-ndctl/usr/bin'
++  /bin/sh ../libtool   --mode=install /usr/bin/ginstall -c ndctl '/tmp/package-ndctl/usr/bin'
++libtool: warning: 'lib/libndctl.la' has not been installed in '/usr/lib'
++libtool: warning: '/tmp/ndctl-71.1/daxctl/lib/libdaxctl.la' has not been installed in '/usr/lib'
++libtool: warning: '../daxctl/lib/libdaxctl.la' has not been installed in '/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/ndctl /tmp/package-ndctl/usr/bin/ndctl
++ /usr/bin/mkdir -p '/tmp/package-ndctl/etc/ndctl/keys'
++ /usr/bin/ginstall -c -m 644 keys.readme '/tmp/package-ndctl/etc/ndctl/keys'
++ /usr/bin/mkdir -p '/tmp/package-ndctl/etc/ndctl'
++ /usr/bin/ginstall -c -m 644 monitor.conf '/tmp/package-ndctl/etc/ndctl'
++Making install in daxctl
++make --no-print-directory install-am
++ /usr/bin/mkdir -p '/tmp/package-ndctl/usr/bin'
++  /bin/sh ../libtool   --mode=install /usr/bin/ginstall -c daxctl '/tmp/package-ndctl/usr/bin'
++libtool: warning: 'lib/libdaxctl.la' has not been installed in '/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/daxctl /tmp/package-ndctl/usr/bin/daxctl
++make[4]: Nothing to be done for 'install-data-am'.
++Making install in Documentation/ndctl
++make[3]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-ndctl/usr/man/man1'
++ /usr/bin/ginstall -c -m 644 ndctl.1 ndctl-wait-scrub.1 ndctl-start-scrub.1 ndctl-zero-labels.1 ndctl-read-labels.1 ndctl-write-labels.1 ndctl-init-labels.1 ndctl-check-labels.1 ndctl-enable-region.1 ndctl-disable-region.1 ndctl-enable-dimm.1 ndctl-disable-dimm.1 ndctl-enable-namespace.1 ndctl-disable-namespace.1 ndctl-create-namespace.1 ndctl-destroy-namespace.1 ndctl-check-namespace.1 ndctl-clear-errors.1 ndctl-inject-error.1 ndctl-inject-smart.1 ndctl-update-firmware.1 ndctl-list.1 ndctl-monitor.1 ndctl-setup-passphrase.1 ndctl-update-passphrase.1 ndctl-remove-passphrase.1 ndctl-freeze-security.1 ndctl-sanitize-dimm.1 ndctl-load-keys.1 ndctl-wait-overwrite.1 ndctl-read-infoblock.1 ndctl-write-infoblock.1 ndctl-activate-firmware.1 '/tmp/package-ndctl/usr/man/man1'
++Making install in Documentation/daxctl
++make[3]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-ndctl/usr/man/man1'
++ /usr/bin/ginstall -c -m 644 daxctl.1 daxctl-list.1 daxctl-migrate-device-model.1 daxctl-reconfigure-device.1 daxctl-online-memory.1 daxctl-offline-memory.1 daxctl-disable-device.1 daxctl-enable-device.1 daxctl-create-device.1 daxctl-destroy-device.1 '/tmp/package-ndctl/usr/man/man1'
++Making install in test
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++cp: cannot stat 'AUTHORS*': No such file or directory
++cp: cannot stat 'ChangeLog': No such file or directory
++cp: cannot stat 'CHANGES': No such file or directory
++cp: cannot stat 'HACKING*': No such file or directory
++cp: cannot stat 'NEWS*': No such file or directory
++cp: cannot stat 'THANKS*': No such file or directory
++cp: cannot stat 'TODO*': No such file or directory
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++usr/lib/libdaxctl.so	libdaxctl.so.1.5.0
++usr/lib/libdaxctl.so.1	libdaxctl.so.1.5.0
++usr/lib/libndctl.so	libndctl.so.6.19.1
++usr/lib/libndctl.so.6	libndctl.so.6.19.1
++
++Making symbolic link creation script:
++( cd usr/lib ; rm -rf libdaxctl.so )
++( cd usr/lib ; ln -sf libdaxctl.so.1.5.0 libdaxctl.so )
++( cd usr/lib ; rm -rf libdaxctl.so.1 )
++( cd usr/lib ; ln -sf libdaxctl.so.1.5.0 libdaxctl.so.1 )
++( cd usr/lib ; rm -rf libndctl.so )
++( cd usr/lib ; ln -sf libndctl.so.6.19.1 libndctl.so )
++( cd usr/lib ; rm -rf libndctl.so.6 )
++( cd usr/lib ; ln -sf libndctl.so.6.19.1 libndctl.so.6 )
++
++Unless your existing installation script already contains the code
++to create these links, you should append these lines to your existing
++install script. Now's your chance. :^)
++
++Would you like to add this stuff to the existing install script and
++remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './usr/lib/libdaxctl.so.1'
++removed './usr/lib/libndctl.so'
++removed './usr/lib/libdaxctl.so'
++removed './usr/lib/libndctl.so.6'
++
++Updating your ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/ndctl-71.1-x86_64-2.txz
++
++./
++etc/
++etc/ndctl/
++etc/ndctl/keys/
++etc/ndctl/keys/keys.readme
++etc/ndctl/monitor.conf.new
++install/
++install/doinst.sh
++install/slack-desc
++lib/
++lib/modprobe.d/
++lib/modprobe.d/nvdimm-security.conf
++usr/
++usr/bin/
++usr/bin/daxctl
++usr/bin/ndctl
++usr/doc/
++usr/doc/ndctl-71.1/
++usr/doc/ndctl-71.1/COPYING
++usr/doc/ndctl-71.1/LICENSES/
++usr/doc/ndctl-71.1/LICENSES/other/
++usr/doc/ndctl-71.1/LICENSES/other/CC0-1.0
++usr/doc/ndctl-71.1/LICENSES/other/MIT
++usr/doc/ndctl-71.1/LICENSES/preferred/
++usr/doc/ndctl-71.1/LICENSES/preferred/GPL-2.0
++usr/doc/ndctl-71.1/LICENSES/preferred/LGPL-2.1
++usr/doc/ndctl-71.1/README.md
++usr/include/
++usr/include/daxctl/
++usr/include/daxctl/libdaxctl.h
++usr/include/ndctl/
++usr/include/ndctl/libdaxctl.h
++usr/include/ndctl/libndctl.h
++usr/include/ndctl/ndctl.h
++usr/lib/
++usr/lib/libdaxctl.so.1.5.0
++usr/lib/libndctl.so.6.19.1
++usr/lib/pkgconfig/
++usr/lib/pkgconfig/libdaxctl.pc
++usr/lib/pkgconfig/libndctl.pc
++usr/man/
++usr/man/man1/
++usr/man/man1/daxctl-create-device.1.gz
++usr/man/man1/daxctl-destroy-device.1.gz
++usr/man/man1/daxctl-disable-device.1.gz
++usr/man/man1/daxctl-enable-device.1.gz
++usr/man/man1/daxctl-list.1.gz
++usr/man/man1/daxctl-migrate-device-model.1.gz
++usr/man/man1/daxctl-offline-memory.1.gz
++usr/man/man1/daxctl-online-memory.1.gz
++usr/man/man1/daxctl-reconfigure-device.1.gz
++usr/man/man1/daxctl.1.gz
++usr/man/man1/ndctl-activate-firmware.1.gz
++usr/man/man1/ndctl-check-labels.1.gz
++usr/man/man1/ndctl-check-namespace.1.gz
++usr/man/man1/ndctl-clear-errors.1.gz
++usr/man/man1/ndctl-create-namespace.1.gz
++usr/man/man1/ndctl-destroy-namespace.1.gz
++usr/man/man1/ndctl-disable-dimm.1.gz
++usr/man/man1/ndctl-disable-namespace.1.gz
++usr/man/man1/ndctl-disable-region.1.gz
++usr/man/man1/ndctl-enable-dimm.1.gz
++usr/man/man1/ndctl-enable-namespace.1.gz
++usr/man/man1/ndctl-enable-region.1.gz
++usr/man/man1/ndctl-freeze-security.1.gz
++usr/man/man1/ndctl-init-labels.1.gz
++usr/man/man1/ndctl-inject-error.1.gz
++usr/man/man1/ndctl-inject-smart.1.gz
++usr/man/man1/ndctl-list.1.gz
++usr/man/man1/ndctl-load-keys.1.gz
++usr/man/man1/ndctl-monitor.1.gz
++usr/man/man1/ndctl-read-infoblock.1.gz
++usr/man/man1/ndctl-read-labels.1.gz
++usr/man/man1/ndctl-remove-passphrase.1.gz
++usr/man/man1/ndctl-sanitize-dimm.1.gz
++usr/man/man1/ndctl-setup-passphrase.1.gz
++usr/man/man1/ndctl-start-scrub.1.gz
++usr/man/man1/ndctl-update-firmware.1.gz
++usr/man/man1/ndctl-update-passphrase.1.gz
++usr/man/man1/ndctl-wait-overwrite.1.gz
++usr/man/man1/ndctl-wait-scrub.1.gz
++usr/man/man1/ndctl-write-infoblock.1.gz
++usr/man/man1/ndctl-write-labels.1.gz
++usr/man/man1/ndctl-zero-labels.1.gz
++usr/man/man1/ndctl.1.gz
++usr/share/
++usr/share/bash-completion/
++usr/share/bash-completion/completions/
++usr/share/bash-completion/completions/ndctl
++usr/share/daxctl/
++usr/share/daxctl/daxctl.conf
++
++Slackware package /tmp/ndctl-71.1-x86_64-2.txz created.
++

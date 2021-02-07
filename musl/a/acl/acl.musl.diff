@@ -1,0 +1,668 @@
+diff -ruBN /tmp/acl/acl.SlackBuild /source/a/acl/acl.SlackBuild
+--- /tmp/acl/acl.SlackBuild	2019-09-29 23:48:35.000000000 +0000
++++ /source/a/acl/acl.SlackBuild	2021-01-02 10:02:00.000000000 +0000
+@@ -48,7 +48,7 @@
+ PKG=$TMP/package-acl
+ 
+ if [ "$ARCH" = "x86_64" ]; then
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ else
+   LIBDIRSUFFIX=""
+ fi
+@@ -81,7 +81,7 @@
+   --infodir=/usr/info \
+   --disable-static \
+   --docdir=/usr/doc/acl-$VERSION \
+-  --build=$ARCH-slackware-linux || exit 1
++  --build=$ARCH-slackware-linux-musl || exit 1
+ 
+ make $NUMJOBS || make || exit 1
+ make install DESTDIR=$PKG || exit 1
+diff -ruBN /tmp/acl/acl.SlackBuild.log /source/a/acl/acl.SlackBuild.log
+--- /tmp/acl/acl.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/a/acl/acl.SlackBuild.log	2021-01-02 10:02:15.000000000 +0000
+@@ -0,0 +1,643 @@
++acl-2.2.53/
++acl-2.2.53/README
++acl-2.2.53/tools/
++acl-2.2.53/tools/chacl.c
++acl-2.2.53/tools/parse.h
++acl-2.2.53/tools/do_set.h
++acl-2.2.53/tools/sequence.c
++acl-2.2.53/tools/getfacl.c
++acl-2.2.53/tools/Makemodule.am
++acl-2.2.53/tools/sequence.h
++acl-2.2.53/tools/user_group.h
++acl-2.2.53/tools/user_group.c
++acl-2.2.53/tools/do_set.c
++acl-2.2.53/tools/setfacl.c
++acl-2.2.53/tools/parse.c
++acl-2.2.53/include/
++acl-2.2.53/include/config.h.in
++acl-2.2.53/include/acl.h
++acl-2.2.53/include/libacl.h
++acl-2.2.53/include/Makemodule.am
++acl-2.2.53/include/misc.h
++acl-2.2.53/include/walk_tree.h
++acl-2.2.53/include/acl_ea.h
++acl-2.2.53/examples/
++acl-2.2.53/examples/copy-acl.c
++acl-2.2.53/examples/README
++acl-2.2.53/examples/Makefile
++acl-2.2.53/examples/Makemodule.am
++acl-2.2.53/examples/copyperm.c
++acl-2.2.53/examples/get-acl.c
++acl-2.2.53/examples/set-acl.c
++acl-2.2.53/m4/
++acl-2.2.53/m4/libtool.m4
++acl-2.2.53/m4/gettext.m4
++acl-2.2.53/m4/iconv.m4
++acl-2.2.53/m4/lib-prefix.m4
++acl-2.2.53/m4/ltsugar.m4
++acl-2.2.53/m4/progtest.m4
++acl-2.2.53/m4/lib-link.m4
++acl-2.2.53/m4/lib-ld.m4
++acl-2.2.53/m4/ltoptions.m4
++acl-2.2.53/m4/po.m4
++acl-2.2.53/m4/intlmacosx.m4
++acl-2.2.53/m4/ltversion.m4
++acl-2.2.53/m4/package_attrdev.m4
++acl-2.2.53/m4/nls.m4
++acl-2.2.53/m4/visibility_hidden.m4
++acl-2.2.53/m4/lt~obsolete.m4
++acl-2.2.53/libmisc/
++acl-2.2.53/libmisc/unquote.c
++acl-2.2.53/libmisc/walk_tree.c
++acl-2.2.53/libmisc/next_line.c
++acl-2.2.53/libmisc/high_water_alloc.c
++acl-2.2.53/libmisc/Makemodule.am
++acl-2.2.53/libmisc/quote.c
++acl-2.2.53/aclocal.m4
++acl-2.2.53/test/
++acl-2.2.53/test/test_passwd.c
++acl-2.2.53/test/make-tree
++acl-2.2.53/test/getfacl-lfs.test
++acl-2.2.53/test/getfacl-noacl.test
++acl-2.2.53/test/test.passwd
++acl-2.2.53/test/run
++acl-2.2.53/test/utf8-filenames.test
++acl-2.2.53/test/getfacl-recursive.test
++acl-2.2.53/test/sbits-restore.test
++acl-2.2.53/test/Makemodule.am
++acl-2.2.53/test/nfs/
++acl-2.2.53/test/nfs/nfsacl.test
++acl-2.2.53/test/nfs/nfs-dir.test
++acl-2.2.53/test/malformed-restore-double-owner.acl
++acl-2.2.53/test/cp.test
++acl-2.2.53/test/root/
++acl-2.2.53/test/root/setfacl.test
++acl-2.2.53/test/root/permissions.test
++acl-2.2.53/test/root/restore.test
++acl-2.2.53/test/root/getfacl.test
++acl-2.2.53/test/sort-getfacl-output
++acl-2.2.53/test/runwrapper
++acl-2.2.53/test/misc.test
++acl-2.2.53/test/setfacl-X.test
++acl-2.2.53/test/test_group.c
++acl-2.2.53/test/malformed-restore.test
++acl-2.2.53/test/test.group
++acl-2.2.53/configure.ac
++acl-2.2.53/configure
++acl-2.2.53/libacl/
++acl-2.2.53/libacl/acl_calc_mask.c
++acl-2.2.53/libacl/__acl_extended_file.c
++acl-2.2.53/libacl/__acl_from_xattr.h
++acl-2.2.53/libacl/acl_delete_def_file.c
++acl-2.2.53/libacl/acl_check.c
++acl-2.2.53/libacl/__libobj.c
++acl-2.2.53/libacl/perm_copy_fd.c
++acl-2.2.53/libacl/acl_equiv_mode.c
++acl-2.2.53/libacl/acl_copy_int.c
++acl-2.2.53/libacl/acl_copy_entry.c
++acl-2.2.53/libacl/acl_get_permset.c
++acl-2.2.53/libacl/acl_extended_fd.c
++acl-2.2.53/libacl/acl_delete_perm.c
++acl-2.2.53/libacl/__acl_extended_file.h
++acl-2.2.53/libacl/acl_init.c
++acl-2.2.53/libacl/acl_copy_ext.c
++acl-2.2.53/libacl/acl_cmp.c
++acl-2.2.53/libacl/__acl_to_xattr.c
++acl-2.2.53/libacl/perm_copy.h
++acl-2.2.53/libacl/acl_set_tag_type.c
++acl-2.2.53/libacl/byteorder.h
++acl-2.2.53/libacl/libacl.h
++acl-2.2.53/libacl/acl_error.c
++acl-2.2.53/libacl/Makemodule.am
++acl-2.2.53/libacl/acl_to_any_text.c
++acl-2.2.53/libacl/__acl_reorder_obj_p.c
++acl-2.2.53/libacl/__apply_mask_to_mode.c
++acl-2.2.53/libacl/acl_dup.c
++acl-2.2.53/libacl/acl_get_fd.c
++acl-2.2.53/libacl/acl_to_text.c
++acl-2.2.53/libacl/acl_delete_entry.c
++acl-2.2.53/libacl/acl_extended_file_nofollow.c
++acl-2.2.53/libacl/acl_get_tag_type.c
++acl-2.2.53/libacl/acl_add_perm.c
++acl-2.2.53/libacl/acl_get_file.c
++acl-2.2.53/libacl/acl_valid.c
++acl-2.2.53/libacl/acl_clear_perms.c
++acl-2.2.53/libacl/acl_free.c
++acl-2.2.53/libacl/acl_entries.c
++acl-2.2.53/libacl/acl_from_text.c
++acl-2.2.53/libacl/__acl_to_xattr.h
++acl-2.2.53/libacl/acl_from_mode.c
++acl-2.2.53/libacl/acl_set_qualifier.c
++acl-2.2.53/libacl/acl_get_entry.c
++acl-2.2.53/libacl/libobj.h
++acl-2.2.53/libacl/acl_set_file.c
++acl-2.2.53/libacl/acl_extended_file.c
++acl-2.2.53/libacl/acl_get_qualifier.c
++acl-2.2.53/libacl/__acl_to_any_text.c
++acl-2.2.53/libacl/__acl_from_xattr.c
++acl-2.2.53/libacl/acl_set_fd.c
++acl-2.2.53/libacl/acl_get_perm.c
++acl-2.2.53/libacl/acl_create_entry.c
++acl-2.2.53/libacl/perm_copy_file.c
++acl-2.2.53/libacl/acl_size.c
++acl-2.2.53/libacl/acl_set_permset.c
++acl-2.2.53/exports
++acl-2.2.53/build-aux/
++acl-2.2.53/build-aux/install-sh
++acl-2.2.53/build-aux/config.rpath
++acl-2.2.53/build-aux/ar-lib
++acl-2.2.53/build-aux/compile
++acl-2.2.53/build-aux/missing
++acl-2.2.53/build-aux/config.sub
++acl-2.2.53/build-aux/depcomp
++acl-2.2.53/build-aux/config.guess
++acl-2.2.53/build-aux/test-driver
++acl-2.2.53/build-aux/ltmain.sh
++acl-2.2.53/Makefile.am
++acl-2.2.53/ABOUT-NLS
++acl-2.2.53/Makefile.in
++acl-2.2.53/doc/
++acl-2.2.53/doc/TODO
++acl-2.2.53/doc/PORTING
++acl-2.2.53/doc/COPYING.LGPL
++acl-2.2.53/doc/Makemodule.am
++acl-2.2.53/doc/COPYING
++acl-2.2.53/doc/extensions.txt
++acl-2.2.53/doc/CHANGES
++acl-2.2.53/doc/libacl.txt
++acl-2.2.53/libacl.pc.in
++acl-2.2.53/man/
++acl-2.2.53/man/man5/
++acl-2.2.53/man/man5/Makemodule.am
++acl-2.2.53/man/man5/acl.5
++acl-2.2.53/man/Makemodule.am
++acl-2.2.53/man/man1/
++acl-2.2.53/man/man1/Makemodule.am
++acl-2.2.53/man/man1/chacl.1
++acl-2.2.53/man/man1/getfacl.1
++acl-2.2.53/man/man1/setfacl.1
++acl-2.2.53/man/man3/
++acl-2.2.53/man/man3/acl_get_permset.3
++acl-2.2.53/man/man3/acl_from_text.3
++acl-2.2.53/man/man3/acl_get_perm.3
++acl-2.2.53/man/man3/acl_get_qualifier.3
++acl-2.2.53/man/man3/acl_extended_file_nofollow.3
++acl-2.2.53/man/man3/acl_equiv_mode.3
++acl-2.2.53/man/man3/acl_calc_mask.3
++acl-2.2.53/man/man3/acl_from_mode.3
++acl-2.2.53/man/man3/acl_init.3
++acl-2.2.53/man/man3/acl_copy_ext.3
++acl-2.2.53/man/man3/acl_set_qualifier.3
++acl-2.2.53/man/man3/acl_valid.3
++acl-2.2.53/man/man3/acl_free.3
++acl-2.2.53/man/man3/acl_check.3
++acl-2.2.53/man/man3/acl_dup.3
++acl-2.2.53/man/man3/acl_cmp.3
++acl-2.2.53/man/man3/Makemodule.am
++acl-2.2.53/man/man3/acl_copy_entry.3
++acl-2.2.53/man/man3/acl_size.3
++acl-2.2.53/man/man3/acl_set_tag_type.3
++acl-2.2.53/man/man3/acl_error.3
++acl-2.2.53/man/man3/acl_add_perm.3
++acl-2.2.53/man/man3/acl_get_entry.3
++acl-2.2.53/man/man3/acl_copy_int.3
++acl-2.2.53/man/man3/acl_delete_entry.3
++acl-2.2.53/man/man3/acl_set_file.3
++acl-2.2.53/man/man3/acl_clear_perms.3
++acl-2.2.53/man/man3/acl_extended_fd.3
++acl-2.2.53/man/man3/acl_extended_file.3
++acl-2.2.53/man/man3/acl_set_fd.3
++acl-2.2.53/man/man3/acl_delete_def_file.3
++acl-2.2.53/man/man3/acl_to_text.3
++acl-2.2.53/man/man3/acl_to_any_text.3
++acl-2.2.53/man/man3/acl_set_permset.3
++acl-2.2.53/man/man3/acl_get_tag_type.3
++acl-2.2.53/man/man3/acl_entries.3
++acl-2.2.53/man/man3/acl_get_fd.3
++acl-2.2.53/man/man3/acl_create_entry.3
++acl-2.2.53/man/man3/acl_delete_perm.3
++acl-2.2.53/man/man3/acl_get_file.3
++acl-2.2.53/po/
++acl-2.2.53/po/insert-header.sin
++acl-2.2.53/po/POTFILES.in
++acl-2.2.53/po/quot.sed
++acl-2.2.53/po/LINGUAS
++acl-2.2.53/po/fr.gmo
++acl-2.2.53/po/Makevars
++acl-2.2.53/po/es.gmo
++acl-2.2.53/po/pl.gmo
++acl-2.2.53/po/de.po
++acl-2.2.53/po/gl.po
++acl-2.2.53/po/de.gmo
++acl-2.2.53/po/en@quot.gmo
++acl-2.2.53/po/es.po
++acl-2.2.53/po/boldquot.sed
++acl-2.2.53/po/pl.po
++acl-2.2.53/po/stamp-po
++acl-2.2.53/po/fr.po
++acl-2.2.53/po/en@quot.po
++acl-2.2.53/po/en@boldquot.gmo
++acl-2.2.53/po/Rules-quot
++acl-2.2.53/po/acl.pot
++acl-2.2.53/po/en@boldquot.header
++acl-2.2.53/po/remove-potcdate.sin
++acl-2.2.53/po/Makefile.in.in
++acl-2.2.53/po/en@quot.header
++acl-2.2.53/po/sv.po
++acl-2.2.53/po/en@boldquot.po
++acl-2.2.53/po/sv.gmo
++acl-2.2.53/po/gl.gmo
++checking for a BSD-compatible install... /usr/bin/ginstall -c
++checking whether build environment is sane... yes
++checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
++checking for gawk... gawk
++checking whether make sets $(MAKE)... yes
++checking whether make supports nested variables... yes
++checking whether make supports nested variables... (cached) yes
++checking for gcc... gcc
++checking whether the C compiler works... yes
++checking for C compiler default output file name... a.out
++checking for suffix of executables... 
++checking whether we are cross compiling... no
++checking for suffix of object files... o
++checking whether we are using the GNU C compiler... yes
++checking whether gcc accepts -g... yes
++checking for gcc option to accept ISO C89... none needed
++checking whether gcc understands -c and -o together... yes
++checking for style of include used by make... GNU
++checking dependency style of gcc... gcc3
++checking how to run the C preprocessor... gcc -E
++checking for grep that handles long lines and -e... /usr/bin/grep
++checking for egrep... /usr/bin/grep -E
++checking for ANSI C header files... yes
++checking for sys/types.h... yes
++checking for sys/stat.h... yes
++checking for stdlib.h... yes
++checking for string.h... yes
++checking for memory.h... yes
++checking for strings.h... yes
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking for unistd.h... yes
++checking minix/config.h usability... no
++checking minix/config.h presence... no
++checking for minix/config.h... no
++checking whether it is safe to define __EXTENSIONS__... yes
++checking whether __attribute__((visibility())) is supported... yes
++checking whether byte ordering is bigendian... no
++checking for special C compiler options needed for large files... no
++checking for _FILE_OFFSET_BITS value needed for large files... no
++checking for ar... ar
++checking the archiver (ar) interface... ar
++checking build system type... x86_64-slackware-linux-musl
++checking host system type... x86_64-slackware-linux-musl
++checking how to print strings... printf
++checking for a sed that does not truncate output... /usr/bin/sed
++checking for fgrep... /usr/bin/grep -F
++checking for ld used by gcc... /usr/bin/ld
++checking if the linker (/usr/bin/ld) is GNU ld... yes
++checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
++checking the name lister (/usr/bin/nm -B) interface... BSD nm
++checking whether ln -s works... yes
++checking the maximum length of command line arguments... 98304
++checking how to convert x86_64-slackware-linux-musl file names to x86_64-slackware-linux-musl format... func_convert_file_noop
++checking how to convert x86_64-slackware-linux-musl file names to toolchain format... func_convert_file_noop
++checking for /usr/bin/ld option to reload object files... -r
++checking for objdump... objdump
++checking how to recognize dependent libraries... pass_all
++checking for dlltool... dlltool
++checking how to associate runtime and link libraries... printf %s\n
++checking for archiver @FILE support... @
++checking for strip... strip
++checking for ranlib... ranlib
++checking command to parse /usr/bin/nm -B output from gcc object... ok
++checking for sysroot... no
++checking for a working dd... /usr/bin/dd
++checking how to truncate binary pipes... /usr/bin/dd bs=4096 count=1
++checking for mt... mt
++checking if mt is a manifest tool... no
++checking for dlfcn.h... yes
++checking for objdir... .libs
++checking if gcc supports -fno-rtti -fno-exceptions... no
++checking for gcc option to produce PIC... -fPIC -DPIC
++checking if gcc PIC flag -fPIC -DPIC works... yes
++checking if gcc static flag -static works... yes
++checking if gcc supports -c -o file.o... yes
++checking if gcc supports -c -o file.o... (cached) yes
++checking whether the gcc linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
++checking whether -lc should be explicitly linked in... no
++checking dynamic linker characteristics... GNU/Linux ld.so
++checking how to hardcode library paths into programs... immediate
++checking whether stripping libraries is possible... yes
++checking if libtool supports shared libraries... yes
++checking whether to build shared libraries... yes
++checking whether to build static libraries... no
++checking whether NLS is requested... yes
++checking for msgfmt... /usr/bin/msgfmt
++checking for gmsgfmt... /usr/bin/msgfmt
++checking for xgettext... /usr/bin/xgettext
++checking for msgmerge... /usr/bin/msgmerge
++checking for ld used by gcc... /usr/bin/ld -m elf_x86_64
++checking if the linker (/usr/bin/ld -m elf_x86_64) is GNU ld... yes
++checking for shared library run path origin... done
++checking for CFPreferencesCopyAppValue... no
++checking for CFLocaleCopyCurrent... no
++checking for GNU gettext in libc... no
++checking for iconv... yes
++checking for working iconv... yes
++checking for GNU gettext in libintl... yes
++checking whether to use NLS... yes
++checking where the gettext function comes from... external libintl
++checking how to link with libintl... /usr/lib/libintl.a
++checking attr/error_context.h usability... yes
++checking attr/error_context.h presence... yes
++checking for attr/error_context.h... yes
++checking for getxattr in -lattr... yes
++checking that generated files are newer than configure... done
++configure: creating ./config.status
++config.status: creating libacl.pc
++config.status: creating Makefile
++config.status: creating po/Makefile.in
++config.status: creating include/config.h
++config.status: executing depfiles commands
++config.status: executing libtool commands
++config.status: executing po-directories commands
++config.status: creating po/POTFILES
++config.status: creating po/Makefile
++config.status: executing include/acl commands
++config.status: executing include/sys commands
++Making all in po
++make[1]: Entering directory '/tmp/acl-2.2.53/po'
++make[1]: Nothing to be done for 'all'.
++make[1]: Leaving directory '/tmp/acl-2.2.53/po'
++make[1]: Entering directory '/tmp/acl-2.2.53'
++  CC       libacl/libacl_la-acl_add_perm.lo
++  CC       libacl/libacl_la-acl_calc_mask.lo
++  CC       libacl/libacl_la-acl_clear_perms.lo
++  CC       libacl/libacl_la-acl_copy_entry.lo
++  CC       libacl/libacl_la-acl_copy_ext.lo
++  CC       libacl/libacl_la-acl_copy_int.lo
++  CC       libacl/libacl_la-acl_create_entry.lo
++  CC       libacl/libacl_la-acl_delete_def_file.lo
++  CC       libacl/libacl_la-acl_delete_entry.lo
++  CC       libacl/libacl_la-acl_delete_perm.lo
++  CC       libacl/libacl_la-acl_free.lo
++  CC       libacl/libacl_la-acl_dup.lo
++  CC       libacl/libacl_la-acl_from_text.lo
++  CC       libacl/libacl_la-acl_get_entry.lo
++  CC       libacl/libacl_la-acl_get_fd.lo
++  CC       libacl/libacl_la-acl_get_file.lo
++  CC       libacl/libacl_la-acl_get_perm.lo
++  CC       libacl/libacl_la-acl_get_permset.lo
++  CC       libacl/libacl_la-acl_get_qualifier.lo
++  CC       libacl/libacl_la-acl_get_tag_type.lo
++  CC       libacl/libacl_la-acl_init.lo
++  CC       libacl/libacl_la-acl_set_fd.lo
++  CC       libacl/libacl_la-acl_set_file.lo
++  CC       libacl/libacl_la-acl_set_permset.lo
++  CC       libacl/libacl_la-acl_set_qualifier.lo
++  CC       libacl/libacl_la-acl_set_tag_type.lo
++  CC       libacl/libacl_la-acl_size.lo
++  CC       libacl/libacl_la-acl_to_text.lo
++  CC       libacl/libacl_la-acl_valid.lo
++  CC       libacl/libacl_la-acl_check.lo
++  CC       libacl/libacl_la-acl_cmp.lo
++  CC       libacl/libacl_la-acl_entries.lo
++  CC       libacl/libacl_la-acl_equiv_mode.lo
++  CC       libacl/libacl_la-acl_error.lo
++  CC       libacl/libacl_la-acl_extended_fd.lo
++  CC       libacl/libacl_la-acl_extended_file.lo
++  CC       libacl/libacl_la-acl_extended_file_nofollow.lo
++  CC       libacl/libacl_la-acl_from_mode.lo
++  CC       libacl/libacl_la-acl_to_any_text.lo
++  CC       libacl/libacl_la-__acl_extended_file.lo
++  CC       libacl/libacl_la-__acl_from_xattr.lo
++  CC       libacl/libacl_la-__acl_reorder_obj_p.lo
++  CC       libacl/libacl_la-__acl_to_any_text.lo
++  CC       libacl/libacl_la-__acl_to_xattr.lo
++  CC       libacl/libacl_la-__apply_mask_to_mode.lo
++  CC       libacl/libacl_la-__libobj.lo
++libacl/__acl_to_any_text.c: In function ‘__acl_to_any_text’:
++libacl/__acl_to_any_text.c:90:3: warning: ‘strcpy’ writing 1 or more bytes into a region of size 0 overflows the destination [-Wstringop-overflow=]
++   90 |   strcpy(string_obj_p->sstr + len, suffix);
++      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++  CC       libacl/libacl_la-perm_copy_fd.lo
++  CC       libacl/libacl_la-perm_copy_file.lo
++  CC       libmisc/high_water_alloc.lo
++  CC       libmisc/next_line.lo
++  CC       libmisc/quote.lo
++  CC       libmisc/unquote.lo
++  CC       libmisc/walk_tree.lo
++  CC       tools/chacl.o
++  CC       tools/getfacl.o
++  CC       tools/user_group.o
++  CC       tools/do_set.o
++  CC       tools/parse.o
++  CC       tools/sequence.o
++  CC       tools/setfacl.o
++  CCLD     libmisc.la
++  CCLD     libacl.la
++  CCLD     chacl
++  CCLD     getfacl
++  CCLD     setfacl
++make[1]: Leaving directory '/tmp/acl-2.2.53'
++Making install in po
++make[1]: Entering directory '/tmp/acl-2.2.53/po'
++installing de.gmo as /tmp/package-acl/usr/share/locale/de/LC_MESSAGES/acl.mo
++installing es.gmo as /tmp/package-acl/usr/share/locale/es/LC_MESSAGES/acl.mo
++installing fr.gmo as /tmp/package-acl/usr/share/locale/fr/LC_MESSAGES/acl.mo
++installing gl.gmo as /tmp/package-acl/usr/share/locale/gl/LC_MESSAGES/acl.mo
++installing pl.gmo as /tmp/package-acl/usr/share/locale/pl/LC_MESSAGES/acl.mo
++installing sv.gmo as /tmp/package-acl/usr/share/locale/sv/LC_MESSAGES/acl.mo
++installing en@boldquot.gmo as /tmp/package-acl/usr/share/locale/en@boldquot/LC_MESSAGES/acl.mo
++installing en@quot.gmo as /tmp/package-acl/usr/share/locale/en@quot/LC_MESSAGES/acl.mo
++if test "acl" = "gettext-tools"; then \
++  /usr/bin/mkdir -p /tmp/package-acl/usr/share/gettext/po; \
++  for file in Makefile.in.in remove-potcdate.sin quot.sed boldquot.sed en@quot.header en@boldquot.header insert-header.sin Rules-quot   Makevars.template; do \
++    /usr/bin/ginstall -c -m 644 ./$file \
++		    /tmp/package-acl/usr/share/gettext/po/$file; \
++  done; \
++  for file in Makevars; do \
++    rm -f /tmp/package-acl/usr/share/gettext/po/$file; \
++  done; \
++else \
++  : ; \
++fi
++make[1]: Leaving directory '/tmp/acl-2.2.53/po'
++make[1]: Entering directory '/tmp/acl-2.2.53'
++make[2]: Entering directory '/tmp/acl-2.2.53'
++ /usr/bin/mkdir -p '/tmp/package-acl/usr/lib'
++ /bin/sh ./libtool   --mode=install /usr/bin/ginstall -c   libacl.la '/tmp/package-acl/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/libacl.so.1.1.2253 /tmp/package-acl/usr/lib/libacl.so.1.1.2253
++libtool: install: (cd /tmp/package-acl/usr/lib && { ln -s -f libacl.so.1.1.2253 libacl.so.1 || { rm -f libacl.so.1 && ln -s libacl.so.1.1.2253 libacl.so.1; }; })
++libtool: install: (cd /tmp/package-acl/usr/lib && { ln -s -f libacl.so.1.1.2253 libacl.so || { rm -f libacl.so && ln -s libacl.so.1.1.2253 libacl.so; }; })
++libtool: install: /usr/bin/ginstall -c .libs/libacl.lai /tmp/package-acl/usr/lib/libacl.la
++libtool: warning: remember to run 'libtool --finish /usr/lib'
++ /usr/bin/mkdir -p '/tmp/package-acl/usr/bin'
++  /bin/sh ./libtool   --mode=install /usr/bin/ginstall -c chacl getfacl setfacl '/tmp/package-acl/usr/bin'
++libtool: warning: 'libacl.la' has not been installed in '/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/chacl /tmp/package-acl/usr/bin/chacl
++libtool: warning: 'libacl.la' has not been installed in '/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/getfacl /tmp/package-acl/usr/bin/getfacl
++libtool: warning: 'libacl.la' has not been installed in '/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/setfacl /tmp/package-acl/usr/bin/setfacl
++subst_install_header() { file=`echo "$1" | sed -e 's,^.*/,,'`; /usr/bin/sed -e "s/\<EXPORT\>/extern/" < "$1" > "include/$file.t" || exit 1; /usr/bin/mkdir -p "$2" || exit 1; /usr/bin/ginstall -c -m 644 "include/$file.t" "$2/$file" || exit 1; rm -f "include/$file.t"; }; subst_install_header "include/libacl.h" "/tmp/package-acl/usr/include/acl"
++subst_install_header() { file=`echo "$1" | sed -e 's,^.*/,,'`; /usr/bin/sed -e "s/\<EXPORT\>/extern/" < "$1" > "include/$file.t" || exit 1; /usr/bin/mkdir -p "$2" || exit 1; /usr/bin/ginstall -c -m 644 "include/$file.t" "$2/$file" || exit 1; rm -f "include/$file.t"; }; subst_install_header "include/acl.h" "/tmp/package-acl/usr/include/sys"
++ /usr/bin/mkdir -p '/tmp/package-acl/usr/doc/acl-2.2.53'
++ /usr/bin/ginstall -c -m 644 doc/extensions.txt doc/CHANGES doc/COPYING doc/COPYING.LGPL doc/libacl.txt doc/PORTING '/tmp/package-acl/usr/doc/acl-2.2.53'
++ /usr/bin/mkdir -p '/tmp/package-acl/usr/man/man1'
++ /usr/bin/ginstall -c -m 644 man/man1/chacl.1 man/man1/getfacl.1 man/man1/setfacl.1 '/tmp/package-acl/usr/man/man1'
++ /usr/bin/mkdir -p '/tmp/package-acl/usr/man/man3'
++ /usr/bin/ginstall -c -m 644 man/man3/acl_add_perm.3 man/man3/acl_calc_mask.3 man/man3/acl_check.3 man/man3/acl_clear_perms.3 man/man3/acl_cmp.3 man/man3/acl_copy_entry.3 man/man3/acl_copy_ext.3 man/man3/acl_copy_int.3 man/man3/acl_create_entry.3 man/man3/acl_delete_def_file.3 man/man3/acl_delete_entry.3 man/man3/acl_delete_perm.3 man/man3/acl_dup.3 man/man3/acl_entries.3 man/man3/acl_equiv_mode.3 man/man3/acl_error.3 man/man3/acl_extended_fd.3 man/man3/acl_extended_file.3 man/man3/acl_extended_file_nofollow.3 man/man3/acl_free.3 man/man3/acl_from_mode.3 man/man3/acl_from_text.3 man/man3/acl_get_entry.3 man/man3/acl_get_fd.3 man/man3/acl_get_file.3 man/man3/acl_get_perm.3 man/man3/acl_get_permset.3 man/man3/acl_get_qualifier.3 man/man3/acl_get_tag_type.3 man/man3/acl_init.3 man/man3/acl_set_fd.3 man/man3/acl_set_file.3 man/man3/acl_set_permset.3 man/man3/acl_set_qualifier.3 man/man3/acl_set_tag_type.3 man/man3/acl_size.3 man/man3/acl_to_any_text.3 man/man3/acl_to_text.3 man/man3/acl_valid.3 '/tmp/package-acl/usr/man/man3'
++ /usr/bin/mkdir -p '/tmp/package-acl/usr/man/man5'
++ /usr/bin/ginstall -c -m 644 man/man5/acl.5 '/tmp/package-acl/usr/man/man5'
++ /usr/bin/mkdir -p '/tmp/package-acl/usr/lib/pkgconfig'
++ /usr/bin/ginstall -c -m 644 libacl.pc '/tmp/package-acl/usr/lib/pkgconfig'
++make[2]: Leaving directory '/tmp/acl-2.2.53'
++make[1]: Leaving directory '/tmp/acl-2.2.53'
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++lib/libacl.so.1	libacl.so.1.1.2253
++usr/lib/libacl.so	libacl.so.1.1.2253
++usr/lib/libacl.so.1	libacl.so.1.1.2253
++usr/lib/libacl.so.1.1.2253	../../lib/libacl.so.1.1.2253
++
++Making symbolic link creation script:
++( cd lib ; rm -rf libacl.so.1 )
++( cd lib ; ln -sf libacl.so.1.1.2253 libacl.so.1 )
++( cd usr/lib ; rm -rf libacl.so )
++( cd usr/lib ; ln -sf libacl.so.1.1.2253 libacl.so )
++( cd usr/lib ; rm -rf libacl.so.1 )
++( cd usr/lib ; ln -sf libacl.so.1.1.2253 libacl.so.1 )
++( cd usr/lib ; rm -rf libacl.so.1.1.2253 )
++( cd usr/lib ; ln -sf ../../lib/libacl.so.1.1.2253 libacl.so.1.1.2253 )
++
++It is recommended that you make these lines your new installation script.
++
++Would you like to make this stuff the install script for this package
++and remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './lib/libacl.so.1'
++removed './usr/lib/libacl.so.1.1.2253'
++removed './usr/lib/libacl.so.1'
++removed './usr/lib/libacl.so'
++
++Creating your new ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/acl-2.2.53-x86_64-1.txz
++
++./
++install/
++install/doinst.sh
++install/slack-desc
++lib/
++lib/libacl.so.1.1.2253
++usr/
++usr/bin/
++usr/bin/chacl
++usr/bin/getfacl
++usr/bin/setfacl
++usr/doc/
++usr/doc/acl-2.2.53/
++usr/doc/acl-2.2.53/CHANGES
++usr/doc/acl-2.2.53/COPYING
++usr/doc/acl-2.2.53/COPYING.LGPL
++usr/doc/acl-2.2.53/PORTING
++usr/doc/acl-2.2.53/README
++usr/doc/acl-2.2.53/extensions.txt
++usr/doc/acl-2.2.53/libacl.txt
++usr/include/
++usr/include/acl/
++usr/include/acl/libacl.h
++usr/include/sys/
++usr/include/sys/acl.h
++usr/lib/
++usr/lib/pkgconfig/
++usr/lib/pkgconfig/libacl.pc
++usr/man/
++usr/man/man1/
++usr/man/man1/chacl.1.gz
++usr/man/man1/getfacl.1.gz
++usr/man/man1/setfacl.1.gz
++usr/man/man3/
++usr/man/man3/acl_add_perm.3.gz
++usr/man/man3/acl_calc_mask.3.gz
++usr/man/man3/acl_check.3.gz
++usr/man/man3/acl_clear_perms.3.gz
++usr/man/man3/acl_cmp.3.gz
++usr/man/man3/acl_copy_entry.3.gz
++usr/man/man3/acl_copy_ext.3.gz
++usr/man/man3/acl_copy_int.3.gz
++usr/man/man3/acl_create_entry.3.gz
++usr/man/man3/acl_delete_def_file.3.gz
++usr/man/man3/acl_delete_entry.3.gz
++usr/man/man3/acl_delete_perm.3.gz
++usr/man/man3/acl_dup.3.gz
++usr/man/man3/acl_entries.3.gz
++usr/man/man3/acl_equiv_mode.3.gz
++usr/man/man3/acl_error.3.gz
++usr/man/man3/acl_extended_fd.3.gz
++usr/man/man3/acl_extended_file.3.gz
++usr/man/man3/acl_extended_file_nofollow.3.gz
++usr/man/man3/acl_free.3.gz
++usr/man/man3/acl_from_mode.3.gz
++usr/man/man3/acl_from_text.3.gz
++usr/man/man3/acl_get_entry.3.gz
++usr/man/man3/acl_get_fd.3.gz
++usr/man/man3/acl_get_file.3.gz
++usr/man/man3/acl_get_perm.3.gz
++usr/man/man3/acl_get_permset.3.gz
++usr/man/man3/acl_get_qualifier.3.gz
++usr/man/man3/acl_get_tag_type.3.gz
++usr/man/man3/acl_init.3.gz
++usr/man/man3/acl_set_fd.3.gz
++usr/man/man3/acl_set_file.3.gz
++usr/man/man3/acl_set_permset.3.gz
++usr/man/man3/acl_set_qualifier.3.gz
++usr/man/man3/acl_set_tag_type.3.gz
++usr/man/man3/acl_size.3.gz
++usr/man/man3/acl_to_any_text.3.gz
++usr/man/man3/acl_to_text.3.gz
++usr/man/man3/acl_valid.3.gz
++usr/man/man5/
++usr/man/man5/acl.5.gz
++usr/share/
++usr/share/locale/
++usr/share/locale/de/
++usr/share/locale/de/LC_MESSAGES/
++usr/share/locale/de/LC_MESSAGES/acl.mo
++usr/share/locale/en@boldquot/
++usr/share/locale/en@boldquot/LC_MESSAGES/
++usr/share/locale/en@boldquot/LC_MESSAGES/acl.mo
++usr/share/locale/en@quot/
++usr/share/locale/en@quot/LC_MESSAGES/
++usr/share/locale/en@quot/LC_MESSAGES/acl.mo
++usr/share/locale/es/
++usr/share/locale/es/LC_MESSAGES/
++usr/share/locale/es/LC_MESSAGES/acl.mo
++usr/share/locale/fr/
++usr/share/locale/fr/LC_MESSAGES/
++usr/share/locale/fr/LC_MESSAGES/acl.mo
++usr/share/locale/gl/
++usr/share/locale/gl/LC_MESSAGES/
++usr/share/locale/gl/LC_MESSAGES/acl.mo
++usr/share/locale/pl/
++usr/share/locale/pl/LC_MESSAGES/
++usr/share/locale/pl/LC_MESSAGES/acl.mo
++usr/share/locale/sv/
++usr/share/locale/sv/LC_MESSAGES/
++usr/share/locale/sv/LC_MESSAGES/acl.mo
++
++Slackware package /tmp/acl-2.2.53-x86_64-1.txz created.
++

@@ -1,0 +1,3593 @@
+diff -ruBN /tmp/tar/tar.SlackBuild /source/a/tar/tar.SlackBuild
+--- /tmp/tar/tar.SlackBuild	2021-01-07 20:31:56.000000000 +0000
++++ /source/a/tar/tar.SlackBuild	2021-01-09 06:35:47.000000000 +0000
+@@ -93,7 +93,7 @@
+ ./configure \
+   --prefix=/usr \
+   --disable-nls \
+-  --build=$ARCH-slackware-linux || exit 1
++  --build=$ARCH-slackware-linux-musl || exit 1
+ make $NUMJOBS || make || exit 1
+ mkdir -p $PKG/bin
+ cat src/tar > $PKG/bin/tar-1.13
+@@ -122,7 +122,7 @@
+   --mandir=/usr/man \
+   --docdir=/usr/doc/tar-$VERSION \
+   --enable-backup-scripts \
+-  --build=$ARCH-slackware-linux || exit 1
++  --build=$ARCH-slackware-linux-musl || exit 1
+ 
+ make $NUMJOBS || make || exit 1
+ make install DESTDIR=$PKG || exit 1
+diff -ruBN /tmp/tar/tar.SlackBuild.log /source/a/tar/tar.SlackBuild.log
+--- /tmp/tar/tar.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/a/tar/tar.SlackBuild.log	2021-01-09 06:38:11.000000000 +0000
+@@ -0,0 +1,3568 @@
++tar-1.13/
++tar-1.13/README
++tar-1.13/stamp-h.in
++tar-1.13/ABOUT-NLS
++tar-1.13/AUTHORS
++tar-1.13/BACKLOG
++tar-1.13/COPYING
++tar-1.13/ChangeLog
++tar-1.13/INSTALL
++tar-1.13/Makefile.am
++tar-1.13/Makefile.in
++tar-1.13/NEWS
++tar-1.13/THANKS
++tar-1.13/TODO
++tar-1.13/acconfig.h
++tar-1.13/acinclude.m4
++tar-1.13/aclocal.m4
++tar-1.13/config.guess
++tar-1.13/config.h.in
++tar-1.13/config.sub
++tar-1.13/configure
++tar-1.13/configure.in
++tar-1.13/install-sh
++tar-1.13/missing
++tar-1.13/mkinstalldirs
++tar-1.13/PORTS
++tar-1.13/rebox.el
++tar-1.13/doc/
++tar-1.13/doc/ChangeLog
++tar-1.13/doc/Makefile.am
++tar-1.13/doc/Makefile.in
++tar-1.13/doc/mdate-sh
++tar-1.13/doc/stamp-vti
++tar-1.13/doc/texinfo.tex
++tar-1.13/doc/version.texi
++tar-1.13/doc/tar.texi
++tar-1.13/doc/convtexi.pl
++tar-1.13/doc/getdate.texi
++tar-1.13/doc/header.texi
++tar-1.13/doc/tar.info
++tar-1.13/doc/tar.info-1
++tar-1.13/doc/tar.info-2
++tar-1.13/doc/tar.info-3
++tar-1.13/doc/tar.info-4
++tar-1.13/doc/tar.info-5
++tar-1.13/doc/tar.info-6
++tar-1.13/doc/tar.info-7
++tar-1.13/doc/tar.info-8
++tar-1.13/lib/
++tar-1.13/lib/ChangeLog
++tar-1.13/lib/Makefile.am
++tar-1.13/lib/Makefile.in
++tar-1.13/lib/alloca.c
++tar-1.13/lib/execlp.c
++tar-1.13/lib/fileblocks.c
++tar-1.13/lib/fnmatch.c
++tar-1.13/lib/ftruncate.c
++tar-1.13/lib/getdate.c
++tar-1.13/lib/lchown.c
++tar-1.13/lib/malloc.c
++tar-1.13/lib/memset.c
++tar-1.13/lib/mkdir.c
++tar-1.13/lib/realloc.c
++tar-1.13/lib/rename.c
++tar-1.13/lib/rmdir.c
++tar-1.13/lib/strstr.c
++tar-1.13/lib/strtol.c
++tar-1.13/lib/strtoul.c
++tar-1.13/lib/strtoull.c
++tar-1.13/lib/strtoumax.c
++tar-1.13/lib/utime.c
++tar-1.13/lib/addext.c
++tar-1.13/lib/argmatch.c
++tar-1.13/lib/backupfile.c
++tar-1.13/lib/basename.c
++tar-1.13/lib/error.c
++tar-1.13/lib/exclude.c
++tar-1.13/lib/full-write.c
++tar-1.13/lib/getdate.y
++tar-1.13/lib/getopt.c
++tar-1.13/lib/getopt1.c
++tar-1.13/lib/modechange.c
++tar-1.13/lib/msleep.c
++tar-1.13/lib/quotearg.c
++tar-1.13/lib/safe-read.c
++tar-1.13/lib/xgetcwd.c
++tar-1.13/lib/xmalloc.c
++tar-1.13/lib/xstrdup.c
++tar-1.13/lib/xstrtol.c
++tar-1.13/lib/xstrtoul.c
++tar-1.13/lib/xstrtoumax.c
++tar-1.13/lib/argmatch.h
++tar-1.13/lib/backupfile.h
++tar-1.13/lib/basename.h
++tar-1.13/lib/error.h
++tar-1.13/lib/exclude.h
++tar-1.13/lib/fnmatch.h
++tar-1.13/lib/getopt.h
++tar-1.13/lib/getdate.h
++tar-1.13/lib/getpagesize.h
++tar-1.13/lib/lchown.h
++tar-1.13/lib/modechange.h
++tar-1.13/lib/pathmax.h
++tar-1.13/lib/quotearg.h
++tar-1.13/lib/safe-read.h
++tar-1.13/lib/xalloc.h
++tar-1.13/lib/xstrtol.h
++tar-1.13/lib/mktime.c
++tar-1.13/lib/stpcpy.c
++tar-1.13/intl/
++tar-1.13/intl/ChangeLog
++tar-1.13/intl/Makefile.in
++tar-1.13/intl/linux-msg.sed
++tar-1.13/intl/po2tbl.sed.in
++tar-1.13/intl/xopen-msg.sed
++tar-1.13/intl/gettext.h
++tar-1.13/intl/gettextP.h
++tar-1.13/intl/hash-string.h
++tar-1.13/intl/libgettext.h
++tar-1.13/intl/loadinfo.h
++tar-1.13/intl/bindtextdom.c
++tar-1.13/intl/dcgettext.c
++tar-1.13/intl/dgettext.c
++tar-1.13/intl/gettext.c
++tar-1.13/intl/finddomain.c
++tar-1.13/intl/loadmsgcat.c
++tar-1.13/intl/localealias.c
++tar-1.13/intl/textdomain.c
++tar-1.13/intl/l10nflist.c
++tar-1.13/intl/explodename.c
++tar-1.13/intl/intl-compat.c
++tar-1.13/intl/cat-compat.c
++tar-1.13/intl/VERSION
++tar-1.13/m4/
++tar-1.13/m4/Makefile.am
++tar-1.13/m4/Makefile.in
++tar-1.13/m4/ccstdc.m4
++tar-1.13/m4/d-ino.m4
++tar-1.13/m4/gettext.m4
++tar-1.13/m4/inttypes_h.m4
++tar-1.13/m4/isc-posix.m4
++tar-1.13/m4/jm-mktime.m4
++tar-1.13/m4/largefile.m4
++tar-1.13/m4/lcmessage.m4
++tar-1.13/m4/malloc.m4
++tar-1.13/m4/mktime.m4
++tar-1.13/m4/progtest.m4
++tar-1.13/m4/realloc.m4
++tar-1.13/m4/uintmax_t.m4
++tar-1.13/m4/ulonglong.m4
++tar-1.13/m4/utimbuf.m4
++tar-1.13/m4/utime.m4
++tar-1.13/m4/utimes.m4
++tar-1.13/m4/xstrtoumax.m4
++tar-1.13/src/
++tar-1.13/src/ChangeLog
++tar-1.13/src/Makefile.am
++tar-1.13/src/Makefile.in
++tar-1.13/src/ansi2knr.1
++tar-1.13/src/ansi2knr.c
++tar-1.13/src/rmt.c
++tar-1.13/src/arith.c
++tar-1.13/src/buffer.c
++tar-1.13/src/compare.c
++tar-1.13/src/create.c
++tar-1.13/src/delete.c
++tar-1.13/src/extract.c
++tar-1.13/src/incremen.c
++tar-1.13/src/list.c
++tar-1.13/src/mangle.c
++tar-1.13/src/misc.c
++tar-1.13/src/names.c
++tar-1.13/src/open3.c
++tar-1.13/src/rtapelib.c
++tar-1.13/src/tar.c
++tar-1.13/src/update.c
++tar-1.13/src/arith.h
++tar-1.13/src/common.h
++tar-1.13/src/rmt.h
++tar-1.13/src/system.h
++tar-1.13/src/tar.h
++tar-1.13/scripts/
++tar-1.13/scripts/ChangeLog
++tar-1.13/scripts/Makefile.am
++tar-1.13/scripts/Makefile.in
++tar-1.13/scripts/WARNING
++tar-1.13/scripts/backup-specs
++tar-1.13/scripts/dump-remind
++tar-1.13/scripts/level-0
++tar-1.13/scripts/level-1
++tar-1.13/scripts/weekly.new
++tar-1.13/po/
++tar-1.13/po/Makefile.in.in
++tar-1.13/po/POTFILES.in
++tar-1.13/po/tar.pot
++tar-1.13/po/stamp-cat-id
++tar-1.13/po/cs.po
++tar-1.13/po/de.po
++tar-1.13/po/es.po
++tar-1.13/po/fr.po
++tar-1.13/po/it.po
++tar-1.13/po/ko.po
++tar-1.13/po/nl.po
++tar-1.13/po/no.po
++tar-1.13/po/pl.po
++tar-1.13/po/pt.po
++tar-1.13/po/ru.po
++tar-1.13/po/sl.po
++tar-1.13/po/sv.po
++tar-1.13/po/cs.gmo
++tar-1.13/po/de.gmo
++tar-1.13/po/es.gmo
++tar-1.13/po/fr.gmo
++tar-1.13/po/it.gmo
++tar-1.13/po/ko.gmo
++tar-1.13/po/nl.gmo
++tar-1.13/po/no.gmo
++tar-1.13/po/pl.gmo
++tar-1.13/po/pt.gmo
++tar-1.13/po/ru.gmo
++tar-1.13/po/sl.gmo
++tar-1.13/po/sv.gmo
++tar-1.13/po/cat-id-tbl.c
++tar-1.13/tests/
++tar-1.13/tests/ChangeLog
++tar-1.13/tests/Makefile.am
++tar-1.13/tests/Makefile.in
++tar-1.13/tests/preset.in
++tar-1.13/tests/genfile.c
++tar-1.13/tests/after
++tar-1.13/tests/before
++tar-1.13/tests/version.sh
++tar-1.13/tests/ignfail.sh
++tar-1.13/tests/extrac01.sh
++tar-1.13/tests/extrac02.sh
++tar-1.13/tests/extrac03.sh
++tar-1.13/tests/old.sh
++tar-1.13/tests/volume.sh
++tar-1.13/tests/gzip.sh
++tar-1.13/tests/append.sh
++tar-1.13/tests/delete01.sh
++tar-1.13/tests/delete02.sh
++Hmm...  Looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|diff -Nur tar-1.13.orig/src/tar.c tar-1.13/src/tar.c
++|--- tar-1.13.orig/src/tar.c	1999-07-07 00:49:50.000000000 -0500
++|+++ tar-1.13/src/tar.c	2017-12-22 00:39:37.515271544 -0600
++--------------------------
++patching file src/tar.c
++Using Plan A...
++Hunk #1 succeeded at 16.
++Hunk #2 succeeded at 166.
++Hunk #3 succeeded at 344.
++Hunk #4 succeeded at 415.
++Hunk #5 succeeded at 793.
++done
++'/usr/share/libtool/build-aux/config.guess' -> './config.guess'
++'/usr/share/libtool/build-aux/config.sub' -> './config.sub'
++creating cache ./config.cache
++checking host system type... x86_64-unknown-linux-gnu
++checking for a BSD compatible install... /usr/bin/ginstall -c
++checking whether build environment is sane... yes
++checking whether make sets ${MAKE}... yes
++checking for working aclocal... found
++checking for working autoconf... found
++checking for working automake... found
++checking for working autoheader... found
++checking for working makeinfo... found
++checking for gcc... gcc
++checking whether the C compiler (gcc -O2 -fPIC ) works... yes
++checking whether the C compiler (gcc -O2 -fPIC ) is a cross-compiler... no
++checking whether we are using GNU C... yes
++checking whether gcc accepts -g... yes
++checking how to run the C preprocessor... gcc -E
++checking whether gcc needs -traditional... no
++checking for AIX... no
++checking for minix/config.h... no
++checking for Cygwin environment... no
++checking for mingw32 environment... no
++checking for executable suffix... no
++checking for ranlib... ranlib
++checking for bison... bison -y
++checking build system type... x86_64-slackware-linux-musl
++checking for x86_64-unknown-linux-gnu-getconf... getconf
++checking for CFLAGS value to request large file support... no
++checking for LDFLAGS value to request large file support... no
++checking for LIBS value to request large file support... no
++checking for _FILE_OFFSET_BITS... no
++checking for _LARGEFILE_SOURCE... no
++checking for _LARGE_FILES... no
++checking for strerror in -lcposix... no
++checking for gcc option to accept ANSI C... none needed
++checking for function prototypes... yes
++checking for working const... yes
++checking for inline... inline
++checking size of unsigned long... 8
++checking size of long long... 8
++checking for fcntl.h... yes
++checking for limits.h... yes
++checking for linux/fd.h... yes
++checking for memory.h... yes
++checking for net/errno.h... no
++checking for poll.h... yes
++checking for sgtty.h... no
++checking for string.h... yes
++checking for stropts.h... yes
++checking for sys/buf.h... no
++checking for sys/device.h... no
++checking for sys/gentape.h... no
++checking for sys/inet.h... no
++checking for sys/io/trioctl.h... no
++checking for sys/ioccom.h... no
++checking for sys/mtio.h... yes
++checking for sys/param.h... yes
++checking for sys/tprintf.h... no
++checking for sys/tape.h... no
++checking for sys/time.h... yes
++checking for sys/timeb.h... yes
++checking for sys/wait.h... yes
++checking for unistd.h... yes
++checking for inttypes.h... yes
++checking for utime.h... yes
++checking for remote tape header files... yes
++checking for getgrgid declaration... yes
++checking for getpwuid declaration... yes
++checking which ioctl field to test for reversed bytes... mt_type
++checking for dirent.h that defines DIR... yes
++checking for opendir in -ldir... no
++checking whether sys/types.h defines makedev... no
++checking for sys/mkdev.h... no
++checking for sys/sysmacros.h... yes
++checking whether stat file-mode macros are broken... no
++checking for ANSI C header files... yes
++checking whether time.h and sys/time.h may both be included... yes
++checking for st_blksize in struct stat... yes
++checking for st_blocks in struct stat... yes
++checking for d_ino member in directory struct... yes
++checking for st_fstype string in struct stat... no
++checking return type of signal handlers... void
++checking for mode_t... yes
++checking for pid_t... yes
++checking for off_t... yes
++checking for size_t... yes
++checking for uid_t in sys/types.h... yes
++checking for daddr_t... no
++checking for major_t... no
++checking for minor_t... no
++checking for ssize_t... yes
++checking for unsigned long long... yes
++checking for stdlib.h... yes
++checking for strtoumax... yes
++checking for fsync... yes
++checking for ftime... yes
++checking for getcwd... yes
++checking for isascii... yes
++checking for mkfifo... yes
++checking for nap... no
++checking for napms... no
++checking for poll... yes
++checking for select... yes
++checking for strerror... yes
++checking for strstr... yes
++checking for usleep... yes
++checking for mknod... yes
++checking for gethostent... yes
++checking for setsockopt... yes
++checking for working alloca.h... yes
++checking for alloca... yes
++checking for working fnmatch... yes
++checking for vprintf... yes
++checking for execlp... yes
++checking for ftruncate... yes
++checking for lchown... yes
++checking for memset... yes
++checking for mkdir... yes
++checking for rename... yes
++checking for rmdir... yes
++checking for strtol... yes
++checking for strtoul... yes
++checking for working malloc... yes
++checking for sys/time.h... (cached) yes
++checking for unistd.h... (cached) yes
++checking for alarm... yes
++checking for working mktime... no
++checking for localtime_r... yes
++checking for working realloc... yes
++checking for 3-argument open... yes
++checking for union wait... no
++checking for remote shell... no
++checking for netdb.h... yes
++checking for default archive... -
++checking for default blocking... 20
++checking if malloc debugging is wanted... no
++checking for unistd.h... (cached) yes
++checking for getpagesize... yes
++checking for working mmap... yes
++checking for argz.h... no
++checking for limits.h... (cached) yes
++checking for locale.h... yes
++checking for nl_types.h... yes
++checking for malloc.h... yes
++checking for string.h... (cached) yes
++checking for unistd.h... (cached) yes
++checking for sys/param.h... (cached) yes
++checking for getcwd... (cached) yes
++checking for munmap... yes
++checking for putenv... yes
++checking for setenv... yes
++checking for setlocale... yes
++checking for strchr... yes
++checking for strcasecmp... yes
++checking for strdup... yes
++checking for __argz_count... no
++checking for __argz_stringify... no
++checking for __argz_next... no
++checking for stpcpy... yes
++checking for LC_MESSAGES... yes
++checking whether NLS is requested... no
++updating cache ./config.cache
++creating ./config.status
++creating Makefile
++creating doc/Makefile
++creating intl/Makefile
++creating lib/Makefile
++creating m4/Makefile
++creating po/Makefile.in
++creating scripts/Makefile
++creating src/Makefile
++creating tests/Makefile
++creating tests/preset
++creating config.h
++linking ./intl/libgettext.h to intl/libintl.h
++make  all-recursive
++make[1]: Entering directory '/tmp/tar-1.13'
++Making all in doc
++Making all in lib
++make[2]: Entering directory '/tmp/tar-1.13/lib'
++gcc -DHAVE_CONFIG_H -I. -I. -I.. -I.. -I. -I../intl    -O2 -fPIC -c addext.c
++gcc -DHAVE_CONFIG_H -I. -I. -I.. -I.. -I. -I../intl    -O2 -fPIC -c argmatch.c
++gcc -DHAVE_CONFIG_H -I. -I. -I.. -I.. -I. -I../intl    -O2 -fPIC -c backupfile.c
++argmatch.c: In function ‘__argmatch_die’:
++argmatch.c:59:23: warning: implicit declaration of function ‘exit’ [-Wimplicit-function-declaration]
++   59 | # define ARGMATCH_DIE exit (EXIT_FAILURE)
++      |                       ^~~~
++argmatch.c:69:3: note: in expansion of macro ‘ARGMATCH_DIE’
++   69 |   ARGMATCH_DIE;
++      |   ^~~~~~~~~~~~
++argmatch.c:59:23: warning: incompatible implicit declaration of built-in function ‘exit’
++   59 | # define ARGMATCH_DIE exit (EXIT_FAILURE)
++      |                       ^~~~
++argmatch.c:69:3: note: in expansion of macro ‘ARGMATCH_DIE’
++   69 |   ARGMATCH_DIE;
++      |   ^~~~~~~~~~~~
++argmatch.c:41:1: note: include ‘<stdlib.h>’ or provide a declaration of ‘exit’
++   40 | #include "quotearg.h"
++  +++ |+#include <stdlib.h>
++   41 | 
++gcc -DHAVE_CONFIG_H -I. -I. -I.. -I.. -I. -I../intl    -O2 -fPIC -c basename.c
++gcc -DHAVE_CONFIG_H -I. -I. -I.. -I.. -I. -I../intl    -O2 -fPIC -c error.c
++gcc -DHAVE_CONFIG_H -I. -I. -I.. -I.. -I. -I../intl    -O2 -fPIC -c exclude.c
++gcc -DHAVE_CONFIG_H -I. -I. -I.. -I.. -I. -I../intl    -O2 -fPIC -c full-write.c
++gcc -DHAVE_CONFIG_H -I. -I. -I.. -I.. -I. -I../intl    -O2 -fPIC -c getdate.c
++gcc -DHAVE_CONFIG_H -I. -I. -I.. -I.. -I. -I../intl    -O2 -fPIC -c getopt.c
++gcc -DHAVE_CONFIG_H -I. -I. -I.. -I.. -I. -I../intl    -O2 -fPIC -c getopt1.c
++gcc -DHAVE_CONFIG_H -I. -I. -I.. -I.. -I. -I../intl    -O2 -fPIC -c modechange.c
++gcc -DHAVE_CONFIG_H -I. -I. -I.. -I.. -I. -I../intl    -O2 -fPIC -c msleep.c
++gcc -DHAVE_CONFIG_H -I. -I. -I.. -I.. -I. -I../intl    -O2 -fPIC -c quotearg.c
++gcc -DHAVE_CONFIG_H -I. -I. -I.. -I.. -I. -I../intl    -O2 -fPIC -c safe-read.c
++gcc -DHAVE_CONFIG_H -I. -I. -I.. -I.. -I. -I../intl    -O2 -fPIC -c xgetcwd.c
++gcc -DHAVE_CONFIG_H -I. -I. -I.. -I.. -I. -I../intl    -O2 -fPIC -c xmalloc.c
++gcc -DHAVE_CONFIG_H -I. -I. -I.. -I.. -I. -I../intl    -O2 -fPIC -c xstrdup.c
++gcc -DHAVE_CONFIG_H -I. -I. -I.. -I.. -I. -I../intl    -O2 -fPIC -c xstrtol.c
++gcc -DHAVE_CONFIG_H -I. -I. -I.. -I.. -I. -I../intl    -O2 -fPIC -c xstrtoul.c
++gcc -DHAVE_CONFIG_H -I. -I. -I.. -I.. -I. -I../intl    -O2 -fPIC -c xstrtoumax.c
++gcc -DHAVE_CONFIG_H -I. -I. -I.. -I.. -I. -I../intl    -O2 -fPIC -c mktime.c
++rm -f libtar.a
++ar cru libtar.a addext.o argmatch.o backupfile.o basename.o error.o exclude.o full-write.o getdate.o getopt.o getopt1.o modechange.o msleep.o quotearg.o safe-read.o xgetcwd.o xmalloc.o xstrdup.o xstrtol.o xstrtoul.o xstrtoumax.o mktime.o
++ranlib libtar.a
++make[2]: Leaving directory '/tmp/tar-1.13/lib'
++Making all in intl
++make[2]: Entering directory '/tmp/tar-1.13/intl'
++make[2]: Nothing to be done for 'all'.
++make[2]: Leaving directory '/tmp/tar-1.13/intl'
++Making all in m4
++make[2]: Entering directory '/tmp/tar-1.13/m4'
++make[2]: Nothing to be done for 'all'.
++make[2]: Leaving directory '/tmp/tar-1.13/m4'
++Making all in src
++make[2]: Entering directory '/tmp/tar-1.13/src'
++gcc -DLOCALEDIR=\"/usr/share/locale\" -DHAVE_CONFIG_H -I.. -I../intl -I../lib    -O2 -fPIC -c arith.c
++gcc -DLOCALEDIR=\"/usr/share/locale\" -DHAVE_CONFIG_H -I.. -I../intl -I../lib    -O2 -fPIC -c buffer.c
++gcc -DLOCALEDIR=\"/usr/share/locale\" -DHAVE_CONFIG_H -I.. -I../intl -I../lib    -O2 -fPIC -c compare.c
++gcc -DLOCALEDIR=\"/usr/share/locale\" -DHAVE_CONFIG_H -I.. -I../intl -I../lib    -O2 -fPIC -c create.c
++buffer.c: In function ‘new_volume’:
++buffer.c:1653:9: warning: missing sentinel in function call [-Wformat=]
++ 1653 |         execlp (shell, "-sh", "-i", 0);
++      |         ^~~~~~
++gcc -DLOCALEDIR=\"/usr/share/locale\" -DHAVE_CONFIG_H -I.. -I../intl -I../lib    -O2 -fPIC -c delete.c
++gcc -DLOCALEDIR=\"/usr/share/locale\" -DHAVE_CONFIG_H -I.. -I../intl -I../lib    -O2 -fPIC -c extract.c
++gcc -DLOCALEDIR=\"/usr/share/locale\" -DHAVE_CONFIG_H -I.. -I../intl -I../lib    -O2 -fPIC -c incremen.c
++gcc -DLOCALEDIR=\"/usr/share/locale\" -DHAVE_CONFIG_H -I.. -I../intl -I../lib    -O2 -fPIC -c list.c
++gcc -DLOCALEDIR=\"/usr/share/locale\" -DHAVE_CONFIG_H -I.. -I../intl -I../lib    -O2 -fPIC -c mangle.c
++gcc -DLOCALEDIR=\"/usr/share/locale\" -DHAVE_CONFIG_H -I.. -I../intl -I../lib    -O2 -fPIC -c misc.c
++gcc -DLOCALEDIR=\"/usr/share/locale\" -DHAVE_CONFIG_H -I.. -I../intl -I../lib    -O2 -fPIC -c names.c
++gcc -DLOCALEDIR=\"/usr/share/locale\" -DHAVE_CONFIG_H -I.. -I../intl -I../lib    -O2 -fPIC -c open3.c
++gcc -DLOCALEDIR=\"/usr/share/locale\" -DHAVE_CONFIG_H -I.. -I../intl -I../lib    -O2 -fPIC -c rtapelib.c
++gcc -DLOCALEDIR=\"/usr/share/locale\" -DHAVE_CONFIG_H -I.. -I../intl -I../lib    -O2 -fPIC -c tar.c
++gcc -DLOCALEDIR=\"/usr/share/locale\" -DHAVE_CONFIG_H -I.. -I../intl -I../lib    -O2 -fPIC -c update.c
++gcc -DLOCALEDIR=\"/usr/share/locale\" -DHAVE_CONFIG_H -I.. -I../intl -I../lib    -O2 -fPIC -c rmt.c
++gcc  -O2 -fPIC  -o tar  arith.o buffer.o compare.o create.o delete.o extract.o incremen.o list.o mangle.o misc.o names.o open3.o rtapelib.o tar.o update.o ../lib/libtar.a 
++gcc  -O2 -fPIC  -o rmt  rmt.o ../lib/libtar.a 
++make[2]: Leaving directory '/tmp/tar-1.13/src'
++Making all in scripts
++make[2]: Entering directory '/tmp/tar-1.13/scripts'
++make[2]: Nothing to be done for 'all'.
++make[2]: Leaving directory '/tmp/tar-1.13/scripts'
++Making all in po
++make[2]: Entering directory '/tmp/tar-1.13/po'
++make[2]: Nothing to be done for 'all'.
++make[2]: Leaving directory '/tmp/tar-1.13/po'
++Making all in tests
++make[2]: Entering directory '/tmp/tar-1.13/tests'
++make[2]: Nothing to be done for 'all'.
++make[2]: Leaving directory '/tmp/tar-1.13/tests'
++make[2]: Entering directory '/tmp/tar-1.13'
++make[2]: Leaving directory '/tmp/tar-1.13'
++make[1]: Leaving directory '/tmp/tar-1.13'
++tar-1.33/
++tar-1.33/acinclude.m4
++tar-1.33/ChangeLog.1
++tar-1.33/config.h.in
++tar-1.33/Make.rules
++tar-1.33/doc/
++tar-1.33/doc/value.texi
++tar-1.33/doc/recipes.texi
++tar-1.33/doc/rendition.texi
++tar-1.33/doc/fdl.texi
++tar-1.33/doc/snapshot.texi
++tar-1.33/doc/untabify.el
++tar-1.33/doc/parse-datetime.texi
++tar-1.33/doc/intern.texi
++tar-1.33/doc/stamp-vti
++tar-1.33/doc/tar.1
++tar-1.33/doc/texify.sed
++tar-1.33/doc/Makefile.in
++tar-1.33/doc/mastermenu.el
++tar-1.33/doc/genfile.texi
++tar-1.33/doc/tar.info-2
++tar-1.33/doc/sparse.texi
++tar-1.33/doc/tar.info
++tar-1.33/doc/tar-snapshot-edit.texi
++tar-1.33/doc/Makefile.am
++tar-1.33/doc/dumpdir.texi
++tar-1.33/doc/version.texi
++tar-1.33/doc/rmt.8
++tar-1.33/doc/header.texi
++tar-1.33/doc/gendocs_template
++tar-1.33/doc/tar.info-1
++tar-1.33/doc/tar.texi
++tar-1.33/po/
++tar-1.33/po/gl.gmo
++tar-1.33/po/ko.gmo
++tar-1.33/po/id.gmo
++tar-1.33/po/da.gmo
++tar-1.33/po/pt.po
++tar-1.33/po/bg.po
++tar-1.33/po/nb.po
++tar-1.33/po/sr.gmo
++tar-1.33/po/uk.gmo
++tar-1.33/po/es.po
++tar-1.33/po/el.po
++tar-1.33/po/et.po
++tar-1.33/po/sl.po
++tar-1.33/po/da.po
++tar-1.33/po/ca.gmo
++tar-1.33/po/eu.po
++tar-1.33/po/zh_TW.po
++tar-1.33/po/el.gmo
++tar-1.33/po/es.gmo
++tar-1.33/po/fr.gmo
++tar-1.33/po/tar.pot
++tar-1.33/po/de.gmo
++tar-1.33/po/de.po
++tar-1.33/po/ro.gmo
++tar-1.33/po/fr.po
++tar-1.33/po/hu.po
++tar-1.33/po/hr.po
++tar-1.33/po/stamp-po
++tar-1.33/po/sk.gmo
++tar-1.33/po/hu.gmo
++tar-1.33/po/ko.po
++tar-1.33/po/insert-header.sin
++tar-1.33/po/gl.po
++tar-1.33/po/id.po
++tar-1.33/po/ms.po
++tar-1.33/po/tr.gmo
++tar-1.33/po/fi.po
++tar-1.33/po/ro.po
++tar-1.33/po/Makefile.in.in
++tar-1.33/po/vi.gmo
++tar-1.33/po/eo.po
++tar-1.33/po/vi.po
++tar-1.33/po/hr.gmo
++tar-1.33/po/pl.po
++tar-1.33/po/quot.sed
++tar-1.33/po/pl.gmo
++tar-1.33/po/zh_CN.gmo
++tar-1.33/po/ru.po
++tar-1.33/po/zh_TW.gmo
++tar-1.33/po/pt.gmo
++tar-1.33/po/sv.gmo
++tar-1.33/po/fi.gmo
++tar-1.33/po/ky.po
++tar-1.33/po/ga.po
++tar-1.33/po/nl.gmo
++tar-1.33/po/en@quot.header
++tar-1.33/po/ky.gmo
++tar-1.33/po/pt_BR.po
++tar-1.33/po/Makevars
++tar-1.33/po/et.gmo
++tar-1.33/po/ja.po
++tar-1.33/po/ms.gmo
++tar-1.33/po/bg.gmo
++tar-1.33/po/uk.po
++tar-1.33/po/cs.gmo
++tar-1.33/po/sk.po
++tar-1.33/po/sl.gmo
++tar-1.33/po/ca.po
++tar-1.33/po/ja.gmo
++tar-1.33/po/nl.po
++tar-1.33/po/pt_BR.gmo
++tar-1.33/po/nb.gmo
++tar-1.33/po/it.po
++tar-1.33/po/boldquot.sed
++tar-1.33/po/tr.po
++tar-1.33/po/sr.po
++tar-1.33/po/sv.po
++tar-1.33/po/eu.gmo
++tar-1.33/po/it.gmo
++tar-1.33/po/en@boldquot.header
++tar-1.33/po/eo.gmo
++tar-1.33/po/cs.po
++tar-1.33/po/zh_CN.po
++tar-1.33/po/ru.gmo
++tar-1.33/po/remove-potcdate.sin
++tar-1.33/po/LINGUAS
++tar-1.33/po/POTFILES.in
++tar-1.33/po/Rules-quot
++tar-1.33/po/ga.gmo
++tar-1.33/AUTHORS
++tar-1.33/ABOUT-NLS
++tar-1.33/m4/
++tar-1.33/m4/mbtowc.m4
++tar-1.33/m4/getprogname.m4
++tar-1.33/m4/msvc-nothrow.m4
++tar-1.33/m4/mbrtowc.m4
++tar-1.33/m4/manywarnings.m4
++tar-1.33/m4/nls.m4
++tar-1.33/m4/getcwd-path-max.m4
++tar-1.33/m4/dirfd.m4
++tar-1.33/m4/mempcpy.m4
++tar-1.33/m4/dup.m4
++tar-1.33/m4/mbsinit.m4
++tar-1.33/m4/filenamecat.m4
++tar-1.33/m4/getdtablesize.m4
++tar-1.33/m4/backupfile.m4
++tar-1.33/m4/intmax_t.m4
++tar-1.33/m4/mkfifoat.m4
++tar-1.33/m4/langinfo_h.m4
++tar-1.33/m4/fchdir.m4
++tar-1.33/m4/read.m4
++tar-1.33/m4/timegm.m4
++tar-1.33/m4/tm_gmtoff.m4
++tar-1.33/m4/dirent_h.m4
++tar-1.33/m4/timespec.m4
++tar-1.33/m4/unlinkat.m4
++tar-1.33/m4/errno_h.m4
++tar-1.33/m4/fcntl.m4
++tar-1.33/m4/lstat.m4
++tar-1.33/m4/fcntl-safer.m4
++tar-1.33/m4/save-cwd.m4
++tar-1.33/m4/human.m4
++tar-1.33/m4/alloca.m4
++tar-1.33/m4/mbstate_t.m4
++tar-1.33/m4/sysexits.m4
++tar-1.33/m4/linkat.m4
++tar-1.33/m4/group-member.m4
++tar-1.33/m4/link-follow.m4
++tar-1.33/m4/getgroups.m4
++tar-1.33/m4/include_next.m4
++tar-1.33/m4/strtoll.m4
++tar-1.33/m4/time_r.m4
++tar-1.33/m4/open-slash.m4
++tar-1.33/m4/inttypes_h.m4
++tar-1.33/m4/mbiter.m4
++tar-1.33/m4/size_max.m4
++tar-1.33/m4/gnulib-common.m4
++tar-1.33/m4/isblank.m4
++tar-1.33/m4/multiarch.m4
++tar-1.33/m4/printf.m4
++tar-1.33/m4/rmdir.m4
++tar-1.33/m4/locale-fr.m4
++tar-1.33/m4/closedir.m4
++tar-1.33/m4/unlinkdir.m4
++tar-1.33/m4/mktime.m4
++tar-1.33/m4/00gnulib.m4
++tar-1.33/m4/__inline.m4
++tar-1.33/m4/getrandom.m4
++tar-1.33/m4/realloc.m4
++tar-1.33/m4/write.m4
++tar-1.33/m4/strcase.m4
++tar-1.33/m4/close.m4
++tar-1.33/m4/utimens.m4
++tar-1.33/m4/wcwidth.m4
++tar-1.33/m4/getopt.m4
++tar-1.33/m4/sys_types_h.m4
++tar-1.33/m4/memrchr.m4
++tar-1.33/m4/gettimeofday.m4
++tar-1.33/m4/readlinkat.m4
++tar-1.33/m4/mbsrtowcs.m4
++tar-1.33/m4/stdio_h.m4
++tar-1.33/m4/fopen.m4
++tar-1.33/m4/lchown.m4
++tar-1.33/m4/nstrftime.m4
++tar-1.33/m4/locale_h.m4
++tar-1.33/m4/mmap-anon.m4
++tar-1.33/m4/xstrtol.m4
++tar-1.33/m4/fchmodat.m4
++tar-1.33/m4/strerror.m4
++tar-1.33/m4/tempname.m4
++tar-1.33/m4/getpagesize.m4
++tar-1.33/m4/locale-ja.m4
++tar-1.33/m4/std-gnu11.m4
++tar-1.33/m4/strtoimax.m4
++tar-1.33/m4/iswxdigit.m4
++tar-1.33/m4/utime_h.m4
++tar-1.33/m4/xvasprintf.m4
++tar-1.33/m4/nl_langinfo.m4
++tar-1.33/m4/mkfifo.m4
++tar-1.33/m4/mkdtemp.m4
++tar-1.33/m4/strdup.m4
++tar-1.33/m4/strtoumax.m4
++tar-1.33/m4/setlocale_null.m4
++tar-1.33/m4/savedir.m4
++tar-1.33/m4/dirent-safer.m4
++tar-1.33/m4/ssize_t.m4
++tar-1.33/m4/getdelim.m4
++tar-1.33/m4/rawmemchr.m4
++tar-1.33/m4/lib-ld.m4
++tar-1.33/m4/lseek.m4
++tar-1.33/m4/pipe.m4
++tar-1.33/m4/wint_t.m4
++tar-1.33/m4/limits-h.m4
++tar-1.33/m4/visibility.m4
++tar-1.33/m4/modechange.m4
++tar-1.33/m4/gnulib-comp.m4
++tar-1.33/m4/utimensat.m4
++tar-1.33/m4/unlocked-io.m4
++tar-1.33/m4/utime.m4
++tar-1.33/m4/unistd_h.m4
++tar-1.33/m4/largefile.m4
++tar-1.33/m4/malloca.m4
++tar-1.33/m4/rpmatch.m4
++tar-1.33/m4/pid_t.m4
++tar-1.33/m4/mbchar.m4
++tar-1.33/m4/futimens.m4
++tar-1.33/m4/xsize.m4
++tar-1.33/m4/lib-prefix.m4
++tar-1.33/m4/wmemchr.m4
++tar-1.33/m4/minmax.m4
++tar-1.33/m4/system.m4
++tar-1.33/m4/link.m4
++tar-1.33/m4/regex.m4
++tar-1.33/m4/sys_socket_h.m4
++tar-1.33/m4/string_h.m4
++tar-1.33/m4/stdint_h.m4
++tar-1.33/m4/fchownat.m4
++tar-1.33/m4/error.m4
++tar-1.33/m4/priv-set.m4
++tar-1.33/m4/absolute-header.m4
++tar-1.33/m4/mkdir.m4
++tar-1.33/m4/selinux-label-h.m4
++tar-1.33/m4/wchar_t.m4
++tar-1.33/m4/fileblocks.m4
++tar-1.33/m4/fseek.m4
++tar-1.33/m4/safe-write.m4
++tar-1.33/m4/eealloc.m4
++tar-1.33/m4/localcharset.m4
++tar-1.33/m4/strndup.m4
++tar-1.33/m4/symlink.m4
++tar-1.33/m4/inttypes.m4
++tar-1.33/m4/stdlib_h.m4
++tar-1.33/m4/readdir.m4
++tar-1.33/m4/sys_stat_h.m4
++tar-1.33/m4/symlinkat.m4
++tar-1.33/m4/wchar_h.m4
++tar-1.33/m4/argp.m4
++tar-1.33/m4/nocrash.m4
++tar-1.33/m4/double-slash-root.m4
++tar-1.33/m4/iconv.m4
++tar-1.33/m4/chown.m4
++tar-1.33/m4/fstat.m4
++tar-1.33/m4/zzgnulib.m4
++tar-1.33/m4/parse-datetime.m4
++tar-1.33/m4/time_rz.m4
++tar-1.33/m4/flexmember.m4
++tar-1.33/m4/utimes.m4
++tar-1.33/m4/stdbool.m4
++tar-1.33/m4/lchmod.m4
++tar-1.33/m4/stat-time.m4
++tar-1.33/m4/progtest.m4
++tar-1.33/m4/euidaccess.m4
++tar-1.33/m4/environ.m4
++tar-1.33/m4/strtoull.m4
++tar-1.33/m4/renameat.m4
++tar-1.33/m4/opendir.m4
++tar-1.33/m4/configmake.m4
++tar-1.33/m4/getline.m4
++tar-1.33/m4/codeset.m4
++tar-1.33/m4/open-cloexec.m4
++tar-1.33/m4/strings_h.m4
++tar-1.33/m4/stdint.m4
++tar-1.33/m4/malloc.m4
++tar-1.33/m4/obstack.m4
++tar-1.33/m4/getcwd-abort-bug.m4
++tar-1.33/m4/libunistring-base.m4
++tar-1.33/m4/rename.m4
++tar-1.33/m4/stdarg.m4
++tar-1.33/m4/raise.m4
++tar-1.33/m4/gettime.m4
++tar-1.33/m4/fcntl_h.m4
++tar-1.33/m4/msvc-inval.m4
++tar-1.33/m4/unistd-safer.m4
++tar-1.33/m4/fstatat.m4
++tar-1.33/m4/btowc.m4
++tar-1.33/m4/inttostr.m4
++tar-1.33/m4/time_h.m4
++tar-1.33/m4/threadlib.m4
++tar-1.33/m4/warnings.m4
++tar-1.33/m4/selinux-context-h.m4
++tar-1.33/m4/quotearg.m4
++tar-1.33/m4/exponentd.m4
++tar-1.33/m4/fnmatch_h.m4
++tar-1.33/m4/bison.m4
++tar-1.33/m4/chdir-long.m4
++tar-1.33/m4/fnmatch.m4
++tar-1.33/m4/mkdirat.m4
++tar-1.33/m4/sleep.m4
++tar-1.33/m4/xalloc.m4
++tar-1.33/m4/getcwd.m4
++tar-1.33/m4/dup2.m4
++tar-1.33/m4/rmt.m4
++tar-1.33/m4/signal_h.m4
++tar-1.33/m4/acl.m4
++tar-1.33/m4/intlmacosx.m4
++tar-1.33/m4/safe-read.m4
++tar-1.33/m4/strnlen.m4
++tar-1.33/m4/quote.m4
++tar-1.33/m4/iswblank.m4
++tar-1.33/m4/selinux-selinux-h.m4
++tar-1.33/m4/sys_time_h.m4
++tar-1.33/m4/xgetcwd.m4
++tar-1.33/m4/vasnprintf.m4
++tar-1.33/m4/faccessat.m4
++tar-1.33/m4/locale-zh.m4
++tar-1.33/m4/snprintf.m4
++tar-1.33/m4/readlink.m4
++tar-1.33/m4/wmempcpy.m4
++tar-1.33/m4/fpending.m4
++tar-1.33/m4/rewinddir.m4
++tar-1.33/m4/gettext.m4
++tar-1.33/m4/float_h.m4
++tar-1.33/m4/open.m4
++tar-1.33/m4/fdopendir.m4
++tar-1.33/m4/sys_random_h.m4
++tar-1.33/m4/vasprintf.m4
++tar-1.33/m4/iswdigit.m4
++tar-1.33/m4/strtoul.m4
++tar-1.33/m4/paxutils.m4
++tar-1.33/m4/pathmax.m4
++tar-1.33/m4/setenv.m4
++tar-1.33/m4/builtin-expect.m4
++tar-1.33/m4/strtol.m4
++tar-1.33/m4/mode_t.m4
++tar-1.33/m4/rtapelib.m4
++tar-1.33/m4/off_t.m4
++tar-1.33/m4/clock_time.m4
++tar-1.33/m4/fcntl-o.m4
++tar-1.33/m4/free.m4
++tar-1.33/m4/unlink.m4
++tar-1.33/m4/mknod.m4
++tar-1.33/m4/lib-link.m4
++tar-1.33/m4/warn-on-use.m4
++tar-1.33/m4/host-cpu-c-abi.m4
++tar-1.33/m4/localeconv.m4
++tar-1.33/m4/strchrnul.m4
++tar-1.33/m4/stdalign.m4
++tar-1.33/m4/openat.m4
++tar-1.33/m4/canonicalize.m4
++tar-1.33/m4/tzset.m4
++tar-1.33/m4/d-ino.m4
++tar-1.33/m4/fseeko.m4
++tar-1.33/m4/stpcpy.m4
++tar-1.33/m4/memchr.m4
++tar-1.33/m4/wctype_h.m4
++tar-1.33/m4/xstrndup.m4
++tar-1.33/m4/wcrtomb.m4
++tar-1.33/m4/extern-inline.m4
++tar-1.33/m4/version-etc.m4
++tar-1.33/m4/stat.m4
++tar-1.33/m4/po.m4
++tar-1.33/m4/vsnprintf.m4
++tar-1.33/m4/extensions.m4
++tar-1.33/m4/stddef_h.m4
++tar-1.33/m4/ctype.m4
++tar-1.33/Makefile.in
++tar-1.33/TODO
++tar-1.33/lib/
++tar-1.33/lib/rtapelib.c
++tar-1.33/lib/rmt.h
++tar-1.33/lib/system-ioctl.h
++tar-1.33/lib/system.h
++tar-1.33/lib/attr-xattr.in.h
++tar-1.33/lib/paxexit-status.c
++tar-1.33/lib/paxerror.c
++tar-1.33/lib/paxnames.c
++tar-1.33/lib/Makefile.in
++tar-1.33/lib/wordsplit.c
++tar-1.33/lib/xattr-at.h
++tar-1.33/lib/stdopen.h
++tar-1.33/lib/Makefile.am
++tar-1.33/lib/wordsplit.h
++tar-1.33/lib/stdopen.c
++tar-1.33/lib/paxlib.h
++tar-1.33/lib/xattr-at.c
++tar-1.33/build-aux/
++tar-1.33/build-aux/gitlog-to-changelog
++tar-1.33/build-aux/missing
++tar-1.33/build-aux/compile
++tar-1.33/build-aux/depcomp
++tar-1.33/build-aux/config.sub
++tar-1.33/build-aux/install-sh
++tar-1.33/build-aux/config.rpath
++tar-1.33/build-aux/ar-lib
++tar-1.33/build-aux/mdate-sh
++tar-1.33/build-aux/config.guess
++tar-1.33/build-aux/texinfo.tex
++tar-1.33/build-aux/ylwrap
++tar-1.33/src/
++tar-1.33/src/create.c
++tar-1.33/src/unlink.c
++tar-1.33/src/tar.c
++tar-1.33/src/warning.c
++tar-1.33/src/list.c
++tar-1.33/src/transform.c
++tar-1.33/src/tar.h
++tar-1.33/src/common.h
++tar-1.33/src/system.c
++tar-1.33/src/Makefile.in
++tar-1.33/src/checkpoint.c
++tar-1.33/src/xheader.c
++tar-1.33/src/xattrs.h
++tar-1.33/src/map.c
++tar-1.33/src/Makefile.am
++tar-1.33/src/exit.c
++tar-1.33/src/update.c
++tar-1.33/src/delete.c
++tar-1.33/src/arith.h
++tar-1.33/src/extract.c
++tar-1.33/src/compare.c
++tar-1.33/src/suffix.c
++tar-1.33/src/misc.c
++tar-1.33/src/sparse.c
++tar-1.33/src/xattrs.c
++tar-1.33/src/names.c
++tar-1.33/src/utf8.c
++tar-1.33/src/buffer.c
++tar-1.33/src/incremen.c
++tar-1.33/src/exclist.c
++tar-1.33/COPYING
++tar-1.33/configure.ac
++tar-1.33/aclocal.m4
++tar-1.33/gnu/
++tar-1.33/gnu/sys_random.in.h
++tar-1.33/gnu/chdir-long.h
++tar-1.33/gnu/mbrtowc.c
++tar-1.33/gnu/mkfifo.c
++tar-1.33/gnu/stdio-impl.h
++tar-1.33/gnu/argp-namefrob.h
++tar-1.33/gnu/fpending.c
++tar-1.33/gnu/dirent-safer.h
++tar-1.33/gnu/localeconv.c
++tar-1.33/gnu/locale.in.h
++tar-1.33/gnu/timespec-sub.c
++tar-1.33/gnu/priv-set.c
++tar-1.33/gnu/strdup.c
++tar-1.33/gnu/fd-safer.c
++tar-1.33/gnu/c-strcase.h
++tar-1.33/gnu/full-write.h
++tar-1.33/gnu/getgroups.c
++tar-1.33/gnu/scratch_buffer.h
++tar-1.33/gnu/tempname.h
++tar-1.33/gnu/closeout.c
++tar-1.33/gnu/fileblocks.c
++tar-1.33/gnu/printf-args.h
++tar-1.33/gnu/btowc.c
++tar-1.33/gnu/mbchar.h
++tar-1.33/gnu/gettime.c
++tar-1.33/gnu/rename.c
++tar-1.33/gnu/argp-pvh.c
++tar-1.33/gnu/uniwidth.in.h
++tar-1.33/gnu/getopt-ext.h
++tar-1.33/gnu/se-selinux.c
++tar-1.33/gnu/xvasprintf.h
++tar-1.33/gnu/streq.h
++tar-1.33/gnu/sysexits.in.h
++tar-1.33/gnu/mbrtowc-impl-utf8.h
++tar-1.33/gnu/vasnprintf.c
++tar-1.33/gnu/strndup.c
++tar-1.33/gnu/modechange.h
++tar-1.33/gnu/unitypes.in.h
++tar-1.33/gnu/getdelim.c
++tar-1.33/gnu/stddef.in.h
++tar-1.33/gnu/isblank.c
++tar-1.33/gnu/inttostr.c
++tar-1.33/gnu/exclude.c
++tar-1.33/gnu/iswblank.c
++tar-1.33/gnu/xmalloc.c
++tar-1.33/gnu/unistd--.h
++tar-1.33/gnu/cloexec.c
++tar-1.33/gnu/progname.h
++tar-1.33/gnu/float+.h
++tar-1.33/gnu/parse-datetime.h
++tar-1.33/gnu/regex.c
++tar-1.33/gnu/getopt1.c
++tar-1.33/gnu/offtostr.c
++tar-1.33/gnu/priv-set.h
++tar-1.33/gnu/utimens.c
++tar-1.33/gnu/limits.in.h
++tar-1.33/gnu/unistd.in.h
++tar-1.33/gnu/mkdtemp.c
++tar-1.33/gnu/argp-ba.c
++tar-1.33/gnu/xasprintf.c
++tar-1.33/gnu/same-inode.h
++tar-1.33/gnu/stpcpy.c
++tar-1.33/gnu/areadlink-with-size.c
++tar-1.33/gnu/safe-write.h
++tar-1.33/gnu/mbsinit.c
++tar-1.33/gnu/se-label.in.h
++tar-1.33/gnu/renameatu.h
++tar-1.33/gnu/backupfile.c
++tar-1.33/gnu/fstatat.c
++tar-1.33/gnu/xgetcwd.h
++tar-1.33/gnu/dirfd.c
++tar-1.33/gnu/backup-internal.h
++tar-1.33/gnu/modechange.c
++tar-1.33/gnu/utimensat.c
++tar-1.33/gnu/readlinkat.c
++tar-1.33/gnu/uinttostr.c
++tar-1.33/gnu/filenamecat.h
++tar-1.33/gnu/close-stream.c
++tar-1.33/gnu/canonicalize-lgpl.c
++tar-1.33/gnu/version-etc-fsf.c
++tar-1.33/gnu/se-context.in.h
++tar-1.33/gnu/version-etc.c
++tar-1.33/gnu/version-etc.h
++tar-1.33/gnu/gettimeofday.c
++tar-1.33/gnu/dirname-lgpl.c
++tar-1.33/gnu/linkat.c
++tar-1.33/gnu/stdlib.in.h
++tar-1.33/gnu/msvc-nothrow.c
++tar-1.33/gnu/rewinddir.c
++tar-1.33/gnu/fd-hook.c
++tar-1.33/gnu/inttypes.in.h
++tar-1.33/gnu/arg-nonnull.h
++tar-1.33/gnu/memrchr.c
++tar-1.33/gnu/wctype.in.h
++tar-1.33/gnu/fopen.c
++tar-1.33/gnu/unlocked-io.h
++tar-1.33/gnu/printf-parse.h
++tar-1.33/gnu/unlink.c
++tar-1.33/gnu/xalloc.h
++tar-1.33/gnu/lchown.c
++tar-1.33/gnu/uniwidth/
++tar-1.33/gnu/uniwidth/cjk.h
++tar-1.33/gnu/uniwidth/width.c
++tar-1.33/gnu/strchrnul.valgrind
++tar-1.33/gnu/malloca.c
++tar-1.33/gnu/symlink.c
++tar-1.33/gnu/memchr.valgrind
++tar-1.33/gnu/rpmatch.c
++tar-1.33/gnu/verify.h
++tar-1.33/gnu/lstat.c
++tar-1.33/gnu/human.c
++tar-1.33/gnu/parse-datetime.y
++tar-1.33/gnu/openat.h
++tar-1.33/gnu/argp-fmtstream.h
++tar-1.33/gnu/savedir.c
++tar-1.33/gnu/fdopendir.c
++tar-1.33/gnu/chown.c
++tar-1.33/gnu/hash.h
++tar-1.33/gnu/quotearg.c
++tar-1.33/gnu/strerror-override.c
++tar-1.33/gnu/areadlink.c
++tar-1.33/gnu/stat-w32.c
++tar-1.33/gnu/basename-lgpl.h
++tar-1.33/gnu/parse-datetime.c
++tar-1.33/gnu/acl_entries.c
++tar-1.33/gnu/obstack.c
++tar-1.33/gnu/mbtowc.c
++tar-1.33/gnu/realloc.c
++tar-1.33/gnu/backupfile.h
++tar-1.33/gnu/getcwd.c
++tar-1.33/gnu/nstrftime.c
++tar-1.33/gnu/fcntl-safer.h
++tar-1.33/gnu/getprogname.h
++tar-1.33/gnu/asprintf.c
++tar-1.33/gnu/exitfail.h
++tar-1.33/gnu/lc-charset-dispatch.h
++tar-1.33/gnu/exitfail.c
++tar-1.33/gnu/getopt-cdefs.in.h
++tar-1.33/gnu/timegm.c
++tar-1.33/gnu/alignof.h
++tar-1.33/gnu/savedir.h
++tar-1.33/gnu/warn-on-use.h
++tar-1.33/gnu/fstat.c
++tar-1.33/gnu/stdio.in.h
++tar-1.33/gnu/wmemchr-impl.h
++tar-1.33/gnu/pipe.c
++tar-1.33/gnu/mbsrtowcs-state.c
++tar-1.33/gnu/fchown-stub.c
++tar-1.33/gnu/fpending.h
++tar-1.33/gnu/safe-read.h
++tar-1.33/gnu/utime.c
++tar-1.33/gnu/stat-macros.h
++tar-1.33/gnu/root-uid.h
++tar-1.33/gnu/printf-parse.c
++tar-1.33/gnu/getopt.in.h
++tar-1.33/gnu/mktime-internal.h
++tar-1.33/gnu/dup-safer.c
++tar-1.33/gnu/backup-find.c
++tar-1.33/gnu/human.h
++tar-1.33/gnu/c-strcaseeq.h
++tar-1.33/gnu/asnprintf.c
++tar-1.33/gnu/se-selinux.in.h
++tar-1.33/gnu/tempname.c
++tar-1.33/gnu/get-permissions.c
++tar-1.33/gnu/selinux-at.h
++tar-1.33/gnu/wctype-h.c
++tar-1.33/gnu/flexmember.h
++tar-1.33/gnu/size_max.h
++tar-1.33/gnu/errno.in.h
++tar-1.33/gnu/vasnprintf.h
++tar-1.33/gnu/iswdigit.c
++tar-1.33/gnu/close-stream.h
++tar-1.33/gnu/basename.c
++tar-1.33/gnu/mbtowc-lock.h
++tar-1.33/gnu/euidaccess.c
++tar-1.33/gnu/argp-pin.c
++tar-1.33/gnu/mkdirat.c
++tar-1.33/gnu/safe-read.c
++tar-1.33/gnu/xstrtoul.c
++tar-1.33/gnu/fd-safer-flag.c
++tar-1.33/gnu/localcharset.h
++tar-1.33/gnu/time_rz.c
++tar-1.33/gnu/unistd-safer.h
++tar-1.33/gnu/fd-hook.h
++tar-1.33/gnu/stdalign.in.h
++tar-1.33/gnu/write.c
++tar-1.33/gnu/chdir-long.c
++tar-1.33/gnu/getopt-pfx-core.h
++tar-1.33/gnu/setlocale_null.h
++tar-1.33/gnu/set-permissions.c
++tar-1.33/gnu/creat-safer.c
++tar-1.33/gnu/faccessat.c
++tar-1.33/gnu/progname.c
++tar-1.33/gnu/strtoimax.c
++tar-1.33/gnu/inttostr.h
++tar-1.33/gnu/malloca.h
++tar-1.33/gnu/sleep.c
++tar-1.33/gnu/Makefile.in
++tar-1.33/gnu/regexec.c
++tar-1.33/gnu/dup-safer-flag.c
++tar-1.33/gnu/stat-time.h
++tar-1.33/gnu/cloexec.h
++tar-1.33/gnu/setenv.c
++tar-1.33/gnu/intprops.h
++tar-1.33/gnu/quotearg.h
++tar-1.33/gnu/strerror-override.h
++tar-1.33/gnu/strerror.c
++tar-1.33/gnu/stat.c
++tar-1.33/gnu/renameatu.c
++tar-1.33/gnu/strtoul.c
++tar-1.33/gnu/argp-eexst.c
++tar-1.33/gnu/closeout.h
++tar-1.33/gnu/strcasecmp.c
++tar-1.33/gnu/eloop-threshold.h
++tar-1.33/gnu/getdtablesize.c
++tar-1.33/gnu/c-ctype.c
++tar-1.33/gnu/nl_langinfo.c
++tar-1.33/gnu/stdint.in.h
++tar-1.33/gnu/setlocale-lock.c
++tar-1.33/gnu/allocator.c
++tar-1.33/gnu/read.c
++tar-1.33/gnu/localcharset.c
++tar-1.33/gnu/openat-proc.c
++tar-1.33/gnu/careadlinkat.c
++tar-1.33/gnu/stripslash.c
++tar-1.33/gnu/xstrtol.h
++tar-1.33/gnu/imaxtostr.c
++tar-1.33/gnu/mbuiter.c
++tar-1.33/gnu/timespec.c
++tar-1.33/gnu/time-internal.h
++tar-1.33/gnu/stdbool.in.h
++tar-1.33/gnu/strnlen1.h
++tar-1.33/gnu/unistd.c
++tar-1.33/gnu/wmempcpy.c
++tar-1.33/gnu/stat-time.c
++tar-1.33/gnu/sys_types.in.h
++tar-1.33/gnu/strncasecmp.c
++tar-1.33/gnu/mknod.c
++tar-1.33/gnu/areadlink.h
++tar-1.33/gnu/careadlinkat.h
++tar-1.33/gnu/assure.h
++tar-1.33/gnu/msvc-nothrow.h
++tar-1.33/gnu/alloca.c
++tar-1.33/gnu/pipe-safer.c
++tar-1.33/gnu/link.c
++tar-1.33/gnu/lchmod.c
++tar-1.33/gnu/strings.in.h
++tar-1.33/gnu/time.in.h
++tar-1.33/gnu/umaxtostr.c
++tar-1.33/gnu/idx.h
++tar-1.33/gnu/xstrtoumax.c
++tar-1.33/gnu/fdutimensat.c
++tar-1.33/gnu/getopt_int.h
++tar-1.33/gnu/strchrnul.c
++tar-1.33/gnu/hash.c
++tar-1.33/gnu/readdir.c
++tar-1.33/gnu/msvc-inval.h
++tar-1.33/gnu/bitrotate.c
++tar-1.33/gnu/xvasprintf.c
++tar-1.33/gnu/getpagesize.c
++tar-1.33/gnu/save-cwd.h
++tar-1.33/gnu/error.c
++tar-1.33/gnu/mbscasecmp.c
++tar-1.33/gnu/utime.in.h
++tar-1.33/gnu/stdarg.in.h
++tar-1.33/gnu/dirent-private.h
++tar-1.33/gnu/getline.c
++tar-1.33/gnu/at-func.c
++tar-1.33/gnu/mbsrtowcs.c
++tar-1.33/gnu/quote.h
++tar-1.33/gnu/dup2.c
++tar-1.33/gnu/c-ctype.h
++tar-1.33/gnu/xalloc-oversized.h
++tar-1.33/gnu/mknodat.c
++tar-1.33/gnu/obstack.h
++tar-1.33/gnu/fprintftime.c
++tar-1.33/gnu/Makefile.am
++tar-1.33/gnu/cdefs.h
++tar-1.33/gnu/dirent--.h
++tar-1.33/gnu/fseeko.c
++tar-1.33/gnu/fcntl.c
++tar-1.33/gnu/unsetenv.c
++tar-1.33/gnu/regex_internal.h
++tar-1.33/gnu/alloca.in.h
++tar-1.33/gnu/opendir-safer.c
++tar-1.33/gnu/dirname.c
++tar-1.33/gnu/malloc.c
++tar-1.33/gnu/fnmatch_loop.c
++tar-1.33/gnu/strtoll.c
++tar-1.33/gnu/save-cwd.c
++tar-1.33/gnu/argp-xinl.c
++tar-1.33/gnu/wcwidth.c
++tar-1.33/gnu/regex_internal.c
++tar-1.33/gnu/getopt.c
++tar-1.33/gnu/open-safer.c
++tar-1.33/gnu/attribute.h
++tar-1.33/gnu/mbrtowc-impl.h
++tar-1.33/gnu/openat-priv.h
++tar-1.33/gnu/fprintftime.h
++tar-1.33/gnu/mkfifoat.c
++tar-1.33/gnu/c-strcasecmp.c
++tar-1.33/gnu/itold.c
++tar-1.33/gnu/argp-version-etc.h
++tar-1.33/gnu/strtol.c
++tar-1.33/gnu/c-strncasecmp.c
++tar-1.33/gnu/mbsrtowcs-impl.h
++tar-1.33/gnu/se-label.c
++tar-1.33/gnu/at-func2.c
++tar-1.33/gnu/fcntl.in.h
++tar-1.33/gnu/langinfo.in.h
++tar-1.33/gnu/unused-parameter.h
++tar-1.33/gnu/wchar.in.h
++tar-1.33/gnu/regex.h
++tar-1.33/gnu/malloc/
++tar-1.33/gnu/malloc/scratch_buffer.h
++tar-1.33/gnu/malloc/scratch_buffer_set_array_size.c
++tar-1.33/gnu/malloc/scratch_buffer_dupfree.c
++tar-1.33/gnu/malloc/scratch_buffer_grow_preserve.c
++tar-1.33/gnu/malloc/scratch_buffer_grow.c
++tar-1.33/gnu/opendir.c
++tar-1.33/gnu/utimens.h
++tar-1.33/gnu/argmatch.c
++tar-1.33/gnu/float.in.h
++tar-1.33/gnu/sys_time.in.h
++tar-1.33/gnu/fnmatch.c
++tar-1.33/gnu/basename-lgpl.c
++tar-1.33/gnu/opendirat.c
++tar-1.33/gnu/file-has-acl.c
++tar-1.33/gnu/acl.h
++tar-1.33/gnu/fseek.c
++tar-1.33/gnu/filenamecat-lgpl.c
++tar-1.33/gnu/argp.h
++tar-1.33/gnu/iswxdigit.c
++tar-1.33/gnu/vasprintf.c
++tar-1.33/gnu/wcrtomb.c
++tar-1.33/gnu/opendirat.h
++tar-1.33/gnu/openat-safer.c
++tar-1.33/gnu/xstrndup.c
++tar-1.33/gnu/selinux-at.c
++tar-1.33/gnu/mempcpy.c
++tar-1.33/gnu/statat.c
++tar-1.33/gnu/strnlen.c
++tar-1.33/gnu/fnmatch.in.h
++tar-1.33/gnu/nl_langinfo-lock.c
++tar-1.33/gnu/renameat.c
++tar-1.33/gnu/getfilecon.c
++tar-1.33/gnu/areadlinkat.c
++tar-1.33/gnu/argp-help.c
++tar-1.33/gnu/closedir.c
++tar-1.33/gnu/regcomp.c
++tar-1.33/gnu/argp-fs-xinl.c
++tar-1.33/gnu/getprogname.c
++tar-1.33/gnu/libc-config.h
++tar-1.33/gnu/stat-w32.h
++tar-1.33/gnu/xsize.c
++tar-1.33/gnu/mbtowc-lock.c
++tar-1.33/gnu/windows-initguard.h
++tar-1.33/gnu/bitrotate.h
++tar-1.33/gnu/xgetcwd.c
++tar-1.33/gnu/rmdir.c
++tar-1.33/gnu/setlocale_null.c
++tar-1.33/gnu/symlinkat.c
++tar-1.33/gnu/fchdir.c
++tar-1.33/gnu/argp-pv.c
++tar-1.33/gnu/areadlinkat-with-size.c
++tar-1.33/gnu/fcntl--.h
++tar-1.33/gnu/strtoumax.c
++tar-1.33/gnu/rawmemchr.valgrind
++tar-1.33/gnu/xalloc-die.c
++tar-1.33/gnu/minmax.h
++tar-1.33/gnu/unlinkat.c
++tar-1.33/gnu/argp-version-etc.c
++tar-1.33/gnu/unlinkdir.h
++tar-1.33/gnu/open.c
++tar-1.33/gnu/tzset.c
++tar-1.33/gnu/anytostr.c
++tar-1.33/gnu/se-context.c
++tar-1.33/gnu/wmemchr.c
++tar-1.33/gnu/allocator.h
++tar-1.33/gnu/mktime.c
++tar-1.33/gnu/snprintf.c
++tar-1.33/gnu/full-write.c
++tar-1.33/gnu/dirname.h
++tar-1.33/gnu/raise.c
++tar-1.33/gnu/gettext.h
++tar-1.33/gnu/xsize.h
++tar-1.33/gnu/mkdir.c
++tar-1.33/gnu/getrandom.c
++tar-1.33/gnu/readlink.c
++tar-1.33/gnu/acl-errno-valid.c
++tar-1.33/gnu/unlinkdir.c
++tar-1.33/gnu/acl-internal.h
++tar-1.33/gnu/dup.c
++tar-1.33/gnu/_Noreturn.h
++tar-1.33/gnu/safe-write.c
++tar-1.33/gnu/lc-charset-dispatch.c
++tar-1.33/gnu/vsnprintf.c
++tar-1.33/gnu/signal.in.h
++tar-1.33/gnu/strtoull.c
++tar-1.33/gnu/timespec.h
++tar-1.33/gnu/parse-datetime-gen.h
++tar-1.33/gnu/exclude.h
++tar-1.33/gnu/pathmax.h
++tar-1.33/gnu/close.c
++tar-1.33/gnu/mbuiter.h
++tar-1.33/gnu/strnlen1.c
++tar-1.33/gnu/openat.c
++tar-1.33/gnu/error.h
++tar-1.33/gnu/rawmemchr.c
++tar-1.33/gnu/hard-locale.c
++tar-1.33/gnu/mbtowc-impl.h
++tar-1.33/gnu/lseek.c
++tar-1.33/gnu/sys-limits.h
++tar-1.33/gnu/xstrndup.h
++tar-1.33/gnu/mbchar.c
++tar-1.33/gnu/string.in.h
++tar-1.33/gnu/printf-args.c
++tar-1.33/gnu/getopt-pfx-ext.h
++tar-1.33/gnu/fchownat.c
++tar-1.33/gnu/getcwd-lgpl.c
++tar-1.33/gnu/getopt-core.h
++tar-1.33/gnu/group-member.c
++tar-1.33/gnu/filename.h
++tar-1.33/gnu/msvc-inval.c
++tar-1.33/gnu/time_r.c
++tar-1.33/gnu/memchr.c
++tar-1.33/gnu/argmatch.h
++tar-1.33/gnu/xstrtol.c
++tar-1.33/gnu/c++defs.h
++tar-1.33/gnu/float.c
++tar-1.33/gnu/dirent.in.h
++tar-1.33/gnu/fchmodat.c
++tar-1.33/gnu/strftime.h
++tar-1.33/gnu/futimens.c
++tar-1.33/gnu/hard-locale.h
++tar-1.33/gnu/free.c
++tar-1.33/gnu/argp-fmtstream.c
++tar-1.33/gnu/sys_stat.in.h
++tar-1.33/gnu/acl-internal.c
++tar-1.33/gnu/argp-parse.c
++tar-1.33/gnu/openat-die.c
++tar-1.33/gnu/ctype.in.h
++tar-1.33/INSTALL
++tar-1.33/Makefile.am
++tar-1.33/README
++tar-1.33/scripts/
++tar-1.33/scripts/dump-remind.in
++tar-1.33/scripts/restore.in
++tar-1.33/scripts/Makefile.in
++tar-1.33/scripts/Makefile.am
++tar-1.33/scripts/backup.in
++tar-1.33/scripts/backup-specs
++tar-1.33/scripts/backup.sh.in
++tar-1.33/rmt/
++tar-1.33/rmt/Makefile.in
++tar-1.33/rmt/Makefile.am
++tar-1.33/rmt/rmt.c
++tar-1.33/NEWS
++tar-1.33/ChangeLog
++tar-1.33/tests/
++tar-1.33/tests/argcv.c
++tar-1.33/tests/T-null2.at
++tar-1.33/tests/extrac14.at
++tar-1.33/tests/exclude04.at
++tar-1.33/tests/sparsemvp.at
++tar-1.33/tests/incremental.at
++tar-1.33/tests/multiv08.at
++tar-1.33/tests/T-cd.at
++tar-1.33/tests/selnx01.at
++tar-1.33/tests/verbose.at
++tar-1.33/tests/multiv10.at
++tar-1.33/tests/label03.at
++tar-1.33/tests/exclude15.at
++tar-1.33/tests/compress.m4
++tar-1.33/tests/remfiles02.at
++tar-1.33/tests/exclude.at
++tar-1.33/tests/rename01.at
++tar-1.33/tests/spmvp10.at
++tar-1.33/tests/exclude09.at
++tar-1.33/tests/xattr01.at
++tar-1.33/tests/extrac04.at
++tar-1.33/tests/exclude16.at
++tar-1.33/tests/pipe.at
++tar-1.33/tests/append04.at
++tar-1.33/tests/rename04.at
++tar-1.33/tests/dirrem01.at
++tar-1.33/tests/xform-h.at
++tar-1.33/tests/remfiles05c.at
++tar-1.33/tests/exclude01.at
++tar-1.33/tests/time02.at
++tar-1.33/tests/remfiles07c.at
++tar-1.33/tests/exclude13.at
++tar-1.33/tests/extrac23.at
++tar-1.33/tests/positional01.at
++tar-1.33/tests/T-empty.at
++tar-1.33/tests/rename03.at
++tar-1.33/tests/sparse05.at
++tar-1.33/tests/sparse06.at
++tar-1.33/tests/filerem01.at
++tar-1.33/tests/sparsemv.at
++tar-1.33/tests/extrac02.at
++tar-1.33/tests/T-rec.at
++tar-1.33/tests/label02.at
++tar-1.33/tests/multiv03.at
++tar-1.33/tests/sparse03.at
++tar-1.33/tests/genfile.c
++tar-1.33/tests/exclude11.at
++tar-1.33/tests/listed04.at
++tar-1.33/tests/options02.at
++tar-1.33/tests/T-mult.at
++tar-1.33/tests/append.at
++tar-1.33/tests/shortupd.at
++tar-1.33/tests/ckmtime.c
++tar-1.33/tests/extrac13.at
++tar-1.33/tests/append05.at
++tar-1.33/tests/positional03.at
++tar-1.33/tests/opcomp06.at
++tar-1.33/tests/opcomp04.at
++tar-1.33/tests/volsize.at
++tar-1.33/tests/remfiles04b.at
++tar-1.33/tests/xattr07.at
++tar-1.33/tests/T-null.at
++tar-1.33/tests/exclude06.at
++tar-1.33/tests/opcomp02.at
++tar-1.33/tests/append03.at
++tar-1.33/tests/onetop01.at
++tar-1.33/tests/owner.at
++tar-1.33/tests/label04.at
++tar-1.33/tests/extrac16.at
++tar-1.33/tests/extrac20.at
++tar-1.33/tests/sparse02.at
++tar-1.33/tests/incr02.at
++tar-1.33/tests/remfiles03.at
++tar-1.33/tests/exclude10.at
++tar-1.33/tests/comprec.at
++tar-1.33/tests/opcomp03.at
++tar-1.33/tests/xform02.at
++tar-1.33/tests/incr01.at
++tar-1.33/tests/T-nonl.at
++tar-1.33/tests/grow.at
++tar-1.33/tests/xattr06.at
++tar-1.33/tests/volume.at
++tar-1.33/tests/lustar01.at
++tar-1.33/tests/spmvp01.at
++tar-1.33/tests/verify.at
++tar-1.33/tests/rename06.at
++tar-1.33/tests/remfiles08c.at
++tar-1.33/tests/rename02.at
++tar-1.33/tests/update02.at
++tar-1.33/tests/selacl01.at
++tar-1.33/tests/onetop05.at
++tar-1.33/tests/acls02.at
++tar-1.33/tests/remfiles05a.at
++tar-1.33/tests/remfiles08b.at
++tar-1.33/tests/xform01.at
++tar-1.33/tests/Makefile.in
++tar-1.33/tests/append01.at
++tar-1.33/tests/remfiles07a.at
++tar-1.33/tests/remfiles08a.at
++tar-1.33/tests/remfiles01.at
++tar-1.33/tests/delete02.at
++tar-1.33/tests/truncate.at
++tar-1.33/tests/sptrcreat.at
++tar-1.33/tests/same-order02.at
++tar-1.33/tests/version.at
++tar-1.33/tests/extrac05.at
++tar-1.33/tests/multiv01.at
++tar-1.33/tests/exclude07.at
++tar-1.33/tests/label05.at
++tar-1.33/tests/rename05.at
++tar-1.33/tests/argcv.h
++tar-1.33/tests/extrac10.at
++tar-1.33/tests/comperr.at
++tar-1.33/tests/update01.at
++tar-1.33/tests/sptrdiff01.at
++tar-1.33/tests/opcomp05.at
++tar-1.33/tests/xattr05.at
++tar-1.33/tests/chtype.at
++tar-1.33/tests/extrac11.at
++tar-1.33/tests/remfiles05b.at
++tar-1.33/tests/options.at
++tar-1.33/tests/recurs02.at
++tar-1.33/tests/difflink.at
++tar-1.33/tests/incr09.at
++tar-1.33/tests/numeric.at
++tar-1.33/tests/link04.at
++tar-1.33/tests/opcomp01.at
++tar-1.33/tests/xform03.at
++tar-1.33/tests/old.at
++tar-1.33/tests/onetop04.at
++tar-1.33/tests/sptrdiff00.at
++tar-1.33/tests/extrac18.at
++tar-1.33/tests/remfiles04c.at
++tar-1.33/tests/remfiles09c.at
++tar-1.33/tests/multiv02.at
++tar-1.33/tests/Makefile.am
++tar-1.33/tests/sparse01.at
++tar-1.33/tests/acls01.at
++tar-1.33/tests/remfiles06a.at
++tar-1.33/tests/lustar02.at
++tar-1.33/tests/longv7.at
++tar-1.33/tests/ignfail.at
++tar-1.33/tests/star/
++tar-1.33/tests/star/multi-fail.at
++tar-1.33/tests/star/gtarfail2.at
++tar-1.33/tests/star/ustar-big-8g.at
++tar-1.33/tests/star/pax-big-10g.at
++tar-1.33/tests/star/ustar-big-2g.at
++tar-1.33/tests/star/README
++tar-1.33/tests/star/quicktest.sh
++tar-1.33/tests/star/gtarfail.at
++tar-1.33/tests/shortrec.at
++tar-1.33/tests/testsuite.at
++tar-1.33/tests/long01.at
++tar-1.33/tests/shortfile.at
++tar-1.33/tests/lustar03.at
++tar-1.33/tests/listed02.at
++tar-1.33/tests/incr07.at
++tar-1.33/tests/T-dir00.at
++tar-1.33/tests/add-file.at
++tar-1.33/tests/remfiles06b.at
++tar-1.33/tests/remfiles09a.at
++tar-1.33/tests/incr03.at
++tar-1.33/tests/extrac12.at
++tar-1.33/tests/multiv06.at
++tar-1.33/tests/delete01.at
++tar-1.33/tests/options03.at
++tar-1.33/tests/xattr02.at
++tar-1.33/tests/listed05.at
++tar-1.33/tests/extrac19.at
++tar-1.33/tests/append02.at
++tar-1.33/tests/indexfile.at
++tar-1.33/tests/multiv07.at
++tar-1.33/tests/extrac01.at
++tar-1.33/tests/extrac09.at
++tar-1.33/tests/remfiles09b.at
++tar-1.33/tests/capabs_raw01.at
++tar-1.33/tests/exclude12.at
++tar-1.33/tests/exclude08.at
++tar-1.33/tests/remfiles10.at
++tar-1.33/tests/delete04.at
++tar-1.33/tests/spmvp00.at
++tar-1.33/tests/onetop02.at
++tar-1.33/tests/T-zfile.at
++tar-1.33/tests/gzip.at
++tar-1.33/tests/incr05.at
++tar-1.33/tests/same-order01.at
++tar-1.33/tests/label01.at
++tar-1.33/tests/incr10.at
++tar-1.33/tests/sparse07.at
++tar-1.33/tests/xattr04.at
++tar-1.33/tests/extrac08.at
++tar-1.33/tests/map.at
++tar-1.33/tests/delete05.at
++tar-1.33/tests/filerem02.at
++tar-1.33/tests/time01.at
++tar-1.33/tests/T-recurse.at
++tar-1.33/tests/checkpoint/
++tar-1.33/tests/checkpoint/dot-int.at
++tar-1.33/tests/checkpoint/defaults.at
++tar-1.33/tests/checkpoint/dot.at
++tar-1.33/tests/checkpoint/interval.at
++tar-1.33/tests/checkpoint/dot-compat.at
++tar-1.33/tests/recurse.at
++tar-1.33/tests/multiv09.at
++tar-1.33/tests/exclude14.at
++tar-1.33/tests/T-nest.at
++tar-1.33/tests/link01.at
++tar-1.33/tests/checkseekhole.c
++tar-1.33/tests/extrac06.at
++tar-1.33/tests/xattr03.at
++tar-1.33/tests/remfiles04a.at
++tar-1.33/tests/dirrem02.at
++tar-1.33/tests/extrac15.at
++tar-1.33/tests/multiv04.at
++tar-1.33/tests/incr06.at
++tar-1.33/tests/extrac22.at
++tar-1.33/tests/testsuite
++tar-1.33/tests/listed01.at
++tar-1.33/tests/remfiles06c.at
++tar-1.33/tests/incr11.at
++tar-1.33/tests/exclude03.at
++tar-1.33/tests/update.at
++tar-1.33/tests/remfiles07b.at
++tar-1.33/tests/link02.at
++tar-1.33/tests/listed03.at
++tar-1.33/tests/exclude05.at
++tar-1.33/tests/extrac07.at
++tar-1.33/tests/extrac21.at
++tar-1.33/tests/link03.at
++tar-1.33/tests/incr08.at
++tar-1.33/tests/positional02.at
++tar-1.33/tests/exclude02.at
++tar-1.33/tests/update03.at
++tar-1.33/tests/delete03.at
++tar-1.33/tests/acls03.at
++tar-1.33/tests/package.m4
++tar-1.33/tests/atlocal.in
++tar-1.33/tests/extrac17.at
++tar-1.33/tests/sparse04.at
++tar-1.33/tests/T-dir01.at
++tar-1.33/tests/incr04.at
++tar-1.33/tests/multiv05.at
++tar-1.33/tests/onetop03.at
++tar-1.33/tests/backup01.at
++tar-1.33/tests/extrac03.at
++tar-1.33/tests/sigpipe.at
++tar-1.33/configure
++tar-1.33/THANKS
++Hmm...  Looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|--- ./src/list.c.orig	2017-12-16 15:23:12.000000000 -0600
++|+++ ./src/list.c	2018-09-06 16:51:52.982740004 -0500
++--------------------------
++patching file src/list.c
++Using Plan A...
++Hunk #1 succeeded at 241 (offset -1 lines).
++done
++checking for a BSD-compatible install... /usr/bin/ginstall -c
++checking whether build environment is sane... yes
++checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
++checking for gawk... gawk
++checking whether make sets $(MAKE)... yes
++checking whether make supports nested variables... yes
++checking whether UID '0' is supported by ustar format... yes
++checking whether GID '0' is supported by ustar format... yes
++checking how to create a ustar tar archive... gnutar
++checking whether make supports nested variables... (cached) yes
++checking for style of include used by make... GNU
++checking for gcc... gcc
++checking whether the C compiler works... yes
++checking for C compiler default output file name... a.out
++checking for suffix of executables... 
++checking whether we are cross compiling... no
++checking for suffix of object files... o
++checking whether we are using the GNU C compiler... yes
++checking whether gcc accepts -g... yes
++checking for gcc option to enable C11 features... none needed
++checking whether the compiler is clang... no
++checking for compiler option needed when checking for declarations... none
++checking dependency style of gcc... gcc3
++checking for ranlib... ranlib
++checking for bison... bison -y
++checking how to run the C preprocessor... gcc -E
++checking for grep that handles long lines and -e... /usr/bin/grep
++checking for egrep... /usr/bin/grep -E
++checking for ANSI C header files... yes
++checking for sys/types.h... yes
++checking for sys/stat.h... yes
++checking for stdlib.h... yes
++checking for string.h... yes
++checking for memory.h... yes
++checking for strings.h... yes
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking for unistd.h... yes
++checking for wchar.h... yes
++checking for minix/config.h... no
++checking for fcntl.h... yes
++checking for linux/fd.h... yes
++checking for memory.h... (cached) yes
++checking for net/errno.h... no
++checking for sgtty.h... no
++checking for string.h... (cached) yes
++checking for sys/param.h... yes
++checking for sys/device.h... no
++checking for sys/gentape.h... no
++checking for sys/inet.h... no
++checking for sys/io/trioctl.h... no
++checking for sys/mtio.h... yes
++checking for sys/time.h... yes
++checking for sys/tprintf.h... no
++checking for sys/tape.h... no
++checking for unistd.h... (cached) yes
++checking for locale.h... yes
++checking for sys/types.h... (cached) yes
++checking for features.h... yes
++checking for linewrap.h... no
++checking for sys/socket.h... yes
++checking for dirent.h... yes
++checking for fnmatch.h... yes
++checking for stdio_ext.h... yes
++checking for sys/stat.h... (cached) yes
++checking for getopt.h... yes
++checking for sys/cdefs.h... yes
++checking for threads.h... yes
++checking for limits.h... yes
++checking for inttypes.h... (cached) yes
++checking for stdint.h... (cached) yes
++checking for crtdefs.h... no
++checking for wctype.h... yes
++checking for langinfo.h... yes
++checking for xlocale.h... no
++checking for sys/mman.h... yes
++checking for priv.h... no
++checking for malloc.h... yes
++checking for selinux/selinux.h... no
++checking for strings.h... (cached) yes
++checking for sys/random.h... yes
++checking for sysexits.h... yes
++checking for utime.h... yes
++checking for netdb.h... yes
++checking for sys/wait.h... yes
++checking for pwd.h... yes
++checking for grp.h... yes
++checking whether it is safe to define __EXTENSIONS__... yes
++checking whether _XOPEN_SOURCE should be defined... no
++checking build system type... x86_64-slackware-linux-musl
++checking host system type... x86_64-slackware-linux-musl
++checking for Minix Amsterdam compiler... no
++checking for ar... ar
++checking for _LARGEFILE_SOURCE value needed for large files... no
++checking for special C compiler options needed for large files... no
++checking for _FILE_OFFSET_BITS value needed for large files... no
++checking for special C compiler options needed for large files... (cached) no
++checking for _FILE_OFFSET_BITS value needed for large files... (cached) no
++checking for inline... inline
++checking for sys/buf.h... no
++checking sys/mkdev.h usability... no
++checking sys/mkdev.h presence... no
++checking for sys/mkdev.h... no
++checking sys/sysmacros.h usability... yes
++checking sys/sysmacros.h presence... yes
++checking for sys/sysmacros.h... yes
++checking for st_fstype string in struct stat... no
++checking sys/acl.h usability... yes
++checking sys/acl.h presence... yes
++checking for sys/acl.h... yes
++checking for library containing acl_get_file... -lacl
++checking for library containing acl_get_fd... none required
++checking for library containing acl_set_file... none required
++checking for library containing acl_set_fd... none required
++checking for library containing acl_to_text... none required
++checking for library containing acl_from_text... none required
++checking for library containing acl_delete_def_file... none required
++checking for library containing acl_free... none required
++checking for mode_t... yes
++checking for pid_t... yes
++checking for off_t... yes
++checking for uid_t in sys/types.h... yes
++checking for major_t... no
++checking for minor_t... no
++checking for dev_t... yes
++checking for ino_t... yes
++checking for ssize_t... yes
++checking for fchmod... yes
++checking for flockfile... yes
++checking for funlockfile... yes
++checking for pathconf... yes
++checking for btowc... yes
++checking for canonicalize_file_name... no
++checking for faccessat... yes
++checking for realpath... yes
++checking for readlinkat... yes
++checking for chown... yes
++checking for fchown... yes
++checking for _set_invalid_parameter_handler... no
++checking for fchdir... yes
++checking for fdopendir... yes
++checking for fchmodat... yes
++checking for lchmod... yes
++checking for fcntl... yes
++checking for symlink... yes
++checking for mempcpy... yes
++checking for fnmatch... yes
++checking for mbsrtowcs... yes
++checking for fstatat... yes
++checking for futimens... yes
++checking for getdelim... yes
++checking for getdtablesize... yes
++checking for getprogname... no
++checking for getexecname... no
++checking for getrandom... yes
++checking for gettimeofday... yes
++checking for isblank... yes
++checking for iswcntrl... yes
++checking for iswblank... yes
++checking for lstat... yes
++checking for link... yes
++checking for readlink... yes
++checking for openat... yes
++checking for linkat... yes
++checking for mbsinit... yes
++checking for mbrtowc... yes
++checking for mprotect... yes
++checking for mkdirat... yes
++checking for mkfifoat... yes
++checking for mknodat... yes
++checking for mknod... yes
++checking for nl_langinfo... yes
++checking for pipe... yes
++checking for iswctype... yes
++checking for renameat... yes
++checking for renameat2... no
++checking for setenv... yes
++checking for sleep... yes
++checking for snprintf... yes
++checking for strndup... yes
++checking for strtoimax... yes
++checking for strtoumax... yes
++checking for symlinkat... yes
++checking for localtime_r... yes
++checking for timegm... yes
++checking for unlinkat... yes
++checking for futimes... yes
++checking for futimesat... yes
++checking for utimensat... yes
++checking for lutimes... yes
++checking for vasnprintf... no
++checking for wcrtomb... yes
++checking for wcwidth... yes
++checking for wmempcpy... no
++checking for mkfifo... yes
++checking for setlocale... yes
++checking for fsync... yes
++checking for size_t... yes
++checking for working alloca.h... yes
++checking for alloca... yes
++checking for C/C++ restrict keyword... __restrict__
++checking whether clearerr_unlocked is declared... yes
++checking whether feof_unlocked is declared... yes
++checking whether ferror_unlocked is declared... yes
++checking whether fflush_unlocked is declared... yes
++checking whether fgets_unlocked is declared... yes
++checking whether fputc_unlocked is declared... yes
++checking whether fputs_unlocked is declared... yes
++checking whether fread_unlocked is declared... yes
++checking whether fwrite_unlocked is declared... yes
++checking whether getc_unlocked is declared... yes
++checking whether getchar_unlocked is declared... yes
++checking whether putc_unlocked is declared... yes
++checking whether putchar_unlocked is declared... yes
++checking whether strerror_r is declared... yes
++checking for strerror_r... yes
++checking whether strerror_r returns char *... no
++checking for d_ino member in directory struct... yes
++checking for long file names... yes
++checking whether <wchar.h> uses 'inline' correctly... yes
++checking for nl_langinfo and CODESET... yes
++checking for a traditional french locale... none
++checking whether lstat correctly handles trailing slash... yes
++checking whether // is distinct from /... no
++checking whether realpath works... yes
++checking for getcwd... yes
++checking for unistd.h... (cached) yes
++checking for working chown... yes
++checking whether chown dereferences symlinks... yes
++checking whether chown honors trailing slash... yes
++checking whether chown always updates ctime... yes
++checking whether the preprocessor supports include_next... yes
++checking whether source code line length is unlimited... yes
++checking if environ is properly declared... yes
++checking for complete errno.h... yes
++checking type of array argument to getgroups... gid_t
++checking whether fchdir is declared... yes
++checking for working fcntl.h... yes
++checking for promoted mode_t type... mode_t
++checking for mbstate_t... yes
++checking whether stdin defaults to large file offsets... yes
++checking whether fseeko is declared... yes
++checking for fseeko... yes
++checking whether stat file-mode macros are broken... no
++checking for nlink_t... yes
++checking whether getcwd (NULL, 0) allocates memory for result... yes
++checking for getcwd with POSIX signature... yes
++checking whether getcwd is declared... yes
++checking whether getdelim is declared... yes
++checking whether getdtablesize is declared... yes
++checking whether getline is declared... yes
++checking for getopt.h... (cached) yes
++checking for getopt_long_only... yes
++checking whether getopt is POSIX compatible... no
++checking for struct timeval... yes
++checking for wide-enough struct timeval.tv_sec member... yes
++checking pthread.h usability... yes
++checking pthread.h presence... yes
++checking for pthread.h... yes
++checking for pthread_kill in -lpthread... yes
++checking whether POSIX threads API is available... yes
++checking whether setlocale (LC_ALL, NULL) is multithread-safe... no
++checking whether setlocale (category, NULL) is multithread-safe... yes
++checking whether imported symbols can be declared weak... yes
++checking whether limits.h has LLONG_MAX, WORD_BIT, ULLONG_WIDTH etc.... no
++checking for wint_t... yes
++checking whether wint_t is large enough... yes
++checking whether the compiler produces multi-arch binaries... no
++checking whether stdint.h conforms to C99... yes
++checking whether stdint.h works without ISO C predefines... yes
++checking whether stdint.h has UINTMAX_WIDTH etc.... no
++checking whether iswcntrl works... yes
++checking for towlower... yes
++checking for wctype_t... yes
++checking for wctrans_t... yes
++checking for a traditional japanese locale... none
++checking for a french Unicode locale... none
++checking for a transitional chinese locale... none
++checking for O_CLOEXEC... yes
++checking for wchar_t... yes
++checking for good max_align_t... yes
++checking whether NULL can be used in arbitrary expressions... yes
++checking whether locale.h defines locale_t... yes
++checking whether malloc, realloc, calloc are POSIX compliant... yes
++checking for GNU libc compatible malloc... yes
++checking for mmap... yes
++checking for MAP_ANONYMOUS... yes
++checking whether memchr works... yes
++checking whether memrchr is declared... yes
++checking whether <limits.h> defines MIN and MAX... no
++checking whether <sys/param.h> defines MIN and MAX... yes
++checking whether time_t is signed... yes
++checking whether alarm is declared... yes
++checking for working mktime... yes
++checking whether struct tm is in sys/time.h or time.h... time.h
++checking for struct tm.tm_zone... yes
++checking for struct tm.tm_gmtoff... yes
++checking for stdbool.h that conforms to C99... yes
++checking for _Bool... yes
++checking for compound literals... yes
++checking for library containing setfilecon... no
++checking whether setenv is declared... yes
++checking search.h usability... yes
++checking search.h presence... yes
++checking for search.h... yes
++checking for tsearch... yes
++checking for sigset_t... yes
++checking whether snprintf returns a byte count as in C99... yes
++checking whether snprintf is declared... yes
++checking whether fcloseall is declared... no
++checking whether ecvt is declared... yes
++checking whether fcvt is declared... yes
++checking whether gcvt is declared... yes
++checking whether strdup is declared... yes
++checking whether strerror(0) succeeds... yes
++checking whether strndup is declared... yes
++checking whether strnlen is declared... yes
++checking whether strtoimax is declared... yes
++checking whether strtoumax is declared... yes
++checking for struct timespec in <time.h>... yes
++checking for TIME_UTC in <time.h>... yes
++checking whether execvpe is declared... yes
++checking whether unsetenv is declared... yes
++checking whether the utimes function works... yes
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking for intmax_t... yes
++checking where to find the exponent in a 'double'... word 1 bit 20
++checking whether snprintf truncates the result as in C99... yes
++checking for snprintf... (cached) yes
++checking for strnlen... yes
++checking for wcslen... yes
++checking for wcsnlen... yes
++checking for mbrtowc... (cached) yes
++checking for wcrtomb... (cached) yes
++checking whether _snprintf is declared... no
++checking whether vsnprintf is declared... yes
++checking for sys/acl.h... (cached) yes
++checking for library containing acl_get_file... (cached) -lacl
++checking for acl_get_file... yes
++checking for acl_get_fd... yes
++checking for acl_set_file... yes
++checking for acl_set_fd... yes
++checking for acl_free... yes
++checking for acl_from_mode... yes
++checking for acl_from_text... yes
++checking for acl_delete_def_file... yes
++checking for acl_extended_file... yes
++checking for acl_delete_fd_np... no
++checking for acl_delete_file_np... no
++checking for acl_copy_ext_native... no
++checking for acl_create_entry_np... no
++checking for acl_to_short_text... no
++checking for acl_free_text... no
++checking for working acl_get_file... yes
++checking acl/libacl.h usability... yes
++checking acl/libacl.h presence... yes
++checking for acl/libacl.h... yes
++checking for acl_entries... yes
++checking for ACL_FIRST_ENTRY... yes
++checking for ACL_TYPE_EXTENDED... no
++checking for alloca as a compiler built-in... yes
++checking whether program_invocation_name is declared... yes
++checking whether program_invocation_short_name is declared... yes
++checking whether program_invocation_name is defined... yes
++checking whether program_invocation_short_name is defined... yes
++checking whether btowc(0) is correct... yes
++checking whether btowc(EOF) is correct... guessing yes
++checking for __builtin_expect... yes
++checking whether this system supports file names of any length... no
++checking for library containing clock_gettime... none required
++checking for clock_gettime... yes
++checking for clock_settime... yes
++checking for closedir... yes
++checking for d_ino member in directory struct... (cached) yes
++checking for dirfd... yes
++checking whether dirfd is declared... yes
++checking whether dirfd is a macro... no
++checking whether // is distinct from /... (cached) no
++checking whether dup works... yes
++checking whether dup2 works... yes
++checking for error_at_line... no
++checking for euidaccess... yes
++checking whether fchmodat+AT_SYMLINK_NOFOLLOW works on non-symlinks... yes
++checking for fchownat... yes
++checking whether fchownat works with AT_SYMLINK_NOFOLLOW... yes
++checking whether fchownat works with an empty file name... yes
++checking whether fcntl handles F_DUPFD correctly... yes
++checking whether fcntl understands F_DUPFD_CLOEXEC... needs runtime check
++checking whether fdopendir is declared... yes
++checking whether fdopendir works... yes
++checking for getxattr with XATTR_NAME_POSIX_ACL macros... yes
++checking for struct stat.st_blocks... yes
++checking for flexible array member... yes
++checking whether conversion from 'int' to 'long double' works... yes
++checking for working GNU fnmatch... no
++checking whether fopen recognizes a trailing slash... yes
++checking whether fopen supports the mode character 'x'... yes
++checking whether fopen supports the mode character 'e'... yes
++checking for __fpending... yes
++checking whether __fpending is declared... yes
++checking whether free is known to preserve errno... no
++checking for fseeko... (cached) yes
++checking whether fstatat (..., 0) works... yes
++checking whether futimens works... no
++checking whether getcwd handles long file names properly... no, but it is partly working
++checking for getpagesize... yes
++checking whether getcwd succeeds when 4k < cwd_length < 16k... yes
++checking for working getdelim function... yes
++checking whether getdtablesize works... yes
++checking for getgroups... yes
++checking for working getgroups... yes
++checking whether getgroups handles negative values... yes
++checking for getline... yes
++checking for working getline function... yes
++checking for getpagesize... (cached) yes
++checking whether getpagesize is declared... yes
++checking whether program_invocation_name is declared... (cached) yes
++checking whether program_invocation_short_name is declared... (cached) yes
++checking whether __argv is declared... no
++checking whether getrandom is compatible with its GNU+BSD signature... yes
++checking for gettimeofday with POSIX signature... yes
++checking for group_member... no
++checking whether INT32_MAX < INTMAX_MAX... yes
++checking whether INT64_MAX == LONG_MAX... yes
++checking whether UINT32_MAX < UINTMAX_MAX... yes
++checking whether UINT64_MAX == ULONG_MAX... yes
++checking whether iswblank is declared... yes
++checking whether iswdigit is ISO C compliant... guessing yes
++checking whether iswxdigit is ISO C compliant... guessing yes
++checking whether langinfo.h defines CODESET... yes
++checking whether langinfo.h defines T_FMT_AMPM... yes
++checking whether langinfo.h defines ALTMON_1... no
++checking whether langinfo.h defines ERA... yes
++checking whether langinfo.h defines YESEXPR... yes
++checking for lchown... yes
++checking whether the compiler supports the __inline keyword... yes
++checking whether link obeys POSIX... yes
++checking for __xpg4... no
++checking whether link(2) dereferences a symlink... no
++checking whether linkat() can link symlinks... yes
++checking whether linkat handles trailing slash correctly... yes
++checking whether locale.h conforms to POSIX:2001... yes
++checking whether struct lconv is properly defined... yes
++checking whether lseek detects pipes... yes
++checking for GNU libc compatible malloc... (cached) yes
++checking whether mbrtowc handles incomplete characters... guessing yes
++checking whether mbrtowc works as well as mbtowc... guessing yes
++checking whether mbrtowc handles a NULL pwc argument... guessing yes
++checking whether mbrtowc handles a NULL string argument... guessing yes
++checking whether mbrtowc has a correct return value... guessing yes
++checking whether mbrtowc returns 0 when parsing a NUL character... guessing yes
++checking whether mbrtowc stores incomplete characters... guessing no
++checking whether mbrtowc works on empty input... yes
++checking whether the C locale is free of encoding errors... yes
++checking whether mbrtowc handles incomplete characters... (cached) guessing yes
++checking whether mbrtowc works as well as mbtowc... (cached) guessing yes
++checking whether mbrtowc handles incomplete characters... (cached) guessing yes
++checking whether mbrtowc works as well as mbtowc... (cached) guessing yes
++checking whether mbsrtowcs works... guessing yes
++checking for mbtowc... yes
++checking for mempcpy... (cached) yes
++checking for memrchr... yes
++checking whether mkdir handles trailing slash... yes
++checking whether mkdir handles trailing dot... yes
++checking for mkdtemp... yes
++checking for mkfifo... yes
++checking whether mkfifo rejects trailing slashes... yes
++checking whether mkfifoat rejects trailing slashes... yes
++checking whether mknod can create fifo without root privileges... no
++checking for __mktime_internal... no
++checking whether YESEXPR works... yes
++checking for obstacks that work with any size object... no
++checking whether open recognizes a trailing slash... yes
++checking for opendir... yes
++checking for bison... bison
++checking for bison 2.4 or newer... 3.7.4, ok
++checking for struct tm.tm_zone... (cached) yes
++checking for getppriv... no
++checking whether program_invocation_name is declared... (cached) yes
++checking whether program_invocation_short_name is declared... (cached) yes
++checking for raise... yes
++checking for rawmemchr... no
++checking for readdir... yes
++checking whether readlink signature is correct... yes
++checking whether readlink handles trailing slash correctly... yes
++checking whether readlink truncates results correctly... yes
++checking whether readlinkat signature is correct... yes
++checking for working re_compile_pattern... no
++checking libintl.h usability... yes
++checking libintl.h presence... yes
++checking for libintl.h... yes
++checking whether isblank is declared... yes
++checking whether rename honors trailing slash on destination... yes
++checking whether rename honors trailing slash on source... yes
++checking whether rename manages hard links correctly... yes
++checking whether rename manages existing destinations correctly... yes
++checking linux/fs.h usability... yes
++checking linux/fs.h presence... yes
++checking for linux/fs.h... yes
++checking for linux/fs.h... (cached) yes
++checking for rewinddir... yes
++checking whether rmdir works... yes
++checking for rpmatch... no
++checking for nl_langinfo and YESEXPR... yes
++checking selinux/flask.h usability... no
++checking selinux/flask.h presence... no
++checking for selinux/flask.h... no
++checking whether setenv validates arguments... yes
++checking whether setlocale (LC_ALL, NULL) is multithread-safe... (cached) no
++checking whether setlocale (category, NULL) is multithread-safe... (cached) yes
++checking whether imported symbols can be declared weak... (cached) yes
++checking whether the -Werror option is usable... yes
++checking for simple visibility declarations... yes
++checking for volatile sig_atomic_t... yes
++checking for sighandler_t... yes
++checking for stdint.h... (cached) yes
++checking for SIZE_MAX... yes
++checking whether sleep is declared... yes
++checking for working sleep... yes
++checking for snprintf... (cached) yes
++checking whether snprintf respects a size of 1... yes
++checking whether printf supports POSIX/XSI format strings with positions... yes
++checking for ssize_t... (cached) yes
++checking whether stat handles trailing slashes on files... yes
++checking for struct stat.st_atim.tv_nsec... yes
++checking whether struct stat.st_atim is of type struct timespec... yes
++checking for struct stat.st_birthtimespec.tv_nsec... no
++checking for struct stat.st_birthtimensec... no
++checking for struct stat.st_birthtim.tv_nsec... no
++checking for working stdalign.h... yes
++checking for va_copy... yes
++checking for good max_align_t... (cached) yes
++checking whether NULL can be used in arbitrary expressions... (cached) yes
++checking which flavor of printf attribute matches inttypes macros... system
++checking for stpcpy... yes
++checking for strcasecmp... yes
++checking for strncasecmp... yes
++checking whether strncasecmp is declared... yes
++checking for strchrnul... yes
++checking whether strchrnul works... yes
++checking for working strerror function... yes
++checking for working strndup... yes
++checking for working strnlen... yes
++checking whether strtoimax works... yes
++checking for strtol... yes
++checking for strtoll... yes
++checking for strtoul... yes
++checking for strtoull... yes
++checking whether symlink handles trailing slash correctly... yes
++checking whether symlinkat handles trailing slash correctly... yes
++checking for nlink_t... (cached) yes
++checking whether localtime_r is declared... yes
++checking whether localtime_r is compatible with its POSIX signature... yes
++checking whether localtime works even near extrema... yes
++checking for timezone_t... no
++checking whether unlink honors trailing slashes... yes
++checking whether unlink of a parent directory fails as it should... guessing yes
++checking for unsetenv... yes
++checking for unsetenv() return type... int
++checking whether unsetenv obeys POSIX... yes
++checking for utime... yes
++checking whether utime handles trailing slashes on files... yes
++checking whether utimensat works... yes
++checking for ptrdiff_t... yes
++checking for vasprintf... yes
++checking for vsnprintf... yes
++checking whether snprintf respects a size of 1... (cached) yes
++checking whether printf supports POSIX/XSI format strings with positions... (cached) yes
++checking whether wcsdup is declared... yes
++checking whether mbrtowc handles incomplete characters... (cached) guessing yes
++checking whether mbrtowc works as well as mbtowc... (cached) guessing yes
++checking whether wcrtomb works in the C locale... yes
++checking whether wcrtomb return value is correct... guessing yes
++checking whether iswcntrl works... (cached) yes
++checking for towlower... (cached) yes
++checking for wctype_t... (cached) yes
++checking for wctrans_t... (cached) yes
++checking whether wcwidth is declared... yes
++checking whether wcwidth works reasonably in UTF-8 locales... yes
++checking for wmemchr... yes
++checking for stdint.h... (cached) yes
++checking whether time.h and sys/time.h may both be included... yes
++checking for struct stat.st_blksize... yes
++checking for library containing setsockopt... none required
++checking for library containing setsockopt... (cached) none required
++checking for sys/mtio.h... (cached) yes
++checking which ioctl field to test for reversed bytes... mt_type
++checking whether to build rmt... yes
++checking for remote tape header files... yes
++checking for sys/buf.h... (cached) no
++checking for struct stat.st_blksize... (cached) yes
++checking for library containing gethostbyname... none required
++checking sys/xattr.h usability... yes
++checking sys/xattr.h presence... yes
++checking for sys/xattr.h... yes
++checking for library containing getxattr... none required
++checking for library containing fgetxattr... none required
++checking for library containing lgetxattr... none required
++checking for library containing setxattr... none required
++checking for library containing fsetxattr... none required
++checking for library containing lsetxattr... none required
++checking for library containing listxattr... none required
++checking for library containing flistxattr... none required
++checking for library containing llistxattr... none required
++checking whether getgrgid is declared... yes
++checking whether getpwuid is declared... yes
++checking whether time is declared... yes
++checking for waitpid... yes
++checking for remote shell... no
++checking for netdb.h... (cached) yes
++checking for default archive format... GNU
++checking for default archive... -
++checking for default blocking... 20
++checking for default quoting style... escape
++checking for ld used by gcc... /usr/bin/ld
++checking if the linker (/usr/bin/ld) is GNU ld... yes
++checking for shared library run path origin... done
++checking 32-bit host C ABI... no
++checking for ELF binary format... yes
++checking for the common suffixes of directories in the library search path... lib,lib,lib64
++checking for iconv... yes
++checking for working iconv... yes
++checking whether iconv is compatible with its POSIX signature... yes
++checking iconv.h usability... yes
++checking iconv.h presence... yes
++checking for iconv.h... yes
++checking for iconv_t... yes
++checking for a sed that does not truncate output... /usr/bin/sed
++checking whether NLS is requested... yes
++checking for msgfmt... /usr/bin/msgfmt
++checking for gmsgfmt... /usr/bin/msgfmt
++checking for xgettext... /usr/bin/xgettext
++checking for msgmerge... /usr/bin/msgmerge
++checking for CFPreferencesCopyAppValue... no
++checking for CFLocaleCopyPreferredLanguages... no
++checking for GNU gettext in libc... yes
++checking whether to use NLS... yes
++checking where the gettext function comes from... libc
++checking that generated files are newer than configure... done
++configure: creating ./config.status
++config.status: creating tests/Makefile
++config.status: creating tests/atlocal
++config.status: creating Makefile
++config.status: creating doc/Makefile
++config.status: creating gnu/Makefile
++config.status: creating lib/Makefile
++config.status: creating po/Makefile.in
++config.status: creating scripts/Makefile
++config.status: creating rmt/Makefile
++config.status: creating src/Makefile
++config.status: creating config.h
++config.status: executing depfiles commands
++config.status: executing po-directories commands
++config.status: creating po/POTFILES
++config.status: creating po/Makefile
++config.status: executing tests/atconfig commands
++make  all-recursive
++make[1]: Entering directory '/tmp/tar-1.33'
++Making all in doc
++make[2]: Entering directory '/tmp/tar-1.33/doc'
++make[2]: Nothing to be done for 'all'.
++make[2]: Leaving directory '/tmp/tar-1.33/doc'
++Making all in gnu
++make[2]: Entering directory '/tmp/tar-1.33/gnu'
++  GEN      configmake.h
++  GEN      alloca.h
++  GEN      ctype.h
++  GEN      dirent.h
++  GEN      fcntl.h
++  GEN      fnmatch.h
++  GEN      getopt.h
++  GEN      getopt-cdefs.h
++  GEN      langinfo.h
++  GEN      inttypes.h
++  GEN      limits.h
++  GEN      locale.h
++  GEN      selinux/selinux.h
++  GEN      selinux/context.h
++  GEN      selinux/label.h
++  GEN      signal.h
++  GEN      stdint.h
++  GEN      stdio.h
++  GEN      stdlib.h
++  GEN      string.h
++  GEN      strings.h
++  GEN      sys/random.h
++  GEN      sys/stat.h
++  GEN      sys/time.h
++  GEN      sys/types.h
++  GEN      time.h
++  GEN      unistd.h
++  GEN      unitypes.h
++  GEN      uniwidth.h
++  GEN      utime.h
++  GEN      wchar.h
++  GEN      wctype.h
++make  all-recursive
++make[3]: Entering directory '/tmp/tar-1.33/gnu'
++make[4]: Entering directory '/tmp/tar-1.33/gnu'
++  CC       acl-errno-valid.o
++  CC       acl-internal.o
++  CC       get-permissions.o
++  CC       set-permissions.o
++  CC       allocator.o
++  CC       areadlink.o
++  CC       areadlink-with-size.o
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./fcntl.h:79,
++                 from careadlinkat.h:23,
++                 from areadlink.c:27:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       areadlinkat.o
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from areadlink-with-size.c:30:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./fcntl.h:79,
++                 from careadlinkat.h:23,
++                 from areadlinkat.c:30:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       areadlinkat-with-size.o
++  CC       argmatch.o
++  CC       argp-ba.o
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from areadlinkat-with-size.c:31:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       argp-eexst.o
++In file included from ./getopt-cdefs.h:33,
++                 from ./getopt.h:84,
++                 from argp.h:24,
++                 from argp-eexst.c:25:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       argp-fmtstream.o
++  CC       argp-fs-xinl.o
++  CC       argp-help.o
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from argp-fmtstream.h:29,
++                 from argp-fmtstream.c:32:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from argp-fmtstream.h:29,
++                 from argp-fs-xinl.c:30:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ./getopt-cdefs.h:33,
++                 from ./getopt.h:84,
++                 from argp.h:24,
++                 from argp-help.c:52:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       argp-parse.o
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from argp-parse.c:28:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       argp-pin.o
++  CC       argp-pv.o
++  CC       argp-pvh.o
++In file included from ./getopt-cdefs.h:33,
++                 from ./getopt.h:84,
++                 from argp.h:24,
++                 from argp-pvh.c:23:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       argp-xinl.o
++In file included from ./getopt-cdefs.h:33,
++                 from ./getopt.h:84,
++                 from argp.h:24,
++                 from argp-xinl.c:37:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       argp-version-etc.o
++  CC       openat-proc.o
++In file included from ./getopt-cdefs.h:33,
++                 from ./getopt.h:84,
++                 from ./argp.h:24,
++                 from argp-version-etc.c:19:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./fcntl.h:79,
++                 from openat-proc.c:26:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       backupfile.o
++  CC       backup-find.o
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./fcntl.h:79,
++                 from backupfile.h:22,
++                 from backup-internal.h:1,
++                 from backup-find.c:20:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./fcntl.h:79,
++                 from backupfile.h:22,
++                 from backup-internal.h:1,
++                 from backupfile.c:23:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       basename-lgpl.o
++  CC       bitrotate.o
++  CC       c-ctype.o
++  CC       c-strcasecmp.o
++  CC       c-strncasecmp.o
++  CC       careadlinkat.o
++  CC       cloexec.o
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./fcntl.h:79,
++                 from careadlinkat.h:23,
++                 from careadlinkat.c:23:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++careadlinkat.c: In function ‘careadlinkat’:
++careadlinkat.c:184:5: warning: #warning "GCC might issue a bogus -Wreturn-local-addr warning here." [-Wcpp]
++  184 |    #warning "GCC might issue a bogus -Wreturn-local-addr warning here."
++      |     ^~~~~~~
++careadlinkat.c:185:5: warning: #warning "See <https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93644>." [-Wcpp]
++  185 |    #warning "See <https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93644>."
++      |     ^~~~~~~
++careadlinkat.c:188:10: warning: function may return address of local variable [-Wreturn-local-addr]
++  188 |   return readlink_stk (fd, filename, buffer, buffer_size, alloc,
++      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++  189 |                        preadlinkat, stack_buf);
++      |                        ~~~~~~~~~~~~~~~~~~~~~~~
++careadlinkat.c:187:8: note: declared here
++  187 |   char stack_buf[STACK_BUF_SIZE];
++      |        ^~~~~~~~~
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./fcntl.h:79,
++                 from cloexec.c:25:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       close-stream.o
++  CC       closeout.o
++  CC       opendir-safer.o
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from closeout.c:26:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       dirname.o
++  CC       basename.o
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./fcntl.h:79,
++                 from opendir-safer.c:25:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       dirname-lgpl.o
++  CC       stripslash.o
++  CC       exclude.o
++  CC       exitfail.o
++  CC       creat-safer.o
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./fcntl.h:79,
++                 from creat-safer.c:24:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       open-safer.o
++  CC       fd-hook.o
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./fcntl.h:79,
++                 from open-safer.c:24:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       fd-safer-flag.o
++  CC       dup-safer-flag.o
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from fd-safer-flag.c:27:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       fdutimensat.o
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./fcntl.h:79,
++                 from dup-safer-flag.c:26:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./fcntl.h:79,
++                 from utimens.h:26,
++                 from fdutimensat.c:24:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       file-has-acl.o
++  CC       filenamecat-lgpl.o
++  CC       fprintftime.o
++  CC       full-write.o
++  CC       getprogname.o
++  CC       gettime.o
++  CC       hard-locale.o
++  CC       hash.o
++  CC       human.o
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from human.h:26,
++                 from human.c:22:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       imaxtostr.o
++  CC       inttostr.o
++  CC       offtostr.o
++  CC       uinttostr.o
++  CC       umaxtostr.o
++  CC       localcharset.o
++  CC       malloca.o
++  CC       mbchar.o
++  CC       mbscasecmp.o
++  CC       mbuiter.o
++  CC       modechange.o
++  CC       nstrftime.o
++  CC       openat-die.o
++  CC       openat-safer.o
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./fcntl.h:79,
++                 from openat-safer.c:24:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./fcntl.h:79,
++                 from openat.h:22,
++                 from openat-die.c:20:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       opendirat.o
++  CC       parse-datetime.o
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./fcntl.h:79,
++                 from ./fcntl--.h:20,
++                 from opendirat.c:25:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       priv-set.o
++  CC       progname.o
++  CC       quotearg.o
++  CC       renameatu.o
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from renameatu.c:26:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       safe-read.o
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from safe-read.c:30:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       safe-write.o
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from safe-read.c:30,
++                 from safe-write.c:18:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       save-cwd.o
++  CC       savedir.o
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./fcntl.h:79,
++                 from save-cwd.c:26:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       selinux-at.o
++  CC       se-context.o
++  CC       se-label.o
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./fcntl.h:79,
++                 from openat.h:22,
++                 from selinux-at.c:22:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       se-selinux.o
++  CC       setlocale_null.o
++  CC       stat-time.o
++  CC       statat.o
++  CC       strnlen1.o
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./fcntl.h:79,
++                 from openat.h:22,
++                 from statat.c:3:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       tempname.o
++  CC       timespec.o
++  CC       timespec-sub.o
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./fcntl.h:79,
++                 from tempname.c:49:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       unistd.o
++  CC       dup-safer.o
++In file included from ./getopt-cdefs.h:33,
++                 from unistd.h:658,
++                 from unistd.c:3:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       fd-safer.o
++  CC       pipe-safer.o
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./fcntl.h:79,
++                 from dup-safer.c:24:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from fd-safer.c:25:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from pipe-safer.c:23:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       unlinkdir.o
++  CC       utimens.o
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from unlinkdir.c:25:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       version-etc.o
++  CC       version-etc-fsf.o
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./fcntl.h:79,
++                 from utimens.h:26,
++                 from utimens.c:25:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       wctype-h.o
++  CC       xmalloc.o
++  CC       xalloc-die.o
++  CC       xgetcwd.o
++  CC       xsize.o
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from xgetcwd.c:26:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       xstrndup.o
++  CC       xstrtol.o
++  CC       xstrtoul.o
++  CC       xstrtoumax.o
++  CC       xvasprintf.o
++  CC       xasprintf.o
++  CC       asnprintf.o
++  CC       canonicalize-lgpl.o
++  CC       chdir-long.o
++  CC       error.o
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./fcntl.h:79,
++                 from canonicalize-lgpl.c:32:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from chdir-long.h:19,
++                 from chdir-long.c:21:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       fcntl.o
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./fcntl.h:79,
++                 from error.c:93:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       fnmatch.o
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./fcntl.h:79,
++                 from fcntl.c:23:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       free.o
++  CC       futimens.o
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./fcntl.h:79,
++                 from utimens.h:26,
++                 from futimens.c:23:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       getcwd.o
++  CC       getcwd-lgpl.o
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from getcwd.c:20:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from getcwd-lgpl.c:20:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       getopt.o
++In file included from ./getopt-cdefs.h:33,
++                 from ./getopt.h:84,
++                 from getopt.h:34,
++                 from getopt.c:24:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       getopt1.o
++In file included from ./getopt-cdefs.h:33,
++                 from ./getopt.h:84,
++                 from getopt.h:34,
++                 from getopt1.c:24:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       group-member.o
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from group-member.c:22:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       mknod.o
++  CC       mktime.o
++  CC       nl_langinfo.o
++  CC       obstack.o
++  CC       printf-args.o
++  CC       printf-parse.o
++  CC       rawmemchr.o
++  CC       regex.o
++  CC       rpmatch.o
++  CC       setlocale-lock.o
++  CC       time_rz.o
++  CC       vasnprintf.o
++  CC       wmempcpy.o
++  CC       malloc/scratch_buffer_dupfree.o
++  CC       malloc/scratch_buffer_grow.o
++  CC       malloc/scratch_buffer_grow_preserve.o
++  CC       malloc/scratch_buffer_set_array_size.o
++  CC       uniwidth/width.o
++  AR       libgnu.a
++make[4]: Leaving directory '/tmp/tar-1.33/gnu'
++make[3]: Leaving directory '/tmp/tar-1.33/gnu'
++make[2]: Leaving directory '/tmp/tar-1.33/gnu'
++Making all in lib
++make[2]: Entering directory '/tmp/tar-1.33/lib'
++  GEN      rmt-command.h
++make  all-am
++make[3]: Entering directory '/tmp/tar-1.33/lib'
++  CC       paxerror.o
++  CC       paxexit-status.o
++  CC       paxnames.o
++In file included from ../gnu/getopt-cdefs.h:33,
++                 from ../gnu/unistd.h:658,
++                 from ../gnu/fcntl.h:79,
++                 from ./system.h:84,
++                 from paxexit-status.c:1:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ../gnu/getopt-cdefs.h:33,
++                 from ../gnu/unistd.h:658,
++                 from ../gnu/fcntl.h:79,
++                 from ./system.h:84,
++                 from paxnames.c:18:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ../gnu/getopt-cdefs.h:33,
++                 from ../gnu/unistd.h:658,
++                 from ../gnu/fcntl.h:79,
++                 from ./system.h:84,
++                 from paxerror.c:19:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       rtapelib.o
++  CC       stdopen.o
++In file included from ../gnu/getopt-cdefs.h:33,
++                 from ../gnu/unistd.h:658,
++                 from ../gnu/fcntl.h:79,
++                 from stdopen.c:28:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ../gnu/getopt-cdefs.h:33,
++                 from ../gnu/unistd.h:658,
++                 from ../gnu/fcntl.h:79,
++                 from system.h:84,
++                 from rtapelib.c:35:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       wordsplit.o
++In file included from ../gnu/getopt-cdefs.h:33,
++                 from ../gnu/unistd.h:658,
++                 from wordsplit.c:23:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       xattr-at.o
++In file included from ../gnu/getopt-cdefs.h:33,
++                 from ../gnu/unistd.h:658,
++                 from ../gnu/fcntl.h:79,
++                 from ../gnu/openat.h:22,
++                 from xattr-at.c:22:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  AR       libtar.a
++make[3]: Leaving directory '/tmp/tar-1.33/lib'
++make[2]: Leaving directory '/tmp/tar-1.33/lib'
++Making all in rmt
++make[2]: Entering directory '/tmp/tar-1.33/rmt'
++  CC       rmt.o
++In file included from ../gnu/getopt-cdefs.h:33,
++                 from ../gnu/unistd.h:658,
++                 from ../gnu/fcntl.h:79,
++                 from ../lib/system.h:84,
++                 from rmt.c:17:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CCLD     rmt
++make[2]: Leaving directory '/tmp/tar-1.33/rmt'
++Making all in src
++make[2]: Entering directory '/tmp/tar-1.33/src'
++  CC       buffer.o
++  CC       checkpoint.o
++  CC       compare.o
++In file included from ../gnu/getopt-cdefs.h:33,
++                 from ../gnu/unistd.h:658,
++                 from ../gnu/fcntl.h:79,
++                 from ../lib/system.h:84,
++                 from buffer.c:22:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ../gnu/getopt-cdefs.h:33,
++                 from ../gnu/unistd.h:658,
++                 from ../gnu/fcntl.h:79,
++                 from ../lib/system.h:84,
++                 from checkpoint.c:20:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ../gnu/getopt-cdefs.h:33,
++                 from ../gnu/unistd.h:658,
++                 from ../gnu/fcntl.h:79,
++                 from ../lib/system.h:84,
++                 from compare.c:22:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       create.o
++In file included from ../gnu/getopt-cdefs.h:33,
++                 from ../gnu/unistd.h:658,
++                 from ../gnu/fcntl.h:79,
++                 from ../lib/system.h:84,
++                 from create.c:22:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       delete.o
++In file included from ../gnu/getopt-cdefs.h:33,
++                 from ../gnu/unistd.h:658,
++                 from ../gnu/fcntl.h:79,
++                 from ../lib/system.h:84,
++                 from delete.c:20:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       exit.o
++In file included from ../gnu/getopt-cdefs.h:33,
++                 from ../gnu/unistd.h:658,
++                 from ../gnu/fcntl.h:79,
++                 from ../lib/system.h:84,
++                 from exit.c:20:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       exclist.o
++In file included from ../gnu/getopt-cdefs.h:33,
++                 from ../gnu/unistd.h:658,
++                 from ../gnu/fcntl.h:79,
++                 from ../lib/system.h:84,
++                 from exclist.c:20:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       extract.o
++  CC       xheader.o
++In file included from ../gnu/getopt-cdefs.h:33,
++                 from ../gnu/unistd.h:658,
++                 from ../gnu/fcntl.h:79,
++                 from ../lib/system.h:84,
++                 from xheader.c:20:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ../gnu/getopt-cdefs.h:33,
++                 from ../gnu/unistd.h:658,
++                 from ../gnu/fcntl.h:79,
++                 from ../lib/system.h:84,
++                 from extract.c:22:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       incremen.o
++In file included from ../gnu/getopt-cdefs.h:33,
++                 from ../gnu/unistd.h:658,
++                 from ../gnu/fcntl.h:79,
++                 from ../lib/system.h:84,
++                 from incremen.c:20:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       list.o
++In file included from ../gnu/getopt-cdefs.h:33,
++                 from ../gnu/unistd.h:658,
++                 from ../gnu/fcntl.h:79,
++                 from ../lib/system.h:84,
++                 from list.c:22:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       map.o
++In file included from ../gnu/getopt-cdefs.h:33,
++                 from ../gnu/unistd.h:658,
++                 from ../gnu/fcntl.h:79,
++                 from ../lib/system.h:84,
++                 from map.c:20:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       misc.o
++In file included from ../gnu/getopt-cdefs.h:33,
++                 from ../gnu/unistd.h:658,
++                 from ../gnu/fcntl.h:79,
++                 from ../lib/system.h:84,
++                 from misc.c:19:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       names.o
++  CC       sparse.o
++In file included from ../gnu/getopt-cdefs.h:33,
++                 from ../gnu/unistd.h:658,
++                 from ../gnu/fcntl.h:79,
++                 from ../lib/system.h:84,
++                 from sparse.c:18:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ../gnu/getopt-cdefs.h:33,
++                 from ../gnu/unistd.h:658,
++                 from ../gnu/fcntl.h:79,
++                 from ../lib/system.h:84,
++                 from names.c:18:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       suffix.o
++In file included from ../gnu/getopt-cdefs.h:33,
++                 from ../gnu/unistd.h:658,
++                 from ../gnu/fcntl.h:79,
++                 from ../lib/system.h:84,
++                 from suffix.c:19:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       system.o
++In file included from ../gnu/getopt-cdefs.h:33,
++                 from ../gnu/unistd.h:658,
++                 from ../gnu/fcntl.h:79,
++                 from ../lib/system.h:84,
++                 from system.c:18:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       tar.o
++In file included from ../gnu/getopt-cdefs.h:33,
++                 from ../gnu/unistd.h:658,
++                 from ../gnu/fcntl.h:79,
++                 from ../lib/system.h:84,
++                 from tar.c:20:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       transform.o
++In file included from ../gnu/getopt-cdefs.h:33,
++                 from ../gnu/unistd.h:658,
++                 from ../gnu/fcntl.h:79,
++                 from ../lib/system.h:84,
++                 from transform.c:17:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       unlink.o
++In file included from ../gnu/getopt-cdefs.h:33,
++                 from ../gnu/unistd.h:658,
++                 from ../gnu/fcntl.h:79,
++                 from ../lib/system.h:84,
++                 from unlink.c:20:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       update.o
++  CC       utf8.o
++In file included from ../gnu/getopt-cdefs.h:33,
++                 from ../gnu/unistd.h:658,
++                 from ../gnu/fcntl.h:79,
++                 from ../lib/system.h:84,
++                 from update.c:25:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ../gnu/getopt-cdefs.h:33,
++                 from ../gnu/unistd.h:658,
++                 from ../gnu/fcntl.h:79,
++                 from ../lib/system.h:84,
++                 from utf8.c:20:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       warning.o
++In file included from ../gnu/getopt-cdefs.h:33,
++                 from ../gnu/unistd.h:658,
++                 from ../gnu/fcntl.h:79,
++                 from ../lib/system.h:84,
++                 from warning.c:20:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       xattrs.o
++In file included from ../gnu/getopt-cdefs.h:33,
++                 from ../gnu/unistd.h:658,
++                 from ../gnu/fcntl.h:79,
++                 from ../lib/system.h:84,
++                 from xattrs.c:23:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CCLD     tar
++make[2]: Leaving directory '/tmp/tar-1.33/src'
++Making all in scripts
++make[2]: Entering directory '/tmp/tar-1.33/scripts'
++sed "s,\@libexecdir\@,/usr/libexec,; s,\@sysconfdir\@,/usr/etc,; s,\@PACKAGE_NAME\@,GNU tar,; s,\@VERSION\@,1.33,; s,\@PACKAGE_BUGREPORT\@,bug-tar@gnu.org,; s,\@DATE_FORMAT_OK\@,,;/^#ELSE_DATE_FORMAT_OK/,/^#ENDIF_DATE_FORMAT_OK/d;/^#IF_DATE_FORMAT_OK/d" backup.sh.in > backup.sh
++sed "s,\@libexecdir\@,/usr/libexec,; s,\@sysconfdir\@,/usr/etc,; s,\@PACKAGE_NAME\@,GNU tar,; s,\@VERSION\@,1.33,; s,\@PACKAGE_BUGREPORT\@,bug-tar@gnu.org,; s,\@DATE_FORMAT_OK\@,,;/^#ELSE_DATE_FORMAT_OK/,/^#ENDIF_DATE_FORMAT_OK/d;/^#IF_DATE_FORMAT_OK/d" dump-remind.in > dump-remind
++sed "s,\@libexecdir\@,/usr/libexec,; s,\@sysconfdir\@,/usr/etc,; s,\@PACKAGE_NAME\@,GNU tar,; s,\@VERSION\@,1.33,; s,\@PACKAGE_BUGREPORT\@,bug-tar@gnu.org,; s,\@DATE_FORMAT_OK\@,,;/^#ELSE_DATE_FORMAT_OK/,/^#ENDIF_DATE_FORMAT_OK/d;/^#IF_DATE_FORMAT_OK/d" backup.in > backup
++sed "s,\@libexecdir\@,/usr/libexec,; s,\@sysconfdir\@,/usr/etc,; s,\@PACKAGE_NAME\@,GNU tar,; s,\@VERSION\@,1.33,; s,\@PACKAGE_BUGREPORT\@,bug-tar@gnu.org,; s,\@DATE_FORMAT_OK\@,,;/^#ELSE_DATE_FORMAT_OK/,/^#ENDIF_DATE_FORMAT_OK/d;/^#IF_DATE_FORMAT_OK/d" restore.in > restore
++make[2]: Leaving directory '/tmp/tar-1.33/scripts'
++Making all in po
++make[2]: Entering directory '/tmp/tar-1.33/po'
++make[2]: Nothing to be done for 'all'.
++make[2]: Leaving directory '/tmp/tar-1.33/po'
++Making all in tests
++make[2]: Entering directory '/tmp/tar-1.33/tests'
++make[2]: Nothing to be done for 'all'.
++make[2]: Leaving directory '/tmp/tar-1.33/tests'
++make[2]: Entering directory '/tmp/tar-1.33'
++make[2]: Leaving directory '/tmp/tar-1.33'
++make[1]: Leaving directory '/tmp/tar-1.33'
++Making install in doc
++make[1]: Entering directory '/tmp/tar-1.33/doc'
++make[2]: Entering directory '/tmp/tar-1.33/doc'
++make[2]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-tar/usr/info'
++ /usr/bin/ginstall -c -m 644 ./tar.info ./tar.info-1 ./tar.info-2 '/tmp/package-tar/usr/info'
++ install-info --info-dir='/tmp/package-tar/usr/info' '/tmp/package-tar/usr/info/tar.info'
++ /usr/bin/mkdir -p '/tmp/package-tar/usr/man/man1'
++ /usr/bin/ginstall -c -m 644 tar.1 '/tmp/package-tar/usr/man/man1'
++ /usr/bin/mkdir -p '/tmp/package-tar/usr/man/man8'
++ /usr/bin/ginstall -c -m 644 rmt.8 '/tmp/package-tar/usr/man/man8'
++make[2]: Leaving directory '/tmp/tar-1.33/doc'
++make[1]: Leaving directory '/tmp/tar-1.33/doc'
++Making install in gnu
++make[1]: Entering directory '/tmp/tar-1.33/gnu'
++make  install-recursive
++make[2]: Entering directory '/tmp/tar-1.33/gnu'
++make[3]: Entering directory '/tmp/tar-1.33/gnu'
++make[4]: Entering directory '/tmp/tar-1.33/gnu'
++make[4]: Nothing to be done for 'install-exec-am'.
++make[4]: Nothing to be done for 'install-data-am'.
++make[4]: Leaving directory '/tmp/tar-1.33/gnu'
++make[3]: Leaving directory '/tmp/tar-1.33/gnu'
++make[2]: Leaving directory '/tmp/tar-1.33/gnu'
++make[1]: Leaving directory '/tmp/tar-1.33/gnu'
++Making install in lib
++make[1]: Entering directory '/tmp/tar-1.33/lib'
++make  install-am
++make[2]: Entering directory '/tmp/tar-1.33/lib'
++make[3]: Entering directory '/tmp/tar-1.33/lib'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/tar-1.33/lib'
++make[2]: Leaving directory '/tmp/tar-1.33/lib'
++make[1]: Leaving directory '/tmp/tar-1.33/lib'
++Making install in rmt
++make[1]: Entering directory '/tmp/tar-1.33/rmt'
++make[2]: Entering directory '/tmp/tar-1.33/rmt'
++make[2]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-tar/usr/libexec'
++  /usr/bin/ginstall -c rmt '/tmp/package-tar/usr/libexec'
++make[2]: Leaving directory '/tmp/tar-1.33/rmt'
++make[1]: Leaving directory '/tmp/tar-1.33/rmt'
++Making install in src
++make[1]: Entering directory '/tmp/tar-1.33/src'
++make[2]: Entering directory '/tmp/tar-1.33/src'
++ /usr/bin/mkdir -p '/tmp/package-tar/usr/bin'
++  /usr/bin/ginstall -c tar '/tmp/package-tar/usr/bin'
++make[2]: Nothing to be done for 'install-data-am'.
++make[2]: Leaving directory '/tmp/tar-1.33/src'
++make[1]: Leaving directory '/tmp/tar-1.33/src'
++Making install in scripts
++make[1]: Entering directory '/tmp/tar-1.33/scripts'
++make[2]: Entering directory '/tmp/tar-1.33/scripts'
++ /usr/bin/mkdir -p '/tmp/package-tar/usr/libexec'
++ /usr/bin/ginstall -c backup.sh dump-remind '/tmp/package-tar/usr/libexec'
++ /usr/bin/mkdir -p '/tmp/package-tar/usr/sbin'
++ /usr/bin/ginstall -c backup restore '/tmp/package-tar/usr/sbin'
++make[2]: Nothing to be done for 'install-data-am'.
++make[2]: Leaving directory '/tmp/tar-1.33/scripts'
++make[1]: Leaving directory '/tmp/tar-1.33/scripts'
++Making install in po
++make[1]: Entering directory '/tmp/tar-1.33/po'
++installing bg.gmo as /tmp/package-tar/usr/share/locale/bg/LC_MESSAGES/tar.mo
++installing ca.gmo as /tmp/package-tar/usr/share/locale/ca/LC_MESSAGES/tar.mo
++installing cs.gmo as /tmp/package-tar/usr/share/locale/cs/LC_MESSAGES/tar.mo
++installing da.gmo as /tmp/package-tar/usr/share/locale/da/LC_MESSAGES/tar.mo
++installing de.gmo as /tmp/package-tar/usr/share/locale/de/LC_MESSAGES/tar.mo
++installing el.gmo as /tmp/package-tar/usr/share/locale/el/LC_MESSAGES/tar.mo
++installing eo.gmo as /tmp/package-tar/usr/share/locale/eo/LC_MESSAGES/tar.mo
++installing es.gmo as /tmp/package-tar/usr/share/locale/es/LC_MESSAGES/tar.mo
++installing et.gmo as /tmp/package-tar/usr/share/locale/et/LC_MESSAGES/tar.mo
++installing eu.gmo as /tmp/package-tar/usr/share/locale/eu/LC_MESSAGES/tar.mo
++installing fi.gmo as /tmp/package-tar/usr/share/locale/fi/LC_MESSAGES/tar.mo
++installing fr.gmo as /tmp/package-tar/usr/share/locale/fr/LC_MESSAGES/tar.mo
++installing ga.gmo as /tmp/package-tar/usr/share/locale/ga/LC_MESSAGES/tar.mo
++installing gl.gmo as /tmp/package-tar/usr/share/locale/gl/LC_MESSAGES/tar.mo
++installing hr.gmo as /tmp/package-tar/usr/share/locale/hr/LC_MESSAGES/tar.mo
++installing hu.gmo as /tmp/package-tar/usr/share/locale/hu/LC_MESSAGES/tar.mo
++installing id.gmo as /tmp/package-tar/usr/share/locale/id/LC_MESSAGES/tar.mo
++installing it.gmo as /tmp/package-tar/usr/share/locale/it/LC_MESSAGES/tar.mo
++installing ja.gmo as /tmp/package-tar/usr/share/locale/ja/LC_MESSAGES/tar.mo
++installing ko.gmo as /tmp/package-tar/usr/share/locale/ko/LC_MESSAGES/tar.mo
++installing ky.gmo as /tmp/package-tar/usr/share/locale/ky/LC_MESSAGES/tar.mo
++installing ms.gmo as /tmp/package-tar/usr/share/locale/ms/LC_MESSAGES/tar.mo
++installing nb.gmo as /tmp/package-tar/usr/share/locale/nb/LC_MESSAGES/tar.mo
++installing nl.gmo as /tmp/package-tar/usr/share/locale/nl/LC_MESSAGES/tar.mo
++installing pl.gmo as /tmp/package-tar/usr/share/locale/pl/LC_MESSAGES/tar.mo
++installing pt.gmo as /tmp/package-tar/usr/share/locale/pt/LC_MESSAGES/tar.mo
++installing pt_BR.gmo as /tmp/package-tar/usr/share/locale/pt_BR/LC_MESSAGES/tar.mo
++installing ro.gmo as /tmp/package-tar/usr/share/locale/ro/LC_MESSAGES/tar.mo
++installing ru.gmo as /tmp/package-tar/usr/share/locale/ru/LC_MESSAGES/tar.mo
++installing sk.gmo as /tmp/package-tar/usr/share/locale/sk/LC_MESSAGES/tar.mo
++installing sl.gmo as /tmp/package-tar/usr/share/locale/sl/LC_MESSAGES/tar.mo
++installing sr.gmo as /tmp/package-tar/usr/share/locale/sr/LC_MESSAGES/tar.mo
++installing sv.gmo as /tmp/package-tar/usr/share/locale/sv/LC_MESSAGES/tar.mo
++installing tr.gmo as /tmp/package-tar/usr/share/locale/tr/LC_MESSAGES/tar.mo
++installing uk.gmo as /tmp/package-tar/usr/share/locale/uk/LC_MESSAGES/tar.mo
++installing vi.gmo as /tmp/package-tar/usr/share/locale/vi/LC_MESSAGES/tar.mo
++installing zh_CN.gmo as /tmp/package-tar/usr/share/locale/zh_CN/LC_MESSAGES/tar.mo
++installing zh_TW.gmo as /tmp/package-tar/usr/share/locale/zh_TW/LC_MESSAGES/tar.mo
++if test "tar" = "gettext-tools"; then \
++  /usr/bin/mkdir -p /tmp/package-tar/usr/share/gettext/po; \
++  for file in Makefile.in.in remove-potcdate.sin quot.sed boldquot.sed en@quot.header en@boldquot.header insert-header.sin Rules-quot   Makevars.template; do \
++    /usr/bin/ginstall -c -m 644 ./$file \
++		    /tmp/package-tar/usr/share/gettext/po/$file; \
++  done; \
++  for file in Makevars; do \
++    rm -f /tmp/package-tar/usr/share/gettext/po/$file; \
++  done; \
++else \
++  : ; \
++fi
++make[1]: Leaving directory '/tmp/tar-1.33/po'
++Making install in tests
++make[1]: Entering directory '/tmp/tar-1.33/tests'
++make[2]: Entering directory '/tmp/tar-1.33/tests'
++make[2]: Nothing to be done for 'install-exec-am'.
++make[2]: Nothing to be done for 'install-data-am'.
++make[2]: Leaving directory '/tmp/tar-1.33/tests'
++make[1]: Leaving directory '/tmp/tar-1.33/tests'
++make[1]: Entering directory '/tmp/tar-1.33'
++make[2]: Entering directory '/tmp/tar-1.33'
++make[2]: Nothing to be done for 'install-exec-am'.
++make[2]: Nothing to be done for 'install-data-am'.
++make[2]: Leaving directory '/tmp/tar-1.33'
++make[1]: Leaving directory '/tmp/tar-1.33'
++cp: cannot stat 'PORTS': No such file or directory
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++bin/tar-1.33	tar
++etc/rmt	/usr/libexec/rmt
++sbin/rmt	/usr/libexec/rmt
++usr/bin/tar	/bin/tar
++
++Making symbolic link creation script:
++( cd bin ; rm -rf tar-1.33 )
++( cd bin ; ln -sf tar tar-1.33 )
++( cd etc ; rm -rf rmt )
++( cd etc ; ln -sf /usr/libexec/rmt rmt )
++( cd sbin ; rm -rf rmt )
++( cd sbin ; ln -sf /usr/libexec/rmt rmt )
++( cd usr/bin ; rm -rf tar )
++( cd usr/bin ; ln -sf /bin/tar tar )
++
++It is recommended that you make these lines your new installation script.
++
++Would you like to make this stuff the install script for this package
++and remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './etc/rmt'
++removed './bin/tar-1.33'
++removed './usr/bin/tar'
++removed './sbin/rmt'
++
++Creating your new ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/tar-1.33-x86_64-1.txz
++
++./
++bin/
++bin/tar
++bin/tar-1.13
++etc/
++install/
++install/doinst.sh
++install/slack-desc
++sbin/
++usr/
++usr/bin/
++usr/doc/
++usr/doc/tar-1.33/
++usr/doc/tar-1.33/AUTHORS
++usr/doc/tar-1.33/COPYING
++usr/doc/tar-1.33/NEWS
++usr/doc/tar-1.33/README
++usr/doc/tar-1.33/THANKS
++usr/doc/tar-1.33/TODO
++usr/info/
++usr/info/tar.info-1.gz
++usr/info/tar.info-2.gz
++usr/info/tar.info.gz
++usr/libexec/
++usr/libexec/backup.sh
++usr/libexec/dump-remind
++usr/libexec/rmt
++usr/man/
++usr/man/man1/
++usr/man/man1/tar.1.gz
++usr/man/man8/
++usr/man/man8/rmt.8.gz
++usr/sbin/
++usr/sbin/backup
++usr/sbin/restore
++usr/share/
++usr/share/locale/
++usr/share/locale/bg/
++usr/share/locale/bg/LC_MESSAGES/
++usr/share/locale/bg/LC_MESSAGES/tar.mo
++usr/share/locale/ca/
++usr/share/locale/ca/LC_MESSAGES/
++usr/share/locale/ca/LC_MESSAGES/tar.mo
++usr/share/locale/cs/
++usr/share/locale/cs/LC_MESSAGES/
++usr/share/locale/cs/LC_MESSAGES/tar.mo
++usr/share/locale/da/
++usr/share/locale/da/LC_MESSAGES/
++usr/share/locale/da/LC_MESSAGES/tar.mo
++usr/share/locale/de/
++usr/share/locale/de/LC_MESSAGES/
++usr/share/locale/de/LC_MESSAGES/tar.mo
++usr/share/locale/el/
++usr/share/locale/el/LC_MESSAGES/
++usr/share/locale/el/LC_MESSAGES/tar.mo
++usr/share/locale/eo/
++usr/share/locale/eo/LC_MESSAGES/
++usr/share/locale/eo/LC_MESSAGES/tar.mo
++usr/share/locale/es/
++usr/share/locale/es/LC_MESSAGES/
++usr/share/locale/es/LC_MESSAGES/tar.mo
++usr/share/locale/et/
++usr/share/locale/et/LC_MESSAGES/
++usr/share/locale/et/LC_MESSAGES/tar.mo
++usr/share/locale/eu/
++usr/share/locale/eu/LC_MESSAGES/
++usr/share/locale/eu/LC_MESSAGES/tar.mo
++usr/share/locale/fi/
++usr/share/locale/fi/LC_MESSAGES/
++usr/share/locale/fi/LC_MESSAGES/tar.mo
++usr/share/locale/fr/
++usr/share/locale/fr/LC_MESSAGES/
++usr/share/locale/fr/LC_MESSAGES/tar.mo
++usr/share/locale/ga/
++usr/share/locale/ga/LC_MESSAGES/
++usr/share/locale/ga/LC_MESSAGES/tar.mo
++usr/share/locale/gl/
++usr/share/locale/gl/LC_MESSAGES/
++usr/share/locale/gl/LC_MESSAGES/tar.mo
++usr/share/locale/hr/
++usr/share/locale/hr/LC_MESSAGES/
++usr/share/locale/hr/LC_MESSAGES/tar.mo
++usr/share/locale/hu/
++usr/share/locale/hu/LC_MESSAGES/
++usr/share/locale/hu/LC_MESSAGES/tar.mo
++usr/share/locale/id/
++usr/share/locale/id/LC_MESSAGES/
++usr/share/locale/id/LC_MESSAGES/tar.mo
++usr/share/locale/it/
++usr/share/locale/it/LC_MESSAGES/
++usr/share/locale/it/LC_MESSAGES/tar.mo
++usr/share/locale/ja/
++usr/share/locale/ja/LC_MESSAGES/
++usr/share/locale/ja/LC_MESSAGES/tar.mo
++usr/share/locale/ko/
++usr/share/locale/ko/LC_MESSAGES/
++usr/share/locale/ko/LC_MESSAGES/tar.mo
++usr/share/locale/ky/
++usr/share/locale/ky/LC_MESSAGES/
++usr/share/locale/ky/LC_MESSAGES/tar.mo
++usr/share/locale/ms/
++usr/share/locale/ms/LC_MESSAGES/
++usr/share/locale/ms/LC_MESSAGES/tar.mo
++usr/share/locale/nb/
++usr/share/locale/nb/LC_MESSAGES/
++usr/share/locale/nb/LC_MESSAGES/tar.mo
++usr/share/locale/nl/
++usr/share/locale/nl/LC_MESSAGES/
++usr/share/locale/nl/LC_MESSAGES/tar.mo
++usr/share/locale/pl/
++usr/share/locale/pl/LC_MESSAGES/
++usr/share/locale/pl/LC_MESSAGES/tar.mo
++usr/share/locale/pt/
++usr/share/locale/pt/LC_MESSAGES/
++usr/share/locale/pt/LC_MESSAGES/tar.mo
++usr/share/locale/pt_BR/
++usr/share/locale/pt_BR/LC_MESSAGES/
++usr/share/locale/pt_BR/LC_MESSAGES/tar.mo
++usr/share/locale/ro/
++usr/share/locale/ro/LC_MESSAGES/
++usr/share/locale/ro/LC_MESSAGES/tar.mo
++usr/share/locale/ru/
++usr/share/locale/ru/LC_MESSAGES/
++usr/share/locale/ru/LC_MESSAGES/tar.mo
++usr/share/locale/sk/
++usr/share/locale/sk/LC_MESSAGES/
++usr/share/locale/sk/LC_MESSAGES/tar.mo
++usr/share/locale/sl/
++usr/share/locale/sl/LC_MESSAGES/
++usr/share/locale/sl/LC_MESSAGES/tar.mo
++usr/share/locale/sr/
++usr/share/locale/sr/LC_MESSAGES/
++usr/share/locale/sr/LC_MESSAGES/tar.mo
++usr/share/locale/sv/
++usr/share/locale/sv/LC_MESSAGES/
++usr/share/locale/sv/LC_MESSAGES/tar.mo
++usr/share/locale/tr/
++usr/share/locale/tr/LC_MESSAGES/
++usr/share/locale/tr/LC_MESSAGES/tar.mo
++usr/share/locale/uk/
++usr/share/locale/uk/LC_MESSAGES/
++usr/share/locale/uk/LC_MESSAGES/tar.mo
++usr/share/locale/vi/
++usr/share/locale/vi/LC_MESSAGES/
++usr/share/locale/vi/LC_MESSAGES/tar.mo
++usr/share/locale/zh_CN/
++usr/share/locale/zh_CN/LC_MESSAGES/
++usr/share/locale/zh_CN/LC_MESSAGES/tar.mo
++usr/share/locale/zh_TW/
++usr/share/locale/zh_TW/LC_MESSAGES/
++usr/share/locale/zh_TW/LC_MESSAGES/tar.mo
++
++Slackware package /tmp/tar-1.33-x86_64-1.txz created.
++

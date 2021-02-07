@@ -1,0 +1,641 @@
+diff -ruBN /tmp/htop/htop.SlackBuild /source/ap/htop/htop.SlackBuild
+--- /tmp/htop/htop.SlackBuild	2020-08-29 17:28:42.000000000 +0000
++++ /source/ap/htop/htop.SlackBuild	2021-01-15 23:53:21.000000000 +0000
+@@ -54,7 +54,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ else
+   SLKCFLAGS="-O2"
+   LIBDIRSUFFIX=""
+@@ -92,7 +92,7 @@
+   --libdir=/usr/lib${LIBDIRSUFFIX} \
+   --mandir=/usr/man \
+   --docdir=/usr/doc/$PKGNAM-$VERSION \
+-  --build=$ARCH-slackware-linux || exit 1
++  --build=$ARCH-slackware-linux-musl || exit 1
+ 
+ make $NUMJOBS || make || exit 1
+ make install DESTDIR=$PKG || exit 1
+diff -ruBN /tmp/htop/htop.SlackBuild.log /source/ap/htop/htop.SlackBuild.log
+--- /tmp/htop/htop.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/ap/htop/htop.SlackBuild.log	2021-01-15 23:54:33.000000000 +0000
+@@ -0,0 +1,616 @@
++htop-3.0.5/
++htop-3.0.5/README.md
++htop-3.0.5/MemoryMeter.c
++htop-3.0.5/.editorconfig
++htop-3.0.5/ScreenManager.h
++htop-3.0.5/TasksMeter.h
++htop-3.0.5/ClockMeter.c
++htop-3.0.5/FunctionBar.c
++htop-3.0.5/CommandScreen.c
++htop-3.0.5/AvailableColumnsPanel.c
++htop-3.0.5/Process.h
++htop-3.0.5/dragonflybsd/
++htop-3.0.5/dragonflybsd/DragonFlyBSDProcess.c
++htop-3.0.5/dragonflybsd/Platform.h
++htop-3.0.5/dragonflybsd/ProcessField.h
++htop-3.0.5/dragonflybsd/DragonFlyBSDProcessList.h
++htop-3.0.5/dragonflybsd/DragonFlyBSDProcess.h
++htop-3.0.5/dragonflybsd/DragonFlyBSDProcessList.c
++htop-3.0.5/dragonflybsd/Platform.c
++htop-3.0.5/LoadAverageMeter.c
++htop-3.0.5/scripts/
++htop-3.0.5/scripts/htop_suppressions.valgrind
++htop-3.0.5/scripts/run_valgrind.sh
++htop-3.0.5/MetersPanel.h
++htop-3.0.5/Affinity.h
++htop-3.0.5/iwyu/
++htop-3.0.5/iwyu/run_iwyu.sh
++htop-3.0.5/iwyu/htop.imp
++htop-3.0.5/RichString.c
++htop-3.0.5/autogen.sh
++htop-3.0.5/Settings.h
++htop-3.0.5/SignalsPanel.c
++htop-3.0.5/Macros.h
++htop-3.0.5/docs/
++htop-3.0.5/docs/styleguide.md
++htop-3.0.5/docs/images/
++htop-3.0.5/docs/images/screenshot.png
++htop-3.0.5/Vector.c
++htop-3.0.5/htop.desktop
++htop-3.0.5/ListItem.c
++htop-3.0.5/UsersTable.c
++htop-3.0.5/UsersTable.h
++htop-3.0.5/README
++htop-3.0.5/EnvScreen.h
++htop-3.0.5/htop.svg
++htop-3.0.5/AvailableMetersPanel.h
++htop-3.0.5/Affinity.c
++htop-3.0.5/UptimeMeter.c
++htop-3.0.5/OpenFilesScreen.c
++htop-3.0.5/InfoScreen.h
++htop-3.0.5/SignalsPanel.h
++htop-3.0.5/ProcessList.c
++htop-3.0.5/test_spec.lua
++htop-3.0.5/openbsd/
++htop-3.0.5/openbsd/OpenBSDProcess.c
++htop-3.0.5/openbsd/Platform.h
++htop-3.0.5/openbsd/ProcessField.h
++htop-3.0.5/openbsd/OpenBSDProcess.h
++htop-3.0.5/openbsd/OpenBSDProcessList.c
++htop-3.0.5/openbsd/OpenBSDProcessList.h
++htop-3.0.5/openbsd/Platform.c
++htop-3.0.5/ColorsPanel.h
++htop-3.0.5/CPUMeter.c
++htop-3.0.5/Meter.h
++htop-3.0.5/XUtils.c
++htop-3.0.5/Hashtable.c
++htop-3.0.5/FunctionBar.h
++htop-3.0.5/ScreenManager.c
++htop-3.0.5/ListItem.h
++htop-3.0.5/ChangeLog
++htop-3.0.5/Header.h
++htop-3.0.5/DiskIOMeter.h
++htop-3.0.5/darwin/
++htop-3.0.5/darwin/Platform.h
++htop-3.0.5/darwin/DarwinProcessList.h
++htop-3.0.5/darwin/ProcessField.h
++htop-3.0.5/darwin/DarwinProcess.c
++htop-3.0.5/darwin/DarwinProcess.h
++htop-3.0.5/darwin/DarwinProcessList.c
++htop-3.0.5/darwin/Platform.c
++htop-3.0.5/UptimeMeter.h
++htop-3.0.5/ColumnsPanel.c
++htop-3.0.5/unsupported/
++htop-3.0.5/unsupported/Platform.h
++htop-3.0.5/unsupported/UnsupportedProcessList.h
++htop-3.0.5/unsupported/ProcessField.h
++htop-3.0.5/unsupported/UnsupportedProcess.h
++htop-3.0.5/unsupported/UnsupportedProcessList.c
++htop-3.0.5/unsupported/UnsupportedProcess.c
++htop-3.0.5/unsupported/Platform.c
++htop-3.0.5/.github/
++htop-3.0.5/.github/workflows/
++htop-3.0.5/.github/workflows/ci.yml
++htop-3.0.5/Object.c
++htop-3.0.5/ProvideCurses.h
++htop-3.0.5/CRT.c
++htop-3.0.5/solaris/
++htop-3.0.5/solaris/Platform.h
++htop-3.0.5/solaris/ProcessField.h
++htop-3.0.5/solaris/SolarisProcess.h
++htop-3.0.5/solaris/SolarisProcessList.h
++htop-3.0.5/solaris/SolarisProcessList.c
++htop-3.0.5/solaris/SolarisProcess.c
++htop-3.0.5/solaris/Platform.c
++htop-3.0.5/RichString.h
++htop-3.0.5/COPYING
++htop-3.0.5/CommandScreen.h
++htop-3.0.5/Process.c
++htop-3.0.5/ColumnsPanel.h
++htop-3.0.5/BatteryMeter.h
++htop-3.0.5/MemoryMeter.h
++htop-3.0.5/Header.c
++htop-3.0.5/htop.1.in
++htop-3.0.5/DateTimeMeter.c
++htop-3.0.5/Action.h
++htop-3.0.5/MetersPanel.c
++htop-3.0.5/OpenFilesScreen.h
++htop-3.0.5/configure.ac
++htop-3.0.5/TasksMeter.c
++htop-3.0.5/CPUMeter.h
++htop-3.0.5/HostnameMeter.c
++htop-3.0.5/freebsd/
++htop-3.0.5/freebsd/Platform.h
++htop-3.0.5/freebsd/ProcessField.h
++htop-3.0.5/freebsd/FreeBSDProcessList.h
++htop-3.0.5/freebsd/FreeBSDProcessList.c
++htop-3.0.5/freebsd/FreeBSDProcess.c
++htop-3.0.5/freebsd/FreeBSDProcess.h
++htop-3.0.5/freebsd/Platform.c
++htop-3.0.5/SwapMeter.h
++htop-3.0.5/CategoriesPanel.c
++htop-3.0.5/Compat.h
++htop-3.0.5/BatteryMeter.c
++htop-3.0.5/XUtils.h
++htop-3.0.5/NetworkIOMeter.c
++htop-3.0.5/DisplayOptionsPanel.c
++htop-3.0.5/ClockMeter.h
++htop-3.0.5/Vector.h
++htop-3.0.5/ColorsPanel.c
++htop-3.0.5/Panel.h
++htop-3.0.5/LoadAverageMeter.h
++htop-3.0.5/Settings.c
++htop-3.0.5/AvailableColumnsPanel.h
++htop-3.0.5/AvailableMetersPanel.c
++htop-3.0.5/CRT.h
++htop-3.0.5/InfoScreen.c
++htop-3.0.5/SwapMeter.c
++htop-3.0.5/Hashtable.h
++htop-3.0.5/Object.h
++htop-3.0.5/CONTRIBUTING.md
++htop-3.0.5/AffinityPanel.h
++htop-3.0.5/Action.c
++htop-3.0.5/MainPanel.h
++htop-3.0.5/linux/
++htop-3.0.5/linux/Platform.h
++htop-3.0.5/linux/LibSensors.h
++htop-3.0.5/linux/PressureStallMeter.h
++htop-3.0.5/linux/LinuxProcessList.c
++htop-3.0.5/linux/IOPriorityPanel.h
++htop-3.0.5/linux/ProcessField.h
++htop-3.0.5/linux/LinuxProcessList.h
++htop-3.0.5/linux/SELinuxMeter.c
++htop-3.0.5/linux/ZramStats.h
++htop-3.0.5/linux/SELinuxMeter.h
++htop-3.0.5/linux/PressureStallMeter.c
++htop-3.0.5/linux/LibSensors.c
++htop-3.0.5/linux/LinuxProcess.c
++htop-3.0.5/linux/ZramMeter.c
++htop-3.0.5/linux/LinuxProcess.h
++htop-3.0.5/linux/IOPriority.h
++htop-3.0.5/linux/SystemdMeter.h
++htop-3.0.5/linux/ZramMeter.h
++htop-3.0.5/linux/SystemdMeter.c
++htop-3.0.5/linux/IOPriorityPanel.c
++htop-3.0.5/linux/Platform.c
++htop-3.0.5/htop.c
++htop-3.0.5/MainPanel.c
++htop-3.0.5/Meter.c
++htop-3.0.5/Compat.c
++htop-3.0.5/IncSet.h
++htop-3.0.5/NEWS
++htop-3.0.5/DiskIOMeter.c
++htop-3.0.5/IncSet.c
++htop-3.0.5/ProcessLocksScreen.h
++htop-3.0.5/zfs/
++htop-3.0.5/zfs/ZfsCompressedArcMeter.c
++htop-3.0.5/zfs/ZfsArcMeter.h
++htop-3.0.5/zfs/openzfs_sysctl.h
++htop-3.0.5/zfs/ZfsArcStats.h
++htop-3.0.5/zfs/ZfsCompressedArcMeter.h
++htop-3.0.5/zfs/ZfsArcStats.c
++htop-3.0.5/zfs/openzfs_sysctl.c
++htop-3.0.5/zfs/ZfsArcMeter.c
++htop-3.0.5/OptionItem.h
++htop-3.0.5/EnvScreen.c
++htop-3.0.5/DateMeter.c
++htop-3.0.5/DateTimeMeter.h
++htop-3.0.5/TraceScreen.c
++htop-3.0.5/NetworkIOMeter.h
++htop-3.0.5/AffinityPanel.c
++htop-3.0.5/TraceScreen.h
++htop-3.0.5/Panel.c
++htop-3.0.5/DisplayOptionsPanel.h
++htop-3.0.5/ProcessList.h
++htop-3.0.5/HostnameMeter.h
++htop-3.0.5/Makefile.am
++htop-3.0.5/AUTHORS
++htop-3.0.5/CategoriesPanel.h
++htop-3.0.5/ProcessLocksScreen.c
++htop-3.0.5/DateMeter.h
++htop-3.0.5/OptionItem.c
++htop-3.0.5/.gitignore
++htop-3.0.5/.travis.yml
++htop-3.0.5/htop.png
++htop-3.0.5/TESTPLAN
++autoreconf: Entering directory `.'
++autoreconf: configure.ac: not using Gettext
++autoreconf: running: aclocal --force --warnings=all 
++autoreconf: configure.ac: tracing
++autoreconf: configure.ac: not using Libtool
++autoreconf: running: /usr/bin/autoconf --force --warnings=all
++autoreconf: running: /usr/bin/autoheader --force --warnings=all
++autoreconf: running: automake --add-missing --copy --force-missing --warnings=all
++configure.ac:18: installing './compile'
++configure.ac:12: installing './config.guess'
++configure.ac:12: installing './config.sub'
++configure.ac:14: installing './install-sh'
++configure.ac:14: installing './missing'
++Makefile.am: installing './INSTALL'
++Makefile.am: installing './depcomp'
++autoreconf: Leaving directory `.'
++checking build system type... x86_64-slackware-linux-musl
++checking host system type... x86_64-slackware-linux-musl
++checking target system type... x86_64-slackware-linux-musl
++checking for a BSD-compatible install... /usr/bin/ginstall -c
++checking whether build environment is sane... yes
++checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
++checking for gawk... gawk
++checking whether make sets $(MAKE)... yes
++checking whether make supports nested variables... yes
++checking for gcc... gcc
++checking whether the C compiler works... yes
++checking for C compiler default output file name... a.out
++checking for suffix of executables... 
++checking whether we are cross compiling... no
++checking for suffix of object files... o
++checking whether we are using the GNU C compiler... yes
++checking whether gcc accepts -g... yes
++checking for gcc option to accept ISO C89... none needed
++checking whether gcc understands -c and -o together... yes
++checking whether make supports the include directive... yes (GNU style)
++checking dependency style of gcc... gcc3
++checking how to run the C preprocessor... gcc -E
++checking for grep that handles long lines and -e... /usr/bin/grep
++checking for egrep... /usr/bin/grep -E
++checking for ANSI C header files... yes
++checking for sys/types.h... yes
++checking for sys/stat.h... yes
++checking for stdlib.h... yes
++checking for string.h... yes
++checking for memory.h... yes
++checking for strings.h... yes
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking for unistd.h... yes
++checking minix/config.h usability... no
++checking minix/config.h presence... no
++checking for minix/config.h... no
++checking whether it is safe to define __EXTENSIONS__... yes
++checking for ceil in -lm... yes
++checking for dirent.h that defines DIR... yes
++checking for library containing opendir... none required
++checking for ANSI C header files... (cached) yes
++checking for stdlib.h... (cached) yes
++checking for string.h... (cached) yes
++checking for strings.h... (cached) yes
++checking sys/param.h usability... yes
++checking sys/param.h presence... yes
++checking for sys/param.h... yes
++checking sys/time.h usability... yes
++checking sys/time.h presence... yes
++checking for sys/time.h... yes
++checking for unistd.h... (cached) yes
++checking execinfo.h usability... yes
++checking execinfo.h presence... yes
++checking for execinfo.h... yes
++checking whether sys/types.h defines makedev... no
++checking sys/mkdev.h usability... no
++checking sys/mkdev.h presence... no
++checking for sys/mkdev.h... no
++checking sys/sysmacros.h usability... yes
++checking sys/sysmacros.h presence... yes
++checking for sys/sysmacros.h... yes
++checking for sys/sysmacros.h... (cached) yes
++checking for stdbool.h that conforms to C99... yes
++checking for _Bool... yes
++checking for an ANSI C-conforming const... yes
++checking for pid_t... yes
++checking for uid_t in sys/types.h... yes
++checking for uint8_t... yes
++checking for uint16_t... yes
++checking for uint32_t... yes
++checking for uint64_t... yes
++checking whether closedir returns void... no
++checking whether lstat correctly handles trailing slash... yes
++checking whether stat accepts an empty string... no
++checking for clock_gettime... yes
++checking for faccessat... yes
++checking for fstatat... yes
++checking for host_get_clock_service... no
++checking for openat... yes
++checking for readlinkat... yes
++checking for library containing dlopen... none required
++checking for library containing clock_gettime... none required
++checking whether cc -std=c99 option works... yes
++checking for library containing backtrace... -lexecinfo
++checking for library containing devstat_checkversion... no
++checking for addnwstr in -lncursesw6... no
++checking for addnwstr in -lncursesw... yes
++checking ncursesw/curses.h usability... yes
++checking ncursesw/curses.h presence... yes
++checking for ncursesw/curses.h... yes
++checking for library containing keypad... none required
++checking for usable sched_setaffinity... yes
++checking sensors/sensors.h usability... yes
++checking sensors/sensors.h presence... yes
++checking for sensors/sensors.h... yes
++checking whether C compiler accepts -Wnull-dereference... yes
++checking that generated files are newer than configure... done
++configure: creating ./config.status
++config.status: creating Makefile
++config.status: creating htop.1
++config.status: creating config.h
++config.status: executing depfiles commands
++
++  htop 3.0.5
++
++  platform:                  linux
++  (Linux) proc directory:    /proc
++  (Linux) openvz:            no
++  (Linux) vserver:           no
++  (Linux) ancient vserver:   no
++  (Linux) affinity:          yes
++  (Linux) delay accounting:  no
++  (Linux) sensors:           yes
++  unicode:                   yes
++  hwloc:                     no
++  setuid:                    no
++  debug:                     no
++
++make  all-am
++make[1]: Entering directory '/tmp/htop-3.0.5'
++depbase=`echo Action.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT Action.o -MD -MP -MF $depbase.Tpo -c -o Action.o Action.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo Affinity.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT Affinity.o -MD -MP -MF $depbase.Tpo -c -o Affinity.o Affinity.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo AffinityPanel.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT AffinityPanel.o -MD -MP -MF $depbase.Tpo -c -o AffinityPanel.o AffinityPanel.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo AvailableColumnsPanel.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT AvailableColumnsPanel.o -MD -MP -MF $depbase.Tpo -c -o AvailableColumnsPanel.o AvailableColumnsPanel.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo AvailableMetersPanel.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT AvailableMetersPanel.o -MD -MP -MF $depbase.Tpo -c -o AvailableMetersPanel.o AvailableMetersPanel.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo BatteryMeter.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT BatteryMeter.o -MD -MP -MF $depbase.Tpo -c -o BatteryMeter.o BatteryMeter.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo CategoriesPanel.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT CategoriesPanel.o -MD -MP -MF $depbase.Tpo -c -o CategoriesPanel.o CategoriesPanel.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo ClockMeter.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT ClockMeter.o -MD -MP -MF $depbase.Tpo -c -o ClockMeter.o ClockMeter.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo ColorsPanel.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT ColorsPanel.o -MD -MP -MF $depbase.Tpo -c -o ColorsPanel.o ColorsPanel.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo ColumnsPanel.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT ColumnsPanel.o -MD -MP -MF $depbase.Tpo -c -o ColumnsPanel.o ColumnsPanel.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo CommandScreen.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT CommandScreen.o -MD -MP -MF $depbase.Tpo -c -o CommandScreen.o CommandScreen.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo Compat.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT Compat.o -MD -MP -MF $depbase.Tpo -c -o Compat.o Compat.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo CPUMeter.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT CPUMeter.o -MD -MP -MF $depbase.Tpo -c -o CPUMeter.o CPUMeter.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo CRT.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT CRT.o -MD -MP -MF $depbase.Tpo -c -o CRT.o CRT.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo DateMeter.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT DateMeter.o -MD -MP -MF $depbase.Tpo -c -o DateMeter.o DateMeter.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo DateTimeMeter.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT DateTimeMeter.o -MD -MP -MF $depbase.Tpo -c -o DateTimeMeter.o DateTimeMeter.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo DiskIOMeter.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT DiskIOMeter.o -MD -MP -MF $depbase.Tpo -c -o DiskIOMeter.o DiskIOMeter.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo DisplayOptionsPanel.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT DisplayOptionsPanel.o -MD -MP -MF $depbase.Tpo -c -o DisplayOptionsPanel.o DisplayOptionsPanel.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo EnvScreen.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT EnvScreen.o -MD -MP -MF $depbase.Tpo -c -o EnvScreen.o EnvScreen.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo FunctionBar.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT FunctionBar.o -MD -MP -MF $depbase.Tpo -c -o FunctionBar.o FunctionBar.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo Hashtable.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT Hashtable.o -MD -MP -MF $depbase.Tpo -c -o Hashtable.o Hashtable.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo Header.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT Header.o -MD -MP -MF $depbase.Tpo -c -o Header.o Header.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo HostnameMeter.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT HostnameMeter.o -MD -MP -MF $depbase.Tpo -c -o HostnameMeter.o HostnameMeter.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo htop.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT htop.o -MD -MP -MF $depbase.Tpo -c -o htop.o htop.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo IncSet.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT IncSet.o -MD -MP -MF $depbase.Tpo -c -o IncSet.o IncSet.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo InfoScreen.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT InfoScreen.o -MD -MP -MF $depbase.Tpo -c -o InfoScreen.o InfoScreen.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo ListItem.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT ListItem.o -MD -MP -MF $depbase.Tpo -c -o ListItem.o ListItem.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo LoadAverageMeter.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT LoadAverageMeter.o -MD -MP -MF $depbase.Tpo -c -o LoadAverageMeter.o LoadAverageMeter.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo MainPanel.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT MainPanel.o -MD -MP -MF $depbase.Tpo -c -o MainPanel.o MainPanel.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo MemoryMeter.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT MemoryMeter.o -MD -MP -MF $depbase.Tpo -c -o MemoryMeter.o MemoryMeter.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo Meter.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT Meter.o -MD -MP -MF $depbase.Tpo -c -o Meter.o Meter.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo MetersPanel.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT MetersPanel.o -MD -MP -MF $depbase.Tpo -c -o MetersPanel.o MetersPanel.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo NetworkIOMeter.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT NetworkIOMeter.o -MD -MP -MF $depbase.Tpo -c -o NetworkIOMeter.o NetworkIOMeter.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo Object.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT Object.o -MD -MP -MF $depbase.Tpo -c -o Object.o Object.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo OpenFilesScreen.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT OpenFilesScreen.o -MD -MP -MF $depbase.Tpo -c -o OpenFilesScreen.o OpenFilesScreen.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo OptionItem.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT OptionItem.o -MD -MP -MF $depbase.Tpo -c -o OptionItem.o OptionItem.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo Panel.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT Panel.o -MD -MP -MF $depbase.Tpo -c -o Panel.o Panel.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo Process.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT Process.o -MD -MP -MF $depbase.Tpo -c -o Process.o Process.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo ProcessList.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT ProcessList.o -MD -MP -MF $depbase.Tpo -c -o ProcessList.o ProcessList.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo ProcessLocksScreen.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT ProcessLocksScreen.o -MD -MP -MF $depbase.Tpo -c -o ProcessLocksScreen.o ProcessLocksScreen.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo RichString.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT RichString.o -MD -MP -MF $depbase.Tpo -c -o RichString.o RichString.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo ScreenManager.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT ScreenManager.o -MD -MP -MF $depbase.Tpo -c -o ScreenManager.o ScreenManager.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo Settings.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT Settings.o -MD -MP -MF $depbase.Tpo -c -o Settings.o Settings.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo SignalsPanel.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT SignalsPanel.o -MD -MP -MF $depbase.Tpo -c -o SignalsPanel.o SignalsPanel.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo SwapMeter.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT SwapMeter.o -MD -MP -MF $depbase.Tpo -c -o SwapMeter.o SwapMeter.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo TasksMeter.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT TasksMeter.o -MD -MP -MF $depbase.Tpo -c -o TasksMeter.o TasksMeter.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo TraceScreen.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT TraceScreen.o -MD -MP -MF $depbase.Tpo -c -o TraceScreen.o TraceScreen.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo UptimeMeter.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT UptimeMeter.o -MD -MP -MF $depbase.Tpo -c -o UptimeMeter.o UptimeMeter.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo UsersTable.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT UsersTable.o -MD -MP -MF $depbase.Tpo -c -o UsersTable.o UsersTable.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo Vector.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT Vector.o -MD -MP -MF $depbase.Tpo -c -o Vector.o Vector.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo XUtils.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT XUtils.o -MD -MP -MF $depbase.Tpo -c -o XUtils.o XUtils.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo linux/IOPriorityPanel.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT linux/IOPriorityPanel.o -MD -MP -MF $depbase.Tpo -c -o linux/IOPriorityPanel.o linux/IOPriorityPanel.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo linux/LibSensors.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT linux/LibSensors.o -MD -MP -MF $depbase.Tpo -c -o linux/LibSensors.o linux/LibSensors.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo linux/LinuxProcess.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT linux/LinuxProcess.o -MD -MP -MF $depbase.Tpo -c -o linux/LinuxProcess.o linux/LinuxProcess.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo linux/LinuxProcessList.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT linux/LinuxProcessList.o -MD -MP -MF $depbase.Tpo -c -o linux/LinuxProcessList.o linux/LinuxProcessList.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo linux/Platform.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT linux/Platform.o -MD -MP -MF $depbase.Tpo -c -o linux/Platform.o linux/Platform.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo linux/PressureStallMeter.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT linux/PressureStallMeter.o -MD -MP -MF $depbase.Tpo -c -o linux/PressureStallMeter.o linux/PressureStallMeter.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo linux/SELinuxMeter.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT linux/SELinuxMeter.o -MD -MP -MF $depbase.Tpo -c -o linux/SELinuxMeter.o linux/SELinuxMeter.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo linux/SystemdMeter.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT linux/SystemdMeter.o -MD -MP -MF $depbase.Tpo -c -o linux/SystemdMeter.o linux/SystemdMeter.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo linux/ZramMeter.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT linux/ZramMeter.o -MD -MP -MF $depbase.Tpo -c -o linux/ZramMeter.o linux/ZramMeter.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo zfs/ZfsArcMeter.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT zfs/ZfsArcMeter.o -MD -MP -MF $depbase.Tpo -c -o zfs/ZfsArcMeter.o zfs/ZfsArcMeter.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo zfs/ZfsArcStats.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT zfs/ZfsArcStats.o -MD -MP -MF $depbase.Tpo -c -o zfs/ZfsArcStats.o zfs/ZfsArcStats.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo zfs/ZfsCompressedArcMeter.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.  -DNDEBUG  -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -MT zfs/ZfsCompressedArcMeter.o -MD -MP -MF $depbase.Tpo -c -o zfs/ZfsCompressedArcMeter.o zfs/ZfsCompressedArcMeter.c &&\
++mv -f $depbase.Tpo $depbase.Po
++gcc -Wall -Wcast-align -Wcast-qual -Wextra -Wfloat-equal -Wformat=2 -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused -Wwrite-strings -Wnull-dereference -pedantic -std=c99 -D_XOPEN_SOURCE_EXTENDED -DSYSCONFDIR=\"/etc\" -I"./linux" -O2 -fPIC -rdynamic   -o htop   Action.o Affinity.o AffinityPanel.o AvailableColumnsPanel.o AvailableMetersPanel.o BatteryMeter.o CategoriesPanel.o ClockMeter.o ColorsPanel.o ColumnsPanel.o CommandScreen.o Compat.o CPUMeter.o CRT.o DateMeter.o DateTimeMeter.o DiskIOMeter.o DisplayOptionsPanel.o EnvScreen.o FunctionBar.o Hashtable.o Header.o HostnameMeter.o htop.o IncSet.o InfoScreen.o ListItem.o LoadAverageMeter.o MainPanel.o MemoryMeter.o Meter.o MetersPanel.o NetworkIOMeter.o Object.o OpenFilesScreen.o OptionItem.o Panel.o Process.o ProcessList.o ProcessLocksScreen.o RichString.o ScreenManager.o Settings.o SignalsPanel.o SwapMeter.o TasksMeter.o TraceScreen.o UptimeMeter.o UsersTable.o Vector.o XUtils.o linux/IOPriorityPanel.o linux/LibSensors.o linux/LinuxProcess.o linux/LinuxProcessList.o linux/Platform.o linux/PressureStallMeter.o linux/SELinuxMeter.o linux/SystemdMeter.o linux/ZramMeter.o zfs/ZfsArcMeter.o zfs/ZfsArcStats.o zfs/ZfsCompressedArcMeter.o   -lncursesw -ltinfo -lexecinfo -lm  
++make[1]: Leaving directory '/tmp/htop-3.0.5'
++make[1]: Entering directory '/tmp/htop-3.0.5'
++ /usr/bin/mkdir -p '/tmp/package-htop/usr/bin'
++  /usr/bin/ginstall -c htop '/tmp/package-htop/usr/bin'
++ /usr/bin/mkdir -p '/tmp/package-htop/usr/share/icons/hicolor/scalable/apps'
++ /usr/bin/ginstall -c -m 644 htop.svg '/tmp/package-htop/usr/share/icons/hicolor/scalable/apps'
++ /usr/bin/mkdir -p '/tmp/package-htop/usr/share/applications'
++ /usr/bin/ginstall -c -m 644 htop.desktop '/tmp/package-htop/usr/share/applications'
++ /usr/bin/mkdir -p '/tmp/package-htop/usr/man/man1'
++ /usr/bin/ginstall -c -m 644 htop.1 '/tmp/package-htop/usr/man/man1'
++ /usr/bin/mkdir -p '/tmp/package-htop/usr/share/pixmaps'
++ /usr/bin/ginstall -c -m 644 htop.png '/tmp/package-htop/usr/share/pixmaps'
++make[1]: Leaving directory '/tmp/htop-3.0.5'
++cp: cannot stat 'TODO': No such file or directory
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++usr/doc/htop-3.0.5/README.md	README
++
++Making symbolic link creation script:
++( cd usr/doc/htop-3.0.5 ; rm -rf README.md )
++( cd usr/doc/htop-3.0.5 ; ln -sf README README.md )
++
++It is recommended that you make these lines your new installation script.
++
++Would you like to make this stuff the install script for this package
++and remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './usr/doc/htop-3.0.5/README.md'
++
++Creating your new ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/htop-3.0.5-x86_64-1.txz
++
++./
++install/
++install/doinst.sh
++install/slack-desc
++usr/
++usr/bin/
++usr/bin/htop
++usr/doc/
++usr/doc/htop-3.0.5/
++usr/doc/htop-3.0.5/AUTHORS
++usr/doc/htop-3.0.5/COPYING
++usr/doc/htop-3.0.5/ChangeLog
++usr/doc/htop-3.0.5/NEWS
++usr/doc/htop-3.0.5/README
++usr/man/
++usr/man/man1/
++usr/man/man1/htop.1.gz
++usr/share/
++usr/share/applications/
++usr/share/applications/htop.desktop
++usr/share/icons/
++usr/share/icons/hicolor/
++usr/share/icons/hicolor/scalable/
++usr/share/icons/hicolor/scalable/apps/
++usr/share/icons/hicolor/scalable/apps/htop.svg
++usr/share/pixmaps/
++usr/share/pixmaps/htop.png
++
++Slackware package /tmp/htop-3.0.5-x86_64-1.txz created.
++

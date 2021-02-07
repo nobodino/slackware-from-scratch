@@ -1,0 +1,29 @@
+[libdefaults]
+    default_realm = ATHENA.MIT.EDU
+    dns_lookup_kdc = true
+    dns_lookup_realm = false
+
+[realms]
+    ATHENA.MIT.EDU = {
+        kdc = kerberos.mit.edu
+        kdc = kerberos-1.mit.edu
+        kdc = kerberos-2.mit.edu
+        admin_server = kerberos.mit.edu
+        master_kdc = kerberos.mit.edu
+    }
+    EXAMPLE.COM = {
+        kdc = kerberos.example.com
+        kdc = kerberos-1.example.com
+        admin_server = kerberos.example.com
+    }
+
+[domain_realm]
+    mit.edu = ATHENA.MIT.EDU
+
+[capaths]
+    ATHENA.MIT.EDU = {
+           EXAMPLE.COM = .
+    }
+    EXAMPLE.COM = {
+           ATHENA.MIT.EDU = .
+    }

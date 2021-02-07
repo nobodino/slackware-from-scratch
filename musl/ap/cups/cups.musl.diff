@@ -1,0 +1,3110 @@
+diff -ruBN /tmp/cups/cups.SlackBuild /source/ap/cups/cups.SlackBuild
+--- /tmp/cups/cups.SlackBuild	2020-11-30 07:15:22.000000000 +0000
++++ /source/ap/cups/cups.SlackBuild	2021-01-03 11:33:01.000000000 +0000
+@@ -57,7 +57,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "armv7hl" ]; then
+   SLKCFLAGS="-O3 -march=armv7-a -mfpu=vfpv3-d16"
+   LIBDIRSUFFIX=""
+@@ -102,7 +102,7 @@
+   $SHADOW_OPTIONS \
+   --disable-avahi \
+   --disable-dnssd \
+-  --build=$ARCH-slackware-linux || exit 1
++  --build=$ARCH-slackware-linux-musl || exit 1
+ 
+ make $NUMJOBS || exit 1
+ make BUILDROOT=$PKG install || exit 1
+diff -ruBN /tmp/cups/cups.SlackBuild.log /source/ap/cups/cups.SlackBuild.log
+--- /tmp/cups/cups.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/ap/cups/cups.SlackBuild.log	2021-01-03 11:35:18.000000000 +0000
+@@ -0,0 +1,3085 @@
++cups-2.3.3/
++cups-2.3.3/xcode/
++cups-2.3.3/man/
++cups-2.3.3/packaging/
++cups-2.3.3/berkeley/
++cups-2.3.3/install-sh
++cups-2.3.3/configure.ac
++cups-2.3.3/tools/
++cups-2.3.3/monitor/
++cups-2.3.3/locale/
++cups-2.3.3/LICENSE
++cups-2.3.3/test/
++cups-2.3.3/DEVELOPING.md
++cups-2.3.3/configure
++cups-2.3.3/notifier/
++cups-2.3.3/Makefile
++cups-2.3.3/systemv/
++cups-2.3.3/CREDITS.md
++cups-2.3.3/config-scripts/
++cups-2.3.3/vcnet/
++cups-2.3.3/Makedefs.in
++cups-2.3.3/scheduler/
++cups-2.3.3/config.h.in
++cups-2.3.3/INSTALL.md
++cups-2.3.3/desktop/
++cups-2.3.3/config.guess
++cups-2.3.3/backend/
++cups-2.3.3/ppdc/
++cups-2.3.3/.lgtm.yml
++cups-2.3.3/NOTICE
++cups-2.3.3/README.md
++cups-2.3.3/cups-config.in
++cups-2.3.3/config.sub
++cups-2.3.3/CONTRIBUTING.md
++cups-2.3.3/examples/
++cups-2.3.3/CHANGES.md
++cups-2.3.3/cgi-bin/
++cups-2.3.3/templates/
++cups-2.3.3/doc/
++cups-2.3.3/filter/
++cups-2.3.3/data/
++cups-2.3.3/conf/
++cups-2.3.3/cups/
++cups-2.3.3/cups/raster-interstub.c
++cups-2.3.3/cups/cups.h
++cups-2.3.3/cups/thread.c
++cups-2.3.3/cups/testoptions.c
++cups-2.3.3/cups/api-admin.header
++cups-2.3.3/cups/testthreads.c
++cups-2.3.3/cups/api-admin.shtml
++cups-2.3.3/cups/ipp-vars.c
++cups-2.3.3/cups/api-filter.shtml
++cups-2.3.3/cups/testdest.c
++cups-2.3.3/cups/http-private.h
++cups-2.3.3/cups/auth.c
++cups-2.3.3/cups/tls-darwin.c
++cups-2.3.3/cups/request.c
++cups-2.3.3/cups/testraster.c
++cups-2.3.3/cups/api-filter.header
++cups-2.3.3/cups/util.c
++cups-2.3.3/cups/adminutil.c
++cups-2.3.3/cups/http-support.c
++cups-2.3.3/cups/http.h
++cups-2.3.3/cups/ppd-conflicts.c
++cups-2.3.3/cups/thread-private.h
++cups-2.3.3/cups/array.c
++cups-2.3.3/cups/getputfile.c
++cups-2.3.3/cups/ppd-util.c
++cups-2.3.3/cups/pwg-media.c
++cups-2.3.3/cups/ipp-private.h
++cups-2.3.3/cups/ipp-support.c
++cups-2.3.3/cups/cupspm-icon.png
++cups-2.3.3/cups/getifaddrs.c
++cups-2.3.3/cups/ppd-private.h
++cups-2.3.3/cups/ipp.c
++cups-2.3.3/cups/tlscheck.c
++cups-2.3.3/cups/backchannel.c
++cups-2.3.3/cups/libcups2.def
++cups-2.3.3/cups/usersys.c
++cups-2.3.3/cups/ppd-custom.c
++cups-2.3.3/cups/backend.h
++cups-2.3.3/cups/Makefile
++cups-2.3.3/cups/transcode.c
++cups-2.3.3/cups/testpwg.c
++cups-2.3.3/cups/md5passwd.c
++cups-2.3.3/cups/testcache.c
++cups-2.3.3/cups/getifaddrs-internal.h
++cups-2.3.3/cups/pwg.h
++cups-2.3.3/cups/testlang.c
++cups-2.3.3/cups/file.h
++cups-2.3.3/cups/language.h
++cups-2.3.3/cups/testclient.c
++cups-2.3.3/cups/test2.ppd
++cups-2.3.3/cups/sidechannel.c
++cups-2.3.3/cups/ppd-emit.c
++cups-2.3.3/cups/raster.h
++cups-2.3.3/cups/string.c
++cups-2.3.3/cups/Dependencies
++cups-2.3.3/cups/dest.c
++cups-2.3.3/cups/ppd.c
++cups-2.3.3/cups/debug-internal.h
++cups-2.3.3/cups/dest-job.c
++cups-2.3.3/cups/raster-stubs.c
++cups-2.3.3/cups/cupspm.md
++cups-2.3.3/cups/hash.c
++cups-2.3.3/cups/encode.c
++cups-2.3.3/cups/dir.c
++cups-2.3.3/cups/api-ppd.shtml
++cups-2.3.3/cups/ppd-cache.c
++cups-2.3.3/cups/raster-interpret.c
++cups-2.3.3/cups/versioning.h
++cups-2.3.3/cups/http-addr.c
++cups-2.3.3/cups/http-addrlist.c
++cups-2.3.3/cups/language-private.h
++cups-2.3.3/cups/testfile.c
++cups-2.3.3/cups/ipp-file.c
++cups-2.3.3/cups/testcreds.c
++cups-2.3.3/cups/debug.c
++cups-2.3.3/cups/file-private.h
++cups-2.3.3/cups/api-raster.shtml
++cups-2.3.3/cups/pwg-private.h
++cups-2.3.3/cups/array-private.h
++cups-2.3.3/cups/langprintf.c
++cups-2.3.3/cups/testconflicts.c
++cups-2.3.3/cups/ppd-attr.c
++cups-2.3.3/cups/snprintf.c
++cups-2.3.3/cups/tls-gnutls.c
++cups-2.3.3/cups/cups-private.h
++cups-2.3.3/cups/ppd-page.c
++cups-2.3.3/cups/ipp.h
++cups-2.3.3/cups/test.ppd
++cups-2.3.3/cups/api-raster.header
++cups-2.3.3/cups/testi18n.c
++cups-2.3.3/cups/snmp.c
++cups-2.3.3/cups/testipp.c
++cups-2.3.3/cups/array.h
++cups-2.3.3/cups/ppd-localize.c
++cups-2.3.3/cups/snmp-private.h
++cups-2.3.3/cups/http.c
++cups-2.3.3/cups/ppd-mark.c
++cups-2.3.3/cups/adminutil.h
++cups-2.3.3/cups/testarray.c
++cups-2.3.3/cups/cupspm.png
++cups-2.3.3/cups/api-ppd.header
++cups-2.3.3/cups/tls.c
++cups-2.3.3/cups/raster-stream.c
++cups-2.3.3/cups/tls-darwin.h
++cups-2.3.3/cups/dest-options.c
++cups-2.3.3/cups/raster-private.h
++cups-2.3.3/cups/rasterbench.c
++cups-2.3.3/cups/sidechannel.h
++cups-2.3.3/cups/string-private.h
++cups-2.3.3/cups/md5.c
++cups-2.3.3/cups/language.c
++cups-2.3.3/cups/file.c
++cups-2.3.3/cups/utf8demo.txt
++cups-2.3.3/cups/testgetdests.c
++cups-2.3.3/cups/tls-sspi.c
++cups-2.3.3/cups/raster-error.c
++cups-2.3.3/cups/testfile.txt
++cups-2.3.3/cups/testcups.c
++cups-2.3.3/cups/transcode.h
++cups-2.3.3/cups/getdevices.c
++cups-2.3.3/cups/md5-internal.h
++cups-2.3.3/cups/backend.c
++cups-2.3.3/cups/notify.c
++cups-2.3.3/cups/debug-private.h
++cups-2.3.3/cups/cupspm.opacity
++cups-2.3.3/cups/dest-localization.c
++cups-2.3.3/cups/globals.c
++cups-2.3.3/cups/dir.h
++cups-2.3.3/cups/tempfile.c
++cups-2.3.3/cups/testadmin.c
++cups-2.3.3/cups/options.c
++cups-2.3.3/cups/testsnmp.c
++cups-2.3.3/cups/testppd.c
++cups-2.3.3/cups/ppd.h
++cups-2.3.3/cups/libcups2.rc
++cups-2.3.3/cups/testhttp.c
++cups-2.3.3/conf/mime.convs.in
++cups-2.3.3/conf/cupsd.conf.in
++cups-2.3.3/conf/Makefile
++cups-2.3.3/conf/snmp.conf.in
++cups-2.3.3/conf/pam.securityserver
++cups-2.3.3/conf/pam.opendirectory
++cups-2.3.3/conf/pam.std.in
++cups-2.3.3/conf/mime.types
++cups-2.3.3/conf/cups-files.conf.in
++cups-2.3.3/conf/pam.common
++cups-2.3.3/data/label.h
++cups-2.3.3/data/cups.suse
++cups-2.3.3/data/Makefile
++cups-2.3.3/data/smiley.ps
++cups-2.3.3/data/cups.irix
++cups-2.3.3/data/cups.pam
++cups-2.3.3/data/raster.defs
++cups-2.3.3/data/hp.h
++cups-2.3.3/data/font.defs
++cups-2.3.3/data/epson.h
++cups-2.3.3/data/media.defs
++cups-2.3.3/filter/common.c
++cups-2.3.3/filter/raster-driver.header
++cups-2.3.3/filter/ppd-compiler.shtml
++cups-2.3.3/filter/rastertolabel.c
++cups-2.3.3/filter/postscript-driver.header
++cups-2.3.3/filter/Makefile
++cups-2.3.3/filter/gziptoany.c
++cups-2.3.3/filter/spec-ppd.header
++cups-2.3.3/filter/Dependencies
++cups-2.3.3/filter/postscript-driver.shtml
++cups-2.3.3/filter/rastertohp.c
++cups-2.3.3/filter/common.h
++cups-2.3.3/filter/commandtops.c
++cups-2.3.3/filter/raster-driver.shtml
++cups-2.3.3/filter/rastertopwg.c
++cups-2.3.3/filter/pstops.c
++cups-2.3.3/filter/spec-ppd.shtml
++cups-2.3.3/filter/rastertoepson.c
++cups-2.3.3/filter/ppd-compiler.header
++cups-2.3.3/doc/da/
++cups-2.3.3/doc/apple-touch-icon.png
++cups-2.3.3/doc/cups.css
++cups-2.3.3/doc/images/
++cups-2.3.3/doc/Makefile
++cups-2.3.3/doc/pt_BR/
++cups-2.3.3/doc/ja/
++cups-2.3.3/doc/ru/
++cups-2.3.3/doc/cups-printable.css
++cups-2.3.3/doc/index.html.in
++cups-2.3.3/doc/de/
++cups-2.3.3/doc/es/
++cups-2.3.3/doc/robots.txt
++cups-2.3.3/doc/help/
++cups-2.3.3/doc/apple-touch-icon.opacity
++cups-2.3.3/doc/help/man-ppdi.html
++cups-2.3.3/doc/help/man-lpstat.html
++cups-2.3.3/doc/help/man-cupsfilter.html
++cups-2.3.3/doc/help/man-cups.html
++cups-2.3.3/doc/help/spec-banner.html
++cups-2.3.3/doc/help/man-cups-config.html
++cups-2.3.3/doc/help/man-filter.html
++cups-2.3.3/doc/help/man-lpr.html
++cups-2.3.3/doc/help/man-subscriptions.conf.html
++cups-2.3.3/doc/help/cgi.html
++cups-2.3.3/doc/help/firewalls.html
++cups-2.3.3/doc/help/man-cupsenable.html
++cups-2.3.3/doc/help/man-lprm.html
++cups-2.3.3/doc/help/man-lpinfo.html
++cups-2.3.3/doc/help/admin.html
++cups-2.3.3/doc/help/api-admin.html
++cups-2.3.3/doc/help/man-cups-files.conf.html
++cups-2.3.3/doc/help/man-ppdc.html
++cups-2.3.3/doc/help/man-lpoptions.html
++cups-2.3.3/doc/help/spec-command.html
++cups-2.3.3/doc/help/man-classes.conf.html
++cups-2.3.3/doc/help/license.html
++cups-2.3.3/doc/help/man-cupsctl.html
++cups-2.3.3/doc/help/man-ippfind.html
++cups-2.3.3/doc/help/network.html
++cups-2.3.3/doc/help/man-ipptool.html
++cups-2.3.3/doc/help/sharing.html
++cups-2.3.3/doc/help/translation.html
++cups-2.3.3/doc/help/raster-driver.html
++cups-2.3.3/doc/help/api-raster.html
++cups-2.3.3/doc/help/man-ppdcfile.html
++cups-2.3.3/doc/help/man-cupsd.html
++cups-2.3.3/doc/help/encryption.html
++cups-2.3.3/doc/help/man-cupsd.conf.html
++cups-2.3.3/doc/help/man-cupsd-helper.html
++cups-2.3.3/doc/help/man-cups-snmp.html
++cups-2.3.3/doc/help/man-ippevepcl.html
++cups-2.3.3/doc/help/spec-ppd.html
++cups-2.3.3/doc/help/overview.html
++cups-2.3.3/doc/help/cupspm.epub
++cups-2.3.3/doc/help/ref-ppdcfile.html
++cups-2.3.3/doc/help/accounting.html
++cups-2.3.3/doc/help/man-mailto.conf.html
++cups-2.3.3/doc/help/man-lp.html
++cups-2.3.3/doc/help/man-cups-snmp.conf.html
++cups-2.3.3/doc/help/man-mime.convs.html
++cups-2.3.3/doc/help/postscript-driver.html
++cups-2.3.3/doc/help/glossary.html
++cups-2.3.3/doc/help/man-cupsaccept.html
++cups-2.3.3/doc/help/man-lpc.html
++cups-2.3.3/doc/help/security.html
++cups-2.3.3/doc/help/man-ppdhtml.html
++cups-2.3.3/doc/help/man-client.conf.html
++cups-2.3.3/doc/help/man-lpadmin.html
++cups-2.3.3/doc/help/man-lpmove.html
++cups-2.3.3/doc/help/man-backend.html
++cups-2.3.3/doc/help/spec-design.html
++cups-2.3.3/doc/help/man-cupstestppd.html
++cups-2.3.3/doc/help/options.html
++cups-2.3.3/doc/help/ppd-compiler.html
++cups-2.3.3/doc/help/man-printers.conf.html
++cups-2.3.3/doc/help/policies.html
++cups-2.3.3/doc/help/man-notifier.html
++cups-2.3.3/doc/help/kerberos.html
++cups-2.3.3/doc/help/man-ippeveprinter.html
++cups-2.3.3/doc/help/spec-stp.html
++cups-2.3.3/doc/help/spec-ipp.html
++cups-2.3.3/doc/help/man-mime.types.html
++cups-2.3.3/doc/help/man-ppdmerge.html
++cups-2.3.3/doc/help/cupspm.html
++cups-2.3.3/doc/help/api-ppd.html
++cups-2.3.3/doc/help/man-ppdpo.html
++cups-2.3.3/doc/help/man-ipptoolfile.html
++cups-2.3.3/doc/help/man-cups-lpd.html
++cups-2.3.3/doc/help/spec-raster.html
++cups-2.3.3/doc/help/api-filter.html
++cups-2.3.3/doc/help/man-cancel.html
++cups-2.3.3/doc/help/man-cupsd-logs.html
++cups-2.3.3/doc/help/man-lpq.html
++cups-2.3.3/doc/es/index.html.in
++cups-2.3.3/doc/de/index.html.in
++cups-2.3.3/doc/ru/index.html.in
++cups-2.3.3/doc/ja/index.html.in
++cups-2.3.3/doc/pt_BR/index.html.in
++cups-2.3.3/doc/images/cups.svg
++cups-2.3.3/doc/images/left.gif
++cups-2.3.3/doc/images/raster.svg
++cups-2.3.3/doc/images/raster-organization.svg
++cups-2.3.3/doc/images/cups-block-diagram.png
++cups-2.3.3/doc/images/smiley.jpg
++cups-2.3.3/doc/images/cups-block-diagram.svg
++cups-2.3.3/doc/images/unsel.gif
++cups-2.3.3/doc/images/left.xcf.gz
++cups-2.3.3/doc/images/raster-organization.png
++cups-2.3.3/doc/images/raster.png
++cups-2.3.3/doc/images/wait.gif
++cups-2.3.3/doc/images/right.gif
++cups-2.3.3/doc/images/cups.png
++cups-2.3.3/doc/images/cups-command-chain.png
++cups-2.3.3/doc/images/generic.png
++cups-2.3.3/doc/images/cups-postscript-chain.svg
++cups-2.3.3/doc/images/cups-raster-chain.png
++cups-2.3.3/doc/images/cups-raster-chain.svg
++cups-2.3.3/doc/images/cups-postscript-chain.png
++cups-2.3.3/doc/images/sample-image.png
++cups-2.3.3/doc/images/sel.gif
++cups-2.3.3/doc/images/webinterface.png
++cups-2.3.3/doc/images/cups-icon.png
++cups-2.3.3/doc/images/color-wheel.png
++cups-2.3.3/doc/images/cups-command-chain.svg
++cups-2.3.3/doc/da/index.html.in
++cups-2.3.3/templates/restart.tmpl
++cups-2.3.3/templates/option-conflict.tmpl
++cups-2.3.3/templates/trailer.tmpl
++cups-2.3.3/templates/printer-start.tmpl
++cups-2.3.3/templates/choose-make.tmpl
++cups-2.3.3/templates/option-header.tmpl
++cups-2.3.3/templates/job-cancel.tmpl
++cups-2.3.3/templates/option-trailer.tmpl
++cups-2.3.3/templates/printer-added.tmpl
++cups-2.3.3/templates/command.tmpl
++cups-2.3.3/templates/help-printable.tmpl
++cups-2.3.3/templates/printer-reject.tmpl
++cups-2.3.3/templates/class.tmpl
++cups-2.3.3/templates/modify-class.tmpl
++cups-2.3.3/templates/da/
++cups-2.3.3/templates/list-available-printers.tmpl
++cups-2.3.3/templates/printer-stop.tmpl
++cups-2.3.3/templates/printer-cancel-jobs.tmpl
++cups-2.3.3/templates/choose-model.tmpl
++cups-2.3.3/templates/Makefile
++cups-2.3.3/templates/option-pickmany.tmpl
++cups-2.3.3/templates/choose-device.tmpl
++cups-2.3.3/templates/pt_BR/
++cups-2.3.3/templates/ja/
++cups-2.3.3/templates/jobs.tmpl
++cups-2.3.3/templates/class-jobs-header.tmpl
++cups-2.3.3/templates/help-header.tmpl
++cups-2.3.3/templates/ru/
++cups-2.3.3/templates/pager.tmpl
++cups-2.3.3/templates/option-pickone.tmpl
++cups-2.3.3/templates/printers.tmpl
++cups-2.3.3/templates/job-move.tmpl
++cups-2.3.3/templates/admin.tmpl
++cups-2.3.3/templates/choose-uri.tmpl
++cups-2.3.3/templates/header.tmpl.in
++cups-2.3.3/templates/class-confirm.tmpl
++cups-2.3.3/templates/search.tmpl
++cups-2.3.3/templates/option-boolean.tmpl
++cups-2.3.3/templates/set-printer-options-header.tmpl
++cups-2.3.3/templates/job-restart.tmpl
++cups-2.3.3/templates/printer-configured.tmpl
++cups-2.3.3/templates/class-modified.tmpl
++cups-2.3.3/templates/help-trailer.tmpl
++cups-2.3.3/templates/error-op.tmpl
++cups-2.3.3/templates/printers-header.tmpl
++cups-2.3.3/templates/jobs-header.tmpl
++cups-2.3.3/templates/printer.tmpl
++cups-2.3.3/templates/error.tmpl
++cups-2.3.3/templates/job-release.tmpl
++cups-2.3.3/templates/choose-serial.tmpl
++cups-2.3.3/templates/printer-deleted.tmpl
++cups-2.3.3/templates/de/
++cups-2.3.3/templates/printer-accept.tmpl
++cups-2.3.3/templates/norestart.tmpl
++cups-2.3.3/templates/fr/
++cups-2.3.3/templates/printer-modified.tmpl
++cups-2.3.3/templates/es/
++cups-2.3.3/templates/printer-default.tmpl
++cups-2.3.3/templates/add-printer.tmpl
++cups-2.3.3/templates/class-deleted.tmpl
++cups-2.3.3/templates/users.tmpl
++cups-2.3.3/templates/modify-printer.tmpl
++cups-2.3.3/templates/classes-header.tmpl
++cups-2.3.3/templates/set-printer-options-trailer.tmpl
++cups-2.3.3/templates/edit-config.tmpl
++cups-2.3.3/templates/printer-confirm.tmpl
++cups-2.3.3/templates/job-hold.tmpl
++cups-2.3.3/templates/class-added.tmpl
++cups-2.3.3/templates/classes.tmpl
++cups-2.3.3/templates/test-page.tmpl
++cups-2.3.3/templates/printer-jobs-header.tmpl
++cups-2.3.3/templates/job-moved.tmpl
++cups-2.3.3/templates/add-class.tmpl
++cups-2.3.3/templates/es/restart.tmpl
++cups-2.3.3/templates/es/option-conflict.tmpl
++cups-2.3.3/templates/es/trailer.tmpl
++cups-2.3.3/templates/es/printer-start.tmpl
++cups-2.3.3/templates/es/choose-make.tmpl
++cups-2.3.3/templates/es/option-header.tmpl
++cups-2.3.3/templates/es/job-cancel.tmpl
++cups-2.3.3/templates/es/option-trailer.tmpl
++cups-2.3.3/templates/es/printer-added.tmpl
++cups-2.3.3/templates/es/command.tmpl
++cups-2.3.3/templates/es/help-printable.tmpl
++cups-2.3.3/templates/es/printer-reject.tmpl
++cups-2.3.3/templates/es/class.tmpl
++cups-2.3.3/templates/es/modify-class.tmpl
++cups-2.3.3/templates/es/list-available-printers.tmpl
++cups-2.3.3/templates/es/printer-stop.tmpl
++cups-2.3.3/templates/es/printer-cancel-jobs.tmpl
++cups-2.3.3/templates/es/choose-model.tmpl
++cups-2.3.3/templates/es/option-pickmany.tmpl
++cups-2.3.3/templates/es/choose-device.tmpl
++cups-2.3.3/templates/es/jobs.tmpl
++cups-2.3.3/templates/es/class-jobs-header.tmpl
++cups-2.3.3/templates/es/help-header.tmpl
++cups-2.3.3/templates/es/pager.tmpl
++cups-2.3.3/templates/es/option-pickone.tmpl
++cups-2.3.3/templates/es/printers.tmpl
++cups-2.3.3/templates/es/job-move.tmpl
++cups-2.3.3/templates/es/admin.tmpl
++cups-2.3.3/templates/es/choose-uri.tmpl
++cups-2.3.3/templates/es/header.tmpl.in
++cups-2.3.3/templates/es/class-confirm.tmpl
++cups-2.3.3/templates/es/search.tmpl
++cups-2.3.3/templates/es/option-boolean.tmpl
++cups-2.3.3/templates/es/set-printer-options-header.tmpl
++cups-2.3.3/templates/es/job-restart.tmpl
++cups-2.3.3/templates/es/printer-configured.tmpl
++cups-2.3.3/templates/es/class-modified.tmpl
++cups-2.3.3/templates/es/help-trailer.tmpl
++cups-2.3.3/templates/es/error-op.tmpl
++cups-2.3.3/templates/es/printers-header.tmpl
++cups-2.3.3/templates/es/jobs-header.tmpl
++cups-2.3.3/templates/es/printer.tmpl
++cups-2.3.3/templates/es/error.tmpl
++cups-2.3.3/templates/es/job-release.tmpl
++cups-2.3.3/templates/es/choose-serial.tmpl
++cups-2.3.3/templates/es/printer-deleted.tmpl
++cups-2.3.3/templates/es/printer-accept.tmpl
++cups-2.3.3/templates/es/norestart.tmpl
++cups-2.3.3/templates/es/printer-modified.tmpl
++cups-2.3.3/templates/es/printer-default.tmpl
++cups-2.3.3/templates/es/add-printer.tmpl
++cups-2.3.3/templates/es/class-deleted.tmpl
++cups-2.3.3/templates/es/users.tmpl
++cups-2.3.3/templates/es/modify-printer.tmpl
++cups-2.3.3/templates/es/classes-header.tmpl
++cups-2.3.3/templates/es/set-printer-options-trailer.tmpl
++cups-2.3.3/templates/es/edit-config.tmpl
++cups-2.3.3/templates/es/printer-confirm.tmpl
++cups-2.3.3/templates/es/job-hold.tmpl
++cups-2.3.3/templates/es/class-added.tmpl
++cups-2.3.3/templates/es/classes.tmpl
++cups-2.3.3/templates/es/test-page.tmpl
++cups-2.3.3/templates/es/printer-jobs-header.tmpl
++cups-2.3.3/templates/es/job-moved.tmpl
++cups-2.3.3/templates/es/add-class.tmpl
++cups-2.3.3/templates/fr/restart.tmpl
++cups-2.3.3/templates/fr/option-conflict.tmpl
++cups-2.3.3/templates/fr/trailer.tmpl
++cups-2.3.3/templates/fr/printer-start.tmpl
++cups-2.3.3/templates/fr/choose-make.tmpl
++cups-2.3.3/templates/fr/option-header.tmpl
++cups-2.3.3/templates/fr/job-cancel.tmpl
++cups-2.3.3/templates/fr/option-trailer.tmpl
++cups-2.3.3/templates/fr/printer-added.tmpl
++cups-2.3.3/templates/fr/command.tmpl
++cups-2.3.3/templates/fr/help-printable.tmpl
++cups-2.3.3/templates/fr/printer-reject.tmpl
++cups-2.3.3/templates/fr/class.tmpl
++cups-2.3.3/templates/fr/modify-class.tmpl
++cups-2.3.3/templates/fr/list-available-printers.tmpl
++cups-2.3.3/templates/fr/printer-stop.tmpl
++cups-2.3.3/templates/fr/printer-cancel-jobs.tmpl
++cups-2.3.3/templates/fr/choose-model.tmpl
++cups-2.3.3/templates/fr/option-pickmany.tmpl
++cups-2.3.3/templates/fr/choose-device.tmpl
++cups-2.3.3/templates/fr/jobs.tmpl
++cups-2.3.3/templates/fr/class-jobs-header.tmpl
++cups-2.3.3/templates/fr/help-header.tmpl
++cups-2.3.3/templates/fr/pager.tmpl
++cups-2.3.3/templates/fr/option-pickone.tmpl
++cups-2.3.3/templates/fr/printers.tmpl
++cups-2.3.3/templates/fr/job-move.tmpl
++cups-2.3.3/templates/fr/admin.tmpl
++cups-2.3.3/templates/fr/choose-uri.tmpl
++cups-2.3.3/templates/fr/header.tmpl.in
++cups-2.3.3/templates/fr/class-confirm.tmpl
++cups-2.3.3/templates/fr/search.tmpl
++cups-2.3.3/templates/fr/option-boolean.tmpl
++cups-2.3.3/templates/fr/set-printer-options-header.tmpl
++cups-2.3.3/templates/fr/job-restart.tmpl
++cups-2.3.3/templates/fr/printer-configured.tmpl
++cups-2.3.3/templates/fr/class-modified.tmpl
++cups-2.3.3/templates/fr/help-trailer.tmpl
++cups-2.3.3/templates/fr/error-op.tmpl
++cups-2.3.3/templates/fr/printers-header.tmpl
++cups-2.3.3/templates/fr/jobs-header.tmpl
++cups-2.3.3/templates/fr/printer.tmpl
++cups-2.3.3/templates/fr/error.tmpl
++cups-2.3.3/templates/fr/job-release.tmpl
++cups-2.3.3/templates/fr/choose-serial.tmpl
++cups-2.3.3/templates/fr/printer-deleted.tmpl
++cups-2.3.3/templates/fr/printer-accept.tmpl
++cups-2.3.3/templates/fr/norestart.tmpl
++cups-2.3.3/templates/fr/printer-modified.tmpl
++cups-2.3.3/templates/fr/printer-default.tmpl
++cups-2.3.3/templates/fr/add-printer.tmpl
++cups-2.3.3/templates/fr/class-deleted.tmpl
++cups-2.3.3/templates/fr/users.tmpl
++cups-2.3.3/templates/fr/modify-printer.tmpl
++cups-2.3.3/templates/fr/classes-header.tmpl
++cups-2.3.3/templates/fr/set-printer-options-trailer.tmpl
++cups-2.3.3/templates/fr/edit-config.tmpl
++cups-2.3.3/templates/fr/printer-confirm.tmpl
++cups-2.3.3/templates/fr/job-hold.tmpl
++cups-2.3.3/templates/fr/class-added.tmpl
++cups-2.3.3/templates/fr/classes.tmpl
++cups-2.3.3/templates/fr/test-page.tmpl
++cups-2.3.3/templates/fr/printer-jobs-header.tmpl
++cups-2.3.3/templates/fr/job-moved.tmpl
++cups-2.3.3/templates/fr/add-class.tmpl
++cups-2.3.3/templates/de/restart.tmpl
++cups-2.3.3/templates/de/option-conflict.tmpl
++cups-2.3.3/templates/de/trailer.tmpl
++cups-2.3.3/templates/de/printer-start.tmpl
++cups-2.3.3/templates/de/choose-make.tmpl
++cups-2.3.3/templates/de/option-header.tmpl
++cups-2.3.3/templates/de/job-cancel.tmpl
++cups-2.3.3/templates/de/option-trailer.tmpl
++cups-2.3.3/templates/de/printer-added.tmpl
++cups-2.3.3/templates/de/command.tmpl
++cups-2.3.3/templates/de/help-printable.tmpl
++cups-2.3.3/templates/de/printer-reject.tmpl
++cups-2.3.3/templates/de/class.tmpl
++cups-2.3.3/templates/de/modify-class.tmpl
++cups-2.3.3/templates/de/list-available-printers.tmpl
++cups-2.3.3/templates/de/printer-stop.tmpl
++cups-2.3.3/templates/de/printer-cancel-jobs.tmpl
++cups-2.3.3/templates/de/choose-model.tmpl
++cups-2.3.3/templates/de/option-pickmany.tmpl
++cups-2.3.3/templates/de/choose-device.tmpl
++cups-2.3.3/templates/de/jobs.tmpl
++cups-2.3.3/templates/de/class-jobs-header.tmpl
++cups-2.3.3/templates/de/help-header.tmpl
++cups-2.3.3/templates/de/pager.tmpl
++cups-2.3.3/templates/de/option-pickone.tmpl
++cups-2.3.3/templates/de/printers.tmpl
++cups-2.3.3/templates/de/job-move.tmpl
++cups-2.3.3/templates/de/admin.tmpl
++cups-2.3.3/templates/de/choose-uri.tmpl
++cups-2.3.3/templates/de/header.tmpl.in
++cups-2.3.3/templates/de/class-confirm.tmpl
++cups-2.3.3/templates/de/search.tmpl
++cups-2.3.3/templates/de/option-boolean.tmpl
++cups-2.3.3/templates/de/set-printer-options-header.tmpl
++cups-2.3.3/templates/de/job-restart.tmpl
++cups-2.3.3/templates/de/printer-configured.tmpl
++cups-2.3.3/templates/de/class-modified.tmpl
++cups-2.3.3/templates/de/help-trailer.tmpl
++cups-2.3.3/templates/de/error-op.tmpl
++cups-2.3.3/templates/de/printers-header.tmpl
++cups-2.3.3/templates/de/jobs-header.tmpl
++cups-2.3.3/templates/de/printer.tmpl
++cups-2.3.3/templates/de/error.tmpl
++cups-2.3.3/templates/de/job-release.tmpl
++cups-2.3.3/templates/de/choose-serial.tmpl
++cups-2.3.3/templates/de/printer-deleted.tmpl
++cups-2.3.3/templates/de/printer-accept.tmpl
++cups-2.3.3/templates/de/norestart.tmpl
++cups-2.3.3/templates/de/printer-modified.tmpl
++cups-2.3.3/templates/de/printer-default.tmpl
++cups-2.3.3/templates/de/add-printer.tmpl
++cups-2.3.3/templates/de/class-deleted.tmpl
++cups-2.3.3/templates/de/users.tmpl
++cups-2.3.3/templates/de/modify-printer.tmpl
++cups-2.3.3/templates/de/classes-header.tmpl
++cups-2.3.3/templates/de/set-printer-options-trailer.tmpl
++cups-2.3.3/templates/de/edit-config.tmpl
++cups-2.3.3/templates/de/printer-confirm.tmpl
++cups-2.3.3/templates/de/job-hold.tmpl
++cups-2.3.3/templates/de/class-added.tmpl
++cups-2.3.3/templates/de/classes.tmpl
++cups-2.3.3/templates/de/test-page.tmpl
++cups-2.3.3/templates/de/printer-jobs-header.tmpl
++cups-2.3.3/templates/de/job-moved.tmpl
++cups-2.3.3/templates/de/add-class.tmpl
++cups-2.3.3/templates/ru/restart.tmpl
++cups-2.3.3/templates/ru/option-conflict.tmpl
++cups-2.3.3/templates/ru/trailer.tmpl
++cups-2.3.3/templates/ru/printer-start.tmpl
++cups-2.3.3/templates/ru/choose-make.tmpl
++cups-2.3.3/templates/ru/option-header.tmpl
++cups-2.3.3/templates/ru/job-cancel.tmpl
++cups-2.3.3/templates/ru/option-trailer.tmpl
++cups-2.3.3/templates/ru/printer-added.tmpl
++cups-2.3.3/templates/ru/command.tmpl
++cups-2.3.3/templates/ru/help-printable.tmpl
++cups-2.3.3/templates/ru/printer-reject.tmpl
++cups-2.3.3/templates/ru/class.tmpl
++cups-2.3.3/templates/ru/modify-class.tmpl
++cups-2.3.3/templates/ru/list-available-printers.tmpl
++cups-2.3.3/templates/ru/printer-stop.tmpl
++cups-2.3.3/templates/ru/printer-cancel-jobs.tmpl
++cups-2.3.3/templates/ru/choose-model.tmpl
++cups-2.3.3/templates/ru/option-pickmany.tmpl
++cups-2.3.3/templates/ru/choose-device.tmpl
++cups-2.3.3/templates/ru/jobs.tmpl
++cups-2.3.3/templates/ru/class-jobs-header.tmpl
++cups-2.3.3/templates/ru/help-header.tmpl
++cups-2.3.3/templates/ru/pager.tmpl
++cups-2.3.3/templates/ru/option-pickone.tmpl
++cups-2.3.3/templates/ru/printers.tmpl
++cups-2.3.3/templates/ru/job-move.tmpl
++cups-2.3.3/templates/ru/admin.tmpl
++cups-2.3.3/templates/ru/choose-uri.tmpl
++cups-2.3.3/templates/ru/header.tmpl.in
++cups-2.3.3/templates/ru/class-confirm.tmpl
++cups-2.3.3/templates/ru/search.tmpl
++cups-2.3.3/templates/ru/option-boolean.tmpl
++cups-2.3.3/templates/ru/set-printer-options-header.tmpl
++cups-2.3.3/templates/ru/job-restart.tmpl
++cups-2.3.3/templates/ru/printer-configured.tmpl
++cups-2.3.3/templates/ru/class-modified.tmpl
++cups-2.3.3/templates/ru/help-trailer.tmpl
++cups-2.3.3/templates/ru/error-op.tmpl
++cups-2.3.3/templates/ru/printers-header.tmpl
++cups-2.3.3/templates/ru/jobs-header.tmpl
++cups-2.3.3/templates/ru/printer.tmpl
++cups-2.3.3/templates/ru/error.tmpl
++cups-2.3.3/templates/ru/job-release.tmpl
++cups-2.3.3/templates/ru/choose-serial.tmpl
++cups-2.3.3/templates/ru/printer-deleted.tmpl
++cups-2.3.3/templates/ru/printer-accept.tmpl
++cups-2.3.3/templates/ru/norestart.tmpl
++cups-2.3.3/templates/ru/printer-modified.tmpl
++cups-2.3.3/templates/ru/printer-default.tmpl
++cups-2.3.3/templates/ru/add-printer.tmpl
++cups-2.3.3/templates/ru/class-deleted.tmpl
++cups-2.3.3/templates/ru/users.tmpl
++cups-2.3.3/templates/ru/modify-printer.tmpl
++cups-2.3.3/templates/ru/classes-header.tmpl
++cups-2.3.3/templates/ru/set-printer-options-trailer.tmpl
++cups-2.3.3/templates/ru/edit-config.tmpl
++cups-2.3.3/templates/ru/printer-confirm.tmpl
++cups-2.3.3/templates/ru/job-hold.tmpl
++cups-2.3.3/templates/ru/class-added.tmpl
++cups-2.3.3/templates/ru/classes.tmpl
++cups-2.3.3/templates/ru/test-page.tmpl
++cups-2.3.3/templates/ru/printer-jobs-header.tmpl
++cups-2.3.3/templates/ru/job-moved.tmpl
++cups-2.3.3/templates/ru/add-class.tmpl
++cups-2.3.3/templates/ja/restart.tmpl
++cups-2.3.3/templates/ja/option-conflict.tmpl
++cups-2.3.3/templates/ja/trailer.tmpl
++cups-2.3.3/templates/ja/printer-start.tmpl
++cups-2.3.3/templates/ja/choose-make.tmpl
++cups-2.3.3/templates/ja/option-header.tmpl
++cups-2.3.3/templates/ja/job-cancel.tmpl
++cups-2.3.3/templates/ja/option-trailer.tmpl
++cups-2.3.3/templates/ja/printer-added.tmpl
++cups-2.3.3/templates/ja/command.tmpl
++cups-2.3.3/templates/ja/help-printable.tmpl
++cups-2.3.3/templates/ja/printer-reject.tmpl
++cups-2.3.3/templates/ja/class.tmpl
++cups-2.3.3/templates/ja/modify-class.tmpl
++cups-2.3.3/templates/ja/list-available-printers.tmpl
++cups-2.3.3/templates/ja/printer-stop.tmpl
++cups-2.3.3/templates/ja/printer-cancel-jobs.tmpl
++cups-2.3.3/templates/ja/choose-model.tmpl
++cups-2.3.3/templates/ja/option-pickmany.tmpl
++cups-2.3.3/templates/ja/choose-device.tmpl
++cups-2.3.3/templates/ja/jobs.tmpl
++cups-2.3.3/templates/ja/class-jobs-header.tmpl
++cups-2.3.3/templates/ja/help-header.tmpl
++cups-2.3.3/templates/ja/pager.tmpl
++cups-2.3.3/templates/ja/option-pickone.tmpl
++cups-2.3.3/templates/ja/printers.tmpl
++cups-2.3.3/templates/ja/job-move.tmpl
++cups-2.3.3/templates/ja/admin.tmpl
++cups-2.3.3/templates/ja/choose-uri.tmpl
++cups-2.3.3/templates/ja/header.tmpl.in
++cups-2.3.3/templates/ja/class-confirm.tmpl
++cups-2.3.3/templates/ja/search.tmpl
++cups-2.3.3/templates/ja/option-boolean.tmpl
++cups-2.3.3/templates/ja/set-printer-options-header.tmpl
++cups-2.3.3/templates/ja/job-restart.tmpl
++cups-2.3.3/templates/ja/printer-configured.tmpl
++cups-2.3.3/templates/ja/class-modified.tmpl
++cups-2.3.3/templates/ja/help-trailer.tmpl
++cups-2.3.3/templates/ja/error-op.tmpl
++cups-2.3.3/templates/ja/printers-header.tmpl
++cups-2.3.3/templates/ja/jobs-header.tmpl
++cups-2.3.3/templates/ja/printer.tmpl
++cups-2.3.3/templates/ja/error.tmpl
++cups-2.3.3/templates/ja/job-release.tmpl
++cups-2.3.3/templates/ja/choose-serial.tmpl
++cups-2.3.3/templates/ja/printer-deleted.tmpl
++cups-2.3.3/templates/ja/printer-accept.tmpl
++cups-2.3.3/templates/ja/norestart.tmpl
++cups-2.3.3/templates/ja/printer-modified.tmpl
++cups-2.3.3/templates/ja/printer-default.tmpl
++cups-2.3.3/templates/ja/add-printer.tmpl
++cups-2.3.3/templates/ja/class-deleted.tmpl
++cups-2.3.3/templates/ja/users.tmpl
++cups-2.3.3/templates/ja/modify-printer.tmpl
++cups-2.3.3/templates/ja/classes-header.tmpl
++cups-2.3.3/templates/ja/set-printer-options-trailer.tmpl
++cups-2.3.3/templates/ja/edit-config.tmpl
++cups-2.3.3/templates/ja/printer-confirm.tmpl
++cups-2.3.3/templates/ja/job-hold.tmpl
++cups-2.3.3/templates/ja/class-added.tmpl
++cups-2.3.3/templates/ja/classes.tmpl
++cups-2.3.3/templates/ja/test-page.tmpl
++cups-2.3.3/templates/ja/printer-jobs-header.tmpl
++cups-2.3.3/templates/ja/job-moved.tmpl
++cups-2.3.3/templates/ja/add-class.tmpl
++cups-2.3.3/templates/pt_BR/restart.tmpl
++cups-2.3.3/templates/pt_BR/option-conflict.tmpl
++cups-2.3.3/templates/pt_BR/trailer.tmpl
++cups-2.3.3/templates/pt_BR/printer-start.tmpl
++cups-2.3.3/templates/pt_BR/choose-make.tmpl
++cups-2.3.3/templates/pt_BR/option-header.tmpl
++cups-2.3.3/templates/pt_BR/job-cancel.tmpl
++cups-2.3.3/templates/pt_BR/option-trailer.tmpl
++cups-2.3.3/templates/pt_BR/printer-added.tmpl
++cups-2.3.3/templates/pt_BR/command.tmpl
++cups-2.3.3/templates/pt_BR/help-printable.tmpl
++cups-2.3.3/templates/pt_BR/printer-reject.tmpl
++cups-2.3.3/templates/pt_BR/class.tmpl
++cups-2.3.3/templates/pt_BR/modify-class.tmpl
++cups-2.3.3/templates/pt_BR/list-available-printers.tmpl
++cups-2.3.3/templates/pt_BR/printer-stop.tmpl
++cups-2.3.3/templates/pt_BR/printer-cancel-jobs.tmpl
++cups-2.3.3/templates/pt_BR/choose-model.tmpl
++cups-2.3.3/templates/pt_BR/option-pickmany.tmpl
++cups-2.3.3/templates/pt_BR/choose-device.tmpl
++cups-2.3.3/templates/pt_BR/jobs.tmpl
++cups-2.3.3/templates/pt_BR/class-jobs-header.tmpl
++cups-2.3.3/templates/pt_BR/help-header.tmpl
++cups-2.3.3/templates/pt_BR/pager.tmpl
++cups-2.3.3/templates/pt_BR/option-pickone.tmpl
++cups-2.3.3/templates/pt_BR/printers.tmpl
++cups-2.3.3/templates/pt_BR/job-move.tmpl
++cups-2.3.3/templates/pt_BR/admin.tmpl
++cups-2.3.3/templates/pt_BR/choose-uri.tmpl
++cups-2.3.3/templates/pt_BR/header.tmpl.in
++cups-2.3.3/templates/pt_BR/class-confirm.tmpl
++cups-2.3.3/templates/pt_BR/search.tmpl
++cups-2.3.3/templates/pt_BR/option-boolean.tmpl
++cups-2.3.3/templates/pt_BR/set-printer-options-header.tmpl
++cups-2.3.3/templates/pt_BR/job-restart.tmpl
++cups-2.3.3/templates/pt_BR/printer-configured.tmpl
++cups-2.3.3/templates/pt_BR/class-modified.tmpl
++cups-2.3.3/templates/pt_BR/help-trailer.tmpl
++cups-2.3.3/templates/pt_BR/error-op.tmpl
++cups-2.3.3/templates/pt_BR/printers-header.tmpl
++cups-2.3.3/templates/pt_BR/jobs-header.tmpl
++cups-2.3.3/templates/pt_BR/printer.tmpl
++cups-2.3.3/templates/pt_BR/error.tmpl
++cups-2.3.3/templates/pt_BR/job-release.tmpl
++cups-2.3.3/templates/pt_BR/choose-serial.tmpl
++cups-2.3.3/templates/pt_BR/printer-deleted.tmpl
++cups-2.3.3/templates/pt_BR/printer-accept.tmpl
++cups-2.3.3/templates/pt_BR/norestart.tmpl
++cups-2.3.3/templates/pt_BR/printer-modified.tmpl
++cups-2.3.3/templates/pt_BR/printer-default.tmpl
++cups-2.3.3/templates/pt_BR/add-printer.tmpl
++cups-2.3.3/templates/pt_BR/class-deleted.tmpl
++cups-2.3.3/templates/pt_BR/users.tmpl
++cups-2.3.3/templates/pt_BR/modify-printer.tmpl
++cups-2.3.3/templates/pt_BR/classes-header.tmpl
++cups-2.3.3/templates/pt_BR/set-printer-options-trailer.tmpl
++cups-2.3.3/templates/pt_BR/edit-config.tmpl
++cups-2.3.3/templates/pt_BR/printer-confirm.tmpl
++cups-2.3.3/templates/pt_BR/job-hold.tmpl
++cups-2.3.3/templates/pt_BR/class-added.tmpl
++cups-2.3.3/templates/pt_BR/classes.tmpl
++cups-2.3.3/templates/pt_BR/test-page.tmpl
++cups-2.3.3/templates/pt_BR/printer-jobs-header.tmpl
++cups-2.3.3/templates/pt_BR/job-moved.tmpl
++cups-2.3.3/templates/pt_BR/add-class.tmpl
++cups-2.3.3/templates/da/restart.tmpl
++cups-2.3.3/templates/da/option-conflict.tmpl
++cups-2.3.3/templates/da/trailer.tmpl
++cups-2.3.3/templates/da/printer-start.tmpl
++cups-2.3.3/templates/da/choose-make.tmpl
++cups-2.3.3/templates/da/option-header.tmpl
++cups-2.3.3/templates/da/job-cancel.tmpl
++cups-2.3.3/templates/da/option-trailer.tmpl
++cups-2.3.3/templates/da/printer-added.tmpl
++cups-2.3.3/templates/da/command.tmpl
++cups-2.3.3/templates/da/help-printable.tmpl
++cups-2.3.3/templates/da/printer-reject.tmpl
++cups-2.3.3/templates/da/class.tmpl
++cups-2.3.3/templates/da/modify-class.tmpl
++cups-2.3.3/templates/da/list-available-printers.tmpl
++cups-2.3.3/templates/da/printer-stop.tmpl
++cups-2.3.3/templates/da/printer-cancel-jobs.tmpl
++cups-2.3.3/templates/da/choose-model.tmpl
++cups-2.3.3/templates/da/option-pickmany.tmpl
++cups-2.3.3/templates/da/choose-device.tmpl
++cups-2.3.3/templates/da/jobs.tmpl
++cups-2.3.3/templates/da/class-jobs-header.tmpl
++cups-2.3.3/templates/da/help-header.tmpl
++cups-2.3.3/templates/da/pager.tmpl
++cups-2.3.3/templates/da/option-pickone.tmpl
++cups-2.3.3/templates/da/printers.tmpl
++cups-2.3.3/templates/da/job-move.tmpl
++cups-2.3.3/templates/da/admin.tmpl
++cups-2.3.3/templates/da/choose-uri.tmpl
++cups-2.3.3/templates/da/header.tmpl.in
++cups-2.3.3/templates/da/class-confirm.tmpl
++cups-2.3.3/templates/da/search.tmpl
++cups-2.3.3/templates/da/option-boolean.tmpl
++cups-2.3.3/templates/da/set-printer-options-header.tmpl
++cups-2.3.3/templates/da/job-restart.tmpl
++cups-2.3.3/templates/da/printer-configured.tmpl
++cups-2.3.3/templates/da/class-modified.tmpl
++cups-2.3.3/templates/da/help-trailer.tmpl
++cups-2.3.3/templates/da/error-op.tmpl
++cups-2.3.3/templates/da/printers-header.tmpl
++cups-2.3.3/templates/da/jobs-header.tmpl
++cups-2.3.3/templates/da/printer.tmpl
++cups-2.3.3/templates/da/error.tmpl
++cups-2.3.3/templates/da/job-release.tmpl
++cups-2.3.3/templates/da/choose-serial.tmpl
++cups-2.3.3/templates/da/printer-deleted.tmpl
++cups-2.3.3/templates/da/printer-accept.tmpl
++cups-2.3.3/templates/da/norestart.tmpl
++cups-2.3.3/templates/da/printer-modified.tmpl
++cups-2.3.3/templates/da/printer-default.tmpl
++cups-2.3.3/templates/da/add-printer.tmpl
++cups-2.3.3/templates/da/class-deleted.tmpl
++cups-2.3.3/templates/da/users.tmpl
++cups-2.3.3/templates/da/modify-printer.tmpl
++cups-2.3.3/templates/da/classes-header.tmpl
++cups-2.3.3/templates/da/set-printer-options-trailer.tmpl
++cups-2.3.3/templates/da/edit-config.tmpl
++cups-2.3.3/templates/da/printer-confirm.tmpl
++cups-2.3.3/templates/da/job-hold.tmpl
++cups-2.3.3/templates/da/class-added.tmpl
++cups-2.3.3/templates/da/classes.tmpl
++cups-2.3.3/templates/da/test-page.tmpl
++cups-2.3.3/templates/da/printer-jobs-header.tmpl
++cups-2.3.3/templates/da/job-moved.tmpl
++cups-2.3.3/templates/da/add-class.tmpl
++cups-2.3.3/cgi-bin/testtemplate.c
++cups-2.3.3/cgi-bin/multipart.dat
++cups-2.3.3/cgi-bin/printers.c
++cups-2.3.3/cgi-bin/libcupscgi.exp
++cups-2.3.3/cgi-bin/Makefile
++cups-2.3.3/cgi-bin/testhi.c
++cups-2.3.3/cgi-bin/admin.c
++cups-2.3.3/cgi-bin/Dependencies
++cups-2.3.3/cgi-bin/template.c
++cups-2.3.3/cgi-bin/help-index.c
++cups-2.3.3/cgi-bin/ipp-var.c
++cups-2.3.3/cgi-bin/search.c
++cups-2.3.3/cgi-bin/cgi-private.h
++cups-2.3.3/cgi-bin/help.c
++cups-2.3.3/cgi-bin/jobs.c
++cups-2.3.3/cgi-bin/makedocset.c
++cups-2.3.3/cgi-bin/html.c
++cups-2.3.3/cgi-bin/classes.c
++cups-2.3.3/cgi-bin/var.c
++cups-2.3.3/cgi-bin/testhi.html
++cups-2.3.3/cgi-bin/help-index.h
++cups-2.3.3/cgi-bin/cgi.h
++cups-2.3.3/cgi-bin/testcgi.c
++cups-2.3.3/examples/ipp-2.0.test
++cups-2.3.3/examples/create-job-format.test
++cups-2.3.3/examples/ipp-everywhere.test
++cups-2.3.3/examples/r300-basic.drv
++cups-2.3.3/examples/get-ppds-make-and-model.test
++cups-2.3.3/examples/get-ppds-product.test
++cups-2.3.3/examples/laserjet-pjl.drv
++cups-2.3.3/examples/create-printer-subscription.test
++cups-2.3.3/examples/get-ppds-language.test
++cups-2.3.3/examples/create-job-timeout.test
++cups-2.3.3/examples/get-ppd-printer.test
++cups-2.3.3/examples/gray.jpg
++cups-2.3.3/examples/cancel-current-job.test
++cups-2.3.3/examples/identify-printer.test
++cups-2.3.3/examples/ppdx.h
++cups-2.3.3/examples/grouping.drv
++cups-2.3.3/examples/get-printers.test
++cups-2.3.3/examples/print-job-and-wait.test
++cups-2.3.3/examples/postscript.drv
++cups-2.3.3/examples/print-job-deflate.test
++cups-2.3.3/examples/ipp-2.1.test
++cups-2.3.3/examples/print-job-media-col.test
++cups-2.3.3/examples/get-devices.test
++cups-2.3.3/examples/Makefile
++cups-2.3.3/examples/document-a4.sla
++cups-2.3.3/examples/print-job.test
++cups-2.3.3/examples/onepage-a4-300-black-1.pwg
++cups-2.3.3/examples/custom.drv
++cups-2.3.3/examples/set-attrs-hold.test
++cups-2.3.3/examples/onepage-a4.sla
++cups-2.3.3/examples/print-job-manual.test
++cups-2.3.3/examples/onepage-letter.sla
++cups-2.3.3/examples/document-a4.ps
++cups-2.3.3/examples/testfile.pcl
++cups-2.3.3/examples/document-letter.ps
++cups-2.3.3/examples/document-letter.pdf
++cups-2.3.3/examples/onepage-letter.ps
++cups-2.3.3/examples/onepage-letter-300-black-1.pwg
++cups-2.3.3/examples/get-printer-attributes-suite.test
++cups-2.3.3/examples/identify-printer-display.test
++cups-2.3.3/examples/testfile.pdf
++cups-2.3.3/examples/get-jobs.test
++cups-2.3.3/examples/r300-colorman.drv
++cups-2.3.3/examples/ipp-1.1.test
++cups-2.3.3/examples/testfile.ps
++cups-2.3.3/examples/ipp-backend.test
++cups-2.3.3/examples/testfile.jpg
++cups-2.3.3/examples/print-job-password.test
++cups-2.3.3/examples/print-job-letter.test
++cups-2.3.3/examples/r300-remote.drv
++cups-2.3.3/examples/validate-job.test
++cups-2.3.3/examples/color.jpg
++cups-2.3.3/examples/minimum.drv
++cups-2.3.3/examples/laserjet-basic.drv
++cups-2.3.3/examples/print-job-hold.test
++cups-2.3.3/examples/get-ppds-drv-only.test
++cups-2.3.3/examples/ppdx.c
++cups-2.3.3/examples/get-printers-printer-id.test
++cups-2.3.3/examples/onepage-letter.pdf
++cups-2.3.3/examples/get-job-attributes2.test
++cups-2.3.3/examples/onepage-a4.pdf
++cups-2.3.3/examples/get-ppds-psversion.test
++cups-2.3.3/examples/testppdx.ppd
++cups-2.3.3/examples/get-ppds-make.test
++cups-2.3.3/examples/fax-job.test
++cups-2.3.3/examples/ipp-2.2.test
++cups-2.3.3/examples/cups-create-local-printer.test
++cups-2.3.3/examples/testfile.txt
++cups-2.3.3/examples/document-letter.sla
++cups-2.3.3/examples/get-job-attributes.test
++cups-2.3.3/examples/print-job-gzip.test
++cups-2.3.3/examples/color.drv
++cups-2.3.3/examples/print-uri.test
++cups-2.3.3/examples/get-ppds.test
++cups-2.3.3/examples/get-notifications.test
++cups-2.3.3/examples/onepage-a4.ps
++cups-2.3.3/examples/identify-printer-multiple.test
++cups-2.3.3/examples/get-subscriptions.test
++cups-2.3.3/examples/constraint.drv
++cups-2.3.3/examples/document-a4.pdf
++cups-2.3.3/examples/create-job-sheets.test
++cups-2.3.3/examples/get-ppd.test
++cups-2.3.3/examples/testppdx.c
++cups-2.3.3/examples/get-printer-attributes.test
++cups-2.3.3/examples/get-printer-description-attributes.test
++cups-2.3.3/examples/get-job-template-attributes.test
++cups-2.3.3/examples/get-completed-jobs.test
++cups-2.3.3/examples/create-job.test
++cups-2.3.3/ppdc/ppdc-message.cxx
++cups-2.3.3/ppdc/testcatalog.cxx
++cups-2.3.3/ppdc/ppdc-group.cxx
++cups-2.3.3/ppdc/ppdc-option.cxx
++cups-2.3.3/ppdc/ppdc-file.cxx
++cups-2.3.3/ppdc/ppdi.cxx
++cups-2.3.3/ppdc/ppdc-driver.cxx
++cups-2.3.3/ppdc/ppdc-shared.cxx
++cups-2.3.3/ppdc/ppdc.h
++cups-2.3.3/ppdc/Makefile
++cups-2.3.3/ppdc/ppdc-profile.cxx
++cups-2.3.3/ppdc/ppdc-variable.cxx
++cups-2.3.3/ppdc/ppdc-import.cxx
++cups-2.3.3/ppdc/ppdc-constraint.cxx
++cups-2.3.3/ppdc/Dependencies
++cups-2.3.3/ppdc/ppdc-private.h
++cups-2.3.3/ppdc/ppdc-array.cxx
++cups-2.3.3/ppdc/ppdmerge.cxx
++cups-2.3.3/ppdc/ppdc-source.cxx
++cups-2.3.3/ppdc/genstrings.cxx
++cups-2.3.3/ppdc/foo.drv
++cups-2.3.3/ppdc/ppdpo.cxx
++cups-2.3.3/ppdc/ppdhtml.cxx
++cups-2.3.3/ppdc/sample.drv
++cups-2.3.3/ppdc/ppdc-choice.cxx
++cups-2.3.3/ppdc/ppdc-mediasize.cxx
++cups-2.3.3/ppdc/ppdc.cxx
++cups-2.3.3/ppdc/ppdc-attr.cxx
++cups-2.3.3/ppdc/ppdc-font.cxx
++cups-2.3.3/ppdc/ppdc-filter.cxx
++cups-2.3.3/ppdc/ppdc-string.cxx
++cups-2.3.3/ppdc/foo-fr.po
++cups-2.3.3/ppdc/ppdc-catalog.cxx
++cups-2.3.3/backend/usb-darwin.c
++cups-2.3.3/backend/network.c
++cups-2.3.3/backend/ieee1284.c
++cups-2.3.3/backend/testsupplies.c
++cups-2.3.3/backend/usb.c
++cups-2.3.3/backend/ipp.c
++cups-2.3.3/backend/snmp-supplies.c
++cups-2.3.3/backend/testbackend.c
++cups-2.3.3/backend/Makefile
++cups-2.3.3/backend/org.cups.usb-quirks
++cups-2.3.3/backend/dnssd.c
++cups-2.3.3/backend/usb-libusb.c
++cups-2.3.3/backend/pseudo
++cups-2.3.3/backend/Dependencies
++cups-2.3.3/backend/socket.c
++cups-2.3.3/backend/test1284.c
++cups-2.3.3/backend/backend-private.h
++cups-2.3.3/backend/snmp.c
++cups-2.3.3/backend/usb-unix.c
++cups-2.3.3/backend/lpd.c
++cups-2.3.3/backend/runloop.c
++cups-2.3.3/backend/snmp.txt
++cups-2.3.3/desktop/cups.desktop.in
++cups-2.3.3/desktop/cups.svg
++cups-2.3.3/desktop/cups-64.png
++cups-2.3.3/desktop/cups.conf
++cups-2.3.3/desktop/cups-16.png
++cups-2.3.3/desktop/Makefile
++cups-2.3.3/desktop/cups-512.png
++cups-2.3.3/desktop/cups-128.png
++cups-2.3.3/desktop/cups-256.png
++cups-2.3.3/desktop/cups-32.png
++cups-2.3.3/desktop/cups.icns
++cups-2.3.3/scheduler/testspeed.c
++cups-2.3.3/scheduler/statbuf.h
++cups-2.3.3/scheduler/log.c
++cups-2.3.3/scheduler/dirsvc.c
++cups-2.3.3/scheduler/network.c
++cups-2.3.3/scheduler/org.cups.cupsd.plist
++cups-2.3.3/scheduler/mime.h
++cups-2.3.3/scheduler/client.h
++cups-2.3.3/scheduler/process.c
++cups-2.3.3/scheduler/auth.c
++cups-2.3.3/scheduler/policy.h
++cups-2.3.3/scheduler/util.c
++cups-2.3.3/scheduler/testlpd.c
++cups-2.3.3/scheduler/cups-exec.c
++cups-2.3.3/scheduler/printers.c
++cups-2.3.3/scheduler/cert.c
++cups-2.3.3/scheduler/cups.sh.in
++cups-2.3.3/scheduler/banners.c
++cups-2.3.3/scheduler/ipp.c
++cups-2.3.3/scheduler/cups-lpd.xinetd.in
++cups-2.3.3/scheduler/Makefile
++cups-2.3.3/scheduler/conf.h
++cups-2.3.3/scheduler/cups-driverd.cxx
++cups-2.3.3/scheduler/org.cups.cupsd.service.in
++cups-2.3.3/scheduler/testsub.c
++cups-2.3.3/scheduler/listen.c
++cups-2.3.3/scheduler/classes.h
++cups-2.3.3/scheduler/select.c
++cups-2.3.3/scheduler/org.cups.cupsd.socket.in
++cups-2.3.3/scheduler/cups.xml.in
++cups-2.3.3/scheduler/Dependencies
++cups-2.3.3/scheduler/job.h
++cups-2.3.3/scheduler/colorman.h
++cups-2.3.3/scheduler/org.cups.cupsd.path.in
++cups-2.3.3/scheduler/mime-private.h
++cups-2.3.3/scheduler/server.c
++cups-2.3.3/scheduler/filter.c
++cups-2.3.3/scheduler/cups-lpd.c
++cups-2.3.3/scheduler/cupsd.h
++cups-2.3.3/scheduler/sysman.h
++cups-2.3.3/scheduler/subscriptions.h
++cups-2.3.3/scheduler/client.c
++cups-2.3.3/scheduler/mime.c
++cups-2.3.3/scheduler/quotas.c
++cups-2.3.3/scheduler/dirsvc.h
++cups-2.3.3/scheduler/env.c
++cups-2.3.3/scheduler/network.h
++cups-2.3.3/scheduler/main.c
++cups-2.3.3/scheduler/cups-deviced.c
++cups-2.3.3/scheduler/type.c
++cups-2.3.3/scheduler/statbuf.c
++cups-2.3.3/scheduler/org.cups.cups-lpdAT.service.in
++cups-2.3.3/scheduler/banners.h
++cups-2.3.3/scheduler/org.cups.cups-lpd.socket
++cups-2.3.3/scheduler/cert.h
++cups-2.3.3/scheduler/printers.h
++cups-2.3.3/scheduler/util.h
++cups-2.3.3/scheduler/policy.c
++cups-2.3.3/scheduler/auth.h
++cups-2.3.3/scheduler/classes.c
++cups-2.3.3/scheduler/file.c
++cups-2.3.3/scheduler/testmime.c
++cups-2.3.3/scheduler/conf.c
++cups-2.3.3/scheduler/org.cups.cups-lpd.plist.in
++cups-2.3.3/scheduler/cupsfilter.c
++cups-2.3.3/scheduler/subscriptions.c
++cups-2.3.3/scheduler/sysman.c
++cups-2.3.3/scheduler/colorman.c
++cups-2.3.3/scheduler/libcupsmime.exp
++cups-2.3.3/scheduler/job.c
++cups-2.3.3/vcnet/ipptool.vcxproj.filters
++cups-2.3.3/vcnet/dns_sd.h
++cups-2.3.3/vcnet/ipptool.vcxproj.user
++cups-2.3.3/vcnet/cupstestppd.vcxproj
++cups-2.3.3/vcnet/testfile.vcxproj.filters
++cups-2.3.3/vcnet/dnssdstub.vcxproj
++cups-2.3.3/vcnet/regex.vcxproj
++cups-2.3.3/vcnet/ippeveprinter.vcxproj.filters
++cups-2.3.3/vcnet/ippeveprinter.vcxproj.user
++cups-2.3.3/vcnet/config.h
++cups-2.3.3/vcnet/dnssdstub.vcxproj.user
++cups-2.3.3/vcnet/ippfind.vcxproj
++cups-2.3.3/vcnet/regex.vcxproj.filters
++cups-2.3.3/vcnet/ippfind.vcxproj.filters
++cups-2.3.3/vcnet/libcups2.vcxproj
++cups-2.3.3/vcnet/regex.vcxproj.user
++cups-2.3.3/vcnet/testhttp.vcxproj.user
++cups-2.3.3/vcnet/ippfind.vcxproj.user
++cups-2.3.3/vcnet/regex/
++cups-2.3.3/vcnet/ippeveprinter.vcxproj
++cups-2.3.3/vcnet/testfile.vcxproj
++cups-2.3.3/vcnet/libcups2.vcxproj.filters
++cups-2.3.3/vcnet/dns_sd.c
++cups-2.3.3/vcnet/packages.config
++cups-2.3.3/vcnet/dnssdstub.vcxproj.filters
++cups-2.3.3/vcnet/cupstestppd.vcxproj.filters
++cups-2.3.3/vcnet/testhttp.vcxproj.filters
++cups-2.3.3/vcnet/README.txt
++cups-2.3.3/vcnet/cups.sln
++cups-2.3.3/vcnet/libcups2.vcxproj.user
++cups-2.3.3/vcnet/testhttp.vcxproj
++cups-2.3.3/vcnet/setdebug.bat
++cups-2.3.3/vcnet/testfile.vcxproj.user
++cups-2.3.3/vcnet/ipptool.vcxproj
++cups-2.3.3/vcnet/cupstestppd.vcxproj.user
++cups-2.3.3/vcnet/regex/utils.h
++cups-2.3.3/vcnet/regex/mkh
++cups-2.3.3/vcnet/regex/regcomp.ih
++cups-2.3.3/vcnet/regex/Makefile
++cups-2.3.3/vcnet/regex/cclass.h
++cups-2.3.3/vcnet/regex/regexec.c
++cups-2.3.3/vcnet/regex/tests
++cups-2.3.3/vcnet/regex/regex.h
++cups-2.3.3/vcnet/regex/split.c
++cups-2.3.3/vcnet/regex/regcomp.c
++cups-2.3.3/vcnet/regex/WHATSNEW
++cups-2.3.3/vcnet/regex/regex.def
++cups-2.3.3/vcnet/regex/regex.7
++cups-2.3.3/vcnet/regex/README
++cups-2.3.3/vcnet/regex/cname.h
++cups-2.3.3/vcnet/regex/debug.c
++cups-2.3.3/vcnet/regex/engine.c
++cups-2.3.3/vcnet/regex/main.ih
++cups-2.3.3/vcnet/regex/main.c
++cups-2.3.3/vcnet/regex/regerror.ih
++cups-2.3.3/vcnet/regex/COPYRIGHT
++cups-2.3.3/vcnet/regex/engine.ih
++cups-2.3.3/vcnet/regex/regerror.c
++cups-2.3.3/vcnet/regex/debug.ih
++cups-2.3.3/vcnet/regex/regfree.c
++cups-2.3.3/vcnet/regex/regex.3
++cups-2.3.3/vcnet/regex/regex2.h
++cups-2.3.3/config-scripts/cups-opsys.m4
++cups-2.3.3/config-scripts/cups-gssapi.m4
++cups-2.3.3/config-scripts/cups-dnssd.m4
++cups-2.3.3/config-scripts/cups-directories.m4
++cups-2.3.3/config-scripts/cups-compiler.m4
++cups-2.3.3/config-scripts/cups-threads.m4
++cups-2.3.3/config-scripts/cups-ssl.m4
++cups-2.3.3/config-scripts/cups-poll.m4
++cups-2.3.3/config-scripts/cups-network.m4
++cups-2.3.3/config-scripts/cups-libtool.m4
++cups-2.3.3/config-scripts/cups-manpages.m4
++cups-2.3.3/config-scripts/cups-pam.m4
++cups-2.3.3/config-scripts/cups-largefile.m4
++cups-2.3.3/config-scripts/cups-defaults.m4
++cups-2.3.3/config-scripts/cups-common.m4
++cups-2.3.3/config-scripts/cups-startup.m4
++cups-2.3.3/config-scripts/cups-sharedlibs.m4
++cups-2.3.3/systemv/cupsaccept.c
++cups-2.3.3/systemv/cancel.c
++cups-2.3.3/systemv/Makefile
++cups-2.3.3/systemv/lp.c
++cups-2.3.3/systemv/Dependencies
++cups-2.3.3/systemv/lpadmin.c
++cups-2.3.3/systemv/lpinfo.c
++cups-2.3.3/systemv/lpoptions.c
++cups-2.3.3/systemv/cupsctl.c
++cups-2.3.3/systemv/lpmove.c
++cups-2.3.3/systemv/cupstestppd.c
++cups-2.3.3/systemv/lpstat.c
++cups-2.3.3/notifier/testnotify.c
++cups-2.3.3/notifier/Makefile
++cups-2.3.3/notifier/rss.c
++cups-2.3.3/notifier/mailto.c
++cups-2.3.3/notifier/Dependencies
++cups-2.3.3/notifier/dbus.c
++cups-2.3.3/test/5.5-lp.sh
++cups-2.3.3/test/run-stp-tests.sh
++cups-2.3.3/test/waitjobs.sh
++cups-2.3.3/test/5.8-cancel.sh
++cups-2.3.3/test/5.7-lprm.sh
++cups-2.3.3/test/4.2-cups-printer-ops.test
++cups-2.3.3/test/5.2-lpc.sh
++cups-2.3.3/test/test.convs
++cups-2.3.3/test/str-header.html
++cups-2.3.3/test/5.9-lpinfo.sh
++cups-2.3.3/test/test.types
++cups-2.3.3/test/str-trailer.html
++cups-2.3.3/test/5.6-lpr.sh
++cups-2.3.3/test/5.3-lpq.sh
++cups-2.3.3/test/4.1-requests.test
++cups-2.3.3/test/testhp.ppd
++cups-2.3.3/test/4.4-subscription-ops.test
++cups-2.3.3/test/testps.ppd
++cups-2.3.3/test/5.1-lpadmin.sh
++cups-2.3.3/test/5.4-lpstat.sh
++cups-2.3.3/test/4.3-job-ops.test
++cups-2.3.3/locale/cups_ja.po
++cups-2.3.3/locale/ipp-strings.c
++cups-2.3.3/locale/Makefile
++cups-2.3.3/locale/cups_pt_BR.po
++cups-2.3.3/locale/checkpo.c
++cups-2.3.3/locale/cups_ru.po
++cups-2.3.3/locale/Dependencies
++cups-2.3.3/locale/cups_zh_CN.po
++cups-2.3.3/locale/cups_fr.po
++cups-2.3.3/locale/cups_cs.po
++cups-2.3.3/locale/cups_en.po
++cups-2.3.3/locale/cups.pot
++cups-2.3.3/locale/cups_es.po
++cups-2.3.3/locale/cups_it.po
++cups-2.3.3/locale/cups.strings
++cups-2.3.3/locale/cups.header
++cups-2.3.3/locale/cups_ca.po
++cups-2.3.3/locale/po2strings.c
++cups-2.3.3/locale/cups_de.po
++cups-2.3.3/locale/strings2po.c
++cups-2.3.3/monitor/Makefile
++cups-2.3.3/monitor/Dependencies
++cups-2.3.3/monitor/tbcp.c
++cups-2.3.3/monitor/bcp.c
++cups-2.3.3/tools/ippevecommon.h
++cups-2.3.3/tools/ippeveps.c
++cups-2.3.3/tools/dither.h
++cups-2.3.3/tools/printer.opacity
++cups-2.3.3/tools/Makefile
++cups-2.3.3/tools/ippfind.c
++cups-2.3.3/tools/ippevepcl.c
++cups-2.3.3/tools/Dependencies
++cups-2.3.3/tools/ippeveprinter.c
++cups-2.3.3/tools/ipptool.c
++cups-2.3.3/tools/printer.png
++cups-2.3.3/tools/printer-png.h
++cups-2.3.3/berkeley/lprm.c
++cups-2.3.3/berkeley/Makefile
++cups-2.3.3/berkeley/Dependencies
++cups-2.3.3/berkeley/lpr.c
++cups-2.3.3/berkeley/lpq.c
++cups-2.3.3/berkeley/lpc.c
++cups-2.3.3/packaging/cups.spec.in
++cups-2.3.3/packaging/cups.spec
++cups-2.3.3/packaging/cups.list.in
++cups-2.3.3/man/cups.1
++cups-2.3.3/man/ppdmerge.1
++cups-2.3.3/man/ppdcfile.5
++cups-2.3.3/man/lpr.1
++cups-2.3.3/man/notifier.7
++cups-2.3.3/man/mailto.conf.5
++cups-2.3.3/man/ppdpo.1
++cups-2.3.3/man/ipptool.1
++cups-2.3.3/man/cupsd-logs.5
++cups-2.3.3/man/cups-snmp.8
++cups-2.3.3/man/mime.convs.5
++cups-2.3.3/man/Makefile
++cups-2.3.3/man/ppdc.1
++cups-2.3.3/man/ppdi.1
++cups-2.3.3/man/client.conf.5
++cups-2.3.3/man/lpq.1
++cups-2.3.3/man/cupsd.conf.5
++cups-2.3.3/man/backend.7
++cups-2.3.3/man/lpstat.1
++cups-2.3.3/man/cupsd.8
++cups-2.3.3/man/ipptoolfile.5
++cups-2.3.3/man/cupsfilter.8
++cups-2.3.3/man/lpc.8
++cups-2.3.3/man/cupstestppd.1
++cups-2.3.3/man/cupsaccept.8
++cups-2.3.3/man/cups-files.conf.5
++cups-2.3.3/man/printers.conf.5
++cups-2.3.3/man/mime.types.5
++cups-2.3.3/man/cupsd-helper.8
++cups-2.3.3/man/cancel.1
++cups-2.3.3/man/subscriptions.conf.5
++cups-2.3.3/man/lprm.1
++cups-2.3.3/man/classes.conf.5
++cups-2.3.3/man/mantohtml.c
++cups-2.3.3/man/cups-snmp.conf.5
++cups-2.3.3/man/ippevepcl.7
++cups-2.3.3/man/cups-config.1
++cups-2.3.3/man/cupsenable.8
++cups-2.3.3/man/ippfind.1
++cups-2.3.3/man/lpinfo.8
++cups-2.3.3/man/lpoptions.1
++cups-2.3.3/man/ppdhtml.1
++cups-2.3.3/man/cupsctl.8
++cups-2.3.3/man/ippeveprinter.1
++cups-2.3.3/man/cups-lpd.8
++cups-2.3.3/man/lpmove.8
++cups-2.3.3/man/lp.1
++cups-2.3.3/man/filter.7
++cups-2.3.3/man/lpadmin.8
++cups-2.3.3/xcode/CUPS.xcodeproj/
++cups-2.3.3/xcode/config.h
++cups-2.3.3/xcode/README.txt
++cups-2.3.3/xcode/CUPS.xcodeproj/project.pbxproj
++checking build system type... x86_64-slackware-linux-musl
++checking host system type... x86_64-slackware-linux-musl
++checking for codesign... no
++checking for true... /usr/bin/true
++checking for gawk... gawk
++checking for clang... clang
++checking whether the C compiler works... yes
++checking for C compiler default output file name... a.out
++checking for suffix of executables... 
++checking whether we are cross compiling... no
++checking for suffix of object files... o
++checking whether we are using the GNU C compiler... yes
++checking whether clang accepts -g... yes
++checking for clang option to accept ISO C89... none needed
++checking how to run the C preprocessor... clang -E
++checking for clang++... clang++
++checking whether we are using the GNU C++ compiler... yes
++checking whether clang++ accepts -g... yes
++checking for ranlib... ranlib
++checking for ar... /usr/bin/ar
++checking for chmod... /usr/bin/chmod
++checking for gzip... /usr/bin/gzip
++checking for install-sh script... using /tmp/cups-2.3.3/install-sh
++checking for ld... /usr/bin/ld
++checking for ln... /usr/bin/ln
++checking for mkdir... /usr/bin/mkdir
++checking for mv... /usr/bin/mv
++checking for rm... /usr/bin/rm
++checking for rmdir... /usr/bin/rmdir
++checking for sed... /usr/bin/sed
++checking for xdg-open... /usr/bin/xdg-open
++checking for pkg-config... /usr/bin/pkg-config
++checking for library containing abs... none required
++checking for library containing crypt... none required
++checking for library containing fmod... none required
++checking for library containing getspent... none required
++checking for grep that handles long lines and -e... /usr/bin/grep
++checking for egrep... /usr/bin/grep -E
++checking for ANSI C header files... yes
++checking for sys/types.h... yes
++checking for sys/stat.h... yes
++checking for stdlib.h... yes
++checking for string.h... yes
++checking for memory.h... yes
++checking for strings.h... yes
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking for unistd.h... yes
++checking for stdlib.h... (cached) yes
++checking crypt.h usability... yes
++checking crypt.h presence... yes
++checking for crypt.h... yes
++checking langinfo.h usability... yes
++checking langinfo.h presence... yes
++checking for langinfo.h... yes
++checking malloc.h usability... yes
++checking malloc.h presence... yes
++checking for malloc.h... yes
++checking shadow.h usability... yes
++checking shadow.h presence... yes
++checking for shadow.h... yes
++checking for stdint.h... (cached) yes
++checking for string.h... (cached) yes
++checking for strings.h... (cached) yes
++checking bstring.h usability... no
++checking bstring.h presence... no
++checking for bstring.h... no
++checking sys/ioctl.h usability... yes
++checking sys/ioctl.h presence... yes
++checking for sys/ioctl.h... yes
++checking sys/param.h usability... yes
++checking sys/param.h presence... yes
++checking for sys/param.h... yes
++checking sys/ucred.h usability... no
++checking sys/ucred.h presence... no
++checking for sys/ucred.h... no
++checking iconv.h usability... yes
++checking iconv.h presence... yes
++checking for iconv.h... yes
++checking for library containing iconv_open... none required
++checking for library containing libiconv_open... no
++checking sys/mount.h usability... yes
++checking sys/mount.h presence... yes
++checking for sys/mount.h... yes
++checking sys/statfs.h usability... yes
++checking sys/statfs.h presence... yes
++checking for sys/statfs.h... yes
++checking sys/statvfs.h usability... yes
++checking sys/statvfs.h presence... yes
++checking for sys/statvfs.h... yes
++checking sys/vfs.h usability... yes
++checking sys/vfs.h presence... yes
++checking for sys/vfs.h... yes
++checking for statfs... yes
++checking for statvfs... yes
++checking for strdup... yes
++checking for strlcat... yes
++checking for strlcpy... yes
++checking for snprintf... yes
++checking for vsnprintf... yes
++checking for random... yes
++checking for lrand48... yes
++checking for arc4random... no
++checking for geteuid... yes
++checking for setpgid... yes
++checking for vsyslog... yes
++checking for sigaction... yes
++checking for waitpid... yes
++checking for wait3... yes
++checking for posix_spawn... yes
++checking for getgrouplist... yes
++checking for tm_gmtoff member in tm structure... yes
++checking for st_gen member in stat structure... no
++checking for removefile... no
++checking for libusb-1.0... yes
++checking zlib.h usability... yes
++checking zlib.h presence... yes
++checking for zlib.h... yes
++checking for gzgets in -lz... yes
++checking for inflateCopy in -lz... yes
++checking for library containing acl_init... -lacl
++checking for DBUS... yes
++checking for dbus_message_iter_init_append... yes
++checking for dbus_threads_init... yes
++checking whether compiler supports -fstack-protector... yes
++checking whether compiler supports -fPIE... yes
++checking for resolv.h... yes
++checking for library containing socket... none required
++checking for library containing gethostbyaddr... none required
++checking for library containing getifaddrs... none required
++checking for library containing hstrerror... none required
++checking for library containing rresvport_af... no
++checking for library containing __res_init... no
++checking for library containing res_9_init... no
++checking for library containing res_init... none required
++checking for library containing getaddrinfo... none required
++checking for library containing getnameinfo... none required
++checking for struct sockaddr.sa_len... no
++checking sys/sockio.h usability... no
++checking sys/sockio.h presence... no
++checking for sys/sockio.h... no
++checking for poll... yes
++checking for epoll_create... yes
++checking for kqueue... no
++checking for krb5-config... /usr/bin/krb5-config
++checking krb5.h usability... yes
++checking krb5.h presence... yes
++checking for krb5.h... yes
++checking gssapi.h usability... yes
++checking gssapi.h presence... yes
++checking for gssapi.h... yes
++checking gssapi/gssapi.h usability... yes
++checking gssapi/gssapi.h presence... yes
++checking for gssapi/gssapi.h... yes
++checking for __ApplePrivate_gss_acquire_cred_ex_f... no
++checking for GSS_C_NT_HOSTBASED_SERVICE... yes
++checking pthread.h usability... yes
++checking pthread.h presence... yes
++checking for pthread.h... yes
++checking for pthread_create using -lpthreads... no
++checking for pthread_create using -lpthread... yes
++checking for libgnutls-config... no
++checking for gnutls_transport_set_pull_timeout_function... yes
++checking for gnutls_priority_set_direct... yes
++    Using SSLLIBS="-lgnutls"
++    Using SSLFLAGS="-I/usr/include/p11-kit-1"
++checking for dlopen in -ldl... yes
++checking for pam_start in -lpam... yes
++checking for pam_set_item in -lpam... yes
++checking for pam_setcred in -lpam... yes
++checking security/pam_appl.h usability... yes
++checking security/pam_appl.h presence... yes
++checking for security/pam_appl.h... yes
++checking for special C compiler options needed for large files... no
++checking for _FILE_OFFSET_BITS value needed for large files... no
++checking for long long int... yes
++checking for strtoll... yes
++checking for launch_activate_socket... no
++checking launch.h usability... no
++checking launch.h presence... no
++checking for launch.h... no
++checking for libsystemd... no
++checking for default print user... lp
++checking for default print group... lp
++checking for default system groups... "sys root wheel"
++configure: creating ./config.status
++config.status: creating Makedefs
++config.status: creating conf/cups-files.conf
++config.status: creating conf/cupsd.conf
++config.status: creating conf/mime.convs
++config.status: creating conf/pam.std
++config.status: creating conf/snmp.conf
++config.status: creating cups-config
++config.status: creating desktop/cups.desktop
++config.status: creating doc/index.html
++config.status: creating scheduler/cups-lpd.xinetd
++config.status: creating scheduler/cups.sh
++config.status: creating scheduler/cups.xml
++config.status: creating scheduler/org.cups.cups-lpd.plist
++config.status: creating scheduler/org.cups.cups-lpdAT.service
++config.status: creating scheduler/org.cups.cupsd.path
++config.status: creating scheduler/org.cups.cupsd.service
++config.status: creating scheduler/org.cups.cupsd.socket
++config.status: creating templates/header.tmpl
++config.status: creating packaging/cups.list
++config.status: creating doc/de/index.html
++config.status: creating templates/de/header.tmpl
++config.status: creating doc/es/index.html
++config.status: creating templates/es/header.tmpl
++config.status: creating templates/fr/header.tmpl
++config.status: creating doc/ja/index.html
++config.status: creating templates/ja/header.tmpl
++config.status: creating doc/pt_BR/index.html
++config.status: creating templates/pt_BR/header.tmpl
++config.status: creating doc/ru/index.html
++config.status: creating templates/ru/header.tmpl
++config.status: creating config.h
++Using ARCHFLAGS=
++Using ALL_CFLAGS=-I.. -D_CUPS_SOURCE -O2 -fPIC -I/usr/include/libusb-1.0 -I/usr/include/dbus-1.0 -I/usr/lib/dbus-1.0/include -DDBUS_API_SUBJECT_TO_CHANGE -D_FORTIFY_SOURCE=2 -I/usr/include/p11-kit-1 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_THREAD_SAFE -D_REENTRANT  -Wall -Wno-format-y2k -Wunused -Wno-unused-result -Wsign-conversion
++Using ALL_CXXFLAGS=-I.. -D_CUPS_SOURCE -O2 -fPIC -D_FORTIFY_SOURCE=2 -I/usr/include/p11-kit-1 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_THREAD_SAFE -D_REENTRANT  -Wall -Wno-format-y2k -Wunused -Wno-unused-result -Wsign-conversion
++Using CC=clang
++Using CXX=clang
++Using DSOFLAGS=-Wl,-soname,all -shared
++Using LDFLAGS=
++Using LIBS=-Wl,--enable-new-dtags -Wl,-rpath -Wl,/usr/lib -lgssapi_krb5 -lkrb5 -lk5crypto -lcom_err  -lgnutls -lz -lpthread   -lz
++Making all in cups...
++make[1]: warning: -jN forced in submake: disabling jobserver mode.
++Compiling raster-interstub.c...
++Compiling raster-stubs.c...
++Compiling array.c...
++Compiling auth.c...
++Compiling debug.c...
++Compiling dest.c...
++Compiling dest-job.c...
++Compiling dest-localization.c...
++Compiling dest-options.c...
++Compiling dir.c...
++Compiling encode.c...
++Compiling file.c...
++Compiling getputfile.c...
++Compiling globals.c...
++Compiling hash.c...
++Compiling http.c...
++Compiling http-addr.c...
++Compiling http-addrlist.c...
++Compiling http-support.c...
++Compiling ipp.c...
++Compiling ipp-file.c...
++Compiling ipp-vars.c...
++Compiling ipp-support.c...
++Compiling langprintf.c...
++Compiling language.c...
++Compiling md5.c...
++Compiling md5passwd.c...
++Compiling notify.c...
++Compiling options.c...
++Compiling pwg-media.c...
++Compiling raster-error.c...
++Compiling raster-stream.c...
++Compiling request.c...
++Compiling snprintf.c...
++Compiling string.c...
++Compiling tempfile.c...
++Compiling thread.c...
++Compiling tls.c...
++Compiling transcode.c...
++Compiling usersys.c...
++Compiling util.c...
++Compiling adminutil.c...
++Compiling backchannel.c...
++Compiling backend.c...
++Compiling getdevices.c...
++Compiling getifaddrs.c...
++Compiling ppd.c...
++Compiling ppd-attr.c...
++Compiling ppd-cache.c...
++Compiling ppd-conflicts.c...
++Compiling ppd-custom.c...
++Compiling ppd-emit.c...
++Compiling ppd-localize.c...
++Compiling ppd-mark.c...
++Compiling ppd-page.c...
++Compiling ppd-util.c...
++Compiling raster-interpret.c...
++Compiling sidechannel.c...
++Compiling snmp.c...
++Archiving libcupsimage.a...
++a - raster-interstub.o
++a - raster-stubs.o
++Linking libcups.so.2...
++Archiving libcups.a...
++a - array.o
++a - auth.o
++a - debug.o
++a - dest.o
++a - dest-job.o
++a - dest-localization.o
++a - dest-options.o
++a - dir.o
++a - encode.o
++a - file.o
++a - getputfile.o
++a - globals.o
++a - hash.o
++a - http.o
++a - http-addr.o
++a - http-addrlist.o
++a - http-support.o
++a - ipp.o
++a - ipp-file.o
++a - ipp-vars.o
++a - ipp-support.o
++a - langprintf.o
++a - language.o
++a - md5.o
++a - md5passwd.o
++a - notify.o
++a - options.o
++a - pwg-media.o
++a - raster-error.o
++a - raster-stream.o
++a - raster-stubs.o
++a - request.o
++a - snprintf.o
++a - string.o
++a - tempfile.o
++a - thread.o
++a - tls.o
++a - transcode.o
++a - usersys.o
++a - util.o
++a - adminutil.o
++a - backchannel.o
++a - backend.o
++a - getdevices.o
++a - getifaddrs.o
++a - ppd.o
++a - ppd-attr.o
++a - ppd-cache.o
++a - ppd-conflicts.o
++a - ppd-custom.o
++a - ppd-emit.o
++a - ppd-localize.o
++a - ppd-mark.o
++a - ppd-page.o
++a - ppd-util.o
++a - raster-interpret.o
++a - raster-interstub.o
++a - sidechannel.o
++a - snmp.o
++Linking libcupsimage.so.2...
++Making all in tools...
++make[1]: warning: -jN forced in submake: disabling jobserver mode.
++Compiling ippevepcl.c...
++Compiling ippeveps.c...
++Compiling ippeveprinter.c...
++In file included from ippeveprinter.c:41:
++/usr/include/sys/fcntl.h:1:2: warning: redirecting incorrect #include <sys/fcntl.h> to <fcntl.h> [-W#warnings]
++#warning redirecting incorrect #include <sys/fcntl.h> to <fcntl.h>
++ ^
++Compiling ipptool.c...
++Linking ippevepcl...
++Linking ippeveps...
++Linking ipptool...
++Linking ipptool-static...
++1 warning generated.
++Linking ippeveprinter...
++Linking ippeveprinter-static...
++Making all in filter...
++make[1]: warning: -jN forced in submake: disabling jobserver mode.
++Compiling commandtops.c...
++Compiling gziptoany.c...
++Compiling pstops.c...
++Compiling common.c...
++Compiling rastertoepson.c...
++Compiling rastertohp.c...
++Compiling rastertolabel.c...
++Compiling rastertopwg.c...
++Linking commandtops...
++Linking gziptoany...
++Linking rastertoepson...
++Linking rastertohp...
++Linking rastertolabel...
++Linking rastertopwg...
++Linking pstops...
++Making all in backend...
++make[1]: warning: -jN forced in submake: disabling jobserver mode.
++Compiling ieee1284.c...
++Compiling runloop.c...
++Compiling network.c...
++ieee1284.c:79:19: warning: implicit conversion changes signedness: 'unsigned int' to 'int' [-Wsign-conversion]
++    if (ioctl(fd, LPIOC_GET_DEVICE_ID((unsigned)device_id_size), device_id))
++        ~~~~~     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++./backend-private.h:29:38: note: expanded from macro 'LPIOC_GET_DEVICE_ID'
++#    define LPIOC_GET_DEVICE_ID(len)    _IOC(_IOC_READ, 'P', IOCNR_GET_DEVICE_ID, len)
++                                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++/usr/include/asm-generic/ioctl.h:72:28: note: expanded from macro '_IOC'
++         ((nr)   << _IOC_NRSHIFT) | \
++         ~~~~~~~~~~~~~~~~~~~~~~~~~^~~
++Compiling snmp-supplies.c...
++1 warning generated.
++Compiling ipp.c...
++Compiling lpd.c...
++Compiling snmp.c...
++Compiling socket.c...
++Compiling usb.c...
++Archiving libbackend.a...
++a - ieee1284.o
++a - network.o
++a - runloop.o
++a - snmp-supplies.o
++Linking lpd...
++Linking snmp...
++Linking socket...
++Linking ipp...
++Linking usb...
++Making all in berkeley...
++make[1]: warning: -jN forced in submake: disabling jobserver mode.
++Compiling lpc.c...
++Compiling lpq.c...
++Compiling lpr.c...
++Compiling lprm.c...
++Linking lpc...
++Linking lpr...
++Linking lpq...
++Linking lprm...
++Making all in cgi-bin...
++make[1]: warning: -jN forced in submake: disabling jobserver mode.
++Compiling help-index.c...
++Compiling html.c...
++Compiling ipp-var.c...
++Compiling search.c...
++Compiling template.c...
++Compiling var.c...
++Compiling admin.c...
++Compiling classes.c...
++Compiling help.c...
++Compiling jobs.c...
++Compiling printers.c...
++Archiving libcupscgi.a...
++a - help-index.o
++a - html.o
++a - ipp-var.o
++a - search.o
++a - template.o
++a - var.o
++Linking classes.cgi...
++Linking help.cgi...
++Linking jobs.cgi...
++Linking printers.cgi...
++Linking admin.cgi...
++Making all in monitor...
++make[1]: warning: -jN forced in submake: disabling jobserver mode.
++Compiling bcp.c...
++Compiling tbcp.c...
++Linking tbcp...
++Linking bcp...
++Making all in notifier...
++make[1]: warning: -jN forced in submake: disabling jobserver mode.
++Compiling dbus.c...
++Compiling mailto.c...
++Compiling rss.c...
++Compiling testnotify.c...
++Linking mailto...
++Linking rss...
++Linking dbus...
++Linking testnotify...
++Making all in ppdc...
++make[1]: warning: -jN forced in submake: disabling jobserver mode.
++Compiling ppdc-array.cxx...
++Compiling ppdc-attr.cxx...
++Compiling ppdc-catalog.cxx...
++Compiling ppdc-choice.cxx...
++Compiling ppdc-constraint.cxx...
++Compiling ppdc-driver.cxx...
++Compiling ppdc-file.cxx...
++Compiling ppdc-filter.cxx...
++Compiling ppdc-font.cxx...
++Compiling ppdc-group.cxx...
++Compiling ppdc-import.cxx...
++Compiling ppdc-mediasize.cxx...
++Compiling ppdc-message.cxx...
++Compiling ppdc-option.cxx...
++Compiling ppdc-profile.cxx...
++Compiling ppdc-shared.cxx...
++Compiling ppdc-source.cxx...
++Compiling ppdc-string.cxx...
++Compiling ppdc-variable.cxx...
++Compiling ppdc.cxx...
++Compiling ppdhtml.cxx...
++Compiling ppdi.cxx...
++Compiling ppdmerge.cxx...
++Compiling ppdpo.cxx...
++Compiling genstrings.cxx...
++Linking ppdmerge...
++Archiving libcupsppdc.a...
++a - ppdc-array.o
++a - ppdc-attr.o
++a - ppdc-catalog.o
++a - ppdc-choice.o
++a - ppdc-constraint.o
++a - ppdc-driver.o
++a - ppdc-file.o
++a - ppdc-filter.o
++a - ppdc-font.o
++a - ppdc-group.o
++a - ppdc-import.o
++a - ppdc-mediasize.o
++a - ppdc-message.o
++a - ppdc-option.o
++a - ppdc-profile.o
++a - ppdc-shared.o
++a - ppdc-source.o
++a - ppdc-string.o
++a - ppdc-variable.o
++Linking ppdc...
++Linking ppdhtml...
++Linking ppdi...
++Linking ppdpo...
++Linking genstrings...
++Generating localization strings...
++Making all in scheduler...
++make[1]: warning: -jN forced in submake: disabling jobserver mode.
++Compiling filter.c...
++Compiling mime.c...
++Compiling type.c...
++Compiling auth.c...
++Compiling banners.c...
++Compiling cert.c...
++Compiling classes.c...
++Compiling client.c...
++Compiling colorman.c...
++Compiling conf.c...
++Compiling dirsvc.c...
++Compiling env.c...
++Compiling file.c...
++Compiling main.c...
++Compiling ipp.c...
++Compiling listen.c...
++Compiling job.c...
++Compiling log.c...
++Compiling network.c...
++Compiling policy.c...
++Compiling printers.c...
++Compiling process.c...
++Compiling quotas.c...
++Compiling select.c...
++Compiling server.c...
++Compiling statbuf.c...
++Compiling subscriptions.c...
++Compiling sysman.c...
++Compiling cupsfilter.c...
++Compiling cups-deviced.c...
++Compiling util.c...
++Compiling cups-driverd.cxx...
++Compiling cups-exec.c...
++Compiling cups-lpd.c...
++Archiving libcupsmime.a...
++a - filter.o
++a - mime.o
++a - type.o
++Linking cups-deviced...
++Linking cups-exec...
++Linking cupsd...
++Linking cupsfilter...
++Linking cups-lpd...
++Linking cups-driverd...
++Making all in systemv...
++make[1]: warning: -jN forced in submake: disabling jobserver mode.
++Compiling cancel.c...
++Compiling cupsaccept.c...
++Compiling cupsctl.c...
++Compiling cupstestppd.c...
++Compiling lp.c...
++Compiling lpadmin.c...
++Compiling lpinfo.c...
++Compiling lpmove.c...
++Compiling lpoptions.c...
++Compiling lpstat.c...
++Linking cancel...
++Linking cupsaccept...
++Linking cupsctl...
++Linking lp...
++Linking lpadmin...
++Linking lpinfo...
++Linking lpmove...
++Linking lpoptions...
++Linking lpstat...
++Linking cupstestppd...
++Making all in conf...
++make[1]: warning: -jN forced in submake: disabling jobserver mode.
++Making all in data...
++make[1]: warning: -jN forced in submake: disabling jobserver mode.
++Making all in desktop...
++make[1]: warning: -jN forced in submake: disabling jobserver mode.
++Making all in locale...
++make[1]: warning: -jN forced in submake: disabling jobserver mode.
++Compiling checkpo.c...
++Compiling po2strings.c...
++Compiling strings2po.c...
++Linking strings2po...
++Linking po2strings...
++Linking checkpo...
++Making all in man...
++make[1]: warning: -jN forced in submake: disabling jobserver mode.
++Making all in doc...
++make[1]: warning: -jN forced in submake: disabling jobserver mode.
++Making all in examples...
++make[1]: warning: -jN forced in submake: disabling jobserver mode.
++Making all in templates...
++make[1]: warning: -jN forced in submake: disabling jobserver mode.
++Making all in cups...
++Installing data files in cups...
++Installing data files in tools...
++Installing data files in filter...
++Installing data files in backend...
++Installing USB quirks in /tmp/package-cups/usr/share/cups/usb
++Installing data files in berkeley...
++Installing data files in cgi-bin...
++Installing data files in monitor...
++Installing data files in notifier...
++Installing data files in ppdc...
++Installing data files in scheduler...
++Creating /tmp/package-cups/usr/lib/cups/driver...
++Creating /tmp/package-cups/etc/cups...
++Creating /tmp/package-cups/etc/cups/ppd...
++Creating /tmp/package-cups/etc/cups/ssl...
++Creating /tmp/package-cups/var/run/cups...
++Creating /tmp/package-cups/var/run/cups/certs...
++Creating /tmp/package-cups/var/log/cups...
++Creating /tmp/package-cups/var/spool/cups...
++Creating /tmp/package-cups/var/spool/cups/tmp...
++Creating /tmp/package-cups/var/cache/cups...
++Installing init scripts...
++Installing data files in systemv...
++Installing data files in conf...
++Installing data files in data...
++Installing data files in desktop...
++Installing cups.conf in /etc/dbus-1...
++Installing desktop menu...
++Installing desktop icons...
++Installing data files in locale...
++Installing data files in man...
++Installing man pages in /tmp/package-cups/usr/share/man/man1...
++Installing man pages in /tmp/package-cups/usr/share/man/man5...
++Installing man pages in /tmp/package-cups/usr/share/man/man7...
++Installing man pages in /tmp/package-cups/usr/share/man/man8...
++Installing data files in doc...
++Installing data files in examples...
++Installing sample PPD compiler files in /tmp/package-cups/usr/share/cups/examples...
++Installing sample ipptool files in /tmp/package-cups/usr/share/cups/ipptool...
++Installing data files in templates...
++install: samba-export.tmpl does not exist
++install: samba-exported.tmpl does not exist
++Installing cups-config script...
++Installing header files in cups...
++Installing header files into /tmp/package-cups/usr/include/cups...
++Installing header files in tools...
++Installing header files in filter...
++Installing header files in backend...
++Installing header files in berkeley...
++Installing header files in cgi-bin...
++Installing header files in monitor...
++Installing header files in notifier...
++Installing header files in ppdc...
++Installing header files in scheduler...
++Installing header files in systemv...
++Installing header files in conf...
++Installing header files in data...
++Installing header files in desktop...
++Installing header files in locale...
++Installing header files in man...
++Installing header files in doc...
++Installing header files in examples...
++Installing header files in templates...
++Using ARCHFLAGS=
++Using ALL_CFLAGS=-I.. -D_CUPS_SOURCE -O2 -fPIC -I/usr/include/libusb-1.0 -I/usr/include/dbus-1.0 -I/usr/lib/dbus-1.0/include -DDBUS_API_SUBJECT_TO_CHANGE -D_FORTIFY_SOURCE=2 -I/usr/include/p11-kit-1 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_THREAD_SAFE -D_REENTRANT  -Wall -Wno-format-y2k -Wunused -Wno-unused-result -Wsign-conversion
++Using ALL_CXXFLAGS=-I.. -D_CUPS_SOURCE -O2 -fPIC -D_FORTIFY_SOURCE=2 -I/usr/include/p11-kit-1 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_THREAD_SAFE -D_REENTRANT  -Wall -Wno-format-y2k -Wunused -Wno-unused-result -Wsign-conversion
++Using CC=clang
++Using CXX=clang
++Using DSOFLAGS=-Wl,-soname,libs -shared
++Using LDFLAGS=
++Using LIBS=-Wl,--enable-new-dtags -Wl,-rpath -Wl,/usr/lib -lgssapi_krb5 -lkrb5 -lk5crypto -lcom_err  -lgnutls -lz -lpthread   -lz
++Making libraries in cups...
++Making libraries in tools...
++Making libraries in filter...
++Making libraries in backend...
++Making libraries in berkeley...
++Making libraries in cgi-bin...
++Making libraries in monitor...
++Making libraries in notifier...
++Making libraries in ppdc...
++Making libraries in scheduler...
++Making libraries in systemv...
++Making libraries in conf...
++Making libraries in data...
++Making libraries in desktop...
++Making libraries in locale...
++Making libraries in man...
++Making libraries in doc...
++Making libraries in examples...
++Making libraries in templates...
++Installing libraries in cups...
++Installing libraries in /tmp/package-cups/usr/lib...
++Installing libraries in tools...
++Installing libraries in filter...
++Installing libraries in backend...
++Installing backends in /tmp/package-cups/usr/lib/cups/backend
++Installing libraries in berkeley...
++Installing libraries in cgi-bin...
++Installing libraries in monitor...
++Installing libraries in notifier...
++Installing libraries in ppdc...
++Installing libraries in scheduler...
++Installing libraries in systemv...
++Installing libraries in conf...
++Installing libraries in data...
++Installing libraries in desktop...
++Installing libraries in locale...
++Installing libraries in man...
++Installing libraries in doc...
++Installing libraries in examples...
++Installing libraries in templates...
++Using ARCHFLAGS=
++Using ALL_CFLAGS=-I.. -D_CUPS_SOURCE -O2 -fPIC -I/usr/include/libusb-1.0 -I/usr/include/dbus-1.0 -I/usr/lib/dbus-1.0/include -DDBUS_API_SUBJECT_TO_CHANGE -D_FORTIFY_SOURCE=2 -I/usr/include/p11-kit-1 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_THREAD_SAFE -D_REENTRANT  -Wall -Wno-format-y2k -Wunused -Wno-unused-result -Wsign-conversion
++Using ALL_CXXFLAGS=-I.. -D_CUPS_SOURCE -O2 -fPIC -D_FORTIFY_SOURCE=2 -I/usr/include/p11-kit-1 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_THREAD_SAFE -D_REENTRANT  -Wall -Wno-format-y2k -Wunused -Wno-unused-result -Wsign-conversion
++Using CC=clang
++Using CXX=clang
++Using DSOFLAGS=-Wl,-soname,all -shared
++Using LDFLAGS=
++Using LIBS=-Wl,--enable-new-dtags -Wl,-rpath -Wl,/usr/lib -lgssapi_krb5 -lkrb5 -lk5crypto -lcom_err  -lgnutls -lz -lpthread   -lz
++Making all in cups...
++Making all in tools...
++Making all in filter...
++Making all in backend...
++Making all in berkeley...
++Making all in cgi-bin...
++Making all in monitor...
++Making all in notifier...
++Making all in ppdc...
++Making all in scheduler...
++Making all in systemv...
++Making all in conf...
++Making all in data...
++Making all in desktop...
++Making all in locale...
++Making all in man...
++Making all in doc...
++Making all in examples...
++Making all in templates...
++Installing programs in cups...
++Installing programs in tools...
++Installing IPP tools in /tmp/package-cups/usr/bin...
++Installing printer commands in /tmp/package-cups/usr/lib/cups/command...
++Installing programs in filter...
++Installing programs in backend...
++Installing backends in /tmp/package-cups/usr/lib/cups/backend
++Installing programs in berkeley...
++Installing Berkeley user printing commands in /tmp/package-cups/usr/bin...
++Installing Berkeley admin printing commands in /tmp/package-cups/usr/bin...
++Installing programs in cgi-bin...
++Installing programs in monitor...
++Installing programs in notifier...
++Installing notifiers in /tmp/package-cups/usr/lib/cups/notifier...
++Installing programs in ppdc...
++Installing PPD compiler programs...
++Installing programs in scheduler...
++Installing programs in /tmp/package-cups/usr/sbin...
++Installing programs in /tmp/package-cups/usr/lib/cups/daemon...
++Installing programs in systemv...
++Installing System V admin printing commands in /tmp/package-cups/usr/sbin
++Installing System V user printing commands in /tmp/package-cups/usr/bin
++Installing programs in conf...
++Installing programs in data...
++Installing programs in desktop...
++Installing programs in locale...
++Installing programs in man...
++Installing programs in doc...
++Installing programs in examples...
++Installing programs in templates...
++rmdir: failed to remove directory '/tmp/package-cups/etc': Directory not empty
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++usr/doc/cups	cups-2.3.3
++usr/lib/cups/backend/http	ipp
++usr/lib/cups/backend/https	ipp
++usr/lib/cups/backend/ipps	ipp
++usr/lib/cups/backend/smb	/usr/bin/smbspool
++usr/lib/libcups.so	libcups.so.2
++usr/lib/libcupsimage.so	libcupsimage.so.2
++usr/man/man7/ippeveps.7.gz	ippevepcl.7.gz
++usr/man/man8/cups-deviced.8.gz	cupsd-helper.8.gz
++usr/man/man8/cups-driverd.8.gz	cupsd-helper.8.gz
++usr/man/man8/cups-exec.8.gz	cupsd-helper.8.gz
++usr/man/man8/cupsdisable.8.gz	cupsenable.8.gz
++usr/man/man8/cupsreject.8.gz	cupsaccept.8.gz
++usr/sbin/cupsdisable	cupsaccept
++usr/sbin/cupsenable	cupsaccept
++usr/sbin/cupsreject	cupsaccept
++
++Making symbolic link creation script:
++( cd usr/doc ; rm -rf cups )
++( cd usr/doc ; ln -sf cups-2.3.3 cups )
++( cd usr/lib/cups/backend ; rm -rf http )
++( cd usr/lib/cups/backend ; ln -sf ipp http )
++( cd usr/lib/cups/backend ; rm -rf https )
++( cd usr/lib/cups/backend ; ln -sf ipp https )
++( cd usr/lib/cups/backend ; rm -rf ipps )
++( cd usr/lib/cups/backend ; ln -sf ipp ipps )
++( cd usr/lib/cups/backend ; rm -rf smb )
++( cd usr/lib/cups/backend ; ln -sf /usr/bin/smbspool smb )
++( cd usr/lib ; rm -rf libcups.so )
++( cd usr/lib ; ln -sf libcups.so.2 libcups.so )
++( cd usr/lib ; rm -rf libcupsimage.so )
++( cd usr/lib ; ln -sf libcupsimage.so.2 libcupsimage.so )
++( cd usr/man/man7 ; rm -rf ippeveps.7.gz )
++( cd usr/man/man7 ; ln -sf ippevepcl.7.gz ippeveps.7.gz )
++( cd usr/man/man8 ; rm -rf cups-deviced.8.gz )
++( cd usr/man/man8 ; ln -sf cupsd-helper.8.gz cups-deviced.8.gz )
++( cd usr/man/man8 ; rm -rf cups-driverd.8.gz )
++( cd usr/man/man8 ; ln -sf cupsd-helper.8.gz cups-driverd.8.gz )
++( cd usr/man/man8 ; rm -rf cups-exec.8.gz )
++( cd usr/man/man8 ; ln -sf cupsd-helper.8.gz cups-exec.8.gz )
++( cd usr/man/man8 ; rm -rf cupsdisable.8.gz )
++( cd usr/man/man8 ; ln -sf cupsenable.8.gz cupsdisable.8.gz )
++( cd usr/man/man8 ; rm -rf cupsreject.8.gz )
++( cd usr/man/man8 ; ln -sf cupsaccept.8.gz cupsreject.8.gz )
++( cd usr/sbin ; rm -rf cupsdisable )
++( cd usr/sbin ; ln -sf cupsaccept cupsdisable )
++( cd usr/sbin ; rm -rf cupsenable )
++( cd usr/sbin ; ln -sf cupsaccept cupsenable )
++( cd usr/sbin ; rm -rf cupsreject )
++( cd usr/sbin ; ln -sf cupsaccept cupsreject )
++
++Unless your existing installation script already contains the code
++to create these links, you should append these lines to your existing
++install script. Now's your chance. :^)
++
++Would you like to add this stuff to the existing install script and
++remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './usr/doc/cups'
++removed './usr/man/man7/ippeveps.7.gz'
++removed './usr/man/man8/cups-deviced.8.gz'
++removed './usr/man/man8/cups-exec.8.gz'
++removed './usr/man/man8/cups-driverd.8.gz'
++removed './usr/man/man8/cupsreject.8.gz'
++removed './usr/man/man8/cupsdisable.8.gz'
++removed './usr/lib/cups/backend/smb'
++removed './usr/lib/cups/backend/ipps'
++removed './usr/lib/cups/backend/https'
++removed './usr/lib/cups/backend/http'
++removed './usr/lib/libcups.so'
++removed './usr/lib/libcupsimage.so'
++removed './usr/sbin/cupsdisable'
++removed './usr/sbin/cupsreject'
++removed './usr/sbin/cupsenable'
++
++Updating your ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/cups-2.3.3-x86_64-3.txz
++
++./
++etc/
++etc/cups/
++etc/cups/cups-files.conf.default
++etc/cups/cups-files.conf.new
++etc/cups/cupsd.conf.default
++etc/cups/cupsd.conf.new
++etc/cups/ppd/
++etc/cups/snmp.conf.default
++etc/cups/snmp.conf.new
++etc/cups/ssl/
++etc/pam.d/
++etc/pam.d/cups.new
++etc/rc.d/
++etc/rc.d/rc.cups.new
++install/
++install/doinst.sh
++install/slack-desc
++lib/
++lib/modprobe.d/
++lib/modprobe.d/cups-blacklist-usblp.conf
++usr/
++usr/bin/
++usr/bin/cancel
++usr/bin/cups-config
++usr/bin/cupstestppd
++usr/bin/ippeveprinter
++usr/bin/ipptool
++usr/bin/lp
++usr/bin/lpoptions
++usr/bin/lpq
++usr/bin/lpr
++usr/bin/lprm
++usr/bin/lpstat
++usr/bin/ppdc
++usr/bin/ppdhtml
++usr/bin/ppdi
++usr/bin/ppdmerge
++usr/bin/ppdpo
++usr/doc/
++usr/doc/cups-2.3.3/
++usr/doc/cups-2.3.3/apple-touch-icon.png
++usr/doc/cups-2.3.3/cups-printable.css
++usr/doc/cups-2.3.3/cups.css
++usr/doc/cups-2.3.3/de/
++usr/doc/cups-2.3.3/de/index.html
++usr/doc/cups-2.3.3/es/
++usr/doc/cups-2.3.3/es/index.html
++usr/doc/cups-2.3.3/help/
++usr/doc/cups-2.3.3/help/accounting.html
++usr/doc/cups-2.3.3/help/admin.html
++usr/doc/cups-2.3.3/help/api-admin.html
++usr/doc/cups-2.3.3/help/api-filter.html
++usr/doc/cups-2.3.3/help/api-ppd.html
++usr/doc/cups-2.3.3/help/api-raster.html
++usr/doc/cups-2.3.3/help/cgi.html
++usr/doc/cups-2.3.3/help/cupspm.html
++usr/doc/cups-2.3.3/help/encryption.html
++usr/doc/cups-2.3.3/help/firewalls.html
++usr/doc/cups-2.3.3/help/glossary.html
++usr/doc/cups-2.3.3/help/kerberos.html
++usr/doc/cups-2.3.3/help/license.html
++usr/doc/cups-2.3.3/help/man-backend.html
++usr/doc/cups-2.3.3/help/man-cancel.html
++usr/doc/cups-2.3.3/help/man-classes.conf.html
++usr/doc/cups-2.3.3/help/man-client.conf.html
++usr/doc/cups-2.3.3/help/man-cups-config.html
++usr/doc/cups-2.3.3/help/man-cups-files.conf.html
++usr/doc/cups-2.3.3/help/man-cups-lpd.html
++usr/doc/cups-2.3.3/help/man-cups-snmp.html
++usr/doc/cups-2.3.3/help/man-cups.html
++usr/doc/cups-2.3.3/help/man-cupsaccept.html
++usr/doc/cups-2.3.3/help/man-cupsd-helper.html
++usr/doc/cups-2.3.3/help/man-cupsd-logs.html
++usr/doc/cups-2.3.3/help/man-cupsd.conf.html
++usr/doc/cups-2.3.3/help/man-cupsd.html
++usr/doc/cups-2.3.3/help/man-cupsenable.html
++usr/doc/cups-2.3.3/help/man-cupstestppd.html
++usr/doc/cups-2.3.3/help/man-filter.html
++usr/doc/cups-2.3.3/help/man-ippevepcl.html
++usr/doc/cups-2.3.3/help/man-ippeveprinter.html
++usr/doc/cups-2.3.3/help/man-ipptool.html
++usr/doc/cups-2.3.3/help/man-ipptoolfile.html
++usr/doc/cups-2.3.3/help/man-lp.html
++usr/doc/cups-2.3.3/help/man-lpadmin.html
++usr/doc/cups-2.3.3/help/man-lpc.html
++usr/doc/cups-2.3.3/help/man-lpinfo.html
++usr/doc/cups-2.3.3/help/man-lpmove.html
++usr/doc/cups-2.3.3/help/man-lpoptions.html
++usr/doc/cups-2.3.3/help/man-lpq.html
++usr/doc/cups-2.3.3/help/man-lpr.html
++usr/doc/cups-2.3.3/help/man-lprm.html
++usr/doc/cups-2.3.3/help/man-lpstat.html
++usr/doc/cups-2.3.3/help/man-mime.convs.html
++usr/doc/cups-2.3.3/help/man-mime.types.html
++usr/doc/cups-2.3.3/help/man-notifier.html
++usr/doc/cups-2.3.3/help/man-ppdc.html
++usr/doc/cups-2.3.3/help/man-ppdhtml.html
++usr/doc/cups-2.3.3/help/man-ppdi.html
++usr/doc/cups-2.3.3/help/man-ppdmerge.html
++usr/doc/cups-2.3.3/help/man-ppdpo.html
++usr/doc/cups-2.3.3/help/man-printers.conf.html
++usr/doc/cups-2.3.3/help/man-subscriptions.conf.html
++usr/doc/cups-2.3.3/help/network.html
++usr/doc/cups-2.3.3/help/options.html
++usr/doc/cups-2.3.3/help/overview.html
++usr/doc/cups-2.3.3/help/policies.html
++usr/doc/cups-2.3.3/help/postscript-driver.html
++usr/doc/cups-2.3.3/help/ppd-compiler.html
++usr/doc/cups-2.3.3/help/raster-driver.html
++usr/doc/cups-2.3.3/help/ref-ppdcfile.html
++usr/doc/cups-2.3.3/help/security.html
++usr/doc/cups-2.3.3/help/sharing.html
++usr/doc/cups-2.3.3/help/spec-banner.html
++usr/doc/cups-2.3.3/help/spec-command.html
++usr/doc/cups-2.3.3/help/spec-design.html
++usr/doc/cups-2.3.3/help/spec-ipp.html
++usr/doc/cups-2.3.3/help/spec-ppd.html
++usr/doc/cups-2.3.3/help/spec-raster.html
++usr/doc/cups-2.3.3/help/spec-stp.html
++usr/doc/cups-2.3.3/help/translation.html
++usr/doc/cups-2.3.3/images/
++usr/doc/cups-2.3.3/images/color-wheel.png
++usr/doc/cups-2.3.3/images/cups-block-diagram.png
++usr/doc/cups-2.3.3/images/cups-command-chain.png
++usr/doc/cups-2.3.3/images/cups-icon.png
++usr/doc/cups-2.3.3/images/cups-postscript-chain.png
++usr/doc/cups-2.3.3/images/cups-raster-chain.png
++usr/doc/cups-2.3.3/images/cups.png
++usr/doc/cups-2.3.3/images/generic.png
++usr/doc/cups-2.3.3/images/left.gif
++usr/doc/cups-2.3.3/images/raster-organization.png
++usr/doc/cups-2.3.3/images/raster.png
++usr/doc/cups-2.3.3/images/right.gif
++usr/doc/cups-2.3.3/images/sample-image.png
++usr/doc/cups-2.3.3/images/sel.gif
++usr/doc/cups-2.3.3/images/smiley.jpg
++usr/doc/cups-2.3.3/images/unsel.gif
++usr/doc/cups-2.3.3/images/wait.gif
++usr/doc/cups-2.3.3/index.html
++usr/doc/cups-2.3.3/ja/
++usr/doc/cups-2.3.3/ja/index.html
++usr/doc/cups-2.3.3/pt_BR/
++usr/doc/cups-2.3.3/pt_BR/index.html
++usr/doc/cups-2.3.3/robots.txt
++usr/doc/cups-2.3.3/ru/
++usr/doc/cups-2.3.3/ru/index.html
++usr/include/
++usr/include/cups/
++usr/include/cups/adminutil.h
++usr/include/cups/array.h
++usr/include/cups/backend.h
++usr/include/cups/cups.h
++usr/include/cups/dir.h
++usr/include/cups/file.h
++usr/include/cups/http.h
++usr/include/cups/ipp.h
++usr/include/cups/language.h
++usr/include/cups/ppd.h
++usr/include/cups/pwg.h
++usr/include/cups/raster.h
++usr/include/cups/sidechannel.h
++usr/include/cups/transcode.h
++usr/include/cups/versioning.h
++usr/lib/
++usr/lib/cups/
++usr/lib/cups/backend/
++usr/lib/cups/backend/ipp
++usr/lib/cups/backend/lpd
++usr/lib/cups/backend/snmp
++usr/lib/cups/backend/socket
++usr/lib/cups/backend/usb
++usr/lib/cups/cgi-bin/
++usr/lib/cups/cgi-bin/admin.cgi
++usr/lib/cups/cgi-bin/classes.cgi
++usr/lib/cups/cgi-bin/help.cgi
++usr/lib/cups/cgi-bin/jobs.cgi
++usr/lib/cups/cgi-bin/printers.cgi
++usr/lib/cups/command/
++usr/lib/cups/command/ippevepcl
++usr/lib/cups/command/ippeveps
++usr/lib/cups/daemon/
++usr/lib/cups/daemon/cups-deviced
++usr/lib/cups/daemon/cups-driverd
++usr/lib/cups/daemon/cups-exec
++usr/lib/cups/daemon/cups-lpd
++usr/lib/cups/driver/
++usr/lib/cups/filter/
++usr/lib/cups/filter/commandtops
++usr/lib/cups/filter/gziptoany
++usr/lib/cups/filter/pstops
++usr/lib/cups/filter/rastertoepson
++usr/lib/cups/filter/rastertohp
++usr/lib/cups/filter/rastertolabel
++usr/lib/cups/filter/rastertopwg
++usr/lib/cups/monitor/
++usr/lib/cups/monitor/bcp
++usr/lib/cups/monitor/tbcp
++usr/lib/cups/notifier/
++usr/lib/cups/notifier/dbus
++usr/lib/cups/notifier/mailto
++usr/lib/cups/notifier/rss
++usr/lib/libcups.so.2
++usr/lib/libcupsimage.so.2
++usr/man/
++usr/man/man1/
++usr/man/man1/cancel.1.gz
++usr/man/man1/cups-config.1.gz
++usr/man/man1/cups.1.gz
++usr/man/man1/cupstestppd.1.gz
++usr/man/man1/ippeveprinter.1.gz
++usr/man/man1/ipptool.1.gz
++usr/man/man1/lp.1.gz
++usr/man/man1/lpoptions.1.gz
++usr/man/man1/lpq.1.gz
++usr/man/man1/lpr.1.gz
++usr/man/man1/lprm.1.gz
++usr/man/man1/lpstat.1.gz
++usr/man/man1/ppdc.1.gz
++usr/man/man1/ppdhtml.1.gz
++usr/man/man1/ppdi.1.gz
++usr/man/man1/ppdmerge.1.gz
++usr/man/man1/ppdpo.1.gz
++usr/man/man5/
++usr/man/man5/classes.conf.5.gz
++usr/man/man5/client.conf.5.gz
++usr/man/man5/cups-files.conf.5.gz
++usr/man/man5/cups-snmp.conf.5.gz
++usr/man/man5/cupsd-logs.5.gz
++usr/man/man5/cupsd.conf.5.gz
++usr/man/man5/ipptoolfile.5.gz
++usr/man/man5/mailto.conf.5.gz
++usr/man/man5/mime.convs.5.gz
++usr/man/man5/mime.types.5.gz
++usr/man/man5/ppdcfile.5.gz
++usr/man/man5/printers.conf.5.gz
++usr/man/man5/subscriptions.conf.5.gz
++usr/man/man7/
++usr/man/man7/backend.7.gz
++usr/man/man7/filter.7.gz
++usr/man/man7/ippevepcl.7.gz
++usr/man/man7/notifier.7.gz
++usr/man/man8/
++usr/man/man8/cups-lpd.8.gz
++usr/man/man8/cups-snmp.8.gz
++usr/man/man8/cupsaccept.8.gz
++usr/man/man8/cupsctl.8.gz
++usr/man/man8/cupsd-helper.8.gz
++usr/man/man8/cupsd.8.gz
++usr/man/man8/cupsenable.8.gz
++usr/man/man8/cupsfilter.8.gz
++usr/man/man8/lpadmin.8.gz
++usr/man/man8/lpc.8.gz
++usr/man/man8/lpinfo.8.gz
++usr/man/man8/lpmove.8.gz
++usr/sbin/
++usr/sbin/cupsaccept
++usr/sbin/cupsctl
++usr/sbin/cupsd
++usr/sbin/cupsfilter
++usr/sbin/lpadmin
++usr/sbin/lpc
++usr/sbin/lpinfo
++usr/sbin/lpmove
++usr/share/
++usr/share/applications/
++usr/share/applications/cups.desktop
++usr/share/cups/
++usr/share/cups/banners/
++usr/share/cups/data/
++usr/share/cups/drv/
++usr/share/cups/drv/sample.drv
++usr/share/cups/examples/
++usr/share/cups/examples/color.drv
++usr/share/cups/examples/constraint.drv
++usr/share/cups/examples/custom.drv
++usr/share/cups/examples/grouping.drv
++usr/share/cups/examples/laserjet-basic.drv
++usr/share/cups/examples/laserjet-pjl.drv
++usr/share/cups/examples/minimum.drv
++usr/share/cups/examples/postscript.drv
++usr/share/cups/examples/r300-basic.drv
++usr/share/cups/examples/r300-colorman.drv
++usr/share/cups/examples/r300-remote.drv
++usr/share/cups/ipptool/
++usr/share/cups/ipptool/cancel-current-job.test
++usr/share/cups/ipptool/create-job-format.test
++usr/share/cups/ipptool/create-job-sheets.test
++usr/share/cups/ipptool/create-job-timeout.test
++usr/share/cups/ipptool/create-job.test
++usr/share/cups/ipptool/create-printer-subscription.test
++usr/share/cups/ipptool/cups-create-local-printer.test
++usr/share/cups/ipptool/fax-job.test
++usr/share/cups/ipptool/get-completed-jobs.test
++usr/share/cups/ipptool/get-devices.test
++usr/share/cups/ipptool/get-job-attributes.test
++usr/share/cups/ipptool/get-job-attributes2.test
++usr/share/cups/ipptool/get-job-template-attributes.test
++usr/share/cups/ipptool/get-jobs.test
++usr/share/cups/ipptool/get-notifications.test
++usr/share/cups/ipptool/get-ppd-printer.test
++usr/share/cups/ipptool/get-ppd.test
++usr/share/cups/ipptool/get-ppds-drv-only.test
++usr/share/cups/ipptool/get-ppds-language.test
++usr/share/cups/ipptool/get-ppds-make-and-model.test
++usr/share/cups/ipptool/get-ppds-make.test
++usr/share/cups/ipptool/get-ppds-product.test
++usr/share/cups/ipptool/get-ppds-psversion.test
++usr/share/cups/ipptool/get-ppds.test
++usr/share/cups/ipptool/get-printer-attributes-suite.test
++usr/share/cups/ipptool/get-printer-attributes.test
++usr/share/cups/ipptool/get-printer-description-attributes.test
++usr/share/cups/ipptool/get-printers-printer-id.test
++usr/share/cups/ipptool/get-printers.test
++usr/share/cups/ipptool/get-subscriptions.test
++usr/share/cups/ipptool/identify-printer-display.test
++usr/share/cups/ipptool/identify-printer-multiple.test
++usr/share/cups/ipptool/identify-printer.test
++usr/share/cups/ipptool/ipp-1.1.test
++usr/share/cups/ipptool/ipp-2.0.test
++usr/share/cups/ipptool/ipp-2.1.test
++usr/share/cups/ipptool/ipp-2.2.test
++usr/share/cups/ipptool/ipp-backend.test
++usr/share/cups/ipptool/ipp-everywhere.test
++usr/share/cups/ipptool/print-job-and-wait.test
++usr/share/cups/ipptool/print-job-deflate.test
++usr/share/cups/ipptool/print-job-gzip.test
++usr/share/cups/ipptool/print-job-hold.test
++usr/share/cups/ipptool/print-job-letter.test
++usr/share/cups/ipptool/print-job-manual.test
++usr/share/cups/ipptool/print-job-media-col.test
++usr/share/cups/ipptool/print-job-password.test
++usr/share/cups/ipptool/print-job.test
++usr/share/cups/ipptool/print-uri.test
++usr/share/cups/ipptool/set-attrs-hold.test
++usr/share/cups/ipptool/testfile.pcl
++usr/share/cups/ipptool/testfile.txt
++usr/share/cups/ipptool/validate-job.test
++usr/share/cups/mime/
++usr/share/cups/mime/mime.convs
++usr/share/cups/mime/mime.types
++usr/share/cups/model/
++usr/share/cups/ppdc/
++usr/share/cups/ppdc/epson.h
++usr/share/cups/ppdc/font.defs
++usr/share/cups/ppdc/hp.h
++usr/share/cups/ppdc/label.h
++usr/share/cups/ppdc/media.defs
++usr/share/cups/ppdc/raster.defs
++usr/share/cups/profiles/
++usr/share/cups/templates/
++usr/share/cups/templates/add-class.tmpl
++usr/share/cups/templates/add-printer.tmpl
++usr/share/cups/templates/admin.tmpl
++usr/share/cups/templates/choose-device.tmpl
++usr/share/cups/templates/choose-make.tmpl
++usr/share/cups/templates/choose-model.tmpl
++usr/share/cups/templates/choose-serial.tmpl
++usr/share/cups/templates/choose-uri.tmpl
++usr/share/cups/templates/class-added.tmpl
++usr/share/cups/templates/class-confirm.tmpl
++usr/share/cups/templates/class-deleted.tmpl
++usr/share/cups/templates/class-jobs-header.tmpl
++usr/share/cups/templates/class-modified.tmpl
++usr/share/cups/templates/class.tmpl
++usr/share/cups/templates/classes-header.tmpl
++usr/share/cups/templates/classes.tmpl
++usr/share/cups/templates/command.tmpl
++usr/share/cups/templates/de/
++usr/share/cups/templates/de/add-class.tmpl
++usr/share/cups/templates/de/add-printer.tmpl
++usr/share/cups/templates/de/admin.tmpl
++usr/share/cups/templates/de/choose-device.tmpl
++usr/share/cups/templates/de/choose-make.tmpl
++usr/share/cups/templates/de/choose-model.tmpl
++usr/share/cups/templates/de/choose-serial.tmpl
++usr/share/cups/templates/de/choose-uri.tmpl
++usr/share/cups/templates/de/class-added.tmpl
++usr/share/cups/templates/de/class-confirm.tmpl
++usr/share/cups/templates/de/class-deleted.tmpl
++usr/share/cups/templates/de/class-jobs-header.tmpl
++usr/share/cups/templates/de/class-modified.tmpl
++usr/share/cups/templates/de/class.tmpl
++usr/share/cups/templates/de/classes-header.tmpl
++usr/share/cups/templates/de/classes.tmpl
++usr/share/cups/templates/de/command.tmpl
++usr/share/cups/templates/de/edit-config.tmpl
++usr/share/cups/templates/de/error-op.tmpl
++usr/share/cups/templates/de/error.tmpl
++usr/share/cups/templates/de/header.tmpl
++usr/share/cups/templates/de/help-header.tmpl
++usr/share/cups/templates/de/help-printable.tmpl
++usr/share/cups/templates/de/help-trailer.tmpl
++usr/share/cups/templates/de/job-cancel.tmpl
++usr/share/cups/templates/de/job-hold.tmpl
++usr/share/cups/templates/de/job-move.tmpl
++usr/share/cups/templates/de/job-moved.tmpl
++usr/share/cups/templates/de/job-release.tmpl
++usr/share/cups/templates/de/job-restart.tmpl
++usr/share/cups/templates/de/jobs-header.tmpl
++usr/share/cups/templates/de/jobs.tmpl
++usr/share/cups/templates/de/list-available-printers.tmpl
++usr/share/cups/templates/de/modify-class.tmpl
++usr/share/cups/templates/de/modify-printer.tmpl
++usr/share/cups/templates/de/norestart.tmpl
++usr/share/cups/templates/de/option-boolean.tmpl
++usr/share/cups/templates/de/option-conflict.tmpl
++usr/share/cups/templates/de/option-header.tmpl
++usr/share/cups/templates/de/option-pickmany.tmpl
++usr/share/cups/templates/de/option-pickone.tmpl
++usr/share/cups/templates/de/option-trailer.tmpl
++usr/share/cups/templates/de/pager.tmpl
++usr/share/cups/templates/de/printer-accept.tmpl
++usr/share/cups/templates/de/printer-added.tmpl
++usr/share/cups/templates/de/printer-cancel-jobs.tmpl
++usr/share/cups/templates/de/printer-configured.tmpl
++usr/share/cups/templates/de/printer-confirm.tmpl
++usr/share/cups/templates/de/printer-default.tmpl
++usr/share/cups/templates/de/printer-deleted.tmpl
++usr/share/cups/templates/de/printer-jobs-header.tmpl
++usr/share/cups/templates/de/printer-modified.tmpl
++usr/share/cups/templates/de/printer-reject.tmpl
++usr/share/cups/templates/de/printer-start.tmpl
++usr/share/cups/templates/de/printer-stop.tmpl
++usr/share/cups/templates/de/printer.tmpl
++usr/share/cups/templates/de/printers-header.tmpl
++usr/share/cups/templates/de/printers.tmpl
++usr/share/cups/templates/de/restart.tmpl
++usr/share/cups/templates/de/search.tmpl
++usr/share/cups/templates/de/set-printer-options-header.tmpl
++usr/share/cups/templates/de/set-printer-options-trailer.tmpl
++usr/share/cups/templates/de/test-page.tmpl
++usr/share/cups/templates/de/trailer.tmpl
++usr/share/cups/templates/de/users.tmpl
++usr/share/cups/templates/edit-config.tmpl
++usr/share/cups/templates/error-op.tmpl
++usr/share/cups/templates/error.tmpl
++usr/share/cups/templates/es/
++usr/share/cups/templates/es/add-class.tmpl
++usr/share/cups/templates/es/add-printer.tmpl
++usr/share/cups/templates/es/admin.tmpl
++usr/share/cups/templates/es/choose-device.tmpl
++usr/share/cups/templates/es/choose-make.tmpl
++usr/share/cups/templates/es/choose-model.tmpl
++usr/share/cups/templates/es/choose-serial.tmpl
++usr/share/cups/templates/es/choose-uri.tmpl
++usr/share/cups/templates/es/class-added.tmpl
++usr/share/cups/templates/es/class-confirm.tmpl
++usr/share/cups/templates/es/class-deleted.tmpl
++usr/share/cups/templates/es/class-jobs-header.tmpl
++usr/share/cups/templates/es/class-modified.tmpl
++usr/share/cups/templates/es/class.tmpl
++usr/share/cups/templates/es/classes-header.tmpl
++usr/share/cups/templates/es/classes.tmpl
++usr/share/cups/templates/es/command.tmpl
++usr/share/cups/templates/es/edit-config.tmpl
++usr/share/cups/templates/es/error-op.tmpl
++usr/share/cups/templates/es/error.tmpl
++usr/share/cups/templates/es/header.tmpl
++usr/share/cups/templates/es/help-header.tmpl
++usr/share/cups/templates/es/help-printable.tmpl
++usr/share/cups/templates/es/help-trailer.tmpl
++usr/share/cups/templates/es/job-cancel.tmpl
++usr/share/cups/templates/es/job-hold.tmpl
++usr/share/cups/templates/es/job-move.tmpl
++usr/share/cups/templates/es/job-moved.tmpl
++usr/share/cups/templates/es/job-release.tmpl
++usr/share/cups/templates/es/job-restart.tmpl
++usr/share/cups/templates/es/jobs-header.tmpl
++usr/share/cups/templates/es/jobs.tmpl
++usr/share/cups/templates/es/list-available-printers.tmpl
++usr/share/cups/templates/es/modify-class.tmpl
++usr/share/cups/templates/es/modify-printer.tmpl
++usr/share/cups/templates/es/norestart.tmpl
++usr/share/cups/templates/es/option-boolean.tmpl
++usr/share/cups/templates/es/option-conflict.tmpl
++usr/share/cups/templates/es/option-header.tmpl
++usr/share/cups/templates/es/option-pickmany.tmpl
++usr/share/cups/templates/es/option-pickone.tmpl
++usr/share/cups/templates/es/option-trailer.tmpl
++usr/share/cups/templates/es/pager.tmpl
++usr/share/cups/templates/es/printer-accept.tmpl
++usr/share/cups/templates/es/printer-added.tmpl
++usr/share/cups/templates/es/printer-cancel-jobs.tmpl
++usr/share/cups/templates/es/printer-configured.tmpl
++usr/share/cups/templates/es/printer-confirm.tmpl
++usr/share/cups/templates/es/printer-default.tmpl
++usr/share/cups/templates/es/printer-deleted.tmpl
++usr/share/cups/templates/es/printer-jobs-header.tmpl
++usr/share/cups/templates/es/printer-modified.tmpl
++usr/share/cups/templates/es/printer-reject.tmpl
++usr/share/cups/templates/es/printer-start.tmpl
++usr/share/cups/templates/es/printer-stop.tmpl
++usr/share/cups/templates/es/printer.tmpl
++usr/share/cups/templates/es/printers-header.tmpl
++usr/share/cups/templates/es/printers.tmpl
++usr/share/cups/templates/es/restart.tmpl
++usr/share/cups/templates/es/search.tmpl
++usr/share/cups/templates/es/set-printer-options-header.tmpl
++usr/share/cups/templates/es/set-printer-options-trailer.tmpl
++usr/share/cups/templates/es/test-page.tmpl
++usr/share/cups/templates/es/trailer.tmpl
++usr/share/cups/templates/es/users.tmpl
++usr/share/cups/templates/fr/
++usr/share/cups/templates/fr/add-class.tmpl
++usr/share/cups/templates/fr/add-printer.tmpl
++usr/share/cups/templates/fr/admin.tmpl
++usr/share/cups/templates/fr/choose-device.tmpl
++usr/share/cups/templates/fr/choose-make.tmpl
++usr/share/cups/templates/fr/choose-model.tmpl
++usr/share/cups/templates/fr/choose-serial.tmpl
++usr/share/cups/templates/fr/choose-uri.tmpl
++usr/share/cups/templates/fr/class-added.tmpl
++usr/share/cups/templates/fr/class-confirm.tmpl
++usr/share/cups/templates/fr/class-deleted.tmpl
++usr/share/cups/templates/fr/class-jobs-header.tmpl
++usr/share/cups/templates/fr/class-modified.tmpl
++usr/share/cups/templates/fr/class.tmpl
++usr/share/cups/templates/fr/classes-header.tmpl
++usr/share/cups/templates/fr/classes.tmpl
++usr/share/cups/templates/fr/command.tmpl
++usr/share/cups/templates/fr/edit-config.tmpl
++usr/share/cups/templates/fr/error-op.tmpl
++usr/share/cups/templates/fr/error.tmpl
++usr/share/cups/templates/fr/header.tmpl
++usr/share/cups/templates/fr/help-header.tmpl
++usr/share/cups/templates/fr/help-printable.tmpl
++usr/share/cups/templates/fr/help-trailer.tmpl
++usr/share/cups/templates/fr/job-cancel.tmpl
++usr/share/cups/templates/fr/job-hold.tmpl
++usr/share/cups/templates/fr/job-move.tmpl
++usr/share/cups/templates/fr/job-moved.tmpl
++usr/share/cups/templates/fr/job-release.tmpl
++usr/share/cups/templates/fr/job-restart.tmpl
++usr/share/cups/templates/fr/jobs-header.tmpl
++usr/share/cups/templates/fr/jobs.tmpl
++usr/share/cups/templates/fr/list-available-printers.tmpl
++usr/share/cups/templates/fr/modify-class.tmpl
++usr/share/cups/templates/fr/modify-printer.tmpl
++usr/share/cups/templates/fr/norestart.tmpl
++usr/share/cups/templates/fr/option-boolean.tmpl
++usr/share/cups/templates/fr/option-conflict.tmpl
++usr/share/cups/templates/fr/option-header.tmpl
++usr/share/cups/templates/fr/option-pickmany.tmpl
++usr/share/cups/templates/fr/option-pickone.tmpl
++usr/share/cups/templates/fr/option-trailer.tmpl
++usr/share/cups/templates/fr/pager.tmpl
++usr/share/cups/templates/fr/printer-accept.tmpl
++usr/share/cups/templates/fr/printer-added.tmpl
++usr/share/cups/templates/fr/printer-cancel-jobs.tmpl
++usr/share/cups/templates/fr/printer-configured.tmpl
++usr/share/cups/templates/fr/printer-confirm.tmpl
++usr/share/cups/templates/fr/printer-default.tmpl
++usr/share/cups/templates/fr/printer-deleted.tmpl
++usr/share/cups/templates/fr/printer-jobs-header.tmpl
++usr/share/cups/templates/fr/printer-modified.tmpl
++usr/share/cups/templates/fr/printer-reject.tmpl
++usr/share/cups/templates/fr/printer-start.tmpl
++usr/share/cups/templates/fr/printer-stop.tmpl
++usr/share/cups/templates/fr/printer.tmpl
++usr/share/cups/templates/fr/printers-header.tmpl
++usr/share/cups/templates/fr/printers.tmpl
++usr/share/cups/templates/fr/restart.tmpl
++usr/share/cups/templates/fr/search.tmpl
++usr/share/cups/templates/fr/set-printer-options-header.tmpl
++usr/share/cups/templates/fr/set-printer-options-trailer.tmpl
++usr/share/cups/templates/fr/test-page.tmpl
++usr/share/cups/templates/fr/trailer.tmpl
++usr/share/cups/templates/fr/users.tmpl
++usr/share/cups/templates/header.tmpl
++usr/share/cups/templates/help-header.tmpl
++usr/share/cups/templates/help-printable.tmpl
++usr/share/cups/templates/help-trailer.tmpl
++usr/share/cups/templates/ja/
++usr/share/cups/templates/ja/add-class.tmpl
++usr/share/cups/templates/ja/add-printer.tmpl
++usr/share/cups/templates/ja/admin.tmpl
++usr/share/cups/templates/ja/choose-device.tmpl
++usr/share/cups/templates/ja/choose-make.tmpl
++usr/share/cups/templates/ja/choose-model.tmpl
++usr/share/cups/templates/ja/choose-serial.tmpl
++usr/share/cups/templates/ja/choose-uri.tmpl
++usr/share/cups/templates/ja/class-added.tmpl
++usr/share/cups/templates/ja/class-confirm.tmpl
++usr/share/cups/templates/ja/class-deleted.tmpl
++usr/share/cups/templates/ja/class-jobs-header.tmpl
++usr/share/cups/templates/ja/class-modified.tmpl
++usr/share/cups/templates/ja/class.tmpl
++usr/share/cups/templates/ja/classes-header.tmpl
++usr/share/cups/templates/ja/classes.tmpl
++usr/share/cups/templates/ja/command.tmpl
++usr/share/cups/templates/ja/edit-config.tmpl
++usr/share/cups/templates/ja/error-op.tmpl
++usr/share/cups/templates/ja/error.tmpl
++usr/share/cups/templates/ja/header.tmpl
++usr/share/cups/templates/ja/help-header.tmpl
++usr/share/cups/templates/ja/help-printable.tmpl
++usr/share/cups/templates/ja/help-trailer.tmpl
++usr/share/cups/templates/ja/job-cancel.tmpl
++usr/share/cups/templates/ja/job-hold.tmpl
++usr/share/cups/templates/ja/job-move.tmpl
++usr/share/cups/templates/ja/job-moved.tmpl
++usr/share/cups/templates/ja/job-release.tmpl
++usr/share/cups/templates/ja/job-restart.tmpl
++usr/share/cups/templates/ja/jobs-header.tmpl
++usr/share/cups/templates/ja/jobs.tmpl
++usr/share/cups/templates/ja/list-available-printers.tmpl
++usr/share/cups/templates/ja/modify-class.tmpl
++usr/share/cups/templates/ja/modify-printer.tmpl
++usr/share/cups/templates/ja/norestart.tmpl
++usr/share/cups/templates/ja/option-boolean.tmpl
++usr/share/cups/templates/ja/option-conflict.tmpl
++usr/share/cups/templates/ja/option-header.tmpl
++usr/share/cups/templates/ja/option-pickmany.tmpl
++usr/share/cups/templates/ja/option-pickone.tmpl
++usr/share/cups/templates/ja/option-trailer.tmpl
++usr/share/cups/templates/ja/pager.tmpl
++usr/share/cups/templates/ja/printer-accept.tmpl
++usr/share/cups/templates/ja/printer-added.tmpl
++usr/share/cups/templates/ja/printer-cancel-jobs.tmpl
++usr/share/cups/templates/ja/printer-configured.tmpl
++usr/share/cups/templates/ja/printer-confirm.tmpl
++usr/share/cups/templates/ja/printer-default.tmpl
++usr/share/cups/templates/ja/printer-deleted.tmpl
++usr/share/cups/templates/ja/printer-jobs-header.tmpl
++usr/share/cups/templates/ja/printer-modified.tmpl
++usr/share/cups/templates/ja/printer-reject.tmpl
++usr/share/cups/templates/ja/printer-start.tmpl
++usr/share/cups/templates/ja/printer-stop.tmpl
++usr/share/cups/templates/ja/printer.tmpl
++usr/share/cups/templates/ja/printers-header.tmpl
++usr/share/cups/templates/ja/printers.tmpl
++usr/share/cups/templates/ja/restart.tmpl
++usr/share/cups/templates/ja/search.tmpl
++usr/share/cups/templates/ja/set-printer-options-header.tmpl
++usr/share/cups/templates/ja/set-printer-options-trailer.tmpl
++usr/share/cups/templates/ja/test-page.tmpl
++usr/share/cups/templates/ja/trailer.tmpl
++usr/share/cups/templates/ja/users.tmpl
++usr/share/cups/templates/job-cancel.tmpl
++usr/share/cups/templates/job-hold.tmpl
++usr/share/cups/templates/job-move.tmpl
++usr/share/cups/templates/job-moved.tmpl
++usr/share/cups/templates/job-release.tmpl
++usr/share/cups/templates/job-restart.tmpl
++usr/share/cups/templates/jobs-header.tmpl
++usr/share/cups/templates/jobs.tmpl
++usr/share/cups/templates/list-available-printers.tmpl
++usr/share/cups/templates/modify-class.tmpl
++usr/share/cups/templates/modify-printer.tmpl
++usr/share/cups/templates/norestart.tmpl
++usr/share/cups/templates/option-boolean.tmpl
++usr/share/cups/templates/option-conflict.tmpl
++usr/share/cups/templates/option-header.tmpl
++usr/share/cups/templates/option-pickmany.tmpl
++usr/share/cups/templates/option-pickone.tmpl
++usr/share/cups/templates/option-trailer.tmpl
++usr/share/cups/templates/pager.tmpl
++usr/share/cups/templates/printer-accept.tmpl
++usr/share/cups/templates/printer-added.tmpl
++usr/share/cups/templates/printer-cancel-jobs.tmpl
++usr/share/cups/templates/printer-configured.tmpl
++usr/share/cups/templates/printer-confirm.tmpl
++usr/share/cups/templates/printer-default.tmpl
++usr/share/cups/templates/printer-deleted.tmpl
++usr/share/cups/templates/printer-jobs-header.tmpl
++usr/share/cups/templates/printer-modified.tmpl
++usr/share/cups/templates/printer-reject.tmpl
++usr/share/cups/templates/printer-start.tmpl
++usr/share/cups/templates/printer-stop.tmpl
++usr/share/cups/templates/printer.tmpl
++usr/share/cups/templates/printers-header.tmpl
++usr/share/cups/templates/printers.tmpl
++usr/share/cups/templates/pt_BR/
++usr/share/cups/templates/pt_BR/add-class.tmpl
++usr/share/cups/templates/pt_BR/add-printer.tmpl
++usr/share/cups/templates/pt_BR/admin.tmpl
++usr/share/cups/templates/pt_BR/choose-device.tmpl
++usr/share/cups/templates/pt_BR/choose-make.tmpl
++usr/share/cups/templates/pt_BR/choose-model.tmpl
++usr/share/cups/templates/pt_BR/choose-serial.tmpl
++usr/share/cups/templates/pt_BR/choose-uri.tmpl
++usr/share/cups/templates/pt_BR/class-added.tmpl
++usr/share/cups/templates/pt_BR/class-confirm.tmpl
++usr/share/cups/templates/pt_BR/class-deleted.tmpl
++usr/share/cups/templates/pt_BR/class-jobs-header.tmpl
++usr/share/cups/templates/pt_BR/class-modified.tmpl
++usr/share/cups/templates/pt_BR/class.tmpl
++usr/share/cups/templates/pt_BR/classes-header.tmpl
++usr/share/cups/templates/pt_BR/classes.tmpl
++usr/share/cups/templates/pt_BR/command.tmpl
++usr/share/cups/templates/pt_BR/edit-config.tmpl
++usr/share/cups/templates/pt_BR/error-op.tmpl
++usr/share/cups/templates/pt_BR/error.tmpl
++usr/share/cups/templates/pt_BR/header.tmpl
++usr/share/cups/templates/pt_BR/help-header.tmpl
++usr/share/cups/templates/pt_BR/help-printable.tmpl
++usr/share/cups/templates/pt_BR/help-trailer.tmpl
++usr/share/cups/templates/pt_BR/job-cancel.tmpl
++usr/share/cups/templates/pt_BR/job-hold.tmpl
++usr/share/cups/templates/pt_BR/job-move.tmpl
++usr/share/cups/templates/pt_BR/job-moved.tmpl
++usr/share/cups/templates/pt_BR/job-release.tmpl
++usr/share/cups/templates/pt_BR/job-restart.tmpl
++usr/share/cups/templates/pt_BR/jobs-header.tmpl
++usr/share/cups/templates/pt_BR/jobs.tmpl
++usr/share/cups/templates/pt_BR/list-available-printers.tmpl
++usr/share/cups/templates/pt_BR/modify-class.tmpl
++usr/share/cups/templates/pt_BR/modify-printer.tmpl
++usr/share/cups/templates/pt_BR/norestart.tmpl
++usr/share/cups/templates/pt_BR/option-boolean.tmpl
++usr/share/cups/templates/pt_BR/option-conflict.tmpl
++usr/share/cups/templates/pt_BR/option-header.tmpl
++usr/share/cups/templates/pt_BR/option-pickmany.tmpl
++usr/share/cups/templates/pt_BR/option-pickone.tmpl
++usr/share/cups/templates/pt_BR/option-trailer.tmpl
++usr/share/cups/templates/pt_BR/pager.tmpl
++usr/share/cups/templates/pt_BR/printer-accept.tmpl
++usr/share/cups/templates/pt_BR/printer-added.tmpl
++usr/share/cups/templates/pt_BR/printer-cancel-jobs.tmpl
++usr/share/cups/templates/pt_BR/printer-configured.tmpl
++usr/share/cups/templates/pt_BR/printer-confirm.tmpl
++usr/share/cups/templates/pt_BR/printer-default.tmpl
++usr/share/cups/templates/pt_BR/printer-deleted.tmpl
++usr/share/cups/templates/pt_BR/printer-jobs-header.tmpl
++usr/share/cups/templates/pt_BR/printer-modified.tmpl
++usr/share/cups/templates/pt_BR/printer-reject.tmpl
++usr/share/cups/templates/pt_BR/printer-start.tmpl
++usr/share/cups/templates/pt_BR/printer-stop.tmpl
++usr/share/cups/templates/pt_BR/printer.tmpl
++usr/share/cups/templates/pt_BR/printers-header.tmpl
++usr/share/cups/templates/pt_BR/printers.tmpl
++usr/share/cups/templates/pt_BR/restart.tmpl
++usr/share/cups/templates/pt_BR/search.tmpl
++usr/share/cups/templates/pt_BR/set-printer-options-header.tmpl
++usr/share/cups/templates/pt_BR/set-printer-options-trailer.tmpl
++usr/share/cups/templates/pt_BR/test-page.tmpl
++usr/share/cups/templates/pt_BR/trailer.tmpl
++usr/share/cups/templates/pt_BR/users.tmpl
++usr/share/cups/templates/restart.tmpl
++usr/share/cups/templates/ru/
++usr/share/cups/templates/ru/add-class.tmpl
++usr/share/cups/templates/ru/add-printer.tmpl
++usr/share/cups/templates/ru/admin.tmpl
++usr/share/cups/templates/ru/choose-device.tmpl
++usr/share/cups/templates/ru/choose-make.tmpl
++usr/share/cups/templates/ru/choose-model.tmpl
++usr/share/cups/templates/ru/choose-serial.tmpl
++usr/share/cups/templates/ru/choose-uri.tmpl
++usr/share/cups/templates/ru/class-added.tmpl
++usr/share/cups/templates/ru/class-confirm.tmpl
++usr/share/cups/templates/ru/class-deleted.tmpl
++usr/share/cups/templates/ru/class-jobs-header.tmpl
++usr/share/cups/templates/ru/class-modified.tmpl
++usr/share/cups/templates/ru/class.tmpl
++usr/share/cups/templates/ru/classes-header.tmpl
++usr/share/cups/templates/ru/classes.tmpl
++usr/share/cups/templates/ru/command.tmpl
++usr/share/cups/templates/ru/edit-config.tmpl
++usr/share/cups/templates/ru/error-op.tmpl
++usr/share/cups/templates/ru/error.tmpl
++usr/share/cups/templates/ru/header.tmpl
++usr/share/cups/templates/ru/help-header.tmpl
++usr/share/cups/templates/ru/help-printable.tmpl
++usr/share/cups/templates/ru/help-trailer.tmpl
++usr/share/cups/templates/ru/job-cancel.tmpl
++usr/share/cups/templates/ru/job-hold.tmpl
++usr/share/cups/templates/ru/job-move.tmpl
++usr/share/cups/templates/ru/job-moved.tmpl
++usr/share/cups/templates/ru/job-release.tmpl
++usr/share/cups/templates/ru/job-restart.tmpl
++usr/share/cups/templates/ru/jobs-header.tmpl
++usr/share/cups/templates/ru/jobs.tmpl
++usr/share/cups/templates/ru/list-available-printers.tmpl
++usr/share/cups/templates/ru/modify-class.tmpl
++usr/share/cups/templates/ru/modify-printer.tmpl
++usr/share/cups/templates/ru/norestart.tmpl
++usr/share/cups/templates/ru/option-boolean.tmpl
++usr/share/cups/templates/ru/option-conflict.tmpl
++usr/share/cups/templates/ru/option-header.tmpl
++usr/share/cups/templates/ru/option-pickmany.tmpl
++usr/share/cups/templates/ru/option-pickone.tmpl
++usr/share/cups/templates/ru/option-trailer.tmpl
++usr/share/cups/templates/ru/pager.tmpl
++usr/share/cups/templates/ru/printer-accept.tmpl
++usr/share/cups/templates/ru/printer-added.tmpl
++usr/share/cups/templates/ru/printer-cancel-jobs.tmpl
++usr/share/cups/templates/ru/printer-configured.tmpl
++usr/share/cups/templates/ru/printer-confirm.tmpl
++usr/share/cups/templates/ru/printer-default.tmpl
++usr/share/cups/templates/ru/printer-deleted.tmpl
++usr/share/cups/templates/ru/printer-jobs-header.tmpl
++usr/share/cups/templates/ru/printer-modified.tmpl
++usr/share/cups/templates/ru/printer-reject.tmpl
++usr/share/cups/templates/ru/printer-start.tmpl
++usr/share/cups/templates/ru/printer-stop.tmpl
++usr/share/cups/templates/ru/printer.tmpl
++usr/share/cups/templates/ru/printers-header.tmpl
++usr/share/cups/templates/ru/printers.tmpl
++usr/share/cups/templates/ru/restart.tmpl
++usr/share/cups/templates/ru/search.tmpl
++usr/share/cups/templates/ru/set-printer-options-header.tmpl
++usr/share/cups/templates/ru/set-printer-options-trailer.tmpl
++usr/share/cups/templates/ru/test-page.tmpl
++usr/share/cups/templates/ru/trailer.tmpl
++usr/share/cups/templates/ru/users.tmpl
++usr/share/cups/templates/search.tmpl
++usr/share/cups/templates/set-printer-options-header.tmpl
++usr/share/cups/templates/set-printer-options-trailer.tmpl
++usr/share/cups/templates/test-page.tmpl
++usr/share/cups/templates/trailer.tmpl
++usr/share/cups/templates/users.tmpl
++usr/share/cups/usb/
++usr/share/cups/usb/org.cups.usb-quirks
++usr/share/dbus-1/
++usr/share/dbus-1/system.d/
++usr/share/dbus-1/system.d/cups.conf
++usr/share/icons/
++usr/share/icons/hicolor/
++usr/share/icons/hicolor/128x128/
++usr/share/icons/hicolor/128x128/apps/
++usr/share/icons/hicolor/128x128/apps/cups.png
++usr/share/icons/hicolor/16x16/
++usr/share/icons/hicolor/16x16/apps/
++usr/share/icons/hicolor/16x16/apps/cups.png
++usr/share/icons/hicolor/32x32/
++usr/share/icons/hicolor/32x32/apps/
++usr/share/icons/hicolor/32x32/apps/cups.png
++usr/share/icons/hicolor/64x64/
++usr/share/icons/hicolor/64x64/apps/
++usr/share/icons/hicolor/64x64/apps/cups.png
++usr/share/locale/
++usr/share/locale/ca/
++usr/share/locale/ca/cups_ca.po
++usr/share/locale/cs/
++usr/share/locale/cs/cups_cs.po
++usr/share/locale/de/
++usr/share/locale/de/cups_de.po
++usr/share/locale/en/
++usr/share/locale/en/cups_en.po
++usr/share/locale/es/
++usr/share/locale/es/cups_es.po
++usr/share/locale/fr/
++usr/share/locale/fr/cups_fr.po
++usr/share/locale/it/
++usr/share/locale/it/cups_it.po
++usr/share/locale/ja/
++usr/share/locale/ja/cups_ja.po
++usr/share/locale/pt_BR/
++usr/share/locale/pt_BR/cups_pt_BR.po
++usr/share/locale/ru/
++usr/share/locale/ru/cups_ru.po
++usr/share/locale/zh_CN/
++usr/share/locale/zh_CN/cups_zh_CN.po
++var/
++var/cache/
++var/cache/cups/
++var/cache/cups/rss/
++var/log/
++var/log/cups/
++var/run/
++var/run/cups/
++var/run/cups/certs/
++var/spool/
++var/spool/cups/
++var/spool/cups/tmp/
++WARNING:  zero length file usr/share/cups/templates/ja/help-trailer.tmpl
++WARNING:  zero length file usr/share/cups/templates/de/help-trailer.tmpl
++WARNING:  zero length file usr/share/cups/templates/fr/help-trailer.tmpl
++WARNING:  zero length file usr/share/cups/templates/ru/help-trailer.tmpl
++WARNING:  zero length file usr/share/cups/templates/es/help-trailer.tmpl
++WARNING:  zero length file usr/share/cups/templates/help-trailer.tmpl
++WARNING:  zero length file usr/share/cups/templates/pt_BR/help-trailer.tmpl
++
++Slackware package /tmp/cups-2.3.3-x86_64-3.txz created.
++

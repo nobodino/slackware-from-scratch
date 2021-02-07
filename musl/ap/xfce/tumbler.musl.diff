@@ -1,0 +1,1518 @@
+diff -ruBN /tmp/tumbler/tumbler.SlackBuild /source/xfce/tumbler/tumbler.SlackBuild
+--- /tmp/tumbler/tumbler.SlackBuild	2020-12-25 18:18:46.000000000 +0000
++++ /source/xfce/tumbler/tumbler.SlackBuild	2021-01-23 22:09:25.000000000 +0000
+@@ -56,7 +56,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ else
+   SLKCFLAGS="-O2"
+   LIBDIRSUFFIX=""
+@@ -94,7 +94,7 @@
+   --docdir=/usr/doc/$PKGNAM-$VERSION \
+   --disable-static \
+   --disable-debug \
+-  --build=$ARCH-slackware-linux || exit 1
++  --build=$ARCH-slackware-linux-musl || exit 1
+ 
+ # Build and install:
+ make $NUMJOBS || make || exit 1
+diff -ruBN /tmp/tumbler/tumbler.SlackBuild.log /source/xfce/tumbler/tumbler.SlackBuild.log
+--- /tmp/tumbler/tumbler.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/xfce/tumbler/tumbler.SlackBuild.log	2021-01-23 22:11:06.000000000 +0000
+@@ -0,0 +1,1493 @@
++tumbler-4.16.0/
++tumbler-4.16.0/missing
++tumbler-4.16.0/Makefile.am
++tumbler-4.16.0/config.h.in
++tumbler-4.16.0/tumbler/
++tumbler-4.16.0/tumbler/tumbler-provider-factory.h
++tumbler-4.16.0/tumbler/tumbler-thumbnailer.h
++tumbler-4.16.0/tumbler/Makefile.am
++tumbler-4.16.0/tumbler/tumbler-abstract-thumbnailer.c
++tumbler-4.16.0/tumbler/tumbler-abstract-thumbnailer.h
++tumbler-4.16.0/tumbler/tumbler-thumbnail-flavor.h
++tumbler-4.16.0/tumbler/tumbler-config.h.in
++tumbler-4.16.0/tumbler/tumbler-marshal.list
++tumbler-4.16.0/tumbler/tumbler-enum-types.h
++tumbler-4.16.0/tumbler/tumbler-thumbnailer-provider.c
++tumbler-4.16.0/tumbler/tumbler-thumbnail.h
++tumbler-4.16.0/tumbler/tumbler-cache-plugin.c
++tumbler-4.16.0/tumbler/tumbler-1.pc.in
++tumbler-4.16.0/tumbler/tumbler-provider-factory.c
++tumbler-4.16.0/tumbler/tumbler-provider-plugin.c
++tumbler-4.16.0/tumbler/tumbler-cache.h
++tumbler-4.16.0/tumbler/tumbler-error.h
++tumbler-4.16.0/tumbler/Makefile.in
++tumbler-4.16.0/tumbler/tumbler-thumbnailer-provider.h
++tumbler-4.16.0/tumbler/tumbler-file-info.h
++tumbler-4.16.0/tumbler/tumbler-config.c
++tumbler-4.16.0/tumbler/tumbler-file-info.c
++tumbler-4.16.0/tumbler/tumbler.h
++tumbler-4.16.0/tumbler/tumbler-cache.c
++tumbler-4.16.0/tumbler/tumbler-thumbnail.c
++tumbler-4.16.0/tumbler/tumbler-thumbnailer.c
++tumbler-4.16.0/tumbler/tumbler-util.c
++tumbler-4.16.0/tumbler/tumbler-enum-types.c
++tumbler-4.16.0/tumbler/tumbler-glib-extensions.h
++tumbler-4.16.0/tumbler/tumbler-config.h
++tumbler-4.16.0/tumbler/tumbler-marshal.c
++tumbler-4.16.0/tumbler/tumbler-cache-plugin.h
++tumbler-4.16.0/tumbler/tumbler-marshal.h
++tumbler-4.16.0/tumbler/tumbler-thumbnail-flavor.c
++tumbler-4.16.0/tumbler/tumbler-util.h
++tumbler-4.16.0/tumbler/tumbler-provider-plugin.h
++tumbler-4.16.0/NEWS
++tumbler-4.16.0/ChangeLog
++tumbler-4.16.0/depcomp
++tumbler-4.16.0/acinclude.m4
++tumbler-4.16.0/COPYING
++tumbler-4.16.0/AUTHORS
++tumbler-4.16.0/mkinstalldirs
++tumbler-4.16.0/plugins/
++tumbler-4.16.0/plugins/Makefile.am
++tumbler-4.16.0/plugins/raw-thumbnailer/
++tumbler-4.16.0/plugins/raw-thumbnailer/raw-thumbnailer.h
++tumbler-4.16.0/plugins/raw-thumbnailer/raw-thumbnailer.c
++tumbler-4.16.0/plugins/raw-thumbnailer/Makefile.am
++tumbler-4.16.0/plugins/raw-thumbnailer/raw-thumbnailer-provider.c
++tumbler-4.16.0/plugins/raw-thumbnailer/raw-thumbnailer-plugin.c
++tumbler-4.16.0/plugins/raw-thumbnailer/Makefile.in
++tumbler-4.16.0/plugins/raw-thumbnailer/raw-thumbnailer-provider.h
++tumbler-4.16.0/plugins/cover-thumbnailer/
++tumbler-4.16.0/plugins/cover-thumbnailer/Makefile.am
++tumbler-4.16.0/plugins/cover-thumbnailer/cover-thumbnailer-provider.h
++tumbler-4.16.0/plugins/cover-thumbnailer/cover-thumbnailer-provider.c
++tumbler-4.16.0/plugins/cover-thumbnailer/cover-thumbnailer-plugin.c
++tumbler-4.16.0/plugins/cover-thumbnailer/cover-thumbnailer.h
++tumbler-4.16.0/plugins/cover-thumbnailer/Makefile.in
++tumbler-4.16.0/plugins/cover-thumbnailer/cover-thumbnailer.c
++tumbler-4.16.0/plugins/gepub-thumbnailer/
++tumbler-4.16.0/plugins/gepub-thumbnailer/Makefile.am
++tumbler-4.16.0/plugins/gepub-thumbnailer/Makefile.in
++tumbler-4.16.0/plugins/gepub-thumbnailer/gepub-thumbnailer-plugin.c
++tumbler-4.16.0/plugins/gepub-thumbnailer/gepub-thumbnailer.c
++tumbler-4.16.0/plugins/gepub-thumbnailer/gepub-thumbnailer-provider.c
++tumbler-4.16.0/plugins/gepub-thumbnailer/gepub-thumbnailer.h
++tumbler-4.16.0/plugins/gepub-thumbnailer/gepub-thumbnailer-provider.h
++tumbler-4.16.0/plugins/desktop-thumbnailer/
++tumbler-4.16.0/plugins/desktop-thumbnailer/desktop-thumbnailer.c
++tumbler-4.16.0/plugins/desktop-thumbnailer/Makefile.am
++tumbler-4.16.0/plugins/desktop-thumbnailer/desktop-thumbnailer-provider.c
++tumbler-4.16.0/plugins/desktop-thumbnailer/desktop-thumbnailer-plugin.c
++tumbler-4.16.0/plugins/desktop-thumbnailer/Makefile.in
++tumbler-4.16.0/plugins/desktop-thumbnailer/desktop-thumbnailer-provider.h
++tumbler-4.16.0/plugins/desktop-thumbnailer/desktop-thumbnailer.h
++tumbler-4.16.0/plugins/jpeg-thumbnailer/
++tumbler-4.16.0/plugins/jpeg-thumbnailer/Makefile.am
++tumbler-4.16.0/plugins/jpeg-thumbnailer/jpeg-thumbnailer.c
++tumbler-4.16.0/plugins/jpeg-thumbnailer/Makefile.in
++tumbler-4.16.0/plugins/jpeg-thumbnailer/jpeg-thumbnailer-plugin.c
++tumbler-4.16.0/plugins/jpeg-thumbnailer/jpeg-thumbnailer-provider.h
++tumbler-4.16.0/plugins/jpeg-thumbnailer/jpeg-thumbnailer.h
++tumbler-4.16.0/plugins/jpeg-thumbnailer/jpeg-thumbnailer-provider.c
++tumbler-4.16.0/plugins/odf-thumbnailer/
++tumbler-4.16.0/plugins/odf-thumbnailer/Makefile.am
++tumbler-4.16.0/plugins/odf-thumbnailer/odf-thumbnailer-provider.c
++tumbler-4.16.0/plugins/odf-thumbnailer/odf-thumbnailer-plugin.c
++tumbler-4.16.0/plugins/odf-thumbnailer/Makefile.in
++tumbler-4.16.0/plugins/odf-thumbnailer/odf-thumbnailer.h
++tumbler-4.16.0/plugins/odf-thumbnailer/odf-thumbnailer-provider.h
++tumbler-4.16.0/plugins/odf-thumbnailer/odf-thumbnailer.c
++tumbler-4.16.0/plugins/pixbuf-thumbnailer/
++tumbler-4.16.0/plugins/pixbuf-thumbnailer/Makefile.am
++tumbler-4.16.0/plugins/pixbuf-thumbnailer/pixbuf-thumbnailer-provider.c
++tumbler-4.16.0/plugins/pixbuf-thumbnailer/pixbuf-thumbnailer-plugin.c
++tumbler-4.16.0/plugins/pixbuf-thumbnailer/Makefile.in
++tumbler-4.16.0/plugins/pixbuf-thumbnailer/pixbuf-thumbnailer.c
++tumbler-4.16.0/plugins/pixbuf-thumbnailer/pixbuf-thumbnailer.h
++tumbler-4.16.0/plugins/pixbuf-thumbnailer/pixbuf-thumbnailer-provider.h
++tumbler-4.16.0/plugins/ffmpeg-thumbnailer/
++tumbler-4.16.0/plugins/ffmpeg-thumbnailer/Makefile.am
++tumbler-4.16.0/plugins/ffmpeg-thumbnailer/ffmpeg-thumbnailer.h
++tumbler-4.16.0/plugins/ffmpeg-thumbnailer/ffmpeg-thumbnailer-provider.c
++tumbler-4.16.0/plugins/ffmpeg-thumbnailer/Makefile.in
++tumbler-4.16.0/plugins/ffmpeg-thumbnailer/ffmpeg-thumbnailer.c
++tumbler-4.16.0/plugins/ffmpeg-thumbnailer/ffmpeg-thumbnailer-plugin.c
++tumbler-4.16.0/plugins/ffmpeg-thumbnailer/ffmpeg-thumbnailer-provider.h
++tumbler-4.16.0/plugins/Makefile.in
++tumbler-4.16.0/plugins/xdg-cache/
++tumbler-4.16.0/plugins/xdg-cache/xdg-cache-thumbnail.c
++tumbler-4.16.0/plugins/xdg-cache/Makefile.am
++tumbler-4.16.0/plugins/xdg-cache/xdg-cache-cache.c
++tumbler-4.16.0/plugins/xdg-cache/Makefile.in
++tumbler-4.16.0/plugins/xdg-cache/xdg-cache-plugin.c
++tumbler-4.16.0/plugins/xdg-cache/xdg-cache-thumbnail.h
++tumbler-4.16.0/plugins/xdg-cache/xdg-cache-cache.h
++tumbler-4.16.0/plugins/gst-thumbnailer/
++tumbler-4.16.0/plugins/gst-thumbnailer/gst-thumbnailer.h
++tumbler-4.16.0/plugins/gst-thumbnailer/Makefile.am
++tumbler-4.16.0/plugins/gst-thumbnailer/gst-thumbnailer.c
++tumbler-4.16.0/plugins/gst-thumbnailer/gst-thumbnailer-plugin.c
++tumbler-4.16.0/plugins/gst-thumbnailer/gst-thumbnailer-provider.h
++tumbler-4.16.0/plugins/gst-thumbnailer/Makefile.in
++tumbler-4.16.0/plugins/gst-thumbnailer/gst-thumbnailer-provider.c
++tumbler-4.16.0/plugins/poppler-thumbnailer/
++tumbler-4.16.0/plugins/poppler-thumbnailer/Makefile.am
++tumbler-4.16.0/plugins/poppler-thumbnailer/poppler-thumbnailer-provider.c
++tumbler-4.16.0/plugins/poppler-thumbnailer/poppler-thumbnailer.h
++tumbler-4.16.0/plugins/poppler-thumbnailer/poppler-thumbnailer-provider.h
++tumbler-4.16.0/plugins/poppler-thumbnailer/poppler-thumbnailer-plugin.c
++tumbler-4.16.0/plugins/poppler-thumbnailer/poppler-thumbnailer.c
++tumbler-4.16.0/plugins/poppler-thumbnailer/Makefile.in
++tumbler-4.16.0/plugins/font-thumbnailer/
++tumbler-4.16.0/plugins/font-thumbnailer/font-thumbnailer-provider.h
++tumbler-4.16.0/plugins/font-thumbnailer/Makefile.am
++tumbler-4.16.0/plugins/font-thumbnailer/font-thumbnailer.c
++tumbler-4.16.0/plugins/font-thumbnailer/font-thumbnailer-provider.c
++tumbler-4.16.0/plugins/font-thumbnailer/Makefile.in
++tumbler-4.16.0/plugins/font-thumbnailer/font-thumbnailer-plugin.c
++tumbler-4.16.0/plugins/font-thumbnailer/font-thumbnailer.h
++tumbler-4.16.0/configure.ac
++tumbler-4.16.0/aclocal.m4
++tumbler-4.16.0/configure
++tumbler-4.16.0/Makefile.in
++tumbler-4.16.0/gtk-doc.make
++tumbler-4.16.0/docs/
++tumbler-4.16.0/docs/Makefile.am
++tumbler-4.16.0/docs/reference/
++tumbler-4.16.0/docs/reference/Makefile.am
++tumbler-4.16.0/docs/reference/tumbler/
++tumbler-4.16.0/docs/reference/tumbler/Makefile.am
++tumbler-4.16.0/docs/reference/tumbler/tumbler.types
++tumbler-4.16.0/docs/reference/tumbler/version.xml.in
++tumbler-4.16.0/docs/reference/tumbler/Makefile.in
++tumbler-4.16.0/docs/reference/tumbler/tumbler-overrides.txt
++tumbler-4.16.0/docs/reference/tumbler/version.xml
++tumbler-4.16.0/docs/reference/tumbler/tumbler-sections.txt
++tumbler-4.16.0/docs/reference/tumbler/html/
++tumbler-4.16.0/docs/reference/tumbler/html/style.css
++tumbler-4.16.0/docs/reference/tumbler/html/TumblerThumbnail.html
++tumbler-4.16.0/docs/reference/tumbler/html/left.png
++tumbler-4.16.0/docs/reference/tumbler/html/up-insensitive.png
++tumbler-4.16.0/docs/reference/tumbler/html/TumblerAbstractThumbnailer.html
++tumbler-4.16.0/docs/reference/tumbler/html/right.png
++tumbler-4.16.0/docs/reference/tumbler/html/home.png
++tumbler-4.16.0/docs/reference/tumbler/html/left-insensitive.png
++tumbler-4.16.0/docs/reference/tumbler/html/object-tree.html
++tumbler-4.16.0/docs/reference/tumbler/html/up.png
++tumbler-4.16.0/docs/reference/tumbler/html/extension-tutorial.html
++tumbler-4.16.0/docs/reference/tumbler/html/miscellaneous.html
++tumbler-4.16.0/docs/reference/tumbler/html/TumblerProviderFactory.html
++tumbler-4.16.0/docs/reference/tumbler/html/thumbnails.html
++tumbler-4.16.0/docs/reference/tumbler/html/tumbler-Various-Enumeration-Types.html
++tumbler-4.16.0/docs/reference/tumbler/html/TumblerProviderPlugin.html
++tumbler-4.16.0/docs/reference/tumbler/html/TumblerFileInfo.html
++tumbler-4.16.0/docs/reference/tumbler/html/TumblerThumbnailerProvider.html
++tumbler-4.16.0/docs/reference/tumbler/html/TumblerCache.html
++tumbler-4.16.0/docs/reference/tumbler/html/tumbler-Version-Information-and-Compatibility-Checks.html
++tumbler-4.16.0/docs/reference/tumbler/html/api-index-full.html
++tumbler-4.16.0/docs/reference/tumbler/html/right-insensitive.png
++tumbler-4.16.0/docs/reference/tumbler/html/tumbler-Error-Domain-and-Types.html
++tumbler-4.16.0/docs/reference/tumbler/html/tumbler.devhelp2
++tumbler-4.16.0/docs/reference/tumbler/html/index.html
++tumbler-4.16.0/docs/reference/tumbler/html/pt01.html
++tumbler-4.16.0/docs/reference/tumbler/html/extension-api.html
++tumbler-4.16.0/docs/reference/tumbler/tumbler-docs.xml
++tumbler-4.16.0/docs/reference/Makefile.in
++tumbler-4.16.0/docs/Makefile.in
++tumbler-4.16.0/tumblerd/
++tumbler-4.16.0/tumblerd/tumbler-component.c
++tumbler-4.16.0/tumblerd/tumbler-service-dbus.xml
++tumbler-4.16.0/tumblerd/tumbler-lifecycle-manager.c
++tumbler-4.16.0/tumblerd/Makefile.am
++tumbler-4.16.0/tumblerd/tumbler-cache-service-gdbus.h
++tumbler-4.16.0/tumblerd/tumbler-scheduler.h
++tumbler-4.16.0/tumblerd/tumbler-cache-service-gdbus.c
++tumbler-4.16.0/tumblerd/org.xfce.Tumbler.Manager1.service.in
++tumbler-4.16.0/tumblerd/tumbler-service.h
++tumbler-4.16.0/tumblerd/tumbler-service-gdbus.c
++tumbler-4.16.0/tumblerd/org.xfce.Tumbler.Thumbnailer1.service.in
++tumbler-4.16.0/tumblerd/tumbler-specialized-thumbnailer.h
++tumbler-4.16.0/tumblerd/tumbler-scheduler.c
++tumbler-4.16.0/tumblerd/tumbler-specialized-thumbnailer.c
++tumbler-4.16.0/tumblerd/tumbler-utils.h
++tumbler-4.16.0/tumblerd/tumbler-cache-service.h
++tumbler-4.16.0/tumblerd/Makefile.in
++tumbler-4.16.0/tumblerd/tumbler-service.c
++tumbler-4.16.0/tumblerd/tumbler-lifo-scheduler.h
++tumbler-4.16.0/tumblerd/tumbler-manager.h
++tumbler-4.16.0/tumblerd/tumbler.rc
++tumbler-4.16.0/tumblerd/tumbler-cache-service-dbus.xml
++tumbler-4.16.0/tumblerd/tumbler-lifo-scheduler.c
++tumbler-4.16.0/tumblerd/tumbler-registry.h
++tumbler-4.16.0/tumblerd/tumbler-manager.c
++tumbler-4.16.0/tumblerd/tumbler-lifecycle-manager.h
++tumbler-4.16.0/tumblerd/tumbler-group-scheduler.h
++tumbler-4.16.0/tumblerd/tumbler-cache-service.c
++tumbler-4.16.0/tumblerd/tumbler-service-gdbus.h
++tumbler-4.16.0/tumblerd/tumbler-registry.c
++tumbler-4.16.0/tumblerd/main.c
++tumbler-4.16.0/tumblerd/tumbler-component.h
++tumbler-4.16.0/tumblerd/tumbler-manager-gdbus.h
++tumbler-4.16.0/tumblerd/tumbler-manager-dbus.xml
++tumbler-4.16.0/tumblerd/tumbler-manager-gdbus.c
++tumbler-4.16.0/tumblerd/org.xfce.Tumbler.Cache1.service.in
++tumbler-4.16.0/tumblerd/tumbler-group-scheduler.c
++tumbler-4.16.0/INSTALL
++tumbler-4.16.0/ltmain.sh
++tumbler-4.16.0/compile
++tumbler-4.16.0/config.sub
++tumbler-4.16.0/config.guess
++tumbler-4.16.0/install-sh
++tumbler-4.16.0/README.md
++tumbler-4.16.0/po/
++tumbler-4.16.0/po/en_GB.po
++tumbler-4.16.0/po/ca.po
++tumbler-4.16.0/po/zh_CN.po
++tumbler-4.16.0/po/nb.po
++tumbler-4.16.0/po/tr.po
++tumbler-4.16.0/po/en_AU.po
++tumbler-4.16.0/po/fr.po
++tumbler-4.16.0/po/eu.po
++tumbler-4.16.0/po/gl.po
++tumbler-4.16.0/po/be.po
++tumbler-4.16.0/po/zh_TW.po
++tumbler-4.16.0/po/th.po
++tumbler-4.16.0/po/Makefile.in.in
++tumbler-4.16.0/po/sr.po
++tumbler-4.16.0/po/fi.po
++tumbler-4.16.0/po/pl.po
++tumbler-4.16.0/po/ast.po
++tumbler-4.16.0/po/it.po
++tumbler-4.16.0/po/he.po
++tumbler-4.16.0/po/et.po
++tumbler-4.16.0/po/pt_BR.po
++tumbler-4.16.0/po/de.po
++tumbler-4.16.0/po/sl.po
++tumbler-4.16.0/po/pa.po
++tumbler-4.16.0/po/zh_HK.po
++tumbler-4.16.0/po/nl.po
++tumbler-4.16.0/po/hy_AM.po
++tumbler-4.16.0/po/hi.po
++tumbler-4.16.0/po/ja.po
++tumbler-4.16.0/po/hu.po
++tumbler-4.16.0/po/POTFILES.in
++tumbler-4.16.0/po/nn.po
++tumbler-4.16.0/po/si.po
++tumbler-4.16.0/po/ar.po
++tumbler-4.16.0/po/ko.po
++tumbler-4.16.0/po/es.po
++tumbler-4.16.0/po/kk.po
++tumbler-4.16.0/po/sk.po
++tumbler-4.16.0/po/te.po
++tumbler-4.16.0/po/hr.po
++tumbler-4.16.0/po/sq.po
++tumbler-4.16.0/po/pt.po
++tumbler-4.16.0/po/cs.po
++tumbler-4.16.0/po/is.po
++tumbler-4.16.0/po/uk.po
++tumbler-4.16.0/po/hye.po
++tumbler-4.16.0/po/bn.po
++tumbler-4.16.0/po/id.po
++tumbler-4.16.0/po/da.po
++tumbler-4.16.0/po/ug.po
++tumbler-4.16.0/po/lv.po
++tumbler-4.16.0/po/el.po
++tumbler-4.16.0/po/sv.po
++tumbler-4.16.0/po/ru.po
++tumbler-4.16.0/po/lt.po
++tumbler-4.16.0/po/ms.po
++tumbler-4.16.0/po/ro.po
++tumbler-4.16.0/po/bg.po
++tumbler-4.16.0/po/oc.po
++tumbler-4.16.0/TODO
++tumbler-4.16.0/icons/
++tumbler-4.16.0/icons/Makefile.am
++tumbler-4.16.0/icons/32x32/
++tumbler-4.16.0/icons/32x32/org.xfce.tumbler.png
++tumbler-4.16.0/icons/32x32/Makefile.am
++tumbler-4.16.0/icons/32x32/Makefile.in
++tumbler-4.16.0/icons/Makefile.in
++checking build system type... x86_64-slackware-linux-musl
++checking host system type... x86_64-slackware-linux-musl
++checking target system type... x86_64-slackware-linux-musl
++checking for a BSD-compatible install... /usr/bin/ginstall -c
++checking whether build environment is sane... yes
++checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
++checking for gawk... gawk
++checking whether make sets $(MAKE)... yes
++checking whether make supports nested variables... yes
++checking whether UID '0' is supported by ustar format... yes
++checking whether GID '0' is supported by ustar format... yes
++checking how to create a ustar tar archive... gnutar
++checking whether to enable maintainer-specific portions of Makefiles... no
++checking whether make supports nested variables... (cached) yes
++checking whether make supports the include directive... yes (GNU style)
++checking for gcc... gcc
++checking whether the C compiler works... yes
++checking for C compiler default output file name... a.out
++checking for suffix of executables... 
++checking whether we are cross compiling... no
++checking for suffix of object files... o
++checking whether we are using the GNU C compiler... yes
++checking whether gcc accepts -g... yes
++checking for gcc option to accept ISO C89... none needed
++checking whether gcc understands -c and -o together... yes
++checking dependency style of gcc... gcc3
++checking how to run the C preprocessor... gcc -E
++checking for grep that handles long lines and -e... /usr/bin/grep
++checking for egrep... /usr/bin/grep -E
++checking for ANSI C header files... yes
++checking for sys/types.h... yes
++checking for sys/stat.h... yes
++checking for stdlib.h... yes
++checking for string.h... yes
++checking for memory.h... yes
++checking for strings.h... yes
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking for unistd.h... yes
++checking minix/config.h usability... no
++checking minix/config.h presence... no
++checking for minix/config.h... no
++checking whether it is safe to define __EXTENSIONS__... yes
++checking for library containing strerror... none required
++checking if building for some Win32 platform... no
++checking dependency style of gcc... gcc3
++checking for gcc... (cached) gcc
++checking whether we are using the GNU C compiler... (cached) yes
++checking whether gcc accepts -g... (cached) yes
++checking for gcc option to accept ISO C89... (cached) none needed
++checking whether gcc understands -c and -o together... (cached) yes
++checking dependency style of gcc... (cached) gcc3
++checking whether NLS is requested... yes
++checking for intltool >= 0.35.0... 0.51.0 found
++checking for intltool-update... /usr/bin/intltool-update
++checking for intltool-merge... /usr/bin/intltool-merge
++checking for intltool-extract... /usr/bin/intltool-extract
++checking for xgettext... /usr/bin/xgettext
++checking for msgmerge... /usr/bin/msgmerge
++checking for msgfmt... /usr/bin/msgfmt
++checking for gmsgfmt... /usr/bin/msgfmt
++checking for perl... /usr/bin/perl
++checking for perl >= 5.8.1... 5.32.0
++checking how to print strings... printf
++checking for a sed that does not truncate output... /usr/bin/sed
++checking for fgrep... /usr/bin/grep -F
++checking for ld used by gcc... /usr/bin/ld
++checking if the linker (/usr/bin/ld) is GNU ld... yes
++checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
++checking the name lister (/usr/bin/nm -B) interface... BSD nm
++checking whether ln -s works... yes
++checking the maximum length of command line arguments... 98304
++checking how to convert x86_64-slackware-linux-musl file names to x86_64-slackware-linux-musl format... func_convert_file_noop
++checking how to convert x86_64-slackware-linux-musl file names to toolchain format... func_convert_file_noop
++checking for /usr/bin/ld option to reload object files... -r
++checking for objdump... objdump
++checking how to recognize dependent libraries... pass_all
++checking for dlltool... dlltool
++checking how to associate runtime and link libraries... printf %s\n
++checking for ar... ar
++checking for archiver @FILE support... @
++checking for strip... strip
++checking for ranlib... ranlib
++checking command to parse /usr/bin/nm -B output from gcc object... ok
++checking for sysroot... no
++checking for a working dd... /usr/bin/dd
++checking how to truncate binary pipes... /usr/bin/dd bs=4096 count=1
++checking for mt... mt
++checking if mt is a manifest tool... no
++checking for dlfcn.h... yes
++checking for objdir... .libs
++checking if gcc supports -fno-rtti -fno-exceptions... no
++checking for gcc option to produce PIC... -fPIC -DPIC
++checking if gcc PIC flag -fPIC -DPIC works... yes
++checking if gcc static flag -static works... yes
++checking if gcc supports -c -o file.o... yes
++checking if gcc supports -c -o file.o... (cached) yes
++checking whether the gcc linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
++checking whether -lc should be explicitly linked in... no
++checking dynamic linker characteristics... GNU/Linux ld.so
++checking how to hardcode library paths into programs... immediate
++checking whether stripping libraries is possible... yes
++checking if libtool supports shared libraries... yes
++checking whether to build shared libraries... yes
++checking whether to build static libraries... no
++checking for ANSI C header files... (cached) yes
++checking fcntl.h usability... yes
++checking fcntl.h presence... yes
++checking for fcntl.h... yes
++checking linux/sched.h usability... yes
++checking linux/sched.h presence... yes
++checking for linux/sched.h... yes
++checking for memory.h... (cached) yes
++checking sched.h usability... yes
++checking sched.h presence... yes
++checking for sched.h... yes
++checking setjmp.h usability... yes
++checking setjmp.h presence... yes
++checking for setjmp.h... yes
++checking stdio.h usability... yes
++checking stdio.h presence... yes
++checking for stdio.h... yes
++checking for stdlib.h... (cached) yes
++checking for string.h... (cached) yes
++checking syscall.h usability... yes
++checking syscall.h presence... yes
++checking for syscall.h... yes
++checking sys/mman.h usability... yes
++checking sys/mman.h presence... yes
++checking for sys/mman.h... yes
++checking for sys/types.h... (cached) yes
++checking for sys/stat.h... (cached) yes
++checking for unistd.h... (cached) yes
++checking sys/select.h usability... yes
++checking sys/select.h presence... yes
++checking for sys/select.h... yes
++checking pwd.h usability... yes
++checking pwd.h presence... yes
++checking for pwd.h... yes
++checking for stdlib.h... (cached) yes
++checking for unistd.h... (cached) yes
++checking for sys/param.h... yes
++checking for getpagesize... yes
++checking for working mmap... yes
++checking for sched_getparam... yes
++checking for sched_setscheduler... yes
++checking for getpwnam... yes
++checking locale.h usability... yes
++checking locale.h presence... yes
++checking for locale.h... yes
++checking for LC_MESSAGES... yes
++checking for CFPreferencesCopyAppValue... no
++checking for CFLocaleCopyCurrent... no
++checking libintl.h usability... yes
++checking libintl.h presence... yes
++checking for libintl.h... yes
++checking for ngettext in libc... yes
++checking for dgettext in libc... yes
++checking for bind_textdomain_codeset... yes
++checking for msgfmt... (cached) /usr/bin/msgfmt
++checking for dcgettext... yes
++checking if msgfmt accepts -c... yes
++checking for gmsgfmt... (cached) /usr/bin/msgfmt
++checking for xgettext... (cached) /usr/bin/xgettext
++checking for catalogs to be installed...  ar ast be bg bn ca cs da de el en_AU en_GB es et eu fi fr gl he hi hr hu hy_AM hye id is it ja kk ko lt lv ms nb nl nn oc pa pl pt pt_BR ro ru si sk sl sq sr sv te th tr ug uk zh_CN zh_HK zh_TW
++checking for bind_textdomain_codeset... (cached) yes
++checking for locales directory... /usr/lib/locale
++checking for additional xgettext flags... --keyword=Q_ --from-code=UTF-8
++checking pkg-config is at least version 0.9.0... yes
++checking for gtk-doc... yes
++checking for gtkdoc-check... gtkdoc-check.test
++checking for gtkdoc-check... /usr/bin/gtkdoc-check
++checking for gtkdoc-rebase... /usr/bin/gtkdoc-rebase
++checking for gtkdoc-mkpdf... /usr/bin/gtkdoc-mkpdf
++checking whether to build gtk-doc documentation... no
++checking for GTKDOC_DEPS... yes
++checking for gdbus-codegen... /usr/bin/gdbus-codegen
++checking for GLIB... yes
++checking for GIO... yes
++checking for GIO_UNIX... yes
++checking for GMODULE... yes
++checking for GTHREAD... yes
++checking for GDK_PIXBUF... yes
++checking for CURL... yes
++checking whether to build the Cover thumbnailer plugin... yes
++checking for GDK_PIXBUF... yes
++checking for FREETYPE... yes
++checking whether to build the FreeType thumbnailer plugin... yes
++checking for GDK_PIXBUF... yes
++checking for jpeg_start_decompress in -ljpeg... yes
++checking jpeglib.h usability... yes
++checking jpeglib.h presence... yes
++checking for jpeglib.h... yes
++checking whether to build the JPEG thumbnailer plugin with EXIF support... yes
++checking for GDK_PIXBUF... yes
++checking whether to build the GdkPixbuf thumbnailer plugin... yes
++checking for GDK_PIXBUF... yes
++checking for FFMPEGTHUMBNAILER... no
++checking whether to build the ffmpeg video thumbnailer plugin... no
++checking for GDK_PIXBUF... yes
++checking for GSTREAMER... yes
++checking for GSTREAMER_TAG... yes
++checking whether to build the gstreamer video thumbnailer plugin... yes
++checking for GDK_PIXBUF... yes
++checking for GSF... yes
++checking whether to build the office thumbnailer plugin... yes
++checking for GDK_PIXBUF... yes
++checking for POPPLER_GLIB... yes
++checking whether to build the poppler PDF/PS thumbnailer plugin... yes
++checking for GDK_PIXBUF... yes
++checking for LIBOPENRAW_GNOME... no
++checking for LIBOPENRAW_GNOME... no
++checking whether to build the RAW image thumbnailer plugin... no
++checking for GDK_PIXBUF... yes
++checking for PNG... yes
++checking whether to build the freedesktop.org cache plugin... yes
++checking for GDK_PIXBUF... yes
++checking whether to build the plugin support for loading thumbnailers *.thumbnailer files... yes
++checking for GDK_PIXBUF... yes
++checking for GEPUB... no
++checking whether to build the libgepub thumbnailer plugin... no
++checking whether to build with debugging support... no
++checking whether /usr/bin/ld -m elf_x86_64 accepts --as-needed... yes
++checking whether /usr/bin/ld -m elf_x86_64 accepts -O1... yes
++checking if gcc supports -Wno-sign-compare... yes
++checking that generated files are newer than configure... done
++configure: creating ./config.status
++config.status: creating Makefile
++config.status: creating docs/Makefile
++config.status: creating docs/reference/Makefile
++config.status: creating docs/reference/tumbler/Makefile
++config.status: creating docs/reference/tumbler/version.xml
++config.status: creating icons/Makefile
++config.status: creating icons/32x32/Makefile
++config.status: creating plugins/Makefile
++config.status: creating plugins/cover-thumbnailer/Makefile
++config.status: creating plugins/font-thumbnailer/Makefile
++config.status: creating plugins/gst-thumbnailer/Makefile
++config.status: creating plugins/jpeg-thumbnailer/Makefile
++config.status: creating plugins/pixbuf-thumbnailer/Makefile
++config.status: creating plugins/ffmpeg-thumbnailer/Makefile
++config.status: creating plugins/odf-thumbnailer/Makefile
++config.status: creating plugins/poppler-thumbnailer/Makefile
++config.status: creating plugins/raw-thumbnailer/Makefile
++config.status: creating plugins/xdg-cache/Makefile
++config.status: creating plugins/desktop-thumbnailer/Makefile
++config.status: creating plugins/gepub-thumbnailer/Makefile
++config.status: creating po/Makefile.in
++config.status: creating tumbler/Makefile
++config.status: creating tumbler/tumbler-1.pc
++config.status: creating tumbler/tumbler-config.h
++config.status: creating tumblerd/Makefile
++config.status: creating config.h
++config.status: executing depfiles commands
++config.status: executing libtool commands
++config.status: executing default-1 commands
++config.status: executing po/stamp-it commands
++
++Build Configuration:
++
++  * Debug:                                            no
++
++Plugins:
++
++  * GdkPixbuf thumbnailer plugin:                     yes
++  * Cover thumbnailer plugin:                         yes
++  * FreeType font thumbnailer plugin:                 yes
++  * JPEG thumbnailer plugin with EXIF support:        yes
++  * Video thumbnailer plugin using ffmpegthumbnailer: no
++  * Video thumbnailer plugin using GStreamer:         yes
++  * ODF thumbnailer plugin using libgsf:              yes
++  * PDF/PS thumbnailer plugin using poppler:          yes
++  * RAW thumbnailer plugin using libopenraw:          no
++  * Freedesktop.org cache plugin:                     yes
++  * Loading thumbnailers from .thumbnailer files:     yes
++  * EPUB thumbnailer using libgepub:                  no
++
++make  all-recursive
++make[1]: Entering directory '/tmp/tumbler-4.16.0'
++Making all in po
++make[2]: Entering directory '/tmp/tumbler-4.16.0/po'
++  MSGFMT ar.gmo
++  MSGFMT ast.gmo
++  MSGFMT be.gmo
++  MSGFMT bg.gmo
++  MSGFMT bn.gmo
++  MSGFMT ca.gmo
++  MSGFMT cs.gmo
++  MSGFMT da.gmo
++  MSGFMT de.gmo
++  MSGFMT el.gmo
++  MSGFMT en_AU.gmo
++  MSGFMT en_GB.gmo
++  MSGFMT es.gmo
++  MSGFMT et.gmo
++  MSGFMT eu.gmo
++  MSGFMT fi.gmo
++  MSGFMT fr.gmo
++  MSGFMT gl.gmo
++  MSGFMT he.gmo
++  MSGFMT hi.gmo
++  MSGFMT hr.gmo
++  MSGFMT hu.gmo
++  MSGFMT hy_AM.gmo
++  MSGFMT hye.gmo
++  MSGFMT id.gmo
++  MSGFMT is.gmo
++  MSGFMT it.gmo
++  MSGFMT ja.gmo
++  MSGFMT kk.gmo
++  MSGFMT ko.gmo
++  MSGFMT lt.gmo
++  MSGFMT lv.gmo
++  MSGFMT ms.gmo
++  MSGFMT nb.gmo
++  MSGFMT nl.gmo
++  MSGFMT nn.gmo
++  MSGFMT oc.gmo
++  MSGFMT pa.gmo
++  MSGFMT pl.gmo
++  MSGFMT pt.gmo
++  MSGFMT pt_BR.gmo
++  MSGFMT ro.gmo
++  MSGFMT ru.gmo
++  MSGFMT si.gmo
++  MSGFMT sk.gmo
++  MSGFMT sl.gmo
++  MSGFMT sq.gmo
++  MSGFMT sr.gmo
++  MSGFMT sv.gmo
++  MSGFMT te.gmo
++  MSGFMT th.gmo
++  MSGFMT tr.gmo
++  MSGFMT ug.gmo
++  MSGFMT uk.gmo
++  MSGFMT zh_CN.gmo
++  MSGFMT zh_HK.gmo
++  MSGFMT zh_TW.gmo
++make[2]: Leaving directory '/tmp/tumbler-4.16.0/po'
++Making all in tumbler
++make[2]: Entering directory '/tmp/tumbler-4.16.0/tumbler'
++  GEN      stamp-tumbler-marshal.h
++  GEN      tumbler-marshal.c
++INFO: Reading ./tumbler-marshal.list...
++INFO: Reading ./tumbler-marshal.list...
++make  all-am
++make[3]: Entering directory '/tmp/tumbler-4.16.0/tumbler'
++  CC       libtumbler_1_la-tumbler-abstract-thumbnailer.lo
++  CC       libtumbler_1_la-tumbler-cache.lo
++  CC       libtumbler_1_la-tumbler-cache-plugin.lo
++  CC       libtumbler_1_la-tumbler-config.lo
++  CC       libtumbler_1_la-tumbler-enum-types.lo
++  CC       libtumbler_1_la-tumbler-file-info.lo
++  CC       libtumbler_1_la-tumbler-marshal.lo
++  CC       libtumbler_1_la-tumbler-provider-factory.lo
++  CC       libtumbler_1_la-tumbler-provider-plugin.lo
++  CC       libtumbler_1_la-tumbler-thumbnailer-provider.lo
++  CC       libtumbler_1_la-tumbler-thumbnailer.lo
++  CC       libtumbler_1_la-tumbler-thumbnail.lo
++  CC       libtumbler_1_la-tumbler-thumbnail-flavor.lo
++  CC       libtumbler_1_la-tumbler-util.lo
++  CCLD     libtumbler-1.la
++make[3]: Leaving directory '/tmp/tumbler-4.16.0/tumbler'
++make[2]: Leaving directory '/tmp/tumbler-4.16.0/tumbler'
++Making all in plugins
++make[2]: Entering directory '/tmp/tumbler-4.16.0/plugins'
++Making all in cover-thumbnailer
++make[3]: Entering directory '/tmp/tumbler-4.16.0/plugins/cover-thumbnailer'
++  CC       tumbler_cover_thumbnailer_la-cover-thumbnailer-plugin.lo
++  CC       tumbler_cover_thumbnailer_la-cover-thumbnailer-provider.lo
++  CC       tumbler_cover_thumbnailer_la-cover-thumbnailer.lo
++  CCLD     tumbler-cover-thumbnailer.la
++make[3]: Leaving directory '/tmp/tumbler-4.16.0/plugins/cover-thumbnailer'
++Making all in font-thumbnailer
++make[3]: Entering directory '/tmp/tumbler-4.16.0/plugins/font-thumbnailer'
++  CC       tumbler_font_thumbnailer_la-font-thumbnailer-plugin.lo
++  CC       tumbler_font_thumbnailer_la-font-thumbnailer-provider.lo
++  CC       tumbler_font_thumbnailer_la-font-thumbnailer.lo
++  CCLD     tumbler-font-thumbnailer.la
++make[3]: Leaving directory '/tmp/tumbler-4.16.0/plugins/font-thumbnailer'
++Making all in gst-thumbnailer
++make[3]: Entering directory '/tmp/tumbler-4.16.0/plugins/gst-thumbnailer'
++  CC       tumbler_gst_thumbnailer_la-gst-thumbnailer-plugin.lo
++  CC       tumbler_gst_thumbnailer_la-gst-thumbnailer-provider.lo
++  CC       tumbler_gst_thumbnailer_la-gst-thumbnailer.lo
++  CCLD     tumbler-gst-thumbnailer.la
++make[3]: Leaving directory '/tmp/tumbler-4.16.0/plugins/gst-thumbnailer'
++Making all in jpeg-thumbnailer
++make[3]: Entering directory '/tmp/tumbler-4.16.0/plugins/jpeg-thumbnailer'
++  CC       tumbler_jpeg_thumbnailer_la-jpeg-thumbnailer-plugin.lo
++  CC       tumbler_jpeg_thumbnailer_la-jpeg-thumbnailer.lo
++  CC       tumbler_jpeg_thumbnailer_la-jpeg-thumbnailer-provider.lo
++  CCLD     tumbler-jpeg-thumbnailer.la
++make[3]: Leaving directory '/tmp/tumbler-4.16.0/plugins/jpeg-thumbnailer'
++Making all in pixbuf-thumbnailer
++make[3]: Entering directory '/tmp/tumbler-4.16.0/plugins/pixbuf-thumbnailer'
++  CC       tumbler_pixbuf_thumbnailer_la-pixbuf-thumbnailer-plugin.lo
++  CC       tumbler_pixbuf_thumbnailer_la-pixbuf-thumbnailer-provider.lo
++  CC       tumbler_pixbuf_thumbnailer_la-pixbuf-thumbnailer.lo
++  CCLD     tumbler-pixbuf-thumbnailer.la
++make[3]: Leaving directory '/tmp/tumbler-4.16.0/plugins/pixbuf-thumbnailer'
++Making all in ffmpeg-thumbnailer
++make[3]: Entering directory '/tmp/tumbler-4.16.0/plugins/ffmpeg-thumbnailer'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/tumbler-4.16.0/plugins/ffmpeg-thumbnailer'
++Making all in odf-thumbnailer
++make[3]: Entering directory '/tmp/tumbler-4.16.0/plugins/odf-thumbnailer'
++  CC       tumbler_odf_thumbnailer_la-odf-thumbnailer-plugin.lo
++  CC       tumbler_odf_thumbnailer_la-odf-thumbnailer-provider.lo
++  CC       tumbler_odf_thumbnailer_la-odf-thumbnailer.lo
++  CCLD     tumbler-odf-thumbnailer.la
++make[3]: Leaving directory '/tmp/tumbler-4.16.0/plugins/odf-thumbnailer'
++Making all in poppler-thumbnailer
++make[3]: Entering directory '/tmp/tumbler-4.16.0/plugins/poppler-thumbnailer'
++  CC       tumbler_poppler_thumbnailer_la-poppler-thumbnailer-plugin.lo
++  CC       tumbler_poppler_thumbnailer_la-poppler-thumbnailer-provider.lo
++  CC       tumbler_poppler_thumbnailer_la-poppler-thumbnailer.lo
++  CCLD     tumbler-poppler-thumbnailer.la
++make[3]: Leaving directory '/tmp/tumbler-4.16.0/plugins/poppler-thumbnailer'
++Making all in raw-thumbnailer
++make[3]: Entering directory '/tmp/tumbler-4.16.0/plugins/raw-thumbnailer'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/tumbler-4.16.0/plugins/raw-thumbnailer'
++Making all in desktop-thumbnailer
++make[3]: Entering directory '/tmp/tumbler-4.16.0/plugins/desktop-thumbnailer'
++  CC       tumbler_desktop_thumbnailer_la-desktop-thumbnailer-plugin.lo
++  CC       tumbler_desktop_thumbnailer_la-desktop-thumbnailer-provider.lo
++  CC       tumbler_desktop_thumbnailer_la-desktop-thumbnailer.lo
++  CCLD     tumbler-desktop-thumbnailer.la
++make[3]: Leaving directory '/tmp/tumbler-4.16.0/plugins/desktop-thumbnailer'
++Making all in gepub-thumbnailer
++make[3]: Entering directory '/tmp/tumbler-4.16.0/plugins/gepub-thumbnailer'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/tumbler-4.16.0/plugins/gepub-thumbnailer'
++Making all in xdg-cache
++make[3]: Entering directory '/tmp/tumbler-4.16.0/plugins/xdg-cache'
++  CC       tumbler_xdg_cache_la-xdg-cache-cache.lo
++  CC       tumbler_xdg_cache_la-xdg-cache-plugin.lo
++  CC       tumbler_xdg_cache_la-xdg-cache-thumbnail.lo
++  CCLD     tumbler-xdg-cache.la
++make[3]: Leaving directory '/tmp/tumbler-4.16.0/plugins/xdg-cache'
++make[3]: Entering directory '/tmp/tumbler-4.16.0/plugins'
++make[3]: Nothing to be done for 'all-am'.
++make[3]: Leaving directory '/tmp/tumbler-4.16.0/plugins'
++make[2]: Leaving directory '/tmp/tumbler-4.16.0/plugins'
++Making all in tumblerd
++make[2]: Entering directory '/tmp/tumbler-4.16.0/tumblerd'
++  GEN      tumbler-manager-gdbus.c
++  GEN      tumbler-service-gdbus.c
++  GEN      tumbler-cache-service-gdbus.c
++make  all-am
++make[3]: Entering directory '/tmp/tumbler-4.16.0/tumblerd'
++  CC       tumblerd-main.o
++  CC       tumblerd-tumbler-cache-service.o
++  CC       tumblerd-tumbler-component.o
++  CC       tumblerd-tumbler-lifecycle-manager.o
++  CC       tumblerd-tumbler-manager.o
++  CC       tumblerd-tumbler-registry.o
++  CC       tumblerd-tumbler-scheduler.o
++  CC       tumblerd-tumbler-service.o
++  CC       tumblerd-tumbler-lifo-scheduler.o
++  CC       tumblerd-tumbler-specialized-thumbnailer.o
++  CC       tumblerd-tumbler-group-scheduler.o
++  CC       tumblerd-tumbler-manager-gdbus.o
++  CC       tumblerd-tumbler-service-gdbus.o
++  CC       tumblerd-tumbler-cache-service-gdbus.o
++sed -e "s,\@libdir\@,/usr/lib,g"				\
++    -e "s,\@TUMBLER_VERSION_API\@,1,g" < org.xfce.Tumbler.Cache1.service.in > org.xfce.Tumbler.Cache1.service
++sed -e "s,\@libdir\@,/usr/lib,g"				\
++    -e "s,\@TUMBLER_VERSION_API\@,1,g" < org.xfce.Tumbler.Manager1.service.in > org.xfce.Tumbler.Manager1.service
++sed -e "s,\@libdir\@,/usr/lib,g"				\
++    -e "s,\@TUMBLER_VERSION_API\@,1,g" < org.xfce.Tumbler.Thumbnailer1.service.in > org.xfce.Tumbler.Thumbnailer1.service
++  CCLD     tumblerd
++make[3]: Leaving directory '/tmp/tumbler-4.16.0/tumblerd'
++make[2]: Leaving directory '/tmp/tumbler-4.16.0/tumblerd'
++Making all in docs
++make[2]: Entering directory '/tmp/tumbler-4.16.0/docs'
++Making all in reference
++make[3]: Entering directory '/tmp/tumbler-4.16.0/docs/reference'
++Making all in tumbler
++make[4]: Entering directory '/tmp/tumbler-4.16.0/docs/reference/tumbler'
++make[4]: Nothing to be done for 'all'.
++make[4]: Leaving directory '/tmp/tumbler-4.16.0/docs/reference/tumbler'
++make[4]: Entering directory '/tmp/tumbler-4.16.0/docs/reference'
++make[4]: Nothing to be done for 'all-am'.
++make[4]: Leaving directory '/tmp/tumbler-4.16.0/docs/reference'
++make[3]: Leaving directory '/tmp/tumbler-4.16.0/docs/reference'
++make[3]: Entering directory '/tmp/tumbler-4.16.0/docs'
++make[3]: Nothing to be done for 'all-am'.
++make[3]: Leaving directory '/tmp/tumbler-4.16.0/docs'
++make[2]: Leaving directory '/tmp/tumbler-4.16.0/docs'
++Making all in icons
++make[2]: Entering directory '/tmp/tumbler-4.16.0/icons'
++Making all in 32x32
++make[3]: Entering directory '/tmp/tumbler-4.16.0/icons/32x32'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/tumbler-4.16.0/icons/32x32'
++make[3]: Entering directory '/tmp/tumbler-4.16.0/icons'
++make[3]: Nothing to be done for 'all-am'.
++make[3]: Leaving directory '/tmp/tumbler-4.16.0/icons'
++make[2]: Leaving directory '/tmp/tumbler-4.16.0/icons'
++make[2]: Entering directory '/tmp/tumbler-4.16.0'
++make[2]: Leaving directory '/tmp/tumbler-4.16.0'
++make[1]: Leaving directory '/tmp/tumbler-4.16.0'
++Making install in po
++make[1]: Entering directory '/tmp/tumbler-4.16.0/po'
++linguas="ar ast be bg bn ca cs da de el en_AU en_GB es et eu fi fr gl he hi hr hu hy_AM hye id is it ja kk ko lt lv ms nb nl nn oc pa pl pt pt_BR ro ru si sk sl sq sr sv te th tr ug uk zh_CN zh_HK zh_TW "; \
++for lang in $linguas; do \
++  dir=/tmp/package-tumbler/usr/lib/locale/$lang/LC_MESSAGES; \
++  /bin/sh /tmp/tumbler-4.16.0/install-sh -d $dir; \
++  if test -r $lang.gmo; then \
++    /usr/bin/ginstall -c -m 644 $lang.gmo $dir/tumbler.mo; \
++    echo "installing $lang.gmo as $dir/tumbler.mo"; \
++  else \
++    /usr/bin/ginstall -c -m 644 ./$lang.gmo $dir/tumbler.mo; \
++    echo "installing ./$lang.gmo as" \
++	 "$dir/tumbler.mo"; \
++  fi; \
++  if test -r $lang.gmo.m; then \
++    /usr/bin/ginstall -c -m 644 $lang.gmo.m $dir/tumbler.mo.m; \
++    echo "installing $lang.gmo.m as $dir/tumbler.mo.m"; \
++  else \
++    if test -r ./$lang.gmo.m ; then \
++      /usr/bin/ginstall -c -m 644 ./$lang.gmo.m \
++	$dir/tumbler.mo.m; \
++      echo "installing ./$lang.gmo.m as" \
++	   "$dir/tumbler.mo.m"; \
++    else \
++      true; \
++    fi; \
++  fi; \
++done
++installing ar.gmo as /tmp/package-tumbler/usr/lib/locale/ar/LC_MESSAGES/tumbler.mo
++installing ast.gmo as /tmp/package-tumbler/usr/lib/locale/ast/LC_MESSAGES/tumbler.mo
++installing be.gmo as /tmp/package-tumbler/usr/lib/locale/be/LC_MESSAGES/tumbler.mo
++installing bg.gmo as /tmp/package-tumbler/usr/lib/locale/bg/LC_MESSAGES/tumbler.mo
++installing bn.gmo as /tmp/package-tumbler/usr/lib/locale/bn/LC_MESSAGES/tumbler.mo
++installing ca.gmo as /tmp/package-tumbler/usr/lib/locale/ca/LC_MESSAGES/tumbler.mo
++installing cs.gmo as /tmp/package-tumbler/usr/lib/locale/cs/LC_MESSAGES/tumbler.mo
++installing da.gmo as /tmp/package-tumbler/usr/lib/locale/da/LC_MESSAGES/tumbler.mo
++installing de.gmo as /tmp/package-tumbler/usr/lib/locale/de/LC_MESSAGES/tumbler.mo
++installing el.gmo as /tmp/package-tumbler/usr/lib/locale/el/LC_MESSAGES/tumbler.mo
++installing en_AU.gmo as /tmp/package-tumbler/usr/lib/locale/en_AU/LC_MESSAGES/tumbler.mo
++installing en_GB.gmo as /tmp/package-tumbler/usr/lib/locale/en_GB/LC_MESSAGES/tumbler.mo
++installing es.gmo as /tmp/package-tumbler/usr/lib/locale/es/LC_MESSAGES/tumbler.mo
++installing et.gmo as /tmp/package-tumbler/usr/lib/locale/et/LC_MESSAGES/tumbler.mo
++installing eu.gmo as /tmp/package-tumbler/usr/lib/locale/eu/LC_MESSAGES/tumbler.mo
++installing fi.gmo as /tmp/package-tumbler/usr/lib/locale/fi/LC_MESSAGES/tumbler.mo
++installing fr.gmo as /tmp/package-tumbler/usr/lib/locale/fr/LC_MESSAGES/tumbler.mo
++installing gl.gmo as /tmp/package-tumbler/usr/lib/locale/gl/LC_MESSAGES/tumbler.mo
++installing he.gmo as /tmp/package-tumbler/usr/lib/locale/he/LC_MESSAGES/tumbler.mo
++installing hi.gmo as /tmp/package-tumbler/usr/lib/locale/hi/LC_MESSAGES/tumbler.mo
++installing hr.gmo as /tmp/package-tumbler/usr/lib/locale/hr/LC_MESSAGES/tumbler.mo
++installing hu.gmo as /tmp/package-tumbler/usr/lib/locale/hu/LC_MESSAGES/tumbler.mo
++installing hy_AM.gmo as /tmp/package-tumbler/usr/lib/locale/hy_AM/LC_MESSAGES/tumbler.mo
++installing hye.gmo as /tmp/package-tumbler/usr/lib/locale/hye/LC_MESSAGES/tumbler.mo
++installing id.gmo as /tmp/package-tumbler/usr/lib/locale/id/LC_MESSAGES/tumbler.mo
++installing is.gmo as /tmp/package-tumbler/usr/lib/locale/is/LC_MESSAGES/tumbler.mo
++installing it.gmo as /tmp/package-tumbler/usr/lib/locale/it/LC_MESSAGES/tumbler.mo
++installing ja.gmo as /tmp/package-tumbler/usr/lib/locale/ja/LC_MESSAGES/tumbler.mo
++installing kk.gmo as /tmp/package-tumbler/usr/lib/locale/kk/LC_MESSAGES/tumbler.mo
++installing ko.gmo as /tmp/package-tumbler/usr/lib/locale/ko/LC_MESSAGES/tumbler.mo
++installing lt.gmo as /tmp/package-tumbler/usr/lib/locale/lt/LC_MESSAGES/tumbler.mo
++installing lv.gmo as /tmp/package-tumbler/usr/lib/locale/lv/LC_MESSAGES/tumbler.mo
++installing ms.gmo as /tmp/package-tumbler/usr/lib/locale/ms/LC_MESSAGES/tumbler.mo
++installing nb.gmo as /tmp/package-tumbler/usr/lib/locale/nb/LC_MESSAGES/tumbler.mo
++installing nl.gmo as /tmp/package-tumbler/usr/lib/locale/nl/LC_MESSAGES/tumbler.mo
++installing nn.gmo as /tmp/package-tumbler/usr/lib/locale/nn/LC_MESSAGES/tumbler.mo
++installing oc.gmo as /tmp/package-tumbler/usr/lib/locale/oc/LC_MESSAGES/tumbler.mo
++installing pa.gmo as /tmp/package-tumbler/usr/lib/locale/pa/LC_MESSAGES/tumbler.mo
++installing pl.gmo as /tmp/package-tumbler/usr/lib/locale/pl/LC_MESSAGES/tumbler.mo
++installing pt.gmo as /tmp/package-tumbler/usr/lib/locale/pt/LC_MESSAGES/tumbler.mo
++installing pt_BR.gmo as /tmp/package-tumbler/usr/lib/locale/pt_BR/LC_MESSAGES/tumbler.mo
++installing ro.gmo as /tmp/package-tumbler/usr/lib/locale/ro/LC_MESSAGES/tumbler.mo
++installing ru.gmo as /tmp/package-tumbler/usr/lib/locale/ru/LC_MESSAGES/tumbler.mo
++installing si.gmo as /tmp/package-tumbler/usr/lib/locale/si/LC_MESSAGES/tumbler.mo
++installing sk.gmo as /tmp/package-tumbler/usr/lib/locale/sk/LC_MESSAGES/tumbler.mo
++installing sl.gmo as /tmp/package-tumbler/usr/lib/locale/sl/LC_MESSAGES/tumbler.mo
++installing sq.gmo as /tmp/package-tumbler/usr/lib/locale/sq/LC_MESSAGES/tumbler.mo
++installing sr.gmo as /tmp/package-tumbler/usr/lib/locale/sr/LC_MESSAGES/tumbler.mo
++installing sv.gmo as /tmp/package-tumbler/usr/lib/locale/sv/LC_MESSAGES/tumbler.mo
++installing te.gmo as /tmp/package-tumbler/usr/lib/locale/te/LC_MESSAGES/tumbler.mo
++installing th.gmo as /tmp/package-tumbler/usr/lib/locale/th/LC_MESSAGES/tumbler.mo
++installing tr.gmo as /tmp/package-tumbler/usr/lib/locale/tr/LC_MESSAGES/tumbler.mo
++installing ug.gmo as /tmp/package-tumbler/usr/lib/locale/ug/LC_MESSAGES/tumbler.mo
++installing uk.gmo as /tmp/package-tumbler/usr/lib/locale/uk/LC_MESSAGES/tumbler.mo
++installing zh_CN.gmo as /tmp/package-tumbler/usr/lib/locale/zh_CN/LC_MESSAGES/tumbler.mo
++installing zh_HK.gmo as /tmp/package-tumbler/usr/lib/locale/zh_HK/LC_MESSAGES/tumbler.mo
++installing zh_TW.gmo as /tmp/package-tumbler/usr/lib/locale/zh_TW/LC_MESSAGES/tumbler.mo
++make[1]: Leaving directory '/tmp/tumbler-4.16.0/po'
++Making install in tumbler
++make[1]: Entering directory '/tmp/tumbler-4.16.0/tumbler'
++make  install-am
++make[2]: Entering directory '/tmp/tumbler-4.16.0/tumbler'
++make[3]: Entering directory '/tmp/tumbler-4.16.0/tumbler'
++ /usr/bin/mkdir -p '/tmp/package-tumbler/usr/lib'
++ /bin/sh ../libtool   --mode=install /usr/bin/ginstall -c   libtumbler-1.la '/tmp/package-tumbler/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/libtumbler-1.so.0.0.0 /tmp/package-tumbler/usr/lib/libtumbler-1.so.0.0.0
++libtool: install: (cd /tmp/package-tumbler/usr/lib && { ln -s -f libtumbler-1.so.0.0.0 libtumbler-1.so.0 || { rm -f libtumbler-1.so.0 && ln -s libtumbler-1.so.0.0.0 libtumbler-1.so.0; }; })
++libtool: install: (cd /tmp/package-tumbler/usr/lib && { ln -s -f libtumbler-1.so.0.0.0 libtumbler-1.so || { rm -f libtumbler-1.so && ln -s libtumbler-1.so.0.0.0 libtumbler-1.so; }; })
++libtool: install: /usr/bin/ginstall -c .libs/libtumbler-1.lai /tmp/package-tumbler/usr/lib/libtumbler-1.la
++libtool: warning: remember to run 'libtool --finish /usr/lib'
++ /usr/bin/mkdir -p '/tmp/package-tumbler/usr/include/tumbler-1/tumbler'
++ /usr/bin/ginstall -c -m 644 tumbler-abstract-thumbnailer.h tumbler-cache.h tumbler-cache-plugin.h tumbler-config.h tumbler-enum-types.h tumbler-error.h tumbler-file-info.h tumbler-glib-extensions.h tumbler-marshal.h tumbler-provider-factory.h tumbler-provider-plugin.h tumbler-thumbnailer-provider.h tumbler-thumbnailer.h tumbler-thumbnail.h tumbler-thumbnail-flavor.h tumbler-util.h tumbler.h '/tmp/package-tumbler/usr/include/tumbler-1/tumbler'
++ /usr/bin/mkdir -p '/tmp/package-tumbler/usr/lib/pkgconfig'
++ /usr/bin/ginstall -c -m 644 tumbler-1.pc '/tmp/package-tumbler/usr/lib/pkgconfig'
++make[3]: Leaving directory '/tmp/tumbler-4.16.0/tumbler'
++make[2]: Leaving directory '/tmp/tumbler-4.16.0/tumbler'
++make[1]: Leaving directory '/tmp/tumbler-4.16.0/tumbler'
++Making install in plugins
++make[1]: Entering directory '/tmp/tumbler-4.16.0/plugins'
++Making install in cover-thumbnailer
++make[2]: Entering directory '/tmp/tumbler-4.16.0/plugins/cover-thumbnailer'
++make[3]: Entering directory '/tmp/tumbler-4.16.0/plugins/cover-thumbnailer'
++make[3]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-tumbler/usr/lib/tumbler-1/plugins'
++ /bin/sh ../../libtool   --mode=install /usr/bin/ginstall -c   tumbler-cover-thumbnailer.la '/tmp/package-tumbler/usr/lib/tumbler-1/plugins'
++libtool: warning: relinking 'tumbler-cover-thumbnailer.la'
++libtool: install: (cd /tmp/tumbler-4.16.0/plugins/cover-thumbnailer; /bin/sh "/tmp/tumbler-4.16.0/libtool"  --silent --tag CC --mode=relink gcc -I../.. -I../../plugins -I../.. -I../../plugins -DG_LOG_DOMAIN=\"tumbler-cover-thumbnailer\" -DPACKAGE_LOCALE_DIR=\"/usr/lib/locale\" -pthread -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -pthread -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -O2 -fPIC -avoid-version -export-dynamic -module -Wl,--as-needed -Wl,-O1 -o tumbler-cover-thumbnailer.la -rpath /usr/lib/tumbler-1/plugins tumbler_cover_thumbnailer_la-cover-thumbnailer-plugin.lo tumbler_cover_thumbnailer_la-cover-thumbnailer-provider.lo tumbler_cover_thumbnailer_la-cover-thumbnailer.lo ../../tumbler/libtumbler-1.la -lgdk_pixbuf-2.0 -lgobject-2.0 -lglib-2.0 -lgio-2.0 -lgobject-2.0 -lglib-2.0 -lglib-2.0 -lcurl -lm -inst-prefix-dir /tmp/package-tumbler)
++libtool: install: /usr/bin/ginstall -c .libs/tumbler-cover-thumbnailer.soT /tmp/package-tumbler/usr/lib/tumbler-1/plugins/tumbler-cover-thumbnailer.so
++libtool: install: /usr/bin/ginstall -c .libs/tumbler-cover-thumbnailer.lai /tmp/package-tumbler/usr/lib/tumbler-1/plugins/tumbler-cover-thumbnailer.la
++libtool: warning: remember to run 'libtool --finish /usr/lib/tumbler-1/plugins'
++make[3]: Leaving directory '/tmp/tumbler-4.16.0/plugins/cover-thumbnailer'
++make[2]: Leaving directory '/tmp/tumbler-4.16.0/plugins/cover-thumbnailer'
++Making install in font-thumbnailer
++make[2]: Entering directory '/tmp/tumbler-4.16.0/plugins/font-thumbnailer'
++make[3]: Entering directory '/tmp/tumbler-4.16.0/plugins/font-thumbnailer'
++make[3]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-tumbler/usr/lib/tumbler-1/plugins'
++ /bin/sh ../../libtool   --mode=install /usr/bin/ginstall -c   tumbler-font-thumbnailer.la '/tmp/package-tumbler/usr/lib/tumbler-1/plugins'
++libtool: warning: relinking 'tumbler-font-thumbnailer.la'
++libtool: install: (cd /tmp/tumbler-4.16.0/plugins/font-thumbnailer; /bin/sh "/tmp/tumbler-4.16.0/libtool"  --silent --tag CC --mode=relink gcc -I../.. -I../../plugins -I../.. -I../../plugins -DG_LOG_DOMAIN=\"tumbler-font-thumbnailer\" -DPACKAGE_LOCALE_DIR=\"/usr/lib/locale\" -pthread -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -pthread -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/freetype2 -I/usr/include/libpng16 -O2 -fPIC -avoid-version -export-dynamic -module -Wl,--as-needed -Wl,-O1 -o tumbler-font-thumbnailer.la -rpath /usr/lib/tumbler-1/plugins tumbler_font_thumbnailer_la-font-thumbnailer-plugin.lo tumbler_font_thumbnailer_la-font-thumbnailer-provider.lo tumbler_font_thumbnailer_la-font-thumbnailer.lo ../../tumbler/libtumbler-1.la -lgdk_pixbuf-2.0 -lgobject-2.0 -lglib-2.0 -lgio-2.0 -lgobject-2.0 -lglib-2.0 -lglib-2.0 -lfreetype -lm -inst-prefix-dir /tmp/package-tumbler)
++libtool: install: /usr/bin/ginstall -c .libs/tumbler-font-thumbnailer.soT /tmp/package-tumbler/usr/lib/tumbler-1/plugins/tumbler-font-thumbnailer.so
++libtool: install: /usr/bin/ginstall -c .libs/tumbler-font-thumbnailer.lai /tmp/package-tumbler/usr/lib/tumbler-1/plugins/tumbler-font-thumbnailer.la
++libtool: warning: remember to run 'libtool --finish /usr/lib/tumbler-1/plugins'
++make[3]: Leaving directory '/tmp/tumbler-4.16.0/plugins/font-thumbnailer'
++make[2]: Leaving directory '/tmp/tumbler-4.16.0/plugins/font-thumbnailer'
++Making install in gst-thumbnailer
++make[2]: Entering directory '/tmp/tumbler-4.16.0/plugins/gst-thumbnailer'
++make[3]: Entering directory '/tmp/tumbler-4.16.0/plugins/gst-thumbnailer'
++make[3]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-tumbler/usr/lib/tumbler-1/plugins'
++ /bin/sh ../../libtool   --mode=install /usr/bin/ginstall -c   tumbler-gst-thumbnailer.la '/tmp/package-tumbler/usr/lib/tumbler-1/plugins'
++libtool: warning: relinking 'tumbler-gst-thumbnailer.la'
++libtool: install: (cd /tmp/tumbler-4.16.0/plugins/gst-thumbnailer; /bin/sh "/tmp/tumbler-4.16.0/libtool"  --silent --tag CC --mode=relink gcc -I../.. -I../../plugins -I../.. -I../../plugins -DG_LOG_DOMAIN=\"tumbler-gst-thumbnailer\" -DPACKAGE_LOCALE_DIR=\"/usr/lib/locale\" -pthread -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -pthread -I/usr/include/gstreamer-1.0 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -pthread -I/usr/include/gstreamer-1.0 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -pthread -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -O2 -fPIC -avoid-version -export-dynamic -module -Wl,--as-needed -Wl,-O1 -o tumbler-gst-thumbnailer.la -rpath /usr/lib/tumbler-1/plugins tumbler_gst_thumbnailer_la-gst-thumbnailer-plugin.lo tumbler_gst_thumbnailer_la-gst-thumbnailer-provider.lo tumbler_gst_thumbnailer_la-gst-thumbnailer.lo ../../tumbler/libtumbler-1.la -lgdk_pixbuf-2.0 -lgobject-2.0 -lglib-2.0 -lgstreamer-1.0 -lgobject-2.0 -lglib-2.0 -lgsttag-1.0 -lgstreamer-1.0 -lgobject-2.0 -lglib-2.0 -lgio-2.0 -lgobject-2.0 -lglib-2.0 -lglib-2.0 -lm -inst-prefix-dir /tmp/package-tumbler)
++libtool: install: /usr/bin/ginstall -c .libs/tumbler-gst-thumbnailer.soT /tmp/package-tumbler/usr/lib/tumbler-1/plugins/tumbler-gst-thumbnailer.so
++libtool: install: /usr/bin/ginstall -c .libs/tumbler-gst-thumbnailer.lai /tmp/package-tumbler/usr/lib/tumbler-1/plugins/tumbler-gst-thumbnailer.la
++libtool: warning: remember to run 'libtool --finish /usr/lib/tumbler-1/plugins'
++make[3]: Leaving directory '/tmp/tumbler-4.16.0/plugins/gst-thumbnailer'
++make[2]: Leaving directory '/tmp/tumbler-4.16.0/plugins/gst-thumbnailer'
++Making install in jpeg-thumbnailer
++make[2]: Entering directory '/tmp/tumbler-4.16.0/plugins/jpeg-thumbnailer'
++make[3]: Entering directory '/tmp/tumbler-4.16.0/plugins/jpeg-thumbnailer'
++make[3]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-tumbler/usr/lib/tumbler-1/plugins'
++ /bin/sh ../../libtool   --mode=install /usr/bin/ginstall -c   tumbler-jpeg-thumbnailer.la '/tmp/package-tumbler/usr/lib/tumbler-1/plugins'
++libtool: warning: relinking 'tumbler-jpeg-thumbnailer.la'
++libtool: install: (cd /tmp/tumbler-4.16.0/plugins/jpeg-thumbnailer; /bin/sh "/tmp/tumbler-4.16.0/libtool"  --silent --tag CC --mode=relink gcc -I../.. -I../../plugins -I../.. -I../../plugins -DG_LOG_DOMAIN=\"tumbler-jpeg-thumbnailer\" -DPACKAGE_LOCALE_DIR=\"/usr/lib/locale\" -pthread -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -pthread -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -O2 -fPIC -avoid-version -export-dynamic -module -Wl,--as-needed -Wl,-O1 -o tumbler-jpeg-thumbnailer.la -rpath /usr/lib/tumbler-1/plugins tumbler_jpeg_thumbnailer_la-jpeg-thumbnailer-plugin.lo tumbler_jpeg_thumbnailer_la-jpeg-thumbnailer-provider.lo tumbler_jpeg_thumbnailer_la-jpeg-thumbnailer.lo ../../tumbler/libtumbler-1.la -lgdk_pixbuf-2.0 -lgobject-2.0 -lglib-2.0 -lgio-2.0 -lgobject-2.0 -lglib-2.0 -lglib-2.0 -ljpeg -lm -lm -inst-prefix-dir /tmp/package-tumbler)
++libtool: install: /usr/bin/ginstall -c .libs/tumbler-jpeg-thumbnailer.soT /tmp/package-tumbler/usr/lib/tumbler-1/plugins/tumbler-jpeg-thumbnailer.so
++libtool: install: /usr/bin/ginstall -c .libs/tumbler-jpeg-thumbnailer.lai /tmp/package-tumbler/usr/lib/tumbler-1/plugins/tumbler-jpeg-thumbnailer.la
++libtool: warning: remember to run 'libtool --finish /usr/lib/tumbler-1/plugins'
++make[3]: Leaving directory '/tmp/tumbler-4.16.0/plugins/jpeg-thumbnailer'
++make[2]: Leaving directory '/tmp/tumbler-4.16.0/plugins/jpeg-thumbnailer'
++Making install in pixbuf-thumbnailer
++make[2]: Entering directory '/tmp/tumbler-4.16.0/plugins/pixbuf-thumbnailer'
++make[3]: Entering directory '/tmp/tumbler-4.16.0/plugins/pixbuf-thumbnailer'
++make[3]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-tumbler/usr/lib/tumbler-1/plugins'
++ /bin/sh ../../libtool   --mode=install /usr/bin/ginstall -c   tumbler-pixbuf-thumbnailer.la '/tmp/package-tumbler/usr/lib/tumbler-1/plugins'
++libtool: warning: relinking 'tumbler-pixbuf-thumbnailer.la'
++libtool: install: (cd /tmp/tumbler-4.16.0/plugins/pixbuf-thumbnailer; /bin/sh "/tmp/tumbler-4.16.0/libtool"  --silent --tag CC --mode=relink gcc -I../.. -I../../plugins -I../.. -I../../plugins -DG_LOG_DOMAIN=\"tumbler-pixbuf-thumbnailer\" -DPACKAGE_LOCALE_DIR=\"/usr/lib/locale\" -pthread -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -pthread -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -O2 -fPIC -avoid-version -export-dynamic -module -Wl,--as-needed -Wl,-O1 -o tumbler-pixbuf-thumbnailer.la -rpath /usr/lib/tumbler-1/plugins tumbler_pixbuf_thumbnailer_la-pixbuf-thumbnailer-plugin.lo tumbler_pixbuf_thumbnailer_la-pixbuf-thumbnailer-provider.lo tumbler_pixbuf_thumbnailer_la-pixbuf-thumbnailer.lo ../../tumbler/libtumbler-1.la -lgdk_pixbuf-2.0 -lgobject-2.0 -lglib-2.0 -lgio-2.0 -lgobject-2.0 -lglib-2.0 -lglib-2.0 -lm -inst-prefix-dir /tmp/package-tumbler)
++libtool: install: /usr/bin/ginstall -c .libs/tumbler-pixbuf-thumbnailer.soT /tmp/package-tumbler/usr/lib/tumbler-1/plugins/tumbler-pixbuf-thumbnailer.so
++libtool: install: /usr/bin/ginstall -c .libs/tumbler-pixbuf-thumbnailer.lai /tmp/package-tumbler/usr/lib/tumbler-1/plugins/tumbler-pixbuf-thumbnailer.la
++libtool: warning: remember to run 'libtool --finish /usr/lib/tumbler-1/plugins'
++make[3]: Leaving directory '/tmp/tumbler-4.16.0/plugins/pixbuf-thumbnailer'
++make[2]: Leaving directory '/tmp/tumbler-4.16.0/plugins/pixbuf-thumbnailer'
++Making install in ffmpeg-thumbnailer
++make[2]: Entering directory '/tmp/tumbler-4.16.0/plugins/ffmpeg-thumbnailer'
++make[3]: Entering directory '/tmp/tumbler-4.16.0/plugins/ffmpeg-thumbnailer'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Leaving directory '/tmp/tumbler-4.16.0/plugins/ffmpeg-thumbnailer'
++make[2]: Leaving directory '/tmp/tumbler-4.16.0/plugins/ffmpeg-thumbnailer'
++Making install in odf-thumbnailer
++make[2]: Entering directory '/tmp/tumbler-4.16.0/plugins/odf-thumbnailer'
++make[3]: Entering directory '/tmp/tumbler-4.16.0/plugins/odf-thumbnailer'
++make[3]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-tumbler/usr/lib/tumbler-1/plugins'
++ /bin/sh ../../libtool   --mode=install /usr/bin/ginstall -c   tumbler-odf-thumbnailer.la '/tmp/package-tumbler/usr/lib/tumbler-1/plugins'
++libtool: warning: relinking 'tumbler-odf-thumbnailer.la'
++libtool: install: (cd /tmp/tumbler-4.16.0/plugins/odf-thumbnailer; /bin/sh "/tmp/tumbler-4.16.0/libtool"  --silent --tag CC --mode=relink gcc -I../.. -I../../plugins -I../.. -I../../plugins -DG_LOG_DOMAIN=\"tumbler-odf-thumbnailer\" -DPACKAGE_LOCALE_DIR=\"/usr/lib/locale\" -pthread -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -pthread -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/libgsf-1 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/libxml2 -O2 -fPIC -avoid-version -export-dynamic -module -Wl,--as-needed -Wl,-O1 -o tumbler-odf-thumbnailer.la -rpath /usr/lib/tumbler-1/plugins tumbler_odf_thumbnailer_la-odf-thumbnailer-plugin.lo tumbler_odf_thumbnailer_la-odf-thumbnailer-provider.lo tumbler_odf_thumbnailer_la-odf-thumbnailer.lo ../../tumbler/libtumbler-1.la -lgdk_pixbuf-2.0 -lgobject-2.0 -lglib-2.0 -lgio-2.0 -lgobject-2.0 -lglib-2.0 -lglib-2.0 -lgsf-1 -lgobject-2.0 -lglib-2.0 -lxml2 -lm -inst-prefix-dir /tmp/package-tumbler)
++libtool: install: /usr/bin/ginstall -c .libs/tumbler-odf-thumbnailer.soT /tmp/package-tumbler/usr/lib/tumbler-1/plugins/tumbler-odf-thumbnailer.so
++libtool: install: /usr/bin/ginstall -c .libs/tumbler-odf-thumbnailer.lai /tmp/package-tumbler/usr/lib/tumbler-1/plugins/tumbler-odf-thumbnailer.la
++libtool: warning: remember to run 'libtool --finish /usr/lib/tumbler-1/plugins'
++make[3]: Leaving directory '/tmp/tumbler-4.16.0/plugins/odf-thumbnailer'
++make[2]: Leaving directory '/tmp/tumbler-4.16.0/plugins/odf-thumbnailer'
++Making install in poppler-thumbnailer
++make[2]: Entering directory '/tmp/tumbler-4.16.0/plugins/poppler-thumbnailer'
++make[3]: Entering directory '/tmp/tumbler-4.16.0/plugins/poppler-thumbnailer'
++make[3]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-tumbler/usr/lib/tumbler-1/plugins'
++ /bin/sh ../../libtool   --mode=install /usr/bin/ginstall -c   tumbler-poppler-thumbnailer.la '/tmp/package-tumbler/usr/lib/tumbler-1/plugins'
++libtool: warning: relinking 'tumbler-poppler-thumbnailer.la'
++libtool: install: (cd /tmp/tumbler-4.16.0/plugins/poppler-thumbnailer; /bin/sh "/tmp/tumbler-4.16.0/libtool"  --silent --tag CC --mode=relink gcc -I../.. -I../../plugins -I../.. -I../../plugins -DG_LOG_DOMAIN=\"tumbler-poppler-thumbnailer\" -DPACKAGE_LOCALE_DIR=\"/usr/lib/locale\" -pthread -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -pthread -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/poppler/glib -I/usr/include/poppler -I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/pixman-1 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -O2 -fPIC -avoid-version -export-dynamic -module -Wl,--as-needed -Wl,-O1 -o tumbler-poppler-thumbnailer.la -rpath /usr/lib/tumbler-1/plugins tumbler_poppler_thumbnailer_la-poppler-thumbnailer-plugin.lo tumbler_poppler_thumbnailer_la-poppler-thumbnailer-provider.lo tumbler_poppler_thumbnailer_la-poppler-thumbnailer.lo ../../tumbler/libtumbler-1.la -lgdk_pixbuf-2.0 -lgobject-2.0 -lglib-2.0 -lgio-2.0 -lgobject-2.0 -lglib-2.0 -lglib-2.0 -lpoppler-glib -lgobject-2.0 -lglib-2.0 -lcairo -lm -inst-prefix-dir /tmp/package-tumbler)
++libtool: install: /usr/bin/ginstall -c .libs/tumbler-poppler-thumbnailer.soT /tmp/package-tumbler/usr/lib/tumbler-1/plugins/tumbler-poppler-thumbnailer.so
++libtool: install: /usr/bin/ginstall -c .libs/tumbler-poppler-thumbnailer.lai /tmp/package-tumbler/usr/lib/tumbler-1/plugins/tumbler-poppler-thumbnailer.la
++libtool: warning: remember to run 'libtool --finish /usr/lib/tumbler-1/plugins'
++make[3]: Leaving directory '/tmp/tumbler-4.16.0/plugins/poppler-thumbnailer'
++make[2]: Leaving directory '/tmp/tumbler-4.16.0/plugins/poppler-thumbnailer'
++Making install in raw-thumbnailer
++make[2]: Entering directory '/tmp/tumbler-4.16.0/plugins/raw-thumbnailer'
++make[3]: Entering directory '/tmp/tumbler-4.16.0/plugins/raw-thumbnailer'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Leaving directory '/tmp/tumbler-4.16.0/plugins/raw-thumbnailer'
++make[2]: Leaving directory '/tmp/tumbler-4.16.0/plugins/raw-thumbnailer'
++Making install in desktop-thumbnailer
++make[2]: Entering directory '/tmp/tumbler-4.16.0/plugins/desktop-thumbnailer'
++make[3]: Entering directory '/tmp/tumbler-4.16.0/plugins/desktop-thumbnailer'
++make[3]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-tumbler/usr/lib/tumbler-1/plugins'
++ /bin/sh ../../libtool   --mode=install /usr/bin/ginstall -c   tumbler-desktop-thumbnailer.la '/tmp/package-tumbler/usr/lib/tumbler-1/plugins'
++libtool: warning: relinking 'tumbler-desktop-thumbnailer.la'
++libtool: install: (cd /tmp/tumbler-4.16.0/plugins/desktop-thumbnailer; /bin/sh "/tmp/tumbler-4.16.0/libtool"  --silent --tag CC --mode=relink gcc -I../.. -I../../plugins -I../.. -I../../plugins -DG_LOG_DOMAIN=\"tumbler-desktop-thumbnailer\" -DPACKAGE_LOCALE_DIR=\"/usr/lib/locale\" -pthread -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -pthread -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -O2 -fPIC -avoid-version -export-dynamic -module -Wl,--as-needed -Wl,-O1 -o tumbler-desktop-thumbnailer.la -rpath /usr/lib/tumbler-1/plugins tumbler_desktop_thumbnailer_la-desktop-thumbnailer-plugin.lo tumbler_desktop_thumbnailer_la-desktop-thumbnailer-provider.lo tumbler_desktop_thumbnailer_la-desktop-thumbnailer.lo ../../tumbler/libtumbler-1.la -lgdk_pixbuf-2.0 -lgobject-2.0 -lglib-2.0 -lgio-2.0 -lgobject-2.0 -lglib-2.0 -lglib-2.0 -lm -inst-prefix-dir /tmp/package-tumbler)
++libtool: install: /usr/bin/ginstall -c .libs/tumbler-desktop-thumbnailer.soT /tmp/package-tumbler/usr/lib/tumbler-1/plugins/tumbler-desktop-thumbnailer.so
++libtool: install: /usr/bin/ginstall -c .libs/tumbler-desktop-thumbnailer.lai /tmp/package-tumbler/usr/lib/tumbler-1/plugins/tumbler-desktop-thumbnailer.la
++libtool: warning: remember to run 'libtool --finish /usr/lib/tumbler-1/plugins'
++make[3]: Leaving directory '/tmp/tumbler-4.16.0/plugins/desktop-thumbnailer'
++make[2]: Leaving directory '/tmp/tumbler-4.16.0/plugins/desktop-thumbnailer'
++Making install in gepub-thumbnailer
++make[2]: Entering directory '/tmp/tumbler-4.16.0/plugins/gepub-thumbnailer'
++make[3]: Entering directory '/tmp/tumbler-4.16.0/plugins/gepub-thumbnailer'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Leaving directory '/tmp/tumbler-4.16.0/plugins/gepub-thumbnailer'
++make[2]: Leaving directory '/tmp/tumbler-4.16.0/plugins/gepub-thumbnailer'
++Making install in xdg-cache
++make[2]: Entering directory '/tmp/tumbler-4.16.0/plugins/xdg-cache'
++make[3]: Entering directory '/tmp/tumbler-4.16.0/plugins/xdg-cache'
++make[3]: Nothing to be done for 'install-exec-am'.
++/bin/sh ../../mkinstalldirs /tmp/package-tumbler/usr/lib/tumbler-1/plugins/cache
++mkdir -p -- /tmp/package-tumbler/usr/lib/tumbler-1/plugins/cache
++( cd /tmp/package-tumbler/usr/lib/tumbler-1/plugins/cache ; \
++	test -x tumbler-xdg-cache.so || \
++	ln -sf tumbler-xdg-cache.so tumbler-cache-plugin.so )
++ /usr/bin/mkdir -p '/tmp/package-tumbler/usr/lib/tumbler-1/plugins/cache'
++ /bin/sh ../../libtool   --mode=install /usr/bin/ginstall -c   tumbler-xdg-cache.la '/tmp/package-tumbler/usr/lib/tumbler-1/plugins/cache'
++libtool: warning: relinking 'tumbler-xdg-cache.la'
++libtool: install: (cd /tmp/tumbler-4.16.0/plugins/xdg-cache; /bin/sh "/tmp/tumbler-4.16.0/libtool"  --silent --tag CC --mode=relink gcc -I../.. -I../../plugins -I../.. -I../../plugins -DG_LOG_DOMAIN=\"tumbler-xdg-cache\" -DPACKAGE_LOCALE_DIR=\"/usr/lib/locale\" -pthread -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -pthread -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/libpng16 -O2 -fPIC -avoid-version -export-dynamic -module -Wl,--as-needed -Wl,-O1 -o tumbler-xdg-cache.la -rpath /usr/lib/tumbler-1/plugins/cache tumbler_xdg_cache_la-xdg-cache-cache.lo tumbler_xdg_cache_la-xdg-cache-plugin.lo tumbler_xdg_cache_la-xdg-cache-thumbnail.lo ../../tumbler/libtumbler-1.la -lgdk_pixbuf-2.0 -lgobject-2.0 -lglib-2.0 -lgio-2.0 -lgobject-2.0 -lglib-2.0 -lglib-2.0 -lpng16 -lz -inst-prefix-dir /tmp/package-tumbler)
++libtool: install: /usr/bin/ginstall -c .libs/tumbler-xdg-cache.soT /tmp/package-tumbler/usr/lib/tumbler-1/plugins/cache/tumbler-xdg-cache.so
++libtool: install: /usr/bin/ginstall -c .libs/tumbler-xdg-cache.lai /tmp/package-tumbler/usr/lib/tumbler-1/plugins/cache/tumbler-xdg-cache.la
++libtool: warning: remember to run 'libtool --finish /usr/lib/tumbler-1/plugins/cache'
++make[3]: Leaving directory '/tmp/tumbler-4.16.0/plugins/xdg-cache'
++make[2]: Leaving directory '/tmp/tumbler-4.16.0/plugins/xdg-cache'
++make[2]: Entering directory '/tmp/tumbler-4.16.0/plugins'
++make[3]: Entering directory '/tmp/tumbler-4.16.0/plugins'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/tumbler-4.16.0/plugins'
++make[2]: Leaving directory '/tmp/tumbler-4.16.0/plugins'
++make[1]: Leaving directory '/tmp/tumbler-4.16.0/plugins'
++Making install in tumblerd
++make[1]: Entering directory '/tmp/tumbler-4.16.0/tumblerd'
++make  install-am
++make[2]: Entering directory '/tmp/tumbler-4.16.0/tumblerd'
++make[3]: Entering directory '/tmp/tumbler-4.16.0/tumblerd'
++make[3]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-tumbler/etc/xdg/tumbler'
++ /usr/bin/ginstall -c -m 644 tumbler.rc '/tmp/package-tumbler/etc/xdg/tumbler'
++ /usr/bin/mkdir -p '/tmp/package-tumbler/usr/share/dbus-1/services'
++ /usr/bin/ginstall -c -m 644 org.xfce.Tumbler.Cache1.service org.xfce.Tumbler.Manager1.service org.xfce.Tumbler.Thumbnailer1.service '/tmp/package-tumbler/usr/share/dbus-1/services'
++ /usr/bin/mkdir -p '/tmp/package-tumbler/usr/lib/tumbler-1'
++  /bin/sh ../libtool   --mode=install /usr/bin/ginstall -c tumblerd '/tmp/package-tumbler/usr/lib/tumbler-1'
++libtool: warning: '../tumbler/libtumbler-1.la' has not been installed in '/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/tumblerd /tmp/package-tumbler/usr/lib/tumbler-1/tumblerd
++make[3]: Leaving directory '/tmp/tumbler-4.16.0/tumblerd'
++make[2]: Leaving directory '/tmp/tumbler-4.16.0/tumblerd'
++make[1]: Leaving directory '/tmp/tumbler-4.16.0/tumblerd'
++Making install in docs
++make[1]: Entering directory '/tmp/tumbler-4.16.0/docs'
++Making install in reference
++make[2]: Entering directory '/tmp/tumbler-4.16.0/docs/reference'
++Making install in tumbler
++make[3]: Entering directory '/tmp/tumbler-4.16.0/docs/reference/tumbler'
++make[4]: Entering directory '/tmp/tumbler-4.16.0/docs/reference/tumbler'
++make[4]: Nothing to be done for 'install-exec-am'.
++mkdir -p -- /tmp/package-tumbler/usr/share/gtk-doc/html/tumbler
++ /usr/bin/ginstall -c -m 644 ./html/TumblerAbstractThumbnailer.html
++ /usr/bin/ginstall -c -m 644 ./html/TumblerCache.html
++ /usr/bin/ginstall -c -m 644 ./html/TumblerFileInfo.html
++ /usr/bin/ginstall -c -m 644 ./html/TumblerProviderFactory.html
++ /usr/bin/ginstall -c -m 644 ./html/TumblerProviderPlugin.html
++ /usr/bin/ginstall -c -m 644 ./html/TumblerThumbnail.html
++ /usr/bin/ginstall -c -m 644 ./html/TumblerThumbnailerProvider.html
++ /usr/bin/ginstall -c -m 644 ./html/api-index-full.html
++ /usr/bin/ginstall -c -m 644 ./html/extension-api.html
++ /usr/bin/ginstall -c -m 644 ./html/extension-tutorial.html
++ /usr/bin/ginstall -c -m 644 ./html/home.png
++ /usr/bin/ginstall -c -m 644 ./html/index.html
++ /usr/bin/ginstall -c -m 644 ./html/left-insensitive.png
++ /usr/bin/ginstall -c -m 644 ./html/left.png
++ /usr/bin/ginstall -c -m 644 ./html/miscellaneous.html
++ /usr/bin/ginstall -c -m 644 ./html/object-tree.html
++ /usr/bin/ginstall -c -m 644 ./html/pt01.html
++ /usr/bin/ginstall -c -m 644 ./html/right-insensitive.png
++ /usr/bin/ginstall -c -m 644 ./html/right.png
++ /usr/bin/ginstall -c -m 644 ./html/style.css
++ /usr/bin/ginstall -c -m 644 ./html/thumbnails.html
++ /usr/bin/ginstall -c -m 644 ./html/tumbler-Error-Domain-and-Types.html
++ /usr/bin/ginstall -c -m 644 ./html/tumbler-Various-Enumeration-Types.html
++ /usr/bin/ginstall -c -m 644 ./html/tumbler-Version-Information-and-Compatibility-Checks.html
++ /usr/bin/ginstall -c -m 644 ./html/tumbler.devhelp2
++ /usr/bin/ginstall -c -m 644 ./html/up-insensitive.png
++ /usr/bin/ginstall -c -m 644 ./html/up.png
++make[4]: Leaving directory '/tmp/tumbler-4.16.0/docs/reference/tumbler'
++make[3]: Leaving directory '/tmp/tumbler-4.16.0/docs/reference/tumbler'
++make[3]: Entering directory '/tmp/tumbler-4.16.0/docs/reference'
++make[4]: Entering directory '/tmp/tumbler-4.16.0/docs/reference'
++make[4]: Nothing to be done for 'install-exec-am'.
++make[4]: Nothing to be done for 'install-data-am'.
++make[4]: Leaving directory '/tmp/tumbler-4.16.0/docs/reference'
++make[3]: Leaving directory '/tmp/tumbler-4.16.0/docs/reference'
++make[2]: Leaving directory '/tmp/tumbler-4.16.0/docs/reference'
++make[2]: Entering directory '/tmp/tumbler-4.16.0/docs'
++make[3]: Entering directory '/tmp/tumbler-4.16.0/docs'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/tumbler-4.16.0/docs'
++make[2]: Leaving directory '/tmp/tumbler-4.16.0/docs'
++make[1]: Leaving directory '/tmp/tumbler-4.16.0/docs'
++Making install in icons
++make[1]: Entering directory '/tmp/tumbler-4.16.0/icons'
++Making install in 32x32
++make[2]: Entering directory '/tmp/tumbler-4.16.0/icons/32x32'
++make[3]: Entering directory '/tmp/tumbler-4.16.0/icons/32x32'
++make[3]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-tumbler/usr/share/icons/hicolor/32x32/apps'
++ /usr/bin/ginstall -c -m 644 org.xfce.tumbler.png '/tmp/package-tumbler/usr/share/icons/hicolor/32x32/apps'
++make[3]: Leaving directory '/tmp/tumbler-4.16.0/icons/32x32'
++make[2]: Leaving directory '/tmp/tumbler-4.16.0/icons/32x32'
++make[2]: Entering directory '/tmp/tumbler-4.16.0/icons'
++make[3]: Entering directory '/tmp/tumbler-4.16.0/icons'
++make[3]: Nothing to be done for 'install-exec-am'.
++make  install-data-hook
++make[4]: Entering directory '/tmp/tumbler-4.16.0/icons'
++*** Icon cache not updated. Remember to run:
++***
++***   gtk-update-icon-cache -f -t /usr/share/icons/hicolor
++***
++make[4]: Leaving directory '/tmp/tumbler-4.16.0/icons'
++make[3]: Leaving directory '/tmp/tumbler-4.16.0/icons'
++make[2]: Leaving directory '/tmp/tumbler-4.16.0/icons'
++make[1]: Leaving directory '/tmp/tumbler-4.16.0/icons'
++make[1]: Entering directory '/tmp/tumbler-4.16.0'
++make[2]: Entering directory '/tmp/tumbler-4.16.0'
++make[2]: Nothing to be done for 'install-exec-am'.
++make[2]: Nothing to be done for 'install-data-am'.
++make[2]: Leaving directory '/tmp/tumbler-4.16.0'
++make[1]: Leaving directory '/tmp/tumbler-4.16.0'
++cp: cannot stat 'BUGS': No such file or directory
++cp: cannot stat 'COMPOSITOR': No such file or directory
++cp: cannot stat 'FAQ': No such file or directory
++cp: cannot stat 'HACKING': No such file or directory
++cp: cannot stat 'NOTES': No such file or directory
++cp: cannot stat 'THANKS': No such file or directory
++cp: cannot stat 'example.gtkrc-2.0': No such file or directory
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++usr/doc/tumbler-4.16.0/html	/usr/share/gtk-doc/html/tumbler/
++usr/lib/libtumbler-1.so	libtumbler-1.so.0.0.0
++usr/lib/libtumbler-1.so.0	libtumbler-1.so.0.0.0
++usr/lib/tumbler-1/plugins/cache/tumbler-cache-plugin.so	tumbler-xdg-cache.so
++
++Making symbolic link creation script:
++( cd usr/doc/tumbler-4.16.0 ; rm -rf html )
++( cd usr/doc/tumbler-4.16.0 ; ln -sf /usr/share/gtk-doc/html/tumbler/ html )
++( cd usr/lib ; rm -rf libtumbler-1.so )
++( cd usr/lib ; ln -sf libtumbler-1.so.0.0.0 libtumbler-1.so )
++( cd usr/lib ; rm -rf libtumbler-1.so.0 )
++( cd usr/lib ; ln -sf libtumbler-1.so.0.0.0 libtumbler-1.so.0 )
++( cd usr/lib/tumbler-1/plugins/cache ; rm -rf tumbler-cache-plugin.so )
++( cd usr/lib/tumbler-1/plugins/cache ; ln -sf tumbler-xdg-cache.so tumbler-cache-plugin.so )
++
++It is recommended that you make these lines your new installation script.
++
++Would you like to make this stuff the install script for this package
++and remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './usr/doc/tumbler-4.16.0/html'
++removed './usr/lib/tumbler-1/plugins/cache/tumbler-cache-plugin.so'
++removed './usr/lib/libtumbler-1.so.0'
++removed './usr/lib/libtumbler-1.so'
++
++Creating your new ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/tumbler-4.16.0-x86_64-1.txz
++
++./
++etc/
++etc/xdg/
++etc/xdg/tumbler/
++etc/xdg/tumbler/tumbler.rc
++install/
++install/doinst.sh
++install/slack-desc
++usr/
++usr/doc/
++usr/doc/tumbler-4.16.0/
++usr/doc/tumbler-4.16.0/AUTHORS
++usr/doc/tumbler-4.16.0/COPYING
++usr/doc/tumbler-4.16.0/ChangeLog
++usr/doc/tumbler-4.16.0/INSTALL
++usr/doc/tumbler-4.16.0/NEWS
++usr/doc/tumbler-4.16.0/README.md
++usr/doc/tumbler-4.16.0/TODO
++usr/include/
++usr/include/tumbler-1/
++usr/include/tumbler-1/tumbler/
++usr/include/tumbler-1/tumbler/tumbler-abstract-thumbnailer.h
++usr/include/tumbler-1/tumbler/tumbler-cache-plugin.h
++usr/include/tumbler-1/tumbler/tumbler-cache.h
++usr/include/tumbler-1/tumbler/tumbler-config.h
++usr/include/tumbler-1/tumbler/tumbler-enum-types.h
++usr/include/tumbler-1/tumbler/tumbler-error.h
++usr/include/tumbler-1/tumbler/tumbler-file-info.h
++usr/include/tumbler-1/tumbler/tumbler-glib-extensions.h
++usr/include/tumbler-1/tumbler/tumbler-marshal.h
++usr/include/tumbler-1/tumbler/tumbler-provider-factory.h
++usr/include/tumbler-1/tumbler/tumbler-provider-plugin.h
++usr/include/tumbler-1/tumbler/tumbler-thumbnail-flavor.h
++usr/include/tumbler-1/tumbler/tumbler-thumbnail.h
++usr/include/tumbler-1/tumbler/tumbler-thumbnailer-provider.h
++usr/include/tumbler-1/tumbler/tumbler-thumbnailer.h
++usr/include/tumbler-1/tumbler/tumbler-util.h
++usr/include/tumbler-1/tumbler/tumbler.h
++usr/lib/
++usr/lib/libtumbler-1.so.0.0.0
++usr/lib/locale/
++usr/lib/locale/ar/
++usr/lib/locale/ar/LC_MESSAGES/
++usr/lib/locale/ar/LC_MESSAGES/tumbler.mo
++usr/lib/locale/ast/
++usr/lib/locale/ast/LC_MESSAGES/
++usr/lib/locale/ast/LC_MESSAGES/tumbler.mo
++usr/lib/locale/be/
++usr/lib/locale/be/LC_MESSAGES/
++usr/lib/locale/be/LC_MESSAGES/tumbler.mo
++usr/lib/locale/bg/
++usr/lib/locale/bg/LC_MESSAGES/
++usr/lib/locale/bg/LC_MESSAGES/tumbler.mo
++usr/lib/locale/bn/
++usr/lib/locale/bn/LC_MESSAGES/
++usr/lib/locale/bn/LC_MESSAGES/tumbler.mo
++usr/lib/locale/ca/
++usr/lib/locale/ca/LC_MESSAGES/
++usr/lib/locale/ca/LC_MESSAGES/tumbler.mo
++usr/lib/locale/cs/
++usr/lib/locale/cs/LC_MESSAGES/
++usr/lib/locale/cs/LC_MESSAGES/tumbler.mo
++usr/lib/locale/da/
++usr/lib/locale/da/LC_MESSAGES/
++usr/lib/locale/da/LC_MESSAGES/tumbler.mo
++usr/lib/locale/de/
++usr/lib/locale/de/LC_MESSAGES/
++usr/lib/locale/de/LC_MESSAGES/tumbler.mo
++usr/lib/locale/el/
++usr/lib/locale/el/LC_MESSAGES/
++usr/lib/locale/el/LC_MESSAGES/tumbler.mo
++usr/lib/locale/en_AU/
++usr/lib/locale/en_AU/LC_MESSAGES/
++usr/lib/locale/en_AU/LC_MESSAGES/tumbler.mo
++usr/lib/locale/en_GB/
++usr/lib/locale/en_GB/LC_MESSAGES/
++usr/lib/locale/en_GB/LC_MESSAGES/tumbler.mo
++usr/lib/locale/es/
++usr/lib/locale/es/LC_MESSAGES/
++usr/lib/locale/es/LC_MESSAGES/tumbler.mo
++usr/lib/locale/et/
++usr/lib/locale/et/LC_MESSAGES/
++usr/lib/locale/et/LC_MESSAGES/tumbler.mo
++usr/lib/locale/eu/
++usr/lib/locale/eu/LC_MESSAGES/
++usr/lib/locale/eu/LC_MESSAGES/tumbler.mo
++usr/lib/locale/fi/
++usr/lib/locale/fi/LC_MESSAGES/
++usr/lib/locale/fi/LC_MESSAGES/tumbler.mo
++usr/lib/locale/fr/
++usr/lib/locale/fr/LC_MESSAGES/
++usr/lib/locale/fr/LC_MESSAGES/tumbler.mo
++usr/lib/locale/gl/
++usr/lib/locale/gl/LC_MESSAGES/
++usr/lib/locale/gl/LC_MESSAGES/tumbler.mo
++usr/lib/locale/he/
++usr/lib/locale/he/LC_MESSAGES/
++usr/lib/locale/he/LC_MESSAGES/tumbler.mo
++usr/lib/locale/hi/
++usr/lib/locale/hi/LC_MESSAGES/
++usr/lib/locale/hi/LC_MESSAGES/tumbler.mo
++usr/lib/locale/hr/
++usr/lib/locale/hr/LC_MESSAGES/
++usr/lib/locale/hr/LC_MESSAGES/tumbler.mo
++usr/lib/locale/hu/
++usr/lib/locale/hu/LC_MESSAGES/
++usr/lib/locale/hu/LC_MESSAGES/tumbler.mo
++usr/lib/locale/hy_AM/
++usr/lib/locale/hy_AM/LC_MESSAGES/
++usr/lib/locale/hy_AM/LC_MESSAGES/tumbler.mo
++usr/lib/locale/hye/
++usr/lib/locale/hye/LC_MESSAGES/
++usr/lib/locale/hye/LC_MESSAGES/tumbler.mo
++usr/lib/locale/id/
++usr/lib/locale/id/LC_MESSAGES/
++usr/lib/locale/id/LC_MESSAGES/tumbler.mo
++usr/lib/locale/is/
++usr/lib/locale/is/LC_MESSAGES/
++usr/lib/locale/is/LC_MESSAGES/tumbler.mo
++usr/lib/locale/it/
++usr/lib/locale/it/LC_MESSAGES/
++usr/lib/locale/it/LC_MESSAGES/tumbler.mo
++usr/lib/locale/ja/
++usr/lib/locale/ja/LC_MESSAGES/
++usr/lib/locale/ja/LC_MESSAGES/tumbler.mo
++usr/lib/locale/kk/
++usr/lib/locale/kk/LC_MESSAGES/
++usr/lib/locale/kk/LC_MESSAGES/tumbler.mo
++usr/lib/locale/ko/
++usr/lib/locale/ko/LC_MESSAGES/
++usr/lib/locale/ko/LC_MESSAGES/tumbler.mo
++usr/lib/locale/lt/
++usr/lib/locale/lt/LC_MESSAGES/
++usr/lib/locale/lt/LC_MESSAGES/tumbler.mo
++usr/lib/locale/lv/
++usr/lib/locale/lv/LC_MESSAGES/
++usr/lib/locale/lv/LC_MESSAGES/tumbler.mo
++usr/lib/locale/ms/
++usr/lib/locale/ms/LC_MESSAGES/
++usr/lib/locale/ms/LC_MESSAGES/tumbler.mo
++usr/lib/locale/nb/
++usr/lib/locale/nb/LC_MESSAGES/
++usr/lib/locale/nb/LC_MESSAGES/tumbler.mo
++usr/lib/locale/nl/
++usr/lib/locale/nl/LC_MESSAGES/
++usr/lib/locale/nl/LC_MESSAGES/tumbler.mo
++usr/lib/locale/nn/
++usr/lib/locale/nn/LC_MESSAGES/
++usr/lib/locale/nn/LC_MESSAGES/tumbler.mo
++usr/lib/locale/oc/
++usr/lib/locale/oc/LC_MESSAGES/
++usr/lib/locale/oc/LC_MESSAGES/tumbler.mo
++usr/lib/locale/pa/
++usr/lib/locale/pa/LC_MESSAGES/
++usr/lib/locale/pa/LC_MESSAGES/tumbler.mo
++usr/lib/locale/pl/
++usr/lib/locale/pl/LC_MESSAGES/
++usr/lib/locale/pl/LC_MESSAGES/tumbler.mo
++usr/lib/locale/pt/
++usr/lib/locale/pt/LC_MESSAGES/
++usr/lib/locale/pt/LC_MESSAGES/tumbler.mo
++usr/lib/locale/pt_BR/
++usr/lib/locale/pt_BR/LC_MESSAGES/
++usr/lib/locale/pt_BR/LC_MESSAGES/tumbler.mo
++usr/lib/locale/ro/
++usr/lib/locale/ro/LC_MESSAGES/
++usr/lib/locale/ro/LC_MESSAGES/tumbler.mo
++usr/lib/locale/ru/
++usr/lib/locale/ru/LC_MESSAGES/
++usr/lib/locale/ru/LC_MESSAGES/tumbler.mo
++usr/lib/locale/si/
++usr/lib/locale/si/LC_MESSAGES/
++usr/lib/locale/si/LC_MESSAGES/tumbler.mo
++usr/lib/locale/sk/
++usr/lib/locale/sk/LC_MESSAGES/
++usr/lib/locale/sk/LC_MESSAGES/tumbler.mo
++usr/lib/locale/sl/
++usr/lib/locale/sl/LC_MESSAGES/
++usr/lib/locale/sl/LC_MESSAGES/tumbler.mo
++usr/lib/locale/sq/
++usr/lib/locale/sq/LC_MESSAGES/
++usr/lib/locale/sq/LC_MESSAGES/tumbler.mo
++usr/lib/locale/sr/
++usr/lib/locale/sr/LC_MESSAGES/
++usr/lib/locale/sr/LC_MESSAGES/tumbler.mo
++usr/lib/locale/sv/
++usr/lib/locale/sv/LC_MESSAGES/
++usr/lib/locale/sv/LC_MESSAGES/tumbler.mo
++usr/lib/locale/te/
++usr/lib/locale/te/LC_MESSAGES/
++usr/lib/locale/te/LC_MESSAGES/tumbler.mo
++usr/lib/locale/th/
++usr/lib/locale/th/LC_MESSAGES/
++usr/lib/locale/th/LC_MESSAGES/tumbler.mo
++usr/lib/locale/tr/
++usr/lib/locale/tr/LC_MESSAGES/
++usr/lib/locale/tr/LC_MESSAGES/tumbler.mo
++usr/lib/locale/ug/
++usr/lib/locale/ug/LC_MESSAGES/
++usr/lib/locale/ug/LC_MESSAGES/tumbler.mo
++usr/lib/locale/uk/
++usr/lib/locale/uk/LC_MESSAGES/
++usr/lib/locale/uk/LC_MESSAGES/tumbler.mo
++usr/lib/locale/zh_CN/
++usr/lib/locale/zh_CN/LC_MESSAGES/
++usr/lib/locale/zh_CN/LC_MESSAGES/tumbler.mo
++usr/lib/locale/zh_HK/
++usr/lib/locale/zh_HK/LC_MESSAGES/
++usr/lib/locale/zh_HK/LC_MESSAGES/tumbler.mo
++usr/lib/locale/zh_TW/
++usr/lib/locale/zh_TW/LC_MESSAGES/
++usr/lib/locale/zh_TW/LC_MESSAGES/tumbler.mo
++usr/lib/pkgconfig/
++usr/lib/pkgconfig/tumbler-1.pc
++usr/lib/tumbler-1/
++usr/lib/tumbler-1/plugins/
++usr/lib/tumbler-1/plugins/cache/
++usr/lib/tumbler-1/plugins/cache/tumbler-xdg-cache.la
++usr/lib/tumbler-1/plugins/cache/tumbler-xdg-cache.so
++usr/lib/tumbler-1/plugins/tumbler-cover-thumbnailer.la
++usr/lib/tumbler-1/plugins/tumbler-cover-thumbnailer.so
++usr/lib/tumbler-1/plugins/tumbler-desktop-thumbnailer.la
++usr/lib/tumbler-1/plugins/tumbler-desktop-thumbnailer.so
++usr/lib/tumbler-1/plugins/tumbler-font-thumbnailer.la
++usr/lib/tumbler-1/plugins/tumbler-font-thumbnailer.so
++usr/lib/tumbler-1/plugins/tumbler-gst-thumbnailer.la
++usr/lib/tumbler-1/plugins/tumbler-gst-thumbnailer.so
++usr/lib/tumbler-1/plugins/tumbler-jpeg-thumbnailer.la
++usr/lib/tumbler-1/plugins/tumbler-jpeg-thumbnailer.so
++usr/lib/tumbler-1/plugins/tumbler-odf-thumbnailer.la
++usr/lib/tumbler-1/plugins/tumbler-odf-thumbnailer.so
++usr/lib/tumbler-1/plugins/tumbler-pixbuf-thumbnailer.la
++usr/lib/tumbler-1/plugins/tumbler-pixbuf-thumbnailer.so
++usr/lib/tumbler-1/plugins/tumbler-poppler-thumbnailer.la
++usr/lib/tumbler-1/plugins/tumbler-poppler-thumbnailer.so
++usr/lib/tumbler-1/tumblerd
++usr/share/
++usr/share/dbus-1/
++usr/share/dbus-1/services/
++usr/share/dbus-1/services/org.xfce.Tumbler.Cache1.service
++usr/share/dbus-1/services/org.xfce.Tumbler.Manager1.service
++usr/share/dbus-1/services/org.xfce.Tumbler.Thumbnailer1.service
++usr/share/gtk-doc/
++usr/share/gtk-doc/html/
++usr/share/gtk-doc/html/tumbler/
++usr/share/gtk-doc/html/tumbler/TumblerAbstractThumbnailer.html
++usr/share/gtk-doc/html/tumbler/TumblerCache.html
++usr/share/gtk-doc/html/tumbler/TumblerFileInfo.html
++usr/share/gtk-doc/html/tumbler/TumblerProviderFactory.html
++usr/share/gtk-doc/html/tumbler/TumblerProviderPlugin.html
++usr/share/gtk-doc/html/tumbler/TumblerThumbnail.html
++usr/share/gtk-doc/html/tumbler/TumblerThumbnailerProvider.html
++usr/share/gtk-doc/html/tumbler/api-index-full.html
++usr/share/gtk-doc/html/tumbler/extension-api.html
++usr/share/gtk-doc/html/tumbler/extension-tutorial.html
++usr/share/gtk-doc/html/tumbler/home.png
++usr/share/gtk-doc/html/tumbler/index.html
++usr/share/gtk-doc/html/tumbler/left-insensitive.png
++usr/share/gtk-doc/html/tumbler/left.png
++usr/share/gtk-doc/html/tumbler/miscellaneous.html
++usr/share/gtk-doc/html/tumbler/object-tree.html
++usr/share/gtk-doc/html/tumbler/pt01.html
++usr/share/gtk-doc/html/tumbler/right-insensitive.png
++usr/share/gtk-doc/html/tumbler/right.png
++usr/share/gtk-doc/html/tumbler/style.css
++usr/share/gtk-doc/html/tumbler/thumbnails.html
++usr/share/gtk-doc/html/tumbler/tumbler-Error-Domain-and-Types.html
++usr/share/gtk-doc/html/tumbler/tumbler-Various-Enumeration-Types.html
++usr/share/gtk-doc/html/tumbler/tumbler-Version-Information-and-Compatibility-Checks.html
++usr/share/gtk-doc/html/tumbler/tumbler.devhelp2
++usr/share/gtk-doc/html/tumbler/up-insensitive.png
++usr/share/gtk-doc/html/tumbler/up.png
++usr/share/icons/
++usr/share/icons/hicolor/
++usr/share/icons/hicolor/32x32/
++usr/share/icons/hicolor/32x32/apps/
++usr/share/icons/hicolor/32x32/apps/org.xfce.tumbler.png
++
++Slackware package /tmp/tumbler-4.16.0-x86_64-1.txz created.
++

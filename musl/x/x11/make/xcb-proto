@@ -1,0 +1,17 @@
+cd python2
+  if ! make $NUMJOBS ; then
+    touch ${SLACK_X_BUILD_DIR}/${PKGNAME}.failed
+    continue
+  fi
+
+  make install DESTDIR=$PKG
+cd -
+
+cd python3
+  if ! make $NUMJOBS ; then
+    touch ${SLACK_X_BUILD_DIR}/${PKGNAME}.failed
+    continue
+  fi
+
+  make install DESTDIR=$PKG
+cd -

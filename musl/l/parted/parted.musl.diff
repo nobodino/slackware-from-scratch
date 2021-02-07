@@ -1,0 +1,2899 @@
+diff -ruBN /tmp/parted/parted.SlackBuild /source/l/parted/parted.SlackBuild
+--- /tmp/parted/parted.SlackBuild	2021-01-28 19:45:51.000000000 +0000
++++ /source/l/parted/parted.SlackBuild	2021-01-29 23:39:00.000000000 +0000
+@@ -57,7 +57,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC -fgnu89-inline"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ else
+   SLKCFLAGS="-O2"
+   LIBDIRSUFFIX=""
+@@ -91,7 +91,7 @@
+   --enable-static=no \
+   --enable-device-mapper=yes \
+   --with-readline \
+-  --build=$ARCH-slackware-linux || exit 1
++  --build=$ARCH-slackware-linux-musl || exit 1
+ 
+ make $NUMJOBS || make || exit 1
+ make install DESTDIR=$PKG || exit 1
+diff -ruBN /tmp/parted/parted.SlackBuild.log /source/l/parted/parted.SlackBuild.log
+--- /tmp/parted/parted.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/l/parted/parted.SlackBuild.log	2021-01-29 23:43:49.000000000 +0000
+@@ -0,0 +1,2874 @@
++parted-3.4/
++parted-3.4/parted.spec.in
++parted-3.4/.prev-version
++parted-3.4/GNUmakefile
++parted-3.4/COPYING
++parted-3.4/libparted.pc.in
++parted-3.4/debug/
++parted-3.4/debug/Makefile.am
++parted-3.4/debug/Makefile.in
++parted-3.4/debug/test/
++parted-3.4/debug/test/test_fs_hfsplus
++parted-3.4/debug/test/test_disk_bsd
++parted-3.4/debug/test/test_disk_pc98
++parted-3.4/debug/test/Makefile.am
++parted-3.4/debug/test/test_fs_ext2
++parted-3.4/debug/test/test_disk_sun
++parted-3.4/debug/test/HOWTO
++parted-3.4/debug/test/test_disk_gpt
++parted-3.4/debug/test/test_disk_dos
++parted-3.4/debug/test/Makefile.in
++parted-3.4/debug/test/build_leak_list
++parted-3.4/debug/test/test_fs_linux_swap
++parted-3.4/debug/test/test_fs_fat
++parted-3.4/debug/test/testrc
++parted-3.4/debug/test/test_disk_dvh
++parted-3.4/debug/test/test_disk_mac
++parted-3.4/debug/test/test_fs_hfs
++parted-3.4/debug/test/test_fs_reiserfs
++parted-3.4/debug/test/test
++parted-3.4/m4/
++parted-3.4/m4/clock_time.m4
++parted-3.4/m4/symlink.m4
++parted-3.4/m4/ltsugar.m4
++parted-3.4/m4/limits-h.m4
++parted-3.4/m4/sleep.m4
++parted-3.4/m4/regex.m4
++parted-3.4/m4/localcharset.m4
++parted-3.4/m4/strtoll.m4
++parted-3.4/m4/getcwd.m4
++parted-3.4/m4/sys_types_h.m4
++parted-3.4/m4/read.m4
++parted-3.4/m4/sys_uio_h.m4
++parted-3.4/m4/inet_pton.m4
++parted-3.4/m4/pid_t.m4
++parted-3.4/m4/dup2.m4
++parted-3.4/m4/getdtablesize.m4
++parted-3.4/m4/lib-link.m4
++parted-3.4/m4/rpmatch.m4
++parted-3.4/m4/readlink.m4
++parted-3.4/m4/malloca.m4
++parted-3.4/m4/wctob.m4
++parted-3.4/m4/mbrtowc.m4
++parted-3.4/m4/nl_langinfo.m4
++parted-3.4/m4/msvc-inval.m4
++parted-3.4/m4/gnulib-comp.m4
++parted-3.4/m4/off_t.m4
++parted-3.4/m4/visibility.m4
++parted-3.4/m4/environ.m4
++parted-3.4/m4/canonicalize.m4
++parted-3.4/m4/stdarg.m4
++parted-3.4/m4/unistd_h.m4
++parted-3.4/m4/xstrndup.m4
++parted-3.4/m4/safe-read.m4
++parted-3.4/m4/std-gnu11.m4
++parted-3.4/m4/fcntl-o.m4
++parted-3.4/m4/open-cloexec.m4
++parted-3.4/m4/usleep.m4
++parted-3.4/m4/ltversion.m4
++parted-3.4/m4/fcntl.m4
++parted-3.4/m4/largefile.m4
++parted-3.4/m4/stdint.m4
++parted-3.4/m4/codeset.m4
++parted-3.4/m4/locale_h.m4
++parted-3.4/m4/putenv.m4
++parted-3.4/m4/zzgnulib.m4
++parted-3.4/m4/locale-fr.m4
++parted-3.4/m4/close.m4
++parted-3.4/m4/include_next.m4
++parted-3.4/m4/sys_ioctl_h.m4
++parted-3.4/m4/gettext.m4
++parted-3.4/m4/sockets.m4
++parted-3.4/m4/absolute-header.m4
++parted-3.4/m4/builtin-expect.m4
++parted-3.4/m4/strerror.m4
++parted-3.4/m4/nls.m4
++parted-3.4/m4/__inline.m4
++parted-3.4/m4/localeconv.m4
++parted-3.4/m4/quote.m4
++parted-3.4/m4/getprogname.m4
++parted-3.4/m4/pthread_rwlock_rdlock.m4
++parted-3.4/m4/stdlib_h.m4
++parted-3.4/m4/locale-tr.m4
++parted-3.4/m4/quotearg.m4
++parted-3.4/m4/mbsinit.m4
++parted-3.4/m4/sys_stat_h.m4
++parted-3.4/m4/libtool.m4
++parted-3.4/m4/stddef_h.m4
++parted-3.4/m4/malloc.m4
++parted-3.4/m4/arpa_inet_h.m4
++parted-3.4/m4/stdalign.m4
++parted-3.4/m4/time_h.m4
++parted-3.4/m4/gettimeofday.m4
++parted-3.4/m4/signal_h.m4
++parted-3.4/m4/sys_time_h.m4
++parted-3.4/m4/iconv.m4
++parted-3.4/m4/warnings.m4
++parted-3.4/m4/strdup.m4
++parted-3.4/m4/perror.m4
++parted-3.4/m4/yield.m4
++parted-3.4/m4/ssize_t.m4
++parted-3.4/m4/sys_random_h.m4
++parted-3.4/m4/gnulib-common.m4
++parted-3.4/m4/extensions.m4
++parted-3.4/m4/stdbool.m4
++parted-3.4/m4/priv-set.m4
++parted-3.4/m4/netinet_in_h.m4
++parted-3.4/m4/wctomb.m4
++parted-3.4/m4/thread.m4
++parted-3.4/m4/mkdir.m4
++parted-3.4/m4/double-slash-root.m4
++parted-3.4/m4/musl.m4
++parted-3.4/m4/o-direct.m4
++parted-3.4/m4/ioctl.m4
++parted-3.4/m4/sys_select_h.m4
++parted-3.4/m4/lt~obsolete.m4
++parted-3.4/m4/localename.m4
++parted-3.4/m4/mode_t.m4
++parted-3.4/m4/strerror_r.m4
++parted-3.4/m4/open.m4
++parted-3.4/m4/getpagesize.m4
++parted-3.4/m4/btowc.m4
++parted-3.4/m4/minmax.m4
++parted-3.4/m4/inttypes.m4
++parted-3.4/m4/select.m4
++parted-3.4/m4/wchar_t.m4
++parted-3.4/m4/error.m4
++parted-3.4/m4/xstrtol.m4
++parted-3.4/m4/flexmember.m4
++parted-3.4/m4/pthread_sigmask.m4
++parted-3.4/m4/setlocale.m4
++parted-3.4/m4/realloc.m4
++parted-3.4/m4/alloca.m4
++parted-3.4/m4/pipe.m4
++parted-3.4/m4/intlmacosx.m4
++parted-3.4/m4/nocrash.m4
++parted-3.4/m4/lseek.m4
++parted-3.4/m4/wint_t.m4
++parted-3.4/m4/sched_h.m4
++parted-3.4/m4/errno_h.m4
++parted-3.4/m4/signalblocking.m4
++parted-3.4/m4/wchar_h.m4
++parted-3.4/m4/stat-time.m4
++parted-3.4/m4/manywarnings.m4
++parted-3.4/m4/langinfo_h.m4
++parted-3.4/m4/sys_socket_h.m4
++parted-3.4/m4/setlocale_null.m4
++parted-3.4/m4/lib-ignore.m4
++parted-3.4/m4/unlink.m4
++parted-3.4/m4/msvc-nothrow.m4
++parted-3.4/m4/pathmax.m4
++parted-3.4/m4/socklen.m4
++parted-3.4/m4/setenv.m4
++parted-3.4/m4/calloc.m4
++parted-3.4/m4/pthread-thread.m4
++parted-3.4/m4/getrandom.m4
++parted-3.4/m4/mmap-anon.m4
++parted-3.4/m4/stat.m4
++parted-3.4/m4/fcntl_h.m4
++parted-3.4/m4/wcrtomb.m4
++parted-3.4/m4/glibc21.m4
++parted-3.4/m4/strndup.m4
++parted-3.4/m4/lib-ld.m4
++parted-3.4/m4/lstat.m4
++parted-3.4/m4/xalloc.m4
++parted-3.4/m4/isblank.m4
++parted-3.4/m4/string_h.m4
++parted-3.4/m4/po.m4
++parted-3.4/m4/warn-on-use.m4
++parted-3.4/m4/locale-zh.m4
++parted-3.4/m4/getopt.m4
++parted-3.4/m4/fsync.m4
++parted-3.4/m4/intl-thread-locale.m4
++parted-3.4/m4/configmake.m4
++parted-3.4/m4/semaphore.m4
++parted-3.4/m4/sockpfaf.m4
++parted-3.4/m4/mbstate_t.m4
++parted-3.4/m4/00gnulib.m4
++parted-3.4/m4/lcmessage.m4
++parted-3.4/m4/socketlib.m4
++parted-3.4/m4/fstat.m4
++parted-3.4/m4/threadlib.m4
++parted-3.4/m4/fpending.m4
++parted-3.4/m4/version-etc.m4
++parted-3.4/m4/wctype_h.m4
++parted-3.4/m4/lib-prefix.m4
++parted-3.4/m4/stdio_h.m4
++parted-3.4/m4/tempname.m4
++parted-3.4/m4/pthread_h.m4
++parted-3.4/m4/open-slash.m4
++parted-3.4/m4/fdopen.m4
++parted-3.4/m4/ctype.m4
++parted-3.4/m4/multiarch.m4
++parted-3.4/m4/config-h.m4
++parted-3.4/m4/sigaction.m4
++parted-3.4/m4/strtoull.m4
++parted-3.4/m4/ftruncate.m4
++parted-3.4/m4/assert.m4
++parted-3.4/m4/progtest.m4
++parted-3.4/m4/extern-inline.m4
++parted-3.4/m4/raise.m4
++parted-3.4/m4/nanosleep.m4
++parted-3.4/m4/mkstemp.m4
++parted-3.4/m4/locale-ja.m4
++parted-3.4/m4/ltoptions.m4
++parted-3.4/m4/mbtowc.m4
++parted-3.4/m4/unlinkdir.m4
++parted-3.4/m4/lock.m4
++parted-3.4/m4/strnlen.m4
++parted-3.4/m4/eealloc.m4
++parted-3.4/THANKS
++parted-3.4/po/
++parted-3.4/po/uk.gmo
++parted-3.4/po/parted.pot
++parted-3.4/po/boldquot.sed
++parted-3.4/po/pt_BR.gmo
++parted-3.4/po/pt.gmo
++parted-3.4/po/fr.po
++parted-3.4/po/ja.po
++parted-3.4/po/sr.gmo
++parted-3.4/po/Rules-quot
++parted-3.4/po/POTFILES.in
++parted-3.4/po/es.po
++parted-3.4/po/hu.gmo
++parted-3.4/po/rw.po
++parted-3.4/po/vi.gmo
++parted-3.4/po/da.gmo
++parted-3.4/po/hu.po
++parted-3.4/po/sr.po
++parted-3.4/po/sk.gmo
++parted-3.4/po/ko.po
++parted-3.4/po/fr.gmo
++parted-3.4/po/nn.po
++parted-3.4/po/sl.po
++parted-3.4/po/ja.gmo
++parted-3.4/po/it.po
++parted-3.4/po/nl.po
++parted-3.4/po/Makevars
++parted-3.4/po/LINGUAS
++parted-3.4/po/it.gmo
++parted-3.4/po/ru.gmo
++parted-3.4/po/quot.sed
++parted-3.4/po/cs.po
++parted-3.4/po/zh_CN.gmo
++parted-3.4/po/nn.gmo
++parted-3.4/po/en@quot.header
++parted-3.4/po/sv.gmo
++parted-3.4/po/remove-potcdate.sin
++parted-3.4/po/uk.po
++parted-3.4/po/nl.gmo
++parted-3.4/po/ca.po
++parted-3.4/po/tr.gmo
++parted-3.4/po/vi.po
++parted-3.4/po/stamp-po
++parted-3.4/po/gl.gmo
++parted-3.4/po/pl.po
++parted-3.4/po/cs.gmo
++parted-3.4/po/id.po
++parted-3.4/po/pl.gmo
++parted-3.4/po/zh_TW.gmo
++parted-3.4/po/id.gmo
++parted-3.4/po/gl.po
++parted-3.4/po/es.gmo
++parted-3.4/po/sk.po
++parted-3.4/po/zh_TW.po
++parted-3.4/po/ro.po
++parted-3.4/po/de.po
++parted-3.4/po/ru.po
++parted-3.4/po/de.gmo
++parted-3.4/po/insert-header.sin
++parted-3.4/po/zh_CN.po
++parted-3.4/po/tr.po
++parted-3.4/po/da.po
++parted-3.4/po/pt_BR.po
++parted-3.4/po/ChangeLog.0
++parted-3.4/po/ca.gmo
++parted-3.4/po/pt.po
++parted-3.4/po/Makefile.in.in
++parted-3.4/po/ro.gmo
++parted-3.4/po/fur.gmo
++parted-3.4/po/ko.gmo
++parted-3.4/po/fur.po
++parted-3.4/po/rw.gmo
++parted-3.4/po/sl.gmo
++parted-3.4/po/sv.po
++parted-3.4/po/en@boldquot.header
++parted-3.4/Makefile.am
++parted-3.4/cfg.mk
++parted-3.4/dist-check.mk
++parted-3.4/maint.mk
++parted-3.4/libparted/
++parted-3.4/libparted/fs/
++parted-3.4/libparted/fs/udf/
++parted-3.4/libparted/fs/udf/udf.c
++parted-3.4/libparted/fs/r/
++parted-3.4/libparted/fs/r/filesys.c
++parted-3.4/libparted/fs/r/fat/
++parted-3.4/libparted/fs/r/fat/count.c
++parted-3.4/libparted/fs/r/fat/table.h
++parted-3.4/libparted/fs/r/fat/fat.c
++parted-3.4/libparted/fs/r/fat/resize.c
++parted-3.4/libparted/fs/r/fat/traverse.c
++parted-3.4/libparted/fs/r/fat/context.h
++parted-3.4/libparted/fs/r/fat/calc.c
++parted-3.4/libparted/fs/r/fat/table.c
++parted-3.4/libparted/fs/r/fat/context.c
++parted-3.4/libparted/fs/r/fat/traverse.h
++parted-3.4/libparted/fs/r/fat/calc.h
++parted-3.4/libparted/fs/r/fat/bootsector.c
++parted-3.4/libparted/fs/r/fat/fat.h
++parted-3.4/libparted/fs/r/fat/clstdup.c
++parted-3.4/libparted/fs/r/fat/fatio.h
++parted-3.4/libparted/fs/r/fat/count.h
++parted-3.4/libparted/fs/r/fat/clstdup.h
++parted-3.4/libparted/fs/r/fat/bootsector.h
++parted-3.4/libparted/fs/r/fat/fatio.c
++parted-3.4/libparted/fs/r/hfs/
++parted-3.4/libparted/fs/r/hfs/reloc.h
++parted-3.4/libparted/fs/r/hfs/file.h
++parted-3.4/libparted/fs/r/hfs/file_plus.h
++parted-3.4/libparted/fs/r/hfs/cache.h
++parted-3.4/libparted/fs/r/hfs/cache.c
++parted-3.4/libparted/fs/r/hfs/hfs.h
++parted-3.4/libparted/fs/r/hfs/reloc_plus.h
++parted-3.4/libparted/fs/r/hfs/journal.h
++parted-3.4/libparted/fs/r/hfs/advfs.c
++parted-3.4/libparted/fs/r/hfs/advfs_plus.h
++parted-3.4/libparted/fs/r/hfs/probe.h
++parted-3.4/libparted/fs/r/hfs/advfs_plus.c
++parted-3.4/libparted/fs/r/hfs/hfs.c
++parted-3.4/libparted/fs/r/hfs/file.c
++parted-3.4/libparted/fs/r/hfs/journal.c
++parted-3.4/libparted/fs/r/hfs/file_plus.c
++parted-3.4/libparted/fs/r/hfs/reloc_plus.c
++parted-3.4/libparted/fs/r/hfs/reloc.c
++parted-3.4/libparted/fs/r/hfs/advfs.h
++parted-3.4/libparted/fs/r/hfs/probe.c
++parted-3.4/libparted/fs/jfs/
++parted-3.4/libparted/fs/jfs/jfs_superblock.h
++parted-3.4/libparted/fs/jfs/jfs.c
++parted-3.4/libparted/fs/jfs/jfs_types.h
++parted-3.4/libparted/fs/reiserfs/
++parted-3.4/libparted/fs/reiserfs/reiserfs.h
++parted-3.4/libparted/fs/reiserfs/reiserfs.c
++parted-3.4/libparted/fs/Makefile.am
++parted-3.4/libparted/fs/ufs/
++parted-3.4/libparted/fs/ufs/ufs.c
++parted-3.4/libparted/fs/fsresize.sym
++parted-3.4/libparted/fs/f2fs/
++parted-3.4/libparted/fs/f2fs/f2fs.c
++parted-3.4/libparted/fs/f2fs/f2fs.h
++parted-3.4/libparted/fs/nilfs2/
++parted-3.4/libparted/fs/nilfs2/nilfs2.c
++parted-3.4/libparted/fs/Makefile.in
++parted-3.4/libparted/fs/ntfs/
++parted-3.4/libparted/fs/ntfs/ntfs.c
++parted-3.4/libparted/fs/xfs/
++parted-3.4/libparted/fs/xfs/xfs_sb.h
++parted-3.4/libparted/fs/xfs/xfs_types.h
++parted-3.4/libparted/fs/xfs/xfs.c
++parted-3.4/libparted/fs/xfs/platform_defs.h
++parted-3.4/libparted/fs/amiga/
++parted-3.4/libparted/fs/amiga/asfs.h
++parted-3.4/libparted/fs/amiga/amiga.c
++parted-3.4/libparted/fs/amiga/asfs.c
++parted-3.4/libparted/fs/amiga/a-interface.c
++parted-3.4/libparted/fs/amiga/amiga.h
++parted-3.4/libparted/fs/amiga/apfs.c
++parted-3.4/libparted/fs/amiga/apfs.h
++parted-3.4/libparted/fs/amiga/affs.c
++parted-3.4/libparted/fs/amiga/affs.h
++parted-3.4/libparted/fs/btrfs/
++parted-3.4/libparted/fs/btrfs/btrfs.c
++parted-3.4/libparted/fs/ext2/
++parted-3.4/libparted/fs/ext2/ext2.h
++parted-3.4/libparted/fs/ext2/ext2_fs.h
++parted-3.4/libparted/fs/ext2/interface.c
++parted-3.4/libparted/fs/fat/
++parted-3.4/libparted/fs/fat/fat.c
++parted-3.4/libparted/fs/fat/bootsector.c
++parted-3.4/libparted/fs/fat/fat.h
++parted-3.4/libparted/fs/fat/count.h
++parted-3.4/libparted/fs/fat/bootsector.h
++parted-3.4/libparted/fs/linux_swap/
++parted-3.4/libparted/fs/linux_swap/linux_swap.c
++parted-3.4/libparted/fs/hfs/
++parted-3.4/libparted/fs/hfs/DOC
++parted-3.4/libparted/fs/hfs/hfs.h
++parted-3.4/libparted/fs/hfs/probe.h
++parted-3.4/libparted/fs/hfs/hfs.c
++parted-3.4/libparted/fs/hfs/TODO
++parted-3.4/libparted/fs/hfs/HISTORY
++parted-3.4/libparted/fs/hfs/probe.c
++parted-3.4/libparted/timer.c
++parted-3.4/libparted/debug.c
++parted-3.4/libparted/architecture.h
++parted-3.4/libparted/libparted.c
++parted-3.4/libparted/Makefile.am
++parted-3.4/libparted/cs/
++parted-3.4/libparted/cs/natmath.c
++parted-3.4/libparted/cs/constraint.c
++parted-3.4/libparted/cs/geom.c
++parted-3.4/libparted/exception.c
++parted-3.4/libparted/filesys.c
++parted-3.4/libparted/mbr.s
++parted-3.4/libparted/Makefile.in
++parted-3.4/libparted/arch/
++parted-3.4/libparted/arch/gnu.c
++parted-3.4/libparted/arch/linux.h
++parted-3.4/libparted/arch/beos.c
++parted-3.4/libparted/arch/linux.c
++parted-3.4/libparted/unit.c
++parted-3.4/libparted/architecture.c
++parted-3.4/libparted/device.c
++parted-3.4/libparted/tests/
++parted-3.4/libparted/tests/zerolen.c
++parted-3.4/libparted/tests/t3000-symlink.sh
++parted-3.4/libparted/tests/Makefile.am
++parted-3.4/libparted/tests/t1000-label.sh
++parted-3.4/libparted/tests/t2100-zerolen.sh
++parted-3.4/libparted/tests/t4000-volser.sh
++parted-3.4/libparted/tests/Makefile.in
++parted-3.4/libparted/tests/common.h
++parted-3.4/libparted/tests/volser.c
++parted-3.4/libparted/tests/symlink.c
++parted-3.4/libparted/tests/t2000-disk.sh
++parted-3.4/libparted/tests/common.c
++parted-3.4/libparted/tests/disk.c
++parted-3.4/libparted/tests/label.c
++parted-3.4/libparted/labels/
++parted-3.4/libparted/labels/bsd.c
++parted-3.4/libparted/labels/dvh.h
++parted-3.4/libparted/labels/fdasd.c
++parted-3.4/libparted/labels/pt-limit.gperf
++parted-3.4/libparted/labels/Makefile.am
++parted-3.4/libparted/labels/pc98.c
++parted-3.4/libparted/labels/loop.c
++parted-3.4/libparted/labels/pt-limit.c
++parted-3.4/libparted/labels/vtoc.c
++parted-3.4/libparted/labels/dasd.c
++parted-3.4/libparted/labels/pt-tools.h
++parted-3.4/libparted/labels/Makefile.in
++parted-3.4/libparted/labels/misc.h
++parted-3.4/libparted/labels/gpt.c
++parted-3.4/libparted/labels/dos.c
++parted-3.4/libparted/labels/dvh.c
++parted-3.4/libparted/labels/aix.c
++parted-3.4/libparted/labels/rdb.c
++parted-3.4/libparted/labels/sun.c
++parted-3.4/libparted/labels/pt-tools.c
++parted-3.4/libparted/labels/mac.c
++parted-3.4/libparted/labels/atari.c
++parted-3.4/libparted/labels/pt-common.h
++parted-3.4/libparted/labels/efi_crc32.c
++parted-3.4/libparted/disk.c
++parted-3.4/.version
++parted-3.4/ChangeLog
++parted-3.4/AUTHORS
++parted-3.4/libparted-fs-resize.pc.in
++parted-3.4/Makefile.in
++parted-3.4/INSTALL
++parted-3.4/configure
++parted-3.4/NEWS
++parted-3.4/README
++parted-3.4/lib/
++parted-3.4/lib/dirname.c
++parted-3.4/lib/calloc.c
++parted-3.4/lib/lc-charset-dispatch.c
++parted-3.4/lib/gettext.h
++parted-3.4/lib/mbrtowc-impl.h
++parted-3.4/lib/mbtowc-impl.h
++parted-3.4/lib/exitfail.c
++parted-3.4/lib/nl_langinfo-lock.c
++parted-3.4/lib/windows-recmutex.h
++parted-3.4/lib/stdio.in.h
++parted-3.4/lib/malloc.c
++parted-3.4/lib/error.c
++parted-3.4/lib/close-stream.c
++parted-3.4/lib/mbsinit.c
++parted-3.4/lib/getopt-cdefs.in.h
++parted-3.4/lib/regcomp.c
++parted-3.4/lib/fpending.c
++parted-3.4/lib/filename.h
++parted-3.4/lib/hard-locale.c
++parted-3.4/lib/unlink.c
++parted-3.4/lib/cdefs.h
++parted-3.4/lib/stripslash.c
++parted-3.4/lib/close.c
++parted-3.4/lib/c-ctype.h
++parted-3.4/lib/msvc-inval.c
++parted-3.4/lib/msvc-inval.h
++parted-3.4/lib/sleep.c
++parted-3.4/lib/quote.h
++parted-3.4/lib/string.in.h
++parted-3.4/lib/glthread/
++parted-3.4/lib/glthread/lock.c
++parted-3.4/lib/glthread/threadlib.c
++parted-3.4/lib/glthread/lock.h
++parted-3.4/lib/setlocale_null.c
++parted-3.4/lib/lseek.c
++parted-3.4/lib/xalloc.h
++parted-3.4/lib/windows-recmutex.c
++parted-3.4/lib/windows-initguard.h
++parted-3.4/lib/errno.in.h
++parted-3.4/lib/Makefile.am
++parted-3.4/lib/getopt1.c
++parted-3.4/lib/xstrndup.h
++parted-3.4/lib/argmatch.c
++parted-3.4/lib/hard-locale.h
++parted-3.4/lib/sys_random.in.h
++parted-3.4/lib/wchar.in.h
++parted-3.4/lib/dirname.h
++parted-3.4/lib/getopt-pfx-ext.h
++parted-3.4/lib/c-ctype.c
++parted-3.4/lib/fsync.c
++parted-3.4/lib/windows-mutex.h
++parted-3.4/lib/strerror-override.h
++parted-3.4/lib/basename-lgpl.h
++parted-3.4/lib/cloexec.c
++parted-3.4/lib/lc-charset-dispatch.h
++parted-3.4/lib/windows-rwlock.h
++parted-3.4/lib/progname.h
++parted-3.4/lib/rpmatch.c
++parted-3.4/lib/regex.c
++parted-3.4/lib/strerror-override.c
++parted-3.4/lib/getopt-core.h
++parted-3.4/lib/regex_internal.h
++parted-3.4/lib/sys_stat.in.h
++parted-3.4/lib/getopt.c
++parted-3.4/lib/getdtablesize.c
++parted-3.4/lib/basename.c
++parted-3.4/lib/xstrtol.h
++parted-3.4/lib/stdint.in.h
++parted-3.4/lib/fcntl.c
++parted-3.4/lib/read.c
++parted-3.4/lib/localcharset.c
++parted-3.4/lib/progname.c
++parted-3.4/lib/assure.h
++parted-3.4/lib/verify.h
++parted-3.4/lib/regexec.c
++parted-3.4/lib/windows-rwlock.c
++parted-3.4/lib/unistd.c
++parted-3.4/lib/close-stream.h
++parted-3.4/lib/langinfo.in.h
++parted-3.4/lib/cloexec.h
++parted-3.4/lib/xstrndup.c
++parted-3.4/lib/mkstemp.c
++parted-3.4/lib/tempname.c
++parted-3.4/lib/exitfail.h
++parted-3.4/lib/getopt_int.h
++parted-3.4/lib/strnlen.c
++parted-3.4/lib/setlocale-lock.c
++parted-3.4/lib/windows-once.c
++parted-3.4/lib/getprogname.h
++parted-3.4/lib/warn-on-use.h
++parted-3.4/lib/sys-limits.h
++parted-3.4/lib/getrandom.c
++parted-3.4/lib/stdarg.in.h
++parted-3.4/lib/closeout.h
++parted-3.4/lib/xmalloc.c
++parted-3.4/lib/mbrtowc-impl-utf8.h
++parted-3.4/lib/intprops.h
++parted-3.4/lib/stat-time.c
++parted-3.4/lib/long-options.h
++parted-3.4/lib/mbtowc.c
++parted-3.4/lib/safe-read.h
++parted-3.4/lib/mbtowc-lock.c
++parted-3.4/lib/tempname.h
++parted-3.4/lib/strtoull.c
++parted-3.4/lib/locale.in.h
++parted-3.4/lib/Makefile.in
++parted-3.4/lib/pathmax.h
++parted-3.4/lib/stat-time.h
++parted-3.4/lib/attribute.h
++parted-3.4/lib/realloc.c
++parted-3.4/lib/version-etc-fsf.c
++parted-3.4/lib/stat-w32.c
++parted-3.4/lib/version-etc.c
++parted-3.4/lib/quotearg.h
++parted-3.4/lib/fstat.c
++parted-3.4/lib/regex_internal.c
++parted-3.4/lib/xstrtoul.c
++parted-3.4/lib/xstrtol.c
++parted-3.4/lib/wctype-h.c
++parted-3.4/lib/dirname-lgpl.c
++parted-3.4/lib/stat.c
++parted-3.4/lib/wctype.in.h
++parted-3.4/lib/usleep.c
++parted-3.4/lib/basename-lgpl.c
++parted-3.4/lib/_Noreturn.h
++parted-3.4/lib/mkdir.c
++parted-3.4/lib/stdio-impl.h
++parted-3.4/lib/windows-mutex.c
++parted-3.4/lib/arg-nonnull.h
++parted-3.4/lib/getprogname.c
++parted-3.4/lib/xalloc-die.c
++parted-3.4/lib/msvc-nothrow.c
++parted-3.4/lib/error.h
++parted-3.4/lib/canonicalize-lgpl.c
++parted-3.4/lib/xstrtoll.c
++parted-3.4/lib/windows-once.h
++parted-3.4/lib/strdup.c
++parted-3.4/lib/safe-read.c
++parted-3.4/lib/time.in.h
++parted-3.4/lib/lstat.c
++parted-3.4/lib/limits.in.h
++parted-3.4/lib/quotearg.c
++parted-3.4/lib/long-options.c
++parted-3.4/lib/fd-hook.h
++parted-3.4/lib/mbrtowc.c
++parted-3.4/lib/libc-config.h
++parted-3.4/lib/malloca.h
++parted-3.4/lib/malloca.c
++parted-3.4/lib/fcntl.in.h
++parted-3.4/lib/closeout.c
++parted-3.4/lib/fd-hook.c
++parted-3.4/lib/streq.h
++parted-3.4/lib/localeconv.c
++parted-3.4/lib/c-strncasecmp.c
++parted-3.4/lib/wcrtomb.c
++parted-3.4/lib/c++defs.h
++parted-3.4/lib/setlocale_null.h
++parted-3.4/lib/stdbool.in.h
++parted-3.4/lib/c-strcaseeq.h
++parted-3.4/lib/regex.h
++parted-3.4/lib/alloca.in.h
++parted-3.4/lib/gnulib.mk
++parted-3.4/lib/strtoll.c
++parted-3.4/lib/xstrtoull.c
++parted-3.4/lib/msvc-nothrow.h
++parted-3.4/lib/strtol.c
++parted-3.4/lib/open.c
++parted-3.4/lib/stdalign.in.h
++parted-3.4/lib/strndup.c
++parted-3.4/lib/getopt-ext.h
++parted-3.4/lib/stat-w32.h
++parted-3.4/lib/config.h.in
++parted-3.4/lib/getopt.in.h
++parted-3.4/lib/inttypes.in.h
++parted-3.4/lib/unistd.in.h
++parted-3.4/lib/c-strcase.h
++parted-3.4/lib/getopt-pfx-core.h
++parted-3.4/lib/idx.h
++parted-3.4/lib/argmatch.h
++parted-3.4/lib/readlink.c
++parted-3.4/lib/stddef.in.h
++parted-3.4/lib/sys_types.in.h
++parted-3.4/lib/strerror.c
++parted-3.4/lib/xalloc-oversized.h
++parted-3.4/lib/nl_langinfo.c
++parted-3.4/lib/localcharset.h
++parted-3.4/lib/alloca.c
++parted-3.4/lib/mbtowc-lock.h
++parted-3.4/lib/version-etc.h
++parted-3.4/lib/strtoul.c
++parted-3.4/lib/c-strcasecmp.c
++parted-3.4/lib/dup2.c
++parted-3.4/lib/btowc.c
++parted-3.4/lib/fpending.h
++parted-3.4/lib/minmax.h
++parted-3.4/lib/stdlib.in.h
++parted-3.4/TODO
++parted-3.4/partprobe/
++parted-3.4/partprobe/partprobe.c
++parted-3.4/partprobe/Makefile.am
++parted-3.4/partprobe/Makefile.in
++parted-3.4/include/
++parted-3.4/include/Makefile.am
++parted-3.4/include/Makefile.in
++parted-3.4/include/parted/
++parted-3.4/include/parted/crc32.in.h
++parted-3.4/include/parted/geom.h
++parted-3.4/include/parted/disk.in.h
++parted-3.4/include/parted/unit.h
++parted-3.4/include/parted/natmath.h
++parted-3.4/include/parted/filesys.h
++parted-3.4/include/parted/device.in.h
++parted-3.4/include/parted/parted.h
++parted-3.4/include/parted/endian.h
++parted-3.4/include/parted/Makefile.am
++parted-3.4/include/parted/disk.h
++parted-3.4/include/parted/debug.h
++parted-3.4/include/parted/filesys.in.h
++parted-3.4/include/parted/unit.in.h
++parted-3.4/include/parted/device.h
++parted-3.4/include/parted/Makefile.in
++parted-3.4/include/parted/endian.in.h
++parted-3.4/include/parted/constraint.in.h
++parted-3.4/include/parted/geom.in.h
++parted-3.4/include/parted/constraint.h
++parted-3.4/include/parted/debug.in.h
++parted-3.4/include/parted/fdasd.in.h
++parted-3.4/include/parted/fdasd.h
++parted-3.4/include/parted/vtoc.in.h
++parted-3.4/include/parted/natmath.in.h
++parted-3.4/include/parted/timer.in.h
++parted-3.4/include/parted/parted.in.h
++parted-3.4/include/parted/exception.in.h
++parted-3.4/include/parted/timer.h
++parted-3.4/include/parted/exception.h
++parted-3.4/include/parted/crc32.h
++parted-3.4/include/parted/vtoc.h
++parted-3.4/parted.spec
++parted-3.4/BUGS
++parted-3.4/configure.ac
++parted-3.4/parted/
++parted-3.4/parted/table.h
++parted-3.4/parted/strlist.c
++parted-3.4/parted/Makefile.am
++parted-3.4/parted/table.c
++parted-3.4/parted/command.c
++parted-3.4/parted/parted.c
++parted-3.4/parted/ui.h
++parted-3.4/parted/Makefile.in
++parted-3.4/parted/command.h
++parted-3.4/parted/ui.c
++parted-3.4/parted/strlist.h
++parted-3.4/tests/
++parted-3.4/tests/t9041-undetected-in-use-16th-partition.sh
++parted-3.4/tests/print-flags.c
++parted-3.4/tests/t0206-gpt-print-with-corrupt-primary-clobbers-pmbr.sh
++parted-3.4/tests/t4300-nilfs2-tiny.sh
++parted-3.4/tests/t0205-gpt-list-clobbers-pmbr.sh
++parted-3.4/tests/t6006-dm-512b-sectors.sh
++parted-3.4/tests/t0202-gpt-pmbr.sh
++parted-3.4/tests/t5000-tags.sh
++parted-3.4/tests/t2300-dos-label-extended-bootcode.sh
++parted-3.4/tests/t-lib-helpers.sh
++parted-3.4/tests/t9022-one-unit-snap.sh
++parted-3.4/tests/t0211-gpt-rewrite-header.sh
++parted-3.4/tests/t0000-basic.sh
++parted-3.4/tests/t9020-alignment.sh
++parted-3.4/tests/print-max.c
++parted-3.4/tests/t0100-print.sh
++parted-3.4/tests/print-align.c
++parted-3.4/tests/t1701-rescue-fs.sh
++parted-3.4/tests/t0210-gpt-resized-partition-entry-array.sh
++parted-3.4/tests/t2320-dos-extended-noclobber.sh
++parted-3.4/tests/t6005-dm-uuid.sh
++parted-3.4/tests/t0001-tiny.sh
++parted-3.4/tests/Makefile.am
++parted-3.4/tests/fs-resize.c
++parted-3.4/tests/t0201-gpt.sh
++parted-3.4/tests/t9040-many-partitions.sh
++parted-3.4/tests/t0209-gpt-pmbr_boot.sh
++parted-3.4/tests/t3300-palo-prep.sh
++parted-3.4/tests/t0101-print-empty.sh
++parted-3.4/tests/t4001-sun-vtoc.sh
++parted-3.4/tests/t6100-mdraid-partitions.sh
++parted-3.4/tests/t6004-dm-many-partitions.sh
++parted-3.4/tests/gpt-header-move
++parted-3.4/tests/gpt-header-munge
++parted-3.4/tests/t1101-busy-partition.sh
++parted-3.4/tests/t4200-partprobe.sh
++parted-3.4/tests/t0251-gpt-unicode.sh
++parted-3.4/tests/t0220-gpt-msftres.sh
++parted-3.4/tests/t0301-overwrite-gpt-pmbr.sh
++parted-3.4/tests/t0282-gpt-move-backup.sh
++parted-3.4/tests/init.sh
++parted-3.4/tests/t0213-mkpart-start-negative.sh
++parted-3.4/tests/init.cfg
++parted-3.4/tests/t2201-pc98-label-recog.sh
++parted-3.4/tests/t7000-scripting.sh
++parted-3.4/tests/t0250-gpt.sh
++parted-3.4/tests/Makefile.in
++parted-3.4/tests/t0203-gpt-tiny-device-abort.sh
++parted-3.4/tests/t4100-msdos-partition-limits.sh
++parted-3.4/tests/t0203-gpt-create-on-min-sized-device.sh
++parted-3.4/tests/t4100-msdos-starting-sector.sh
++parted-3.4/tests/t2200-dos-label-recog.sh
++parted-3.4/tests/t2310-dos-extended-2-sector-min-offset.sh
++parted-3.4/tests/t0203-gpt-shortened-device-primary-valid.sh
++parted-3.4/tests/t-lvm.sh
++parted-3.4/tests/t0200-gpt.sh
++parted-3.4/tests/t2410-dos-udf-partition-type.sh
++parted-3.4/tests/help-version.sh
++parted-3.4/tests/t0300-dos-on-gpt.sh
++parted-3.4/tests/t0501-duplicate.sh
++parted-3.4/tests/t-local.sh
++parted-3.4/tests/t3200-type-change.sh
++parted-3.4/tests/t9010-big-sector.sh
++parted-3.4/tests/t3400-whole-disk-FAT-partition.sh
++parted-3.4/tests/t4301-nilfs2-badsb2.sh
++parted-3.4/tests/t3200-resize-partition.sh
++parted-3.4/tests/t0283-overlap-partitions.sh
++parted-3.4/tests/t9050-partition-table-types.sh
++parted-3.4/tests/t3000-resize-fs.sh
++parted-3.4/tests/msdos-overlap
++parted-3.4/tests/dup-clobber.c
++parted-3.4/tests/t0500-dup-clobber.sh
++parted-3.4/tests/t0212-gpt-many-partitions.sh
++parted-3.4/tests/t0350-mac-PT-increases-sector-size.sh
++parted-3.4/tests/t1102-loop-label.sh
++parted-3.4/tests/t4100-dvh-partition-limits.sh
++parted-3.4/tests/duplicate.c
++parted-3.4/tests/t0400-loop-clobber-infloop.sh
++parted-3.4/tests/t1104-remove-and-add-partition.sh
++parted-3.4/tests/t2500-probe-corrupt-hfs.sh
++parted-3.4/tests/t4302-nilfs2-lessbadsb2.sh
++parted-3.4/tests/t9042-dos-partition-limit.sh
++parted-3.4/tests/t1700-probe-fs.sh
++parted-3.4/tests/t0207-IEC-binary-notation.sh
++parted-3.4/tests/t3310-flags.sh
++parted-3.4/tests/t8001-loop-blkpg.sh
++parted-3.4/tests/t4000-sun-raid-type.sh
++parted-3.4/tests/t6003-dm-hide.sh
++parted-3.4/tests/t9021-maxima.sh
++parted-3.4/tests/t1100-busy-label.sh
++parted-3.4/tests/t0208-mkpart-end-in-IEC.sh
++parted-3.4/tests/t0010-script-no-ctrl-chars.sh
++parted-3.4/tests/t0280-gpt-corrupt.sh
++parted-3.4/tests/t8000-loop.sh
++parted-3.4/tests/t6002-dm-busy.sh
++parted-3.4/tests/t6000-dm.sh
++parted-3.4/tests/t0281-gpt-grow.sh
++parted-3.4/tests/t9030-align-check.sh
++parted-3.4/tests/t9023-value-lt-one.sh
++parted-3.4/tests/t6001-psep.sh
++parted-3.4/tests/t2400-dos-hfs-partition-type.sh
++parted-3.4/doc/
++parted-3.4/doc/parted.info
++parted-3.4/doc/pt_BR/
++parted-3.4/doc/pt_BR/Makefile.am
++parted-3.4/doc/pt_BR/Makefile.in
++parted-3.4/doc/C/
++parted-3.4/doc/C/parted.8
++parted-3.4/doc/C/Makefile.am
++parted-3.4/doc/C/partprobe.8
++parted-3.4/doc/C/Makefile.in
++parted-3.4/doc/API
++parted-3.4/doc/Makefile.am
++parted-3.4/doc/stamp-vti
++parted-3.4/doc/version.texi
++parted-3.4/doc/parted.texi
++parted-3.4/doc/fdl.texi
++parted-3.4/doc/Makefile.in
++parted-3.4/doc/FAT
++parted-3.4/doc/po4a.mk
++parted-3.4/doc/parted-pt_BR.texi
++parted-3.4/doc/USER.jp
++parted-3.4/scripts/
++parted-3.4/scripts/extract_symvers
++parted-3.4/scripts/data/
++parted-3.4/scripts/data/abi/
++parted-3.4/scripts/data/abi/baseline_symbols.txt
++parted-3.4/ABOUT-NLS
++parted-3.4/build-aux/
++parted-3.4/build-aux/ltmain.sh
++parted-3.4/build-aux/config.rpath
++parted-3.4/build-aux/texinfo.tex
++parted-3.4/build-aux/update-copyright
++parted-3.4/build-aux/depcomp
++parted-3.4/build-aux/config.guess
++parted-3.4/build-aux/mktempd
++parted-3.4/build-aux/do-release-commit-and-tag
++parted-3.4/build-aux/useless-if-before-free
++parted-3.4/build-aux/announce-gen
++parted-3.4/build-aux/mdate-sh
++parted-3.4/build-aux/gnu-web-doc-update
++parted-3.4/build-aux/git-version-gen
++parted-3.4/build-aux/gnupload
++parted-3.4/build-aux/install-sh
++parted-3.4/build-aux/gendocs.sh
++parted-3.4/build-aux/vc-list-files
++parted-3.4/build-aux/gitlog-to-changelog
++parted-3.4/build-aux/test-driver
++parted-3.4/build-aux/missing
++parted-3.4/build-aux/config.sub
++parted-3.4/aclocal.m4
++parted-3.4/.tarball-version
++checking for a BSD-compatible install... /usr/bin/ginstall -c
++checking whether build environment is sane... yes
++checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
++checking for gawk... gawk
++checking whether make sets $(MAKE)... yes
++checking whether make supports nested variables... yes
++checking whether make supports nested variables... (cached) yes
++checking build system type... x86_64-slackware-linux-musl
++checking host system type... x86_64-slackware-linux-musl
++checking whether make supports the include directive... yes (GNU style)
++checking for gcc... gcc
++checking whether the C compiler works... yes
++checking for C compiler default output file name... a.out
++checking for suffix of executables... 
++checking whether we are cross compiling... no
++checking for suffix of object files... o
++checking whether we are using the GNU C compiler... yes
++checking whether gcc accepts -g... yes
++checking for gcc option to enable C11 features... none needed
++checking whether the compiler is clang... no
++checking for compiler option needed when checking for declarations... none
++checking dependency style of gcc... gcc3
++checking for library containing strerror... none required
++checking how to run the C preprocessor... gcc -E
++checking for grep that handles long lines and -e... /usr/bin/grep
++checking for egrep... /usr/bin/grep -E
++checking whether gcc needs -traditional... no
++checking for ANSI C header files... yes
++checking for sys/types.h... yes
++checking for sys/stat.h... yes
++checking for stdlib.h... yes
++checking for string.h... yes
++checking for memory.h... yes
++checking for strings.h... yes
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking for unistd.h... yes
++checking minix/config.h usability... no
++checking minix/config.h presence... no
++checking for minix/config.h... no
++checking whether it is safe to define __EXTENSIONS__... yes
++checking whether _XOPEN_SOURCE should be defined... no
++checking for Minix Amsterdam compiler... no
++checking for ar... ar
++checking for ranlib... ranlib
++checking for special C compiler options needed for large files... no
++checking for _FILE_OFFSET_BITS value needed for large files... no
++checking for a usable (O_DIRECT-supporting) temporary dir... .
++checking for special C compiler options needed for large files... (cached) no
++checking for _FILE_OFFSET_BITS value needed for large files... (cached) no
++checking for size_t... yes
++checking for working alloca.h... yes
++checking for alloca... yes
++checking whether <wchar.h> uses 'inline' correctly... yes
++checking for btowc... yes
++checking for canonicalize_file_name... no
++checking for readlink... yes
++checking for realpath... yes
++checking for _set_invalid_parameter_handler... no
++checking for fcntl... yes
++checking for symlink... yes
++checking for fsync... yes
++checking for getdtablesize... yes
++checking for getprogname... no
++checking for getexecname... no
++checking for getrandom... yes
++checking for lstat... yes
++checking for mbsinit... yes
++checking for mbrtowc... yes
++checking for mkstemp... yes
++checking for nl_langinfo... yes
++checking for isblank... yes
++checking for iswctype... yes
++checking for sleep... yes
++checking for strerror_r... yes
++checking for __xpg_strerror_r... yes
++checking for strndup... yes
++checking for usleep... yes
++checking for wcrtomb... yes
++checking for iswcntrl... yes
++checking for ftruncate... yes
++checking for gettimeofday... yes
++checking for duplocale... yes
++checking for newlocale... yes
++checking for uselocale... yes
++checking for freelocale... yes
++checking for pipe... yes
++checking for pthread_sigmask... yes
++checking for mprotect... yes
++checking for setenv... yes
++checking for sigaction... yes
++checking for sigaltstack... yes
++checking for siginterrupt... yes
++checking for catgets... yes
++checking for snprintf... yes
++checking for shutdown... yes
++checking for wctob... yes
++checking for nl_langinfo and CODESET... yes
++checking for a traditional french locale... none
++checking whether malloc, realloc, calloc are POSIX compliant... yes
++checking whether // is distinct from /... no
++checking whether realpath works... yes
++checking for sys/param.h... yes
++checking for sys/socket.h... yes
++checking for unistd.h... (cached) yes
++checking for stdio_ext.h... yes
++checking for sys/stat.h... (cached) yes
++checking for getopt.h... yes
++checking for sys/cdefs.h... yes
++checking for threads.h... yes
++checking for limits.h... yes
++checking for wchar.h... yes
++checking for stdint.h... (cached) yes
++checking for inttypes.h... (cached) yes
++checking for langinfo.h... yes
++checking for xlocale.h... no
++checking for malloc.h... yes
++checking for sys/time.h... yes
++checking for sys/random.h... yes
++checking for features.h... yes
++checking for crtdefs.h... no
++checking for wctype.h... yes
++checking for arpa/inet.h... yes
++checking for netdb.h... yes
++checking for netinet/in.h... yes
++checking for semaphore.h... yes
++checking for sys/select.h... yes
++checking for priv.h... no
++checking for pthread.h... yes
++checking for sys/mman.h... yes
++checking for sys/wait.h... yes
++checking for sys/ioctl.h... yes
++checking for sys/uio.h... yes
++checking for blkid/blkid.h... yes
++checking for getcwd... yes
++checking whether the preprocessor supports include_next... yes
++checking whether source code line length is unlimited... yes
++checking for complete errno.h... yes
++checking whether strerror_r is declared... yes
++checking for strerror_r... (cached) yes
++checking whether strerror_r returns char *... no
++checking for working fcntl.h... yes
++checking for pid_t... yes
++checking for mode_t... yes
++checking whether stat file-mode macros are broken... no
++checking for C/C++ restrict keyword... __restrict
++checking for nlink_t... yes
++checking whether getdtablesize is declared... yes
++checking for getopt.h... (cached) yes
++checking for getopt_long_only... yes
++checking whether getopt is POSIX compatible... no
++checking for pthread.h... (cached) yes
++checking for pthread_kill in -lpthread... yes
++checking whether POSIX threads API is available... yes
++checking whether setlocale (LC_ALL, NULL) is multithread-safe... no
++checking whether setlocale (category, NULL) is multithread-safe... yes
++checking whether imported symbols can be declared weak... yes
++checking whether limits.h has LLONG_MAX, WORD_BIT, ULLONG_WIDTH etc.... no
++checking for wint_t... yes
++checking whether wint_t is large enough... yes
++checking whether the compiler produces multi-arch binaries... no
++checking whether stdint.h conforms to C99... yes
++checking whether stdint.h works without ISO C predefines... yes
++checking whether stdint.h has UINTMAX_WIDTH etc.... no
++checking for wchar_t... yes
++checking for good max_align_t... yes
++checking whether NULL can be used in arbitrary expressions... yes
++checking whether locale.h defines locale_t... yes
++checking whether imported symbols can be declared weak... (cached) yes
++checking for multithread API to use... posix
++checking whether lstat correctly handles trailing slash... yes
++checking for a sed that does not truncate output... /usr/bin/sed
++checking for GNU libc compatible malloc... yes
++checking for mbstate_t... yes
++checking for a traditional japanese locale... none
++checking for a french Unicode locale... none
++checking for a transitional chinese locale... none
++checking for inline... inline
++checking whether <limits.h> defines MIN and MAX... no
++checking whether <sys/param.h> defines MIN and MAX... yes
++checking for O_CLOEXEC... yes
++checking for promoted mode_t type... mode_t
++checking whether alarm is declared... yes
++checking whether we are using the GNU C Library >= 2.1 or uClibc... no
++checking for ssize_t... yes
++checking for stdbool.h that conforms to C99... yes
++checking for _Bool... yes
++checking whether fcloseall is declared... no
++checking whether ecvt is declared... yes
++checking whether fcvt is declared... yes
++checking whether gcvt is declared... yes
++checking whether strdup is declared... yes
++checking whether strerror(0) succeeds... yes
++checking for strerror_r with POSIX signature... yes
++checking whether strerror_r works... yes
++checking whether strndup is declared... yes
++checking whether strnlen is declared... yes
++checking for struct timespec in <time.h>... yes
++checking whether execvpe is declared... yes
++checking whether <sys/socket.h> is self-contained... yes
++checking for shutdown... (cached) yes
++checking whether <sys/socket.h> defines the SHUT_* macros... yes
++checking for struct sockaddr_storage... yes
++checking for sa_family_t... yes
++checking for struct sockaddr_storage.ss_family... yes
++checking if environ is properly declared... yes
++checking whether getcwd (NULL, 0) allocates memory for result... yes
++checking for getcwd with POSIX signature... yes
++checking for struct timeval... yes
++checking for wide-enough struct timeval.tv_sec member... yes
++checking for IPv4 sockets... yes
++checking for IPv6 sockets... yes
++checking for LC_MESSAGES... yes
++checking whether uselocale works... yes
++checking for fake locale system (OpenBSD)... no
++checking for Solaris 11.4 locale system... no
++checking for getlocalename_l... no
++checking for CFPreferencesCopyAppValue... no
++checking for CFLocaleCopyPreferredLanguages... no
++checking for library needed for semaphore functions... none
++checking whether <sys/select.h> is self-contained... yes
++checking for library containing setsockopt... none needed
++checking whether select supports a 0 argument... yes
++checking whether select detects invalid fds... yes
++checking whether strerror_r is declared... (cached) yes
++checking for sigset_t... yes
++checking whether setenv is declared... yes
++checking search.h usability... yes
++checking search.h presence... yes
++checking for search.h... yes
++checking for tsearch... yes
++checking for uid_t in sys/types.h... yes
++checking whether unsetenv is declared... yes
++checking for alloca as a compiler built-in... yes
++checking whether to enable assertions... yes
++checking whether btowc(0) is correct... yes
++checking whether btowc(EOF) is correct... guessing yes
++checking for __builtin_expect... yes
++checking for GNU libc compatible calloc... yes
++checking for library containing clock_gettime... none required
++checking for clock_gettime... yes
++checking for clock_settime... yes
++checking whether // is distinct from /... (cached) no
++checking whether dup2 works... yes
++checking for error_at_line... no
++checking whether fcntl handles F_DUPFD correctly... yes
++checking whether fcntl understands F_DUPFD_CLOEXEC... needs runtime check
++checking for __fpending... yes
++checking whether __fpending is declared... yes
++checking whether getdtablesize works... yes
++checking whether program_invocation_name is declared... yes
++checking whether program_invocation_short_name is declared... yes
++checking whether __argv is declared... no
++checking whether getrandom is compatible with its GNU+BSD signature... yes
++checking whether INT32_MAX < INTMAX_MAX... yes
++checking whether INT64_MAX == LONG_MAX... yes
++checking whether UINT32_MAX < UINTMAX_MAX... yes
++checking whether UINT64_MAX == ULONG_MAX... yes
++checking whether langinfo.h defines CODESET... yes
++checking whether langinfo.h defines T_FMT_AMPM... yes
++checking whether langinfo.h defines ALTMON_1... no
++checking whether langinfo.h defines ERA... yes
++checking whether langinfo.h defines YESEXPR... yes
++checking for C compiler flag to ignore unused libraries... -Wl,--as-needed
++checking whether the compiler supports the __inline keyword... yes
++checking whether locale.h conforms to POSIX:2001... yes
++checking whether struct lconv is properly defined... yes
++checking for pthread_rwlock_t... yes
++checking whether pthread_rwlock_rdlock prefers a writer to a reader... no
++checking whether lseek detects pipes... yes
++checking for GNU libc compatible malloc... (cached) yes
++checking whether mbrtowc handles incomplete characters... guessing yes
++checking whether mbrtowc works as well as mbtowc... guessing yes
++checking whether mbrtowc handles a NULL pwc argument... guessing yes
++checking whether mbrtowc handles a NULL string argument... guessing yes
++checking whether mbrtowc has a correct return value... guessing yes
++checking whether mbrtowc returns 0 when parsing a NUL character... guessing yes
++checking whether mbrtowc stores incomplete characters... guessing no
++checking whether mbrtowc works on empty input... yes
++checking whether the C locale is free of encoding errors... yes
++checking whether mbrtowc handles incomplete characters... (cached) guessing yes
++checking whether mbrtowc works as well as mbtowc... (cached) guessing yes
++checking for mbtowc... yes
++checking whether mkdir handles trailing slash... yes
++checking whether mkdir handles trailing dot... yes
++checking for working mkstemp... yes
++checking whether YESEXPR works... yes
++checking whether open recognizes a trailing slash... yes
++checking whether program_invocation_name is declared... (cached) yes
++checking whether program_invocation_short_name is declared... (cached) yes
++checking whether readlink signature is correct... yes
++checking whether readlink handles trailing slash correctly... yes
++checking for GNU libc compatible realloc... yes
++checking for working re_compile_pattern... no
++checking libintl.h usability... yes
++checking libintl.h presence... yes
++checking for libintl.h... yes
++checking whether isblank is declared... yes
++checking for rpmatch... no
++checking for nl_langinfo and YESEXPR... yes
++checking whether setlocale (LC_ALL, NULL) is multithread-safe... (cached) no
++checking whether setlocale (category, NULL) is multithread-safe... (cached) yes
++checking whether imported symbols can be declared weak... (cached) yes
++checking whether the -Werror option is usable... yes
++checking for simple visibility declarations... yes
++checking whether sleep is declared... yes
++checking for working sleep... yes
++checking for ssize_t... (cached) yes
++checking whether stat handles trailing slashes on files... yes
++checking for struct stat.st_atim.tv_nsec... yes
++checking whether struct stat.st_atim is of type struct timespec... yes
++checking for struct stat.st_birthtimespec.tv_nsec... no
++checking for struct stat.st_birthtimensec... no
++checking for struct stat.st_birthtim.tv_nsec... no
++checking for working stdalign.h... yes
++checking for va_copy... yes
++checking for good max_align_t... (cached) yes
++checking whether NULL can be used in arbitrary expressions... (cached) yes
++checking which flavor of printf attribute matches inttypes macros... system
++checking for working strerror function... yes
++checking for working strndup... yes
++checking for working strnlen... yes
++checking for strtoll... yes
++checking for strtoull... yes
++checking for nlink_t... (cached) yes
++checking whether unlink honors trailing slashes... yes
++checking whether unlink of a parent directory fails as it should... guessing yes
++checking for useconds_t... yes
++checking whether usleep allows large arguments... yes
++checking whether wcsdup is declared... yes
++checking whether mbrtowc handles incomplete characters... (cached) guessing yes
++checking whether mbrtowc works as well as mbtowc... (cached) guessing yes
++checking whether wcrtomb works in the C locale... yes
++checking whether wcrtomb return value is correct... guessing yes
++checking whether iswcntrl works... yes
++checking for towlower... yes
++checking for wctype_t... yes
++checking for wctrans_t... yes
++checking for a traditional french locale... (cached) none
++checking for a french Unicode locale... (cached) none
++checking for a traditional french locale... (cached) none
++checking for a turkish Unicode locale... none
++checking whether fdopen sets errno... yes
++checking for flexible array member... yes
++checking for getpagesize... yes
++checking whether getpagesize is declared... yes
++checking for gettimeofday with POSIX signature... yes
++checking for library containing inet_pton... none required
++checking whether inet_pton is declared... yes
++checking whether byte ordering is bigendian... no
++checking for ioctl... yes
++checking for ioctl with POSIX signature... yes
++checking for a traditional french locale... (cached) none
++checking for a french Unicode locale... (cached) none
++checking for a traditional japanese locale... (cached) none
++checking for a transitional chinese locale... (cached) none
++checking for a french Unicode locale... (cached) none
++checking for library containing nanosleep... none required
++checking for working nanosleep... no (mishandles large arguments)
++checking whether <netinet/in.h> is self-contained... yes
++checking for a traditional french locale... (cached) none
++checking for a french Unicode locale... (cached) none
++checking whether perror matches strerror... yes
++checking for getppriv... no
++checking for pthread_t... yes
++checking for pthread_spinlock_t... yes
++checking for PTHREAD_CREATE_DETACHED... yes
++checking for PTHREAD_MUTEX_RECURSIVE... yes
++checking for PTHREAD_MUTEX_ROBUST... yes
++checking for PTHREAD_PROCESS_SHARED... yes
++checking whether pthread_create exists as a global function... yes
++checking whether pthread_sigmask is a macro... no
++checking whether pthread_sigmask works without -lpthread... yes
++checking whether pthread_sigmask returns error numbers... yes
++checking whether pthread_sigmask unblocks signals correctly... guessing yes
++checking for putenv compatible with GNU and SVID... yes
++checking for mmap... yes
++checking for MAP_ANONYMOUS... yes
++checking for raise... yes
++checking for sigprocmask... yes
++checking for sched.h... yes
++checking for struct sched_param... yes
++checking whether select supports a 0 argument... (cached) yes
++checking whether select detects invalid fds... (cached) yes
++checking whether setenv validates arguments... yes
++checking whether setlocale supports the C locale... yes
++checking for a traditional french locale... (cached) none
++checking for a french Unicode locale... (cached) none
++checking for a traditional japanese locale... (cached) none
++checking for a transitional chinese locale... (cached) none
++checking for struct sigaction.sa_sigaction... yes
++checking for volatile sig_atomic_t... yes
++checking for sighandler_t... yes
++checking for sigprocmask... (cached) yes
++checking for socklen_t... yes
++checking for mmap... (cached) yes
++checking for MAP_ANONYMOUS... yes
++checking whether symlink handles trailing slash correctly... yes
++checking whether <sys/ioctl.h> declares ioctl... yes
++checking for pthread_atfork... yes
++checking sys/single_threaded.h usability... no
++checking sys/single_threaded.h presence... no
++checking for sys/single_threaded.h... no
++checking for unsetenv... yes
++checking for unsetenv() return type... int
++checking whether unsetenv obeys POSIX... yes
++checking for a traditional french locale... (cached) none
++checking for a french Unicode locale... (cached) none
++checking for a traditional japanese locale... (cached) none
++checking for a transitional chinese locale... (cached) none
++checking whether wctob works... guessing yes
++checking whether wctob is declared... yes
++checking size of off_t... 8
++checking how to print strings... printf
++checking for a sed that does not truncate output... (cached) /usr/bin/sed
++checking for fgrep... /usr/bin/grep -F
++checking for ld used by gcc... /usr/bin/ld
++checking if the linker (/usr/bin/ld) is GNU ld... yes
++checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
++checking the name lister (/usr/bin/nm -B) interface... BSD nm
++checking whether ln -s works... yes
++checking the maximum length of command line arguments... 98304
++checking how to convert x86_64-slackware-linux-musl file names to x86_64-slackware-linux-musl format... func_convert_file_noop
++checking how to convert x86_64-slackware-linux-musl file names to toolchain format... func_convert_file_noop
++checking for /usr/bin/ld option to reload object files... -r
++checking for objdump... objdump
++checking how to recognize dependent libraries... pass_all
++checking for dlltool... dlltool
++checking how to associate runtime and link libraries... printf %s\n
++checking for archiver @FILE support... @
++checking for strip... strip
++checking for ranlib... (cached) ranlib
++checking command to parse /usr/bin/nm -B output from gcc object... ok
++checking for sysroot... no
++checking for a working dd... /usr/bin/dd
++checking how to truncate binary pipes... /usr/bin/dd bs=4096 count=1
++checking for mt... mt
++checking if mt is a manifest tool... no
++checking for dlfcn.h... yes
++checking for objdir... .libs
++checking if gcc supports -fno-rtti -fno-exceptions... no
++checking for gcc option to produce PIC... -fPIC -DPIC
++checking if gcc PIC flag -fPIC -DPIC works... yes
++checking if gcc static flag -static works... yes
++checking if gcc supports -c -o file.o... yes
++checking if gcc supports -c -o file.o... (cached) yes
++checking whether the gcc linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
++checking whether -lc should be explicitly linked in... no
++checking dynamic linker characteristics... GNU/Linux ld.so
++checking how to hardcode library paths into programs... immediate
++checking whether stripping libraries is possible... yes
++checking if libtool supports shared libraries... yes
++checking whether to build shared libraries... yes
++checking whether to build static libraries... no
++checking for ld used by GCC... /usr/bin/ld -m elf_x86_64
++checking if the linker (/usr/bin/ld -m elf_x86_64) is GNU ld... yes
++checking for shared library run path origin... done
++checking for iconv... yes
++checking for working iconv... yes
++checking for iconv declaration... 
++         extern size_t iconv (iconv_t cd, char * *inbuf, size_t *inbytesleft, char * *outbuf, size_t *outbytesleft);
++checking whether NLS is requested... yes
++checking for msgfmt... /usr/bin/msgfmt
++checking for gmsgfmt... /usr/bin/msgfmt
++checking for xgettext... /usr/bin/xgettext
++checking for msgmerge... /usr/bin/msgmerge
++checking for CFPreferencesCopyAppValue... (cached) no
++checking for CFLocaleCopyPreferredLanguages... (cached) no
++checking for GNU gettext in libc... no
++checking for iconv... (cached) yes
++checking for working iconv... (cached) yes
++checking for GNU gettext in libintl... yes
++checking whether to use NLS... yes
++checking where the gettext function comes from... external libintl
++checking how to link with libintl... /usr/lib/libintl.a
++checking for uuid_generate in -luuid... yes
++checking for dm_task_create in -ldevmapper... yes
++checking for library containing tgetent... -ltinfo
++checking for readline in -lreadline... yes
++checking for rl_variable_value in -lreadline... yes
++checking uuid/uuid.h usability... yes
++checking uuid/uuid.h presence... yes
++checking for uuid/uuid.h... yes
++checking for getopt.h... (cached) yes
++checking linux/ext2_fs.h usability... no
++checking linux/ext2_fs.h presence... no
++checking for linux/ext2_fs.h... no
++checking linux/unistd.h usability... yes
++checking linux/unistd.h presence... yes
++checking for linux/unistd.h... yes
++checking readline/readline.h usability... yes
++checking readline/readline.h presence... yes
++checking for readline/readline.h... yes
++checking readline/history.h usability... yes
++checking readline/history.h presence... yes
++checking for readline/history.h... yes
++checking termcap.h usability... yes
++checking termcap.h presence... yes
++checking for termcap.h... yes
++checking for wctype.h... (cached) yes
++checking execinfo.h usability... yes
++checking execinfo.h presence... yes
++checking for execinfo.h... yes
++checking for backtrace in -lc... no
++checking pkg-config is at least version 0.9.0... yes
++checking for CHECK... yes
++checking for ld used by gcc... (cached) /usr/bin/ld
++checking if the linker (/usr/bin/ld) is GNU ld... (cached) yes
++checking whether byte ordering is bigendian... (cached) no
++checking for inline... (cached) inline
++checking for an ANSI C-conforming const... yes
++checking for C/C++ restrict keyword... (cached) __restrict
++checking for sigaction... (cached) yes
++checking for getuid... yes
++checking for rl_completion_matches... yes
++checking for canonicalize_file_name... (cached) no
++checking for library containing blkid_probe_get_topology... -lblkid
++checking for blkid_probe_get_topology... yes
++checking that generated files are newer than configure... done
++configure: creating ./config.status
++config.status: creating Makefile
++config.status: creating lib/Makefile
++config.status: creating include/Makefile
++config.status: creating include/parted/Makefile
++config.status: creating libparted/Makefile
++config.status: creating libparted/labels/Makefile
++config.status: creating libparted/fs/Makefile
++config.status: creating libparted/tests/Makefile
++config.status: creating libparted.pc
++config.status: creating libparted-fs-resize.pc
++config.status: creating parted/Makefile
++config.status: creating partprobe/Makefile
++config.status: creating doc/Makefile
++config.status: creating doc/C/Makefile
++config.status: creating doc/pt_BR/Makefile
++config.status: creating debug/Makefile
++config.status: creating debug/test/Makefile
++config.status: creating tests/Makefile
++config.status: creating po/Makefile.in
++config.status: creating lib/config.h
++config.status: executing depfiles commands
++config.status: executing libtool commands
++config.status: executing po-directories commands
++config.status: creating po/POTFILES
++config.status: creating po/Makefile
++
++Type 'make' to compile parted.
++make  all-recursive
++make[1]: Entering directory '/tmp/parted-3.4'
++Making all in po
++make[2]: Entering directory '/tmp/parted-3.4/po'
++make[2]: Leaving directory '/tmp/parted-3.4/po'
++Making all in lib
++make[2]: Entering directory '/tmp/parted-3.4/lib'
++  GEN      alloca.h
++  GEN      configmake.h
++  GEN      fcntl.h
++  GEN      getopt.h
++  GEN      getopt-cdefs.h
++  GEN      inttypes.h
++  GEN      langinfo.h
++  GEN      limits.h
++  GEN      locale.h
++  GEN      stdint.h
++  GEN      stdio.h
++  GEN      stdlib.h
++  GEN      string.h
++  GEN      sys/random.h
++  GEN      sys/stat.h
++  GEN      sys/types.h
++  GEN      time.h
++  GEN      unistd.h
++  GEN      wchar.h
++  GEN      wctype.h
++make  all-am
++make[3]: Entering directory '/tmp/parted-3.4/lib'
++  CC       argmatch.lo
++  CC       basename-lgpl.lo
++  CC       c-ctype.lo
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./stdlib.h:100,
++                 from argmatch.c:29:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       c-strcasecmp.lo
++  CC       c-strncasecmp.lo
++  CC       cloexec.lo
++  CC       close-stream.lo
++  CC       closeout.lo
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./fcntl.h:79,
++                 from cloexec.c:25:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       dirname.lo
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from closeout.c:26:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       basename.lo
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./stdlib.h:100,
++                 from dirname.c:23:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       dirname-lgpl.lo
++  CC       stripslash.lo
++  CC       exitfail.lo
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./stdlib.h:100,
++                 from dirname-lgpl.c:23:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       fd-hook.lo
++  CC       getprogname.lo
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./stdlib.h:100,
++                 from exitfail.c:22:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       hard-locale.lo
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./stdlib.h:100,
++                 from getprogname.h:20,
++                 from getprogname.c:20:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./stdlib.h:100,
++                 from fd-hook.c:23:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       localcharset.lo
++  CC       long-options.lo
++  CC       malloca.lo
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./stdlib.h:100,
++                 from localcharset.c:28:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./stdlib.h:100,
++                 from long-options.c:28:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./stdlib.h:100,
++                 from malloca.h:23,
++                 from malloca.c:22:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       progname.lo
++  CC       quotearg.lo
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./stdlib.h:100,
++                 from progname.c:27:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./stdlib.h:100,
++                 from quotearg.c:43:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       safe-read.lo
++  CC       setlocale_null.lo
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from safe-read.c:30:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./stdlib.h:100,
++                 from setlocale_null.c:26:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       stat-time.lo
++  CC       tempname.lo
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./stdlib.h:100,
++                 from tempname.c:46:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       glthread/threadlib.lo
++  CC       unistd.lo
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./stdlib.h:100,
++                 from glthread/threadlib.c:29:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       version-etc.lo
++  CC       version-etc-fsf.lo
++In file included from ./getopt-cdefs.h:33,
++                 from unistd.h:658,
++                 from unistd.c:3:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       wctype-h.lo
++  CC       xmalloc.lo
++  CC       xalloc-die.lo
++  CC       xstrndup.lo
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./stdlib.h:100,
++                 from xmalloc.c:24:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./stdlib.h:100,
++                 from xalloc-die.c:23:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       xstrtol.lo
++  CC       xstrtoul.lo
++  CC       xstrtoll.lo
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./stdlib.h:100,
++                 from xstrtol.c:40:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./stdlib.h:100,
++                 from xstrtol.c:40,
++                 from xstrtoul.c:6:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./stdlib.h:100,
++                 from xstrtol.c:40,
++                 from xstrtoll.c:6:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       xstrtoull.lo
++  CC       canonicalize-lgpl.lo
++  CC       error.lo
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./stdlib.h:100,
++                 from xstrtol.c:40,
++                 from xstrtoull.c:6:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./stdlib.h:100,
++                 from canonicalize-lgpl.c:30:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./stdlib.h:100,
++                 from error.c:28:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       fcntl.lo
++  CC       getopt.lo
++  CC       getopt1.lo
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./fcntl.h:79,
++                 from fcntl.c:23:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ./getopt-cdefs.h:33,
++                 from ./getopt.h:84,
++                 from getopt.h:34,
++                 from getopt.c:24:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       nl_langinfo.lo
++In file included from ./getopt-cdefs.h:33,
++                 from ./getopt.h:84,
++                 from getopt.h:34,
++                 from getopt1.c:24:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       regex.lo
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./stdlib.h:100,
++                 from nl_langinfo.c:24:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       rpmatch.lo
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./stdlib.h:100,
++                 from regex_internal.h:25,
++                 from regex.c:70:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./stdlib.h:100,
++                 from rpmatch.c:23:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       setlocale-lock.lo
++  CC       glthread/lock.lo
++In file included from ./getopt-cdefs.h:33,
++                 from ./unistd.h:658,
++                 from ./stdlib.h:100,
++                 from ./glthread/lock.h:81,
++                 from glthread/lock.c:22:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CCLD     libgnulib.la
++make[3]: Leaving directory '/tmp/parted-3.4/lib'
++make[2]: Leaving directory '/tmp/parted-3.4/lib'
++Making all in include
++make[2]: Entering directory '/tmp/parted-3.4/include'
++Making all in parted
++make[3]: Entering directory '/tmp/parted-3.4/include/parted'
++make  all-am
++make[4]: Entering directory '/tmp/parted-3.4/include/parted'
++make[4]: Nothing to be done for 'all-am'.
++make[4]: Leaving directory '/tmp/parted-3.4/include/parted'
++make[3]: Leaving directory '/tmp/parted-3.4/include/parted'
++make[3]: Entering directory '/tmp/parted-3.4/include'
++make[3]: Nothing to be done for 'all-am'.
++make[3]: Leaving directory '/tmp/parted-3.4/include'
++make[2]: Leaving directory '/tmp/parted-3.4/include'
++Making all in libparted
++make[2]: Entering directory '/tmp/parted-3.4/libparted'
++Makefile:1704: target 'arch/.deps/linux.Plo' given more than once in the same rule
++Making all in labels
++make[3]: Entering directory '/tmp/parted-3.4/libparted/labels'
++make  all-am
++make[4]: Entering directory '/tmp/parted-3.4/libparted/labels'
++  CC       aix.lo
++  CC       atari.lo
++  CC       bsd.lo
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from aix.c:25:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from bsd.c:26:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from atari.c:36:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       dos.lo
++  CC       dvh.lo
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from dos.c:24:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from dvh.c:21:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       efi_crc32.lo
++  CC       gpt.lo
++  CC       loop.lo
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from gpt.c:29:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from loop.c:22:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       mac.lo
++  CC       pc98.lo
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from mac.c:22:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from pc98.c:22:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       pt-tools.lo
++  CC       rdb.lo
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from pt-tools.c:20:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from rdb.c:26:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       sun.lo
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from sun.c:25:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CCLD     liblabels.la
++
++*** Warning: Linking the shared library liblabels.la against the
++*** static library /usr/lib/libintl.a is not portable!
++make[4]: Leaving directory '/tmp/parted-3.4/libparted/labels'
++make[3]: Leaving directory '/tmp/parted-3.4/libparted/labels'
++Making all in fs
++make[3]: Entering directory '/tmp/parted-3.4/libparted/fs'
++  CC       r/filesys.lo
++  CC       r/fat/bootsector.lo
++  CC       r/fat/calc.lo
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from r/fat/fat.h:23,
++                 from r/fat/bootsector.c:21:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from r/filesys.c:31:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from r/fat/fat.h:23,
++                 from r/fat/calc.c:21:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       r/fat/clstdup.lo
++  CC       r/fat/context.lo
++  CC       r/fat/count.lo
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from r/fat/fat.h:23,
++                 from r/fat/clstdup.c:23:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from r/fat/fat.h:23,
++                 from r/fat/context.c:23:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from r/fat/fat.h:23,
++                 from r/fat/count.c:21:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       r/fat/fat.lo
++  CC       r/fat/fatio.lo
++  CC       r/fat/resize.lo
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from r/fat/fat.h:23,
++                 from r/fat/fat.c:23:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from r/fat/fat.h:23,
++                 from r/fat/fatio.c:21:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from r/fat/fat.h:23,
++                 from r/fat/resize.c:21:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       r/fat/table.lo
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from r/fat/fat.h:23,
++                 from r/fat/table.c:22:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       r/fat/traverse.lo
++  CC       r/hfs/advfs.lo
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from r/fat/fat.h:23,
++                 from r/fat/traverse.c:21:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       r/hfs/advfs_plus.lo
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from r/hfs/advfs.c:24:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       r/hfs/cache.lo
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from r/hfs/advfs_plus.c:24:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       r/hfs/file.lo
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from r/hfs/cache.c:24:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from r/hfs/file.c:24:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       r/hfs/file_plus.lo
++  CC       r/hfs/hfs.lo
++  CC       r/hfs/journal.lo
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from r/hfs/file_plus.c:24:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from r/hfs/hfs.c:27:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from r/hfs/journal.c:24:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       r/hfs/probe.lo
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from r/hfs/probe.c:22:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       r/hfs/reloc.lo
++  CC       r/hfs/reloc_plus.lo
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from r/hfs/reloc.c:24:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       amiga/affs.lo
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from r/hfs/reloc_plus.c:24:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from amiga/affs.c:22:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       amiga/amiga.lo
++  CC       amiga/apfs.lo
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from amiga/amiga.c:23:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from amiga/apfs.c:22:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       amiga/asfs.lo
++  CC       amiga/a-interface.lo
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from amiga/asfs.c:22:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from amiga/a-interface.c:23:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       btrfs/btrfs.lo
++  CC       ext2/interface.lo
++  CC       fat/bootsector.lo
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from btrfs/btrfs.c:21:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from fat/fat.h:23,
++                 from fat/bootsector.c:21:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from ext2/interface.c:26:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       fat/fat.lo
++  CC       f2fs/f2fs.lo
++  CC       hfs/hfs.lo
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from fat/fat.h:23,
++                 from fat/fat.c:24:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from f2fs/f2fs.c:21:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       hfs/probe.lo
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from hfs/hfs.c:27:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       jfs/jfs.lo
++  CC       linux_swap/linux_swap.lo
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from hfs/probe.c:22:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from jfs/jfs.c:22:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from linux_swap/linux_swap.c:24:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       nilfs2/nilfs2.lo
++  CC       ntfs/ntfs.lo
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from nilfs2/nilfs2.c:24:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       reiserfs/reiserfs.lo
++  CC       udf/udf.lo
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from ntfs/ntfs.c:22:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/fcntl.h:79,
++                 from reiserfs/reiserfs.c:23:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       ufs/ufs.lo
++  CC       xfs/xfs.lo
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from udf/udf.c:21:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from ufs/ufs.c:24:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CCLD     libparted-fs-resize.la
++In file included from ../../lib/getopt-cdefs.h:33,
++                 from ../../lib/unistd.h:658,
++                 from ../../lib/stdlib.h:100,
++                 from ../../include/parted/parted.h:44,
++                 from xfs/xfs.c:21:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CCLD     libfs.la
++
++*** Warning: Linking the shared library libfs.la against the
++*** static library /usr/lib/libintl.a is not portable!
++make[3]: Leaving directory '/tmp/parted-3.4/libparted/fs'
++Making all in .
++make[3]: Entering directory '/tmp/parted-3.4/libparted'
++Makefile:1704: target 'arch/.deps/linux.Plo' given more than once in the same rule
++  CC       debug.lo
++  CC       architecture.lo
++  CC       device.lo
++In file included from ../lib/getopt-cdefs.h:33,
++                 from ../lib/unistd.h:658,
++                 from ../lib/stdlib.h:100,
++                 from ../include/parted/parted.h:44,
++                 from device.c:40:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ../lib/getopt-cdefs.h:33,
++                 from ../lib/unistd.h:658,
++                 from ../lib/stdlib.h:100,
++                 from ../include/parted/parted.h:44,
++                 from debug.c:21:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       exception.lo
++  CC       filesys.lo
++In file included from ../lib/getopt-cdefs.h:33,
++                 from ../lib/unistd.h:658,
++                 from ../lib/stdlib.h:100,
++                 from ../include/parted/parted.h:44,
++                 from exception.c:54:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ../lib/getopt-cdefs.h:33,
++                 from ../lib/unistd.h:658,
++                 from ../lib/stdlib.h:100,
++                 from ../include/parted/parted.h:44,
++                 from filesys.c:32:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       libparted.lo
++  CC       timer.lo
++  CC       unit.lo
++In file included from ../lib/getopt-cdefs.h:33,
++                 from ../lib/unistd.h:658,
++                 from ../lib/stdlib.h:100,
++                 from ../include/parted/parted.h:44,
++                 from libparted.c:23:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ../lib/getopt-cdefs.h:33,
++                 from ../lib/unistd.h:658,
++                 from ../lib/stdlib.h:100,
++                 from ../include/parted/parted.h:44,
++                 from timer.c:47:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       disk.lo
++In file included from ../lib/getopt-cdefs.h:33,
++                 from ../lib/unistd.h:658,
++                 from ../lib/stdlib.h:100,
++                 from ../include/parted/parted.h:44,
++                 from unit.c:54:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       cs/geom.lo
++In file included from ../lib/getopt-cdefs.h:33,
++                 from ../lib/unistd.h:658,
++                 from ../lib/stdlib.h:100,
++                 from ../include/parted/parted.h:44,
++                 from disk.c:37:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ../lib/getopt-cdefs.h:33,
++                 from ../lib/unistd.h:658,
++                 from ../lib/stdlib.h:100,
++                 from ../include/parted/parted.h:44,
++                 from cs/geom.c:43:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       cs/constraint.lo
++  CC       cs/natmath.lo
++In file included from ../lib/getopt-cdefs.h:33,
++                 from ../lib/unistd.h:658,
++                 from ../lib/stdlib.h:100,
++                 from ../include/parted/parted.h:44,
++                 from cs/constraint.c:48:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ../lib/getopt-cdefs.h:33,
++                 from ../lib/unistd.h:658,
++                 from ../lib/stdlib.h:100,
++                 from cs/natmath.c:34:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       arch/linux.lo
++In file included from ../lib/getopt-cdefs.h:33,
++                 from ../lib/unistd.h:658,
++                 from ../lib/stdlib.h:100,
++                 from ../include/parted/parted.h:44,
++                 from arch/linux.c:23:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CCLD     libparted.la
++
++*** Warning: Linking the shared library libparted.la against the
++*** static library /usr/lib/libintl.a is not portable!
++make[3]: Leaving directory '/tmp/parted-3.4/libparted'
++Making all in tests
++make[3]: Entering directory '/tmp/parted-3.4/libparted/tests'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/parted-3.4/libparted/tests'
++make[2]: Leaving directory '/tmp/parted-3.4/libparted'
++Making all in parted
++make[2]: Entering directory '/tmp/parted-3.4/parted'
++  GEN      version.c
++  GEN      version.h
++make  all-am
++make[3]: Entering directory '/tmp/parted-3.4/parted'
++  CC       command.o
++  CC       strlist.o
++  CC       parted.o
++In file included from ../lib/getopt-cdefs.h:33,
++                 from ../lib/unistd.h:658,
++                 from ../lib/stdlib.h:100,
++                 from strlist.c:28:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ../lib/getopt-cdefs.h:33,
++                 from ../lib/unistd.h:658,
++                 from ../lib/stdlib.h:100,
++                 from ../include/parted/parted.h:44,
++                 from command.h:23,
++                 from command.c:21:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from ../lib/getopt-cdefs.h:33,
++                 from ../lib/unistd.h:658,
++                 from ../lib/stdlib.h:100,
++                 from ../include/parted/parted.h:44,
++                 from command.h:23,
++                 from parted.c:27:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       ui.o
++In file included from ../lib/getopt-cdefs.h:33,
++                 from ../lib/unistd.h:658,
++                 from ../lib/stdlib.h:100,
++                 from ../include/parted/parted.h:44,
++                 from ui.c:23:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       table.o
++In file included from ../lib/getopt-cdefs.h:33,
++                 from ../lib/unistd.h:658,
++                 from ../lib/stdlib.h:100,
++                 from table.c:26:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       version.o
++  AR       libver.a
++  CCLD     parted
++make[3]: Leaving directory '/tmp/parted-3.4/parted'
++make[2]: Leaving directory '/tmp/parted-3.4/parted'
++Making all in partprobe
++make[2]: Entering directory '/tmp/parted-3.4/partprobe'
++  CC       partprobe.o
++In file included from ../lib/getopt-cdefs.h:33,
++                 from ../lib/unistd.h:658,
++                 from ../lib/stdlib.h:100,
++                 from ../include/parted/parted.h:44,
++                 from partprobe.c:30:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CCLD     partprobe
++make[2]: Leaving directory '/tmp/parted-3.4/partprobe'
++Making all in doc
++make[2]: Entering directory '/tmp/parted-3.4/doc'
++Making all in C
++make[3]: Entering directory '/tmp/parted-3.4/doc/C'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/parted-3.4/doc/C'
++Making all in pt_BR
++make[3]: Entering directory '/tmp/parted-3.4/doc/pt_BR'
++  GEN      all-local
++make[3]: Leaving directory '/tmp/parted-3.4/doc/pt_BR'
++make[3]: Entering directory '/tmp/parted-3.4/doc'
++make[3]: Nothing to be done for 'all-am'.
++make[3]: Leaving directory '/tmp/parted-3.4/doc'
++make[2]: Leaving directory '/tmp/parted-3.4/doc'
++Making all in debug
++make[2]: Entering directory '/tmp/parted-3.4/debug'
++Making all in test
++make[3]: Entering directory '/tmp/parted-3.4/debug/test'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/parted-3.4/debug/test'
++make[3]: Entering directory '/tmp/parted-3.4/debug'
++make[3]: Nothing to be done for 'all-am'.
++make[3]: Leaving directory '/tmp/parted-3.4/debug'
++make[2]: Leaving directory '/tmp/parted-3.4/debug'
++Making all in tests
++make[2]: Entering directory '/tmp/parted-3.4/tests'
++make[2]: Nothing to be done for 'all'.
++make[2]: Leaving directory '/tmp/parted-3.4/tests'
++make[2]: Entering directory '/tmp/parted-3.4'
++make[2]: Nothing to be done for 'all-am'.
++make[2]: Leaving directory '/tmp/parted-3.4'
++make[1]: Leaving directory '/tmp/parted-3.4'
++make  install-recursive
++make[1]: Entering directory '/tmp/parted-3.4'
++Making install in po
++make[2]: Entering directory '/tmp/parted-3.4/po'
++installing ca.gmo as /tmp/package-parted/usr/share/locale/ca/LC_MESSAGES/parted.mo
++installing cs.gmo as /tmp/package-parted/usr/share/locale/cs/LC_MESSAGES/parted.mo
++installing da.gmo as /tmp/package-parted/usr/share/locale/da/LC_MESSAGES/parted.mo
++installing de.gmo as /tmp/package-parted/usr/share/locale/de/LC_MESSAGES/parted.mo
++installing es.gmo as /tmp/package-parted/usr/share/locale/es/LC_MESSAGES/parted.mo
++installing fr.gmo as /tmp/package-parted/usr/share/locale/fr/LC_MESSAGES/parted.mo
++installing fur.gmo as /tmp/package-parted/usr/share/locale/fur/LC_MESSAGES/parted.mo
++installing gl.gmo as /tmp/package-parted/usr/share/locale/gl/LC_MESSAGES/parted.mo
++installing hu.gmo as /tmp/package-parted/usr/share/locale/hu/LC_MESSAGES/parted.mo
++installing id.gmo as /tmp/package-parted/usr/share/locale/id/LC_MESSAGES/parted.mo
++installing it.gmo as /tmp/package-parted/usr/share/locale/it/LC_MESSAGES/parted.mo
++installing ja.gmo as /tmp/package-parted/usr/share/locale/ja/LC_MESSAGES/parted.mo
++installing ko.gmo as /tmp/package-parted/usr/share/locale/ko/LC_MESSAGES/parted.mo
++installing nl.gmo as /tmp/package-parted/usr/share/locale/nl/LC_MESSAGES/parted.mo
++installing nn.gmo as /tmp/package-parted/usr/share/locale/nn/LC_MESSAGES/parted.mo
++installing pl.gmo as /tmp/package-parted/usr/share/locale/pl/LC_MESSAGES/parted.mo
++installing pt.gmo as /tmp/package-parted/usr/share/locale/pt/LC_MESSAGES/parted.mo
++installing pt_BR.gmo as /tmp/package-parted/usr/share/locale/pt_BR/LC_MESSAGES/parted.mo
++installing ro.gmo as /tmp/package-parted/usr/share/locale/ro/LC_MESSAGES/parted.mo
++installing ru.gmo as /tmp/package-parted/usr/share/locale/ru/LC_MESSAGES/parted.mo
++installing rw.gmo as /tmp/package-parted/usr/share/locale/rw/LC_MESSAGES/parted.mo
++installing sk.gmo as /tmp/package-parted/usr/share/locale/sk/LC_MESSAGES/parted.mo
++installing sl.gmo as /tmp/package-parted/usr/share/locale/sl/LC_MESSAGES/parted.mo
++installing sr.gmo as /tmp/package-parted/usr/share/locale/sr/LC_MESSAGES/parted.mo
++installing sv.gmo as /tmp/package-parted/usr/share/locale/sv/LC_MESSAGES/parted.mo
++installing tr.gmo as /tmp/package-parted/usr/share/locale/tr/LC_MESSAGES/parted.mo
++installing uk.gmo as /tmp/package-parted/usr/share/locale/uk/LC_MESSAGES/parted.mo
++installing vi.gmo as /tmp/package-parted/usr/share/locale/vi/LC_MESSAGES/parted.mo
++installing zh_CN.gmo as /tmp/package-parted/usr/share/locale/zh_CN/LC_MESSAGES/parted.mo
++installing zh_TW.gmo as /tmp/package-parted/usr/share/locale/zh_TW/LC_MESSAGES/parted.mo
++if test "parted" = "gettext-tools"; then \
++  /usr/bin/mkdir -p /tmp/package-parted/usr/share/gettext/po; \
++  for file in Makefile.in.in remove-potcdate.sin quot.sed boldquot.sed en@quot.header en@boldquot.header insert-header.sin Rules-quot   Makevars.template; do \
++    /usr/bin/ginstall -c -m 644 ./$file \
++		    /tmp/package-parted/usr/share/gettext/po/$file; \
++  done; \
++  for file in Makevars; do \
++    rm -f /tmp/package-parted/usr/share/gettext/po/$file; \
++  done; \
++else \
++  : ; \
++fi
++make[2]: Leaving directory '/tmp/parted-3.4/po'
++Making install in lib
++make[2]: Entering directory '/tmp/parted-3.4/lib'
++make  install-am
++make[3]: Entering directory '/tmp/parted-3.4/lib'
++make[4]: Entering directory '/tmp/parted-3.4/lib'
++make[4]: Nothing to be done for 'install-exec-am'.
++make[4]: Nothing to be done for 'install-data-am'.
++make[4]: Leaving directory '/tmp/parted-3.4/lib'
++make[3]: Leaving directory '/tmp/parted-3.4/lib'
++make[2]: Leaving directory '/tmp/parted-3.4/lib'
++Making install in include
++make[2]: Entering directory '/tmp/parted-3.4/include'
++Making install in parted
++make[3]: Entering directory '/tmp/parted-3.4/include/parted'
++make  install-am
++make[4]: Entering directory '/tmp/parted-3.4/include/parted'
++make[5]: Entering directory '/tmp/parted-3.4/include/parted'
++make[5]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-parted/usr/include/parted'
++ /usr/bin/ginstall -c -m 644 constraint.h debug.h device.h disk.h exception.h filesys.h geom.h natmath.h timer.h unit.h parted.h '/tmp/package-parted/usr/include/parted'
++make[5]: Leaving directory '/tmp/parted-3.4/include/parted'
++make[4]: Leaving directory '/tmp/parted-3.4/include/parted'
++make[3]: Leaving directory '/tmp/parted-3.4/include/parted'
++make[3]: Entering directory '/tmp/parted-3.4/include'
++make[4]: Entering directory '/tmp/parted-3.4/include'
++make[4]: Nothing to be done for 'install-exec-am'.
++make[4]: Nothing to be done for 'install-data-am'.
++make[4]: Leaving directory '/tmp/parted-3.4/include'
++make[3]: Leaving directory '/tmp/parted-3.4/include'
++make[2]: Leaving directory '/tmp/parted-3.4/include'
++Making install in libparted
++make[2]: Entering directory '/tmp/parted-3.4/libparted'
++Makefile:1704: target 'arch/.deps/linux.Plo' given more than once in the same rule
++Making install in labels
++make[3]: Entering directory '/tmp/parted-3.4/libparted/labels'
++make  install-am
++make[4]: Entering directory '/tmp/parted-3.4/libparted/labels'
++make[5]: Entering directory '/tmp/parted-3.4/libparted/labels'
++make[5]: Nothing to be done for 'install-exec-am'.
++make[5]: Nothing to be done for 'install-data-am'.
++make[5]: Leaving directory '/tmp/parted-3.4/libparted/labels'
++make[4]: Leaving directory '/tmp/parted-3.4/libparted/labels'
++make[3]: Leaving directory '/tmp/parted-3.4/libparted/labels'
++Making install in fs
++make[3]: Entering directory '/tmp/parted-3.4/libparted/fs'
++make[4]: Entering directory '/tmp/parted-3.4/libparted/fs'
++ /usr/bin/mkdir -p '/tmp/package-parted/usr/lib'
++ /bin/sh ../../libtool   --mode=install /usr/bin/ginstall -c   libparted-fs-resize.la '/tmp/package-parted/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/libparted-fs-resize.so.0.0.3 /tmp/package-parted/usr/lib/libparted-fs-resize.so.0.0.3
++libtool: install: (cd /tmp/package-parted/usr/lib && { ln -s -f libparted-fs-resize.so.0.0.3 libparted-fs-resize.so.0 || { rm -f libparted-fs-resize.so.0 && ln -s libparted-fs-resize.so.0.0.3 libparted-fs-resize.so.0; }; })
++libtool: install: (cd /tmp/package-parted/usr/lib && { ln -s -f libparted-fs-resize.so.0.0.3 libparted-fs-resize.so || { rm -f libparted-fs-resize.so && ln -s libparted-fs-resize.so.0.0.3 libparted-fs-resize.so; }; })
++libtool: install: /usr/bin/ginstall -c .libs/libparted-fs-resize.lai /tmp/package-parted/usr/lib/libparted-fs-resize.la
++libtool: warning: remember to run 'libtool --finish /usr/lib'
++make[4]: Nothing to be done for 'install-data-am'.
++make[4]: Leaving directory '/tmp/parted-3.4/libparted/fs'
++make[3]: Leaving directory '/tmp/parted-3.4/libparted/fs'
++Making install in .
++make[3]: Entering directory '/tmp/parted-3.4/libparted'
++Makefile:1704: target 'arch/.deps/linux.Plo' given more than once in the same rule
++make[4]: Entering directory '/tmp/parted-3.4/libparted'
++Makefile:1704: target 'arch/.deps/linux.Plo' given more than once in the same rule
++ /usr/bin/mkdir -p '/tmp/package-parted/usr/lib'
++ /bin/sh ../libtool   --mode=install /usr/bin/ginstall -c   libparted.la '/tmp/package-parted/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/libparted.so.2.0.3 /tmp/package-parted/usr/lib/libparted.so.2.0.3
++libtool: install: (cd /tmp/package-parted/usr/lib && { ln -s -f libparted.so.2.0.3 libparted.so.2 || { rm -f libparted.so.2 && ln -s libparted.so.2.0.3 libparted.so.2; }; })
++libtool: install: (cd /tmp/package-parted/usr/lib && { ln -s -f libparted.so.2.0.3 libparted.so || { rm -f libparted.so && ln -s libparted.so.2.0.3 libparted.so; }; })
++libtool: install: /usr/bin/ginstall -c .libs/libparted.lai /tmp/package-parted/usr/lib/libparted.la
++libtool: warning: remember to run 'libtool --finish /usr/lib'
++make[4]: Nothing to be done for 'install-data-am'.
++make[4]: Leaving directory '/tmp/parted-3.4/libparted'
++make[3]: Leaving directory '/tmp/parted-3.4/libparted'
++Making install in tests
++make[3]: Entering directory '/tmp/parted-3.4/libparted/tests'
++make[4]: Entering directory '/tmp/parted-3.4/libparted/tests'
++make[4]: Nothing to be done for 'install-exec-am'.
++make[4]: Nothing to be done for 'install-data-am'.
++make[4]: Leaving directory '/tmp/parted-3.4/libparted/tests'
++make[3]: Leaving directory '/tmp/parted-3.4/libparted/tests'
++make[2]: Leaving directory '/tmp/parted-3.4/libparted'
++Making install in parted
++make[2]: Entering directory '/tmp/parted-3.4/parted'
++make  install-am
++make[3]: Entering directory '/tmp/parted-3.4/parted'
++make[4]: Entering directory '/tmp/parted-3.4/parted'
++ /usr/bin/mkdir -p '/tmp/package-parted/usr/sbin'
++  /bin/sh ../libtool   --mode=install /usr/bin/ginstall -c parted '/tmp/package-parted/usr/sbin'
++libtool: warning: '../libparted/libparted.la' has not been installed in '/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/parted /tmp/package-parted/usr/sbin/parted
++make[4]: Nothing to be done for 'install-data-am'.
++make[4]: Leaving directory '/tmp/parted-3.4/parted'
++make[3]: Leaving directory '/tmp/parted-3.4/parted'
++make[2]: Leaving directory '/tmp/parted-3.4/parted'
++Making install in partprobe
++make[2]: Entering directory '/tmp/parted-3.4/partprobe'
++make[3]: Entering directory '/tmp/parted-3.4/partprobe'
++ /usr/bin/mkdir -p '/tmp/package-parted/usr/sbin'
++  /bin/sh ../libtool   --mode=install /usr/bin/ginstall -c partprobe '/tmp/package-parted/usr/sbin'
++libtool: warning: '../libparted/libparted.la' has not been installed in '/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/partprobe /tmp/package-parted/usr/sbin/partprobe
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/parted-3.4/partprobe'
++make[2]: Leaving directory '/tmp/parted-3.4/partprobe'
++Making install in doc
++make[2]: Entering directory '/tmp/parted-3.4/doc'
++Making install in C
++make[3]: Entering directory '/tmp/parted-3.4/doc/C'
++make[4]: Entering directory '/tmp/parted-3.4/doc/C'
++make[4]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-parted/usr/man/man8'
++ /usr/bin/ginstall -c -m 644 parted.8 partprobe.8 '/tmp/package-parted/usr/man/man8'
++make[4]: Leaving directory '/tmp/parted-3.4/doc/C'
++make[3]: Leaving directory '/tmp/parted-3.4/doc/C'
++Making install in pt_BR
++make[3]: Entering directory '/tmp/parted-3.4/doc/pt_BR'
++  GEN      all-local
++make[4]: Entering directory '/tmp/parted-3.4/doc/pt_BR'
++make[4]: Nothing to be done for 'install-exec-am'.
++make[4]: Nothing to be done for 'install-data-am'.
++make[4]: Leaving directory '/tmp/parted-3.4/doc/pt_BR'
++make[3]: Leaving directory '/tmp/parted-3.4/doc/pt_BR'
++make[3]: Entering directory '/tmp/parted-3.4/doc'
++make[4]: Entering directory '/tmp/parted-3.4/doc'
++make[4]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-parted/usr/info'
++ /usr/bin/ginstall -c -m 644 ./parted.info '/tmp/package-parted/usr/info'
++ install-info --info-dir='/tmp/package-parted/usr/info' '/tmp/package-parted/usr/info/parted.info'
++make[4]: Leaving directory '/tmp/parted-3.4/doc'
++make[3]: Leaving directory '/tmp/parted-3.4/doc'
++make[2]: Leaving directory '/tmp/parted-3.4/doc'
++Making install in debug
++make[2]: Entering directory '/tmp/parted-3.4/debug'
++Making install in test
++make[3]: Entering directory '/tmp/parted-3.4/debug/test'
++make[4]: Entering directory '/tmp/parted-3.4/debug/test'
++make[4]: Nothing to be done for 'install-exec-am'.
++make[4]: Nothing to be done for 'install-data-am'.
++make[4]: Leaving directory '/tmp/parted-3.4/debug/test'
++make[3]: Leaving directory '/tmp/parted-3.4/debug/test'
++make[3]: Entering directory '/tmp/parted-3.4/debug'
++make[4]: Entering directory '/tmp/parted-3.4/debug'
++make[4]: Nothing to be done for 'install-exec-am'.
++make[4]: Nothing to be done for 'install-data-am'.
++make[4]: Leaving directory '/tmp/parted-3.4/debug'
++make[3]: Leaving directory '/tmp/parted-3.4/debug'
++make[2]: Leaving directory '/tmp/parted-3.4/debug'
++Making install in tests
++make[2]: Entering directory '/tmp/parted-3.4/tests'
++make[3]: Entering directory '/tmp/parted-3.4/tests'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/parted-3.4/tests'
++make[2]: Leaving directory '/tmp/parted-3.4/tests'
++make[2]: Entering directory '/tmp/parted-3.4'
++make[3]: Entering directory '/tmp/parted-3.4'
++make[3]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-parted/usr/lib/pkgconfig'
++ /usr/bin/ginstall -c -m 644 libparted.pc libparted-fs-resize.pc '/tmp/package-parted/usr/lib/pkgconfig'
++make[3]: Leaving directory '/tmp/parted-3.4'
++make[2]: Leaving directory '/tmp/parted-3.4'
++make[1]: Leaving directory '/tmp/parted-3.4'
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++usr/lib/libparted-fs-resize.so	libparted-fs-resize.so.0.0.3
++usr/lib/libparted-fs-resize.so.0	libparted-fs-resize.so.0.0.3
++usr/lib/libparted.so	libparted.so.2.0.3
++usr/lib/libparted.so.2	libparted.so.2.0.3
++
++Making symbolic link creation script:
++( cd usr/lib ; rm -rf libparted-fs-resize.so )
++( cd usr/lib ; ln -sf libparted-fs-resize.so.0.0.3 libparted-fs-resize.so )
++( cd usr/lib ; rm -rf libparted-fs-resize.so.0 )
++( cd usr/lib ; ln -sf libparted-fs-resize.so.0.0.3 libparted-fs-resize.so.0 )
++( cd usr/lib ; rm -rf libparted.so )
++( cd usr/lib ; ln -sf libparted.so.2.0.3 libparted.so )
++( cd usr/lib ; rm -rf libparted.so.2 )
++( cd usr/lib ; ln -sf libparted.so.2.0.3 libparted.so.2 )
++
++It is recommended that you make these lines your new installation script.
++
++Would you like to make this stuff the install script for this package
++and remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './usr/lib/libparted-fs-resize.so'
++removed './usr/lib/libparted.so'
++removed './usr/lib/libparted.so.2'
++removed './usr/lib/libparted-fs-resize.so.0'
++
++Creating your new ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/parted-3.4-x86_64-1.txz
++
++./
++install/
++install/doinst.sh
++install/slack-desc
++usr/
++usr/doc/
++usr/doc/parted-3.4/
++usr/doc/parted-3.4/API
++usr/doc/parted-3.4/AUTHORS
++usr/doc/parted-3.4/BUGS
++usr/doc/parted-3.4/COPYING
++usr/doc/parted-3.4/ChangeLog
++usr/doc/parted-3.4/FAT
++usr/doc/parted-3.4/NEWS
++usr/doc/parted-3.4/README
++usr/doc/parted-3.4/THANKS
++usr/doc/parted-3.4/TODO
++usr/doc/parted-3.4/USER.jp
++usr/include/
++usr/include/parted/
++usr/include/parted/constraint.h
++usr/include/parted/debug.h
++usr/include/parted/device.h
++usr/include/parted/disk.h
++usr/include/parted/exception.h
++usr/include/parted/filesys.h
++usr/include/parted/geom.h
++usr/include/parted/natmath.h
++usr/include/parted/parted.h
++usr/include/parted/timer.h
++usr/include/parted/unit.h
++usr/info/
++usr/info/parted.info.gz
++usr/lib/
++usr/lib/libparted-fs-resize.so.0.0.3
++usr/lib/libparted.so.2.0.3
++usr/lib/pkgconfig/
++usr/lib/pkgconfig/libparted-fs-resize.pc
++usr/lib/pkgconfig/libparted.pc
++usr/man/
++usr/man/man8/
++usr/man/man8/parted.8.gz
++usr/man/man8/partprobe.8.gz
++usr/sbin/
++usr/sbin/parted
++usr/sbin/partprobe
++usr/share/
++usr/share/locale/
++usr/share/locale/ca/
++usr/share/locale/ca/LC_MESSAGES/
++usr/share/locale/ca/LC_MESSAGES/parted.mo
++usr/share/locale/cs/
++usr/share/locale/cs/LC_MESSAGES/
++usr/share/locale/cs/LC_MESSAGES/parted.mo
++usr/share/locale/da/
++usr/share/locale/da/LC_MESSAGES/
++usr/share/locale/da/LC_MESSAGES/parted.mo
++usr/share/locale/de/
++usr/share/locale/de/LC_MESSAGES/
++usr/share/locale/de/LC_MESSAGES/parted.mo
++usr/share/locale/es/
++usr/share/locale/es/LC_MESSAGES/
++usr/share/locale/es/LC_MESSAGES/parted.mo
++usr/share/locale/fr/
++usr/share/locale/fr/LC_MESSAGES/
++usr/share/locale/fr/LC_MESSAGES/parted.mo
++usr/share/locale/fur/
++usr/share/locale/fur/LC_MESSAGES/
++usr/share/locale/fur/LC_MESSAGES/parted.mo
++usr/share/locale/gl/
++usr/share/locale/gl/LC_MESSAGES/
++usr/share/locale/gl/LC_MESSAGES/parted.mo
++usr/share/locale/hu/
++usr/share/locale/hu/LC_MESSAGES/
++usr/share/locale/hu/LC_MESSAGES/parted.mo
++usr/share/locale/id/
++usr/share/locale/id/LC_MESSAGES/
++usr/share/locale/id/LC_MESSAGES/parted.mo
++usr/share/locale/it/
++usr/share/locale/it/LC_MESSAGES/
++usr/share/locale/it/LC_MESSAGES/parted.mo
++usr/share/locale/ja/
++usr/share/locale/ja/LC_MESSAGES/
++usr/share/locale/ja/LC_MESSAGES/parted.mo
++usr/share/locale/ko/
++usr/share/locale/ko/LC_MESSAGES/
++usr/share/locale/ko/LC_MESSAGES/parted.mo
++usr/share/locale/nl/
++usr/share/locale/nl/LC_MESSAGES/
++usr/share/locale/nl/LC_MESSAGES/parted.mo
++usr/share/locale/nn/
++usr/share/locale/nn/LC_MESSAGES/
++usr/share/locale/nn/LC_MESSAGES/parted.mo
++usr/share/locale/pl/
++usr/share/locale/pl/LC_MESSAGES/
++usr/share/locale/pl/LC_MESSAGES/parted.mo
++usr/share/locale/pt/
++usr/share/locale/pt/LC_MESSAGES/
++usr/share/locale/pt/LC_MESSAGES/parted.mo
++usr/share/locale/pt_BR/
++usr/share/locale/pt_BR/LC_MESSAGES/
++usr/share/locale/pt_BR/LC_MESSAGES/parted.mo
++usr/share/locale/ro/
++usr/share/locale/ro/LC_MESSAGES/
++usr/share/locale/ro/LC_MESSAGES/parted.mo
++usr/share/locale/ru/
++usr/share/locale/ru/LC_MESSAGES/
++usr/share/locale/ru/LC_MESSAGES/parted.mo
++usr/share/locale/rw/
++usr/share/locale/rw/LC_MESSAGES/
++usr/share/locale/rw/LC_MESSAGES/parted.mo
++usr/share/locale/sk/
++usr/share/locale/sk/LC_MESSAGES/
++usr/share/locale/sk/LC_MESSAGES/parted.mo
++usr/share/locale/sl/
++usr/share/locale/sl/LC_MESSAGES/
++usr/share/locale/sl/LC_MESSAGES/parted.mo
++usr/share/locale/sr/
++usr/share/locale/sr/LC_MESSAGES/
++usr/share/locale/sr/LC_MESSAGES/parted.mo
++usr/share/locale/sv/
++usr/share/locale/sv/LC_MESSAGES/
++usr/share/locale/sv/LC_MESSAGES/parted.mo
++usr/share/locale/tr/
++usr/share/locale/tr/LC_MESSAGES/
++usr/share/locale/tr/LC_MESSAGES/parted.mo
++usr/share/locale/uk/
++usr/share/locale/uk/LC_MESSAGES/
++usr/share/locale/uk/LC_MESSAGES/parted.mo
++usr/share/locale/vi/
++usr/share/locale/vi/LC_MESSAGES/
++usr/share/locale/vi/LC_MESSAGES/parted.mo
++usr/share/locale/zh_CN/
++usr/share/locale/zh_CN/LC_MESSAGES/
++usr/share/locale/zh_CN/LC_MESSAGES/parted.mo
++usr/share/locale/zh_TW/
++usr/share/locale/zh_TW/LC_MESSAGES/
++usr/share/locale/zh_TW/LC_MESSAGES/parted.mo
++
++Slackware package /tmp/parted-3.4-x86_64-1.txz created.
++

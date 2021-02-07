@@ -1,0 +1,1999 @@
+diff -ruBN /tmp/xfsprogs/xfsprogs.SlackBuild /source/a/xfsprogs/xfsprogs.SlackBuild
+--- /tmp/xfsprogs/xfsprogs.SlackBuild	2020-12-17 20:04:47.000000000 +0000
++++ /source/a/xfsprogs/xfsprogs.SlackBuild	2021-01-02 10:03:59.000000000 +0000
+@@ -57,7 +57,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ else
+   SLKCFLAGS="-O2"
+   LIBDIRSUFFIX=""
+@@ -94,7 +94,7 @@
+   --docdir=/usr/doc/xfsprogs-$VERSION \
+   --enable-shared=yes \
+   --enable-gettext=yes \
+-  --build=$ARCH-slackware-linux || exit 1
++  --build=$ARCH-slackware-linux-musl || exit 1
+ 
+ make $NUMJOBS || make || exit 1
+ make install DIST_ROOT=$PKG || exit 1
+diff -ruBN /tmp/xfsprogs/xfsprogs.SlackBuild.log /source/a/xfsprogs/xfsprogs.SlackBuild.log
+--- /tmp/xfsprogs/xfsprogs.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/a/xfsprogs/xfsprogs.SlackBuild.log	2021-01-02 10:06:17.000000000 +0000
+@@ -0,0 +1,1974 @@
++xfsprogs-5.10.0/.gitignore
++xfsprogs-5.10.0/LICENSES/GPL-2.0
++xfsprogs-5.10.0/LICENSES/LGPL-2.1
++xfsprogs-5.10.0/Makefile
++xfsprogs-5.10.0/README
++xfsprogs-5.10.0/VERSION
++xfsprogs-5.10.0/configure.ac
++xfsprogs-5.10.0/copy/Makefile
++xfsprogs-5.10.0/copy/xfs_copy.c
++xfsprogs-5.10.0/copy/xfs_copy.h
++xfsprogs-5.10.0/db/Makefile
++xfsprogs-5.10.0/db/addr.c
++xfsprogs-5.10.0/db/addr.h
++xfsprogs-5.10.0/db/agf.c
++xfsprogs-5.10.0/db/agf.h
++xfsprogs-5.10.0/db/agfl.c
++xfsprogs-5.10.0/db/agfl.h
++xfsprogs-5.10.0/db/agi.c
++xfsprogs-5.10.0/db/agi.h
++xfsprogs-5.10.0/db/attr.c
++xfsprogs-5.10.0/db/attr.h
++xfsprogs-5.10.0/db/attrset.c
++xfsprogs-5.10.0/db/attrset.h
++xfsprogs-5.10.0/db/attrshort.c
++xfsprogs-5.10.0/db/attrshort.h
++xfsprogs-5.10.0/db/bit.c
++xfsprogs-5.10.0/db/bit.h
++xfsprogs-5.10.0/db/block.c
++xfsprogs-5.10.0/db/block.h
++xfsprogs-5.10.0/db/bmap.c
++xfsprogs-5.10.0/db/bmap.h
++xfsprogs-5.10.0/db/bmroot.c
++xfsprogs-5.10.0/db/bmroot.h
++xfsprogs-5.10.0/db/btblock.c
++xfsprogs-5.10.0/db/btblock.h
++xfsprogs-5.10.0/db/btdump.c
++xfsprogs-5.10.0/db/btheight.c
++xfsprogs-5.10.0/db/check.c
++xfsprogs-5.10.0/db/check.h
++xfsprogs-5.10.0/db/command.c
++xfsprogs-5.10.0/db/command.h
++xfsprogs-5.10.0/db/convert.c
++xfsprogs-5.10.0/db/crc.c
++xfsprogs-5.10.0/db/crc.h
++xfsprogs-5.10.0/db/debug.c
++xfsprogs-5.10.0/db/debug.h
++xfsprogs-5.10.0/db/dir2.c
++xfsprogs-5.10.0/db/dir2.h
++xfsprogs-5.10.0/db/dir2sf.c
++xfsprogs-5.10.0/db/dir2sf.h
++xfsprogs-5.10.0/db/dquot.c
++xfsprogs-5.10.0/db/dquot.h
++xfsprogs-5.10.0/db/echo.c
++xfsprogs-5.10.0/db/echo.h
++xfsprogs-5.10.0/db/faddr.c
++xfsprogs-5.10.0/db/faddr.h
++xfsprogs-5.10.0/db/field.c
++xfsprogs-5.10.0/db/field.h
++xfsprogs-5.10.0/db/flist.c
++xfsprogs-5.10.0/db/flist.h
++xfsprogs-5.10.0/db/fprint.c
++xfsprogs-5.10.0/db/fprint.h
++xfsprogs-5.10.0/db/frag.c
++xfsprogs-5.10.0/db/frag.h
++xfsprogs-5.10.0/db/freesp.c
++xfsprogs-5.10.0/db/freesp.h
++xfsprogs-5.10.0/db/fsmap.c
++xfsprogs-5.10.0/db/fsmap.h
++xfsprogs-5.10.0/db/fuzz.c
++xfsprogs-5.10.0/db/fuzz.h
++xfsprogs-5.10.0/db/hash.c
++xfsprogs-5.10.0/db/hash.h
++xfsprogs-5.10.0/db/help.c
++xfsprogs-5.10.0/db/help.h
++xfsprogs-5.10.0/db/info.c
++xfsprogs-5.10.0/db/init.c
++xfsprogs-5.10.0/db/init.h
++xfsprogs-5.10.0/db/inode.c
++xfsprogs-5.10.0/db/inode.h
++xfsprogs-5.10.0/db/input.c
++xfsprogs-5.10.0/db/input.h
++xfsprogs-5.10.0/db/io.c
++xfsprogs-5.10.0/db/io.h
++xfsprogs-5.10.0/db/logformat.c
++xfsprogs-5.10.0/db/logformat.h
++xfsprogs-5.10.0/db/malloc.c
++xfsprogs-5.10.0/db/malloc.h
++xfsprogs-5.10.0/db/metadump.c
++xfsprogs-5.10.0/db/metadump.h
++xfsprogs-5.10.0/db/output.c
++xfsprogs-5.10.0/db/output.h
++xfsprogs-5.10.0/db/print.c
++xfsprogs-5.10.0/db/print.h
++xfsprogs-5.10.0/db/quit.c
++xfsprogs-5.10.0/db/quit.h
++xfsprogs-5.10.0/db/sb.c
++xfsprogs-5.10.0/db/sb.h
++xfsprogs-5.10.0/db/sig.c
++xfsprogs-5.10.0/db/sig.h
++xfsprogs-5.10.0/db/strvec.c
++xfsprogs-5.10.0/db/strvec.h
++xfsprogs-5.10.0/db/symlink.c
++xfsprogs-5.10.0/db/symlink.h
++xfsprogs-5.10.0/db/text.c
++xfsprogs-5.10.0/db/text.h
++xfsprogs-5.10.0/db/timelimit.c
++xfsprogs-5.10.0/db/type.c
++xfsprogs-5.10.0/db/type.h
++xfsprogs-5.10.0/db/write.c
++xfsprogs-5.10.0/db/write.h
++xfsprogs-5.10.0/db/xfs_admin.sh
++xfsprogs-5.10.0/db/xfs_metadump.sh
++xfsprogs-5.10.0/db/xfs_ncheck.sh
++xfsprogs-5.10.0/debian/Makefile
++xfsprogs-5.10.0/debian/changelog
++xfsprogs-5.10.0/debian/compat
++xfsprogs-5.10.0/debian/control
++xfsprogs-5.10.0/debian/copyright
++xfsprogs-5.10.0/debian/local/initramfs.hook
++xfsprogs-5.10.0/debian/postinst
++xfsprogs-5.10.0/debian/rules
++xfsprogs-5.10.0/debian/source/format
++xfsprogs-5.10.0/debian/watch
++xfsprogs-5.10.0/doc/CHANGES
++xfsprogs-5.10.0/doc/CREDITS
++xfsprogs-5.10.0/doc/INSTALL
++xfsprogs-5.10.0/doc/Makefile
++xfsprogs-5.10.0/doc/README-env-vars.txt
++xfsprogs-5.10.0/doc/sparse.txt
++xfsprogs-5.10.0/estimate/Makefile
++xfsprogs-5.10.0/estimate/xfs_estimate.c
++xfsprogs-5.10.0/fsck/Makefile
++xfsprogs-5.10.0/fsck/xfs_fsck.sh
++xfsprogs-5.10.0/fsr/Makefile
++xfsprogs-5.10.0/fsr/xfs_fsr.c
++xfsprogs-5.10.0/growfs/Makefile
++xfsprogs-5.10.0/growfs/xfs_growfs.c
++xfsprogs-5.10.0/include/Makefile
++xfsprogs-5.10.0/include/atomic.h
++xfsprogs-5.10.0/include/bitops.h
++xfsprogs-5.10.0/include/builddefs.in
++xfsprogs-5.10.0/include/buildmacros
++xfsprogs-5.10.0/include/buildrules
++xfsprogs-5.10.0/include/cache.h
++xfsprogs-5.10.0/include/command.h
++xfsprogs-5.10.0/include/handle.h
++xfsprogs-5.10.0/include/hlist.h
++xfsprogs-5.10.0/include/input.h
++xfsprogs-5.10.0/include/install-sh
++xfsprogs-5.10.0/include/jdm.h
++xfsprogs-5.10.0/include/kmem.h
++xfsprogs-5.10.0/include/libxcmd.h
++xfsprogs-5.10.0/include/libxfs.h
++xfsprogs-5.10.0/include/libxlog.h
++xfsprogs-5.10.0/include/linux.h
++xfsprogs-5.10.0/include/list.h
++xfsprogs-5.10.0/include/parent.h
++xfsprogs-5.10.0/include/platform_defs.h.in
++xfsprogs-5.10.0/include/xfs.h
++xfsprogs-5.10.0/include/xfs_arch.h
++xfsprogs-5.10.0/include/xfs_fs_compat.h
++xfsprogs-5.10.0/include/xfs_inode.h
++xfsprogs-5.10.0/include/xfs_log_recover.h
++xfsprogs-5.10.0/include/xfs_metadump.h
++xfsprogs-5.10.0/include/xfs_mount.h
++xfsprogs-5.10.0/include/xfs_multidisk.h
++xfsprogs-5.10.0/include/xfs_trace.h
++xfsprogs-5.10.0/include/xfs_trans.h
++xfsprogs-5.10.0/include/xqm.h
++xfsprogs-5.10.0/io/Makefile
++xfsprogs-5.10.0/io/attr.c
++xfsprogs-5.10.0/io/bmap.c
++xfsprogs-5.10.0/io/bulkstat.c
++xfsprogs-5.10.0/io/copy_file_range.c
++xfsprogs-5.10.0/io/cowextsize.c
++xfsprogs-5.10.0/io/crc32cselftest.c
++xfsprogs-5.10.0/io/encrypt.c
++xfsprogs-5.10.0/io/fadvise.c
++xfsprogs-5.10.0/io/fiemap.c
++xfsprogs-5.10.0/io/file.c
++xfsprogs-5.10.0/io/freeze.c
++xfsprogs-5.10.0/io/fsmap.c
++xfsprogs-5.10.0/io/fsync.c
++xfsprogs-5.10.0/io/getrusage.c
++xfsprogs-5.10.0/io/imap.c
++xfsprogs-5.10.0/io/init.c
++xfsprogs-5.10.0/io/init.h
++xfsprogs-5.10.0/io/inject.c
++xfsprogs-5.10.0/io/io.h
++xfsprogs-5.10.0/io/label.c
++xfsprogs-5.10.0/io/link.c
++xfsprogs-5.10.0/io/log_writes.c
++xfsprogs-5.10.0/io/madvise.c
++xfsprogs-5.10.0/io/mincore.c
++xfsprogs-5.10.0/io/mmap.c
++xfsprogs-5.10.0/io/open.c
++xfsprogs-5.10.0/io/parent.c
++xfsprogs-5.10.0/io/pread.c
++xfsprogs-5.10.0/io/prealloc.c
++xfsprogs-5.10.0/io/pwrite.c
++xfsprogs-5.10.0/io/readdir.c
++xfsprogs-5.10.0/io/reflink.c
++xfsprogs-5.10.0/io/resblks.c
++xfsprogs-5.10.0/io/scrub.c
++xfsprogs-5.10.0/io/seek.c
++xfsprogs-5.10.0/io/sendfile.c
++xfsprogs-5.10.0/io/shutdown.c
++xfsprogs-5.10.0/io/stat.c
++xfsprogs-5.10.0/io/statx.h
++xfsprogs-5.10.0/io/swapext.c
++xfsprogs-5.10.0/io/sync.c
++xfsprogs-5.10.0/io/sync_file_range.c
++xfsprogs-5.10.0/io/truncate.c
++xfsprogs-5.10.0/io/utimes.c
++xfsprogs-5.10.0/io/xfs_bmap.sh
++xfsprogs-5.10.0/io/xfs_freeze.sh
++xfsprogs-5.10.0/io/xfs_mkfile.sh
++xfsprogs-5.10.0/libfrog/Makefile
++xfsprogs-5.10.0/libfrog/avl64.c
++xfsprogs-5.10.0/libfrog/avl64.h
++xfsprogs-5.10.0/libfrog/bitmap.c
++xfsprogs-5.10.0/libfrog/bitmap.h
++xfsprogs-5.10.0/libfrog/bulkstat.c
++xfsprogs-5.10.0/libfrog/bulkstat.h
++xfsprogs-5.10.0/libfrog/convert.c
++xfsprogs-5.10.0/libfrog/convert.h
++xfsprogs-5.10.0/libfrog/crc32.c
++xfsprogs-5.10.0/libfrog/crc32c.h
++xfsprogs-5.10.0/libfrog/crc32cselftest.h
++xfsprogs-5.10.0/libfrog/crc32defs.h
++xfsprogs-5.10.0/libfrog/fsgeom.c
++xfsprogs-5.10.0/libfrog/fsgeom.h
++xfsprogs-5.10.0/libfrog/gen_crc32table.c
++xfsprogs-5.10.0/libfrog/linux.c
++xfsprogs-5.10.0/libfrog/list_sort.c
++xfsprogs-5.10.0/libfrog/logging.c
++xfsprogs-5.10.0/libfrog/logging.h
++xfsprogs-5.10.0/libfrog/paths.c
++xfsprogs-5.10.0/libfrog/paths.h
++xfsprogs-5.10.0/libfrog/platform.h
++xfsprogs-5.10.0/libfrog/projects.c
++xfsprogs-5.10.0/libfrog/projects.h
++xfsprogs-5.10.0/libfrog/ptvar.c
++xfsprogs-5.10.0/libfrog/ptvar.h
++xfsprogs-5.10.0/libfrog/radix-tree.c
++xfsprogs-5.10.0/libfrog/radix-tree.h
++xfsprogs-5.10.0/libfrog/scrub.c
++xfsprogs-5.10.0/libfrog/scrub.h
++xfsprogs-5.10.0/libfrog/topology.c
++xfsprogs-5.10.0/libfrog/topology.h
++xfsprogs-5.10.0/libfrog/util.c
++xfsprogs-5.10.0/libfrog/util.h
++xfsprogs-5.10.0/libfrog/workqueue.c
++xfsprogs-5.10.0/libfrog/workqueue.h
++xfsprogs-5.10.0/libhandle/Makefile
++xfsprogs-5.10.0/libhandle/handle.c
++xfsprogs-5.10.0/libhandle/jdm.c
++xfsprogs-5.10.0/libhandle/libhandle.sym
++xfsprogs-5.10.0/libxcmd/Makefile
++xfsprogs-5.10.0/libxcmd/command.c
++xfsprogs-5.10.0/libxcmd/help.c
++xfsprogs-5.10.0/libxcmd/input.c
++xfsprogs-5.10.0/libxcmd/quit.c
++xfsprogs-5.10.0/libxfs/Makefile
++xfsprogs-5.10.0/libxfs/cache.c
++xfsprogs-5.10.0/libxfs/defer_item.c
++xfsprogs-5.10.0/libxfs/init.c
++xfsprogs-5.10.0/libxfs/init.h
++xfsprogs-5.10.0/libxfs/kmem.c
++xfsprogs-5.10.0/libxfs/libxfs_api_defs.h
++xfsprogs-5.10.0/libxfs/libxfs_io.h
++xfsprogs-5.10.0/libxfs/libxfs_priv.h
++xfsprogs-5.10.0/libxfs/logitem.c
++xfsprogs-5.10.0/libxfs/rdwr.c
++xfsprogs-5.10.0/libxfs/trans.c
++xfsprogs-5.10.0/libxfs/util.c
++xfsprogs-5.10.0/libxfs/xfs_ag.c
++xfsprogs-5.10.0/libxfs/xfs_ag.h
++xfsprogs-5.10.0/libxfs/xfs_ag_resv.c
++xfsprogs-5.10.0/libxfs/xfs_ag_resv.h
++xfsprogs-5.10.0/libxfs/xfs_alloc.c
++xfsprogs-5.10.0/libxfs/xfs_alloc.h
++xfsprogs-5.10.0/libxfs/xfs_alloc_btree.c
++xfsprogs-5.10.0/libxfs/xfs_alloc_btree.h
++xfsprogs-5.10.0/libxfs/xfs_attr.c
++xfsprogs-5.10.0/libxfs/xfs_attr.h
++xfsprogs-5.10.0/libxfs/xfs_attr_leaf.c
++xfsprogs-5.10.0/libxfs/xfs_attr_leaf.h
++xfsprogs-5.10.0/libxfs/xfs_attr_remote.c
++xfsprogs-5.10.0/libxfs/xfs_attr_remote.h
++xfsprogs-5.10.0/libxfs/xfs_attr_sf.h
++xfsprogs-5.10.0/libxfs/xfs_bit.c
++xfsprogs-5.10.0/libxfs/xfs_bit.h
++xfsprogs-5.10.0/libxfs/xfs_bmap.c
++xfsprogs-5.10.0/libxfs/xfs_bmap.h
++xfsprogs-5.10.0/libxfs/xfs_bmap_btree.c
++xfsprogs-5.10.0/libxfs/xfs_bmap_btree.h
++xfsprogs-5.10.0/libxfs/xfs_btree.c
++xfsprogs-5.10.0/libxfs/xfs_btree.h
++xfsprogs-5.10.0/libxfs/xfs_btree_staging.c
++xfsprogs-5.10.0/libxfs/xfs_btree_staging.h
++xfsprogs-5.10.0/libxfs/xfs_cksum.h
++xfsprogs-5.10.0/libxfs/xfs_da_btree.c
++xfsprogs-5.10.0/libxfs/xfs_da_btree.h
++xfsprogs-5.10.0/libxfs/xfs_da_format.h
++xfsprogs-5.10.0/libxfs/xfs_defer.c
++xfsprogs-5.10.0/libxfs/xfs_defer.h
++xfsprogs-5.10.0/libxfs/xfs_dir2.c
++xfsprogs-5.10.0/libxfs/xfs_dir2.h
++xfsprogs-5.10.0/libxfs/xfs_dir2_block.c
++xfsprogs-5.10.0/libxfs/xfs_dir2_data.c
++xfsprogs-5.10.0/libxfs/xfs_dir2_leaf.c
++xfsprogs-5.10.0/libxfs/xfs_dir2_node.c
++xfsprogs-5.10.0/libxfs/xfs_dir2_priv.h
++xfsprogs-5.10.0/libxfs/xfs_dir2_sf.c
++xfsprogs-5.10.0/libxfs/xfs_dquot_buf.c
++xfsprogs-5.10.0/libxfs/xfs_errortag.h
++xfsprogs-5.10.0/libxfs/xfs_format.h
++xfsprogs-5.10.0/libxfs/xfs_fs.h
++xfsprogs-5.10.0/libxfs/xfs_health.h
++xfsprogs-5.10.0/libxfs/xfs_ialloc.c
++xfsprogs-5.10.0/libxfs/xfs_ialloc.h
++xfsprogs-5.10.0/libxfs/xfs_ialloc_btree.c
++xfsprogs-5.10.0/libxfs/xfs_ialloc_btree.h
++xfsprogs-5.10.0/libxfs/xfs_iext_tree.c
++xfsprogs-5.10.0/libxfs/xfs_inode_buf.c
++xfsprogs-5.10.0/libxfs/xfs_inode_buf.h
++xfsprogs-5.10.0/libxfs/xfs_inode_fork.c
++xfsprogs-5.10.0/libxfs/xfs_inode_fork.h
++xfsprogs-5.10.0/libxfs/xfs_log_format.h
++xfsprogs-5.10.0/libxfs/xfs_log_rlimit.c
++xfsprogs-5.10.0/libxfs/xfs_quota_defs.h
++xfsprogs-5.10.0/libxfs/xfs_refcount.c
++xfsprogs-5.10.0/libxfs/xfs_refcount.h
++xfsprogs-5.10.0/libxfs/xfs_refcount_btree.c
++xfsprogs-5.10.0/libxfs/xfs_refcount_btree.h
++xfsprogs-5.10.0/libxfs/xfs_rmap.c
++xfsprogs-5.10.0/libxfs/xfs_rmap.h
++xfsprogs-5.10.0/libxfs/xfs_rmap_btree.c
++xfsprogs-5.10.0/libxfs/xfs_rmap_btree.h
++xfsprogs-5.10.0/libxfs/xfs_rtbitmap.c
++xfsprogs-5.10.0/libxfs/xfs_sb.c
++xfsprogs-5.10.0/libxfs/xfs_sb.h
++xfsprogs-5.10.0/libxfs/xfs_shared.h
++xfsprogs-5.10.0/libxfs/xfs_symlink_remote.c
++xfsprogs-5.10.0/libxfs/xfs_trans_inode.c
++xfsprogs-5.10.0/libxfs/xfs_trans_resv.c
++xfsprogs-5.10.0/libxfs/xfs_trans_resv.h
++xfsprogs-5.10.0/libxfs/xfs_trans_space.h
++xfsprogs-5.10.0/libxfs/xfs_types.c
++xfsprogs-5.10.0/libxfs/xfs_types.h
++xfsprogs-5.10.0/libxlog/Makefile
++xfsprogs-5.10.0/libxlog/util.c
++xfsprogs-5.10.0/libxlog/xfs_log_recover.c
++xfsprogs-5.10.0/logprint/Makefile
++xfsprogs-5.10.0/logprint/log_copy.c
++xfsprogs-5.10.0/logprint/log_dump.c
++xfsprogs-5.10.0/logprint/log_misc.c
++xfsprogs-5.10.0/logprint/log_print_all.c
++xfsprogs-5.10.0/logprint/log_print_trans.c
++xfsprogs-5.10.0/logprint/log_redo.c
++xfsprogs-5.10.0/logprint/logprint.c
++xfsprogs-5.10.0/logprint/logprint.h
++xfsprogs-5.10.0/m4/Makefile
++xfsprogs-5.10.0/m4/manual_format.m4
++xfsprogs-5.10.0/m4/multilib.m4
++xfsprogs-5.10.0/m4/package_aiodev.m4
++xfsprogs-5.10.0/m4/package_attr.m4
++xfsprogs-5.10.0/m4/package_blkid.m4
++xfsprogs-5.10.0/m4/package_devmapper.m4
++xfsprogs-5.10.0/m4/package_globals.m4
++xfsprogs-5.10.0/m4/package_icu.m4
++xfsprogs-5.10.0/m4/package_inih.m4
++xfsprogs-5.10.0/m4/package_libcdev.m4
++xfsprogs-5.10.0/m4/package_pthread.m4
++xfsprogs-5.10.0/m4/package_rt.m4
++xfsprogs-5.10.0/m4/package_sanitizer.m4
++xfsprogs-5.10.0/m4/package_services.m4
++xfsprogs-5.10.0/m4/package_types.m4
++xfsprogs-5.10.0/m4/package_utilies.m4
++xfsprogs-5.10.0/m4/package_uuiddev.m4
++xfsprogs-5.10.0/man/Makefile
++xfsprogs-5.10.0/man/man2/Makefile
++xfsprogs-5.10.0/man/man2/ioctl_xfs_ag_geometry.2
++xfsprogs-5.10.0/man/man2/ioctl_xfs_bulkstat.2
++xfsprogs-5.10.0/man/man2/ioctl_xfs_fsbulkstat.2
++xfsprogs-5.10.0/man/man2/ioctl_xfs_fscounts.2
++xfsprogs-5.10.0/man/man2/ioctl_xfs_fsgeometry.2
++xfsprogs-5.10.0/man/man2/ioctl_xfs_fsgetxattr.2
++xfsprogs-5.10.0/man/man2/ioctl_xfs_fsgetxattra.2
++xfsprogs-5.10.0/man/man2/ioctl_xfs_fsinumbers.2
++xfsprogs-5.10.0/man/man2/ioctl_xfs_fssetxattr.2
++xfsprogs-5.10.0/man/man2/ioctl_xfs_getbmap.2
++xfsprogs-5.10.0/man/man2/ioctl_xfs_getbmapa.2
++xfsprogs-5.10.0/man/man2/ioctl_xfs_getbmapx.2
++xfsprogs-5.10.0/man/man2/ioctl_xfs_getresblks.2
++xfsprogs-5.10.0/man/man2/ioctl_xfs_goingdown.2
++xfsprogs-5.10.0/man/man2/ioctl_xfs_inumbers.2
++xfsprogs-5.10.0/man/man2/ioctl_xfs_scrub_metadata.2
++xfsprogs-5.10.0/man/man2/ioctl_xfs_setresblks.2
++xfsprogs-5.10.0/man/man3/Makefile
++xfsprogs-5.10.0/man/man3/handle.3
++xfsprogs-5.10.0/man/man3/xfsctl.3
++xfsprogs-5.10.0/man/man5/Makefile
++xfsprogs-5.10.0/man/man5/projects.5
++xfsprogs-5.10.0/man/man5/projid.5
++xfsprogs-5.10.0/man/man5/xfs.5
++xfsprogs-5.10.0/man/man8/Makefile
++xfsprogs-5.10.0/man/man8/fsck.xfs.8
++xfsprogs-5.10.0/man/man8/mkfs.xfs.8
++xfsprogs-5.10.0/man/man8/xfs_admin.8
++xfsprogs-5.10.0/man/man8/xfs_bmap.8
++xfsprogs-5.10.0/man/man8/xfs_copy.8
++xfsprogs-5.10.0/man/man8/xfs_db.8
++xfsprogs-5.10.0/man/man8/xfs_estimate.8
++xfsprogs-5.10.0/man/man8/xfs_freeze.8
++xfsprogs-5.10.0/man/man8/xfs_fsr.8
++xfsprogs-5.10.0/man/man8/xfs_growfs.8
++xfsprogs-5.10.0/man/man8/xfs_info.8
++xfsprogs-5.10.0/man/man8/xfs_io.8
++xfsprogs-5.10.0/man/man8/xfs_logprint.8
++xfsprogs-5.10.0/man/man8/xfs_mdrestore.8
++xfsprogs-5.10.0/man/man8/xfs_metadump.8
++xfsprogs-5.10.0/man/man8/xfs_mkfile.8
++xfsprogs-5.10.0/man/man8/xfs_ncheck.8
++xfsprogs-5.10.0/man/man8/xfs_quota.8
++xfsprogs-5.10.0/man/man8/xfs_repair.8
++xfsprogs-5.10.0/man/man8/xfs_rtcp.8
++xfsprogs-5.10.0/man/man8/xfs_scrub.8
++xfsprogs-5.10.0/man/man8/xfs_scrub_all.8
++xfsprogs-5.10.0/man/man8/xfs_spaceman.8
++xfsprogs-5.10.0/mdrestore/Makefile
++xfsprogs-5.10.0/mdrestore/xfs_mdrestore.c
++xfsprogs-5.10.0/mkfs/Makefile
++xfsprogs-5.10.0/mkfs/proto.c
++xfsprogs-5.10.0/mkfs/xfs_mkfs.c
++xfsprogs-5.10.0/po/Makefile
++xfsprogs-5.10.0/po/de.po
++xfsprogs-5.10.0/po/pl.po
++xfsprogs-5.10.0/quota/Makefile
++xfsprogs-5.10.0/quota/edit.c
++xfsprogs-5.10.0/quota/free.c
++xfsprogs-5.10.0/quota/init.c
++xfsprogs-5.10.0/quota/init.h
++xfsprogs-5.10.0/quota/linux.c
++xfsprogs-5.10.0/quota/path.c
++xfsprogs-5.10.0/quota/project.c
++xfsprogs-5.10.0/quota/quot.c
++xfsprogs-5.10.0/quota/quota.c
++xfsprogs-5.10.0/quota/quota.h
++xfsprogs-5.10.0/quota/report.c
++xfsprogs-5.10.0/quota/state.c
++xfsprogs-5.10.0/quota/util.c
++xfsprogs-5.10.0/release.sh
++xfsprogs-5.10.0/repair/Makefile
++xfsprogs-5.10.0/repair/README
++xfsprogs-5.10.0/repair/agbtree.c
++xfsprogs-5.10.0/repair/agbtree.h
++xfsprogs-5.10.0/repair/agheader.c
++xfsprogs-5.10.0/repair/agheader.h
++xfsprogs-5.10.0/repair/attr_repair.c
++xfsprogs-5.10.0/repair/attr_repair.h
++xfsprogs-5.10.0/repair/avl.c
++xfsprogs-5.10.0/repair/avl.h
++xfsprogs-5.10.0/repair/bmap.c
++xfsprogs-5.10.0/repair/bmap.h
++xfsprogs-5.10.0/repair/btree.c
++xfsprogs-5.10.0/repair/btree.h
++xfsprogs-5.10.0/repair/bulkload.c
++xfsprogs-5.10.0/repair/bulkload.h
++xfsprogs-5.10.0/repair/da_util.c
++xfsprogs-5.10.0/repair/da_util.h
++xfsprogs-5.10.0/repair/dino_chunks.c
++xfsprogs-5.10.0/repair/dinode.c
++xfsprogs-5.10.0/repair/dinode.h
++xfsprogs-5.10.0/repair/dir2.c
++xfsprogs-5.10.0/repair/dir2.h
++xfsprogs-5.10.0/repair/err_protos.h
++xfsprogs-5.10.0/repair/globals.c
++xfsprogs-5.10.0/repair/globals.h
++xfsprogs-5.10.0/repair/incore.c
++xfsprogs-5.10.0/repair/incore.h
++xfsprogs-5.10.0/repair/incore_bmc.c
++xfsprogs-5.10.0/repair/incore_ext.c
++xfsprogs-5.10.0/repair/incore_ino.c
++xfsprogs-5.10.0/repair/init.c
++xfsprogs-5.10.0/repair/phase1.c
++xfsprogs-5.10.0/repair/phase2.c
++xfsprogs-5.10.0/repair/phase3.c
++xfsprogs-5.10.0/repair/phase4.c
++xfsprogs-5.10.0/repair/phase5.c
++xfsprogs-5.10.0/repair/phase6.c
++xfsprogs-5.10.0/repair/phase7.c
++xfsprogs-5.10.0/repair/prefetch.c
++xfsprogs-5.10.0/repair/prefetch.h
++xfsprogs-5.10.0/repair/progress.c
++xfsprogs-5.10.0/repair/progress.h
++xfsprogs-5.10.0/repair/protos.h
++xfsprogs-5.10.0/repair/quotacheck.c
++xfsprogs-5.10.0/repair/quotacheck.h
++xfsprogs-5.10.0/repair/rmap.c
++xfsprogs-5.10.0/repair/rmap.h
++xfsprogs-5.10.0/repair/rt.c
++xfsprogs-5.10.0/repair/rt.h
++xfsprogs-5.10.0/repair/sb.c
++xfsprogs-5.10.0/repair/scan.c
++xfsprogs-5.10.0/repair/scan.h
++xfsprogs-5.10.0/repair/slab.c
++xfsprogs-5.10.0/repair/slab.h
++xfsprogs-5.10.0/repair/threads.c
++xfsprogs-5.10.0/repair/threads.h
++xfsprogs-5.10.0/repair/versions.c
++xfsprogs-5.10.0/repair/versions.h
++xfsprogs-5.10.0/repair/xfs_repair.c
++xfsprogs-5.10.0/rtcp/Makefile
++xfsprogs-5.10.0/rtcp/xfs_rtcp.c
++xfsprogs-5.10.0/scrub/Makefile
++xfsprogs-5.10.0/scrub/common.c
++xfsprogs-5.10.0/scrub/common.h
++xfsprogs-5.10.0/scrub/counter.c
++xfsprogs-5.10.0/scrub/counter.h
++xfsprogs-5.10.0/scrub/descr.c
++xfsprogs-5.10.0/scrub/descr.h
++xfsprogs-5.10.0/scrub/disk.c
++xfsprogs-5.10.0/scrub/disk.h
++xfsprogs-5.10.0/scrub/filemap.c
++xfsprogs-5.10.0/scrub/filemap.h
++xfsprogs-5.10.0/scrub/fscounters.c
++xfsprogs-5.10.0/scrub/fscounters.h
++xfsprogs-5.10.0/scrub/inodes.c
++xfsprogs-5.10.0/scrub/inodes.h
++xfsprogs-5.10.0/scrub/phase1.c
++xfsprogs-5.10.0/scrub/phase2.c
++xfsprogs-5.10.0/scrub/phase3.c
++xfsprogs-5.10.0/scrub/phase4.c
++xfsprogs-5.10.0/scrub/phase5.c
++xfsprogs-5.10.0/scrub/phase6.c
++xfsprogs-5.10.0/scrub/phase7.c
++xfsprogs-5.10.0/scrub/progress.c
++xfsprogs-5.10.0/scrub/progress.h
++xfsprogs-5.10.0/scrub/read_verify.c
++xfsprogs-5.10.0/scrub/read_verify.h
++xfsprogs-5.10.0/scrub/repair.c
++xfsprogs-5.10.0/scrub/repair.h
++xfsprogs-5.10.0/scrub/scrub.c
++xfsprogs-5.10.0/scrub/scrub.h
++xfsprogs-5.10.0/scrub/spacemap.c
++xfsprogs-5.10.0/scrub/spacemap.h
++xfsprogs-5.10.0/scrub/unicrash.c
++xfsprogs-5.10.0/scrub/unicrash.h
++xfsprogs-5.10.0/scrub/vfs.c
++xfsprogs-5.10.0/scrub/vfs.h
++xfsprogs-5.10.0/scrub/xfs_scrub.c
++xfsprogs-5.10.0/scrub/xfs_scrub.h
++xfsprogs-5.10.0/scrub/xfs_scrub@.service.in
++xfsprogs-5.10.0/scrub/xfs_scrub_all.cron.in
++xfsprogs-5.10.0/scrub/xfs_scrub_all.in
++xfsprogs-5.10.0/scrub/xfs_scrub_all.service.in
++xfsprogs-5.10.0/scrub/xfs_scrub_all.timer
++xfsprogs-5.10.0/scrub/xfs_scrub_fail
++xfsprogs-5.10.0/scrub/xfs_scrub_fail@.service.in
++xfsprogs-5.10.0/spaceman/Makefile
++xfsprogs-5.10.0/spaceman/file.c
++xfsprogs-5.10.0/spaceman/freesp.c
++xfsprogs-5.10.0/spaceman/health.c
++xfsprogs-5.10.0/spaceman/info.c
++xfsprogs-5.10.0/spaceman/init.c
++xfsprogs-5.10.0/spaceman/init.h
++xfsprogs-5.10.0/spaceman/prealloc.c
++xfsprogs-5.10.0/spaceman/space.h
++xfsprogs-5.10.0/spaceman/trim.c
++xfsprogs-5.10.0/spaceman/xfs_info.sh
++xfsprogs-5.10.0/tools/find-api-violations.sh
++xfsprogs-5.10.0/tools/libxfs-apply
++xfsprogs-5.10.0/tools/libxfs-diff
++xfsprogs-5.10.0/tools/xfsbuflock.py
++xfsprogs-5.10.0/m4/libtool.m4
++xfsprogs-5.10.0/m4/lt~obsolete.m4
++xfsprogs-5.10.0/m4/ltoptions.m4
++xfsprogs-5.10.0/m4/ltsugar.m4
++xfsprogs-5.10.0/m4/ltversion.m4
++xfsprogs-5.10.0/po/xfsprogs.pot
++xfsprogs-5.10.0/.gitcensus
++xfsprogs-5.10.0/aclocal.m4
++xfsprogs-5.10.0/configure
++xfsprogs-5.10.0/config.guess
++xfsprogs-5.10.0/config.sub
++xfsprogs-5.10.0/install-sh
++xfsprogs-5.10.0/ltmain.sh
++checking for a BSD-compatible install... /usr/bin/ginstall -c
++checking build system type... x86_64-slackware-linux-musl
++checking host system type... x86_64-slackware-linux-musl
++checking how to print strings... printf
++checking for gcc... gcc
++checking whether the C compiler works... yes
++checking for C compiler default output file name... a.out
++checking for suffix of executables... 
++checking whether we are cross compiling... no
++checking for suffix of object files... o
++checking whether we are using the GNU C compiler... yes
++checking whether gcc accepts -g... yes
++checking for gcc option to accept ISO C89... none needed
++checking for a sed that does not truncate output... /usr/bin/sed
++checking for grep that handles long lines and -e... /usr/bin/grep
++checking for egrep... /usr/bin/grep -E
++checking for fgrep... /usr/bin/grep -F
++checking for ld used by gcc... /usr/bin/ld
++checking if the linker (/usr/bin/ld) is GNU ld... yes
++checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
++checking the name lister (/usr/bin/nm -B) interface... BSD nm
++checking whether ln -s works... yes
++checking the maximum length of command line arguments... 98304
++checking whether the shell understands some XSI constructs... yes
++checking whether the shell understands "+="... yes
++checking how to convert x86_64-slackware-linux-musl file names to x86_64-slackware-linux-musl format... func_convert_file_noop
++checking how to convert x86_64-slackware-linux-musl file names to toolchain format... func_convert_file_noop
++checking for /usr/bin/ld option to reload object files... -r
++checking for objdump... objdump
++checking how to recognize dependent libraries... pass_all
++checking for dlltool... dlltool
++checking how to associate runtime and link libraries... printf %s\n
++checking for ar... ar
++checking for archiver @FILE support... @
++checking for strip... strip
++checking for ranlib... ranlib
++checking for gawk... gawk
++checking command to parse /usr/bin/nm -B output from gcc object... ok
++checking for sysroot... no
++checking for mt... mt
++checking if mt is a manifest tool... no
++checking how to run the C preprocessor... gcc -E
++checking for ANSI C header files... yes
++checking for sys/types.h... yes
++checking for sys/stat.h... yes
++checking for stdlib.h... yes
++checking for string.h... yes
++checking for memory.h... yes
++checking for strings.h... yes
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking for unistd.h... yes
++checking for dlfcn.h... yes
++checking for objdir... .libs
++checking if gcc supports -fno-rtti -fno-exceptions... no
++checking for gcc option to produce PIC... -fPIC -DPIC
++checking if gcc PIC flag -fPIC -DPIC works... yes
++checking if gcc static flag -static works... yes
++checking if gcc supports -c -o file.o... yes
++checking if gcc supports -c -o file.o... (cached) yes
++checking whether the gcc linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
++checking whether -lc should be explicitly linked in... no
++checking dynamic linker characteristics... GNU/Linux ld.so
++checking how to hardcode library paths into programs... immediate
++checking whether stripping libraries is possible... yes
++checking if libtool supports shared libraries... yes
++checking whether to build shared libraries... yes
++checking whether to build static libraries... yes
++checking for gcc... (cached) gcc
++checking whether we are using the GNU C compiler... (cached) yes
++checking whether gcc accepts -g... (cached) yes
++checking for gcc option to accept ISO C89... (cached) none needed
++checking for gcc... (cached) gcc
++checking whether we are using the GNU C compiler... (cached) yes
++checking whether gcc accepts -g... (cached) yes
++checking for gcc option to accept ISO C89... (cached) none needed
++checking for gcc... (cached) gcc
++checking whether we are using the GNU C compiler... (cached) yes
++checking whether gcc accepts -g... (cached) yes
++checking for gcc option to accept ISO C89... (cached) none needed
++checking for gmake... /usr/bin/gmake
++checking for tar... /usr/bin/tar
++checking for gzip... /usr/bin/gzip
++checking whether gcc -MM is supported... yes
++checking for sort... /bin/sort
++checking whether ln -s works... yes
++checking for msgfmt... /usr/bin/msgfmt
++checking for msgmerge... /usr/bin/msgmerge
++checking for xgettext... /usr/bin/xgettext
++checking for rpm... no
++checking ini.h usability... yes
++checking ini.h presence... yes
++checking for ini.h... yes
++checking for ini_parse in -linih... yes
++checking uuid.h usability... no
++checking uuid.h presence... no
++checking for uuid.h... no
++checking sys/uuid.h usability... no
++checking sys/uuid.h presence... no
++checking for sys/uuid.h... no
++checking uuid/uuid.h usability... yes
++checking uuid/uuid.h presence... yes
++checking for uuid/uuid.h... yes
++checking for uuid_compare... no
++checking for uuid_compare in -luuid... yes
++checking pthread.h usability... yes
++checking pthread.h presence... yes
++checking for pthread.h... yes
++checking for pthread_mutex_init in -lpthread... yes
++checking for fadvise ... yes
++checking for madvise ... yes
++checking for mincore ... yes
++checking for sendfile ... yes
++checking for getmntent ... yes
++checking for fallocate... yes
++checking for fiemap... yes
++checking for pwritev2... no
++checking for preadv... yes
++checking for copy_file_range... yes
++checking for sync_file_range... yes
++checking for syncfs... yes
++checking mntent.h usability... yes
++checking mntent.h presence... yes
++checking for mntent.h... yes
++checking whether fls is declared... no
++checking for readdir... yes
++checking whether fsetxattr is declared... yes
++checking whether mremap is declared... yes
++checking for struct fsxattr... yes
++checking for struct fsxattr.fsx_cowextsize... yes
++checking for struct fscrypt_add_key_arg... yes
++checking for struct fscrypt_add_key_arg.key_id... yes
++checking for GETFSMAP... yes
++checking for struct statfs... yes
++checking for struct statfs.f_flags... yes
++checking for MAP_SYNC... no
++checking for library containing dm_task_create... -ldevmapper
++checking for mallinfo ... no
++checking attr/attributes.h usability... yes
++checking attr/attributes.h presence... yes
++checking for attr/attributes.h... yes
++checking for struct attrlist_cursor... yes
++checking pkg-config is at least version 0.9.0... yes
++checking for libicu... yes
++checking whether openat is declared... yes
++checking whether fstatat is declared... yes
++checking for struct sg_io_hdr ... yes
++checking for struct hd_geometry ... yes
++checking for systemd... no
++checking for systemd system unit dir... no
++checking for system crontab dir... /etc/cron.d
++checking for library containing blkid_probe_all... -lblkid
++checking for blkid_probe_get_topology... yes
++checking size of long... 8
++checking size of char *... 8
++checking for umode_t... no
++configure: creating ./config.status
++config.status: creating include/builddefs
++config.status: creating include/platform_defs.h
++config.status: executing libtool commands
++   [HEADERS] include
++   [HEADERS] libxfs
++Building include
++    [LN]     disk
++gmake[1]: Nothing to be done for 'include'.
++Building libfrog
++    [CC]     gen_crc32table
++    [GENERATE] crc32table.h
++    [TEST]    CRC32
++    [CC]     avl64.lo
++    [CC]     bitmap.lo
++CRC_LE_BITS = 64
++crc32c: tests passed, 225944 bytes in 120 usec
++    [CC]     bulkstat.lo
++    [CC]     convert.lo
++    [CC]     crc32.lo
++    [CC]     fsgeom.lo
++    [CC]     list_sort.lo
++    [CC]     linux.lo
++    [CC]     logging.lo
++    [CC]     paths.lo
++    [CC]     projects.lo
++    [CC]     ptvar.lo
++    [CC]     radix-tree.lo
++    [CC]     scrub.lo
++    [CC]     topology.lo
++    [CC]     util.lo
++    [CC]     workqueue.lo
++    [LD]     libfrog.la
++Building libxfs
++    [CC]     cache.lo
++    [CC]     defer_item.lo
++    [CC]     init.lo
++In file included from cache.c:13:
++libxfs_priv.h:216: warning: "PAGE_SIZE" redefined
++  216 | #define PAGE_SIZE  getpagesize()
++      | 
++In file included from init.c:10:
++libxfs_priv.h:216: warning: "PAGE_SIZE" redefined
++  216 | #define PAGE_SIZE  getpagesize()
++      | 
++In file included from /usr/include/sys/param.h:33,
++                 from ../include/platform_defs.h:23,
++                 from libxfs_priv.h:41,
++                 from cache.c:13:
++/usr/include/limits.h:97: note: this is the location of the previous definition
++   97 | #define PAGE_SIZE PAGESIZE
++      | 
++In file included from /usr/include/sys/param.h:33,
++                 from ../include/platform_defs.h:23,
++                 from libxfs_priv.h:41,
++                 from init.c:10:
++/usr/include/limits.h:97: note: this is the location of the previous definition
++   97 | #define PAGE_SIZE PAGESIZE
++      | 
++In file included from defer_item.c:6:
++libxfs_priv.h:216: warning: "PAGE_SIZE" redefined
++  216 | #define PAGE_SIZE  getpagesize()
++      | 
++In file included from /usr/include/sys/param.h:33,
++                 from ../include/platform_defs.h:23,
++                 from libxfs_priv.h:41,
++                 from defer_item.c:6:
++/usr/include/limits.h:97: note: this is the location of the previous definition
++   97 | #define PAGE_SIZE PAGESIZE
++      | 
++    [CC]     kmem.lo
++In file included from kmem.c:4:
++libxfs_priv.h:216: warning: "PAGE_SIZE" redefined
++  216 | #define PAGE_SIZE  getpagesize()
++      | 
++In file included from /usr/include/sys/param.h:33,
++                 from ../include/platform_defs.h:23,
++                 from libxfs_priv.h:41,
++                 from kmem.c:4:
++/usr/include/limits.h:97: note: this is the location of the previous definition
++   97 | #define PAGE_SIZE PAGESIZE
++      | 
++    [CC]     logitem.lo
++    [CC]     rdwr.lo
++In file included from logitem.c:7:
++libxfs_priv.h:216: warning: "PAGE_SIZE" redefined
++  216 | #define PAGE_SIZE  getpagesize()
++      | 
++In file included from /usr/include/sys/param.h:33,
++                 from ../include/platform_defs.h:23,
++                 from libxfs_priv.h:41,
++                 from logitem.c:7:
++/usr/include/limits.h:97: note: this is the location of the previous definition
++   97 | #define PAGE_SIZE PAGESIZE
++      | 
++In file included from rdwr.c:8:
++libxfs_priv.h:216: warning: "PAGE_SIZE" redefined
++  216 | #define PAGE_SIZE  getpagesize()
++      | 
++In file included from /usr/include/sys/param.h:33,
++                 from ../include/platform_defs.h:23,
++                 from libxfs_priv.h:41,
++                 from rdwr.c:8:
++/usr/include/limits.h:97: note: this is the location of the previous definition
++   97 | #define PAGE_SIZE PAGESIZE
++      | 
++rdwr.c: In function 'libxfs_bcompare':
++rdwr.c:211:5: warning: format '%lx' expects argument of type 'long unsigned int', but argument 3 has type 'pthread_t' {aka 'struct __pthread *'} [-Wformat=]
++  211 |  "%lx: Badness in key lookup (length)\n"
++      |   ~~^
++      |     |
++      |     long unsigned int
++  212 |  "bp=(bno 0x%llx, len %u bytes) key=(bno 0x%llx, len %u bytes)\n",
++  213 |     pthread_self(),
++      |     ~~~~~~~~~~~~~~
++      |     |
++      |     pthread_t {aka struct __pthread *}
++    [CC]     trans.lo
++    [CC]     util.lo
++In file included from trans.c:8:
++libxfs_priv.h:216: warning: "PAGE_SIZE" redefined
++  216 | #define PAGE_SIZE  getpagesize()
++      | 
++In file included from /usr/include/sys/param.h:33,
++                 from ../include/platform_defs.h:23,
++                 from libxfs_priv.h:41,
++                 from trans.c:8:
++/usr/include/limits.h:97: note: this is the location of the previous definition
++   97 | #define PAGE_SIZE PAGESIZE
++      | 
++In file included from util.c:7:
++libxfs_priv.h:216: warning: "PAGE_SIZE" redefined
++  216 | #define PAGE_SIZE  getpagesize()
++      | 
++In file included from /usr/include/sys/param.h:33,
++                 from ../include/platform_defs.h:23,
++                 from libxfs_priv.h:41,
++                 from util.c:7:
++/usr/include/limits.h:97: note: this is the location of the previous definition
++   97 | #define PAGE_SIZE PAGESIZE
++      | 
++    [CC]     xfs_ag.lo
++    [CC]     xfs_ag_resv.lo
++In file included from xfs_ag.c:8:
++libxfs_priv.h:216: warning: "PAGE_SIZE" redefined
++  216 | #define PAGE_SIZE  getpagesize()
++      | 
++In file included from /usr/include/sys/param.h:33,
++                 from ../include/platform_defs.h:23,
++                 from libxfs_priv.h:41,
++                 from xfs_ag.c:8:
++/usr/include/limits.h:97: note: this is the location of the previous definition
++   97 | #define PAGE_SIZE PAGESIZE
++      | 
++In file included from xfs_ag_resv.c:6:
++libxfs_priv.h:216: warning: "PAGE_SIZE" redefined
++  216 | #define PAGE_SIZE  getpagesize()
++      | 
++In file included from /usr/include/sys/param.h:33,
++                 from ../include/platform_defs.h:23,
++                 from libxfs_priv.h:41,
++                 from xfs_ag_resv.c:6:
++/usr/include/limits.h:97: note: this is the location of the previous definition
++   97 | #define PAGE_SIZE PAGESIZE
++      | 
++    [CC]     xfs_alloc.lo
++In file included from xfs_alloc.c:6:
++libxfs_priv.h:216: warning: "PAGE_SIZE" redefined
++  216 | #define PAGE_SIZE  getpagesize()
++      | 
++In file included from /usr/include/sys/param.h:33,
++                 from ../include/platform_defs.h:23,
++                 from libxfs_priv.h:41,
++                 from xfs_alloc.c:6:
++/usr/include/limits.h:97: note: this is the location of the previous definition
++   97 | #define PAGE_SIZE PAGESIZE
++      | 
++    [CC]     xfs_alloc_btree.lo
++In file included from xfs_alloc_btree.c:6:
++libxfs_priv.h:216: warning: "PAGE_SIZE" redefined
++  216 | #define PAGE_SIZE  getpagesize()
++      | 
++In file included from /usr/include/sys/param.h:33,
++                 from ../include/platform_defs.h:23,
++                 from libxfs_priv.h:41,
++                 from xfs_alloc_btree.c:6:
++/usr/include/limits.h:97: note: this is the location of the previous definition
++   97 | #define PAGE_SIZE PAGESIZE
++      | 
++    [CC]     xfs_attr.lo
++In file included from xfs_attr.c:6:
++libxfs_priv.h:216: warning: "PAGE_SIZE" redefined
++  216 | #define PAGE_SIZE  getpagesize()
++      | 
++In file included from /usr/include/sys/param.h:33,
++                 from ../include/platform_defs.h:23,
++                 from libxfs_priv.h:41,
++                 from xfs_attr.c:6:
++/usr/include/limits.h:97: note: this is the location of the previous definition
++   97 | #define PAGE_SIZE PAGESIZE
++      | 
++    [CC]     xfs_attr_leaf.lo
++In file included from xfs_attr_leaf.c:7:
++libxfs_priv.h:216: warning: "PAGE_SIZE" redefined
++  216 | #define PAGE_SIZE  getpagesize()
++      | 
++In file included from /usr/include/sys/param.h:33,
++                 from ../include/platform_defs.h:23,
++                 from libxfs_priv.h:41,
++                 from xfs_attr_leaf.c:7:
++/usr/include/limits.h:97: note: this is the location of the previous definition
++   97 | #define PAGE_SIZE PAGESIZE
++      | 
++    [CC]     xfs_attr_remote.lo
++In file included from xfs_attr_remote.c:7:
++libxfs_priv.h:216: warning: "PAGE_SIZE" redefined
++  216 | #define PAGE_SIZE  getpagesize()
++      | 
++In file included from /usr/include/sys/param.h:33,
++                 from ../include/platform_defs.h:23,
++                 from libxfs_priv.h:41,
++                 from xfs_attr_remote.c:7:
++/usr/include/limits.h:97: note: this is the location of the previous definition
++   97 | #define PAGE_SIZE PAGESIZE
++      | 
++    [CC]     xfs_bit.lo
++In file included from xfs_bit.c:6:
++libxfs_priv.h:216: warning: "PAGE_SIZE" redefined
++  216 | #define PAGE_SIZE  getpagesize()
++      | 
++In file included from /usr/include/sys/param.h:33,
++                 from ../include/platform_defs.h:23,
++                 from libxfs_priv.h:41,
++                 from xfs_bit.c:6:
++/usr/include/limits.h:97: note: this is the location of the previous definition
++   97 | #define PAGE_SIZE PAGESIZE
++      | 
++    [CC]     xfs_bmap.lo
++    [CC]     xfs_bmap_btree.lo
++In file included from xfs_bmap.c:6:
++libxfs_priv.h:216: warning: "PAGE_SIZE" redefined
++  216 | #define PAGE_SIZE  getpagesize()
++      | 
++In file included from /usr/include/sys/param.h:33,
++                 from ../include/platform_defs.h:23,
++                 from libxfs_priv.h:41,
++                 from xfs_bmap.c:6:
++/usr/include/limits.h:97: note: this is the location of the previous definition
++   97 | #define PAGE_SIZE PAGESIZE
++      | 
++In file included from xfs_bmap_btree.c:6:
++libxfs_priv.h:216: warning: "PAGE_SIZE" redefined
++  216 | #define PAGE_SIZE  getpagesize()
++      | 
++In file included from /usr/include/sys/param.h:33,
++                 from ../include/platform_defs.h:23,
++                 from libxfs_priv.h:41,
++                 from xfs_bmap_btree.c:6:
++/usr/include/limits.h:97: note: this is the location of the previous definition
++   97 | #define PAGE_SIZE PAGESIZE
++      | 
++    [CC]     xfs_btree.lo
++In file included from xfs_btree.c:6:
++libxfs_priv.h:216: warning: "PAGE_SIZE" redefined
++  216 | #define PAGE_SIZE  getpagesize()
++      | 
++In file included from /usr/include/sys/param.h:33,
++                 from ../include/platform_defs.h:23,
++                 from libxfs_priv.h:41,
++                 from xfs_btree.c:6:
++/usr/include/limits.h:97: note: this is the location of the previous definition
++   97 | #define PAGE_SIZE PAGESIZE
++      | 
++    [CC]     xfs_btree_staging.lo
++In file included from xfs_btree_staging.c:6:
++libxfs_priv.h:216: warning: "PAGE_SIZE" redefined
++  216 | #define PAGE_SIZE  getpagesize()
++      | 
++In file included from /usr/include/sys/param.h:33,
++                 from ../include/platform_defs.h:23,
++                 from libxfs_priv.h:41,
++                 from xfs_btree_staging.c:6:
++/usr/include/limits.h:97: note: this is the location of the previous definition
++   97 | #define PAGE_SIZE PAGESIZE
++      | 
++    [CC]     xfs_da_btree.lo
++In file included from xfs_da_btree.c:7:
++libxfs_priv.h:216: warning: "PAGE_SIZE" redefined
++  216 | #define PAGE_SIZE  getpagesize()
++      | 
++In file included from /usr/include/sys/param.h:33,
++                 from ../include/platform_defs.h:23,
++                 from libxfs_priv.h:41,
++                 from xfs_da_btree.c:7:
++/usr/include/limits.h:97: note: this is the location of the previous definition
++   97 | #define PAGE_SIZE PAGESIZE
++      | 
++    [CC]     xfs_defer.lo
++    [CC]     xfs_dir2.lo
++In file included from xfs_defer.c:6:
++libxfs_priv.h:216: warning: "PAGE_SIZE" redefined
++  216 | #define PAGE_SIZE  getpagesize()
++      | 
++In file included from /usr/include/sys/param.h:33,
++                 from ../include/platform_defs.h:23,
++                 from libxfs_priv.h:41,
++                 from xfs_defer.c:6:
++/usr/include/limits.h:97: note: this is the location of the previous definition
++   97 | #define PAGE_SIZE PAGESIZE
++      | 
++In file included from xfs_dir2.c:6:
++libxfs_priv.h:216: warning: "PAGE_SIZE" redefined
++  216 | #define PAGE_SIZE  getpagesize()
++      | 
++In file included from /usr/include/sys/param.h:33,
++                 from ../include/platform_defs.h:23,
++                 from libxfs_priv.h:41,
++                 from xfs_dir2.c:6:
++/usr/include/limits.h:97: note: this is the location of the previous definition
++   97 | #define PAGE_SIZE PAGESIZE
++      | 
++    [CC]     xfs_dir2_block.lo
++    [CC]     xfs_dir2_data.lo
++In file included from xfs_dir2_block.c:7:
++libxfs_priv.h:216: warning: "PAGE_SIZE" redefined
++  216 | #define PAGE_SIZE  getpagesize()
++      | 
++In file included from /usr/include/sys/param.h:33,
++                 from ../include/platform_defs.h:23,
++                 from libxfs_priv.h:41,
++                 from xfs_dir2_block.c:7:
++/usr/include/limits.h:97: note: this is the location of the previous definition
++   97 | #define PAGE_SIZE PAGESIZE
++      | 
++In file included from xfs_dir2_data.c:7:
++libxfs_priv.h:216: warning: "PAGE_SIZE" redefined
++  216 | #define PAGE_SIZE  getpagesize()
++      | 
++In file included from /usr/include/sys/param.h:33,
++                 from ../include/platform_defs.h:23,
++                 from libxfs_priv.h:41,
++                 from xfs_dir2_data.c:7:
++/usr/include/limits.h:97: note: this is the location of the previous definition
++   97 | #define PAGE_SIZE PAGESIZE
++      | 
++    [CC]     xfs_dir2_leaf.lo
++In file included from xfs_dir2_leaf.c:7:
++libxfs_priv.h:216: warning: "PAGE_SIZE" redefined
++  216 | #define PAGE_SIZE  getpagesize()
++      | 
++In file included from /usr/include/sys/param.h:33,
++                 from ../include/platform_defs.h:23,
++                 from libxfs_priv.h:41,
++                 from xfs_dir2_leaf.c:7:
++/usr/include/limits.h:97: note: this is the location of the previous definition
++   97 | #define PAGE_SIZE PAGESIZE
++      | 
++    [CC]     xfs_dir2_node.lo
++In file included from xfs_dir2_node.c:7:
++libxfs_priv.h:216: warning: "PAGE_SIZE" redefined
++  216 | #define PAGE_SIZE  getpagesize()
++      | 
++In file included from /usr/include/sys/param.h:33,
++                 from ../include/platform_defs.h:23,
++                 from libxfs_priv.h:41,
++                 from xfs_dir2_node.c:7:
++/usr/include/limits.h:97: note: this is the location of the previous definition
++   97 | #define PAGE_SIZE PAGESIZE
++      | 
++    [CC]     xfs_dir2_sf.lo
++In file included from xfs_dir2_sf.c:6:
++libxfs_priv.h:216: warning: "PAGE_SIZE" redefined
++  216 | #define PAGE_SIZE  getpagesize()
++      | 
++In file included from /usr/include/sys/param.h:33,
++                 from ../include/platform_defs.h:23,
++                 from libxfs_priv.h:41,
++                 from xfs_dir2_sf.c:6:
++/usr/include/limits.h:97: note: this is the location of the previous definition
++   97 | #define PAGE_SIZE PAGESIZE
++      | 
++    [CC]     xfs_dquot_buf.lo
++In file included from xfs_dquot_buf.c:7:
++libxfs_priv.h:216: warning: "PAGE_SIZE" redefined
++  216 | #define PAGE_SIZE  getpagesize()
++      | 
++In file included from /usr/include/sys/param.h:33,
++                 from ../include/platform_defs.h:23,
++                 from libxfs_priv.h:41,
++                 from xfs_dquot_buf.c:7:
++/usr/include/limits.h:97: note: this is the location of the previous definition
++   97 | #define PAGE_SIZE PAGESIZE
++      | 
++    [CC]     xfs_ialloc.lo
++In file included from xfs_ialloc.c:6:
++libxfs_priv.h:216: warning: "PAGE_SIZE" redefined
++  216 | #define PAGE_SIZE  getpagesize()
++      | 
++In file included from /usr/include/sys/param.h:33,
++                 from ../include/platform_defs.h:23,
++                 from libxfs_priv.h:41,
++                 from xfs_ialloc.c:6:
++/usr/include/limits.h:97: note: this is the location of the previous definition
++   97 | #define PAGE_SIZE PAGESIZE
++      | 
++    [CC]     xfs_iext_tree.lo
++In file included from xfs_iext_tree.c:6:
++libxfs_priv.h:216: warning: "PAGE_SIZE" redefined
++  216 | #define PAGE_SIZE  getpagesize()
++      | 
++In file included from /usr/include/sys/param.h:33,
++                 from ../include/platform_defs.h:23,
++                 from libxfs_priv.h:41,
++                 from xfs_iext_tree.c:6:
++/usr/include/limits.h:97: note: this is the location of the previous definition
++   97 | #define PAGE_SIZE PAGESIZE
++      | 
++    [CC]     xfs_inode_buf.lo
++In file included from xfs_inode_buf.c:6:
++libxfs_priv.h:216: warning: "PAGE_SIZE" redefined
++  216 | #define PAGE_SIZE  getpagesize()
++      | 
++In file included from /usr/include/sys/param.h:33,
++                 from ../include/platform_defs.h:23,
++                 from libxfs_priv.h:41,
++                 from xfs_inode_buf.c:6:
++/usr/include/limits.h:97: note: this is the location of the previous definition
++   97 | #define PAGE_SIZE PAGESIZE
++      | 
++    [CC]     xfs_inode_fork.lo
++    [CC]     xfs_ialloc_btree.lo
++In file included from xfs_ialloc_btree.c:6:
++libxfs_priv.h:216: warning: "PAGE_SIZE" redefined
++  216 | #define PAGE_SIZE  getpagesize()
++      | 
++In file included from /usr/include/sys/param.h:33,
++                 from ../include/platform_defs.h:23,
++                 from libxfs_priv.h:41,
++                 from xfs_ialloc_btree.c:6:
++/usr/include/limits.h:97: note: this is the location of the previous definition
++   97 | #define PAGE_SIZE PAGESIZE
++      | 
++In file included from xfs_inode_fork.c:7:
++libxfs_priv.h:216: warning: "PAGE_SIZE" redefined
++  216 | #define PAGE_SIZE  getpagesize()
++      | 
++In file included from /usr/include/sys/param.h:33,
++                 from ../include/platform_defs.h:23,
++                 from libxfs_priv.h:41,
++                 from xfs_inode_fork.c:7:
++/usr/include/limits.h:97: note: this is the location of the previous definition
++   97 | #define PAGE_SIZE PAGESIZE
++      | 
++    [CC]     xfs_log_rlimit.lo
++In file included from xfs_log_rlimit.c:6:
++libxfs_priv.h:216: warning: "PAGE_SIZE" redefined
++  216 | #define PAGE_SIZE  getpagesize()
++      | 
++In file included from /usr/include/sys/param.h:33,
++                 from ../include/platform_defs.h:23,
++                 from libxfs_priv.h:41,
++                 from xfs_log_rlimit.c:6:
++/usr/include/limits.h:97: note: this is the location of the previous definition
++   97 | #define PAGE_SIZE PAGESIZE
++      | 
++    [CC]     xfs_refcount.lo
++    [CC]     xfs_refcount_btree.lo
++In file included from xfs_refcount_btree.c:6:
++libxfs_priv.h:216: warning: "PAGE_SIZE" redefined
++  216 | #define PAGE_SIZE  getpagesize()
++      | 
++In file included from /usr/include/sys/param.h:33,
++                 from ../include/platform_defs.h:23,
++                 from libxfs_priv.h:41,
++                 from xfs_refcount_btree.c:6:
++/usr/include/limits.h:97: note: this is the location of the previous definition
++   97 | #define PAGE_SIZE PAGESIZE
++      | 
++In file included from xfs_refcount.c:6:
++libxfs_priv.h:216: warning: "PAGE_SIZE" redefined
++  216 | #define PAGE_SIZE  getpagesize()
++      | 
++In file included from /usr/include/sys/param.h:33,
++                 from ../include/platform_defs.h:23,
++                 from libxfs_priv.h:41,
++                 from xfs_refcount.c:6:
++/usr/include/limits.h:97: note: this is the location of the previous definition
++   97 | #define PAGE_SIZE PAGESIZE
++      | 
++    [CC]     xfs_rmap.lo
++In file included from xfs_rmap.c:6:
++libxfs_priv.h:216: warning: "PAGE_SIZE" redefined
++  216 | #define PAGE_SIZE  getpagesize()
++      | 
++In file included from /usr/include/sys/param.h:33,
++                 from ../include/platform_defs.h:23,
++                 from libxfs_priv.h:41,
++                 from xfs_rmap.c:6:
++/usr/include/limits.h:97: note: this is the location of the previous definition
++   97 | #define PAGE_SIZE PAGESIZE
++      | 
++    [CC]     xfs_rmap_btree.lo
++In file included from xfs_rmap_btree.c:6:
++libxfs_priv.h:216: warning: "PAGE_SIZE" redefined
++  216 | #define PAGE_SIZE  getpagesize()
++      | 
++In file included from /usr/include/sys/param.h:33,
++                 from ../include/platform_defs.h:23,
++                 from libxfs_priv.h:41,
++                 from xfs_rmap_btree.c:6:
++/usr/include/limits.h:97: note: this is the location of the previous definition
++   97 | #define PAGE_SIZE PAGESIZE
++      | 
++    [CC]     xfs_rtbitmap.lo
++In file included from xfs_rtbitmap.c:6:
++libxfs_priv.h:216: warning: "PAGE_SIZE" redefined
++  216 | #define PAGE_SIZE  getpagesize()
++      | 
++In file included from /usr/include/sys/param.h:33,
++                 from ../include/platform_defs.h:23,
++                 from libxfs_priv.h:41,
++                 from xfs_rtbitmap.c:6:
++/usr/include/limits.h:97: note: this is the location of the previous definition
++   97 | #define PAGE_SIZE PAGESIZE
++      | 
++    [CC]     xfs_sb.lo
++In file included from xfs_sb.c:6:
++libxfs_priv.h:216: warning: "PAGE_SIZE" redefined
++  216 | #define PAGE_SIZE  getpagesize()
++      | 
++In file included from /usr/include/sys/param.h:33,
++                 from ../include/platform_defs.h:23,
++                 from libxfs_priv.h:41,
++                 from xfs_sb.c:6:
++/usr/include/limits.h:97: note: this is the location of the previous definition
++   97 | #define PAGE_SIZE PAGESIZE
++      | 
++    [CC]     xfs_symlink_remote.lo
++    [CC]     xfs_trans_inode.lo
++In file included from xfs_symlink_remote.c:7:
++libxfs_priv.h:216: warning: "PAGE_SIZE" redefined
++  216 | #define PAGE_SIZE  getpagesize()
++      | 
++In file included from /usr/include/sys/param.h:33,
++                 from ../include/platform_defs.h:23,
++                 from libxfs_priv.h:41,
++                 from xfs_symlink_remote.c:7:
++/usr/include/limits.h:97: note: this is the location of the previous definition
++   97 | #define PAGE_SIZE PAGESIZE
++      | 
++In file included from xfs_trans_inode.c:6:
++libxfs_priv.h:216: warning: "PAGE_SIZE" redefined
++  216 | #define PAGE_SIZE  getpagesize()
++      | 
++In file included from /usr/include/sys/param.h:33,
++                 from ../include/platform_defs.h:23,
++                 from libxfs_priv.h:41,
++                 from xfs_trans_inode.c:6:
++/usr/include/limits.h:97: note: this is the location of the previous definition
++   97 | #define PAGE_SIZE PAGESIZE
++      | 
++    [CC]     xfs_trans_resv.lo
++    [CC]     xfs_types.lo
++In file included from xfs_trans_resv.c:7:
++libxfs_priv.h:216: warning: "PAGE_SIZE" redefined
++  216 | #define PAGE_SIZE  getpagesize()
++      | 
++In file included from /usr/include/sys/param.h:33,
++                 from ../include/platform_defs.h:23,
++                 from libxfs_priv.h:41,
++                 from xfs_trans_resv.c:7:
++/usr/include/limits.h:97: note: this is the location of the previous definition
++   97 | #define PAGE_SIZE PAGESIZE
++      | 
++In file included from xfs_types.c:7:
++libxfs_priv.h:216: warning: "PAGE_SIZE" redefined
++  216 | #define PAGE_SIZE  getpagesize()
++      | 
++In file included from /usr/include/sys/param.h:33,
++                 from ../include/platform_defs.h:23,
++                 from libxfs_priv.h:41,
++                 from xfs_types.c:7:
++/usr/include/limits.h:97: note: this is the location of the previous definition
++   97 | #define PAGE_SIZE PAGESIZE
++      | 
++    [LD]     libxfs.la
++Building libxlog
++Building libxcmd
++Building libhandle
++    [CC]     handle.lo
++    [CC]     xfs_log_recover.lo
++    [CC]     command.lo
++    [CC]     input.lo
++    [CC]     jdm.lo
++    [LD]     libhandle.la
++    [CC]     help.lo
++    [CC]     quit.lo
++Building estimate
++    [CC]     xfs_estimate.o
++    [LD]     libxcmd.la
++    [CC]     util.lo
++    [LD]     xfs_estimate
++Building fsck
++Building fsr
++Building growfs
++    [CC]     xfs_fsr.o
++    [CC]     xfs_growfs.o
++    [LD]     libxlog.la
++    [LD]     xfs_growfs
++Building io
++Building logprint
++    [LD]     xfs_fsr
++    [CC]     logprint.o
++    [CC]     log_copy.o
++    [CC]     log_dump.o
++    [CC]     log_misc.o
++    [CC]     log_print_all.o
++    [CC]     init.o
++    [CC]     log_print_trans.o
++    [CC]     attr.o
++    [CC]     log_redo.o
++    [CC]     bmap.o
++    [CC]     bulkstat.o
++    [LD]     xfs_logprint
++Building mkfs
++    [CC]     crc32cselftest.o
++    [CC]     proto.o
++    [CC]     cowextsize.o
++Building quota
++    [CC]     encrypt.o
++    [CC]     xfs_mkfs.o
++    [CC]     file.o
++    [CC]     init.o
++    [CC]     freeze.o
++    [CC]     util.o
++    [CC]     fsync.o
++    [CC]     getrusage.o
++    [CC]     edit.o
++    [CC]     imap.o
++    [CC]     inject.o
++    [CC]     label.o
++    [CC]     free.o
++    [CC]     link.o
++    [CC]     linux.o
++    [CC]     mmap.o
++    [CC]     path.o
++    [CC]     project.o
++    [CC]     open.o
++    [LD]     mkfs.xfs
++    [CC]     quot.o
++    [CC]     quota.o
++    [CC]     report.o
++    [CC]     parent.o
++    [CC]     pread.o
++    [CC]     prealloc.o
++    [CC]     state.o
++    [CC]     pwrite.o
++    [CC]     reflink.o
++    [LD]     xfs_quota
++    [CC]     resblks.o
++    [CC]     scrub.o
++    [CC]     seek.o
++Building mdrestore
++    [CC]     xfs_mdrestore.o
++    [CC]     shutdown.o
++    [CC]     stat.o
++    [CC]     swapext.o
++    [CC]     sync.o
++    [CC]     truncate.o
++    [LD]     xfs_mdrestore
++    [CC]     utimes.o
++    [CC]     fadvise.o
++Building repair
++Building rtcp
++    [CC]     madvise.o
++    [CC]     xfs_rtcp.o
++    [CC]     mincore.o
++    [CC]     sendfile.o
++    [CC]     fiemap.o
++    [LD]     xfs_rtcp
++    [CC]     copy_file_range.o
++    [CC]     sync_file_range.o
++    [CC]     readdir.o
++    [CC]     log_writes.o
++    [CC]     fsmap.o
++Building m4
++Building man
++Building man2
++Building man3
++Building man5
++Building man8
++Building doc
++    [ZIP]    CHANGES.gz
++Building debian
++Building spaceman
++    [LD]     xfs_io
++    [CC]     info.o
++    [CC]     agheader.o
++    [CC]     init.o
++Building scrub
++    [CC]     file.o
++    [CC]     agbtree.o
++    [CC]     health.o
++    [CC]     prealloc.o
++    [CC]     trim.o
++    [CC]     attr_repair.o
++    [CC]     freesp.o
++    [CC]     common.o
++In file included from common.c:10:
++common.c: In function ‘__str_out’:
++common.c:125:21: warning: format ‘%s’ expects argument of type ‘char *’, but argument 3 has type ‘int’ [-Wformat=]
++  125 |   fprintf(stream, _("%s."), strerror_r(error, buf, DESCR_BUFSZ));
++      |                     ^~~~~
++../include/platform_defs.h:44:41: note: in definition of macro ‘_’
++   44 | # define _(x)                   gettext(x)
++      |                                         ^
++common.c:125:23: note: format string is defined here
++  125 |   fprintf(stream, _("%s."), strerror_r(error, buf, DESCR_BUFSZ));
++      |                      ~^
++      |                       |
++      |                       char *
++      |                      %d
++    [CC]     counter.o
++    [LD]     xfs_spaceman
++    [CC]     descr.o
++    [CC]     disk.o
++    [CC]     avl.o
++Building po
++    [CC]     filemap.o
++    [MSGFMT] de.mo
++    [MSGFMT] pl.mo
++Building copy
++    [CC]     fscounters.o
++    [CC]     xfs_copy.o
++xfs_copy.c: In function ‘handler’:
++xfs_copy.c:261:21: warning: comparison between pointer and integer
++  261 |   if (target[i].pid == pid)  {
++      |                     ^~
++    [CC]     inodes.o
++    [CC]     bulkload.o
++    [CC]     phase1.o
++    [CC]     bmap.o
++    [CC]     phase2.o
++    [CC]     btree.o
++    [CC]     phase3.o
++    [LD]     xfs_copy
++    [CC]     phase4.o
++    [CC]     phase5.o
++Building db
++    [CC]     da_util.o
++    [CC]     phase6.o
++    [CC]     phase7.o
++    [CC]     dino_chunks.o
++    [CC]     progress.o
++    [CC]     read_verify.o
++    [CC]     repair.o
++    [CC]     dinode.o
++    [CC]     scrub.o
++    [CC]     spacemap.o
++    [CC]     vfs.o
++    [CC]     xfs_scrub.o
++    [CC]     unicrash.o
++    [CC]     addr.o
++    [CC]     dir2.o
++    [CC]     agf.o
++    [SED]    xfs_scrub_all
++    [SED]    xfs_scrub_all.cron
++    [LD]     xfs_scrub
++    [CC]     agfl.o
++    [CC]     agi.o
++    [CC]     attr.o
++    [CC]     attrshort.o
++    [CC]     bit.o
++    [CC]     globals.o
++    [CC]     block.o
++    [CC]     incore_bmc.o
++    [CC]     bmap.o
++    [CC]     incore.o
++    [CC]     btblock.o
++    [CC]     incore_ext.o
++    [CC]     bmroot.o
++    [CC]     check.o
++    [CC]     incore_ino.o
++    [CC]     command.o
++    [CC]     crc.o
++    [CC]     debug.o
++    [CC]     init.o
++    [CC]     dir2.o
++    [CC]     phase1.o
++    [CC]     phase2.o
++    [CC]     phase3.o
++    [CC]     dir2sf.o
++    [CC]     phase4.o
++    [CC]     dquot.o
++    [CC]     echo.o
++    [CC]     phase5.o
++    [CC]     faddr.o
++    [CC]     field.o
++    [CC]     phase6.o
++    [CC]     flist.o
++    [CC]     fprint.o
++    [CC]     frag.o
++    [CC]     freesp.o
++    [CC]     hash.o
++    [CC]     help.o
++    [CC]     init.o
++    [CC]     inode.o
++    [CC]     input.o
++    [CC]     phase7.o
++    [CC]     io.o
++    [CC]     logformat.o
++    [CC]     prefetch.o
++    [CC]     malloc.o
++    [CC]     metadump.o
++    [CC]     output.o
++    [CC]     print.o
++    [CC]     progress.o
++    [CC]     quit.o
++    [CC]     sb.o
++    [CC]     quotacheck.o
++    [CC]     rmap.o
++    [CC]     sig.o
++    [CC]     strvec.o
++    [CC]     text.o
++    [CC]     type.o
++    [CC]     write.o
++    [CC]     rt.o
++    [CC]     attrset.o
++    [CC]     sb.o
++    [CC]     symlink.o
++    [CC]     fsmap.o
++    [CC]     fuzz.o
++    [CC]     scan.o
++    [CC]     btdump.o
++    [CC]     btheight.o
++    [CC]     convert.o
++    [CC]     info.o
++    [CC]     timelimit.o
++    [CC]     slab.o
++    [LD]     xfs_db
++    [CC]     threads.o
++    [CC]     versions.o
++    [CC]     xfs_repair.o
++    [LD]     xfs_repair
++Installing libfrog-install
++Installing libxfs-install
++../install-sh -o root -g root -m 755 -d /usr/include/xfs
++Installing libxlog-install
++Installing libxcmd-install
++Installing libhandle-install
++cd ../libhandle/.libs; ../../install-sh -o root -g root -m 755 -d /lib; ../../install-sh -o root -g root -m 755 -T so_dot_version libhandle.lai /lib; ../../install-sh -o root -g root -T so_dot_current libhandle.lai /lib
++Installing copy-install
++../install-sh -o root -g root -m 755 -d /sbin
++/bin/sh ../libtool --quiet --mode=install ../install-sh -o root -g root -m 755 xfs_copy /sbin
++Installing db-install
++../install-sh -o root -g root -m 755 -d /sbin
++/bin/sh ../libtool --quiet --mode=install ../install-sh -o root -g root -m 755 xfs_db /sbin
++../install-sh -o root -g root -m 755 xfs_admin.sh /sbin/xfs_admin
++../install-sh -o root -g root -m 755 xfs_ncheck.sh /sbin/xfs_ncheck
++../install-sh -o root -g root -m 755 xfs_metadump.sh /sbin/xfs_metadump
++Installing estimate-install
++../install-sh -o root -g root -m 755 -d /sbin
++/bin/sh ../libtool --quiet --mode=install ../install-sh -o root -g root -m 755 xfs_estimate /sbin
++Installing fsck-install
++../install-sh -o root -g root -m 755 -d /sbin
++../install-sh -o root -g root -m 755 xfs_fsck.sh /sbin/fsck.xfs
++Installing fsr-install
++../install-sh -o root -g root -m 755 -d /sbin
++/bin/sh ../libtool --quiet --mode=install ../install-sh -o root -g root -m 755 xfs_fsr /sbin
++Installing growfs-install
++../install-sh -o root -g root -m 755 -d /sbin
++/bin/sh ../libtool --quiet --mode=install ../install-sh -o root -g root -m 755 xfs_growfs /sbin
++Installing io-install
++../install-sh -o root -g root -m 755 -d /sbin
++/bin/sh ../libtool --quiet --mode=install ../install-sh -o root -g root -m 755 xfs_io /sbin
++/bin/sh ../libtool --quiet --mode=install ../install-sh -o root -g root -m 755 xfs_bmap.sh /sbin/xfs_bmap
++/bin/sh ../libtool --quiet --mode=install ../install-sh -o root -g root -m 755 xfs_freeze.sh /sbin/xfs_freeze
++/bin/sh ../libtool --quiet --mode=install ../install-sh -o root -g root -m 755 xfs_mkfile.sh /sbin/xfs_mkfile
++Installing logprint-install
++../install-sh -o root -g root -m 755 -d /sbin
++/bin/sh ../libtool --quiet --mode=install ../install-sh -o root -g root -m 755 xfs_logprint /sbin
++Installing mkfs-install
++../install-sh -o root -g root -m 755 -d /sbin
++/bin/sh ../libtool --quiet --mode=install ../install-sh -o root -g root -m 755 mkfs.xfs /sbin
++Installing quota-install
++../install-sh -o root -g root -m 755 -d /sbin
++/bin/sh ../libtool --quiet --mode=install ../install-sh -o root -g root -m 755 xfs_quota /sbin
++Installing mdrestore-install
++../install-sh -o root -g root -m 755 -d /sbin
++/bin/sh ../libtool --quiet --mode=install ../install-sh -o root -g root -m 755 xfs_mdrestore /sbin
++Installing repair-install
++../install-sh -o root -g root -m 755 -d /sbin
++/bin/sh ../libtool --quiet --mode=install ../install-sh -o root -g root -m 755 xfs_repair /sbin
++Installing rtcp-install
++../install-sh -o root -g root -m 755 -d /sbin
++/bin/sh ../libtool --quiet --mode=install ../install-sh -o root -g root -m 755 xfs_rtcp /sbin
++Installing m4-install
++gmake[1]: Nothing to be done for 'install'.
++Installing man-install
++gmake[2]: Nothing to be done for 'install'.
++gmake[2]: Nothing to be done for 'install'.
++../../install-sh -o root -g root -m 755 -d /usr/man/man5
++../../install-sh -o root -g root -m 644 projects.5 /usr/man/man5/projects.5
++../../install-sh -o root -g root -m 644 projid.5 /usr/man/man5/projid.5
++../../install-sh -o root -g root -m 644 xfs.5 /usr/man/man5/xfs.5
++../../install-sh -o root -g root -m 755 -d /usr/man/man8
++../../install-sh -o root -g root -m 644 fsck.xfs.8 /usr/man/man8/fsck.xfs.8
++../../install-sh -o root -g root -m 644 mkfs.xfs.8 /usr/man/man8/mkfs.xfs.8
++../../install-sh -o root -g root -m 644 xfs_admin.8 /usr/man/man8/xfs_admin.8
++../../install-sh -o root -g root -m 644 xfs_bmap.8 /usr/man/man8/xfs_bmap.8
++../../install-sh -o root -g root -m 644 xfs_copy.8 /usr/man/man8/xfs_copy.8
++../../install-sh -o root -g root -m 644 xfs_db.8 /usr/man/man8/xfs_db.8
++../../install-sh -o root -g root -m 644 xfs_estimate.8 /usr/man/man8/xfs_estimate.8
++../../install-sh -o root -g root -m 644 xfs_freeze.8 /usr/man/man8/xfs_freeze.8
++../../install-sh -o root -g root -m 644 xfs_fsr.8 /usr/man/man8/xfs_fsr.8
++../../install-sh -o root -g root -m 644 xfs_growfs.8 /usr/man/man8/xfs_growfs.8
++../../install-sh -o root -g root -m 644 xfs_info.8 /usr/man/man8/xfs_info.8
++../../install-sh -o root -g root -m 644 xfs_io.8 /usr/man/man8/xfs_io.8
++../../install-sh -o root -g root -m 644 xfs_logprint.8 /usr/man/man8/xfs_logprint.8
++../../install-sh -o root -g root -m 644 xfs_mdrestore.8 /usr/man/man8/xfs_mdrestore.8
++../../install-sh -o root -g root -m 644 xfs_metadump.8 /usr/man/man8/xfs_metadump.8
++../../install-sh -o root -g root -m 644 xfs_mkfile.8 /usr/man/man8/xfs_mkfile.8
++../../install-sh -o root -g root -m 644 xfs_ncheck.8 /usr/man/man8/xfs_ncheck.8
++../../install-sh -o root -g root -m 644 xfs_quota.8 /usr/man/man8/xfs_quota.8
++../../install-sh -o root -g root -m 644 xfs_repair.8 /usr/man/man8/xfs_repair.8
++../../install-sh -o root -g root -m 644 xfs_rtcp.8 /usr/man/man8/xfs_rtcp.8
++../../install-sh -o root -g root -m 644 xfs_scrub.8 /usr/man/man8/xfs_scrub.8
++../../install-sh -o root -g root -m 644 xfs_scrub_all.8 /usr/man/man8/xfs_scrub_all.8
++../../install-sh -o root -g root -m 644 xfs_spaceman.8 /usr/man/man8/xfs_spaceman.8
++Installing doc-install
++../install-sh -o root -g root -m 755 -d /usr/share/doc/xfsprogs
++../install-sh -o root -g root -m 644 CHANGES.gz CREDITS /usr/share/doc/xfsprogs
++Installing debian-install
++gmake[1]: Nothing to be done for 'install'.
++Installing spaceman-install
++../install-sh -o root -g root -m 755 -d /sbin
++/bin/sh ../libtool --quiet --mode=install ../install-sh -o root -g root -m 755 xfs_spaceman /sbin
++../install-sh -o root -g root -m 755 xfs_info.sh /sbin/xfs_info
++Installing scrub-install
++../install-sh -o root -g root -m 755 -d /sbin
++/bin/sh ../libtool --quiet --mode=install ../install-sh -o root -g root -m 755 xfs_scrub /sbin
++../install-sh -o root -g root -m 755 xfs_scrub_all /sbin
++../install-sh -o root -g root -m 755 -d /lib/xfsprogs
++../install-sh -o root -g root -m 644 xfs_scrub_all.cron /lib/xfsprogs
++Installing po-install
++Installing include-install
++../install-sh -o root -g root -m 755 -d /usr/include/xfs
++./install-sh -o root -g root -m 755 -d /usr/share/doc/xfsprogs
++./install-sh -o root -g root -m 644 README /usr/share/doc/xfsprogs
++Installing libfrog-install-dev
++Installing libxfs-install-dev
++../install-sh -o root -g root -m 755 -d /usr/include/xfs
++../install-sh -o root -g root -m 644 xfs_fs.h xfs_types.h xfs_da_format.h xfs_format.h xfs_log_format.h /usr/include/xfs
++Installing libxlog-install-dev
++Installing libxcmd-install-dev
++Installing libhandle-install-dev
++cd ../libhandle/.libs; ../../install-sh -o root -g root -m 755 -d /lib; ../../install-sh -o root -g root -m 644 -T old_lib libhandle.lai /lib; ../../install-sh -o root -g root -m 644 libhandle.lai /lib/libhandle.la ; ../../install-sh -o root -g root -m 755 -d /lib; ../../install-sh -o root -g root -T so_base libhandle.lai /lib; if [ "x/lib" != "x/lib" ]; then ../../install-sh -o root -g root -S /lib/libhandle.a /lib/libhandle.a; ../../install-sh -o root -g root -S /lib/libhandle.la /lib/libhandle.la; ../../install-sh -o root -g root -S /lib/libhandle.so /lib/libhandle.so; fi
++Installing copy-install-dev
++gmake[1]: Nothing to be done for 'install-dev'.
++Installing db-install-dev
++gmake[1]: Nothing to be done for 'install-dev'.
++Installing estimate-install-dev
++gmake[1]: Nothing to be done for 'install-dev'.
++Installing fsck-install-dev
++gmake[1]: Nothing to be done for 'install-dev'.
++Installing fsr-install-dev
++gmake[1]: Nothing to be done for 'install-dev'.
++Installing growfs-install-dev
++gmake[1]: Nothing to be done for 'install-dev'.
++Installing io-install-dev
++gmake[1]: Nothing to be done for 'install-dev'.
++Installing logprint-install-dev
++gmake[1]: Nothing to be done for 'install-dev'.
++Installing mkfs-install-dev
++gmake[1]: Nothing to be done for 'install-dev'.
++Installing quota-install-dev
++gmake[1]: Nothing to be done for 'install-dev'.
++Installing mdrestore-install-dev
++gmake[1]: Nothing to be done for 'install-dev'.
++Installing repair-install-dev
++gmake[1]: Nothing to be done for 'install-dev'.
++Installing rtcp-install-dev
++gmake[1]: Nothing to be done for 'install-dev'.
++Installing m4-install-dev
++gmake[1]: Nothing to be done for 'install-dev'.
++Installing man-install-dev
++../../install-sh -o root -g root -m 755 -d /usr/man/man2
++../../install-sh -o root -g root -m 644 ioctl_xfs_ag_geometry.2 /usr/man/man2/ioctl_xfs_ag_geometry.2
++../../install-sh -o root -g root -m 644 ioctl_xfs_bulkstat.2 /usr/man/man2/ioctl_xfs_bulkstat.2
++../../install-sh -o root -g root -m 644 ioctl_xfs_fsbulkstat.2 /usr/man/man2/ioctl_xfs_fsbulkstat.2
++../../install-sh -o root -g root -m 644 ioctl_xfs_fscounts.2 /usr/man/man2/ioctl_xfs_fscounts.2
++../../install-sh -o root -g root -m 644 ioctl_xfs_fsgeometry.2 /usr/man/man2/ioctl_xfs_fsgeometry.2
++../../install-sh -o root -g root -m 644 ioctl_xfs_fsgetxattr.2 /usr/man/man2/ioctl_xfs_fsgetxattr.2
++../../install-sh -o root -g root -m 644 ioctl_xfs_fsgetxattra.2 /usr/man/man2/ioctl_xfs_fsgetxattra.2
++../../install-sh -o root -g root -m 644 ioctl_xfs_fsinumbers.2 /usr/man/man2/ioctl_xfs_fsinumbers.2
++../../install-sh -o root -g root -m 644 ioctl_xfs_fssetxattr.2 /usr/man/man2/ioctl_xfs_fssetxattr.2
++../../install-sh -o root -g root -m 644 ioctl_xfs_getbmap.2 /usr/man/man2/ioctl_xfs_getbmap.2
++../../install-sh -o root -g root -m 644 ioctl_xfs_getbmapa.2 /usr/man/man2/ioctl_xfs_getbmapa.2
++../../install-sh -o root -g root -m 644 ioctl_xfs_getbmapx.2 /usr/man/man2/ioctl_xfs_getbmapx.2
++../../install-sh -o root -g root -m 644 ioctl_xfs_getresblks.2 /usr/man/man2/ioctl_xfs_getresblks.2
++../../install-sh -o root -g root -m 644 ioctl_xfs_goingdown.2 /usr/man/man2/ioctl_xfs_goingdown.2
++../../install-sh -o root -g root -m 644 ioctl_xfs_inumbers.2 /usr/man/man2/ioctl_xfs_inumbers.2
++../../install-sh -o root -g root -m 644 ioctl_xfs_scrub_metadata.2 /usr/man/man2/ioctl_xfs_scrub_metadata.2
++../../install-sh -o root -g root -m 644 ioctl_xfs_setresblks.2 /usr/man/man2/ioctl_xfs_setresblks.2
++../../install-sh -o root -g root -m 755 -d /usr/man/man3
++../../install-sh -o root -g root -m 644 handle.3 /usr/man/man3/path_to_handle.3
++../../install-sh -o root -g root -S path_to_handle.3 /usr/man/man3/path_to_fshandle.3
++../../install-sh -o root -g root -S path_to_handle.3 /usr/man/man3/fd_to_handle.3
++../../install-sh -o root -g root -S path_to_handle.3 /usr/man/man3/handle_to_fshandle.3
++../../install-sh -o root -g root -S path_to_handle.3 /usr/man/man3/open_by_handle.3
++../../install-sh -o root -g root -S path_to_handle.3 /usr/man/man3/readlink_by_handle.3
++../../install-sh -o root -g root -S path_to_handle.3 /usr/man/man3/attr_multi_by_handle.3
++../../install-sh -o root -g root -S path_to_handle.3 /usr/man/man3/attr_list_by_handle.3
++../../install-sh -o root -g root -S path_to_handle.3 /usr/man/man3/fssetdm_by_handle.3
++../../install-sh -o root -g root -S path_to_handle.3 /usr/man/man3/free_handle.3
++../../install-sh -o root -g root -S path_to_handle.3 /usr/man/man3/getparents_by_handle.3
++../../install-sh -o root -g root -S path_to_handle.3 /usr/man/man3/getparentpaths_by_handle.3
++../../install-sh -o root -g root -m 644 xfsctl.3 /usr/man/man3/xfsctl.3
++gmake[2]: Nothing to be done for 'install-dev'.
++gmake[2]: Nothing to be done for 'install-dev'.
++Installing doc-install-dev
++gmake[1]: Nothing to be done for 'install-dev'.
++Installing debian-install-dev
++gmake[1]: Nothing to be done for 'install-dev'.
++Installing spaceman-install-dev
++gmake[1]: Nothing to be done for 'install-dev'.
++Installing scrub-install-dev
++gmake[1]: Nothing to be done for 'install-dev'.
++Installing po-install-dev
++gmake[1]: Nothing to be done for 'install-dev'.
++Installing include-install-dev
++../install-sh -o root -g root -m 755 -d /usr/include/xfs
++../install-sh -o root -g root -m 644 handle.h jdm.h linux.h xfs.h xqm.h xfs_fs_compat.h xfs_arch.h /usr/include/xfs
++cp: cannot stat 'doc/COPYING': No such file or directory
++cp: cannot stat 'doc/PORTING': No such file or directory
++strip: '/tmp/package-xfsprogs/usr/lib/*.a': No such file
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++lib/libhandle.so.1	libhandle.so.1.0.3
++usr/lib/libhandle.so	/lib/libhandle.so.1
++usr/man/man3/attr_list_by_handle.3	path_to_handle.3
++usr/man/man3/attr_multi_by_handle.3	path_to_handle.3
++usr/man/man3/fd_to_handle.3	path_to_handle.3
++usr/man/man3/free_handle.3	path_to_handle.3
++usr/man/man3/fssetdm_by_handle.3	path_to_handle.3
++usr/man/man3/getparentpaths_by_handle.3	path_to_handle.3
++usr/man/man3/getparents_by_handle.3	path_to_handle.3
++usr/man/man3/handle_to_fshandle.3	path_to_handle.3
++usr/man/man3/open_by_handle.3	path_to_handle.3
++usr/man/man3/path_to_fshandle.3	path_to_handle.3
++usr/man/man3/readlink_by_handle.3	path_to_handle.3
++
++Making symbolic link creation script:
++( cd lib ; rm -rf libhandle.so.1 )
++( cd lib ; ln -sf libhandle.so.1.0.3 libhandle.so.1 )
++( cd usr/lib ; rm -rf libhandle.so )
++( cd usr/lib ; ln -sf /lib/libhandle.so.1 libhandle.so )
++( cd usr/man/man3 ; rm -rf attr_list_by_handle.3 )
++( cd usr/man/man3 ; ln -sf path_to_handle.3 attr_list_by_handle.3 )
++( cd usr/man/man3 ; rm -rf attr_multi_by_handle.3 )
++( cd usr/man/man3 ; ln -sf path_to_handle.3 attr_multi_by_handle.3 )
++( cd usr/man/man3 ; rm -rf fd_to_handle.3 )
++( cd usr/man/man3 ; ln -sf path_to_handle.3 fd_to_handle.3 )
++( cd usr/man/man3 ; rm -rf free_handle.3 )
++( cd usr/man/man3 ; ln -sf path_to_handle.3 free_handle.3 )
++( cd usr/man/man3 ; rm -rf fssetdm_by_handle.3 )
++( cd usr/man/man3 ; ln -sf path_to_handle.3 fssetdm_by_handle.3 )
++( cd usr/man/man3 ; rm -rf getparentpaths_by_handle.3 )
++( cd usr/man/man3 ; ln -sf path_to_handle.3 getparentpaths_by_handle.3 )
++( cd usr/man/man3 ; rm -rf getparents_by_handle.3 )
++( cd usr/man/man3 ; ln -sf path_to_handle.3 getparents_by_handle.3 )
++( cd usr/man/man3 ; rm -rf handle_to_fshandle.3 )
++( cd usr/man/man3 ; ln -sf path_to_handle.3 handle_to_fshandle.3 )
++( cd usr/man/man3 ; rm -rf open_by_handle.3 )
++( cd usr/man/man3 ; ln -sf path_to_handle.3 open_by_handle.3 )
++( cd usr/man/man3 ; rm -rf path_to_fshandle.3 )
++( cd usr/man/man3 ; ln -sf path_to_handle.3 path_to_fshandle.3 )
++( cd usr/man/man3 ; rm -rf readlink_by_handle.3 )
++( cd usr/man/man3 ; ln -sf path_to_handle.3 readlink_by_handle.3 )
++
++It is recommended that you make these lines your new installation script.
++
++Would you like to make this stuff the install script for this package
++and remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './lib/libhandle.so.1'
++removed './usr/man/man3/free_handle.3'
++removed './usr/man/man3/getparentpaths_by_handle.3'
++removed './usr/man/man3/fd_to_handle.3'
++removed './usr/man/man3/attr_list_by_handle.3'
++removed './usr/man/man3/fssetdm_by_handle.3'
++removed './usr/man/man3/path_to_fshandle.3'
++removed './usr/man/man3/getparents_by_handle.3'
++removed './usr/man/man3/handle_to_fshandle.3'
++removed './usr/man/man3/attr_multi_by_handle.3'
++removed './usr/man/man3/readlink_by_handle.3'
++removed './usr/man/man3/open_by_handle.3'
++removed './usr/lib/libhandle.so'
++
++Creating your new ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/xfsprogs-5.10.0-x86_64-1.txz
++
++./
++install/
++install/doinst.sh
++install/slack-desc
++lib/
++lib/libhandle.so.1.0.3
++lib/xfsprogs/
++lib/xfsprogs/xfs_scrub_all.cron
++sbin/
++sbin/fsck.xfs
++sbin/mkfs.xfs
++sbin/xfs_repair
++usr/
++usr/doc/
++usr/doc/xfsprogs-5.10.0/
++usr/doc/xfsprogs-5.10.0/CHANGES
++usr/doc/xfsprogs-5.10.0/CREDITS
++usr/doc/xfsprogs-5.10.0/README
++usr/include/
++usr/include/xfs/
++usr/include/xfs/handle.h
++usr/include/xfs/jdm.h
++usr/include/xfs/linux.h
++usr/include/xfs/xfs.h
++usr/include/xfs/xfs_arch.h
++usr/include/xfs/xfs_da_format.h
++usr/include/xfs/xfs_format.h
++usr/include/xfs/xfs_fs.h
++usr/include/xfs/xfs_fs_compat.h
++usr/include/xfs/xfs_log_format.h
++usr/include/xfs/xfs_types.h
++usr/include/xfs/xqm.h
++usr/lib/
++usr/man/
++usr/man/man2/
++usr/man/man2/ioctl_xfs_ag_geometry.2
++usr/man/man2/ioctl_xfs_bulkstat.2
++usr/man/man2/ioctl_xfs_fsbulkstat.2
++usr/man/man2/ioctl_xfs_fscounts.2
++usr/man/man2/ioctl_xfs_fsgeometry.2
++usr/man/man2/ioctl_xfs_fsgetxattr.2
++usr/man/man2/ioctl_xfs_fsgetxattra.2
++usr/man/man2/ioctl_xfs_fsinumbers.2
++usr/man/man2/ioctl_xfs_fssetxattr.2
++usr/man/man2/ioctl_xfs_getbmap.2
++usr/man/man2/ioctl_xfs_getbmapa.2
++usr/man/man2/ioctl_xfs_getbmapx.2
++usr/man/man2/ioctl_xfs_getresblks.2
++usr/man/man2/ioctl_xfs_goingdown.2
++usr/man/man2/ioctl_xfs_inumbers.2
++usr/man/man2/ioctl_xfs_scrub_metadata.2
++usr/man/man2/ioctl_xfs_setresblks.2
++usr/man/man3/
++usr/man/man3/path_to_handle.3
++usr/man/man3/xfsctl.3
++usr/man/man5/
++usr/man/man5/projects.5
++usr/man/man5/projid.5
++usr/man/man5/xfs.5
++usr/man/man8/
++usr/man/man8/fsck.xfs.8
++usr/man/man8/mkfs.xfs.8
++usr/man/man8/xfs_admin.8
++usr/man/man8/xfs_bmap.8
++usr/man/man8/xfs_copy.8
++usr/man/man8/xfs_db.8
++usr/man/man8/xfs_estimate.8
++usr/man/man8/xfs_freeze.8
++usr/man/man8/xfs_fsr.8
++usr/man/man8/xfs_growfs.8
++usr/man/man8/xfs_info.8
++usr/man/man8/xfs_io.8
++usr/man/man8/xfs_logprint.8
++usr/man/man8/xfs_mdrestore.8
++usr/man/man8/xfs_metadump.8
++usr/man/man8/xfs_mkfile.8
++usr/man/man8/xfs_ncheck.8
++usr/man/man8/xfs_quota.8
++usr/man/man8/xfs_repair.8
++usr/man/man8/xfs_rtcp.8
++usr/man/man8/xfs_scrub.8
++usr/man/man8/xfs_scrub_all.8
++usr/man/man8/xfs_spaceman.8
++usr/sbin/
++usr/sbin/xfs_admin
++usr/sbin/xfs_bmap
++usr/sbin/xfs_copy
++usr/sbin/xfs_db
++usr/sbin/xfs_estimate
++usr/sbin/xfs_freeze
++usr/sbin/xfs_fsr
++usr/sbin/xfs_growfs
++usr/sbin/xfs_info
++usr/sbin/xfs_io
++usr/sbin/xfs_logprint
++usr/sbin/xfs_mdrestore
++usr/sbin/xfs_metadump
++usr/sbin/xfs_mkfile
++usr/sbin/xfs_ncheck
++usr/sbin/xfs_quota
++usr/sbin/xfs_rtcp
++usr/sbin/xfs_scrub
++usr/sbin/xfs_scrub_all
++usr/sbin/xfs_spaceman
++usr/share/
++usr/share/locale/
++usr/share/locale/de/
++usr/share/locale/de/LC_MESSAGES/
++usr/share/locale/de/LC_MESSAGES/xfsprogs.mo
++usr/share/locale/pl/
++usr/share/locale/pl/LC_MESSAGES/
++usr/share/locale/pl/LC_MESSAGES/xfsprogs.mo
++
++Slackware package /tmp/xfsprogs-5.10.0-x86_64-1.txz created.
++

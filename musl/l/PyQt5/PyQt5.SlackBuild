@@ -1,0 +1,165 @@
+#!/bin/sh
+
+# Slackware build script for PyQt
+
+# Copyright 2008  Aleksandar Samardzic <asamardzic@gmail.com>
+# Copyright 2008, 2009, 2010, 2011, 2015, 2016, 2017, 2020  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ''AS IS'' AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+# EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# Modified by Robby Workman <rworkman@slackware.com>
+# Modified by Eric Hameleers <alien@slackware.com>
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=PyQt5
+VERSION=${VERSION:-$(echo $PKGNAM-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+BUILD=${BUILD:-1}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$(uname -m)" in
+    i?86) ARCH=i586 ;;
+    arm*) readelf /usr/bin/file -A | egrep -q "Tag_CPU.*[4,5]" && ARCH=arm || ARCH=armv7hl ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+    *) ARCH=$(uname -m) ;;
+  esac
+  export ARCH
+fi
+
+if [ "$ARCH" = "i486" ]; then
+  SLKCFLAGS="-O2 -march=i486 -mtune=i686"
+elif [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+elif [ "$ARCH" = "i686" ]; then
+  SLKCFLAGS="-O2 -march=i686 -mtune=i686"
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+elif [ "$ARCH" = "armv7hl" ]; then
+  SLKCFLAGS="-O2 -march=armv7-a -mfpu=vfpv3-d16"
+else
+  SLKCFLAGS="-O2"
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$(echo $VERSION |tr - _)-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-$PKGNAM
+
+PYTHON2LIB=$( python2 -c 'from distutils.sysconfig import get_python_lib; print(get_python_lib())' 2>/dev/null )
+PYTHON3LIB=$( python3 -c 'from distutils.sysconfig import get_python_lib; print(get_python_lib())' 2>/dev/null )
+
+rm -rf $PKG
+mkdir -p $TMP $PKG $OUTPUT
+cd $TMP
+rm -rf ${PKGNAM}-$VERSION
+tar xvf $CWD/${PKGNAM}-$VERSION.tar.?z || exit 1
+cd ${PKGNAM}-$VERSION || exit 1
+
+# Remove code that is unneeded if Qt is not bundled and crashes on python2
+# https://www.riverbankcomputing.com/pipermail/pyqt/2019-July/041896.html
+zcat $CWD/patches/pyqt5-python2-crash.patch.gz | patch -p1 --verbose || exit 1
+
+chown -R root:root .
+find . \
+ \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+ -exec chmod 755 {} \+ -o \
+ \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+ -exec chmod 644 {} \+
+
+# This avoids compiling a version number into KDE's .la files:
+export QTDIR=/usr/lib${LIBDIRSUFFIX}/qt5
+export QT5DIR=/usr/lib${LIBDIRSUFFIX}/qt5
+
+export CFLAGS="$SLKCFLAGS"
+export CXXFLAGS="$SLKCFLAGS"
+
+## I see no reason at this point to include python2 support. We'll see later if
+## we can get away with that or not...
+## AND... it appears that we might not be able to, at least Plasma 5 does not
+## like to build that way, so we will add it back for now to fix using this
+## package with ktown. Better to merge Plasma in a working state (hopefully
+## soonish) and then worry about trying to get the last bits of python2 out
+## of the distribution, though honestly that may not occur until Slackware 15.1.
+python2 configure.py \
+  --confirm-license \
+  --verbose \
+  --qsci-api \
+  -q /usr/bin/qmake-qt5 \
+  || exit 1
+
+make $NUMJOBS || make || exit 1
+# INSTALL_ROOT is needed for QtDesigner, the other Makefiles use DESTDIR
+make -j1 install DESTDIR=$PKG INSTALL_ROOT=$PKG || exit 1
+
+mv $PKG/usr/bin/pyrcc5 $PKG/usr/bin/pyrcc5-py2
+mv $PKG/usr/bin/pyuic5 $PKG/usr/bin/pyuic5-py2
+mv $PKG/usr/bin/pylupdate5 $PKG/usr/bin/pylupdate5-py2
+rm -rf $PKG/$PYTHON2LIB/${PKGNAM}/uic/port_v3/
+make clean
+
+python3 configure.py \
+  --confirm-license \
+  --verbose \
+  --qsci-api \
+  -q /usr/bin/qmake-qt5 \
+  || exit 1
+
+make $NUMJOBS || make || exit 1
+# INSTALL_ROOT is needed for QtDesigner, the other Makefiles use DESTDIR
+make -j1 install DESTDIR=$PKG INSTALL_ROOT=$PKG || exit 1
+
+rm -rf $PKG/$PYTHON3LIB/${PKGNAM}/uic/port_v2/
+
+find $PKG | xargs file | grep -e "executable" -e "shared object" \
+  | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+
+# Remove rpaths:
+for file in $(find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF | cut -f 1 -d : 2> /dev/null) ; do
+  if [ ! "$(patchelf --print-rpath $file 2> /dev/null)" = "" ]; then
+    patchelf --remove-rpath $file
+  fi
+done
+
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION
+cp -a \
+  ChangeLog LICENSE* NEWS* README* \
+  $PKG/usr/doc/$PKGNAM-$VERSION
+
+# If there's a ChangeLog, installing at least part of the recent history
+# is useful, but don't let it get totally out of control:
+if [ -r ChangeLog ]; then
+  DOCSDIR=$(echo $PKG/usr/doc/${PKGNAM}-$VERSION)
+  cat ChangeLog | head -n 1000 > $DOCSDIR/ChangeLog
+  touch -r ChangeLog $DOCSDIR/ChangeLog
+fi
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/$PKGNAM-$(echo $VERSION |tr - _)-$ARCH-$BUILD.txz

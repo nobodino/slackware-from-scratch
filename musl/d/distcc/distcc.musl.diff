@@ -1,0 +1,1239 @@
+diff -ruBN /tmp/distcc/distcc.SlackBuild /source/d/distcc/distcc.SlackBuild
+--- /tmp/distcc/distcc.SlackBuild	2021-01-18 13:11:54.000000000 +0000
++++ /source/d/distcc/distcc.SlackBuild	2021-01-19 06:02:10.000000000 +0000
+@@ -43,7 +43,7 @@
+ elif [ "$ARCH" = "s390" ]; then
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "armv7hl" ]; then
+   LIBDIRSUFFIX=""
+ else
+@@ -91,7 +91,7 @@
+   --without-gnome \
+   --without-avahi \
+   --disable-Werror \
+-  --target=$ARCH-slackware-linux || exit 1
++  --target=$ARCH-slackware-linux-musl || exit 1
+ 
+ make $NUMJOBS || make || exit 1
+ make install DESTDIR=$PKG docdir=/usr/doc/distcc-$VERSION || exit 1
+diff -ruBN /tmp/distcc/distcc.SlackBuild.log /source/d/distcc/distcc.SlackBuild.log
+--- /tmp/distcc/distcc.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/d/distcc/distcc.SlackBuild.log	2021-01-19 06:04:20.000000000 +0000
+@@ -0,0 +1,1214 @@
++distcc-3.3.5/
++distcc-3.3.5/README.packaging
++distcc-3.3.5/README.md
++distcc-3.3.5/src/
++distcc-3.3.5/src/mon-text.c
++distcc-3.3.5/src/auth_distccd.c
++distcc-3.3.5/src/h_hosts.c
++distcc-3.3.5/src/mon-notify.c
++distcc-3.3.5/src/srvrpc.c
++distcc-3.3.5/src/rpc.c
++distcc-3.3.5/src/state.h
++distcc-3.3.5/src/strip.c
++distcc-3.3.5/src/exec.c
++distcc-3.3.5/src/fix_debug_info.c
++distcc-3.3.5/src/util.c
++distcc-3.3.5/src/hosts.h
++distcc-3.3.5/src/zeroconf.h
++distcc-3.3.5/src/sendfile.c
++distcc-3.3.5/src/tempfile.c
++distcc-3.3.5/src/lsdistcc.c
++distcc-3.3.5/src/h_dotd.c
++distcc-3.3.5/src/va_copy.h
++distcc-3.3.5/src/h_sa2str.c
++distcc-3.3.5/src/daemon.h
++distcc-3.3.5/src/h_issource.c
++distcc-3.3.5/src/lock.c
++distcc-3.3.5/src/where.h
++distcc-3.3.5/src/exec.h
++distcc-3.3.5/src/trace.c
++distcc-3.3.5/src/compile.c
++distcc-3.3.5/src/include_server_if.h
++distcc-3.3.5/src/bulk.c
++distcc-3.3.5/src/trace.h
++distcc-3.3.5/src/zeroconf.c
++distcc-3.3.5/src/snprintf.h
++distcc-3.3.5/src/clinet.c
++distcc-3.3.5/src/timefile.h
++distcc-3.3.5/src/loadfile.c
++distcc-3.3.5/src/dopt.h
++distcc-3.3.5/src/renderer.c
++distcc-3.3.5/src/dsignal.c
++distcc-3.3.5/src/argutil.c
++distcc-3.3.5/src/exitcode.h
++distcc-3.3.5/src/srvnet.h
++distcc-3.3.5/src/h_exten.c
++distcc-3.3.5/src/timefile.c
++distcc-3.3.5/src/mon.c
++distcc-3.3.5/src/timeval.h
++distcc-3.3.5/src/access.h
++distcc-3.3.5/src/clirpc.c
++distcc-3.3.5/src/implicit.h
++distcc-3.3.5/src/history.c
++distcc-3.3.5/src/safeguard.c
++distcc-3.3.5/src/netutil.h
++distcc-3.3.5/src/auth_common.c
++distcc-3.3.5/src/hosts.c
++distcc-3.3.5/src/hostfile.c
++distcc-3.3.5/src/util.h
++distcc-3.3.5/src/distcc.h
++distcc-3.3.5/src/distcc.c
++distcc-3.3.5/src/emaillog.c
++distcc-3.3.5/src/serve.c
++distcc-3.3.5/src/timeval.c
++distcc-3.3.5/src/emaillog.h
++distcc-3.3.5/src/cleanup.c
++distcc-3.3.5/src/io.c
++distcc-3.3.5/src/ncpus.c
++distcc-3.3.5/src/fix_debug_info.h
++distcc-3.3.5/src/arg.c
++distcc-3.3.5/src/bulk.h
++distcc-3.3.5/src/rslave.h
++distcc-3.3.5/src/where.c
++distcc-3.3.5/src/h_strip.c
++distcc-3.3.5/src/h_scanargs.c
++distcc-3.3.5/src/rpc.h
++distcc-3.3.5/src/stringmap.c
++distcc-3.3.5/src/backoff.c
++distcc-3.3.5/src/remote.c
++distcc-3.3.5/src/auth.h
++distcc-3.3.5/src/pump.c
++distcc-3.3.5/src/stats.c
++distcc-3.3.5/src/dopt.c
++distcc-3.3.5/src/snprintf.c
++distcc-3.3.5/src/climasq.c
++distcc-3.3.5/src/h_getline.c
++distcc-3.3.5/src/include_server_if.c
++distcc-3.3.5/src/compress.c
++distcc-3.3.5/src/rslave.c
++distcc-3.3.5/src/ssh.c
++distcc-3.3.5/src/cpp.c
++distcc-3.3.5/src/zeroconf-reg.c
++distcc-3.3.5/src/h_compile.c
++distcc-3.3.5/src/mon-gnome.c
++distcc-3.3.5/src/srvnet.c
++distcc-3.3.5/src/daemon.c
++distcc-3.3.5/src/stringmap.h
++distcc-3.3.5/src/implicit.c
++distcc-3.3.5/src/stats.h
++distcc-3.3.5/src/lock.h
++distcc-3.3.5/src/dotd.c
++distcc-3.3.5/src/h_parsemask.c
++distcc-3.3.5/src/h_argvtostr.c
++distcc-3.3.5/src/filename.c
++distcc-3.3.5/src/dparent.c
++distcc-3.3.5/src/types.h
++distcc-3.3.5/src/mon.h
++distcc-3.3.5/src/setuid.c
++distcc-3.3.5/src/clinet.h
++distcc-3.3.5/src/prefork.c
++distcc-3.3.5/src/renderer.h
++distcc-3.3.5/src/compile.h
++distcc-3.3.5/src/dotd.h
++distcc-3.3.5/src/traceenv.c
++distcc-3.3.5/src/access.c
++distcc-3.3.5/src/gcc-id.c
++distcc-3.3.5/src/auth_distcc.c
++distcc-3.3.5/src/help.c
++distcc-3.3.5/src/state.c
++distcc-3.3.5/src/netutil.c
++distcc-3.3.5/survey.txt
++distcc-3.3.5/docker/
++distcc-3.3.5/docker/README.md
++distcc-3.3.5/docker/base/
++distcc-3.3.5/docker/base/Dockerfile
++distcc-3.3.5/docker/base/apt-conf
++distcc-3.3.5/docker/compilers/
++distcc-3.3.5/docker/compilers/Dockerfile.clang-3.8
++distcc-3.3.5/docker/compilers/Dockerfile.gcc-4.8
++distcc-3.3.5/docker/compilers/Dockerfile.gcc-5
++distcc-3.3.5/docker/build.sh
++distcc-3.3.5/lzo/
++distcc-3.3.5/lzo/lzoconf.h
++distcc-3.3.5/lzo/lzodefs.h
++distcc-3.3.5/lzo/COPYING
++distcc-3.3.5/lzo/minilzo.c
++distcc-3.3.5/lzo/.stamp-conf.in
++distcc-3.3.5/lzo/README.LZO
++distcc-3.3.5/lzo/minilzo.h
++distcc-3.3.5/lzo/testmini.c
++distcc-3.3.5/autogen.sh
++distcc-3.3.5/README
++distcc-3.3.5/doc/
++distcc-3.3.5/doc/example/
++distcc-3.3.5/doc/example/services
++distcc-3.3.5/doc/example/default
++distcc-3.3.5/doc/example/xinetd
++distcc-3.3.5/doc/example/hosts.allow
++distcc-3.3.5/doc/example/README
++distcc-3.3.5/doc/example/init
++distcc-3.3.5/doc/example/logrotate
++distcc-3.3.5/doc/example/init-suse
++distcc-3.3.5/doc/protocol-2.txt
++distcc-3.3.5/doc/reporting-bugs.txt
++distcc-3.3.5/doc/status-1.txt
++distcc-3.3.5/doc/protocol-1.txt
++distcc-3.3.5/doc/protocol-3.txt
++distcc-3.3.5/doc/web/
++distcc-3.3.5/doc/web/distccmon-gnome-2003-09-23-01.png
++distcc-3.3.5/doc/web/favicon.ico
++distcc-3.3.5/doc/web/compilers.html
++distcc-3.3.5/doc/web/security.html
++distcc-3.3.5/doc/web/distcc-green.css
++distcc-3.3.5/doc/web/scenarios.html
++distcc-3.3.5/doc/web/benchmark.html
++distcc-3.3.5/doc/web/distcc-lca-2004.pdf
++distcc-3.3.5/doc/web/results.html
++distcc-3.3.5/doc/web/man/
++distcc-3.3.5/doc/web/man/distccmon_text_1.html
++distcc-3.3.5/doc/web/man/pump_1.html
++distcc-3.3.5/doc/web/man/lsdistcc_1.html
++distcc-3.3.5/doc/web/man/include_server_1.html
++distcc-3.3.5/doc/web/man/distccd_1.html
++distcc-3.3.5/doc/web/man/distcc_1.html
++distcc-3.3.5/doc/web/man/index.html
++distcc-3.3.5/doc/web/distcc-lca2003.ps.gz
++distcc-3.3.5/doc/web/compared.html
++distcc-3.3.5/doc/web/distcc-lca-2004.html
++distcc-3.3.5/doc/web/index.html
++distcc-3.3.5/doc/web/faq.html
++distcc-3.3.5/doc/protocol-gssapi.txt
++distcc-3.3.5/doc/protocol-3-impl.txt
++distcc-3.3.5/include_server/
++distcc-3.3.5/include_server/parse_command_test.py
++distcc-3.3.5/include_server/parse_file.py
++distcc-3.3.5/include_server/c_extensions_test.py
++distcc-3.3.5/include_server/macro_eval.py
++distcc-3.3.5/include_server/c_extensions/
++distcc-3.3.5/include_server/c_extensions/distcc_pump_c_extensions_module.c
++distcc-3.3.5/include_server/test_data/
++distcc-3.3.5/include_server/test_data/func_macro.c
++distcc-3.3.5/include_server/test_data/abc_pre.c
++distcc-3.3.5/include_server/test_data/test_directory_probing.c
++distcc-3.3.5/include_server/test_data/distcc/
++distcc-3.3.5/include_server/test_data/distcc/src/
++distcc-3.3.5/include_server/test_data/distcc/src/state.h
++distcc-3.3.5/include_server/test_data/distcc/src/hosts.h
++distcc-3.3.5/include_server/test_data/distcc/src/include_me.h
++distcc-3.3.5/include_server/test_data/distcc/src/trace.h
++distcc-3.3.5/include_server/test_data/distcc/src/exitcode.h
++distcc-3.3.5/include_server/test_data/distcc/src/implicit.h
++distcc-3.3.5/include_server/test_data/distcc/src/util.h
++distcc-3.3.5/include_server/test_data/distcc/src/distcc.h
++distcc-3.3.5/include_server/test_data/distcc/src/distcc.c
++distcc-3.3.5/include_server/test_data/distcc/src/emaillog.h
++distcc-3.3.5/include_server/test_data/distcc/src/bulk.h
++distcc-3.3.5/include_server/test_data/distcc/src/config.h
++distcc-3.3.5/include_server/test_data/distcc/src/compile.h
++distcc-3.3.5/include_server/test_data/distcc/README
++distcc-3.3.5/include_server/test_data/p1.h
++distcc-3.3.5/include_server/test_data/i_am_perhaps_a_directory.h/
++distcc-3.3.5/include_server/test_data/i_am_perhaps_a_directory.h/empty_file
++distcc-3.3.5/include_server/test_data/abc_post.c
++distcc-3.3.5/include_server/test_data/stat_triggers.h
++distcc-3.3.5/include_server/test_data/dbar/
++distcc-3.3.5/include_server/test_data/dbar/dbar1/
++distcc-3.3.5/include_server/test_data/dbar/dbar1/bar.h
++distcc-3.3.5/include_server/test_data/dbar/foo.h
++distcc-3.3.5/include_server/test_data/test_computed_includes/
++distcc-3.3.5/include_server/test_data/test_computed_includes/inclA.h
++distcc-3.3.5/include_server/test_data/test_computed_includes/srcA.c
++distcc-3.3.5/include_server/test_data/test_computed_includes/helper.c
++distcc-3.3.5/include_server/test_data/test_computed_includes/src.c
++distcc-3.3.5/include_server/test_data/test_computed_includes/incl.h
++distcc-3.3.5/include_server/test_data/stat_triggers.c
++distcc-3.3.5/include_server/test_data/parse.c
++distcc-3.3.5/include_server/test_data/more_macros.c
++distcc-3.3.5/include_server/test_data/maps/
++distcc-3.3.5/include_server/test_data/maps/foo.tpl.varnames.h
++distcc-3.3.5/include_server/test_data/include_include_next_foo.h
++distcc-3.3.5/include_server/test_data/test_include_next/
++distcc-3.3.5/include_server/test_data/test_include_next/bar/
++distcc-3.3.5/include_server/test_data/test_include_next/bar/x.h
++distcc-3.3.5/include_server/test_data/test_include_next/bar/y.h
++distcc-3.3.5/include_server/test_data/test_include_next/baz/
++distcc-3.3.5/include_server/test_data/test_include_next/baz/x.h
++distcc-3.3.5/include_server/test_data/test_include_next/baz/y.h
++distcc-3.3.5/include_server/test_data/test_include_next/baz/start_y.c
++distcc-3.3.5/include_server/test_data/test_include_next/baz/start_x.c
++distcc-3.3.5/include_server/test_data/test_include_next/biz/
++distcc-3.3.5/include_server/test_data/test_include_next/biz/x.h
++distcc-3.3.5/include_server/test_data/test_include_next/foo/
++distcc-3.3.5/include_server/test_data/test_include_next/foo/x.h
++distcc-3.3.5/include_server/test_data/test_include_next/foo/y.h
++distcc-3.3.5/include_server/test_data/symlink_farm/
++distcc-3.3.5/include_server/test_data/symlink_farm/abc_pre.c
++distcc-3.3.5/include_server/test_data/symlink_farm/test_directory_probing.c
++distcc-3.3.5/include_server/test_data/symlink_farm/p1.h
++distcc-3.3.5/include_server/test_data/symlink_farm/abc_post.c
++distcc-3.3.5/include_server/test_data/symlink_farm/dbar
++distcc-3.3.5/include_server/test_data/symlink_farm/parse.c
++distcc-3.3.5/include_server/test_data/symlink_farm/test_include_next
++distcc-3.3.5/include_server/test_data/symlink_farm/foo
++distcc-3.3.5/include_server/test_data/symlink_farm/sub_farm/
++distcc-3.3.5/include_server/test_data/symlink_farm/sub_farm/link_to_dd_dd_dfoo_include_dotdot_foo
++distcc-3.3.5/include_server/test_data/symlink_farm/computed_includes.c
++distcc-3.3.5/include_server/test_data/symlink_farm/dfoo
++distcc-3.3.5/include_server/test_data/contains_abs_include.c
++distcc-3.3.5/include_server/test_data/computed_includes.c
++distcc-3.3.5/include_server/test_data/dfoo/
++distcc-3.3.5/include_server/test_data/dfoo/include_next_foo.h
++distcc-3.3.5/include_server/test_data/dfoo/foo2.h
++distcc-3.3.5/include_server/test_data/dfoo/i_am_perhaps_a_directory.h
++distcc-3.3.5/include_server/test_data/dfoo/stat_triggers.h
++distcc-3.3.5/include_server/test_data/dfoo/foo.h
++distcc-3.3.5/include_server/test_data/dfoo/include_dotdot_foo
++distcc-3.3.5/include_server/parse_file_test.py
++distcc-3.3.5/include_server/setup.py
++distcc-3.3.5/include_server/include_analyzer_memoizing_node_test.py
++distcc-3.3.5/include_server/compress_files.py
++distcc-3.3.5/include_server/cache_basics.py
++distcc-3.3.5/include_server/include_server_test.py
++distcc-3.3.5/include_server/include_server.py
++distcc-3.3.5/include_server/compiler_defaults.py
++distcc-3.3.5/include_server/mirror_path_test.py
++distcc-3.3.5/include_server/include_analyzer.py
++distcc-3.3.5/include_server/mirror_path.py
++distcc-3.3.5/include_server/parse_command.py
++distcc-3.3.5/include_server/include_analyzer_memoizing_node.py
++distcc-3.3.5/include_server/macro_eval_test.py
++distcc-3.3.5/include_server/basics_test.py
++distcc-3.3.5/include_server/statistics.py
++distcc-3.3.5/include_server/basics.py
++distcc-3.3.5/include_server/run.py
++distcc-3.3.5/include_server/include_analyzer_test.py
++distcc-3.3.5/TODO
++distcc-3.3.5/m4/
++distcc-3.3.5/m4/pkg.m4
++distcc-3.3.5/m4/ax_pthread.m4
++distcc-3.3.5/man/
++distcc-3.3.5/man/distccd.1
++distcc-3.3.5/man/lsdistcc.1
++distcc-3.3.5/man/distcc.1
++distcc-3.3.5/man/pump.1
++distcc-3.3.5/man/distccmon-text.1
++distcc-3.3.5/man/include_server.1
++distcc-3.3.5/ChangeLog
++distcc-3.3.5/COPYING
++distcc-3.3.5/find_c_extension.sh
++distcc-3.3.5/install-sh
++distcc-3.3.5/configure.ac
++distcc-3.3.5/INSTALL
++distcc-3.3.5/config.guess
++distcc-3.3.5/pump.in
++distcc-3.3.5/bench/
++distcc-3.3.5/bench/Project.py
++distcc-3.3.5/bench/Summary.py
++distcc-3.3.5/bench/ProjectDefs.py
++distcc-3.3.5/bench/benchmark.py
++distcc-3.3.5/bench/Build.py
++distcc-3.3.5/bench/buildutil.py
++distcc-3.3.5/bench/statistics.py
++distcc-3.3.5/bench/compiler.py
++distcc-3.3.5/bench/actions.py
++distcc-3.3.5/contrib/
++distcc-3.3.5/contrib/stage-cc-wrapper.patch
++distcc-3.3.5/contrib/distccd-on-servers
++distcc-3.3.5/contrib/netpwd
++distcc-3.3.5/contrib/make-j
++distcc-3.3.5/contrib/redhat/
++distcc-3.3.5/contrib/redhat/xinetd
++distcc-3.3.5/contrib/redhat/sysconfig
++distcc-3.3.5/contrib/redhat/init
++distcc-3.3.5/contrib/redhat/logrotate
++distcc-3.3.5/contrib/distcc.sh
++distcc-3.3.5/contrib/dmake
++distcc-3.3.5/contrib/distcc-absolutify
++distcc-3.3.5/contrib/distccd-init
++distcc-3.3.5/README.pump
++distcc-3.3.5/NEWS
++distcc-3.3.5/update-distcc-symlinks.py
++distcc-3.3.5/test/
++distcc-3.3.5/test/testdistcc.py
++distcc-3.3.5/test/comfychair.py
++distcc-3.3.5/test/onetest.py
++distcc-3.3.5/mkinstalldirs
++distcc-3.3.5/popt/
++distcc-3.3.5/popt/findme.c
++distcc-3.3.5/popt/poptint.h
++distcc-3.3.5/popt/popt.c
++distcc-3.3.5/popt/.stamp-conf.in
++distcc-3.3.5/popt/system.h
++distcc-3.3.5/popt/popthelp.c
++distcc-3.3.5/popt/poptparse.c
++distcc-3.3.5/popt/findme.h
++distcc-3.3.5/popt/README.popt
++distcc-3.3.5/popt/poptconfig.c
++distcc-3.3.5/popt/popt.h
++distcc-3.3.5/gnome/
++distcc-3.3.5/gnome/distccmon-gnome.desktop
++distcc-3.3.5/gnome/distccmon-gnome.png
++distcc-3.3.5/AUTHORS
++distcc-3.3.5/Makefile.in
++distcc-3.3.5/.gitignore
++distcc-3.3.5/.travis.yml
++distcc-3.3.5/packaging/
++distcc-3.3.5/packaging/RedHat/
++distcc-3.3.5/packaging/RedHat/default/
++distcc-3.3.5/packaging/RedHat/default/distcc
++distcc-3.3.5/packaging/RedHat/xinetd.d/
++distcc-3.3.5/packaging/RedHat/xinetd.d/distcc
++distcc-3.3.5/packaging/RedHat/rpm.spec
++distcc-3.3.5/packaging/RedHat/conf/
++distcc-3.3.5/packaging/RedHat/conf/clients.allow
++distcc-3.3.5/packaging/RedHat/conf/commands.allow.sh
++distcc-3.3.5/packaging/RedHat/conf/hosts
++distcc-3.3.5/packaging/RedHat/init.d/
++distcc-3.3.5/packaging/RedHat/init.d/distcc
++distcc-3.3.5/packaging/RedHat/logrotate.d/
++distcc-3.3.5/packaging/RedHat/logrotate.d/distcc
++distcc-3.3.5/packaging/rpm.sh
++distcc-3.3.5/packaging/deb.sh
++distcc-3.3.5/packaging/googlecode_upload.py
++distcc-3.3.5/config.sub
++./autogen.sh: running aclocal
++./autogen.sh: running autoheader
++./autogen.sh: running autoconf
++Now run './configure' and then 'make'.
++checking for gcc... gcc
++checking whether the C compiler works... yes
++checking for C compiler default output file name... a.out
++checking for suffix of executables... 
++checking whether we are cross compiling... no
++checking for suffix of object files... o
++checking whether we are using the GNU C compiler... yes
++checking whether gcc accepts -g... yes
++checking for gcc option to accept ISO C89... none needed
++checking for socklen_t... yes
++checking if building on Android... no
++checking for a Python interpreter with version >= 3.1... python3
++checking for python3... /usr/bin/python3
++checking for python3 version... 3.9
++checking for python3 platform... linux
++checking for python3 script directory... ${prefix}/lib/python3.9/site-packages
++checking for python3 extension module directory... ${exec_prefix}/lib/python3.9/site-packages
++checking version of gtk+-2.0... 2.24.32
++checking GNOME/GTK+ cflags... -pthread -I/usr/include/gtk-2.0 -I/usr/lib/gtk-2.0/include -I/usr/include/pango-1.0 -I/usr/include/atk-1.0 -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/pango-1.0 -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/fribidi -I/usr/include/cairo -I/usr/include/pixman-1 -I/usr/include/harfbuzz -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16
++checking GNOME/GTK+ libraries... -lgtk-x11-2.0 -lgdk-x11-2.0 -lpangocairo-1.0 -latk-1.0 -lcairo -lgdk_pixbuf-2.0 -lgio-2.0 -lpangoft2-1.0 -lpango-1.0 -lgobject-2.0 -lglib-2.0 -lharfbuzz -lfontconfig -lfreetype
++checking for gcc... (cached) gcc
++checking whether we are using the GNU C compiler... (cached) yes
++checking whether gcc accepts -g... (cached) yes
++checking for gcc option to accept ISO C89... (cached) none needed
++configure: Adding gcc options: -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized
++checking for library containing strerror... none required
++checking whether make sets $(MAKE)... yes
++checking for a BSD-compatible install... /usr/bin/ginstall -c
++checking for inline... inline
++checking how to run the C preprocessor... gcc -E
++checking for grep that handles long lines and -e... /usr/bin/grep
++checking for egrep... /usr/bin/grep -E
++checking for ANSI C header files... yes
++checking for sys/types.h... yes
++checking for sys/stat.h... yes
++checking for stdlib.h... yes
++checking for string.h... yes
++checking for memory.h... yes
++checking for strings.h... yes
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking for unistd.h... yes
++checking whether byte ordering is bigendian... no
++checking for unistd.h... (cached) yes
++checking for sys/types.h... (cached) yes
++checking sys/sendfile.h usability... yes
++checking sys/sendfile.h presence... yes
++checking for sys/sendfile.h... yes
++checking ctype.h usability... yes
++checking ctype.h presence... yes
++checking for ctype.h... yes
++checking sys/resource.h usability... yes
++checking sys/resource.h presence... yes
++checking for sys/resource.h... yes
++checking sys/socket.h usability... yes
++checking sys/socket.h presence... yes
++checking for sys/socket.h... yes
++checking sys/select.h usability... yes
++checking sys/select.h presence... yes
++checking for sys/select.h... yes
++checking for netinet/in.h... yes
++checking for arpa/nameser.h... yes
++checking for resolv.h... yes
++checking float.h usability... yes
++checking float.h presence... yes
++checking for float.h... yes
++checking mcheck.h usability... no
++checking mcheck.h presence... no
++checking for mcheck.h... no
++checking alloca.h usability... yes
++checking alloca.h presence... yes
++checking for alloca.h... yes
++checking sys/mman.h usability... yes
++checking sys/mman.h presence... yes
++checking for sys/mman.h... yes
++checking sys/loadavg.h usability... no
++checking sys/loadavg.h presence... no
++checking for sys/loadavg.h... no
++checking elf.h usability... yes
++checking elf.h presence... yes
++checking for elf.h... yes
++checking fnmatch.h usability... yes
++checking fnmatch.h presence... yes
++checking for fnmatch.h... yes
++checking for in_port_t... yes
++checking for in_addr_t... yes
++checking for library containing gethostent... none required
++checking for library containing setsockopt... none required
++checking for library containing hstrerror... none required
++checking for library containing inet_aton... none required
++checking for poptGetContext in -lpopt... yes
++checking popt.h usability... yes
++checking popt.h presence... yes
++checking for popt.h... yes
++checking whether to use included libpopt... no
++checking for poptGetContext in -lpopt... (cached) yes
++checking for expandargv in -liberty... yes
++checking libiberty.h usability... no
++checking libiberty.h presence... no
++checking for libiberty.h... no
++checking libiberty/libiberty.h usability... yes
++checking libiberty/libiberty.h presence... yes
++checking for libiberty/libiberty.h... yes
++checking return type of signal handlers... void
++checking for getpagesize... yes
++checking for sendfile... yes
++checking for setsid... yes
++checking for flock... yes
++checking for lockf... yes
++checking for hstrerror... yes
++checking for strerror... yes
++checking for setuid... yes
++checking for setreuid... yes
++checking for getuid... yes
++checking for geteuid... yes
++checking for mcheck... no
++checking for wait4... yes
++checking for wait3... yes
++checking for waitpid... yes
++checking for setgroups... yes
++checking for snprintf... yes
++checking for vsnprintf... yes
++checking for vasprintf... yes
++checking for asprintf... yes
++checking for getcwd... yes
++checking for getwd... no
++checking for mkdtemp... yes
++checking for getrusage... yes
++checking for strsignal... yes
++checking for gettimeofday... yes
++checking for getaddrinfo... yes
++checking for getnameinfo... yes
++checking for inet_ntop... yes
++checking for inet_ntoa... yes
++checking for strndup... yes
++checking for strsep... yes
++checking for mmap... yes
++checking for strlcpy... yes
++checking for getloadavg... yes
++checking for getline... yes
++checking for fstatat... yes
++checking whether snprintf is declared... yes
++checking whether vsnprintf is declared... yes
++checking whether vasprintf is declared... yes
++checking whether asprintf is declared... yes
++checking whether strndup is declared... yes
++checking if mmap() supports MAP_FAILED... yes
++checking for vararg macro support... yes
++checking for va_copy... yes
++checking for __va_copy... no
++checking for C99 vsnprintf... yes
++checking for working socketpair... yes
++checking for struct sockaddr_storage.ss_family... yes
++checking for library containing gss_init_sec_context... -lgssapi_krb5
++checking build system type... x86_64-pc-linux-gnu
++checking host system type... x86_64-pc-linux-gnu
++checking for a sed that does not truncate output... /usr/bin/sed
++checking whether gcc is Clang... no
++checking whether pthreads work with -pthread... yes
++checking for joinable pthread attribute... PTHREAD_CREATE_JOINABLE
++checking whether more special flags are required for pthreads... no
++checking for PTHREAD_PRIO_INHERIT... yes
++configure: creating ./config.status
++config.status: creating Makefile
++config.status: creating popt/.stamp-conf
++config.status: creating lzo/.stamp-conf
++config.status: creating pump
++config.status: creating src/config.h
++ 
++'make install' will install distcc as follows:
++  man pages            /usr/man/man1
++  documents            /usr/share/doc/distcc
++  programs             /usr/bin
++  sbin programs        /usr/sbin
++  system configuration /etc
++  icon file            /usr/share/pixmaps
++  application file     /usr/share/applications
++ 
++
++    distcc 3.3.5 configured
++
++    Copyright (C) 2002, 2003, 2004 by Martin Pool <mbp@samba.org>
++    Portions Copyright 2005 Google Inc.
++
++    This program is free software; you can redistribute it and/or
++    modify it under the terms of the GNU General Public License
++    as published by the Free Software Foundation; either version 2
++    of the License, or (at your option) any later version.
++
++    This program is distributed in the hope that it will be useful,
++    but WITHOUT ANY WARRANTY; without even the implied warranty of
++    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++    GNU General Public License for more details.
++
++    You should have received a copy of the GNU General Public License
++    along with this program; if not, write to the Free Software
++    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
++    USA.
++
++After installing distcc, please complete the survey in the file "survey.txt".
++
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/backoff.o -c src/backoff.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/climasq.o -c src/climasq.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/clinet.o -c src/clinet.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/clirpc.o -c src/clirpc.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/compile.o -c src/compile.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/cpp.o -c src/cpp.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/distcc.o -c src/distcc.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/remote.o -c src/remote.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/ssh.o -c src/ssh.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/state.o -c src/state.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/strip.o -c src/strip.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/timefile.o -c src/timefile.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/traceenv.o -c src/traceenv.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/include_server_if.o -c src/include_server_if.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/where.o -c src/where.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/auth_distcc.o -c src/auth_distcc.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/emaillog.o -c src/emaillog.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/arg.o -c src/arg.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/argutil.o -c src/argutil.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/cleanup.o -c src/cleanup.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/compress.o -c src/compress.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/trace.o -c src/trace.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/util.o -c src/util.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/io.o -c src/io.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/exec.o -c src/exec.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/rpc.o -c src/rpc.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/tempfile.o -c src/tempfile.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/bulk.o -c src/bulk.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/help.o -c src/help.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/filename.o -c src/filename.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/lock.o -c src/lock.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/netutil.o -c src/netutil.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/pump.o -c src/pump.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/sendfile.o -c src/sendfile.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/safeguard.o -c src/safeguard.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/snprintf.o -c src/snprintf.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/timeval.o -c src/timeval.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/dotd.o -c src/dotd.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/hosts.o -c src/hosts.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/hostfile.o -c src/hostfile.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/implicit.o -c src/implicit.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/loadfile.o -c src/loadfile.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o lzo/minilzo.o -c lzo/minilzo.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/auth_common.o -c src/auth_common.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/access.o -c src/access.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/daemon.o -c src/daemon.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/dopt.o -c src/dopt.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/dparent.o -c src/dparent.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/dsignal.o -c src/dsignal.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/ncpus.o -c src/ncpus.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/prefork.o -c src/prefork.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/stringmap.o -c src/stringmap.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/serve.o -c src/serve.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/setuid.o -c src/setuid.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/srvnet.o -c src/srvnet.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/srvrpc.o -c src/srvrpc.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/stats.o -c src/stats.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/fix_debug_info.o -c src/fix_debug_info.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/auth_distccd.o -c src/auth_distccd.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/mon.o -c src/mon.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/mon-text.o -c src/mon-text.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/lsdistcc.o -c src/lsdistcc.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/rslave.o -c src/rslave.c
++gcc -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"   -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -o src/history.o -c src/history.c
++gcc -c -o src/mon-gnome.o -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"  -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread \
++	-pthread -I/usr/include/gtk-2.0 -I/usr/lib/gtk-2.0/include -I/usr/include/pango-1.0 -I/usr/include/atk-1.0 -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/pango-1.0 -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/fribidi -I/usr/include/cairo -I/usr/include/pixman-1 -I/usr/include/harfbuzz -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 \
++	./src/mon-gnome.c
++gcc -c -o src/renderer.o -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"  -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread			\
++	-pthread -I/usr/include/gtk-2.0 -I/usr/lib/gtk-2.0/include -I/usr/include/pango-1.0 -I/usr/include/atk-1.0 -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/pango-1.0 -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/fribidi -I/usr/include/cairo -I/usr/include/pixman-1 -I/usr/include/harfbuzz -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 \
++	./src/renderer.c
++cp update-distcc-symlinks.py update-distcc-symlinks
++if test -z "/usr/bin/python3"; then	\
++  echo "Not building include-server: No suitable python found"; \
++else						\
++  mkdir -p "./_include_server" &&      \
++  DISTCC_VERSION="3.3.5"			\
++  SRCDIR="."                            \
++  CFLAGS="-g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -Wno-missing-prototypes -Wno-missing-declarations -Wno-write-strings"           \
++  CPPFLAGS="-DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo" "                        \
++  /usr/bin/python3 "./include_server/setup.py" \
++      build 					\
++        --build-base="./_include_server"  \
++        --build-temp="./_include_server"; \
++fi
++running build
++running build_py
++package init file '/tmp/distcc-3.3.5/include_server/__init__.py' not found (or not a regular file)
++creating _include_server/lib.linux-x86_64-3.9
++creating _include_server/lib.linux-x86_64-3.9/include_server
++copying /tmp/distcc-3.3.5/include_server/parse_command.py -> ./_include_server/lib.linux-x86_64-3.9/include_server
++copying /tmp/distcc-3.3.5/include_server/compress_files.py -> ./_include_server/lib.linux-x86_64-3.9/include_server
++copying /tmp/distcc-3.3.5/include_server/basics_test.py -> ./_include_server/lib.linux-x86_64-3.9/include_server
++copying /tmp/distcc-3.3.5/include_server/c_extensions_test.py -> ./_include_server/lib.linux-x86_64-3.9/include_server
++copying /tmp/distcc-3.3.5/include_server/parse_file_test.py -> ./_include_server/lib.linux-x86_64-3.9/include_server
++copying /tmp/distcc-3.3.5/include_server/include_server.py -> ./_include_server/lib.linux-x86_64-3.9/include_server
++copying /tmp/distcc-3.3.5/include_server/parse_file.py -> ./_include_server/lib.linux-x86_64-3.9/include_server
++copying /tmp/distcc-3.3.5/include_server/basics.py -> ./_include_server/lib.linux-x86_64-3.9/include_server
++copying /tmp/distcc-3.3.5/include_server/include_server_test.py -> ./_include_server/lib.linux-x86_64-3.9/include_server
++copying /tmp/distcc-3.3.5/include_server/mirror_path.py -> ./_include_server/lib.linux-x86_64-3.9/include_server
++copying /tmp/distcc-3.3.5/include_server/include_analyzer_memoizing_node.py -> ./_include_server/lib.linux-x86_64-3.9/include_server
++copying /tmp/distcc-3.3.5/include_server/macro_eval.py -> ./_include_server/lib.linux-x86_64-3.9/include_server
++copying /tmp/distcc-3.3.5/include_server/mirror_path_test.py -> ./_include_server/lib.linux-x86_64-3.9/include_server
++copying /tmp/distcc-3.3.5/include_server/include_analyzer_memoizing_node_test.py -> ./_include_server/lib.linux-x86_64-3.9/include_server
++copying /tmp/distcc-3.3.5/include_server/include_analyzer.py -> ./_include_server/lib.linux-x86_64-3.9/include_server
++copying /tmp/distcc-3.3.5/include_server/setup.py -> ./_include_server/lib.linux-x86_64-3.9/include_server
++copying /tmp/distcc-3.3.5/include_server/run.py -> ./_include_server/lib.linux-x86_64-3.9/include_server
++copying /tmp/distcc-3.3.5/include_server/cache_basics.py -> ./_include_server/lib.linux-x86_64-3.9/include_server
++copying /tmp/distcc-3.3.5/include_server/include_analyzer_test.py -> ./_include_server/lib.linux-x86_64-3.9/include_server
++copying /tmp/distcc-3.3.5/include_server/compiler_defaults.py -> ./_include_server/lib.linux-x86_64-3.9/include_server
++copying /tmp/distcc-3.3.5/include_server/macro_eval_test.py -> ./_include_server/lib.linux-x86_64-3.9/include_server
++copying /tmp/distcc-3.3.5/include_server/statistics.py -> ./_include_server/lib.linux-x86_64-3.9/include_server
++copying /tmp/distcc-3.3.5/include_server/parse_command_test.py -> ./_include_server/lib.linux-x86_64-3.9/include_server
++package init file '/tmp/distcc-3.3.5/include_server/__init__.py' not found (or not a regular file)
++running build_ext
++building 'include_server.distcc_pump_c_extensions' extension
++creating _include_server/tmp
++creating _include_server/tmp/distcc-3.3.5
++creating _include_server/tmp/distcc-3.3.5/include_server
++creating _include_server/tmp/distcc-3.3.5/include_server/c_extensions
++creating _include_server/tmp/distcc-3.3.5/lzo
++creating _include_server/tmp/distcc-3.3.5/src
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -Wno-missing-prototypes -Wno-missing-declarations -Wno-write-strings -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR=/usr/lib -DSYSCONFDIR=/etc -DICONDIR=/usr/share/pixmaps -Isrc -I./src -I./lzo -fPIC -D_GNU_SOURCE=1 -Isrc -I./src -I./lzo -I/usr/include/python3.9 -c /tmp/distcc-3.3.5/include_server/c_extensions/distcc_pump_c_extensions_module.c -o ./_include_server/tmp/distcc-3.3.5/include_server/c_extensions/distcc_pump_c_extensions_module.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -Wno-missing-prototypes -Wno-missing-declarations -Wno-write-strings -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR=/usr/lib -DSYSCONFDIR=/etc -DICONDIR=/usr/share/pixmaps -Isrc -I./src -I./lzo -fPIC -D_GNU_SOURCE=1 -Isrc -I./src -I./lzo -I/usr/include/python3.9 -c /tmp/distcc-3.3.5/lzo/minilzo.c -o ./_include_server/tmp/distcc-3.3.5/lzo/minilzo.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -Wno-missing-prototypes -Wno-missing-declarations -Wno-write-strings -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR=/usr/lib -DSYSCONFDIR=/etc -DICONDIR=/usr/share/pixmaps -Isrc -I./src -I./lzo -fPIC -D_GNU_SOURCE=1 -Isrc -I./src -I./lzo -I/usr/include/python3.9 -c /tmp/distcc-3.3.5/src/argutil.c -o ./_include_server/tmp/distcc-3.3.5/src/argutil.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -Wno-missing-prototypes -Wno-missing-declarations -Wno-write-strings -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR=/usr/lib -DSYSCONFDIR=/etc -DICONDIR=/usr/share/pixmaps -Isrc -I./src -I./lzo -fPIC -D_GNU_SOURCE=1 -Isrc -I./src -I./lzo -I/usr/include/python3.9 -c /tmp/distcc-3.3.5/src/bulk.c -o ./_include_server/tmp/distcc-3.3.5/src/bulk.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -Wno-missing-prototypes -Wno-missing-declarations -Wno-write-strings -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR=/usr/lib -DSYSCONFDIR=/etc -DICONDIR=/usr/share/pixmaps -Isrc -I./src -I./lzo -fPIC -D_GNU_SOURCE=1 -Isrc -I./src -I./lzo -I/usr/include/python3.9 -c /tmp/distcc-3.3.5/src/cleanup.c -o ./_include_server/tmp/distcc-3.3.5/src/cleanup.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -Wno-missing-prototypes -Wno-missing-declarations -Wno-write-strings -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR=/usr/lib -DSYSCONFDIR=/etc -DICONDIR=/usr/share/pixmaps -Isrc -I./src -I./lzo -fPIC -D_GNU_SOURCE=1 -Isrc -I./src -I./lzo -I/usr/include/python3.9 -c /tmp/distcc-3.3.5/src/clinet.c -o ./_include_server/tmp/distcc-3.3.5/src/clinet.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -Wno-missing-prototypes -Wno-missing-declarations -Wno-write-strings -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR=/usr/lib -DSYSCONFDIR=/etc -DICONDIR=/usr/share/pixmaps -Isrc -I./src -I./lzo -fPIC -D_GNU_SOURCE=1 -Isrc -I./src -I./lzo -I/usr/include/python3.9 -c /tmp/distcc-3.3.5/src/clirpc.c -o ./_include_server/tmp/distcc-3.3.5/src/clirpc.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -Wno-missing-prototypes -Wno-missing-declarations -Wno-write-strings -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR=/usr/lib -DSYSCONFDIR=/etc -DICONDIR=/usr/share/pixmaps -Isrc -I./src -I./lzo -fPIC -D_GNU_SOURCE=1 -Isrc -I./src -I./lzo -I/usr/include/python3.9 -c /tmp/distcc-3.3.5/src/compress.c -o ./_include_server/tmp/distcc-3.3.5/src/compress.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -Wno-missing-prototypes -Wno-missing-declarations -Wno-write-strings -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR=/usr/lib -DSYSCONFDIR=/etc -DICONDIR=/usr/share/pixmaps -Isrc -I./src -I./lzo -fPIC -D_GNU_SOURCE=1 -Isrc -I./src -I./lzo -I/usr/include/python3.9 -c /tmp/distcc-3.3.5/src/emaillog.c -o ./_include_server/tmp/distcc-3.3.5/src/emaillog.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -Wno-missing-prototypes -Wno-missing-declarations -Wno-write-strings -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR=/usr/lib -DSYSCONFDIR=/etc -DICONDIR=/usr/share/pixmaps -Isrc -I./src -I./lzo -fPIC -D_GNU_SOURCE=1 -Isrc -I./src -I./lzo -I/usr/include/python3.9 -c /tmp/distcc-3.3.5/src/filename.c -o ./_include_server/tmp/distcc-3.3.5/src/filename.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -Wno-missing-prototypes -Wno-missing-declarations -Wno-write-strings -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR=/usr/lib -DSYSCONFDIR=/etc -DICONDIR=/usr/share/pixmaps -Isrc -I./src -I./lzo -fPIC -D_GNU_SOURCE=1 -Isrc -I./src -I./lzo -I/usr/include/python3.9 -c /tmp/distcc-3.3.5/src/include_server_if.c -o ./_include_server/tmp/distcc-3.3.5/src/include_server_if.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -Wno-missing-prototypes -Wno-missing-declarations -Wno-write-strings -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR=/usr/lib -DSYSCONFDIR=/etc -DICONDIR=/usr/share/pixmaps -Isrc -I./src -I./lzo -fPIC -D_GNU_SOURCE=1 -Isrc -I./src -I./lzo -I/usr/include/python3.9 -c /tmp/distcc-3.3.5/src/io.c -o ./_include_server/tmp/distcc-3.3.5/src/io.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -Wno-missing-prototypes -Wno-missing-declarations -Wno-write-strings -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR=/usr/lib -DSYSCONFDIR=/etc -DICONDIR=/usr/share/pixmaps -Isrc -I./src -I./lzo -fPIC -D_GNU_SOURCE=1 -Isrc -I./src -I./lzo -I/usr/include/python3.9 -c /tmp/distcc-3.3.5/src/netutil.c -o ./_include_server/tmp/distcc-3.3.5/src/netutil.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -Wno-missing-prototypes -Wno-missing-declarations -Wno-write-strings -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR=/usr/lib -DSYSCONFDIR=/etc -DICONDIR=/usr/share/pixmaps -Isrc -I./src -I./lzo -fPIC -D_GNU_SOURCE=1 -Isrc -I./src -I./lzo -I/usr/include/python3.9 -c /tmp/distcc-3.3.5/src/pump.c -o ./_include_server/tmp/distcc-3.3.5/src/pump.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -Wno-missing-prototypes -Wno-missing-declarations -Wno-write-strings -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR=/usr/lib -DSYSCONFDIR=/etc -DICONDIR=/usr/share/pixmaps -Isrc -I./src -I./lzo -fPIC -D_GNU_SOURCE=1 -Isrc -I./src -I./lzo -I/usr/include/python3.9 -c /tmp/distcc-3.3.5/src/rpc.c -o ./_include_server/tmp/distcc-3.3.5/src/rpc.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -Wno-missing-prototypes -Wno-missing-declarations -Wno-write-strings -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR=/usr/lib -DSYSCONFDIR=/etc -DICONDIR=/usr/share/pixmaps -Isrc -I./src -I./lzo -fPIC -D_GNU_SOURCE=1 -Isrc -I./src -I./lzo -I/usr/include/python3.9 -c /tmp/distcc-3.3.5/src/sendfile.c -o ./_include_server/tmp/distcc-3.3.5/src/sendfile.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -Wno-missing-prototypes -Wno-missing-declarations -Wno-write-strings -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR=/usr/lib -DSYSCONFDIR=/etc -DICONDIR=/usr/share/pixmaps -Isrc -I./src -I./lzo -fPIC -D_GNU_SOURCE=1 -Isrc -I./src -I./lzo -I/usr/include/python3.9 -c /tmp/distcc-3.3.5/src/snprintf.c -o ./_include_server/tmp/distcc-3.3.5/src/snprintf.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -Wno-missing-prototypes -Wno-missing-declarations -Wno-write-strings -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR=/usr/lib -DSYSCONFDIR=/etc -DICONDIR=/usr/share/pixmaps -Isrc -I./src -I./lzo -fPIC -D_GNU_SOURCE=1 -Isrc -I./src -I./lzo -I/usr/include/python3.9 -c /tmp/distcc-3.3.5/src/srvrpc.c -o ./_include_server/tmp/distcc-3.3.5/src/srvrpc.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -Wno-missing-prototypes -Wno-missing-declarations -Wno-write-strings -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR=/usr/lib -DSYSCONFDIR=/etc -DICONDIR=/usr/share/pixmaps -Isrc -I./src -I./lzo -fPIC -D_GNU_SOURCE=1 -Isrc -I./src -I./lzo -I/usr/include/python3.9 -c /tmp/distcc-3.3.5/src/state.c -o ./_include_server/tmp/distcc-3.3.5/src/state.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -Wno-missing-prototypes -Wno-missing-declarations -Wno-write-strings -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR=/usr/lib -DSYSCONFDIR=/etc -DICONDIR=/usr/share/pixmaps -Isrc -I./src -I./lzo -fPIC -D_GNU_SOURCE=1 -Isrc -I./src -I./lzo -I/usr/include/python3.9 -c /tmp/distcc-3.3.5/src/tempfile.c -o ./_include_server/tmp/distcc-3.3.5/src/tempfile.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -Wno-missing-prototypes -Wno-missing-declarations -Wno-write-strings -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR=/usr/lib -DSYSCONFDIR=/etc -DICONDIR=/usr/share/pixmaps -Isrc -I./src -I./lzo -fPIC -D_GNU_SOURCE=1 -Isrc -I./src -I./lzo -I/usr/include/python3.9 -c /tmp/distcc-3.3.5/src/timeval.c -o ./_include_server/tmp/distcc-3.3.5/src/timeval.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -Wno-missing-prototypes -Wno-missing-declarations -Wno-write-strings -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR=/usr/lib -DSYSCONFDIR=/etc -DICONDIR=/usr/share/pixmaps -Isrc -I./src -I./lzo -fPIC -D_GNU_SOURCE=1 -Isrc -I./src -I./lzo -I/usr/include/python3.9 -c /tmp/distcc-3.3.5/src/trace.c -o ./_include_server/tmp/distcc-3.3.5/src/trace.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -Wno-missing-prototypes -Wno-missing-declarations -Wno-write-strings -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR=/usr/lib -DSYSCONFDIR=/etc -DICONDIR=/usr/share/pixmaps -Isrc -I./src -I./lzo -fPIC -D_GNU_SOURCE=1 -Isrc -I./src -I./lzo -I/usr/include/python3.9 -c /tmp/distcc-3.3.5/src/util.c -o ./_include_server/tmp/distcc-3.3.5/src/util.o
++gcc -shared -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -Wno-missing-prototypes -Wno-missing-declarations -Wno-write-strings -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR=/usr/lib -DSYSCONFDIR=/etc -DICONDIR=/usr/share/pixmaps -Isrc -I./src -I./lzo ./_include_server/tmp/distcc-3.3.5/include_server/c_extensions/distcc_pump_c_extensions_module.o ./_include_server/tmp/distcc-3.3.5/lzo/minilzo.o ./_include_server/tmp/distcc-3.3.5/src/argutil.o ./_include_server/tmp/distcc-3.3.5/src/bulk.o ./_include_server/tmp/distcc-3.3.5/src/cleanup.o ./_include_server/tmp/distcc-3.3.5/src/clinet.o ./_include_server/tmp/distcc-3.3.5/src/clirpc.o ./_include_server/tmp/distcc-3.3.5/src/compress.o ./_include_server/tmp/distcc-3.3.5/src/emaillog.o ./_include_server/tmp/distcc-3.3.5/src/filename.o ./_include_server/tmp/distcc-3.3.5/src/include_server_if.o ./_include_server/tmp/distcc-3.3.5/src/io.o ./_include_server/tmp/distcc-3.3.5/src/netutil.o ./_include_server/tmp/distcc-3.3.5/src/pump.o ./_include_server/tmp/distcc-3.3.5/src/rpc.o ./_include_server/tmp/distcc-3.3.5/src/sendfile.o ./_include_server/tmp/distcc-3.3.5/src/snprintf.o ./_include_server/tmp/distcc-3.3.5/src/srvrpc.o ./_include_server/tmp/distcc-3.3.5/src/state.o ./_include_server/tmp/distcc-3.3.5/src/tempfile.o ./_include_server/tmp/distcc-3.3.5/src/timeval.o ./_include_server/tmp/distcc-3.3.5/src/trace.o ./_include_server/tmp/distcc-3.3.5/src/util.o -L/usr/lib -o ./_include_server/lib.linux-x86_64-3.9/include_server/distcc_pump_c_extensions.cpython-39-x86_64-linux-gnu.so
++gcc -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread  -o distcc src/backoff.o src/climasq.o src/clinet.o src/clirpc.o src/compile.o src/cpp.o src/distcc.o src/remote.o src/ssh.o src/state.o src/strip.o src/timefile.o src/traceenv.o src/include_server_if.o src/where.o src/auth_distcc.o src/emaillog.o src/arg.o src/argutil.o src/cleanup.o src/compress.o src/trace.o src/util.o src/io.o src/exec.o src/rpc.o src/tempfile.o src/bulk.o src/help.o src/filename.o src/lock.o src/netutil.o src/pump.o src/sendfile.o src/safeguard.o src/snprintf.o src/timeval.o src/dotd.o src/hosts.o src/hostfile.o src/implicit.o src/loadfile.o lzo/minilzo.o src/auth_common.o -lgssapi_krb5 -liberty -lpopt -lpopt 
++gcc -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread  -o distccd src/access.o src/daemon.o  src/dopt.o src/dparent.o src/dsignal.o src/ncpus.o src/prefork.o src/stringmap.o src/serve.o src/setuid.o src/srvnet.o src/srvrpc.o src/state.o src/stats.o src/fix_debug_info.o src/auth_distccd.o src/arg.o src/argutil.o src/cleanup.o src/compress.o src/trace.o src/util.o src/io.o src/exec.o src/rpc.o src/tempfile.o src/bulk.o src/help.o src/filename.o src/lock.o src/netutil.o src/pump.o src/sendfile.o src/safeguard.o src/snprintf.o src/timeval.o src/dotd.o src/hosts.o src/hostfile.o src/implicit.o src/loadfile.o lzo/minilzo.o src/auth_common.o  -lgssapi_krb5 -liberty -lpopt -lpopt 	
++gcc -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread  -o distccmon-text src/cleanup.o src/filename.o src/io.o src/mon.o src/netutil.o src/argutil.o src/rpc.o src/snprintf.o src/state.o src/tempfile.o src/trace.o src/traceenv.o src/util.o src/mon-text.o -lgssapi_krb5 -liberty -lpopt -lpopt 
++gcc -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread  -o lsdistcc src/lsdistcc.o src/clinet.o src/io.o src/netutil.o src/trace.o src/util.o src/rslave.o src/snprintf.o lzo/minilzo.o -lgssapi_krb5 -liberty -lpopt -lpopt 
++In file included from /usr/include/gtk-2.0/gtk/gtkobject.h:37,
++                 from /usr/include/gtk-2.0/gtk/gtkwidget.h:36,
++                 from /usr/include/gtk-2.0/gtk/gtkcontainer.h:35,
++                 from /usr/include/gtk-2.0/gtk/gtkbin.h:35,
++                 from /usr/include/gtk-2.0/gtk/gtkwindow.h:36,
++                 from /usr/include/gtk-2.0/gtk/gtkdialog.h:35,
++                 from /usr/include/gtk-2.0/gtk/gtkaboutdialog.h:32,
++                 from /usr/include/gtk-2.0/gtk/gtk.h:33,
++                 from ./src/mon-gnome.c:67:
++/usr/include/gtk-2.0/gtk/gtktypeutils.h:236:1: warning: ‘GTypeDebugFlags’ is deprecated [-Wdeprecated-declarations]
++  236 | void            gtk_type_init   (GTypeDebugFlags    debug_flags);
++      | ^~~~
++In file included from /usr/include/gtk-2.0/gtk/gtkobject.h:37,
++                 from /usr/include/gtk-2.0/gtk/gtkwidget.h:36,
++                 from /usr/include/gtk-2.0/gtk/gtkcontainer.h:35,
++                 from /usr/include/gtk-2.0/gtk/gtkbin.h:35,
++                 from /usr/include/gtk-2.0/gtk/gtkwindow.h:36,
++                 from /usr/include/gtk-2.0/gtk/gtkdialog.h:35,
++                 from /usr/include/gtk-2.0/gtk/gtkaboutdialog.h:32,
++                 from /usr/include/gtk-2.0/gtk/gtk.h:33,
++                 from ./src/renderer.c:57:
++/usr/include/gtk-2.0/gtk/gtktypeutils.h:236:1: warning: ‘GTypeDebugFlags’ is deprecated [-Wdeprecated-declarations]
++  236 | void            gtk_type_init   (GTypeDebugFlags    debug_flags);
++      | ^~~~
++In file included from /usr/include/glib-2.0/gobject/gobject.h:24,
++                 from /usr/include/glib-2.0/gobject/gbinding.h:29,
++                 from /usr/include/glib-2.0/glib-object.h:22,
++                 from /usr/include/glib-2.0/gio/gioenums.h:28,
++                 from /usr/include/glib-2.0/gio/giotypes.h:28,
++                 from /usr/include/glib-2.0/gio/gio.h:26,
++                 from /usr/include/gtk-2.0/gdk/gdkapplaunchcontext.h:30,
++                 from /usr/include/gtk-2.0/gdk/gdk.h:32,
++                 from /usr/include/gtk-2.0/gtk/gtk.h:32,
++                 from ./src/renderer.c:57:
++/usr/include/glib-2.0/gobject/gtype.h:679:1: note: declared here
++  679 | {
++      | ^
++In file included from /usr/include/glib-2.0/gobject/gobject.h:24,
++                 from /usr/include/glib-2.0/gobject/gbinding.h:29,
++                 from /usr/include/glib-2.0/glib-object.h:22,
++                 from /usr/include/glib-2.0/gio/gioenums.h:28,
++                 from /usr/include/glib-2.0/gio/giotypes.h:28,
++                 from /usr/include/glib-2.0/gio/gio.h:26,
++                 from /usr/include/gtk-2.0/gdk/gdkapplaunchcontext.h:30,
++                 from /usr/include/gtk-2.0/gdk/gdk.h:32,
++                 from /usr/include/gtk-2.0/gtk/gtk.h:32,
++                 from ./src/mon-gnome.c:67:
++/usr/include/glib-2.0/gobject/gtype.h:679:1: note: declared here
++  679 | {
++      | ^
++In file included from /usr/include/gtk-2.0/gtk/gtktoolitem.h:31,
++                 from /usr/include/gtk-2.0/gtk/gtktoolbutton.h:30,
++                 from /usr/include/gtk-2.0/gtk/gtkmenutoolbutton.h:30,
++                 from /usr/include/gtk-2.0/gtk/gtk.h:126,
++                 from ./src/renderer.c:57:
++/usr/include/gtk-2.0/gtk/gtktooltips.h:73:3: warning: ‘GTimeVal’ is deprecated: Use 'GDateTime' instead [-Wdeprecated-declarations]
++   73 |   GTimeVal last_popdown;
++      |   ^~~~~~~~
++In file included from /usr/include/gtk-2.0/gtk/gtktoolitem.h:31,
++                 from /usr/include/gtk-2.0/gtk/gtktoolbutton.h:30,
++                 from /usr/include/gtk-2.0/gtk/gtkmenutoolbutton.h:30,
++                 from /usr/include/gtk-2.0/gtk/gtk.h:126,
++                 from ./src/mon-gnome.c:67:
++/usr/include/gtk-2.0/gtk/gtktooltips.h:73:3: warning: ‘GTimeVal’ is deprecated: Use 'GDateTime' instead [-Wdeprecated-declarations]
++   73 |   GTimeVal last_popdown;
++      |   ^~~~~~~~
++In file included from /usr/include/glib-2.0/glib/galloca.h:32,
++                 from /usr/include/glib-2.0/glib.h:30,
++                 from /usr/include/glib-2.0/gobject/gbinding.h:28,
++                 from /usr/include/glib-2.0/glib-object.h:22,
++                 from /usr/include/glib-2.0/gio/gioenums.h:28,
++                 from /usr/include/glib-2.0/gio/giotypes.h:28,
++                 from /usr/include/glib-2.0/gio/gio.h:26,
++                 from /usr/include/gtk-2.0/gdk/gdkapplaunchcontext.h:30,
++                 from /usr/include/gtk-2.0/gdk/gdk.h:32,
++                 from /usr/include/gtk-2.0/gtk/gtk.h:32,
++                 from ./src/mon-gnome.c:67:
++/usr/include/glib-2.0/glib/gtypes.h:547:8: note: declared here
++  547 | struct _GTimeVal
++      |        ^~~~~~~~~
++In file included from /usr/include/glib-2.0/glib/galloca.h:32,
++                 from /usr/include/glib-2.0/glib.h:30,
++                 from ./src/renderer.c:56:
++/usr/include/glib-2.0/glib/gtypes.h:547:8: note: declared here
++  547 | struct _GTimeVal
++      |        ^~~~~~~~~
++In file included from /usr/include/gtk-2.0/gtk/gtk.h:234,
++                 from ./src/mon-gnome.c:67:
++/usr/include/gtk-2.0/gtk/gtkitemfactory.h:47:1: warning: function declaration isn’t a prototype [-Wstrict-prototypes]
++   47 | typedef void (*GtkItemFactoryCallback)  ();
++      | ^~~~~~~
++In file included from /usr/include/gtk-2.0/gtk/gtk.h:234,
++                 from ./src/renderer.c:57:
++/usr/include/gtk-2.0/gtk/gtkitemfactory.h:47:1: warning: function declaration isn’t a prototype [-Wstrict-prototypes]
++   47 | typedef void (*GtkItemFactoryCallback)  ();
++      | ^~~~~~~
++./src/renderer.c: In function ‘dcc_cell_renderer_chart_get_type’:
++./src/renderer.c:283:5: warning: cast between incompatible function types from ‘void (*)(DccCellRendererChartClass *)’ {aka ‘void (*)(struct _DccCellRendererChartClass *)’} to ‘void (*)(void *, void *)’ [-Wcast-function-type]
++  283 |     (GClassInitFunc) dcc_cell_renderer_chart_class_init,
++      |     ^
++./src/renderer.c:288:5: warning: cast between incompatible function types from ‘void (*)(DccCellRendererChart *)’ {aka ‘void (*)(struct _DccCellRendererChart *)’} to ‘void (*)(GTypeInstance *, void *)’ {aka ‘void (*)(struct _GTypeInstance *, void *)’} [-Wcast-function-type]
++  288 |     (GInstanceInitFunc) dcc_cell_renderer_chart_init,
++      |     ^
++gcc -o distccmon-gnome -DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo"  -g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread  \
++	src/cleanup.o src/filename.o src/io.o src/mon.o src/netutil.o src/argutil.o src/rpc.o src/snprintf.o src/state.o src/tempfile.o src/trace.o src/traceenv.o src/util.o src/history.o src/mon-gnome.o src/renderer.o \
++	-lgssapi_krb5 -liberty -lpopt -lpopt  -pthread -I/usr/include/gtk-2.0 -I/usr/lib/gtk-2.0/include -I/usr/include/pango-1.0 -I/usr/include/atk-1.0 -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/pango-1.0 -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/fribidi -I/usr/include/cairo -I/usr/include/pixman-1 -I/usr/include/harfbuzz -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -lgtk-x11-2.0 -lgdk-x11-2.0 -lpangocairo-1.0 -latk-1.0 -lcairo -lgdk_pixbuf-2.0 -lgio-2.0 -lpangoft2-1.0 -lpango-1.0 -lgobject-2.0 -lglib-2.0 -lharfbuzz -lfontconfig -lfreetype
++'make install' will install distcc as follows:
++  man pages            /tmp/package-distcc/usr/man/man1
++  documents            /tmp/package-distcc/usr/doc/distcc-3.3.5
++  programs             /tmp/package-distcc/usr/bin
++  sbin programs        /tmp/package-distcc/usr/sbin
++  system configuration /tmp/package-distcc/etc
++  icon file            /tmp/package-distcc/usr/share/pixmaps
++  application file     /tmp/package-distcc/usr/share/applications
++/bin/sh ./mkinstalldirs "/tmp/package-distcc/usr/doc/distcc-3.3.5"
++mkdir /tmp/package-distcc/usr
++mkdir /tmp/package-distcc/usr/doc
++mkdir /tmp/package-distcc/usr/doc/distcc-3.3.5
++for p in AUTHORS COPYING NEWS README README.pump INSTALL TODO doc/protocol-1.txt doc/status-1.txt doc/protocol-2.txt doc/protocol-3.txt doc/protocol-3-impl.txt doc/protocol-gssapi.txt doc/reporting-bugs.txt survey.txt; do \
++  /usr/bin/ginstall -c -m 644 "./$p" "/tmp/package-distcc/usr/doc/distcc-3.3.5" || exit 1; \
++done
++/bin/sh ./mkinstalldirs "/tmp/package-distcc/usr/man/man1"
++mkdir /tmp/package-distcc/usr/man
++mkdir /tmp/package-distcc/usr/man/man1
++for p in man/distcc.1 man/distccd.1 man/distccmon-text.1 man/lsdistcc.1 man/pump.1 man/include_server.1; do \
++  if gzip --help >/dev/null 2>&1; then \
++    mkdir -p "`dirname $p`"; \
++    if [ -e "/tmp/package-distcc/usr/man/man1$p" ]; then rm -fv "/tmp/package-distcc/usr/man/man1$p"; fi; \
++    gzip < "./$p" > "$p.gz"; \
++    /usr/bin/ginstall -c -m 644 "$p.gz" "/tmp/package-distcc/usr/man/man1" || exit 1; \
++  else \
++    echo "Warning: no working gzip, installing man pages uncompressed" 1>&2; \
++    if [ -e "/tmp/package-distcc/usr/man/man1$p.gz" ]; then rm -fv "/tmp/package-distcc/usr/man/man1$p.gz"; fi; \
++    /usr/bin/ginstall -c -m 644 "./$p" "/tmp/package-distcc/usr/man/man1" || exit 1; \
++  fi; \
++done
++echo "path: $PATH"
++path: /usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/games:/usr/lib64/qt/bin:/usr/lib64/qt5/bin
++./config.status
++config.status: creating Makefile
++config.status: creating popt/.stamp-conf
++config.status: creating lzo/.stamp-conf
++config.status: creating pump
++config.status: creating src/config.h
++config.status: src/config.h is unchanged
++touch src/config.h.stamp
++/bin/sh ./mkinstalldirs "/tmp/package-distcc/usr/bin"
++mkdir /tmp/package-distcc/usr/bin
++/bin/sh ./mkinstalldirs "/tmp/package-distcc/usr/sbin"
++mkdir /tmp/package-distcc/usr/sbin
++for p in distcc distccd distccmon-text lsdistcc distccmon-gnome ; do \
++  /usr/bin/ginstall -c  "$p" "/tmp/package-distcc/usr/bin" || exit 1; \
++done
++for p in update-distcc-symlinks; do \
++  /usr/bin/ginstall -c  "$p" "/tmp/package-distcc/usr/sbin" || exit 1; \
++done
++if test -z "/usr/bin/python3"; then	\
++  echo "Not building include-server: No suitable python found"; \
++else						\
++  mkdir -p "./_include_server" &&      \
++  DISTCC_VERSION="3.3.5"			\
++  SRCDIR="."                            \
++  CFLAGS="-g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -Wno-missing-prototypes -Wno-missing-declarations -Wno-write-strings"           \
++  CPPFLAGS="-DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo" "                        \
++  /usr/bin/python3 "./include_server/setup.py" \
++      build 					\
++        --build-base="./_include_server"  \
++        --build-temp="./_include_server"; \
++fi
++running build
++running build_py
++package init file '/tmp/distcc-3.3.5/include_server/__init__.py' not found (or not a regular file)
++package init file '/tmp/distcc-3.3.5/include_server/__init__.py' not found (or not a regular file)
++running build_ext
++if test -z "/usr/bin/python3"; then	\
++  echo "Not building install-include-server: No suitable python found"; \
++else						\
++  mkdir -p "./_include_server" &&      \
++  DESTDIR=`cd "/tmp/package-distcc/" && pwd` &&            \
++  DISTCC_VERSION="3.3.5"			\
++  SRCDIR="."                            \
++  CFLAGS="-g -O2 -MD -W -Wall -Wimplicit -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wmissing-declarations -Wuninitialized -pthread -Wno-missing-prototypes -Wno-missing-declarations -Wno-write-strings"           \
++  CPPFLAGS="-DMINILZO_HAVE_CONFIG_H -DHAVE_CONFIG_H -D_GNU_SOURCE -DLIBDIR="\"/usr/lib\"" -DSYSCONFDIR="\"/etc\"" -DICONDIR="\"/usr/share/pixmaps\"" -Isrc -I"./src" -I"./lzo" "                        \
++  /usr/bin/python3 "./include_server/setup.py" \
++      build 					\
++        --build-base="./_include_server" \
++        --build-temp="./_include_server" \
++      install 					\
++         --prefix="/usr" 			\
++         --record="./_include_server/install.log.pre" \
++         --root="$DESTDIR"                     \
++    || exit 1; \
++  sed -e '/^[^\/]/ s,^,/,' \
++      -e 's/\r$//' \
++      "./_include_server/install.log.pre" \
++      > "./_include_server/install.log"; \
++  if test -n ""; then \
++    cp -f "./_include_server/install.log" ""; \
++  fi; \
++  /bin/sh ./mkinstalldirs "/tmp/package-distcc/usr/bin" && \
++  INCLUDE_SERVER=`grep '/include_server.py$' "./_include_server/install.log"` && \
++  sed "s,^include_server='',include_server='$INCLUDE_SERVER'," \
++    pump > "./_include_server/pump" && \
++  /usr/bin/ginstall -c "./_include_server/pump" "/tmp/package-distcc/usr/bin"; \
++fi
++running build
++running build_py
++package init file '/tmp/distcc-3.3.5/include_server/__init__.py' not found (or not a regular file)
++package init file '/tmp/distcc-3.3.5/include_server/__init__.py' not found (or not a regular file)
++running build_ext
++running install
++running install_lib
++creating /tmp/package-distcc/usr/lib
++creating /tmp/package-distcc/usr/lib/python3.9
++creating /tmp/package-distcc/usr/lib/python3.9/site-packages
++creating /tmp/package-distcc/usr/lib/python3.9/site-packages/include_server
++copying ./_include_server/lib.linux-x86_64-3.9/include_server/parse_command.py -> /tmp/package-distcc/usr/lib/python3.9/site-packages/include_server
++copying ./_include_server/lib.linux-x86_64-3.9/include_server/compress_files.py -> /tmp/package-distcc/usr/lib/python3.9/site-packages/include_server
++copying ./_include_server/lib.linux-x86_64-3.9/include_server/basics_test.py -> /tmp/package-distcc/usr/lib/python3.9/site-packages/include_server
++copying ./_include_server/lib.linux-x86_64-3.9/include_server/c_extensions_test.py -> /tmp/package-distcc/usr/lib/python3.9/site-packages/include_server
++copying ./_include_server/lib.linux-x86_64-3.9/include_server/parse_file_test.py -> /tmp/package-distcc/usr/lib/python3.9/site-packages/include_server
++copying ./_include_server/lib.linux-x86_64-3.9/include_server/include_server.py -> /tmp/package-distcc/usr/lib/python3.9/site-packages/include_server
++copying ./_include_server/lib.linux-x86_64-3.9/include_server/parse_file.py -> /tmp/package-distcc/usr/lib/python3.9/site-packages/include_server
++copying ./_include_server/lib.linux-x86_64-3.9/include_server/basics.py -> /tmp/package-distcc/usr/lib/python3.9/site-packages/include_server
++copying ./_include_server/lib.linux-x86_64-3.9/include_server/include_server_test.py -> /tmp/package-distcc/usr/lib/python3.9/site-packages/include_server
++copying ./_include_server/lib.linux-x86_64-3.9/include_server/mirror_path.py -> /tmp/package-distcc/usr/lib/python3.9/site-packages/include_server
++copying ./_include_server/lib.linux-x86_64-3.9/include_server/include_analyzer_memoizing_node.py -> /tmp/package-distcc/usr/lib/python3.9/site-packages/include_server
++copying ./_include_server/lib.linux-x86_64-3.9/include_server/macro_eval.py -> /tmp/package-distcc/usr/lib/python3.9/site-packages/include_server
++copying ./_include_server/lib.linux-x86_64-3.9/include_server/mirror_path_test.py -> /tmp/package-distcc/usr/lib/python3.9/site-packages/include_server
++copying ./_include_server/lib.linux-x86_64-3.9/include_server/distcc_pump_c_extensions.cpython-39-x86_64-linux-gnu.so -> /tmp/package-distcc/usr/lib/python3.9/site-packages/include_server
++copying ./_include_server/lib.linux-x86_64-3.9/include_server/include_analyzer_memoizing_node_test.py -> /tmp/package-distcc/usr/lib/python3.9/site-packages/include_server
++copying ./_include_server/lib.linux-x86_64-3.9/include_server/include_analyzer.py -> /tmp/package-distcc/usr/lib/python3.9/site-packages/include_server
++copying ./_include_server/lib.linux-x86_64-3.9/include_server/setup.py -> /tmp/package-distcc/usr/lib/python3.9/site-packages/include_server
++copying ./_include_server/lib.linux-x86_64-3.9/include_server/run.py -> /tmp/package-distcc/usr/lib/python3.9/site-packages/include_server
++copying ./_include_server/lib.linux-x86_64-3.9/include_server/cache_basics.py -> /tmp/package-distcc/usr/lib/python3.9/site-packages/include_server
++copying ./_include_server/lib.linux-x86_64-3.9/include_server/include_analyzer_test.py -> /tmp/package-distcc/usr/lib/python3.9/site-packages/include_server
++copying ./_include_server/lib.linux-x86_64-3.9/include_server/compiler_defaults.py -> /tmp/package-distcc/usr/lib/python3.9/site-packages/include_server
++copying ./_include_server/lib.linux-x86_64-3.9/include_server/macro_eval_test.py -> /tmp/package-distcc/usr/lib/python3.9/site-packages/include_server
++copying ./_include_server/lib.linux-x86_64-3.9/include_server/statistics.py -> /tmp/package-distcc/usr/lib/python3.9/site-packages/include_server
++copying ./_include_server/lib.linux-x86_64-3.9/include_server/parse_command_test.py -> /tmp/package-distcc/usr/lib/python3.9/site-packages/include_server
++byte-compiling /tmp/package-distcc/usr/lib/python3.9/site-packages/include_server/parse_command.py to parse_command.cpython-39.pyc
++byte-compiling /tmp/package-distcc/usr/lib/python3.9/site-packages/include_server/compress_files.py to compress_files.cpython-39.pyc
++byte-compiling /tmp/package-distcc/usr/lib/python3.9/site-packages/include_server/basics_test.py to basics_test.cpython-39.pyc
++byte-compiling /tmp/package-distcc/usr/lib/python3.9/site-packages/include_server/c_extensions_test.py to c_extensions_test.cpython-39.pyc
++byte-compiling /tmp/package-distcc/usr/lib/python3.9/site-packages/include_server/parse_file_test.py to parse_file_test.cpython-39.pyc
++byte-compiling /tmp/package-distcc/usr/lib/python3.9/site-packages/include_server/include_server.py to include_server.cpython-39.pyc
++byte-compiling /tmp/package-distcc/usr/lib/python3.9/site-packages/include_server/parse_file.py to parse_file.cpython-39.pyc
++byte-compiling /tmp/package-distcc/usr/lib/python3.9/site-packages/include_server/basics.py to basics.cpython-39.pyc
++byte-compiling /tmp/package-distcc/usr/lib/python3.9/site-packages/include_server/include_server_test.py to include_server_test.cpython-39.pyc
++byte-compiling /tmp/package-distcc/usr/lib/python3.9/site-packages/include_server/mirror_path.py to mirror_path.cpython-39.pyc
++byte-compiling /tmp/package-distcc/usr/lib/python3.9/site-packages/include_server/include_analyzer_memoizing_node.py to include_analyzer_memoizing_node.cpython-39.pyc
++byte-compiling /tmp/package-distcc/usr/lib/python3.9/site-packages/include_server/macro_eval.py to macro_eval.cpython-39.pyc
++byte-compiling /tmp/package-distcc/usr/lib/python3.9/site-packages/include_server/mirror_path_test.py to mirror_path_test.cpython-39.pyc
++byte-compiling /tmp/package-distcc/usr/lib/python3.9/site-packages/include_server/include_analyzer_memoizing_node_test.py to include_analyzer_memoizing_node_test.cpython-39.pyc
++byte-compiling /tmp/package-distcc/usr/lib/python3.9/site-packages/include_server/include_analyzer.py to include_analyzer.cpython-39.pyc
++byte-compiling /tmp/package-distcc/usr/lib/python3.9/site-packages/include_server/setup.py to setup.cpython-39.pyc
++byte-compiling /tmp/package-distcc/usr/lib/python3.9/site-packages/include_server/run.py to run.cpython-39.pyc
++byte-compiling /tmp/package-distcc/usr/lib/python3.9/site-packages/include_server/cache_basics.py to cache_basics.cpython-39.pyc
++byte-compiling /tmp/package-distcc/usr/lib/python3.9/site-packages/include_server/include_analyzer_test.py to include_analyzer_test.cpython-39.pyc
++byte-compiling /tmp/package-distcc/usr/lib/python3.9/site-packages/include_server/compiler_defaults.py to compiler_defaults.cpython-39.pyc
++byte-compiling /tmp/package-distcc/usr/lib/python3.9/site-packages/include_server/macro_eval_test.py to macro_eval_test.cpython-39.pyc
++byte-compiling /tmp/package-distcc/usr/lib/python3.9/site-packages/include_server/statistics.py to statistics.cpython-39.pyc
++byte-compiling /tmp/package-distcc/usr/lib/python3.9/site-packages/include_server/parse_command_test.py to parse_command_test.cpython-39.pyc
++running install_egg_info
++Writing /tmp/package-distcc/usr/lib/python3.9/site-packages/include_server-3.3.5-py3.9.egg-info
++package init file '/tmp/distcc-3.3.5/include_server/__init__.py' not found (or not a regular file)
++writing list of installed files to './_include_server/install.log.pre'
++/bin/sh ./mkinstalldirs "/tmp/package-distcc/usr/doc/distcc-3.3.5/example"
++mkdir /tmp/package-distcc/usr/doc/distcc-3.3.5/example
++for p in doc/example/README doc/example/default doc/example/hosts.allow doc/example/services doc/example/init doc/example/init-suse doc/example/logrotate doc/example/xinetd ; do \
++  /usr/bin/ginstall -c -m 644 "./$p" "/tmp/package-distcc/usr/doc/distcc-3.3.5/example" || exit 1; \
++done
++/bin/sh ./mkinstalldirs "/tmp/package-distcc/usr/share/pixmaps"
++mkdir /tmp/package-distcc/usr/share
++mkdir /tmp/package-distcc/usr/share/pixmaps
++/bin/sh ./mkinstalldirs "/tmp/package-distcc/usr/share/applications"
++mkdir /tmp/package-distcc/usr/share/applications
++/usr/bin/ginstall -c -m 644 ./gnome/distccmon-gnome.png "/tmp/package-distcc/usr/share/pixmaps"
++/usr/bin/ginstall -c -m 644 ./gnome/distccmon-gnome.desktop "/tmp/package-distcc/usr/share/applications"
++/bin/sh ./mkinstalldirs "/tmp/package-distcc/etc/distcc"
++mkdir /tmp/package-distcc/etc
++mkdir /tmp/package-distcc/etc/distcc
++/bin/sh ./mkinstalldirs "/tmp/package-distcc/etc/default"
++mkdir /tmp/package-distcc/etc/default
++/usr/bin/ginstall -c -m 644 ./packaging/RedHat/conf/hosts /tmp/package-distcc/etc/distcc/hosts
++/usr/bin/ginstall -c -m 644 ./packaging/RedHat/conf/clients.allow /tmp/package-distcc/etc/distcc/clients.allow
++/usr/bin/ginstall -c -m 644 ./packaging/RedHat/conf/commands.allow.sh /tmp/package-distcc/etc/distcc/commands.allow.sh
++/usr/bin/ginstall -c -m 644 ./packaging/RedHat/default/distcc /tmp/package-distcc/etc/default/distcc
++gzip: /tmp/package-distcc/usr/man/man1/distcc.1.gz already has .gz suffix -- unchanged
++gzip: /tmp/package-distcc/usr/man/man1/distccd.1.gz already has .gz suffix -- unchanged
++gzip: /tmp/package-distcc/usr/man/man1/distccmon-text.1.gz already has .gz suffix -- unchanged
++gzip: /tmp/package-distcc/usr/man/man1/include_server.1.gz already has .gz suffix -- unchanged
++gzip: /tmp/package-distcc/usr/man/man1/lsdistcc.1.gz already has .gz suffix -- unchanged
++gzip: /tmp/package-distcc/usr/man/man1/pump.1.gz already has .gz suffix -- unchanged
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++usr/lib/distcc/c++	../../bin/distcc
++usr/lib/distcc/c89	../../bin/distcc
++usr/lib/distcc/c99	../../bin/distcc
++usr/lib/distcc/cc	../../bin/distcc
++usr/lib/distcc/clang	../../bin/distcc
++usr/lib/distcc/clang++	../../bin/distcc
++usr/lib/distcc/g++	../../bin/distcc
++usr/lib/distcc/gcc	../../bin/distcc
++usr/lib/distcc/gcc-10.2.0	../../bin/distcc
++usr/lib/distcc/x86_64-slackware-linux-g++	../../bin/distcc
++usr/lib/distcc/x86_64-slackware-linux-gcc	../../bin/distcc
++usr/lib/distcc/x86_64-slackware-linux-gcc-10.2.0	../../bin/distcc
++
++Making symbolic link creation script:
++( cd usr/lib/distcc ; rm -rf c++ )
++( cd usr/lib/distcc ; ln -sf ../../bin/distcc c++ )
++( cd usr/lib/distcc ; rm -rf c89 )
++( cd usr/lib/distcc ; ln -sf ../../bin/distcc c89 )
++( cd usr/lib/distcc ; rm -rf c99 )
++( cd usr/lib/distcc ; ln -sf ../../bin/distcc c99 )
++( cd usr/lib/distcc ; rm -rf cc )
++( cd usr/lib/distcc ; ln -sf ../../bin/distcc cc )
++( cd usr/lib/distcc ; rm -rf clang )
++( cd usr/lib/distcc ; ln -sf ../../bin/distcc clang )
++( cd usr/lib/distcc ; rm -rf clang++ )
++( cd usr/lib/distcc ; ln -sf ../../bin/distcc clang++ )
++( cd usr/lib/distcc ; rm -rf g++ )
++( cd usr/lib/distcc ; ln -sf ../../bin/distcc g++ )
++( cd usr/lib/distcc ; rm -rf gcc )
++( cd usr/lib/distcc ; ln -sf ../../bin/distcc gcc )
++( cd usr/lib/distcc ; rm -rf gcc-10.2.0 )
++( cd usr/lib/distcc ; ln -sf ../../bin/distcc gcc-10.2.0 )
++( cd usr/lib/distcc ; rm -rf x86_64-slackware-linux-g++ )
++( cd usr/lib/distcc ; ln -sf ../../bin/distcc x86_64-slackware-linux-g++ )
++( cd usr/lib/distcc ; rm -rf x86_64-slackware-linux-gcc )
++( cd usr/lib/distcc ; ln -sf ../../bin/distcc x86_64-slackware-linux-gcc )
++( cd usr/lib/distcc ; rm -rf x86_64-slackware-linux-gcc-10.2.0 )
++( cd usr/lib/distcc ; ln -sf ../../bin/distcc x86_64-slackware-linux-gcc-10.2.0 )
++
++Unless your existing installation script already contains the code
++to create these links, you should append these lines to your existing
++install script. Now's your chance. :^)
++
++Would you like to add this stuff to the existing install script and
++remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './usr/lib/distcc/clang'
++removed './usr/lib/distcc/c99'
++removed './usr/lib/distcc/x86_64-slackware-linux-g++'
++removed './usr/lib/distcc/g++'
++removed './usr/lib/distcc/c89'
++removed './usr/lib/distcc/x86_64-slackware-linux-gcc'
++removed './usr/lib/distcc/gcc'
++removed './usr/lib/distcc/cc'
++removed './usr/lib/distcc/clang++'
++removed './usr/lib/distcc/c++'
++removed './usr/lib/distcc/gcc-10.2.0'
++removed './usr/lib/distcc/x86_64-slackware-linux-gcc-10.2.0'
++
++Updating your ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/distcc-3.3.5-x86_64-2.txz
++
++./
++etc/
++etc/default/
++etc/default/distcc
++etc/distcc/
++etc/distcc/clients.allow.new
++etc/distcc/commands.allow.sh.new
++etc/distcc/hosts.new
++install/
++install/doinst.sh
++install/slack-desc
++usr/
++usr/bin/
++usr/bin/distcc
++usr/bin/distccd
++usr/bin/distccmon-gnome
++usr/bin/distccmon-text
++usr/bin/lsdistcc
++usr/bin/pump
++usr/doc/
++usr/doc/distcc-3.3.5/
++usr/doc/distcc-3.3.5/AUTHORS
++usr/doc/distcc-3.3.5/COPYING
++usr/doc/distcc-3.3.5/INSTALL
++usr/doc/distcc-3.3.5/NEWS
++usr/doc/distcc-3.3.5/README
++usr/doc/distcc-3.3.5/README.pump
++usr/doc/distcc-3.3.5/TODO
++usr/doc/distcc-3.3.5/example/
++usr/doc/distcc-3.3.5/example/README
++usr/doc/distcc-3.3.5/example/default
++usr/doc/distcc-3.3.5/example/hosts.allow
++usr/doc/distcc-3.3.5/example/init
++usr/doc/distcc-3.3.5/example/init-suse
++usr/doc/distcc-3.3.5/example/logrotate
++usr/doc/distcc-3.3.5/example/services
++usr/doc/distcc-3.3.5/example/xinetd
++usr/doc/distcc-3.3.5/protocol-1.txt
++usr/doc/distcc-3.3.5/protocol-2.txt
++usr/doc/distcc-3.3.5/protocol-3-impl.txt
++usr/doc/distcc-3.3.5/protocol-3.txt
++usr/doc/distcc-3.3.5/protocol-gssapi.txt
++usr/doc/distcc-3.3.5/reporting-bugs.txt
++usr/doc/distcc-3.3.5/status-1.txt
++usr/doc/distcc-3.3.5/survey.txt
++usr/lib/
++usr/lib/distcc/
++usr/lib/python3.9/
++usr/lib/python3.9/site-packages/
++usr/lib/python3.9/site-packages/include_server/
++usr/lib/python3.9/site-packages/include_server-3.3.5-py3.9.egg-info
++usr/lib/python3.9/site-packages/include_server/__pycache__/
++usr/lib/python3.9/site-packages/include_server/__pycache__/basics.cpython-39.pyc
++usr/lib/python3.9/site-packages/include_server/__pycache__/basics_test.cpython-39.pyc
++usr/lib/python3.9/site-packages/include_server/__pycache__/c_extensions_test.cpython-39.pyc
++usr/lib/python3.9/site-packages/include_server/__pycache__/cache_basics.cpython-39.pyc
++usr/lib/python3.9/site-packages/include_server/__pycache__/compiler_defaults.cpython-39.pyc
++usr/lib/python3.9/site-packages/include_server/__pycache__/compress_files.cpython-39.pyc
++usr/lib/python3.9/site-packages/include_server/__pycache__/include_analyzer.cpython-39.pyc
++usr/lib/python3.9/site-packages/include_server/__pycache__/include_analyzer_memoizing_node.cpython-39.pyc
++usr/lib/python3.9/site-packages/include_server/__pycache__/include_analyzer_memoizing_node_test.cpython-39.pyc
++usr/lib/python3.9/site-packages/include_server/__pycache__/include_analyzer_test.cpython-39.pyc
++usr/lib/python3.9/site-packages/include_server/__pycache__/include_server.cpython-39.pyc
++usr/lib/python3.9/site-packages/include_server/__pycache__/include_server_test.cpython-39.pyc
++usr/lib/python3.9/site-packages/include_server/__pycache__/macro_eval.cpython-39.pyc
++usr/lib/python3.9/site-packages/include_server/__pycache__/macro_eval_test.cpython-39.pyc
++usr/lib/python3.9/site-packages/include_server/__pycache__/mirror_path.cpython-39.pyc
++usr/lib/python3.9/site-packages/include_server/__pycache__/mirror_path_test.cpython-39.pyc
++usr/lib/python3.9/site-packages/include_server/__pycache__/parse_command.cpython-39.pyc
++usr/lib/python3.9/site-packages/include_server/__pycache__/parse_command_test.cpython-39.pyc
++usr/lib/python3.9/site-packages/include_server/__pycache__/parse_file.cpython-39.pyc
++usr/lib/python3.9/site-packages/include_server/__pycache__/parse_file_test.cpython-39.pyc
++usr/lib/python3.9/site-packages/include_server/__pycache__/run.cpython-39.pyc
++usr/lib/python3.9/site-packages/include_server/__pycache__/setup.cpython-39.pyc
++usr/lib/python3.9/site-packages/include_server/__pycache__/statistics.cpython-39.pyc
++usr/lib/python3.9/site-packages/include_server/basics.py
++usr/lib/python3.9/site-packages/include_server/basics_test.py
++usr/lib/python3.9/site-packages/include_server/c_extensions_test.py
++usr/lib/python3.9/site-packages/include_server/cache_basics.py
++usr/lib/python3.9/site-packages/include_server/compiler_defaults.py
++usr/lib/python3.9/site-packages/include_server/compress_files.py
++usr/lib/python3.9/site-packages/include_server/distcc_pump_c_extensions.cpython-39-x86_64-linux-gnu.so
++usr/lib/python3.9/site-packages/include_server/include_analyzer.py
++usr/lib/python3.9/site-packages/include_server/include_analyzer_memoizing_node.py
++usr/lib/python3.9/site-packages/include_server/include_analyzer_memoizing_node_test.py
++usr/lib/python3.9/site-packages/include_server/include_analyzer_test.py
++usr/lib/python3.9/site-packages/include_server/include_server.py
++usr/lib/python3.9/site-packages/include_server/include_server_test.py
++usr/lib/python3.9/site-packages/include_server/macro_eval.py
++usr/lib/python3.9/site-packages/include_server/macro_eval_test.py
++usr/lib/python3.9/site-packages/include_server/mirror_path.py
++usr/lib/python3.9/site-packages/include_server/mirror_path_test.py
++usr/lib/python3.9/site-packages/include_server/parse_command.py
++usr/lib/python3.9/site-packages/include_server/parse_command_test.py
++usr/lib/python3.9/site-packages/include_server/parse_file.py
++usr/lib/python3.9/site-packages/include_server/parse_file_test.py
++usr/lib/python3.9/site-packages/include_server/run.py
++usr/lib/python3.9/site-packages/include_server/setup.py
++usr/lib/python3.9/site-packages/include_server/statistics.py
++usr/man/
++usr/man/man1/
++usr/man/man1/distcc.1.gz
++usr/man/man1/distccd.1.gz
++usr/man/man1/distccmon-text.1.gz
++usr/man/man1/include_server.1.gz
++usr/man/man1/lsdistcc.1.gz
++usr/man/man1/pump.1.gz
++usr/sbin/
++usr/sbin/update-distcc-symlinks
++usr/share/
++usr/share/applications/
++usr/share/applications/distccmon-gnome.desktop
++usr/share/pixmaps/
++usr/share/pixmaps/distccmon-gnome.png
++
++Slackware package /tmp/distcc-3.3.5-x86_64-2.txz created.
++

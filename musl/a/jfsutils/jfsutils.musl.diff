@@ -1,0 +1,720 @@
+diff -ruBN /tmp/jfsutils/gcc-10.patch /source/a/jfsutils/gcc-10.patch
+--- /tmp/jfsutils/gcc-10.patch	1970-01-01 00:00:00.000000000 +0000
++++ /source/a/jfsutils/gcc-10.patch	2021-01-06 12:18:40.000000000 +0000
+@@ -0,0 +1,72 @@
++Fix building with GCC 10
++
++Origin: https://sources.debian.org/patches/jfsutils/1.1.15-5/gcc10_fix-1.patch/
++
++--- jfsutils-1.1.15.old/fscklog/display.c
+++++ jfsutils-1.1.15.new/fscklog/display.c
++@@ -54,7 +54,7 @@
++  * output: fsck extracted service log I/O buffer
++  *
++  */
++-char xchklog_buffer[XCHKLOG_BUFSIZE];
+++static char xchklog_buffer[XCHKLOG_BUFSIZE];
++ 
++ /* + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
++  *
++--- jfsutils-1.1.15.old/libfs/logredo.c
+++++ jfsutils-1.1.15.new/libfs/logredo.c
++@@ -87,9 +87,9 @@
++  *    S T U F F    F O R    T H E    L O G
++  *
++  */
++-struct logsuper logsup;		/* log super block */
++-int32_t numdoblk;		/* number of do blocks used     */
++-int32_t numnodofile;		/* number of nodo file blocks used  */
+++static struct logsuper logsup;		/* log super block */
+++static int32_t numdoblk;		/* number of do blocks used     */
+++static int32_t numnodofile;		/* number of nodo file blocks used  */
++ int32_t numExtDtPg = 0;		/* number of extended dtpage blocks used  */
++ 
++ /*
++@@ -129,7 +129,7 @@
++  */
++ 
++ /* buffer header table */
++-struct bufhdr {
+++static struct bufhdr {
++ 	int16_t next;		/* 2: next on free/lru list */
++ 	int16_t prev;		/* 2: previous on free/lru list */
++ 	int16_t hnext;		/* 2: next on hash chain */
++@@ -142,7 +142,7 @@
++ } bufhdr[NBUFPOOL];		/* (24) */
++ 
++ /* buffer table */
++-struct bufpool {
+++static struct bufpool {
++ 	char bytes[PSIZE];
++ } buffer[NBUFPOOL - 1];
++ 
++@@ -151,15 +151,16 @@
++  *
++  * log has its own 4 page buffer pool.
++  */
++-uint8_t afterdata[LOGPSIZE * 2];	/* buffer to read in redopage data */
+++static uint8_t afterdata[LOGPSIZE * 2];	/* buffer to read in redopage data */
++ 
++ /*
++  * Miscellaneous
++  */
++-caddr_t prog;			/* Program name */
++-int32_t mntcnt, bufsize;
++-char *mntinfo;
++-int32_t retcode;		/* return code from logredo    */
+++static caddr_t prog;			/* Program name */
+++extern int32_t mntcnt;
+++static int32_t bufsize;
+++static char *mntinfo;
+++static int32_t retcode;		/* return code from logredo    */
++ int end_of_transaction = 0;
++ 
++ /*
++ 
++
+diff -ruBN /tmp/jfsutils/jfsutils-include-sysmacros.patch /source/a/jfsutils/jfsutils-include-sysmacros.patch
+--- /tmp/jfsutils/jfsutils-include-sysmacros.patch	1970-01-01 00:00:00.000000000 +0000
++++ /source/a/jfsutils/jfsutils-include-sysmacros.patch	2021-01-06 12:18:40.000000000 +0000
+@@ -0,0 +1,10 @@
++--- a/libfs/devices.c
+++++ b/libfs/devices.c
++@@ -38,6 +38,7 @@
++ #endif
++ 
++ #include <sys/types.h>
+++#include <sys/sysmacros.h>
++ #include <sys/stat.h>
++ #include <sys/ioctl.h>
++ #if defined(__DragonFly__)
+diff -ruBN /tmp/jfsutils/jfsutils.SlackBuild /source/a/jfsutils/jfsutils.SlackBuild
+--- /tmp/jfsutils/jfsutils.SlackBuild	2021-01-06 12:10:55.000000000 +0000
++++ /source/a/jfsutils/jfsutils.SlackBuild	2021-01-06 12:18:41.000000000 +0000
+@@ -61,6 +61,10 @@
+ rm -rf jfsutils-$VERSION
+ tar xvf $CWD/jfsutils-$VERSION.tar.?z* || exit 1
+ cd jfsutils-$VERSION || exit 1
++patch -p1 < $CWD/gcc-10.patch || exit 1
++patch -p1 < $CWD/missing-stdinth.patch || exit 1
++patch -p1 < $CWD/jfsutils-include-sysmacros.patch || exit 1
++patch -p1 < $CWD/musl-fix-includes.patch || exit 1
+ chown -R root:root .
+ find . \
+   \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+diff -ruBN /tmp/jfsutils/jfsutils.SlackBuild.log /source/a/jfsutils/jfsutils.SlackBuild.log
+--- /tmp/jfsutils/jfsutils.SlackBuild.log	2021-01-06 12:11:00.000000000 +0000
++++ /source/a/jfsutils/jfsutils.SlackBuild.log	2021-01-06 12:19:05.000000000 +0000
+@@ -142,6 +142,11 @@
+ jfsutils-1.1.15/xpeek/ui.c
+ jfsutils-1.1.15/xpeek/xpeek.c
+ jfsutils-1.1.15/xpeek/xpeek.h
++patching file fscklog/display.c
++patching file libfs/logredo.c
++patching file fscklog/extract.c
++patching file libfs/devices.c
++patching file libfs/fssubs.c
+ Hmm...  Looks like a unified diff to me...
+ The text leading up to this was:
+ --------------------------
+@@ -150,7 +155,7 @@
+ --------------------------
+ patching file libfs/devices.c
+ Using Plan A...
+-Hunk #1 succeeded at 40.
++Hunk #1 succeeded at 41 with fuzz 1 (offset 1 line).
+ done
+ Hmm...  Looks like a unified diff to me...
+ The text leading up to this was:
+@@ -269,13 +274,546 @@
+ Making all in libfs
+ make[2]: Entering directory '/tmp/jfsutils-1.1.15/libfs'
+ gcc -DHAVE_CONFIG_H -I. -I.. -I../include   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c fssubs.c
+-fssubs.c: In function ‘Is_Device_Type_JFS’:
+-fssubs.c:224:32: error: ‘_PATH_MNTTAB’ undeclared (first use in this function)
+-  224 |  if ((FS_Info_File = setmntent(_PATH_MNTTAB, "r")) == NULL) {
+-      |                                ^~~~~~~~~~~~
+-fssubs.c:224:32: note: each undeclared identifier is reported only once for each function it appears in
+-make[2]: *** [Makefile:244: fssubs.o] Error 1
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c unicode_to_utf8.c
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c devices.c
++devices.c: In function ‘ujfs_rw_diskblocks’:
++devices.c:443:58: warning: format ‘%lld’ expects argument of type ‘long long int’, but argument 6 has type ‘int64_t’ {aka ‘long int’} [-Wformat=]
++  443 |     "ujfs_rw_diskblocks: %s %zd of %d bytes at offset %lld\n",
++      |                                                       ~~~^
++      |                                                          |
++      |                                                          long long int
++      |                                                       %ld
++  444 |     (mode == GET) ? "read" : "wrote",
++  445 |     Bytes_Transferred, disk_count, disk_offset);
++      |                                    ~~~~~~~~~~~            
++      |                                    |
++      |                                    int64_t {aka long int}
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c utilsubs.c
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c super.c
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c inode.c
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c diskmap.c
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c message.c
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c uniupr.c
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c jfs_endian.c
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c open_by_label.c
++open_by_label.c: In function ‘open_check_label’:
++open_by_label.c:72:18: warning: pointer targets in passing argument 1 of ‘strncmp’ differ in signedness [-Wpointer-sign]
++   72 |     if (!strncmp(uuid, logsup.label, 16))
++      |                  ^~~~
++      |                  |
++      |                  unsigned char *
++In file included from open_by_label.c:21:
++/usr/include/string.h:38:14: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
++   38 | int strncmp (const char *, const char *, size_t);
++      |              ^~~~~~~~~~~~
++open_by_label.c:84:18: warning: pointer targets in passing argument 1 of ‘strncmp’ differ in signedness [-Wpointer-sign]
++   84 |     if (!strncmp(uuid, super.s_label, 16))
++      |                  ^~~~
++      |                  |
++      |                  unsigned char *
++In file included from open_by_label.c:21:
++/usr/include/string.h:38:14: note: expected ‘const char *’ but argument is of type ‘unsigned char *’
++   38 | int strncmp (const char *, const char *, size_t);
++      |              ^~~~~~~~~~~~
++open_by_label.c: In function ‘open_by_label’:
++open_by_label.c:276:39: warning: ‘%s’ directive writing up to 255 bytes into a region of size 86 [-Wformat-overflow=]
++  276 |    sprintf(lv_dirname, "/proc/lvm/VGs/%s/LVs", vg_ent->d_name);
++      |                                       ^~
++open_by_label.c:276:4: note: ‘sprintf’ output between 19 and 274 bytes into a destination of size 100
++  276 |    sprintf(lv_dirname, "/proc/lvm/VGs/%s/LVs", vg_ent->d_name);
++      |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++open_by_label.c:284:27: warning: ‘%s’ directive writing up to 255 bytes into a region of size 95 [-Wformat-overflow=]
++  284 |     sprintf(device, "/dev/%s/%s", vg_ent->d_name, lv_ent->d_name);
++      |                           ^~
++open_by_label.c:284:5: note: ‘sprintf’ output between 7 and 517 bytes into a destination of size 100
++  284 |     sprintf(device, "/dev/%s/%s", vg_ent->d_name, lv_ent->d_name);
++      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c log_dump.c
++log_dump.c: In function ‘jfs_logdump’:
++log_dump.c:333:37: warning: pointer targets in passing argument 3 of ‘logRead’ differ in signedness [-Wpointer-sign]
++  333 |    nextaddr = logRead(logaddr, &ld, afterdata);
++      |                                     ^~~~~~~~~
++      |                                     |
++      |                                     uint8_t * {aka unsigned char *}
++log_dump.c:167:43: note: expected ‘char *’ but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
++  167 | extern int logRead(int32_t, struct lrd *, char *);
++      |                                           ^~~~~~
++log_dump.c: In function ‘ldmp_xdump’:
++log_dump.c:652:6: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
++  652 |  i = (int) saddr % 4;
++      |      ^
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c logform.c
++logform.c: In function ‘jfs_logform’:
++logform.c:153:3: warning: ‘strncpy’ specified bound 16 equals destination size [-Wstringop-truncation]
++  153 |   strncpy((char *) &log_sup->label, label, sizeof (log_sup->label));
++      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c logredo.c
++logredo.c: In function ‘jfs_logredo’:
++logredo.c:618:36: warning: pointer targets in passing argument 3 of ‘logRead’ differ in signedness [-Wpointer-sign]
++  618 |   nextaddr = logRead(logaddr, &ld, afterdata);
++      |                                    ^~~~~~~~~
++      |                                    |
++      |                                    uint8_t * {aka unsigned char *}
++logredo.c:174:43: note: expected ‘char *’ but argument is of type ‘uint8_t *’ {aka ‘unsigned char *’}
++  174 | extern int logRead(int32_t, struct lrd *, char *);
++      |                                           ^~~~~~
++At top level:
++logredo.c:159:16: warning: ‘prog’ defined but not used [-Wunused-variable]
++  159 | static caddr_t prog;   /* Program name */
++      |                ^~~~
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c log_work.c
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c log_read.c
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c log_map.c
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c fsckmsgdef.c
++rm -f libfs.a
++ar cru libfs.a fssubs.o unicode_to_utf8.o devices.o utilsubs.o super.o inode.o diskmap.o message.o uniupr.o jfs_endian.o open_by_label.o log_dump.o logform.o logredo.o log_work.o log_read.o log_map.o fsckmsgdef.o 
++ranlib libfs.a
+ make[2]: Leaving directory '/tmp/jfsutils-1.1.15/libfs'
+-make[1]: *** [Makefile:260: all-recursive] Error 1
++Making all in include
++make[2]: Entering directory '/tmp/jfsutils-1.1.15/include'
++make[2]: Nothing to be done for 'all'.
++make[2]: Leaving directory '/tmp/jfsutils-1.1.15/include'
++Making all in fsck
++make[2]: Entering directory '/tmp/jfsutils-1.1.15/fsck'
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include -I../libfs   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c fsckbmap.c
++fsckbmap.c: In function ‘dmap_pwmap_rebuild’:
++fsckbmap.c:391:22: warning: pointer targets in passing argument 1 of ‘ujfs_maxbuddy’ differ in signedness [-Wpointer-sign]
++  391 |        ujfs_maxbuddy((char *) &(wsp_bits[map_wordidx]));
++      |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++      |                      |
++      |                      char *
++In file included from fsckbmap.c:22:
++../libfs/diskmap.h:25:22: note: expected ‘unsigned char *’ but argument is of type ‘char *’
++   25 | int8_t ujfs_maxbuddy(unsigned char *);
++      |                      ^~~~~~~~~~~~~~~
++fsckbmap.c: In function ‘dmap_pmap_verify’:
++fsckbmap.c:478:29: warning: pointer targets in passing argument 1 of ‘ujfs_maxbuddy’ differ in signedness [-Wpointer-sign]
++  478 |   max_buddy = ujfs_maxbuddy((char *) &(wsp_bits[map_wordidx]));
++      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++      |                             |
++      |                             char *
++In file included from fsckbmap.c:22:
++../libfs/diskmap.h:25:22: note: expected ‘unsigned char *’ but argument is of type ‘char *’
++   25 | int8_t ujfs_maxbuddy(unsigned char *);
++      |                      ^~~~~~~~~~~~~~~
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include -I../libfs   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c fsckconn.c
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include -I../libfs   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c fsckdire.c
++fsckdire.c: In function ‘dtSplitPage’:
++fsckdire.c:940:8: warning: pointer targets in assignment from ‘int8_t *’ {aka ‘signed char *’} to ‘uint8_t *’ {aka ‘unsigned char *’} differ in signedness [-Wpointer-sign]
++  940 |   stbl = DT_GETSTBL(rp);
++      |        ^
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include -I../libfs   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c fsckdtre.c
++fsckdtre.c: In function ‘dTree_key_extract_cautiously’:
++fsckdtre.c:1641:7: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
++ 1641 |       (unsigned short) NULL) {
++      |       ^
++fsckdtre.c: In function ‘dTree_key_extract_record’:
++fsckdtre.c:1777:7: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
++ 1777 |       (unsigned short) NULL) {
++      |       ^
++fsckdtre.c: In function ‘reconnect_fs_inodes’:
++fsckdtre.c:3917:14: warning: pointer targets in passing argument 2 of ‘UTF8_String_To_Unicode_String’ differ in signedness [-Wpointer-sign]
++ 3917 |              ino_name,
++      |              ^~~~~~~~
++      |              |
++      |              char *
++In file included from fsckdtre.c:30:
++../libfs/unicode_to_utf8.h:18:68: note: expected ‘const uint8_t *’ {aka ‘const unsigned char *’} but argument is of type ‘char *’
++   18 | int UTF8_String_To_Unicode_String(uint16_t * pwcs, const uint8_t * s, int maxLen);
++      |                                                    ~~~~~~~~~~~~~~~~^
++fsckdtre.c:3911:25: warning: ‘%s’ directive writing up to 299 bytes into a region of size 16 [-Wformat-overflow=]
++ 3911 |      sprintf(ino_name, "%s%06d%s",
++      |                         ^~
++ 3912 |       msg_defs[fsck_inopfx].msg_txt,
++      |       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++fsckdtre.c:3911:24: note: using the range [-2147483648, 2147483647] for directive argument
++ 3911 |      sprintf(ino_name, "%s%06d%s",
++      |                        ^~~~~~~~~~
++fsckdtre.c:3911:6: note: ‘sprintf’ output between 7 and 610 bytes into a destination of size 16
++ 3911 |      sprintf(ino_name, "%s%06d%s",
++      |      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 3912 |       msg_defs[fsck_inopfx].msg_txt,
++      |       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 3913 |       this_ext->inonum,
++      |       ~~~~~~~~~~~~~~~~~
++ 3914 |       msg_defs[fsck_dotext].msg_txt);
++      |       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++fsckdtre.c:3906:25: warning: ‘%s’ directive writing up to 299 bytes into a region of size 16 [-Wformat-overflow=]
++ 3906 |      sprintf(ino_name, "%s%06d%s",
++      |                         ^~
++ 3907 |       msg_defs[fsck_dirpfx].msg_txt,
++      |       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++fsckdtre.c:3906:24: note: using the range [-2147483648, 2147483647] for directive argument
++ 3906 |      sprintf(ino_name, "%s%06d%s",
++      |                        ^~~~~~~~~~
++fsckdtre.c:3906:6: note: ‘sprintf’ output between 7 and 610 bytes into a destination of size 16
++ 3906 |      sprintf(ino_name, "%s%06d%s",
++      |      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 3907 |       msg_defs[fsck_dirpfx].msg_txt,
++      |       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 3908 |       this_ext->inonum,
++      |       ~~~~~~~~~~~~~~~~~
++ 3909 |       msg_defs[fsck_dotext].msg_txt);
++      |       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include -I../libfs   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c fsckea.c
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include -I../libfs   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c fsckimap.c
++fsckimap.c: In function ‘AIS_redundancy_check’:
++fsckimap.c:1001:16: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
++ 1001 |  tree_offset = (int32_t) &(((struct dinode *)0)->di_btroot);
++      |                ^
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include -I../libfs   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c fsckino.c
++fsckino.c: In function ‘validate_record_fileset_inode’:
++fsckino.c:1844:6: warning: variable ‘intermed_rc’ set but not used [-Wunused-but-set-variable]
++ 1844 |  int intermed_rc = FSCK_OK;
++      |      ^~~~~~~~~~~
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include -I../libfs   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c fsckmeta.c
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include -I../libfs   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c fsckpfs.c
++fsckpfs.c: In function ‘blkmap_flush’:
++fsckpfs.c:347:28: warning: variable ‘fsck_bmpt_ptr’ set but not used [-Wunused-but-set-variable]
++  347 |  struct fsck_blk_map_page *fsck_bmpt_ptr;
++      |                            ^~~~~~~~~~~~~
++fsckpfs.c: In function ‘blkmap_get_page’:
++fsckpfs.c:490:28: warning: variable ‘fsck_bmpt_ptr’ set but not used [-Wunused-but-set-variable]
++  490 |  struct fsck_blk_map_page *fsck_bmpt_ptr;
++      |                            ^~~~~~~~~~~~~
++fsckpfs.c: In function ‘blktbl_dmap_get’:
++fsckpfs.c:768:15: warning: variable ‘dmap_t_ptr’ set but not used [-Wunused-but-set-variable]
++  768 |  struct dmap *dmap_t_ptr;
++      |               ^~~~~~~~~~
++fsckpfs.c: In function ‘blktbl_dmaps_flush’:
++fsckpfs.c:918:15: warning: variable ‘dmap_t_ptr’ set but not used [-Wunused-but-set-variable]
++  918 |  struct dmap *dmap_t_ptr;
++      |               ^~~~~~~~~~
++fsckpfs.c: In function ‘imapleaf_get’:
++fsckpfs.c:2125:12: warning: variable ‘xtpage_t_ptr’ set but not used [-Wunused-but-set-variable]
++ 2125 |  xtpage_t *xtpage_t_ptr;
++      |            ^~~~~~~~~~~~
++fsckpfs.c: In function ‘node_get’:
++fsckpfs.c:3090:12: warning: variable ‘xtpage_t_ptr’ set but not used [-Wunused-but-set-variable]
++ 3090 |  xtpage_t *xtpage_t_ptr;
++      |            ^~~~~~~~~~~~
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include -I../libfs   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c dirindex.c
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include -I../libfs   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c fsckwsp.c
++fsckwsp.c: In function ‘establish_wsp_block_map_ctl’:
++fsckwsp.c:1484:3: warning: ‘strncpy’ output truncated before terminating nul copying 8 bytes from a string of the same length [-Wstringop-truncation]
++ 1484 |   strncpy(agg_recptr->blkmp_ctlptr->hdr.eyecatcher,
++      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 1485 |    fbmh_eyecatcher_string, strlen(fbmh_eyecatcher_string));
++      |    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++fsckwsp.c:1503:11: warning: ‘%d’ directive writing between 1 and 11 bytes into a region of size between 0 and 16 [-Wformat-overflow=]
++ 1503 |    "%d/%d/%d %d:%02d:%02d", fsck_DateTime->tm_mon + 1,
++      |           ^~
++fsckwsp.c:1503:4: note: directive argument in the range [-2147481748, 2147483647]
++ 1503 |    "%d/%d/%d %d:%02d:%02d", fsck_DateTime->tm_mon + 1,
++      |    ^~~~~~~~~~~~~~~~~~~~~~~
++fsckwsp.c:1502:3: note: ‘sprintf’ output between 14 and 72 bytes into a destination of size 20
++ 1502 |   sprintf(&(agg_recptr->blkmp_ctlptr->hdr.start_time[0]),
++      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 1503 |    "%d/%d/%d %d:%02d:%02d", fsck_DateTime->tm_mon + 1,
++      |    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 1504 |    fsck_DateTime->tm_mday,
++      |    ~~~~~~~~~~~~~~~~~~~~~~~
++ 1505 |    (fsck_DateTime->tm_year + 1900),
++      |    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 1506 |    fsck_DateTime->tm_hour, fsck_DateTime->tm_min,
++      |    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 1507 |    fsck_DateTime->tm_sec);
++      |    ~~~~~~~~~~~~~~~~~~~~~~
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include -I../libfs   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c fsckxtre.c
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include -I../libfs   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c xchkdsk.c
++xchkdsk.c: In function ‘initial_processing’:
++xchkdsk.c:1432:6: warning: variable ‘iml_rc’ set but not used [-Wunused-but-set-variable]
++ 1432 |  int iml_rc = FSCK_OK;
++      |      ^~~~~~
++xchkdsk.c: In function ‘main’:
++xchkdsk.c:432:29: warning: ‘%d’ directive writing between 1 and 11 bytes into a region of size between 0 and 16 [-Wformat-overflow=]
++  432 |  sprintf(time_stamp, "%d/%d/%d %d:%02d:%02d",
++      |                             ^~
++xchkdsk.c:432:22: note: directive argument in the range [-2147481748, 2147483647]
++  432 |  sprintf(time_stamp, "%d/%d/%d %d:%02d:%02d",
++      |                      ^~~~~~~~~~~~~~~~~~~~~~~
++xchkdsk.c:432:2: note: ‘sprintf’ output between 14 and 72 bytes into a destination of size 20
++  432 |  sprintf(time_stamp, "%d/%d/%d %d:%02d:%02d",
++      |  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++  433 |   fsck_DateTime->tm_mon + 1,
++      |   ~~~~~~~~~~~~~~~~~~~~~~~~~~
++  434 |   fsck_DateTime->tm_mday, (fsck_DateTime->tm_year + 1900),
++      |   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++  435 |   fsck_DateTime->tm_hour, fsck_DateTime->tm_min,
++      |   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++  436 |   fsck_DateTime->tm_sec);
++      |   ~~~~~~~~~~~~~~~~~~~~~~
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include -I../libfs   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c fsckruns.c
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include -I../libfs   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c fsck_message.c
++fsck_message.c: In function ‘fsck_record_msg’:
++fsck_message.c:43:2: warning: ‘strncpy’ specified bound 510 equals destination size [-Wstringop-truncation]
++   43 |  strncpy(msg, msg_txt, max_log_entry_length - entry_length);
++      |  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++gcc -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC   -o jfs_fsck fsckbmap.o fsckconn.o fsckdire.o fsckdtre.o fsckea.o fsckimap.o fsckino.o fsckmeta.o fsckpfs.o dirindex.o fsckwsp.o fsckxtre.o xchkdsk.o fsckruns.o fsck_message.o ../libfs/libfs.a -luuid 
++make[2]: Leaving directory '/tmp/jfsutils-1.1.15/fsck'
++Making all in fscklog
++make[2]: Entering directory '/tmp/jfsutils-1.1.15/fscklog'
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include -I../libfs -I../fsck   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c fscklog.c
++fscklog.c: In function ‘parse_parms’:
++fscklog.c:205:5: warning: ‘strncpy’ specified bound depends on the length of the source argument [-Wstringop-overflow=]
++  205 |     strncpy(file_name, optarg, arg_len);
++      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++fscklog.c:198:14: note: length computed here
++  198 |    arg_len = strlen(optarg);
++      |              ^~~~~~~~~~~~~~
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include -I../libfs -I../fsck   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c display.c
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include -I../libfs -I../fsck   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c extract.c
++gcc -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC   -o jfs_fscklog fscklog.o display.o extract.o ../libfs/libfs.a 
++make[2]: Leaving directory '/tmp/jfsutils-1.1.15/fscklog'
++Making all in logdump
++make[2]: Entering directory '/tmp/jfsutils-1.1.15/logdump'
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include -I../libfs   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c logdump.c
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include -I../libfs   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c helpers.c
++gcc -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC   -o jfs_logdump logdump.o helpers.o ../libfs/libfs.a -luuid 
++make[2]: Leaving directory '/tmp/jfsutils-1.1.15/logdump'
++Making all in mkfs
++make[2]: Entering directory '/tmp/jfsutils-1.1.15/mkfs'
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include -I../libfs -DONE_FILESET_PER_AGGR  -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c initmap.c
++initmap.c: In function ‘dbAlloc’:
++initmap.c:735:26: warning: pointer targets in passing argument 1 of ‘ujfs_maxbuddy’ differ in signedness [-Wpointer-sign]
++  735 |    leafw = ujfs_maxbuddy((char *) &p1->wmap[word]);
++      |                          ^~~~~~~~~~~~~~~~~~~~~~~~
++      |                          |
++      |                          char *
++In file included from initmap.c:34:
++../libfs/diskmap.h:25:22: note: expected ‘unsigned char *’ but argument is of type ‘char *’
++   25 | int8_t ujfs_maxbuddy(unsigned char *);
++      |                      ^~~~~~~~~~~~~~~
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include -I../libfs -DONE_FILESET_PER_AGGR  -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c inodemap.c
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include -I../libfs -DONE_FILESET_PER_AGGR  -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c inodes.c
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include -I../libfs -DONE_FILESET_PER_AGGR  -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c mkfs.c
++mkfs.c: In function ‘parse_journal_opts’:
++mkfs.c:601:40: warning: pointer targets in passing argument 1 of ‘open_by_label’ differ in signedness [-Wpointer-sign]
++  601 |        open_by_label((char *) opts + 7 + 6, 1, 1,
++      |                      ~~~~~~~~~~~~~~~~~~^~~
++      |                                        |
++      |                                        char *
++mkfs.c:52:21: note: expected ‘unsigned char *’ but argument is of type ‘char *’
++   52 | FILE *open_by_label(uuid_t, int, int, char *, int *);
++      |                     ^~~~~~
++mkfs.c: In function ‘main’:
++mkfs.c:898:67: warning: format ‘%lld’ expects argument of type ‘long long int’, but argument 2 has type ‘int64_t’ {aka ‘long int’} [-Wformat=]
++  898 |    printf("Requested blocks exceed number of blocks on device: %lld.\n",
++      |                                                                ~~~^
++      |                                                                   |
++      |                                                                   long long int
++      |                                                                %ld
++  899 |           number_of_blocks);
++      |           ~~~~~~~~~~~~~~~~                                         
++      |           |
++      |           int64_t {aka long int}
++mkfs.c:990:8: warning: the address of ‘volume_label’ will always evaluate as ‘true’ [-Waddress]
++  990 |        && volume_label) {
++      |        ^~
++In function ‘create_aggregate’,
++    inlined from ‘main’ at mkfs.c:1063:7:
++mkfs.c:522:2: warning: ‘strncpy’ output may be truncated copying 11 bytes from a string of length 15 [-Wstringop-truncation]
++  522 |  strncpy(aggr_superblock.s_fpack, volume_label, LV_NAME_SIZE);
++      |  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++mkfs.c: In function ‘main’:
++mkfs.c:730:4: warning: ‘strncpy’ specified bound 16 equals destination size [-Wstringop-truncation]
++  730 |    strncpy(volume_label, optarg, 16);
++      |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++gcc -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC   -o jfs_mkfs initmap.o inodemap.o inodes.o mkfs.o ../libfs/libfs.a -luuid 
++make[2]: Leaving directory '/tmp/jfsutils-1.1.15/mkfs'
++Making all in tune
++make[2]: Entering directory '/tmp/jfsutils-1.1.15/tune'
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include -I../libfs   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c tune.c
++tune.c: In function ‘parse_journal_opts’:
++tune.c:92:45: warning: pointer targets in passing argument 1 of ‘open_by_label’ differ in signedness [-Wpointer-sign]
++   92 |    log_fd = open_by_label((char *) opts + 7 + 6, 1, 1,
++      |                           ~~~~~~~~~~~~~~~~~~^~~
++      |                                             |
++      |                                             char *
++tune.c:47:29: note: expected ‘unsigned char *’ but argument is of type ‘char *’
++   47 | extern FILE * open_by_label(uuid_t, int, int, char *, int *);
++      |                             ^~~~~~
++tune.c:96:8: warning: the address of ‘logdev’ will always evaluate as ‘true’ [-Waddress]
++   96 |    if (logdev)
++      |        ^~~~~~
++tune.c: In function ‘main’:
++tune.c:335:4: warning: ‘strncpy’ specified bound 16 equals destination size [-Wstringop-truncation]
++  335 |    strncpy(logsup.label, new_label, sizeof (logsup.label));
++      |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++tune.c:324:4: warning: ‘strncpy’ specified bound 11 equals destination size [-Wstringop-truncation]
++  324 |    strncpy(sb.s_fpack, new_label, sizeof (sb.s_fpack));
++      |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++tune.c:328:4: warning: ‘strncpy’ specified bound 16 equals destination size [-Wstringop-truncation]
++  328 |    strncpy(sb.s_label, new_label, sizeof (sb.s_label));
++      |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include -I../libfs   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c super.c
++gcc -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC   -o jfs_tune tune.o super.o ../libfs/libfs.a -luuid 
++make[2]: Leaving directory '/tmp/jfsutils-1.1.15/tune'
++Making all in xpeek
++make[2]: Entering directory '/tmp/jfsutils-1.1.15/xpeek'
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include -I../libfs   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c alter.c
++alter.c: In function ‘alter’:
++alter.c:87:9: warning: pointer targets in assignment from ‘char *’ to ‘uint8_t *’ {aka ‘unsigned char *’} differ in signedness [-Wpointer-sign]
++   87 |  buffer = (char *) malloc(length);
++      |         ^
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include -I../libfs   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c display.c
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include -I../libfs   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c fsckcbbl.c
++fsckcbbl.c: In function ‘display_cbblfsck’:
++fsckcbbl.c:213:3: warning: ‘strncpy’ specified bound 8 equals destination size [-Wstringop-truncation]
++  213 |   strncpy(cbblrec->bufptr_eyecatcher, token, 8);
++      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++fsckcbbl.c:177:3: warning: ‘strncpy’ specified bound 8 equals destination size [-Wstringop-truncation]
++  177 |   strncpy(cbblrec->eyecatcher, token, 8);
++      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++fsckcbbl.c: In function ‘display_fsck_wsphdr’:
++fsckcbbl.c:303:3: warning: ‘strncpy’ specified bound 8 equals destination size [-Wstringop-truncation]
++  303 |   strncpy(wp->hdr.eyecatcher, token, 8);
++      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++fsckcbbl.c: In function ‘display_logsuper’:
++fsckcbbl.c:477:3: warning: ‘strncpy’ specified bound 16 equals destination size [-Wstringop-truncation]
++  477 |   strncpy(lsp->label, token, 16);
++      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include -I../libfs   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c iag.c
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include -I../libfs   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c io.c
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include -I../libfs   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c super2.c
++super2.c: In function ‘display_super2’:
++super2.c:332:3: warning: ‘strncpy’ specified bound 16 equals destination size [-Wstringop-truncation]
++  332 |   strncpy(sb->s_label, token, 16);
++      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++super2.c:235:3: warning: ‘strncpy’ specified bound 4 equals destination size [-Wstringop-truncation]
++  235 |   strncpy(sb->s_magic, token, 4);
++      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include -I../libfs   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c xpeek.c
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include -I../libfs   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c directory.c
++directory.c: In function ‘print_direntry’:
++directory.c:199:32: warning: pointer targets in passing argument 1 of ‘Unicode_String_to_UTF8_String’ differ in signedness [-Wpointer-sign]
++  199 |  Unicode_String_to_UTF8_String(UTF8_Buffer, name, entry->namlen);
++      |                                ^~~~~~~~~~~
++      |                                |
++      |                                char *
++In file included from directory.c:31:
++../libfs/unicode_to_utf8.h:16:45: note: expected ‘uint8_t *’ {aka ‘unsigned char *’} but argument is of type ‘char *’
++   16 | int Unicode_String_to_UTF8_String(uint8_t * s, const uint16_t * pwcs, int maxlen);
++      |                                   ~~~~~~~~~~^
++directory.c: In function ‘display_leaf_slots’:
++directory.c:593:33: warning: pointer targets in passing argument 1 of ‘Unicode_String_to_UTF8_String’ differ in signedness [-Wpointer-sign]
++  593 |   Unicode_String_to_UTF8_String(UTF8_Buffer, leaf->name, leaf->namlen);
++      |                                 ^~~~~~~~~~~
++      |                                 |
++      |                                 char *
++In file included from directory.c:31:
++../libfs/unicode_to_utf8.h:16:45: note: expected ‘uint8_t *’ {aka ‘unsigned char *’} but argument is of type ‘char *’
++   16 | int Unicode_String_to_UTF8_String(uint8_t * s, const uint16_t * pwcs, int maxlen);
++      |                                   ~~~~~~~~~~^
++directory.c: In function ‘display_slot’:
++directory.c:652:32: warning: pointer targets in passing argument 1 of ‘Unicode_String_to_UTF8_String’ differ in signedness [-Wpointer-sign]
++  652 |  Unicode_String_to_UTF8_String(UTF8_Buffer, slot[index].name, JFS_PATH_MAX);
++      |                                ^~~~~~~~~~~
++      |                                |
++      |                                char *
++In file included from directory.c:31:
++../libfs/unicode_to_utf8.h:16:45: note: expected ‘uint8_t *’ {aka ‘unsigned char *’} but argument is of type ‘char *’
++   16 | int Unicode_String_to_UTF8_String(uint8_t * s, const uint16_t * pwcs, int maxlen);
++      |                                   ~~~~~~~~~~^
++directory.c: In function ‘display_internal_slots’:
++directory.c:694:33: warning: pointer targets in passing argument 1 of ‘Unicode_String_to_UTF8_String’ differ in signedness [-Wpointer-sign]
++  694 |   Unicode_String_to_UTF8_String(UTF8_Buffer, entry->name, entry->namlen);
++      |                                 ^~~~~~~~~~~
++      |                                 |
++      |                                 char *
++In file included from directory.c:31:
++../libfs/unicode_to_utf8.h:16:45: note: expected ‘uint8_t *’ {aka ‘unsigned char *’} but argument is of type ‘char *’
++   16 | int Unicode_String_to_UTF8_String(uint8_t * s, const uint16_t * pwcs, int maxlen);
++      |                                   ~~~~~~~~~~^
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include -I../libfs   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c dmap.c
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include -I../libfs   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c help.c
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include -I../libfs   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c inode.c
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include -I../libfs   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c super.c
++super.c: In function ‘display_super’:
++super.c:336:3: warning: ‘strncpy’ specified bound 16 equals destination size [-Wstringop-truncation]
++  336 |   strncpy(sb->s_label, token, 16);
++      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++super.c:323:3: warning: ‘strncpy’ specified bound 11 equals destination size [-Wstringop-truncation]
++  323 |   strncpy(sb->s_fpack, token, 11);
++      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++super.c:244:3: warning: ‘strncpy’ specified bound 4 equals destination size [-Wstringop-truncation]
++  244 |   strncpy(sb->s_magic, token, 4);
++      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++gcc -DHAVE_CONFIG_H -I. -I.. -I../include -I../libfs   -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC -c ui.c
++gcc -Wall -Wstrict-prototypes -fno-strict-aliasing -O2 -fPIC   -o jfs_debugfs alter.o display.o fsckcbbl.o iag.o io.o super2.o xpeek.o directory.o dmap.o help.o inode.o super.o ui.o ../libfs/libfs.a -luuid 
++make[2]: Leaving directory '/tmp/jfsutils-1.1.15/xpeek'
++make[2]: Entering directory '/tmp/jfsutils-1.1.15'
++make[2]: Leaving directory '/tmp/jfsutils-1.1.15'
+ make[1]: Leaving directory '/tmp/jfsutils-1.1.15'
+-make: *** [Makefile:196: all] Error 2
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++sbin/fsck.jfs	jfs_fsck
++sbin/mkfs.jfs	jfs_mkfs
++usr/man/man8/fsck.jfs.8.gz	jfs_fsck.8.gz
++usr/man/man8/mkfs.jfs.8.gz	jfs_mkfs.8.gz
++
++Making symbolic link creation script:
++( cd sbin ; rm -rf fsck.jfs )
++( cd sbin ; ln -sf jfs_fsck fsck.jfs )
++( cd sbin ; rm -rf mkfs.jfs )
++( cd sbin ; ln -sf jfs_mkfs mkfs.jfs )
++( cd usr/man/man8 ; rm -rf fsck.jfs.8.gz )
++( cd usr/man/man8 ; ln -sf jfs_fsck.8.gz fsck.jfs.8.gz )
++( cd usr/man/man8 ; rm -rf mkfs.jfs.8.gz )
++( cd usr/man/man8 ; ln -sf jfs_mkfs.8.gz mkfs.jfs.8.gz )
++
++It is recommended that you make these lines your new installation script.
++
++Would you like to make this stuff the install script for this package
++and remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './usr/man/man8/mkfs.jfs.8.gz'
++removed './usr/man/man8/fsck.jfs.8.gz'
++removed './sbin/fsck.jfs'
++removed './sbin/mkfs.jfs'
++
++Creating your new ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/jfsutils-1.1.15-x86_64-2.txz
++
++./
++install/
++install/doinst.sh
++install/slack-desc
++sbin/
++sbin/jfs_debugfs
++sbin/jfs_fsck
++sbin/jfs_fscklog
++sbin/jfs_logdump
++sbin/jfs_mkfs
++sbin/jfs_tune
++usr/
++usr/doc/
++usr/doc/jfsutils-1.1.15/
++usr/doc/jfsutils-1.1.15/AUTHORS
++usr/doc/jfsutils-1.1.15/COPYING
++usr/doc/jfsutils-1.1.15/ChangeLog
++usr/doc/jfsutils-1.1.15/NEWS
++usr/doc/jfsutils-1.1.15/README
++usr/man/
++usr/man/man8/
++usr/man/man8/jfs_debugfs.8.gz
++usr/man/man8/jfs_fsck.8.gz
++usr/man/man8/jfs_fscklog.8.gz
++usr/man/man8/jfs_logdump.8.gz
++usr/man/man8/jfs_mkfs.8.gz
++usr/man/man8/jfs_tune.8.gz
++
++Slackware package /tmp/jfsutils-1.1.15-x86_64-2.txz created.
++
+diff -ruBN /tmp/jfsutils/missing-stdinth.patch /source/a/jfsutils/missing-stdinth.patch
+--- /tmp/jfsutils/missing-stdinth.patch	1970-01-01 00:00:00.000000000 +0000
++++ /source/a/jfsutils/missing-stdinth.patch	2021-01-06 12:18:41.000000000 +0000
+@@ -0,0 +1,11 @@
++--- jfsutils-1.1.15/fscklog/extract.c.orig
+++++ jfsutils-1.1.15/fscklog/extract.c
++@@ -28,6 +28,7 @@
++ #include <stdio.h>
++ #include <string.h>
++ #include <unistd.h>
+++#include <stdint.h>
++ 
++ #include "devices.h"
++ #include "diskmap.h"
++
+diff -ruBN /tmp/jfsutils/musl-fix-includes.patch /source/a/jfsutils/musl-fix-includes.patch
+--- /tmp/jfsutils/musl-fix-includes.patch	1970-01-01 00:00:00.000000000 +0000
++++ /source/a/jfsutils/musl-fix-includes.patch	2021-01-06 12:18:41.000000000 +0000
+@@ -0,0 +1,18 @@
++--- jfsutils-1.1.15.orig/libfs/fssubs.c
+++++ jfsutils-1.1.15/libfs/fssubs.c
++@@ -24,6 +24,7 @@
++ #include <stdio.h>
++ #include <stdlib.h>
++ #include <string.h>
+++#include <paths.h>
++ 
++ #if HAVE_MNTENT_H
++ #include <mntent.h>
++@@ -31,7 +32,6 @@
++ #endif
++ 
++ #if HAVE_GETMNTINFO
++-#include <paths.h>
++ #include <sys/param.h>
++ #include <sys/mount.h>
++ #endif

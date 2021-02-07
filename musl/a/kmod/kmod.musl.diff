@@ -1,0 +1,1663 @@
+diff -ruBN /tmp/kmod/kmod.SlackBuild /source/a/kmod/kmod.SlackBuild
+--- /tmp/kmod/kmod.SlackBuild	2021-01-08 01:28:58.000000000 +0000
++++ /source/a/kmod/kmod.SlackBuild	2021-01-10 07:17:40.000000000 +0000
+@@ -58,7 +58,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ else
+   SLKCFLAGS="-O2"
+   LIBDIRSUFFIX=""
+@@ -95,7 +95,7 @@
+   --with-xz \
+   --with-zlib \
+   --with-zstd \
+-  --build=$ARCH-slackware-linux || exit 1
++  --build=$ARCH-slackware-linux-musl || exit 1
+ 
+ make $NUMJOBS || make || exit 1
+ make $NUMJOBS install DESTDIR=$PKG || make install DESTDIR=$PKG || exit 1
+@@ -134,7 +134,7 @@
+ #  --with-xz \
+ #  --with-zlib \
+ #  --with-zstd \
+-#  --build=$ARCH-slackware-linux || exit 1
++#  --build=$ARCH-slackware-linux-musl || exit 1
+ #
+ #make \
+ #  $NUMJOBS \
+diff -ruBN /tmp/kmod/kmod.SlackBuild.log /source/a/kmod/kmod.SlackBuild.log
+--- /tmp/kmod/kmod.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/a/kmod/kmod.SlackBuild.log	2021-01-10 07:18:07.000000000 +0000
+@@ -0,0 +1,1629 @@
++kmod-28/
++kmod-28/configure
++kmod-28/aclocal.m4
++kmod-28/COPYING
++kmod-28/TODO
++kmod-28/NEWS
++kmod-28/build-aux/
++kmod-28/build-aux/ltmain.sh
++kmod-28/build-aux/config.sub
++kmod-28/build-aux/config.guess
++kmod-28/build-aux/install-sh
++kmod-28/build-aux/missing
++kmod-28/build-aux/py-compile
++kmod-28/build-aux/compile
++kmod-28/build-aux/depcomp
++kmod-28/build-aux/test-driver
++kmod-28/Makefile.in
++kmod-28/Makefile.am
++kmod-28/man/
++kmod-28/man/modprobe.xml
++kmod-28/man/lsmod.8
++kmod-28/man/insmod.xml
++kmod-28/man/modules.dep.5
++kmod-28/man/insmod.8
++kmod-28/man/lsmod.xml
++kmod-28/man/modinfo.xml
++kmod-28/man/modules.dep.xml
++kmod-28/man/kmod.xml
++kmod-28/man/Makefile.in
++kmod-28/man/Makefile.am
++kmod-28/man/depmod.xml
++kmod-28/man/modprobe.d.xml
++kmod-28/man/modprobe.d.5
++kmod-28/man/modules.dep.bin.5
++kmod-28/man/modinfo.8
++kmod-28/man/depmod.d.5
++kmod-28/man/modprobe.8
++kmod-28/man/depmod.d.xml
++kmod-28/man/depmod.8
++kmod-28/man/rmmod.8
++kmod-28/man/rmmod.xml
++kmod-28/man/kmod.8
++kmod-28/shared/
++kmod-28/shared/strbuf.h
++kmod-28/shared/hash.h
++kmod-28/shared/array.h
++kmod-28/shared/util.h
++kmod-28/shared/util.c
++kmod-28/shared/array.c
++kmod-28/shared/scratchbuf.c
++kmod-28/shared/macro.h
++kmod-28/shared/strbuf.c
++kmod-28/shared/scratchbuf.h
++kmod-28/shared/missing.h
++kmod-28/shared/hash.c
++kmod-28/shell-completion/
++kmod-28/shell-completion/bash/
++kmod-28/shell-completion/bash/kmod
++kmod-28/README
++kmod-28/testsuite/
++kmod-28/testsuite/test-tools.c
++kmod-28/testsuite/test-initstate.c
++kmod-28/testsuite/test-list.c
++kmod-28/testsuite/test-testsuite.c
++kmod-28/testsuite/test-util.c
++kmod-28/testsuite/COPYING
++kmod-28/testsuite/testsuite.h
++kmod-28/testsuite/test-new-module.c
++kmod-28/testsuite/test-modprobe.c
++kmod-28/testsuite/testsuite.c
++kmod-28/testsuite/uname.c
++kmod-28/testsuite/module-playground/
++kmod-28/testsuite/module-playground/mod-loop.h
++kmod-28/testsuite/module-playground/Makefile
++kmod-28/testsuite/module-playground/mod-foo-a.c
++kmod-28/testsuite/module-playground/mod-simple-sparc64.ko
++kmod-28/testsuite/module-playground/mod-foo-b.c
++kmod-28/testsuite/module-playground/mod-simple.c
++kmod-28/testsuite/module-playground/mod-loop-b.c
++kmod-28/testsuite/module-playground/mod-simple-i386.ko
++kmod-28/testsuite/module-playground/dummy.sha256
++kmod-28/testsuite/module-playground/mod-fake-hpsa.c
++kmod-28/testsuite/module-playground/mod-loop-f.c
++kmod-28/testsuite/module-playground/mod-loop-a.c
++kmod-28/testsuite/module-playground/dummy.pkcs7
++kmod-28/testsuite/module-playground/mod-loop-g.c
++kmod-28/testsuite/module-playground/mod-simple-x86_64.ko
++kmod-28/testsuite/module-playground/mod-loop-i.c
++kmod-28/testsuite/module-playground/mod-loop-d.c
++kmod-28/testsuite/module-playground/mod-loop-j.c
++kmod-28/testsuite/module-playground/README
++kmod-28/testsuite/module-playground/mod-foo.c
++kmod-28/testsuite/module-playground/mod-foo-c.c
++kmod-28/testsuite/module-playground/mod-loop-h.c
++kmod-28/testsuite/module-playground/mod-loop-e.c
++kmod-28/testsuite/module-playground/mod-loop-k.c
++kmod-28/testsuite/module-playground/mod-fake-scsi-mod.c
++kmod-28/testsuite/module-playground/mod-loop-c.c
++kmod-28/testsuite/module-playground/mod-fake-cciss.c
++kmod-28/testsuite/module-playground/dummy.sha1
++kmod-28/testsuite/module-playground/Makefile.arch
++kmod-28/testsuite/module-playground/cache/
++kmod-28/testsuite/module-playground/cache/mod-loop-g.ko
++kmod-28/testsuite/module-playground/cache/mod-loop-b.ko
++kmod-28/testsuite/module-playground/cache/mod-loop-e.ko
++kmod-28/testsuite/module-playground/cache/mod-loop-i.ko
++kmod-28/testsuite/module-playground/cache/mod-fake-scsi-mod.ko
++kmod-28/testsuite/module-playground/cache/mod-fake-cciss.ko
++kmod-28/testsuite/module-playground/cache/mod-loop-h.ko
++kmod-28/testsuite/module-playground/cache/mod-foo-c.ko
++kmod-28/testsuite/module-playground/cache/mod-simple.ko
++kmod-28/testsuite/module-playground/cache/mod-loop-d.ko
++kmod-28/testsuite/module-playground/cache/mod-loop-f.ko
++kmod-28/testsuite/module-playground/cache/mod-foo.ko
++kmod-28/testsuite/module-playground/cache/mod-fake-hpsa.ko
++kmod-28/testsuite/module-playground/cache/mod-loop-a.ko
++kmod-28/testsuite/module-playground/cache/mod-loop-j.ko
++kmod-28/testsuite/module-playground/cache/mod-loop-c.ko
++kmod-28/testsuite/module-playground/cache/mod-loop-k.ko
++kmod-28/testsuite/module-playground/cache/mod-foo-a.ko
++kmod-28/testsuite/module-playground/cache/mod-foo-b.ko
++kmod-28/testsuite/test-loaded.c
++kmod-28/testsuite/test-scratchbuf.c
++kmod-28/testsuite/path.c
++kmod-28/testsuite/test-blacklist.c
++kmod-28/testsuite/test-init.c
++kmod-28/testsuite/rootfs-pristine/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline/correct.txt
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline/lib/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline/lib/modules/4.4.4/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline/lib/modules/4.4.4/modules.devname
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline/lib/modules/4.4.4/modules.alias
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline/lib/modules/4.4.4/modules.symbols.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline/lib/modules/4.4.4/modules.dep.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline/lib/modules/4.4.4/modules.softdep
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline/lib/modules/4.4.4/modules.symbols
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline/lib/modules/4.4.4/modules.builtin.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline/lib/modules/4.4.4/modules.alias.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline/lib/modules/4.4.4/modules.dep
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline/proc/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline/proc/modules
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline/proc/cmdline
++kmod-28/testsuite/rootfs-pristine/test-modprobe/install-cmd-loop/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/install-cmd-loop/lib/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/install-cmd-loop/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/install-cmd-loop/lib/modules/4.4.4/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/install-cmd-loop/lib/modules/4.4.4/modules.devname
++kmod-28/testsuite/rootfs-pristine/test-modprobe/install-cmd-loop/lib/modules/4.4.4/modules.alias
++kmod-28/testsuite/rootfs-pristine/test-modprobe/install-cmd-loop/lib/modules/4.4.4/modules.symbols.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/install-cmd-loop/lib/modules/4.4.4/modules.dep.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/install-cmd-loop/lib/modules/4.4.4/modules.softdep
++kmod-28/testsuite/rootfs-pristine/test-modprobe/install-cmd-loop/lib/modules/4.4.4/modules.symbols
++kmod-28/testsuite/rootfs-pristine/test-modprobe/install-cmd-loop/lib/modules/4.4.4/modules.builtin.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/install-cmd-loop/lib/modules/4.4.4/modules.alias.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/install-cmd-loop/lib/modules/4.4.4/modules.dep
++kmod-28/testsuite/rootfs-pristine/test-modprobe/install-cmd-loop/etc/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/install-cmd-loop/etc/modprobe.d/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/install-cmd-loop/etc/modprobe.d/dumb-instal-loop.conf
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline2/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline2/correct.txt
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline2/proc/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline2/proc/cmdline
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-exports/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-exports/correct.txt
++kmod-28/testsuite/rootfs-pristine/test-modprobe/external/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/external/lib/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/external/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/external/lib/modules/4.4.4/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/external/lib/modules/4.4.4/modules.devname
++kmod-28/testsuite/rootfs-pristine/test-modprobe/external/lib/modules/4.4.4/modules.alias
++kmod-28/testsuite/rootfs-pristine/test-modprobe/external/lib/modules/4.4.4/modules.symbols.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/external/lib/modules/4.4.4/modules.dep.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/external/lib/modules/4.4.4/modules.softdep
++kmod-28/testsuite/rootfs-pristine/test-modprobe/external/lib/modules/4.4.4/modules.symbols
++kmod-28/testsuite/rootfs-pristine/test-modprobe/external/lib/modules/4.4.4/modules.builtin.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/external/lib/modules/4.4.4/modules.alias.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/external/lib/modules/4.4.4/modules.dep
++kmod-28/testsuite/rootfs-pristine/test-modprobe/external/proc/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/external/proc/modules
++kmod-28/testsuite/rootfs-pristine/test-modprobe/softdep-loop/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/softdep-loop/lib/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/softdep-loop/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/softdep-loop/lib/modules/4.4.4/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/softdep-loop/lib/modules/4.4.4/modules.devname
++kmod-28/testsuite/rootfs-pristine/test-modprobe/softdep-loop/lib/modules/4.4.4/modules.alias
++kmod-28/testsuite/rootfs-pristine/test-modprobe/softdep-loop/lib/modules/4.4.4/modules.symbols.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/softdep-loop/lib/modules/4.4.4/modules.dep.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/softdep-loop/lib/modules/4.4.4/modules.softdep
++kmod-28/testsuite/rootfs-pristine/test-modprobe/softdep-loop/lib/modules/4.4.4/modules.symbols
++kmod-28/testsuite/rootfs-pristine/test-modprobe/softdep-loop/lib/modules/4.4.4/modules.builtin.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/softdep-loop/lib/modules/4.4.4/modules.alias.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/softdep-loop/lib/modules/4.4.4/modules.dep
++kmod-28/testsuite/rootfs-pristine/test-modprobe/softdep-loop/etc/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/softdep-loop/etc/modprobe.d/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/softdep-loop/etc/modprobe.d/dumb-softdep.conf
++kmod-28/testsuite/rootfs-pristine/test-modprobe/builtin/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/builtin/correct.txt
++kmod-28/testsuite/rootfs-pristine/test-modprobe/builtin/lib/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/builtin/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/builtin/lib/modules/4.4.4/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/builtin/lib/modules/4.4.4/modules.devname
++kmod-28/testsuite/rootfs-pristine/test-modprobe/builtin/lib/modules/4.4.4/modules.alias
++kmod-28/testsuite/rootfs-pristine/test-modprobe/builtin/lib/modules/4.4.4/modules.symbols.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/builtin/lib/modules/4.4.4/modules.dep.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/builtin/lib/modules/4.4.4/modules.softdep
++kmod-28/testsuite/rootfs-pristine/test-modprobe/builtin/lib/modules/4.4.4/modules.builtin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/builtin/lib/modules/4.4.4/modules.symbols
++kmod-28/testsuite/rootfs-pristine/test-modprobe/builtin/lib/modules/4.4.4/modules.builtin.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/builtin/lib/modules/4.4.4/modules.alias.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/builtin/lib/modules/4.4.4/modules.dep
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline3/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline3/correct.txt
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline3/proc/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline3/proc/cmdline
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel-force/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel-force/lib/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel-force/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel-force/lib/modules/3.3.3/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel-force/lib/modules/3.3.3/modules.devname
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel-force/lib/modules/3.3.3/modules.alias
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel-force/lib/modules/3.3.3/modules.symbols.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel-force/lib/modules/3.3.3/modules.dep.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel-force/lib/modules/3.3.3/modules.softdep
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel-force/lib/modules/3.3.3/modules.symbols
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel-force/lib/modules/3.3.3/modules.builtin.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel-force/lib/modules/3.3.3/modules.alias.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel-force/lib/modules/3.3.3/modules.dep
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel-force/proc/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel-force/proc/modules
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline6/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline6/correct.txt
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline6/proc/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline6/proc/cmdline
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel/lib/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel/lib/modules/3.3.3/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel/lib/modules/3.3.3/modules.devname
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel/lib/modules/3.3.3/modules.alias
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel/lib/modules/3.3.3/modules.symbols.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel/lib/modules/3.3.3/modules.dep.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel/lib/modules/3.3.3/modules.softdep
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel/lib/modules/3.3.3/modules.symbols
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel/lib/modules/3.3.3/modules.builtin.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel/lib/modules/3.3.3/modules.alias.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel/lib/modules/3.3.3/modules.dep
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel/proc/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel/proc/modules
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-depends/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-depends/correct.txt
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-depends/lib/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-depends/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-depends/lib/modules/4.4.4/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-depends/lib/modules/4.4.4/modules.devname
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-depends/lib/modules/4.4.4/modules.alias
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-depends/lib/modules/4.4.4/modules.symbols.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-depends/lib/modules/4.4.4/modules.dep.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-depends/lib/modules/4.4.4/modules.softdep
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-depends/lib/modules/4.4.4/modules.symbols
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-depends/lib/modules/4.4.4/modules.builtin.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-depends/lib/modules/4.4.4/modules.alias.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-depends/lib/modules/4.4.4/modules.dep
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-depends/sys/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-depends/sys/module/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-depends/sys/module/mod_loop_b/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-depends/sys/module/mod_loop_b/initstate
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-depends/sys/module/mod_loop_a/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-depends/sys/module/mod_loop_a/initstate
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-depends/proc/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-depends/proc/modules
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-depends/correct-mod-simple.txt
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline4/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline4/correct.txt
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline4/proc/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline4/proc/cmdline
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline5/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline5/correct.txt
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline5/proc/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline5/proc/cmdline
++kmod-28/testsuite/rootfs-pristine/test-modprobe/alias-to-none/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/alias-to-none/correct.txt
++kmod-28/testsuite/rootfs-pristine/test-modprobe/alias-to-none/lib/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/alias-to-none/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/alias-to-none/lib/modules/4.4.4/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/alias-to-none/lib/modules/4.4.4/modules.devname
++kmod-28/testsuite/rootfs-pristine/test-modprobe/alias-to-none/lib/modules/4.4.4/modules.alias
++kmod-28/testsuite/rootfs-pristine/test-modprobe/alias-to-none/lib/modules/4.4.4/modules.symbols.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/alias-to-none/lib/modules/4.4.4/modules.dep.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/alias-to-none/lib/modules/4.4.4/modules.softdep
++kmod-28/testsuite/rootfs-pristine/test-modprobe/alias-to-none/lib/modules/4.4.4/modules.symbols
++kmod-28/testsuite/rootfs-pristine/test-modprobe/alias-to-none/lib/modules/4.4.4/modules.builtin.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/alias-to-none/lib/modules/4.4.4/modules.alias.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/alias-to-none/lib/modules/4.4.4/modules.dep
++kmod-28/testsuite/rootfs-pristine/test-modprobe/alias-to-none/proc/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/alias-to-none/proc/modules
++kmod-28/testsuite/rootfs-pristine/test-modprobe/alias-to-none/etc/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/alias-to-none/etc/modprobe.d/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/alias-to-none/etc/modprobe.d/bogus.conf
++kmod-28/testsuite/rootfs-pristine/test-modprobe/force/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/force/lib/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/force/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/force/lib/modules/4.4.4/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/force/lib/modules/4.4.4/modules.devname
++kmod-28/testsuite/rootfs-pristine/test-modprobe/force/lib/modules/4.4.4/modules.alias
++kmod-28/testsuite/rootfs-pristine/test-modprobe/force/lib/modules/4.4.4/modules.symbols.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/force/lib/modules/4.4.4/modules.dep.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/force/lib/modules/4.4.4/modules.softdep
++kmod-28/testsuite/rootfs-pristine/test-modprobe/force/lib/modules/4.4.4/modules.symbols
++kmod-28/testsuite/rootfs-pristine/test-modprobe/force/lib/modules/4.4.4/modules.builtin.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/force/lib/modules/4.4.4/modules.alias.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/force/lib/modules/4.4.4/modules.dep
++kmod-28/testsuite/rootfs-pristine/test-modprobe/force/proc/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/force/proc/modules
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources-empty-builtin-aliases-bin/
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources-empty-builtin-aliases-bin/lib/
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources-empty-builtin-aliases-bin/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources-empty-builtin-aliases-bin/lib/modules/5.6.0/
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources-empty-builtin-aliases-bin/lib/modules/5.6.0/modules.devname
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources-empty-builtin-aliases-bin/lib/modules/5.6.0/modules.alias
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources-empty-builtin-aliases-bin/lib/modules/5.6.0/modules.symbols.bin
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources-empty-builtin-aliases-bin/lib/modules/5.6.0/modules.dep.bin
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources-empty-builtin-aliases-bin/lib/modules/5.6.0/modules.softdep
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources-empty-builtin-aliases-bin/lib/modules/5.6.0/modules.builtin
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources-empty-builtin-aliases-bin/lib/modules/5.6.0/modules.symbols
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources-empty-builtin-aliases-bin/lib/modules/5.6.0/modules.builtin.alias.bin
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources-empty-builtin-aliases-bin/lib/modules/5.6.0/modules.builtin.bin
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources-empty-builtin-aliases-bin/lib/modules/5.6.0/modules.alias.bin
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources-empty-builtin-aliases-bin/lib/modules/5.6.0/modules.dep
++kmod-28/testsuite/rootfs-pristine/test-tools/
++kmod-28/testsuite/rootfs-pristine/test-tools/remove/
++kmod-28/testsuite/rootfs-pristine/test-tools/remove/lib/
++kmod-28/testsuite/rootfs-pristine/test-tools/remove/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-tools/remove/lib/modules/4.4.4/
++kmod-28/testsuite/rootfs-pristine/test-tools/remove/lib/modules/4.4.4/modules.devname
++kmod-28/testsuite/rootfs-pristine/test-tools/remove/lib/modules/4.4.4/modules.order
++kmod-28/testsuite/rootfs-pristine/test-tools/remove/lib/modules/4.4.4/modules.alias
++kmod-28/testsuite/rootfs-pristine/test-tools/remove/lib/modules/4.4.4/modules.symbols.bin
++kmod-28/testsuite/rootfs-pristine/test-tools/remove/lib/modules/4.4.4/modules.dep.bin
++kmod-28/testsuite/rootfs-pristine/test-tools/remove/lib/modules/4.4.4/modules.softdep
++kmod-28/testsuite/rootfs-pristine/test-tools/remove/lib/modules/4.4.4/modules.builtin
++kmod-28/testsuite/rootfs-pristine/test-tools/remove/lib/modules/4.4.4/modules.symbols
++kmod-28/testsuite/rootfs-pristine/test-tools/remove/lib/modules/4.4.4/modules.builtin.bin
++kmod-28/testsuite/rootfs-pristine/test-tools/remove/lib/modules/4.4.4/modules.alias.bin
++kmod-28/testsuite/rootfs-pristine/test-tools/remove/lib/modules/4.4.4/modules.dep
++kmod-28/testsuite/rootfs-pristine/test-tools/remove/sys/
++kmod-28/testsuite/rootfs-pristine/test-tools/remove/sys/module/
++kmod-28/testsuite/rootfs-pristine/test-tools/remove/sys/module/mod_simple/
++kmod-28/testsuite/rootfs-pristine/test-tools/remove/sys/module/mod_simple/refcnt
++kmod-28/testsuite/rootfs-pristine/test-tools/remove/sys/module/mod_simple/initstate
++kmod-28/testsuite/rootfs-pristine/test-tools/remove/sys/module/mod_simple/holders/
++kmod-28/testsuite/rootfs-pristine/test-tools/remove/sys/module/mod_simple/holders/.gitignore
++kmod-28/testsuite/rootfs-pristine/test-tools/insert/
++kmod-28/testsuite/rootfs-pristine/test-tools/insert/lib/
++kmod-28/testsuite/rootfs-pristine/test-tools/insert/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-tools/insert/lib/modules/4.4.4/
++kmod-28/testsuite/rootfs-pristine/test-tools/insert/lib/modules/4.4.4/modules.devname
++kmod-28/testsuite/rootfs-pristine/test-tools/insert/lib/modules/4.4.4/modules.order
++kmod-28/testsuite/rootfs-pristine/test-tools/insert/lib/modules/4.4.4/modules.alias
++kmod-28/testsuite/rootfs-pristine/test-tools/insert/lib/modules/4.4.4/modules.symbols.bin
++kmod-28/testsuite/rootfs-pristine/test-tools/insert/lib/modules/4.4.4/modules.dep.bin
++kmod-28/testsuite/rootfs-pristine/test-tools/insert/lib/modules/4.4.4/modules.softdep
++kmod-28/testsuite/rootfs-pristine/test-tools/insert/lib/modules/4.4.4/modules.builtin
++kmod-28/testsuite/rootfs-pristine/test-tools/insert/lib/modules/4.4.4/modules.symbols
++kmod-28/testsuite/rootfs-pristine/test-tools/insert/lib/modules/4.4.4/modules.builtin.bin
++kmod-28/testsuite/rootfs-pristine/test-tools/insert/lib/modules/4.4.4/modules.alias.bin
++kmod-28/testsuite/rootfs-pristine/test-tools/insert/lib/modules/4.4.4/modules.dep
++kmod-28/testsuite/rootfs-pristine/test-dependencies/
++kmod-28/testsuite/rootfs-pristine/test-dependencies/lib/
++kmod-28/testsuite/rootfs-pristine/test-dependencies/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-dependencies/lib/modules/4.0.20-kmod/
++kmod-28/testsuite/rootfs-pristine/test-dependencies/lib/modules/4.0.20-kmod/modules.devname
++kmod-28/testsuite/rootfs-pristine/test-dependencies/lib/modules/4.0.20-kmod/modules.order
++kmod-28/testsuite/rootfs-pristine/test-dependencies/lib/modules/4.0.20-kmod/modules.alias
++kmod-28/testsuite/rootfs-pristine/test-dependencies/lib/modules/4.0.20-kmod/modules.symbols.bin
++kmod-28/testsuite/rootfs-pristine/test-dependencies/lib/modules/4.0.20-kmod/modules.dep.bin
++kmod-28/testsuite/rootfs-pristine/test-dependencies/lib/modules/4.0.20-kmod/modules.softdep
++kmod-28/testsuite/rootfs-pristine/test-dependencies/lib/modules/4.0.20-kmod/modules.builtin
++kmod-28/testsuite/rootfs-pristine/test-dependencies/lib/modules/4.0.20-kmod/modules.symbols
++kmod-28/testsuite/rootfs-pristine/test-dependencies/lib/modules/4.0.20-kmod/modules.builtin.bin
++kmod-28/testsuite/rootfs-pristine/test-dependencies/lib/modules/4.0.20-kmod/modules.alias.bin
++kmod-28/testsuite/rootfs-pristine/test-dependencies/lib/modules/4.0.20-kmod/modules.dep
++kmod-28/testsuite/rootfs-pristine/test-blacklist/
++kmod-28/testsuite/rootfs-pristine/test-blacklist/etc/
++kmod-28/testsuite/rootfs-pristine/test-blacklist/etc/modprobe.d/
++kmod-28/testsuite/rootfs-pristine/test-blacklist/etc/modprobe.d/modprobe.conf
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources/
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources/lib/
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources/lib/modules/5.6.0/
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources/lib/modules/5.6.0/modules.devname
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources/lib/modules/5.6.0/modules.alias
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources/lib/modules/5.6.0/modules.symbols.bin
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources/lib/modules/5.6.0/modules.dep.bin
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources/lib/modules/5.6.0/modules.softdep
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources/lib/modules/5.6.0/modules.builtin
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources/lib/modules/5.6.0/modules.symbols
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources/lib/modules/5.6.0/modules.builtin.bin
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources/lib/modules/5.6.0/modules.alias.bin
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources/lib/modules/5.6.0/modules.dep
++kmod-28/testsuite/rootfs-pristine/test-rootfs/
++kmod-28/testsuite/rootfs-pristine/test-rootfs/lib/
++kmod-28/testsuite/rootfs-pristine/test-rootfs/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-rootfs/lib/modules/a
++kmod-28/testsuite/rootfs-pristine/test-rootfs/testdir/
++kmod-28/testsuite/rootfs-pristine/test-rootfs/testdir/.gitignore
++kmod-28/testsuite/rootfs-pristine/test-depmod/
++kmod-28/testsuite/rootfs-pristine/test-depmod/detect-loop/
++kmod-28/testsuite/rootfs-pristine/test-depmod/detect-loop/correct.txt
++kmod-28/testsuite/rootfs-pristine/test-depmod/detect-loop/lib/
++kmod-28/testsuite/rootfs-pristine/test-depmod/detect-loop/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-depmod/detect-loop/lib/modules/4.4.4/
++kmod-28/testsuite/rootfs-pristine/test-depmod/detect-loop/lib/modules/4.4.4/modules.order
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-external-first/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-external-first/lib/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-external-first/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-external-first/lib/modules/4.4.4/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-external-first/lib/modules/4.4.4/correct-modules.dep
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-external-first/etc/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-external-first/etc/depmod.d/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-external-first/etc/depmod.d/search.conf
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-external-first/etc/depmod.d/external.conf
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-simple/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-simple/lib/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-simple/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-simple/lib/modules/4.4.4/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-simple/lib/modules/4.4.4/correct-modules.dep
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-simple/etc/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-simple/etc/depmod.d/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-simple/etc/depmod.d/search.conf
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-same-prefix/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-same-prefix/lib/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-same-prefix/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-same-prefix/lib/modules/4.4.4/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-same-prefix/lib/modules/4.4.4/correct-modules.dep
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-same-prefix/etc/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-same-prefix/etc/depmod.d/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-same-prefix/etc/depmod.d/search.conf
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-external-last/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-external-last/lib/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-external-last/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-external-last/lib/modules/4.4.4/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-external-last/lib/modules/4.4.4/correct-modules.dep
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-external-last/etc/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-external-last/etc/depmod.d/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-external-last/etc/depmod.d/search.conf
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-external-last/etc/depmod.d/external.conf
++kmod-28/testsuite/rootfs-pristine/test-depmod/modules-order-compressed/
++kmod-28/testsuite/rootfs-pristine/test-depmod/modules-order-compressed/lib/
++kmod-28/testsuite/rootfs-pristine/test-depmod/modules-order-compressed/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-depmod/modules-order-compressed/lib/modules/4.4.4/
++kmod-28/testsuite/rootfs-pristine/test-depmod/modules-order-compressed/lib/modules/4.4.4/modules.order
++kmod-28/testsuite/rootfs-pristine/test-depmod/modules-order-compressed/lib/modules/4.4.4/modules.builtin
++kmod-28/testsuite/rootfs-pristine/test-depmod/modules-order-compressed/lib/modules/4.4.4/correct-modules.alias
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-override/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-override/lib/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-override/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-override/lib/modules/4.4.4/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-override/lib/modules/4.4.4/correct-modules.dep
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-override/etc/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-override/etc/depmod.d/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-override/etc/depmod.d/override.conf
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-override/etc/depmod.d/search.conf
++kmod-28/testsuite/rootfs-pristine/test-modinfo/
++kmod-28/testsuite/rootfs-pristine/test-modinfo/correct-signer.txt
++kmod-28/testsuite/rootfs-pristine/test-modinfo/correct.txt
++kmod-28/testsuite/rootfs-pristine/test-modinfo/external/
++kmod-28/testsuite/rootfs-pristine/test-modinfo/external/lib/
++kmod-28/testsuite/rootfs-pristine/test-modinfo/external/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-modinfo/external/lib/modules/4.4.4/
++kmod-28/testsuite/rootfs-pristine/test-modinfo/external/lib/modules/4.4.4/modules.devname
++kmod-28/testsuite/rootfs-pristine/test-modinfo/external/lib/modules/4.4.4/modules.alias
++kmod-28/testsuite/rootfs-pristine/test-modinfo/external/lib/modules/4.4.4/modules.symbols.bin
++kmod-28/testsuite/rootfs-pristine/test-modinfo/external/lib/modules/4.4.4/modules.dep.bin
++kmod-28/testsuite/rootfs-pristine/test-modinfo/external/lib/modules/4.4.4/modules.softdep
++kmod-28/testsuite/rootfs-pristine/test-modinfo/external/lib/modules/4.4.4/modules.symbols
++kmod-28/testsuite/rootfs-pristine/test-modinfo/external/lib/modules/4.4.4/modules.builtin.bin
++kmod-28/testsuite/rootfs-pristine/test-modinfo/external/lib/modules/4.4.4/modules.alias.bin
++kmod-28/testsuite/rootfs-pristine/test-modinfo/external/lib/modules/4.4.4/modules.dep
++kmod-28/testsuite/rootfs-pristine/test-modinfo/correct-sig_key.txt
++kmod-28/testsuite/rootfs-pristine/test-modinfo/correct-sig_hashalgo.txt
++kmod-28/testsuite/rootfs-pristine/test-modinfo/correct-sig_key-openssl.txt
++kmod-28/testsuite/rootfs-pristine/test-modinfo/correct-depends.txt
++kmod-28/testsuite/rootfs-pristine/test-modinfo/correct-signer-openssl.txt
++kmod-28/testsuite/rootfs-pristine/test-modinfo/correct-sig_hashalgo-openssl.txt
++kmod-28/testsuite/rootfs-pristine/test-modinfo/correct-parm.txt
++kmod-28/testsuite/rootfs-pristine/test-modinfo/correct-description.txt
++kmod-28/testsuite/rootfs-pristine/test-modinfo/correct-license.txt
++kmod-28/testsuite/rootfs-pristine/test-modinfo/correct-author.txt
++kmod-28/testsuite/rootfs-pristine/test-modinfo/correct-external.txt
++kmod-28/testsuite/rootfs-pristine/test-modinfo/correct-filename.txt
++kmod-28/testsuite/rootfs-pristine/test-util2/
++kmod-28/testsuite/rootfs-pristine/test-util2/write-str-safe-correct.txt
++kmod-28/testsuite/rootfs-pristine/test-loaded/
++kmod-28/testsuite/rootfs-pristine/test-loaded/correct.txt
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/refcnt
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/notes/
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/notes/.note.gnu.build-id
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/parameters/
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/parameters/ignore_sniffer
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/parameters/ignore_dga
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/parameters/reset
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/parameters/disable_scofix
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/parameters/ignore_csr
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/parameters/force_scofix
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/srcversion
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/sections/
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/sections/.bss
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/sections/__param
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/sections/.exit.text
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/sections/.rodata
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/sections/.gnu.linkonce.this_module
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/sections/.init.text
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/sections/.symtab
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/sections/.rodata.str1.8
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/sections/.text
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/sections/.smp_locks
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/sections/.note.gnu.build-id
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/sections/.strtab
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/sections/.data
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/sections/.rodata.str1.1
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/version
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/drivers/
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/initstate
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/holders/
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/holders/.gitignore
++kmod-28/testsuite/rootfs-pristine/test-loaded/proc/
++kmod-28/testsuite/rootfs-pristine/test-loaded/proc/modules
++kmod-28/testsuite/rootfs-pristine/test-new-module/
++kmod-28/testsuite/rootfs-pristine/test-new-module/from_name/
++kmod-28/testsuite/rootfs-pristine/test-new-module/from_name/correct.txt
++kmod-28/testsuite/rootfs-pristine/test-new-module/from_alias/
++kmod-28/testsuite/rootfs-pristine/test-new-module/from_alias/correct.txt
++kmod-28/testsuite/rootfs-pristine/test-new-module/from_alias/etc/
++kmod-28/testsuite/rootfs-pristine/test-new-module/from_alias/etc/modprobe.d/
++kmod-28/testsuite/rootfs-pristine/test-new-module/from_alias/etc/modprobe.d/modprobe.conf
++kmod-28/testsuite/rootfs-pristine/test-util/
++kmod-28/testsuite/rootfs-pristine/test-util/freadline_wrapped-correct.txt
++kmod-28/testsuite/rootfs-pristine/test-util/alias-correct.txt
++kmod-28/testsuite/rootfs-pristine/test-util/freadline_wrapped-input.txt
++kmod-28/testsuite/rootfs-pristine/test-initstate/
++kmod-28/testsuite/rootfs-pristine/test-initstate/lib/
++kmod-28/testsuite/rootfs-pristine/test-initstate/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-initstate/lib/modules/4.4.4/
++kmod-28/testsuite/rootfs-pristine/test-initstate/lib/modules/4.4.4/modules.devname
++kmod-28/testsuite/rootfs-pristine/test-initstate/lib/modules/4.4.4/modules.alias
++kmod-28/testsuite/rootfs-pristine/test-initstate/lib/modules/4.4.4/modules.symbols.bin
++kmod-28/testsuite/rootfs-pristine/test-initstate/lib/modules/4.4.4/modules.dep.bin
++kmod-28/testsuite/rootfs-pristine/test-initstate/lib/modules/4.4.4/modules.softdep
++kmod-28/testsuite/rootfs-pristine/test-initstate/lib/modules/4.4.4/modules.builtin
++kmod-28/testsuite/rootfs-pristine/test-initstate/lib/modules/4.4.4/modules.symbols
++kmod-28/testsuite/rootfs-pristine/test-initstate/lib/modules/4.4.4/modules.builtin.bin
++kmod-28/testsuite/rootfs-pristine/test-initstate/lib/modules/4.4.4/modules.alias.bin
++kmod-28/testsuite/rootfs-pristine/test-initstate/lib/modules/4.4.4/modules.dep
++kmod-28/testsuite/test-strbuf.c
++kmod-28/testsuite/test-depmod.c
++kmod-28/testsuite/init_module.c
++kmod-28/testsuite/stripped-module.h
++kmod-28/testsuite/test-modinfo.c
++kmod-28/testsuite/test-array.c
++kmod-28/testsuite/populate-modules.sh
++kmod-28/testsuite/test-dependencies.c
++kmod-28/testsuite/delete_module.c
++kmod-28/testsuite/test-hash.c
++kmod-28/m4/
++kmod-28/m4/features.m4
++kmod-28/m4/ltversion.m4
++kmod-28/m4/ltsugar.m4
++kmod-28/m4/lt~obsolete.m4
++kmod-28/m4/attributes.m4
++kmod-28/m4/libtool.m4
++kmod-28/m4/ltoptions.m4
++kmod-28/configure.ac
++kmod-28/config.h.in
++kmod-28/libkmod/
++kmod-28/libkmod/libkmod.sym
++kmod-28/libkmod/libkmod-index.c
++kmod-28/libkmod/COPYING
++kmod-28/libkmod/libkmod-index.h
++kmod-28/libkmod/libkmod.h
++kmod-28/libkmod/libkmod-list.c
++kmod-28/libkmod/libkmod-elf.c
++kmod-28/libkmod/python/
++kmod-28/libkmod/python/kmod/
++kmod-28/libkmod/python/kmod/version.py
++kmod-28/libkmod/python/kmod/_util.c
++kmod-28/libkmod/python/kmod/__init__.py
++kmod-28/libkmod/python/kmod/error.py
++kmod-28/libkmod/python/kmod/module.c
++kmod-28/libkmod/python/kmod/list.c
++kmod-28/libkmod/python/kmod/kmod.c
++kmod-28/libkmod/libkmod.c
++kmod-28/libkmod/README
++kmod-28/libkmod/libkmod-internal.h
++kmod-28/libkmod/libkmod-file.c
++kmod-28/libkmod/libkmod-signature.c
++kmod-28/libkmod/libkmod-builtin.c
++kmod-28/libkmod/libkmod-config.c
++kmod-28/libkmod/libkmod-module.c
++kmod-28/libkmod/docs/
++kmod-28/libkmod/docs/version.xml.in
++kmod-28/libkmod/docs/gtk-doc.make
++kmod-28/libkmod/docs/Makefile.in
++kmod-28/libkmod/docs/Makefile.am
++kmod-28/libkmod/docs/libkmod-docs.xml
++kmod-28/libkmod/docs/libkmod-sections.txt
++kmod-28/libkmod/libkmod.pc.in
++kmod-28/tools/
++kmod-28/tools/rmmod.c
++kmod-28/tools/log.h
++kmod-28/tools/COPYING
++kmod-28/tools/modinfo.c
++kmod-28/tools/insert.c
++kmod-28/tools/log.c
++kmod-28/tools/remove.c
++kmod-28/tools/lsmod.c
++kmod-28/tools/modprobe.c
++kmod-28/tools/static-nodes.c
++kmod-28/tools/depmod.c
++kmod-28/tools/kmod.h
++kmod-28/tools/insmod.c
++kmod-28/tools/kmod.c
++checking for gcc... gcc
++checking whether the C compiler works... yes
++checking for C compiler default output file name... a.out
++checking for suffix of executables... 
++checking whether we are cross compiling... no
++checking for suffix of object files... o
++checking whether we are using the GNU C compiler... yes
++checking whether gcc accepts -g... yes
++checking for gcc option to accept ISO C89... none needed
++checking whether gcc understands -c and -o together... yes
++checking how to run the C preprocessor... gcc -E
++checking for grep that handles long lines and -e... /usr/bin/grep
++checking for egrep... /usr/bin/grep -E
++checking for ANSI C header files... yes
++checking for sys/types.h... yes
++checking for sys/stat.h... yes
++checking for stdlib.h... yes
++checking for string.h... yes
++checking for memory.h... yes
++checking for strings.h... yes
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking for unistd.h... yes
++checking minix/config.h usability... no
++checking minix/config.h presence... no
++checking for minix/config.h... no
++checking whether it is safe to define __EXTENSIONS__... yes
++checking for special C compiler options needed for large files... no
++checking for _FILE_OFFSET_BITS value needed for large files... no
++checking whether to enable maintainer-specific portions of Makefiles... yes
++checking for a BSD-compatible install... /usr/bin/ginstall -c
++checking whether build environment is sane... yes
++checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
++checking for gawk... gawk
++checking whether make sets $(MAKE)... yes
++checking whether make supports the include directive... yes (GNU style)
++checking whether make supports nested variables... yes
++checking how to create a pax tar archive... gnutar
++checking dependency style of gcc... gcc3
++checking whether make supports nested variables... (cached) yes
++checking build system type... x86_64-slackware-linux-musl
++checking host system type... x86_64-slackware-linux-musl
++checking how to print strings... printf
++checking for a sed that does not truncate output... /usr/bin/sed
++checking for fgrep... /usr/bin/grep -F
++checking for ld used by gcc... /usr/bin/ld
++checking if the linker (/usr/bin/ld) is GNU ld... yes
++checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
++checking the name lister (/usr/bin/nm -B) interface... BSD nm
++checking whether ln -s works... yes
++checking the maximum length of command line arguments... 98304
++checking how to convert x86_64-slackware-linux-musl file names to x86_64-slackware-linux-musl format... func_convert_file_noop
++checking how to convert x86_64-slackware-linux-musl file names to toolchain format... func_convert_file_noop
++checking for /usr/bin/ld option to reload object files... -r
++checking for objdump... objdump
++checking how to recognize dependent libraries... pass_all
++checking for dlltool... dlltool
++checking how to associate runtime and link libraries... printf %s\n
++checking for ar... ar
++checking for archiver @FILE support... @
++checking for strip... strip
++checking for ranlib... ranlib
++checking command to parse /usr/bin/nm -B output from gcc object... ok
++checking for sysroot... no
++checking for a working dd... /usr/bin/dd
++checking how to truncate binary pipes... /usr/bin/dd bs=4096 count=1
++checking for mt... mt
++checking if mt is a manifest tool... no
++checking for dlfcn.h... yes
++checking for objdir... .libs
++checking if gcc supports -fno-rtti -fno-exceptions... no
++checking for gcc option to produce PIC... -fPIC -DPIC
++checking if gcc PIC flag -fPIC -DPIC works... yes
++checking if gcc static flag -static works... yes
++checking if gcc supports -c -o file.o... yes
++checking if gcc supports -c -o file.o... (cached) yes
++checking whether the gcc linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
++checking whether -lc should be explicitly linked in... no
++checking dynamic linker characteristics... GNU/Linux ld.so
++checking how to hardcode library paths into programs... immediate
++checking whether stripping libraries is possible... yes
++checking if libtool supports shared libraries... yes
++checking whether to build shared libraries... yes
++checking whether to build static libraries... no
++checking for a sed that does not truncate output... (cached) /usr/bin/sed
++checking whether ln -s works... yes
++checking pkg-config is at least version 0.9.0... yes
++checking for xsltproc... /usr/bin/xsltproc
++checking for mkosi... no
++checking for gcc option to accept ISO C99... none needed
++checking for __xstat... yes
++checking for __secure_getenv... no
++checking for secure_getenv... yes
++checking for finit_module... no
++checking if compiler has __builtin_clz builtin function... yes
++checking if compiler has __builtin_types_compatible_p builtin function... yes
++checking if compiler has __builtin_uaddl_overflow builtin function... yes
++checking if compiler has __builtin_uaddll_overflow builtin function... yes
++checking for struct stat.st_mtim... yes
++checking whether strndupa is declared... no
++checking whether be32toh is declared... yes
++checking for linux/module.h... yes
++checking whether _Static_assert() is supported... yes
++checking whether _Noreturn is supported... yes
++checking for libzstd... yes
++checking for liblzma... yes
++checking for zlib... yes
++checking for libcrypto... yes
++checking if gcc supports flag -pipe in envvar CFLAGS... yes
++checking if gcc supports flag -DANOTHER_BRICK_IN_THE in envvar CFLAGS... yes
++checking if gcc supports flag -Wall in envvar CFLAGS... yes
++checking if gcc supports flag -W in envvar CFLAGS... yes
++checking if gcc supports flag -Wextra in envvar CFLAGS... yes
++checking if gcc supports flag -Wno-inline in envvar CFLAGS... yes
++checking if gcc supports flag -Wvla in envvar CFLAGS... yes
++checking if gcc supports flag -Wundef in envvar CFLAGS... yes
++checking if gcc supports flag -Wformat=2 in envvar CFLAGS... yes
++checking if gcc supports flag -Wlogical-op in envvar CFLAGS... yes
++checking if gcc supports flag -Wsign-compare in envvar CFLAGS... yes
++checking if gcc supports flag -Wformat-security in envvar CFLAGS... yes
++checking if gcc supports flag -Wmissing-include-dirs in envvar CFLAGS... yes
++checking if gcc supports flag -Wformat-nonliteral in envvar CFLAGS... yes
++checking if gcc supports flag -Wold-style-definition in envvar CFLAGS... yes
++checking if gcc supports flag -Wpointer-arith in envvar CFLAGS... yes
++checking if gcc supports flag -Winit-self in envvar CFLAGS... yes
++checking if gcc supports flag -Wdeclaration-after-statement in envvar CFLAGS... yes
++checking if gcc supports flag -Wfloat-equal in envvar CFLAGS... yes
++checking if gcc supports flag -Wmissing-prototypes in envvar CFLAGS... yes
++checking if gcc supports flag -Wstrict-prototypes in envvar CFLAGS... yes
++checking if gcc supports flag -Wredundant-decls in envvar CFLAGS... yes
++checking if gcc supports flag -Wmissing-declarations in envvar CFLAGS... yes
++checking if gcc supports flag -Wmissing-noreturn in envvar CFLAGS... yes
++checking if gcc supports flag -Wshadow in envvar CFLAGS... yes
++checking if gcc supports flag -Wendif-labels in envvar CFLAGS... yes
++checking if gcc supports flag -Wstrict-aliasing=3 in envvar CFLAGS... yes
++checking if gcc supports flag -Wwrite-strings in envvar CFLAGS... yes
++checking if gcc supports flag -Wno-long-long in envvar CFLAGS... yes
++checking if gcc supports flag -Wno-overlength-strings in envvar CFLAGS... yes
++checking if gcc supports flag -Wno-unused-parameter in envvar CFLAGS... yes
++checking if gcc supports flag -Wno-missing-field-initializers in envvar CFLAGS... yes
++checking if gcc supports flag -Wno-unused-result in envvar CFLAGS... yes
++checking if gcc supports flag -Wnested-externs in envvar CFLAGS... yes
++checking if gcc supports flag -Wchar-subscripts in envvar CFLAGS... yes
++checking if gcc supports flag -Wtype-limits in envvar CFLAGS... yes
++checking if gcc supports flag -Wuninitialized in envvar CFLAGS... yes
++checking if gcc supports flag -fno-common in envvar CFLAGS... yes
++checking if gcc supports flag -fdiagnostics-show-option in envvar CFLAGS... yes
++checking if gcc supports flag -fvisibility=hidden in envvar CFLAGS... yes
++checking if gcc supports flag -ffunction-sections in envvar CFLAGS... yes
++checking if gcc supports flag -fdata-sections in envvar CFLAGS... yes
++checking if gcc supports flag -Wl,--as-needed in envvar LDFLAGS... yes
++checking if gcc supports flag -Wl,--no-undefined in envvar LDFLAGS... yes
++checking if gcc supports flag -Wl,--gc-sections in envvar LDFLAGS... yes
++checking that generated files are newer than configure... done
++configure: creating ./config.status
++config.status: creating Makefile
++config.status: creating man/Makefile
++config.status: creating libkmod/docs/Makefile
++config.status: creating libkmod/docs/version.xml
++config.status: creating config.h
++config.status: executing depfiles commands
++config.status: executing libtool commands
++
++	kmod 28
++	=======
++
++	prefix:			/usr
++	sysconfdir:		/etc
++	libdir:			/lib
++	rootlibdir:		/lib
++	includedir:		${prefix}/include
++	bindir:			/sbin
++	Bash completions dir:   ${datarootdir}/bash-completion/completions
++
++	compiler:		gcc
++	cflags:			 -pipe -DANOTHER_BRICK_IN_THE -Wall -W -Wextra -Wno-inline -Wvla -Wundef -Wformat=2 -Wlogical-op -Wsign-compare -Wformat-security -Wmissing-include-dirs -Wformat-nonliteral -Wold-style-definition -Wpointer-arith -Winit-self -Wdeclaration-after-statement -Wfloat-equal -Wmissing-prototypes -Wstrict-prototypes -Wredundant-decls -Wmissing-declarations -Wmissing-noreturn -Wshadow -Wendif-labels -Wstrict-aliasing=3 -Wwrite-strings -Wno-long-long -Wno-overlength-strings -Wno-unused-parameter -Wno-missing-field-initializers -Wno-unused-result -Wnested-externs -Wchar-subscripts -Wtype-limits -Wuninitialized -fno-common -fdiagnostics-show-option -fvisibility=hidden -ffunction-sections -fdata-sections -O2 -fPIC
++	ldflags:		 -Wl,--as-needed -Wl,--no-undefined -Wl,--gc-sections 
++
++	experimental features:  no
++	tools:			yes
++	python bindings:	no
++	logging:		yes
++	compression:		zstd=yes  xz=yes  zlib=yes
++	debug:			no
++	coverage:		no
++	doc:			
++	man:			yes
++	test-modules:           yes
++
++	features:               +ZSTD +XZ +ZLIB +LIBCRYPTO -EXPERIMENTAL
++
++make --no-print-directory all-recursive
++Making all in .
++  GEN      libkmod/libkmod.pc
++  CC       tools/kmod.o
++  CC       tools/lsmod.o
++  CC       tools/rmmod.o
++  CC       tools/insmod.o
++  CC       tools/modinfo.o
++  CC       tools/modprobe.o
++  CC       tools/depmod.o
++  CC       tools/log.o
++  CC       tools/static-nodes.o
++  CC       shared/array.lo
++  CC       shared/hash.lo
++  CC       shared/scratchbuf.lo
++  CC       shared/strbuf.lo
++  CC       shared/util.lo
++  CC       libkmod/libkmod.lo
++  CC       libkmod/libkmod-builtin.lo
++  CC       libkmod/libkmod-list.lo
++  CC       libkmod/libkmod-config.lo
++  CC       libkmod/libkmod-index.lo
++  CC       libkmod/libkmod-module.lo
++  CC       libkmod/libkmod-file.lo
++  CC       libkmod/libkmod-elf.lo
++  CC       libkmod/libkmod-signature.lo
++  CCLD     shared/libshared.la
++  CCLD     libkmod/libkmod-internal.la
++  CCLD     libkmod/libkmod.la
++  CCLD     tools/kmod
++  GEN      tools/insmod
++  GEN      tools/rmmod
++  GEN      tools/lsmod
++  GEN      tools/modprobe
++  GEN      tools/modinfo
++  GEN      tools/depmod
++Making all in libkmod/docs
++make[2]: Nothing to be done for 'all'.
++Making all in man
++  XSLT     depmod.d.5
++  XSLT     modprobe.d.5
++  XSLT     depmod.8
++  XSLT     modprobe.8
++  XSLT     modinfo.8
++Making install in .
++ /usr/bin/mkdir -p '/tmp/package-kmod/usr/share/bash-completion/completions'
++ /usr/bin/mkdir -p '/tmp/package-kmod/usr/include'
++ /usr/bin/mkdir -p '/tmp/package-kmod/lib/pkgconfig'
++ /usr/bin/ginstall -c -m 644 shell-completion/bash/kmod '/tmp/package-kmod/usr/share/bash-completion/completions'
++ /usr/bin/ginstall -c -m 644 libkmod/libkmod.pc '/tmp/package-kmod/lib/pkgconfig'
++ /usr/bin/ginstall -c -m 644 libkmod/libkmod.h '/tmp/package-kmod/usr/include'
++ /usr/bin/mkdir -p '/tmp/package-kmod/lib'
++ /bin/sh ./libtool   --mode=install /usr/bin/ginstall -c   libkmod/libkmod.la '/tmp/package-kmod/lib'
++libtool: install: /usr/bin/ginstall -c libkmod/.libs/libkmod.so.2.3.6 /tmp/package-kmod/lib/libkmod.so.2.3.6
++libtool: install: (cd /tmp/package-kmod/lib && { ln -s -f libkmod.so.2.3.6 libkmod.so.2 || { rm -f libkmod.so.2 && ln -s libkmod.so.2.3.6 libkmod.so.2; }; })
++libtool: install: (cd /tmp/package-kmod/lib && { ln -s -f libkmod.so.2.3.6 libkmod.so || { rm -f libkmod.so && ln -s libkmod.so.2.3.6 libkmod.so; }; })
++libtool: install: /usr/bin/ginstall -c libkmod/.libs/libkmod.lai /tmp/package-kmod/lib/libkmod.la
++libtool: warning: remember to run 'libtool --finish /lib'
++ /usr/bin/mkdir -p '/tmp/package-kmod/sbin'
++  /bin/sh ./libtool   --mode=install /usr/bin/ginstall -c tools/kmod '/tmp/package-kmod/sbin'
++libtool: install: /usr/bin/ginstall -c tools/kmod /tmp/package-kmod/sbin/kmod
++make --no-print-directory install-exec-hook
++if test "/lib" != "/lib"; then \
++	/usr/bin/mkdir -p /tmp/package-kmod/lib && \
++	so_img_name=$(readlink /tmp/package-kmod/lib/libkmod.so) && \
++	so_img_rel_target_prefix=$(echo /lib | sed 's,\(^/\|\)[^/][^/]*,..,g') && \
++	ln -sf $so_img_rel_target_prefix/lib/$so_img_name /tmp/package-kmod/lib/libkmod.so && \
++	mv /tmp/package-kmod/lib/libkmod.so.* /tmp/package-kmod/lib; \
++fi
++Making install in libkmod/docs
++make[2]: Nothing to be done for 'install-exec-am'.
++make[2]: Nothing to be done for 'install-data-am'.
++Making install in man
++make[2]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-kmod/usr/man/man5'
++ /usr/bin/mkdir -p '/tmp/package-kmod/usr/man/man8'
++ /usr/bin/ginstall -c -m 644 kmod.8 depmod.8 insmod.8 lsmod.8 rmmod.8 modprobe.8 modinfo.8 '/tmp/package-kmod/usr/man/man8'
++ /usr/bin/ginstall -c -m 644 depmod.d.5 modprobe.d.5 modules.dep.5 modules.dep.bin.5 '/tmp/package-kmod/usr/man/man5'
++kmod-28/
++kmod-28/configure
++kmod-28/aclocal.m4
++kmod-28/COPYING
++kmod-28/TODO
++kmod-28/NEWS
++kmod-28/build-aux/
++kmod-28/build-aux/ltmain.sh
++kmod-28/build-aux/config.sub
++kmod-28/build-aux/config.guess
++kmod-28/build-aux/install-sh
++kmod-28/build-aux/missing
++kmod-28/build-aux/py-compile
++kmod-28/build-aux/compile
++kmod-28/build-aux/depcomp
++kmod-28/build-aux/test-driver
++kmod-28/Makefile.in
++kmod-28/Makefile.am
++kmod-28/man/
++kmod-28/man/modprobe.xml
++kmod-28/man/lsmod.8
++kmod-28/man/insmod.xml
++kmod-28/man/modules.dep.5
++kmod-28/man/insmod.8
++kmod-28/man/lsmod.xml
++kmod-28/man/modinfo.xml
++kmod-28/man/modules.dep.xml
++kmod-28/man/kmod.xml
++kmod-28/man/Makefile.in
++kmod-28/man/Makefile.am
++kmod-28/man/depmod.xml
++kmod-28/man/modprobe.d.xml
++kmod-28/man/modprobe.d.5
++kmod-28/man/modules.dep.bin.5
++kmod-28/man/modinfo.8
++kmod-28/man/depmod.d.5
++kmod-28/man/modprobe.8
++kmod-28/man/depmod.d.xml
++kmod-28/man/depmod.8
++kmod-28/man/rmmod.8
++kmod-28/man/rmmod.xml
++kmod-28/man/kmod.8
++kmod-28/shared/
++kmod-28/shared/strbuf.h
++kmod-28/shared/hash.h
++kmod-28/shared/array.h
++kmod-28/shared/util.h
++kmod-28/shared/util.c
++kmod-28/shared/array.c
++kmod-28/shared/scratchbuf.c
++kmod-28/shared/macro.h
++kmod-28/shared/strbuf.c
++kmod-28/shared/scratchbuf.h
++kmod-28/shared/missing.h
++kmod-28/shared/hash.c
++kmod-28/shell-completion/
++kmod-28/shell-completion/bash/
++kmod-28/shell-completion/bash/kmod
++kmod-28/README
++kmod-28/testsuite/
++kmod-28/testsuite/test-tools.c
++kmod-28/testsuite/test-initstate.c
++kmod-28/testsuite/test-list.c
++kmod-28/testsuite/test-testsuite.c
++kmod-28/testsuite/test-util.c
++kmod-28/testsuite/COPYING
++kmod-28/testsuite/testsuite.h
++kmod-28/testsuite/test-new-module.c
++kmod-28/testsuite/test-modprobe.c
++kmod-28/testsuite/testsuite.c
++kmod-28/testsuite/uname.c
++kmod-28/testsuite/module-playground/
++kmod-28/testsuite/module-playground/mod-loop.h
++kmod-28/testsuite/module-playground/Makefile
++kmod-28/testsuite/module-playground/mod-foo-a.c
++kmod-28/testsuite/module-playground/mod-simple-sparc64.ko
++kmod-28/testsuite/module-playground/mod-foo-b.c
++kmod-28/testsuite/module-playground/mod-simple.c
++kmod-28/testsuite/module-playground/mod-loop-b.c
++kmod-28/testsuite/module-playground/mod-simple-i386.ko
++kmod-28/testsuite/module-playground/dummy.sha256
++kmod-28/testsuite/module-playground/mod-fake-hpsa.c
++kmod-28/testsuite/module-playground/mod-loop-f.c
++kmod-28/testsuite/module-playground/mod-loop-a.c
++kmod-28/testsuite/module-playground/dummy.pkcs7
++kmod-28/testsuite/module-playground/mod-loop-g.c
++kmod-28/testsuite/module-playground/mod-simple-x86_64.ko
++kmod-28/testsuite/module-playground/mod-loop-i.c
++kmod-28/testsuite/module-playground/mod-loop-d.c
++kmod-28/testsuite/module-playground/mod-loop-j.c
++kmod-28/testsuite/module-playground/README
++kmod-28/testsuite/module-playground/mod-foo.c
++kmod-28/testsuite/module-playground/mod-foo-c.c
++kmod-28/testsuite/module-playground/mod-loop-h.c
++kmod-28/testsuite/module-playground/mod-loop-e.c
++kmod-28/testsuite/module-playground/mod-loop-k.c
++kmod-28/testsuite/module-playground/mod-fake-scsi-mod.c
++kmod-28/testsuite/module-playground/mod-loop-c.c
++kmod-28/testsuite/module-playground/mod-fake-cciss.c
++kmod-28/testsuite/module-playground/dummy.sha1
++kmod-28/testsuite/module-playground/Makefile.arch
++kmod-28/testsuite/module-playground/cache/
++kmod-28/testsuite/module-playground/cache/mod-loop-g.ko
++kmod-28/testsuite/module-playground/cache/mod-loop-b.ko
++kmod-28/testsuite/module-playground/cache/mod-loop-e.ko
++kmod-28/testsuite/module-playground/cache/mod-loop-i.ko
++kmod-28/testsuite/module-playground/cache/mod-fake-scsi-mod.ko
++kmod-28/testsuite/module-playground/cache/mod-fake-cciss.ko
++kmod-28/testsuite/module-playground/cache/mod-loop-h.ko
++kmod-28/testsuite/module-playground/cache/mod-foo-c.ko
++kmod-28/testsuite/module-playground/cache/mod-simple.ko
++kmod-28/testsuite/module-playground/cache/mod-loop-d.ko
++kmod-28/testsuite/module-playground/cache/mod-loop-f.ko
++kmod-28/testsuite/module-playground/cache/mod-foo.ko
++kmod-28/testsuite/module-playground/cache/mod-fake-hpsa.ko
++kmod-28/testsuite/module-playground/cache/mod-loop-a.ko
++kmod-28/testsuite/module-playground/cache/mod-loop-j.ko
++kmod-28/testsuite/module-playground/cache/mod-loop-c.ko
++kmod-28/testsuite/module-playground/cache/mod-loop-k.ko
++kmod-28/testsuite/module-playground/cache/mod-foo-a.ko
++kmod-28/testsuite/module-playground/cache/mod-foo-b.ko
++kmod-28/testsuite/test-loaded.c
++kmod-28/testsuite/test-scratchbuf.c
++kmod-28/testsuite/path.c
++kmod-28/testsuite/test-blacklist.c
++kmod-28/testsuite/test-init.c
++kmod-28/testsuite/rootfs-pristine/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline/correct.txt
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline/lib/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline/lib/modules/4.4.4/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline/lib/modules/4.4.4/modules.devname
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline/lib/modules/4.4.4/modules.alias
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline/lib/modules/4.4.4/modules.symbols.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline/lib/modules/4.4.4/modules.dep.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline/lib/modules/4.4.4/modules.softdep
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline/lib/modules/4.4.4/modules.symbols
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline/lib/modules/4.4.4/modules.builtin.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline/lib/modules/4.4.4/modules.alias.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline/lib/modules/4.4.4/modules.dep
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline/proc/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline/proc/modules
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline/proc/cmdline
++kmod-28/testsuite/rootfs-pristine/test-modprobe/install-cmd-loop/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/install-cmd-loop/lib/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/install-cmd-loop/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/install-cmd-loop/lib/modules/4.4.4/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/install-cmd-loop/lib/modules/4.4.4/modules.devname
++kmod-28/testsuite/rootfs-pristine/test-modprobe/install-cmd-loop/lib/modules/4.4.4/modules.alias
++kmod-28/testsuite/rootfs-pristine/test-modprobe/install-cmd-loop/lib/modules/4.4.4/modules.symbols.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/install-cmd-loop/lib/modules/4.4.4/modules.dep.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/install-cmd-loop/lib/modules/4.4.4/modules.softdep
++kmod-28/testsuite/rootfs-pristine/test-modprobe/install-cmd-loop/lib/modules/4.4.4/modules.symbols
++kmod-28/testsuite/rootfs-pristine/test-modprobe/install-cmd-loop/lib/modules/4.4.4/modules.builtin.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/install-cmd-loop/lib/modules/4.4.4/modules.alias.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/install-cmd-loop/lib/modules/4.4.4/modules.dep
++kmod-28/testsuite/rootfs-pristine/test-modprobe/install-cmd-loop/etc/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/install-cmd-loop/etc/modprobe.d/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/install-cmd-loop/etc/modprobe.d/dumb-instal-loop.conf
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline2/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline2/correct.txt
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline2/proc/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline2/proc/cmdline
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-exports/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-exports/correct.txt
++kmod-28/testsuite/rootfs-pristine/test-modprobe/external/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/external/lib/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/external/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/external/lib/modules/4.4.4/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/external/lib/modules/4.4.4/modules.devname
++kmod-28/testsuite/rootfs-pristine/test-modprobe/external/lib/modules/4.4.4/modules.alias
++kmod-28/testsuite/rootfs-pristine/test-modprobe/external/lib/modules/4.4.4/modules.symbols.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/external/lib/modules/4.4.4/modules.dep.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/external/lib/modules/4.4.4/modules.softdep
++kmod-28/testsuite/rootfs-pristine/test-modprobe/external/lib/modules/4.4.4/modules.symbols
++kmod-28/testsuite/rootfs-pristine/test-modprobe/external/lib/modules/4.4.4/modules.builtin.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/external/lib/modules/4.4.4/modules.alias.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/external/lib/modules/4.4.4/modules.dep
++kmod-28/testsuite/rootfs-pristine/test-modprobe/external/proc/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/external/proc/modules
++kmod-28/testsuite/rootfs-pristine/test-modprobe/softdep-loop/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/softdep-loop/lib/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/softdep-loop/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/softdep-loop/lib/modules/4.4.4/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/softdep-loop/lib/modules/4.4.4/modules.devname
++kmod-28/testsuite/rootfs-pristine/test-modprobe/softdep-loop/lib/modules/4.4.4/modules.alias
++kmod-28/testsuite/rootfs-pristine/test-modprobe/softdep-loop/lib/modules/4.4.4/modules.symbols.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/softdep-loop/lib/modules/4.4.4/modules.dep.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/softdep-loop/lib/modules/4.4.4/modules.softdep
++kmod-28/testsuite/rootfs-pristine/test-modprobe/softdep-loop/lib/modules/4.4.4/modules.symbols
++kmod-28/testsuite/rootfs-pristine/test-modprobe/softdep-loop/lib/modules/4.4.4/modules.builtin.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/softdep-loop/lib/modules/4.4.4/modules.alias.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/softdep-loop/lib/modules/4.4.4/modules.dep
++kmod-28/testsuite/rootfs-pristine/test-modprobe/softdep-loop/etc/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/softdep-loop/etc/modprobe.d/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/softdep-loop/etc/modprobe.d/dumb-softdep.conf
++kmod-28/testsuite/rootfs-pristine/test-modprobe/builtin/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/builtin/correct.txt
++kmod-28/testsuite/rootfs-pristine/test-modprobe/builtin/lib/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/builtin/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/builtin/lib/modules/4.4.4/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/builtin/lib/modules/4.4.4/modules.devname
++kmod-28/testsuite/rootfs-pristine/test-modprobe/builtin/lib/modules/4.4.4/modules.alias
++kmod-28/testsuite/rootfs-pristine/test-modprobe/builtin/lib/modules/4.4.4/modules.symbols.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/builtin/lib/modules/4.4.4/modules.dep.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/builtin/lib/modules/4.4.4/modules.softdep
++kmod-28/testsuite/rootfs-pristine/test-modprobe/builtin/lib/modules/4.4.4/modules.builtin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/builtin/lib/modules/4.4.4/modules.symbols
++kmod-28/testsuite/rootfs-pristine/test-modprobe/builtin/lib/modules/4.4.4/modules.builtin.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/builtin/lib/modules/4.4.4/modules.alias.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/builtin/lib/modules/4.4.4/modules.dep
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline3/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline3/correct.txt
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline3/proc/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline3/proc/cmdline
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel-force/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel-force/lib/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel-force/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel-force/lib/modules/3.3.3/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel-force/lib/modules/3.3.3/modules.devname
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel-force/lib/modules/3.3.3/modules.alias
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel-force/lib/modules/3.3.3/modules.symbols.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel-force/lib/modules/3.3.3/modules.dep.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel-force/lib/modules/3.3.3/modules.softdep
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel-force/lib/modules/3.3.3/modules.symbols
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel-force/lib/modules/3.3.3/modules.builtin.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel-force/lib/modules/3.3.3/modules.alias.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel-force/lib/modules/3.3.3/modules.dep
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel-force/proc/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel-force/proc/modules
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline6/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline6/correct.txt
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline6/proc/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline6/proc/cmdline
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel/lib/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel/lib/modules/3.3.3/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel/lib/modules/3.3.3/modules.devname
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel/lib/modules/3.3.3/modules.alias
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel/lib/modules/3.3.3/modules.symbols.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel/lib/modules/3.3.3/modules.dep.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel/lib/modules/3.3.3/modules.softdep
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel/lib/modules/3.3.3/modules.symbols
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel/lib/modules/3.3.3/modules.builtin.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel/lib/modules/3.3.3/modules.alias.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel/lib/modules/3.3.3/modules.dep
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel/proc/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/oldkernel/proc/modules
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-depends/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-depends/correct.txt
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-depends/lib/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-depends/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-depends/lib/modules/4.4.4/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-depends/lib/modules/4.4.4/modules.devname
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-depends/lib/modules/4.4.4/modules.alias
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-depends/lib/modules/4.4.4/modules.symbols.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-depends/lib/modules/4.4.4/modules.dep.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-depends/lib/modules/4.4.4/modules.softdep
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-depends/lib/modules/4.4.4/modules.symbols
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-depends/lib/modules/4.4.4/modules.builtin.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-depends/lib/modules/4.4.4/modules.alias.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-depends/lib/modules/4.4.4/modules.dep
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-depends/sys/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-depends/sys/module/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-depends/sys/module/mod_loop_b/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-depends/sys/module/mod_loop_b/initstate
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-depends/sys/module/mod_loop_a/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-depends/sys/module/mod_loop_a/initstate
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-depends/proc/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-depends/proc/modules
++kmod-28/testsuite/rootfs-pristine/test-modprobe/show-depends/correct-mod-simple.txt
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline4/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline4/correct.txt
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline4/proc/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline4/proc/cmdline
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline5/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline5/correct.txt
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline5/proc/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/module-param-kcmdline5/proc/cmdline
++kmod-28/testsuite/rootfs-pristine/test-modprobe/alias-to-none/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/alias-to-none/correct.txt
++kmod-28/testsuite/rootfs-pristine/test-modprobe/alias-to-none/lib/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/alias-to-none/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/alias-to-none/lib/modules/4.4.4/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/alias-to-none/lib/modules/4.4.4/modules.devname
++kmod-28/testsuite/rootfs-pristine/test-modprobe/alias-to-none/lib/modules/4.4.4/modules.alias
++kmod-28/testsuite/rootfs-pristine/test-modprobe/alias-to-none/lib/modules/4.4.4/modules.symbols.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/alias-to-none/lib/modules/4.4.4/modules.dep.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/alias-to-none/lib/modules/4.4.4/modules.softdep
++kmod-28/testsuite/rootfs-pristine/test-modprobe/alias-to-none/lib/modules/4.4.4/modules.symbols
++kmod-28/testsuite/rootfs-pristine/test-modprobe/alias-to-none/lib/modules/4.4.4/modules.builtin.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/alias-to-none/lib/modules/4.4.4/modules.alias.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/alias-to-none/lib/modules/4.4.4/modules.dep
++kmod-28/testsuite/rootfs-pristine/test-modprobe/alias-to-none/proc/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/alias-to-none/proc/modules
++kmod-28/testsuite/rootfs-pristine/test-modprobe/alias-to-none/etc/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/alias-to-none/etc/modprobe.d/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/alias-to-none/etc/modprobe.d/bogus.conf
++kmod-28/testsuite/rootfs-pristine/test-modprobe/force/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/force/lib/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/force/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/force/lib/modules/4.4.4/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/force/lib/modules/4.4.4/modules.devname
++kmod-28/testsuite/rootfs-pristine/test-modprobe/force/lib/modules/4.4.4/modules.alias
++kmod-28/testsuite/rootfs-pristine/test-modprobe/force/lib/modules/4.4.4/modules.symbols.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/force/lib/modules/4.4.4/modules.dep.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/force/lib/modules/4.4.4/modules.softdep
++kmod-28/testsuite/rootfs-pristine/test-modprobe/force/lib/modules/4.4.4/modules.symbols
++kmod-28/testsuite/rootfs-pristine/test-modprobe/force/lib/modules/4.4.4/modules.builtin.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/force/lib/modules/4.4.4/modules.alias.bin
++kmod-28/testsuite/rootfs-pristine/test-modprobe/force/lib/modules/4.4.4/modules.dep
++kmod-28/testsuite/rootfs-pristine/test-modprobe/force/proc/
++kmod-28/testsuite/rootfs-pristine/test-modprobe/force/proc/modules
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources-empty-builtin-aliases-bin/
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources-empty-builtin-aliases-bin/lib/
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources-empty-builtin-aliases-bin/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources-empty-builtin-aliases-bin/lib/modules/5.6.0/
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources-empty-builtin-aliases-bin/lib/modules/5.6.0/modules.devname
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources-empty-builtin-aliases-bin/lib/modules/5.6.0/modules.alias
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources-empty-builtin-aliases-bin/lib/modules/5.6.0/modules.symbols.bin
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources-empty-builtin-aliases-bin/lib/modules/5.6.0/modules.dep.bin
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources-empty-builtin-aliases-bin/lib/modules/5.6.0/modules.softdep
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources-empty-builtin-aliases-bin/lib/modules/5.6.0/modules.builtin
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources-empty-builtin-aliases-bin/lib/modules/5.6.0/modules.symbols
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources-empty-builtin-aliases-bin/lib/modules/5.6.0/modules.builtin.alias.bin
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources-empty-builtin-aliases-bin/lib/modules/5.6.0/modules.builtin.bin
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources-empty-builtin-aliases-bin/lib/modules/5.6.0/modules.alias.bin
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources-empty-builtin-aliases-bin/lib/modules/5.6.0/modules.dep
++kmod-28/testsuite/rootfs-pristine/test-tools/
++kmod-28/testsuite/rootfs-pristine/test-tools/remove/
++kmod-28/testsuite/rootfs-pristine/test-tools/remove/lib/
++kmod-28/testsuite/rootfs-pristine/test-tools/remove/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-tools/remove/lib/modules/4.4.4/
++kmod-28/testsuite/rootfs-pristine/test-tools/remove/lib/modules/4.4.4/modules.devname
++kmod-28/testsuite/rootfs-pristine/test-tools/remove/lib/modules/4.4.4/modules.order
++kmod-28/testsuite/rootfs-pristine/test-tools/remove/lib/modules/4.4.4/modules.alias
++kmod-28/testsuite/rootfs-pristine/test-tools/remove/lib/modules/4.4.4/modules.symbols.bin
++kmod-28/testsuite/rootfs-pristine/test-tools/remove/lib/modules/4.4.4/modules.dep.bin
++kmod-28/testsuite/rootfs-pristine/test-tools/remove/lib/modules/4.4.4/modules.softdep
++kmod-28/testsuite/rootfs-pristine/test-tools/remove/lib/modules/4.4.4/modules.builtin
++kmod-28/testsuite/rootfs-pristine/test-tools/remove/lib/modules/4.4.4/modules.symbols
++kmod-28/testsuite/rootfs-pristine/test-tools/remove/lib/modules/4.4.4/modules.builtin.bin
++kmod-28/testsuite/rootfs-pristine/test-tools/remove/lib/modules/4.4.4/modules.alias.bin
++kmod-28/testsuite/rootfs-pristine/test-tools/remove/lib/modules/4.4.4/modules.dep
++kmod-28/testsuite/rootfs-pristine/test-tools/remove/sys/
++kmod-28/testsuite/rootfs-pristine/test-tools/remove/sys/module/
++kmod-28/testsuite/rootfs-pristine/test-tools/remove/sys/module/mod_simple/
++kmod-28/testsuite/rootfs-pristine/test-tools/remove/sys/module/mod_simple/refcnt
++kmod-28/testsuite/rootfs-pristine/test-tools/remove/sys/module/mod_simple/initstate
++kmod-28/testsuite/rootfs-pristine/test-tools/remove/sys/module/mod_simple/holders/
++kmod-28/testsuite/rootfs-pristine/test-tools/remove/sys/module/mod_simple/holders/.gitignore
++kmod-28/testsuite/rootfs-pristine/test-tools/insert/
++kmod-28/testsuite/rootfs-pristine/test-tools/insert/lib/
++kmod-28/testsuite/rootfs-pristine/test-tools/insert/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-tools/insert/lib/modules/4.4.4/
++kmod-28/testsuite/rootfs-pristine/test-tools/insert/lib/modules/4.4.4/modules.devname
++kmod-28/testsuite/rootfs-pristine/test-tools/insert/lib/modules/4.4.4/modules.order
++kmod-28/testsuite/rootfs-pristine/test-tools/insert/lib/modules/4.4.4/modules.alias
++kmod-28/testsuite/rootfs-pristine/test-tools/insert/lib/modules/4.4.4/modules.symbols.bin
++kmod-28/testsuite/rootfs-pristine/test-tools/insert/lib/modules/4.4.4/modules.dep.bin
++kmod-28/testsuite/rootfs-pristine/test-tools/insert/lib/modules/4.4.4/modules.softdep
++kmod-28/testsuite/rootfs-pristine/test-tools/insert/lib/modules/4.4.4/modules.builtin
++kmod-28/testsuite/rootfs-pristine/test-tools/insert/lib/modules/4.4.4/modules.symbols
++kmod-28/testsuite/rootfs-pristine/test-tools/insert/lib/modules/4.4.4/modules.builtin.bin
++kmod-28/testsuite/rootfs-pristine/test-tools/insert/lib/modules/4.4.4/modules.alias.bin
++kmod-28/testsuite/rootfs-pristine/test-tools/insert/lib/modules/4.4.4/modules.dep
++kmod-28/testsuite/rootfs-pristine/test-dependencies/
++kmod-28/testsuite/rootfs-pristine/test-dependencies/lib/
++kmod-28/testsuite/rootfs-pristine/test-dependencies/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-dependencies/lib/modules/4.0.20-kmod/
++kmod-28/testsuite/rootfs-pristine/test-dependencies/lib/modules/4.0.20-kmod/modules.devname
++kmod-28/testsuite/rootfs-pristine/test-dependencies/lib/modules/4.0.20-kmod/modules.order
++kmod-28/testsuite/rootfs-pristine/test-dependencies/lib/modules/4.0.20-kmod/modules.alias
++kmod-28/testsuite/rootfs-pristine/test-dependencies/lib/modules/4.0.20-kmod/modules.symbols.bin
++kmod-28/testsuite/rootfs-pristine/test-dependencies/lib/modules/4.0.20-kmod/modules.dep.bin
++kmod-28/testsuite/rootfs-pristine/test-dependencies/lib/modules/4.0.20-kmod/modules.softdep
++kmod-28/testsuite/rootfs-pristine/test-dependencies/lib/modules/4.0.20-kmod/modules.builtin
++kmod-28/testsuite/rootfs-pristine/test-dependencies/lib/modules/4.0.20-kmod/modules.symbols
++kmod-28/testsuite/rootfs-pristine/test-dependencies/lib/modules/4.0.20-kmod/modules.builtin.bin
++kmod-28/testsuite/rootfs-pristine/test-dependencies/lib/modules/4.0.20-kmod/modules.alias.bin
++kmod-28/testsuite/rootfs-pristine/test-dependencies/lib/modules/4.0.20-kmod/modules.dep
++kmod-28/testsuite/rootfs-pristine/test-blacklist/
++kmod-28/testsuite/rootfs-pristine/test-blacklist/etc/
++kmod-28/testsuite/rootfs-pristine/test-blacklist/etc/modprobe.d/
++kmod-28/testsuite/rootfs-pristine/test-blacklist/etc/modprobe.d/modprobe.conf
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources/
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources/lib/
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources/lib/modules/5.6.0/
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources/lib/modules/5.6.0/modules.devname
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources/lib/modules/5.6.0/modules.alias
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources/lib/modules/5.6.0/modules.symbols.bin
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources/lib/modules/5.6.0/modules.dep.bin
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources/lib/modules/5.6.0/modules.softdep
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources/lib/modules/5.6.0/modules.builtin
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources/lib/modules/5.6.0/modules.symbols
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources/lib/modules/5.6.0/modules.builtin.bin
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources/lib/modules/5.6.0/modules.alias.bin
++kmod-28/testsuite/rootfs-pristine/test-init-load-resources/lib/modules/5.6.0/modules.dep
++kmod-28/testsuite/rootfs-pristine/test-rootfs/
++kmod-28/testsuite/rootfs-pristine/test-rootfs/lib/
++kmod-28/testsuite/rootfs-pristine/test-rootfs/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-rootfs/lib/modules/a
++kmod-28/testsuite/rootfs-pristine/test-rootfs/testdir/
++kmod-28/testsuite/rootfs-pristine/test-rootfs/testdir/.gitignore
++kmod-28/testsuite/rootfs-pristine/test-depmod/
++kmod-28/testsuite/rootfs-pristine/test-depmod/detect-loop/
++kmod-28/testsuite/rootfs-pristine/test-depmod/detect-loop/correct.txt
++kmod-28/testsuite/rootfs-pristine/test-depmod/detect-loop/lib/
++kmod-28/testsuite/rootfs-pristine/test-depmod/detect-loop/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-depmod/detect-loop/lib/modules/4.4.4/
++kmod-28/testsuite/rootfs-pristine/test-depmod/detect-loop/lib/modules/4.4.4/modules.order
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-external-first/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-external-first/lib/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-external-first/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-external-first/lib/modules/4.4.4/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-external-first/lib/modules/4.4.4/correct-modules.dep
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-external-first/etc/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-external-first/etc/depmod.d/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-external-first/etc/depmod.d/search.conf
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-external-first/etc/depmod.d/external.conf
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-simple/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-simple/lib/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-simple/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-simple/lib/modules/4.4.4/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-simple/lib/modules/4.4.4/correct-modules.dep
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-simple/etc/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-simple/etc/depmod.d/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-simple/etc/depmod.d/search.conf
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-same-prefix/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-same-prefix/lib/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-same-prefix/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-same-prefix/lib/modules/4.4.4/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-same-prefix/lib/modules/4.4.4/correct-modules.dep
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-same-prefix/etc/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-same-prefix/etc/depmod.d/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-same-prefix/etc/depmod.d/search.conf
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-external-last/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-external-last/lib/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-external-last/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-external-last/lib/modules/4.4.4/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-external-last/lib/modules/4.4.4/correct-modules.dep
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-external-last/etc/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-external-last/etc/depmod.d/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-external-last/etc/depmod.d/search.conf
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-external-last/etc/depmod.d/external.conf
++kmod-28/testsuite/rootfs-pristine/test-depmod/modules-order-compressed/
++kmod-28/testsuite/rootfs-pristine/test-depmod/modules-order-compressed/lib/
++kmod-28/testsuite/rootfs-pristine/test-depmod/modules-order-compressed/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-depmod/modules-order-compressed/lib/modules/4.4.4/
++kmod-28/testsuite/rootfs-pristine/test-depmod/modules-order-compressed/lib/modules/4.4.4/modules.order
++kmod-28/testsuite/rootfs-pristine/test-depmod/modules-order-compressed/lib/modules/4.4.4/modules.builtin
++kmod-28/testsuite/rootfs-pristine/test-depmod/modules-order-compressed/lib/modules/4.4.4/correct-modules.alias
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-override/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-override/lib/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-override/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-override/lib/modules/4.4.4/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-override/lib/modules/4.4.4/correct-modules.dep
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-override/etc/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-override/etc/depmod.d/
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-override/etc/depmod.d/override.conf
++kmod-28/testsuite/rootfs-pristine/test-depmod/search-order-override/etc/depmod.d/search.conf
++kmod-28/testsuite/rootfs-pristine/test-modinfo/
++kmod-28/testsuite/rootfs-pristine/test-modinfo/correct-signer.txt
++kmod-28/testsuite/rootfs-pristine/test-modinfo/correct.txt
++kmod-28/testsuite/rootfs-pristine/test-modinfo/external/
++kmod-28/testsuite/rootfs-pristine/test-modinfo/external/lib/
++kmod-28/testsuite/rootfs-pristine/test-modinfo/external/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-modinfo/external/lib/modules/4.4.4/
++kmod-28/testsuite/rootfs-pristine/test-modinfo/external/lib/modules/4.4.4/modules.devname
++kmod-28/testsuite/rootfs-pristine/test-modinfo/external/lib/modules/4.4.4/modules.alias
++kmod-28/testsuite/rootfs-pristine/test-modinfo/external/lib/modules/4.4.4/modules.symbols.bin
++kmod-28/testsuite/rootfs-pristine/test-modinfo/external/lib/modules/4.4.4/modules.dep.bin
++kmod-28/testsuite/rootfs-pristine/test-modinfo/external/lib/modules/4.4.4/modules.softdep
++kmod-28/testsuite/rootfs-pristine/test-modinfo/external/lib/modules/4.4.4/modules.symbols
++kmod-28/testsuite/rootfs-pristine/test-modinfo/external/lib/modules/4.4.4/modules.builtin.bin
++kmod-28/testsuite/rootfs-pristine/test-modinfo/external/lib/modules/4.4.4/modules.alias.bin
++kmod-28/testsuite/rootfs-pristine/test-modinfo/external/lib/modules/4.4.4/modules.dep
++kmod-28/testsuite/rootfs-pristine/test-modinfo/correct-sig_key.txt
++kmod-28/testsuite/rootfs-pristine/test-modinfo/correct-sig_hashalgo.txt
++kmod-28/testsuite/rootfs-pristine/test-modinfo/correct-sig_key-openssl.txt
++kmod-28/testsuite/rootfs-pristine/test-modinfo/correct-depends.txt
++kmod-28/testsuite/rootfs-pristine/test-modinfo/correct-signer-openssl.txt
++kmod-28/testsuite/rootfs-pristine/test-modinfo/correct-sig_hashalgo-openssl.txt
++kmod-28/testsuite/rootfs-pristine/test-modinfo/correct-parm.txt
++kmod-28/testsuite/rootfs-pristine/test-modinfo/correct-description.txt
++kmod-28/testsuite/rootfs-pristine/test-modinfo/correct-license.txt
++kmod-28/testsuite/rootfs-pristine/test-modinfo/correct-author.txt
++kmod-28/testsuite/rootfs-pristine/test-modinfo/correct-external.txt
++kmod-28/testsuite/rootfs-pristine/test-modinfo/correct-filename.txt
++kmod-28/testsuite/rootfs-pristine/test-util2/
++kmod-28/testsuite/rootfs-pristine/test-util2/write-str-safe-correct.txt
++kmod-28/testsuite/rootfs-pristine/test-loaded/
++kmod-28/testsuite/rootfs-pristine/test-loaded/correct.txt
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/refcnt
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/notes/
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/notes/.note.gnu.build-id
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/parameters/
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/parameters/ignore_sniffer
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/parameters/ignore_dga
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/parameters/reset
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/parameters/disable_scofix
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/parameters/ignore_csr
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/parameters/force_scofix
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/srcversion
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/sections/
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/sections/.bss
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/sections/__param
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/sections/.exit.text
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/sections/.rodata
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/sections/.gnu.linkonce.this_module
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/sections/.init.text
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/sections/.symtab
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/sections/.rodata.str1.8
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/sections/.text
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/sections/.smp_locks
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/sections/.note.gnu.build-id
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/sections/.strtab
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/sections/.data
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/sections/.rodata.str1.1
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/version
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/drivers/
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/initstate
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/holders/
++kmod-28/testsuite/rootfs-pristine/test-loaded/sys/module/btusb/holders/.gitignore
++kmod-28/testsuite/rootfs-pristine/test-loaded/proc/
++kmod-28/testsuite/rootfs-pristine/test-loaded/proc/modules
++kmod-28/testsuite/rootfs-pristine/test-new-module/
++kmod-28/testsuite/rootfs-pristine/test-new-module/from_name/
++kmod-28/testsuite/rootfs-pristine/test-new-module/from_name/correct.txt
++kmod-28/testsuite/rootfs-pristine/test-new-module/from_alias/
++kmod-28/testsuite/rootfs-pristine/test-new-module/from_alias/correct.txt
++kmod-28/testsuite/rootfs-pristine/test-new-module/from_alias/etc/
++kmod-28/testsuite/rootfs-pristine/test-new-module/from_alias/etc/modprobe.d/
++kmod-28/testsuite/rootfs-pristine/test-new-module/from_alias/etc/modprobe.d/modprobe.conf
++kmod-28/testsuite/rootfs-pristine/test-util/
++kmod-28/testsuite/rootfs-pristine/test-util/freadline_wrapped-correct.txt
++kmod-28/testsuite/rootfs-pristine/test-util/alias-correct.txt
++kmod-28/testsuite/rootfs-pristine/test-util/freadline_wrapped-input.txt
++kmod-28/testsuite/rootfs-pristine/test-initstate/
++kmod-28/testsuite/rootfs-pristine/test-initstate/lib/
++kmod-28/testsuite/rootfs-pristine/test-initstate/lib/modules/
++kmod-28/testsuite/rootfs-pristine/test-initstate/lib/modules/4.4.4/
++kmod-28/testsuite/rootfs-pristine/test-initstate/lib/modules/4.4.4/modules.devname
++kmod-28/testsuite/rootfs-pristine/test-initstate/lib/modules/4.4.4/modules.alias
++kmod-28/testsuite/rootfs-pristine/test-initstate/lib/modules/4.4.4/modules.symbols.bin
++kmod-28/testsuite/rootfs-pristine/test-initstate/lib/modules/4.4.4/modules.dep.bin
++kmod-28/testsuite/rootfs-pristine/test-initstate/lib/modules/4.4.4/modules.softdep
++kmod-28/testsuite/rootfs-pristine/test-initstate/lib/modules/4.4.4/modules.builtin
++kmod-28/testsuite/rootfs-pristine/test-initstate/lib/modules/4.4.4/modules.symbols
++kmod-28/testsuite/rootfs-pristine/test-initstate/lib/modules/4.4.4/modules.builtin.bin
++kmod-28/testsuite/rootfs-pristine/test-initstate/lib/modules/4.4.4/modules.alias.bin
++kmod-28/testsuite/rootfs-pristine/test-initstate/lib/modules/4.4.4/modules.dep
++kmod-28/testsuite/test-strbuf.c
++kmod-28/testsuite/test-depmod.c
++kmod-28/testsuite/init_module.c
++kmod-28/testsuite/stripped-module.h
++kmod-28/testsuite/test-modinfo.c
++kmod-28/testsuite/test-array.c
++kmod-28/testsuite/populate-modules.sh
++kmod-28/testsuite/test-dependencies.c
++kmod-28/testsuite/delete_module.c
++kmod-28/testsuite/test-hash.c
++kmod-28/m4/
++kmod-28/m4/features.m4
++kmod-28/m4/ltversion.m4
++kmod-28/m4/ltsugar.m4
++kmod-28/m4/lt~obsolete.m4
++kmod-28/m4/attributes.m4
++kmod-28/m4/libtool.m4
++kmod-28/m4/ltoptions.m4
++kmod-28/configure.ac
++kmod-28/config.h.in
++kmod-28/libkmod/
++kmod-28/libkmod/libkmod.sym
++kmod-28/libkmod/libkmod-index.c
++kmod-28/libkmod/COPYING
++kmod-28/libkmod/libkmod-index.h
++kmod-28/libkmod/libkmod.h
++kmod-28/libkmod/libkmod-list.c
++kmod-28/libkmod/libkmod-elf.c
++kmod-28/libkmod/python/
++kmod-28/libkmod/python/kmod/
++kmod-28/libkmod/python/kmod/version.py
++kmod-28/libkmod/python/kmod/_util.c
++kmod-28/libkmod/python/kmod/__init__.py
++kmod-28/libkmod/python/kmod/error.py
++kmod-28/libkmod/python/kmod/module.c
++kmod-28/libkmod/python/kmod/list.c
++kmod-28/libkmod/python/kmod/kmod.c
++kmod-28/libkmod/libkmod.c
++kmod-28/libkmod/README
++kmod-28/libkmod/libkmod-internal.h
++kmod-28/libkmod/libkmod-file.c
++kmod-28/libkmod/libkmod-signature.c
++kmod-28/libkmod/libkmod-builtin.c
++kmod-28/libkmod/libkmod-config.c
++kmod-28/libkmod/libkmod-module.c
++kmod-28/libkmod/docs/
++kmod-28/libkmod/docs/version.xml.in
++kmod-28/libkmod/docs/gtk-doc.make
++kmod-28/libkmod/docs/Makefile.in
++kmod-28/libkmod/docs/Makefile.am
++kmod-28/libkmod/docs/libkmod-docs.xml
++kmod-28/libkmod/docs/libkmod-sections.txt
++kmod-28/libkmod/libkmod.pc.in
++kmod-28/tools/
++kmod-28/tools/rmmod.c
++kmod-28/tools/log.h
++kmod-28/tools/COPYING
++kmod-28/tools/modinfo.c
++kmod-28/tools/insert.c
++kmod-28/tools/log.c
++kmod-28/tools/remove.c
++kmod-28/tools/lsmod.c
++kmod-28/tools/modprobe.c
++kmod-28/tools/static-nodes.c
++kmod-28/tools/depmod.c
++kmod-28/tools/kmod.h
++kmod-28/tools/insmod.c
++kmod-28/tools/kmod.c
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++bin/lsmod	/sbin/lsmod
++lib/libkmod.so.2	libkmod.so.2.3.6
++sbin/depmod	kmod
++sbin/insmod	kmod
++sbin/lsmod	kmod
++sbin/modinfo	kmod
++sbin/modprobe	kmod
++sbin/rmmod	kmod
++usr/lib/libkmod.so	../../lib/libkmod.so.2
++
++Making symbolic link creation script:
++( cd bin ; rm -rf lsmod )
++( cd bin ; ln -sf /sbin/lsmod lsmod )
++( cd lib ; rm -rf libkmod.so.2 )
++( cd lib ; ln -sf libkmod.so.2.3.6 libkmod.so.2 )
++( cd sbin ; rm -rf depmod )
++( cd sbin ; ln -sf kmod depmod )
++( cd sbin ; rm -rf insmod )
++( cd sbin ; ln -sf kmod insmod )
++( cd sbin ; rm -rf lsmod )
++( cd sbin ; ln -sf kmod lsmod )
++( cd sbin ; rm -rf modinfo )
++( cd sbin ; ln -sf kmod modinfo )
++( cd sbin ; rm -rf modprobe )
++( cd sbin ; ln -sf kmod modprobe )
++( cd sbin ; rm -rf rmmod )
++( cd sbin ; ln -sf kmod rmmod )
++( cd usr/lib ; rm -rf libkmod.so )
++( cd usr/lib ; ln -sf ../../lib/libkmod.so.2 libkmod.so )
++
++It is recommended that you make these lines your new installation script.
++
++Would you like to make this stuff the install script for this package
++and remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './lib/libkmod.so.2'
++removed './bin/lsmod'
++removed './usr/lib/libkmod.so'
++removed './sbin/modprobe'
++removed './sbin/insmod'
++removed './sbin/rmmod'
++removed './sbin/depmod'
++removed './sbin/lsmod'
++removed './sbin/modinfo'
++
++Creating your new ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/kmod-28-x86_64-1.txz
++
++./
++bin/
++etc/
++etc/modprobe.d/
++install/
++install/doinst.sh
++install/slack-desc
++lib/
++lib/libkmod.so.2.3.6
++sbin/
++sbin/kmod
++usr/
++usr/doc/
++usr/doc/kmod-28/
++usr/doc/kmod-28/COPYING
++usr/doc/kmod-28/NEWS
++usr/doc/kmod-28/README
++usr/doc/kmod-28/TODO
++usr/include/
++usr/include/libkmod.h
++usr/lib/
++usr/lib/pkgconfig/
++usr/lib/pkgconfig/libkmod.pc
++usr/man/
++usr/man/man5/
++usr/man/man5/depmod.d.5.gz
++usr/man/man5/modprobe.d.5.gz
++usr/man/man5/modules.dep.5.gz
++usr/man/man5/modules.dep.bin.5.gz
++usr/man/man8/
++usr/man/man8/depmod.8.gz
++usr/man/man8/insmod.8.gz
++usr/man/man8/kmod.8.gz
++usr/man/man8/lsmod.8.gz
++usr/man/man8/modinfo.8.gz
++usr/man/man8/modprobe.8.gz
++usr/man/man8/rmmod.8.gz
++usr/share/
++usr/share/bash-completion/
++usr/share/bash-completion/completions/
++usr/share/bash-completion/completions/kmod
++
++Slackware package /tmp/kmod-28-x86_64-1.txz created.
++

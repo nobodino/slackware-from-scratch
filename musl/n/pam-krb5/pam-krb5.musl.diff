@@ -1,0 +1,727 @@
+diff -ruBN /tmp/pam-krb5/pam-krb5.SlackBuild /source/n/pam-krb5/pam-krb5.SlackBuild
+--- /tmp/pam-krb5/pam-krb5.SlackBuild	2021-01-28 19:18:03.000000000 +0000
++++ /source/n/pam-krb5/pam-krb5.SlackBuild	2021-01-29 23:34:02.000000000 +0000
+@@ -58,7 +58,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "armv7hl" ]; then
+   SLKCFLAGS="-O3 -march=armv7-a -mfpu=vfpv3-d16"
+   LIBDIRSUFFIX=""
+@@ -95,7 +95,7 @@
+   --localstatedir=/var \
+   --docdir=/usr/doc/$PKGNAM-$VERSION \
+   --mandir=/usr/man \
+-  --build=$ARCH-slackware-linux || exit 1
++  --build=$ARCH-slackware-linux-musl || exit 1
+ make $NUMJOBS || make || exit 1
+ make install DESTDIR=$PKG || exit 1
+ 
+diff -ruBN /tmp/pam-krb5/pam-krb5.SlackBuild.log /source/n/pam-krb5/pam-krb5.SlackBuild.log
+--- /tmp/pam-krb5/pam-krb5.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/n/pam-krb5/pam-krb5.SlackBuild.log	2021-01-29 23:35:05.000000000 +0000
+@@ -0,0 +1,702 @@
++pam-krb5-4.9/
++pam-krb5-4.9/build-aux/
++pam-krb5-4.9/build-aux/ar-lib
++pam-krb5-4.9/build-aux/compile
++pam-krb5-4.9/build-aux/config.guess
++pam-krb5-4.9/build-aux/config.sub
++pam-krb5-4.9/build-aux/depcomp
++pam-krb5-4.9/build-aux/install-sh
++pam-krb5-4.9/build-aux/ltmain.sh
++pam-krb5-4.9/build-aux/missing
++pam-krb5-4.9/ci/
++pam-krb5-4.9/ci/files/
++pam-krb5-4.9/ci/files/heimdal/
++pam-krb5-4.9/ci/files/heimdal/heimdal-kdc
++pam-krb5-4.9/ci/files/heimdal/kadmind.acl
++pam-krb5-4.9/ci/files/heimdal/kdc.conf
++pam-krb5-4.9/ci/files/heimdal/krb5.conf
++pam-krb5-4.9/ci/files/heimdal/pki-mapping
++pam-krb5-4.9/ci/files/mit/
++pam-krb5-4.9/ci/files/mit/extensions.client
++pam-krb5-4.9/ci/files/mit/extensions.kdc
++pam-krb5-4.9/ci/files/mit/kadm5.acl
++pam-krb5-4.9/ci/files/mit/kdc.conf
++pam-krb5-4.9/ci/files/mit/krb5.conf
++pam-krb5-4.9/ci/README.md
++pam-krb5-4.9/ci/kdc-setup-heimdal
++pam-krb5-4.9/ci/kdc-setup-mit
++pam-krb5-4.9/ci/install
++pam-krb5-4.9/ci/test
++pam-krb5-4.9/docs/
++pam-krb5-4.9/docs/pam_krb5.5
++pam-krb5-4.9/docs/metadata/
++pam-krb5-4.9/docs/metadata/README
++pam-krb5-4.9/docs/metadata/blurb
++pam-krb5-4.9/docs/metadata/build/
++pam-krb5-4.9/docs/metadata/build/middle
++pam-krb5-4.9/docs/metadata/debian/
++pam-krb5-4.9/docs/metadata/debian/summary
++pam-krb5-4.9/docs/metadata/description
++pam-krb5-4.9/docs/metadata/metadata.json
++pam-krb5-4.9/docs/metadata/quote
++pam-krb5-4.9/docs/metadata/requirements
++pam-krb5-4.9/docs/metadata/sections/
++pam-krb5-4.9/docs/metadata/sections/configuring
++pam-krb5-4.9/docs/metadata/sections/debugging
++pam-krb5-4.9/docs/metadata/sections/history-and-acknowledgements
++pam-krb5-4.9/docs/metadata/sections/implementation-notes
++pam-krb5-4.9/docs/metadata/test/
++pam-krb5-4.9/docs/metadata/test/prefix
++pam-krb5-4.9/docs/metadata/test/suffix
++pam-krb5-4.9/docs/pam_krb5.pod
++pam-krb5-4.9/m4/
++pam-krb5-4.9/m4/cc-flags.m4
++pam-krb5-4.9/m4/clang.m4
++pam-krb5-4.9/m4/kadm5clnt.m4
++pam-krb5-4.9/m4/krb5-config.m4
++pam-krb5-4.9/m4/krb5-pkinit.m4
++pam-krb5-4.9/m4/krb5.m4
++pam-krb5-4.9/m4/ld-version.m4
++pam-krb5-4.9/m4/lib-depends.m4
++pam-krb5-4.9/m4/lib-helper.m4
++pam-krb5-4.9/m4/lib-pathname.m4
++pam-krb5-4.9/m4/libtool.m4
++pam-krb5-4.9/m4/ltoptions.m4
++pam-krb5-4.9/m4/ltsugar.m4
++pam-krb5-4.9/m4/ltversion.m4
++pam-krb5-4.9/m4/lt~obsolete.m4
++pam-krb5-4.9/m4/pam-const.m4
++pam-krb5-4.9/m4/snprintf.m4
++pam-krb5-4.9/module/
++pam-krb5-4.9/module/account.c
++pam-krb5-4.9/module/alt-auth.c
++pam-krb5-4.9/module/auth.c
++pam-krb5-4.9/module/cache.c
++pam-krb5-4.9/module/context.c
++pam-krb5-4.9/module/fast.c
++pam-krb5-4.9/module/internal.h
++pam-krb5-4.9/module/options.c
++pam-krb5-4.9/module/password.c
++pam-krb5-4.9/module/prompting.c
++pam-krb5-4.9/module/public.c
++pam-krb5-4.9/module/setcred.c
++pam-krb5-4.9/module/support.c
++pam-krb5-4.9/module/pam_krb5.map
++pam-krb5-4.9/module/pam_krb5.sym
++pam-krb5-4.9/pam-util/
++pam-krb5-4.9/pam-util/args.c
++pam-krb5-4.9/pam-util/args.h
++pam-krb5-4.9/pam-util/logging.c
++pam-krb5-4.9/pam-util/logging.h
++pam-krb5-4.9/pam-util/options.c
++pam-krb5-4.9/pam-util/options.h
++pam-krb5-4.9/pam-util/vector.c
++pam-krb5-4.9/pam-util/vector.h
++pam-krb5-4.9/portable/
++pam-krb5-4.9/portable/asprintf.c
++pam-krb5-4.9/portable/issetugid.c
++pam-krb5-4.9/portable/krb5-extra.c
++pam-krb5-4.9/portable/krb5-profile.c
++pam-krb5-4.9/portable/mkstemp.c
++pam-krb5-4.9/portable/pam_syslog.c
++pam-krb5-4.9/portable/pam_vsyslog.c
++pam-krb5-4.9/portable/reallocarray.c
++pam-krb5-4.9/portable/snprintf.c
++pam-krb5-4.9/portable/strndup.c
++pam-krb5-4.9/portable/dummy.c
++pam-krb5-4.9/portable/kadmin.h
++pam-krb5-4.9/portable/krb5.h
++pam-krb5-4.9/portable/macros.h
++pam-krb5-4.9/portable/pam.h
++pam-krb5-4.9/portable/stdbool.h
++pam-krb5-4.9/portable/system.h
++pam-krb5-4.9/tests/
++pam-krb5-4.9/tests/config/
++pam-krb5-4.9/tests/config/README
++pam-krb5-4.9/tests/data/
++pam-krb5-4.9/tests/data/cppcheck.supp
++pam-krb5-4.9/tests/data/generate-krb5-conf
++pam-krb5-4.9/tests/data/krb5-pam.conf
++pam-krb5-4.9/tests/data/krb5.conf
++pam-krb5-4.9/tests/data/perl.conf
++pam-krb5-4.9/tests/data/scripts/
++pam-krb5-4.9/tests/data/scripts/alt-auth/
++pam-krb5-4.9/tests/data/scripts/alt-auth/basic
++pam-krb5-4.9/tests/data/scripts/alt-auth/basic-debug
++pam-krb5-4.9/tests/data/scripts/alt-auth/fail
++pam-krb5-4.9/tests/data/scripts/alt-auth/fail-debug
++pam-krb5-4.9/tests/data/scripts/alt-auth/fallback
++pam-krb5-4.9/tests/data/scripts/alt-auth/fallback-debug
++pam-krb5-4.9/tests/data/scripts/alt-auth/fallback-realm
++pam-krb5-4.9/tests/data/scripts/alt-auth/force
++pam-krb5-4.9/tests/data/scripts/alt-auth/force-fail-debug
++pam-krb5-4.9/tests/data/scripts/alt-auth/force-fallback
++pam-krb5-4.9/tests/data/scripts/alt-auth/only
++pam-krb5-4.9/tests/data/scripts/alt-auth/only-fail
++pam-krb5-4.9/tests/data/scripts/alt-auth/username-map
++pam-krb5-4.9/tests/data/scripts/alt-auth/username-map-prefix
++pam-krb5-4.9/tests/data/scripts/bad-authtok/
++pam-krb5-4.9/tests/data/scripts/bad-authtok/no-prompt
++pam-krb5-4.9/tests/data/scripts/bad-authtok/try-first
++pam-krb5-4.9/tests/data/scripts/bad-authtok/try-first-debug
++pam-krb5-4.9/tests/data/scripts/bad-authtok/use-first
++pam-krb5-4.9/tests/data/scripts/bad-authtok/use-first-debug
++pam-krb5-4.9/tests/data/scripts/basic/
++pam-krb5-4.9/tests/data/scripts/basic/force-first
++pam-krb5-4.9/tests/data/scripts/basic/force-first-debug
++pam-krb5-4.9/tests/data/scripts/basic/ignore-root
++pam-krb5-4.9/tests/data/scripts/basic/ignore-root-debug
++pam-krb5-4.9/tests/data/scripts/basic/minimum-uid
++pam-krb5-4.9/tests/data/scripts/basic/minimum-uid-debug
++pam-krb5-4.9/tests/data/scripts/basic/no-context
++pam-krb5-4.9/tests/data/scripts/basic/no-context-debug
++pam-krb5-4.9/tests/data/scripts/cache-cleanup/
++pam-krb5-4.9/tests/data/scripts/cache-cleanup/auth-only
++pam-krb5-4.9/tests/data/scripts/cache/
++pam-krb5-4.9/tests/data/scripts/cache/basic
++pam-krb5-4.9/tests/data/scripts/cache/open-session
++pam-krb5-4.9/tests/data/scripts/cache/search-k5login
++pam-krb5-4.9/tests/data/scripts/cache/search-k5login-debug
++pam-krb5-4.9/tests/data/scripts/expired/
++pam-krb5-4.9/tests/data/scripts/expired/basic-heimdal
++pam-krb5-4.9/tests/data/scripts/expired/basic-heimdal-debug
++pam-krb5-4.9/tests/data/scripts/expired/basic-heimdal-flag-silent
++pam-krb5-4.9/tests/data/scripts/expired/basic-heimdal-old
++pam-krb5-4.9/tests/data/scripts/expired/basic-heimdal-old-debug
++pam-krb5-4.9/tests/data/scripts/expired/basic-heimdal-silent
++pam-krb5-4.9/tests/data/scripts/expired/basic-mit
++pam-krb5-4.9/tests/data/scripts/expired/basic-mit-debug
++pam-krb5-4.9/tests/data/scripts/expired/basic-mit-flag-silent
++pam-krb5-4.9/tests/data/scripts/expired/basic-mit-silent
++pam-krb5-4.9/tests/data/scripts/expired/defer-mit
++pam-krb5-4.9/tests/data/scripts/expired/defer-mit-debug
++pam-krb5-4.9/tests/data/scripts/expired/fail
++pam-krb5-4.9/tests/data/scripts/expired/fail-debug
++pam-krb5-4.9/tests/data/scripts/fast/
++pam-krb5-4.9/tests/data/scripts/fast/anonymous
++pam-krb5-4.9/tests/data/scripts/fast/anonymous-debug
++pam-krb5-4.9/tests/data/scripts/fast/ccache
++pam-krb5-4.9/tests/data/scripts/fast/ccache-debug
++pam-krb5-4.9/tests/data/scripts/fast/no-ccache
++pam-krb5-4.9/tests/data/scripts/fast/no-ccache-debug
++pam-krb5-4.9/tests/data/scripts/long/
++pam-krb5-4.9/tests/data/scripts/long/password
++pam-krb5-4.9/tests/data/scripts/long/password-debug
++pam-krb5-4.9/tests/data/scripts/long/use-first
++pam-krb5-4.9/tests/data/scripts/long/use-first-debug
++pam-krb5-4.9/tests/data/scripts/no-cache/
++pam-krb5-4.9/tests/data/scripts/no-cache/no-prompt
++pam-krb5-4.9/tests/data/scripts/no-cache/no-prompt-try
++pam-krb5-4.9/tests/data/scripts/no-cache/no-prompt-use
++pam-krb5-4.9/tests/data/scripts/no-cache/prompt
++pam-krb5-4.9/tests/data/scripts/no-cache/prompt-expose
++pam-krb5-4.9/tests/data/scripts/no-cache/prompt-fail
++pam-krb5-4.9/tests/data/scripts/no-cache/prompt-fail-debug
++pam-krb5-4.9/tests/data/scripts/no-cache/prompt-principal
++pam-krb5-4.9/tests/data/scripts/no-cache/try-first
++pam-krb5-4.9/tests/data/scripts/no-cache/use-first
++pam-krb5-4.9/tests/data/scripts/pam-user/
++pam-krb5-4.9/tests/data/scripts/pam-user/no-update
++pam-krb5-4.9/tests/data/scripts/pam-user/update
++pam-krb5-4.9/tests/data/scripts/password/
++pam-krb5-4.9/tests/data/scripts/password/authtok
++pam-krb5-4.9/tests/data/scripts/password/authtok-force
++pam-krb5-4.9/tests/data/scripts/password/authtok-too-long
++pam-krb5-4.9/tests/data/scripts/password/authtok-too-long-debug
++pam-krb5-4.9/tests/data/scripts/password/banner
++pam-krb5-4.9/tests/data/scripts/password/banner-expose
++pam-krb5-4.9/tests/data/scripts/password/basic
++pam-krb5-4.9/tests/data/scripts/password/basic-debug
++pam-krb5-4.9/tests/data/scripts/password/expose
++pam-krb5-4.9/tests/data/scripts/password/ignore
++pam-krb5-4.9/tests/data/scripts/password/no-banner
++pam-krb5-4.9/tests/data/scripts/password/no-banner-expose
++pam-krb5-4.9/tests/data/scripts/password/prompt-principal
++pam-krb5-4.9/tests/data/scripts/password/too-long
++pam-krb5-4.9/tests/data/scripts/password/too-long-debug
++pam-krb5-4.9/tests/data/scripts/pkinit/
++pam-krb5-4.9/tests/data/scripts/pkinit/basic
++pam-krb5-4.9/tests/data/scripts/pkinit/basic-debug
++pam-krb5-4.9/tests/data/scripts/pkinit/no-use-pkinit
++pam-krb5-4.9/tests/data/scripts/pkinit/pin-mit
++pam-krb5-4.9/tests/data/scripts/pkinit/preauth-opt-mit
++pam-krb5-4.9/tests/data/scripts/pkinit/prompt-try
++pam-krb5-4.9/tests/data/scripts/pkinit/prompt-use
++pam-krb5-4.9/tests/data/scripts/pkinit/try-pkinit
++pam-krb5-4.9/tests/data/scripts/pkinit/try-pkinit-debug
++pam-krb5-4.9/tests/data/scripts/pkinit/try-pkinit-debug-mit
++pam-krb5-4.9/tests/data/scripts/realm/
++pam-krb5-4.9/tests/data/scripts/realm/fail-bad-user-realm
++pam-krb5-4.9/tests/data/scripts/realm/fail-no-realm
++pam-krb5-4.9/tests/data/scripts/realm/fail-no-realm-debug
++pam-krb5-4.9/tests/data/scripts/realm/fail-realm
++pam-krb5-4.9/tests/data/scripts/realm/fail-user-realm
++pam-krb5-4.9/tests/data/scripts/realm/pass-realm
++pam-krb5-4.9/tests/data/scripts/realm/pass-user-realm
++pam-krb5-4.9/tests/data/scripts/stacked/
++pam-krb5-4.9/tests/data/scripts/stacked/auth-only
++pam-krb5-4.9/tests/data/scripts/stacked/basic
++pam-krb5-4.9/tests/data/scripts/stacked/prompt
++pam-krb5-4.9/tests/data/scripts/stacked/prompt-principal
++pam-krb5-4.9/tests/data/scripts/stacked/try-first
++pam-krb5-4.9/tests/data/scripts/stacked/use-first
++pam-krb5-4.9/tests/data/scripts/trace/
++pam-krb5-4.9/tests/data/scripts/trace/supported
++pam-krb5-4.9/tests/data/scripts/trace/unsupported
++pam-krb5-4.9/tests/data/valgrind.supp
++pam-krb5-4.9/tests/docs/
++pam-krb5-4.9/tests/docs/pod-spelling-t
++pam-krb5-4.9/tests/docs/pod-t
++pam-krb5-4.9/tests/docs/spdx-license-t
++pam-krb5-4.9/tests/fakepam/
++pam-krb5-4.9/tests/fakepam/config.c
++pam-krb5-4.9/tests/fakepam/data.c
++pam-krb5-4.9/tests/fakepam/general.c
++pam-krb5-4.9/tests/fakepam/internal.h
++pam-krb5-4.9/tests/fakepam/kuserok.c
++pam-krb5-4.9/tests/fakepam/logging.c
++pam-krb5-4.9/tests/fakepam/pam.h
++pam-krb5-4.9/tests/fakepam/script.c
++pam-krb5-4.9/tests/fakepam/script.h
++pam-krb5-4.9/tests/fakepam/README
++pam-krb5-4.9/tests/module/
++pam-krb5-4.9/tests/module/alt-auth-t.c
++pam-krb5-4.9/tests/module/bad-authtok-t.c
++pam-krb5-4.9/tests/module/basic-t.c
++pam-krb5-4.9/tests/module/cache-cleanup-t.c
++pam-krb5-4.9/tests/module/cache-t.c
++pam-krb5-4.9/tests/module/expired-t.c
++pam-krb5-4.9/tests/module/fast-anon-t.c
++pam-krb5-4.9/tests/module/fast-t.c
++pam-krb5-4.9/tests/module/long-t.c
++pam-krb5-4.9/tests/module/no-cache-t.c
++pam-krb5-4.9/tests/module/pam-user-t.c
++pam-krb5-4.9/tests/module/password-t.c
++pam-krb5-4.9/tests/module/pkinit-t.c
++pam-krb5-4.9/tests/module/realm-t.c
++pam-krb5-4.9/tests/module/stacked-t.c
++pam-krb5-4.9/tests/module/trace-t.c
++pam-krb5-4.9/tests/pam-util/
++pam-krb5-4.9/tests/pam-util/args-t.c
++pam-krb5-4.9/tests/pam-util/fakepam-t.c
++pam-krb5-4.9/tests/pam-util/logging-t.c
++pam-krb5-4.9/tests/pam-util/options-t.c
++pam-krb5-4.9/tests/pam-util/vector-t.c
++pam-krb5-4.9/tests/portable/
++pam-krb5-4.9/tests/portable/asprintf-t.c
++pam-krb5-4.9/tests/portable/asprintf.c
++pam-krb5-4.9/tests/portable/mkstemp-t.c
++pam-krb5-4.9/tests/portable/mkstemp.c
++pam-krb5-4.9/tests/portable/snprintf-t.c
++pam-krb5-4.9/tests/portable/snprintf.c
++pam-krb5-4.9/tests/portable/strndup-t.c
++pam-krb5-4.9/tests/portable/strndup.c
++pam-krb5-4.9/tests/style/
++pam-krb5-4.9/tests/style/obsolete-strings-t
++pam-krb5-4.9/tests/tap/
++pam-krb5-4.9/tests/tap/perl/
++pam-krb5-4.9/tests/tap/perl/Test/
++pam-krb5-4.9/tests/tap/perl/Test/RRA/
++pam-krb5-4.9/tests/tap/perl/Test/RRA/Automake.pm
++pam-krb5-4.9/tests/tap/perl/Test/RRA/Config.pm
++pam-krb5-4.9/tests/tap/perl/Test/RRA.pm
++pam-krb5-4.9/tests/tap/basic.c
++pam-krb5-4.9/tests/tap/basic.h
++pam-krb5-4.9/tests/tap/kadmin.c
++pam-krb5-4.9/tests/tap/kadmin.h
++pam-krb5-4.9/tests/tap/kerberos.c
++pam-krb5-4.9/tests/tap/kerberos.h
++pam-krb5-4.9/tests/tap/macros.h
++pam-krb5-4.9/tests/tap/process.c
++pam-krb5-4.9/tests/tap/process.h
++pam-krb5-4.9/tests/tap/string.c
++pam-krb5-4.9/tests/tap/string.h
++pam-krb5-4.9/tests/tap/libtap.sh
++pam-krb5-4.9/tests/valgrind/
++pam-krb5-4.9/tests/valgrind/logs-t
++pam-krb5-4.9/tests/runtests.c
++pam-krb5-4.9/tests/README
++pam-krb5-4.9/tests/TESTS
++pam-krb5-4.9/Makefile.am
++pam-krb5-4.9/configure
++pam-krb5-4.9/configure.ac
++pam-krb5-4.9/aclocal.m4
++pam-krb5-4.9/Makefile.in
++pam-krb5-4.9/config.h.in
++pam-krb5-4.9/NEWS
++pam-krb5-4.9/README
++pam-krb5-4.9/TODO
++pam-krb5-4.9/.clang-format
++pam-krb5-4.9/.gitignore
++pam-krb5-4.9/.github/
++pam-krb5-4.9/.github/workflows/
++pam-krb5-4.9/.github/workflows/build.yaml
++pam-krb5-4.9/LICENSE
++pam-krb5-4.9/README.md
++pam-krb5-4.9/bootstrap
++checking for a BSD-compatible install... /usr/bin/ginstall -c
++checking whether build environment is sane... yes
++checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
++checking for gawk... gawk
++checking whether make sets $(MAKE)... yes
++checking whether make supports nested variables... yes
++checking whether to enable maintainer-specific portions of Makefiles... no
++checking for gcc... gcc
++checking whether the C compiler works... yes
++checking for C compiler default output file name... a.out
++checking for suffix of executables... 
++checking whether we are cross compiling... no
++checking for suffix of object files... o
++checking whether we are using the GNU C compiler... yes
++checking whether gcc accepts -g... yes
++checking for gcc option to accept ISO C89... none needed
++checking whether gcc understands -c and -o together... yes
++checking whether make supports the include directive... yes (GNU style)
++checking dependency style of gcc... gcc3
++checking how to run the C preprocessor... gcc -E
++checking for grep that handles long lines and -e... /usr/bin/grep
++checking for egrep... /usr/bin/grep -E
++checking for ANSI C header files... yes
++checking for sys/types.h... yes
++checking for sys/stat.h... yes
++checking for stdlib.h... yes
++checking for string.h... yes
++checking for memory.h... yes
++checking for strings.h... yes
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking for unistd.h... yes
++checking minix/config.h usability... no
++checking minix/config.h presence... no
++checking for minix/config.h... no
++checking whether it is safe to define __EXTENSIONS__... yes
++checking if the compiler is Clang... no
++checking if gcc supports -fstrict-overflow... yes
++checking if gcc supports -fstrict-aliasing... yes
++checking if gcc supports -Wall... yes
++checking if gcc supports -Wextra... yes
++checking if gcc supports -Wformat=2... yes
++checking if gcc supports -Wformat-overflow=2... yes
++checking if gcc supports -Wformat-signedness... yes
++checking if gcc supports -Wformat-truncation=2... yes
++checking if gcc supports -Wnull-dereference... yes
++checking if gcc supports -Winit-self... yes
++checking if gcc supports -Wswitch-enum... yes
++checking if gcc supports -Wstrict-overflow=5... yes
++checking if gcc supports -Wmissing-format-attribute... yes
++checking if gcc supports -Walloc-zero... yes
++checking if gcc supports -Wduplicated-branches... yes
++checking if gcc supports -Wduplicated-cond... yes
++checking if gcc supports -Wtrampolines... yes
++checking if gcc supports -Wfloat-equal... yes
++checking if gcc supports -Wdeclaration-after-statement... yes
++checking if gcc supports -Wshadow... yes
++checking if gcc supports -Wpointer-arith... yes
++checking if gcc supports -Wbad-function-cast... yes
++checking if gcc supports -Wcast-align... yes
++checking if gcc supports -Wwrite-strings... yes
++checking if gcc supports -Wconversion... yes
++checking if gcc supports -Wno-sign-conversion... yes
++checking if gcc supports -Wdate-time... yes
++checking if gcc supports -Wjump-misses-init... yes
++checking if gcc supports -Wlogical-op... yes
++checking if gcc supports -Wstrict-prototypes... yes
++checking if gcc supports -Wold-style-definition... yes
++checking if gcc supports -Wmissing-prototypes... yes
++checking if gcc supports -Wmissing-declarations... yes
++checking if gcc supports -Wnormalized=nfc... yes
++checking if gcc supports -Wpacked... yes
++checking if gcc supports -Wredundant-decls... yes
++checking if gcc supports -Wrestrict... yes
++checking if gcc supports -Wnested-externs... yes
++checking if gcc supports -Winline... yes
++checking if gcc supports -Wvla... yes
++checking for special C compiler options needed for large files... no
++checking for _FILE_OFFSET_BITS value needed for large files... no
++checking for ar... ar
++checking the archiver (ar) interface... ar
++checking build system type... x86_64-slackware-linux-musl
++checking host system type... x86_64-slackware-linux-musl
++checking how to print strings... printf
++checking for a sed that does not truncate output... /usr/bin/sed
++checking for fgrep... /usr/bin/grep -F
++checking for ld used by gcc... /usr/bin/ld
++checking if the linker (/usr/bin/ld) is GNU ld... yes
++checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
++checking the name lister (/usr/bin/nm -B) interface... BSD nm
++checking whether ln -s works... yes
++checking the maximum length of command line arguments... 98304
++checking how to convert x86_64-slackware-linux-musl file names to x86_64-slackware-linux-musl format... func_convert_file_noop
++checking how to convert x86_64-slackware-linux-musl file names to toolchain format... func_convert_file_noop
++checking for /usr/bin/ld option to reload object files... -r
++checking for objdump... objdump
++checking how to recognize dependent libraries... pass_all
++checking for dlltool... dlltool
++checking how to associate runtime and link libraries... printf %s\n
++checking for archiver @FILE support... @
++checking for strip... strip
++checking for ranlib... ranlib
++checking command to parse /usr/bin/nm -B output from gcc object... ok
++checking for sysroot... no
++checking for a working dd... /usr/bin/dd
++checking how to truncate binary pipes... /usr/bin/dd bs=4096 count=1
++checking for mt... mt
++checking if mt is a manifest tool... no
++checking for dlfcn.h... yes
++checking for objdir... .libs
++checking if gcc supports -fno-rtti -fno-exceptions... no
++checking for gcc option to produce PIC... -fPIC -DPIC
++checking if gcc PIC flag -fPIC -DPIC works... yes
++checking if gcc static flag -static works... yes
++checking if gcc supports -c -o file.o... yes
++checking if gcc supports -c -o file.o... (cached) yes
++checking whether the gcc linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
++checking whether -lc should be explicitly linked in... no
++checking dynamic linker characteristics... GNU/Linux ld.so
++checking how to hardcode library paths into programs... immediate
++checking whether stripping libraries is possible... yes
++checking if libtool supports shared libraries... yes
++checking whether to build shared libraries... yes
++checking whether to build static libraries... no
++checking if -Wl,--version-script works... yes
++checking for openssl... /usr/bin/openssl
++checking for valgrind... no
++checking for library containing pam_set_data... -lpam
++checking for pam_getenv... yes
++checking for pam_getenvlist... yes
++checking for pam_modutil_getpwnam... yes
++checking for pam_syslog... yes
++checking for pam_vsyslog... yes
++checking security/pam_modutil.h usability... yes
++checking security/pam_modutil.h presence... yes
++checking for security/pam_modutil.h... yes
++checking security/pam_appl.h usability... yes
++checking security/pam_appl.h presence... yes
++checking for security/pam_appl.h... yes
++checking security/pam_ext.h usability... yes
++checking security/pam_ext.h presence... yes
++checking for security/pam_ext.h... yes
++checking whether PAM prefers const... yes
++checking whether pam_strerror uses const... no
++checking size of long... 8
++checking for krb5-config... /usr/bin/krb5-config
++checking for krb5 support in krb5-config... yes
++checking for --deps support in krb5-config... no
++checking for krb5_init_context... yes
++checking krb5.h usability... yes
++checking krb5.h presence... yes
++checking for krb5.h... yes
++checking kerberosv5/krb5.h usability... no
++checking kerberosv5/krb5.h presence... no
++checking for kerberosv5/krb5.h... no
++checking krb5/krb5.h usability... yes
++checking krb5/krb5.h presence... yes
++checking for krb5/krb5.h... yes
++checking for krb5_get_error_message... yes
++checking for krb5_free_error_message... yes
++checking hx509_err.h usability... no
++checking hx509_err.h presence... no
++checking for hx509_err.h... no
++checking for krb5_creds.session... no
++checking for krb5_realm... no
++checking for krb5_cc_get_full_name... yes
++checking for krb5_data_free... no
++checking for krb5_free_default_realm... yes
++checking for krb5_free_string... yes
++checking for krb5_get_init_creds_opt_alloc... yes
++checking for krb5_get_init_creds_opt_set_anonymous... yes
++checking for krb5_get_init_creds_opt_set_change_password_prompt... yes
++checking for krb5_get_init_creds_opt_set_default_flags... no
++checking for krb5_get_init_creds_opt_set_fast_ccache_name... yes
++checking for krb5_get_init_creds_opt_set_out_ccache... yes
++checking for krb5_get_init_creds_opt_set_pa... yes
++checking for krb5_get_prompt_types... yes
++checking for krb5_init_secure_context... yes
++checking for krb5_principal_get_realm... no
++checking for krb5_principal_set_comp_string... no
++checking for krb5_set_password... yes
++checking for krb5_set_trace_filename... yes
++checking for krb5_verify_init_creds_opt_init... yes
++checking for krb5_xfree... no
++checking for krb5_get_init_creds_opt_set_pkinit... no
++checking for krb5_get_init_creds_opt_free... yes
++checking if krb5_get_init_creds_opt_free takes two arguments... yes
++checking whether krb5_kt_free_entry is declared... yes
++checking for krb5_appdefault_string... yes
++checking for krb5-config... (cached) /usr/bin/krb5-config
++checking for kadm-client support in krb5-config... yes
++checking for --deps support in krb5-config... (cached) no
++checking for kadm5_init_with_password... yes
++checking kadm5/kadm5_err.h usability... no
++checking kadm5/kadm5_err.h presence... no
++checking for kadm5/kadm5_err.h... no
++checking for kadm5_init_krb5_context... yes
++checking for kadm5_init_with_skey_ctx... no
++checking regex.h usability... yes
++checking regex.h presence... yes
++checking for regex.h... yes
++checking for regcomp... yes
++checking for stdbool.h that conforms to C99... yes
++checking for _Bool... yes
++checking for strings.h... (cached) yes
++checking sys/bittypes.h usability... no
++checking sys/bittypes.h presence... no
++checking for sys/bittypes.h... no
++checking sys/select.h usability... yes
++checking sys/select.h presence... yes
++checking for sys/select.h... yes
++checking sys/time.h usability... yes
++checking sys/time.h presence... yes
++checking for sys/time.h... yes
++checking whether snprintf is declared... yes
++checking whether vsnprintf is declared... yes
++checking for unsigned long long int... yes
++checking for long long int... yes
++checking for ssize_t... yes
++checking for working snprintf... yes
++checking for explicit_bzero... yes
++checking for asprintf... yes
++checking for issetugid... yes
++checking for mkstemp... yes
++checking for reallocarray... yes
++checking for strndup... yes
++checking that generated files are newer than configure... done
++configure: creating ./config.status
++config.status: creating Makefile
++config.status: creating config.h
++config.status: executing depfiles commands
++config.status: executing libtool commands
++make  all-am
++make[1]: Entering directory '/tmp/pam-krb5-4.9'
++depbase=`echo pam-util/args.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ./libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.     -O2 -fPIC -MT pam-util/args.lo -MD -MP -MF $depbase.Tpo -c -o pam-util/args.lo pam-util/args.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++depbase=`echo pam-util/logging.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ./libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.     -O2 -fPIC -MT pam-util/logging.lo -MD -MP -MF $depbase.Tpo -c -o pam-util/logging.lo pam-util/logging.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++depbase=`echo pam-util/options.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ./libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.     -O2 -fPIC -MT pam-util/options.lo -MD -MP -MF $depbase.Tpo -c -o pam-util/options.lo pam-util/options.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -O2 -fPIC -MT pam-util/logging.lo -MD -MP -MF pam-util/.deps/logging.Tpo -c pam-util/logging.c  -fPIC -DPIC -o pam-util/.libs/logging.o
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -O2 -fPIC -MT pam-util/args.lo -MD -MP -MF pam-util/.deps/args.Tpo -c pam-util/args.c  -fPIC -DPIC -o pam-util/.libs/args.o
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -O2 -fPIC -MT pam-util/options.lo -MD -MP -MF pam-util/.deps/options.Tpo -c pam-util/options.c  -fPIC -DPIC -o pam-util/.libs/options.o
++depbase=`echo pam-util/vector.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ./libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.     -O2 -fPIC -MT pam-util/vector.lo -MD -MP -MF $depbase.Tpo -c -o pam-util/vector.lo pam-util/vector.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -O2 -fPIC -MT pam-util/vector.lo -MD -MP -MF pam-util/.deps/vector.Tpo -c pam-util/vector.c  -fPIC -DPIC -o pam-util/.libs/vector.o
++depbase=`echo portable/dummy.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ./libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.     -O2 -fPIC -MT portable/dummy.lo -MD -MP -MF $depbase.Tpo -c -o portable/dummy.lo portable/dummy.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -O2 -fPIC -MT portable/dummy.lo -MD -MP -MF portable/.deps/dummy.Tpo -c portable/dummy.c  -fPIC -DPIC -o portable/.libs/dummy.o
++depbase=`echo portable/krb5-extra.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ./libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.     -O2 -fPIC -MT portable/krb5-extra.lo -MD -MP -MF $depbase.Tpo -c -o portable/krb5-extra.lo portable/krb5-extra.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -O2 -fPIC -MT portable/krb5-extra.lo -MD -MP -MF portable/.deps/krb5-extra.Tpo -c portable/krb5-extra.c  -fPIC -DPIC -o portable/.libs/krb5-extra.o
++depbase=`echo module/account.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ./libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.     -O2 -fPIC -MT module/account.lo -MD -MP -MF $depbase.Tpo -c -o module/account.lo module/account.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++depbase=`echo module/alt-auth.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ./libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.     -O2 -fPIC -MT module/alt-auth.lo -MD -MP -MF $depbase.Tpo -c -o module/alt-auth.lo module/alt-auth.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -O2 -fPIC -MT module/account.lo -MD -MP -MF module/.deps/account.Tpo -c module/account.c  -fPIC -DPIC -o module/.libs/account.o
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -O2 -fPIC -MT module/alt-auth.lo -MD -MP -MF module/.deps/alt-auth.Tpo -c module/alt-auth.c  -fPIC -DPIC -o module/.libs/alt-auth.o
++depbase=`echo module/auth.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ./libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.     -O2 -fPIC -MT module/auth.lo -MD -MP -MF $depbase.Tpo -c -o module/auth.lo module/auth.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++depbase=`echo module/cache.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ./libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.     -O2 -fPIC -MT module/cache.lo -MD -MP -MF $depbase.Tpo -c -o module/cache.lo module/cache.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -O2 -fPIC -MT module/auth.lo -MD -MP -MF module/.deps/auth.Tpo -c module/auth.c  -fPIC -DPIC -o module/.libs/auth.o
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -O2 -fPIC -MT module/cache.lo -MD -MP -MF module/.deps/cache.Tpo -c module/cache.c  -fPIC -DPIC -o module/.libs/cache.o
++depbase=`echo module/context.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ./libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.     -O2 -fPIC -MT module/context.lo -MD -MP -MF $depbase.Tpo -c -o module/context.lo module/context.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -O2 -fPIC -MT module/context.lo -MD -MP -MF module/.deps/context.Tpo -c module/context.c  -fPIC -DPIC -o module/.libs/context.o
++depbase=`echo module/fast.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ./libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.     -O2 -fPIC -MT module/fast.lo -MD -MP -MF $depbase.Tpo -c -o module/fast.lo module/fast.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -O2 -fPIC -MT module/fast.lo -MD -MP -MF module/.deps/fast.Tpo -c module/fast.c  -fPIC -DPIC -o module/.libs/fast.o
++depbase=`echo module/options.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ./libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.     -O2 -fPIC -MT module/options.lo -MD -MP -MF $depbase.Tpo -c -o module/options.lo module/options.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -O2 -fPIC -MT module/options.lo -MD -MP -MF module/.deps/options.Tpo -c module/options.c  -fPIC -DPIC -o module/.libs/options.o
++depbase=`echo module/password.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ./libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.     -O2 -fPIC -MT module/password.lo -MD -MP -MF $depbase.Tpo -c -o module/password.lo module/password.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -O2 -fPIC -MT module/password.lo -MD -MP -MF module/.deps/password.Tpo -c module/password.c  -fPIC -DPIC -o module/.libs/password.o
++depbase=`echo module/prompting.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ./libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.     -O2 -fPIC -MT module/prompting.lo -MD -MP -MF $depbase.Tpo -c -o module/prompting.lo module/prompting.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -O2 -fPIC -MT module/prompting.lo -MD -MP -MF module/.deps/prompting.Tpo -c module/prompting.c  -fPIC -DPIC -o module/.libs/prompting.o
++depbase=`echo module/public.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ./libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.     -O2 -fPIC -MT module/public.lo -MD -MP -MF $depbase.Tpo -c -o module/public.lo module/public.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++depbase=`echo module/setcred.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ./libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.     -O2 -fPIC -MT module/setcred.lo -MD -MP -MF $depbase.Tpo -c -o module/setcred.lo module/setcred.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -O2 -fPIC -MT module/public.lo -MD -MP -MF module/.deps/public.Tpo -c module/public.c  -fPIC -DPIC -o module/.libs/public.o
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -O2 -fPIC -MT module/setcred.lo -MD -MP -MF module/.deps/setcred.Tpo -c module/setcred.c  -fPIC -DPIC -o module/.libs/setcred.o
++depbase=`echo module/support.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ./libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.     -O2 -fPIC -MT module/support.lo -MD -MP -MF $depbase.Tpo -c -o module/support.lo module/support.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -O2 -fPIC -MT module/support.lo -MD -MP -MF module/.deps/support.Tpo -c module/support.c  -fPIC -DPIC -o module/.libs/support.o
++/bin/sh ./libtool  --tag=CC   --mode=link gcc  -O2 -fPIC   -o pam-util/libpamutil.la  pam-util/args.lo pam-util/logging.lo pam-util/options.lo pam-util/vector.lo  -lpam 
++/bin/sh ./libtool  --tag=CC   --mode=link gcc  -O2 -fPIC   -o portable/libportable.la  portable/dummy.lo portable/krb5-extra.lo -lpam 
++libtool: link: ar cr pam-util/.libs/libpamutil.a pam-util/.libs/args.o pam-util/.libs/logging.o pam-util/.libs/options.o pam-util/.libs/vector.o 
++libtool: link: ranlib pam-util/.libs/libpamutil.a
++libtool: link: ar cr portable/.libs/libportable.a portable/.libs/dummy.o portable/.libs/krb5-extra.o 
++libtool: link: ranlib portable/.libs/libportable.a
++libtool: link: ( cd "pam-util/.libs" && rm -f "libpamutil.la" && ln -s "../libpamutil.la" "libpamutil.la" )
++libtool: link: ( cd "portable/.libs" && rm -f "libportable.la" && ln -s "../libportable.la" "libportable.la" )
++/bin/sh ./libtool  --tag=CC   --mode=link gcc  -O2 -fPIC -module -shared -avoid-version -Wl,--version-script=./module/pam_krb5.map   -o module/pam_krb5.la -rpath /lib/security module/account.lo module/alt-auth.lo module/auth.lo module/cache.lo module/context.lo module/fast.lo module/options.lo module/password.lo module/prompting.lo module/public.lo module/setcred.lo module/support.lo pam-util/libpamutil.la portable/libportable.la -Wl,--enable-new-dtags -Wl,-rpath -Wl,/usr/lib -lkrb5 -lk5crypto -lcom_err -lpam 
++libtool: link: gcc -shared  -fPIC -DPIC  module/.libs/account.o module/.libs/alt-auth.o module/.libs/auth.o module/.libs/cache.o module/.libs/context.o module/.libs/fast.o module/.libs/options.o module/.libs/password.o module/.libs/prompting.o module/.libs/public.o module/.libs/setcred.o module/.libs/support.o  -Wl,--whole-archive pam-util/.libs/libpamutil.a portable/.libs/libportable.a -Wl,--no-whole-archive  -lkrb5 -lk5crypto -lcom_err -lpam  -O2 -Wl,--version-script=./module/pam_krb5.map -Wl,--enable-new-dtags -Wl,-rpath -Wl,/usr/lib   -Wl,-soname -Wl,pam_krb5.so -o module/.libs/pam_krb5.so
++libtool: link: ( cd "module/.libs" && rm -f "pam_krb5.la" && ln -s "../pam_krb5.la" "pam_krb5.la" )
++make[1]: Leaving directory '/tmp/pam-krb5-4.9'
++make[1]: Entering directory '/tmp/pam-krb5-4.9'
++make[1]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-pam-krb5/usr/man/man5'
++ /usr/bin/ginstall -c -m 644 docs/pam_krb5.5 '/tmp/package-pam-krb5/usr/man/man5'
++ /usr/bin/mkdir -p '/tmp/package-pam-krb5/lib/security'
++ /bin/sh ./libtool   --mode=install /usr/bin/ginstall -c   module/pam_krb5.la '/tmp/package-pam-krb5/lib/security'
++libtool: install: /usr/bin/ginstall -c module/.libs/pam_krb5.so /tmp/package-pam-krb5/lib/security/pam_krb5.so
++libtool: install: /usr/bin/ginstall -c module/.libs/pam_krb5.lai /tmp/package-pam-krb5/lib/security/pam_krb5.la
++libtool: warning: remember to run 'libtool --finish /lib/security'
++make[1]: Leaving directory '/tmp/pam-krb5-4.9'
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++
++No symbolic links were found, so we won't make an installation script.
++You can make your own later in ./install/doinst.sh and rebuild the
++package if you like.
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/pam-krb5-4.9-x86_64-3.txz
++
++./
++install/
++install/slack-desc
++lib/
++lib/security/
++lib/security/pam_krb5.so
++usr/
++usr/doc/
++usr/doc/pam-krb5-4.9/
++usr/doc/pam-krb5-4.9/LICENSE
++usr/doc/pam-krb5-4.9/NEWS
++usr/doc/pam-krb5-4.9/README
++usr/doc/pam-krb5-4.9/README.md
++usr/doc/pam-krb5-4.9/TODO
++usr/man/
++usr/man/man5/
++usr/man/man5/pam_krb5.5.gz
++
++Slackware package /tmp/pam-krb5-4.9-x86_64-3.txz created.
++

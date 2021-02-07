@@ -1,0 +1,3385 @@
+diff -ruBN /tmp/lvm2/fix-stdio-usage.patch /source/a/lvm2/fix-stdio-usage.patch
+--- /tmp/lvm2/fix-stdio-usage.patch	1970-01-01 00:00:00.000000000 +0000
++++ /source/a/lvm2/fix-stdio-usage.patch	2021-01-09 06:31:49.000000000 +0000
+@@ -0,0 +1,49 @@
++--- ./tools/lvmcmdline.c
+++++ ./tools/lvmcmdline.c
++@@ -1252,7 +1252,7 @@
++ 	int err = is_valid_fd(STDERR_FILENO);
++ 
++ 	if (!is_valid_fd(STDIN_FILENO) &&
++-	    !(stdin = fopen(_PATH_DEVNULL, "r"))) {
+++	    !freopen(_PATH_DEVNULL, "r", stdin)) {
++ 		if (err)
++ 			perror("stdin stream open");
++ 		else
++@@ -1262,7 +1262,7 @@
++ 	}
++ 
++ 	if (!is_valid_fd(STDOUT_FILENO) &&
++-	    !(stdout = fopen(_PATH_DEVNULL, "w"))) {
+++	    !freopen(_PATH_DEVNULL, "w", stdout)) {
++ 		if (err)
++ 			perror("stdout stream open");
++ 		/* else no stdout */
++@@ -1270,7 +1270,7 @@
++ 	}
++ 
++ 	if (!is_valid_fd(STDERR_FILENO) &&
++-	    !(stderr = fopen(_PATH_DEVNULL, "w"))) {
+++	    !freopen(_PATH_DEVNULL, "w", stderr)) {
++ 		printf("stderr stream open: %s\n",
++ 		       strerror(errno));
++ 		return 0;
++--- ./lib/commands/toolcontext.c
+++++ ./lib/commands/toolcontext.c
++@@ -1869,7 +1869,7 @@
++ 	/* FIXME Make this configurable? */
++ 	reset_lvm_errno(1);
++ 
++-#ifndef VALGRIND_POOL
+++#if !defined(VALGRIND_POOL) && defined(__GLIBC__)
++ 	/* Set in/out stream buffering before glibc */
++ 	if (set_buffering
++ #ifdef SYS_gettid
++@@ -2274,7 +2274,7 @@
++ 
++ 	if (cmd->pending_delete_mem)
++ 		dm_pool_destroy(cmd->pending_delete_mem);
++-#ifndef VALGRIND_POOL
+++#if !defined(VALGRIND_POOL) && defined(__GLIBC__)
++ 	if (cmd->linebuffer) {
++ 		/* Reset stream buffering to defaults */
++ 		if (is_valid_fd(STDIN_FILENO) &&
+diff -ruBN /tmp/lvm2/lvm2.SlackBuild /source/a/lvm2/lvm2.SlackBuild
+--- /tmp/lvm2/lvm2.SlackBuild	2019-09-29 23:48:35.000000000 +0000
++++ /source/a/lvm2/lvm2.SlackBuild	2021-01-09 06:31:49.000000000 +0000
+@@ -57,7 +57,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ else
+   SLKCFLAGS="-O2"
+   LIBDIRSUFFIX=""
+@@ -78,6 +78,8 @@
+   -exec chmod 644 {} \+
+ 
+ zcat $CWD/create-dm-run-dir.diff.gz | patch -p1 --verbose || exit 1
++patch -p1 < $CWD/mallinfo.patch || exit 1
++patch -p1 < $CWD/fix-stdio-usage.patch || exit 1
+ 
+ # uid 0 = root
+ # gid 6 = disk
+@@ -102,7 +104,7 @@
+   --with-default-dm-run-dir=/run/lvm \
+   --with-cmirrord-pidfile=/run/lvm/cmirrord.pid \
+   --with-dmeventd-pidfile=/run/lvm/dmeventd.pid \
+-  --build=$ARCH-slackware-linux || exit 1
++  --build=$ARCH-slackware-linux-musl || exit 1
+ 
+ make $NUMJOBS || make || exit 1
+ make install DESTDIR=$PKG || exit 1
+diff -ruBN /tmp/lvm2/lvm2.SlackBuild.log /source/a/lvm2/lvm2.SlackBuild.log
+--- /tmp/lvm2/lvm2.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/a/lvm2/lvm2.SlackBuild.log	2021-01-09 06:33:37.000000000 +0000
+@@ -0,0 +1,3283 @@
++LVM2.2.03.11/
++LVM2.2.03.11/COPYING
++LVM2.2.03.11/COPYING.BSD
++LVM2.2.03.11/COPYING.LIB
++LVM2.2.03.11/INSTALL
++LVM2.2.03.11/Makefile.in
++LVM2.2.03.11/README
++LVM2.2.03.11/TESTING
++LVM2.2.03.11/acinclude.m4
++LVM2.2.03.11/aclocal.m4
++LVM2.2.03.11/autoconf/
++LVM2.2.03.11/autoconf/config.guess
++LVM2.2.03.11/autoconf/config.sub
++LVM2.2.03.11/autoconf/install-sh
++LVM2.2.03.11/autoconf/py-compile
++LVM2.2.03.11/base/
++LVM2.2.03.11/base/Makefile
++LVM2.2.03.11/base/data-struct/
++LVM2.2.03.11/base/data-struct/hash.c
++LVM2.2.03.11/base/data-struct/hash.h
++LVM2.2.03.11/base/data-struct/list.c
++LVM2.2.03.11/base/data-struct/list.h
++LVM2.2.03.11/base/data-struct/radix-tree-adaptive.c
++LVM2.2.03.11/base/data-struct/radix-tree-simple.c
++LVM2.2.03.11/base/data-struct/radix-tree.c
++LVM2.2.03.11/base/data-struct/radix-tree.h
++LVM2.2.03.11/base/memory/
++LVM2.2.03.11/base/memory/container_of.h
++LVM2.2.03.11/base/memory/zalloc.h
++LVM2.2.03.11/conf/
++LVM2.2.03.11/conf/Makefile.in
++LVM2.2.03.11/conf/cache-mq.profile
++LVM2.2.03.11/conf/cache-smq.profile
++LVM2.2.03.11/conf/command_profile_template.profile.in
++LVM2.2.03.11/conf/example.conf.in
++LVM2.2.03.11/conf/lvmdbusd.profile
++LVM2.2.03.11/conf/lvmlocal.conf.in
++LVM2.2.03.11/conf/metadata_profile_template.profile.in
++LVM2.2.03.11/conf/thin-generic.profile
++LVM2.2.03.11/conf/thin-performance.profile
++LVM2.2.03.11/conf/vdo-small.profile
++LVM2.2.03.11/configure
++LVM2.2.03.11/configure.ac
++LVM2.2.03.11/coverity/
++LVM2.2.03.11/coverity/coverity_model.c
++LVM2.2.03.11/daemons/
++LVM2.2.03.11/daemons/Makefile.in
++LVM2.2.03.11/daemons/cmirrord/
++LVM2.2.03.11/daemons/cmirrord/Makefile.in
++LVM2.2.03.11/daemons/cmirrord/clogd.c
++LVM2.2.03.11/daemons/cmirrord/cluster.c
++LVM2.2.03.11/daemons/cmirrord/cluster.h
++LVM2.2.03.11/daemons/cmirrord/common.h
++LVM2.2.03.11/daemons/cmirrord/compat.c
++LVM2.2.03.11/daemons/cmirrord/compat.h
++LVM2.2.03.11/daemons/cmirrord/functions.c
++LVM2.2.03.11/daemons/cmirrord/functions.h
++LVM2.2.03.11/daemons/cmirrord/link_mon.c
++LVM2.2.03.11/daemons/cmirrord/link_mon.h
++LVM2.2.03.11/daemons/cmirrord/local.c
++LVM2.2.03.11/daemons/cmirrord/local.h
++LVM2.2.03.11/daemons/cmirrord/logging.c
++LVM2.2.03.11/daemons/cmirrord/logging.h
++LVM2.2.03.11/daemons/dmeventd/
++LVM2.2.03.11/daemons/dmeventd/.exported_symbols
++LVM2.2.03.11/daemons/dmeventd/Makefile.in
++LVM2.2.03.11/daemons/dmeventd/dmeventd.c
++LVM2.2.03.11/daemons/dmeventd/dmeventd.h
++LVM2.2.03.11/daemons/dmeventd/libdevmapper-event.c
++LVM2.2.03.11/daemons/dmeventd/libdevmapper-event.h
++LVM2.2.03.11/daemons/dmeventd/libdevmapper-event.pc.in
++LVM2.2.03.11/daemons/dmeventd/plugins/
++LVM2.2.03.11/daemons/dmeventd/plugins/Makefile.in
++LVM2.2.03.11/daemons/dmeventd/plugins/lvm2/
++LVM2.2.03.11/daemons/dmeventd/plugins/lvm2/.exported_symbols
++LVM2.2.03.11/daemons/dmeventd/plugins/lvm2/Makefile.in
++LVM2.2.03.11/daemons/dmeventd/plugins/lvm2/dmeventd_lvm.c
++LVM2.2.03.11/daemons/dmeventd/plugins/lvm2/dmeventd_lvm.h
++LVM2.2.03.11/daemons/dmeventd/plugins/mirror/
++LVM2.2.03.11/daemons/dmeventd/plugins/mirror/.exported_symbols
++LVM2.2.03.11/daemons/dmeventd/plugins/mirror/Makefile.in
++LVM2.2.03.11/daemons/dmeventd/plugins/mirror/dmeventd_mirror.c
++LVM2.2.03.11/daemons/dmeventd/plugins/raid/
++LVM2.2.03.11/daemons/dmeventd/plugins/raid/.exported_symbols
++LVM2.2.03.11/daemons/dmeventd/plugins/raid/Makefile.in
++LVM2.2.03.11/daemons/dmeventd/plugins/raid/dmeventd_raid.c
++LVM2.2.03.11/daemons/dmeventd/plugins/snapshot/
++LVM2.2.03.11/daemons/dmeventd/plugins/snapshot/.exported_symbols
++LVM2.2.03.11/daemons/dmeventd/plugins/snapshot/Makefile.in
++LVM2.2.03.11/daemons/dmeventd/plugins/snapshot/dmeventd_snapshot.c
++LVM2.2.03.11/daemons/dmeventd/plugins/thin/
++LVM2.2.03.11/daemons/dmeventd/plugins/thin/.exported_symbols
++LVM2.2.03.11/daemons/dmeventd/plugins/thin/Makefile.in
++LVM2.2.03.11/daemons/dmeventd/plugins/thin/dmeventd_thin.c
++LVM2.2.03.11/daemons/dmeventd/plugins/vdo/
++LVM2.2.03.11/daemons/dmeventd/plugins/vdo/.exported_symbols
++LVM2.2.03.11/daemons/dmeventd/plugins/vdo/Makefile.in
++LVM2.2.03.11/daemons/dmeventd/plugins/vdo/dmeventd_vdo.c
++LVM2.2.03.11/daemons/lvmdbusd/
++LVM2.2.03.11/daemons/lvmdbusd/Makefile.in
++LVM2.2.03.11/daemons/lvmdbusd/__init__.py
++LVM2.2.03.11/daemons/lvmdbusd/automatedproperties.py
++LVM2.2.03.11/daemons/lvmdbusd/background.py
++LVM2.2.03.11/daemons/lvmdbusd/cfg.py
++LVM2.2.03.11/daemons/lvmdbusd/cmdhandler.py
++LVM2.2.03.11/daemons/lvmdbusd/fetch.py
++LVM2.2.03.11/daemons/lvmdbusd/job.py
++LVM2.2.03.11/daemons/lvmdbusd/loader.py
++LVM2.2.03.11/daemons/lvmdbusd/lv.py
++LVM2.2.03.11/daemons/lvmdbusd/lvm_shell_proxy.py.in
++LVM2.2.03.11/daemons/lvmdbusd/lvmdb.py.in
++LVM2.2.03.11/daemons/lvmdbusd/lvmdbusd.in
++LVM2.2.03.11/daemons/lvmdbusd/main.py
++LVM2.2.03.11/daemons/lvmdbusd/manager.py
++LVM2.2.03.11/daemons/lvmdbusd/objectmanager.py
++LVM2.2.03.11/daemons/lvmdbusd/path.py.in
++LVM2.2.03.11/daemons/lvmdbusd/pv.py
++LVM2.2.03.11/daemons/lvmdbusd/request.py
++LVM2.2.03.11/daemons/lvmdbusd/state.py
++LVM2.2.03.11/daemons/lvmdbusd/udevwatch.py
++LVM2.2.03.11/daemons/lvmdbusd/utils.py
++LVM2.2.03.11/daemons/lvmdbusd/vg.py
++LVM2.2.03.11/daemons/lvmlockd/
++LVM2.2.03.11/daemons/lvmlockd/Makefile.in
++LVM2.2.03.11/daemons/lvmlockd/lvmlockctl.c
++LVM2.2.03.11/daemons/lvmlockd/lvmlockd-client.h
++LVM2.2.03.11/daemons/lvmlockd/lvmlockd-core.c
++LVM2.2.03.11/daemons/lvmlockd/lvmlockd-dlm.c
++LVM2.2.03.11/daemons/lvmlockd/lvmlockd-internal.h
++LVM2.2.03.11/daemons/lvmlockd/lvmlockd-sanlock.c
++LVM2.2.03.11/daemons/lvmpolld/
++LVM2.2.03.11/daemons/lvmpolld/Makefile.in
++LVM2.2.03.11/daemons/lvmpolld/lvmpolld-cmd-utils.c
++LVM2.2.03.11/daemons/lvmpolld/lvmpolld-cmd-utils.h
++LVM2.2.03.11/daemons/lvmpolld/lvmpolld-common.h
++LVM2.2.03.11/daemons/lvmpolld/lvmpolld-core.c
++LVM2.2.03.11/daemons/lvmpolld/lvmpolld-data-utils.c
++LVM2.2.03.11/daemons/lvmpolld/lvmpolld-data-utils.h
++LVM2.2.03.11/daemons/lvmpolld/lvmpolld-protocol.h
++LVM2.2.03.11/daemons/lvmpolld/polling_ops.h
++LVM2.2.03.11/device_mapper/
++LVM2.2.03.11/device_mapper/Makefile
++LVM2.2.03.11/device_mapper/all.h
++LVM2.2.03.11/device_mapper/datastruct/
++LVM2.2.03.11/device_mapper/datastruct/bitset.c
++LVM2.2.03.11/device_mapper/ioctl/
++LVM2.2.03.11/device_mapper/ioctl/libdm-iface.c
++LVM2.2.03.11/device_mapper/ioctl/libdm-targets.h
++LVM2.2.03.11/device_mapper/libdm-common.c
++LVM2.2.03.11/device_mapper/libdm-common.h
++LVM2.2.03.11/device_mapper/libdm-config.c
++LVM2.2.03.11/device_mapper/libdm-deptree.c
++LVM2.2.03.11/device_mapper/libdm-file.c
++LVM2.2.03.11/device_mapper/libdm-report.c
++LVM2.2.03.11/device_mapper/libdm-string.c
++LVM2.2.03.11/device_mapper/libdm-targets.c
++LVM2.2.03.11/device_mapper/libdm-timestamp.c
++LVM2.2.03.11/device_mapper/misc/
++LVM2.2.03.11/device_mapper/misc/dm-ioctl.h
++LVM2.2.03.11/device_mapper/misc/dm-log-userspace.h
++LVM2.2.03.11/device_mapper/misc/dm-logging.h
++LVM2.2.03.11/device_mapper/misc/dmlib.h
++LVM2.2.03.11/device_mapper/misc/kdev_t.h
++LVM2.2.03.11/device_mapper/mm/
++LVM2.2.03.11/device_mapper/mm/pool-debug.c
++LVM2.2.03.11/device_mapper/mm/pool-fast.c
++LVM2.2.03.11/device_mapper/mm/pool.c
++LVM2.2.03.11/device_mapper/regex/
++LVM2.2.03.11/device_mapper/regex/matcher.c
++LVM2.2.03.11/device_mapper/regex/parse_rx.c
++LVM2.2.03.11/device_mapper/regex/parse_rx.h
++LVM2.2.03.11/device_mapper/regex/ttree.c
++LVM2.2.03.11/device_mapper/regex/ttree.h
++LVM2.2.03.11/device_mapper/vdo/
++LVM2.2.03.11/device_mapper/vdo/status.c
++LVM2.2.03.11/device_mapper/vdo/target.h
++LVM2.2.03.11/device_mapper/vdo/vdo_limits.h
++LVM2.2.03.11/device_mapper/vdo/vdo_target.c
++LVM2.2.03.11/doc/
++LVM2.2.03.11/doc/example_cmdlib.c
++LVM2.2.03.11/doc/kernel/
++LVM2.2.03.11/doc/kernel/cache-policies.txt
++LVM2.2.03.11/doc/kernel/cache.txt
++LVM2.2.03.11/doc/kernel/crypt.txt
++LVM2.2.03.11/doc/kernel/delay.txt
++LVM2.2.03.11/doc/kernel/era.txt
++LVM2.2.03.11/doc/kernel/flakey.txt
++LVM2.2.03.11/doc/kernel/integrity.txt
++LVM2.2.03.11/doc/kernel/io.txt
++LVM2.2.03.11/doc/kernel/kcopyd.txt
++LVM2.2.03.11/doc/kernel/linear.txt
++LVM2.2.03.11/doc/kernel/log-writes.txt
++LVM2.2.03.11/doc/kernel/log.txt
++LVM2.2.03.11/doc/kernel/persistent-data.txt
++LVM2.2.03.11/doc/kernel/queue-length.txt
++LVM2.2.03.11/doc/kernel/raid.txt
++LVM2.2.03.11/doc/kernel/service-time.txt
++LVM2.2.03.11/doc/kernel/snapshot.txt
++LVM2.2.03.11/doc/kernel/statistics.txt
++LVM2.2.03.11/doc/kernel/striped.txt
++LVM2.2.03.11/doc/kernel/switch.txt
++LVM2.2.03.11/doc/kernel/thin-provisioning.txt
++LVM2.2.03.11/doc/kernel/uevent.txt
++LVM2.2.03.11/doc/kernel/verity.txt
++LVM2.2.03.11/doc/kernel/zero.txt
++LVM2.2.03.11/doc/kernel/zoned.txt
++LVM2.2.03.11/doc/lvm-disk-reading.txt
++LVM2.2.03.11/doc/lvm2-raid.txt
++LVM2.2.03.11/doc/lvm_fault_handling.txt
++LVM2.2.03.11/doc/lvmetad_design.txt
++LVM2.2.03.11/doc/lvmpolld_overview.txt
++LVM2.2.03.11/doc/pvmove_outline.txt
++LVM2.2.03.11/doc/refactoring.txt
++LVM2.2.03.11/doc/release-notes/
++LVM2.2.03.11/doc/release-notes/2.02.178
++LVM2.2.03.11/doc/tagging.txt
++LVM2.2.03.11/doc/testing.txt
++LVM2.2.03.11/doc/udev_assembly.txt
++LVM2.2.03.11/doc/unit-tests.txt
++LVM2.2.03.11/doc/vdo.md
++LVM2.2.03.11/include/
++LVM2.2.03.11/include/Makefile.in
++LVM2.2.03.11/include/configure.h.in
++LVM2.2.03.11/include/lvm-version.h.in
++LVM2.2.03.11/lib/
++LVM2.2.03.11/lib/Makefile.in
++LVM2.2.03.11/lib/activate/
++LVM2.2.03.11/lib/activate/activate.c
++LVM2.2.03.11/lib/activate/activate.h
++LVM2.2.03.11/lib/activate/dev_manager.c
++LVM2.2.03.11/lib/activate/dev_manager.h
++LVM2.2.03.11/lib/activate/fs.c
++LVM2.2.03.11/lib/activate/fs.h
++LVM2.2.03.11/lib/activate/targets.h
++LVM2.2.03.11/lib/cache/
++LVM2.2.03.11/lib/cache/lvmcache.c
++LVM2.2.03.11/lib/cache/lvmcache.h
++LVM2.2.03.11/lib/cache_segtype/
++LVM2.2.03.11/lib/cache_segtype/cache.c
++LVM2.2.03.11/lib/commands/
++LVM2.2.03.11/lib/commands/toolcontext.c
++LVM2.2.03.11/lib/commands/toolcontext.h
++LVM2.2.03.11/lib/config/
++LVM2.2.03.11/lib/config/config.c
++LVM2.2.03.11/lib/config/config.h
++LVM2.2.03.11/lib/config/config_settings.h
++LVM2.2.03.11/lib/config/defaults.h
++LVM2.2.03.11/lib/datastruct/
++LVM2.2.03.11/lib/datastruct/btree.c
++LVM2.2.03.11/lib/datastruct/btree.h
++LVM2.2.03.11/lib/datastruct/str_list.c
++LVM2.2.03.11/lib/datastruct/str_list.h
++LVM2.2.03.11/lib/device/
++LVM2.2.03.11/lib/device/bcache-utils.c
++LVM2.2.03.11/lib/device/bcache.c
++LVM2.2.03.11/lib/device/bcache.h
++LVM2.2.03.11/lib/device/dev-cache.c
++LVM2.2.03.11/lib/device/dev-cache.h
++LVM2.2.03.11/lib/device/dev-dasd.c
++LVM2.2.03.11/lib/device/dev-ext-udev-constants.h
++LVM2.2.03.11/lib/device/dev-ext.c
++LVM2.2.03.11/lib/device/dev-io.c
++LVM2.2.03.11/lib/device/dev-luks.c
++LVM2.2.03.11/lib/device/dev-lvm1-pool.c
++LVM2.2.03.11/lib/device/dev-md.c
++LVM2.2.03.11/lib/device/dev-swap.c
++LVM2.2.03.11/lib/device/dev-type.c
++LVM2.2.03.11/lib/device/dev-type.h
++LVM2.2.03.11/lib/device/device-types.h
++LVM2.2.03.11/lib/device/device.h
++LVM2.2.03.11/lib/display/
++LVM2.2.03.11/lib/display/display.c
++LVM2.2.03.11/lib/display/display.h
++LVM2.2.03.11/lib/error/
++LVM2.2.03.11/lib/error/errseg.c
++LVM2.2.03.11/lib/filters/
++LVM2.2.03.11/lib/filters/filter-composite.c
++LVM2.2.03.11/lib/filters/filter-fwraid.c
++LVM2.2.03.11/lib/filters/filter-internal.c
++LVM2.2.03.11/lib/filters/filter-md.c
++LVM2.2.03.11/lib/filters/filter-mpath.c
++LVM2.2.03.11/lib/filters/filter-partitioned.c
++LVM2.2.03.11/lib/filters/filter-persistent.c
++LVM2.2.03.11/lib/filters/filter-regex.c
++LVM2.2.03.11/lib/filters/filter-signature.c
++LVM2.2.03.11/lib/filters/filter-sysfs.c
++LVM2.2.03.11/lib/filters/filter-type.c
++LVM2.2.03.11/lib/filters/filter-usable.c
++LVM2.2.03.11/lib/filters/filter.h
++LVM2.2.03.11/lib/format_text/
++LVM2.2.03.11/lib/format_text/archive.c
++LVM2.2.03.11/lib/format_text/archiver.c
++LVM2.2.03.11/lib/format_text/archiver.h
++LVM2.2.03.11/lib/format_text/export.c
++LVM2.2.03.11/lib/format_text/flags.c
++LVM2.2.03.11/lib/format_text/format-text.c
++LVM2.2.03.11/lib/format_text/format-text.h
++LVM2.2.03.11/lib/format_text/import-export.h
++LVM2.2.03.11/lib/format_text/import.c
++LVM2.2.03.11/lib/format_text/import_vsn1.c
++LVM2.2.03.11/lib/format_text/layout.h
++LVM2.2.03.11/lib/format_text/text_export.h
++LVM2.2.03.11/lib/format_text/text_import.h
++LVM2.2.03.11/lib/format_text/text_label.c
++LVM2.2.03.11/lib/freeseg/
++LVM2.2.03.11/lib/freeseg/freeseg.c
++LVM2.2.03.11/lib/integrity/
++LVM2.2.03.11/lib/integrity/integrity.c
++LVM2.2.03.11/lib/label/
++LVM2.2.03.11/lib/label/hints.c
++LVM2.2.03.11/lib/label/hints.h
++LVM2.2.03.11/lib/label/label.c
++LVM2.2.03.11/lib/label/label.h
++LVM2.2.03.11/lib/locking/
++LVM2.2.03.11/lib/locking/.exported_symbols
++LVM2.2.03.11/lib/locking/file_locking.c
++LVM2.2.03.11/lib/locking/locking.c
++LVM2.2.03.11/lib/locking/locking.h
++LVM2.2.03.11/lib/locking/locking_types.h
++LVM2.2.03.11/lib/locking/lvmlockd.c
++LVM2.2.03.11/lib/locking/lvmlockd.h
++LVM2.2.03.11/lib/log/
++LVM2.2.03.11/lib/log/log.c
++LVM2.2.03.11/lib/log/log.h
++LVM2.2.03.11/lib/log/lvm-logging.h
++LVM2.2.03.11/lib/lvmpolld/
++LVM2.2.03.11/lib/lvmpolld/lvmpolld-client.c
++LVM2.2.03.11/lib/lvmpolld/lvmpolld-client.h
++LVM2.2.03.11/lib/lvmpolld/polldaemon.h
++LVM2.2.03.11/lib/metadata/
++LVM2.2.03.11/lib/metadata/cache_manip.c
++LVM2.2.03.11/lib/metadata/integrity_manip.c
++LVM2.2.03.11/lib/metadata/lv.c
++LVM2.2.03.11/lib/metadata/lv.h
++LVM2.2.03.11/lib/metadata/lv_alloc.h
++LVM2.2.03.11/lib/metadata/lv_manip.c
++LVM2.2.03.11/lib/metadata/merge.c
++LVM2.2.03.11/lib/metadata/metadata-exported.h
++LVM2.2.03.11/lib/metadata/metadata.c
++LVM2.2.03.11/lib/metadata/metadata.h
++LVM2.2.03.11/lib/metadata/mirror.c
++LVM2.2.03.11/lib/metadata/pool_manip.c
++LVM2.2.03.11/lib/metadata/pv.c
++LVM2.2.03.11/lib/metadata/pv.h
++LVM2.2.03.11/lib/metadata/pv_alloc.h
++LVM2.2.03.11/lib/metadata/pv_list.c
++LVM2.2.03.11/lib/metadata/pv_manip.c
++LVM2.2.03.11/lib/metadata/pv_map.c
++LVM2.2.03.11/lib/metadata/pv_map.h
++LVM2.2.03.11/lib/metadata/raid_manip.c
++LVM2.2.03.11/lib/metadata/segtype.c
++LVM2.2.03.11/lib/metadata/segtype.h
++LVM2.2.03.11/lib/metadata/snapshot_manip.c
++LVM2.2.03.11/lib/metadata/takeover_matrix.h
++LVM2.2.03.11/lib/metadata/thin_manip.c
++LVM2.2.03.11/lib/metadata/vdo_manip.c
++LVM2.2.03.11/lib/metadata/vg.c
++LVM2.2.03.11/lib/metadata/vg.h
++LVM2.2.03.11/lib/metadata/writecache_manip.c
++LVM2.2.03.11/lib/mirror/
++LVM2.2.03.11/lib/mirror/mirrored.c
++LVM2.2.03.11/lib/misc/
++LVM2.2.03.11/lib/misc/crc.c
++LVM2.2.03.11/lib/misc/crc.h
++LVM2.2.03.11/lib/misc/crc_gen.c
++LVM2.2.03.11/lib/misc/intl.h
++LVM2.2.03.11/lib/misc/last-path-component.h
++LVM2.2.03.11/lib/misc/lib.h
++LVM2.2.03.11/lib/misc/lvm-exec.c
++LVM2.2.03.11/lib/misc/lvm-exec.h
++LVM2.2.03.11/lib/misc/lvm-file.c
++LVM2.2.03.11/lib/misc/lvm-file.h
++LVM2.2.03.11/lib/misc/lvm-flock.c
++LVM2.2.03.11/lib/misc/lvm-flock.h
++LVM2.2.03.11/lib/misc/lvm-globals.c
++LVM2.2.03.11/lib/misc/lvm-globals.h
++LVM2.2.03.11/lib/misc/lvm-maths.c
++LVM2.2.03.11/lib/misc/lvm-maths.h
++LVM2.2.03.11/lib/misc/lvm-percent.c
++LVM2.2.03.11/lib/misc/lvm-percent.h
++LVM2.2.03.11/lib/misc/lvm-signal.c
++LVM2.2.03.11/lib/misc/lvm-signal.h
++LVM2.2.03.11/lib/misc/lvm-string.c
++LVM2.2.03.11/lib/misc/lvm-string.h
++LVM2.2.03.11/lib/misc/lvm-wrappers.c
++LVM2.2.03.11/lib/misc/lvm-wrappers.h
++LVM2.2.03.11/lib/misc/sharedlib.c
++LVM2.2.03.11/lib/misc/sharedlib.h
++LVM2.2.03.11/lib/misc/util.h
++LVM2.2.03.11/lib/mm/
++LVM2.2.03.11/lib/mm/memlock.c
++LVM2.2.03.11/lib/mm/memlock.h
++LVM2.2.03.11/lib/mm/xlate.h
++LVM2.2.03.11/lib/notify/
++LVM2.2.03.11/lib/notify/lvmnotify.c
++LVM2.2.03.11/lib/notify/lvmnotify.h
++LVM2.2.03.11/lib/properties/
++LVM2.2.03.11/lib/properties/prop_common.c
++LVM2.2.03.11/lib/properties/prop_common.h
++LVM2.2.03.11/lib/raid/
++LVM2.2.03.11/lib/raid/raid.c
++LVM2.2.03.11/lib/report/
++LVM2.2.03.11/lib/report/columns-cmdlog.h
++LVM2.2.03.11/lib/report/columns-devtypes.h
++LVM2.2.03.11/lib/report/columns.h
++LVM2.2.03.11/lib/report/properties.c
++LVM2.2.03.11/lib/report/properties.h
++LVM2.2.03.11/lib/report/report.c
++LVM2.2.03.11/lib/report/report.h
++LVM2.2.03.11/lib/report/values.h
++LVM2.2.03.11/lib/snapshot/
++LVM2.2.03.11/lib/snapshot/snapshot.c
++LVM2.2.03.11/lib/striped/
++LVM2.2.03.11/lib/striped/striped.c
++LVM2.2.03.11/lib/thin/
++LVM2.2.03.11/lib/thin/thin.c
++LVM2.2.03.11/lib/unknown/
++LVM2.2.03.11/lib/unknown/unknown.c
++LVM2.2.03.11/lib/uuid/
++LVM2.2.03.11/lib/uuid/uuid.c
++LVM2.2.03.11/lib/uuid/uuid.h
++LVM2.2.03.11/lib/vdo/
++LVM2.2.03.11/lib/vdo/vdo.c
++LVM2.2.03.11/lib/writecache/
++LVM2.2.03.11/lib/writecache/writecache.c
++LVM2.2.03.11/lib/zero/
++LVM2.2.03.11/lib/zero/zero.c
++LVM2.2.03.11/libdaemon/
++LVM2.2.03.11/libdaemon/Makefile.in
++LVM2.2.03.11/libdaemon/client/
++LVM2.2.03.11/libdaemon/client/Makefile.in
++LVM2.2.03.11/libdaemon/client/config-util.c
++LVM2.2.03.11/libdaemon/client/config-util.h
++LVM2.2.03.11/libdaemon/client/daemon-client.c
++LVM2.2.03.11/libdaemon/client/daemon-client.h
++LVM2.2.03.11/libdaemon/client/daemon-io.c
++LVM2.2.03.11/libdaemon/client/daemon-io.h
++LVM2.2.03.11/libdaemon/server/
++LVM2.2.03.11/libdaemon/server/Makefile.in
++LVM2.2.03.11/libdaemon/server/daemon-log.c
++LVM2.2.03.11/libdaemon/server/daemon-log.h
++LVM2.2.03.11/libdaemon/server/daemon-server.c
++LVM2.2.03.11/libdaemon/server/daemon-server.h
++LVM2.2.03.11/libdm/
++LVM2.2.03.11/libdm/.exported_symbols
++LVM2.2.03.11/libdm/.exported_symbols.Base
++LVM2.2.03.11/libdm/.exported_symbols.DM_1_02_100
++LVM2.2.03.11/libdm/.exported_symbols.DM_1_02_101
++LVM2.2.03.11/libdm/.exported_symbols.DM_1_02_103
++LVM2.2.03.11/libdm/.exported_symbols.DM_1_02_104
++LVM2.2.03.11/libdm/.exported_symbols.DM_1_02_105
++LVM2.2.03.11/libdm/.exported_symbols.DM_1_02_106
++LVM2.2.03.11/libdm/.exported_symbols.DM_1_02_107
++LVM2.2.03.11/libdm/.exported_symbols.DM_1_02_110
++LVM2.2.03.11/libdm/.exported_symbols.DM_1_02_113
++LVM2.2.03.11/libdm/.exported_symbols.DM_1_02_124
++LVM2.2.03.11/libdm/.exported_symbols.DM_1_02_128
++LVM2.2.03.11/libdm/.exported_symbols.DM_1_02_129
++LVM2.2.03.11/libdm/.exported_symbols.DM_1_02_131
++LVM2.2.03.11/libdm/.exported_symbols.DM_1_02_133
++LVM2.2.03.11/libdm/.exported_symbols.DM_1_02_135
++LVM2.2.03.11/libdm/.exported_symbols.DM_1_02_138
++LVM2.2.03.11/libdm/.exported_symbols.DM_1_02_141
++LVM2.2.03.11/libdm/.exported_symbols.DM_1_02_147
++LVM2.2.03.11/libdm/.exported_symbols.DM_1_02_97
++LVM2.2.03.11/libdm/.exported_symbols.DM_1_02_98
++LVM2.2.03.11/libdm/.exported_symbols.DM_1_02_99
++LVM2.2.03.11/libdm/Makefile.in
++LVM2.2.03.11/libdm/datastruct/
++LVM2.2.03.11/libdm/datastruct/bitset.c
++LVM2.2.03.11/libdm/datastruct/hash.c
++LVM2.2.03.11/libdm/datastruct/list.c
++LVM2.2.03.11/libdm/dm-tools/
++LVM2.2.03.11/libdm/dm-tools/Makefile.in
++LVM2.2.03.11/libdm/dm-tools/dmfilemapd.c
++LVM2.2.03.11/libdm/dm-tools/dmsetup.c
++LVM2.2.03.11/libdm/dm-tools/util.h
++LVM2.2.03.11/libdm/ioctl/
++LVM2.2.03.11/libdm/ioctl/libdm-iface.c
++LVM2.2.03.11/libdm/ioctl/libdm-targets.h
++LVM2.2.03.11/libdm/libdevmapper.h
++LVM2.2.03.11/libdm/libdevmapper.pc.in
++LVM2.2.03.11/libdm/libdm-common.c
++LVM2.2.03.11/libdm/libdm-common.h
++LVM2.2.03.11/libdm/libdm-config.c
++LVM2.2.03.11/libdm/libdm-deptree.c
++LVM2.2.03.11/libdm/libdm-file.c
++LVM2.2.03.11/libdm/libdm-report.c
++LVM2.2.03.11/libdm/libdm-stats.c
++LVM2.2.03.11/libdm/libdm-string.c
++LVM2.2.03.11/libdm/libdm-targets.c
++LVM2.2.03.11/libdm/libdm-timestamp.c
++LVM2.2.03.11/libdm/make.tmpl.in
++LVM2.2.03.11/libdm/misc/
++LVM2.2.03.11/libdm/misc/dm-ioctl.h
++LVM2.2.03.11/libdm/misc/dm-log-userspace.h
++LVM2.2.03.11/libdm/misc/dm-logging.h
++LVM2.2.03.11/libdm/misc/dmlib.h
++LVM2.2.03.11/libdm/misc/kdev_t.h
++LVM2.2.03.11/libdm/mm/
++LVM2.2.03.11/libdm/mm/dbg_malloc.c
++LVM2.2.03.11/libdm/mm/pool-debug.c
++LVM2.2.03.11/libdm/mm/pool-fast.c
++LVM2.2.03.11/libdm/mm/pool.c
++LVM2.2.03.11/libdm/regex/
++LVM2.2.03.11/libdm/regex/matcher.c
++LVM2.2.03.11/libdm/regex/parse_rx.c
++LVM2.2.03.11/libdm/regex/parse_rx.h
++LVM2.2.03.11/libdm/regex/ttree.c
++LVM2.2.03.11/libdm/regex/ttree.h
++LVM2.2.03.11/make.tmpl.in
++LVM2.2.03.11/man/
++LVM2.2.03.11/man/Makefile.in
++LVM2.2.03.11/man/blkdeactivate.8_main
++LVM2.2.03.11/man/cmirrord.8_main
++LVM2.2.03.11/man/dmeventd.8_main
++LVM2.2.03.11/man/dmfilemapd.8_main
++LVM2.2.03.11/man/dmsetup.8_main
++LVM2.2.03.11/man/dmstats.8_main
++LVM2.2.03.11/man/fsadm.8_main
++LVM2.2.03.11/man/lvchange.8_des
++LVM2.2.03.11/man/lvchange.8_end
++LVM2.2.03.11/man/lvchange.8_pregen
++LVM2.2.03.11/man/lvconvert.8_des
++LVM2.2.03.11/man/lvconvert.8_end
++LVM2.2.03.11/man/lvconvert.8_pregen
++LVM2.2.03.11/man/lvcreate.8_des
++LVM2.2.03.11/man/lvcreate.8_end
++LVM2.2.03.11/man/lvcreate.8_pregen
++LVM2.2.03.11/man/lvdisplay.8_des
++LVM2.2.03.11/man/lvdisplay.8_end
++LVM2.2.03.11/man/lvdisplay.8_pregen
++LVM2.2.03.11/man/lvextend.8_des
++LVM2.2.03.11/man/lvextend.8_end
++LVM2.2.03.11/man/lvextend.8_pregen
++LVM2.2.03.11/man/lvm-fullreport.8_des
++LVM2.2.03.11/man/lvm-fullreport.8_end
++LVM2.2.03.11/man/lvm-fullreport.8_pregen
++LVM2.2.03.11/man/lvm-lvpoll.8_des
++LVM2.2.03.11/man/lvm-lvpoll.8_end
++LVM2.2.03.11/man/lvm-lvpoll.8_pregen
++LVM2.2.03.11/man/lvm.8_main
++LVM2.2.03.11/man/lvm.conf.5_main
++LVM2.2.03.11/man/lvm2-activation-generator.8_main
++LVM2.2.03.11/man/lvmcache.7_main
++LVM2.2.03.11/man/lvmconfig.8_des
++LVM2.2.03.11/man/lvmconfig.8_end
++LVM2.2.03.11/man/lvmconfig.8_pregen
++LVM2.2.03.11/man/lvmdbusd.8_main
++LVM2.2.03.11/man/lvmdiskscan.8_des
++LVM2.2.03.11/man/lvmdiskscan.8_end
++LVM2.2.03.11/man/lvmdiskscan.8_pregen
++LVM2.2.03.11/man/lvmdump.8_main
++LVM2.2.03.11/man/lvmlockctl.8_main
++LVM2.2.03.11/man/lvmlockd.8_main
++LVM2.2.03.11/man/lvmpolld.8_main
++LVM2.2.03.11/man/lvmraid.7_main
++LVM2.2.03.11/man/lvmreport.7_main
++LVM2.2.03.11/man/lvmsadc.8_main
++LVM2.2.03.11/man/lvmsar.8_main
++LVM2.2.03.11/man/lvmsystemid.7_main
++LVM2.2.03.11/man/lvmthin.7_main
++LVM2.2.03.11/man/lvmvdo.7_main
++LVM2.2.03.11/man/lvreduce.8_des
++LVM2.2.03.11/man/lvreduce.8_end
++LVM2.2.03.11/man/lvreduce.8_pregen
++LVM2.2.03.11/man/lvremove.8_des
++LVM2.2.03.11/man/lvremove.8_end
++LVM2.2.03.11/man/lvremove.8_pregen
++LVM2.2.03.11/man/lvrename.8_des
++LVM2.2.03.11/man/lvrename.8_end
++LVM2.2.03.11/man/lvrename.8_pregen
++LVM2.2.03.11/man/lvresize.8_des
++LVM2.2.03.11/man/lvresize.8_end
++LVM2.2.03.11/man/lvresize.8_pregen
++LVM2.2.03.11/man/lvs.8_des
++LVM2.2.03.11/man/lvs.8_end
++LVM2.2.03.11/man/lvs.8_pregen
++LVM2.2.03.11/man/lvscan.8_des
++LVM2.2.03.11/man/lvscan.8_end
++LVM2.2.03.11/man/lvscan.8_pregen
++LVM2.2.03.11/man/pvchange.8_des
++LVM2.2.03.11/man/pvchange.8_end
++LVM2.2.03.11/man/pvchange.8_pregen
++LVM2.2.03.11/man/pvck.8_des
++LVM2.2.03.11/man/pvck.8_end
++LVM2.2.03.11/man/pvck.8_pregen
++LVM2.2.03.11/man/pvcreate.8_des
++LVM2.2.03.11/man/pvcreate.8_end
++LVM2.2.03.11/man/pvcreate.8_pregen
++LVM2.2.03.11/man/pvdisplay.8_des
++LVM2.2.03.11/man/pvdisplay.8_end
++LVM2.2.03.11/man/pvdisplay.8_pregen
++LVM2.2.03.11/man/pvmove.8_des
++LVM2.2.03.11/man/pvmove.8_end
++LVM2.2.03.11/man/pvmove.8_pregen
++LVM2.2.03.11/man/pvremove.8_des
++LVM2.2.03.11/man/pvremove.8_end
++LVM2.2.03.11/man/pvremove.8_pregen
++LVM2.2.03.11/man/pvresize.8_des
++LVM2.2.03.11/man/pvresize.8_end
++LVM2.2.03.11/man/pvresize.8_pregen
++LVM2.2.03.11/man/pvs.8_des
++LVM2.2.03.11/man/pvs.8_end
++LVM2.2.03.11/man/pvs.8_pregen
++LVM2.2.03.11/man/pvscan.8_des
++LVM2.2.03.11/man/pvscan.8_end
++LVM2.2.03.11/man/pvscan.8_pregen
++LVM2.2.03.11/man/see_also.end
++LVM2.2.03.11/man/vgcfgbackup.8_des
++LVM2.2.03.11/man/vgcfgbackup.8_end
++LVM2.2.03.11/man/vgcfgbackup.8_pregen
++LVM2.2.03.11/man/vgcfgrestore.8_des
++LVM2.2.03.11/man/vgcfgrestore.8_end
++LVM2.2.03.11/man/vgcfgrestore.8_pregen
++LVM2.2.03.11/man/vgchange.8_des
++LVM2.2.03.11/man/vgchange.8_end
++LVM2.2.03.11/man/vgchange.8_pregen
++LVM2.2.03.11/man/vgck.8_des
++LVM2.2.03.11/man/vgck.8_end
++LVM2.2.03.11/man/vgck.8_pregen
++LVM2.2.03.11/man/vgconvert.8_des
++LVM2.2.03.11/man/vgconvert.8_end
++LVM2.2.03.11/man/vgconvert.8_pregen
++LVM2.2.03.11/man/vgcreate.8_des
++LVM2.2.03.11/man/vgcreate.8_end
++LVM2.2.03.11/man/vgcreate.8_pregen
++LVM2.2.03.11/man/vgdisplay.8_des
++LVM2.2.03.11/man/vgdisplay.8_end
++LVM2.2.03.11/man/vgdisplay.8_pregen
++LVM2.2.03.11/man/vgexport.8_des
++LVM2.2.03.11/man/vgexport.8_end
++LVM2.2.03.11/man/vgexport.8_pregen
++LVM2.2.03.11/man/vgextend.8_des
++LVM2.2.03.11/man/vgextend.8_end
++LVM2.2.03.11/man/vgextend.8_pregen
++LVM2.2.03.11/man/vgimport.8_des
++LVM2.2.03.11/man/vgimport.8_end
++LVM2.2.03.11/man/vgimport.8_pregen
++LVM2.2.03.11/man/vgimportclone.8_des
++LVM2.2.03.11/man/vgimportclone.8_end
++LVM2.2.03.11/man/vgimportclone.8_pregen
++LVM2.2.03.11/man/vgmerge.8_des
++LVM2.2.03.11/man/vgmerge.8_end
++LVM2.2.03.11/man/vgmerge.8_pregen
++LVM2.2.03.11/man/vgmknodes.8_des
++LVM2.2.03.11/man/vgmknodes.8_end
++LVM2.2.03.11/man/vgmknodes.8_pregen
++LVM2.2.03.11/man/vgreduce.8_des
++LVM2.2.03.11/man/vgreduce.8_end
++LVM2.2.03.11/man/vgreduce.8_pregen
++LVM2.2.03.11/man/vgremove.8_des
++LVM2.2.03.11/man/vgremove.8_end
++LVM2.2.03.11/man/vgremove.8_pregen
++LVM2.2.03.11/man/vgrename.8_des
++LVM2.2.03.11/man/vgrename.8_end
++LVM2.2.03.11/man/vgrename.8_pregen
++LVM2.2.03.11/man/vgs.8_des
++LVM2.2.03.11/man/vgs.8_end
++LVM2.2.03.11/man/vgs.8_pregen
++LVM2.2.03.11/man/vgscan.8_des
++LVM2.2.03.11/man/vgscan.8_end
++LVM2.2.03.11/man/vgscan.8_pregen
++LVM2.2.03.11/man/vgsplit.8_des
++LVM2.2.03.11/man/vgsplit.8_end
++LVM2.2.03.11/man/vgsplit.8_pregen
++LVM2.2.03.11/po/
++LVM2.2.03.11/po/Makefile.in
++LVM2.2.03.11/po/de.po
++LVM2.2.03.11/po/lvm2.po
++LVM2.2.03.11/po/pogen.h
++LVM2.2.03.11/scripts/
++LVM2.2.03.11/scripts/Makefile.in
++LVM2.2.03.11/scripts/VolumeGroup.ocf
++LVM2.2.03.11/scripts/blk_availability_init_red_hat.in
++LVM2.2.03.11/scripts/blk_availability_systemd_red_hat.service.in
++LVM2.2.03.11/scripts/blkdeactivate.sh.in
++LVM2.2.03.11/scripts/cmirrord_init_red_hat.in
++LVM2.2.03.11/scripts/code-stats.rb
++LVM2.2.03.11/scripts/com.redhat.lvmdbus1.conf
++LVM2.2.03.11/scripts/com.redhat.lvmdbus1.service.in
++LVM2.2.03.11/scripts/dm_event_systemd_red_hat.service.in
++LVM2.2.03.11/scripts/dm_event_systemd_red_hat.socket.in
++LVM2.2.03.11/scripts/fsadm.sh
++LVM2.2.03.11/scripts/gdbinit
++LVM2.2.03.11/scripts/generator-internals.c
++LVM2.2.03.11/scripts/lvm2-pvscan.service.in
++LVM2.2.03.11/scripts/lvm2_activation_generator_systemd_red_hat.c
++LVM2.2.03.11/scripts/lvm2_cmirrord_systemd_red_hat.service.in
++LVM2.2.03.11/scripts/lvm2_lvmdbusd_systemd_red_hat.service.in
++LVM2.2.03.11/scripts/lvm2_lvmpolld_init_red_hat.in
++LVM2.2.03.11/scripts/lvm2_lvmpolld_systemd_red_hat.service.in
++LVM2.2.03.11/scripts/lvm2_lvmpolld_systemd_red_hat.socket.in
++LVM2.2.03.11/scripts/lvm2_monitoring_init_red_hat.in
++LVM2.2.03.11/scripts/lvm2_monitoring_init_rhel4
++LVM2.2.03.11/scripts/lvm2_monitoring_systemd_red_hat.service.in
++LVM2.2.03.11/scripts/lvm2_tmpfiles_red_hat.conf.in
++LVM2.2.03.11/scripts/lvm2create_initrd/
++LVM2.2.03.11/scripts/lvm2create_initrd/Makefile
++LVM2.2.03.11/scripts/lvm2create_initrd/README
++LVM2.2.03.11/scripts/lvm2create_initrd/lvm2create_initrd
++LVM2.2.03.11/scripts/lvm2create_initrd/lvm2create_initrd.8
++LVM2.2.03.11/scripts/lvm2create_initrd/lvm2create_initrd.pod
++LVM2.2.03.11/scripts/lvm2create_initrd/lvm2udev
++LVM2.2.03.11/scripts/lvmdump.sh.in
++LVM2.2.03.11/scripts/lvmlockd.service.in
++LVM2.2.03.11/scripts/lvmlocks.service.in
++LVM2.2.03.11/scripts/relpath.awk
++LVM2.2.03.11/scripts/vgimportclone.sh
++LVM2.2.03.11/test/
++LVM2.2.03.11/test/Makefile.in
++LVM2.2.03.11/test/api/
++LVM2.2.03.11/test/api/dbustest.sh
++LVM2.2.03.11/test/dbus/
++LVM2.2.03.11/test/dbus/lvmdbustest.py
++LVM2.2.03.11/test/dbus/testlib.py
++LVM2.2.03.11/test/dbus/validatestate.py
++LVM2.2.03.11/test/lib/
++LVM2.2.03.11/test/lib/aux.sh
++LVM2.2.03.11/test/lib/brick-shelltest.h
++LVM2.2.03.11/test/lib/check.sh
++LVM2.2.03.11/test/lib/dmsecuretest.c
++LVM2.2.03.11/test/lib/flavour-ndev-cluster-lvmpolld.sh
++LVM2.2.03.11/test/lib/flavour-ndev-cluster.sh
++LVM2.2.03.11/test/lib/flavour-ndev-lvmpolld.sh
++LVM2.2.03.11/test/lib/flavour-ndev-vanilla.sh
++LVM2.2.03.11/test/lib/flavour-udev-cluster-lvmpolld.sh
++LVM2.2.03.11/test/lib/flavour-udev-cluster.sh
++LVM2.2.03.11/test/lib/flavour-udev-lvmlockd-dlm.sh
++LVM2.2.03.11/test/lib/flavour-udev-lvmlockd-sanlock.sh
++LVM2.2.03.11/test/lib/flavour-udev-lvmlockd-test.sh
++LVM2.2.03.11/test/lib/flavour-udev-lvmpolld.sh
++LVM2.2.03.11/test/lib/flavour-udev-vanilla.sh
++LVM2.2.03.11/test/lib/get.sh
++LVM2.2.03.11/test/lib/harness.c
++LVM2.2.03.11/test/lib/inittest.sh
++LVM2.2.03.11/test/lib/lvm-wrapper.sh
++LVM2.2.03.11/test/lib/mke2fs.conf
++LVM2.2.03.11/test/lib/not.c
++LVM2.2.03.11/test/lib/runner.cpp
++LVM2.2.03.11/test/lib/test-corosync-conf
++LVM2.2.03.11/test/lib/test-dlm-conf
++LVM2.2.03.11/test/lib/test-sanlock-conf
++LVM2.2.03.11/test/lib/utils.sh
++LVM2.2.03.11/test/shell/
++LVM2.2.03.11/test/shell/000-basic.sh
++LVM2.2.03.11/test/shell/aa-lvmlockd-dlm-prepare.sh
++LVM2.2.03.11/test/shell/aa-lvmlockd-sanlock-prepare.sh
++LVM2.2.03.11/test/shell/activate-minor.sh
++LVM2.2.03.11/test/shell/activate-missing-segment.sh
++LVM2.2.03.11/test/shell/activate-missing.sh
++LVM2.2.03.11/test/shell/activate-partial.sh
++LVM2.2.03.11/test/shell/activation-skip.sh
++LVM2.2.03.11/test/shell/allow-mixed-block-sizes.sh
++LVM2.2.03.11/test/shell/backup-read-only.sh
++LVM2.2.03.11/test/shell/cache-metadata2.sh
++LVM2.2.03.11/test/shell/cache-no-discard.sh
++LVM2.2.03.11/test/shell/cache-single-options.sh
++LVM2.2.03.11/test/shell/cache-single-split.sh
++LVM2.2.03.11/test/shell/cache-single-thin.sh
++LVM2.2.03.11/test/shell/cache-single-types.sh
++LVM2.2.03.11/test/shell/cache-single-usage.sh
++LVM2.2.03.11/test/shell/cachevol-cachedevice.sh
++LVM2.2.03.11/test/shell/component-cache.sh
++LVM2.2.03.11/test/shell/component-mirror.sh
++LVM2.2.03.11/test/shell/component-raid.sh
++LVM2.2.03.11/test/shell/component-thin.sh
++LVM2.2.03.11/test/shell/covercmd.sh
++LVM2.2.03.11/test/shell/creation-time.sh
++LVM2.2.03.11/test/shell/discards-thin.sh
++LVM2.2.03.11/test/shell/dmeventd-restart.sh
++LVM2.2.03.11/test/shell/dmsecuretest.sh
++LVM2.2.03.11/test/shell/dmsetup-integrity-keys.sh
++LVM2.2.03.11/test/shell/dmsetup-keyring.sh
++LVM2.2.03.11/test/shell/dmstats-create.sh
++LVM2.2.03.11/test/shell/dmstats-report.sh
++LVM2.2.03.11/test/shell/dumpconfig.sh
++LVM2.2.03.11/test/shell/duplicate-pvs-md0.sh
++LVM2.2.03.11/test/shell/duplicate-pvs-md1.sh
++LVM2.2.03.11/test/shell/duplicate-vgnames.sh
++LVM2.2.03.11/test/shell/duplicate-vgrename.sh
++LVM2.2.03.11/test/shell/error-usage.sh
++LVM2.2.03.11/test/shell/exported.sh
++LVM2.2.03.11/test/shell/fsadm-crypt.sh
++LVM2.2.03.11/test/shell/fsadm-renamed.sh
++LVM2.2.03.11/test/shell/fsadm.sh
++LVM2.2.03.11/test/shell/hints.sh
++LVM2.2.03.11/test/shell/inconsistent-metadata.sh
++LVM2.2.03.11/test/shell/integrity-blocksize-2.sh
++LVM2.2.03.11/test/shell/integrity-blocksize-3.sh
++LVM2.2.03.11/test/shell/integrity-blocksize.sh
++LVM2.2.03.11/test/shell/integrity-dmeventd.sh
++LVM2.2.03.11/test/shell/integrity-large.sh
++LVM2.2.03.11/test/shell/integrity-misc.sh
++LVM2.2.03.11/test/shell/integrity-syncaction.sh
++LVM2.2.03.11/test/shell/integrity.sh
++LVM2.2.03.11/test/shell/large-physical-sector-size.sh
++LVM2.2.03.11/test/shell/listings.sh
++LVM2.2.03.11/test/shell/lock-blocking.sh
++LVM2.2.03.11/test/shell/lock-parallel.sh
++LVM2.2.03.11/test/shell/losetup-partscan.sh
++LVM2.2.03.11/test/shell/lv-ancestry.sh
++LVM2.2.03.11/test/shell/lvchange-cache-mode.sh
++LVM2.2.03.11/test/shell/lvchange-cache-old.sh
++LVM2.2.03.11/test/shell/lvchange-cache-syncaction-raid.sh
++LVM2.2.03.11/test/shell/lvchange-cache.sh
++LVM2.2.03.11/test/shell/lvchange-mirror.sh
++LVM2.2.03.11/test/shell/lvchange-partial-raid10.sh
++LVM2.2.03.11/test/shell/lvchange-partial.sh
++LVM2.2.03.11/test/shell/lvchange-raid-transient-failures.sh
++LVM2.2.03.11/test/shell/lvchange-raid.sh
++LVM2.2.03.11/test/shell/lvchange-raid1-writemostly.sh
++LVM2.2.03.11/test/shell/lvchange-raid10.sh
++LVM2.2.03.11/test/shell/lvchange-raid456.sh
++LVM2.2.03.11/test/shell/lvchange-rebuild-raid.sh
++LVM2.2.03.11/test/shell/lvchange-syncaction-raid.sh
++LVM2.2.03.11/test/shell/lvchange-thin.sh
++LVM2.2.03.11/test/shell/lvchange-vdo.sh
++LVM2.2.03.11/test/shell/lvconvert-cache-abort.sh
++LVM2.2.03.11/test/shell/lvconvert-cache-chunks.sh
++LVM2.2.03.11/test/shell/lvconvert-cache-raid.sh
++LVM2.2.03.11/test/shell/lvconvert-cache-smq.sh
++LVM2.2.03.11/test/shell/lvconvert-cache-snapshot.sh
++LVM2.2.03.11/test/shell/lvconvert-cache-thin.sh
++LVM2.2.03.11/test/shell/lvconvert-cache-vdo.sh
++LVM2.2.03.11/test/shell/lvconvert-cache.sh
++LVM2.2.03.11/test/shell/lvconvert-m-raid1-degraded.sh
++LVM2.2.03.11/test/shell/lvconvert-mirror-basic-0.sh
++LVM2.2.03.11/test/shell/lvconvert-mirror-basic-1.sh
++LVM2.2.03.11/test/shell/lvconvert-mirror-basic-2.sh
++LVM2.2.03.11/test/shell/lvconvert-mirror-basic-3.sh
++LVM2.2.03.11/test/shell/lvconvert-mirror-basic.sh
++LVM2.2.03.11/test/shell/lvconvert-mirror-split.sh
++LVM2.2.03.11/test/shell/lvconvert-mirror-updown.sh
++LVM2.2.03.11/test/shell/lvconvert-mirror.sh
++LVM2.2.03.11/test/shell/lvconvert-raid-allocation.sh
++LVM2.2.03.11/test/shell/lvconvert-raid-regionsize.sh
++LVM2.2.03.11/test/shell/lvconvert-raid-reshape-linear_to_raid6-single-type.sh
++LVM2.2.03.11/test/shell/lvconvert-raid-reshape-linear_to_striped-single-type.sh
++LVM2.2.03.11/test/shell/lvconvert-raid-reshape-linear_to_striped.sh
++LVM2.2.03.11/test/shell/lvconvert-raid-reshape-load.sh
++LVM2.2.03.11/test/shell/lvconvert-raid-reshape-striped_to_linear-single-type.sh
++LVM2.2.03.11/test/shell/lvconvert-raid-reshape-striped_to_linear.sh
++LVM2.2.03.11/test/shell/lvconvert-raid-reshape-stripes-load-fail.sh
++LVM2.2.03.11/test/shell/lvconvert-raid-reshape-stripes-load-reload.sh
++LVM2.2.03.11/test/shell/lvconvert-raid-reshape-stripes-load.sh
++LVM2.2.03.11/test/shell/lvconvert-raid-reshape.sh
++LVM2.2.03.11/test/shell/lvconvert-raid-restripe-linear.sh
++LVM2.2.03.11/test/shell/lvconvert-raid-status-validation.sh
++LVM2.2.03.11/test/shell/lvconvert-raid-takeover-alloc-failure.sh
++LVM2.2.03.11/test/shell/lvconvert-raid-takeover-linear_to_raid4.sh
++LVM2.2.03.11/test/shell/lvconvert-raid-takeover-raid4_to_linear.sh
++LVM2.2.03.11/test/shell/lvconvert-raid-takeover-thin.sh
++LVM2.2.03.11/test/shell/lvconvert-raid-takeover.sh
++LVM2.2.03.11/test/shell/lvconvert-raid.sh
++LVM2.2.03.11/test/shell/lvconvert-raid0-striped.sh
++LVM2.2.03.11/test/shell/lvconvert-raid0_to_raid10.sh
++LVM2.2.03.11/test/shell/lvconvert-raid1-split-trackchanges.sh
++LVM2.2.03.11/test/shell/lvconvert-raid10.sh
++LVM2.2.03.11/test/shell/lvconvert-raid456.sh
++LVM2.2.03.11/test/shell/lvconvert-raid5_to_raid10.sh
++LVM2.2.03.11/test/shell/lvconvert-repair-cache.sh
++LVM2.2.03.11/test/shell/lvconvert-repair-dmeventd.sh
++LVM2.2.03.11/test/shell/lvconvert-repair-mirror.sh
++LVM2.2.03.11/test/shell/lvconvert-repair-policy.sh
++LVM2.2.03.11/test/shell/lvconvert-repair-raid-dmeventd.sh
++LVM2.2.03.11/test/shell/lvconvert-repair-raid.sh
++LVM2.2.03.11/test/shell/lvconvert-repair-replace.sh
++LVM2.2.03.11/test/shell/lvconvert-repair-snapshot.sh
++LVM2.2.03.11/test/shell/lvconvert-repair-thin-raid.sh
++LVM2.2.03.11/test/shell/lvconvert-repair-thin.sh
++LVM2.2.03.11/test/shell/lvconvert-repair-transient-dmeventd.sh
++LVM2.2.03.11/test/shell/lvconvert-repair-transient.sh
++LVM2.2.03.11/test/shell/lvconvert-repair.sh
++LVM2.2.03.11/test/shell/lvconvert-snapshot-cache.sh
++LVM2.2.03.11/test/shell/lvconvert-snapshot-mirror.sh
++LVM2.2.03.11/test/shell/lvconvert-snapshot-raid.sh
++LVM2.2.03.11/test/shell/lvconvert-snapshot-thin.sh
++LVM2.2.03.11/test/shell/lvconvert-snapshot.sh
++LVM2.2.03.11/test/shell/lvconvert-striped-raid0.sh
++LVM2.2.03.11/test/shell/lvconvert-thin-external-cache.sh
++LVM2.2.03.11/test/shell/lvconvert-thin-external.sh
++LVM2.2.03.11/test/shell/lvconvert-thin-raid.sh
++LVM2.2.03.11/test/shell/lvconvert-thin.sh
++LVM2.2.03.11/test/shell/lvconvert-twostep.sh
++LVM2.2.03.11/test/shell/lvconvert-vdo-raid.sh
++LVM2.2.03.11/test/shell/lvconvert-vdo.sh
++LVM2.2.03.11/test/shell/lvcreate-cache-fail.sh
++LVM2.2.03.11/test/shell/lvcreate-cache-no-tools.sh
++LVM2.2.03.11/test/shell/lvcreate-cache-raid.sh
++LVM2.2.03.11/test/shell/lvcreate-cache-snapshot.sh
++LVM2.2.03.11/test/shell/lvcreate-cache.sh
++LVM2.2.03.11/test/shell/lvcreate-external-dmeventd.sh
++LVM2.2.03.11/test/shell/lvcreate-large-raid.sh
++LVM2.2.03.11/test/shell/lvcreate-large-raid10.sh
++LVM2.2.03.11/test/shell/lvcreate-large.sh
++LVM2.2.03.11/test/shell/lvcreate-mirror.sh
++LVM2.2.03.11/test/shell/lvcreate-missing.sh
++LVM2.2.03.11/test/shell/lvcreate-operation.sh
++LVM2.2.03.11/test/shell/lvcreate-pvtags.sh
++LVM2.2.03.11/test/shell/lvcreate-raid-nosync.sh
++LVM2.2.03.11/test/shell/lvcreate-raid-volume_list.sh
++LVM2.2.03.11/test/shell/lvcreate-raid.sh
++LVM2.2.03.11/test/shell/lvcreate-raid1-read-error.sh
++LVM2.2.03.11/test/shell/lvcreate-raid10.sh
++LVM2.2.03.11/test/shell/lvcreate-repair.sh
++LVM2.2.03.11/test/shell/lvcreate-signature-wiping.sh
++LVM2.2.03.11/test/shell/lvcreate-small-snap.sh
++LVM2.2.03.11/test/shell/lvcreate-striped-mirror.sh
++LVM2.2.03.11/test/shell/lvcreate-thin-big.sh
++LVM2.2.03.11/test/shell/lvcreate-thin-cache.sh
++LVM2.2.03.11/test/shell/lvcreate-thin-external-size.sh
++LVM2.2.03.11/test/shell/lvcreate-thin-external.sh
++LVM2.2.03.11/test/shell/lvcreate-thin-limits.sh
++LVM2.2.03.11/test/shell/lvcreate-thin-power2.sh
++LVM2.2.03.11/test/shell/lvcreate-thin-snap.sh
++LVM2.2.03.11/test/shell/lvcreate-thin.sh
++LVM2.2.03.11/test/shell/lvcreate-usage.sh
++LVM2.2.03.11/test/shell/lvcreate-vdo-cache.sh
++LVM2.2.03.11/test/shell/lvcreate-vdo.sh
++LVM2.2.03.11/test/shell/lvextend-percent-extents.sh
++LVM2.2.03.11/test/shell/lvextend-raid.sh
++LVM2.2.03.11/test/shell/lvextend-snapshot-dmeventd.sh
++LVM2.2.03.11/test/shell/lvextend-snapshot-policy.sh
++LVM2.2.03.11/test/shell/lvextend-thin-cache.sh
++LVM2.2.03.11/test/shell/lvextend-thin-data-dmeventd.sh
++LVM2.2.03.11/test/shell/lvextend-thin-full.sh
++LVM2.2.03.11/test/shell/lvextend-thin-metadata-dmeventd.sh
++LVM2.2.03.11/test/shell/lvextend-thin-raid.sh
++LVM2.2.03.11/test/shell/lvextend-thin.sh
++LVM2.2.03.11/test/shell/lvextend-vdo-dmeventd.sh
++LVM2.2.03.11/test/shell/lvextend-vdo.sh
++LVM2.2.03.11/test/shell/lvm-conf-error.sh
++LVM2.2.03.11/test/shell/lvm-init.sh
++LVM2.2.03.11/test/shell/lvm-on-md.sh
++LVM2.2.03.11/test/shell/lvmcache-exercise.sh
++LVM2.2.03.11/test/shell/lvmlockd-hello-world.sh
++LVM2.2.03.11/test/shell/lvmlockd-lv-types.sh
++LVM2.2.03.11/test/shell/lvrename-cache-thin.sh
++LVM2.2.03.11/test/shell/lvresize-full.sh
++LVM2.2.03.11/test/shell/lvresize-mirror.sh
++LVM2.2.03.11/test/shell/lvresize-raid.sh
++LVM2.2.03.11/test/shell/lvresize-raid10.sh
++LVM2.2.03.11/test/shell/lvresize-rounding.sh
++LVM2.2.03.11/test/shell/lvresize-thin-external-origin.sh
++LVM2.2.03.11/test/shell/lvresize-thin-metadata.sh
++LVM2.2.03.11/test/shell/lvresize-usage.sh
++LVM2.2.03.11/test/shell/lvresize-vdo.sh
++LVM2.2.03.11/test/shell/lvs-cache.sh
++LVM2.2.03.11/test/shell/mda-rollback.sh
++LVM2.2.03.11/test/shell/mdata-strings.sh
++LVM2.2.03.11/test/shell/metadata-bad-mdaheader.sh
++LVM2.2.03.11/test/shell/metadata-bad-text.sh
++LVM2.2.03.11/test/shell/metadata-balance.sh
++LVM2.2.03.11/test/shell/metadata-full.sh
++LVM2.2.03.11/test/shell/metadata-old.sh
++LVM2.2.03.11/test/shell/metadata-zero-space.sh
++LVM2.2.03.11/test/shell/metadata.sh
++LVM2.2.03.11/test/shell/mirror-names.sh
++LVM2.2.03.11/test/shell/mirror-vgreduce-removemissing.sh
++LVM2.2.03.11/test/shell/missing-pv-unused.sh
++LVM2.2.03.11/test/shell/missing-pv.sh
++LVM2.2.03.11/test/shell/name-mangling.sh
++LVM2.2.03.11/test/shell/nomda-missing.sh
++LVM2.2.03.11/test/shell/nomda-restoremissing.sh
++LVM2.2.03.11/test/shell/open-file-limit.sh
++LVM2.2.03.11/test/shell/orphan-ondisk.sh
++LVM2.2.03.11/test/shell/outdated-pv.sh
++LVM2.2.03.11/test/shell/pe-align.sh
++LVM2.2.03.11/test/shell/pool-labels.sh
++LVM2.2.03.11/test/shell/process-each-duplicate-pvs.sh
++LVM2.2.03.11/test/shell/process-each-lv.sh
++LVM2.2.03.11/test/shell/process-each-pv-nomda-all.sh
++LVM2.2.03.11/test/shell/process-each-pv-nomda.sh
++LVM2.2.03.11/test/shell/process-each-pv.sh
++LVM2.2.03.11/test/shell/process-each-pvresize.sh
++LVM2.2.03.11/test/shell/process-each-vg.sh
++LVM2.2.03.11/test/shell/process-each-vgreduce.sh
++LVM2.2.03.11/test/shell/profiles-cache.sh
++LVM2.2.03.11/test/shell/profiles-thin.sh
++LVM2.2.03.11/test/shell/profiles-vdo.sh
++LVM2.2.03.11/test/shell/profiles.sh
++LVM2.2.03.11/test/shell/pv-check-dev-size.sh
++LVM2.2.03.11/test/shell/pv-corruption.sh
++LVM2.2.03.11/test/shell/pv-duplicate-uuid.sh
++LVM2.2.03.11/test/shell/pv-ext-flags.sh
++LVM2.2.03.11/test/shell/pv-ext-update.sh
++LVM2.2.03.11/test/shell/pv-min-size.sh
++LVM2.2.03.11/test/shell/pv-range-overflow.sh
++LVM2.2.03.11/test/shell/pvchange-usage.sh
++LVM2.2.03.11/test/shell/pvck-dump.sh
++LVM2.2.03.11/test/shell/pvck-repair.sh
++LVM2.2.03.11/test/shell/pvcreate-bootloaderarea.sh
++LVM2.2.03.11/test/shell/pvcreate-ff.sh
++LVM2.2.03.11/test/shell/pvcreate-md-fake-hdr.sh
++LVM2.2.03.11/test/shell/pvcreate-metadata0.sh
++LVM2.2.03.11/test/shell/pvcreate-operation-md.sh
++LVM2.2.03.11/test/shell/pvcreate-operation.sh
++LVM2.2.03.11/test/shell/pvcreate-restore.sh
++LVM2.2.03.11/test/shell/pvcreate-usage.sh
++LVM2.2.03.11/test/shell/pvmove-abort-all.sh
++LVM2.2.03.11/test/shell/pvmove-abort.sh
++LVM2.2.03.11/test/shell/pvmove-all-segtypes.sh
++LVM2.2.03.11/test/shell/pvmove-background.sh
++LVM2.2.03.11/test/shell/pvmove-basic.sh
++LVM2.2.03.11/test/shell/pvmove-cache-segtypes.sh
++LVM2.2.03.11/test/shell/pvmove-lvs.sh
++LVM2.2.03.11/test/shell/pvmove-raid-segtypes.sh
++LVM2.2.03.11/test/shell/pvmove-restart.sh
++LVM2.2.03.11/test/shell/pvmove-resume-1.sh
++LVM2.2.03.11/test/shell/pvmove-resume-2.sh
++LVM2.2.03.11/test/shell/pvmove-resume-multiseg.sh
++LVM2.2.03.11/test/shell/pvmove-thin-segtypes.sh
++LVM2.2.03.11/test/shell/pvremove-thin.sh
++LVM2.2.03.11/test/shell/pvremove-usage.sh
++LVM2.2.03.11/test/shell/pvremove-warnings.sh
++LVM2.2.03.11/test/shell/pvresize-mdas.sh
++LVM2.2.03.11/test/shell/pvscan-autoactivate.sh
++LVM2.2.03.11/test/shell/pvscan-autoactivation-polling.sh
++LVM2.2.03.11/test/shell/pvscan-cache.sh
++LVM2.2.03.11/test/shell/pvscan-nomda-bg.sh
++LVM2.2.03.11/test/shell/read-ahead.sh
++LVM2.2.03.11/test/shell/relative-sign-options.sh
++LVM2.2.03.11/test/shell/report-fields.sh
++LVM2.2.03.11/test/shell/report-hidden.sh
++LVM2.2.03.11/test/shell/scan-lvs.sh
++LVM2.2.03.11/test/shell/select-report.sh
++LVM2.2.03.11/test/shell/select-tools-thin.sh
++LVM2.2.03.11/test/shell/select-tools.sh
++LVM2.2.03.11/test/shell/snapshot-autoumount-dmeventd.sh
++LVM2.2.03.11/test/shell/snapshot-cluster.sh
++LVM2.2.03.11/test/shell/snapshot-maxsize.sh
++LVM2.2.03.11/test/shell/snapshot-merge-stack.sh
++LVM2.2.03.11/test/shell/snapshot-merge-thin.sh
++LVM2.2.03.11/test/shell/snapshot-merge.sh
++LVM2.2.03.11/test/shell/snapshot-reactivate.sh
++LVM2.2.03.11/test/shell/snapshot-remove-dmsetup.sh
++LVM2.2.03.11/test/shell/snapshot-rename.sh
++LVM2.2.03.11/test/shell/snapshot-usage-exa.sh
++LVM2.2.03.11/test/shell/snapshot-usage.sh
++LVM2.2.03.11/test/shell/snapshots-of-mirrors.sh
++LVM2.2.03.11/test/shell/stray-device-node.sh
++LVM2.2.03.11/test/shell/system_id.sh
++LVM2.2.03.11/test/shell/tags.sh
++LVM2.2.03.11/test/shell/test-partition.sh
++LVM2.2.03.11/test/shell/thin-autoumount-dmeventd.sh
++LVM2.2.03.11/test/shell/thin-defaults.sh
++LVM2.2.03.11/test/shell/thin-dmeventd-warns.sh
++LVM2.2.03.11/test/shell/thin-errors.sh
++LVM2.2.03.11/test/shell/thin-flags.sh
++LVM2.2.03.11/test/shell/thin-foreign-dmeventd.sh
++LVM2.2.03.11/test/shell/thin-foreign-repair.sh
++LVM2.2.03.11/test/shell/thin-large.sh
++LVM2.2.03.11/test/shell/thin-many-dmeventd.sh
++LVM2.2.03.11/test/shell/thin-merge.sh
++LVM2.2.03.11/test/shell/thin-overprovisioning.sh
++LVM2.2.03.11/test/shell/thin-resize-match.sh
++LVM2.2.03.11/test/shell/thin-restore.sh
++LVM2.2.03.11/test/shell/thin-vglock.sh
++LVM2.2.03.11/test/shell/thin-volume-list.sh
++LVM2.2.03.11/test/shell/topology-support.sh
++LVM2.2.03.11/test/shell/unknown-segment.sh
++LVM2.2.03.11/test/shell/unlost-pv.sh
++LVM2.2.03.11/test/shell/vdo-autoumount-dmeventd.sh
++LVM2.2.03.11/test/shell/vg-check-devs-used.sh
++LVM2.2.03.11/test/shell/vg-name-from-env.sh
++LVM2.2.03.11/test/shell/vgcfgbackup-lvm1.sh
++LVM2.2.03.11/test/shell/vgcfgbackup-usage.sh
++LVM2.2.03.11/test/shell/vgchange-many.sh
++LVM2.2.03.11/test/shell/vgchange-maxlv.sh
++LVM2.2.03.11/test/shell/vgchange-partial.sh
++LVM2.2.03.11/test/shell/vgchange-sysinit.sh
++LVM2.2.03.11/test/shell/vgchange-usage.sh
++LVM2.2.03.11/test/shell/vgck.sh
++LVM2.2.03.11/test/shell/vgcreate-many-pvs.sh
++LVM2.2.03.11/test/shell/vgcreate-usage.sh
++LVM2.2.03.11/test/shell/vgextend-restoremissing.sh
++LVM2.2.03.11/test/shell/vgextend-usage.sh
++LVM2.2.03.11/test/shell/vgimportclone.sh
++LVM2.2.03.11/test/shell/vgmerge-operation.sh
++LVM2.2.03.11/test/shell/vgmerge-usage.sh
++LVM2.2.03.11/test/shell/vgreduce-removemissing-snapshot.sh
++LVM2.2.03.11/test/shell/vgreduce-usage.sh
++LVM2.2.03.11/test/shell/vgremove-corrupt-vg.sh
++LVM2.2.03.11/test/shell/vgrename-usage.sh
++LVM2.2.03.11/test/shell/vgsplit-cache.sh
++LVM2.2.03.11/test/shell/vgsplit-operation.sh
++LVM2.2.03.11/test/shell/vgsplit-raid.sh
++LVM2.2.03.11/test/shell/vgsplit-stacked.sh
++LVM2.2.03.11/test/shell/vgsplit-thin.sh
++LVM2.2.03.11/test/shell/vgsplit-usage.sh
++LVM2.2.03.11/test/shell/vgsplit-vdo.sh
++LVM2.2.03.11/test/shell/writecache-blocksize.sh
++LVM2.2.03.11/test/shell/writecache-large.sh
++LVM2.2.03.11/test/shell/writecache-misc.sh
++LVM2.2.03.11/test/shell/writecache-split.sh
++LVM2.2.03.11/test/shell/writecache.sh
++LVM2.2.03.11/test/shell/zero-usage.sh
++LVM2.2.03.11/test/shell/zz-lvmlockd-dlm-remove.sh
++LVM2.2.03.11/test/shell/zz-lvmlockd-sanlock-remove.sh
++LVM2.2.03.11/test/unit/
++LVM2.2.03.11/test/unit/Makefile
++LVM2.2.03.11/test/unit/activation-generator_t.c
++LVM2.2.03.11/test/unit/bcache_t.c
++LVM2.2.03.11/test/unit/bcache_utils_t.c
++LVM2.2.03.11/test/unit/bitset_t.c
++LVM2.2.03.11/test/unit/config_t.c
++LVM2.2.03.11/test/unit/dmlist_t.c
++LVM2.2.03.11/test/unit/dmstatus_t.c
++LVM2.2.03.11/test/unit/framework.c
++LVM2.2.03.11/test/unit/framework.h
++LVM2.2.03.11/test/unit/io_engine_t.c
++LVM2.2.03.11/test/unit/matcher_data.h
++LVM2.2.03.11/test/unit/matcher_t.c
++LVM2.2.03.11/test/unit/percent_t.c
++LVM2.2.03.11/test/unit/radix_tree_t.c
++LVM2.2.03.11/test/unit/rt_case1.c
++LVM2.2.03.11/test/unit/run.c
++LVM2.2.03.11/test/unit/string_t.c
++LVM2.2.03.11/test/unit/unit-test.sh
++LVM2.2.03.11/test/unit/units.h
++LVM2.2.03.11/test/unit/vdo_t.c
++LVM2.2.03.11/tools/
++LVM2.2.03.11/tools/.exported_symbols
++LVM2.2.03.11/tools/Makefile.in
++LVM2.2.03.11/tools/args.h
++LVM2.2.03.11/tools/cmdnames.h
++LVM2.2.03.11/tools/command-lines.in
++LVM2.2.03.11/tools/command.c
++LVM2.2.03.11/tools/command.h
++LVM2.2.03.11/tools/commands.h
++LVM2.2.03.11/tools/dumpconfig.c
++LVM2.2.03.11/tools/errors.h
++LVM2.2.03.11/tools/formats.c
++LVM2.2.03.11/tools/license.inc
++LVM2.2.03.11/tools/lv_props.h
++LVM2.2.03.11/tools/lv_types.h
++LVM2.2.03.11/tools/lvchange.c
++LVM2.2.03.11/tools/lvconvert.c
++LVM2.2.03.11/tools/lvconvert_poll.c
++LVM2.2.03.11/tools/lvconvert_poll.h
++LVM2.2.03.11/tools/lvcreate.c
++LVM2.2.03.11/tools/lvdisplay.c
++LVM2.2.03.11/tools/lvextend.c
++LVM2.2.03.11/tools/lvm-static.c
++LVM2.2.03.11/tools/lvm.c
++LVM2.2.03.11/tools/lvm2cmd-static.c
++LVM2.2.03.11/tools/lvm2cmd.c
++LVM2.2.03.11/tools/lvm2cmd.h
++LVM2.2.03.11/tools/lvm2cmdline.h
++LVM2.2.03.11/tools/lvmcmdlib.c
++LVM2.2.03.11/tools/lvmcmdline.c
++LVM2.2.03.11/tools/lvmdiskscan.c
++LVM2.2.03.11/tools/lvpoll.c
++LVM2.2.03.11/tools/lvreduce.c
++LVM2.2.03.11/tools/lvremove.c
++LVM2.2.03.11/tools/lvrename.c
++LVM2.2.03.11/tools/lvresize.c
++LVM2.2.03.11/tools/lvscan.c
++LVM2.2.03.11/tools/polldaemon.c
++LVM2.2.03.11/tools/pvchange.c
++LVM2.2.03.11/tools/pvck.c
++LVM2.2.03.11/tools/pvcreate.c
++LVM2.2.03.11/tools/pvdisplay.c
++LVM2.2.03.11/tools/pvmove.c
++LVM2.2.03.11/tools/pvmove_poll.c
++LVM2.2.03.11/tools/pvmove_poll.h
++LVM2.2.03.11/tools/pvremove.c
++LVM2.2.03.11/tools/pvresize.c
++LVM2.2.03.11/tools/pvscan.c
++LVM2.2.03.11/tools/reporter.c
++LVM2.2.03.11/tools/segtypes.c
++LVM2.2.03.11/tools/stub.h
++LVM2.2.03.11/tools/tags.c
++LVM2.2.03.11/tools/tool.h
++LVM2.2.03.11/tools/toollib.c
++LVM2.2.03.11/tools/toollib.h
++LVM2.2.03.11/tools/tools.h
++LVM2.2.03.11/tools/vals.h
++LVM2.2.03.11/tools/vgcfgbackup.c
++LVM2.2.03.11/tools/vgcfgrestore.c
++LVM2.2.03.11/tools/vgchange.c
++LVM2.2.03.11/tools/vgck.c
++LVM2.2.03.11/tools/vgcreate.c
++LVM2.2.03.11/tools/vgdisplay.c
++LVM2.2.03.11/tools/vgexport.c
++LVM2.2.03.11/tools/vgextend.c
++LVM2.2.03.11/tools/vgimport.c
++LVM2.2.03.11/tools/vgimportclone.c
++LVM2.2.03.11/tools/vgmerge.c
++LVM2.2.03.11/tools/vgmknodes.c
++LVM2.2.03.11/tools/vgreduce.c
++LVM2.2.03.11/tools/vgremove.c
++LVM2.2.03.11/tools/vgrename.c
++LVM2.2.03.11/tools/vgscan.c
++LVM2.2.03.11/tools/vgsplit.c
++LVM2.2.03.11/udev/
++LVM2.2.03.11/udev/10-dm.rules.in
++LVM2.2.03.11/udev/11-dm-lvm.rules.in
++LVM2.2.03.11/udev/12-dm-permissions.rules
++LVM2.2.03.11/udev/13-dm-disk.rules.in
++LVM2.2.03.11/udev/69-dm-lvm-metad.rules.in
++LVM2.2.03.11/udev/95-dm-notify.rules.in
++LVM2.2.03.11/udev/Makefile.in
++LVM2.2.03.11/VERSION
++LVM2.2.03.11/VERSION_DM
++LVM2.2.03.11/WHATS_NEW
++LVM2.2.03.11/WHATS_NEW_DM
++Hmm...  Looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|diff -Nur LVM2.2.02.114.orig/daemons/dmeventd/dmeventd.c LVM2.2.02.114/daemons/dmeventd/dmeventd.c
++|--- LVM2.2.02.114.orig/daemons/dmeventd/dmeventd.c	2014-11-28 17:07:42.000000000 -0600
++|+++ LVM2.2.02.114/daemons/dmeventd/dmeventd.c	2014-12-08 22:46:58.702066654 -0600
++--------------------------
++patching file daemons/dmeventd/dmeventd.c
++Using Plan A...
++Hunk #1 succeeded at 2209 with fuzz 2 (offset 33 lines).
++done
++patching file lib/mm/memlock.c
++Hunk #1 succeeded at 160 (offset 23 lines).
++patching file tools/lvmcmdline.c
++Hunk #1 succeeded at 3238 (offset 1986 lines).
++Hunk #2 succeeded at 3248 (offset 1986 lines).
++Hunk #3 succeeded at 3256 (offset 1986 lines).
++patching file lib/commands/toolcontext.c
++Hunk #1 succeeded at 1605 (offset -264 lines).
++Hunk #2 succeeded at 1986 (offset -288 lines).
++checking build system type... x86_64-slackware-linux-musl
++checking host system type... x86_64-slackware-linux-musl
++checking target system type... x86_64-slackware-linux-musl
++checking for a sed that does not truncate output... /usr/bin/sed
++checking for gawk... gawk
++checking for gcc... gcc
++checking whether the C compiler works... yes
++checking for C compiler default output file name... a.out
++checking for suffix of executables... 
++checking whether we are cross compiling... no
++checking for suffix of object files... o
++checking whether we are using the GNU C compiler... yes
++checking whether gcc accepts -g... yes
++checking for gcc option to accept ISO C89... none needed
++checking for g++... g++
++checking whether we are using the GNU C++ compiler... yes
++checking whether g++ accepts -g... yes
++checking how to run the C preprocessor... gcc -E
++checking for grep that handles long lines and -e... /usr/bin/grep
++checking for egrep... /usr/bin/grep -E
++checking whether gcc needs -traditional... no
++checking for a BSD-compatible install... /usr/bin/ginstall -c
++checking whether ln -s works... yes
++checking whether make sets $(MAKE)... yes
++checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
++checking for ranlib... ranlib
++checking for ar... ar
++checking for cflow... no
++checking for cscope... /usr/bin/cscope
++checking for chmod... /usr/bin/chmod
++checking for wc... /usr/bin/wc
++checking for sort... /usr/bin/sort
++checking for dirent.h that defines DIR... yes
++checking for library containing opendir... none required
++checking for ANSI C header files... yes
++checking for sys/types.h... yes
++checking for sys/stat.h... yes
++checking for stdlib.h... yes
++checking for string.h... yes
++checking for memory.h... yes
++checking for strings.h... yes
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking for unistd.h... yes
++checking whether sys/types.h defines makedev... no
++checking sys/mkdev.h usability... no
++checking sys/mkdev.h presence... no
++checking for sys/mkdev.h... no
++checking sys/sysmacros.h usability... yes
++checking sys/sysmacros.h presence... yes
++checking for sys/sysmacros.h... yes
++checking for stdbool.h that conforms to C99... yes
++checking for _Bool... yes
++checking for ANSI C header files... (cached) yes
++checking for sys/wait.h that is POSIX.1 compatible... yes
++checking whether time.h and sys/time.h may both be included... yes
++checking assert.h usability... yes
++checking assert.h presence... yes
++checking for assert.h... yes
++checking ctype.h usability... yes
++checking ctype.h presence... yes
++checking for ctype.h... yes
++checking dirent.h usability... yes
++checking dirent.h presence... yes
++checking for dirent.h... yes
++checking errno.h usability... yes
++checking errno.h presence... yes
++checking for errno.h... yes
++checking fcntl.h usability... yes
++checking fcntl.h presence... yes
++checking for fcntl.h... yes
++checking float.h usability... yes
++checking float.h presence... yes
++checking for float.h... yes
++checking getopt.h usability... yes
++checking getopt.h presence... yes
++checking for getopt.h... yes
++checking for inttypes.h... (cached) yes
++checking langinfo.h usability... yes
++checking langinfo.h presence... yes
++checking for langinfo.h... yes
++checking libaio.h usability... yes
++checking libaio.h presence... yes
++checking for libaio.h... yes
++checking libgen.h usability... yes
++checking libgen.h presence... yes
++checking for libgen.h... yes
++checking limits.h usability... yes
++checking limits.h presence... yes
++checking for limits.h... yes
++checking locale.h usability... yes
++checking locale.h presence... yes
++checking for locale.h... yes
++checking paths.h usability... yes
++checking paths.h presence... yes
++checking for paths.h... yes
++checking signal.h usability... yes
++checking signal.h presence... yes
++checking for signal.h... yes
++checking stdarg.h usability... yes
++checking stdarg.h presence... yes
++checking for stdarg.h... yes
++checking stddef.h usability... yes
++checking stddef.h presence... yes
++checking for stddef.h... yes
++checking stdio.h usability... yes
++checking stdio.h presence... yes
++checking for stdio.h... yes
++checking for stdlib.h... (cached) yes
++checking for string.h... (cached) yes
++checking sys/file.h usability... yes
++checking sys/file.h presence... yes
++checking for sys/file.h... yes
++checking sys/ioctl.h usability... yes
++checking sys/ioctl.h presence... yes
++checking for sys/ioctl.h... yes
++checking syslog.h usability... yes
++checking syslog.h presence... yes
++checking for syslog.h... yes
++checking sys/mman.h usability... yes
++checking sys/mman.h presence... yes
++checking for sys/mman.h... yes
++checking sys/param.h usability... yes
++checking sys/param.h presence... yes
++checking for sys/param.h... yes
++checking sys/resource.h usability... yes
++checking sys/resource.h presence... yes
++checking for sys/resource.h... yes
++checking for sys/stat.h... (cached) yes
++checking sys/time.h usability... yes
++checking sys/time.h presence... yes
++checking for sys/time.h... yes
++checking for sys/types.h... (cached) yes
++checking sys/utsname.h usability... yes
++checking sys/utsname.h presence... yes
++checking for sys/utsname.h... yes
++checking for sys/wait.h... (cached) yes
++checking time.h usability... yes
++checking time.h presence... yes
++checking for time.h... yes
++checking for unistd.h... (cached) yes
++checking termios.h usability... yes
++checking termios.h presence... yes
++checking for termios.h... yes
++checking sys/statvfs.h usability... yes
++checking sys/statvfs.h presence... yes
++checking for sys/statvfs.h... yes
++checking sys/timerfd.h usability... yes
++checking sys/timerfd.h presence... yes
++checking for sys/timerfd.h... yes
++checking sys/vfs.h usability... yes
++checking sys/vfs.h presence... yes
++checking for sys/vfs.h... yes
++checking linux/magic.h usability... yes
++checking linux/magic.h presence... yes
++checking for linux/magic.h... yes
++checking linux/fiemap.h usability... yes
++checking linux/fiemap.h presence... yes
++checking for linux/fiemap.h... yes
++checking asm/byteorder.h usability... yes
++checking asm/byteorder.h presence... yes
++checking for asm/byteorder.h... yes
++checking linux/fs.h usability... yes
++checking linux/fs.h presence... yes
++checking for linux/fs.h... yes
++checking malloc.h usability... yes
++checking malloc.h presence... yes
++checking for malloc.h... yes
++checking for an ANSI C-conforming const... yes
++checking for inline... inline
++checking for struct stat.st_rdev... yes
++checking for ptrdiff_t... yes
++checking for struct stat.st_blocks... yes
++checking whether struct tm is in sys/time.h or time.h... time.h
++checking for off_t... yes
++checking for pid_t... yes
++checking return type of signal handlers... void
++checking for size_t... yes
++checking for mode_t... yes
++checking for int8_t... yes
++checking for int16_t... yes
++checking for int32_t... yes
++checking for int64_t... yes
++checking for ssize_t... yes
++checking for uid_t in sys/types.h... yes
++checking for uint8_t... yes
++checking for uint16_t... yes
++checking for uint32_t... yes
++checking for uint64_t... yes
++checking for __builtin_clz... yes
++checking for __builtin_clzll... yes
++checking for ftruncate... yes
++checking for gethostname... yes
++checking for getpagesize... yes
++checking for gettimeofday... yes
++checking for localtime_r... yes
++checking for memchr... yes
++checking for memset... yes
++checking for mkdir... yes
++checking for mkfifo... yes
++checking for munmap... yes
++checking for nl_langinfo... yes
++checking for pselect... yes
++checking for realpath... yes
++checking for rmdir... yes
++checking for setenv... yes
++checking for setlocale... yes
++checking for strcasecmp... yes
++checking for strchr... yes
++checking for strcspn... yes
++checking for strdup... yes
++checking for strerror... yes
++checking for strncasecmp... yes
++checking for strndup... yes
++checking for strrchr... yes
++checking for strspn... yes
++checking for strstr... yes
++checking for strtol... yes
++checking for strtoul... yes
++checking for uname... yes
++checking for prlimit... yes
++checking for working alloca.h... yes
++checking for alloca... yes
++checking whether closedir returns void... no
++checking for unistd.h... (cached) yes
++checking for working chown... yes
++checking vfork.h usability... no
++checking vfork.h presence... no
++checking for vfork.h... no
++checking for fork... yes
++checking for vfork... yes
++checking for working fork... yes
++checking for working vfork... (cached) yes
++checking whether lstat correctly handles trailing slash... yes
++checking whether lstat accepts an empty string... no
++checking for stdlib.h... (cached) yes
++checking for GNU libc compatible malloc... yes
++checking for working memcmp... yes
++checking for sys/time.h... (cached) yes
++checking for unistd.h... (cached) yes
++checking for stdlib.h... (cached) yes
++checking for sys/param.h... (cached) yes
++checking for alarm... yes
++checking for working mktime... yes
++checking for getpagesize... (cached) yes
++checking for working mmap... yes
++checking for stdlib.h... (cached) yes
++checking for GNU libc compatible realloc... yes
++checking whether stat accepts an empty string... no
++checking for working strtod... yes
++checking for vprintf... yes
++checking for _doprnt... no
++checking whether to enable dependency tracking... yes
++checking whether to build silently... yes
++checking whether to use static linking... no
++checking whether gcc accepts -pie flag... yes
++checking whether gcc accepts -Wl,-z,relro,-z,now ld flags... yes
++checking file owner... 
++checking group owner... 
++checking device node uid... 0
++checking device node gid... 6
++checking device node mode... 0660
++checking when to create device nodes... on resume
++checking default name mangling... auto
++checking whether to include snapshots... internal
++checking whether to include mirrors... internal
++checking whether to include thin provisioning... internal
++checking for thin_check... no
++configure: WARNING: thin_check not found in path /usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/games:/usr/lib64/qt/bin:/usr/lib64/qt5/bin
++configure: WARNING: /usr/sbin/thin_check: Bad version "" found
++checking for thin_dump... no
++configure: WARNING: thin_dump not found in path /usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/games:/usr/lib64/qt/bin:/usr/lib64/qt5/bin
++checking for thin_repair... no
++configure: WARNING: thin_repair not found in path /usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/games:/usr/lib64/qt/bin:/usr/lib64/qt5/bin
++checking for thin_restore... no
++configure: WARNING: thin_restore not found in path /usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/games:/usr/lib64/qt/bin:/usr/lib64/qt5/bin
++checking whether thin_check supports the needs-check flag... no
++checking whether to include cache... internal
++checking for cache_check... no
++configure: WARNING: cache_check not found in path /usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/games:/usr/lib64/qt/bin:/usr/lib64/qt5/bin
++configure: WARNING: /usr/sbin/cache_check: Bad version "" found
++checking for cache_dump... no
++configure: WARNING: cache_dump not found in path /usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/games:/usr/lib64/qt/bin:/usr/lib64/qt5/bin
++checking for cache_repair... no
++configure: WARNING: cache_repair not found in path /usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/games:/usr/lib64/qt/bin:/usr/lib64/qt5/bin
++checking for cache_restore... no
++configure: WARNING: cache_restore not found in path /usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/games:/usr/lib64/qt/bin:/usr/lib64/qt5/bin
++checking whether cache_check supports the needs-check flag... no
++checking whether to include vdo... internal
++checking for vdoformat... no
++configure: WARNING: vdoformat not found in path /usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/games:/usr/lib64/qt/bin:/usr/lib64/qt5/bin
++checking whether to include writecache... internal
++checking whether to include integrity... internal
++checking whether to enable realtime support... yes
++checking whether to enable OCF resource agents... no
++checking for default run directory... /run
++checking whether to build cluster mirror log daemon... no
++checking whether to enable debugging... no
++checking whether gcc accepts -Wjump-misses-init flag... yes
++checking whether gcc accepts -Wclobbered flag... yes
++checking whether gcc accepts -Wsync-nand flag... yes
++checking for C optimisation flag... 
++checking whether to gather gcov profiling data... no
++checking whether to enable valgrind awareness of pools... no
++checking pkg-config is at least version 0.9.0... yes
++checking for PKGCONFIGINIT... no
++pkg-config initialized
++checking for VALGRIND... no
++checking whether to use device-mapper... yes
++checking whether to build lvmpolld... no
++checking whether to build lvmlockdsanlock... no
++checking whether to build lvmlockddlm... no
++checking whether to build lvmlockddlmcontrol... no
++checking whether to build lvmlockd... no
++checking whether to build dmfilemapd... no
++checking whether to build notifydbus... no
++checking for BLKID... yes
++checking whether to enable libblkid detection of signatures when wiping... yes
++checking for SYSTEMD... no
++checking whether to use udev-systemd protocol for jobs in background... no
++checking whether to enable synchronisation with udev processing... yes
++checking for UDEV... yes
++checking for udev_device_get_is_initialized in -ludev... yes
++checking whether to enable installation of udev rules required for synchronisation... yes
++checking whether to enable executable path detection in udev rules... no
++checking whether udev supports built-in blkid... yes
++checking whether to enable O_DIRECT... yes
++checking whether to compile liblvm2cmd.so... yes
++checking whether to include Python D-Bus support... no
++checking whether to install fsadm... yes
++checking whether to install blkdeactivate... yes
++checking whether to use dmeventd... yes
++checking for getline in -lc... yes
++checking for canonicalize_file_name in -lc... no
++checking for dlopen in -ldl... yes
++checking for log10 in -lm... yes
++checking for pthread_mutex_lock in -lpthread... yes
++checking whether to enable selinux support... yes
++checking for sepol_check_context in -lsepol... no
++checking for is_selinux_enabled in -lselinux... no
++configure: WARNING: Disabling selinux
++checking for BLKZEROOUT in sys/ioctl.h.... yes
++checking whether to use BLKZEROOUT for device zeroing... yes
++checking for clock_gettime... yes
++checking for struct stat has st_ctim.... yes
++checking for getopt.h... (cached) yes
++checking whether to enable internationalisation... no
++Package systemd was not found in the pkg-config search path.
++Perhaps you should add the directory containing `systemd.pc'
++to the PKG_CONFIG_PATH environment variable
++No package 'systemd' found
++Package systemd was not found in the pkg-config search path.
++Perhaps you should add the directory containing `systemd.pc'
++to the PKG_CONFIG_PATH environment variable
++No package 'systemd' found
++checking whether to enable readline... no
++checking whether to enable editline... no
++checking arpa/inet.h usability... yes
++checking arpa/inet.h presence... yes
++checking for arpa/inet.h... yes
++checking dlfcn.h usability... yes
++checking dlfcn.h presence... yes
++checking for dlfcn.h... yes
++checking sys/ipc.h usability... yes
++checking sys/ipc.h presence... yes
++checking for sys/ipc.h... yes
++checking sys/sem.h usability... yes
++checking sys/sem.h presence... yes
++checking for sys/sem.h... yes
++checking for modprobe... /sbin/modprobe
++checking for kernel interface choice... ioctl
++configure: creating ./config.status
++config.status: creating Makefile
++config.status: creating make.tmpl
++config.status: creating libdm/make.tmpl
++config.status: creating daemons/Makefile
++config.status: creating daemons/cmirrord/Makefile
++config.status: creating daemons/dmeventd/Makefile
++config.status: creating daemons/dmeventd/libdevmapper-event.pc
++config.status: creating daemons/dmeventd/plugins/Makefile
++config.status: creating daemons/dmeventd/plugins/lvm2/Makefile
++config.status: creating daemons/dmeventd/plugins/raid/Makefile
++config.status: creating daemons/dmeventd/plugins/mirror/Makefile
++config.status: creating daemons/dmeventd/plugins/snapshot/Makefile
++config.status: creating daemons/dmeventd/plugins/thin/Makefile
++config.status: creating daemons/dmeventd/plugins/vdo/Makefile
++config.status: creating daemons/lvmdbusd/Makefile
++config.status: creating daemons/lvmdbusd/lvmdbusd
++config.status: creating daemons/lvmdbusd/lvmdb.py
++config.status: creating daemons/lvmdbusd/lvm_shell_proxy.py
++config.status: creating daemons/lvmdbusd/path.py
++config.status: creating daemons/lvmpolld/Makefile
++config.status: creating daemons/lvmlockd/Makefile
++config.status: creating conf/Makefile
++config.status: creating conf/example.conf
++config.status: creating conf/lvmlocal.conf
++config.status: creating conf/command_profile_template.profile
++config.status: creating conf/metadata_profile_template.profile
++config.status: creating include/Makefile
++config.status: creating lib/Makefile
++config.status: creating include/lvm-version.h
++config.status: creating libdaemon/Makefile
++config.status: creating libdaemon/client/Makefile
++config.status: creating libdaemon/server/Makefile
++config.status: creating libdm/Makefile
++config.status: creating libdm/dm-tools/Makefile
++config.status: creating libdm/libdevmapper.pc
++config.status: creating man/Makefile
++config.status: creating po/Makefile
++config.status: creating scripts/lvm2-pvscan.service
++config.status: creating scripts/blkdeactivate.sh
++config.status: creating scripts/blk_availability_init_red_hat
++config.status: creating scripts/blk_availability_systemd_red_hat.service
++config.status: creating scripts/cmirrord_init_red_hat
++config.status: creating scripts/com.redhat.lvmdbus1.service
++config.status: creating scripts/dm_event_systemd_red_hat.service
++config.status: creating scripts/dm_event_systemd_red_hat.socket
++config.status: creating scripts/lvm2_cmirrord_systemd_red_hat.service
++config.status: creating scripts/lvm2_lvmdbusd_systemd_red_hat.service
++config.status: creating scripts/lvm2_lvmpolld_init_red_hat
++config.status: creating scripts/lvm2_lvmpolld_systemd_red_hat.service
++config.status: creating scripts/lvm2_lvmpolld_systemd_red_hat.socket
++config.status: creating scripts/lvmlockd.service
++config.status: creating scripts/lvmlocks.service
++config.status: creating scripts/lvm2_monitoring_init_red_hat
++config.status: creating scripts/lvm2_monitoring_systemd_red_hat.service
++config.status: creating scripts/lvm2_tmpfiles_red_hat.conf
++config.status: creating scripts/lvmdump.sh
++config.status: creating scripts/Makefile
++config.status: creating test/Makefile
++config.status: creating tools/Makefile
++config.status: creating udev/Makefile
++config.status: creating include/configure.h
++configure: WARNING: Support for thin provisioning is limited since some thin provisioning tools are missing!
++configure: WARNING: You should also install latest thin_check vsn 0.7.0 (or later) for lvm2 thin provisioning
++configure: WARNING: Support for cache is limited since some cache tools are missing!
++configure: WARNING: You should install latest cache_check vsn 0.7.0 to use lvm2 cache metadata format 2
++configure: WARNING: Unrecognized 'vdoformat' tool is REQUIRED for VDO logical volume creation!
++    [DEP] test/unit/vdo_t.c
++    [DEP] test/unit/run.c
++    [DEP] test/unit/string_t.c
++    [DEP] test/unit/percent_t.c
++    [DEP] test/unit/radix_tree_t.c
++    [DEP] test/unit/matcher_t.c
++    [DEP] test/unit/io_engine_t.c
++    [DEP] test/unit/framework.c
++    [DEP] test/unit/dmstatus_t.c
++    [DEP] test/unit/dmlist_t.c
++    [DEP] test/unit/config_t.c
++    [DEP] test/unit/bitset_t.c
++    [DEP] test/unit/bcache_utils_t.c
++    [DEP] test/unit/bcache_t.c
++    [DEP] test/unit/activation-generator_t.c
++    [DEP] device_mapper/vdo/status.c
++    [DEP] device_mapper/vdo/vdo_target.c
++    [DEP] device_mapper/regex/ttree.c
++    [DEP] device_mapper/regex/parse_rx.c
++    [DEP] device_mapper/mm/pool.c
++    [DEP] device_mapper/regex/matcher.c
++    [DEP] device_mapper/libdm-timestamp.c
++    [DEP] device_mapper/libdm-targets.c
++    [DEP] device_mapper/libdm-string.c
++    [DEP] device_mapper/libdm-report.c
++    [DEP] device_mapper/libdm-file.c
++    [DEP] device_mapper/libdm-deptree.c
++    [DEP] device_mapper/libdm-config.c
++    [DEP] device_mapper/libdm-common.c
++    [DEP] device_mapper/ioctl/libdm-iface.c
++    [DEP] device_mapper/datastruct/bitset.c
++    [DEP] base/data-struct/radix-tree.c
++    [DEP] base/data-struct/list.c
++    [DEP] base/data-struct/hash.c
++make -C conf device-mapper
++make -C include device-mapper
++make -C libdaemon device-mapper
++make[1]: Entering directory '/tmp/LVM2.2.03.11/conf'
++make[1]: Entering directory '/tmp/LVM2.2.03.11/include'
++make[1]: Entering directory '/tmp/LVM2.2.03.11/libdaemon'
++make[1]: Nothing to be done for 'device-mapper'.
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/conf'
++make -C man device-mapper
++make[1]: Nothing to be done for 'device-mapper'.
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/include'
++make[1]: Entering directory '/tmp/LVM2.2.03.11/man'
++make -C udev device-mapper
++make[1]: Nothing to be done for 'device-mapper'.
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/libdaemon'
++make[1]: Entering directory '/tmp/LVM2.2.03.11/udev'
++    [CC] base/data-struct/hash.c
++make[1]: Nothing to be done for 'device-mapper'.
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/udev'
++    [MAN] dmsetup.8
++    [CC] base/data-struct/list.c
++    [MAN] dmstats.8
++    [MAN] blkdeactivate.8
++    [MAN] dmeventd.8
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/man'
++    [CC] base/data-struct/radix-tree.c
++    [CC] device_mapper/datastruct/bitset.c
++    [CC] device_mapper/ioctl/libdm-iface.c
++    [CC] device_mapper/libdm-common.c
++    [CC] device_mapper/libdm-config.c
++In function ‘_lookup_dev_name’,
++    inlined from ‘_flatten’ at device_mapper/ioctl/libdm-iface.c:1222:8,
++    inlined from ‘_do_dm_ioctl’ at device_mapper/ioctl/libdm-iface.c:1816:8,
++    inlined from ‘dm_task_run’ at device_mapper/ioctl/libdm-iface.c:2043:14:
++device_mapper/ioctl/libdm-iface.c:1085:4: warning: ‘strncpy’ specified bound 128 equals destination size [-Wstringop-truncation]
++ 1085 |    strncpy(buf, names->name, len);
++      |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In function ‘_flatten’,
++    inlined from ‘_do_dm_ioctl’ at device_mapper/ioctl/libdm-iface.c:1816:8,
++    inlined from ‘dm_task_run’ at device_mapper/ioctl/libdm-iface.c:2043:14:
++device_mapper/ioctl/libdm-iface.c:1235:3: warning: ‘strncpy’ specified bound 128 equals destination size [-Wstringop-truncation]
++ 1235 |   strncpy(dmi->name, DEV_NAME(dmt), sizeof(dmi->name));
++      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++device_mapper/ioctl/libdm-iface.c:1238:3: warning: ‘strncpy’ specified bound 129 equals destination size [-Wstringop-truncation]
++ 1238 |   strncpy(dmi->uuid, DEV_UUID(dmt), sizeof(dmi->uuid));
++      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++    [CC] device_mapper/libdm-deptree.c
++    [CC] device_mapper/libdm-file.c
++    [CC] device_mapper/libdm-report.c
++    [CC] device_mapper/libdm-string.c
++    [CC] device_mapper/libdm-targets.c
++    [CC] device_mapper/libdm-timestamp.c
++    [CC] device_mapper/mm/pool.c
++    [CC] device_mapper/regex/matcher.c
++In function ‘_find_dm_tree_node_by_uuid’,
++    inlined from ‘dm_tree_find_node_by_uuid’ at device_mapper/libdm-deptree.c:823:9:
++device_mapper/libdm-deptree.c:623:11: warning: ‘strncpy’ specified bound 129 equals destination size [-Wstringop-truncation]
++  623 |    (void) strncpy(uuid_without_suffix, uuid, sizeof(uuid_without_suffix));
++      |           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++    [CC] device_mapper/regex/parse_rx.c
++    [CC] device_mapper/regex/ttree.c
++    [CC] device_mapper/vdo/status.c
++    [CC] device_mapper/vdo/vdo_target.c
++make -C libdm device-mapper
++make[1]: Entering directory '/tmp/LVM2.2.03.11/libdm'
++make -C lib device-mapper
++make[1]: Entering directory '/tmp/LVM2.2.03.11/lib'
++    [DEP] ioctl/libdm-iface.c
++    [DEP] vdo/vdo.c
++    [DEP] regex/ttree.c
++    [DEP] regex/parse_rx.c
++    [DEP] activate/fs.c
++    [DEP] regex/matcher.c
++    [DEP] activate/dev_manager.c
++make -C scripts device-mapper
++make[1]: Entering directory '/tmp/LVM2.2.03.11/scripts'
++    [DEP] mm/pool.c
++    [DEP] lvm2_activation_generator_systemd_red_hat.c
++    [DEP] zero/zero.c
++    [DEP] mm/dbg_malloc.c
++make[1]: Nothing to be done for 'device-mapper'.
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/scripts'
++    [AR] base/libbase.a
++    [DEP] libdm-timestamp.c
++    [DEP] uuid/uuid.c
++ar: creating base/libbase.a
++    [AR] device_mapper/libdevice-mapper.a
++ar: creating device_mapper/libdevice-mapper.a
++    [DEP] thin/thin.c
++    [DEP] libdm-targets.c
++    [DEP] striped/striped.c
++    [DEP] libdm-string.c
++    [DEP] snapshot/snapshot.c
++    [DEP] report/report.c
++    [DEP] libdm-stats.c
++    [DEP] report/properties.c
++    [DEP] raid/raid.c
++    [DEP] libdm-report.c
++    [DEP] properties/prop_common.c
++    [DEP] notify/lvmnotify.c
++    [DEP] libdm-file.c
++    [DEP] mm/memlock.c
++    [DEP] misc/sharedlib.c
++    [DEP] libdm-deptree.c
++    [DEP] misc/lvm-percent.c
++    [DEP] misc/lvm-wrappers.c
++    [DEP] libdm-config.c
++    [DEP] misc/lvm-string.c
++    [DEP] misc/lvm-signal.c
++    [DEP] libdm-common.c
++    [DEP] misc/lvm-maths.c
++    [DEP] misc/lvm-globals.c
++    [DEP] datastruct/list.c
++    [DEP] misc/lvm-flock.c
++    [DEP] misc/lvm-file.c
++    [DEP] datastruct/hash.c
++    [DEP] datastruct/bitset.c
++    [DEP] misc/lvm-exec.c
++    [DEP] misc/crc.c
++    [CC] datastruct/bitset.c
++    [DEP] mirror/mirrored.c
++    [CC] datastruct/hash.c
++    [DEP] metadata/vg.c
++    [CC] datastruct/list.c
++    [DEP] metadata/vdo_manip.c
++    [CC] libdm-common.c
++    [DEP] metadata/thin_manip.c
++    [CC] libdm-config.c
++    [DEP] metadata/snapshot_manip.c
++    [DEP] metadata/segtype.c
++    [DEP] metadata/raid_manip.c
++    [DEP] metadata/pv_map.c
++    [DEP] metadata/pv_manip.c
++    [DEP] metadata/pv_list.c
++    [DEP] metadata/pv.c
++    [DEP] metadata/pool_manip.c
++    [CC] libdm-deptree.c
++    [DEP] metadata/mirror.c
++    [DEP] metadata/metadata.c
++    [DEP] metadata/merge.c
++    [CC] libdm-file.c
++    [DEP] metadata/lv_manip.c
++    [DEP] metadata/lv.c
++    [CC] libdm-report.c
++    [DEP] metadata/integrity_manip.c
++In function ‘_find_dm_tree_node_by_uuid’,
++    inlined from ‘dm_tree_find_node_by_uuid’ at libdm-deptree.c:785:9:
++libdm-deptree.c:585:11: warning: ‘strncpy’ specified bound 129 equals destination size [-Wstringop-truncation]
++  585 |    (void) strncpy(uuid_without_suffix, uuid, sizeof(uuid_without_suffix));
++      |           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++    [DEP] metadata/writecache_manip.c
++    [DEP] metadata/cache_manip.c
++    [DEP] log/log.c
++    [DEP] locking/locking.c
++    [DEP] locking/file_locking.c
++    [DEP] label/hints.c
++    [DEP] label/label.c
++    [DEP] freeseg/freeseg.c
++    [DEP] format_text/text_label.c
++    [DEP] format_text/import_vsn1.c
++    [DEP] format_text/import.c
++    [DEP] format_text/format-text.c
++    [DEP] format_text/flags.c
++    [CC] libdm-stats.c
++    [DEP] format_text/export.c
++    [DEP] format_text/archiver.c
++    [DEP] format_text/archive.c
++    [DEP] filters/filter-signature.c
++    [DEP] filters/filter-internal.c
++    [DEP] filters/filter-usable.c
++    [DEP] filters/filter-type.c
++    [DEP] filters/filter-partitioned.c
++    [DEP] filters/filter-mpath.c
++    [DEP] filters/filter-fwraid.c
++    [CC] libdm-string.c
++    [DEP] filters/filter-md.c
++    [DEP] filters/filter-sysfs.c
++    [DEP] filters/filter-regex.c
++    [DEP] filters/filter-persistent.c
++    [DEP] filters/filter-composite.c
++    [CC] libdm-targets.c
++    [DEP] unknown/unknown.c
++    [DEP] error/errseg.c
++    [DEP] display/display.c
++    [DEP] device/dev-lvm1-pool.c
++    [DEP] device/dev-dasd.c
++    [CC] libdm-timestamp.c
++    [DEP] device/dev-luks.c
++    [CC] mm/dbg_malloc.c
++    [DEP] device/dev-type.c
++    [DEP] device/dev-swap.c
++    [CC] mm/pool.c
++    [CC] regex/matcher.c
++    [DEP] device/dev-md.c
++    [DEP] device/dev-io.c
++    [CC] regex/parse_rx.c
++    [DEP] device/dev-ext.c
++    [DEP] device/dev-cache.c
++    [DEP] device/bcache-utils.c
++    [CC] regex/ttree.c
++    [CC] ioctl/libdm-iface.c
++    [DEP] device/bcache.c
++    [DEP] datastruct/str_list.c
++    [DEP] datastruct/btree.c
++    [DEP] config/config.c
++    [DEP] commands/toolcontext.c
++    [DEP] cache_segtype/cache.c
++    [DEP] integrity/integrity.c
++    [DEP] writecache/writecache.c
++    [DEP] cache/lvmcache.c
++    [DEP] activate/activate.c
++In function ‘_lookup_dev_name’,
++    inlined from ‘_flatten’ at ioctl/libdm-iface.c:1230:8,
++    inlined from ‘_do_dm_ioctl’ at ioctl/libdm-iface.c:1816:8,
++    inlined from ‘dm_task_run’ at ioctl/libdm-iface.c:2045:14:
++ioctl/libdm-iface.c:1093:4: warning: ‘strncpy’ specified bound 128 equals destination size [-Wstringop-truncation]
++ 1093 |    strncpy(buf, names->name, len);
++      |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In function ‘_flatten’,
++    inlined from ‘_do_dm_ioctl’ at ioctl/libdm-iface.c:1816:8,
++    inlined from ‘dm_task_run’ at ioctl/libdm-iface.c:2045:14:
++ioctl/libdm-iface.c:1247:3: warning: ‘strncpy’ specified bound 128 equals destination size [-Wstringop-truncation]
++ 1247 |   strncpy(dmi->name, DEV_NAME(dmt), sizeof(dmi->name));
++      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ioctl/libdm-iface.c:1250:3: warning: ‘strncpy’ specified bound 129 equals destination size [-Wstringop-truncation]
++ 1250 |   strncpy(dmi->uuid, DEV_UUID(dmt), sizeof(dmi->uuid));
++      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++make[1]: Nothing to be done for 'device-mapper'.
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/lib'
++    [CC] ioctl/libdevmapper.so.1.02
++    [LN] ioctl/libdevmapper.so.1.02
++    [LN] ioctl/libdevmapper.so
++    [LN] ioctl/libdevmapper.so
++make -C dm-tools device-mapper
++make[2]: Entering directory '/tmp/LVM2.2.03.11/libdm/dm-tools'
++    [DEP] dmsetup.c
++    [CC] dmsetup.c
++    [CC] dmsetup
++make[2]: Leaving directory '/tmp/LVM2.2.03.11/libdm/dm-tools'
++make -C dm-tools
++make[2]: Entering directory '/tmp/LVM2.2.03.11/libdm/dm-tools'
++make[2]: Nothing to be done for 'all'.
++make[2]: Leaving directory '/tmp/LVM2.2.03.11/libdm/dm-tools'
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/libdm'
++make -C daemons device-mapper
++make -C tools device-mapper
++make[1]: Entering directory '/tmp/LVM2.2.03.11/tools'
++make[1]: Entering directory '/tmp/LVM2.2.03.11/daemons'
++make -C dmeventd device-mapper
++make[2]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd'
++    [LN] man-generator.c
++    [GEN] command-lines-input.h
++    [GEN] command-count.h
++    [GEN] cmds.h
++    [DEP] dmeventd.c
++    [DEP] libdevmapper-event.c
++    [DEP] man-generator.c
++    [DEP] lvmcmdlib.c
++    [CC] libdevmapper-event.c
++    [DEP] lvm2cmd.c
++libdevmapper-event.c: In function ‘dm_event_log’:
++libdevmapper-event.c:939:5: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
++  939 |     (int)pthread_self(), subsys,
++      |     ^
++    [DEP] lvm2cmd-static.c
++    [DEP] lvm.c
++    [DEP] vgsplit.c
++    [DEP] vgscan.c
++    [DEP] vgrename.c
++    [DEP] vgremove.c
++    [DEP] vgreduce.c
++    [DEP] vgmknodes.c
++    [DEP] vgmerge.c
++    [DEP] vgimportclone.c
++    [DEP] vgimport.c
++    [CC] dmeventd.c
++    [DEP] vgextend.c
++    [DEP] vgexport.c
++dmeventd.c: In function ‘_timeout_thread’:
++dmeventd.c:784:9: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
++  784 |         (int) thread->thread);
++      |         ^
++dmeventd.c:118:67: note: in definition of macro ‘LOG_MESG’
++  118 | #define LOG_MESG(l, f, ln, e, x...) _dmeventd_log(l, f, ln, e, ## x)
++      |                                                                   ^
++../../lib/log/log.h:84:25: note: in expansion of macro ‘LOG_LINE’
++   84 | #define log_debug(x...) LOG_LINE(_LOG_DEBUG, x)
++      |                         ^~~~~~~~
++dmeventd.c:783:6: note: in expansion of macro ‘log_debug’
++  783 |      log_debug("Skipping SIGALRM to processing Thr %x for timeout.",
++      |      ^~~~~~~~~
++dmeventd.c:791:10: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
++  791 |          (int) thread->thread, strerror(ret));
++      |          ^
++dmeventd.c:118:67: note: in definition of macro ‘LOG_MESG’
++  118 | #define LOG_MESG(l, f, ln, e, x...) _dmeventd_log(l, f, ln, e, ## x)
++      |                                                                   ^
++../../lib/log/log.h:101:23: note: in expansion of macro ‘LOG_LINE_WITH_ERRNO’
++  101 | #define log_err(x...) LOG_LINE_WITH_ERRNO(_LOG_ERR, EUNCLASSIFIED, x)
++      |                       ^~~~~~~~~~~~~~~~~~~
++../../lib/log/log.h:111:28: note: in expansion of macro ‘log_err’
++  111 | #define log_error(args...) log_err(args)
++      |                            ^~~~~~~
++dmeventd.c:790:7: note: in expansion of macro ‘log_error’
++  790 |       log_error("Unable to wakeup Thr %x for timeout: %s.",
++      |       ^~~~~~~~~
++dmeventd.c: In function ‘_do_process_event’:
++dmeventd.c:952:38: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
++  952 |   log_error("Lost event in Thr %x.", (int)thread->thread);
++      |                                      ^
++dmeventd.c:118:67: note: in definition of macro ‘LOG_MESG’
++  118 | #define LOG_MESG(l, f, ln, e, x...) _dmeventd_log(l, f, ln, e, ## x)
++      |                                                                   ^
++../../lib/log/log.h:101:23: note: in expansion of macro ‘LOG_LINE_WITH_ERRNO’
++  101 | #define log_err(x...) LOG_LINE_WITH_ERRNO(_LOG_ERR, EUNCLASSIFIED, x)
++      |                       ^~~~~~~~~~~~~~~~~~~
++../../lib/log/log.h:111:28: note: in expansion of macro ‘log_err’
++  111 | #define log_error(args...) log_err(args)
++      |                            ^~~~~~~
++dmeventd.c:952:3: note: in expansion of macro ‘log_error’
++  952 |   log_error("Lost event in Thr %x.", (int)thread->thread);
++      |   ^~~~~~~~~
++    [DEP] vgdisplay.c
++    [DEP] vgcreate.c
++    [DEP] vgck.c
++    [DEP] vgchange.c
++    [DEP] vgcfgrestore.c
++    [DEP] vgcfgbackup.c
++    [DEP] toollib.c
++    [DEP] tags.c
++    [DEP] segtypes.c
++    [DEP] reporter.c
++    [DEP] pvscan.c
++    [DEP] pvresize.c
++    [DEP] pvremove.c
++    [DEP] pvmove_poll.c
++    [DEP] pvmove.c
++    [DEP] pvdisplay.c
++    [CC] libdevmapper-event.so.1.02
++    [DEP] pvcreate.c
++    [DEP] pvck.c
++    [LN] libdevmapper-event.so
++    [CC] dmeventd
++make[2]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd'
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/daemons'
++    [DEP] pvchange.c
++    [DEP] polldaemon.c
++    [DEP] lvscan.c
++    [DEP] lvresize.c
++    [DEP] lvrename.c
++    [DEP] lvremove.c
++    [DEP] lvreduce.c
++    [DEP] lvpoll.c
++    [DEP] lvmdiskscan.c
++    [DEP] lvmcmdline.c
++    [DEP] lvextend.c
++    [DEP] lvdisplay.c
++    [DEP] lvcreate.c
++    [DEP] lvconvert_poll.c
++    [DEP] lvconvert.c
++    [DEP] lvchange.c
++    [DEP] formats.c
++    [DEP] dumpconfig.c
++    [DEP] command.c
++make[1]: Nothing to be done for 'device-mapper'.
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/tools'
++make -C conf
++make -C include
++make -C udev
++make[1]: Entering directory '/tmp/LVM2.2.03.11/conf'
++make[1]: Entering directory '/tmp/LVM2.2.03.11/include'
++make[1]: Entering directory '/tmp/LVM2.2.03.11/udev'
++make[1]: Nothing to be done for 'all'.
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/conf'
++make[1]: Nothing to be done for 'all'.
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/include'
++make -C libdaemon
++make -C libdm
++make[1]: Entering directory '/tmp/LVM2.2.03.11/libdm'
++make[1]: Entering directory '/tmp/LVM2.2.03.11/libdaemon'
++make -C dm-tools device-mapper
++make -C client device-mapper
++make[2]: Entering directory '/tmp/LVM2.2.03.11/libdm/dm-tools'
++make[2]: Entering directory '/tmp/LVM2.2.03.11/libdaemon/client'
++make[2]: Nothing to be done for 'device-mapper'.
++make[2]: Leaving directory '/tmp/LVM2.2.03.11/libdm/dm-tools'
++make -C dm-tools
++    [DEP] daemon-client.c
++make[2]: Entering directory '/tmp/LVM2.2.03.11/libdm/dm-tools'
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/udev'
++make[2]: Nothing to be done for 'all'.
++make[2]: Leaving directory '/tmp/LVM2.2.03.11/libdm/dm-tools'
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/libdm'
++    [DEP] daemon-io.c
++    [DEP] config-util.c
++make[2]: Nothing to be done for 'device-mapper'.
++make[2]: Leaving directory '/tmp/LVM2.2.03.11/libdaemon/client'
++make -C client
++make[2]: Entering directory '/tmp/LVM2.2.03.11/libdaemon/client'
++    [CC] daemon-io.c
++    [CC] config-util.c
++    [CC] daemon-client.c
++    [AR] libdaemonclient.a
++ar: creating libdaemonclient.a
++make[2]: Leaving directory '/tmp/LVM2.2.03.11/libdaemon/client'
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/libdaemon'
++make -C lib
++make[1]: Entering directory '/tmp/LVM2.2.03.11/lib'
++    [CC] activate/activate.c
++    [CC] cache/lvmcache.c
++    [CC] writecache/writecache.c
++    [CC] integrity/integrity.c
++    [CC] cache_segtype/cache.c
++cache/lvmcache.c: In function ‘lvmcache_add’:
++cache/lvmcache.c:2064:3: warning: ‘strncpy’ specified bound 32 equals destination size [-Wstringop-truncation]
++ 2064 |   strncpy((char *)&vgsummary.vgid, vgid, sizeof(vgsummary.vgid));
++      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++    [CC] commands/toolcontext.c
++commands/toolcontext.c: In function ‘create_toolcontext’:
++commands/toolcontext.c:1572:6: warning: unused variable ‘flags’ [-Wunused-variable]
++ 1572 |  int flags;
++      |      ^~~~~
++commands/toolcontext.c: In function ‘destroy_toolcontext’:
++commands/toolcontext.c:1960:6: warning: unused variable ‘flags’ [-Wunused-variable]
++ 1960 |  int flags;
++      |      ^~~~~
++At top level:
++commands/toolcontext.c:47:21: warning: ‘_linebuffer_size’ defined but not used [-Wunused-const-variable=]
++   47 | static const size_t _linebuffer_size = 4096;
++      |                     ^~~~~~~~~~~~~~~~
++    [CC] config/config.c
++    [CC] datastruct/btree.c
++    [CC] datastruct/str_list.c
++In function ‘_get_sysfs_dir’,
++    inlined from ‘_process_config’ at commands/toolcontext.c:621:2:
++commands/toolcontext.c:232:2: warning: ‘strncpy’ specified bound 4096 equals destination size [-Wstringop-truncation]
++  232 |  strncpy(buf, sys_mnt, buf_size);
++      |  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++    [CC] device/bcache.c
++    [CC] device/bcache-utils.c
++    [CC] device/dev-cache.c
++    [CC] device/dev-ext.c
++    [CC] device/dev-io.c
++    [CC] device/dev-md.c
++    [CC] device/dev-swap.c
++    [CC] device/dev-type.c
++    [CC] device/dev-luks.c
++    [CC] device/dev-dasd.c
++    [CC] device/dev-lvm1-pool.c
++    [CC] display/display.c
++    [CC] error/errseg.c
++    [CC] unknown/unknown.c
++    [CC] filters/filter-composite.c
++    [CC] filters/filter-persistent.c
++    [CC] filters/filter-regex.c
++    [CC] filters/filter-sysfs.c
++    [CC] filters/filter-md.c
++    [CC] filters/filter-fwraid.c
++    [CC] filters/filter-mpath.c
++    [CC] filters/filter-partitioned.c
++    [CC] filters/filter-type.c
++    [CC] filters/filter-usable.c
++    [CC] filters/filter-internal.c
++    [CC] filters/filter-signature.c
++    [CC] format_text/archive.c
++    [CC] format_text/archiver.c
++    [CC] format_text/export.c
++    [CC] format_text/flags.c
++    [CC] format_text/format-text.c
++    [CC] format_text/import.c
++    [CC] format_text/import_vsn1.c
++    [CC] format_text/text_label.c
++    [CC] freeseg/freeseg.c
++    [CC] label/label.c
++    [CC] label/hints.c
++    [CC] locking/file_locking.c
++    [CC] locking/locking.c
++    [CC] log/log.c
++    [CC] metadata/cache_manip.c
++    [CC] metadata/writecache_manip.c
++    [CC] metadata/integrity_manip.c
++    [CC] metadata/lv.c
++    [CC] metadata/lv_manip.c
++    [CC] metadata/merge.c
++    [CC] metadata/metadata.c
++    [CC] metadata/mirror.c
++    [CC] metadata/pool_manip.c
++    [CC] metadata/pv.c
++    [CC] metadata/pv_list.c
++    [CC] metadata/pv_manip.c
++    [CC] metadata/pv_map.c
++    [CC] metadata/raid_manip.c
++    [CC] metadata/segtype.c
++    [CC] metadata/snapshot_manip.c
++    [CC] metadata/thin_manip.c
++    [CC] metadata/vdo_manip.c
++    [CC] metadata/vg.c
++    [CC] mirror/mirrored.c
++    [CC] misc/crc.c
++    [CC] misc/lvm-exec.c
++    [CC] misc/lvm-file.c
++    [CC] misc/lvm-flock.c
++    [CC] misc/lvm-globals.c
++    [CC] misc/lvm-maths.c
++    [CC] misc/lvm-signal.c
++    [CC] misc/lvm-string.c
++    [CC] misc/lvm-wrappers.c
++    [CC] misc/lvm-percent.c
++    [CC] misc/sharedlib.c
++    [CC] mm/memlock.c
++mm/memlock.c:149:13: warning: ‘_touch_memory’ defined but not used [-Wunused-function]
++  149 | static void _touch_memory(void *mem, size_t size)
++      |             ^~~~~~~~~~~~~
++mm/memlock.c:84:15: warning: ‘_size_malloc’ defined but not used [-Wunused-variable]
++   84 | static size_t _size_malloc = 2000000;
++      |               ^~~~~~~~~~~~
++    [CC] notify/lvmnotify.c
++    [CC] properties/prop_common.c
++    [CC] raid/raid.c
++    [CC] report/properties.c
++    [CC] report/report.c
++    [CC] snapshot/snapshot.c
++    [CC] striped/striped.c
++    [CC] thin/thin.c
++    [CC] uuid/uuid.c
++    [CC] zero/zero.c
++    [CC] activate/dev_manager.c
++    [CC] activate/fs.c
++    [CC] vdo/vdo.c
++    [AR] liblvm-internal.a
++ar: creating liblvm-internal.a
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/lib'
++make -C tools
++make -C scripts
++make[1]: Entering directory '/tmp/LVM2.2.03.11/scripts'
++make[1]: Entering directory '/tmp/LVM2.2.03.11/tools'
++    [CC] lvm2_activation_generator_systemd_red_hat.c
++    [CC] commands.h
++    [CC] command.c
++    [CC] dumpconfig.c
++    [CC] lvm2_activation_generator_systemd_red_hat
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/scripts'
++    [CC] formats.c
++    [CC] lvchange.c
++    [CC] lvconvert.c
++    [CC] lvconvert_poll.c
++    [CC] lvcreate.c
++    [CC] lvdisplay.c
++    [CC] lvextend.c
++    [CC] lvmcmdline.c
++    [CC] lvmdiskscan.c
++    [CC] lvpoll.c
++    [CC] lvreduce.c
++    [CC] lvremove.c
++    [CC] lvrename.c
++    [CC] lvresize.c
++    [CC] lvscan.c
++    [CC] polldaemon.c
++    [CC] pvchange.c
++    [CC] pvck.c
++    [CC] pvcreate.c
++    [CC] pvdisplay.c
++    [CC] pvmove.c
++    [CC] pvmove_poll.c
++    [CC] pvremove.c
++    [CC] pvresize.c
++    [CC] pvscan.c
++    [CC] reporter.c
++pvscan.c: In function ‘pvscan_cache_cmd’:
++pvscan.c:1618:9: warning: ‘ret’ may be used uninitialized in this function [-Wmaybe-uninitialized]
++ 1618 |  return ret;
++      |         ^~~
++    [CC] segtypes.c
++    [CC] tags.c
++    [CC] toollib.c
++    [CC] vgcfgbackup.c
++    [CC] vgcfgrestore.c
++    [CC] vgchange.c
++    [CC] vgck.c
++    [CC] vgcreate.c
++    [CC] vgdisplay.c
++    [CC] vgexport.c
++    [CC] vgextend.c
++    [CC] vgimport.c
++    [CC] vgimportclone.c
++    [CC] vgmerge.c
++    [CC] vgmknodes.c
++    [CC] vgreduce.c
++    [CC] vgremove.c
++    [CC] vgrename.c
++    [CC] vgscan.c
++    [CC] vgsplit.c
++    [CC] lvmcmdlib.c
++In function ‘_get_all_devices’,
++    inlined from ‘process_each_pv’ at toollib.c:4442:13:
++toollib.c:3879:4: warning: ‘strncpy’ output may be truncated copying 32 bytes from a string of length 32 [-Wstringop-truncation]
++ 3879 |    strncpy(dil->pvid, hint->pvid, ID_LEN);
++      |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++toollib.c:3899:3: warning: ‘strncpy’ output may be truncated copying 32 bytes from a string of length 32 [-Wstringop-truncation]
++ 3899 |   strncpy(dil->pvid, dev->pvid, ID_LEN);
++      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In function ‘_get_arg_devices’,
++    inlined from ‘process_each_pv’ at toollib.c:4447:13:
++toollib.c:3845:4: warning: ‘strncpy’ output may be truncated copying 32 bytes from a string of length 32 [-Wstringop-truncation]
++ 3845 |    strncpy(dil->pvid, dil->dev->pvid, ID_LEN);
++      |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++    [CC] lvm2cmd.c
++    [CC] lvm.c
++    [CC] man-generator.c
++    [AR] liblvm2cmd.a
++    [CC] lvm
++    [CC] liblvm2cmd.so
++    [LN] liblvm2cmd.so.2.03
++    [CC] man-generator
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/tools'
++make -C daemons
++make -C man
++make[1]: Entering directory '/tmp/LVM2.2.03.11/daemons'
++make[1]: Entering directory '/tmp/LVM2.2.03.11/man'
++make -C dmeventd device-mapper
++    [MAN] lvm.conf.5
++make[2]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd'
++    [MAN] lvmsystemid.7
++    [MAN] lvmreport.7
++    [MAN] lvmcache.7
++make[2]: Nothing to be done for 'device-mapper'.
++make[2]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd'
++make -C dmeventd
++make[2]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd'
++    [MAN] lvmthin.7
++make -C plugins device-mapper
++make[3]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins'
++    [MAN] lvmraid.7
++make[3]: Nothing to be done for 'device-mapper'.
++make[3]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins'
++make -C plugins
++make[3]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins'
++make -C lvm2 device-mapper
++    [MAN] lvmvdo.7
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/lvm2'
++    [MAN] lvm.8
++    [MAN] lvmdump.8
++    [DEP] dmeventd_lvm.c
++../tools/man-generator --primary lvmconfig > test.gen
++make -C snapshot device-mapper
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/snapshot'
++    [MAN] lvmsar.8
++    [DEP] dmeventd_snapshot.c
++    [MAN] lvmsadc.8
++make[4]: Nothing to be done for 'device-mapper'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/lvm2'
++make -C raid device-mapper
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/raid'
++    [DEP] dmeventd_raid.c
++make[4]: Nothing to be done for 'device-mapper'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/snapshot'
++make -C thin device-mapper
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/thin'
++    [MAN] fsadm.8
++    [MAN] lvm2-activation-generator.8
++    [DEP] dmeventd_thin.c
++make[4]: Nothing to be done for 'device-mapper'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/raid'
++make -C mirror device-mapper
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/mirror'
++    [DEP] dmeventd_mirror.c
++make[4]: Nothing to be done for 'device-mapper'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/thin'
++make -C vdo device-mapper
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/vdo'
++    [DEP] dmeventd_vdo.c
++make[4]: Nothing to be done for 'device-mapper'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/mirror'
++make[4]: Nothing to be done for 'device-mapper'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/vdo'
++make -C lvm2
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/lvm2'
++    [CC] dmeventd_lvm.c
++    [CC] libdevmapper-event-lvm2.so.2.03
++    [LN] libdevmapper-event-lvm2.so
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/lvm2'
++make -C snapshot
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/snapshot'
++    [CC] dmeventd_snapshot.c
++    [CC] libdevmapper-event-lvm2snapshot.so.2.03
++    [LN] libdevmapper-event-lvm2snapshot.so
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/snapshot'
++make -C raid
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/raid'
++    [CC] dmeventd_raid.c
++    [CC] libdevmapper-event-lvm2raid.so.2.03
++    [LN] libdevmapper-event-lvm2raid.so
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/raid'
++make -C thin
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/thin'
++    [CC] dmeventd_thin.c
++    [CC] libdevmapper-event-lvm2thin.so.2.03
++    [LN] libdevmapper-event-lvm2thin.so
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/thin'
++make -C mirror
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/mirror'
++    [CC] dmeventd_mirror.c
++    [CC] libdevmapper-event-lvm2mirror.so.2.03
++    [LN] libdevmapper-event-lvm2mirror.so
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/mirror'
++make -C vdo
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/vdo'
++    [CC] dmeventd_vdo.c
++    [MAN] lvmdiskscan.8
++    [MAN] lvm-fullreport.8
++    [MAN] lvm-lvpoll.8
++    [MAN] lvcreate.8
++    [MAN] lvchange.8
++    [MAN] lvmconfig.8
++    [MAN] lvconvert.8
++    [MAN] lvdisplay.8
++    [MAN] lvextend.8
++    [MAN] lvreduce.8
++    [MAN] lvremove.8
++    [MAN] lvrename.8
++    [MAN] lvresize.8
++    [MAN] lvs.8
++    [CC] libdevmapper-event-lvm2vdo.so.2.03
++    [MAN] lvscan.8
++    [MAN] pvchange.8
++    [MAN] pvck.8
++    [LN] libdevmapper-event-lvm2vdo.so
++    [MAN] pvcreate.8
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/vdo'
++make[3]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins'
++make[2]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd'
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/daemons'
++    [MAN] pvdisplay.8
++    [MAN] pvmove.8
++    [MAN] pvremove.8
++    [MAN] pvresize.8
++    [MAN] pvscan.8
++    [MAN] pvs.8
++    [MAN] vgcfgbackup.8
++    [MAN] vgcfgrestore.8
++    [MAN] vgchange.8
++    [MAN] vgck.8
++    [MAN] vgcreate.8
++    [MAN] vgconvert.8
++    [MAN] vgdisplay.8
++    [MAN] vgexport.8
++    [MAN] vgextend.8
++    [MAN] vgimport.8
++    [MAN] vgimportclone.8
++    [MAN] vgmerge.8
++    [MAN] vgmknodes.8
++    [MAN] vgreduce.8
++    [MAN] vgremove.8
++    [MAN] vgrename.8
++    [MAN] vgs.8
++    [MAN] vgscan.8
++    [MAN] vgsplit.8
++    [MAN] lvm-config.8
++    [MAN] lvm-dumpconfig.8
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/man'
++make -C conf device-mapper
++make[1]: Entering directory '/tmp/LVM2.2.03.11/conf'
++make[1]: Nothing to be done for 'device-mapper'.
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/conf'
++make -C include device-mapper
++make[1]: Entering directory '/tmp/LVM2.2.03.11/include'
++make[1]: Nothing to be done for 'device-mapper'.
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/include'
++make -C libdm device-mapper
++make[1]: Entering directory '/tmp/LVM2.2.03.11/libdm'
++make -C dm-tools device-mapper
++make[2]: Entering directory '/tmp/LVM2.2.03.11/libdm/dm-tools'
++make[2]: Nothing to be done for 'device-mapper'.
++make[2]: Leaving directory '/tmp/LVM2.2.03.11/libdm/dm-tools'
++make -C dm-tools
++make[2]: Entering directory '/tmp/LVM2.2.03.11/libdm/dm-tools'
++make[2]: Nothing to be done for 'all'.
++make[2]: Leaving directory '/tmp/LVM2.2.03.11/libdm/dm-tools'
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/libdm'
++make -C daemons device-mapper
++make[1]: Entering directory '/tmp/LVM2.2.03.11/daemons'
++make -C dmeventd device-mapper
++make[2]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd'
++make[2]: Nothing to be done for 'device-mapper'.
++make[2]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd'
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/daemons'
++make -C lib device-mapper
++make[1]: Entering directory '/tmp/LVM2.2.03.11/lib'
++make[1]: Nothing to be done for 'device-mapper'.
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/lib'
++make -C libdaemon device-mapper
++make[1]: Entering directory '/tmp/LVM2.2.03.11/libdaemon'
++make[1]: Nothing to be done for 'device-mapper'.
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/libdaemon'
++make -C man device-mapper
++make[1]: Entering directory '/tmp/LVM2.2.03.11/man'
++make[1]: Nothing to be done for 'device-mapper'.
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/man'
++make -C scripts device-mapper
++make[1]: Entering directory '/tmp/LVM2.2.03.11/scripts'
++make[1]: Nothing to be done for 'device-mapper'.
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/scripts'
++make -C tools device-mapper
++make[1]: Entering directory '/tmp/LVM2.2.03.11/tools'
++make[1]: Nothing to be done for 'device-mapper'.
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/tools'
++make -C udev device-mapper
++make[1]: Entering directory '/tmp/LVM2.2.03.11/udev'
++make[1]: Nothing to be done for 'device-mapper'.
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/udev'
++make -C conf
++make[1]: Entering directory '/tmp/LVM2.2.03.11/conf'
++make[1]: Nothing to be done for 'all'.
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/conf'
++make -C include
++make[1]: Entering directory '/tmp/LVM2.2.03.11/include'
++make[1]: Nothing to be done for 'all'.
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/include'
++make -C libdaemon
++make[1]: Entering directory '/tmp/LVM2.2.03.11/libdaemon'
++make -C client device-mapper
++make[2]: Entering directory '/tmp/LVM2.2.03.11/libdaemon/client'
++make[2]: Nothing to be done for 'device-mapper'.
++make[2]: Leaving directory '/tmp/LVM2.2.03.11/libdaemon/client'
++make -C client
++make[2]: Entering directory '/tmp/LVM2.2.03.11/libdaemon/client'
++make[2]: Nothing to be done for 'all'.
++make[2]: Leaving directory '/tmp/LVM2.2.03.11/libdaemon/client'
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/libdaemon'
++make -C lib
++make[1]: Entering directory '/tmp/LVM2.2.03.11/lib'
++make[1]: Nothing to be done for 'all'.
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/lib'
++make -C tools
++make[1]: Entering directory '/tmp/LVM2.2.03.11/tools'
++make[1]: Nothing to be done for 'all'.
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/tools'
++make -C daemons
++make[1]: Entering directory '/tmp/LVM2.2.03.11/daemons'
++make -C dmeventd device-mapper
++make[2]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd'
++make[2]: Nothing to be done for 'device-mapper'.
++make[2]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd'
++make -C dmeventd
++make[2]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd'
++make -C plugins device-mapper
++make[3]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins'
++make[3]: Nothing to be done for 'device-mapper'.
++make[3]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins'
++make -C plugins
++make[3]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins'
++make -C lvm2 device-mapper
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/lvm2'
++make[4]: Nothing to be done for 'device-mapper'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/lvm2'
++make -C snapshot device-mapper
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/snapshot'
++make[4]: Nothing to be done for 'device-mapper'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/snapshot'
++make -C raid device-mapper
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/raid'
++make[4]: Nothing to be done for 'device-mapper'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/raid'
++make -C thin device-mapper
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/thin'
++make[4]: Nothing to be done for 'device-mapper'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/thin'
++make -C mirror device-mapper
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/mirror'
++make[4]: Nothing to be done for 'device-mapper'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/mirror'
++make -C vdo device-mapper
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/vdo'
++make[4]: Nothing to be done for 'device-mapper'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/vdo'
++make -C lvm2
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/lvm2'
++make[4]: Nothing to be done for 'all'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/lvm2'
++make -C snapshot
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/snapshot'
++make[4]: Nothing to be done for 'all'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/snapshot'
++make -C raid
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/raid'
++make[4]: Nothing to be done for 'all'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/raid'
++make -C thin
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/thin'
++make[4]: Nothing to be done for 'all'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/thin'
++make -C mirror
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/mirror'
++make[4]: Nothing to be done for 'all'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/mirror'
++make -C vdo
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/vdo'
++make[4]: Nothing to be done for 'all'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/vdo'
++make[3]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins'
++make[2]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd'
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/daemons'
++make -C libdm
++make[1]: Entering directory '/tmp/LVM2.2.03.11/libdm'
++make -C dm-tools device-mapper
++make[2]: Entering directory '/tmp/LVM2.2.03.11/libdm/dm-tools'
++make[2]: Nothing to be done for 'device-mapper'.
++make[2]: Leaving directory '/tmp/LVM2.2.03.11/libdm/dm-tools'
++make -C dm-tools
++make[2]: Entering directory '/tmp/LVM2.2.03.11/libdm/dm-tools'
++make[2]: Nothing to be done for 'all'.
++make[2]: Leaving directory '/tmp/LVM2.2.03.11/libdm/dm-tools'
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/libdm'
++make -C man
++make[1]: Entering directory '/tmp/LVM2.2.03.11/man'
++make[1]: Nothing to be done for 'all'.
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/man'
++make -C scripts
++make[1]: Entering directory '/tmp/LVM2.2.03.11/scripts'
++make[1]: Nothing to be done for 'all'.
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/scripts'
++make -C udev
++make[1]: Entering directory '/tmp/LVM2.2.03.11/udev'
++make[1]: Nothing to be done for 'all'.
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/udev'
++make -C conf install
++make[1]: Entering directory '/tmp/LVM2.2.03.11/conf'
++/usr/bin/ginstall -c -p -m 644 -D example.conf /tmp/package-lvm2/etc/lvm/lvm.conf
++/usr/bin/ginstall -c -p -m 644 -D lvmlocal.conf /tmp/package-lvm2/etc/lvm/lvmlocal.conf
++    [INSTALL] command_profile_template.profile
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/conf'
++make -C daemons install
++make[1]: Entering directory '/tmp/LVM2.2.03.11/daemons'
++make -C dmeventd device-mapper
++make[2]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd'
++make[2]: Nothing to be done for 'device-mapper'.
++make[2]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd'
++make -C dmeventd
++make[2]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd'
++make -C plugins device-mapper
++make[3]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins'
++make[3]: Nothing to be done for 'device-mapper'.
++make[3]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins'
++make -C plugins
++make[3]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins'
++make -C lvm2 device-mapper
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/lvm2'
++make[4]: Nothing to be done for 'device-mapper'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/lvm2'
++make -C snapshot device-mapper
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/snapshot'
++make[4]: Nothing to be done for 'device-mapper'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/snapshot'
++make -C raid device-mapper
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/raid'
++make[4]: Nothing to be done for 'device-mapper'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/raid'
++make -C thin device-mapper
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/thin'
++make[4]: Nothing to be done for 'device-mapper'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/thin'
++make -C mirror device-mapper
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/mirror'
++make[4]: Nothing to be done for 'device-mapper'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/mirror'
++make -C vdo device-mapper
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/vdo'
++make[4]: Nothing to be done for 'device-mapper'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/vdo'
++make -C lvm2
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/lvm2'
++make[4]: Nothing to be done for 'all'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/lvm2'
++make -C snapshot
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/snapshot'
++make[4]: Nothing to be done for 'all'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/snapshot'
++make -C raid
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/raid'
++make[4]: Nothing to be done for 'all'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/raid'
++make -C thin
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/thin'
++make[4]: Nothing to be done for 'all'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/thin'
++make -C mirror
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/mirror'
++make[4]: Nothing to be done for 'all'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/mirror'
++make -C vdo
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/vdo'
++make[4]: Nothing to be done for 'all'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/vdo'
++make[3]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins'
++make[2]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd'
++make -C dmeventd install
++make[2]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd'
++make -C plugins device-mapper
++make[3]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins'
++make[3]: Nothing to be done for 'device-mapper'.
++make[3]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins'
++make -C plugins
++make[3]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins'
++make -C lvm2 device-mapper
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/lvm2'
++make[4]: Nothing to be done for 'device-mapper'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/lvm2'
++make -C snapshot device-mapper
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/snapshot'
++make[4]: Nothing to be done for 'device-mapper'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/snapshot'
++make -C raid device-mapper
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/raid'
++make[4]: Nothing to be done for 'device-mapper'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/raid'
++make -C thin device-mapper
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/thin'
++make[4]: Nothing to be done for 'device-mapper'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/thin'
++make -C mirror device-mapper
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/mirror'
++make[4]: Nothing to be done for 'device-mapper'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/mirror'
++make -C vdo device-mapper
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/vdo'
++make[4]: Nothing to be done for 'device-mapper'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/vdo'
++make -C lvm2
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/lvm2'
++make[4]: Nothing to be done for 'all'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/lvm2'
++make -C snapshot
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/snapshot'
++make[4]: Nothing to be done for 'all'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/snapshot'
++make -C raid
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/raid'
++make[4]: Nothing to be done for 'all'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/raid'
++make -C thin
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/thin'
++make[4]: Nothing to be done for 'all'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/thin'
++make -C mirror
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/mirror'
++make[4]: Nothing to be done for 'all'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/mirror'
++make -C vdo
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/vdo'
++make[4]: Nothing to be done for 'all'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/vdo'
++make[3]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins'
++make -C plugins install
++make[3]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins'
++make -C lvm2 device-mapper
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/lvm2'
++make[4]: Nothing to be done for 'device-mapper'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/lvm2'
++make -C snapshot device-mapper
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/snapshot'
++make[4]: Nothing to be done for 'device-mapper'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/snapshot'
++make -C raid device-mapper
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/raid'
++make[4]: Nothing to be done for 'device-mapper'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/raid'
++make -C thin device-mapper
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/thin'
++make[4]: Nothing to be done for 'device-mapper'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/thin'
++make -C mirror device-mapper
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/mirror'
++make[4]: Nothing to be done for 'device-mapper'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/mirror'
++make -C vdo device-mapper
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/vdo'
++make[4]: Nothing to be done for 'device-mapper'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/vdo'
++make -C lvm2
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/lvm2'
++make[4]: Nothing to be done for 'all'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/lvm2'
++make -C snapshot
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/snapshot'
++make[4]: Nothing to be done for 'all'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/snapshot'
++make -C raid
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/raid'
++make[4]: Nothing to be done for 'all'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/raid'
++make -C thin
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/thin'
++make[4]: Nothing to be done for 'all'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/thin'
++make -C mirror
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/mirror'
++make[4]: Nothing to be done for 'all'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/mirror'
++make -C vdo
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/vdo'
++make[4]: Nothing to be done for 'all'.
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/vdo'
++make -C lvm2 install
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/lvm2'
++    [INSTALL] libdevmapper-event-lvm2.so
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/lvm2'
++make -C snapshot install
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/snapshot'
++    [INSTALL] libdevmapper-event-lvm2snapshot.so
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/snapshot'
++make -C raid install
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/raid'
++    [INSTALL] libdevmapper-event-lvm2raid.so
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/raid'
++make -C thin install
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/thin'
++    [INSTALL] libdevmapper-event-lvm2thin.so
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/thin'
++make -C mirror install
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/mirror'
++    [INSTALL] libdevmapper-event-lvm2mirror.so
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/mirror'
++make -C vdo install
++make[4]: Entering directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/vdo'
++    [INSTALL] libdevmapper-event-lvm2vdo.so
++make[4]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins/vdo'
++make[3]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd/plugins'
++    [INSTALL] libdevmapper-event.h
++    [INSTALL] libdevmapper-event.so
++    [INSTALL] libdevmapper-event.pc
++    [INSTALL] dmeventd
++make[2]: Leaving directory '/tmp/LVM2.2.03.11/daemons/dmeventd'
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/daemons'
++make -C include install
++make[1]: Entering directory '/tmp/LVM2.2.03.11/include'
++make[1]: Nothing to be done for 'install'.
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/include'
++make -C lib install
++make[1]: Entering directory '/tmp/LVM2.2.03.11/lib'
++make[1]: Nothing to be done for 'install'.
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/lib'
++make -C libdaemon install
++make[1]: Entering directory '/tmp/LVM2.2.03.11/libdaemon'
++make -C client device-mapper
++make[2]: Entering directory '/tmp/LVM2.2.03.11/libdaemon/client'
++make[2]: Nothing to be done for 'device-mapper'.
++make[2]: Leaving directory '/tmp/LVM2.2.03.11/libdaemon/client'
++make -C client
++make[2]: Entering directory '/tmp/LVM2.2.03.11/libdaemon/client'
++make[2]: Nothing to be done for 'all'.
++make[2]: Leaving directory '/tmp/LVM2.2.03.11/libdaemon/client'
++make -C client install
++make[2]: Entering directory '/tmp/LVM2.2.03.11/libdaemon/client'
++make[2]: Nothing to be done for 'install'.
++make[2]: Leaving directory '/tmp/LVM2.2.03.11/libdaemon/client'
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/libdaemon'
++make -C libdm install
++make[1]: Entering directory '/tmp/LVM2.2.03.11/libdm'
++make -C dm-tools device-mapper
++make[2]: Entering directory '/tmp/LVM2.2.03.11/libdm/dm-tools'
++make[2]: Nothing to be done for 'device-mapper'.
++make[2]: Leaving directory '/tmp/LVM2.2.03.11/libdm/dm-tools'
++make -C dm-tools
++make[2]: Entering directory '/tmp/LVM2.2.03.11/libdm/dm-tools'
++make[2]: Nothing to be done for 'all'.
++make[2]: Leaving directory '/tmp/LVM2.2.03.11/libdm/dm-tools'
++make -C dm-tools install
++make[2]: Entering directory '/tmp/LVM2.2.03.11/libdm/dm-tools'
++    [INSTALL] dmsetup
++make[2]: Leaving directory '/tmp/LVM2.2.03.11/libdm/dm-tools'
++    [INSTALL] ioctl/libdevmapper.so
++    [INSTALL] libdevmapper.pc
++    [INSTALL] libdevmapper.h
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/libdm'
++make -C man install
++make[1]: Entering directory '/tmp/LVM2.2.03.11/man'
++    [INSTALL] lvm.conf.5
++    [INSTALL] lvmsystemid.7
++    [INSTALL] lvm.8
++    [INSTALL] dmsetup.8
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/man'
++make -C scripts install
++make[1]: Entering directory '/tmp/LVM2.2.03.11/scripts'
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/scripts'
++make -C tools install
++make[1]: Entering directory '/tmp/LVM2.2.03.11/tools'
++    [INSTALL] lvm
++Creating symbolic links for individual commands in /tmp/package-lvm2/sbin
++    [INSTALL] liblvm2cmd.so
++    [INSTALL] lvm2cmd.h
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/tools'
++make -C udev install
++make[1]: Entering directory '/tmp/LVM2.2.03.11/udev'
++    [INSTALL] 11-dm-lvm.rules
++    [INSTALL] 69-dm-lvm-metad.rules
++    [INSTALL] 10-dm.rules
++    [INSTALL] 13-dm-disk.rules
++    [INSTALL] 95-dm-notify.rules
++make[1]: Leaving directory '/tmp/LVM2.2.03.11/udev'
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++sbin/dmstats	dmsetup
++sbin/lvchange	lvm
++sbin/lvconvert	lvm
++sbin/lvcreate	lvm
++sbin/lvdisplay	lvm
++sbin/lvextend	lvm
++sbin/lvmconfig	lvm
++sbin/lvmdiskscan	lvm
++sbin/lvmsadc	lvm
++sbin/lvmsar	lvm
++sbin/lvreduce	lvm
++sbin/lvremove	lvm
++sbin/lvrename	lvm
++sbin/lvresize	lvm
++sbin/lvs	lvm
++sbin/lvscan	lvm
++sbin/pvchange	lvm
++sbin/pvck	lvm
++sbin/pvcreate	lvm
++sbin/pvdisplay	lvm
++sbin/pvmove	lvm
++sbin/pvremove	lvm
++sbin/pvresize	lvm
++sbin/pvs	lvm
++sbin/pvscan	lvm
++sbin/vgcfgbackup	lvm
++sbin/vgcfgrestore	lvm
++sbin/vgchange	lvm
++sbin/vgck	lvm
++sbin/vgconvert	lvm
++sbin/vgcreate	lvm
++sbin/vgdisplay	lvm
++sbin/vgexport	lvm
++sbin/vgextend	lvm
++sbin/vgimport	lvm
++sbin/vgimportclone	lvm
++sbin/vgmerge	lvm
++sbin/vgmknodes	lvm
++sbin/vgreduce	lvm
++sbin/vgremove	lvm
++sbin/vgrename	lvm
++sbin/vgs	lvm
++sbin/vgscan	lvm
++sbin/vgsplit	lvm
++usr/lib/libdevmapper-event-lvm2.so	libdevmapper-event-lvm2.so.2.03
++usr/lib/libdevmapper-event-lvm2.so.2.03	../../lib/libdevmapper-event-lvm2.so.2.03
++usr/lib/libdevmapper-event-lvm2mirror.so	device-mapper/libdevmapper-event-lvm2mirror.so
++usr/lib/libdevmapper-event-lvm2raid.so	device-mapper/libdevmapper-event-lvm2raid.so
++usr/lib/libdevmapper-event-lvm2snapshot.so	device-mapper/libdevmapper-event-lvm2snapshot.so
++usr/lib/libdevmapper-event-lvm2thin.so	device-mapper/libdevmapper-event-lvm2thin.so
++usr/lib/libdevmapper-event-lvm2vdo.so	device-mapper/libdevmapper-event-lvm2vdo.so
++usr/lib/libdevmapper-event.so	libdevmapper-event.so.1.02
++usr/lib/libdevmapper-event.so.1.02	../../lib/libdevmapper-event.so.1.02
++usr/lib/libdevmapper.so	libdevmapper.so.1.02
++usr/lib/libdevmapper.so.1.02	../../lib/libdevmapper.so.1.02
++usr/lib/liblvm2cmd.so	liblvm2cmd.so.2.03
++usr/lib/liblvm2cmd.so.2.03	../../lib/liblvm2cmd.so.2.03
++
++Making symbolic link creation script:
++( cd sbin ; rm -rf dmstats )
++( cd sbin ; ln -sf dmsetup dmstats )
++( cd sbin ; rm -rf lvchange )
++( cd sbin ; ln -sf lvm lvchange )
++( cd sbin ; rm -rf lvconvert )
++( cd sbin ; ln -sf lvm lvconvert )
++( cd sbin ; rm -rf lvcreate )
++( cd sbin ; ln -sf lvm lvcreate )
++( cd sbin ; rm -rf lvdisplay )
++( cd sbin ; ln -sf lvm lvdisplay )
++( cd sbin ; rm -rf lvextend )
++( cd sbin ; ln -sf lvm lvextend )
++( cd sbin ; rm -rf lvmconfig )
++( cd sbin ; ln -sf lvm lvmconfig )
++( cd sbin ; rm -rf lvmdiskscan )
++( cd sbin ; ln -sf lvm lvmdiskscan )
++( cd sbin ; rm -rf lvmsadc )
++( cd sbin ; ln -sf lvm lvmsadc )
++( cd sbin ; rm -rf lvmsar )
++( cd sbin ; ln -sf lvm lvmsar )
++( cd sbin ; rm -rf lvreduce )
++( cd sbin ; ln -sf lvm lvreduce )
++( cd sbin ; rm -rf lvremove )
++( cd sbin ; ln -sf lvm lvremove )
++( cd sbin ; rm -rf lvrename )
++( cd sbin ; ln -sf lvm lvrename )
++( cd sbin ; rm -rf lvresize )
++( cd sbin ; ln -sf lvm lvresize )
++( cd sbin ; rm -rf lvs )
++( cd sbin ; ln -sf lvm lvs )
++( cd sbin ; rm -rf lvscan )
++( cd sbin ; ln -sf lvm lvscan )
++( cd sbin ; rm -rf pvchange )
++( cd sbin ; ln -sf lvm pvchange )
++( cd sbin ; rm -rf pvck )
++( cd sbin ; ln -sf lvm pvck )
++( cd sbin ; rm -rf pvcreate )
++( cd sbin ; ln -sf lvm pvcreate )
++( cd sbin ; rm -rf pvdisplay )
++( cd sbin ; ln -sf lvm pvdisplay )
++( cd sbin ; rm -rf pvmove )
++( cd sbin ; ln -sf lvm pvmove )
++( cd sbin ; rm -rf pvremove )
++( cd sbin ; ln -sf lvm pvremove )
++( cd sbin ; rm -rf pvresize )
++( cd sbin ; ln -sf lvm pvresize )
++( cd sbin ; rm -rf pvs )
++( cd sbin ; ln -sf lvm pvs )
++( cd sbin ; rm -rf pvscan )
++( cd sbin ; ln -sf lvm pvscan )
++( cd sbin ; rm -rf vgcfgbackup )
++( cd sbin ; ln -sf lvm vgcfgbackup )
++( cd sbin ; rm -rf vgcfgrestore )
++( cd sbin ; ln -sf lvm vgcfgrestore )
++( cd sbin ; rm -rf vgchange )
++( cd sbin ; ln -sf lvm vgchange )
++( cd sbin ; rm -rf vgck )
++( cd sbin ; ln -sf lvm vgck )
++( cd sbin ; rm -rf vgconvert )
++( cd sbin ; ln -sf lvm vgconvert )
++( cd sbin ; rm -rf vgcreate )
++( cd sbin ; ln -sf lvm vgcreate )
++( cd sbin ; rm -rf vgdisplay )
++( cd sbin ; ln -sf lvm vgdisplay )
++( cd sbin ; rm -rf vgexport )
++( cd sbin ; ln -sf lvm vgexport )
++( cd sbin ; rm -rf vgextend )
++( cd sbin ; ln -sf lvm vgextend )
++( cd sbin ; rm -rf vgimport )
++( cd sbin ; ln -sf lvm vgimport )
++( cd sbin ; rm -rf vgimportclone )
++( cd sbin ; ln -sf lvm vgimportclone )
++( cd sbin ; rm -rf vgmerge )
++( cd sbin ; ln -sf lvm vgmerge )
++( cd sbin ; rm -rf vgmknodes )
++( cd sbin ; ln -sf lvm vgmknodes )
++( cd sbin ; rm -rf vgreduce )
++( cd sbin ; ln -sf lvm vgreduce )
++( cd sbin ; rm -rf vgremove )
++( cd sbin ; ln -sf lvm vgremove )
++( cd sbin ; rm -rf vgrename )
++( cd sbin ; ln -sf lvm vgrename )
++( cd sbin ; rm -rf vgs )
++( cd sbin ; ln -sf lvm vgs )
++( cd sbin ; rm -rf vgscan )
++( cd sbin ; ln -sf lvm vgscan )
++( cd sbin ; rm -rf vgsplit )
++( cd sbin ; ln -sf lvm vgsplit )
++( cd usr/lib ; rm -rf libdevmapper-event-lvm2.so )
++( cd usr/lib ; ln -sf libdevmapper-event-lvm2.so.2.03 libdevmapper-event-lvm2.so )
++( cd usr/lib ; rm -rf libdevmapper-event-lvm2.so.2.03 )
++( cd usr/lib ; ln -sf ../../lib/libdevmapper-event-lvm2.so.2.03 libdevmapper-event-lvm2.so.2.03 )
++( cd usr/lib ; rm -rf libdevmapper-event-lvm2mirror.so )
++( cd usr/lib ; ln -sf device-mapper/libdevmapper-event-lvm2mirror.so libdevmapper-event-lvm2mirror.so )
++( cd usr/lib ; rm -rf libdevmapper-event-lvm2raid.so )
++( cd usr/lib ; ln -sf device-mapper/libdevmapper-event-lvm2raid.so libdevmapper-event-lvm2raid.so )
++( cd usr/lib ; rm -rf libdevmapper-event-lvm2snapshot.so )
++( cd usr/lib ; ln -sf device-mapper/libdevmapper-event-lvm2snapshot.so libdevmapper-event-lvm2snapshot.so )
++( cd usr/lib ; rm -rf libdevmapper-event-lvm2thin.so )
++( cd usr/lib ; ln -sf device-mapper/libdevmapper-event-lvm2thin.so libdevmapper-event-lvm2thin.so )
++( cd usr/lib ; rm -rf libdevmapper-event-lvm2vdo.so )
++( cd usr/lib ; ln -sf device-mapper/libdevmapper-event-lvm2vdo.so libdevmapper-event-lvm2vdo.so )
++( cd usr/lib ; rm -rf libdevmapper-event.so )
++( cd usr/lib ; ln -sf libdevmapper-event.so.1.02 libdevmapper-event.so )
++( cd usr/lib ; rm -rf libdevmapper-event.so.1.02 )
++( cd usr/lib ; ln -sf ../../lib/libdevmapper-event.so.1.02 libdevmapper-event.so.1.02 )
++( cd usr/lib ; rm -rf libdevmapper.so )
++( cd usr/lib ; ln -sf libdevmapper.so.1.02 libdevmapper.so )
++( cd usr/lib ; rm -rf libdevmapper.so.1.02 )
++( cd usr/lib ; ln -sf ../../lib/libdevmapper.so.1.02 libdevmapper.so.1.02 )
++( cd usr/lib ; rm -rf liblvm2cmd.so )
++( cd usr/lib ; ln -sf liblvm2cmd.so.2.03 liblvm2cmd.so )
++( cd usr/lib ; rm -rf liblvm2cmd.so.2.03 )
++( cd usr/lib ; ln -sf ../../lib/liblvm2cmd.so.2.03 liblvm2cmd.so.2.03 )
++
++Unless your existing installation script already contains the code
++to create these links, you should append these lines to your existing
++install script. Now's your chance. :^)
++
++Would you like to add this stuff to the existing install script and
++remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './usr/lib/libdevmapper-event-lvm2.so'
++removed './usr/lib/liblvm2cmd.so.2.03'
++removed './usr/lib/liblvm2cmd.so'
++removed './usr/lib/libdevmapper-event.so'
++removed './usr/lib/libdevmapper-event-lvm2mirror.so'
++removed './usr/lib/libdevmapper.so.1.02'
++removed './usr/lib/libdevmapper-event-lvm2thin.so'
++removed './usr/lib/libdevmapper-event-lvm2.so.2.03'
++removed './usr/lib/libdevmapper-event-lvm2snapshot.so'
++removed './usr/lib/libdevmapper-event-lvm2vdo.so'
++removed './usr/lib/libdevmapper-event-lvm2raid.so'
++removed './usr/lib/libdevmapper.so'
++removed './usr/lib/libdevmapper-event.so.1.02'
++removed './sbin/lvrename'
++removed './sbin/lvresize'
++removed './sbin/pvmove'
++removed './sbin/vgmerge'
++removed './sbin/vgchange'
++removed './sbin/vgs'
++removed './sbin/lvreduce'
++removed './sbin/vgcreate'
++removed './sbin/vgexport'
++removed './sbin/vgreduce'
++removed './sbin/lvmsadc'
++removed './sbin/dmstats'
++removed './sbin/lvmdiskscan'
++removed './sbin/pvresize'
++removed './sbin/pvscan'
++removed './sbin/vgcfgrestore'
++removed './sbin/vgextend'
++removed './sbin/vgconvert'
++removed './sbin/vgsplit'
++removed './sbin/lvscan'
++removed './sbin/vgremove'
++removed './sbin/pvs'
++removed './sbin/vgimport'
++removed './sbin/pvchange'
++removed './sbin/lvcreate'
++removed './sbin/lvchange'
++removed './sbin/vgck'
++removed './sbin/lvmsar'
++removed './sbin/lvremove'
++removed './sbin/vgcfgbackup'
++removed './sbin/vgscan'
++removed './sbin/lvextend'
++removed './sbin/vgdisplay'
++removed './sbin/pvremove'
++removed './sbin/pvck'
++removed './sbin/pvdisplay'
++removed './sbin/lvmconfig'
++removed './sbin/pvcreate'
++removed './sbin/vgrename'
++removed './sbin/vgimportclone'
++removed './sbin/lvdisplay'
++removed './sbin/vgmknodes'
++removed './sbin/lvconvert'
++removed './sbin/lvs'
++
++Updating your ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/lvm2-2.03.11-x86_64-1.txz
++
++./
++etc/
++etc/lvm/
++etc/lvm/lvm.conf.new
++etc/lvm/lvmlocal.conf
++etc/lvm/profile/
++etc/lvm/profile/cache-mq.profile
++etc/lvm/profile/cache-smq.profile
++etc/lvm/profile/command_profile_template.profile
++etc/lvm/profile/lvmdbusd.profile
++etc/lvm/profile/metadata_profile_template.profile
++etc/lvm/profile/thin-generic.profile
++etc/lvm/profile/thin-performance.profile
++etc/lvm/profile/vdo-small.profile
++install/
++install/doinst.sh
++install/slack-desc
++lib/
++lib/libdevmapper-event-lvm2.so.2.03
++lib/libdevmapper-event.so.1.02
++lib/libdevmapper.so.1.02
++lib/liblvm2cmd.so.2.03
++lib/udev/
++lib/udev/rules.d/
++lib/udev/rules.d/10-dm.rules
++lib/udev/rules.d/11-dm-lvm.rules
++lib/udev/rules.d/13-dm-disk.rules
++lib/udev/rules.d/69-dm-lvm-metad.rules
++lib/udev/rules.d/95-dm-notify.rules
++sbin/
++sbin/blkdeactivate
++sbin/dmeventd
++sbin/dmsetup
++sbin/fsadm
++sbin/lvm
++sbin/lvmdump
++usr/
++usr/doc/
++usr/doc/LVM2.2.03.11/
++usr/doc/LVM2.2.03.11/COPYING
++usr/doc/LVM2.2.03.11/COPYING.BSD
++usr/doc/LVM2.2.03.11/COPYING.LIB
++usr/doc/LVM2.2.03.11/INSTALL
++usr/doc/LVM2.2.03.11/README
++usr/doc/LVM2.2.03.11/VERSION
++usr/doc/LVM2.2.03.11/WHATS_NEW
++usr/include/
++usr/include/libdevmapper-event.h
++usr/include/libdevmapper.h
++usr/include/lvm2cmd.h
++usr/lib/
++usr/lib/device-mapper/
++usr/lib/device-mapper/libdevmapper-event-lvm2mirror.so
++usr/lib/device-mapper/libdevmapper-event-lvm2raid.so
++usr/lib/device-mapper/libdevmapper-event-lvm2snapshot.so
++usr/lib/device-mapper/libdevmapper-event-lvm2thin.so
++usr/lib/device-mapper/libdevmapper-event-lvm2vdo.so
++usr/lib/pkgconfig/
++usr/lib/pkgconfig/devmapper-event.pc
++usr/lib/pkgconfig/devmapper.pc
++usr/man/
++usr/man/man5/
++usr/man/man5/lvm.conf.5.gz
++usr/man/man7/
++usr/man/man7/lvmcache.7.gz
++usr/man/man7/lvmraid.7.gz
++usr/man/man7/lvmreport.7.gz
++usr/man/man7/lvmsystemid.7.gz
++usr/man/man7/lvmthin.7.gz
++usr/man/man7/lvmvdo.7.gz
++usr/man/man8/
++usr/man/man8/blkdeactivate.8.gz
++usr/man/man8/dmeventd.8.gz
++usr/man/man8/dmsetup.8.gz
++usr/man/man8/dmstats.8.gz
++usr/man/man8/fsadm.8.gz
++usr/man/man8/lvchange.8.gz
++usr/man/man8/lvconvert.8.gz
++usr/man/man8/lvcreate.8.gz
++usr/man/man8/lvdisplay.8.gz
++usr/man/man8/lvextend.8.gz
++usr/man/man8/lvm-config.8.gz
++usr/man/man8/lvm-dumpconfig.8.gz
++usr/man/man8/lvm-fullreport.8.gz
++usr/man/man8/lvm-lvpoll.8.gz
++usr/man/man8/lvm.8.gz
++usr/man/man8/lvmconfig.8.gz
++usr/man/man8/lvmdiskscan.8.gz
++usr/man/man8/lvmdump.8.gz
++usr/man/man8/lvmsadc.8.gz
++usr/man/man8/lvmsar.8.gz
++usr/man/man8/lvreduce.8.gz
++usr/man/man8/lvremove.8.gz
++usr/man/man8/lvrename.8.gz
++usr/man/man8/lvresize.8.gz
++usr/man/man8/lvs.8.gz
++usr/man/man8/lvscan.8.gz
++usr/man/man8/pvchange.8.gz
++usr/man/man8/pvck.8.gz
++usr/man/man8/pvcreate.8.gz
++usr/man/man8/pvdisplay.8.gz
++usr/man/man8/pvmove.8.gz
++usr/man/man8/pvremove.8.gz
++usr/man/man8/pvresize.8.gz
++usr/man/man8/pvs.8.gz
++usr/man/man8/pvscan.8.gz
++usr/man/man8/vgcfgbackup.8.gz
++usr/man/man8/vgcfgrestore.8.gz
++usr/man/man8/vgchange.8.gz
++usr/man/man8/vgck.8.gz
++usr/man/man8/vgconvert.8.gz
++usr/man/man8/vgcreate.8.gz
++usr/man/man8/vgdisplay.8.gz
++usr/man/man8/vgexport.8.gz
++usr/man/man8/vgextend.8.gz
++usr/man/man8/vgimport.8.gz
++usr/man/man8/vgimportclone.8.gz
++usr/man/man8/vgmerge.8.gz
++usr/man/man8/vgmknodes.8.gz
++usr/man/man8/vgreduce.8.gz
++usr/man/man8/vgremove.8.gz
++usr/man/man8/vgrename.8.gz
++usr/man/man8/vgs.8.gz
++usr/man/man8/vgscan.8.gz
++usr/man/man8/vgsplit.8.gz
++
++Slackware package /tmp/lvm2-2.03.11-x86_64-1.txz created.
++
+diff -ruBN /tmp/lvm2/mallinfo.patch /source/a/lvm2/mallinfo.patch
+--- /tmp/lvm2/mallinfo.patch	1970-01-01 00:00:00.000000000 +0000
++++ /source/a/lvm2/mallinfo.patch	2021-01-09 06:31:49.000000000 +0000
+@@ -0,0 +1,11 @@
++--- ./lib/mm/memlock.c.orig	2015-03-09 11:18:41.560028850 -0100
+++++ ./lib/mm/memlock.c	2015-03-09 11:19:54.504373309 -0100
++@@ -137,7 +137,7 @@
++ 
++ static void _allocate_memory(void)
++ {
++-#ifndef VALGRIND_POOL
+++#if !defined(VALGRIND_POOL) && defined(__GLIBC__)
++ 	void *stack_mem;
++ 	struct rlimit limit;
++ 	int i, area = 0, missing = _size_malloc_tmp, max_areas = 32, hblks;

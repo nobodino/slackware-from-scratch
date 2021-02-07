@@ -1,0 +1,23 @@
+#!/bin/sh
+#BLURB="Run mkfontdir and mkfontscale in font directories."
+# Just in case.
+chroot . /sbin/ldconfig 1> /dev/null 2> /dev/null
+if [ -x usr/bin/fc-cache ]; then
+  if [ "$COLOR" = "on" -o -r $TMP/SeTcolor ]; then
+    dialog --title "MKFONTDIR AND MKFONTSCALE UPDATE" --infobox \
+  "Please wait while we run mkfontscale and mkfontdir in \
+your font directories." 4 68
+  else
+    echo "Please wait while we run mkfontscale and mkfontdir in your font directories."
+  fi
+  for fontdir in 100dpi 75dpi OTF Speedo TTF Type1 cyrillic ; do
+    if [ -d usr/share/fonts/$fontdir ]; then
+      chroot . mkfontscale /usr/share/fonts/$fontdir 1> /dev/null 2> /dev/null
+      chroot . mkfontdir /usr/share/fonts/$fontdir 1> /dev/null 2> /dev/null
+    fi
+  done
+  if [ -d usr/share/fonts/misc ]; then
+    chroot . mkfontscale /usr/share/fonts/misc  1> /dev/null 2> /dev/null
+    chroot . mkfontdir -e /usr/share/fonts/encodings -e /usr/share/fonts/encodings/large /usr/share/fonts/misc 1> /dev/null 2> /dev/null
+  fi
+fi

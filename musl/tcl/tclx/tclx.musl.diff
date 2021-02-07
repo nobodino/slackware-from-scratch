@@ -1,0 +1,551 @@
+diff -ruBN /tmp/tclx/tclx.SlackBuild /source/tcl/tclx/tclx.SlackBuild
+--- /tmp/tclx/tclx.SlackBuild	2019-09-29 23:48:34.000000000 +0000
++++ /source/tcl/tclx/tclx.SlackBuild	2021-01-21 00:27:50.000000000 +0000
+@@ -59,7 +59,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC -I/usr/include/tcl-private/generic -I/usr/include/tcl-private/unix"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ fi
+ 
+ cd $TMP
+@@ -89,7 +89,7 @@
+   --enable-shared \
+   --enable-threads \
+   --enable-64bit \
+-  --build=$ARCH-slackware-linux
++  --build=$ARCH-slackware-linux-musl
+ 
+ # Build and install:
+ make $NUMJOBS || make || exit 1
+diff -ruBN /tmp/tclx/tclx.SlackBuild.log /source/tcl/tclx/tclx.SlackBuild.log
+--- /tmp/tclx/tclx.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/tcl/tclx/tclx.SlackBuild.log	2021-01-21 00:28:37.000000000 +0000
+@@ -0,0 +1,526 @@
++tclx-8.4.4/
++tclx-8.4.4/generic/
++tclx-8.4.4/generic/tclXprocess.c
++tclx-8.4.4/generic/tclXsocket.c
++tclx-8.4.4/generic/tclXkeylist.c
++tclx-8.4.4/generic/tclXgeneral.c
++tclx-8.4.4/generic/tclXlgets.c
++tclx-8.4.4/generic/tclXstring.c
++tclx-8.4.4/generic/tclXdebug.c
++tclx-8.4.4/generic/tclXfstat.c
++tclx-8.4.4/generic/tclXinit.c
++tclx-8.4.4/generic/tclExtend.h
++tclx-8.4.4/generic/tclXlist.c
++tclx-8.4.4/generic/tclXdup.c
++tclx-8.4.4/generic/tclXutil.c
++tclx-8.4.4/generic/tclXcoalesce.c
++tclx-8.4.4/generic/tclXfilescan.c
++tclx-8.4.4/generic/tclExtdInt.h
++tclx-8.4.4/generic/tclXflock.c
++tclx-8.4.4/generic/tclXlib.c
++tclx-8.4.4/generic/tclXbsearch.c
++tclx-8.4.4/generic/tclXfcntl.c
++tclx-8.4.4/generic/tclXcmdloop.c
++tclx-8.4.4/generic/tclXselect.c
++tclx-8.4.4/generic/tclXfilecmds.c
++tclx-8.4.4/generic/tclXhandles.c
++tclx-8.4.4/generic/tclXmsgcat.c
++tclx-8.4.4/generic/tclXoscmds.c
++tclx-8.4.4/generic/tclXsignal.c
++tclx-8.4.4/generic/tclXtest.c
++tclx-8.4.4/generic/tclXprofile.c
++tclx-8.4.4/generic/tclXmath.c
++tclx-8.4.4/generic/tclXchmod.c
++tclx-8.4.4/unix/
++tclx-8.4.4/unix/tclXunixTest.c
++tclx-8.4.4/unix/tclXunixOS.c
++tclx-8.4.4/unix/tclXunixId.c
++tclx-8.4.4/unix/tools/
++tclx-8.4.4/unix/tools/cphelpdir.sh
++tclx-8.4.4/unix/tools/buildutil.tcl
++tclx-8.4.4/unix/tools/runbuildhelp.tcl
++tclx-8.4.4/unix/tools/genindex.tcl
++tclx-8.4.4/unix/tools/cpmanpages.tcl
++tclx-8.4.4/unix/tools/libconvert.tcl
++tclx-8.4.4/unix/tools/Makefile.in
++tclx-8.4.4/unix/tools/instcopy.tcl
++tclx-8.4.4/unix/tools/tkmanpages
++tclx-8.4.4/unix/tools/checkup.tcl
++tclx-8.4.4/unix/tools/tclmanpages
++tclx-8.4.4/unix/tools/bldmanhelp.tcl
++tclx-8.4.4/unix/tclXAppInit.c
++tclx-8.4.4/unix/tclXunixPort.h
++tclx-8.4.4/unix/INSTALL
++tclx-8.4.4/unix/tclXunixCmds.c
++tclx-8.4.4/unix/tclXchannelfd.c
++tclx-8.4.4/unix/tclXunixSock.c
++tclx-8.4.4/unix/tclXunixDup.c
++tclx-8.4.4/aclocal.m4
++tclx-8.4.4/.gitignore
++tclx-8.4.4/configure.in
++tclx-8.4.4/.travis.yml
++tclx-8.4.4/configure
++tclx-8.4.4/ChangeLog
++tclx-8.4.4/README.md
++tclx-8.4.4/CHANGES
++tclx-8.4.4/Makefile.in
++tclx-8.4.4/license.terms
++tclx-8.4.4/tests/
++tclx-8.4.4/tests/select.test
++tclx-8.4.4/tests/help.test
++tclx-8.4.4/tests/list.test
++tclx-8.4.4/tests/bsearch.test
++tclx-8.4.4/tests/id.test
++tclx-8.4.4/tests/msgcat.test
++tclx-8.4.4/tests/loop.test
++tclx-8.4.4/tests/chartype.test
++tclx-8.4.4/tests/all.tcl
++tclx-8.4.4/tests/testlib.tcl
++tclx-8.4.4/tests/math.test
++tclx-8.4.4/tests/filescan.test
++tclx-8.4.4/tests/nice.test
++tclx-8.4.4/tests/tcllib.test
++tclx-8.4.4/tests/process.test
++tclx-8.4.4/tests/cmdtrace.test
++tclx-8.4.4/tests/unixcmds.test
++tclx-8.4.4/tests/forfile.test
++tclx-8.4.4/tests/init.test
++tclx-8.4.4/tests/keylist.test
++tclx-8.4.4/tests/setfuncs.test
++tclx-8.4.4/tests/readdir.test
++tclx-8.4.4/tests/flock.test
++tclx-8.4.4/tests/lassign.test
++tclx-8.4.4/tests/sync.test
++tclx-8.4.4/tests/lgets.test
++tclx-8.4.4/tests/pipe.test
++tclx-8.4.4/tests/showproc.test
++tclx-8.4.4/tests/profile.test
++tclx-8.4.4/tests/globrecur.test
++tclx-8.4.4/tests/cmdloop.test
++tclx-8.4.4/tests/pushd.test
++tclx-8.4.4/tests/ftrunc.test
++tclx-8.4.4/tests/lmatch.test
++tclx-8.4.4/tests/string.test
++tclx-8.4.4/tests/coalesce.test
++tclx-8.4.4/tests/socket.test
++tclx-8.4.4/tests/fmath.test
++tclx-8.4.4/tests/signal.test
++tclx-8.4.4/tests/fcntl.test
++tclx-8.4.4/tests/compat/
++tclx-8.4.4/tests/compat/clock.test
++tclx-8.4.4/tests/compat/server.test
++tclx-8.4.4/tests/compat/file.test
++tclx-8.4.4/tests/compat/copyfile.test
++tclx-8.4.4/tests/chroot.test
++tclx-8.4.4/tests/fstat.test
++tclx-8.4.4/tests/dup.test
++tclx-8.4.4/tests/arrayproc.test
++tclx-8.4.4/tests/tryeval.test
++tclx-8.4.4/tests/convlib.test
++tclx-8.4.4/tests/chmod.test
++tclx-8.4.4/tests/stringfil.test
++tclx-8.4.4/library/
++tclx-8.4.4/library/edprocs.tcl
++tclx-8.4.4/library/forfile.tcl
++tclx-8.4.4/library/compat.tcl
++tclx-8.4.4/library/convlib.tcl
++tclx-8.4.4/library/tcllib.tcl
++tclx-8.4.4/library/help.tcl
++tclx-8.4.4/library/setfuncs.tcl
++tclx-8.4.4/library/globrecur.tcl
++tclx-8.4.4/library/events.tcl
++tclx-8.4.4/library/buildidx.tcl
++tclx-8.4.4/library/profrep.tcl
++tclx-8.4.4/library/tclx.tcl
++tclx-8.4.4/library/fmath.tcl
++tclx-8.4.4/library/buildhelp.tcl
++tclx-8.4.4/library/pushd.tcl
++tclx-8.4.4/library/autoload.tcl
++tclx-8.4.4/library/showproc.tcl
++tclx-8.4.4/library/arrayprocs.tcl
++tclx-8.4.4/library/stringfile.tcl
++tclx-8.4.4/tclconfig/
++tclx-8.4.4/tclconfig/README.txt
++tclx-8.4.4/tclconfig/ChangeLog
++tclx-8.4.4/tclconfig/install-sh
++tclx-8.4.4/tclconfig/tcl.m4
++tclx-8.4.4/README.FreeBSD
++tclx-8.4.4/win/
++tclx-8.4.4/win/tclXwinDup.c
++tclx-8.4.4/win/rules.vc
++tclx-8.4.4/win/makefile.vc
++tclx-8.4.4/win/tclXwinId.c
++tclx-8.4.4/win/tclXwinOS.c
++tclx-8.4.4/win/tclXAppInit.c
++tclx-8.4.4/win/tclXwinCmds.c
++tclx-8.4.4/win/tclXwinPort.h
++tclx-8.4.4/win/pkgIndex.tcl.in
++tclx-8.4.4/win/nmakehlp.c
++tclx-8.4.4/win/tclXwinTest.c
++tclx-8.4.4/win/cattcl.c
++tclx-8.4.4/win/tclx.rc
++tclx-8.4.4/win/INSTALL.txt
++tclx-8.4.4/compat/
++tclx-8.4.4/compat/rename.c
++tclx-8.4.4/compat/random.c
++tclx-8.4.4/compat/getopt.c
++tclx-8.4.4/doc/
++tclx-8.4.4/doc/Keylist.3
++tclx-8.4.4/doc/CmdWrite.3
++tclx-8.4.4/doc/TclX.n
++tclx-8.4.4/doc/Handles.3
++tclx-8.4.4/doc/ObjCmdWrite.3
++tclx-8.4.4/doc/TclXInit.3
++tclx-8.4.4/doc/CONVERSION-NOTES
++checking for correct TEA configuration... ok (TEA 3.9)
++configure: configuring tclx 8.6
++checking for Tcl configuration... found /usr/lib/tclConfig.sh
++checking for gcc... gcc
++checking whether the C compiler works... yes
++checking for C compiler default output file name... a.out
++checking for suffix of executables... 
++checking whether we are cross compiling... no
++checking for suffix of object files... o
++checking whether we are using the GNU C compiler... yes
++checking whether gcc accepts -g... yes
++checking for gcc option to accept ISO C89... none needed
++checking for existence of /usr/lib/tclConfig.sh... loading
++checking platform... unix
++configure: --exec-prefix defaulting to TCL_EXEC_PREFIX /usr
++checking for gcc... (cached) gcc
++checking whether we are using the GNU C compiler... (cached) yes
++checking whether gcc accepts -g... (cached) yes
++checking for gcc option to accept ISO C89... (cached) none needed
++checking how to run the C preprocessor... gcc -E
++checking whether make sets $(MAKE)... yes
++checking for ranlib... ranlib
++checking for grep that handles long lines and -e... /usr/bin/grep
++checking for egrep... /usr/bin/grep -E
++checking for ANSI C header files... yes
++checking for sys/types.h... yes
++checking for sys/stat.h... yes
++checking for stdlib.h... yes
++checking for string.h... yes
++checking for memory.h... yes
++checking for strings.h... yes
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking for unistd.h... yes
++checking if the compiler understands -pipe... yes
++checking whether byte ordering is bigendian... no
++checking for sin... yes
++checking for main in -lieee... no
++checking for main in -linet... no
++checking net/errno.h usability... no
++checking net/errno.h presence... no
++checking for net/errno.h... no
++checking for connect... yes
++checking for gethostbyname... yes
++checking dirent.h... yes
++checking errno.h usability... yes
++checking errno.h presence... yes
++checking for errno.h... yes
++checking float.h usability... yes
++checking float.h presence... yes
++checking for float.h... yes
++checking values.h usability... yes
++checking values.h presence... yes
++checking for values.h... yes
++checking limits.h usability... yes
++checking limits.h presence... yes
++checking for limits.h... yes
++checking for stdlib.h... (cached) yes
++checking for string.h... (cached) yes
++checking sys/wait.h usability... yes
++checking sys/wait.h presence... yes
++checking for sys/wait.h... yes
++checking dlfcn.h usability... yes
++checking dlfcn.h presence... yes
++checking for dlfcn.h... yes
++checking sys/param.h usability... yes
++checking sys/param.h presence... yes
++checking for sys/param.h... yes
++checking for Tcl public headers... /usr/include
++checking for Tcl private include files... private headers found with public headers
++checking for pthread_mutex_init in -lpthread... yes
++checking for building with threads... yes (default)
++checking how to build libraries... shared
++checking for ranlib... (cached) ranlib
++checking if 64bit support is requested... yes
++checking if 64bit Sparc VIS support is requested... no
++checking if compiler supports visibility "hidden"... yes
++checking if rpath support is requested... yes
++checking system version... Linux-5.4.73
++checking for ar... ar
++checking if compiler accepts -m64 flag... yes
++checking for cast to union support... yes
++checking for required early compiler flags...  _LARGEFILE64_SOURCE
++checking for 64-bit integer type... using long
++checking for build with symbols... no
++checking sys/select.h usability... yes
++checking sys/select.h presence... yes
++checking for sys/select.h... yes
++checking return type of signal handlers... void
++checking whether struct tm is in sys/time.h or time.h... time.h
++checking sys/time.h usability... yes
++checking sys/time.h presence... yes
++checking for sys/time.h... yes
++checking whether time.h and sys/time.h may both be included... yes
++checking for struct tm.tm_zone... yes
++checking for gmtime_r... yes
++checking for localtime_r... yes
++checking tm_tzadj in struct tm... no
++checking tm_gmtoff in struct tm... yes
++checking long timezone variable... yes
++checking union wait... no
++checking checking to see what 'times' returns... elapsed real time
++checking for time_t... yes
++checking for off_t... yes
++checking for ftruncate... yes
++checking for select... yes
++checking for setitimer... yes
++checking for sigaction... yes
++checking for setpgid... yes
++checking for getgroups... yes
++checking for bzero... yes
++checking for bcopy... yes
++checking for fsync... yes
++checking for getpriority... yes
++checking for strcoll... yes
++checking for fchown... yes
++checking for fchmod... yes
++checking for truncate... yes
++checking for waitpid... yes
++checking for sysconf... yes
++checking for inet_aton... yes
++checking for gethostname... yes
++checking for main in -ldnet_stub... no
++checking for catgets... yes
++checking catclose return value... ok
++checking for random... yes
++checking where to place TclX help files... do not build help files
++checking for tclsh... /usr/bin/tclsh8.6
++configure: creating ./config.status
++config.status: creating Makefile
++config.status: WARNING:  'Makefile.in' seems to ignore the --datarootdir setting
++gcc -DPACKAGE_NAME=\"tclx\" -DPACKAGE_TARNAME=\"tclx\" -DPACKAGE_VERSION=\"8.6\" -DPACKAGE_STRING=\"tclx\ 8.6\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE_URL=\"\" -DFULL_VERSION=\"8.6.0\" -DBUILD_tclx=/\*\*/ -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_LIMITS_H=1 -DHAVE_SYS_PARAM_H=1 -DUSE_THREAD_ALLOC=1 -D_REENTRANT=1 -D_THREAD_SAFE=1 -DTCL_THREADS=1 -DMODULE_SCOPE=extern\ __attribute__\(\(__visibility__\(\"hidden\"\)\)\) -DHAVE_HIDDEN=1 -DHAVE_CAST_TO_UNION=1 -D_LARGEFILE64_SOURCE=1 -DTCL_WIDE_INT_IS_LONG=1 -DUSE_TCL_STUBS=1 -DHAVE_SYS_SELECT_H=1 -DRETSIGTYPE=void -DHAVE_SYS_TIME_H=1 -DTIME_WITH_SYS_TIME=1 -DHAVE_STRUCT_TM_TM_ZONE=1 -DHAVE_TM_ZONE=1 -DHAVE_GMTIME_R=1 -DHAVE_LOCALTIME_R=1 -DHAVE_TM_GMTOFF=1 -DHAVE_TIMEZONE_VAR=1 -DNO_UNION_WAIT=1  -I"./generic" -I"./unix" -I"/usr/include"    -O2 -fPIC -I/usr/include/tcl-private/generic -I/usr/include/tcl-private/unix -pipe -m64 -O2 -fomit-frame-pointer -DNDEBUG -Wall -fPIC -DUSE_INTERP_RESULT -c `echo ./generic/tclXbsearch.c` -o tclXbsearch.o
++gcc -DPACKAGE_NAME=\"tclx\" -DPACKAGE_TARNAME=\"tclx\" -DPACKAGE_VERSION=\"8.6\" -DPACKAGE_STRING=\"tclx\ 8.6\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE_URL=\"\" -DFULL_VERSION=\"8.6.0\" -DBUILD_tclx=/\*\*/ -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_LIMITS_H=1 -DHAVE_SYS_PARAM_H=1 -DUSE_THREAD_ALLOC=1 -D_REENTRANT=1 -D_THREAD_SAFE=1 -DTCL_THREADS=1 -DMODULE_SCOPE=extern\ __attribute__\(\(__visibility__\(\"hidden\"\)\)\) -DHAVE_HIDDEN=1 -DHAVE_CAST_TO_UNION=1 -D_LARGEFILE64_SOURCE=1 -DTCL_WIDE_INT_IS_LONG=1 -DUSE_TCL_STUBS=1 -DHAVE_SYS_SELECT_H=1 -DRETSIGTYPE=void -DHAVE_SYS_TIME_H=1 -DTIME_WITH_SYS_TIME=1 -DHAVE_STRUCT_TM_TM_ZONE=1 -DHAVE_TM_ZONE=1 -DHAVE_GMTIME_R=1 -DHAVE_LOCALTIME_R=1 -DHAVE_TM_GMTOFF=1 -DHAVE_TIMEZONE_VAR=1 -DNO_UNION_WAIT=1  -I"./generic" -I"./unix" -I"/usr/include"    -O2 -fPIC -I/usr/include/tcl-private/generic -I/usr/include/tcl-private/unix -pipe -m64 -O2 -fomit-frame-pointer -DNDEBUG -Wall -fPIC -DUSE_INTERP_RESULT -c `echo ./generic/tclXchmod.c` -o tclXchmod.o
++gcc -DPACKAGE_NAME=\"tclx\" -DPACKAGE_TARNAME=\"tclx\" -DPACKAGE_VERSION=\"8.6\" -DPACKAGE_STRING=\"tclx\ 8.6\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE_URL=\"\" -DFULL_VERSION=\"8.6.0\" -DBUILD_tclx=/\*\*/ -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_LIMITS_H=1 -DHAVE_SYS_PARAM_H=1 -DUSE_THREAD_ALLOC=1 -D_REENTRANT=1 -D_THREAD_SAFE=1 -DTCL_THREADS=1 -DMODULE_SCOPE=extern\ __attribute__\(\(__visibility__\(\"hidden\"\)\)\) -DHAVE_HIDDEN=1 -DHAVE_CAST_TO_UNION=1 -D_LARGEFILE64_SOURCE=1 -DTCL_WIDE_INT_IS_LONG=1 -DUSE_TCL_STUBS=1 -DHAVE_SYS_SELECT_H=1 -DRETSIGTYPE=void -DHAVE_SYS_TIME_H=1 -DTIME_WITH_SYS_TIME=1 -DHAVE_STRUCT_TM_TM_ZONE=1 -DHAVE_TM_ZONE=1 -DHAVE_GMTIME_R=1 -DHAVE_LOCALTIME_R=1 -DHAVE_TM_GMTOFF=1 -DHAVE_TIMEZONE_VAR=1 -DNO_UNION_WAIT=1  -I"./generic" -I"./unix" -I"/usr/include"    -O2 -fPIC -I/usr/include/tcl-private/generic -I/usr/include/tcl-private/unix -pipe -m64 -O2 -fomit-frame-pointer -DNDEBUG -Wall -fPIC -DUSE_INTERP_RESULT -c `echo ./generic/tclXcmdloop.c` -o tclXcmdloop.o
++gcc -DPACKAGE_NAME=\"tclx\" -DPACKAGE_TARNAME=\"tclx\" -DPACKAGE_VERSION=\"8.6\" -DPACKAGE_STRING=\"tclx\ 8.6\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE_URL=\"\" -DFULL_VERSION=\"8.6.0\" -DBUILD_tclx=/\*\*/ -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_LIMITS_H=1 -DHAVE_SYS_PARAM_H=1 -DUSE_THREAD_ALLOC=1 -D_REENTRANT=1 -D_THREAD_SAFE=1 -DTCL_THREADS=1 -DMODULE_SCOPE=extern\ __attribute__\(\(__visibility__\(\"hidden\"\)\)\) -DHAVE_HIDDEN=1 -DHAVE_CAST_TO_UNION=1 -D_LARGEFILE64_SOURCE=1 -DTCL_WIDE_INT_IS_LONG=1 -DUSE_TCL_STUBS=1 -DHAVE_SYS_SELECT_H=1 -DRETSIGTYPE=void -DHAVE_SYS_TIME_H=1 -DTIME_WITH_SYS_TIME=1 -DHAVE_STRUCT_TM_TM_ZONE=1 -DHAVE_TM_ZONE=1 -DHAVE_GMTIME_R=1 -DHAVE_LOCALTIME_R=1 -DHAVE_TM_GMTOFF=1 -DHAVE_TIMEZONE_VAR=1 -DNO_UNION_WAIT=1  -I"./generic" -I"./unix" -I"/usr/include"    -O2 -fPIC -I/usr/include/tcl-private/generic -I/usr/include/tcl-private/unix -pipe -m64 -O2 -fomit-frame-pointer -DNDEBUG -Wall -fPIC -DUSE_INTERP_RESULT -c `echo ./generic/tclXcoalesce.c` -o tclXcoalesce.o
++./generic/tclXchmod.c: In function ‘TclX_ChmodObjCmd’:
++./generic/tclXchmod.c:355:22: warning: ‘modeInfo.absMode’ may be used uninitialized in this function [-Wmaybe-uninitialized]
++  355 |             result = ChmodFileNameObj (interp, modeInfo, fileObjv [idx]);
++      |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++gcc -DPACKAGE_NAME=\"tclx\" -DPACKAGE_TARNAME=\"tclx\" -DPACKAGE_VERSION=\"8.6\" -DPACKAGE_STRING=\"tclx\ 8.6\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE_URL=\"\" -DFULL_VERSION=\"8.6.0\" -DBUILD_tclx=/\*\*/ -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_LIMITS_H=1 -DHAVE_SYS_PARAM_H=1 -DUSE_THREAD_ALLOC=1 -D_REENTRANT=1 -D_THREAD_SAFE=1 -DTCL_THREADS=1 -DMODULE_SCOPE=extern\ __attribute__\(\(__visibility__\(\"hidden\"\)\)\) -DHAVE_HIDDEN=1 -DHAVE_CAST_TO_UNION=1 -D_LARGEFILE64_SOURCE=1 -DTCL_WIDE_INT_IS_LONG=1 -DUSE_TCL_STUBS=1 -DHAVE_SYS_SELECT_H=1 -DRETSIGTYPE=void -DHAVE_SYS_TIME_H=1 -DTIME_WITH_SYS_TIME=1 -DHAVE_STRUCT_TM_TM_ZONE=1 -DHAVE_TM_ZONE=1 -DHAVE_GMTIME_R=1 -DHAVE_LOCALTIME_R=1 -DHAVE_TM_GMTOFF=1 -DHAVE_TIMEZONE_VAR=1 -DNO_UNION_WAIT=1  -I"./generic" -I"./unix" -I"/usr/include"    -O2 -fPIC -I/usr/include/tcl-private/generic -I/usr/include/tcl-private/unix -pipe -m64 -O2 -fomit-frame-pointer -DNDEBUG -Wall -fPIC -DUSE_INTERP_RESULT -c `echo ./generic/tclXdebug.c` -o tclXdebug.o
++gcc -DPACKAGE_NAME=\"tclx\" -DPACKAGE_TARNAME=\"tclx\" -DPACKAGE_VERSION=\"8.6\" -DPACKAGE_STRING=\"tclx\ 8.6\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE_URL=\"\" -DFULL_VERSION=\"8.6.0\" -DBUILD_tclx=/\*\*/ -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_LIMITS_H=1 -DHAVE_SYS_PARAM_H=1 -DUSE_THREAD_ALLOC=1 -D_REENTRANT=1 -D_THREAD_SAFE=1 -DTCL_THREADS=1 -DMODULE_SCOPE=extern\ __attribute__\(\(__visibility__\(\"hidden\"\)\)\) -DHAVE_HIDDEN=1 -DHAVE_CAST_TO_UNION=1 -D_LARGEFILE64_SOURCE=1 -DTCL_WIDE_INT_IS_LONG=1 -DUSE_TCL_STUBS=1 -DHAVE_SYS_SELECT_H=1 -DRETSIGTYPE=void -DHAVE_SYS_TIME_H=1 -DTIME_WITH_SYS_TIME=1 -DHAVE_STRUCT_TM_TM_ZONE=1 -DHAVE_TM_ZONE=1 -DHAVE_GMTIME_R=1 -DHAVE_LOCALTIME_R=1 -DHAVE_TM_GMTOFF=1 -DHAVE_TIMEZONE_VAR=1 -DNO_UNION_WAIT=1  -I"./generic" -I"./unix" -I"/usr/include"    -O2 -fPIC -I/usr/include/tcl-private/generic -I/usr/include/tcl-private/unix -pipe -m64 -O2 -fomit-frame-pointer -DNDEBUG -Wall -fPIC -DUSE_INTERP_RESULT -c `echo ./generic/tclXdup.c` -o tclXdup.o
++gcc -DPACKAGE_NAME=\"tclx\" -DPACKAGE_TARNAME=\"tclx\" -DPACKAGE_VERSION=\"8.6\" -DPACKAGE_STRING=\"tclx\ 8.6\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE_URL=\"\" -DFULL_VERSION=\"8.6.0\" -DBUILD_tclx=/\*\*/ -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_LIMITS_H=1 -DHAVE_SYS_PARAM_H=1 -DUSE_THREAD_ALLOC=1 -D_REENTRANT=1 -D_THREAD_SAFE=1 -DTCL_THREADS=1 -DMODULE_SCOPE=extern\ __attribute__\(\(__visibility__\(\"hidden\"\)\)\) -DHAVE_HIDDEN=1 -DHAVE_CAST_TO_UNION=1 -D_LARGEFILE64_SOURCE=1 -DTCL_WIDE_INT_IS_LONG=1 -DUSE_TCL_STUBS=1 -DHAVE_SYS_SELECT_H=1 -DRETSIGTYPE=void -DHAVE_SYS_TIME_H=1 -DTIME_WITH_SYS_TIME=1 -DHAVE_STRUCT_TM_TM_ZONE=1 -DHAVE_TM_ZONE=1 -DHAVE_GMTIME_R=1 -DHAVE_LOCALTIME_R=1 -DHAVE_TM_GMTOFF=1 -DHAVE_TIMEZONE_VAR=1 -DNO_UNION_WAIT=1  -I"./generic" -I"./unix" -I"/usr/include"    -O2 -fPIC -I/usr/include/tcl-private/generic -I/usr/include/tcl-private/unix -pipe -m64 -O2 -fomit-frame-pointer -DNDEBUG -Wall -fPIC -DUSE_INTERP_RESULT -c `echo ./generic/tclXfcntl.c` -o tclXfcntl.o
++./generic/tclXfcntl.c: In function ‘GetFcntlAttr’:
++./generic/tclXfcntl.c:203:62: warning: pointer targets in passing argument 4 of ‘TclXOSgetsockopt’ differ in signedness [-Wpointer-sign]
++  203 |         if (TclXOSgetsockopt (interp, channel, SO_KEEPALIVE, &value) != TCL_OK)
++      |                                                              ^~~~~~
++      |                                                              |
++      |                                                              int *
++In file included from ./generic/tclXfcntl.c:19:
++./generic/tclExtdInt.h:544:32: note: expected ‘socklen_t *’ {aka ‘unsigned int *’} but argument is of type ‘int *’
++  544 |                   socklen_t   *valuePtr);
++      |                   ~~~~~~~~~~~~~^~~~~~~~
++gcc -DPACKAGE_NAME=\"tclx\" -DPACKAGE_TARNAME=\"tclx\" -DPACKAGE_VERSION=\"8.6\" -DPACKAGE_STRING=\"tclx\ 8.6\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE_URL=\"\" -DFULL_VERSION=\"8.6.0\" -DBUILD_tclx=/\*\*/ -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_LIMITS_H=1 -DHAVE_SYS_PARAM_H=1 -DUSE_THREAD_ALLOC=1 -D_REENTRANT=1 -D_THREAD_SAFE=1 -DTCL_THREADS=1 -DMODULE_SCOPE=extern\ __attribute__\(\(__visibility__\(\"hidden\"\)\)\) -DHAVE_HIDDEN=1 -DHAVE_CAST_TO_UNION=1 -D_LARGEFILE64_SOURCE=1 -DTCL_WIDE_INT_IS_LONG=1 -DUSE_TCL_STUBS=1 -DHAVE_SYS_SELECT_H=1 -DRETSIGTYPE=void -DHAVE_SYS_TIME_H=1 -DTIME_WITH_SYS_TIME=1 -DHAVE_STRUCT_TM_TM_ZONE=1 -DHAVE_TM_ZONE=1 -DHAVE_GMTIME_R=1 -DHAVE_LOCALTIME_R=1 -DHAVE_TM_GMTOFF=1 -DHAVE_TIMEZONE_VAR=1 -DNO_UNION_WAIT=1  -I"./generic" -I"./unix" -I"/usr/include"    -O2 -fPIC -I/usr/include/tcl-private/generic -I/usr/include/tcl-private/unix -pipe -m64 -O2 -fomit-frame-pointer -DNDEBUG -Wall -fPIC -DUSE_INTERP_RESULT -c `echo ./generic/tclXfilecmds.c` -o tclXfilecmds.o
++gcc -DPACKAGE_NAME=\"tclx\" -DPACKAGE_TARNAME=\"tclx\" -DPACKAGE_VERSION=\"8.6\" -DPACKAGE_STRING=\"tclx\ 8.6\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE_URL=\"\" -DFULL_VERSION=\"8.6.0\" -DBUILD_tclx=/\*\*/ -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_LIMITS_H=1 -DHAVE_SYS_PARAM_H=1 -DUSE_THREAD_ALLOC=1 -D_REENTRANT=1 -D_THREAD_SAFE=1 -DTCL_THREADS=1 -DMODULE_SCOPE=extern\ __attribute__\(\(__visibility__\(\"hidden\"\)\)\) -DHAVE_HIDDEN=1 -DHAVE_CAST_TO_UNION=1 -D_LARGEFILE64_SOURCE=1 -DTCL_WIDE_INT_IS_LONG=1 -DUSE_TCL_STUBS=1 -DHAVE_SYS_SELECT_H=1 -DRETSIGTYPE=void -DHAVE_SYS_TIME_H=1 -DTIME_WITH_SYS_TIME=1 -DHAVE_STRUCT_TM_TM_ZONE=1 -DHAVE_TM_ZONE=1 -DHAVE_GMTIME_R=1 -DHAVE_LOCALTIME_R=1 -DHAVE_TM_GMTOFF=1 -DHAVE_TIMEZONE_VAR=1 -DNO_UNION_WAIT=1  -I"./generic" -I"./unix" -I"/usr/include"    -O2 -fPIC -I/usr/include/tcl-private/generic -I/usr/include/tcl-private/unix -pipe -m64 -O2 -fomit-frame-pointer -DNDEBUG -Wall -fPIC -DUSE_INTERP_RESULT -c `echo ./generic/tclXfilescan.c` -o tclXfilescan.o
++gcc -DPACKAGE_NAME=\"tclx\" -DPACKAGE_TARNAME=\"tclx\" -DPACKAGE_VERSION=\"8.6\" -DPACKAGE_STRING=\"tclx\ 8.6\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE_URL=\"\" -DFULL_VERSION=\"8.6.0\" -DBUILD_tclx=/\*\*/ -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_LIMITS_H=1 -DHAVE_SYS_PARAM_H=1 -DUSE_THREAD_ALLOC=1 -D_REENTRANT=1 -D_THREAD_SAFE=1 -DTCL_THREADS=1 -DMODULE_SCOPE=extern\ __attribute__\(\(__visibility__\(\"hidden\"\)\)\) -DHAVE_HIDDEN=1 -DHAVE_CAST_TO_UNION=1 -D_LARGEFILE64_SOURCE=1 -DTCL_WIDE_INT_IS_LONG=1 -DUSE_TCL_STUBS=1 -DHAVE_SYS_SELECT_H=1 -DRETSIGTYPE=void -DHAVE_SYS_TIME_H=1 -DTIME_WITH_SYS_TIME=1 -DHAVE_STRUCT_TM_TM_ZONE=1 -DHAVE_TM_ZONE=1 -DHAVE_GMTIME_R=1 -DHAVE_LOCALTIME_R=1 -DHAVE_TM_GMTOFF=1 -DHAVE_TIMEZONE_VAR=1 -DNO_UNION_WAIT=1  -I"./generic" -I"./unix" -I"/usr/include"    -O2 -fPIC -I/usr/include/tcl-private/generic -I/usr/include/tcl-private/unix -pipe -m64 -O2 -fomit-frame-pointer -DNDEBUG -Wall -fPIC -DUSE_INTERP_RESULT -c `echo ./generic/tclXflock.c` -o tclXflock.o
++gcc -DPACKAGE_NAME=\"tclx\" -DPACKAGE_TARNAME=\"tclx\" -DPACKAGE_VERSION=\"8.6\" -DPACKAGE_STRING=\"tclx\ 8.6\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE_URL=\"\" -DFULL_VERSION=\"8.6.0\" -DBUILD_tclx=/\*\*/ -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_LIMITS_H=1 -DHAVE_SYS_PARAM_H=1 -DUSE_THREAD_ALLOC=1 -D_REENTRANT=1 -D_THREAD_SAFE=1 -DTCL_THREADS=1 -DMODULE_SCOPE=extern\ __attribute__\(\(__visibility__\(\"hidden\"\)\)\) -DHAVE_HIDDEN=1 -DHAVE_CAST_TO_UNION=1 -D_LARGEFILE64_SOURCE=1 -DTCL_WIDE_INT_IS_LONG=1 -DUSE_TCL_STUBS=1 -DHAVE_SYS_SELECT_H=1 -DRETSIGTYPE=void -DHAVE_SYS_TIME_H=1 -DTIME_WITH_SYS_TIME=1 -DHAVE_STRUCT_TM_TM_ZONE=1 -DHAVE_TM_ZONE=1 -DHAVE_GMTIME_R=1 -DHAVE_LOCALTIME_R=1 -DHAVE_TM_GMTOFF=1 -DHAVE_TIMEZONE_VAR=1 -DNO_UNION_WAIT=1  -I"./generic" -I"./unix" -I"/usr/include"    -O2 -fPIC -I/usr/include/tcl-private/generic -I/usr/include/tcl-private/unix -pipe -m64 -O2 -fomit-frame-pointer -DNDEBUG -Wall -fPIC -DUSE_INTERP_RESULT -c `echo ./generic/tclXfstat.c` -o tclXfstat.o
++gcc -DPACKAGE_NAME=\"tclx\" -DPACKAGE_TARNAME=\"tclx\" -DPACKAGE_VERSION=\"8.6\" -DPACKAGE_STRING=\"tclx\ 8.6\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE_URL=\"\" -DFULL_VERSION=\"8.6.0\" -DBUILD_tclx=/\*\*/ -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_LIMITS_H=1 -DHAVE_SYS_PARAM_H=1 -DUSE_THREAD_ALLOC=1 -D_REENTRANT=1 -D_THREAD_SAFE=1 -DTCL_THREADS=1 -DMODULE_SCOPE=extern\ __attribute__\(\(__visibility__\(\"hidden\"\)\)\) -DHAVE_HIDDEN=1 -DHAVE_CAST_TO_UNION=1 -D_LARGEFILE64_SOURCE=1 -DTCL_WIDE_INT_IS_LONG=1 -DUSE_TCL_STUBS=1 -DHAVE_SYS_SELECT_H=1 -DRETSIGTYPE=void -DHAVE_SYS_TIME_H=1 -DTIME_WITH_SYS_TIME=1 -DHAVE_STRUCT_TM_TM_ZONE=1 -DHAVE_TM_ZONE=1 -DHAVE_GMTIME_R=1 -DHAVE_LOCALTIME_R=1 -DHAVE_TM_GMTOFF=1 -DHAVE_TIMEZONE_VAR=1 -DNO_UNION_WAIT=1  -I"./generic" -I"./unix" -I"/usr/include"    -O2 -fPIC -I/usr/include/tcl-private/generic -I/usr/include/tcl-private/unix -pipe -m64 -O2 -fomit-frame-pointer -DNDEBUG -Wall -fPIC -DUSE_INTERP_RESULT -c `echo ./generic/tclXgeneral.c` -o tclXgeneral.o
++gcc -DPACKAGE_NAME=\"tclx\" -DPACKAGE_TARNAME=\"tclx\" -DPACKAGE_VERSION=\"8.6\" -DPACKAGE_STRING=\"tclx\ 8.6\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE_URL=\"\" -DFULL_VERSION=\"8.6.0\" -DBUILD_tclx=/\*\*/ -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_LIMITS_H=1 -DHAVE_SYS_PARAM_H=1 -DUSE_THREAD_ALLOC=1 -D_REENTRANT=1 -D_THREAD_SAFE=1 -DTCL_THREADS=1 -DMODULE_SCOPE=extern\ __attribute__\(\(__visibility__\(\"hidden\"\)\)\) -DHAVE_HIDDEN=1 -DHAVE_CAST_TO_UNION=1 -D_LARGEFILE64_SOURCE=1 -DTCL_WIDE_INT_IS_LONG=1 -DUSE_TCL_STUBS=1 -DHAVE_SYS_SELECT_H=1 -DRETSIGTYPE=void -DHAVE_SYS_TIME_H=1 -DTIME_WITH_SYS_TIME=1 -DHAVE_STRUCT_TM_TM_ZONE=1 -DHAVE_TM_ZONE=1 -DHAVE_GMTIME_R=1 -DHAVE_LOCALTIME_R=1 -DHAVE_TM_GMTOFF=1 -DHAVE_TIMEZONE_VAR=1 -DNO_UNION_WAIT=1  -I"./generic" -I"./unix" -I"/usr/include"    -O2 -fPIC -I/usr/include/tcl-private/generic -I/usr/include/tcl-private/unix -pipe -m64 -O2 -fomit-frame-pointer -DNDEBUG -Wall -fPIC -DUSE_INTERP_RESULT -c `echo ./generic/tclXhandles.c` -o tclXhandles.o
++gcc -DPACKAGE_NAME=\"tclx\" -DPACKAGE_TARNAME=\"tclx\" -DPACKAGE_VERSION=\"8.6\" -DPACKAGE_STRING=\"tclx\ 8.6\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE_URL=\"\" -DFULL_VERSION=\"8.6.0\" -DBUILD_tclx=/\*\*/ -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_LIMITS_H=1 -DHAVE_SYS_PARAM_H=1 -DUSE_THREAD_ALLOC=1 -D_REENTRANT=1 -D_THREAD_SAFE=1 -DTCL_THREADS=1 -DMODULE_SCOPE=extern\ __attribute__\(\(__visibility__\(\"hidden\"\)\)\) -DHAVE_HIDDEN=1 -DHAVE_CAST_TO_UNION=1 -D_LARGEFILE64_SOURCE=1 -DTCL_WIDE_INT_IS_LONG=1 -DUSE_TCL_STUBS=1 -DHAVE_SYS_SELECT_H=1 -DRETSIGTYPE=void -DHAVE_SYS_TIME_H=1 -DTIME_WITH_SYS_TIME=1 -DHAVE_STRUCT_TM_TM_ZONE=1 -DHAVE_TM_ZONE=1 -DHAVE_GMTIME_R=1 -DHAVE_LOCALTIME_R=1 -DHAVE_TM_GMTOFF=1 -DHAVE_TIMEZONE_VAR=1 -DNO_UNION_WAIT=1  -I"./generic" -I"./unix" -I"/usr/include"    -O2 -fPIC -I/usr/include/tcl-private/generic -I/usr/include/tcl-private/unix -pipe -m64 -O2 -fomit-frame-pointer -DNDEBUG -Wall -fPIC -DUSE_INTERP_RESULT -c `echo ./generic/tclXinit.c` -o tclXinit.o
++./generic/tclXhandles.c: In function ‘TclX_HandleFree’:
++./generic/tclXhandles.c:542:54: warning: format ‘%x’ expects argument of type ‘unsigned int’, but argument 2 has type ‘entryHeader_pt’ {aka ‘entryHeader_t *’} [-Wformat=]
++  542 |         panic ("Tcl_HandleFree: entry not allocated %x\n", entryHdrPtr);
++      |                                                     ~^     ~~~~~~~~~~~
++      |                                                      |     |
++      |                                                      |     entryHeader_pt {aka entryHeader_t *}
++      |                                                      unsigned int
++gcc -DPACKAGE_NAME=\"tclx\" -DPACKAGE_TARNAME=\"tclx\" -DPACKAGE_VERSION=\"8.6\" -DPACKAGE_STRING=\"tclx\ 8.6\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE_URL=\"\" -DFULL_VERSION=\"8.6.0\" -DBUILD_tclx=/\*\*/ -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_LIMITS_H=1 -DHAVE_SYS_PARAM_H=1 -DUSE_THREAD_ALLOC=1 -D_REENTRANT=1 -D_THREAD_SAFE=1 -DTCL_THREADS=1 -DMODULE_SCOPE=extern\ __attribute__\(\(__visibility__\(\"hidden\"\)\)\) -DHAVE_HIDDEN=1 -DHAVE_CAST_TO_UNION=1 -D_LARGEFILE64_SOURCE=1 -DTCL_WIDE_INT_IS_LONG=1 -DUSE_TCL_STUBS=1 -DHAVE_SYS_SELECT_H=1 -DRETSIGTYPE=void -DHAVE_SYS_TIME_H=1 -DTIME_WITH_SYS_TIME=1 -DHAVE_STRUCT_TM_TM_ZONE=1 -DHAVE_TM_ZONE=1 -DHAVE_GMTIME_R=1 -DHAVE_LOCALTIME_R=1 -DHAVE_TM_GMTOFF=1 -DHAVE_TIMEZONE_VAR=1 -DNO_UNION_WAIT=1  -I"./generic" -I"./unix" -I"/usr/include"    -O2 -fPIC -I/usr/include/tcl-private/generic -I/usr/include/tcl-private/unix -pipe -m64 -O2 -fomit-frame-pointer -DNDEBUG -Wall -fPIC -DUSE_INTERP_RESULT -c `echo ./generic/tclXkeylist.c` -o tclXkeylist.o
++gcc -DPACKAGE_NAME=\"tclx\" -DPACKAGE_TARNAME=\"tclx\" -DPACKAGE_VERSION=\"8.6\" -DPACKAGE_STRING=\"tclx\ 8.6\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE_URL=\"\" -DFULL_VERSION=\"8.6.0\" -DBUILD_tclx=/\*\*/ -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_LIMITS_H=1 -DHAVE_SYS_PARAM_H=1 -DUSE_THREAD_ALLOC=1 -D_REENTRANT=1 -D_THREAD_SAFE=1 -DTCL_THREADS=1 -DMODULE_SCOPE=extern\ __attribute__\(\(__visibility__\(\"hidden\"\)\)\) -DHAVE_HIDDEN=1 -DHAVE_CAST_TO_UNION=1 -D_LARGEFILE64_SOURCE=1 -DTCL_WIDE_INT_IS_LONG=1 -DUSE_TCL_STUBS=1 -DHAVE_SYS_SELECT_H=1 -DRETSIGTYPE=void -DHAVE_SYS_TIME_H=1 -DTIME_WITH_SYS_TIME=1 -DHAVE_STRUCT_TM_TM_ZONE=1 -DHAVE_TM_ZONE=1 -DHAVE_GMTIME_R=1 -DHAVE_LOCALTIME_R=1 -DHAVE_TM_GMTOFF=1 -DHAVE_TIMEZONE_VAR=1 -DNO_UNION_WAIT=1  -I"./generic" -I"./unix" -I"/usr/include"    -O2 -fPIC -I/usr/include/tcl-private/generic -I/usr/include/tcl-private/unix -pipe -m64 -O2 -fomit-frame-pointer -DNDEBUG -Wall -fPIC -DUSE_INTERP_RESULT -c `echo ./generic/tclXlib.c` -o tclXlib.o
++gcc -DPACKAGE_NAME=\"tclx\" -DPACKAGE_TARNAME=\"tclx\" -DPACKAGE_VERSION=\"8.6\" -DPACKAGE_STRING=\"tclx\ 8.6\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE_URL=\"\" -DFULL_VERSION=\"8.6.0\" -DBUILD_tclx=/\*\*/ -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_LIMITS_H=1 -DHAVE_SYS_PARAM_H=1 -DUSE_THREAD_ALLOC=1 -D_REENTRANT=1 -D_THREAD_SAFE=1 -DTCL_THREADS=1 -DMODULE_SCOPE=extern\ __attribute__\(\(__visibility__\(\"hidden\"\)\)\) -DHAVE_HIDDEN=1 -DHAVE_CAST_TO_UNION=1 -D_LARGEFILE64_SOURCE=1 -DTCL_WIDE_INT_IS_LONG=1 -DUSE_TCL_STUBS=1 -DHAVE_SYS_SELECT_H=1 -DRETSIGTYPE=void -DHAVE_SYS_TIME_H=1 -DTIME_WITH_SYS_TIME=1 -DHAVE_STRUCT_TM_TM_ZONE=1 -DHAVE_TM_ZONE=1 -DHAVE_GMTIME_R=1 -DHAVE_LOCALTIME_R=1 -DHAVE_TM_GMTOFF=1 -DHAVE_TIMEZONE_VAR=1 -DNO_UNION_WAIT=1  -I"./generic" -I"./unix" -I"/usr/include"    -O2 -fPIC -I/usr/include/tcl-private/generic -I/usr/include/tcl-private/unix -pipe -m64 -O2 -fomit-frame-pointer -DNDEBUG -Wall -fPIC -DUSE_INTERP_RESULT -c `echo ./generic/tclXlist.c` -o tclXlist.o
++./generic/tclXkeylist.c: In function ‘DeleteKeyedListEntry’:
++./generic/tclXkeylist.c:357:13: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
++  357 |      nidx = (int) Tcl_GetHashValue(entryPtr);
++      |             ^
++./generic/tclXkeylist.c: In function ‘FindKeyedListEntry’:
++./generic/tclXkeylist.c:419:16: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
++  419 |      findIdx = (int) Tcl_GetHashValue(entryPtr);
++      |                ^
++gcc -DPACKAGE_NAME=\"tclx\" -DPACKAGE_TARNAME=\"tclx\" -DPACKAGE_VERSION=\"8.6\" -DPACKAGE_STRING=\"tclx\ 8.6\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE_URL=\"\" -DFULL_VERSION=\"8.6.0\" -DBUILD_tclx=/\*\*/ -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_LIMITS_H=1 -DHAVE_SYS_PARAM_H=1 -DUSE_THREAD_ALLOC=1 -D_REENTRANT=1 -D_THREAD_SAFE=1 -DTCL_THREADS=1 -DMODULE_SCOPE=extern\ __attribute__\(\(__visibility__\(\"hidden\"\)\)\) -DHAVE_HIDDEN=1 -DHAVE_CAST_TO_UNION=1 -D_LARGEFILE64_SOURCE=1 -DTCL_WIDE_INT_IS_LONG=1 -DUSE_TCL_STUBS=1 -DHAVE_SYS_SELECT_H=1 -DRETSIGTYPE=void -DHAVE_SYS_TIME_H=1 -DTIME_WITH_SYS_TIME=1 -DHAVE_STRUCT_TM_TM_ZONE=1 -DHAVE_TM_ZONE=1 -DHAVE_GMTIME_R=1 -DHAVE_LOCALTIME_R=1 -DHAVE_TM_GMTOFF=1 -DHAVE_TIMEZONE_VAR=1 -DNO_UNION_WAIT=1  -I"./generic" -I"./unix" -I"/usr/include"    -O2 -fPIC -I/usr/include/tcl-private/generic -I/usr/include/tcl-private/unix -pipe -m64 -O2 -fomit-frame-pointer -DNDEBUG -Wall -fPIC -DUSE_INTERP_RESULT -c `echo ./generic/tclXmath.c` -o tclXmath.o
++gcc -DPACKAGE_NAME=\"tclx\" -DPACKAGE_TARNAME=\"tclx\" -DPACKAGE_VERSION=\"8.6\" -DPACKAGE_STRING=\"tclx\ 8.6\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE_URL=\"\" -DFULL_VERSION=\"8.6.0\" -DBUILD_tclx=/\*\*/ -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_LIMITS_H=1 -DHAVE_SYS_PARAM_H=1 -DUSE_THREAD_ALLOC=1 -D_REENTRANT=1 -D_THREAD_SAFE=1 -DTCL_THREADS=1 -DMODULE_SCOPE=extern\ __attribute__\(\(__visibility__\(\"hidden\"\)\)\) -DHAVE_HIDDEN=1 -DHAVE_CAST_TO_UNION=1 -D_LARGEFILE64_SOURCE=1 -DTCL_WIDE_INT_IS_LONG=1 -DUSE_TCL_STUBS=1 -DHAVE_SYS_SELECT_H=1 -DRETSIGTYPE=void -DHAVE_SYS_TIME_H=1 -DTIME_WITH_SYS_TIME=1 -DHAVE_STRUCT_TM_TM_ZONE=1 -DHAVE_TM_ZONE=1 -DHAVE_GMTIME_R=1 -DHAVE_LOCALTIME_R=1 -DHAVE_TM_GMTOFF=1 -DHAVE_TIMEZONE_VAR=1 -DNO_UNION_WAIT=1  -I"./generic" -I"./unix" -I"/usr/include"    -O2 -fPIC -I/usr/include/tcl-private/generic -I/usr/include/tcl-private/unix -pipe -m64 -O2 -fomit-frame-pointer -DNDEBUG -Wall -fPIC -DUSE_INTERP_RESULT -c `echo ./generic/tclXmsgcat.c` -o tclXmsgcat.o
++gcc -DPACKAGE_NAME=\"tclx\" -DPACKAGE_TARNAME=\"tclx\" -DPACKAGE_VERSION=\"8.6\" -DPACKAGE_STRING=\"tclx\ 8.6\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE_URL=\"\" -DFULL_VERSION=\"8.6.0\" -DBUILD_tclx=/\*\*/ -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_LIMITS_H=1 -DHAVE_SYS_PARAM_H=1 -DUSE_THREAD_ALLOC=1 -D_REENTRANT=1 -D_THREAD_SAFE=1 -DTCL_THREADS=1 -DMODULE_SCOPE=extern\ __attribute__\(\(__visibility__\(\"hidden\"\)\)\) -DHAVE_HIDDEN=1 -DHAVE_CAST_TO_UNION=1 -D_LARGEFILE64_SOURCE=1 -DTCL_WIDE_INT_IS_LONG=1 -DUSE_TCL_STUBS=1 -DHAVE_SYS_SELECT_H=1 -DRETSIGTYPE=void -DHAVE_SYS_TIME_H=1 -DTIME_WITH_SYS_TIME=1 -DHAVE_STRUCT_TM_TM_ZONE=1 -DHAVE_TM_ZONE=1 -DHAVE_GMTIME_R=1 -DHAVE_LOCALTIME_R=1 -DHAVE_TM_GMTOFF=1 -DHAVE_TIMEZONE_VAR=1 -DNO_UNION_WAIT=1  -I"./generic" -I"./unix" -I"/usr/include"    -O2 -fPIC -I/usr/include/tcl-private/generic -I/usr/include/tcl-private/unix -pipe -m64 -O2 -fomit-frame-pointer -DNDEBUG -Wall -fPIC -DUSE_INTERP_RESULT -c `echo ./generic/tclXprocess.c` -o tclXprocess.o
++gcc -DPACKAGE_NAME=\"tclx\" -DPACKAGE_TARNAME=\"tclx\" -DPACKAGE_VERSION=\"8.6\" -DPACKAGE_STRING=\"tclx\ 8.6\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE_URL=\"\" -DFULL_VERSION=\"8.6.0\" -DBUILD_tclx=/\*\*/ -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_LIMITS_H=1 -DHAVE_SYS_PARAM_H=1 -DUSE_THREAD_ALLOC=1 -D_REENTRANT=1 -D_THREAD_SAFE=1 -DTCL_THREADS=1 -DMODULE_SCOPE=extern\ __attribute__\(\(__visibility__\(\"hidden\"\)\)\) -DHAVE_HIDDEN=1 -DHAVE_CAST_TO_UNION=1 -D_LARGEFILE64_SOURCE=1 -DTCL_WIDE_INT_IS_LONG=1 -DUSE_TCL_STUBS=1 -DHAVE_SYS_SELECT_H=1 -DRETSIGTYPE=void -DHAVE_SYS_TIME_H=1 -DTIME_WITH_SYS_TIME=1 -DHAVE_STRUCT_TM_TM_ZONE=1 -DHAVE_TM_ZONE=1 -DHAVE_GMTIME_R=1 -DHAVE_LOCALTIME_R=1 -DHAVE_TM_GMTOFF=1 -DHAVE_TIMEZONE_VAR=1 -DNO_UNION_WAIT=1  -I"./generic" -I"./unix" -I"/usr/include"    -O2 -fPIC -I/usr/include/tcl-private/generic -I/usr/include/tcl-private/unix -pipe -m64 -O2 -fomit-frame-pointer -DNDEBUG -Wall -fPIC -DUSE_INTERP_RESULT -c `echo ./generic/tclXprofile.c` -o tclXprofile.o
++gcc -DPACKAGE_NAME=\"tclx\" -DPACKAGE_TARNAME=\"tclx\" -DPACKAGE_VERSION=\"8.6\" -DPACKAGE_STRING=\"tclx\ 8.6\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE_URL=\"\" -DFULL_VERSION=\"8.6.0\" -DBUILD_tclx=/\*\*/ -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_LIMITS_H=1 -DHAVE_SYS_PARAM_H=1 -DUSE_THREAD_ALLOC=1 -D_REENTRANT=1 -D_THREAD_SAFE=1 -DTCL_THREADS=1 -DMODULE_SCOPE=extern\ __attribute__\(\(__visibility__\(\"hidden\"\)\)\) -DHAVE_HIDDEN=1 -DHAVE_CAST_TO_UNION=1 -D_LARGEFILE64_SOURCE=1 -DTCL_WIDE_INT_IS_LONG=1 -DUSE_TCL_STUBS=1 -DHAVE_SYS_SELECT_H=1 -DRETSIGTYPE=void -DHAVE_SYS_TIME_H=1 -DTIME_WITH_SYS_TIME=1 -DHAVE_STRUCT_TM_TM_ZONE=1 -DHAVE_TM_ZONE=1 -DHAVE_GMTIME_R=1 -DHAVE_LOCALTIME_R=1 -DHAVE_TM_GMTOFF=1 -DHAVE_TIMEZONE_VAR=1 -DNO_UNION_WAIT=1  -I"./generic" -I"./unix" -I"/usr/include"    -O2 -fPIC -I/usr/include/tcl-private/generic -I/usr/include/tcl-private/unix -pipe -m64 -O2 -fomit-frame-pointer -DNDEBUG -Wall -fPIC -DUSE_INTERP_RESULT -c `echo ./generic/tclXselect.c` -o tclXselect.o
++gcc -DPACKAGE_NAME=\"tclx\" -DPACKAGE_TARNAME=\"tclx\" -DPACKAGE_VERSION=\"8.6\" -DPACKAGE_STRING=\"tclx\ 8.6\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE_URL=\"\" -DFULL_VERSION=\"8.6.0\" -DBUILD_tclx=/\*\*/ -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_LIMITS_H=1 -DHAVE_SYS_PARAM_H=1 -DUSE_THREAD_ALLOC=1 -D_REENTRANT=1 -D_THREAD_SAFE=1 -DTCL_THREADS=1 -DMODULE_SCOPE=extern\ __attribute__\(\(__visibility__\(\"hidden\"\)\)\) -DHAVE_HIDDEN=1 -DHAVE_CAST_TO_UNION=1 -D_LARGEFILE64_SOURCE=1 -DTCL_WIDE_INT_IS_LONG=1 -DUSE_TCL_STUBS=1 -DHAVE_SYS_SELECT_H=1 -DRETSIGTYPE=void -DHAVE_SYS_TIME_H=1 -DTIME_WITH_SYS_TIME=1 -DHAVE_STRUCT_TM_TM_ZONE=1 -DHAVE_TM_ZONE=1 -DHAVE_GMTIME_R=1 -DHAVE_LOCALTIME_R=1 -DHAVE_TM_GMTOFF=1 -DHAVE_TIMEZONE_VAR=1 -DNO_UNION_WAIT=1  -I"./generic" -I"./unix" -I"/usr/include"    -O2 -fPIC -I/usr/include/tcl-private/generic -I/usr/include/tcl-private/unix -pipe -m64 -O2 -fomit-frame-pointer -DNDEBUG -Wall -fPIC -DUSE_INTERP_RESULT -c `echo ./generic/tclXsignal.c` -o tclXsignal.o
++gcc -DPACKAGE_NAME=\"tclx\" -DPACKAGE_TARNAME=\"tclx\" -DPACKAGE_VERSION=\"8.6\" -DPACKAGE_STRING=\"tclx\ 8.6\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE_URL=\"\" -DFULL_VERSION=\"8.6.0\" -DBUILD_tclx=/\*\*/ -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_LIMITS_H=1 -DHAVE_SYS_PARAM_H=1 -DUSE_THREAD_ALLOC=1 -D_REENTRANT=1 -D_THREAD_SAFE=1 -DTCL_THREADS=1 -DMODULE_SCOPE=extern\ __attribute__\(\(__visibility__\(\"hidden\"\)\)\) -DHAVE_HIDDEN=1 -DHAVE_CAST_TO_UNION=1 -D_LARGEFILE64_SOURCE=1 -DTCL_WIDE_INT_IS_LONG=1 -DUSE_TCL_STUBS=1 -DHAVE_SYS_SELECT_H=1 -DRETSIGTYPE=void -DHAVE_SYS_TIME_H=1 -DTIME_WITH_SYS_TIME=1 -DHAVE_STRUCT_TM_TM_ZONE=1 -DHAVE_TM_ZONE=1 -DHAVE_GMTIME_R=1 -DHAVE_LOCALTIME_R=1 -DHAVE_TM_GMTOFF=1 -DHAVE_TIMEZONE_VAR=1 -DNO_UNION_WAIT=1  -I"./generic" -I"./unix" -I"/usr/include"    -O2 -fPIC -I/usr/include/tcl-private/generic -I/usr/include/tcl-private/unix -pipe -m64 -O2 -fomit-frame-pointer -DNDEBUG -Wall -fPIC -DUSE_INTERP_RESULT -c `echo ./generic/tclXstring.c` -o tclXstring.o
++gcc -DPACKAGE_NAME=\"tclx\" -DPACKAGE_TARNAME=\"tclx\" -DPACKAGE_VERSION=\"8.6\" -DPACKAGE_STRING=\"tclx\ 8.6\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE_URL=\"\" -DFULL_VERSION=\"8.6.0\" -DBUILD_tclx=/\*\*/ -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_LIMITS_H=1 -DHAVE_SYS_PARAM_H=1 -DUSE_THREAD_ALLOC=1 -D_REENTRANT=1 -D_THREAD_SAFE=1 -DTCL_THREADS=1 -DMODULE_SCOPE=extern\ __attribute__\(\(__visibility__\(\"hidden\"\)\)\) -DHAVE_HIDDEN=1 -DHAVE_CAST_TO_UNION=1 -D_LARGEFILE64_SOURCE=1 -DTCL_WIDE_INT_IS_LONG=1 -DUSE_TCL_STUBS=1 -DHAVE_SYS_SELECT_H=1 -DRETSIGTYPE=void -DHAVE_SYS_TIME_H=1 -DTIME_WITH_SYS_TIME=1 -DHAVE_STRUCT_TM_TM_ZONE=1 -DHAVE_TM_ZONE=1 -DHAVE_GMTIME_R=1 -DHAVE_LOCALTIME_R=1 -DHAVE_TM_GMTOFF=1 -DHAVE_TIMEZONE_VAR=1 -DNO_UNION_WAIT=1  -I"./generic" -I"./unix" -I"/usr/include"    -O2 -fPIC -I/usr/include/tcl-private/generic -I/usr/include/tcl-private/unix -pipe -m64 -O2 -fomit-frame-pointer -DNDEBUG -Wall -fPIC -DUSE_INTERP_RESULT -c `echo ./generic/tclXsocket.c` -o tclXsocket.o
++gcc -DPACKAGE_NAME=\"tclx\" -DPACKAGE_TARNAME=\"tclx\" -DPACKAGE_VERSION=\"8.6\" -DPACKAGE_STRING=\"tclx\ 8.6\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE_URL=\"\" -DFULL_VERSION=\"8.6.0\" -DBUILD_tclx=/\*\*/ -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_LIMITS_H=1 -DHAVE_SYS_PARAM_H=1 -DUSE_THREAD_ALLOC=1 -D_REENTRANT=1 -D_THREAD_SAFE=1 -DTCL_THREADS=1 -DMODULE_SCOPE=extern\ __attribute__\(\(__visibility__\(\"hidden\"\)\)\) -DHAVE_HIDDEN=1 -DHAVE_CAST_TO_UNION=1 -D_LARGEFILE64_SOURCE=1 -DTCL_WIDE_INT_IS_LONG=1 -DUSE_TCL_STUBS=1 -DHAVE_SYS_SELECT_H=1 -DRETSIGTYPE=void -DHAVE_SYS_TIME_H=1 -DTIME_WITH_SYS_TIME=1 -DHAVE_STRUCT_TM_TM_ZONE=1 -DHAVE_TM_ZONE=1 -DHAVE_GMTIME_R=1 -DHAVE_LOCALTIME_R=1 -DHAVE_TM_GMTOFF=1 -DHAVE_TIMEZONE_VAR=1 -DNO_UNION_WAIT=1  -I"./generic" -I"./unix" -I"/usr/include"    -O2 -fPIC -I/usr/include/tcl-private/generic -I/usr/include/tcl-private/unix -pipe -m64 -O2 -fomit-frame-pointer -DNDEBUG -Wall -fPIC -DUSE_INTERP_RESULT -c `echo ./generic/tclXutil.c` -o tclXutil.o
++gcc -DPACKAGE_NAME=\"tclx\" -DPACKAGE_TARNAME=\"tclx\" -DPACKAGE_VERSION=\"8.6\" -DPACKAGE_STRING=\"tclx\ 8.6\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE_URL=\"\" -DFULL_VERSION=\"8.6.0\" -DBUILD_tclx=/\*\*/ -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_LIMITS_H=1 -DHAVE_SYS_PARAM_H=1 -DUSE_THREAD_ALLOC=1 -D_REENTRANT=1 -D_THREAD_SAFE=1 -DTCL_THREADS=1 -DMODULE_SCOPE=extern\ __attribute__\(\(__visibility__\(\"hidden\"\)\)\) -DHAVE_HIDDEN=1 -DHAVE_CAST_TO_UNION=1 -D_LARGEFILE64_SOURCE=1 -DTCL_WIDE_INT_IS_LONG=1 -DUSE_TCL_STUBS=1 -DHAVE_SYS_SELECT_H=1 -DRETSIGTYPE=void -DHAVE_SYS_TIME_H=1 -DTIME_WITH_SYS_TIME=1 -DHAVE_STRUCT_TM_TM_ZONE=1 -DHAVE_TM_ZONE=1 -DHAVE_GMTIME_R=1 -DHAVE_LOCALTIME_R=1 -DHAVE_TM_GMTOFF=1 -DHAVE_TIMEZONE_VAR=1 -DNO_UNION_WAIT=1  -I"./generic" -I"./unix" -I"/usr/include"    -O2 -fPIC -I/usr/include/tcl-private/generic -I/usr/include/tcl-private/unix -pipe -m64 -O2 -fomit-frame-pointer -DNDEBUG -Wall -fPIC -DUSE_INTERP_RESULT -c `echo ./generic/tclXoscmds.c` -o tclXoscmds.o
++gcc -DPACKAGE_NAME=\"tclx\" -DPACKAGE_TARNAME=\"tclx\" -DPACKAGE_VERSION=\"8.6\" -DPACKAGE_STRING=\"tclx\ 8.6\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE_URL=\"\" -DFULL_VERSION=\"8.6.0\" -DBUILD_tclx=/\*\*/ -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_LIMITS_H=1 -DHAVE_SYS_PARAM_H=1 -DUSE_THREAD_ALLOC=1 -D_REENTRANT=1 -D_THREAD_SAFE=1 -DTCL_THREADS=1 -DMODULE_SCOPE=extern\ __attribute__\(\(__visibility__\(\"hidden\"\)\)\) -DHAVE_HIDDEN=1 -DHAVE_CAST_TO_UNION=1 -D_LARGEFILE64_SOURCE=1 -DTCL_WIDE_INT_IS_LONG=1 -DUSE_TCL_STUBS=1 -DHAVE_SYS_SELECT_H=1 -DRETSIGTYPE=void -DHAVE_SYS_TIME_H=1 -DTIME_WITH_SYS_TIME=1 -DHAVE_STRUCT_TM_TM_ZONE=1 -DHAVE_TM_ZONE=1 -DHAVE_GMTIME_R=1 -DHAVE_LOCALTIME_R=1 -DHAVE_TM_GMTOFF=1 -DHAVE_TIMEZONE_VAR=1 -DNO_UNION_WAIT=1  -I"./generic" -I"./unix" -I"/usr/include"    -O2 -fPIC -I/usr/include/tcl-private/generic -I/usr/include/tcl-private/unix -pipe -m64 -O2 -fomit-frame-pointer -DNDEBUG -Wall -fPIC -DUSE_INTERP_RESULT -c `echo ./generic/tclXlgets.c` -o tclXlgets.o
++gcc -DPACKAGE_NAME=\"tclx\" -DPACKAGE_TARNAME=\"tclx\" -DPACKAGE_VERSION=\"8.6\" -DPACKAGE_STRING=\"tclx\ 8.6\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE_URL=\"\" -DFULL_VERSION=\"8.6.0\" -DBUILD_tclx=/\*\*/ -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_LIMITS_H=1 -DHAVE_SYS_PARAM_H=1 -DUSE_THREAD_ALLOC=1 -D_REENTRANT=1 -D_THREAD_SAFE=1 -DTCL_THREADS=1 -DMODULE_SCOPE=extern\ __attribute__\(\(__visibility__\(\"hidden\"\)\)\) -DHAVE_HIDDEN=1 -DHAVE_CAST_TO_UNION=1 -D_LARGEFILE64_SOURCE=1 -DTCL_WIDE_INT_IS_LONG=1 -DUSE_TCL_STUBS=1 -DHAVE_SYS_SELECT_H=1 -DRETSIGTYPE=void -DHAVE_SYS_TIME_H=1 -DTIME_WITH_SYS_TIME=1 -DHAVE_STRUCT_TM_TM_ZONE=1 -DHAVE_TM_ZONE=1 -DHAVE_GMTIME_R=1 -DHAVE_LOCALTIME_R=1 -DHAVE_TM_GMTOFF=1 -DHAVE_TIMEZONE_VAR=1 -DNO_UNION_WAIT=1  -I"./generic" -I"./unix" -I"/usr/include"    -O2 -fPIC -I/usr/include/tcl-private/generic -I/usr/include/tcl-private/unix -pipe -m64 -O2 -fomit-frame-pointer -DNDEBUG -Wall -fPIC -DUSE_INTERP_RESULT -c `echo ./unix/tclXchannelfd.c` -o tclXchannelfd.o
++gcc -DPACKAGE_NAME=\"tclx\" -DPACKAGE_TARNAME=\"tclx\" -DPACKAGE_VERSION=\"8.6\" -DPACKAGE_STRING=\"tclx\ 8.6\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE_URL=\"\" -DFULL_VERSION=\"8.6.0\" -DBUILD_tclx=/\*\*/ -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_LIMITS_H=1 -DHAVE_SYS_PARAM_H=1 -DUSE_THREAD_ALLOC=1 -D_REENTRANT=1 -D_THREAD_SAFE=1 -DTCL_THREADS=1 -DMODULE_SCOPE=extern\ __attribute__\(\(__visibility__\(\"hidden\"\)\)\) -DHAVE_HIDDEN=1 -DHAVE_CAST_TO_UNION=1 -D_LARGEFILE64_SOURCE=1 -DTCL_WIDE_INT_IS_LONG=1 -DUSE_TCL_STUBS=1 -DHAVE_SYS_SELECT_H=1 -DRETSIGTYPE=void -DHAVE_SYS_TIME_H=1 -DTIME_WITH_SYS_TIME=1 -DHAVE_STRUCT_TM_TM_ZONE=1 -DHAVE_TM_ZONE=1 -DHAVE_GMTIME_R=1 -DHAVE_LOCALTIME_R=1 -DHAVE_TM_GMTOFF=1 -DHAVE_TIMEZONE_VAR=1 -DNO_UNION_WAIT=1  -I"./generic" -I"./unix" -I"/usr/include"    -O2 -fPIC -I/usr/include/tcl-private/generic -I/usr/include/tcl-private/unix -pipe -m64 -O2 -fomit-frame-pointer -DNDEBUG -Wall -fPIC -DUSE_INTERP_RESULT -c `echo ./unix/tclXunixCmds.c` -o tclXunixCmds.o
++gcc -DPACKAGE_NAME=\"tclx\" -DPACKAGE_TARNAME=\"tclx\" -DPACKAGE_VERSION=\"8.6\" -DPACKAGE_STRING=\"tclx\ 8.6\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE_URL=\"\" -DFULL_VERSION=\"8.6.0\" -DBUILD_tclx=/\*\*/ -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_LIMITS_H=1 -DHAVE_SYS_PARAM_H=1 -DUSE_THREAD_ALLOC=1 -D_REENTRANT=1 -D_THREAD_SAFE=1 -DTCL_THREADS=1 -DMODULE_SCOPE=extern\ __attribute__\(\(__visibility__\(\"hidden\"\)\)\) -DHAVE_HIDDEN=1 -DHAVE_CAST_TO_UNION=1 -D_LARGEFILE64_SOURCE=1 -DTCL_WIDE_INT_IS_LONG=1 -DUSE_TCL_STUBS=1 -DHAVE_SYS_SELECT_H=1 -DRETSIGTYPE=void -DHAVE_SYS_TIME_H=1 -DTIME_WITH_SYS_TIME=1 -DHAVE_STRUCT_TM_TM_ZONE=1 -DHAVE_TM_ZONE=1 -DHAVE_GMTIME_R=1 -DHAVE_LOCALTIME_R=1 -DHAVE_TM_GMTOFF=1 -DHAVE_TIMEZONE_VAR=1 -DNO_UNION_WAIT=1  -I"./generic" -I"./unix" -I"/usr/include"    -O2 -fPIC -I/usr/include/tcl-private/generic -I/usr/include/tcl-private/unix -pipe -m64 -O2 -fomit-frame-pointer -DNDEBUG -Wall -fPIC -DUSE_INTERP_RESULT -c `echo ./unix/tclXunixDup.c` -o tclXunixDup.o
++gcc -DPACKAGE_NAME=\"tclx\" -DPACKAGE_TARNAME=\"tclx\" -DPACKAGE_VERSION=\"8.6\" -DPACKAGE_STRING=\"tclx\ 8.6\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE_URL=\"\" -DFULL_VERSION=\"8.6.0\" -DBUILD_tclx=/\*\*/ -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_LIMITS_H=1 -DHAVE_SYS_PARAM_H=1 -DUSE_THREAD_ALLOC=1 -D_REENTRANT=1 -D_THREAD_SAFE=1 -DTCL_THREADS=1 -DMODULE_SCOPE=extern\ __attribute__\(\(__visibility__\(\"hidden\"\)\)\) -DHAVE_HIDDEN=1 -DHAVE_CAST_TO_UNION=1 -D_LARGEFILE64_SOURCE=1 -DTCL_WIDE_INT_IS_LONG=1 -DUSE_TCL_STUBS=1 -DHAVE_SYS_SELECT_H=1 -DRETSIGTYPE=void -DHAVE_SYS_TIME_H=1 -DTIME_WITH_SYS_TIME=1 -DHAVE_STRUCT_TM_TM_ZONE=1 -DHAVE_TM_ZONE=1 -DHAVE_GMTIME_R=1 -DHAVE_LOCALTIME_R=1 -DHAVE_TM_GMTOFF=1 -DHAVE_TIMEZONE_VAR=1 -DNO_UNION_WAIT=1  -I"./generic" -I"./unix" -I"/usr/include"    -O2 -fPIC -I/usr/include/tcl-private/generic -I/usr/include/tcl-private/unix -pipe -m64 -O2 -fomit-frame-pointer -DNDEBUG -Wall -fPIC -DUSE_INTERP_RESULT -c `echo ./unix/tclXunixId.c` -o tclXunixId.o
++./unix/tclXunixDup.c: In function ‘TclXOSDupChannel’:
++./unix/tclXunixDup.c:89:18: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
++   89 |     srcFileNum = (int) handle;
++      |                  ^
++gcc -DPACKAGE_NAME=\"tclx\" -DPACKAGE_TARNAME=\"tclx\" -DPACKAGE_VERSION=\"8.6\" -DPACKAGE_STRING=\"tclx\ 8.6\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE_URL=\"\" -DFULL_VERSION=\"8.6.0\" -DBUILD_tclx=/\*\*/ -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_LIMITS_H=1 -DHAVE_SYS_PARAM_H=1 -DUSE_THREAD_ALLOC=1 -D_REENTRANT=1 -D_THREAD_SAFE=1 -DTCL_THREADS=1 -DMODULE_SCOPE=extern\ __attribute__\(\(__visibility__\(\"hidden\"\)\)\) -DHAVE_HIDDEN=1 -DHAVE_CAST_TO_UNION=1 -D_LARGEFILE64_SOURCE=1 -DTCL_WIDE_INT_IS_LONG=1 -DUSE_TCL_STUBS=1 -DHAVE_SYS_SELECT_H=1 -DRETSIGTYPE=void -DHAVE_SYS_TIME_H=1 -DTIME_WITH_SYS_TIME=1 -DHAVE_STRUCT_TM_TM_ZONE=1 -DHAVE_TM_ZONE=1 -DHAVE_GMTIME_R=1 -DHAVE_LOCALTIME_R=1 -DHAVE_TM_GMTOFF=1 -DHAVE_TIMEZONE_VAR=1 -DNO_UNION_WAIT=1  -I"./generic" -I"./unix" -I"/usr/include"    -O2 -fPIC -I/usr/include/tcl-private/generic -I/usr/include/tcl-private/unix -pipe -m64 -O2 -fomit-frame-pointer -DNDEBUG -Wall -fPIC -DUSE_INTERP_RESULT -c `echo ./unix/tclXunixOS.c` -o tclXunixOS.o
++gcc -DPACKAGE_NAME=\"tclx\" -DPACKAGE_TARNAME=\"tclx\" -DPACKAGE_VERSION=\"8.6\" -DPACKAGE_STRING=\"tclx\ 8.6\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE_URL=\"\" -DFULL_VERSION=\"8.6.0\" -DBUILD_tclx=/\*\*/ -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_LIMITS_H=1 -DHAVE_SYS_PARAM_H=1 -DUSE_THREAD_ALLOC=1 -D_REENTRANT=1 -D_THREAD_SAFE=1 -DTCL_THREADS=1 -DMODULE_SCOPE=extern\ __attribute__\(\(__visibility__\(\"hidden\"\)\)\) -DHAVE_HIDDEN=1 -DHAVE_CAST_TO_UNION=1 -D_LARGEFILE64_SOURCE=1 -DTCL_WIDE_INT_IS_LONG=1 -DUSE_TCL_STUBS=1 -DHAVE_SYS_SELECT_H=1 -DRETSIGTYPE=void -DHAVE_SYS_TIME_H=1 -DTIME_WITH_SYS_TIME=1 -DHAVE_STRUCT_TM_TM_ZONE=1 -DHAVE_TM_ZONE=1 -DHAVE_GMTIME_R=1 -DHAVE_LOCALTIME_R=1 -DHAVE_TM_GMTOFF=1 -DHAVE_TIMEZONE_VAR=1 -DNO_UNION_WAIT=1  -I"./generic" -I"./unix" -I"/usr/include"    -O2 -fPIC -I/usr/include/tcl-private/generic -I/usr/include/tcl-private/unix -pipe -m64 -O2 -fomit-frame-pointer -DNDEBUG -Wall -fPIC -DUSE_INTERP_RESULT -c `echo ./unix/tclXunixSock.c` -o tclXunixSock.o
++./unix/tclXunixId.c: In function ‘IdHost’:
++./unix/tclXunixId.c:447:5: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
++  447 |     if (objc != 2)
++      |     ^~
++./unix/tclXunixId.c:450:2: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
++  450 |  if (gethostname (hostNameBuf, MAXHOSTNAMELEN) < 0) {
++      |  ^~
++./unix/tclXunixOS.c: In function ‘ChannelToFnum’:
++./unix/tclXunixOS.c:116:12: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
++  116 |     return (int) handle;
++      |            ^
++./unix/tclXunixOS.c: In function ‘TclXOSgetsockname’:
++./unix/tclXunixOS.c:922:33: warning: pointer targets in passing argument 3 of ‘getsockname’ differ in signedness [-Wpointer-sign]
++  922 |   (struct sockaddr *) sockaddr, &sockaddrSize) < 0) {
++      |                                 ^~~~~~~~~~~~~
++      |                                 |
++      |                                 int *
++In file included from /usr/include/tclUnixPort.h:176,
++                 from /usr/include/tclPort.h:23,
++                 from /usr/include/tclInt.h:36,
++                 from ./generic/tclExtdInt.h:26,
++                 from ./unix/tclXunixOS.c:24:
++/usr/include/sys/socket.h:389:52: note: expected ‘socklen_t * restrict’ {aka ‘unsigned int * restrict’} but argument is of type ‘int *’
++  389 | int getsockname (int, struct sockaddr *__restrict, socklen_t *__restrict);
++      |                                                    ^
++./unix/tclXunixOS.c: In function ‘TclXOSgetsockopt’:
++./unix/tclXunixOS.c:949:21: warning: pointer targets in passing argument 5 of ‘getsockopt’ differ in signedness [-Wpointer-sign]
++  949 |   (void*) valuePtr, &valueLen) != 0) {
++      |                     ^~~~~~~~~
++      |                     |
++      |                     int *
++In file included from /usr/include/tclUnixPort.h:176,
++                 from /usr/include/tclPort.h:23,
++                 from /usr/include/tclInt.h:36,
++                 from ./generic/tclExtdInt.h:26,
++                 from ./unix/tclXunixOS.c:24:
++/usr/include/sys/socket.h:399:50: note: expected ‘socklen_t * restrict’ {aka ‘unsigned int * restrict’} but argument is of type ‘int *’
++  399 | int getsockopt (int, int, int, void *__restrict, socklen_t *__restrict);
++      |                                                  ^
++./unix/tclXunixOS.c: In function ‘TclXOSGetSelectFnum’:
++./unix/tclXunixOS.c:1388:16: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
++ 1388 |     *fnumPtr = (int) handle;
++      |                ^
++./unix/tclXunixSock.c: In function ‘TclX_ServerCreateCmd’:
++./unix/tclXunixSock.c:198:13: warning: implicit declaration of function ‘rresvport’ [-Wimplicit-function-declaration]
++  198 |         if (rresvport (&port) < 0)
++      |             ^~~~~~~~~
++(echo 'package ifneeded Tclx 8.6 \
++	[list load [file join $dir libtclx8.6.so] Tclx]'\
++) > pkgIndex.tcl
++rm -f libtclx8.6.so
++gcc -shared -O2 -fPIC -I/usr/include/tcl-private/generic -I/usr/include/tcl-private/unix -pipe -m64 -O2 -fomit-frame-pointer -DNDEBUG -Wall -fPIC -DUSE_INTERP_RESULT -Wl,--export-dynamic  -o libtclx8.6.so tclXbsearch.o tclXchmod.o tclXcmdloop.o tclXcoalesce.o tclXdebug.o tclXdup.o tclXfcntl.o tclXfilecmds.o tclXfilescan.o tclXflock.o tclXfstat.o tclXgeneral.o tclXhandles.o tclXinit.o tclXkeylist.o tclXlib.o tclXlist.o tclXmath.o tclXmsgcat.o tclXprocess.o tclXprofile.o tclXselect.o tclXsignal.o tclXstring.o tclXsocket.o tclXutil.o tclXoscmds.o tclXlgets.o tclXchannelfd.o tclXunixCmds.o tclXunixDup.o tclXunixId.o tclXunixOS.o tclXunixSock.o   -L/usr/lib -ltclstub8.6 
++: libtclx8.6.so
++ /bin/sh ./tclconfig/install-sh -c libtclx8.6.so /tmp/package-tclx/usr/lib/tclx8.6/libtclx8.6.so
++ : /tmp/package-tclx/usr/lib/tclx8.6/libtclx8.6.so
++ Install tclx.tcl /tmp/package-tclx/usr/lib/tclx8.6/tclx.tcl
++ Install autoload.tcl /tmp/package-tclx/usr/lib/tclx8.6/autoload.tcl
++ Install arrayprocs.tcl /tmp/package-tclx/usr/lib/tclx8.6/arrayprocs.tcl
++ Install compat.tcl /tmp/package-tclx/usr/lib/tclx8.6/compat.tcl
++ Install convlib.tcl /tmp/package-tclx/usr/lib/tclx8.6/convlib.tcl
++ Install edprocs.tcl /tmp/package-tclx/usr/lib/tclx8.6/edprocs.tcl
++ Install events.tcl /tmp/package-tclx/usr/lib/tclx8.6/events.tcl
++ Install forfile.tcl /tmp/package-tclx/usr/lib/tclx8.6/forfile.tcl
++ Install globrecur.tcl /tmp/package-tclx/usr/lib/tclx8.6/globrecur.tcl
++ Install help.tcl /tmp/package-tclx/usr/lib/tclx8.6/help.tcl
++ Install profrep.tcl /tmp/package-tclx/usr/lib/tclx8.6/profrep.tcl
++ Install pushd.tcl /tmp/package-tclx/usr/lib/tclx8.6/pushd.tcl
++ Install setfuncs.tcl /tmp/package-tclx/usr/lib/tclx8.6/setfuncs.tcl
++ Install showproc.tcl /tmp/package-tclx/usr/lib/tclx8.6/showproc.tcl
++ Install stringfile.tcl /tmp/package-tclx/usr/lib/tclx8.6/stringfile.tcl
++ Install tcllib.tcl /tmp/package-tclx/usr/lib/tclx8.6/tcllib.tcl
++ Install fmath.tcl /tmp/package-tclx/usr/lib/tclx8.6/fmath.tcl
++ Install buildhelp.tcl /tmp/package-tclx/usr/lib/tclx8.6/buildhelp.tcl
++ Install pkgIndex.tcl /tmp/package-tclx/usr/lib/tclx8.6
++Installing header files in /tmp/package-tclx/usr/include
++Installing ./generic/tclExtend.h
++Installing documentation in /tmp/package-tclx/usr/man
++Installing ./doc/TclX.n
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++usr/lib/libtclx.so	libtclx8.6.so
++usr/lib/libtclx8.6.so	tclx8.6/libtclx8.6.so
++
++Making symbolic link creation script:
++( cd usr/lib ; rm -rf libtclx.so )
++( cd usr/lib ; ln -sf libtclx8.6.so libtclx.so )
++( cd usr/lib ; rm -rf libtclx8.6.so )
++( cd usr/lib ; ln -sf tclx8.6/libtclx8.6.so libtclx8.6.so )
++
++It is recommended that you make these lines your new installation script.
++
++Would you like to make this stuff the install script for this package
++and remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './usr/lib/libtclx.so'
++removed './usr/lib/libtclx8.6.so'
++
++Creating your new ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/tclx-8.4.4-x86_64-1.txz
++
++./
++install/
++install/doinst.sh
++install/slack-desc
++usr/
++usr/bin/
++usr/doc/
++usr/doc/tclx-8.4.4/
++usr/doc/tclx-8.4.4/ChangeLog
++usr/doc/tclx-8.4.4/README.FreeBSD
++usr/doc/tclx-8.4.4/README.md
++usr/doc/tclx-8.4.4/license.terms
++usr/include/
++usr/include/tclExtend.h
++usr/lib/
++usr/lib/tclx8.6/
++usr/lib/tclx8.6/arrayprocs.tcl
++usr/lib/tclx8.6/autoload.tcl
++usr/lib/tclx8.6/buildhelp.tcl
++usr/lib/tclx8.6/compat.tcl
++usr/lib/tclx8.6/convlib.tcl
++usr/lib/tclx8.6/edprocs.tcl
++usr/lib/tclx8.6/events.tcl
++usr/lib/tclx8.6/fmath.tcl
++usr/lib/tclx8.6/forfile.tcl
++usr/lib/tclx8.6/globrecur.tcl
++usr/lib/tclx8.6/help.tcl
++usr/lib/tclx8.6/libtclx8.6.so
++usr/lib/tclx8.6/pkgIndex.tcl
++usr/lib/tclx8.6/profrep.tcl
++usr/lib/tclx8.6/pushd.tcl
++usr/lib/tclx8.6/setfuncs.tcl
++usr/lib/tclx8.6/showproc.tcl
++usr/lib/tclx8.6/stringfile.tcl
++usr/lib/tclx8.6/tcllib.tcl
++usr/lib/tclx8.6/tclx.tcl
++usr/man/
++usr/man/mann/
++usr/man/mann/TclX.n.gz
++
++Slackware package /tmp/tclx-8.4.4-x86_64-1.txz created.
++

@@ -1,0 +1,528 @@
+diff -ruBN /tmp/wavpack/wavpack.SlackBuild /source/l/wavpack/wavpack.SlackBuild
+--- /tmp/wavpack/wavpack.SlackBuild	2019-12-19 18:57:01.000000000 +0000
++++ /source/l/wavpack/wavpack.SlackBuild	2021-01-17 21:34:13.000000000 +0000
+@@ -66,7 +66,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ fi
+ 
+ rm -rf $PKG
+@@ -90,7 +90,7 @@
+   --localstatedir=/var \
+   --mandir=/usr/man \
+   --enable-static=no \
+-  --build=$ARCH-slackware-linux \
++  --build=$ARCH-slackware-linux-musl \
+   || exit 1
+ 
+ make $NUMJOBS || make || exit 1
+diff -ruBN /tmp/wavpack/wavpack.SlackBuild.log /source/l/wavpack/wavpack.SlackBuild.log
+--- /tmp/wavpack/wavpack.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/l/wavpack/wavpack.SlackBuild.log	2021-01-17 21:34:52.000000000 +0000
+@@ -0,0 +1,503 @@
++wavpack-5.4.0/
++wavpack-5.4.0/cli/
++wavpack-5.4.0/cli/Makefile.in
++wavpack-5.4.0/cli/riff.c
++wavpack-5.4.0/cli/dsdiff.c
++wavpack-5.4.0/cli/dsf_write.c
++wavpack-5.4.0/cli/wvtest.c
++wavpack-5.4.0/cli/md5.h
++wavpack-5.4.0/cli/wvunpack.c
++wavpack-5.4.0/cli/win32_unicode_support.h
++wavpack-5.4.0/cli/riff_write.c
++wavpack-5.4.0/cli/wavpack.c
++wavpack-5.4.0/cli/wvgain.c
++wavpack-5.4.0/cli/dsf.c
++wavpack-5.4.0/cli/wave64.c
++wavpack-5.4.0/cli/caff.c
++wavpack-5.4.0/cli/utils.c
++wavpack-5.4.0/cli/win32_unicode_support.c
++wavpack-5.4.0/cli/wave64_write.c
++wavpack-5.4.0/cli/utils.h
++wavpack-5.4.0/cli/caff_write.c
++wavpack-5.4.0/cli/md5.c
++wavpack-5.4.0/cli/dsdiff_write.c
++wavpack-5.4.0/cli/import_id3.c
++wavpack-5.4.0/cli/wvtag.c
++wavpack-5.4.0/cli/Makefile.am
++wavpack-5.4.0/Makefile.in
++wavpack-5.4.0/AUTHORS
++wavpack-5.4.0/acinclude.m4
++wavpack-5.4.0/wavpack.pc.in
++wavpack-5.4.0/include/
++wavpack-5.4.0/include/Makefile.in
++wavpack-5.4.0/include/wavpack.h
++wavpack-5.4.0/include/Makefile.am
++wavpack-5.4.0/config.sub
++wavpack-5.4.0/src/
++wavpack-5.4.0/src/unpack_armv7.S
++wavpack-5.4.0/src/pack_x86.S
++wavpack-5.4.0/src/Makefile.in
++wavpack-5.4.0/src/unpack.c
++wavpack-5.4.0/src/open_utils.c
++wavpack-5.4.0/src/extra2.c
++wavpack-5.4.0/src/decorr_utils.c
++wavpack-5.4.0/src/write_words.c
++wavpack-5.4.0/src/wavpack_local.h
++wavpack-5.4.0/src/open_raw.c
++wavpack-5.4.0/src/wavpack_version.h
++wavpack-5.4.0/src/open_filename.c
++wavpack-5.4.0/src/read_words.c
++wavpack-5.4.0/src/unpack_seek.c
++wavpack-5.4.0/src/extra1.c
++wavpack-5.4.0/src/unpack3_open.c
++wavpack-5.4.0/src/unpack_floats.c
++wavpack-5.4.0/src/tags.c
++wavpack-5.4.0/src/common_utils.c
++wavpack-5.4.0/src/decorr_tables.h
++wavpack-5.4.0/src/open_legacy.c
++wavpack-5.4.0/src/unpack_dsd.c
++wavpack-5.4.0/src/unpack_utils.c
++wavpack-5.4.0/src/tag_utils.c
++wavpack-5.4.0/src/pack.c
++wavpack-5.4.0/src/pack_dns.c
++wavpack-5.4.0/src/unpack_x86.S
++wavpack-5.4.0/src/unpack3_seek.c
++wavpack-5.4.0/src/unpack3.c
++wavpack-5.4.0/src/pack_dsd.c
++wavpack-5.4.0/src/pack_floats.c
++wavpack-5.4.0/src/entropy_utils.c
++wavpack-5.4.0/src/unpack_x64.S
++wavpack-5.4.0/src/unpack3.h
++wavpack-5.4.0/src/pack_x64.S
++wavpack-5.4.0/src/pack_utils.c
++wavpack-5.4.0/src/Makefile.am
++wavpack-5.4.0/install-sh
++wavpack-5.4.0/man/
++wavpack-5.4.0/man/wvtag.xml
++wavpack-5.4.0/man/Makefile.in
++wavpack-5.4.0/man/wvgain.1
++wavpack-5.4.0/man/wvgain.xml
++wavpack-5.4.0/man/wvunpack.xml
++wavpack-5.4.0/man/wavpack.1
++wavpack-5.4.0/man/wvtag.1
++wavpack-5.4.0/man/wvunpack.1
++wavpack-5.4.0/man/wavpack.xml
++wavpack-5.4.0/man/Makefile.am
++wavpack-5.4.0/configure.ac
++wavpack-5.4.0/aclocal.m4
++wavpack-5.4.0/README.md
++wavpack-5.4.0/compile
++wavpack-5.4.0/ChangeLog
++wavpack-5.4.0/cmake/
++wavpack-5.4.0/cmake/CheckCLinkerFlag.cmake
++wavpack-5.4.0/cmake/TestLargeFiles.cmake
++wavpack-5.4.0/cmake/modules/
++wavpack-5.4.0/cmake/modules/FindIconv.cmake
++wavpack-5.4.0/configure
++wavpack-5.4.0/missing
++wavpack-5.4.0/NEWS
++wavpack-5.4.0/ltmain.sh
++wavpack-5.4.0/depcomp
++wavpack-5.4.0/CMakeLists.txt
++wavpack-5.4.0/doc/
++wavpack-5.4.0/doc/wavpack_doc.html
++wavpack-5.4.0/doc/WavPack5LibraryDoc.pdf
++wavpack-5.4.0/doc/style.css
++wavpack-5.4.0/doc/WavPack5FileFormat.pdf
++wavpack-5.4.0/doc/WavPack5PortingGuide.pdf
++wavpack-5.4.0/config.guess
++wavpack-5.4.0/COPYING
++wavpack-5.4.0/Makefile.am
++checking for a BSD-compatible install... /usr/bin/ginstall -c
++checking whether build environment is sane... yes
++checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
++checking for gawk... gawk
++checking whether make sets $(MAKE)... yes
++checking whether make supports nested variables... yes
++checking whether to enable maintainer-specific portions of Makefiles... no
++checking build system type... x86_64-slackware-linux-musl
++checking host system type... x86_64-slackware-linux-musl
++checking whether make supports the include directive... yes (GNU style)
++checking for gcc... gcc
++checking whether the C compiler works... yes
++checking for C compiler default output file name... a.out
++checking for suffix of executables... 
++checking whether we are cross compiling... no
++checking for suffix of object files... o
++checking whether we are using the GNU C compiler... yes
++checking whether gcc accepts -g... yes
++checking for gcc option to accept ISO C89... none needed
++checking whether gcc understands -c and -o together... yes
++checking dependency style of gcc... gcc3
++checking how to run the C preprocessor... gcc -E
++checking for grep that handles long lines and -e... /usr/bin/grep
++checking for egrep... /usr/bin/grep -E
++checking for ANSI C header files... yes
++checking for sys/types.h... yes
++checking for sys/stat.h... yes
++checking for stdlib.h... yes
++checking for string.h... yes
++checking for memory.h... yes
++checking for strings.h... yes
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking for unistd.h... yes
++checking whether byte ordering is bigendian... no
++checking for gcc... (cached) gcc
++checking whether we are using the GNU C compiler... (cached) yes
++checking whether gcc accepts -g... (cached) yes
++checking for gcc option to accept ISO C89... (cached) none needed
++checking whether gcc understands -c and -o together... (cached) yes
++checking dependency style of gcc... (cached) gcc3
++checking how to print strings... printf
++checking for a sed that does not truncate output... /usr/bin/sed
++checking for fgrep... /usr/bin/grep -F
++checking for ld used by gcc... /usr/bin/ld
++checking if the linker (/usr/bin/ld) is GNU ld... yes
++checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
++checking the name lister (/usr/bin/nm -B) interface... BSD nm
++checking whether ln -s works... yes
++checking the maximum length of command line arguments... 98304
++checking how to convert x86_64-slackware-linux-musl file names to x86_64-slackware-linux-musl format... func_convert_file_noop
++checking how to convert x86_64-slackware-linux-musl file names to toolchain format... func_convert_file_noop
++checking for /usr/bin/ld option to reload object files... -r
++checking for objdump... objdump
++checking how to recognize dependent libraries... pass_all
++checking for dlltool... dlltool
++checking how to associate runtime and link libraries... printf %s\n
++checking for ar... ar
++checking for archiver @FILE support... @
++checking for strip... strip
++checking for ranlib... ranlib
++checking command to parse /usr/bin/nm -B output from gcc object... ok
++checking for sysroot... no
++checking for a working dd... /usr/bin/dd
++checking how to truncate binary pipes... /usr/bin/dd bs=4096 count=1
++checking for mt... mt
++checking if mt is a manifest tool... no
++checking for dlfcn.h... yes
++checking for objdir... .libs
++checking if gcc supports -fno-rtti -fno-exceptions... no
++checking for gcc option to produce PIC... -fPIC -DPIC
++checking if gcc PIC flag -fPIC -DPIC works... yes
++checking if gcc static flag -static works... yes
++checking if gcc supports -c -o file.o... yes
++checking if gcc supports -c -o file.o... (cached) yes
++checking whether the gcc linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
++checking whether -lc should be explicitly linked in... no
++checking dynamic linker characteristics... GNU/Linux ld.so
++checking how to hardcode library paths into programs... immediate
++checking whether stripping libraries is possible... yes
++checking if libtool supports shared libraries... yes
++checking whether to build shared libraries... yes
++checking whether to build static libraries... no
++checking dependency style of gcc... gcc3
++checking for ANSI C header files... (cached) yes
++checking for cos in -lm... yes
++checking for special C compiler options needed for large files... no
++checking for _FILE_OFFSET_BITS value needed for large files... no
++checking for _LARGEFILE_SOURCE value needed for large files... no
++checking iconv.h usability... yes
++checking iconv.h presence... yes
++checking for iconv.h... yes
++checking for iconv... yes
++checking if we are building for a Windows host... no
++checking if assembly optimizations are available... x64
++checking for __builtin_clz... yes
++checking for __builtin_ctz... yes
++checking that generated files are newer than configure... done
++configure: creating ./config.status
++config.status: creating Makefile
++config.status: creating wavpack.pc
++config.status: creating src/Makefile
++config.status: creating include/Makefile
++config.status: creating cli/Makefile
++config.status: creating man/Makefile
++config.status: executing depfiles commands
++config.status: executing libtool commands
++Making all in src
++make[1]: Entering directory '/tmp/wavpack-5.4.0/src'
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" -DPACKAGE_STRING=\"wavpack\ 5.4.0\" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I.     -I../include -O2 -fPIC -MT libwavpack_la-common_utils.lo -MD -MP -MF .deps/libwavpack_la-common_utils.Tpo -c -o libwavpack_la-common_utils.lo `test -f 'common_utils.c' || echo './'`common_utils.c
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" -DPACKAGE_STRING=\"wavpack\ 5.4.0\" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I.     -I../include -O2 -fPIC -MT libwavpack_la-decorr_utils.lo -MD -MP -MF .deps/libwavpack_la-decorr_utils.Tpo -c -o libwavpack_la-decorr_utils.lo `test -f 'decorr_utils.c' || echo './'`decorr_utils.c
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" -DPACKAGE_STRING=\"wavpack\ 5.4.0\" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I.     -I../include -O2 -fPIC -MT libwavpack_la-entropy_utils.lo -MD -MP -MF .deps/libwavpack_la-entropy_utils.Tpo -c -o libwavpack_la-entropy_utils.lo `test -f 'entropy_utils.c' || echo './'`entropy_utils.c
++libtool: compile:  gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" "-DPACKAGE_STRING=\"wavpack 5.4.0\"" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I. -I../include -O2 -fPIC -MT libwavpack_la-common_utils.lo -MD -MP -MF .deps/libwavpack_la-common_utils.Tpo -c common_utils.c  -fPIC -DPIC -o .libs/libwavpack_la-common_utils.o
++libtool: compile:  gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" "-DPACKAGE_STRING=\"wavpack 5.4.0\"" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I. -I../include -O2 -fPIC -MT libwavpack_la-entropy_utils.lo -MD -MP -MF .deps/libwavpack_la-entropy_utils.Tpo -c entropy_utils.c  -fPIC -DPIC -o .libs/libwavpack_la-entropy_utils.o
++libtool: compile:  gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" "-DPACKAGE_STRING=\"wavpack 5.4.0\"" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I. -I../include -O2 -fPIC -MT libwavpack_la-decorr_utils.lo -MD -MP -MF .deps/libwavpack_la-decorr_utils.Tpo -c decorr_utils.c  -fPIC -DPIC -o .libs/libwavpack_la-decorr_utils.o
++mv -f .deps/libwavpack_la-entropy_utils.Tpo .deps/libwavpack_la-entropy_utils.Plo
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" -DPACKAGE_STRING=\"wavpack\ 5.4.0\" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I.     -I../include -O2 -fPIC -MT libwavpack_la-extra1.lo -MD -MP -MF .deps/libwavpack_la-extra1.Tpo -c -o libwavpack_la-extra1.lo `test -f 'extra1.c' || echo './'`extra1.c
++mv -f .deps/libwavpack_la-decorr_utils.Tpo .deps/libwavpack_la-decorr_utils.Plo
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" -DPACKAGE_STRING=\"wavpack\ 5.4.0\" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I.     -I../include -O2 -fPIC -MT libwavpack_la-extra2.lo -MD -MP -MF .deps/libwavpack_la-extra2.Tpo -c -o libwavpack_la-extra2.lo `test -f 'extra2.c' || echo './'`extra2.c
++mv -f .deps/libwavpack_la-common_utils.Tpo .deps/libwavpack_la-common_utils.Plo
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" -DPACKAGE_STRING=\"wavpack\ 5.4.0\" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I.     -I../include -O2 -fPIC -MT libwavpack_la-open_utils.lo -MD -MP -MF .deps/libwavpack_la-open_utils.Tpo -c -o libwavpack_la-open_utils.lo `test -f 'open_utils.c' || echo './'`open_utils.c
++libtool: compile:  gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" "-DPACKAGE_STRING=\"wavpack 5.4.0\"" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I. -I../include -O2 -fPIC -MT libwavpack_la-extra1.lo -MD -MP -MF .deps/libwavpack_la-extra1.Tpo -c extra1.c  -fPIC -DPIC -o .libs/libwavpack_la-extra1.o
++libtool: compile:  gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" "-DPACKAGE_STRING=\"wavpack 5.4.0\"" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I. -I../include -O2 -fPIC -MT libwavpack_la-extra2.lo -MD -MP -MF .deps/libwavpack_la-extra2.Tpo -c extra2.c  -fPIC -DPIC -o .libs/libwavpack_la-extra2.o
++libtool: compile:  gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" "-DPACKAGE_STRING=\"wavpack 5.4.0\"" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I. -I../include -O2 -fPIC -MT libwavpack_la-open_utils.lo -MD -MP -MF .deps/libwavpack_la-open_utils.Tpo -c open_utils.c  -fPIC -DPIC -o .libs/libwavpack_la-open_utils.o
++mv -f .deps/libwavpack_la-extra1.Tpo .deps/libwavpack_la-extra1.Plo
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" -DPACKAGE_STRING=\"wavpack\ 5.4.0\" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I.     -I../include -O2 -fPIC -MT libwavpack_la-open_filename.lo -MD -MP -MF .deps/libwavpack_la-open_filename.Tpo -c -o libwavpack_la-open_filename.lo `test -f 'open_filename.c' || echo './'`open_filename.c
++mv -f .deps/libwavpack_la-extra2.Tpo .deps/libwavpack_la-extra2.Plo
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" -DPACKAGE_STRING=\"wavpack\ 5.4.0\" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I.     -I../include -O2 -fPIC -MT libwavpack_la-open_legacy.lo -MD -MP -MF .deps/libwavpack_la-open_legacy.Tpo -c -o libwavpack_la-open_legacy.lo `test -f 'open_legacy.c' || echo './'`open_legacy.c
++mv -f .deps/libwavpack_la-open_utils.Tpo .deps/libwavpack_la-open_utils.Plo
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" -DPACKAGE_STRING=\"wavpack\ 5.4.0\" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I.     -I../include -O2 -fPIC -MT libwavpack_la-open_raw.lo -MD -MP -MF .deps/libwavpack_la-open_raw.Tpo -c -o libwavpack_la-open_raw.lo `test -f 'open_raw.c' || echo './'`open_raw.c
++libtool: compile:  gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" "-DPACKAGE_STRING=\"wavpack 5.4.0\"" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I. -I../include -O2 -fPIC -MT libwavpack_la-open_filename.lo -MD -MP -MF .deps/libwavpack_la-open_filename.Tpo -c open_filename.c  -fPIC -DPIC -o .libs/libwavpack_la-open_filename.o
++libtool: compile:  gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" "-DPACKAGE_STRING=\"wavpack 5.4.0\"" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I. -I../include -O2 -fPIC -MT libwavpack_la-open_legacy.lo -MD -MP -MF .deps/libwavpack_la-open_legacy.Tpo -c open_legacy.c  -fPIC -DPIC -o .libs/libwavpack_la-open_legacy.o
++mv -f .deps/libwavpack_la-open_filename.Tpo .deps/libwavpack_la-open_filename.Plo
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" -DPACKAGE_STRING=\"wavpack\ 5.4.0\" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I.     -I../include -O2 -fPIC -MT libwavpack_la-pack.lo -MD -MP -MF .deps/libwavpack_la-pack.Tpo -c -o libwavpack_la-pack.lo `test -f 'pack.c' || echo './'`pack.c
++mv -f .deps/libwavpack_la-open_legacy.Tpo .deps/libwavpack_la-open_legacy.Plo
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" -DPACKAGE_STRING=\"wavpack\ 5.4.0\" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I.     -I../include -O2 -fPIC -MT libwavpack_la-pack_dns.lo -MD -MP -MF .deps/libwavpack_la-pack_dns.Tpo -c -o libwavpack_la-pack_dns.lo `test -f 'pack_dns.c' || echo './'`pack_dns.c
++libtool: compile:  gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" "-DPACKAGE_STRING=\"wavpack 5.4.0\"" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I. -I../include -O2 -fPIC -MT libwavpack_la-open_raw.lo -MD -MP -MF .deps/libwavpack_la-open_raw.Tpo -c open_raw.c  -fPIC -DPIC -o .libs/libwavpack_la-open_raw.o
++libtool: compile:  gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" "-DPACKAGE_STRING=\"wavpack 5.4.0\"" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I. -I../include -O2 -fPIC -MT libwavpack_la-pack.lo -MD -MP -MF .deps/libwavpack_la-pack.Tpo -c pack.c  -fPIC -DPIC -o .libs/libwavpack_la-pack.o
++mv -f .deps/libwavpack_la-open_raw.Tpo .deps/libwavpack_la-open_raw.Plo
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" -DPACKAGE_STRING=\"wavpack\ 5.4.0\" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I.     -I../include -O2 -fPIC -MT libwavpack_la-pack_floats.lo -MD -MP -MF .deps/libwavpack_la-pack_floats.Tpo -c -o libwavpack_la-pack_floats.lo `test -f 'pack_floats.c' || echo './'`pack_floats.c
++libtool: compile:  gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" "-DPACKAGE_STRING=\"wavpack 5.4.0\"" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I. -I../include -O2 -fPIC -MT libwavpack_la-pack_dns.lo -MD -MP -MF .deps/libwavpack_la-pack_dns.Tpo -c pack_dns.c  -fPIC -DPIC -o .libs/libwavpack_la-pack_dns.o
++mv -f .deps/libwavpack_la-pack_dns.Tpo .deps/libwavpack_la-pack_dns.Plo
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" -DPACKAGE_STRING=\"wavpack\ 5.4.0\" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I.     -I../include -O2 -fPIC -MT libwavpack_la-pack_utils.lo -MD -MP -MF .deps/libwavpack_la-pack_utils.Tpo -c -o libwavpack_la-pack_utils.lo `test -f 'pack_utils.c' || echo './'`pack_utils.c
++libtool: compile:  gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" "-DPACKAGE_STRING=\"wavpack 5.4.0\"" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I. -I../include -O2 -fPIC -MT libwavpack_la-pack_floats.lo -MD -MP -MF .deps/libwavpack_la-pack_floats.Tpo -c pack_floats.c  -fPIC -DPIC -o .libs/libwavpack_la-pack_floats.o
++mv -f .deps/libwavpack_la-pack_floats.Tpo .deps/libwavpack_la-pack_floats.Plo
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" -DPACKAGE_STRING=\"wavpack\ 5.4.0\" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I.     -I../include -O2 -fPIC -MT libwavpack_la-read_words.lo -MD -MP -MF .deps/libwavpack_la-read_words.Tpo -c -o libwavpack_la-read_words.lo `test -f 'read_words.c' || echo './'`read_words.c
++libtool: compile:  gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" "-DPACKAGE_STRING=\"wavpack 5.4.0\"" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I. -I../include -O2 -fPIC -MT libwavpack_la-pack_utils.lo -MD -MP -MF .deps/libwavpack_la-pack_utils.Tpo -c pack_utils.c  -fPIC -DPIC -o .libs/libwavpack_la-pack_utils.o
++mv -f .deps/libwavpack_la-pack.Tpo .deps/libwavpack_la-pack.Plo
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" -DPACKAGE_STRING=\"wavpack\ 5.4.0\" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I.     -I../include -O2 -fPIC -MT libwavpack_la-tags.lo -MD -MP -MF .deps/libwavpack_la-tags.Tpo -c -o libwavpack_la-tags.lo `test -f 'tags.c' || echo './'`tags.c
++libtool: compile:  gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" "-DPACKAGE_STRING=\"wavpack 5.4.0\"" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I. -I../include -O2 -fPIC -MT libwavpack_la-read_words.lo -MD -MP -MF .deps/libwavpack_la-read_words.Tpo -c read_words.c  -fPIC -DPIC -o .libs/libwavpack_la-read_words.o
++mv -f .deps/libwavpack_la-pack_utils.Tpo .deps/libwavpack_la-pack_utils.Plo
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" -DPACKAGE_STRING=\"wavpack\ 5.4.0\" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I.     -I../include -O2 -fPIC -MT libwavpack_la-tag_utils.lo -MD -MP -MF .deps/libwavpack_la-tag_utils.Tpo -c -o libwavpack_la-tag_utils.lo `test -f 'tag_utils.c' || echo './'`tag_utils.c
++mv -f .deps/libwavpack_la-read_words.Tpo .deps/libwavpack_la-read_words.Plo
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" -DPACKAGE_STRING=\"wavpack\ 5.4.0\" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I.     -I../include -O2 -fPIC -MT libwavpack_la-unpack.lo -MD -MP -MF .deps/libwavpack_la-unpack.Tpo -c -o libwavpack_la-unpack.lo `test -f 'unpack.c' || echo './'`unpack.c
++libtool: compile:  gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" "-DPACKAGE_STRING=\"wavpack 5.4.0\"" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I. -I../include -O2 -fPIC -MT libwavpack_la-tags.lo -MD -MP -MF .deps/libwavpack_la-tags.Tpo -c tags.c  -fPIC -DPIC -o .libs/libwavpack_la-tags.o
++mv -f .deps/libwavpack_la-tags.Tpo .deps/libwavpack_la-tags.Plo
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" -DPACKAGE_STRING=\"wavpack\ 5.4.0\" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I.     -I../include -O2 -fPIC -MT libwavpack_la-unpack_floats.lo -MD -MP -MF .deps/libwavpack_la-unpack_floats.Tpo -c -o libwavpack_la-unpack_floats.lo `test -f 'unpack_floats.c' || echo './'`unpack_floats.c
++libtool: compile:  gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" "-DPACKAGE_STRING=\"wavpack 5.4.0\"" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I. -I../include -O2 -fPIC -MT libwavpack_la-tag_utils.lo -MD -MP -MF .deps/libwavpack_la-tag_utils.Tpo -c tag_utils.c  -fPIC -DPIC -o .libs/libwavpack_la-tag_utils.o
++libtool: compile:  gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" "-DPACKAGE_STRING=\"wavpack 5.4.0\"" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I. -I../include -O2 -fPIC -MT libwavpack_la-unpack.lo -MD -MP -MF .deps/libwavpack_la-unpack.Tpo -c unpack.c  -fPIC -DPIC -o .libs/libwavpack_la-unpack.o
++mv -f .deps/libwavpack_la-tag_utils.Tpo .deps/libwavpack_la-tag_utils.Plo
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" -DPACKAGE_STRING=\"wavpack\ 5.4.0\" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I.     -I../include -O2 -fPIC -MT libwavpack_la-unpack_seek.lo -MD -MP -MF .deps/libwavpack_la-unpack_seek.Tpo -c -o libwavpack_la-unpack_seek.lo `test -f 'unpack_seek.c' || echo './'`unpack_seek.c
++libtool: compile:  gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" "-DPACKAGE_STRING=\"wavpack 5.4.0\"" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I. -I../include -O2 -fPIC -MT libwavpack_la-unpack_floats.lo -MD -MP -MF .deps/libwavpack_la-unpack_floats.Tpo -c unpack_floats.c  -fPIC -DPIC -o .libs/libwavpack_la-unpack_floats.o
++mv -f .deps/libwavpack_la-unpack_floats.Tpo .deps/libwavpack_la-unpack_floats.Plo
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" -DPACKAGE_STRING=\"wavpack\ 5.4.0\" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I.     -I../include -O2 -fPIC -MT libwavpack_la-unpack_utils.lo -MD -MP -MF .deps/libwavpack_la-unpack_utils.Tpo -c -o libwavpack_la-unpack_utils.lo `test -f 'unpack_utils.c' || echo './'`unpack_utils.c
++libtool: compile:  gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" "-DPACKAGE_STRING=\"wavpack 5.4.0\"" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I. -I../include -O2 -fPIC -MT libwavpack_la-unpack_seek.lo -MD -MP -MF .deps/libwavpack_la-unpack_seek.Tpo -c unpack_seek.c  -fPIC -DPIC -o .libs/libwavpack_la-unpack_seek.o
++mv -f .deps/libwavpack_la-unpack.Tpo .deps/libwavpack_la-unpack.Plo
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" -DPACKAGE_STRING=\"wavpack\ 5.4.0\" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I.     -I../include -O2 -fPIC -MT libwavpack_la-write_words.lo -MD -MP -MF .deps/libwavpack_la-write_words.Tpo -c -o libwavpack_la-write_words.lo `test -f 'write_words.c' || echo './'`write_words.c
++libtool: compile:  gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" "-DPACKAGE_STRING=\"wavpack 5.4.0\"" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I. -I../include -O2 -fPIC -MT libwavpack_la-unpack_utils.lo -MD -MP -MF .deps/libwavpack_la-unpack_utils.Tpo -c unpack_utils.c  -fPIC -DPIC -o .libs/libwavpack_la-unpack_utils.o
++mv -f .deps/libwavpack_la-unpack_seek.Tpo .deps/libwavpack_la-unpack_seek.Plo
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" -DPACKAGE_STRING=\"wavpack\ 5.4.0\" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I.     -I../include -O2 -fPIC -MT libwavpack_la-pack_dsd.lo -MD -MP -MF .deps/libwavpack_la-pack_dsd.Tpo -c -o libwavpack_la-pack_dsd.lo `test -f 'pack_dsd.c' || echo './'`pack_dsd.c
++mv -f .deps/libwavpack_la-unpack_utils.Tpo .deps/libwavpack_la-unpack_utils.Plo
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" -DPACKAGE_STRING=\"wavpack\ 5.4.0\" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I.     -I../include -O2 -fPIC -MT libwavpack_la-unpack_dsd.lo -MD -MP -MF .deps/libwavpack_la-unpack_dsd.Tpo -c -o libwavpack_la-unpack_dsd.lo `test -f 'unpack_dsd.c' || echo './'`unpack_dsd.c
++libtool: compile:  gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" "-DPACKAGE_STRING=\"wavpack 5.4.0\"" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I. -I../include -O2 -fPIC -MT libwavpack_la-write_words.lo -MD -MP -MF .deps/libwavpack_la-write_words.Tpo -c write_words.c  -fPIC -DPIC -o .libs/libwavpack_la-write_words.o
++libtool: compile:  gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" "-DPACKAGE_STRING=\"wavpack 5.4.0\"" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I. -I../include -O2 -fPIC -MT libwavpack_la-pack_dsd.lo -MD -MP -MF .deps/libwavpack_la-pack_dsd.Tpo -c pack_dsd.c  -fPIC -DPIC -o .libs/libwavpack_la-pack_dsd.o
++mv -f .deps/libwavpack_la-write_words.Tpo .deps/libwavpack_la-write_words.Plo
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" -DPACKAGE_STRING=\"wavpack\ 5.4.0\" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I.     -O2 -fPIC -MT pack_x64.lo -MD -MP -MF .deps/pack_x64.Tpo -c -o pack_x64.lo pack_x64.S
++libtool: compile:  gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" "-DPACKAGE_STRING=\"wavpack 5.4.0\"" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I. -I../include -O2 -fPIC -MT libwavpack_la-unpack_dsd.lo -MD -MP -MF .deps/libwavpack_la-unpack_dsd.Tpo -c unpack_dsd.c  -fPIC -DPIC -o .libs/libwavpack_la-unpack_dsd.o
++mv -f .deps/libwavpack_la-pack_dsd.Tpo .deps/libwavpack_la-pack_dsd.Plo
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" -DPACKAGE_STRING=\"wavpack\ 5.4.0\" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I.     -O2 -fPIC -MT unpack_x64.lo -MD -MP -MF .deps/unpack_x64.Tpo -c -o unpack_x64.lo unpack_x64.S
++libtool: compile:  gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" "-DPACKAGE_STRING=\"wavpack 5.4.0\"" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I. -O2 -fPIC -MT pack_x64.lo -MD -MP -MF .deps/pack_x64.Tpo -c pack_x64.S  -fPIC -DPIC -o .libs/pack_x64.o
++mv -f .deps/libwavpack_la-unpack_dsd.Tpo .deps/libwavpack_la-unpack_dsd.Plo
++libtool: compile:  gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" "-DPACKAGE_STRING=\"wavpack 5.4.0\"" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I. -O2 -fPIC -MT unpack_x64.lo -MD -MP -MF .deps/unpack_x64.Tpo -c unpack_x64.S  -fPIC -DPIC -o .libs/unpack_x64.o
++mv -f .deps/pack_x64.Tpo .deps/pack_x64.Plo
++mv -f .deps/unpack_x64.Tpo .deps/unpack_x64.Plo
++/bin/sh ../libtool  --tag=CC   --mode=link gcc  -I../include -O2 -fPIC -version-info 3:3:2 -export-symbols-regex '^Wavpack.*$' -no-undefined  -o libwavpack.la -rpath /usr/lib libwavpack_la-common_utils.lo libwavpack_la-decorr_utils.lo libwavpack_la-entropy_utils.lo libwavpack_la-extra1.lo libwavpack_la-extra2.lo libwavpack_la-open_utils.lo libwavpack_la-open_filename.lo libwavpack_la-open_legacy.lo libwavpack_la-open_raw.lo libwavpack_la-pack.lo libwavpack_la-pack_dns.lo libwavpack_la-pack_floats.lo libwavpack_la-pack_utils.lo libwavpack_la-read_words.lo libwavpack_la-tags.lo libwavpack_la-tag_utils.lo libwavpack_la-unpack.lo libwavpack_la-unpack_floats.lo libwavpack_la-unpack_seek.lo libwavpack_la-unpack_utils.lo libwavpack_la-write_words.lo  libwavpack_la-pack_dsd.lo libwavpack_la-unpack_dsd.lo  pack_x64.lo unpack_x64.lo   -lm 
++libtool: link: /usr/bin/nm -B  .libs/libwavpack_la-common_utils.o .libs/libwavpack_la-decorr_utils.o .libs/libwavpack_la-entropy_utils.o .libs/libwavpack_la-extra1.o .libs/libwavpack_la-extra2.o .libs/libwavpack_la-open_utils.o .libs/libwavpack_la-open_filename.o .libs/libwavpack_la-open_legacy.o .libs/libwavpack_la-open_raw.o .libs/libwavpack_la-pack.o .libs/libwavpack_la-pack_dns.o .libs/libwavpack_la-pack_floats.o .libs/libwavpack_la-pack_utils.o .libs/libwavpack_la-read_words.o .libs/libwavpack_la-tags.o .libs/libwavpack_la-tag_utils.o .libs/libwavpack_la-unpack.o .libs/libwavpack_la-unpack_floats.o .libs/libwavpack_la-unpack_seek.o .libs/libwavpack_la-unpack_utils.o .libs/libwavpack_la-write_words.o .libs/libwavpack_la-pack_dsd.o .libs/libwavpack_la-unpack_dsd.o .libs/pack_x64.o .libs/unpack_x64.o   | sed -n -e 's/^.*[	 ]\([ABCDGIRSTW][ABCDGIRSTW]*\)[	 ][	 ]*\([_A-Za-z][_A-Za-z0-9]*\)$/\1 \2 \2/p' | sed '/ __gnu_lto/d' | /usr/bin/sed 's/.* //' | sort | uniq > .libs/libwavpack.exp
++libtool: link: /usr/bin/grep -E -e "^Wavpack.*$" ".libs/libwavpack.exp" > ".libs/libwavpack.expT"
++libtool: link: mv -f ".libs/libwavpack.expT" ".libs/libwavpack.exp"
++libtool: link: echo "{ global:" > .libs/libwavpack.ver
++libtool: link:  cat .libs/libwavpack.exp | sed -e "s/\(.*\)/\1;/" >> .libs/libwavpack.ver
++libtool: link:  echo "local: *; };" >> .libs/libwavpack.ver
++libtool: link:  gcc -shared  -fPIC -DPIC  .libs/libwavpack_la-common_utils.o .libs/libwavpack_la-decorr_utils.o .libs/libwavpack_la-entropy_utils.o .libs/libwavpack_la-extra1.o .libs/libwavpack_la-extra2.o .libs/libwavpack_la-open_utils.o .libs/libwavpack_la-open_filename.o .libs/libwavpack_la-open_legacy.o .libs/libwavpack_la-open_raw.o .libs/libwavpack_la-pack.o .libs/libwavpack_la-pack_dns.o .libs/libwavpack_la-pack_floats.o .libs/libwavpack_la-pack_utils.o .libs/libwavpack_la-read_words.o .libs/libwavpack_la-tags.o .libs/libwavpack_la-tag_utils.o .libs/libwavpack_la-unpack.o .libs/libwavpack_la-unpack_floats.o .libs/libwavpack_la-unpack_seek.o .libs/libwavpack_la-unpack_utils.o .libs/libwavpack_la-write_words.o .libs/libwavpack_la-pack_dsd.o .libs/libwavpack_la-unpack_dsd.o .libs/pack_x64.o .libs/unpack_x64.o   -lm  -O2   -Wl,-soname -Wl,libwavpack.so.1 -Wl,-version-script -Wl,.libs/libwavpack.ver -o .libs/libwavpack.so.1.2.3
++libtool: link: (cd ".libs" && rm -f "libwavpack.so.1" && ln -s "libwavpack.so.1.2.3" "libwavpack.so.1")
++libtool: link: (cd ".libs" && rm -f "libwavpack.so" && ln -s "libwavpack.so.1.2.3" "libwavpack.so")
++libtool: link: ( cd ".libs" && rm -f "libwavpack.la" && ln -s "../libwavpack.la" "libwavpack.la" )
++make[1]: Leaving directory '/tmp/wavpack-5.4.0/src'
++Making all in include
++make[1]: Entering directory '/tmp/wavpack-5.4.0/include'
++make[1]: Nothing to be done for 'all'.
++make[1]: Leaving directory '/tmp/wavpack-5.4.0/include'
++Making all in cli
++make[1]: Entering directory '/tmp/wavpack-5.4.0/cli'
++gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" -DPACKAGE_STRING=\"wavpack\ 5.4.0\" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I.      -I../include -O2 -fPIC -MT wavpack-wavpack.o -MD -MP -MF .deps/wavpack-wavpack.Tpo -c -o wavpack-wavpack.o `test -f 'wavpack.c' || echo './'`wavpack.c
++gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" -DPACKAGE_STRING=\"wavpack\ 5.4.0\" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I.      -I../include -O2 -fPIC -MT wavpack-riff.o -MD -MP -MF .deps/wavpack-riff.Tpo -c -o wavpack-riff.o `test -f 'riff.c' || echo './'`riff.c
++gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" -DPACKAGE_STRING=\"wavpack\ 5.4.0\" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I.      -I../include -O2 -fPIC -MT wavpack-wave64.o -MD -MP -MF .deps/wavpack-wave64.Tpo -c -o wavpack-wave64.o `test -f 'wave64.c' || echo './'`wave64.c
++mv -f .deps/wavpack-wave64.Tpo .deps/wavpack-wave64.Po
++mv -f .deps/wavpack-riff.Tpo .deps/wavpack-riff.Po
++gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" -DPACKAGE_STRING=\"wavpack\ 5.4.0\" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I.      -I../include -O2 -fPIC -MT wavpack-caff.o -MD -MP -MF .deps/wavpack-caff.Tpo -c -o wavpack-caff.o `test -f 'caff.c' || echo './'`caff.c
++gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" -DPACKAGE_STRING=\"wavpack\ 5.4.0\" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I.      -I../include -O2 -fPIC -MT wavpack-dsdiff.o -MD -MP -MF .deps/wavpack-dsdiff.Tpo -c -o wavpack-dsdiff.o `test -f 'dsdiff.c' || echo './'`dsdiff.c
++mv -f .deps/wavpack-dsdiff.Tpo .deps/wavpack-dsdiff.Po
++gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" -DPACKAGE_STRING=\"wavpack\ 5.4.0\" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I.      -I../include -O2 -fPIC -MT wavpack-dsf.o -MD -MP -MF .deps/wavpack-dsf.Tpo -c -o wavpack-dsf.o `test -f 'dsf.c' || echo './'`dsf.c
++mv -f .deps/wavpack-caff.Tpo .deps/wavpack-caff.Po
++gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" -DPACKAGE_STRING=\"wavpack\ 5.4.0\" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I.      -I../include -O2 -fPIC -MT wavpack-utils.o -MD -MP -MF .deps/wavpack-utils.Tpo -c -o wavpack-utils.o `test -f 'utils.c' || echo './'`utils.c
++mv -f .deps/wavpack-dsf.Tpo .deps/wavpack-dsf.Po
++gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" -DPACKAGE_STRING=\"wavpack\ 5.4.0\" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I.      -I../include -O2 -fPIC -MT wavpack-md5.o -MD -MP -MF .deps/wavpack-md5.Tpo -c -o wavpack-md5.o `test -f 'md5.c' || echo './'`md5.c
++mv -f .deps/wavpack-utils.Tpo .deps/wavpack-utils.Po
++gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" -DPACKAGE_STRING=\"wavpack\ 5.4.0\" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I.      -I../include -O2 -fPIC -MT wavpack-import_id3.o -MD -MP -MF .deps/wavpack-import_id3.Tpo -c -o wavpack-import_id3.o `test -f 'import_id3.c' || echo './'`import_id3.c
++mv -f .deps/wavpack-md5.Tpo .deps/wavpack-md5.Po
++gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" -DPACKAGE_STRING=\"wavpack\ 5.4.0\" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I.      -I../include -O2 -fPIC -MT wvunpack-wvunpack.o -MD -MP -MF .deps/wvunpack-wvunpack.Tpo -c -o wvunpack-wvunpack.o `test -f 'wvunpack.c' || echo './'`wvunpack.c
++mv -f .deps/wavpack-import_id3.Tpo .deps/wavpack-import_id3.Po
++gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" -DPACKAGE_STRING=\"wavpack\ 5.4.0\" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I.      -I../include -O2 -fPIC -MT wvunpack-riff_write.o -MD -MP -MF .deps/wvunpack-riff_write.Tpo -c -o wvunpack-riff_write.o `test -f 'riff_write.c' || echo './'`riff_write.c
++mv -f .deps/wvunpack-riff_write.Tpo .deps/wvunpack-riff_write.Po
++gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" -DPACKAGE_STRING=\"wavpack\ 5.4.0\" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I.      -I../include -O2 -fPIC -MT wvunpack-wave64_write.o -MD -MP -MF .deps/wvunpack-wave64_write.Tpo -c -o wvunpack-wave64_write.o `test -f 'wave64_write.c' || echo './'`wave64_write.c
++mv -f .deps/wvunpack-wave64_write.Tpo .deps/wvunpack-wave64_write.Po
++gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" -DPACKAGE_STRING=\"wavpack\ 5.4.0\" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I.      -I../include -O2 -fPIC -MT wvunpack-caff_write.o -MD -MP -MF .deps/wvunpack-caff_write.Tpo -c -o wvunpack-caff_write.o `test -f 'caff_write.c' || echo './'`caff_write.c
++mv -f .deps/wvunpack-caff_write.Tpo .deps/wvunpack-caff_write.Po
++gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" -DPACKAGE_STRING=\"wavpack\ 5.4.0\" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I.      -I../include -O2 -fPIC -MT wvunpack-dsdiff_write.o -MD -MP -MF .deps/wvunpack-dsdiff_write.Tpo -c -o wvunpack-dsdiff_write.o `test -f 'dsdiff_write.c' || echo './'`dsdiff_write.c
++mv -f .deps/wvunpack-dsdiff_write.Tpo .deps/wvunpack-dsdiff_write.Po
++gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" -DPACKAGE_STRING=\"wavpack\ 5.4.0\" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I.      -I../include -O2 -fPIC -MT wvunpack-dsf_write.o -MD -MP -MF .deps/wvunpack-dsf_write.Tpo -c -o wvunpack-dsf_write.o `test -f 'dsf_write.c' || echo './'`dsf_write.c
++mv -f .deps/wvunpack-dsf_write.Tpo .deps/wvunpack-dsf_write.Po
++gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" -DPACKAGE_STRING=\"wavpack\ 5.4.0\" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I.      -I../include -O2 -fPIC -MT wvunpack-utils.o -MD -MP -MF .deps/wvunpack-utils.Tpo -c -o wvunpack-utils.o `test -f 'utils.c' || echo './'`utils.c
++mv -f .deps/wvunpack-utils.Tpo .deps/wvunpack-utils.Po
++gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" -DPACKAGE_STRING=\"wavpack\ 5.4.0\" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I.      -I../include -O2 -fPIC -MT wvunpack-md5.o -MD -MP -MF .deps/wvunpack-md5.Tpo -c -o wvunpack-md5.o `test -f 'md5.c' || echo './'`md5.c
++mv -f .deps/wvunpack-md5.Tpo .deps/wvunpack-md5.Po
++gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" -DPACKAGE_STRING=\"wavpack\ 5.4.0\" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I.     -I../include -O2 -fPIC -MT wvgain-wvgain.o -MD -MP -MF .deps/wvgain-wvgain.Tpo -c -o wvgain-wvgain.o `test -f 'wvgain.c' || echo './'`wvgain.c
++mv -f .deps/wvunpack-wvunpack.Tpo .deps/wvunpack-wvunpack.Po
++gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" -DPACKAGE_STRING=\"wavpack\ 5.4.0\" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I.     -I../include -O2 -fPIC -MT wvgain-utils.o -MD -MP -MF .deps/wvgain-utils.Tpo -c -o wvgain-utils.o `test -f 'utils.c' || echo './'`utils.c
++mv -f .deps/wvgain-wvgain.Tpo .deps/wvgain-wvgain.Po
++mv -f .deps/wvgain-utils.Tpo .deps/wvgain-utils.Po
++gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" -DPACKAGE_STRING=\"wavpack\ 5.4.0\" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I.     -I../include -O2 -fPIC -MT wvtag-wvtag.o -MD -MP -MF .deps/wvtag-wvtag.Tpo -c -o wvtag-wvtag.o `test -f 'wvtag.c' || echo './'`wvtag.c
++gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" -DPACKAGE_STRING=\"wavpack\ 5.4.0\" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I.     -I../include -O2 -fPIC -MT wvtag-utils.o -MD -MP -MF .deps/wvtag-utils.Tpo -c -o wvtag-utils.o `test -f 'utils.c' || echo './'`utils.c
++mv -f .deps/wvtag-utils.Tpo .deps/wvtag-utils.Po
++mv -f .deps/wvtag-wvtag.Tpo .deps/wvtag-wvtag.Po
++gcc -DPACKAGE_NAME=\"wavpack\" -DPACKAGE_TARNAME=\"wavpack\" -DPACKAGE_VERSION=\"5.4.0\" -DPACKAGE_STRING=\"wavpack\ 5.4.0\" -DPACKAGE_BUGREPORT=\"bryant@wavpack.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wavpack\" -DVERSION=\"5.4.0\" -DLIBWAVPACK_MAJOR=5 -DLIBWAVPACK_MINOR=4 -DLIBWAVPACK_MICRO=0 -DLIBWAVPACK_VERSION_STRING=\"5.4.0\" -DVERSION_OS=\"Linux\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DSTDC_HEADERS=1 -DHAVE_FSEEKO=1 -DENABLE_DSD=1 -DOPT_ASM_X64=1 -DHAVE___BUILTIN_CLZ=1 -DHAVE___BUILTIN_CTZ=1 -I.     -I../include -O2 -fPIC -MT wvtag-import_id3.o -MD -MP -MF .deps/wvtag-import_id3.Tpo -c -o wvtag-import_id3.o `test -f 'import_id3.c' || echo './'`import_id3.c
++/bin/sh ../libtool  --tag=CC   --mode=link gcc   -I../include -O2 -fPIC   -o wvunpack wvunpack-wvunpack.o wvunpack-riff_write.o wvunpack-wave64_write.o wvunpack-caff_write.o wvunpack-dsdiff_write.o wvunpack-dsf_write.o wvunpack-utils.o wvunpack-md5.o   ../src/libwavpack.la -lm  
++libtool: link: gcc -I../include -O2 -fPIC -o .libs/wvunpack wvunpack-wvunpack.o wvunpack-riff_write.o wvunpack-wave64_write.o wvunpack-caff_write.o wvunpack-dsdiff_write.o wvunpack-dsf_write.o wvunpack-utils.o wvunpack-md5.o  ../src/.libs/libwavpack.so -lm
++/bin/sh ../libtool  --tag=CC   --mode=link gcc  -I../include -O2 -fPIC   -o wvgain wvgain-wvgain.o wvgain-utils.o   ../src/libwavpack.la -lm 
++libtool: link: gcc -I../include -O2 -fPIC -o .libs/wvgain wvgain-wvgain.o wvgain-utils.o  ../src/.libs/libwavpack.so -lm
++mv -f .deps/wvtag-import_id3.Tpo .deps/wvtag-import_id3.Po
++mv -f .deps/wavpack-wavpack.Tpo .deps/wavpack-wavpack.Po
++/bin/sh ../libtool  --tag=CC   --mode=link gcc  -I../include -O2 -fPIC   -o wvtag wvtag-wvtag.o wvtag-utils.o wvtag-import_id3.o   ../src/libwavpack.la -lm  
++/bin/sh ../libtool  --tag=CC   --mode=link gcc   -I../include -O2 -fPIC   -o wavpack wavpack-wavpack.o wavpack-riff.o wavpack-wave64.o wavpack-caff.o wavpack-dsdiff.o wavpack-dsf.o wavpack-utils.o wavpack-md5.o wavpack-import_id3.o   ../src/libwavpack.la -lm  
++libtool: link: gcc -I../include -O2 -fPIC -o .libs/wvtag wvtag-wvtag.o wvtag-utils.o wvtag-import_id3.o  ../src/.libs/libwavpack.so -lm
++libtool: link: gcc -I../include -O2 -fPIC -o .libs/wavpack wavpack-wavpack.o wavpack-riff.o wavpack-wave64.o wavpack-caff.o wavpack-dsdiff.o wavpack-dsf.o wavpack-utils.o wavpack-md5.o wavpack-import_id3.o  ../src/.libs/libwavpack.so -lm
++make[1]: Leaving directory '/tmp/wavpack-5.4.0/cli'
++Making all in man
++make[1]: Entering directory '/tmp/wavpack-5.4.0/man'
++make[1]: Nothing to be done for 'all'.
++make[1]: Leaving directory '/tmp/wavpack-5.4.0/man'
++make[1]: Entering directory '/tmp/wavpack-5.4.0'
++make[1]: Nothing to be done for 'all-am'.
++make[1]: Leaving directory '/tmp/wavpack-5.4.0'
++if test -z 'strip'; then \
++  make  INSTALL_PROGRAM="/bin/sh /tmp/wavpack-5.4.0/install-sh -c -s" \
++    install_sh_PROGRAM="/bin/sh /tmp/wavpack-5.4.0/install-sh -c -s" INSTALL_STRIP_FLAG=-s \
++      install; \
++else \
++  make  INSTALL_PROGRAM="/bin/sh /tmp/wavpack-5.4.0/install-sh -c -s" \
++    install_sh_PROGRAM="/bin/sh /tmp/wavpack-5.4.0/install-sh -c -s" INSTALL_STRIP_FLAG=-s \
++    "INSTALL_PROGRAM_ENV=STRIPPROG='strip'" install; \
++fi
++make[1]: Entering directory '/tmp/wavpack-5.4.0'
++Making install in src
++make[2]: Entering directory '/tmp/wavpack-5.4.0/src'
++make[3]: Entering directory '/tmp/wavpack-5.4.0/src'
++ /usr/bin/mkdir -p '/tmp/package-wavpack/usr/lib'
++ /bin/sh ../libtool   --mode=install /usr/bin/ginstall -c -s  libwavpack.la '/tmp/package-wavpack/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/libwavpack.so.1.2.3 /tmp/package-wavpack/usr/lib/libwavpack.so.1.2.3
++libtool: install: strip --strip-unneeded /tmp/package-wavpack/usr/lib/libwavpack.so.1.2.3
++libtool: install: (cd /tmp/package-wavpack/usr/lib && { ln -s -f libwavpack.so.1.2.3 libwavpack.so.1 || { rm -f libwavpack.so.1 && ln -s libwavpack.so.1.2.3 libwavpack.so.1; }; })
++libtool: install: (cd /tmp/package-wavpack/usr/lib && { ln -s -f libwavpack.so.1.2.3 libwavpack.so || { rm -f libwavpack.so && ln -s libwavpack.so.1.2.3 libwavpack.so; }; })
++libtool: install: /usr/bin/ginstall -c .libs/libwavpack.lai /tmp/package-wavpack/usr/lib/libwavpack.la
++libtool: warning: remember to run 'libtool --finish /usr/lib'
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/wavpack-5.4.0/src'
++make[2]: Leaving directory '/tmp/wavpack-5.4.0/src'
++Making install in include
++make[2]: Entering directory '/tmp/wavpack-5.4.0/include'
++make[3]: Entering directory '/tmp/wavpack-5.4.0/include'
++make[3]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-wavpack/usr/include/wavpack'
++ /usr/bin/ginstall -c -m 644 wavpack.h '/tmp/package-wavpack/usr/include/wavpack'
++make[3]: Leaving directory '/tmp/wavpack-5.4.0/include'
++make[2]: Leaving directory '/tmp/wavpack-5.4.0/include'
++Making install in cli
++make[2]: Entering directory '/tmp/wavpack-5.4.0/cli'
++make[3]: Entering directory '/tmp/wavpack-5.4.0/cli'
++ /usr/bin/mkdir -p '/tmp/package-wavpack/usr/bin'
++ STRIPPROG='strip' /bin/sh ../libtool   --mode=install /bin/sh /tmp/wavpack-5.4.0/install-sh -c -s wavpack wvunpack wvgain wvtag '/tmp/package-wavpack/usr/bin'
++libtool: warning: '../src/libwavpack.la' has not been installed in '/usr/lib'
++libtool: install: /bin/sh /tmp/wavpack-5.4.0/install-sh -c -s .libs/wavpack /tmp/package-wavpack/usr/bin/wavpack
++libtool: warning: '../src/libwavpack.la' has not been installed in '/usr/lib'
++libtool: install: /bin/sh /tmp/wavpack-5.4.0/install-sh -c -s .libs/wvunpack /tmp/package-wavpack/usr/bin/wvunpack
++libtool: warning: '../src/libwavpack.la' has not been installed in '/usr/lib'
++libtool: install: /bin/sh /tmp/wavpack-5.4.0/install-sh -c -s .libs/wvgain /tmp/package-wavpack/usr/bin/wvgain
++libtool: warning: '../src/libwavpack.la' has not been installed in '/usr/lib'
++libtool: install: /bin/sh /tmp/wavpack-5.4.0/install-sh -c -s .libs/wvtag /tmp/package-wavpack/usr/bin/wvtag
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/wavpack-5.4.0/cli'
++make[2]: Leaving directory '/tmp/wavpack-5.4.0/cli'
++Making install in man
++make[2]: Entering directory '/tmp/wavpack-5.4.0/man'
++make[3]: Entering directory '/tmp/wavpack-5.4.0/man'
++make[3]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-wavpack/usr/man/man1'
++ /usr/bin/ginstall -c -m 644 wavpack.1 wvgain.1 wvunpack.1 wvtag.1 '/tmp/package-wavpack/usr/man/man1'
++make[3]: Leaving directory '/tmp/wavpack-5.4.0/man'
++make[2]: Leaving directory '/tmp/wavpack-5.4.0/man'
++make[2]: Entering directory '/tmp/wavpack-5.4.0'
++make[3]: Entering directory '/tmp/wavpack-5.4.0'
++make[3]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-wavpack/usr/lib/pkgconfig'
++ /usr/bin/ginstall -c -m 644 wavpack.pc '/tmp/package-wavpack/usr/lib/pkgconfig'
++make[3]: Leaving directory '/tmp/wavpack-5.4.0'
++make[2]: Leaving directory '/tmp/wavpack-5.4.0'
++make[1]: Leaving directory '/tmp/wavpack-5.4.0'
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++usr/lib/libwavpack.so	libwavpack.so.1.2.3
++usr/lib/libwavpack.so.1	libwavpack.so.1.2.3
++
++Making symbolic link creation script:
++( cd usr/lib ; rm -rf libwavpack.so )
++( cd usr/lib ; ln -sf libwavpack.so.1.2.3 libwavpack.so )
++( cd usr/lib ; rm -rf libwavpack.so.1 )
++( cd usr/lib ; ln -sf libwavpack.so.1.2.3 libwavpack.so.1 )
++
++It is recommended that you make these lines your new installation script.
++
++Would you like to make this stuff the install script for this package
++and remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './usr/lib/libwavpack.so'
++removed './usr/lib/libwavpack.so.1'
++
++Creating your new ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/wavpack-5.4.0-x86_64-1.txz
++
++./
++install/
++install/doinst.sh
++install/slack-desc
++usr/
++usr/bin/
++usr/bin/wavpack
++usr/bin/wvgain
++usr/bin/wvtag
++usr/bin/wvunpack
++usr/doc/
++usr/doc/wavpack-5.4.0/
++usr/doc/wavpack-5.4.0/AUTHORS
++usr/doc/wavpack-5.4.0/COPYING
++usr/doc/wavpack-5.4.0/ChangeLog
++usr/doc/wavpack-5.4.0/NEWS
++usr/doc/wavpack-5.4.0/README.md
++usr/include/
++usr/include/wavpack/
++usr/include/wavpack/wavpack.h
++usr/lib/
++usr/lib/libwavpack.so.1.2.3
++usr/lib/pkgconfig/
++usr/lib/pkgconfig/wavpack.pc
++usr/man/
++usr/man/man1/
++usr/man/man1/wavpack.1.gz
++usr/man/man1/wvgain.1.gz
++usr/man/man1/wvtag.1.gz
++usr/man/man1/wvunpack.1.gz
++
++Slackware package /tmp/wavpack-5.4.0-x86_64-1.txz created.
++

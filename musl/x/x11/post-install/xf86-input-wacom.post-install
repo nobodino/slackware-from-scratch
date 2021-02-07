@@ -1,0 +1,10 @@
+# I'm not sure we need this any more, so let's wait for a bug report
+# https://wiki.archlinux.org/index.php/Wacom_Tablet
+mkdir -p $PKG/lib/udev/rules.d
+rm -f $PKG/lib/udev/rules.d/*wacom.rules
+cat $CWD/post-install/xf86-input-wacom/60-wacom.rules > \
+   $PKG/lib/udev/rules.d/60-wacom.rules
+
+# We don't need this right now:
+rm -rf $PKG/usr/lib*/systemd
+

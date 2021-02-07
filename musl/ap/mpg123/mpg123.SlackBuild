@@ -1,0 +1,178 @@
+#!/bin/bash
+# Copyright 2006-2018  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=mpg123
+VERSION=${VERSION:-$(echo $PKGNAM-*.tar.?z* | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+BUILD=${BUILD:-1}
+
+NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-${PKGNAM}
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+  TARGET="x86"
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+  TARGET=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX=""
+  TARGET="x86-64"
+elif [ "$ARCH" = "arm" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+  TARGET="arm_nofpu"
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+  TARGET=""
+fi
+
+# If PulseAudio is not installed, configure for ALSA only and add _alsa $TAG:
+if [ ! -r /usr/lib${LIBDIRSUFFIX}/pkgconfig/libpulse.pc ]; then
+  TAG="_alsa"
+  DEFAULT_AUDIO="--with-audio=alsa,oss,sdl --with-default-audio=alsa"
+else
+  # Configure for PulseAudio:
+  DEFAULT_AUDIO="--with-audio=alsa,oss,sdl,pulse --with-default-audio=pulse"
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD$TAG.txz"
+  exit 0
+fi
+
+# configure --help shows the following re TARGET:
+# --with-cpu=i386_fpu		Use code optimized for i386 processors with floating point arithmetic
+# --with-cpu=i386_nofpu		Use code optimized for i386 processors with fixed point arithmetic (experimental)
+# --with-cpu=i486		Use code optimized for i486 processors (only usable alone!)
+# --with-cpu=i586		Use code optimized for i586 processors
+# --with-cpu=i586_dither	Use code optimized for i586 processors with dithering (noise shaping), adds 256K to binary size
+# --with-cpu=3dnow		Use code optimized for 3DNow processors
+# --with-cpu=3dnowext		Use code optimized for 3DNowExt processors (K6-3+, Athlon)
+# --with-cpu=3dnowext_alone	Really only 3DNowExt decoder, without 3DNow fallback for flexible rate
+# --with-cpu=mmx		Use code optimized for MMX processors
+# --with-cpu=mmx_alone		Really only MMX decoder, without i586 fallback for flexible rate
+# --with-cpu=sse		Use code optimized for SSE processors
+# --with-cpu=sse_alone		Really only SSE decoder, without i586 fallback for flexible rate
+# --with-cpu=x86		Pack all x86 opts into one binary (excluding i486, including dither)
+# --with-cpu=x86-64		Use code optimized for x86-64 processors (AMD64 and Intel64, including dithered generic)
+# --with-cpu=arm_nofpu		Use code optimized for ARM processors with fixed point arithmetic (experimental)
+
+rm -rf $PKG
+mkdir -p $PKG $TMP
+cd $TMP
+rm -rf ${PKGNAM}-${VERSION}
+tar xvf $CWD/${PKGNAM}-$VERSION.tar.?z* || exit 1
+cd ${PKGNAM}-$VERSION || exit 1
+
+# Make sure ownerships and permissions are sane:
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \+ -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \+
+
+# Configure:
+CFLAGS="$SLKCFLAGS" \
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --sysconfdir=/etc \
+  --mandir=/usr/man \
+  --docdir=/usr/doc/${PKGNAM}-$VERSION \
+  --with-cpu=$TARGET \
+  $DEFAULT_AUDIO \
+  --with-optimization=2 \
+  --build=$ARCH-slackware-linux-musl || exit 1
+
+# Build and install:
+make $NUMJOBS || make || exit 1
+make install DESTDIR=$PKG || exit 1
+
+# Don't ship .la files:
+rm -f $PKG/{,usr/}lib${LIBDIRSUFFIX}/*.la
+
+# Add compat symlinks for mpg321:
+( cd $PKG/usr/bin ; ln -s mpg123 mpg321 )
+( cd $PKG/usr/man/man1 ; ln -sf mpg123.1 mpg321.1 )
+
+# Strip binaries:
+find $PKG | xargs file | grep -e "executable" -e "shared object" \
+  | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+
+# Compress and link manpages, if any:
+if [ -d $PKG/usr/man ]; then
+  ( cd $PKG/usr/man
+    for manpagedir in $(find . -type d -name "man*") ; do
+      ( cd $manpagedir
+        for eachpage in $( find . -type l -maxdepth 1) ; do
+          ln -s $( readlink $eachpage ).gz $eachpage.gz
+          rm $eachpage
+        done
+        gzip -9 *.*
+      )
+    done
+  )
+fi
+
+# Compress info files, if any:
+if [ -d $PKG/usr/info ]; then
+  ( cd $PKG/usr/info
+    rm -f dir
+    gzip -9 *
+  )
+fi
+
+# Add a documentation directory:
+mkdir -p $PKG/usr/doc/${PKGNAM}-$VERSION
+cp -a \
+  AUTHORS COPYING* ChangeLog INSTALL NEWS* README* TODO doc \
+  $PKG/usr/doc/${PKGNAM}-$VERSION
+#                  ^^^^^^^^^
+# The ChangeLog is only a (small) pointer to an online ChangeLog...
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/${PKGNAM}-$VERSION-$ARCH-$BUILD$TAG.txz
+

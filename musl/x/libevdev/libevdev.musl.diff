@@ -1,0 +1,529 @@
+diff -ruBN /tmp/libevdev/libevdev.SlackBuild /source/x/libevdev/libevdev.SlackBuild
+--- /tmp/libevdev/libevdev.SlackBuild	2020-03-02 18:03:18.000000000 +0000
++++ /source/x/libevdev/libevdev.SlackBuild	2021-01-16 00:17:37.000000000 +0000
+@@ -58,7 +58,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ else
+   SLKCFLAGS="-O2"
+   LIBDIRSUFFIX=""
+@@ -86,7 +86,7 @@
+   --localstatedir=/var \
+   --mandir=/usr/man \
+   --docdir=/usr/doc/$PKGNAM-$VERSION \
+-  --build=$ARCH-slackware-linux || exit 1
++  --build=$ARCH-slackware-linux-musl || exit 1
+ 
+ make $NUMJOBS || exit 1
+ make install DESTDIR=$PKG || exit 1
+diff -ruBN /tmp/libevdev/libevdev.SlackBuild.log /source/x/libevdev/libevdev.SlackBuild.log
+--- /tmp/libevdev/libevdev.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/x/libevdev/libevdev.SlackBuild.log	2021-01-16 00:18:56.000000000 +0000
+@@ -0,0 +1,504 @@
++libevdev-1.10.1/
++libevdev-1.10.1/configure
++libevdev-1.10.1/test/
++libevdev-1.10.1/test/test-common-uinput.h
++libevdev-1.10.1/test/test-int-queue.c
++libevdev-1.10.1/test/test-libevdev-events.c
++libevdev-1.10.1/test/test-main.c
++libevdev-1.10.1/test/test-libevdev-has-event.c
++libevdev-1.10.1/test/test-common-uinput.c
++libevdev-1.10.1/test/test-event-codes.c
++libevdev-1.10.1/test/Makefile.in
++libevdev-1.10.1/test/test-compile-pedantic.c
++libevdev-1.10.1/test/test-event-names.c
++libevdev-1.10.1/test/test-libevdev-init.c
++libevdev-1.10.1/test/valgrind.suppressions
++libevdev-1.10.1/test/generate-gcov-report.sh
++libevdev-1.10.1/test/test-uinput.c
++libevdev-1.10.1/test/test-kernel.c
++libevdev-1.10.1/test/test-common.c
++libevdev-1.10.1/test/test-link.c
++libevdev-1.10.1/test/Makefile.am
++libevdev-1.10.1/test/test-context.c
++libevdev-1.10.1/test/test-common.h
++libevdev-1.10.1/test/test-static-symbols-leak.sh
++libevdev-1.10.1/configure.ac
++libevdev-1.10.1/meson.build
++libevdev-1.10.1/include/
++libevdev-1.10.1/include/linux/
++libevdev-1.10.1/include/linux/input.h
++libevdev-1.10.1/include/linux/uinput.h
++libevdev-1.10.1/include/linux/linux/
++libevdev-1.10.1/include/linux/linux/input.h
++libevdev-1.10.1/include/linux/linux/uinput.h
++libevdev-1.10.1/include/linux/linux/input-event-codes.h
++libevdev-1.10.1/aclocal.m4
++libevdev-1.10.1/build-aux/
++libevdev-1.10.1/build-aux/config.sub
++libevdev-1.10.1/build-aux/test-driver
++libevdev-1.10.1/build-aux/ltmain.sh
++libevdev-1.10.1/build-aux/config.guess
++libevdev-1.10.1/build-aux/install-sh
++libevdev-1.10.1/build-aux/missing
++libevdev-1.10.1/build-aux/depcomp
++libevdev-1.10.1/build-aux/compile
++libevdev-1.10.1/libevdev/
++libevdev-1.10.1/libevdev/libevdev-util.h
++libevdev-1.10.1/libevdev/libevdev-uinput.h
++libevdev-1.10.1/libevdev/libevdev-uinput-int.h
++libevdev-1.10.1/libevdev/libevdev.h
++libevdev-1.10.1/libevdev/libevdev.sym
++libevdev-1.10.1/libevdev/make-event-names.py
++libevdev-1.10.1/libevdev/Makefile.in
++libevdev-1.10.1/libevdev/libevdev.c
++libevdev-1.10.1/libevdev/Makefile.am
++libevdev-1.10.1/libevdev/libevdev-uinput.c
++libevdev-1.10.1/libevdev/libevdev-names.c
++libevdev-1.10.1/libevdev/libevdev-int.h
++libevdev-1.10.1/Makefile.in
++libevdev-1.10.1/libevdev.pc.in
++libevdev-1.10.1/meson_options.txt
++libevdev-1.10.1/COPYING
++libevdev-1.10.1/Makefile.am
++libevdev-1.10.1/doc/
++libevdev-1.10.1/doc/libevdev.man.in
++libevdev-1.10.1/doc/libevdev.doxygen.in
++libevdev-1.10.1/doc/Makefile.in
++libevdev-1.10.1/doc/html/
++libevdev-1.10.1/doc/html/libevdev-uinput_8h_source.html
++libevdev-1.10.1/doc/html/splitbar.png
++libevdev-1.10.1/doc/html/customdoxygen.css
++libevdev-1.10.1/doc/html/group__misc.html
++libevdev-1.10.1/doc/html/group__kernel.html
++libevdev-1.10.1/doc/html/menudata.js
++libevdev-1.10.1/doc/html/search/
++libevdev-1.10.1/doc/html/search/groups_0.html
++libevdev-1.10.1/doc/html/search/all_6.html
++libevdev-1.10.1/doc/html/search/all_5.html
++libevdev-1.10.1/doc/html/search/all_6.js
++libevdev-1.10.1/doc/html/search/all_2.js
++libevdev-1.10.1/doc/html/search/search_m.png
++libevdev-1.10.1/doc/html/search/search_r.png
++libevdev-1.10.1/doc/html/search/pages_0.js
++libevdev-1.10.1/doc/html/search/pages_2.html
++libevdev-1.10.1/doc/html/search/nomatches.html
++libevdev-1.10.1/doc/html/search/functions_0.html
++libevdev-1.10.1/doc/html/search/enums_0.js
++libevdev-1.10.1/doc/html/search/all_8.js
++libevdev-1.10.1/doc/html/search/pages_5.js
++libevdev-1.10.1/doc/html/search/files_0.js
++libevdev-1.10.1/doc/html/search/pages_3.html
++libevdev-1.10.1/doc/html/search/groups_5.js
++libevdev-1.10.1/doc/html/search/pages_4.html
++libevdev-1.10.1/doc/html/search/pages_4.js
++libevdev-1.10.1/doc/html/search/all_4.html
++libevdev-1.10.1/doc/html/search/groups_2.js
++libevdev-1.10.1/doc/html/search/groups_2.html
++libevdev-1.10.1/doc/html/search/groups_3.html
++libevdev-1.10.1/doc/html/search/enums_0.html
++libevdev-1.10.1/doc/html/search/all_3.js
++libevdev-1.10.1/doc/html/search/all_7.js
++libevdev-1.10.1/doc/html/search/all_3.html
++libevdev-1.10.1/doc/html/search/pages_1.js
++libevdev-1.10.1/doc/html/search/pages_3.js
++libevdev-1.10.1/doc/html/search/search.js
++libevdev-1.10.1/doc/html/search/searchdata.js
++libevdev-1.10.1/doc/html/search/groups_4.js
++libevdev-1.10.1/doc/html/search/search_l.png
++libevdev-1.10.1/doc/html/search/pages_2.js
++libevdev-1.10.1/doc/html/search/groups_1.html
++libevdev-1.10.1/doc/html/search/typedefs_0.html
++libevdev-1.10.1/doc/html/search/groups_1.js
++libevdev-1.10.1/doc/html/search/groups_5.html
++libevdev-1.10.1/doc/html/search/all_9.js
++libevdev-1.10.1/doc/html/search/functions_0.js
++libevdev-1.10.1/doc/html/search/all_5.js
++libevdev-1.10.1/doc/html/search/pages_1.html
++libevdev-1.10.1/doc/html/search/pages_0.html
++libevdev-1.10.1/doc/html/search/enumvalues_0.html
++libevdev-1.10.1/doc/html/search/groups_0.js
++libevdev-1.10.1/doc/html/search/all_1.html
++libevdev-1.10.1/doc/html/search/all_4.js
++libevdev-1.10.1/doc/html/search/pages_5.html
++libevdev-1.10.1/doc/html/search/all_9.html
++libevdev-1.10.1/doc/html/search/groups_4.html
++libevdev-1.10.1/doc/html/search/all_0.html
++libevdev-1.10.1/doc/html/search/all_0.js
++libevdev-1.10.1/doc/html/search/enumvalues_0.js
++libevdev-1.10.1/doc/html/search/mag_sel.svg
++libevdev-1.10.1/doc/html/search/defines_0.html
++libevdev-1.10.1/doc/html/search/all_8.html
++libevdev-1.10.1/doc/html/search/all_2.html
++libevdev-1.10.1/doc/html/search/typedefs_0.js
++libevdev-1.10.1/doc/html/search/all_7.html
++libevdev-1.10.1/doc/html/search/groups_3.js
++libevdev-1.10.1/doc/html/search/close.svg
++libevdev-1.10.1/doc/html/search/search.css
++libevdev-1.10.1/doc/html/search/all_1.js
++libevdev-1.10.1/doc/html/search/defines_0.js
++libevdev-1.10.1/doc/html/search/files_0.html
++libevdev-1.10.1/doc/html/globals_eval.html
++libevdev-1.10.1/doc/html/globals.html
++libevdev-1.10.1/doc/html/tab_b.png
++libevdev-1.10.1/doc/html/nav_f.png
++libevdev-1.10.1/doc/html/dynsections.js
++libevdev-1.10.1/doc/html/kernel_header.html
++libevdev-1.10.1/doc/html/closed.png
++libevdev-1.10.1/doc/html/bc_s.png
++libevdev-1.10.1/doc/html/syn_dropped.html
++libevdev-1.10.1/doc/html/backwardscompatibility.html
++libevdev-1.10.1/doc/html/globals_enum.html
++libevdev-1.10.1/doc/html/open.png
++libevdev-1.10.1/doc/html/doxygen.svg
++libevdev-1.10.1/doc/html/group__events.html
++libevdev-1.10.1/doc/html/tab_a.png
++libevdev-1.10.1/doc/html/sync_on.png
++libevdev-1.10.1/doc/html/globals_func.html
++libevdev-1.10.1/doc/html/globals_type.html
++libevdev-1.10.1/doc/html/files.html
++libevdev-1.10.1/doc/html/libevdevdoxygen.css
++libevdev-1.10.1/doc/html/dir_237a012ffe1a208b10d31c74b4ef545e.html
++libevdev-1.10.1/doc/html/modules.html
++libevdev-1.10.1/doc/html/group__bits.html
++libevdev-1.10.1/doc/html/libevdev_8h.html
++libevdev-1.10.1/doc/html/nav_g.png
++libevdev-1.10.1/doc/html/doc.png
++libevdev-1.10.1/doc/html/doxygen.css
++libevdev-1.10.1/doc/html/libevdev-uinput_8h.html
++libevdev-1.10.1/doc/html/group__logging.html
++libevdev-1.10.1/doc/html/ioctls.html
++libevdev-1.10.1/doc/html/sync_off.png
++libevdev-1.10.1/doc/html/menu.js
++libevdev-1.10.1/doc/html/tab_s.png
++libevdev-1.10.1/doc/html/tabs.css
++libevdev-1.10.1/doc/html/group__init.html
++libevdev-1.10.1/doc/html/group__mt.html
++libevdev-1.10.1/doc/html/tab_h.png
++libevdev-1.10.1/doc/html/pages.html
++libevdev-1.10.1/doc/html/libevdev_8h_source.html
++libevdev-1.10.1/doc/html/bdwn.png
++libevdev-1.10.1/doc/html/folderclosed.png
++libevdev-1.10.1/doc/html/deprecated.html
++libevdev-1.10.1/doc/html/folderopen.png
++libevdev-1.10.1/doc/html/index.html
++libevdev-1.10.1/doc/html/static_linking.html
++libevdev-1.10.1/doc/html/bootstrap.css
++libevdev-1.10.1/doc/html/group__uinput.html
++libevdev-1.10.1/doc/html/jquery.js
++libevdev-1.10.1/doc/html/globals_defs.html
++libevdev-1.10.1/doc/html/nav_h.png
++libevdev-1.10.1/doc/html/testing.html
++libevdev-1.10.1/doc/Makefile.am
++libevdev-1.10.1/doc/style/
++libevdev-1.10.1/doc/style/customdoxygen.css
++libevdev-1.10.1/doc/style/dynsections.js
++libevdev-1.10.1/doc/style/README.md
++libevdev-1.10.1/doc/style/LICENSE
++libevdev-1.10.1/doc/style/libevdevdoxygen.css
++libevdev-1.10.1/doc/style/footer.html
++libevdev-1.10.1/doc/style/style.css
++libevdev-1.10.1/doc/style/layout.xml
++libevdev-1.10.1/doc/style/doxy-boot.js
++libevdev-1.10.1/doc/style/bootstrap.css
++libevdev-1.10.1/doc/style/header.html
++libevdev-1.10.1/tools/
++libevdev-1.10.1/tools/Makefile.in
++libevdev-1.10.1/tools/touchpad-edge-detector.1
++libevdev-1.10.1/tools/Makefile.am
++libevdev-1.10.1/tools/libevdev-tweak-device.1
++libevdev-1.10.1/tools/touchpad-edge-detector.c
++libevdev-1.10.1/tools/libevdev-tweak-device.c
++libevdev-1.10.1/tools/mouse-dpi-tool.c
++libevdev-1.10.1/tools/libevdev-events.c
++libevdev-1.10.1/config.h.in
++libevdev-1.10.1/m4/
++libevdev-1.10.1/m4/attributes.m4
++libevdev-1.10.1/m4/libtool.m4
++libevdev-1.10.1/m4/ltversion.m4
++libevdev-1.10.1/m4/ltsugar.m4
++libevdev-1.10.1/m4/ltoptions.m4
++libevdev-1.10.1/m4/lt~obsolete.m4
++checking for gcc... gcc
++checking whether the C compiler works... yes
++checking for C compiler default output file name... a.out
++checking for suffix of executables... 
++checking whether we are cross compiling... no
++checking for suffix of object files... o
++checking whether we are using the GNU C compiler... yes
++checking whether gcc accepts -g... yes
++checking for gcc option to accept ISO C89... none needed
++checking whether gcc understands -c and -o together... yes
++checking how to run the C preprocessor... gcc -E
++checking for grep that handles long lines and -e... /usr/bin/grep
++checking for egrep... /usr/bin/grep -E
++checking for ANSI C header files... yes
++checking for sys/types.h... yes
++checking for sys/stat.h... yes
++checking for stdlib.h... yes
++checking for string.h... yes
++checking for memory.h... yes
++checking for strings.h... yes
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking for unistd.h... yes
++checking minix/config.h usability... no
++checking minix/config.h presence... no
++checking for minix/config.h... no
++checking whether it is safe to define __EXTENSIONS__... yes
++checking for a BSD-compatible install... /usr/bin/ginstall -c
++checking whether build environment is sane... yes
++checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
++checking for gawk... gawk
++checking whether make sets $(MAKE)... yes
++checking whether make supports the include directive... yes (GNU style)
++checking whether make supports nested variables... yes
++checking dependency style of gcc... gcc3
++checking whether make supports nested variables... (cached) yes
++checking for gcc option to accept ISO C99... none needed
++checking build system type... x86_64-slackware-linux-musl
++checking host system type... x86_64-slackware-linux-musl
++checking how to print strings... printf
++checking for a sed that does not truncate output... /usr/bin/sed
++checking for fgrep... /usr/bin/grep -F
++checking for ld used by gcc... /usr/bin/ld
++checking if the linker (/usr/bin/ld) is GNU ld... yes
++checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
++checking the name lister (/usr/bin/nm -B) interface... BSD nm
++checking whether ln -s works... yes
++checking the maximum length of command line arguments... 98304
++checking how to convert x86_64-slackware-linux-musl file names to x86_64-slackware-linux-musl format... func_convert_file_noop
++checking how to convert x86_64-slackware-linux-musl file names to toolchain format... func_convert_file_noop
++checking for /usr/bin/ld option to reload object files... -r
++checking for objdump... objdump
++checking how to recognize dependent libraries... pass_all
++checking for dlltool... dlltool
++checking how to associate runtime and link libraries... printf %s\n
++checking for ar... ar
++checking for archiver @FILE support... @
++checking for strip... strip
++checking for ranlib... ranlib
++checking command to parse /usr/bin/nm -B output from gcc object... ok
++checking for sysroot... no
++checking for a working dd... /usr/bin/dd
++checking how to truncate binary pipes... /usr/bin/dd bs=4096 count=1
++checking for mt... mt
++checking if mt is a manifest tool... no
++checking for dlfcn.h... yes
++checking for objdir... .libs
++checking if gcc supports -fno-rtti -fno-exceptions... no
++checking for gcc option to produce PIC... -fPIC -DPIC
++checking if gcc PIC flag -fPIC -DPIC works... yes
++checking if gcc static flag -static works... yes
++checking if gcc supports -c -o file.o... yes
++checking if gcc supports -c -o file.o... (cached) yes
++checking whether the gcc linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
++checking whether -lc should be explicitly linked in... no
++checking dynamic linker characteristics... GNU/Linux ld.so
++checking how to hardcode library paths into programs... immediate
++checking whether stripping libraries is possible... yes
++checking if libtool supports shared libraries... yes
++checking whether to build shared libraries... yes
++checking whether to build static libraries... yes
++checking for ld used by gcc... (cached) /usr/bin/ld
++checking if the linker (/usr/bin/ld) is GNU ld... (cached) yes
++checking if gcc supports flag -Wl,--as-needed in envvar LDFLAGS... yes
++checking if gcc supports flag -Wl,--gc-sections in envvar LDFLAGS... yes
++checking if gcc supports flag -Wl,-z,relro in envvar LDFLAGS... yes
++checking if gcc supports flag -Wl,-z,now in envvar LDFLAGS... yes
++checking for round in -lm... yes
++checking pkg-config is at least version 0.9.0... yes
++checking for CHECK... yes
++checking for valgrind... no
++checking if gcc supports flag -Wall in envvar CFLAGS... yes
++checking if gcc supports flag -Wextra in envvar CFLAGS... yes
++checking if gcc supports flag -Wno-unused-parameter in envvar CFLAGS... yes
++checking if gcc supports flag -Wstrict-prototypes in envvar CFLAGS... yes
++checking if gcc supports flag -Wmissing-prototypes in envvar CFLAGS... yes
++checking if gcc supports flag -fvisibility=hidden in envvar CFLAGS... yes
++checking if gcc supports flag -pipe in envvar CFLAGS... yes
++checking if gcc supports flag -fno-strict-aliasing in envvar CFLAGS... yes
++checking if gcc supports flag -ffunction-sections in envvar CFLAGS... yes
++checking if gcc supports flag -fdata-sections in envvar CFLAGS... yes
++checking if gcc supports flag -fno-strict-aliasing in envvar CFLAGS... (cached) yes
++checking if gcc supports flag -fdiagnostics-show-option in envvar CFLAGS... yes
++checking if gcc supports flag -fno-common in envvar CFLAGS... yes
++checking for doxygen... /usr/bin/doxygen
++checking whether to build with gcov... no
++checking whether to build with coverity support... no
++checking for a Python interpreter with version >= 2.6... python
++checking for python... /usr/bin/python
++checking for python version... 2.7
++checking for python platform... linux2
++checking for python script directory... ${prefix}/lib/python2.7/site-packages
++checking for python extension module directory... ${exec_prefix}/lib/python2.7/site-packages
++checking for nm... /usr/bin/nm -B
++checking that generated files are newer than configure... done
++configure: creating ./config.status
++config.status: creating Makefile
++config.status: creating libevdev/Makefile
++config.status: creating doc/Makefile
++config.status: creating doc/libevdev.doxygen
++config.status: creating doc/libevdev.man
++config.status: creating tools/Makefile
++config.status: creating test/Makefile
++config.status: creating libevdev.pc
++config.status: creating config.h
++config.status: executing depfiles commands
++config.status: executing libtool commands
++
++	       Prefix				/usr
++	       Libdir				/usr/lib
++
++	       Build documentation		yes
++	       Enable unit-tests		yes
++	       Enable profiling			no
++	       Enable coverity support		no
++	       Static library symbol check	yes
++	       
++make --no-print-directory all-recursive
++Making all in doc
++  GEN      html/index.html
++Making all in libevdev
++/usr/bin/python ./make-event-names.py ../include/linux/linux/input.h ../include/linux/linux/input-event-codes.h  > event-names.h
++make  all-am
++  CC       libevdev-uinput.lo
++  CC       libevdev.lo
++  CC       libevdev-names.lo
++  CCLD     libevdev.la
++Making all in tools
++  CC       touchpad-edge-detector.o
++  CC       mouse-dpi-tool.o
++  CC       libevdev-tweak-device.o
++  CC       libevdev-events.o
++  CCLD     mouse-dpi-tool
++  CCLD     libevdev-tweak-device
++  CCLD     touchpad-edge-detector
++  CCLD     libevdev-events
++Making all in test
++  CC       test_compile_pedantic-test-compile-pedantic.o
++  CCLD     test-compile-pedantic
++  CC       test_link-test-link.o
++  CCLD     test-link
++  CC       test_static_link-test-link.o
++  CCLD     test-static-link
++  CC       test-main.o
++  CC       test-libevdev-init.o
++  CC       test-libevdev-has-event.o
++  CC       test-libevdev-events.o
++  CC       test-common-uinput.o
++  CC       test-common.o
++  CCLD     test-libevdev
++  CC       test_kernel-test-main.o
++  CC       test_kernel-test-kernel.o
++  CC       test_kernel-test-common-uinput.o
++  CC       test_kernel-test-common.o
++  CCLD     test-kernel
++  CC       test-uinput.o
++  CCLD     test-uinput
++  CC       test-event-codes.o
++  CC       test-event-names.o
++  CC       test-context.o
++  CCLD     test-event-codes
++  CC       test-int-queue.o
++  CCLD     test-libevdev-internals
++Making install in doc
++make[2]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-libevdev/usr/man/man3'
++ /usr/bin/ginstall -c -m 644 'libevdev.man' '/tmp/package-libevdev/usr/man/man3/libevdev.3'
++Making install in libevdev
++make  install-am
++ /usr/bin/mkdir -p '/tmp/package-libevdev/usr/lib'
++ /bin/sh ../libtool   --mode=install /usr/bin/ginstall -c   libevdev.la '/tmp/package-libevdev/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/libevdev.so.2.3.0 /tmp/package-libevdev/usr/lib/libevdev.so.2.3.0
++libtool: install: (cd /tmp/package-libevdev/usr/lib && { ln -s -f libevdev.so.2.3.0 libevdev.so.2 || { rm -f libevdev.so.2 && ln -s libevdev.so.2.3.0 libevdev.so.2; }; })
++libtool: install: (cd /tmp/package-libevdev/usr/lib && { ln -s -f libevdev.so.2.3.0 libevdev.so || { rm -f libevdev.so && ln -s libevdev.so.2.3.0 libevdev.so; }; })
++libtool: install: /usr/bin/ginstall -c .libs/libevdev.lai /tmp/package-libevdev/usr/lib/libevdev.la
++libtool: install: /usr/bin/ginstall -c .libs/libevdev.a /tmp/package-libevdev/usr/lib/libevdev.a
++libtool: install: chmod 644 /tmp/package-libevdev/usr/lib/libevdev.a
++libtool: install: ranlib /tmp/package-libevdev/usr/lib/libevdev.a
++libtool: warning: remember to run 'libtool --finish /usr/lib'
++ /usr/bin/mkdir -p '/tmp/package-libevdev/usr/include/libevdev-1.0/libevdev'
++ /usr/bin/ginstall -c -m 644 libevdev.h libevdev-uinput.h '/tmp/package-libevdev/usr/include/libevdev-1.0/libevdev'
++Making install in tools
++ /usr/bin/mkdir -p '/tmp/package-libevdev/usr/bin'
++  /bin/sh ../libtool   --mode=install /usr/bin/ginstall -c touchpad-edge-detector mouse-dpi-tool libevdev-tweak-device '/tmp/package-libevdev/usr/bin'
++libtool: warning: '../libevdev/libevdev.la' has not been installed in '/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/touchpad-edge-detector /tmp/package-libevdev/usr/bin/touchpad-edge-detector
++libtool: warning: '../libevdev/libevdev.la' has not been installed in '/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/mouse-dpi-tool /tmp/package-libevdev/usr/bin/mouse-dpi-tool
++libtool: warning: '../libevdev/libevdev.la' has not been installed in '/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/libevdev-tweak-device /tmp/package-libevdev/usr/bin/libevdev-tweak-device
++ /usr/bin/mkdir -p '/tmp/package-libevdev/usr/man/man1'
++ /usr/bin/ginstall -c -m 644 libevdev-tweak-device.1 touchpad-edge-detector.1 '/tmp/package-libevdev/usr/man/man1'
++Making install in test
++make[2]: Nothing to be done for 'install-exec-am'.
++make[2]: Nothing to be done for 'install-data-am'.
++make[2]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-libevdev/usr/lib/pkgconfig'
++ /usr/bin/ginstall -c -m 644 libevdev.pc '/tmp/package-libevdev/usr/lib/pkgconfig'
++cp: cannot stat 'README*': No such file or directory
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++usr/lib/libevdev.so	libevdev.so.2.3.0
++usr/lib/libevdev.so.2	libevdev.so.2.3.0
++
++Making symbolic link creation script:
++( cd usr/lib ; rm -rf libevdev.so )
++( cd usr/lib ; ln -sf libevdev.so.2.3.0 libevdev.so )
++( cd usr/lib ; rm -rf libevdev.so.2 )
++( cd usr/lib ; ln -sf libevdev.so.2.3.0 libevdev.so.2 )
++
++It is recommended that you make these lines your new installation script.
++
++Would you like to make this stuff the install script for this package
++and remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './usr/lib/libevdev.so.2'
++removed './usr/lib/libevdev.so'
++
++Creating your new ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/libevdev-1.10.1-x86_64-1.txz
++
++./
++install/
++install/doinst.sh
++install/slack-desc
++usr/
++usr/bin/
++usr/bin/libevdev-tweak-device
++usr/bin/mouse-dpi-tool
++usr/bin/touchpad-edge-detector
++usr/doc/
++usr/doc/libevdev-1.10.1/
++usr/doc/libevdev-1.10.1/COPYING
++usr/include/
++usr/include/libevdev-1.0/
++usr/include/libevdev-1.0/libevdev/
++usr/include/libevdev-1.0/libevdev/libevdev-uinput.h
++usr/include/libevdev-1.0/libevdev/libevdev.h
++usr/lib/
++usr/lib/libevdev.a
++usr/lib/libevdev.so.2.3.0
++usr/lib/pkgconfig/
++usr/lib/pkgconfig/libevdev.pc
++usr/man/
++usr/man/man1/
++usr/man/man1/libevdev-tweak-device.1.gz
++usr/man/man1/touchpad-edge-detector.1.gz
++usr/man/man3/
++usr/man/man3/libevdev.3.gz
++
++Slackware package /tmp/libevdev-1.10.1-x86_64-1.txz created.
++

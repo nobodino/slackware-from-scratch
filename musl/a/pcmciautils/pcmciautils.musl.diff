@@ -1,0 +1,232 @@
+diff -ruBN /tmp/pcmciautils/disable_yywrap.patch /source/a/pcmciautils/disable_yywrap.patch
+--- /tmp/pcmciautils/disable_yywrap.patch	1970-01-01 00:00:00.000000000 +0000
++++ /source/a/pcmciautils/disable_yywrap.patch	2021-01-06 16:08:43.000000000 +0000
+@@ -0,0 +1,27 @@
++--- pcmciautils-018/src/lex_config.l
+++++ pcmciautils-018/src/lex_config.l
++@@ -1,8 +1,8 @@
++ /* Special state for handling include files */
++ %x src
++-%option noinput nounput
+++%option noinput nounput noyywrap
++ 
++ %{
++ /*
++  * Startup tool for non statically mapped PCMCIA sockets
++  *
++@@ -75,14 +75,10 @@ module		/* skip */ ;
++ 
++ .		return yytext[0];
++ 
++ %%
++ 
++-#ifndef yywrap
++-int yywrap() { return 1; }
++-#endif
++-
++ /*======================================================================
++ 
++     Stuff to parse basic data types
++ 
++ ======================================================================*/
+diff -ruBN /tmp/pcmciautils/pcmciautils.SlackBuild /source/a/pcmciautils/pcmciautils.SlackBuild
+--- /tmp/pcmciautils/pcmciautils.SlackBuild	2021-01-06 16:04:10.000000000 +0000
++++ /source/a/pcmciautils/pcmciautils.SlackBuild	2021-01-06 16:08:43.000000000 +0000
+@@ -72,6 +72,8 @@
+ rm -rf pcmciautils-$VERSION
+ tar xvf $CWD/pcmciautils-$VERSION.tar.xz || exit 1
+ cd pcmciautils-$VERSION
++patch -p1 < $CWD/disable_yywrap.patch || exit 1
++patch -p1 < $CWD/unsigned.patch || exit 1
+ chown -R root.root .
+ find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+diff -ruBN /tmp/pcmciautils/pcmciautils.SlackBuild.log /source/a/pcmciautils/pcmciautils.SlackBuild.log
+--- /tmp/pcmciautils/pcmciautils.SlackBuild.log	2021-01-06 16:04:13.000000000 +0000
++++ /source/a/pcmciautils/pcmciautils.SlackBuild.log	2021-01-06 16:08:46.000000000 +0000
+@@ -39,6 +39,10 @@
+ pcmciautils-018/udev/rules-modprobe
+ pcmciautils-018/udev/rules-nonstaticsocket
+ pcmciautils-018/udev/rules-start
++patching file src/lex_config.l
++patching file src/read-cis.c
++Hunk #1 succeeded at 52 (offset 1 line).
++patching file src/yacc_config.y
+ Building ccdv
+ Compiling pccardctl.c.
+ yacc -d src/yacc_config.y
+@@ -60,36 +64,117 @@
+ Compiling yacc_config.c.
+ lex  -t src/lex_config.l > src/lex_config.c
+ Compiling lex_config.c.
+-  gcc -O2 -fPIC -pipe -DPCMCIAUTILS_VERSION="018" -I/tmp/pcmciautils-018/src -W
+-  all -Wchar-subscripts -Wpointer-arith -Wsign-compare -Wno-pointer-sign -Wdecl
+-  aration-after-statement -Wshadow -I/usr/lib/gcc/x86_64-slackware-linux-musl/1
+-  0.2.0/include -Os -fomit-frame-pointer -D_GNU_SOURCE -c -o src/lex_config.o s
+-  rc/lex_config.c
+-  In file included from src/lex_config.l:34:
+-  src/yacc_config.y:43:5: error: unknown type name ‘u_long’
+-     43 |     u_long num;
+-        |     ^~~~~~
+-make: *** [Makefile:230: src/lex_config.o] Error 1
+-rm src/lex_config.c
+-Compiling pccardctl.c.
+-Linking pccardctl.
++Linking pcmcia-socket-startup.
+ Running strip.
+-Compiling pcmcia-check-broken-cis.c.
+-Compiling read-cis.c.
+-Linking pcmcia-check-broken-cis.
+-Running strip.
+-Compiling startup.c.
+-Compiling yacc_config.c.
+-lex  -t src/lex_config.l > src/lex_config.c
+-Compiling lex_config.c.
+-  gcc -pipe -DPCMCIAUTILS_VERSION="018" -I/tmp/pcmciautils-018/src -Wall -Wchar
+-  -subscripts -Wpointer-arith -Wsign-compare -Wno-pointer-sign -Wdeclaration-af
+-  ter-statement -Wshadow -I/usr/lib/gcc/x86_64-slackware-linux-musl/10.2.0/incl
+-  ude -Os -fomit-frame-pointer -D_GNU_SOURCE -c -o src/lex_config.o src/lex_con
+-  fig.c
+-  In file included from src/lex_config.l:34:
+-  src/yacc_config.y:43:5: error: unknown type name ‘u_long’
+-     43 |     u_long num;
+-        |     ^~~~~~
+-make: *** [Makefile:230: src/lex_config.o] Error 1
++cat udev/rules-start udev/rules-modprobe udev/rules-base udev/rules-nonstaticsocket udev/rules-end | sed -e "s#__UDEVHELPERDIR__#/lib/udev#g" > udev/60-pcmcia.rules
+ rm src/lex_config.c
++/usr/bin/install -c -d /tmp/package-pcmciautils/sbin
++/usr/bin/install -c -D pccardctl /tmp/package-pcmciautils/sbin/pccardctl
++ln -sf pccardctl /tmp/package-pcmciautils/sbin/lspcmcia
++/usr/bin/install -c -D pcmcia-check-broken-cis /tmp/package-pcmciautils/lib/udev/pcmcia-check-broken-cis
++/usr/bin/install -c -m 644 -D man/man8/pccardctl.8 /tmp/package-pcmciautils/usr/share/man/man8/pccardctl.8
++ln -sf pccardctl.8 /tmp/package-pcmciautils/usr/share/man/man8/lspcmcia.8
++/usr/bin/install -c -m 644 -D udev/60-pcmcia.rules /tmp/package-pcmciautils/lib/udev/rules.d/60-pcmcia.rules
++/usr/bin/install -c -d /tmp/package-pcmciautils/etc/pcmcia
++/usr/bin/install -c -m 644  -D config/config.opts /tmp/package-pcmciautils/etc/pcmcia/config.opts
++if [ -f config/config.opts.x86_64 ]; then \
++	/usr/bin/install -c -m 644 -D config/config.opts.x86_64 /tmp/package-pcmciautils/etc/pcmcia/config.opts; \
++fi
++/usr/bin/install -c -D pcmcia-socket-startup /tmp/package-pcmciautils/lib/udev/pcmcia-socket-startup
++lib/
++lib/firmware/
++lib/firmware/3CCFEM556.cis
++lib/firmware/3CXEM556.cis
++lib/firmware/COMpad2.cis
++lib/firmware/COMpad4.cis
++lib/firmware/DP83903.cis
++lib/firmware/E-CARD.cis
++lib/firmware/LA-PCM.cis
++lib/firmware/MT5634ZLX.cis
++lib/firmware/NE2K.cis
++lib/firmware/PCMLM28.cis
++lib/firmware/PE-200.cis
++lib/firmware/PE520.cis
++lib/firmware/RS-COM-2P.cis
++lib/firmware/tamarack.cis
++cp: cannot stat 'README*': No such file or directory
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++sbin/lspcmcia	pccardctl
++usr/man/man8/lspcmcia.8.gz	pccardctl.8.gz
++
++Making symbolic link creation script:
++( cd sbin ; rm -rf lspcmcia )
++( cd sbin ; ln -sf pccardctl lspcmcia )
++( cd usr/man/man8 ; rm -rf lspcmcia.8.gz )
++( cd usr/man/man8 ; ln -sf pccardctl.8.gz lspcmcia.8.gz )
++
++Unless your existing installation script already contains the code
++to create these links, you should append these lines to your existing
++install script. Now's your chance. :^)
++
++Would you like to add this stuff to the existing install script and
++remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './usr/man/man8/lspcmcia.8.gz'
++removed './sbin/lspcmcia'
++
++Updating your ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/pcmciautils-018-x86_64-2.txz
++
++./
++etc/
++etc/pcmcia/
++etc/pcmcia/config.opts.new
++etc/rc.d/
++etc/rc.d/rc.pcmcia.new
++install/
++install/doinst.sh
++install/slack-desc
++lib/
++lib/firmware/
++lib/firmware/3CCFEM556.cis
++lib/firmware/3CXEM556.cis
++lib/firmware/COMpad2.cis
++lib/firmware/COMpad4.cis
++lib/firmware/DP83903.cis
++lib/firmware/E-CARD.cis
++lib/firmware/LA-PCM.cis
++lib/firmware/MT5634ZLX.cis
++lib/firmware/NE2K.cis
++lib/firmware/PCMLM28.cis
++lib/firmware/PE-200.cis
++lib/firmware/PE520.cis
++lib/firmware/RS-COM-2P.cis
++lib/firmware/tamarack.cis
++lib/udev/
++lib/udev/pcmcia-check-broken-cis
++lib/udev/pcmcia-socket-startup
++lib/udev/rules.d/
++lib/udev/rules.d/60-pcmcia.rules
++sbin/
++sbin/pccardctl
++usr/
++usr/doc/
++usr/doc/pcmciautils-018/
++usr/doc/pcmciautils-018/COPYING
++usr/doc/pcmciautils-018/cardmgr-to-pcmciautils.txt
++usr/doc/pcmciautils-018/mini-howto.txt
++usr/man/
++usr/man/man8/
++usr/man/man8/pccardctl.8.gz
++
++Slackware package /tmp/pcmciautils-018-x86_64-2.txz created.
++
+diff -ruBN /tmp/pcmciautils/unsigned.patch /source/a/pcmciautils/unsigned.patch
+--- /tmp/pcmciautils/unsigned.patch	1970-01-01 00:00:00.000000000 +0000
++++ /source/a/pcmciautils/unsigned.patch	2021-01-06 16:08:43.000000000 +0000
+@@ -0,0 +1,22 @@
++--- pcmciautils-018/src/read-cis.c.orig	2014-11-06 10:07:20.363207536 +0600
+++++ pcmciautils-018/src/read-cis.c	2014-11-06 10:08:37.143611772 +0600
++@@ -51,7 +51,7 @@
++ 		/* Get indirect link from the MFC tuple */
++ 		read_cis(tuple->Flags.link_space,
++ 			       tuple->LinkOffset, 5, link);
++-		ofs = *(u_int *)(link+1);
+++		ofs = *(unsigned int *)(link+1);
++ 		tuple->Flags.space = (link[0] == CISTPL_MFC_ATTR);
++ 		/* Move to the next indirect link */
++ 		tuple->LinkOffset += 5;
++--- pcmciautils-018/src/yacc_config.y.orig	2014-11-06 10:08:55.857046934 +0600
+++++ pcmciautils-018/src/yacc_config.y	2014-11-06 10:09:10.543788999 +0600
++@@ -40,7 +40,7 @@
++ 
++ %union {
++     char *str;
++-    u_long num;
+++    unsigned long num;
++     struct adjust_list_t *adjust;
++ }
++ 

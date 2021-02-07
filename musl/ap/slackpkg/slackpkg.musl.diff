@@ -1,0 +1,354 @@
+Binary files /tmp/slackpkg/files/mirrors-x86_64.sample.gz and /source/ap/slackpkg/files/mirrors-x86_64.sample.gz differ
+Binary files /tmp/slackpkg/files/slackpkg.conf.new.gz and /source/ap/slackpkg/files/slackpkg.conf.new.gz differ
+diff -ruBN /tmp/slackpkg/mktemp.patch /source/ap/slackpkg/mktemp.patch
+--- /tmp/slackpkg/mktemp.patch	1970-01-01 00:00:00.000000000 +0000
++++ /source/ap/slackpkg/mktemp.patch	2021-01-04 09:37:44.000000000 +0000
+@@ -0,0 +1,12 @@
++--- slackpkg.SlackBuild.orig	2021-01-01 13:33:29.000000000 +0000
+++++ slackpkg.SlackBuild	2021-01-01 13:40:59.000000000 +0000
++@@ -142,6 +142,9 @@
++   zcat $CWD/0006-Mention-possible-stale-mirror-if-CHECKSUMS.md5-gpg-v.patch.gz | patch -p2 --verbose || exit 1
++ ) || exit 1
++ 
+++# use mktemp from coreutils instead of tempfile from bin package
+++sed -i "s/tempfile --directory=/mktemp -p /" $PKG/usr/libexec/slackpkg/core-functions.sh
+++
++ mkdir -p $PKG/install
++ zcat $CWD/doinst.sh.gz | sed -e "s/@VERSION@/$VERSION/g" > $PKG/install/doinst.sh
++ cat $CWD/slack-desc > $PKG/install/slack-desc
+diff -ruBN /tmp/slackpkg/slackpkg.SlackBuild /source/ap/slackpkg/slackpkg.SlackBuild
+--- /tmp/slackpkg/slackpkg.SlackBuild	2018-09-18 18:40:39.000000000 +0000
++++ /source/ap/slackpkg/slackpkg.SlackBuild	2021-01-04 09:37:44.000000000 +0000
+@@ -142,6 +142,9 @@
+   zcat $CWD/0006-Mention-possible-stale-mirror-if-CHECKSUMS.md5-gpg-v.patch.gz | patch -p2 --verbose || exit 1
+ ) || exit 1
+ 
++# use mktemp from coreutils instead of tempfile from bin package
++sed -i "s/tempfile --directory=/mktemp -p /" $PKG/usr/libexec/slackpkg/core-functions.sh
++
+ mkdir -p $PKG/install
+ zcat $CWD/doinst.sh.gz | sed -e "s/@VERSION@/$VERSION/g" > $PKG/install/doinst.sh
+ cat $CWD/slack-desc > $PKG/install/slack-desc
+diff -ruBN /tmp/slackpkg/slackpkg.SlackBuild.log /source/ap/slackpkg/slackpkg.SlackBuild.log
+--- /tmp/slackpkg/slackpkg.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/ap/slackpkg/slackpkg.SlackBuild.log	2021-01-04 09:37:45.000000000 +0000
+@@ -0,0 +1,319 @@
++mkdir: created directory '/tmp/package-slackpkg/usr'
++mkdir: created directory '/tmp/package-slackpkg/usr/sbin'
++'slackpkg.gz' -> '/tmp/package-slackpkg/usr/sbin/slackpkg.gz'
++mkdir: created directory '/tmp/package-slackpkg/etc'
++mkdir: created directory '/tmp/package-slackpkg/etc/slackpkg'
++'blacklist.new.gz' -> '/tmp/package-slackpkg/etc/slackpkg/blacklist.new.gz'
++'slackpkg.conf.new.gz' -> '/tmp/package-slackpkg/etc/slackpkg/slackpkg.conf.new.gz'
++mkdir: created directory '/tmp/package-slackpkg/etc/slackpkg/templates'
++mkdir: created directory '/tmp/package-slackpkg/usr/libexec'
++mkdir: created directory '/tmp/package-slackpkg/usr/libexec/slackpkg'
++'core-functions.sh.gz' -> '/tmp/package-slackpkg/usr/libexec/slackpkg/core-functions.sh.gz'
++'cutpkg.awk.gz' -> '/tmp/package-slackpkg/usr/libexec/slackpkg/cutpkg.awk.gz'
++'filelist.awk.gz' -> '/tmp/package-slackpkg/usr/libexec/slackpkg/filelist.awk.gz'
++'install-new.awk.gz' -> '/tmp/package-slackpkg/usr/libexec/slackpkg/install-new.awk.gz'
++'pkglist.awk.gz' -> '/tmp/package-slackpkg/usr/libexec/slackpkg/pkglist.awk.gz'
++mkdir: created directory '/tmp/package-slackpkg/usr/libexec/slackpkg/functions.d'
++'dialog-functions.sh.gz' -> '/tmp/package-slackpkg/usr/libexec/slackpkg/functions.d/dialog-functions.sh.gz'
++'post-functions.sh.gz' -> '/tmp/package-slackpkg/usr/libexec/slackpkg/functions.d/post-functions.sh.gz'
++mkdir: created directory '/tmp/package-slackpkg/usr/man'
++mkdir: created directory '/tmp/package-slackpkg/usr/man/man5'
++'slackpkg.conf.5.gz' -> '/tmp/package-slackpkg/usr/man/man5/slackpkg.conf.5.gz'
++mkdir: created directory '/tmp/package-slackpkg/usr/man/man8'
++'slackpkg.8.gz' -> '/tmp/package-slackpkg/usr/man/man8/slackpkg.8.gz'
++mkdir: created directory '/tmp/package-slackpkg/usr/doc'
++mkdir: created directory '/tmp/package-slackpkg/usr/doc/slackpkg-2.83.0'
++'ChangeLog.gz' -> '/tmp/package-slackpkg/usr/doc/slackpkg-2.83.0/ChangeLog.gz'
++'GPL.gz' -> '/tmp/package-slackpkg/usr/doc/slackpkg-2.83.0/GPL.gz'
++'README.gz' -> '/tmp/package-slackpkg/usr/doc/slackpkg-2.83.0/README.gz'
++'mirrors-arm.sample.gz' -> '/tmp/package-slackpkg/usr/doc/slackpkg-2.83.0/mirrors-arm.sample.gz'
++'mirrors-s390.sample.gz' -> '/tmp/package-slackpkg/usr/doc/slackpkg-2.83.0/mirrors-s390.sample.gz'
++'mirrors-x86.sample.gz' -> '/tmp/package-slackpkg/usr/doc/slackpkg-2.83.0/mirrors-x86.sample.gz'
++'mirrors-x86_64.sample.gz' -> '/tmp/package-slackpkg/usr/doc/slackpkg-2.83.0/mirrors-x86_64.sample.gz'
++mkdir: created directory '/tmp/package-slackpkg/var'
++mkdir: created directory '/tmp/package-slackpkg/var/lib'
++mkdir: created directory '/tmp/package-slackpkg/var/lib/slackpkg'
++mkdir: created directory '/tmp/package-slackpkg/var/cache'
++mkdir: created directory '/tmp/package-slackpkg/var/cache/packages'
++Hmm...  Looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|From 10b2f7d493a7ded620cdc20ab582b25f58e45c62 Mon Sep 17 00:00:00 2001
++|From: Robby Workman <rworkman@slackware.com>
++|Date: Thu, 7 Jun 2018 23:00:02 -0500
++|Subject: Fix for /var/log/packages/ possibly being a symlink to elsewhere
++|
++|---
++| files/core-functions.sh   | 12 ++++++------
++| files/dialog-functions.sh |  2 +-
++| 2 files changed, 7 insertions(+), 7 deletions(-)
++|
++|--- ./core-functions.sh.orig	2018-01-06 23:23:14.000000000 -0600
++|+++ ./core-functions.sh	2018-06-14 16:34:51.741000083 -0500
++--------------------------
++patching file core-functions.sh
++Using Plan A...
++Hunk #1 succeeded at 805.
++Hunk #2 succeeded at 1172.
++Hunk #3 succeeded at 1196.
++Hunk #4 succeeded at 1216.
++Hmm...  The next patch looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|--- ./functions.d/dialog-functions.sh.orig	2014-07-10 17:41:29.000000000 -0500
++|+++ ./functions.d/dialog-functions.sh	2018-06-14 16:34:59.185000084 -0500
++--------------------------
++patching file functions.d/dialog-functions.sh
++Using Plan A...
++Hunk #1 succeeded at 20.
++done
++Hmm...  Looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|From e1fc7d99876aaba621fb353d8c484756e20ad0e8 Mon Sep 17 00:00:00 2001
++|From: "Patrick J. Volkerding" <volkerdi@slackware.com>
++|Date: Thu, 7 Jun 2018 19:03:40 -0500
++|Subject: [PATCH 1/3] Use CHECKSUMS.md5.asc to determine ChangeLog newness
++|
++|Thanks to drgibbon on LQ for the suggestion.
++|
++|Signed-off-by: Robby Workman <rworkman@slackware.com>
++|---
++| files/core-functions.sh | 27 +++++++++++++++++++++++++++
++| 1 file changed, 27 insertions(+)
++|
++|diff --git a/files/core-functions.sh b/files/core-functions.sh
++|index 667667c..ec753c7 100644
++|--- a/files/core-functions.sh
++|+++ b/files/core-functions.sh
++--------------------------
++patching file core-functions.sh
++Using Plan A...
++Hunk #1 succeeded at 970.
++Hmm...  Ignoring the trailing garbage.
++done
++Hmm...  Looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|From 845c9adf65cc91d6f92d95fdedd514052a4b4164 Mon Sep 17 00:00:00 2001
++|From: Robby Workman <rworkman@slackware.com>
++|Date: Tue, 12 Jun 2018 12:46:25 -0500
++|Subject: [PATCH 3/3] mirrors-x86*.sample: Remove bjtu.edu.cn  mirror
++|
++|Thanks to Lockywolf on LQ for the report.
++|---
++| files/mirrors-x86.sample    | 1 -
++| files/mirrors-x86_64.sample | 1 -
++| 2 files changed, 2 deletions(-)
++|
++|diff --git a/files/mirrors-x86.sample b/files/mirrors-x86.sample
++|index 922bc17..e31d22e 100644
++|--- a/files/mirrors-x86.sample
++|+++ b/files/mirrors-x86.sample
++--------------------------
++patching file mirrors-x86.sample
++Using Plan A...
++Hunk #1 succeeded at 242.
++Hmm...  The next patch looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|diff --git a/files/mirrors-x86_64.sample b/files/mirrors-x86_64.sample
++|index aae06f1..de65a31 100644
++|--- a/files/mirrors-x86_64.sample
++|+++ b/files/mirrors-x86_64.sample
++--------------------------
++patching file mirrors-x86_64.sample
++Using Plan A...
++Hunk #1 succeeded at 240.
++Hmm...  Ignoring the trailing garbage.
++done
++Hmm...  Looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|From 24ec5a28f81504c339152840c4282c77b2506398 Mon Sep 17 00:00:00 2001
++|From: Mario Preksavec <mario at slackware dot hr>
++|Date: Wed, 20 Jun 2018 01:27:04 -0500
++|Subject: [PATCH 5/6] Clarify that a press of "Enter" is needed to confirm
++| kernel change
++|
++|Signed-off-by: Robby Workman <rworkman@slackware.com>
++|---
++| files/post-functions.sh | 2 +-
++| 1 file changed, 1 insertion(+), 1 deletion(-)
++|
++|diff --git a/files/post-functions.sh b/files/post-functions.sh
++|index b5fecd3..b3beac8 100644
++|--- a/files/post-functions.sh
++|+++ b/files/post-functions.sh
++--------------------------
++patching file post-functions.sh
++Using Plan A...
++Hunk #1 succeeded at 236.
++Hmm...  Ignoring the trailing garbage.
++done
++Hmm...  Looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|From ff0b9ff70a6031e712035e98b1dd2845774cb137 Mon Sep 17 00:00:00 2001
++|From: Robby Workman <rworkman@slackware.com>
++|Date: Wed, 5 Sep 2018 22:49:24 -0500
++|Subject: [PATCH 6/6] Mention possible stale mirror if CHECKSUMS.md5 gpg verify
++| fails
++|
++|Signed-off-by: Robby Workman <rworkman@slackware.com>
++|---
++| files/core-functions.sh | 5 ++++-
++| 1 file changed, 4 insertions(+), 1 deletion(-)
++|
++|diff --git a/files/core-functions.sh b/files/core-functions.sh
++|index 76cab6f..908edb0 100644
++|--- a/files/core-functions.sh
++|+++ b/files/core-functions.sh
++--------------------------
++patching file core-functions.sh
++Using Plan A...
++Hunk #1 succeeded at 1067.
++Hmm...  Ignoring the trailing garbage.
++done
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++
++No symbolic links were found, so we won't make an installation script.
++You can make your own later in ./install/doinst.sh and rebuild the
++package if you like.
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/slackpkg-2.83.0-noarch-4.txz
++
++./
++etc/
++etc/slackpkg/
++etc/slackpkg/blacklist.new
++etc/slackpkg/slackpkg.conf.new
++etc/slackpkg/templates/
++install/
++install/doinst.sh
++install/slack-desc
++usr/
++usr/doc/
++usr/doc/slackpkg-2.83.0/
++usr/doc/slackpkg-2.83.0/ChangeLog
++usr/doc/slackpkg-2.83.0/GPL
++usr/doc/slackpkg-2.83.0/README
++usr/doc/slackpkg-2.83.0/mirrors-arm.sample
++usr/doc/slackpkg-2.83.0/mirrors-s390.sample
++usr/doc/slackpkg-2.83.0/mirrors-x86.sample
++usr/doc/slackpkg-2.83.0/mirrors-x86_64.sample
++usr/libexec/
++usr/libexec/slackpkg/
++usr/libexec/slackpkg/core-functions.sh
++usr/libexec/slackpkg/cutpkg.awk
++usr/libexec/slackpkg/filelist.awk
++usr/libexec/slackpkg/functions.d/
++usr/libexec/slackpkg/functions.d/dialog-functions.sh
++usr/libexec/slackpkg/functions.d/post-functions.sh
++usr/libexec/slackpkg/install-new.awk
++usr/libexec/slackpkg/pkglist.awk
++usr/man/
++usr/man/de/
++usr/man/de/man5/
++usr/man/de/man5/slackpkg.conf.5.gz
++usr/man/de/man8/
++usr/man/de/man8/slackpkg.8.gz
++usr/man/el/
++usr/man/el/man5/
++usr/man/el/man5/slackpkg.conf.5.gz
++usr/man/el/man8/
++usr/man/el/man8/slackpkg.8.gz
++usr/man/es/
++usr/man/es/man5/
++usr/man/es/man5/slackpkg.conf.5.gz
++usr/man/es/man8/
++usr/man/es/man8/slackpkg.8.gz
++usr/man/fa/
++usr/man/fa/man5/
++usr/man/fa/man5/slackpkg.conf.5.gz
++usr/man/fa/man8/
++usr/man/fa/man8/slackpkg.8.gz
++usr/man/fr/
++usr/man/fr/man5/
++usr/man/fr/man5/slackpkg.conf.5.gz
++usr/man/fr/man8/
++usr/man/fr/man8/slackpkg.8.gz
++usr/man/id/
++usr/man/id/man5/
++usr/man/id/man5/slackpkg.conf.5.gz
++usr/man/id/man8/
++usr/man/id/man8/slackpkg.8.gz
++usr/man/it/
++usr/man/it/man5/
++usr/man/it/man5/slackpkg.conf.5.gz
++usr/man/it/man8/
++usr/man/it/man8/slackpkg.8.gz
++usr/man/man5/
++usr/man/man5/slackpkg.conf.5.gz
++usr/man/man8/
++usr/man/man8/slackpkg.8.gz
++usr/man/nb/
++usr/man/nb/man5/
++usr/man/nb/man5/slackpkg.conf.5.gz
++usr/man/nb/man8/
++usr/man/nb/man8/slackpkg.8.gz
++usr/man/nl/
++usr/man/nl/man5/
++usr/man/nl/man5/slackpkg.conf.5.gz
++usr/man/nl/man8/
++usr/man/nl/man8/slackpkg.8.gz
++usr/man/pl/
++usr/man/pl/man5/
++usr/man/pl/man5/slackpkg.conf.5.gz
++usr/man/pl/man8/
++usr/man/pl/man8/slackpkg.8.gz
++usr/man/pt_BR/
++usr/man/pt_BR/man5/
++usr/man/pt_BR/man5/slackpkg.conf.5.gz
++usr/man/pt_BR/man8/
++usr/man/pt_BR/man8/slackpkg.8.gz
++usr/man/pt_PT/
++usr/man/pt_PT/man5/
++usr/man/pt_PT/man5/slackpkg.conf.5.gz
++usr/man/pt_PT/man8/
++usr/man/pt_PT/man8/slackpkg.8.gz
++usr/man/ru/
++usr/man/ru/man5/
++usr/man/ru/man5/slackpkg.conf.5.gz
++usr/man/ru/man8/
++usr/man/ru/man8/slackpkg.8.gz
++usr/man/sv/
++usr/man/sv/man5/
++usr/man/sv/man5/slackpkg.conf.5.gz
++usr/man/sv/man8/
++usr/man/sv/man8/slackpkg.8.gz
++usr/man/tr/
++usr/man/tr/man5/
++usr/man/tr/man5/slackpkg.conf.5.gz
++usr/man/tr/man8/
++usr/man/tr/man8/slackpkg.8.gz
++usr/man/uk/
++usr/man/uk/man5/
++usr/man/uk/man5/slackpkg.conf.5.gz
++usr/man/uk/man8/
++usr/man/uk/man8/slackpkg.8.gz
++usr/sbin/
++usr/sbin/slackpkg
++var/
++var/cache/
++var/cache/packages/
++var/lib/
++var/lib/slackpkg/
++
++Slackware package /tmp/slackpkg-2.83.0-noarch-4.txz created.
++

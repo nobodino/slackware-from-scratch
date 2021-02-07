@@ -1,0 +1,1121 @@
+diff -ruBN /tmp/reiserfsprogs/musl-__compar_fn_t.patch /source/a/reiserfsprogs/musl-__compar_fn_t.patch
+--- /tmp/reiserfsprogs/musl-__compar_fn_t.patch	1970-01-01 00:00:00.000000000 +0000
++++ /source/a/reiserfsprogs/musl-__compar_fn_t.patch	2021-01-06 16:48:46.000000000 +0000
+@@ -0,0 +1,18 @@
++Define _GNU_SOURCE for the declaration of loff_t in fcntl.h
++Add missing typedefs for __compar_fn_t and compare_fn_t for
++non __GLIBC__ case.
++
++--- include/misc.h
+++++ include/misc.h
++@@ -35,6 +35,11 @@
++ 
++ #define INVAL_PTR	(void *)-1
++ 
+++#if !defined(__GLIBC__)
+++typedef int (*__compar_fn_t) (const void*, const void*);
+++typedef __compar_fn_t comparison_fn_t;
+++#endif
+++
++ void check_memory_msg(void);
++ void die(const char *fmt, ...) __attribute__ ((format(printf, 1, 2)));
++ void *getmem(int size);
+diff -ruBN /tmp/reiserfsprogs/musl-loff_t.patch /source/a/reiserfsprogs/musl-loff_t.patch
+--- /tmp/reiserfsprogs/musl-loff_t.patch	1970-01-01 00:00:00.000000000 +0000
++++ /source/a/reiserfsprogs/musl-loff_t.patch	2021-01-06 16:48:46.000000000 +0000
+@@ -0,0 +1,14 @@
++See https://www.openwall.com/lists/musl/2013/01/23/6
++--- include/reiserfs_lib.h
+++++ include/reiserfs_lib.h
++@@ -3,6 +3,10 @@
++  *  reiserfsprogs/README
++  */
++ 
+++#if !defined(__GLIBC__)
+++#define loff_t off_t
+++#endif
+++
++ #ifndef REISERFSPROGS_LIB_H
++ #define REISERFSPROGS_LIB_H
++ 
+diff -ruBN /tmp/reiserfsprogs/musl-long_long_min_max.patch /source/a/reiserfsprogs/musl-long_long_min_max.patch
+--- /tmp/reiserfsprogs/musl-long_long_min_max.patch	1970-01-01 00:00:00.000000000 +0000
++++ /source/a/reiserfsprogs/musl-long_long_min_max.patch	2021-01-06 16:48:46.000000000 +0000
+@@ -0,0 +1,19 @@
++Add definitions for LONG_LONG_MIN and _MAX derived
++from the values for int64_t.
++
++--- resize_reiserfs/resize_reiserfs.c
+++++ resize_reiserfs/resize_reiserfs.c
++@@ -15,6 +15,13 @@
++ #include "resize.h"
++ #include <limits.h>
++ 
+++#if !defined(__GLIBC__)
+++/* These are not defined in musl libc */
+++#include <stdint.h>
+++#define LONG_LONG_MIN INT64_MIN
+++#define LONG_LONG_MAX INT64_MAX
+++#endif
+++
++ static int opt_banner = 0;
++ static int opt_skipj = 0;
++ int opt_force = 0;
+diff -ruBN /tmp/reiserfsprogs/musl-prints.patch /source/a/reiserfsprogs/musl-prints.patch
+--- /tmp/reiserfsprogs/musl-prints.patch	1970-01-01 00:00:00.000000000 +0000
++++ /source/a/reiserfsprogs/musl-prints.patch	2021-01-06 16:48:46.000000000 +0000
+@@ -0,0 +1,228 @@
++--- reiserfscore/prints.c
+++++ reiserfscore/prints.c
++@@ -7,8 +7,11 @@
++ 
++ #include "includes.h"
++ #include <stdarg.h>
+++#include <stdint.h>
++ #include <limits.h>
+++#if defined(__GLIBC__)
++ #include <printf.h>
+++#endif
++ #include <limits.h>
++ #include <time.h>
++ 
++@@ -16,6 +19,38 @@
++ #  include <uuid/uuid.h>
++ #endif
++ 
+++
+++char ftypelet (mode_t mode)
+++{
+++    if (S_ISBLK (mode))
+++      return 'b';
+++    if (S_ISCHR (mode))
+++      return 'c';
+++    if (S_ISDIR (mode))
+++      return 'd';
+++    if (S_ISREG (mode))
+++      return '-';
+++    if (S_ISFIFO (mode))
+++      return 'p';
+++    if (S_ISLNK (mode))
+++      return 'l';
+++    if (S_ISSOCK (mode))
+++      return 's';
+++    return '?';
+++}
+++
+++
+++static int rwx (FILE * stream, mode_t mode)
+++{
+++    return fprintf (stream, "%c%c%c",
+++                  (mode & S_IRUSR) ? 'r' : '-',
+++                  (mode & S_IWUSR) ? 'w' : '-',
+++                  (mode & S_IXUSR) ? 'x' : '-');
+++}
+++
+++#if defined(__GLIBC__)
+++
+++
++ #ifndef HAVE_REGISTER_PRINTF_SPECIFIER
++ #define register_printf_specifier(x, y, z) register_printf_function(x, y, z)
++ static int arginfo_ptr(const struct printf_info *info, size_t n, int *argtypes)
++@@ -129,33 +164,6 @@ static int print_disk_child(FILE * stream,
++ 	FPRINTF;
++ }
++ 
++-char ftypelet(mode_t mode)
++-{
++-	if (S_ISBLK(mode))
++-		return 'b';
++-	if (S_ISCHR(mode))
++-		return 'c';
++-	if (S_ISDIR(mode))
++-		return 'd';
++-	if (S_ISREG(mode))
++-		return '-';
++-	if (S_ISFIFO(mode))
++-		return 'p';
++-	if (S_ISLNK(mode))
++-		return 'l';
++-	if (S_ISSOCK(mode))
++-		return 's';
++-	return '?';
++-}
++-
++-static int rwx(FILE * stream, mode_t mode)
++-{
++-	return fprintf(stream, "%c%c%c",
++-		       (mode & S_IRUSR) ? 'r' : '-',
++-		       (mode & S_IWUSR) ? 'w' : '-',
++-		       (mode & S_IXUSR) ? 'x' : '-');
++-}
++-
++ /* %M */
++ static int print_sd_mode(FILE * stream,
++ 			 const struct printf_info *info,
++@@ -211,6 +219,140 @@ void reiserfs_warning(FILE * fp, const char *fmt, ...)
++ 	va_end(args);
++ }
++ 
+++#else /* defined(__GLIBC__) */
+++
+++typedef void* void_ptr;
+++
+++void reiserfs_warning (FILE * fp, const char * fmt, ...)
+++{
+++      char * buffer;
+++      int len;
+++      char format_buf[32];
+++      char* dst = format_buf;
+++      char* end = &dst[30];
+++      const struct buffer_head * bh;
+++      const struct item_head * ih;
+++      const struct disk_child * dc;
+++      const struct reiserfs_key * key;
+++      uint16_t mode;
+++#if defined(HAVE_LIBUUID) && defined(HAVE_UUID_UUID_H)
+++      const unsigned char *uuid;
+++      char uuid_buf[37];
+++#endif
+++      va_list args;
+++      int esc = 0;
+++
+++      va_start (args, fmt);
+++      while (*fmt) {
+++              int ch = *fmt++;
+++              if (esc) {
+++                      switch (ch) {
+++                      case '%':
+++                              fputc(ch, fp);
+++                              esc = 0;
+++                              break;
+++                      case 'b':       // block head
+++                              bh = (const struct buffer_head *) va_arg(args, void_ptr);
+++                              len = asprintf(&buffer, "level=%d, nr_items=%d, free_space=%d rdkey",
+++                                      B_LEVEL (bh), B_NR_ITEMS (bh), B_FREE_SPACE (bh));
+++                              *dst++ = 's';
+++                              *dst = '\0';
+++                              fprintf(fp, format_buf, buffer);
+++                              esc = 0;
+++                              break;
+++                      case 'K':       // short key
+++                              key = (const struct reiserfs_key *) va_arg(args, void_ptr);
+++                              len = asprintf(&buffer, "[%u %u]", get_key_dirid (key),
+++                                      get_key_objectid (key));
+++                              *dst++ = 's';
+++                              *dst = '\0';
+++                              fprintf(fp, format_buf, buffer);
+++                              esc = 0;
+++                              break;
+++                      case 'k':       // key
+++                              key = (const struct reiserfs_key *) va_arg(args, void_ptr);
+++                              len = asprintf(&buffer, "[%u %u 0x%Lx %s (%d)]",
+++                                      get_key_dirid (key), get_key_objectid (key),
+++                                      (unsigned long long)get_offset (key), key_of_what (key), get_type (key));
+++                              *dst++ = 's';
+++                              *dst = '\0';
+++                              fprintf(fp, format_buf, buffer);
+++                              esc = 0;
+++                              break;
+++                      case 'H':       // item head
+++                              ih = (const struct item_head *) va_arg(args, void_ptr);
+++                              len = asprintf(&buffer, "%u %u 0x%Lx %s (%d), "
+++                                          "len %u, location %u entry count %u, fsck need %u, format %s",
+++                                      get_key_dirid (&ih->ih_key), get_key_objectid (&ih->ih_key),
+++                                      (unsigned long long)get_offset (&ih->ih_key), key_of_what (&ih->ih_key),
+++                                      get_type (&ih->ih_key), get_ih_item_len (ih), get_ih_location (ih),
+++                                      get_ih_entry_count (ih), get_ih_flags (ih),
+++                                      get_ih_key_format (ih) == KEY_FORMAT_2 ?
+++                                              "new" :
+++                                              ((get_ih_key_format (ih) == KEY_FORMAT_1) ? "old" : "BAD"));
+++                              *dst++ = 's';
+++                              *dst = '\0';
+++                              fprintf(fp, format_buf, buffer);
+++                              esc = 0;
+++                              break;
+++                      case 'y':       // disk child
+++                              dc = (const struct disk_child *) va_arg(args, void_ptr);
+++                              len = asprintf(&buffer, "[dc_number=%u, dc_size=%u]", get_dc_child_blocknr (dc),
+++                                              get_dc_child_size (dc));
+++                              *dst++ = 's';
+++                              *dst = '\0';
+++                              fprintf(fp, format_buf, buffer);
+++                              esc = 0;
+++                              break;
+++                      case 'M':       // sd mode
+++                              mode = (mode_t) va_arg(args, void_ptr);
+++                              fputc(ftypelet (mode), fp);
+++                              rwx (fp, (mode & 0700) << 0);
+++                              rwx (fp, (mode & 0070) << 3);
+++                              rwx (fp, (mode & 0007) << 6);
+++                              esc = 0;
+++                              break;
+++                      case 'U':       // UUID
+++#if defined(HAVE_LIBUUID) && defined(HAVE_UUID_UUID_H)
+++                              uuid = (const unsigned char *) va_arg(args, void_ptr);
+++                              uuid_buf[36] = '\0';
+++                              uuid_unparse(uuid, uuid_buf);
+++                              fprintf(fp, "%s", uuid_buf);
+++#else
+++                              fprintf(fp, "<no libuuid installed>");
+++#endif
+++                              esc = 0;
+++                              break;
+++                      case '-': case '+': case '#': case '.':
+++                      case '0': case '1': case '2': case '3': case '4':
+++                      case '5': case '6': case '7': case '8': case '9':
+++                      case 'l': case 'L': case 'h':
+++                              // non-terminal format modifiers
+++                              if (dst < end)
+++                                      *dst++ = ch;
+++                              break;
+++                      default:
+++                              *dst++ = ch;
+++                              *dst = '\0';
+++                              fprintf(fp, format_buf, va_arg(args, void_ptr));
+++                              esc = 0;
+++                              break;
+++                      }
+++              } else if (ch == '%') {
+++                      esc = 1;
+++                      dst = format_buf;
+++                      end = &dst[30]; // leave room for final "s\0"
+++                      *dst++ = ch;
+++              } else {
+++                      fputc(ch, fp);
+++              }
+++      }
+++
+++      va_end (args);
+++}
+++
+++#endif        /* !defined(__GLIBC__) */
+++
++ static void print_directory_item(FILE *fp, reiserfs_filsys_t fs,
++ 				 struct buffer_head *bh, struct item_head *ih)
++ {
+diff -ruBN /tmp/reiserfsprogs/reiserfsprogs-3.6.27-loff_t.patch /source/a/reiserfsprogs/reiserfsprogs-3.6.27-loff_t.patch
+--- /tmp/reiserfsprogs/reiserfsprogs-3.6.27-loff_t.patch	1970-01-01 00:00:00.000000000 +0000
++++ /source/a/reiserfsprogs/reiserfsprogs-3.6.27-loff_t.patch	2021-01-06 16:48:46.000000000 +0000
+@@ -0,0 +1,16 @@
++glibc-2.28 did hide loff_t indef system-specific macros:
++    https://sourceware.org/git/?p=glibc.git;a=commitdiff;h=663e7d784977f6b15c0cab73f754f9f39c9c0c2c
++
++This caused build failure:
++    ../include/reiserfs_lib.h:300:55: error: unknown type name 'loff_t'; did you mean 'off_t'?
++
++Re-enable extensions to pull loff_t back.
++
++https://bugs.gentoo.org/663930
++--- configure.ac
+++++ configure.ac
++@@ -23,2 +23,4 @@ AC_PROG_MAKE_SET
++ AC_PROG_LIBTOOL
+++dnl pull in loff_t from glibc
+++AC_USE_SYSTEM_EXTENSIONS
++ 
+diff -ruBN /tmp/reiserfsprogs/reiserfsprogs.SlackBuild /source/a/reiserfsprogs/reiserfsprogs.SlackBuild
+--- /tmp/reiserfsprogs/reiserfsprogs.SlackBuild	2019-09-29 23:48:35.000000000 +0000
++++ /source/a/reiserfsprogs/reiserfsprogs.SlackBuild	2021-01-06 16:48:46.000000000 +0000
+@@ -50,14 +50,20 @@
+ PKG=$TMP/package-reiserfsprogs
+ 
+ if [ "$ARCH" = "i586" ]; then
++autoreconf -fi
+   SLKCFLAGS="-O2 -march=i586 -mtune=i686"
++LDFLAGS="-lobstack" \
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "s390" ]; then
++autoreconf -fi
+   SLKCFLAGS="-O2"
++LDFLAGS="-lobstack" \
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
++autoreconf -fi
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++LDFLAGS="-lobstack" \
++  LIBDIRSUFFIX=""
+ fi
+ 
+ rm -rf $PKG
+@@ -67,6 +73,11 @@
+ rm -rf $PKGNAM-$VERSION
+ tar xvf $CWD/$PKGNAM-$VERSION.tar.?z* || exit 1
+ cd $PKGNAM-$VERSION || exit 1
++patch -p0 < $CWD/musl-long_long_min_max.patch || exit 1
++patch -p0 < $CWD/musl-loff_t.patch || exit 1
++patch -p0 < $CWD/musl-__compar_fn_t.patch || exit 1
++patch -p0 < $CWD/musl-prints.patch || exit 1
++patch -p0 < $CWD/reiserfsprogs-3.6.27-loff_t.patch || exit 1
+ 
+ zcat $CWD/reiserfsprogs.glibc228.diff.gz | patch -p1 --backup --suffix=.orig || exit 1
+ 
+@@ -78,14 +89,16 @@
+   -exec chmod 644 {} \+
+ 
+ # Yes, --disable-shared is intentional
++autoreconf -fi
+ CFLAGS="$SLKCFLAGS" \
++LDFLAGS="-lobstack" \
+ ./configure \
+   --prefix=/usr \
+   --libdir=/usr/lib${LIBDIRSUFFIX} \
+   --sbindir=/sbin \
+   --mandir=/usr/man \
+   --disable-shared \
+-  --build=$ARCH-slackware-linux || exit 1
++  --build=$ARCH-slackware-linux-musl || exit 1
+ 
+ if [ "$ARCH" = "x86_64" ]; then
+   # To prevent compilation errors due to broken header:
+diff -ruBN /tmp/reiserfsprogs/reiserfsprogs.SlackBuild.log /source/a/reiserfsprogs/reiserfsprogs.SlackBuild.log
+--- /tmp/reiserfsprogs/reiserfsprogs.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/a/reiserfsprogs/reiserfsprogs.SlackBuild.log	2021-01-06 16:49:25.000000000 +0000
+@@ -0,0 +1,747 @@
++autoreconf: error: 'configure.ac' is required
++reiserfsprogs-3.6.27/
++reiserfsprogs-3.6.27/Makefile.am
++reiserfsprogs-3.6.27/configure
++reiserfsprogs-3.6.27/configure.ac
++reiserfsprogs-3.6.27/aclocal.m4
++reiserfsprogs-3.6.27/Makefile.in
++reiserfsprogs-3.6.27/AUTHORS
++reiserfsprogs-3.6.27/COPYING
++reiserfsprogs-3.6.27/ChangeLog
++reiserfsprogs-3.6.27/INSTALL
++reiserfsprogs-3.6.27/NEWS
++reiserfsprogs-3.6.27/README
++reiserfsprogs-3.6.27/compile
++reiserfsprogs-3.6.27/config.guess
++reiserfsprogs-3.6.27/config.sub
++reiserfsprogs-3.6.27/install-sh
++reiserfsprogs-3.6.27/ltmain.sh
++reiserfsprogs-3.6.27/missing
++reiserfsprogs-3.6.27/CREDITS
++reiserfsprogs-3.6.27/version.h
++reiserfsprogs-3.6.27/reiserfsprogs.spec
++reiserfsprogs-3.6.27/include/
++reiserfsprogs-3.6.27/include/Makefile.am
++reiserfsprogs-3.6.27/include/parse_time.h
++reiserfsprogs-3.6.27/include/progbar.h
++reiserfsprogs-3.6.27/include/io.h
++reiserfsprogs-3.6.27/include/misc.h
++reiserfsprogs-3.6.27/include/reiserfs_fs.h
++reiserfsprogs-3.6.27/include/reiserfs_lib.h
++reiserfsprogs-3.6.27/include/swab.h
++reiserfsprogs-3.6.27/include/Makefile.in
++reiserfsprogs-3.6.27/include/config.h.in
++reiserfsprogs-3.6.27/lib/
++reiserfsprogs-3.6.27/lib/Makefile.am
++reiserfsprogs-3.6.27/lib/Makefile.in
++reiserfsprogs-3.6.27/lib/io.c
++reiserfsprogs-3.6.27/lib/misc.c
++reiserfsprogs-3.6.27/lib/parse_time.c
++reiserfsprogs-3.6.27/lib/progbar.c
++reiserfsprogs-3.6.27/depcomp
++reiserfsprogs-3.6.27/reiserfscore/
++reiserfsprogs-3.6.27/reiserfscore/Makefile.am
++reiserfsprogs-3.6.27/reiserfscore/reiserfs_err.h
++reiserfsprogs-3.6.27/reiserfscore/Makefile.in
++reiserfsprogs-3.6.27/reiserfscore/reiserfscore.pc.in
++reiserfsprogs-3.6.27/reiserfscore/do_balan.c
++reiserfsprogs-3.6.27/reiserfscore/fix_node.c
++reiserfsprogs-3.6.27/reiserfscore/hashes.c
++reiserfsprogs-3.6.27/reiserfscore/ibalance.c
++reiserfsprogs-3.6.27/reiserfscore/lbalance.c
++reiserfsprogs-3.6.27/reiserfscore/prints.c
++reiserfsprogs-3.6.27/reiserfscore/stree.c
++reiserfsprogs-3.6.27/reiserfscore/node_formats.c
++reiserfsprogs-3.6.27/reiserfscore/reiserfslib.c
++reiserfsprogs-3.6.27/reiserfscore/bitmap.c
++reiserfsprogs-3.6.27/reiserfscore/journal.c
++reiserfsprogs-3.6.27/reiserfscore/xattr.c
++reiserfsprogs-3.6.27/reiserfscore/includes.h
++reiserfsprogs-3.6.27/reiserfscore/reiserfs_err.c
++reiserfsprogs-3.6.27/reiserfscore/reiserfs_err.et
++reiserfsprogs-3.6.27/fsck/
++reiserfsprogs-3.6.27/fsck/Makefile.am
++reiserfsprogs-3.6.27/fsck/Makefile.in
++reiserfsprogs-3.6.27/fsck/reiserfsck.8.in
++reiserfsprogs-3.6.27/fsck/main.c
++reiserfsprogs-3.6.27/fsck/pass0.c
++reiserfsprogs-3.6.27/fsck/pass1.c
++reiserfsprogs-3.6.27/fsck/pass2.c
++reiserfsprogs-3.6.27/fsck/semantic_check.c
++reiserfsprogs-3.6.27/fsck/semantic_rebuild.c
++reiserfsprogs-3.6.27/fsck/pass4.c
++reiserfsprogs-3.6.27/fsck/lost+found.c
++reiserfsprogs-3.6.27/fsck/ubitmap.c
++reiserfsprogs-3.6.27/fsck/uobjectid.c
++reiserfsprogs-3.6.27/fsck/ustree.c
++reiserfsprogs-3.6.27/fsck/ufile.c
++reiserfsprogs-3.6.27/fsck/check_tree.c
++reiserfsprogs-3.6.27/fsck/info.c
++reiserfsprogs-3.6.27/fsck/super.c
++reiserfsprogs-3.6.27/fsck/fsck.h
++reiserfsprogs-3.6.27/fsck/reiserfsck.8
++reiserfsprogs-3.6.27/debugreiserfs/
++reiserfsprogs-3.6.27/debugreiserfs/Makefile.am
++reiserfsprogs-3.6.27/debugreiserfs/Makefile.in
++reiserfsprogs-3.6.27/debugreiserfs/debugreiserfs.8.in
++reiserfsprogs-3.6.27/debugreiserfs/debugreiserfs.c
++reiserfsprogs-3.6.27/debugreiserfs/pack.c
++reiserfsprogs-3.6.27/debugreiserfs/unpack.c
++reiserfsprogs-3.6.27/debugreiserfs/stat.c
++reiserfsprogs-3.6.27/debugreiserfs/corruption.c
++reiserfsprogs-3.6.27/debugreiserfs/scan.c
++reiserfsprogs-3.6.27/debugreiserfs/recover.c
++reiserfsprogs-3.6.27/debugreiserfs/debugreiserfs.h
++reiserfsprogs-3.6.27/debugreiserfs/debugreiserfs.8
++reiserfsprogs-3.6.27/resize_reiserfs/
++reiserfsprogs-3.6.27/resize_reiserfs/Makefile.am
++reiserfsprogs-3.6.27/resize_reiserfs/Makefile.in
++reiserfsprogs-3.6.27/resize_reiserfs/resize_reiserfs.8.in
++reiserfsprogs-3.6.27/resize_reiserfs/fe.c
++reiserfsprogs-3.6.27/resize_reiserfs/resize_reiserfs.c
++reiserfsprogs-3.6.27/resize_reiserfs/do_shrink.c
++reiserfsprogs-3.6.27/resize_reiserfs/resize.h
++reiserfsprogs-3.6.27/resize_reiserfs/resize_reiserfs.8
++reiserfsprogs-3.6.27/mkreiserfs/
++reiserfsprogs-3.6.27/mkreiserfs/Makefile.am
++reiserfsprogs-3.6.27/mkreiserfs/Makefile.in
++reiserfsprogs-3.6.27/mkreiserfs/mkreiserfs.8.in
++reiserfsprogs-3.6.27/mkreiserfs/mkreiserfs.c
++reiserfsprogs-3.6.27/mkreiserfs/mkreiserfs.8
++reiserfsprogs-3.6.27/tune/
++reiserfsprogs-3.6.27/tune/Makefile.am
++reiserfsprogs-3.6.27/tune/Makefile.in
++reiserfsprogs-3.6.27/tune/reiserfstune.8.in
++reiserfsprogs-3.6.27/tune/tune.c
++reiserfsprogs-3.6.27/tune/tune.h
++reiserfsprogs-3.6.27/tune/reiserfstune.8
++patching file resize_reiserfs/resize_reiserfs.c
++patching file include/reiserfs_lib.h
++patching file include/misc.h
++patching file reiserfscore/prints.c
++patching file configure.ac
++patching file include/misc.h
++Hunk #1 succeeded at 78 (offset 5 lines).
++patching file include/reiserfs_lib.h
++Hunk #1 succeeded at 301 (offset 4 lines).
++libtoolize: putting auxiliary files in '.'.
++libtoolize: copying file './ltmain.sh'
++libtoolize: Consider adding 'AC_CONFIG_MACRO_DIRS([m4])' to configure.ac,
++libtoolize: and rerunning libtoolize and aclocal.
++libtoolize: Consider adding '-I m4' to ACLOCAL_AMFLAGS in Makefile.am.
++configure.ac:15: warning: 'AM_CONFIG_HEADER': this macro is obsolete.
++configure.ac:15: You should use the 'AC_CONFIG_HEADERS' macro instead.
++./lib/autoconf/general.m4:2433: AC_DIAGNOSE is expanded from...
++aclocal.m4:9792: AM_CONFIG_HEADER is expanded from...
++configure.ac:15: the top level
++configure.ac:23: warning: The macro `AC_PROG_LIBTOOL' is obsolete.
++configure.ac:23: You should run autoupdate.
++aclocal.m4:121: AC_PROG_LIBTOOL is expanded from...
++configure.ac:23: the top level
++configure.ac:25: warning: AC_COMPILE_IFELSE was called before AC_USE_SYSTEM_EXTENSIONS
++./lib/autoconf/specific.m4:364: AC_USE_SYSTEM_EXTENSIONS is expanded from...
++configure.ac:25: the top level
++configure.ac:25: warning: AC_LINK_IFELSE was called before AC_USE_SYSTEM_EXTENSIONS
++./lib/autoconf/specific.m4:364: AC_USE_SYSTEM_EXTENSIONS is expanded from...
++configure.ac:25: the top level
++configure.ac:25: warning: AC_CHECK_INCLUDES_DEFAULT was called before AC_USE_SYSTEM_EXTENSIONS
++./lib/autoconf/specific.m4:364: AC_USE_SYSTEM_EXTENSIONS is expanded from...
++configure.ac:25: the top level
++configure.ac:39: warning: The macro `AC_HEADER_STDC' is obsolete.
++configure.ac:39: You should run autoupdate.
++./lib/autoconf/headers.m4:704: AC_HEADER_STDC is expanded from...
++configure.ac:39: the top level
++configure.ac:47: warning: The macro `AC_STRUCT_ST_RDEV' is obsolete.
++configure.ac:47: You should run autoupdate.
++./lib/autoconf/types.m4:1038: AC_STRUCT_ST_RDEV is expanded from...
++configure.ac:47: the top level
++configure.ac:50: warning: The macro `AC_TRY_COMPILE' is obsolete.
++configure.ac:50: You should run autoupdate.
++./lib/autoconf/general.m4:2846: AC_TRY_COMPILE is expanded from...
++lib/m4sugar/m4sh.m4:692: _AS_IF_ELSE is expanded from...
++lib/m4sugar/m4sh.m4:699: AS_IF is expanded from...
++./lib/autoconf/general.m4:2248: AC_CACHE_VAL is expanded from...
++./lib/autoconf/general.m4:2269: AC_CACHE_CHECK is expanded from...
++configure.ac:50: the top level
++configure.ac:57: warning: The macro `AC_TRY_COMPILE' is obsolete.
++configure.ac:57: You should run autoupdate.
++./lib/autoconf/general.m4:2846: AC_TRY_COMPILE is expanded from...
++lib/m4sugar/m4sh.m4:692: _AS_IF_ELSE is expanded from...
++lib/m4sugar/m4sh.m4:699: AS_IF is expanded from...
++./lib/autoconf/general.m4:2248: AC_CACHE_VAL is expanded from...
++./lib/autoconf/general.m4:2269: AC_CACHE_CHECK is expanded from...
++configure.ac:57: the top level
++configure.ac:64: warning: The macro `AC_TRY_COMPILE' is obsolete.
++configure.ac:64: You should run autoupdate.
++./lib/autoconf/general.m4:2846: AC_TRY_COMPILE is expanded from...
++lib/m4sugar/m4sh.m4:692: _AS_IF_ELSE is expanded from...
++lib/m4sugar/m4sh.m4:699: AS_IF is expanded from...
++./lib/autoconf/general.m4:2248: AC_CACHE_VAL is expanded from...
++./lib/autoconf/general.m4:2269: AC_CACHE_CHECK is expanded from...
++configure.ac:64: the top level
++configure.ac:129: warning: AC_OUTPUT should be used without arguments.
++configure.ac:129: You should run autoupdate.
++configure.ac:18: installing './compile'
++configure.ac:8: installing './missing'
++debugreiserfs/Makefile.am: installing './depcomp'
++checking build system type... x86_64-slackware-linux-musl
++checking host system type... x86_64-slackware-linux-musl
++checking for a BSD-compatible install... /usr/bin/ginstall -c
++checking whether build environment is sane... yes
++checking for a race-free mkdir -p... /usr/bin/mkdir -p
++checking for gawk... gawk
++checking whether make sets $(MAKE)... yes
++checking whether make supports nested variables... yes
++checking whether make supports nested variables... (cached) yes
++checking whether to enable maintainer-specific portions of Makefiles... no
++checking for gcc... gcc
++checking whether the C compiler works... yes
++checking for C compiler default output file name... a.out
++checking for suffix of executables... 
++checking whether we are cross compiling... no
++checking for suffix of object files... o
++checking whether the compiler supports GNU C... yes
++checking whether gcc accepts -g... yes
++checking for gcc option to enable C11 features... none needed
++checking whether gcc understands -c and -o together... yes
++checking whether make supports the include directive... yes (GNU style)
++checking dependency style of gcc... gcc3
++checking for gawk... (cached) gawk
++checking whether ln -s works... yes
++checking whether make sets $(MAKE)... (cached) yes
++checking how to print strings... printf
++checking for a sed that does not truncate output... /usr/bin/sed
++checking for grep that handles long lines and -e... /usr/bin/grep
++checking for egrep... /usr/bin/grep -E
++checking for fgrep... /usr/bin/grep -F
++checking for ld used by gcc... /usr/bin/ld
++checking if the linker (/usr/bin/ld) is GNU ld... yes
++checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
++checking the name lister (/usr/bin/nm -B) interface... BSD nm
++checking the maximum length of command line arguments... 98304
++checking how to convert x86_64-slackware-linux-musl file names to x86_64-slackware-linux-musl format... func_convert_file_noop
++checking how to convert x86_64-slackware-linux-musl file names to toolchain format... func_convert_file_noop
++checking for /usr/bin/ld option to reload object files... -r
++checking for objdump... objdump
++checking how to recognize dependent libraries... pass_all
++checking for dlltool... dlltool
++checking how to associate runtime and link libraries... printf %s\n
++checking for ar... ar
++checking for archiver @FILE support... @
++checking for strip... strip
++checking for ranlib... ranlib
++checking command to parse /usr/bin/nm -B output from gcc object... ok
++checking for sysroot... no
++checking for a working dd... /usr/bin/dd
++checking how to truncate binary pipes... /usr/bin/dd bs=4096 count=1
++checking for mt... mt
++checking if mt is a manifest tool... no
++checking for stdio.h... yes
++checking for stdlib.h... yes
++checking for string.h... yes
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking for strings.h... yes
++checking for sys/stat.h... yes
++checking for sys/types.h... yes
++checking for unistd.h... yes
++checking for wchar.h... yes
++checking for minix/config.h... no
++checking for dlfcn.h... yes
++checking for objdir... .libs
++checking if gcc supports -fno-rtti -fno-exceptions... no
++checking for gcc option to produce PIC... -fPIC -DPIC
++checking if gcc PIC flag -fPIC -DPIC works... yes
++checking if gcc static flag -static works... yes
++checking if gcc supports -c -o file.o... yes
++checking if gcc supports -c -o file.o... (cached) yes
++checking whether the gcc linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
++checking dynamic linker characteristics... GNU/Linux ld.so
++checking how to hardcode library paths into programs... immediate
++checking whether stripping libraries is possible... yes
++checking if libtool supports shared libraries... yes
++checking whether to build shared libraries... no
++checking whether to build static libraries... yes
++checking whether it is safe to define __EXTENSIONS__... yes
++checking whether _XOPEN_SOURCE should be defined... no
++checking for uuid_generate in -luuid... yes
++checking for _et_list in -lcom_err... yes
++checking for egrep... (cached) /usr/bin/grep -E
++checking for fcntl.h... yes
++checking for limits.h... yes
++checking for malloc.h... yes
++checking for sys/ioctl.h... yes
++checking for unistd.h... (cached) yes
++checking for uuid/uuid.h... yes
++checking for sys/mkdev.h... no
++checking for sys/sysmacros.h... yes
++checking for an ANSI C-conforming const... yes
++checking for inline... inline
++checking for size_t... yes
++checking for struct stat.st_rdev... yes
++checking whether -Wuninitialized works... yes
++checking whether -Wno-unused-parameter works... yes
++checking whether -Wredundant-decls works... yes
++checking for special C compiler options needed for large files... no
++checking for _FILE_OFFSET_BITS value needed for large files... no
++checking size of off_t... 8
++checking size of blkcnt_t... 8
++checking how to run the C preprocessor... gcc -E
++checking whether gcc needs -traditional... no
++checking for working memcmp... yes
++checking for strftime... yes
++checking for vprintf... yes
++checking for strerror... yes
++checking for strstr... yes
++checking for strtol... yes
++checking for statfs... yes
++checking for getmntent... yes
++checking for hasmntopt... yes
++checking for memset... yes
++checking for time... yes
++checking for uname... yes
++checking for strptime... yes
++checking for ctime_r... yes
++checking for register_printf_modifier... no
++checking for register_printf_specifier... no
++checking that generated files are newer than configure... done
++configure: creating ./config.status
++config.status: creating include/Makefile
++config.status: creating mkreiserfs/Makefile
++config.status: creating mkreiserfs/mkreiserfs.8
++config.status: creating resize_reiserfs/Makefile
++config.status: creating resize_reiserfs/resize_reiserfs.8
++config.status: creating fsck/Makefile
++config.status: creating fsck/reiserfsck.8
++config.status: creating lib/Makefile
++config.status: creating Makefile
++config.status: creating reiserfscore/Makefile
++config.status: creating reiserfscore/reiserfscore.pc
++config.status: creating debugreiserfs/Makefile
++config.status: creating debugreiserfs/debugreiserfs.8
++config.status: creating tune/Makefile
++config.status: creating tune/reiserfstune.8
++config.status: creating include/config.h
++config.status: executing depfiles commands
++config.status: executing libtool commands
++configure:
++
++Type 'make' to compile reiserfsprogs
++sed: can't read config.h: No such file or directory
++Making all in include
++make[1]: Entering directory '/tmp/reiserfsprogs-3.6.27/include'
++make  all-am
++make[2]: Entering directory '/tmp/reiserfsprogs-3.6.27/include'
++make[2]: Leaving directory '/tmp/reiserfsprogs-3.6.27/include'
++make[1]: Leaving directory '/tmp/reiserfsprogs-3.6.27/include'
++Making all in lib
++make[1]: Entering directory '/tmp/reiserfsprogs-3.6.27/lib'
++  CC       io.lo
++  CC       misc.lo
++  CC       parse_time.lo
++misc.c: In function ‘prepare_dma_check’:
++misc.c:721:5: warning: ‘strncat’ specified bound 5 equals source length [-Wstringop-overflow=]
++  721 |     strncat(buf, "/dev/", 5);
++      |     ^~~~~~~~~~~~~~~~~~~~~~~~
++  CC       progbar.lo
++misc.c:722:5: warning: ‘strncat’ specified bound depends on the length of the source argument [-Wstringop-overflow=]
++  722 |     strncat(buf, dirent->d_name,
++      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
++  723 |      strlen(dirent->d_name));
++      |      ~~~~~~~~~~~~~~~~~~~~~~~
++  CCLD     libmisc.la
++make[1]: Leaving directory '/tmp/reiserfsprogs-3.6.27/lib'
++Making all in reiserfscore
++make[1]: Entering directory '/tmp/reiserfsprogs-3.6.27/reiserfscore'
++make  all-am
++make[2]: Entering directory '/tmp/reiserfsprogs-3.6.27/reiserfscore'
++  CC       fix_node.lo
++  CC       do_balan.lo
++  CC       hashes.lo
++  CC       ibalance.lo
++  CC       lbalance.lo
++  CC       prints.lo
++prints.c: In function ‘reiserfs_warning’:
++prints.c:308:38: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
++  308 |                               mode = (mode_t) va_arg(args, void_ptr);
++      |                                      ^
++In file included from ../include/reiserfs_lib.h:19,
++                 from includes.h:12,
++                 from prints.c:8:
++prints.c: In function ‘print_super_block’:
++../include/reiserfs_fs.h:177:20: warning: taking address of packed member of ‘struct reiserfs_super_block’ may result in an unaligned pointer value [-Waddress-of-packed-member]
++  177 | #define sb_jp(sb) (&((sb)->s_v1.sb_journal))
++      |                   ~^~~~~~~~~~~~~~~~~~~~~~~~~
++prints.c:756:27: note: in expansion of macro ‘sb_jp’
++  756 |  print_journal_params(fp, sb_jp(sb));
++      |                           ^~~~~
++  CC       stree.lo
++  CC       node_formats.lo
++  CC       reiserfslib.lo
++  CC       bitmap.lo
++In file included from ../include/io.h:18,
++                 from includes.h:10,
++                 from node_formats.c:6:
++node_formats.c: In function ‘get_ih_key_format’:
++node_formats.c:1034:23: warning: taking address of packed member of ‘struct item_head’ may result in an unaligned pointer value [-Waddress-of-packed-member]
++ 1034 |  get_bit_field_XX(16, &ih->ih_format, 0, 12);
++      |                       ^~~~~~~~~~~~~~
++../include/misc.h:292:21: note: in definition of macro ‘get_bit_field_XX’
++  292 |     p = (__le##XX *)vp;\
++      |                     ^~
++node_formats.c: In function ‘get_ih_flags’:
++node_formats.c:1039:23: warning: taking address of packed member of ‘struct item_head’ may result in an unaligned pointer value [-Waddress-of-packed-member]
++ 1039 |  get_bit_field_XX(16, &ih->ih_format, 12, 4);
++      |                       ^~~~~~~~~~~~~~
++../include/misc.h:292:21: note: in definition of macro ‘get_bit_field_XX’
++  292 |     p = (__le##XX *)vp;\
++      |                     ^~
++node_formats.c: In function ‘set_ih_key_format’:
++../include/misc.h:275:9: warning: taking address of packed member of ‘struct item_head’ may result in an unaligned pointer value [-Waddress-of-packed-member]
++  275 |     p = (__le##XX *)vp;\
++node_formats.c:1044:2: note: in expansion of macro ‘set_bit_field_XX’
++ 1044 |  set_bit_field_XX(16, &ih->ih_format, val, 0, 12);
++      |  ^~~~~~~~~~~~~~~~
++node_formats.c: In function ‘set_ih_flags’:
++../include/misc.h:275:9: warning: taking address of packed member of ‘struct item_head’ may result in an unaligned pointer value [-Waddress-of-packed-member]
++  275 |     p = (__le##XX *)vp;\
++node_formats.c:1049:2: note: in expansion of macro ‘set_bit_field_XX’
++ 1049 |  set_bit_field_XX(16, &ih->ih_format, val, 12, 4);
++      |  ^~~~~~~~~~~~~~~~
++  CC       journal.lo
++  CC       xattr.lo
++In file included from ../include/reiserfs_lib.h:19,
++                 from includes.h:12,
++                 from journal.c:8:
++journal.c: In function ‘commit_expected’:
++../include/reiserfs_fs.h:177:20: warning: taking address of packed member of ‘struct reiserfs_super_block’ may result in an unaligned pointer value [-Waddress-of-packed-member]
++  177 | #define sb_jp(sb) (&((sb)->s_v1.sb_journal))
++      |                   ~^~~~~~~~~~~~~~~~~~~~~~~~~
++journal.c:28:10: note: in expansion of macro ‘sb_jp’
++   28 |  sb_jp = sb_jp(fs->fs_ondisk_sb);
++      |          ^~~~~
++journal.c: In function ‘next_desc_expected’:
++../include/reiserfs_fs.h:177:20: warning: taking address of packed member of ‘struct reiserfs_super_block’ may result in an unaligned pointer value [-Waddress-of-packed-member]
++  177 | #define sb_jp(sb) (&((sb)->s_v1.sb_journal))
++      |                   ~^~~~~~~~~~~~~~~~~~~~~~~~~
++journal.c:44:10: note: in expansion of macro ‘sb_jp’
++   44 |  sb_jp = sb_jp(fs->fs_ondisk_sb);
++      |          ^~~~~
++  CC       reiserfs_err.lo
++  CCLD     libreiserfscore.la
++make[2]: Leaving directory '/tmp/reiserfsprogs-3.6.27/reiserfscore'
++make[1]: Leaving directory '/tmp/reiserfsprogs-3.6.27/reiserfscore'
++Making all in fsck
++make[1]: Entering directory '/tmp/reiserfsprogs-3.6.27/fsck'
++  CC       main.o
++  CC       pass0.o
++  CC       pass1.o
++  CC       pass2.o
++  CC       semantic_check.o
++  CC       semantic_rebuild.o
++In file included from ../include/reiserfs_lib.h:19,
++                 from fsck.h:14,
++                 from semantic_check.c:5:
++semantic_check.c: In function ‘check_semantic_pass.constprop’:
++../include/reiserfs_fs.h:62:51: warning: ‘relocated_ih’ may be used uninitialized in this function [-Wmaybe-uninitialized]
++   62 | #define get_leXX(xx,p,field) (le##xx##_to_cpu ((p)->field))
++      |                                                   ^~
++../include/reiserfs_fs.h:62:51: warning: ‘relocated_ih’ may be used uninitialized in this function [-Wmaybe-uninitialized]
++  CC       pass4.o
++  CC       lost+found.o
++  CC       ubitmap.o
++  CC       uobjectid.o
++  CC       ustree.o
++  CC       ufile.o
++  CC       check_tree.o
++  CC       info.o
++  CC       super.o
++  CCLD     reiserfsck
++make[1]: Leaving directory '/tmp/reiserfsprogs-3.6.27/fsck'
++Making all in debugreiserfs
++make[1]: Entering directory '/tmp/reiserfsprogs-3.6.27/debugreiserfs'
++  CC       debugreiserfs.o
++  CC       pack.o
++  CC       unpack.o
++  CC       stat.o
++  CC       corruption.o
++  CC       scan.o
++In file included from ../include/reiserfs_lib.h:19,
++                 from debugreiserfs.h:13,
++                 from corruption.c:6:
++corruption.c: In function ‘edit_super_block’:
++../include/reiserfs_fs.h:177:20: warning: taking address of packed member of ‘struct reiserfs_super_block’ may result in an unaligned pointer value [-Waddress-of-packed-member]
++  177 | #define sb_jp(sb) (&((sb)->s_v1.sb_journal))
++      |                   ~^~~~~~~~~~~~~~~~~~~~~~~~~
++corruption.c:127:22: note: in expansion of macro ‘sb_jp’
++  127 |  edit_journal_params(sb_jp(fs->fs_ondisk_sb));
++      |                      ^~~~~
++  CC       recover.o
++  CCLD     debugreiserfs
++make[1]: Leaving directory '/tmp/reiserfsprogs-3.6.27/debugreiserfs'
++Making all in resize_reiserfs
++make[1]: Entering directory '/tmp/reiserfsprogs-3.6.27/resize_reiserfs'
++  CC       fe.o
++  CC       resize_reiserfs.o
++  CC       do_shrink.o
++fe.c: In function ‘resize_fs_online’:
++fe.c:20:6: warning: implicit declaration of function ‘mount’ [-Wimplicit-function-declaration]
++   20 |  if (mount(mnt->mnt_fsname, mnt->mnt_dir, mnt->mnt_type,
++      |      ^~~~~
++  CCLD     resize_reiserfs
++make[1]: Leaving directory '/tmp/reiserfsprogs-3.6.27/resize_reiserfs'
++Making all in mkreiserfs
++make[1]: Entering directory '/tmp/reiserfsprogs-3.6.27/mkreiserfs'
++  CC       mkreiserfs.o
++In file included from ../include/reiserfs_lib.h:19,
++                 from mkreiserfs.c:21:
++mkreiserfs.c: In function ‘report’:
++../include/reiserfs_fs.h:177:20: warning: taking address of packed member of ‘struct reiserfs_super_block’ may result in an unaligned pointer value [-Waddress-of-packed-member]
++  177 | #define sb_jp(sb) (&((sb)->s_v1.sb_journal))
++      |                   ~^~~~~~~~~~~~~~~~~~~~~~~~~
++mkreiserfs.c:364:32: note: in expansion of macro ‘sb_jp’
++  364 |   print_journal_params(stdout, sb_jp(sb));
++      |                                ^~~~~
++  CCLD     mkreiserfs
++make[1]: Leaving directory '/tmp/reiserfsprogs-3.6.27/mkreiserfs'
++Making all in tune
++make[1]: Entering directory '/tmp/reiserfsprogs-3.6.27/tune'
++  CC       tune.o
++In file included from ../include/reiserfs_lib.h:19,
++                 from tune.h:12,
++                 from tune.c:8:
++tune.c: In function ‘main’:
++../include/reiserfs_fs.h:177:20: warning: taking address of packed member of ‘struct reiserfs_super_block’ may result in an unaligned pointer value [-Waddress-of-packed-member]
++  177 | #define sb_jp(sb) (&((sb)->s_v1.sb_journal))
++      |                   ~^~~~~~~~~~~~~~~~~~~~~~~~~
++tune.c:763:12: note: in expansion of macro ‘sb_jp’
++  763 |            sb_jp(fs->fs_ondisk_sb));
++      |            ^~~~~
++../include/reiserfs_fs.h:177:20: warning: taking address of packed member of ‘struct reiserfs_super_block’ may result in an unaligned pointer value [-Waddress-of-packed-member]
++  177 | #define sb_jp(sb) (&((sb)->s_v1.sb_journal))
++      |                   ~^~~~~~~~~~~~~~~~~~~~~~~~~
++tune.c:843:31: note: in expansion of macro ‘sb_jp’
++  843 |  print_journal_params(stdout, sb_jp(fs->fs_ondisk_sb));
++      |                               ^~~~~
++../include/reiserfs_fs.h:177:20: warning: taking address of packed member of ‘struct reiserfs_super_block’ may result in an unaligned pointer value [-Waddress-of-packed-member]
++  177 | #define sb_jp(sb) (&((sb)->s_v1.sb_journal))
++      |                   ~^~~~~~~~~~~~~~~~~~~~~~~~~
++tune.c:891:31: note: in expansion of macro ‘sb_jp’
++  891 |  print_journal_params(stdout, sb_jp(fs->fs_ondisk_sb));
++      |                               ^~~~~
++  CCLD     reiserfstune
++make[1]: Leaving directory '/tmp/reiserfsprogs-3.6.27/tune'
++make[1]: Entering directory '/tmp/reiserfsprogs-3.6.27'
++make[1]: Nothing to be done for 'all-am'.
++make[1]: Leaving directory '/tmp/reiserfsprogs-3.6.27'
++Making install in include
++make[1]: Entering directory '/tmp/reiserfsprogs-3.6.27/include'
++make[2]: Entering directory '/tmp/reiserfsprogs-3.6.27/include'
++make[2]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-reiserfsprogs/usr/include/reiserfs'
++ /usr/bin/ginstall -c -m 644 io.h misc.h reiserfs_fs.h reiserfs_lib.h swab.h '/tmp/package-reiserfsprogs/usr/include/reiserfs'
++make[2]: Leaving directory '/tmp/reiserfsprogs-3.6.27/include'
++make[1]: Leaving directory '/tmp/reiserfsprogs-3.6.27/include'
++Making install in lib
++make[1]: Entering directory '/tmp/reiserfsprogs-3.6.27/lib'
++make[2]: Entering directory '/tmp/reiserfsprogs-3.6.27/lib'
++make[2]: Nothing to be done for 'install-exec-am'.
++make[2]: Nothing to be done for 'install-data-am'.
++make[2]: Leaving directory '/tmp/reiserfsprogs-3.6.27/lib'
++make[1]: Leaving directory '/tmp/reiserfsprogs-3.6.27/lib'
++Making install in reiserfscore
++make[1]: Entering directory '/tmp/reiserfsprogs-3.6.27/reiserfscore'
++make  install-am
++make[2]: Entering directory '/tmp/reiserfsprogs-3.6.27/reiserfscore'
++make[3]: Entering directory '/tmp/reiserfsprogs-3.6.27/reiserfscore'
++ /usr/bin/mkdir -p '/tmp/package-reiserfsprogs/usr/lib'
++ /bin/sh ../libtool   --mode=install /usr/bin/ginstall -c   libreiserfscore.la '/tmp/package-reiserfsprogs/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/libreiserfscore.lai /tmp/package-reiserfsprogs/usr/lib/libreiserfscore.la
++libtool: install: /usr/bin/ginstall -c .libs/libreiserfscore.a /tmp/package-reiserfsprogs/usr/lib/libreiserfscore.a
++libtool: install: chmod 644 /tmp/package-reiserfsprogs/usr/lib/libreiserfscore.a
++libtool: install: ranlib /tmp/package-reiserfsprogs/usr/lib/libreiserfscore.a
++libtool: warning: remember to run 'libtool --finish /usr/lib'
++ /usr/bin/mkdir -p '/tmp/package-reiserfsprogs/usr/lib/pkgconfig'
++ /usr/bin/ginstall -c -m 644 reiserfscore.pc '/tmp/package-reiserfsprogs/usr/lib/pkgconfig'
++ /usr/bin/mkdir -p '/tmp/package-reiserfsprogs/usr/include/reiserfs'
++ /usr/bin/ginstall -c -m 644 reiserfs_err.h '/tmp/package-reiserfsprogs/usr/include/reiserfs'
++make[3]: Leaving directory '/tmp/reiserfsprogs-3.6.27/reiserfscore'
++make[2]: Leaving directory '/tmp/reiserfsprogs-3.6.27/reiserfscore'
++make[1]: Leaving directory '/tmp/reiserfsprogs-3.6.27/reiserfscore'
++Making install in fsck
++make[1]: Entering directory '/tmp/reiserfsprogs-3.6.27/fsck'
++make[2]: Entering directory '/tmp/reiserfsprogs-3.6.27/fsck'
++ /usr/bin/mkdir -p '/tmp/package-reiserfsprogs/sbin'
++  /bin/sh ../libtool   --mode=install /usr/bin/ginstall -c reiserfsck '/tmp/package-reiserfsprogs/sbin'
++libtool: install: /usr/bin/ginstall -c reiserfsck /tmp/package-reiserfsprogs/sbin/reiserfsck
++make  install-exec-hook
++make[3]: Entering directory '/tmp/reiserfsprogs-3.6.27/fsck'
++ln -s reiserfsck /tmp/package-reiserfsprogs/sbin/fsck.reiserfs
++/usr/bin/ginstall -c -m 755 -d /tmp/package-reiserfsprogs/usr/man/man8
++ln -s reiserfsck.8 /tmp/package-reiserfsprogs/usr/man/man8/fsck.reiserfs.8
++make[3]: Leaving directory '/tmp/reiserfsprogs-3.6.27/fsck'
++ /usr/bin/mkdir -p '/tmp/package-reiserfsprogs/usr/man/man8'
++ /usr/bin/ginstall -c -m 644 reiserfsck.8 '/tmp/package-reiserfsprogs/usr/man/man8'
++make[2]: Leaving directory '/tmp/reiserfsprogs-3.6.27/fsck'
++make[1]: Leaving directory '/tmp/reiserfsprogs-3.6.27/fsck'
++Making install in debugreiserfs
++make[1]: Entering directory '/tmp/reiserfsprogs-3.6.27/debugreiserfs'
++make[2]: Entering directory '/tmp/reiserfsprogs-3.6.27/debugreiserfs'
++ /usr/bin/mkdir -p '/tmp/package-reiserfsprogs/sbin'
++  /bin/sh ../libtool   --mode=install /usr/bin/ginstall -c debugreiserfs '/tmp/package-reiserfsprogs/sbin'
++libtool: install: /usr/bin/ginstall -c debugreiserfs /tmp/package-reiserfsprogs/sbin/debugreiserfs
++make  install-exec-hook
++make[3]: Entering directory '/tmp/reiserfsprogs-3.6.27/debugreiserfs'
++ln -s debugreiserfs /tmp/package-reiserfsprogs/sbin/debugfs.reiserfs
++/usr/bin/ginstall -c -m 755 -d /tmp/package-reiserfsprogs/usr/man/man8
++ln -s debugreiserfs.8 /tmp/package-reiserfsprogs/usr/man/man8/debugfs.reiserfs.8
++make[3]: Leaving directory '/tmp/reiserfsprogs-3.6.27/debugreiserfs'
++ /usr/bin/mkdir -p '/tmp/package-reiserfsprogs/usr/man/man8'
++ /usr/bin/ginstall -c -m 644 debugreiserfs.8 '/tmp/package-reiserfsprogs/usr/man/man8'
++make[2]: Leaving directory '/tmp/reiserfsprogs-3.6.27/debugreiserfs'
++make[1]: Leaving directory '/tmp/reiserfsprogs-3.6.27/debugreiserfs'
++Making install in resize_reiserfs
++make[1]: Entering directory '/tmp/reiserfsprogs-3.6.27/resize_reiserfs'
++make[2]: Entering directory '/tmp/reiserfsprogs-3.6.27/resize_reiserfs'
++ /usr/bin/mkdir -p '/tmp/package-reiserfsprogs/sbin'
++  /bin/sh ../libtool   --mode=install /usr/bin/ginstall -c resize_reiserfs '/tmp/package-reiserfsprogs/sbin'
++libtool: install: /usr/bin/ginstall -c resize_reiserfs /tmp/package-reiserfsprogs/sbin/resize_reiserfs
++ /usr/bin/mkdir -p '/tmp/package-reiserfsprogs/usr/man/man8'
++ /usr/bin/ginstall -c -m 644 resize_reiserfs.8 '/tmp/package-reiserfsprogs/usr/man/man8'
++make[2]: Leaving directory '/tmp/reiserfsprogs-3.6.27/resize_reiserfs'
++make[1]: Leaving directory '/tmp/reiserfsprogs-3.6.27/resize_reiserfs'
++Making install in mkreiserfs
++make[1]: Entering directory '/tmp/reiserfsprogs-3.6.27/mkreiserfs'
++make[2]: Entering directory '/tmp/reiserfsprogs-3.6.27/mkreiserfs'
++ /usr/bin/mkdir -p '/tmp/package-reiserfsprogs/sbin'
++  /bin/sh ../libtool   --mode=install /usr/bin/ginstall -c mkreiserfs '/tmp/package-reiserfsprogs/sbin'
++libtool: install: /usr/bin/ginstall -c mkreiserfs /tmp/package-reiserfsprogs/sbin/mkreiserfs
++make  install-exec-hook
++make[3]: Entering directory '/tmp/reiserfsprogs-3.6.27/mkreiserfs'
++ln -s mkreiserfs /tmp/package-reiserfsprogs/sbin/mkfs.reiserfs
++/usr/bin/ginstall -c -m 755 -d /tmp/package-reiserfsprogs/usr/man/man8
++ln -s mkreiserfs.8 /tmp/package-reiserfsprogs/usr/man/man8/mkfs.reiserfs.8
++make[3]: Leaving directory '/tmp/reiserfsprogs-3.6.27/mkreiserfs'
++ /usr/bin/mkdir -p '/tmp/package-reiserfsprogs/usr/man/man8'
++ /usr/bin/ginstall -c -m 644 mkreiserfs.8 '/tmp/package-reiserfsprogs/usr/man/man8'
++make[2]: Leaving directory '/tmp/reiserfsprogs-3.6.27/mkreiserfs'
++make[1]: Leaving directory '/tmp/reiserfsprogs-3.6.27/mkreiserfs'
++Making install in tune
++make[1]: Entering directory '/tmp/reiserfsprogs-3.6.27/tune'
++make[2]: Entering directory '/tmp/reiserfsprogs-3.6.27/tune'
++ /usr/bin/mkdir -p '/tmp/package-reiserfsprogs/sbin'
++  /bin/sh ../libtool   --mode=install /usr/bin/ginstall -c reiserfstune '/tmp/package-reiserfsprogs/sbin'
++libtool: install: /usr/bin/ginstall -c reiserfstune /tmp/package-reiserfsprogs/sbin/reiserfstune
++make  install-exec-hook
++make[3]: Entering directory '/tmp/reiserfsprogs-3.6.27/tune'
++ln -s reiserfstune /tmp/package-reiserfsprogs/sbin/tunefs.reiserfs
++/usr/bin/ginstall -c -m 755 -d /tmp/package-reiserfsprogs/usr/man/man8
++ln -s reiserfstune.8 /tmp/package-reiserfsprogs/usr/man/man8/tunefs.reiserfs.8
++make[3]: Leaving directory '/tmp/reiserfsprogs-3.6.27/tune'
++ /usr/bin/mkdir -p '/tmp/package-reiserfsprogs/usr/man/man8'
++ /usr/bin/ginstall -c -m 644 reiserfstune.8 '/tmp/package-reiserfsprogs/usr/man/man8'
++make[2]: Leaving directory '/tmp/reiserfsprogs-3.6.27/tune'
++make[1]: Leaving directory '/tmp/reiserfsprogs-3.6.27/tune'
++make[1]: Entering directory '/tmp/reiserfsprogs-3.6.27'
++make[2]: Entering directory '/tmp/reiserfsprogs-3.6.27'
++make[2]: Nothing to be done for 'install-exec-am'.
++make[2]: Nothing to be done for 'install-data-am'.
++make[2]: Leaving directory '/tmp/reiserfsprogs-3.6.27'
++make[1]: Leaving directory '/tmp/reiserfsprogs-3.6.27'
++ln: failed to create symbolic link 'debugfs.reiserfs.8': File exists
++ln: failed to create symbolic link 'mkfs.reiserfs.8': File exists
++ln: failed to create symbolic link 'fsck.reiserfs.8': File exists
++ln: failed to create symbolic link 'tunefs.reiserfs.8': File exists
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++sbin/debugfs.reiserfs	debugreiserfs
++sbin/fsck.reiserfs	reiserfsck
++sbin/mkfs.reiserfs	mkreiserfs
++sbin/tunefs.reiserfs	reiserfstune
++usr/man/man8/debugfs.reiserfs.8.gz	debugreiserfs.8.gz
++usr/man/man8/fsck.reiserfs.8.gz	reiserfsck.8.gz
++usr/man/man8/mkfs.reiserfs.8.gz	mkreiserfs.8.gz
++usr/man/man8/resizefs.reiserfs.8.gz	resize_reiserfs.8.gz
++usr/man/man8/tunefs.reiserfs.8.gz	reiserfstune.8.gz
++
++Making symbolic link creation script:
++( cd sbin ; rm -rf debugfs.reiserfs )
++( cd sbin ; ln -sf debugreiserfs debugfs.reiserfs )
++( cd sbin ; rm -rf fsck.reiserfs )
++( cd sbin ; ln -sf reiserfsck fsck.reiserfs )
++( cd sbin ; rm -rf mkfs.reiserfs )
++( cd sbin ; ln -sf mkreiserfs mkfs.reiserfs )
++( cd sbin ; rm -rf tunefs.reiserfs )
++( cd sbin ; ln -sf reiserfstune tunefs.reiserfs )
++( cd usr/man/man8 ; rm -rf debugfs.reiserfs.8.gz )
++( cd usr/man/man8 ; ln -sf debugreiserfs.8.gz debugfs.reiserfs.8.gz )
++( cd usr/man/man8 ; rm -rf fsck.reiserfs.8.gz )
++( cd usr/man/man8 ; ln -sf reiserfsck.8.gz fsck.reiserfs.8.gz )
++( cd usr/man/man8 ; rm -rf mkfs.reiserfs.8.gz )
++( cd usr/man/man8 ; ln -sf mkreiserfs.8.gz mkfs.reiserfs.8.gz )
++( cd usr/man/man8 ; rm -rf resizefs.reiserfs.8.gz )
++( cd usr/man/man8 ; ln -sf resize_reiserfs.8.gz resizefs.reiserfs.8.gz )
++( cd usr/man/man8 ; rm -rf tunefs.reiserfs.8.gz )
++( cd usr/man/man8 ; ln -sf reiserfstune.8.gz tunefs.reiserfs.8.gz )
++
++It is recommended that you make these lines your new installation script.
++
++Would you like to make this stuff the install script for this package
++and remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './usr/man/man8/tunefs.reiserfs.8.gz'
++removed './usr/man/man8/fsck.reiserfs.8.gz'
++removed './usr/man/man8/resizefs.reiserfs.8.gz'
++removed './usr/man/man8/debugfs.reiserfs.8.gz'
++removed './usr/man/man8/mkfs.reiserfs.8.gz'
++removed './sbin/debugfs.reiserfs'
++removed './sbin/tunefs.reiserfs'
++removed './sbin/fsck.reiserfs'
++removed './sbin/mkfs.reiserfs'
++
++Creating your new ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/reiserfsprogs-3.6.27-x86_64-2.txz
++
++./
++install/
++install/doinst.sh
++install/slack-desc
++sbin/
++sbin/debugreiserfs
++sbin/mkreiserfs
++sbin/reiserfsck
++sbin/reiserfstune
++sbin/resize_reiserfs
++usr/
++usr/doc/
++usr/doc/reiserfsprogs-3.6.27/
++usr/doc/reiserfsprogs-3.6.27/AUTHORS
++usr/doc/reiserfsprogs-3.6.27/COPYING
++usr/doc/reiserfsprogs-3.6.27/CREDITS
++usr/doc/reiserfsprogs-3.6.27/INSTALL
++usr/doc/reiserfsprogs-3.6.27/NEWS
++usr/doc/reiserfsprogs-3.6.27/README
++usr/man/
++usr/man/man8/
++usr/man/man8/debugreiserfs.8.gz
++usr/man/man8/mkreiserfs.8.gz
++usr/man/man8/reiserfsck.8.gz
++usr/man/man8/reiserfstune.8.gz
++usr/man/man8/resize_reiserfs.8.gz
++WARNING:  zero length file usr/doc/reiserfsprogs-3.6.27/AUTHORS
++WARNING:  zero length file usr/doc/reiserfsprogs-3.6.27/NEWS
++
++Slackware package /tmp/reiserfsprogs-3.6.27-x86_64-2.txz created.
++

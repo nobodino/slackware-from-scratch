@@ -1,0 +1,18 @@
+
+IMPORTANT!
+
+To fail/exit a script, use this:
+
+[command that fails] || { touch ${SLACK_X_BUILD_DIR}/${PKGNAME}.failed ; continue ; }
+
+DO NOT USE THIS:
+
+[command that fails] || exit 1
+
+as it will cause the parent script to exit in the wrong location and possibly
+silently skip building some packages.
+
+Thanks,
+
+The Management
+

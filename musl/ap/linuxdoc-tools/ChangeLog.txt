@@ -1,0 +1,355 @@
+Wed Jan 29 09:11:40 GMT 2020
+ linuxdoc-tools 0.9.73, build 5.
+ Stuart Winter <mozes@slackware.com>
+  * gnome-doc-tools: Make '/usr/bin/xml2po' and its accompanying Python module
+    build against Python3.
+    Thanks to bassmadrigal and ponce on LQ for the report and the patch.
+  * docbook2x: Removed '--disable-maintainer-mode' configuration flag
+    because it's no longer valid.
+
+Thu Jan  2 11:47:35 GMT 2020
+ linuxdoc-tools 0.9.73, build 4.
+ Stuart Winter <mozes@slackware.com>
+  * Upgraded to gtk-doc-1.32
+  * Upgraded to perl-XML-SAX-1.02
+  * gnome-doc-tools: Migrated to use Python version 3.
+
+Tue Feb  5 20:03:29 GMT 2019
+ linuxdoc-tools 0.9.73, build 1.
+ Stuart Winter <mozes@slackware.com>
+  * Upgraded to gtk-doc-1.29
+  * Upgraded to asciidoc-8.6.10
+  * Upgraded to perl-XML-SAX-1.00
+  * postbuildfixes.sh: Remove code to delete *.la files
+    (slacktrack v2.19 handles this by default)
+    Remove code to delete 'perllocal.pod' (created by SGMLSPL)
+    (slacktrack -Q handles this).
+
+Wed Nov  8 10:09:53 GMT 2017
+ linuxdoc-tools 0.9.72, build 4.
+ Stuart Winter <mozes@slackware.com>
+  * Upgraded to DocBook XSL Stylesheets 1.79.2
+    Applied patch to Fix Bus error with xsltproc
+    Thanks to ecd102 on LQ for the report.
+
+Thu Jun  15 08:08:08 UTC 2017
+ linuxdoc-tools 0.9.72, build 3.
+ Stuart Winter <mozes@slackware.com>
+  * Remove .la files from the package at the suggestion of volkerdi.
+    /usr/lib/libospgrove.la
+    /usr/lib/libosp.la
+    /usr/lib/libostyle.la
+    /usr/lib/libogrove.la
+    (or "lib64").
+  None of these are referenced by a '.la' file within any Slackware package.
+  For rationale behind this, see:
+  http://www.linuxquestions.org/questions/slackware-14/libtool%27s-la-files-4175429931/#post4795486
+
+Wed Jun  7 10:27:13 UTC 2017
+ linuxdoc-tools 0.9.72, build 2.
+ Stuart Winter <mozes@slackware.com>
+  * Switched to OpenJade-1.3.2 (from 1.3.3-pre1 which was segfaulting)
+    No other distributions that I checked ever upgraded beyond this last
+    stable release.  Debian are using a modified version of the 1.4 branch
+    but this doesn't work with our stack yet.
+  * Upgraded to perl-XML-NamespaceSupport-1.12
+  * Upgraded to perl-XML-SAX-Base-1.09
+  * Updated build script to work with bash 4.4.  Thanks to Heinz Wiesinger.
+  * Support '.conf.new' for config files within /etc/asciidoc
+    Thanks to franzen on LQ for the suggestion.
+  * Log the output of the postbuildfixes.sh script (package fixups, post build,
+    pre-packaging) to the slacktrack log file.  The asciidoc .conf.new support
+    is conducted within that script, and includes a check as to whether any
+    dangling symlinks appeared as a result of mv'ing the files.
+    Requries slacktrack v2.18 as it uses a new option to achieve this.
+
+Mon Jul 25 19:14:20 UTC 2016
+ linuxdoc-tools 0.9.72, build 1.
+ Stuart Winter <mozes@slackware.com>
+  * Upgraded to linuxdoc-tools 0.9.72
+  * Upgraded to gtk-doc 1.25
+  * Upgraded to xmlto 0.0.28
+  * Upgraded to DocBook XSL Stylesheets 1.79.1
+    No longer ship the "tools" directory because it grew from a couple of
+    MBs to 23MB, and the content of it looks to be just package updating tools which
+    does not make sense for a vendor to include in a binary package OS.
+  * Apply patch from Fedora for AsciiDoc to write manifests in
+    UTF8 by default.
+
+Fri Aug 14 09:23:02 UTC 2015
+ Stuart Winter <mozes@slackware.com>
+ linuxdoc-tools 0.9.69, build 4.
+  * Upgraded to gtk-doc-1.24
+  * Moved from i486 to i586 target on Intel 32bit
+
+Mon Apr 27 21:07:41 UTC 2015
+ Stuart Winter <mozes@slackware.com>
+ linuxdoc-tools 0.9.69, build 3.
+  * Upgraded to asciidoc-8.6.9
+  * Upgraded to gtk-doc-1.21
+  * linuxdoc-tools: Removed dead code to copy 'sgml2{txt,latex,info}' in to
+    /usr/bin. These used to be supplied as shell wrappers, but the 'make install'
+    now creates symlinks to 'linuxdoc'.
+
+Tue Jul 15 08:57:22 UTC 2014
+ Stuart Winter <mozes@slackware.com>
+ linuxdoc-tools 0.9.69, build 2.
+  * The latest Debian patch set for libsgmls renamed /usr/bin/sgmlspl
+    to /usr/bin/sgmlspl.pl to match their own source management requirements.
+    This file has been renamed back to /usr/bin/sgmlspl
+    Thanks to Matteo Bernardini for the report.
+
+Fri May 16 00:50:09 UTC 2014
+ Stuart Winter <mozes@slackware.com>
+ linuxdoc-tools 0.9.69, build 1.
+  * Upgraded to linuxdoc-tools-0.9.69
+  * Upgraded to gtk-doc-1.20
+  * Upgraded to xmlto-0.0.26
+  * Updated build script to cater for some small changes in source archive
+    presentation.
+
+Sun Jun 23 20:56:24 UTC 2013
+ Stuart Winter <mozes@slackware.com>
+ linuxdoc-tools 0.9.68, build 4.
+  * Added docbook2X-0.8.8
+  * Added dependencies for docbook2X:
+     perl-XML-SAX-0.99
+     perl-XML-NamespaceSupport-1.11
+     perl-XML-SAX-Base-1.08
+  * Upgraded to gtk-doc-1.19
+
+Fri Jun  5 21:51:02 UTC 2013
+ Patrick Volkerding <volkerdi@slackware.com>
+ linuxdoc-tools 0.9.68, build 3.
+ Rebuild for perl-5.18.0.
+
+Fri Apr  5 21:51:02 UTC 2013
+ Patrick Volkerding <volkerdi@slackware.com>
+ linuxdoc-tools 0.9.68, build 2.
+  * Create a symlink VERSION.xsl -> VERSION
+
+Tue Apr  2 19:54:49 UTC 2013
+ Stuart Winter <mozes@slackware.com>
+ linuxdoc-tools 0.9.68, build 1.
+  * Upgraded to linuxdoc-tools 0.9.68
+  * Upgraded to AsciiDoc-8.6.8
+  * Upgraded to DocBook XSL Stylesheets 1.78.1
+  * Removed dangling symlinks from /usr/doc.
+
+Fri Jun 29 17:34:25 UTC 2012
+ Stuart Winter <mozes@slackware.com>
+ linuxdoc-tools 0.9.67, build 2.
+  * Made a compatibility symlink between
+   /usr/share/xml/docbook/stylesheet/docbook-xsl -> /usr/share/xml/docbook/xsl-stylesheets-<ver>
+  Thanks to Patrick Verner for the suggestion.
+
+Mon May 28 21:40:41 UTC 2012
+ Stuart Winter <mozes@slackware.com>
+ linuxdoc-tools 0.9.67, build 1
+  * Removed the files that were overlapping with the 'Python' (and any other) package.
+  * Upgraded to linuxdoc-tools 0.9.67
+  * Upgraded to gnome-doc-utils 0.20.10
+  * Upgraded to xmlto-0.0.25
+  * Upgraded to gtk-doc-1.18
+  * Upgraded to AsciiDoc-8.6.7
+  * Upgraded to DocBook XSL Stylesheets 1.76.1
+  * Fix OpenJade FTBFS with Perl 5.16 installed: Copy the perl4 corelib 'getopts.pl'
+    into OpenJade's build directory as a build-time work-around.
+
+Sun May 15 03:42:16 UTC 2011
+ Patrick Volkerding <volkerdi@slackware.com>
+ linuxdoc-tools 0.9.66, build 9
+ Rebuild for perl-5.14.0.
+
+Mon Mar 21 17:39:48 UTC 2011
+ Patrick Volkerding <volkerdi@slackware.com>
+ linuxdoc-tools 0.9.66, build 8
+ Upgraded to gnome-doc-utils-0.20.4.
+
+Wed Jan 26 18:08:43 UTC 2011
+ Patrick Volkerding <volkerdi@slackware.com>
+ linuxdoc-tools 0.9.66, build 7
+ Rebuild for perl-5.12.3.
+
+Sat Jan  1 21:44:58 UTC 2011
+ Patrick Volkerding <volkerdi@slackware.com>
+ linuxdoc-tools 0.9.66, build 6
+ Rebuild for perl-5.12.2.
+
+Thu Nov 11 13:37:42 CST 2010
+ Patrick Volkerding <volkerdi@slackware.com>
+ linuxdoc-tools 0.9.66, build 5
+ Fixes:
+  * asciidoc: Patched to revert a change that broke processing the
+    documentation for git.
+
+Tue Oct 19 16:10:42 UTC 2010
+ Stuart Winter <mozes@slackware.com>
+ linuxdoc-tools 0.9.66, build 4
+ Upgraded a couple of component packages:
+  * gnome-doc-utils-0.20.2
+  * asciidoc-8.6.2.
+ Fixes:
+  * gtk-doc: Patched to fix a problem with vim.
+    Thanks to Trev Carey-Smith for the report and Robby Workman for
+    finding the patch.
+
+Sun Jul 25 12:40:07 UTC 2010
+ Stuart Winter <mozes@slackware.com>
+ linuxdoc-tools 0.9.66, build 3
+ Upgraded a few component packages:
+  * Upgraded to gtk-doc-1.15
+  * Upgraded to asciidoc-8.5.3
+  * Upgraded to gnome-doc-tools-0.20.1
+    Thanks to Steve Kennedy for the notification about the new version.
+  * Updated various packages to include more recent patches from Fedora.
+  * Changed build script to use rpm2cpio instead of rpm2tgz because
+    with different builds/versions of rpm2tgz (or "rpm" - I'm not sure
+    what causes the change) the "tgz" that is created flips back and
+    forth between having the content in a sub directory, or the root
+    of the archive.
+    Using rpm2cpio means that as a minimum you need seamonkey-solibs
+    installed because rpm2cpio requires libnss3.so.  Mozilla-FireFox
+    & Thunderbird also contain this library.  Slackware is built on a
+    full system, so this shouldn't pose a problem.
+
+Wed Feb 10 10:02:16 GMT 2010
+ Stuart Winter <mozes@slackware.com>
+ linuxdoc-tools 0.9.66, build 2.
+ * Applied an upstream patch to gtk-doc-1.13, fixing problems
+   with gtkdoc-fixxref.
+ * Updated build script to work with the new rpm2tgz which now
+   packages all src RPM contents into the root of the tar archive
+   rather than a sub directory.
+
+Tue Jan 12 20:42:57 GMT 2010
+ Stuart Winter <mozes@slackware.com>
+ linuxdoc-tools 0.9.66, build 1.
+ * Upgraded to linuxdoc-tools 0.9.66
+ * Upgraded to gnome-doc-utils 0.19.1
+ * Upgraded to gtk-doc 1.13
+ * Upgraded to AsciiDoc 8.5.2.
+ * Upgraded to docbook-xsl 1.75.2.
+ * Upgraded to docbook-xsl-doc 1.75.2.
+
+Tue Nov 10 18:28:49 GMT 2009
+ Stuart Winter <mozes@slackware.com>
+ linuxdoc-tools-0.9.65, build 1.
+ * Upgraded to linuxdoc-tools 0.9.65
+ * Upgraded to gnome-doc-utils-0.18.0
+ * Upgraded to xmlto-0.0.23
+ * Upgraded to asciidoc-8.5.1
+
+Sun Aug  2 19:07:43 UTC 2009
+ Stuart Winter <mozes@slackware.com>
+ linuxdoc-tools-0.9.56, build 5.
+ * Replace /usr/share/xml/docbook/xml-dtd-4.5/ent/isogrk4.ent with
+   the Unicode-4 entity map from sgml-common, to fix errors such as
+   ""1D6C2" is not a character number in the document character set"
+   Thanks to Niels Horn for the fix and Ron Parker for the report.
+
+Thu Jul 30 15:56:10 UTC 2009
+ Stuart Winter <mozes@slackware.com>
+ linuxdoc-tools-0.9.56, build 4.
+* Upgraded to:
+   docbook-xsl-1.75.1
+   docbook-xsl-doc-1.75.1
+   gnome-doc-utils-0.17.2
+   asciidoc-8.4.5
+   OpenJade-1.3.3-pre1
+
+This package has a problem producing simple docbook documents
+though, as reported by Ron Parker.
+
+ For example:
+  # cat << EOF > /tmp/test.txt
+Hello
+this will not work yet
+EOF
+  # asciidoc -b docbook  /tmp/test.txt
+  # db2rtf /tmp/test.xml
+You'll see this error:
+jade:/usr/share/xml/docbook/xml-dtd-4.5/ent/isogrk4.ent:42:30:E: "1D6C2" is not a character number in the document character set
+
+I've been reading a few URLs:
+http://lists.oasis-open.org/archives/docbook-apps/200511/msg00119.html
+http://bugs.gentoo.org/238785
+
+The majority of the build process for Docbook and supporting tools
+is taken verbatim from Linux From Scratch:
+http://www.linuxfromscratch.org/blfs/view/svn/index.html
+I have in the past looked at Fedora and Debian spec & rules files
+but LFS has great documentation and makes maintaining this package
+a lot easier, so I'm very keen to keep to their build process
+(including file/directory paths) as much as possible.
+
+If anybody knows how to resolve this, please let me know!
+
+Fri May 29 18:48:41 UTC 2009
+ Stuart Winter <mozes@slackware.com>
+ linuxdoc-tools-0.9.56, build 3.
+ * Remove orphaned *.pyc (Python compiled) files.
+   The addition of GNOME doc-tools causes some Python *.py
+   files to be recompiled, resulting in them appearing in this
+   package. These files belonged to the Python package and
+   therefore caused an overlap.
+
+Mon May 25 14:29:26 UTC 2009
+ Stuart Winter <mozes@slackware.com>
+ linuxdoc-tools-0.9.56, build 2.
+ * Added missing asciidoc filters.
+   Thanks to 'one forall' for the report.
+   Now use asciidoc's 'make install' target to install
+   rather than hand crafted script.
+
+Tue May 12 18:34:38 UTC 2009
+ Stuart Winter <mozes@slackware.com>
+ linuxdoc-tools-0.9.56, build 1.
+  * Upgraded to linuxdoc-tools 0.9.56
+  * Patched OpenSP to prevent segfaulting on the ARM platform:
+    https://bugzilla.redhat.com/show_bug.cgi?id=245104
+  * Added gnome-doc-utils-0.16.0, for gtkdoc.
+  * Upgraded to gtkdoc-1.11
+  * Upgraded to xmlto-0.0.22
+  * Upgraded to asciidoc-8.4.4
+
+Thu Feb 28 17:47:21 CST 2008 <pjv>
+  Upgraded these source files:
+  asciidoc-8.2.5.tar.gz
+  docbook-utils-0.6.14-13.fc9.src.rpm
+  docbook-xsl-1.73.2.tar.bz2
+  docbook-xsl-doc-1.73.2.tar.bz2
+  gtk-doc-1.9.tar.bz2
+  libsgmls-perl_1.03ii-32.diff.gz
+  linuxdoc-tools_0.9.21-0.11.tar.gz
+  sgml-common-0.6.3-23.fc9.src.rpm
+  xmlto-0.0.20.tar.bz2
+
+Sat May  5 13:38:46 UTC 2007
+ Stuart Winter <mozes@slackware.com>
+ linuxdoc-tools-0.9.21, build 4
+  * Converted from docbook RPM source builds to direct source build, with
+    the build script code by: Jerome Pinot
+    based on the Linux From Scratch documentation.
+    Merged some of Jerome's code back into the original linuxdoc-tools.build
+    script.
+    This fixes many bugs with the previous package, with broken catalogs
+    and so on.
+  * Upgraded to gtk-doc v1.8
+  * Upgraded to DocBook SGML DTD v4.5
+  * Upgraded to DocBook DSSSL Stylesheets v1.79
+  * Upgraded to DocBook XML DTD v4.5
+  * Upgraded to DocBook XSL Stylesheets v1.72.0 & docs
+  * Added AsciiDoc v8.2.1
+  * Added xmlto v0.0.18
+  * Removed unused build script code cruft from linuxdoc-tools.build
+  * Re-ordered the build script since OpenSP v1.5.2 requires xmlto,
+    and xmlto requires the docbook stuff to be installed.
+  * Removed buildDocBookCatalog script.  If you delete your system's SGML or XML
+    catalog scripts, thinking that this script can repopulate them, it won't.
+    If you're adding docbook data to your system, you need to read the docs that
+    come with the new data you're installing.
+  * Thanks to Red Hat for the loan of a laptop on which to test this build ;-)
+
+Sat Oct 01 2005
+  * Previous releases

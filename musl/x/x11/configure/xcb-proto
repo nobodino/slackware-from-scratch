@@ -1,0 +1,35 @@
+mkdir python2 python3
+
+cd python2
+  CFLAGS=$SLKCFLAGS \
+  CXXFLAGS=$SLKCFLAGS \
+  PYTHON=python3 \
+  ../configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --infodir=/usr/info \
+    --mandir=/usr/man \
+    --docdir=/usr/doc/${PKGNAME}-${MODULAR_PACKAGE_VERSION} \
+    --with-udev-rules-dir=/lib/udev/rules.d \
+    --disable-static \
+    --build=$ARCH-slackware-linux-musl
+cd -
+
+cd python3
+  CFLAGS=$SLKCFLAGS \
+  CXXFLAGS=$SLKCFLAGS \
+  PYTHON=python \
+  ../configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --infodir=/usr/info \
+    --mandir=/usr/man \
+    --docdir=/usr/doc/${PKGNAME}-${MODULAR_PACKAGE_VERSION} \
+    --with-udev-rules-dir=/lib/udev/rules.d \
+    --disable-static \
+    --build=$ARCH-slackware-linux-musl
+cd -

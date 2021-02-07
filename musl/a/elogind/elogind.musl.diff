@@ -1,0 +1,3091 @@
+diff -ruBN /tmp/elogind/elogind.SlackBuild /source/a/elogind/elogind.SlackBuild
+--- /tmp/elogind/elogind.SlackBuild	2020-12-20 01:58:53.000000000 +0000
++++ /source/a/elogind/elogind.SlackBuild	2021-01-17 23:31:09.000000000 +0000
+@@ -59,7 +59,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "armv7hl" ]; then
+   SLKCFLAGS="-O3 -march=armv7-a -mfpu=vfpv3-d16"
+   LIBDIRSUFFIX=""
+diff -ruBN /tmp/elogind/elogind.SlackBuild.log /source/a/elogind/elogind.SlackBuild.log
+--- /tmp/elogind/elogind.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/a/elogind/elogind.SlackBuild.log	2021-01-17 23:38:52.000000000 +0000
+@@ -0,0 +1,3075 @@
++elogind-246.9.2/
++elogind-246.9.2/configure
++elogind-246.9.2/README.md
++elogind-246.9.2/.mailmap
++elogind-246.9.2/meson.build
++elogind-246.9.2/src/
++elogind-246.9.2/src/shared/
++elogind-246.9.2/src/shared/verbs.c
++elogind-246.9.2/src/shared/exec-elogind.c
++elogind-246.9.2/src/shared/bus-get-properties.h
++elogind-246.9.2/src/shared/meson.build
++elogind-246.9.2/src/shared/pam-util.h
++elogind-246.9.2/src/shared/acl-util.c
++elogind-246.9.2/src/shared/pretty-print.c
++elogind-246.9.2/src/shared/efi-loader.h
++elogind-246.9.2/src/shared/pager.c
++elogind-246.9.2/src/shared/pkcs11-util.c
++elogind-246.9.2/src/shared/pam-util.c
++elogind-246.9.2/src/shared/efi-loader.c
++elogind-246.9.2/src/shared/dns-domain.h
++elogind-246.9.2/src/shared/musl_missing.c
++elogind-246.9.2/src/shared/format-table.h
++elogind-246.9.2/src/shared/cgroup-setup.h
++elogind-246.9.2/src/shared/main-func.h
++elogind-246.9.2/src/shared/service-util.c
++elogind-246.9.2/src/shared/libcrypt-util.h
++elogind-246.9.2/src/shared/bus-locator.c
++elogind-246.9.2/src/shared/utmp-wtmp.h
++elogind-246.9.2/src/shared/pkcs11-util.h
++elogind-246.9.2/src/shared/conf-parser.h
++elogind-246.9.2/src/shared/group-record.h
++elogind-246.9.2/src/shared/user-record.h
++elogind-246.9.2/src/shared/group-record.c
++elogind-246.9.2/src/shared/varlink.c
++elogind-246.9.2/src/shared/dev-setup.h
++elogind-246.9.2/src/shared/reboot-util.c
++elogind-246.9.2/src/shared/verbs.h
++elogind-246.9.2/src/shared/daemon-util.h
++elogind-246.9.2/src/shared/fileio-label.c
++elogind-246.9.2/src/shared/udev-util.c
++elogind-246.9.2/src/shared/bus-locator.h
++elogind-246.9.2/src/shared/exec-util.h
++elogind-246.9.2/src/shared/dns-domain.c
++elogind-246.9.2/src/shared/pe-header.h
++elogind-246.9.2/src/shared/bus-log-control-api.h
++elogind-246.9.2/src/shared/format-table.c
++elogind-246.9.2/src/shared/json-internal.h
++elogind-246.9.2/src/shared/reboot-util.h
++elogind-246.9.2/src/shared/user-record-nss.h
++elogind-246.9.2/src/shared/qsort_r_missing.c
++elogind-246.9.2/src/shared/spawn-polkit-agent.h
++elogind-246.9.2/src/shared/bus-map-properties.c
++elogind-246.9.2/src/shared/udev-util.h
++elogind-246.9.2/src/shared/pretty-print.h
++elogind-246.9.2/src/shared/libcrypt-util.c
++elogind-246.9.2/src/shared/clean-ipc.h
++elogind-246.9.2/src/shared/acl-util.h
++elogind-246.9.2/src/shared/bus-polkit.c
++elogind-246.9.2/src/shared/tests.h
++elogind-246.9.2/src/shared/json.h
++elogind-246.9.2/src/shared/mount-util.h
++elogind-246.9.2/src/shared/bootspec.c
++elogind-246.9.2/src/shared/sleep-config.h
++elogind-246.9.2/src/shared/dev-setup.c
++elogind-246.9.2/src/shared/libshared.sym
++elogind-246.9.2/src/shared/conf-parser.c
++elogind-246.9.2/src/shared/user-record-nss.c
++elogind-246.9.2/src/shared/bus-object.c
++elogind-246.9.2/src/shared/bus-get-properties.c
++elogind-246.9.2/src/shared/tests.c
++elogind-246.9.2/src/shared/bus-print-properties.c
++elogind-246.9.2/src/shared/bus-util.c
++elogind-246.9.2/src/shared/bus-log-control-api.c
++elogind-246.9.2/src/shared/serialize.c
++elogind-246.9.2/src/shared/cgroup-setup.c
++elogind-246.9.2/src/shared/test-tables.h
++elogind-246.9.2/src/shared/bus-object.h
++elogind-246.9.2/src/shared/enable-mempool.c
++elogind-246.9.2/src/shared/pager.h
++elogind-246.9.2/src/shared/utmp-wtmp.c
++elogind-246.9.2/src/shared/xml.h
++elogind-246.9.2/src/shared/exec-util.c
++elogind-246.9.2/src/shared/qsort_r_missing.h
++elogind-246.9.2/src/shared/exec-elogind.h
++elogind-246.9.2/src/shared/output-mode.h
++elogind-246.9.2/src/shared/output-mode.c
++elogind-246.9.2/src/shared/bus-map-properties.h
++elogind-246.9.2/src/shared/nsflags.h
++elogind-246.9.2/src/shared/serialize.h
++elogind-246.9.2/src/shared/userdb.h
++elogind-246.9.2/src/shared/userdb.c
++elogind-246.9.2/src/shared/bus-util.h
++elogind-246.9.2/src/shared/bus-print-properties.h
++elogind-246.9.2/src/shared/service-util.h
++elogind-246.9.2/src/shared/clean-ipc.c
++elogind-246.9.2/src/shared/xml.c
++elogind-246.9.2/src/shared/openssl-util.h
++elogind-246.9.2/src/shared/musl_missing.h
++elogind-246.9.2/src/shared/fileio-label.h
++elogind-246.9.2/src/shared/user-record.c
++elogind-246.9.2/src/shared/sleep-config.c
++elogind-246.9.2/src/shared/bootspec.h
++elogind-246.9.2/src/shared/spawn-polkit-agent.c
++elogind-246.9.2/src/shared/json.c
++elogind-246.9.2/src/shared/nsflags.c
++elogind-246.9.2/src/shared/bus-polkit.h
++elogind-246.9.2/src/shared/varlink.h
++elogind-246.9.2/src/boot/
++elogind-246.9.2/src/boot/efi/
++elogind-246.9.2/src/boot/efi/loader-features.h
++elogind-246.9.2/src/login/
++elogind-246.9.2/src/login/meson.build
++elogind-246.9.2/src/login/sysfs-show.c
++elogind-246.9.2/src/login/logind-core.c
++elogind-246.9.2/src/login/logind-gperf.gperf
++elogind-246.9.2/src/login/eloginctl.c
++elogind-246.9.2/src/login/org.freedesktop.login1.policy
++elogind-246.9.2/src/login/logind-button.c
++elogind-246.9.2/src/login/logind-session-dbus.h
++elogind-246.9.2/src/login/elogind-dbus.h
++elogind-246.9.2/src/login/elogind-user.m4
++elogind-246.9.2/src/login/logind-brightness.h
++elogind-246.9.2/src/login/logind-session.c
++elogind-246.9.2/src/login/test-inhibit.c
++elogind-246.9.2/src/login/logind-seat.h
++elogind-246.9.2/src/login/logind-user-dbus.h
++elogind-246.9.2/src/login/logind-seat-dbus.c
++elogind-246.9.2/src/login/70-power-switch.rules
++elogind-246.9.2/src/login/logind-seat.c
++elogind-246.9.2/src/login/org.freedesktop.login1.conf
++elogind-246.9.2/src/login/logind-session.h
++elogind-246.9.2/src/login/logind-dbus.c
++elogind-246.9.2/src/login/logind-acl.c
++elogind-246.9.2/src/login/logind-device.h
++elogind-246.9.2/src/login/logind-user.h
++elogind-246.9.2/src/login/logind-acl.h
++elogind-246.9.2/src/login/logind-device.c
++elogind-246.9.2/src/login/pam_elogind.sym
++elogind-246.9.2/src/login/test-login-tables.c
++elogind-246.9.2/src/login/user-runtime-dir.c
++elogind-246.9.2/src/login/logind-seat-dbus.h
++elogind-246.9.2/src/login/logind-session-dbus.c
++elogind-246.9.2/src/login/elogind.h
++elogind-246.9.2/src/login/logind-user.c
++elogind-246.9.2/src/login/pam_elogind.c
++elogind-246.9.2/src/login/user-runtime-dir.h
++elogind-246.9.2/src/login/logind.h
++elogind-246.9.2/src/login/71-seat.rules.in
++elogind-246.9.2/src/login/logind-session-device.c
++elogind-246.9.2/src/login/logind-user-dbus.c
++elogind-246.9.2/src/login/inhibit.c
++elogind-246.9.2/src/login/logind-action.c
++elogind-246.9.2/src/login/elogind-dbus.c
++elogind-246.9.2/src/login/elogind.c
++elogind-246.9.2/src/login/loginctl.c
++elogind-246.9.2/src/login/logind-utmp.c
++elogind-246.9.2/src/login/logind.conf.in
++elogind-246.9.2/src/login/sysfs-show.h
++elogind-246.9.2/src/login/logind-brightness.c
++elogind-246.9.2/src/login/test-login-shared.c
++elogind-246.9.2/src/login/logind-inhibit.c
++elogind-246.9.2/src/login/org.freedesktop.login1.service.in
++elogind-246.9.2/src/login/logind-inhibit.h
++elogind-246.9.2/src/login/logind-action.h
++elogind-246.9.2/src/login/eloginctl.h
++elogind-246.9.2/src/login/logind-dbus.h
++elogind-246.9.2/src/login/logind-session-device.h
++elogind-246.9.2/src/login/logind.c
++elogind-246.9.2/src/login/logind-button.h
++elogind-246.9.2/src/login/73-seat-late.rules.in
++elogind-246.9.2/src/login/70-uaccess.rules.m4
++elogind-246.9.2/src/busctl/
++elogind-246.9.2/src/busctl/busctl-introspect.h
++elogind-246.9.2/src/busctl/busctl.c
++elogind-246.9.2/src/busctl/busctl-introspect.c
++elogind-246.9.2/src/sleep/
++elogind-246.9.2/src/sleep/meson.build
++elogind-246.9.2/src/sleep/sleep.h
++elogind-246.9.2/src/sleep/sleep.c
++elogind-246.9.2/src/uaccess-command/
++elogind-246.9.2/src/uaccess-command/uaccess-command.c
++elogind-246.9.2/src/systemd/
++elogind-246.9.2/src/systemd/_sd-common.h
++elogind-246.9.2/src/systemd/meson.build
++elogind-246.9.2/src/systemd/sd-messages.h
++elogind-246.9.2/src/systemd/sd-daemon.h
++elogind-246.9.2/src/systemd/sd-journal.h
++elogind-246.9.2/src/systemd/sd-login.h
++elogind-246.9.2/src/systemd/sd-device.h
++elogind-246.9.2/src/systemd/sd-path.h
++elogind-246.9.2/src/systemd/sd-event.h
++elogind-246.9.2/src/systemd/sd-id128.h
++elogind-246.9.2/src/systemd/sd-bus.h
++elogind-246.9.2/src/systemd/sd-hwdb.h
++elogind-246.9.2/src/systemd/sd-bus-vtable.h
++elogind-246.9.2/src/systemd/sd-bus-protocol.h
++elogind-246.9.2/src/cgroups-agent/
++elogind-246.9.2/src/cgroups-agent/cgroups-agent.c
++elogind-246.9.2/src/core/
++elogind-246.9.2/src/core/meson.build
++elogind-246.9.2/src/core/cgroup.c
++elogind-246.9.2/src/core/mount-setup.h
++elogind-246.9.2/src/core/mount-setup.c
++elogind-246.9.2/src/core/cgroup.h
++elogind-246.9.2/src/test/
++elogind-246.9.2/src/test/test-mountpoint-util.c
++elogind-246.9.2/src/test/test-alloc-util.c
++elogind-246.9.2/src/test/test-set.c
++elogind-246.9.2/src/test/test-ellipsize.c
++elogind-246.9.2/src/test/meson.build
++elogind-246.9.2/src/test/test-id128.c
++elogind-246.9.2/src/test/test-stat-util.c
++elogind-246.9.2/src/test/test-hashmap.c
++elogind-246.9.2/src/test/test-cgroup.c
++elogind-246.9.2/src/test/test-verbs.c
++elogind-246.9.2/src/test/test-io-util.c
++elogind-246.9.2/src/test/test-prioq.c
++elogind-246.9.2/src/test/test-proc-cmdline.c
++elogind-246.9.2/src/test/generate-sym-test.py
++elogind-246.9.2/src/test/test-json.c
++elogind-246.9.2/src/test/test-bus-util.c
++elogind-246.9.2/src/test/test-string-util.c
++elogind-246.9.2/src/test/test-escape.c
++elogind-246.9.2/src/test/test-selinux.c
++elogind-246.9.2/src/test/test-chase-symlinks.c
++elogind-246.9.2/src/test/test-conf-parser.c
++elogind-246.9.2/src/test/test-path-util.c
++elogind-246.9.2/src/test/test-strxcpyx.c
++elogind-246.9.2/src/test/test-copy.c
++elogind-246.9.2/src/test/test-hashmap-ordered.awk
++elogind-246.9.2/src/test/test-static-destruct.c
++elogind-246.9.2/src/test/test-locale-util.c
++elogind-246.9.2/src/test/test-siphash24.c
++elogind-246.9.2/src/test/test-utf8.c
++elogind-246.9.2/src/test/test-format-table.c
++elogind-246.9.2/src/test/test-hashmap-plain.c
++elogind-246.9.2/src/test/test-parse-util.c
++elogind-246.9.2/src/test/test-pretty-print.c
++elogind-246.9.2/src/test/test-umask-util.c
++elogind-246.9.2/src/test/test-process-util.c
++elogind-246.9.2/src/test/test-unaligned.c
++elogind-246.9.2/src/test/test-procfs-util.c
++elogind-246.9.2/src/test/test-fd-util.c
++elogind-246.9.2/src/test/test-sd-path.c
++elogind-246.9.2/src/test/test-list.c
++elogind-246.9.2/src/test/test-fs-util.c
++elogind-246.9.2/src/test/test-signal-util.c
++elogind-246.9.2/src/test/test-sizeof.c
++elogind-246.9.2/src/test/test-ipcrm.c
++elogind-246.9.2/src/test/test-dev-setup.c
++elogind-246.9.2/src/test/test-extract-word.c
++elogind-246.9.2/src/test/test-conf-files.c
++elogind-246.9.2/src/test/test-hash.c
++elogind-246.9.2/src/test/test-format-util.c
++elogind-246.9.2/src/test/test-hexdecoct.c
++elogind-246.9.2/src/test/test-util.c
++elogind-246.9.2/src/test/test-log.c
++elogind-246.9.2/src/test/test-dlopen.c
++elogind-246.9.2/src/test/test-strip-tab-ansi.c
++elogind-246.9.2/src/test/test-random-util.c
++elogind-246.9.2/src/test/test-user-util.c
++elogind-246.9.2/src/test/test-exec-util.c
++elogind-246.9.2/src/test/test-set-disable-mempool.c
++elogind-246.9.2/src/journal/
++elogind-246.9.2/src/journal/meson.build
++elogind-246.9.2/src/journal/journal-file.h
++elogind-246.9.2/src/journal/journal-send.c
++elogind-246.9.2/src/journal/mmap-cache.c
++elogind-246.9.2/src/journal/journal-internal.h
++elogind-246.9.2/src/journal/mmap-cache.h
++elogind-246.9.2/src/journal/journal-def.h
++elogind-246.9.2/src/journal/sd-journal.c
++elogind-246.9.2/src/basic/
++elogind-246.9.2/src/basic/rm-rf.h
++elogind-246.9.2/src/basic/blockdev-util.c
++elogind-246.9.2/src/basic/missing_mman.h
++elogind-246.9.2/src/basic/env-file.c
++elogind-246.9.2/src/basic/parse-util.h
++elogind-246.9.2/src/basic/MurmurHash2.c
++elogind-246.9.2/src/basic/time-util.h
++elogind-246.9.2/src/basic/async.c
++elogind-246.9.2/src/basic/meson.build
++elogind-246.9.2/src/basic/hash-funcs.h
++elogind-246.9.2/src/basic/bus-label.h
++elogind-246.9.2/src/basic/missing_network.h
++elogind-246.9.2/src/basic/cap-to-name.awk
++elogind-246.9.2/src/basic/limits-util.h
++elogind-246.9.2/src/basic/xattr-util.h
++elogind-246.9.2/src/basic/virt.h
++elogind-246.9.2/src/basic/io-util.c
++elogind-246.9.2/src/basic/util.c
++elogind-246.9.2/src/basic/hash-funcs.c
++elogind-246.9.2/src/basic/selinux-util.h
++elogind-246.9.2/src/basic/smack-util.c
++elogind-246.9.2/src/basic/mountpoint-util.c
++elogind-246.9.2/src/basic/efivars.h
++elogind-246.9.2/src/basic/limits-util.c
++elogind-246.9.2/src/basic/string-util.h
++elogind-246.9.2/src/basic/missing_resource.h
++elogind-246.9.2/src/basic/smack-util.h
++elogind-246.9.2/src/basic/missing_fcntl.h
++elogind-246.9.2/src/basic/log.c
++elogind-246.9.2/src/basic/env-util.h
++elogind-246.9.2/src/basic/terminal-util.h
++elogind-246.9.2/src/basic/hexdecoct.c
++elogind-246.9.2/src/basic/login-util.h
++elogind-246.9.2/src/basic/gunicode.c
++elogind-246.9.2/src/basic/utf8.h
++elogind-246.9.2/src/basic/capability-util.h
++elogind-246.9.2/src/basic/utf8.c
++elogind-246.9.2/src/basic/strxcpyx.c
++elogind-246.9.2/src/basic/sparse-endian.h
++elogind-246.9.2/src/basic/dlfcn-util.h
++elogind-246.9.2/src/basic/blockdev-util.h
++elogind-246.9.2/src/basic/static-destruct.h
++elogind-246.9.2/src/basic/sort-util.h
++elogind-246.9.2/src/basic/memory-util.h
++elogind-246.9.2/src/basic/terminal-util.c
++elogind-246.9.2/src/basic/missing_drm.h
++elogind-246.9.2/src/basic/btrfs-util.h
++elogind-246.9.2/src/basic/nulstr-util.h
++elogind-246.9.2/src/basic/missing_capability.h
++elogind-246.9.2/src/basic/stat-util.h
++elogind-246.9.2/src/basic/selinux-util.c
++elogind-246.9.2/src/basic/unit-def.h
++elogind-246.9.2/src/basic/stat-util.c
++elogind-246.9.2/src/basic/dirent-util.h
++elogind-246.9.2/src/basic/locale-util.h
++elogind-246.9.2/src/basic/hexdecoct.h
++elogind-246.9.2/src/basic/tmpfile-util.h
++elogind-246.9.2/src/basic/list.h
++elogind-246.9.2/src/basic/raw-clone.h
++elogind-246.9.2/src/basic/random-util.c
++elogind-246.9.2/src/basic/syslog-util.h
++elogind-246.9.2/src/basic/stdio-util.h
++elogind-246.9.2/src/basic/env-file.h
++elogind-246.9.2/src/basic/mkdir-label.c
++elogind-246.9.2/src/basic/rlimit-util.h
++elogind-246.9.2/src/basic/socket-util.h
++elogind-246.9.2/src/basic/strv.h
++elogind-246.9.2/src/basic/mountpoint-util.h
++elogind-246.9.2/src/basic/missing_input.h
++elogind-246.9.2/src/basic/missing_keyctl.h
++elogind-246.9.2/src/basic/escape.c
++elogind-246.9.2/src/basic/time-util.c
++elogind-246.9.2/src/basic/missing_fs.h
++elogind-246.9.2/src/basic/fileio.c
++elogind-246.9.2/src/basic/virt.c
++elogind-246.9.2/src/basic/cgroup-util.h
++elogind-246.9.2/src/basic/format-util.h
++elogind-246.9.2/src/basic/missing_sched.h
++elogind-246.9.2/src/basic/MurmurHash2.h
++elogind-246.9.2/src/basic/missing_stat.h
++elogind-246.9.2/src/basic/syslog-util.c
++elogind-246.9.2/src/basic/efivars.c
++elogind-246.9.2/src/basic/user-util.c
++elogind-246.9.2/src/basic/util.h
++elogind-246.9.2/src/basic/mempool.c
++elogind-246.9.2/src/basic/string-table.c
++elogind-246.9.2/src/basic/macro.h
++elogind-246.9.2/src/basic/khash.c
++elogind-246.9.2/src/basic/unit-name.h
++elogind-246.9.2/src/basic/user-util.h
++elogind-246.9.2/src/basic/missing_prctl.h
++elogind-246.9.2/src/basic/capability-util.c
++elogind-246.9.2/src/basic/log.h
++elogind-246.9.2/src/basic/hashmap.c
++elogind-246.9.2/src/basic/fs-util.h
++elogind-246.9.2/src/basic/parse-printf-format.h
++elogind-246.9.2/src/basic/prioq.h
++elogind-246.9.2/src/basic/hostname-util.h
++elogind-246.9.2/src/basic/bus-label.c
++elogind-246.9.2/src/basic/sigbus.c
++elogind-246.9.2/src/basic/generate-cap-list.sh
++elogind-246.9.2/src/basic/hashmap.h
++elogind-246.9.2/src/basic/khash.h
++elogind-246.9.2/src/basic/fileio.h
++elogind-246.9.2/src/basic/socket-util.c
++elogind-246.9.2/src/basic/io-util.h
++elogind-246.9.2/src/basic/ratelimit.c
++elogind-246.9.2/src/basic/errno-list.c
++elogind-246.9.2/src/basic/missing_random.h
++elogind-246.9.2/src/basic/path-util.c
++elogind-246.9.2/src/basic/memfd-util.c
++elogind-246.9.2/src/basic/string-table.h
++elogind-246.9.2/src/basic/memfd-util.h
++elogind-246.9.2/src/basic/fd-util.c
++elogind-246.9.2/src/basic/generate-errno-list.sh
++elogind-246.9.2/src/basic/label.h
++elogind-246.9.2/src/basic/siphash24.c
++elogind-246.9.2/src/basic/mempool.h
++elogind-246.9.2/src/basic/async.h
++elogind-246.9.2/src/basic/special.h
++elogind-246.9.2/src/basic/parse-util.c
++elogind-246.9.2/src/basic/conf-files.h
++elogind-246.9.2/src/basic/escape.h
++elogind-246.9.2/src/basic/namespace-util.c
++elogind-246.9.2/src/basic/gunicode.h
++elogind-246.9.2/src/basic/architecture.h
++elogind-246.9.2/src/basic/extract-word.c
++elogind-246.9.2/src/basic/umask-util.h
++elogind-246.9.2/src/basic/copy.h
++elogind-246.9.2/src/basic/fd-util.h
++elogind-246.9.2/src/basic/prioq.c
++elogind-246.9.2/src/basic/siphash24.h
++elogind-246.9.2/src/basic/set.h
++elogind-246.9.2/src/basic/signal-util.c
++elogind-246.9.2/src/basic/strv.c
++elogind-246.9.2/src/basic/nulstr-util.c
++elogind-246.9.2/src/basic/xattr-util.c
++elogind-246.9.2/src/basic/process-util.h
++elogind-246.9.2/src/basic/memory-util.c
++elogind-246.9.2/src/basic/namespace-util.h
++elogind-246.9.2/src/basic/login-util.c
++elogind-246.9.2/src/basic/ratelimit.h
++elogind-246.9.2/src/basic/tmpfile-util.c
++elogind-246.9.2/src/basic/format-util.c
++elogind-246.9.2/src/basic/alloc-util.c
++elogind-246.9.2/src/basic/cap-list.h
++elogind-246.9.2/src/basic/proc-cmdline.c
++elogind-246.9.2/src/basic/procfs-util.c
++elogind-246.9.2/src/basic/process-util.c
++elogind-246.9.2/src/basic/audit-util.h
++elogind-246.9.2/src/basic/missing_type.h
++elogind-246.9.2/src/basic/missing_timerfd.h
++elogind-246.9.2/src/basic/def.h
++elogind-246.9.2/src/basic/sigbus.h
++elogind-246.9.2/src/basic/random-util.h
++elogind-246.9.2/src/basic/alloc-util.h
++elogind-246.9.2/src/basic/proc-cmdline.h
++elogind-246.9.2/src/basic/env-util.c
++elogind-246.9.2/src/basic/strxcpyx.h
++elogind-246.9.2/src/basic/mkdir.c
++elogind-246.9.2/src/basic/errno-to-name.awk
++elogind-246.9.2/src/basic/missing_magic.h
++elogind-246.9.2/src/basic/mkdir.h
++elogind-246.9.2/src/basic/label.c
++elogind-246.9.2/src/basic/chattr-util.c
++elogind-246.9.2/src/basic/extract-word.h
++elogind-246.9.2/src/basic/unit-name.c
++elogind-246.9.2/src/basic/cap-list.c
++elogind-246.9.2/src/basic/btrfs-util.c
++elogind-246.9.2/src/basic/missing_syscall.h
++elogind-246.9.2/src/basic/unaligned.h
++elogind-246.9.2/src/basic/fs-util.c
++elogind-246.9.2/src/basic/build.h
++elogind-246.9.2/src/basic/rm-rf.c
++elogind-246.9.2/src/basic/locale-util.c
++elogind-246.9.2/src/basic/errno-list.h
++elogind-246.9.2/src/basic/dirent-util.c
++elogind-246.9.2/src/basic/errno-util.h
++elogind-246.9.2/src/basic/hostname-util.c
++elogind-246.9.2/src/basic/unit-def.c
++elogind-246.9.2/src/basic/conf-files.c
++elogind-246.9.2/src/basic/rlimit-util.c
++elogind-246.9.2/src/basic/procfs-util.h
++elogind-246.9.2/src/basic/signal-util.h
++elogind-246.9.2/src/basic/parse-printf-format.c
++elogind-246.9.2/src/basic/missing_socket.h
++elogind-246.9.2/src/basic/audit-util.c
++elogind-246.9.2/src/basic/cgroup-util.c
++elogind-246.9.2/src/basic/copy.c
++elogind-246.9.2/src/basic/missing_stdlib.h
++elogind-246.9.2/src/basic/path-util.h
++elogind-246.9.2/src/basic/string-util.c
++elogind-246.9.2/src/basic/chattr-util.h
++elogind-246.9.2/src/update-utmp/
++elogind-246.9.2/src/update-utmp/meson.build
++elogind-246.9.2/src/update-utmp/update-utmp.h
++elogind-246.9.2/src/update-utmp/update-utmp.c
++elogind-246.9.2/src/libelogind/
++elogind-246.9.2/src/libelogind/sd-event/
++elogind-246.9.2/src/libelogind/sd-event/event-source.h
++elogind-246.9.2/src/libelogind/sd-event/test-event.c
++elogind-246.9.2/src/libelogind/sd-event/sd-event.c
++elogind-246.9.2/src/libelogind/meson.build
++elogind-246.9.2/src/libelogind/sd-bus/
++elogind-246.9.2/src/libelogind/sd-bus/test-bus-introspect.c
++elogind-246.9.2/src/libelogind/sd-bus/sd-bus.c
++elogind-246.9.2/src/libelogind/sd-bus/test-bus-match.c
++elogind-246.9.2/src/libelogind/sd-bus/bus-dump.c
++elogind-246.9.2/src/libelogind/sd-bus/bus-creds.c
++elogind-246.9.2/src/libelogind/sd-bus/bus-internal.h
++elogind-246.9.2/src/libelogind/sd-bus/bus-error.h
++elogind-246.9.2/src/libelogind/sd-bus/bus-container.c
++elogind-246.9.2/src/libelogind/sd-bus/bus-signature.h
++elogind-246.9.2/src/libelogind/sd-bus/bus-kernel.h
++elogind-246.9.2/src/libelogind/sd-bus/bus-match.c
++elogind-246.9.2/src/libelogind/sd-bus/test-vtable-data.h
++elogind-246.9.2/src/libelogind/sd-bus/bus-internal.c
++elogind-246.9.2/src/libelogind/sd-bus/bus-introspect.h
++elogind-246.9.2/src/libelogind/sd-bus/bus-track.h
++elogind-246.9.2/src/libelogind/sd-bus/bus-convenience.c
++elogind-246.9.2/src/libelogind/sd-bus/bus-match.h
++elogind-246.9.2/src/libelogind/sd-bus/bus-message.h
++elogind-246.9.2/src/libelogind/sd-bus/bus-objects.h
++elogind-246.9.2/src/libelogind/sd-bus/bus-socket.h
++elogind-246.9.2/src/libelogind/sd-bus/test-bus-server.c
++elogind-246.9.2/src/libelogind/sd-bus/bus-control.c
++elogind-246.9.2/src/libelogind/sd-bus/GVARIANT-SERIALIZATION
++elogind-246.9.2/src/libelogind/sd-bus/bus-protocol.h
++elogind-246.9.2/src/libelogind/sd-bus/bus-control.h
++elogind-246.9.2/src/libelogind/sd-bus/bus-slot.c
++elogind-246.9.2/src/libelogind/sd-bus/bus-message.c
++elogind-246.9.2/src/libelogind/sd-bus/bus-gvariant.h
++elogind-246.9.2/src/libelogind/sd-bus/bus-socket.c
++elogind-246.9.2/src/libelogind/sd-bus/bus-type.h
++elogind-246.9.2/src/libelogind/sd-bus/test-bus-vtable.c
++elogind-246.9.2/src/libelogind/sd-bus/bus-track.c
++elogind-246.9.2/src/libelogind/sd-bus/bus-common-errors.h
++elogind-246.9.2/src/libelogind/sd-bus/bus-introspect.c
++elogind-246.9.2/src/libelogind/sd-bus/test-bus-error.c
++elogind-246.9.2/src/libelogind/sd-bus/bus-objects.c
++elogind-246.9.2/src/libelogind/sd-bus/bus-signature.c
++elogind-246.9.2/src/libelogind/sd-bus/bus-dump.h
++elogind-246.9.2/src/libelogind/sd-bus/test-bus-address.c
++elogind-246.9.2/src/libelogind/sd-bus/bus-error.c
++elogind-246.9.2/src/libelogind/sd-bus/bus-type.c
++elogind-246.9.2/src/libelogind/sd-bus/bus-kernel.c
++elogind-246.9.2/src/libelogind/sd-bus/bus-common-errors.c
++elogind-246.9.2/src/libelogind/sd-bus/bus-slot.h
++elogind-246.9.2/src/libelogind/sd-bus/test-bus-queue-ref-cycle.c
++elogind-246.9.2/src/libelogind/sd-bus/bus-gvariant.c
++elogind-246.9.2/src/libelogind/sd-bus/bus-creds.h
++elogind-246.9.2/src/libelogind/sd-bus/test-bus-signature.c
++elogind-246.9.2/src/libelogind/sd-bus/bus-container.h
++elogind-246.9.2/src/libelogind/sd-device/
++elogind-246.9.2/src/libelogind/sd-device/test-sd-device-thread.c
++elogind-246.9.2/src/libelogind/sd-device/test-sd-device.c
++elogind-246.9.2/src/libelogind/sd-device/device-monitor.c
++elogind-246.9.2/src/libelogind/sd-device/device-internal.h
++elogind-246.9.2/src/libelogind/sd-device/device-util.h
++elogind-246.9.2/src/libelogind/sd-device/device-private.h
++elogind-246.9.2/src/libelogind/sd-device/device-monitor-private.h
++elogind-246.9.2/src/libelogind/sd-device/device-enumerator.c
++elogind-246.9.2/src/libelogind/sd-device/sd-device.c
++elogind-246.9.2/src/libelogind/sd-device/device-enumerator-private.h
++elogind-246.9.2/src/libelogind/sd-device/test-sd-device-monitor.c
++elogind-246.9.2/src/libelogind/sd-device/device-private.c
++elogind-246.9.2/src/libelogind/sd-daemon/
++elogind-246.9.2/src/libelogind/sd-daemon/sd-daemon.c
++elogind-246.9.2/src/libelogind/sd-path/
++elogind-246.9.2/src/libelogind/sd-path/sd-path.c
++elogind-246.9.2/src/libelogind/sd-login/
++elogind-246.9.2/src/libelogind/sd-login/sd-login.c
++elogind-246.9.2/src/libelogind/sd-login/test-login.c
++elogind-246.9.2/src/libelogind/libelogind.pc.in
++elogind-246.9.2/src/libelogind/libelogind.sym
++elogind-246.9.2/src/libelogind/sd-hwdb/
++elogind-246.9.2/src/libelogind/sd-hwdb/sd-hwdb.c
++elogind-246.9.2/src/libelogind/sd-hwdb/hwdb-internal.h
++elogind-246.9.2/src/libelogind/sd-id128/
++elogind-246.9.2/src/libelogind/sd-id128/sd-id128.c
++elogind-246.9.2/src/libelogind/sd-id128/id128-util.c
++elogind-246.9.2/src/libelogind/sd-id128/id128-util.h
++elogind-246.9.2/src/libelogind/disable-mempool.c
++elogind-246.9.2/src/version/
++elogind-246.9.2/src/version/version.h.in
++elogind-246.9.2/docs/
++elogind-246.9.2/docs/style.css
++elogind-246.9.2/docs/TESTING_WITH_SANITIZERS.md
++elogind-246.9.2/docs/favicon.svg
++elogind-246.9.2/docs/CODE_QUALITY.md
++elogind-246.9.2/docs/CODING_STYLE.md
++elogind-246.9.2/TODO
++elogind-246.9.2/factory/
++elogind-246.9.2/factory/etc/
++elogind-246.9.2/factory/etc/pam.d/
++elogind-246.9.2/factory/etc/pam.d/system-auth
++elogind-246.9.2/factory/etc/pam.d/other
++elogind-246.9.2/man/
++elogind-246.9.2/man/sd_get_seats.xml
++elogind-246.9.2/man/sd_event_source_unref.xml
++elogind-246.9.2/man/sd_bus_message_append_basic.xml
++elogind-246.9.2/man/sd_bus_attach_event.xml
++elogind-246.9.2/man/sd_event_source_set_priority.xml
++elogind-246.9.2/man/sd_bus_set_sender.xml
++elogind-246.9.2/man/sd_bus_set_watch_bind.xml
++elogind-246.9.2/man/sd-bus-container-read.c
++elogind-246.9.2/man/sd_booted.xml
++elogind-246.9.2/man/sd_bus_message_set_expect_reply.xml
++elogind-246.9.2/man/meson.build
++elogind-246.9.2/man/sd_bus_set_close_on_exit.xml
++elogind-246.9.2/man/sd_bus_start.xml
++elogind-246.9.2/man/sd_bus_set_connected_signal.xml
++elogind-246.9.2/man/sd_bus_reply_method_return.xml
++elogind-246.9.2/man/vtable-example.c
++elogind-246.9.2/man/sd_bus_process.xml
++elogind-246.9.2/man/sd-login.xml
++elogind-246.9.2/man/sd_event_source_set_description.xml
++elogind-246.9.2/man/sd_id128_to_string.xml
++elogind-246.9.2/man/sd_bus_message_get_cookie.xml
++elogind-246.9.2/man/sd_event_add_io.xml
++elogind-246.9.2/man/sd_journal_get_usage.xml
++elogind-246.9.2/man/sd_bus_message_read.xml
++elogind-246.9.2/man/sd_journal_query_unique.xml
++elogind-246.9.2/man/sd_journal_get_cutoff_realtime_usec.xml
++elogind-246.9.2/man/sd_bus_slot_ref.xml
++elogind-246.9.2/man/sd_bus_slot_set_floating.xml
++elogind-246.9.2/man/man.in
++elogind-246.9.2/man/sd_uid_get_state.xml
++elogind-246.9.2/man/sd_bus_call.xml
++elogind-246.9.2/man/sd_bus_add_object_manager.xml
++elogind-246.9.2/man/sd_bus_add_object.xml
++elogind-246.9.2/man/sd_event_exit.xml
++elogind-246.9.2/man/sd_bus_set_property.xml
++elogind-246.9.2/man/custom-html.xsl
++elogind-246.9.2/man/sd_bus_slot_set_description.xml
++elogind-246.9.2/man/sd_event_source_set_floating.xml
++elogind-246.9.2/man/elogind-inhibit.xml
++elogind-246.9.2/man/sd_bus_message_verify_type.xml
++elogind-246.9.2/man/sd_journal_get_cursor.xml
++elogind-246.9.2/man/sd_bus_set_server.xml
++elogind-246.9.2/man/sd_bus_message_read_array.xml
++elogind-246.9.2/man/loginctl.xml
++elogind-246.9.2/man/rules/
++elogind-246.9.2/man/rules/meson.build
++elogind-246.9.2/man/sd_bus_slot_set_destroy_callback.xml
++elogind-246.9.2/man/sd_bus_message_read_basic.xml
++elogind-246.9.2/man/sd_bus_get_name_machine_id.xml
++elogind-246.9.2/man/standard-options.xml
++elogind-246.9.2/man/sd_bus_message_new_method_error.xml
++elogind-246.9.2/man/sd_journal_has_runtime_files.xml
++elogind-246.9.2/man/sd_bus_message_set_destination.xml
++elogind-246.9.2/man/sd_session_is_active.xml
++elogind-246.9.2/man/sd_bus_call_method.xml
++elogind-246.9.2/man/glib-event-glue.c
++elogind-246.9.2/man/pam_elogind.xml
++elogind-246.9.2/man/sd_bus_error.xml
++elogind-246.9.2/man/sd_event_source_set_destroy_callback.xml
++elogind-246.9.2/man/sd_journal_print.xml
++elogind-246.9.2/man/sd_event_add_defer.xml
++elogind-246.9.2/man/elogind.time.xml
++elogind-246.9.2/man/sd-bus-container-append.c
++elogind-246.9.2/man/directives-template.xml
++elogind-246.9.2/man/sd_event_source_set_prepare.xml
++elogind-246.9.2/man/custom-man.xsl
++elogind-246.9.2/man/sd_bus_request_name.xml
++elogind-246.9.2/man/sd_id128_randomize.xml
++elogind-246.9.2/man/sd_bus_track_add_name.xml
++elogind-246.9.2/man/sd_bus_interface_name_is_valid.xml
++elogind-246.9.2/man/sd_bus_get_n_queued_read.xml
++elogind-246.9.2/man/sd_machine_get_class.xml
++elogind-246.9.2/man/sd_journal_enumerate_fields.xml
++elogind-246.9.2/man/sd_bus_add_node_enumerator.xml
++elogind-246.9.2/man/sd_bus_slot_set_userdata.xml
++elogind-246.9.2/man/html.in
++elogind-246.9.2/man/sd_bus_can_send.xml
++elogind-246.9.2/man/sd-bus.xml
++elogind-246.9.2/man/sd_event_source_get_pending.xml
++elogind-246.9.2/man/sd_journal_get_catalog.xml
++elogind-246.9.2/man/sd_journal_stream_fd.xml
++elogind-246.9.2/man/sd_bus_set_method_call_timeout.xml
++elogind-246.9.2/man/user-system-options.xml
++elogind-246.9.2/man/sd_journal_seek_head.xml
++elogind-246.9.2/man/sd_is_fifo.xml
++elogind-246.9.2/man/sd_bus_message_copy.xml
++elogind-246.9.2/man/sd_bus_creds_new_from_pid.xml
++elogind-246.9.2/man/sd_bus_message_append.xml
++elogind-246.9.2/man/sd_watchdog_enabled.xml
++elogind-246.9.2/man/sd_event_run.xml
++elogind-246.9.2/man/sd_bus_get_current_handler.xml
++elogind-246.9.2/man/vtable-example.xml
++elogind-246.9.2/man/sd_event_source_set_enabled.xml
++elogind-246.9.2/man/sd_bus_close.xml
++elogind-246.9.2/man/sd_event_set_watchdog.xml
++elogind-246.9.2/man/sd_bus_query_sender_creds.xml
++elogind-246.9.2/man/sd_event_get_fd.xml
++elogind-246.9.2/man/logind.conf.xml
++elogind-246.9.2/man/sd_bus_reply_method_error.xml
++elogind-246.9.2/man/sd_notify.xml
++elogind-246.9.2/man/sd_journal_add_match.xml
++elogind-246.9.2/man/sd_bus_message_get_type.xml
++elogind-246.9.2/man/sd_bus_set_exit_on_disconnect.xml
++elogind-246.9.2/man/sd_login_monitor_new.xml
++elogind-246.9.2/man/sd_event_wait.xml
++elogind-246.9.2/man/sd_bus_list_names.xml
++elogind-246.9.2/man/sd_bus_new.xml
++elogind-246.9.2/man/sd_bus_emit_signal.xml
++elogind-246.9.2/man/sd_event_add_signal.xml
++elogind-246.9.2/man/sd-event.xml
++elogind-246.9.2/man/busctl.xml
++elogind-246.9.2/man/sd_journal_get_fd.xml
++elogind-246.9.2/man/sd_bus_creds_get_pid.xml
++elogind-246.9.2/man/sd_bus_path_encode.xml
++elogind-246.9.2/man/sd_id128_get_machine.xml
++elogind-246.9.2/man/sd_event_source_set_userdata.xml
++elogind-246.9.2/man/sd_bus_set_address.xml
++elogind-246.9.2/man/elogind.syntax.xml
++elogind-246.9.2/man/sd_bus_message_append_strv.xml
++elogind-246.9.2/man/elogind.xml
++elogind-246.9.2/man/sd_bus_is_open.xml
++elogind-246.9.2/man/sd_bus_message_get_monotonic_usec.xml
++elogind-246.9.2/man/sd_journal_next.xml
++elogind-246.9.2/man/sd_bus_message_rewind.xml
++elogind-246.9.2/man/sd_bus_message_skip.xml
++elogind-246.9.2/man/custom-entities.ent.in
++elogind-246.9.2/man/sd_bus_message_get_signature.xml
++elogind-246.9.2/man/sd_journal_get_realtime_usec.xml
++elogind-246.9.2/man/sd_bus_track_new.xml
++elogind-246.9.2/man/sd_bus_get_name_creds.xml
++elogind-246.9.2/man/sd_bus_default.xml
++elogind-246.9.2/man/sd_seat_get_active.xml
++elogind-246.9.2/man/sd_bus_message_seal.xml
++elogind-246.9.2/man/sd_listen_fds.xml
++elogind-246.9.2/man/elogind.journal-fields.xml
++elogind-246.9.2/man/sd_event_add_time.xml
++elogind-246.9.2/man/sd_pid_get_owner_uid.xml
++elogind-246.9.2/man/sd_event_now.xml
++elogind-246.9.2/man/sd_bus_error_add_map.xml
++elogind-246.9.2/man/sd_bus_message_append_string_memfd.xml
++elogind-246.9.2/man/sd_bus_wait.xml
++elogind-246.9.2/man/sd_journal_get_data.xml
++elogind-246.9.2/man/sd_bus_message_open_container.xml
++elogind-246.9.2/man/sd_bus_message_new_method_call.xml
++elogind-246.9.2/man/sd_bus_message_append_array.xml
++elogind-246.9.2/man/sd_journal_open.xml
++elogind-246.9.2/man/sd_event_add_child.xml
++elogind-246.9.2/man/sd_event_new.xml
++elogind-246.9.2/man/sd_bus_slot_get_bus.xml
++elogind-246.9.2/man/libelogind-pkgconfig.xml
++elogind-246.9.2/man/sd_event_add_inotify.xml
++elogind-246.9.2/man/sd_event_source_get_event.xml
++elogind-246.9.2/man/sd_bus_set_description.xml
++elogind-246.9.2/man/sd_bus_message_new.xml
++elogind-246.9.2/man/less-variables.xml
++elogind-246.9.2/man/sd_bus_message_dump.xml
++elogind-246.9.2/man/sd_bus_negotiate_fds.xml
++elogind-246.9.2/man/sd_bus_message_new_signal.xml
++elogind-246.9.2/man/sd_bus_add_match.xml
++elogind-246.9.2/man/sd_bus_send.xml
++elogind-246.9.2/man/sd_bus_get_fd.xml
++elogind-246.9.2/LICENSE.LGPL2.1
++elogind-246.9.2/LICENSE.GPL2
++elogind-246.9.2/.gitmodules
++elogind-246.9.2/pwx/
++elogind-246.9.2/meson_options.txt
++elogind-246.9.2/shell-completion/
++elogind-246.9.2/shell-completion/bash/
++elogind-246.9.2/shell-completion/bash/meson.build
++elogind-246.9.2/shell-completion/bash/resolvectl
++elogind-246.9.2/shell-completion/bash/homectl
++elogind-246.9.2/shell-completion/bash/loginctl
++elogind-246.9.2/shell-completion/zsh/
++elogind-246.9.2/shell-completion/zsh/meson.build
++elogind-246.9.2/shell-completion/zsh/_elogind-inhibit
++elogind-246.9.2/shell-completion/zsh/_loginctl
++elogind-246.9.2/shell-completion/zsh/_elogind-path
++elogind-246.9.2/cb/
++elogind-246.9.2/cb/elogind.cbp
++elogind-246.9.2/cb/.gitignore
++elogind-246.9.2/tools/
++elogind-246.9.2/tools/check-compilation.sh
++elogind-246.9.2/tools/xml_helper.py
++elogind-246.9.2/tools/meson-get-cg-controller.sh
++elogind-246.9.2/tools/generate-gperfs.py
++elogind-246.9.2/tools/check-help.sh
++elogind-246.9.2/tools/meson-apply-m4.sh
++elogind-246.9.2/tools/meson-build.sh
++elogind-246.9.2/tools/update-man-rules.py
++elogind-246.9.2/tools/meson-symlink_headers.sh
++elogind-246.9.2/tools/check-api-docs.sh
++elogind-246.9.2/tools/make-directive-index.py
++elogind-246.9.2/tools/make-man-index.py
++elogind-246.9.2/tools/meson-vcs-tag.sh
++elogind-246.9.2/.idea/
++elogind-246.9.2/.idea/vcs.xml
++elogind-246.9.2/.idea/runConfigurations/
++elogind-246.9.2/.idea/runConfigurations/debug.xml
++elogind-246.9.2/.idea/runConfigurations/release.xml
++elogind-246.9.2/.idea/runConfigurations/clean_all_and_print.xml
++elogind-246.9.2/.idea/codeStyles/
++elogind-246.9.2/.idea/codeStyles/Project.xml
++elogind-246.9.2/.idea/codeStyles/codeStyleConfig.xml
++elogind-246.9.2/.idea/misc.xml
++elogind-246.9.2/.idea/elogind.iml
++elogind-246.9.2/.idea/.gitignore
++elogind-246.9.2/.gitattributes
++elogind-246.9.2/Makefile
++elogind-246.9.2/.dir-locals.el
++elogind-246.9.2/.gitignore
++elogind-246.9.2/.travis.yml
++elogind-246.9.2/po/
++elogind-246.9.2/po/be.po
++elogind-246.9.2/po/meson.build
++elogind-246.9.2/po/zh_TW.po
++elogind-246.9.2/po/gl.po
++elogind-246.9.2/po/id.po
++elogind-246.9.2/po/uk.po
++elogind-246.9.2/po/ca.po
++elogind-246.9.2/po/POTFILES.in
++elogind-246.9.2/po/sk.po
++elogind-246.9.2/po/tr.po
++elogind-246.9.2/po/ro.po
++elogind-246.9.2/po/de.po
++elogind-246.9.2/po/LINGUAS
++elogind-246.9.2/po/da.po
++elogind-246.9.2/po/ja.po
++elogind-246.9.2/po/hu.po
++elogind-246.9.2/po/its/
++elogind-246.9.2/po/its/polkit.loc
++elogind-246.9.2/po/its/polkit.its
++elogind-246.9.2/po/lt.po
++elogind-246.9.2/po/hr.po
++elogind-246.9.2/po/es.po
++elogind-246.9.2/po/el.po
++elogind-246.9.2/po/bg.po
++elogind-246.9.2/po/pl.po
++elogind-246.9.2/po/POTFILES.skip
++elogind-246.9.2/po/ru.po
++elogind-246.9.2/po/sr.po
++elogind-246.9.2/po/fr.po
++elogind-246.9.2/po/cs.po
++elogind-246.9.2/po/zh_CN.po
++elogind-246.9.2/po/sv.po
++elogind-246.9.2/po/it.po
++elogind-246.9.2/po/ko.po
++elogind-246.9.2/po/be@latin.po
++elogind-246.9.2/po/pt_BR.po
++Hmm...  Looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|Update org.freedesktop.login1.conf
++|This mirrors an upstream change opening up all of logind's bus calls to
++|unprivileged users via polkit.
++|
++|See systemd/systemd#471.
++|Closes #3.
++|
++|diff -uar a/src/login/org.freedesktop.login1.conf b/src/login/org.freedesktop.login1.conf
++|--- a/src/login/org.freedesktop.login1.conf
++|+++ b/src/login/org.freedesktop.login1.conf
++--------------------------
++patching file src/login/org.freedesktop.login1.conf
++Using Plan A...
++Hunk #1 succeeded at 133 with fuzz 1 (offset 43 lines).
++Hmm...  Ignoring the trailing garbage.
++done
++Using 'PKG_CONFIG_PATH' from environment with value: '/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig'
++Using 'PKG_CONFIG_PATH' from environment with value: '/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig'
++The Meson build system
++Version: 0.56.2
++Source dir: /tmp/elogind-246.9.2
++Build dir: /tmp/elogind-246.9.2/meson-build
++Build type: native build
++Project name: elogind
++Project version: 246.9.2
++Using 'CFLAGS' from environment with value: '-O2 -fPIC'
++C compiler for the host machine: ccache cc (gcc 10.2.0 "cc (GCC) 10.2.0")
++C linker for the host machine: cc ld.bfd 2.33.1-slack15
++Using 'CFLAGS' from environment with value: '-O2 -fPIC'
++Host machine cpu family: x86_64
++Host machine cpu: x86_64
++Message: Setting VARRUN_IS_SYMLINK to: false
++Program tools/check-compilation.sh found: YES (/tmp/elogind-246.9.2/tools/check-compilation.sh)
++Program tools/meson-build.sh found: YES (/tmp/elogind-246.9.2/tools/meson-build.sh)
++Compiler for C supports arguments -Wno-unused-parameter: YES 
++Compiler for C supports arguments -Wno-missing-field-initializers: YES 
++Compiler for C supports arguments -Wno-unused-result: YES 
++Compiler for C supports arguments -Wno-format-signedness: YES 
++Compiler for C supports arguments -Werror=undef: YES 
++Compiler for C supports arguments -Wlogical-op: YES 
++Compiler for C supports arguments -Wmissing-include-dirs: YES 
++Compiler for C supports arguments -Wold-style-definition: YES 
++Compiler for C supports arguments -Wpointer-arith: YES 
++Compiler for C supports arguments -Winit-self: YES 
++Compiler for C supports arguments -Wfloat-equal: YES 
++Compiler for C supports arguments -Wsuggest-attribute=noreturn: YES 
++Compiler for C supports arguments -Werror=missing-prototypes: YES 
++Compiler for C supports arguments -Werror=implicit-function-declaration: YES 
++Compiler for C supports arguments -Werror=missing-declarations: YES 
++Compiler for C supports arguments -Werror=return-type: YES 
++Compiler for C supports arguments -Werror=incompatible-pointer-types: YES 
++Compiler for C supports arguments -Werror=format=2: YES 
++Compiler for C supports arguments -Wstrict-prototypes: YES 
++Compiler for C supports arguments -Wredundant-decls: YES 
++Compiler for C supports arguments -Wmissing-noreturn: YES 
++Compiler for C supports arguments -Wimplicit-fallthrough=5: YES 
++Compiler for C supports arguments -Wshadow: YES 
++Compiler for C supports arguments -Wendif-labels: YES 
++Compiler for C supports arguments -Wstrict-aliasing=2: YES 
++Compiler for C supports arguments -Wwrite-strings: YES 
++Compiler for C supports arguments -Werror=overflow: YES 
++Compiler for C supports arguments -Werror=shift-count-overflow: YES 
++Compiler for C supports arguments -Werror=shift-overflow=2: YES 
++Compiler for C supports arguments -Wdate-time: YES 
++Compiler for C supports arguments -Wnested-externs: YES 
++Compiler for C supports arguments -Wno-error=#warnings: NO 
++Compiler for C supports arguments -Wno-string-plus-int: NO 
++Compiler for C supports arguments -Wno-maybe-uninitialized: YES 
++Compiler for C supports arguments -ffast-math: YES 
++Compiler for C supports arguments -fno-common: YES 
++Compiler for C supports arguments -fdiagnostics-show-option: YES 
++Compiler for C supports arguments -fno-strict-aliasing: YES 
++Compiler for C supports arguments -fvisibility=hidden: YES 
++Compiler for C supports arguments -fstack-protector: YES 
++Compiler for C supports arguments -fstack-protector-strong: YES 
++Compiler for C supports arguments --param=ssp-buffer-size=4: YES 
++Compiler for C supports arguments -ffunction-sections: YES 
++Compiler for C supports arguments -fdata-sections: YES 
++Compiler for C supports link arguments -Wl,-z,relro: YES 
++Compiler for C supports link arguments -Wl,-z,now: YES 
++Compiler for C supports link arguments -fstack-protector: YES 
++Compiler for C supports link arguments -Wl,--gc-sections: YES 
++Compiler for C supports arguments -Wzero-length-bounds: YES 
++Checking if "-Werror=shadow with local shadowing" compiles: YES 
++Compiler for C supports arguments -Wstringop-truncation: YES 
++Checking for size of "dev_t" : 8
++Checking for size of "ino_t" : 8
++Checking for size of "time_t" : 8
++Checking for size of "rlim_t" : 8
++Checking for size of "char16_t" : 2
++Checking for size of "char32_t" : 4
++Checking for size of "struct statx" : -1
++Checking for size of "struct statx" : 256
++Checking for function "secure_getenv" : YES 
++Checking for function "__secure_getenv" : NO 
++Checking for function "memfd_create" : YES 
++Checking for function "gettid" : YES 
++Checking for function "qsort_r" : NO 
++Checking for function "name_to_handle_at" : YES 
++Checking for function "setns" : YES 
++Checking for function "renameat2" : NO 
++Checking for function "kcmp" : NO 
++Checking for function "keyctl" : NO 
++Checking for function "copy_file_range" : YES 
++Checking for function "bpf" : NO 
++Checking for function "statx" : NO 
++Checking for function "explicit_bzero" : YES 
++Checking for function "reallocarray" : YES 
++Checking for function "set_mempolicy" : NO 
++Checking for function "get_mempolicy" : NO 
++Checking for function "pidfd_send_signal" : NO 
++Checking for function "pidfd_open" : NO 
++Checking for function "rt_sigqueueinfo" : NO 
++Checking for function "getrandom" : YES 
++Checking if "program_invocation[_short]_name test" links: YES 
++Program sed found: YES (/usr/bin/sed)
++Program awk found: YES (/usr/bin/awk)
++Program m4 found: YES (/usr/bin/m4)
++Program stat found: YES (/usr/bin/stat)
++Program git found: YES (/usr/bin/git)
++Program env found: YES (/usr/bin/env)
++Program perl found: YES (/usr/bin/perl)
++Message: Using /sbin/halt for halt
++Program kexec /usr/sbin/kexec /sbin/kexec found: NO
++Message: Using /sbin/poweroff for poweroff
++Message: Using /sbin/reboot for reboot
++Program nologin found: YES (/sbin/nologin)
++Program gperf found: YES (/usr/bin/gperf)
++Message: gperf len type is size_t
++Has header "sys/capability.h" : YES 
++Has header "crypt.h" : YES 
++Has header "linux/memfd.h" : YES 
++Has header "linux/vm_sockets.h" : YES 
++Has header "printf.h" : NO 
++Has header "sys/auxv.h" : YES 
++Has header "valgrind/memcheck.h" : NO 
++Has header "valgrind/valgrind.h" : NO 
++Program tools/meson-get-cg-controller.sh found: YES (/tmp/elogind-246.9.2/tools/meson-get-cg-controller.sh)
++Run-time dependency threads found: YES
++Library rt found: YES
++Library m found: YES
++Library dl found: YES
++Library crypt found: YES
++Using 'PKG_CONFIG' from environment with value: '/usr/bin/pkg-config'
++Found pkg-config: /usr/bin/pkg-config (0.29.2)
++Using 'PKG_CONFIG_PATH' from environment with value: '/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig'
++Run-time dependency libcap found: YES 2.46
++Found CMake: /usr/bin/cmake (3.19.2)
++Run-time dependency libselinux found: NO (tried pkgconfig and cmake)
++Run-time dependency polkit-gobject-1 found: NO (tried pkgconfig and cmake)
++Library acl found: YES
++Run-time dependency audit found: NO (tried pkgconfig and cmake)
++Library pam found: YES
++Library pam_misc found: YES
++Using 'PKG_CONFIG_PATH' from environment with value: '/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig'
++Run-time dependency libpcre2-8 found: YES 10.36
++Using 'PKG_CONFIG_PATH' from environment with value: '/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig'
++Run-time dependency glib-2.0 found: YES 2.66.4
++Using 'PKG_CONFIG_PATH' from environment with value: '/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig'
++Run-time dependency gobject-2.0 found: YES 2.66.4
++Using 'PKG_CONFIG_PATH' from environment with value: '/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig'
++Run-time dependency gio-2.0 found: YES 2.66.4
++Using 'PKG_CONFIG_PATH' from environment with value: '/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig'
++Run-time dependency dbus-1 found: YES 1.12.20
++Configuring config.h using configuration
++Program tools/meson-apply-m4.sh found: YES (/bin/sh /tmp/elogind-246.9.2/tools/meson-apply-m4.sh)
++Program tools/generate-gperfs.py found: YES (/tmp/elogind-246.9.2/tools/generate-gperfs.py)
++Program /tmp/elogind-246.9.2/tools/meson-symlink_headers.sh found: YES (/tmp/elogind-246.9.2/tools/meson-symlink_headers.sh)
++Compiler for C supports arguments -std=iso9899:2017: YES 
++Program generate-cap-list.sh found: YES (/tmp/elogind-246.9.2/src/basic/generate-cap-list.sh)
++Program generate-errno-list.sh found: YES (/tmp/elogind-246.9.2/src/basic/generate-errno-list.sh)
++Program sh found: YES (/bin/sh)
++Configuring libelogind.pc using configuration
++Configuring logind.conf using configuration
++Configuring org.freedesktop.login1.service using configuration
++Configuring 71-seat.rules using configuration
++Configuring 73-seat-late.rules.m4 using configuration
++Using 'PKG_CONFIG_PATH' from environment with value: '/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig'
++Run-time dependency libudev found: YES 243
++Program generate-sym-test.py found: YES (/tmp/elogind-246.9.2/src/test/generate-sym-test.py)
++Message: test-ipcrm is an unsafe test
++Message: test-chase-symlinks is a manual test
++Message: test-inhibit is a manual test
++Program tools/make-directive-index.py found: YES (/tmp/elogind-246.9.2/tools/make-directive-index.py)
++Program tools/make-man-index.py found: YES (/tmp/elogind-246.9.2/tools/make-man-index.py)
++Program tools/xml_helper.py found: YES (/tmp/elogind-246.9.2/tools/xml_helper.py)
++Program xsltproc found: YES (/usr/bin/xsltproc)
++Configuring custom-entities.ent using configuration
++../man/meson.build:29: WARNING: The variable(s) 'FALLBACK_HOSTNAME', 'RC_LOCAL_PATH', 'SYSTEM_ENV_GENERATOR_DIR', 'SYSTEM_GENERATOR_DIR', 'USER_ENV_GENERATOR_DIR', 'USER_GENERATOR_DIR' in the input file 'man/custom-entities.ent.in' are not present in the given configuration data.
++Message: python-lxml not available, not making man page indices
++Configuring man using configuration
++Configuring html using configuration
++Program sh found: YES (/bin/sh)
++Program tools/check-help.sh found: YES (/tmp/elogind-246.9.2/tools/check-help.sh)
++Program tools/check-api-docs.sh found: YES (/tmp/elogind-246.9.2/tools/check-api-docs.sh)
++Message: elogind 246.9.2
++         split /usr:                        true
++         split bin-sbin:                    true
++         prefix directory:                  /usr
++         rootprefix directory:              /
++         sysconf directory:                 /etc
++         include directory:                 /usr/include
++         lib directory:                     /usr/lib
++         rootlib directory:                 /lib
++         rootexeclib dir:                   /lib/elogind
++         PAM modules directory:             /lib/security
++         PAM configuration directory:       /etc/pam.d
++         modprobe.d directory:              /lib/modprobe.d
++         D-Bus policy directory:            /usr/share/dbus-1/system.d
++         D-Bus session directory:           /usr/share/dbus-1/services
++         D-Bus system directory:            /usr/share/dbus-1/system-services
++         bash completions directory:        /usr/share/bash-completion/completions
++         zsh completions directory:         /usr/share/zsh/site-functions
++         TTY GID:                           5
++         maximum system UID:                999
++         maximum system GID:                999
++         nobody user name:                  nobody
++         nobody group name:                 nogroup
++         default KillUserProcesses setting: false
++         efi arch:                          x86_64
++         
++         enabled features: PAM, ACL, polkit, efi, dbus, glib, man pages, utmp
++         
++         disabled features: p11kit, libfido2, AUDIT, SELinux, SMACK, legacy pkla, html pages, man page indices, debug elogind, debug hashmap, debug mmap cache, valgrind, trace logging
++         
++Build targets in project: 828
++
++Found ninja-1.10.2 at /usr/bin/ninja
++[1/512] Generating sd_journal_stream_fd.3 with a custom command
++[2/512] Generating sd_journal_seek_head.3 with a custom command
++[3/512] Generating sd_journal_query_unique.3 with a custom command
++[4/512] Generating sd_listen_fds.3 with a custom command
++[5/512] Generating sd_login_monitor_new.3 with a custom command
++[6/512] Generating sd_machine_get_class.3 with a custom command
++[7/512] Generating sd_seat_get_active.3 with a custom command
++[8/512] Generating sd_pid_get_owner_uid.3 with a custom command
++[9/512] Generating sd_notify.3 with a custom command
++[10/512] Generating sd_uid_get_state.3 with a custom command
++[11/512] Generating sd_session_is_active.3 with a custom command
++[12/512] Generating sd_watchdog_enabled.3 with a custom command
++[13/512] Generating sd_get_seats.3 with a custom command
++[14/512] Generating sd_id128_to_string.3 with a custom command
++[15/512] Generating sd_id128_get_machine.3 with a custom command
++[16/512] Generating sd_id128_randomize.3 with a custom command
++[17/512] Generating sd_is_fifo.3 with a custom command
++[18/512] Generating sd_journal_add_match.3 with a custom command
++[19/512] Generating sd_journal_enumerate_fields.3 with a custom command
++[20/512] Generating sd_journal_get_cursor.3 with a custom command
++[21/512] Generating sd_journal_get_catalog.3 with a custom command
++[22/512] Generating sd_journal_get_cutoff_realtime_usec.3 with a custom command
++[23/512] Generating sd_journal_get_data.3 with a custom command
++[24/512] Generating sd_journal_get_fd.3 with a custom command
++[25/512] Generating sd_journal_get_realtime_usec.3 with a custom command
++[26/512] Generating sd_journal_get_usage.3 with a custom command
++[27/512] Generating sd_journal_has_runtime_files.3 with a custom command
++[28/512] Generating sd_journal_next.3 with a custom command
++[29/512] Generating sd_journal_open.3 with a custom command
++[30/512] Generating sd_journal_print.3 with a custom command
++[31/512] Generating sd_event_add_inotify.3 with a custom command
++[32/512] Generating sd_event_add_defer.3 with a custom command
++[33/512] Generating sd_event_add_io.3 with a custom command
++[34/512] Generating sd_event_add_signal.3 with a custom command
++[35/512] Generating sd_event_add_time.3 with a custom command
++[36/512] Generating sd_event_exit.3 with a custom command
++[37/512] Generating sd_event_new.3 with a custom command
++[38/512] Generating sd_event_get_fd.3 with a custom command
++[39/512] Generating sd_event_now.3 with a custom command
++[40/512] Generating sd_event_run.3 with a custom command
++[41/512] Generating sd_event_set_watchdog.3 with a custom command
++[42/512] Generating sd_event_source_get_event.3 with a custom command
++[43/512] Generating sd_event_source_get_pending.3 with a custom command
++[44/512] Generating sd_event_source_set_description.3 with a custom command
++[45/512] Generating sd_event_source_set_destroy_callback.3 with a custom command
++[46/512] Generating sd_event_source_set_enabled.3 with a custom command
++[47/512] Generating sd_event_source_set_floating.3 with a custom command
++[48/512] Generating sd_event_source_set_priority.3 with a custom command
++[49/512] Generating sd_event_source_set_prepare.3 with a custom command
++[50/512] Generating sd_event_source_set_userdata.3 with a custom command
++[51/512] Generating sd_event_source_unref.3 with a custom command
++[52/512] Generating sd_event_wait.3 with a custom command
++[53/512] Generating sd_bus_set_connected_signal.3 with a custom command
++[54/512] Generating sd_bus_set_description.3 with a custom command
++[55/512] Generating sd_bus_set_exit_on_disconnect.3 with a custom command
++[56/512] Generating sd_bus_set_method_call_timeout.3 with a custom command
++[57/512] Generating sd_bus_set_property.3 with a custom command
++[58/512] Generating sd_bus_set_sender.3 with a custom command
++[59/512] Generating sd_bus_set_server.3 with a custom command
++[60/512] Generating sd_bus_set_watch_bind.3 with a custom command
++[61/512] Generating sd_bus_slot_get_bus.3 with a custom command
++[62/512] Generating sd_bus_slot_ref.3 with a custom command
++[63/512] Generating sd_bus_slot_set_description.3 with a custom command
++[64/512] Generating sd_bus_slot_set_destroy_callback.3 with a custom command
++[65/512] Generating sd_bus_slot_set_floating.3 with a custom command
++[66/512] Generating sd_bus_slot_set_userdata.3 with a custom command
++[67/512] Generating sd_bus_start.3 with a custom command
++[68/512] Generating sd_bus_track_add_name.3 with a custom command
++[69/512] Generating sd_bus_track_new.3 with a custom command
++[70/512] Generating sd_bus_wait.3 with a custom command
++[71/512] Generating sd_event_add_child.3 with a custom command
++[72/512] Generating sd_bus_message_new_method_call.3 with a custom command
++[73/512] Generating sd_bus_message_new_method_error.3 with a custom command
++[74/512] Generating sd_bus_message_new_signal.3 with a custom command
++[75/512] Generating sd_bus_message_open_container.3 with a custom command
++[76/512] Generating sd_bus_message_read_array.3 with a custom command
++[77/512] Generating sd_bus_message_read.3 with a custom command
++[78/512] Generating sd_bus_message_read_basic.3 with a custom command
++[79/512] Generating sd_bus_message_rewind.3 with a custom command
++[80/512] Generating sd_bus_message_seal.3 with a custom command
++[81/512] Generating sd_bus_message_set_destination.3 with a custom command
++[82/512] Generating sd_bus_message_set_expect_reply.3 with a custom command
++[83/512] Generating sd_bus_message_skip.3 with a custom command
++[84/512] Generating sd_bus_message_verify_type.3 with a custom command
++[85/512] Generating sd_bus_negotiate_fds.3 with a custom command
++[86/512] Generating sd_bus_new.3 with a custom command
++[87/512] Generating sd_bus_path_encode.3 with a custom command
++[88/512] Generating sd_bus_process.3 with a custom command
++[89/512] Generating sd_bus_query_sender_creds.3 with a custom command
++[90/512] Generating sd_bus_reply_method_return.3 with a custom command
++[91/512] Generating sd_bus_set_address.3 with a custom command
++[92/512] Generating sd_bus_request_name.3 with a custom command
++[93/512] Generating sd_bus_send.3 with a custom command
++[94/512] Generating sd_bus_set_close_on_exit.3 with a custom command
++[95/512] Generating sd_bus_error.3 with a custom command
++[96/512] Generating sd_bus_error_add_map.3 with a custom command
++[97/512] Generating sd_bus_get_fd.3 with a custom command
++[98/512] Generating sd_bus_get_n_queued_read.3 with a custom command
++[99/512] Generating sd_bus_get_current_handler.3 with a custom command
++[100/512] Generating sd_bus_get_name_creds.3 with a custom command
++[101/512] Generating sd_bus_get_name_machine_id.3 with a custom command
++[102/512] Generating sd_bus_interface_name_is_valid.3 with a custom command
++[103/512] Generating sd_bus_reply_method_error.3 with a custom command
++[104/512] Generating sd_bus_is_open.3 with a custom command
++[105/512] Generating sd_bus_list_names.3 with a custom command
++[106/512] Generating sd_bus_message_append.3 with a custom command
++[107/512] Generating sd_bus_message_append_array.3 with a custom command
++[108/512] Generating sd_bus_message_append_basic.3 with a custom command
++[109/512] Generating sd_bus_message_copy.3 with a custom command
++[110/512] Generating sd_bus_message_append_string_memfd.3 with a custom command
++[111/512] Generating sd_bus_message_append_strv.3 with a custom command
++[112/512] Generating sd_bus_message_dump.3 with a custom command
++[113/512] Generating sd_bus_message_get_cookie.3 with a custom command
++[114/512] Generating sd_bus_message_get_monotonic_usec.3 with a custom command
++[115/512] Generating sd_bus_message_get_signature.3 with a custom command
++[116/512] Generating sd_bus_message_get_type.3 with a custom command
++[117/512] Generating sd_bus_message_new.3 with a custom command
++[118/512] Generating sd_bus_add_object_manager.3 with a custom command
++[119/512] Generating sd_bus_attach_event.3 with a custom command
++[120/512] Generating sd_bus_call.3 with a custom command
++[121/512] Generating sd_bus_can_send.3 with a custom command
++[122/512] Generating sd_bus_call_method.3 with a custom command
++[123/512] Generating sd_bus_close.3 with a custom command
++[124/512] Generating sd_bus_creds_get_pid.3 with a custom command
++[125/512] Generating sd_bus_creds_new_from_pid.3 with a custom command
++[126/512] Generating sd_bus_default.3 with a custom command
++[127/512] Generating sd_bus_emit_signal.3 with a custom command
++[128/512] Generating busctl.1 with a custom command
++[129/512] Generating elogind-inhibit.1 with a custom command
++[130/512] Generating elogind.8 with a custom command
++[131/512] Generating elogind.journal-fields.7 with a custom command
++[132/512] Generating sd_bus_add_object.3 with a custom command
++[133/512] Generating elogind.syntax.7 with a custom command
++[134/512] Generating elogind.time.7 with a custom command
++[135/512] Generating loginctl.1 with a custom command
++[136/512] Generating logind.conf.5 with a custom command
++[137/512] Generating pam_elogind.8 with a custom command
++[138/512] Generating sd-bus.3 with a custom command
++[139/512] Generating sd-login.3 with a custom command
++[140/512] Generating sd-event.3 with a custom command
++[141/512] Generating sd_booted.3 with a custom command
++[142/512] Generating elogind-runtest.env with a custom command
++[143/512] Generating sd_bus_add_match.3 with a custom command
++[144/512] Generating sd_bus_add_node_enumerator.3 with a custom command
++[145/512] Compiling C object src/shared/libelogind-shared-246.9.2.a.p/serialize.c.o
++[146/512] Compiling C object src/shared/libelogind-shared-246.9.2.a.p/service-util.c.o
++[147/512] Compiling C object src/shared/libelogind-shared-246.9.2.a.p/udev-util.c.o
++[148/512] Compiling C object src/shared/libelogind-shared-246.9.2.a.p/spawn-polkit-agent.c.o
++[149/512] Compiling C object src/shared/libelogind-shared-246.9.2.a.p/sleep-config.c.o
++[150/512] Compiling C object src/shared/libelogind-shared-246.9.2.a.p/user-record-nss.c.o
++[151/512] Compiling C object src/shared/libelogind-shared-246.9.2.a.p/userdb.c.o
++[152/512] Compiling C object src/shared/libelogind-shared-246.9.2.a.p/verbs.c.o
++[153/512] Compiling C object src/shared/libelogind-shared-246.9.2.a.p/xml.c.o
++[154/512] Compiling C object src/shared/libelogind-shared-246.9.2.a.p/user-record.c.o
++[155/512] Compiling C object src/shared/libelogind-shared-246.9.2.a.p/tests.c.o
++[156/512] Compiling C object src/shared/libelogind-shared-246.9.2.a.p/varlink.c.o
++[157/512] Compiling C object src/shared/libelogind-shared-246.9.2.a.p/acl-util.c.o
++[158/512] Compiling C object src/shared/libelogind-shared-246.9.2.a.p/pam-util.c.o
++[159/512] Compiling C object src/shared/libelogind-shared-246.9.2.a.p/utmp-wtmp.c.o
++[160/512] Compiling C object test-dlopen.p/src_libelogind_disable-mempool.c.o
++[161/512] Compiling C object test-dlopen.p/src_test_test-dlopen.c.o
++[162/512] Generating test-hashmap-ordered.c with a custom command (wrapped by meson to capture output)
++[163/512] Compiling C object elogind.p/src_login_elogind.c.o
++[164/512] Generating test-libelogind-sym.c with a custom command (wrapped by meson to capture output)
++[165/512] Compiling C object elogind.p/src_login_logind.c.o
++[166/512] Compiling C object test-libelogind-sym.p/meson-generated_.._src_test_test-libelogind-sym.c.o
++[167/512] Compiling C object loginctl.p/src_login_loginctl.c.o
++[168/512] Compiling C object loginctl.p/src_login_sysfs-show.c.o
++[169/512] Compiling C object elogind-inhibit.p/src_login_inhibit.c.o
++[170/512] Compiling C object loginctl.p/src_login_eloginctl.c.o
++[171/512] Compiling C object elogind-cgroups-agent.p/src_cgroups-agent_cgroups-agent.c.o
++[172/512] Compiling C object pam_elogind.so.p/src_login_pam_elogind.c.o
++[173/512] Compiling C object elogind-uaccess-command.p/src_uaccess-command_uaccess-command.c.o
++[174/512] Compiling C object src/shared/libelogind-shared-246.9.2.a.p/bus-get-properties.c.o
++[175/512] Compiling C object src/shared/libelogind-shared-246.9.2.a.p/bus-locator.c.o
++[176/512] Compiling C object busctl.p/src_busctl_busctl-introspect.c.o
++[177/512] Compiling C object src/shared/libelogind-shared-246.9.2.a.p/bus-log-control-api.c.o
++[178/512] Compiling C object src/shared/libelogind-shared-246.9.2.a.p/bus-map-properties.c.o
++[179/512] Compiling C object src/shared/libelogind-shared-246.9.2.a.p/bus-object.c.o
++[180/512] Compiling C object busctl.p/src_busctl_busctl.c.o
++[181/512] Compiling C object src/shared/libelogind-shared-246.9.2.a.p/bus-polkit.c.o
++[182/512] Compiling C object src/shared/libelogind-shared-246.9.2.a.p/bootspec.c.o
++[183/512] Compiling C object src/shared/libelogind-shared-246.9.2.a.p/bus-util.c.o
++[184/512] Compiling C object src/shared/libelogind-shared-246.9.2.a.p/bus-print-properties.c.o
++[185/512] Compiling C object src/shared/libelogind-shared-246.9.2.a.p/cgroup-setup.c.o
++[186/512] Compiling C object src/shared/libelogind-shared-246.9.2.a.p/clean-ipc.c.o
++[187/512] Compiling C object src/shared/libelogind-shared-246.9.2.a.p/dev-setup.c.o
++[188/512] Compiling C object src/shared/libelogind-shared-246.9.2.a.p/dns-domain.c.o
++[189/512] Compiling C object src/shared/libelogind-shared-246.9.2.a.p/enable-mempool.c.o
++[190/512] Compiling C object src/shared/libelogind-shared-246.9.2.a.p/conf-parser.c.o
++[191/512] Compiling C object src/shared/libelogind-shared-246.9.2.a.p/exec-elogind.c.o
++[192/512] Compiling C object src/shared/libelogind-shared-246.9.2.a.p/fileio-label.c.o
++[193/512] Compiling C object src/shared/libelogind-shared-246.9.2.a.p/exec-util.c.o
++[194/512] Compiling C object src/shared/libelogind-shared-246.9.2.a.p/efi-loader.c.o
++[195/512] Compiling C object src/shared/libelogind-shared-246.9.2.a.p/group-record.c.o
++[196/512] Compiling C object src/shared/libelogind-shared-246.9.2.a.p/libcrypt-util.c.o
++[197/512] Compiling C object src/shared/libelogind-shared-246.9.2.a.p/musl_missing.c.o
++[198/512] Compiling C object src/shared/libelogind-shared-246.9.2.a.p/nsflags.c.o
++[199/512] Compiling C object src/shared/libelogind-shared-246.9.2.a.p/output-mode.c.o
++[200/512] Compiling C object src/shared/libelogind-shared-246.9.2.a.p/pager.c.o
++[201/512] Compiling C object src/shared/libelogind-shared-246.9.2.a.p/format-table.c.o
++[202/512] Compiling C object src/shared/libelogind-shared-246.9.2.a.p/pkcs11-util.c.o
++[203/512] Compiling C object src/shared/libelogind-shared-246.9.2.a.p/qsort_r_missing.c.o
++[204/512] Compiling C object src/shared/libelogind-shared-246.9.2.a.p/pretty-print.c.o
++[205/512] Compiling C object src/shared/libelogind-shared-246.9.2.a.p/reboot-util.c.o
++[206/512] Generating 73-seat-late.rules with a custom command (wrapped by meson to capture output)
++[207/512] Compiling C object libelogind.so.0.29.0.p/src_libelogind_disable-mempool.c.o
++[208/512] Generating elogind-user with a custom command (wrapped by meson to capture output)
++[209/512] Compiling C object src/shared/libelogind-shared-246.9.2.a.p/json.c.o
++[210/512] Linking static target src/shared/libelogind-shared-246.9.2.a
++[211/512] Compiling C object src/login/liblogind-core.a.p/logind-inhibit.c.o
++[212/512] Compiling C object src/login/liblogind-core.a.p/logind-seat-dbus.c.o
++[213/512] Compiling C object src/login/liblogind-core.a.p/logind-seat.c.o
++[214/512] Compiling C object src/login/liblogind-core.a.p/logind-session-device.c.o
++[215/512] Compiling C object src/login/liblogind-core.a.p/logind-session-dbus.c.o
++[216/512] Compiling C object src/login/liblogind-core.a.p/logind-user-dbus.c.o
++[217/512] Compiling C object src/login/liblogind-core.a.p/logind-session.c.o
++[218/512] Compiling C object src/login/liblogind-core.a.p/logind-utmp.c.o
++[219/512] Compiling C object src/login/liblogind-core.a.p/logind-user.c.o
++[220/512] Compiling C object src/login/liblogind-core.a.p/.._core_mount-setup.c.o
++[221/512] Compiling C object src/login/liblogind-core.a.p/.._update-utmp_update-utmp.c.o
++[222/512] Compiling C object src/login/liblogind-core.a.p/.._sleep_sleep.c.o
++[223/512] Compiling C object src/login/liblogind-core.a.p/elogind-dbus.c.o
++[224/512] Compiling C object src/login/liblogind-core.a.p/user-runtime-dir.c.o
++[225/512] Compiling C object src/login/liblogind-core.a.p/.._core_cgroup.c.o
++[226/512] Compiling C object src/login/liblogind-core.a.p/logind-acl.c.o
++[227/512] Generating 70-uaccess.rules with a custom command (wrapped by meson to capture output)
++[228/512] Compiling C object src/libelogind/libelogind_static.a.p/sd-hwdb_sd-hwdb.c.o
++[229/512] Compiling C object src/libelogind/libelogind_static.a.p/sd-device_device-private.c.o
++[230/512] Compiling C object src/libelogind/libelogind_static.a.p/sd-device_device-monitor.c.o
++[231/512] Compiling C object src/libelogind/libelogind_static.a.p/sd-id128_id128-util.c.o
++[232/512] Compiling C object src/libelogind/libelogind_static.a.p/sd-path_sd-path.c.o
++[233/512] Compiling C object src/libelogind/libelogind_static.a.p/sd-id128_sd-id128.c.o
++[234/512] Compiling C object src/libelogind/libelogind_static.a.p/sd-daemon_sd-daemon.c.o
++[235/512] Compiling C object src/libelogind/libelogind_static.a.p/sd-device_sd-device.c.o
++[236/512] Generating logind_gperf.c with a custom command
++[237/512] Compiling C object src/login/liblogind-core.a.p/meson-generated_.._logind-gperf.c.o
++[238/512] Compiling C object src/libelogind/libelogind_static.a.p/sd-login_sd-login.c.o
++[239/512] Compiling C object src/login/liblogind-core.a.p/logind-core.c.o
++[240/512] Compiling C object src/login/liblogind-core.a.p/logind-device.c.o
++[241/512] Compiling C object src/login/liblogind-core.a.p/logind-action.c.o
++[242/512] Compiling C object src/libelogind/libelogind_static.a.p/sd-event_sd-event.c.o
++[243/512] Compiling C object src/login/liblogind-core.a.p/logind-brightness.c.o
++[244/512] Compiling C object src/libelogind/libelogind_static.a.p/sd-bus_bus-common-errors.c.o
++[245/512] Compiling C object src/libelogind/libelogind_static.a.p/sd-bus_bus-container.c.o
++[246/512] Compiling C object src/login/liblogind-core.a.p/logind-button.c.o
++[247/512] Compiling C object src/login/liblogind-core.a.p/logind-dbus.c.o
++[248/512] Linking static target src/login/liblogind-core.a
++[249/512] Compiling C object src/libelogind/libelogind_static.a.p/sd-bus_bus-control.c.o
++[250/512] Compiling C object src/libelogind/libelogind_static.a.p/sd-bus_bus-convenience.c.o
++[251/512] Compiling C object src/libelogind/libelogind_static.a.p/sd-bus_bus-creds.c.o
++[252/512] Compiling C object src/libelogind/libelogind_static.a.p/sd-bus_bus-error.c.o
++[253/512] Compiling C object src/libelogind/libelogind_static.a.p/sd-bus_bus-gvariant.c.o
++[254/512] Compiling C object src/libelogind/libelogind_static.a.p/sd-bus_bus-dump.c.o
++[255/512] Compiling C object src/libelogind/libelogind_static.a.p/sd-bus_bus-internal.c.o
++[256/512] Compiling C object src/libelogind/libelogind_static.a.p/sd-bus_bus-introspect.c.o
++[257/512] Compiling C object src/libelogind/libelogind_static.a.p/sd-bus_bus-kernel.c.o
++[258/512] Compiling C object src/libelogind/libelogind_static.a.p/sd-bus_bus-match.c.o
++[259/512] Compiling C object src/libelogind/libelogind_static.a.p/sd-bus_bus-signature.c.o
++[260/512] Compiling C object src/libelogind/libelogind_static.a.p/sd-bus_bus-slot.c.o
++[261/512] Compiling C object src/libelogind/libelogind_static.a.p/sd-bus_bus-objects.c.o
++[262/512] Compiling C object src/libelogind/libelogind_static.a.p/sd-bus_bus-track.c.o
++[263/512] Compiling C object src/libelogind/libelogind_static.a.p/sd-bus_bus-socket.c.o
++[264/512] Compiling C object src/libelogind/libelogind_static.a.p/sd-bus_bus-type.c.o
++[265/512] Compiling C object src/libelogind/libelogind_static.a.p/sd-device_device-enumerator.c.o
++[266/512] Compiling C object src/libelogind/libelogind_static.a.p/sd-bus_bus-message.c.o
++[267/512] Compiling C object src/journal/libjournal-client.a.p/mmap-cache.c.o
++[268/512] Compiling C object src/journal/libjournal-client.a.p/journal-send.c.o
++[269/512] Compiling C object src/journal/libjournal-client.a.p/sd-journal.c.o
++[270/512] Linking static target src/journal/libjournal-client.a
++[271/512] Generating errno-list.txt with a custom command (wrapped by meson to capture output)
++[272/512] Generating errno-to-name.h with a custom command (wrapped by meson to capture output)
++[273/512] Generating cap-list.txt with a custom command (wrapped by meson to capture output)
++[274/512] Generating errno-from-name.gperf with a custom command (wrapped by meson to capture output)
++[275/512] Generating cap-to-name.h with a custom command (wrapped by meson to capture output)
++[276/512] Generating errno-from-name.h with a custom command (wrapped by meson to capture output)
++[277/512] Generating cap-from-name.gperf with a custom command (wrapped by meson to capture output)
++[278/512] Compiling C object src/libelogind/libelogind_static.a.p/sd-bus_sd-bus.c.o
++[279/512] Linking static target src/libelogind/libelogind_static.a
++[280/512] Generating version.h with a custom command
++[281/512] Compiling C object test-strxcpyx.p/src_test_test-strxcpyx.c.o
++[282/512] Compiling C object test-siphash24.p/src_test_test-siphash24.c.o
++[283/512] Generating cap-from-name.h with a custom command (wrapped by meson to capture output)
++[284/512] Compiling C object test-conf-files.p/src_test_test-conf-files.c.o
++[285/512] Compiling C object test-id128.p/src_test_test-id128.c.o
++[286/512] Compiling C object test-hash.p/src_test_test-hash.c.o
++[287/512] Compiling C object test-bus-address.p/src_libelogind_sd-bus_test-bus-address.c.o
++[288/512] Compiling C object test-bus-util.p/src_test_test-bus-util.c.o
++[289/512] Compiling C object test-bus-signature.p/src_libelogind_sd-bus_test-bus-signature.c.o
++[290/512] Compiling C object test-sd-path.p/src_test_test-sd-path.c.o
++[291/512] Compiling C object test-bus-server.p/src_libelogind_sd-bus_test-bus-server.c.o
++[292/512] Compiling C object test-bus-vtable.p/src_libelogind_sd-bus_test-bus-vtable.c.o
++../src/libelogind/sd-bus/test-bus-vtable.c:28: warning: "DEFAULT_BUS_PATH" redefined
++   28 | #define DEFAULT_BUS_PATH "unix:path=/run/dbus/system_bus_socket"
++      | 
++../src/libelogind/sd-bus/test-bus-vtable.c:19: note: this is the location of the previous definition
++   19 |   #define DEFAULT_BUS_PATH "unix:path=/var/run/dbus/system_bus_socket"
++      | 
++[293/512] Compiling C object test-bus-queue-ref-cycle.p/src_libelogind_sd-bus_test-bus-queue-ref-cycle.c.o
++[294/512] Compiling C object test-bus-error.p/src_libelogind_sd-bus_test-bus-error.c.o
++[295/512] Compiling C object test-bus-match.p/src_libelogind_sd-bus_test-bus-match.c.o
++[296/512] Compiling C object test-bus-introspect.p/src_libelogind_sd-bus_test-bus-introspect.c.o
++[297/512] Compiling C object test-login.p/src_libelogind_sd-login_test-login.c.o
++[298/512] Compiling C object test-event.p/src_libelogind_sd-event_test-event.c.o
++[299/512] Compiling C object test-sd-device-thread.p/src_libelogind_sd-device_test-sd-device-thread.c.o
++[300/512] Compiling C object test-login-shared.p/src_login_test-login-shared.c.o
++[301/512] Compiling C object test-sd-device.p/src_libelogind_sd-device_test-sd-device.c.o
++[302/512] Compiling C object test-conf-parser.p/src_test_test-conf-parser.c.o
++[303/512] Compiling C object test-sd-device-monitor.p/src_libelogind_sd-device_test-sd-device-monitor.c.o
++[304/512] Compiling C object test-inhibit.p/src_login_test-inhibit.c.o
++[305/512] Compiling C object test-login-tables.p/src_login_test-login-tables.c.o
++[306/512] Compiling C object test-locale-util.p/src_test_test-locale-util.c.o
++[307/512] Compiling C object test-utf8.p/src_test_test-utf8.c.o
++[308/512] Compiling C object test-dev-setup.p/src_test_test-dev-setup.c.o
++[309/512] Compiling C object test-random-util.p/src_test_test-random-util.c.o
++[310/512] Compiling C object test-static-destruct.p/src_test_test-static-destruct.c.o
++[311/512] Compiling C object test-copy.p/src_test_test-copy.c.o
++[312/512] Compiling C object test-format-util.p/src_test_test-format-util.c.o
++[313/512] Compiling C object test-format-table.p/src_test_test-format-table.c.o
++[314/512] Compiling C object test-util.p/src_test_test-util.c.o
++[315/512] Compiling C object test-json.p/src_test_test-json.c.o
++[316/512] Compiling C object test-mountpoint-util.p/src_test_test-mountpoint-util.c.o
++[317/512] Compiling C object test-hexdecoct.p/src_test_test-hexdecoct.c.o
++[318/512] Compiling C object test-alloc-util.p/src_test_test-alloc-util.c.o
++[319/512] Compiling C object test-io-util.p/src_test_test-io-util.c.o
++[320/512] Compiling C object test-umask-util.p/src_test_test-umask-util.c.o
++[321/512] Compiling C object test-exec-util.p/src_test_test-exec-util.c.o
++[322/512] Compiling C object test-proc-cmdline.p/src_test_test-proc-cmdline.c.o
++[323/512] Compiling C object test-fd-util.p/src_test_test-fd-util.c.o
++[324/512] Compiling C object test-stat-util.p/src_test_test-stat-util.c.o
++[325/512] Compiling C object test-escape.p/src_test_test-escape.c.o
++[326/512] Compiling C object test-fs-util.p/src_test_test-fs-util.c.o
++[327/512] Compiling C object test-extract-word.p/src_test_test-extract-word.c.o
++[328/512] Compiling C object test-string-util.p/src_test_test-string-util.c.o
++[329/512] Compiling C object test-parse-util.p/src_test_test-parse-util.c.o
++[330/512] Compiling C object test-pretty-print.p/src_test_test-pretty-print.c.o
++[331/512] Compiling C object test-user-util.p/src_test_test-user-util.c.o
++[332/512] Compiling C object test-process-util.p/src_test_test-process-util.c.o
++[333/512] Compiling C object test-sizeof.p/src_test_test-sizeof.c.o
++[334/512] Compiling C object test-verbs.p/src_test_test-verbs.c.o
++[335/512] Compiling C object test-signal-util.p/src_test_test-signal-util.c.o
++[336/512] Compiling C object test-selinux.p/src_test_test-selinux.c.o
++[337/512] Compiling C object test-hashmap.p/src_test_test-hashmap.c.o
++[338/512] Compiling C object test-set.p/src_test_test-set.c.o
++[339/512] Compiling C object test-hashmap.p/meson-generated_.._src_test_test-hashmap-ordered.c.o
++[340/512] Compiling C object test-set-disable-mempool.p/src_test_test-set-disable-mempool.c.o
++[341/512] Compiling C object test-procfs-util.p/src_test_test-procfs-util.c.o
++[342/512] Compiling C object test-hashmap.p/src_test_test-hashmap-plain.c.o
++[343/512] Compiling C object test-ipcrm.p/src_test_test-ipcrm.c.o
++[344/512] Compiling C object test-list.p/src_test_test-list.c.o
++[345/512] Compiling C object test-unaligned.p/src_test_test-unaligned.c.o
++[346/512] Compiling C object test-prioq.p/src_test_test-prioq.c.o
++[347/512] Compiling C object test-strip-tab-ansi.p/src_test_test-strip-tab-ansi.c.o
++[348/512] Compiling C object test-log.p/src_test_test-log.c.o
++[349/512] Compiling C object test-ellipsize.p/src_test_test-ellipsize.c.o
++[350/512] Compiling C object test-chase-symlinks.p/src_test_test-chase-symlinks.c.o
++[351/512] Compiling C object test-cgroup.p/src_test_test-cgroup.c.o
++[352/512] Compiling C object src/basic/libbasic.a.p/string-table.c.o
++[353/512] Compiling C object src/basic/libbasic.a.p/socket-util.c.o
++[354/512] Compiling C object src/basic/libbasic.a.p/stat-util.c.o
++[355/512] Compiling C object src/basic/libbasic.a.p/strxcpyx.c.o
++[356/512] Compiling C object test-path-util.p/src_test_test-path-util.c.o
++[357/512] Compiling C object src/basic/libbasic.a.p/string-util.c.o
++[358/512] Compiling C object src/basic/libbasic.a.p/strv.c.o
++[359/512] Compiling C object src/basic/libbasic.a.p/tmpfile-util.c.o
++[360/512] Compiling C object src/basic/libbasic.a.p/unit-def.c.o
++[361/512] Compiling C object src/basic/libbasic.a.p/unit-name.c.o
++[362/512] Compiling C object src/basic/libbasic.a.p/util.c.o
++[363/512] Compiling C object src/basic/libbasic.a.p/user-util.c.o
++[364/512] Compiling C object src/basic/libbasic.a.p/utf8.c.o
++[365/512] Compiling C object src/basic/libbasic.a.p/virt.c.o
++[366/512] Compiling C object src/basic/libbasic.a.p/xattr-util.c.o
++[367/512] Compiling C object src/basic/libbasic.a.p/ratelimit.c.o
++[368/512] Compiling C object src/basic/libbasic.a.p/random-util.c.o
++[369/512] Compiling C object src/basic/libbasic.a.p/rlimit-util.c.o
++[370/512] Compiling C object src/basic/libbasic.a.p/sigbus.c.o
++[371/512] Compiling C object src/basic/libbasic.a.p/selinux-util.c.o
++[372/512] Compiling C object src/basic/libbasic.a.p/rm-rf.c.o
++[373/512] Compiling C object src/basic/libbasic.a.p/smack-util.c.o
++[374/512] Compiling C object src/basic/libbasic.a.p/signal-util.c.o
++[375/512] Compiling C object src/basic/libbasic.a.p/siphash24.c.o
++[376/512] Compiling C object src/basic/libbasic.a.p/mkdir-label.c.o
++[377/512] Compiling C object src/basic/libbasic.a.p/mountpoint-util.c.o
++[378/512] Compiling C object src/basic/libbasic.a.p/mkdir.c.o
++[379/512] Compiling C object src/basic/libbasic.a.p/namespace-util.c.o
++[380/512] Compiling C object src/basic/libbasic.a.p/nulstr-util.c.o
++[381/512] Compiling C object src/basic/libbasic.a.p/parse-printf-format.c.o
++[382/512] Compiling C object src/basic/libbasic.a.p/prioq.c.o
++[383/512] Compiling C object src/basic/libbasic.a.p/parse-util.c.o
++[384/512] Compiling C object src/basic/libbasic.a.p/path-util.c.o
++[385/512] Compiling C object src/basic/libbasic.a.p/proc-cmdline.c.o
++[386/512] Compiling C object src/basic/libbasic.a.p/procfs-util.c.o
++[387/512] Compiling C object src/basic/libbasic.a.p/khash.c.o
++[388/512] Compiling C object src/basic/libbasic.a.p/limits-util.c.o
++[389/512] Compiling C object src/basic/libbasic.a.p/label.c.o
++[390/512] Compiling C object src/basic/libbasic.a.p/login-util.c.o
++[391/512] Compiling C object src/basic/libbasic.a.p/locale-util.c.o
++[392/512] Compiling C object src/basic/libbasic.a.p/process-util.c.o
++[393/512] Compiling C object src/basic/libbasic.a.p/memfd-util.c.o
++[394/512] Compiling C object src/basic/libbasic.a.p/mempool.c.o
++[395/512] Compiling C object src/basic/libbasic.a.p/memory-util.c.o
++[396/512] Compiling C object src/basic/libbasic.a.p/escape.c.o
++[397/512] Compiling C object src/basic/libbasic.a.p/log.c.o
++[398/512] Compiling C object src/basic/libbasic.a.p/fd-util.c.o
++[399/512] Compiling C object src/basic/libbasic.a.p/extract-word.c.o
++[400/512] Compiling C object src/basic/libbasic.a.p/format-util.c.o
++[401/512] Compiling C object src/basic/libbasic.a.p/gunicode.c.o
++[402/512] Compiling C object src/basic/libbasic.a.p/fileio.c.o
++[403/512] Compiling C object src/basic/libbasic.a.p/hash-funcs.c.o
++[404/512] Compiling C object src/basic/libbasic.a.p/fs-util.c.o
++[405/512] Compiling C object src/basic/libbasic.a.p/io-util.c.o
++[406/512] Compiling C object src/basic/libbasic.a.p/hexdecoct.c.o
++[407/512] Compiling C object src/basic/libbasic.a.p/hostname-util.c.o
++[408/512] Compiling C object src/basic/libbasic.a.p/errno-list.c.o
++[409/512] Compiling C object src/basic/libbasic.a.p/hashmap.c.o
++[410/512] Compiling C object src/basic/libbasic.a.p/env-file.c.o
++[411/512] Compiling C object src/basic/libbasic.a.p/env-util.c.o
++[412/512] Compiling C object src/basic/libbasic.a.p/syslog-util.c.o
++[413/512] Compiling C object src/basic/libbasic.a.p/cap-list.c.o
++[414/512] Compiling C object src/basic/libbasic.a.p/time-util.c.o
++[415/512] Compiling C object src/basic/libbasic.a.p/terminal-util.c.o
++[416/512] Compiling C object src/basic/libbasic.a.p/chattr-util.c.o
++[417/512] Compiling C object src/basic/libbasic.a.p/conf-files.c.o
++[418/512] Compiling C object src/basic/libbasic.a.p/copy.c.o
++[419/512] Compiling C object src/basic/libbasic.a.p/dirent-util.c.o
++[420/512] Compiling C object src/basic/libbasic.a.p/efivars.c.o
++[421/512] Compiling C object src/basic/libbasic.a.p/audit-util.c.o
++[422/512] Compiling C object src/basic/libbasic.a.p/blockdev-util.c.o
++[423/512] Compiling C object src/basic/libbasic.a.p/bus-label.c.o
++[424/512] Compiling C object src/basic/libbasic.a.p/capability-util.c.o
++[425/512] Compiling C object src/basic/libbasic.a.p/MurmurHash2.c.o
++[426/512] Compiling C object src/basic/libbasic.a.p/btrfs-util.c.o
++[427/512] Compiling C object src/basic/libbasic.a.p/async.c.o
++[428/512] Compiling C object src/basic/libbasic.a.p/alloc-util.c.o
++[429/512] Compiling C object src/basic/libbasic.a.p/cgroup-util.c.o
++[430/512] Linking static target src/basic/libbasic.a
++[431/512] Linking target test-sizeof
++[432/512] Linking target test-bus-error
++[433/512] Linking target test-set
++[434/512] Linking target test-dlopen
++[435/512] Linking target pam_elogind.so
++[436/512] Linking target src/shared/libelogind-shared-246.9.2.so
++[437/512] Linking target libelogind.so.0.29.0
++[438/512] Generating symbol file libelogind.so.0.29.0.p/libelogind.so.0.29.0.symbols
++[439/512] Linking target test-libelogind-sym
++[440/512] Generating symbol file src/shared/libelogind-shared-246.9.2.so.p/libelogind-shared-246.9.2.so.symbols
++[441/512] Linking target test-sd-device-thread
++[442/512] Linking target test-siphash24
++[443/512] Linking target test-chase-symlinks
++[444/512] Linking target test-strxcpyx
++[445/512] Linking target test-conf-files
++[446/512] Linking target test-id128
++[447/512] Linking target test-conf-parser
++[448/512] Linking target test-sd-path
++[449/512] Linking target test-bus-address
++[450/512] Linking target test-hash
++[451/512] Linking target test-bus-util
++[452/512] Linking target test-bus-server
++[453/512] Linking target test-bus-signature
++[454/512] Linking target test-bus-match
++[455/512] Linking target test-bus-vtable
++[456/512] Linking target test-bus-queue-ref-cycle
++[457/512] Linking target test-event
++[458/512] Linking target test-bus-introspect
++[459/512] Linking target test-login
++[460/512] Linking target test-sd-device-monitor
++[461/512] Linking target test-sd-device
++[462/512] Linking target test-login-shared
++[463/512] Linking target test-inhibit
++[464/512] Linking target test-utf8
++[465/512] Linking target test-login-tables
++[466/512] Linking target test-dev-setup
++[467/512] Linking target test-locale-util
++[468/512] Linking target test-copy
++[469/512] Linking target test-static-destruct
++[470/512] Linking target test-random-util
++[471/512] Linking target test-format-util
++[472/512] Linking target test-format-table
++[473/512] Linking target test-util
++[474/512] Linking target test-mountpoint-util
++[475/512] Linking target test-json
++[476/512] Linking target test-exec-util
++[477/512] Linking target test-hexdecoct
++[478/512] Linking target test-alloc-util
++[479/512] Linking target test-io-util
++[480/512] Linking target test-fs-util
++[481/512] Linking target test-umask-util
++[482/512] Linking target test-proc-cmdline
++[483/512] Linking target test-fd-util
++[484/512] Linking target test-stat-util
++[485/512] Linking target test-escape
++[486/512] Linking target test-string-util
++[487/512] Linking target test-extract-word
++[488/512] Linking target test-parse-util
++[489/512] Linking target test-user-util
++[490/512] Linking target test-process-util
++[491/512] Linking target test-pretty-print
++[492/512] Linking target test-selinux
++[493/512] Linking target test-verbs
++[494/512] Linking target test-signal-util
++[495/512] Linking target test-set-disable-mempool
++[496/512] Linking target test-list
++[497/512] Linking target test-hashmap
++[498/512] Linking target test-procfs-util
++[499/512] Linking target test-log
++[500/512] Linking target test-ipcrm
++[501/512] Linking target test-unaligned
++[502/512] Linking target test-prioq
++[503/512] Linking target test-ellipsize
++[504/512] Linking target test-strip-tab-ansi
++[505/512] Linking target test-cgroup
++[506/512] Linking target test-path-util
++[507/512] Linking target loginctl
++[508/512] Linking target elogind-inhibit
++[509/512] Linking target elogind
++[510/512] Linking target elogind-cgroups-agent
++[511/512] Linking target busctl
++[512/512] Linking target elogind-uaccess-command
++[1/86] Generating version.h with a custom command
++[1/2] Installing files.
++Installing subdir /tmp/elogind-246.9.2/factory/etc to /tmp/package-elogind/usr/share/factory/etc
++Installing /tmp/elogind-246.9.2/factory/etc/pam.d/system-auth to /tmp/package-elogind/usr/share/factory/etc/pam.d
++Installing /tmp/elogind-246.9.2/factory/etc/pam.d/other to /tmp/package-elogind/usr/share/factory/etc/pam.d
++Installing src/login/70-uaccess.rules to /tmp/package-elogind/lib/udev/rules.d
++Installing src/login/73-seat-late.rules to /tmp/package-elogind/lib/udev/rules.d
++Installing src/login/elogind-user to /tmp/package-elogind/etc/pam.d
++Installing libelogind.so.0.29.0 to /tmp/package-elogind/lib
++Installing src/shared/libelogind-shared-246.9.2.so to /tmp/package-elogind/lib/elogind
++Installing elogind to /tmp/package-elogind/lib/elogind
++Installing loginctl to /tmp/package-elogind/bin
++Installing elogind-inhibit to /tmp/package-elogind/bin
++Installing pam_elogind.so to /tmp/package-elogind/lib/security
++Installing elogind-cgroups-agent to /tmp/package-elogind/lib/elogind
++Installing busctl to /tmp/package-elogind/usr/bin
++Installing elogind-uaccess-command to /tmp/package-elogind/lib/elogind
++Installing man/busctl.1 to /tmp/package-elogind/usr/man/man1
++Installing man/elogind-inhibit.1 to /tmp/package-elogind/usr/man/man1
++Installing man/elogind.8 to /tmp/package-elogind/usr/man/man8
++Installing man/elogind.journal-fields.7 to /tmp/package-elogind/usr/man/man7
++Installing man/elogind.syntax.7 to /tmp/package-elogind/usr/man/man7
++Installing man/elogind.time.7 to /tmp/package-elogind/usr/man/man7
++Installing man/loginctl.1 to /tmp/package-elogind/usr/man/man1
++Installing man/logind.conf.5 to /tmp/package-elogind/usr/man/man5
++Installing man/pam_elogind.8 to /tmp/package-elogind/usr/man/man8
++Installing man/sd-bus.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd-event.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd-login.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_booted.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_add_match.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_add_match_async.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_match_signal.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_match_signal_async.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_add_node_enumerator.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_add_object.3 to /tmp/package-elogind/usr/man/man3
++Installing man/SD_BUS_METHOD.3 to /tmp/package-elogind/usr/man/man3
++Installing man/SD_BUS_METHOD_WITH_NAMES.3 to /tmp/package-elogind/usr/man/man3
++Installing man/SD_BUS_METHOD_WITH_NAMES_OFFSET.3 to /tmp/package-elogind/usr/man/man3
++Installing man/SD_BUS_METHOD_WITH_OFFSET.3 to /tmp/package-elogind/usr/man/man3
++Installing man/SD_BUS_PARAM.3 to /tmp/package-elogind/usr/man/man3
++Installing man/SD_BUS_PROPERTY.3 to /tmp/package-elogind/usr/man/man3
++Installing man/SD_BUS_SIGNAL.3 to /tmp/package-elogind/usr/man/man3
++Installing man/SD_BUS_SIGNAL_WITH_NAMES.3 to /tmp/package-elogind/usr/man/man3
++Installing man/SD_BUS_VTABLE_END.3 to /tmp/package-elogind/usr/man/man3
++Installing man/SD_BUS_VTABLE_START.3 to /tmp/package-elogind/usr/man/man3
++Installing man/SD_BUS_WRITABLE_PROPERTY.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_add_fallback.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_add_fallback_vtable.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_add_filter.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_add_object_vtable.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_add_object_manager.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_attach_event.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_detach_event.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_get_event.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_call.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_call_async.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_call_method.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_call_method_async.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_call_method_asyncv.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_call_methodv.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_can_send.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_close.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_default_flush_close.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_flush.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_creds_get_pid.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_creds_get_audit_login_uid.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_creds_get_audit_session_id.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_creds_get_cgroup.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_creds_get_cmdline.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_creds_get_comm.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_creds_get_description.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_creds_get_egid.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_creds_get_euid.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_creds_get_exe.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_creds_get_fsgid.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_creds_get_fsuid.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_creds_get_gid.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_creds_get_owner_uid.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_creds_get_ppid.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_creds_get_selinux_context.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_creds_get_session.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_creds_get_sgid.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_creds_get_slice.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_creds_get_suid.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_creds_get_supplementary_gids.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_creds_get_tid.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_creds_get_tid_comm.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_creds_get_tty.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_creds_get_uid.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_creds_get_unique_name.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_creds_get_unit.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_creds_get_user_slice.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_creds_get_user_unit.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_creds_get_well_known_names.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_creds_has_bounding_cap.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_creds_has_effective_cap.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_creds_has_inheritable_cap.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_creds_has_permitted_cap.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_creds_new_from_pid.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_creds_get_augmented_mask.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_creds_get_mask.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_creds_ref.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_creds_unref.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_creds_unrefp.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_default.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_default_system.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_default_user.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_open.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_open_system.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_open_system_machine.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_open_system_remote.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_open_system_with_description.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_open_user.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_open_user_with_description.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_open_with_description.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_emit_signal.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_emit_interfaces_added.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_emit_interfaces_added_strv.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_emit_interfaces_removed.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_emit_interfaces_removed_strv.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_emit_object_added.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_emit_object_removed.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_emit_properties_changed.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_emit_properties_changed_strv.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_emit_signalv.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_error.3 to /tmp/package-elogind/usr/man/man3
++Installing man/SD_BUS_ERROR_MAKE_CONST.3 to /tmp/package-elogind/usr/man/man3
++Installing man/SD_BUS_ERROR_NULL.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_error_copy.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_error_free.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_error_get_errno.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_error_has_name.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_error_is_set.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_error_move.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_error_set.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_error_set_const.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_error_set_errno.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_error_set_errnof.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_error_set_errnofv.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_error_setf.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_error_add_map.3 to /tmp/package-elogind/usr/man/man3
++Installing man/SD_BUS_ERROR_END.3 to /tmp/package-elogind/usr/man/man3
++Installing man/SD_BUS_ERROR_MAP.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_error_map.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_get_current_handler.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_get_current_message.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_get_current_slot.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_get_current_userdata.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_get_fd.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_get_events.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_get_timeout.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_set_fd.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_get_n_queued_read.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_get_n_queued_write.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_get_name_creds.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_get_owner_creds.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_get_name_machine_id.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_interface_name_is_valid.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_member_name_is_valid.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_object_path_is_valid.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_service_name_is_valid.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_is_open.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_is_ready.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_list_names.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_append.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_appendv.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_append_array.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_append_array_iovec.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_append_array_memfd.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_append_array_space.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_append_basic.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_append_string_memfd.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_append_string_iovec.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_append_string_space.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_append_strv.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_copy.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_dump.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_get_cookie.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_get_reply_cookie.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_get_monotonic_usec.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_get_realtime_usec.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_get_seqnum.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_get_signature.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_has_signature.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_is_empty.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_get_type.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_get_creds.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_get_errno.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_get_error.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_is_method_call.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_is_method_error.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_is_signal.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_new.3 to /tmp/package-elogind/usr/man/man3
++Installing man/SD_BUS_MESSAGE_METHOD_CALL.3 to /tmp/package-elogind/usr/man/man3
++Installing man/SD_BUS_MESSAGE_METHOD_ERROR.3 to /tmp/package-elogind/usr/man/man3
++Installing man/SD_BUS_MESSAGE_METHOD_RETURN.3 to /tmp/package-elogind/usr/man/man3
++Installing man/SD_BUS_MESSAGE_SIGNAL.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_get_bus.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_ref.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_unref.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_unrefp.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_new_method_call.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_new_method_return.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_new_method_error.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_new_method_errno.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_new_method_errnof.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_new_method_errorf.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_new_signal.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_open_container.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_close_container.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_enter_container.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_exit_container.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_read.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_peek_type.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_readv.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_read_array.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_read_basic.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_rewind.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_seal.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_set_destination.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_get_destination.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_get_interface.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_get_member.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_get_path.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_get_sender.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_set_sender.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_set_expect_reply.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_get_allow_interactive_authorization.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_get_auto_start.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_get_expect_reply.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_set_allow_interactive_authorization.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_set_auto_start.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_skip.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_message_verify_type.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_negotiate_fds.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_get_creds_mask.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_negotiate_creds.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_negotiate_timestamp.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_new.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_close_unref.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_close_unrefp.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_flush_close_unref.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_flush_close_unrefp.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_ref.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_unref.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_unrefp.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_path_encode.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_path_decode.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_path_decode_many.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_path_encode_many.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_process.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_query_sender_creds.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_query_sender_privilege.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_reply_method_error.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_reply_method_errno.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_reply_method_errnof.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_reply_method_errnofv.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_reply_method_errorf.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_reply_method_errorfv.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_reply_method_return.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_reply_method_returnv.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_request_name.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_release_name.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_release_name_async.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_request_name_async.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_send.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_send_to.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_set_address.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_get_address.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_set_exec.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_set_close_on_exit.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_get_close_on_exit.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_set_connected_signal.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_get_connected_signal.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_set_description.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_get_allow_interactive_authorization.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_get_description.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_get_scope.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_get_tid.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_get_unique_name.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_is_anonymous.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_is_trusted.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_set_allow_interactive_authorization.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_set_anonymous.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_set_trusted.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_set_exit_on_disconnect.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_get_exit_on_disconnect.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_set_method_call_timeout.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_get_method_call_timeout.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_set_property.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_get_property.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_get_property_string.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_get_property_strv.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_get_property_trivial.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_set_propertyv.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_set_sender.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_get_sender.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_set_server.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_get_bus_id.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_is_bus_client.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_is_monitor.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_is_server.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_set_bus_client.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_set_monitor.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_set_watch_bind.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_get_watch_bind.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_slot_get_bus.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_slot_get_current_handler.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_slot_get_current_message.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_slot_get_current_userdata.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_slot_ref.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_slot_unref.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_slot_unrefp.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_slot_set_description.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_slot_get_description.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_slot_set_destroy_callback.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_destroy_t.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_slot_get_destroy_callback.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_track_get_destroy_callback.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_track_set_destroy_callback.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_slot_set_floating.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_slot_get_floating.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_slot_set_userdata.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_slot_get_userdata.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_start.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_track_add_name.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_track_add_sender.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_track_contains.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_track_count.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_track_count_name.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_track_count_sender.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_track_first.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_track_next.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_track_remove_name.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_track_remove_sender.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_track_new.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_track_get_bus.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_track_get_recursive.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_track_get_userdata.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_track_ref.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_track_set_recursive.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_track_set_userdata.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_track_unref.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_track_unrefp.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_bus_wait.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_add_child.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_add_child_pidfd.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_child_handler_t.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_source_get_child_pid.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_source_get_child_pidfd.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_source_get_child_pidfd_own.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_source_get_child_process_own.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_source_send_child_signal.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_source_set_child_pidfd_own.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_source_set_child_process_own.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_add_defer.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_add_exit.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_add_post.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_handler_t.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_add_inotify.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_inotify_handler_t.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_source_get_inotify_mask.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_add_io.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_io_handler_t.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_source.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_source_get_io_events.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_source_get_io_fd.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_source_get_io_fd_own.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_source_get_io_revents.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_source_set_io_events.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_source_set_io_fd.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_source_set_io_fd_own.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_add_signal.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_signal_handler_t.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_source_get_signal.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_add_time.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_source_get_time.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_source_get_time_accuracy.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_source_get_time_clock.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_source_set_time.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_source_set_time_accuracy.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_time_handler_t.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_exit.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_get_exit_code.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_get_fd.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_new.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_default.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_get_tid.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_ref.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_unref.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_unrefp.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_now.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_run.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_loop.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_set_watchdog.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_get_watchdog.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_source_get_event.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_source_get_pending.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_source_set_description.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_source_get_description.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_source_set_destroy_callback.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_destroy_t.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_source_get_destroy_callback.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_source_set_enabled.3 to /tmp/package-elogind/usr/man/man3
++Installing man/SD_EVENT_OFF.3 to /tmp/package-elogind/usr/man/man3
++Installing man/SD_EVENT_ON.3 to /tmp/package-elogind/usr/man/man3
++Installing man/SD_EVENT_ONESHOT.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_source_get_enabled.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_source_set_floating.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_source_get_floating.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_source_set_prepare.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_source_set_priority.3 to /tmp/package-elogind/usr/man/man3
++Installing man/SD_EVENT_PRIORITY_IDLE.3 to /tmp/package-elogind/usr/man/man3
++Installing man/SD_EVENT_PRIORITY_IMPORTANT.3 to /tmp/package-elogind/usr/man/man3
++Installing man/SD_EVENT_PRIORITY_NORMAL.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_source_get_priority.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_source_set_userdata.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_source_get_userdata.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_source_unref.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_source_disable_unref.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_source_disable_unrefp.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_source_ref.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_source_unrefp.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_wait.3 to /tmp/package-elogind/usr/man/man3
++Installing man/SD_EVENT_ARMED.3 to /tmp/package-elogind/usr/man/man3
++Installing man/SD_EVENT_EXITING.3 to /tmp/package-elogind/usr/man/man3
++Installing man/SD_EVENT_FINISHED.3 to /tmp/package-elogind/usr/man/man3
++Installing man/SD_EVENT_INITIAL.3 to /tmp/package-elogind/usr/man/man3
++Installing man/SD_EVENT_PENDING.3 to /tmp/package-elogind/usr/man/man3
++Installing man/SD_EVENT_PREPARING.3 to /tmp/package-elogind/usr/man/man3
++Installing man/SD_EVENT_RUNNING.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_dispatch.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_get_iteration.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_get_state.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_event_prepare.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_get_seats.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_get_machine_names.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_get_sessions.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_get_uids.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_id128_get_machine.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_id128_get_boot.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_id128_get_boot_app_specific.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_id128_get_invocation.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_id128_get_machine_app_specific.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_id128_randomize.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_id128_to_string.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_id128_from_string.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_is_fifo.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_is_mq.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_is_socket.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_is_socket_inet.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_is_socket_sockaddr.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_is_socket_unix.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_is_special.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_add_match.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_add_conjunction.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_add_disjunction.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_flush_matches.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_enumerate_fields.3 to /tmp/package-elogind/usr/man/man3
++Installing man/SD_JOURNAL_FOREACH_FIELD.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_restart_fields.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_get_catalog.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_get_catalog_for_message_id.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_get_cursor.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_test_cursor.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_get_cutoff_realtime_usec.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_get_cutoff_monotonic_usec.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_get_data.3 to /tmp/package-elogind/usr/man/man3
++Installing man/SD_JOURNAL_FOREACH_DATA.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_enumerate_available_data.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_enumerate_data.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_get_data_threshold.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_restart_data.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_set_data_threshold.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_get_fd.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_get_events.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_get_timeout.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_process.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_reliable_fd.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_wait.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_get_realtime_usec.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_get_monotonic_usec.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_get_usage.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_has_runtime_files.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_has_persistent_files.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_next.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_next_skip.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_previous.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_previous_skip.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_open.3 to /tmp/package-elogind/usr/man/man3
++Installing man/SD_JOURNAL_ALL_NAMESPACES.3 to /tmp/package-elogind/usr/man/man3
++Installing man/SD_JOURNAL_INCLUDE_DEFAULT_NAMESPACE.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_close.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_open_directory.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_open_directory_fd.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_open_files.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_open_files_fd.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_open_namespace.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_print.3 to /tmp/package-elogind/usr/man/man3
++Installing man/SD_JOURNAL_SUPPRESS_LOCATION.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_perror.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_perror_with_location.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_print_with_location.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_printv.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_printv_with_location.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_send.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_send_with_location.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_sendv.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_sendv_with_location.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_query_unique.3 to /tmp/package-elogind/usr/man/man3
++Installing man/SD_JOURNAL_FOREACH_UNIQUE.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_enumerate_available_unique.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_enumerate_unique.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_restart_unique.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_seek_head.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_seek_cursor.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_seek_monotonic_usec.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_seek_realtime_usec.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_seek_tail.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_journal_stream_fd.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_listen_fds.3 to /tmp/package-elogind/usr/man/man3
++Installing man/SD_LISTEN_FDS_START.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_listen_fds_with_names.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_login_monitor_new.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_login_monitor.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_login_monitor_flush.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_login_monitor_get_events.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_login_monitor_get_fd.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_login_monitor_get_timeout.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_login_monitor_unref.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_login_monitor_unrefp.3 to /tmp/package-elogind/usr/man/man3Installing /tmp/elogind-246.9.2/meson-build/po/be.gmo to /tmp/package-elogind/usr/share/locale/be/LC_MESSAGES/elogind.mo
++Installing /tmp/elogind-246.9.2/meson-build/po/be@latin.gmo to /tmp/package-elogind/usr/share/locale/be@latin/LC_MESSAGES/elogind.mo
++Installing /tmp/elogind-246.9.2/meson-build/po/bg.gmo to /tmp/package-elogind/usr/share/locale/bg/LC_MESSAGES/elogind.mo
++Installing /tmp/elogind-246.9.2/meson-build/po/ca.gmo to /tmp/package-elogind/usr/share/locale/ca/LC_MESSAGES/elogind.mo
++Installing /tmp/elogind-246.9.2/meson-build/po/cs.gmo to /tmp/package-elogind/usr/share/locale/cs/LC_MESSAGES/elogind.mo
++Installing /tmp/elogind-246.9.2/meson-build/po/da.gmo to /tmp/package-elogind/usr/share/locale/da/LC_MESSAGES/elogind.mo
++Installing /tmp/elogind-246.9.2/meson-build/po/de.gmo to /tmp/package-elogind/usr/share/locale/de/LC_MESSAGES/elogind.mo
++Installing /tmp/elogind-246.9.2/meson-build/po/el.gmo to /tmp/package-elogind/usr/share/locale/el/LC_MESSAGES/elogind.mo
++Installing /tmp/elogind-246.9.2/meson-build/po/es.gmo to /tmp/package-elogind/usr/share/locale/es/LC_MESSAGES/elogind.mo
++Installing /tmp/elogind-246.9.2/meson-build/po/fr.gmo to /tmp/package-elogind/usr/share/locale/fr/LC_MESSAGES/elogind.mo
++Installing /tmp/elogind-246.9.2/meson-build/po/gl.gmo to /tmp/package-elogind/usr/share/locale/gl/LC_MESSAGES/elogind.mo
++Installing /tmp/elogind-246.9.2/meson-build/po/hr.gmo to /tmp/package-elogind/usr/share/locale/hr/LC_MESSAGES/elogind.mo
++Installing /tmp/elogind-246.9.2/meson-build/po/hu.gmo to /tmp/package-elogind/usr/share/locale/hu/LC_MESSAGES/elogind.mo
++Installing /tmp/elogind-246.9.2/meson-build/po/id.gmo to /tmp/package-elogind/usr/share/locale/id/LC_MESSAGES/elogind.mo
++Installing /tmp/elogind-246.9.2/meson-build/po/it.gmo to /tmp/package-elogind/usr/share/locale/it/LC_MESSAGES/elogind.mo
++Installing /tmp/elogind-246.9.2/meson-build/po/ja.gmo to /tmp/package-elogind/usr/share/locale/ja/LC_MESSAGES/elogind.mo
++Installing /tmp/elogind-246.9.2/meson-build/po/ko.gmo to /tmp/package-elogind/usr/share/locale/ko/LC_MESSAGES/elogind.mo
++Installing /tmp/elogind-246.9.2/meson-build/po/lt.gmo to /tmp/package-elogind/usr/share/locale/lt/LC_MESSAGES/elogind.mo
++Installing /tmp/elogind-246.9.2/meson-build/po/pl.gmo to /tmp/package-elogind/usr/share/locale/pl/LC_MESSAGES/elogind.mo
++Installing /tmp/elogind-246.9.2/meson-build/po/pt_BR.gmo to /tmp/package-elogind/usr/share/locale/pt_BR/LC_MESSAGES/elogind.mo
++Installing /tmp/elogind-246.9.2/meson-build/po/ro.gmo to /tmp/package-elogind/usr/share/locale/ro/LC_MESSAGES/elogind.mo
++Installing /tmp/elogind-246.9.2/meson-build/po/ru.gmo to /tmp/package-elogind/usr/share/locale/ru/LC_MESSAGES/elogind.mo
++Installing /tmp/elogind-246.9.2/meson-build/po/sk.gmo to /tmp/package-elogind/usr/share/locale/sk/LC_MESSAGES/elogind.mo
++Installing /tmp/elogind-246.9.2/meson-build/po/sr.gmo to /tmp/package-elogind/usr/share/locale/sr/LC_MESSAGES/elogind.mo
++Installing /tmp/elogind-246.9.2/meson-build/po/sv.gmo to /tmp/package-elogind/usr/share/locale/sv/LC_MESSAGES/elogind.mo
++Installing /tmp/elogind-246.9.2/meson-build/po/tr.gmo to /tmp/package-elogind/usr/share/locale/tr/LC_MESSAGES/elogind.mo
++Installing /tmp/elogind-246.9.2/meson-build/po/uk.gmo to /tmp/package-elogind/usr/share/locale/uk/LC_MESSAGES/elogind.mo
++Installing /tmp/elogind-246.9.2/meson-build/po/zh_CN.gmo to /tmp/package-elogind/usr/share/locale/zh_CN/LC_MESSAGES/elogind.mo
++Installing /tmp/elogind-246.9.2/meson-build/po/zh_TW.gmo to /tmp/package-elogind/usr/share/locale/zh_TW/LC_MESSAGES/elogind.mo
++'/tmp/package-elogind//usr/include/elogind/sd-bus.h' -> 'systemd/sd-bus.h'
++'/tmp/package-elogind//usr/include/elogind/sd-bus-protocol.h' -> 'systemd/sd-bus-protocol.h'
++'/tmp/package-elogind//usr/include/elogind/sd-bus-vtable.h' -> 'systemd/sd-bus-vtable.h'
++'/tmp/package-elogind//usr/include/elogind/sd-daemon.h' -> 'systemd/sd-daemon.h'
++'/tmp/package-elogind//usr/include/elogind/sd-device.h' -> 'systemd/sd-device.h'
++'/tmp/package-elogind//usr/include/elogind/sd-event.h' -> 'systemd/sd-event.h'
++'/tmp/package-elogind//usr/include/elogind/sd-hwdb.h' -> 'systemd/sd-hwdb.h'
++'/tmp/package-elogind//usr/include/elogind/sd-id128.h' -> 'systemd/sd-id128.h'
++'/tmp/package-elogind//usr/include/elogind/sd-journal.h' -> 'systemd/sd-journal.h'
++'/tmp/package-elogind//usr/include/elogind/sd-login.h' -> 'systemd/sd-login.h'
++'/tmp/package-elogind//usr/include/elogind/sd-messages.h' -> 'systemd/sd-messages.h'
++'/tmp/package-elogind//usr/include/elogind/sd-path.h' -> 'systemd/sd-path.h'
++'/tmp/package-elogind//usr/include/elogind/_sd-common.h' -> 'systemd/_sd-common.h'
++
++Installing man/sd_machine_get_class.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_machine_get_ifindices.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_notify.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_notify_barrier.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_notifyf.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_pid_notify.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_pid_notify_with_fds.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_pid_notifyf.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_pid_get_owner_uid.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_peer_get_cgroup.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_peer_get_machine_name.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_peer_get_owner_uid.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_peer_get_session.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_peer_get_slice.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_peer_get_unit.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_peer_get_user_slice.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_peer_get_user_unit.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_pid_get_cgroup.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_pid_get_machine_name.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_pid_get_session.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_pid_get_slice.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_pid_get_unit.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_pid_get_user_slice.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_pid_get_user_unit.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_seat_get_active.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_seat_can_graphical.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_seat_can_tty.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_seat_get_sessions.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_session_is_active.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_session_get_class.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_session_get_desktop.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_session_get_display.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_session_get_remote_host.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_session_get_remote_user.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_session_get_seat.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_session_get_service.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_session_get_state.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_session_get_tty.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_session_get_type.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_session_get_uid.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_session_get_vt.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_session_is_remote.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_uid_get_state.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_uid_get_display.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_uid_get_seats.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_uid_get_sessions.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_uid_is_on_seat.3 to /tmp/package-elogind/usr/man/man3
++Installing man/sd_watchdog_enabled.3 to /tmp/package-elogind/usr/man/man3
++Installing /tmp/elogind-246.9.2/src/systemd/sd-bus.h to /tmp/package-elogind/usr/include/elogind/systemd
++Installing /tmp/elogind-246.9.2/src/systemd/sd-bus-protocol.h to /tmp/package-elogind/usr/include/elogind/systemd
++Installing /tmp/elogind-246.9.2/src/systemd/sd-bus-vtable.h to /tmp/package-elogind/usr/include/elogind/systemd
++Installing /tmp/elogind-246.9.2/src/systemd/sd-daemon.h to /tmp/package-elogind/usr/include/elogind/systemd
++Installing /tmp/elogind-246.9.2/src/systemd/sd-device.h to /tmp/package-elogind/usr/include/elogind/systemd
++Installing /tmp/elogind-246.9.2/src/systemd/sd-event.h to /tmp/package-elogind/usr/include/elogind/systemd
++Installing /tmp/elogind-246.9.2/src/systemd/sd-hwdb.h to /tmp/package-elogind/usr/include/elogind/systemd
++Installing /tmp/elogind-246.9.2/src/systemd/sd-id128.h to /tmp/package-elogind/usr/include/elogind/systemd
++Installing /tmp/elogind-246.9.2/src/systemd/sd-journal.h to /tmp/package-elogind/usr/include/elogind/systemd
++Installing /tmp/elogind-246.9.2/src/systemd/sd-login.h to /tmp/package-elogind/usr/include/elogind/systemd
++Installing /tmp/elogind-246.9.2/src/systemd/sd-messages.h to /tmp/package-elogind/usr/include/elogind/systemd
++Installing /tmp/elogind-246.9.2/src/systemd/sd-path.h to /tmp/package-elogind/usr/include/elogind/systemd
++Installing /tmp/elogind-246.9.2/src/systemd/_sd-common.h to /tmp/package-elogind/usr/include/elogind/systemd
++Installing /tmp/elogind-246.9.2/meson-build/src/libelogind/libelogind.pc to /tmp/package-elogind/usr/lib/pkgconfig
++Installing /tmp/elogind-246.9.2/meson-build/src/login/logind.conf to /tmp/package-elogind/etc/elogind
++Installing /tmp/elogind-246.9.2/src/login/org.freedesktop.login1.conf to /tmp/package-elogind/usr/share/dbus-1/system.d
++Installing /tmp/elogind-246.9.2/meson-build/src/login/org.freedesktop.login1.service to /tmp/package-elogind/usr/share/dbus-1/system-services
++Installing /tmp/elogind-246.9.2/src/login/org.freedesktop.login1.policy to /tmp/package-elogind/usr/share/polkit-1/actions
++Installing /tmp/elogind-246.9.2/src/login/70-power-switch.rules to /tmp/package-elogind/lib/udev/rules.d
++Installing /tmp/elogind-246.9.2/meson-build/src/login/71-seat.rules to /tmp/package-elogind/lib/udev/rules.d
++Installing /tmp/elogind-246.9.2/shell-completion/bash/loginctl to /tmp/package-elogind/usr/share/bash-completion/completions
++Installing /tmp/elogind-246.9.2/shell-completion/zsh/_loginctl to /tmp/package-elogind/usr/share/zsh/site-functions
++Installing /tmp/elogind-246.9.2/LICENSE.GPL2 to /tmp/package-elogind/usr/doc/elogind-246.9.2
++Installing /tmp/elogind-246.9.2/LICENSE.LGPL2.1 to /tmp/package-elogind/usr/doc/elogind-246.9.2
++Installing /tmp/elogind-246.9.2/README.md to /tmp/package-elogind/usr/doc/elogind-246.9.2
++Installing /tmp/elogind-246.9.2/docs/CODING_STYLE.md to /tmp/package-elogind/usr/doc/elogind-246.9.2
++Installing /tmp/elogind-246.9.2/src/libelogind/sd-bus/GVARIANT-SERIALIZATION to /tmp/package-elogind/usr/doc/elogind-246.9.2
++Running custom install script '/usr/bin/meson --internal gettext install --subdir=po --localedir=share/locale --pkgname=elogind'
++Running custom install script '/tmp/elogind-246.9.2/tools/meson-symlink_headers.sh /usr/include sd-bus.h sd-bus-protocol.h sd-bus-vtable.h sd-daemon.h sd-device.h sd-event.h sd-hwdb.h sd-id128.h sd-journal.h sd-login.h sd-messages.h sd-path.h _sd-common.h'
++Running custom install script '/bin/sh -c mkdir -p $DESTDIR//lib/elogind/system-shutdown'
++Running custom install script '/bin/sh -c mkdir -p $DESTDIR//lib/elogind/system-sleep'
++Running custom install script '/bin/sh -c touch $DESTDIR/lib/elogind/system-shutdown/.keep_dir'
++Running custom install script '/bin/sh -c touch $DESTDIR/lib/elogind/system-sleep/.keep_dir'
++Running custom install script '/bin/sh -c touch $DESTDIR/usr'
++cp: cannot stat 'AUTHORS*': No such file or directory
++cp: cannot stat 'ChangeLog': No such file or directory
++cp: cannot stat 'CHANGES': No such file or directory
++cp: cannot stat 'COPYING*': No such file or directory
++cp: cannot stat 'NEWS*': No such file or directory
++cp: cannot stat 'THANKS*': No such file or directory
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++lib/libelogind.so	libelogind.so.0
++lib/libelogind.so.0	libelogind.so.0.29.0
++usr/bin/elogind-inhibit	/bin/elogind-inhibit
++usr/bin/loginctl	/bin/loginctl
++usr/include/elogind/_sd-common.h	systemd/_sd-common.h
++usr/include/elogind/sd-bus-protocol.h	systemd/sd-bus-protocol.h
++usr/include/elogind/sd-bus-vtable.h	systemd/sd-bus-vtable.h
++usr/include/elogind/sd-bus.h	systemd/sd-bus.h
++usr/include/elogind/sd-daemon.h	systemd/sd-daemon.h
++usr/include/elogind/sd-device.h	systemd/sd-device.h
++usr/include/elogind/sd-event.h	systemd/sd-event.h
++usr/include/elogind/sd-hwdb.h	systemd/sd-hwdb.h
++usr/include/elogind/sd-id128.h	systemd/sd-id128.h
++usr/include/elogind/sd-journal.h	systemd/sd-journal.h
++usr/include/elogind/sd-login.h	systemd/sd-login.h
++usr/include/elogind/sd-messages.h	systemd/sd-messages.h
++usr/include/elogind/sd-path.h	systemd/sd-path.h
++
++Making symbolic link creation script:
++( cd lib ; rm -rf libelogind.so )
++( cd lib ; ln -sf libelogind.so.0 libelogind.so )
++( cd lib ; rm -rf libelogind.so.0 )
++( cd lib ; ln -sf libelogind.so.0.29.0 libelogind.so.0 )
++( cd usr/bin ; rm -rf elogind-inhibit )
++( cd usr/bin ; ln -sf /bin/elogind-inhibit elogind-inhibit )
++( cd usr/bin ; rm -rf loginctl )
++( cd usr/bin ; ln -sf /bin/loginctl loginctl )
++( cd usr/include/elogind ; rm -rf _sd-common.h )
++( cd usr/include/elogind ; ln -sf systemd/_sd-common.h _sd-common.h )
++( cd usr/include/elogind ; rm -rf sd-bus-protocol.h )
++( cd usr/include/elogind ; ln -sf systemd/sd-bus-protocol.h sd-bus-protocol.h )
++( cd usr/include/elogind ; rm -rf sd-bus-vtable.h )
++( cd usr/include/elogind ; ln -sf systemd/sd-bus-vtable.h sd-bus-vtable.h )
++( cd usr/include/elogind ; rm -rf sd-bus.h )
++( cd usr/include/elogind ; ln -sf systemd/sd-bus.h sd-bus.h )
++( cd usr/include/elogind ; rm -rf sd-daemon.h )
++( cd usr/include/elogind ; ln -sf systemd/sd-daemon.h sd-daemon.h )
++( cd usr/include/elogind ; rm -rf sd-device.h )
++( cd usr/include/elogind ; ln -sf systemd/sd-device.h sd-device.h )
++( cd usr/include/elogind ; rm -rf sd-event.h )
++( cd usr/include/elogind ; ln -sf systemd/sd-event.h sd-event.h )
++( cd usr/include/elogind ; rm -rf sd-hwdb.h )
++( cd usr/include/elogind ; ln -sf systemd/sd-hwdb.h sd-hwdb.h )
++( cd usr/include/elogind ; rm -rf sd-id128.h )
++( cd usr/include/elogind ; ln -sf systemd/sd-id128.h sd-id128.h )
++( cd usr/include/elogind ; rm -rf sd-journal.h )
++( cd usr/include/elogind ; ln -sf systemd/sd-journal.h sd-journal.h )
++( cd usr/include/elogind ; rm -rf sd-login.h )
++( cd usr/include/elogind ; ln -sf systemd/sd-login.h sd-login.h )
++( cd usr/include/elogind ; rm -rf sd-messages.h )
++( cd usr/include/elogind ; ln -sf systemd/sd-messages.h sd-messages.h )
++( cd usr/include/elogind ; rm -rf sd-path.h )
++( cd usr/include/elogind ; ln -sf systemd/sd-path.h sd-path.h )
++
++Unless your existing installation script already contains the code
++to create these links, you should append these lines to your existing
++install script. Now's your chance. :^)
++
++Would you like to add this stuff to the existing install script and
++remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './lib/libelogind.so.0'
++removed './lib/libelogind.so'
++removed './usr/bin/elogind-inhibit'
++removed './usr/bin/loginctl'
++removed './usr/include/elogind/sd-event.h'
++removed './usr/include/elogind/sd-daemon.h'
++removed './usr/include/elogind/sd-path.h'
++removed './usr/include/elogind/sd-bus-protocol.h'
++removed './usr/include/elogind/sd-messages.h'
++removed './usr/include/elogind/sd-id128.h'
++removed './usr/include/elogind/sd-bus.h'
++removed './usr/include/elogind/sd-bus-vtable.h'
++removed './usr/include/elogind/sd-journal.h'
++removed './usr/include/elogind/sd-hwdb.h'
++removed './usr/include/elogind/_sd-common.h'
++removed './usr/include/elogind/sd-login.h'
++removed './usr/include/elogind/sd-device.h'
++
++Updating your ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/elogind-246.9.2-x86_64-1.txz
++
++./
++bin/
++bin/elogind-inhibit
++bin/loginctl
++etc/
++etc/elogind/
++etc/elogind/logind.conf.d/
++etc/elogind/logind.conf.new
++etc/elogind/sleep.conf.d/
++etc/pam.d/
++etc/pam.d/elogind-user
++etc/rc.d/
++etc/rc.d/rc.elogind.new
++install/
++install/doinst.sh
++install/slack-desc
++lib/
++lib/elogind/
++lib/elogind/elogind
++lib/elogind/elogind-cgroups-agent
++lib/elogind/elogind-uaccess-command
++lib/elogind/libelogind-shared-246.9.2.so
++lib/elogind/system-shutdown/
++lib/elogind/system-sleep/
++lib/libelogind.so.0.29.0
++lib/security/
++lib/security/pam_elogind.so
++lib/udev/
++lib/udev/rules.d/
++lib/udev/rules.d/70-power-switch.rules
++lib/udev/rules.d/70-uaccess.rules
++lib/udev/rules.d/71-seat.rules
++lib/udev/rules.d/73-seat-late.rules
++usr/
++usr/bin/
++usr/bin/busctl
++usr/doc/
++usr/doc/elogind-246.9.2/
++usr/doc/elogind-246.9.2/CODING_STYLE.md
++usr/doc/elogind-246.9.2/GVARIANT-SERIALIZATION
++usr/doc/elogind-246.9.2/LICENSE.GPL2
++usr/doc/elogind-246.9.2/LICENSE.LGPL2.1
++usr/doc/elogind-246.9.2/README.md
++usr/doc/elogind-246.9.2/TODO
++usr/include/
++usr/include/elogind/
++usr/include/elogind/systemd/
++usr/include/elogind/systemd/_sd-common.h
++usr/include/elogind/systemd/sd-bus-protocol.h
++usr/include/elogind/systemd/sd-bus-vtable.h
++usr/include/elogind/systemd/sd-bus.h
++usr/include/elogind/systemd/sd-daemon.h
++usr/include/elogind/systemd/sd-device.h
++usr/include/elogind/systemd/sd-event.h
++usr/include/elogind/systemd/sd-hwdb.h
++usr/include/elogind/systemd/sd-id128.h
++usr/include/elogind/systemd/sd-journal.h
++usr/include/elogind/systemd/sd-login.h
++usr/include/elogind/systemd/sd-messages.h
++usr/include/elogind/systemd/sd-path.h
++usr/lib/
++usr/lib/pkgconfig/
++usr/lib/pkgconfig/libelogind.pc
++usr/man/
++usr/man/man1/
++usr/man/man1/busctl.1.gz
++usr/man/man1/elogind-inhibit.1.gz
++usr/man/man1/loginctl.1.gz
++usr/man/man3/
++usr/man/man3/SD_BUS_ERROR_END.3.gz
++usr/man/man3/SD_BUS_ERROR_MAKE_CONST.3.gz
++usr/man/man3/SD_BUS_ERROR_MAP.3.gz
++usr/man/man3/SD_BUS_ERROR_NULL.3.gz
++usr/man/man3/SD_BUS_MESSAGE_METHOD_CALL.3.gz
++usr/man/man3/SD_BUS_MESSAGE_METHOD_ERROR.3.gz
++usr/man/man3/SD_BUS_MESSAGE_METHOD_RETURN.3.gz
++usr/man/man3/SD_BUS_MESSAGE_SIGNAL.3.gz
++usr/man/man3/SD_BUS_METHOD.3.gz
++usr/man/man3/SD_BUS_METHOD_WITH_NAMES.3.gz
++usr/man/man3/SD_BUS_METHOD_WITH_NAMES_OFFSET.3.gz
++usr/man/man3/SD_BUS_METHOD_WITH_OFFSET.3.gz
++usr/man/man3/SD_BUS_PARAM.3.gz
++usr/man/man3/SD_BUS_PROPERTY.3.gz
++usr/man/man3/SD_BUS_SIGNAL.3.gz
++usr/man/man3/SD_BUS_SIGNAL_WITH_NAMES.3.gz
++usr/man/man3/SD_BUS_VTABLE_END.3.gz
++usr/man/man3/SD_BUS_VTABLE_START.3.gz
++usr/man/man3/SD_BUS_WRITABLE_PROPERTY.3.gz
++usr/man/man3/SD_EVENT_ARMED.3.gz
++usr/man/man3/SD_EVENT_EXITING.3.gz
++usr/man/man3/SD_EVENT_FINISHED.3.gz
++usr/man/man3/SD_EVENT_INITIAL.3.gz
++usr/man/man3/SD_EVENT_OFF.3.gz
++usr/man/man3/SD_EVENT_ON.3.gz
++usr/man/man3/SD_EVENT_ONESHOT.3.gz
++usr/man/man3/SD_EVENT_PENDING.3.gz
++usr/man/man3/SD_EVENT_PREPARING.3.gz
++usr/man/man3/SD_EVENT_PRIORITY_IDLE.3.gz
++usr/man/man3/SD_EVENT_PRIORITY_IMPORTANT.3.gz
++usr/man/man3/SD_EVENT_PRIORITY_NORMAL.3.gz
++usr/man/man3/SD_EVENT_RUNNING.3.gz
++usr/man/man3/SD_JOURNAL_ALL_NAMESPACES.3.gz
++usr/man/man3/SD_JOURNAL_FOREACH_DATA.3.gz
++usr/man/man3/SD_JOURNAL_FOREACH_FIELD.3.gz
++usr/man/man3/SD_JOURNAL_FOREACH_UNIQUE.3.gz
++usr/man/man3/SD_JOURNAL_INCLUDE_DEFAULT_NAMESPACE.3.gz
++usr/man/man3/SD_JOURNAL_SUPPRESS_LOCATION.3.gz
++usr/man/man3/SD_LISTEN_FDS_START.3.gz
++usr/man/man3/sd-bus.3.gz
++usr/man/man3/sd-event.3.gz
++usr/man/man3/sd-login.3.gz
++usr/man/man3/sd_booted.3.gz
++usr/man/man3/sd_bus_add_fallback.3.gz
++usr/man/man3/sd_bus_add_fallback_vtable.3.gz
++usr/man/man3/sd_bus_add_filter.3.gz
++usr/man/man3/sd_bus_add_match.3.gz
++usr/man/man3/sd_bus_add_match_async.3.gz
++usr/man/man3/sd_bus_add_node_enumerator.3.gz
++usr/man/man3/sd_bus_add_object.3.gz
++usr/man/man3/sd_bus_add_object_manager.3.gz
++usr/man/man3/sd_bus_add_object_vtable.3.gz
++usr/man/man3/sd_bus_attach_event.3.gz
++usr/man/man3/sd_bus_call.3.gz
++usr/man/man3/sd_bus_call_async.3.gz
++usr/man/man3/sd_bus_call_method.3.gz
++usr/man/man3/sd_bus_call_method_async.3.gz
++usr/man/man3/sd_bus_call_method_asyncv.3.gz
++usr/man/man3/sd_bus_call_methodv.3.gz
++usr/man/man3/sd_bus_can_send.3.gz
++usr/man/man3/sd_bus_close.3.gz
++usr/man/man3/sd_bus_close_unref.3.gz
++usr/man/man3/sd_bus_close_unrefp.3.gz
++usr/man/man3/sd_bus_creds_get_audit_login_uid.3.gz
++usr/man/man3/sd_bus_creds_get_audit_session_id.3.gz
++usr/man/man3/sd_bus_creds_get_augmented_mask.3.gz
++usr/man/man3/sd_bus_creds_get_cgroup.3.gz
++usr/man/man3/sd_bus_creds_get_cmdline.3.gz
++usr/man/man3/sd_bus_creds_get_comm.3.gz
++usr/man/man3/sd_bus_creds_get_description.3.gz
++usr/man/man3/sd_bus_creds_get_egid.3.gz
++usr/man/man3/sd_bus_creds_get_euid.3.gz
++usr/man/man3/sd_bus_creds_get_exe.3.gz
++usr/man/man3/sd_bus_creds_get_fsgid.3.gz
++usr/man/man3/sd_bus_creds_get_fsuid.3.gz
++usr/man/man3/sd_bus_creds_get_gid.3.gz
++usr/man/man3/sd_bus_creds_get_mask.3.gz
++usr/man/man3/sd_bus_creds_get_owner_uid.3.gz
++usr/man/man3/sd_bus_creds_get_pid.3.gz
++usr/man/man3/sd_bus_creds_get_ppid.3.gz
++usr/man/man3/sd_bus_creds_get_selinux_context.3.gz
++usr/man/man3/sd_bus_creds_get_session.3.gz
++usr/man/man3/sd_bus_creds_get_sgid.3.gz
++usr/man/man3/sd_bus_creds_get_slice.3.gz
++usr/man/man3/sd_bus_creds_get_suid.3.gz
++usr/man/man3/sd_bus_creds_get_supplementary_gids.3.gz
++usr/man/man3/sd_bus_creds_get_tid.3.gz
++usr/man/man3/sd_bus_creds_get_tid_comm.3.gz
++usr/man/man3/sd_bus_creds_get_tty.3.gz
++usr/man/man3/sd_bus_creds_get_uid.3.gz
++usr/man/man3/sd_bus_creds_get_unique_name.3.gz
++usr/man/man3/sd_bus_creds_get_unit.3.gz
++usr/man/man3/sd_bus_creds_get_user_slice.3.gz
++usr/man/man3/sd_bus_creds_get_user_unit.3.gz
++usr/man/man3/sd_bus_creds_get_well_known_names.3.gz
++usr/man/man3/sd_bus_creds_has_bounding_cap.3.gz
++usr/man/man3/sd_bus_creds_has_effective_cap.3.gz
++usr/man/man3/sd_bus_creds_has_inheritable_cap.3.gz
++usr/man/man3/sd_bus_creds_has_permitted_cap.3.gz
++usr/man/man3/sd_bus_creds_new_from_pid.3.gz
++usr/man/man3/sd_bus_creds_ref.3.gz
++usr/man/man3/sd_bus_creds_unref.3.gz
++usr/man/man3/sd_bus_creds_unrefp.3.gz
++usr/man/man3/sd_bus_default.3.gz
++usr/man/man3/sd_bus_default_flush_close.3.gz
++usr/man/man3/sd_bus_default_system.3.gz
++usr/man/man3/sd_bus_default_user.3.gz
++usr/man/man3/sd_bus_destroy_t.3.gz
++usr/man/man3/sd_bus_detach_event.3.gz
++usr/man/man3/sd_bus_emit_interfaces_added.3.gz
++usr/man/man3/sd_bus_emit_interfaces_added_strv.3.gz
++usr/man/man3/sd_bus_emit_interfaces_removed.3.gz
++usr/man/man3/sd_bus_emit_interfaces_removed_strv.3.gz
++usr/man/man3/sd_bus_emit_object_added.3.gz
++usr/man/man3/sd_bus_emit_object_removed.3.gz
++usr/man/man3/sd_bus_emit_properties_changed.3.gz
++usr/man/man3/sd_bus_emit_properties_changed_strv.3.gz
++usr/man/man3/sd_bus_emit_signal.3.gz
++usr/man/man3/sd_bus_emit_signalv.3.gz
++usr/man/man3/sd_bus_error.3.gz
++usr/man/man3/sd_bus_error_add_map.3.gz
++usr/man/man3/sd_bus_error_copy.3.gz
++usr/man/man3/sd_bus_error_free.3.gz
++usr/man/man3/sd_bus_error_get_errno.3.gz
++usr/man/man3/sd_bus_error_has_name.3.gz
++usr/man/man3/sd_bus_error_is_set.3.gz
++usr/man/man3/sd_bus_error_map.3.gz
++usr/man/man3/sd_bus_error_move.3.gz
++usr/man/man3/sd_bus_error_set.3.gz
++usr/man/man3/sd_bus_error_set_const.3.gz
++usr/man/man3/sd_bus_error_set_errno.3.gz
++usr/man/man3/sd_bus_error_set_errnof.3.gz
++usr/man/man3/sd_bus_error_set_errnofv.3.gz
++usr/man/man3/sd_bus_error_setf.3.gz
++usr/man/man3/sd_bus_flush.3.gz
++usr/man/man3/sd_bus_flush_close_unref.3.gz
++usr/man/man3/sd_bus_flush_close_unrefp.3.gz
++usr/man/man3/sd_bus_get_address.3.gz
++usr/man/man3/sd_bus_get_allow_interactive_authorization.3.gz
++usr/man/man3/sd_bus_get_bus_id.3.gz
++usr/man/man3/sd_bus_get_close_on_exit.3.gz
++usr/man/man3/sd_bus_get_connected_signal.3.gz
++usr/man/man3/sd_bus_get_creds_mask.3.gz
++usr/man/man3/sd_bus_get_current_handler.3.gz
++usr/man/man3/sd_bus_get_current_message.3.gz
++usr/man/man3/sd_bus_get_current_slot.3.gz
++usr/man/man3/sd_bus_get_current_userdata.3.gz
++usr/man/man3/sd_bus_get_description.3.gz
++usr/man/man3/sd_bus_get_event.3.gz
++usr/man/man3/sd_bus_get_events.3.gz
++usr/man/man3/sd_bus_get_exit_on_disconnect.3.gz
++usr/man/man3/sd_bus_get_fd.3.gz
++usr/man/man3/sd_bus_get_method_call_timeout.3.gz
++usr/man/man3/sd_bus_get_n_queued_read.3.gz
++usr/man/man3/sd_bus_get_n_queued_write.3.gz
++usr/man/man3/sd_bus_get_name_creds.3.gz
++usr/man/man3/sd_bus_get_name_machine_id.3.gz
++usr/man/man3/sd_bus_get_owner_creds.3.gz
++usr/man/man3/sd_bus_get_property.3.gz
++usr/man/man3/sd_bus_get_property_string.3.gz
++usr/man/man3/sd_bus_get_property_strv.3.gz
++usr/man/man3/sd_bus_get_property_trivial.3.gz
++usr/man/man3/sd_bus_get_scope.3.gz
++usr/man/man3/sd_bus_get_sender.3.gz
++usr/man/man3/sd_bus_get_tid.3.gz
++usr/man/man3/sd_bus_get_timeout.3.gz
++usr/man/man3/sd_bus_get_unique_name.3.gz
++usr/man/man3/sd_bus_get_watch_bind.3.gz
++usr/man/man3/sd_bus_interface_name_is_valid.3.gz
++usr/man/man3/sd_bus_is_anonymous.3.gz
++usr/man/man3/sd_bus_is_bus_client.3.gz
++usr/man/man3/sd_bus_is_monitor.3.gz
++usr/man/man3/sd_bus_is_open.3.gz
++usr/man/man3/sd_bus_is_ready.3.gz
++usr/man/man3/sd_bus_is_server.3.gz
++usr/man/man3/sd_bus_is_trusted.3.gz
++usr/man/man3/sd_bus_list_names.3.gz
++usr/man/man3/sd_bus_match_signal.3.gz
++usr/man/man3/sd_bus_match_signal_async.3.gz
++usr/man/man3/sd_bus_member_name_is_valid.3.gz
++usr/man/man3/sd_bus_message_append.3.gz
++usr/man/man3/sd_bus_message_append_array.3.gz
++usr/man/man3/sd_bus_message_append_array_iovec.3.gz
++usr/man/man3/sd_bus_message_append_array_memfd.3.gz
++usr/man/man3/sd_bus_message_append_array_space.3.gz
++usr/man/man3/sd_bus_message_append_basic.3.gz
++usr/man/man3/sd_bus_message_append_string_iovec.3.gz
++usr/man/man3/sd_bus_message_append_string_memfd.3.gz
++usr/man/man3/sd_bus_message_append_string_space.3.gz
++usr/man/man3/sd_bus_message_append_strv.3.gz
++usr/man/man3/sd_bus_message_appendv.3.gz
++usr/man/man3/sd_bus_message_close_container.3.gz
++usr/man/man3/sd_bus_message_copy.3.gz
++usr/man/man3/sd_bus_message_dump.3.gz
++usr/man/man3/sd_bus_message_enter_container.3.gz
++usr/man/man3/sd_bus_message_exit_container.3.gz
++usr/man/man3/sd_bus_message_get_allow_interactive_authorization.3.gz
++usr/man/man3/sd_bus_message_get_auto_start.3.gz
++usr/man/man3/sd_bus_message_get_bus.3.gz
++usr/man/man3/sd_bus_message_get_cookie.3.gz
++usr/man/man3/sd_bus_message_get_creds.3.gz
++usr/man/man3/sd_bus_message_get_destination.3.gz
++usr/man/man3/sd_bus_message_get_errno.3.gz
++usr/man/man3/sd_bus_message_get_error.3.gz
++usr/man/man3/sd_bus_message_get_expect_reply.3.gz
++usr/man/man3/sd_bus_message_get_interface.3.gz
++usr/man/man3/sd_bus_message_get_member.3.gz
++usr/man/man3/sd_bus_message_get_monotonic_usec.3.gz
++usr/man/man3/sd_bus_message_get_path.3.gz
++usr/man/man3/sd_bus_message_get_realtime_usec.3.gz
++usr/man/man3/sd_bus_message_get_reply_cookie.3.gz
++usr/man/man3/sd_bus_message_get_sender.3.gz
++usr/man/man3/sd_bus_message_get_seqnum.3.gz
++usr/man/man3/sd_bus_message_get_signature.3.gz
++usr/man/man3/sd_bus_message_get_type.3.gz
++usr/man/man3/sd_bus_message_has_signature.3.gz
++usr/man/man3/sd_bus_message_is_empty.3.gz
++usr/man/man3/sd_bus_message_is_method_call.3.gz
++usr/man/man3/sd_bus_message_is_method_error.3.gz
++usr/man/man3/sd_bus_message_is_signal.3.gz
++usr/man/man3/sd_bus_message_new.3.gz
++usr/man/man3/sd_bus_message_new_method_call.3.gz
++usr/man/man3/sd_bus_message_new_method_errno.3.gz
++usr/man/man3/sd_bus_message_new_method_errnof.3.gz
++usr/man/man3/sd_bus_message_new_method_error.3.gz
++usr/man/man3/sd_bus_message_new_method_errorf.3.gz
++usr/man/man3/sd_bus_message_new_method_return.3.gz
++usr/man/man3/sd_bus_message_new_signal.3.gz
++usr/man/man3/sd_bus_message_open_container.3.gz
++usr/man/man3/sd_bus_message_peek_type.3.gz
++usr/man/man3/sd_bus_message_read.3.gz
++usr/man/man3/sd_bus_message_read_array.3.gz
++usr/man/man3/sd_bus_message_read_basic.3.gz
++usr/man/man3/sd_bus_message_readv.3.gz
++usr/man/man3/sd_bus_message_ref.3.gz
++usr/man/man3/sd_bus_message_rewind.3.gz
++usr/man/man3/sd_bus_message_seal.3.gz
++usr/man/man3/sd_bus_message_set_allow_interactive_authorization.3.gz
++usr/man/man3/sd_bus_message_set_auto_start.3.gz
++usr/man/man3/sd_bus_message_set_destination.3.gz
++usr/man/man3/sd_bus_message_set_expect_reply.3.gz
++usr/man/man3/sd_bus_message_set_sender.3.gz
++usr/man/man3/sd_bus_message_skip.3.gz
++usr/man/man3/sd_bus_message_unref.3.gz
++usr/man/man3/sd_bus_message_unrefp.3.gz
++usr/man/man3/sd_bus_message_verify_type.3.gz
++usr/man/man3/sd_bus_negotiate_creds.3.gz
++usr/man/man3/sd_bus_negotiate_fds.3.gz
++usr/man/man3/sd_bus_negotiate_timestamp.3.gz
++usr/man/man3/sd_bus_new.3.gz
++usr/man/man3/sd_bus_object_path_is_valid.3.gz
++usr/man/man3/sd_bus_open.3.gz
++usr/man/man3/sd_bus_open_system.3.gz
++usr/man/man3/sd_bus_open_system_machine.3.gz
++usr/man/man3/sd_bus_open_system_remote.3.gz
++usr/man/man3/sd_bus_open_system_with_description.3.gz
++usr/man/man3/sd_bus_open_user.3.gz
++usr/man/man3/sd_bus_open_user_with_description.3.gz
++usr/man/man3/sd_bus_open_with_description.3.gz
++usr/man/man3/sd_bus_path_decode.3.gz
++usr/man/man3/sd_bus_path_decode_many.3.gz
++usr/man/man3/sd_bus_path_encode.3.gz
++usr/man/man3/sd_bus_path_encode_many.3.gz
++usr/man/man3/sd_bus_process.3.gz
++usr/man/man3/sd_bus_query_sender_creds.3.gz
++usr/man/man3/sd_bus_query_sender_privilege.3.gz
++usr/man/man3/sd_bus_ref.3.gz
++usr/man/man3/sd_bus_release_name.3.gz
++usr/man/man3/sd_bus_release_name_async.3.gz
++usr/man/man3/sd_bus_reply_method_errno.3.gz
++usr/man/man3/sd_bus_reply_method_errnof.3.gz
++usr/man/man3/sd_bus_reply_method_errnofv.3.gz
++usr/man/man3/sd_bus_reply_method_error.3.gz
++usr/man/man3/sd_bus_reply_method_errorf.3.gz
++usr/man/man3/sd_bus_reply_method_errorfv.3.gz
++usr/man/man3/sd_bus_reply_method_return.3.gz
++usr/man/man3/sd_bus_reply_method_returnv.3.gz
++usr/man/man3/sd_bus_request_name.3.gz
++usr/man/man3/sd_bus_request_name_async.3.gz
++usr/man/man3/sd_bus_send.3.gz
++usr/man/man3/sd_bus_send_to.3.gz
++usr/man/man3/sd_bus_service_name_is_valid.3.gz
++usr/man/man3/sd_bus_set_address.3.gz
++usr/man/man3/sd_bus_set_allow_interactive_authorization.3.gz
++usr/man/man3/sd_bus_set_anonymous.3.gz
++usr/man/man3/sd_bus_set_bus_client.3.gz
++usr/man/man3/sd_bus_set_close_on_exit.3.gz
++usr/man/man3/sd_bus_set_connected_signal.3.gz
++usr/man/man3/sd_bus_set_description.3.gz
++usr/man/man3/sd_bus_set_exec.3.gz
++usr/man/man3/sd_bus_set_exit_on_disconnect.3.gz
++usr/man/man3/sd_bus_set_fd.3.gz
++usr/man/man3/sd_bus_set_method_call_timeout.3.gz
++usr/man/man3/sd_bus_set_monitor.3.gz
++usr/man/man3/sd_bus_set_property.3.gz
++usr/man/man3/sd_bus_set_propertyv.3.gz
++usr/man/man3/sd_bus_set_sender.3.gz
++usr/man/man3/sd_bus_set_server.3.gz
++usr/man/man3/sd_bus_set_trusted.3.gz
++usr/man/man3/sd_bus_set_watch_bind.3.gz
++usr/man/man3/sd_bus_slot_get_bus.3.gz
++usr/man/man3/sd_bus_slot_get_current_handler.3.gz
++usr/man/man3/sd_bus_slot_get_current_message.3.gz
++usr/man/man3/sd_bus_slot_get_current_userdata.3.gz
++usr/man/man3/sd_bus_slot_get_description.3.gz
++usr/man/man3/sd_bus_slot_get_destroy_callback.3.gz
++usr/man/man3/sd_bus_slot_get_floating.3.gz
++usr/man/man3/sd_bus_slot_get_userdata.3.gz
++usr/man/man3/sd_bus_slot_ref.3.gz
++usr/man/man3/sd_bus_slot_set_description.3.gz
++usr/man/man3/sd_bus_slot_set_destroy_callback.3.gz
++usr/man/man3/sd_bus_slot_set_floating.3.gz
++usr/man/man3/sd_bus_slot_set_userdata.3.gz
++usr/man/man3/sd_bus_slot_unref.3.gz
++usr/man/man3/sd_bus_slot_unrefp.3.gz
++usr/man/man3/sd_bus_start.3.gz
++usr/man/man3/sd_bus_track_add_name.3.gz
++usr/man/man3/sd_bus_track_add_sender.3.gz
++usr/man/man3/sd_bus_track_contains.3.gz
++usr/man/man3/sd_bus_track_count.3.gz
++usr/man/man3/sd_bus_track_count_name.3.gz
++usr/man/man3/sd_bus_track_count_sender.3.gz
++usr/man/man3/sd_bus_track_first.3.gz
++usr/man/man3/sd_bus_track_get_bus.3.gz
++usr/man/man3/sd_bus_track_get_destroy_callback.3.gz
++usr/man/man3/sd_bus_track_get_recursive.3.gz
++usr/man/man3/sd_bus_track_get_userdata.3.gz
++usr/man/man3/sd_bus_track_new.3.gz
++usr/man/man3/sd_bus_track_next.3.gz
++usr/man/man3/sd_bus_track_ref.3.gz
++usr/man/man3/sd_bus_track_remove_name.3.gz
++usr/man/man3/sd_bus_track_remove_sender.3.gz
++usr/man/man3/sd_bus_track_set_destroy_callback.3.gz
++usr/man/man3/sd_bus_track_set_recursive.3.gz
++usr/man/man3/sd_bus_track_set_userdata.3.gz
++usr/man/man3/sd_bus_track_unref.3.gz
++usr/man/man3/sd_bus_track_unrefp.3.gz
++usr/man/man3/sd_bus_unref.3.gz
++usr/man/man3/sd_bus_unrefp.3.gz
++usr/man/man3/sd_bus_wait.3.gz
++usr/man/man3/sd_event.3.gz
++usr/man/man3/sd_event_add_child.3.gz
++usr/man/man3/sd_event_add_child_pidfd.3.gz
++usr/man/man3/sd_event_add_defer.3.gz
++usr/man/man3/sd_event_add_exit.3.gz
++usr/man/man3/sd_event_add_inotify.3.gz
++usr/man/man3/sd_event_add_io.3.gz
++usr/man/man3/sd_event_add_post.3.gz
++usr/man/man3/sd_event_add_signal.3.gz
++usr/man/man3/sd_event_add_time.3.gz
++usr/man/man3/sd_event_child_handler_t.3.gz
++usr/man/man3/sd_event_default.3.gz
++usr/man/man3/sd_event_destroy_t.3.gz
++usr/man/man3/sd_event_dispatch.3.gz
++usr/man/man3/sd_event_exit.3.gz
++usr/man/man3/sd_event_get_exit_code.3.gz
++usr/man/man3/sd_event_get_fd.3.gz
++usr/man/man3/sd_event_get_iteration.3.gz
++usr/man/man3/sd_event_get_state.3.gz
++usr/man/man3/sd_event_get_tid.3.gz
++usr/man/man3/sd_event_get_watchdog.3.gz
++usr/man/man3/sd_event_handler_t.3.gz
++usr/man/man3/sd_event_inotify_handler_t.3.gz
++usr/man/man3/sd_event_io_handler_t.3.gz
++usr/man/man3/sd_event_loop.3.gz
++usr/man/man3/sd_event_new.3.gz
++usr/man/man3/sd_event_now.3.gz
++usr/man/man3/sd_event_prepare.3.gz
++usr/man/man3/sd_event_ref.3.gz
++usr/man/man3/sd_event_run.3.gz
++usr/man/man3/sd_event_set_watchdog.3.gz
++usr/man/man3/sd_event_signal_handler_t.3.gz
++usr/man/man3/sd_event_source.3.gz
++usr/man/man3/sd_event_source_disable_unref.3.gz
++usr/man/man3/sd_event_source_disable_unrefp.3.gz
++usr/man/man3/sd_event_source_get_child_pid.3.gz
++usr/man/man3/sd_event_source_get_child_pidfd.3.gz
++usr/man/man3/sd_event_source_get_child_pidfd_own.3.gz
++usr/man/man3/sd_event_source_get_child_process_own.3.gz
++usr/man/man3/sd_event_source_get_description.3.gz
++usr/man/man3/sd_event_source_get_destroy_callback.3.gz
++usr/man/man3/sd_event_source_get_enabled.3.gz
++usr/man/man3/sd_event_source_get_event.3.gz
++usr/man/man3/sd_event_source_get_floating.3.gz
++usr/man/man3/sd_event_source_get_inotify_mask.3.gz
++usr/man/man3/sd_event_source_get_io_events.3.gz
++usr/man/man3/sd_event_source_get_io_fd.3.gz
++usr/man/man3/sd_event_source_get_io_fd_own.3.gz
++usr/man/man3/sd_event_source_get_io_revents.3.gz
++usr/man/man3/sd_event_source_get_pending.3.gz
++usr/man/man3/sd_event_source_get_priority.3.gz
++usr/man/man3/sd_event_source_get_signal.3.gz
++usr/man/man3/sd_event_source_get_time.3.gz
++usr/man/man3/sd_event_source_get_time_accuracy.3.gz
++usr/man/man3/sd_event_source_get_time_clock.3.gz
++usr/man/man3/sd_event_source_get_userdata.3.gz
++usr/man/man3/sd_event_source_ref.3.gz
++usr/man/man3/sd_event_source_send_child_signal.3.gz
++usr/man/man3/sd_event_source_set_child_pidfd_own.3.gz
++usr/man/man3/sd_event_source_set_child_process_own.3.gz
++usr/man/man3/sd_event_source_set_description.3.gz
++usr/man/man3/sd_event_source_set_destroy_callback.3.gz
++usr/man/man3/sd_event_source_set_enabled.3.gz
++usr/man/man3/sd_event_source_set_floating.3.gz
++usr/man/man3/sd_event_source_set_io_events.3.gz
++usr/man/man3/sd_event_source_set_io_fd.3.gz
++usr/man/man3/sd_event_source_set_io_fd_own.3.gz
++usr/man/man3/sd_event_source_set_prepare.3.gz
++usr/man/man3/sd_event_source_set_priority.3.gz
++usr/man/man3/sd_event_source_set_time.3.gz
++usr/man/man3/sd_event_source_set_time_accuracy.3.gz
++usr/man/man3/sd_event_source_set_userdata.3.gz
++usr/man/man3/sd_event_source_unref.3.gz
++usr/man/man3/sd_event_source_unrefp.3.gz
++usr/man/man3/sd_event_time_handler_t.3.gz
++usr/man/man3/sd_event_unref.3.gz
++usr/man/man3/sd_event_unrefp.3.gz
++usr/man/man3/sd_event_wait.3.gz
++usr/man/man3/sd_get_machine_names.3.gz
++usr/man/man3/sd_get_seats.3.gz
++usr/man/man3/sd_get_sessions.3.gz
++usr/man/man3/sd_get_uids.3.gz
++usr/man/man3/sd_id128_from_string.3.gz
++usr/man/man3/sd_id128_get_boot.3.gz
++usr/man/man3/sd_id128_get_boot_app_specific.3.gz
++usr/man/man3/sd_id128_get_invocation.3.gz
++usr/man/man3/sd_id128_get_machine.3.gz
++usr/man/man3/sd_id128_get_machine_app_specific.3.gz
++usr/man/man3/sd_id128_randomize.3.gz
++usr/man/man3/sd_id128_to_string.3.gz
++usr/man/man3/sd_is_fifo.3.gz
++usr/man/man3/sd_is_mq.3.gz
++usr/man/man3/sd_is_socket.3.gz
++usr/man/man3/sd_is_socket_inet.3.gz
++usr/man/man3/sd_is_socket_sockaddr.3.gz
++usr/man/man3/sd_is_socket_unix.3.gz
++usr/man/man3/sd_is_special.3.gz
++usr/man/man3/sd_journal.3.gz
++usr/man/man3/sd_journal_add_conjunction.3.gz
++usr/man/man3/sd_journal_add_disjunction.3.gz
++usr/man/man3/sd_journal_add_match.3.gz
++usr/man/man3/sd_journal_close.3.gz
++usr/man/man3/sd_journal_enumerate_available_data.3.gz
++usr/man/man3/sd_journal_enumerate_available_unique.3.gz
++usr/man/man3/sd_journal_enumerate_data.3.gz
++usr/man/man3/sd_journal_enumerate_fields.3.gz
++usr/man/man3/sd_journal_enumerate_unique.3.gz
++usr/man/man3/sd_journal_flush_matches.3.gz
++usr/man/man3/sd_journal_get_catalog.3.gz
++usr/man/man3/sd_journal_get_catalog_for_message_id.3.gz
++usr/man/man3/sd_journal_get_cursor.3.gz
++usr/man/man3/sd_journal_get_cutoff_monotonic_usec.3.gz
++usr/man/man3/sd_journal_get_cutoff_realtime_usec.3.gz
++usr/man/man3/sd_journal_get_data.3.gz
++usr/man/man3/sd_journal_get_data_threshold.3.gz
++usr/man/man3/sd_journal_get_events.3.gz
++usr/man/man3/sd_journal_get_fd.3.gz
++usr/man/man3/sd_journal_get_monotonic_usec.3.gz
++usr/man/man3/sd_journal_get_realtime_usec.3.gz
++usr/man/man3/sd_journal_get_timeout.3.gz
++usr/man/man3/sd_journal_get_usage.3.gz
++usr/man/man3/sd_journal_has_persistent_files.3.gz
++usr/man/man3/sd_journal_has_runtime_files.3.gz
++usr/man/man3/sd_journal_next.3.gz
++usr/man/man3/sd_journal_next_skip.3.gz
++usr/man/man3/sd_journal_open.3.gz
++usr/man/man3/sd_journal_open_directory.3.gz
++usr/man/man3/sd_journal_open_directory_fd.3.gz
++usr/man/man3/sd_journal_open_files.3.gz
++usr/man/man3/sd_journal_open_files_fd.3.gz
++usr/man/man3/sd_journal_open_namespace.3.gz
++usr/man/man3/sd_journal_perror.3.gz
++usr/man/man3/sd_journal_perror_with_location.3.gz
++usr/man/man3/sd_journal_previous.3.gz
++usr/man/man3/sd_journal_previous_skip.3.gz
++usr/man/man3/sd_journal_print.3.gz
++usr/man/man3/sd_journal_print_with_location.3.gz
++usr/man/man3/sd_journal_printv.3.gz
++usr/man/man3/sd_journal_printv_with_location.3.gz
++usr/man/man3/sd_journal_process.3.gz
++usr/man/man3/sd_journal_query_unique.3.gz
++usr/man/man3/sd_journal_reliable_fd.3.gz
++usr/man/man3/sd_journal_restart_data.3.gz
++usr/man/man3/sd_journal_restart_fields.3.gz
++usr/man/man3/sd_journal_restart_unique.3.gz
++usr/man/man3/sd_journal_seek_cursor.3.gz
++usr/man/man3/sd_journal_seek_head.3.gz
++usr/man/man3/sd_journal_seek_monotonic_usec.3.gz
++usr/man/man3/sd_journal_seek_realtime_usec.3.gz
++usr/man/man3/sd_journal_seek_tail.3.gz
++usr/man/man3/sd_journal_send.3.gz
++usr/man/man3/sd_journal_send_with_location.3.gz
++usr/man/man3/sd_journal_sendv.3.gz
++usr/man/man3/sd_journal_sendv_with_location.3.gz
++usr/man/man3/sd_journal_set_data_threshold.3.gz
++usr/man/man3/sd_journal_stream_fd.3.gz
++usr/man/man3/sd_journal_test_cursor.3.gz
++usr/man/man3/sd_journal_wait.3.gz
++usr/man/man3/sd_listen_fds.3.gz
++usr/man/man3/sd_listen_fds_with_names.3.gz
++usr/man/man3/sd_login_monitor.3.gz
++usr/man/man3/sd_login_monitor_flush.3.gz
++usr/man/man3/sd_login_monitor_get_events.3.gz
++usr/man/man3/sd_login_monitor_get_fd.3.gz
++usr/man/man3/sd_login_monitor_get_timeout.3.gz
++usr/man/man3/sd_login_monitor_new.3.gz
++usr/man/man3/sd_login_monitor_unref.3.gz
++usr/man/man3/sd_login_monitor_unrefp.3.gz
++usr/man/man3/sd_machine_get_class.3.gz
++usr/man/man3/sd_machine_get_ifindices.3.gz
++usr/man/man3/sd_notify.3.gz
++usr/man/man3/sd_notify_barrier.3.gz
++usr/man/man3/sd_notifyf.3.gz
++usr/man/man3/sd_peer_get_cgroup.3.gz
++usr/man/man3/sd_peer_get_machine_name.3.gz
++usr/man/man3/sd_peer_get_owner_uid.3.gz
++usr/man/man3/sd_peer_get_session.3.gz
++usr/man/man3/sd_peer_get_slice.3.gz
++usr/man/man3/sd_peer_get_unit.3.gz
++usr/man/man3/sd_peer_get_user_slice.3.gz
++usr/man/man3/sd_peer_get_user_unit.3.gz
++usr/man/man3/sd_pid_get_cgroup.3.gz
++usr/man/man3/sd_pid_get_machine_name.3.gz
++usr/man/man3/sd_pid_get_owner_uid.3.gz
++usr/man/man3/sd_pid_get_session.3.gz
++usr/man/man3/sd_pid_get_slice.3.gz
++usr/man/man3/sd_pid_get_unit.3.gz
++usr/man/man3/sd_pid_get_user_slice.3.gz
++usr/man/man3/sd_pid_get_user_unit.3.gz
++usr/man/man3/sd_pid_notify.3.gz
++usr/man/man3/sd_pid_notify_with_fds.3.gz
++usr/man/man3/sd_pid_notifyf.3.gz
++usr/man/man3/sd_seat_can_graphical.3.gz
++usr/man/man3/sd_seat_can_tty.3.gz
++usr/man/man3/sd_seat_get_active.3.gz
++usr/man/man3/sd_seat_get_sessions.3.gz
++usr/man/man3/sd_session_get_class.3.gz
++usr/man/man3/sd_session_get_desktop.3.gz
++usr/man/man3/sd_session_get_display.3.gz
++usr/man/man3/sd_session_get_remote_host.3.gz
++usr/man/man3/sd_session_get_remote_user.3.gz
++usr/man/man3/sd_session_get_seat.3.gz
++usr/man/man3/sd_session_get_service.3.gz
++usr/man/man3/sd_session_get_state.3.gz
++usr/man/man3/sd_session_get_tty.3.gz
++usr/man/man3/sd_session_get_type.3.gz
++usr/man/man3/sd_session_get_uid.3.gz
++usr/man/man3/sd_session_get_vt.3.gz
++usr/man/man3/sd_session_is_active.3.gz
++usr/man/man3/sd_session_is_remote.3.gz
++usr/man/man3/sd_uid_get_display.3.gz
++usr/man/man3/sd_uid_get_seats.3.gz
++usr/man/man3/sd_uid_get_sessions.3.gz
++usr/man/man3/sd_uid_get_state.3.gz
++usr/man/man3/sd_uid_is_on_seat.3.gz
++usr/man/man3/sd_watchdog_enabled.3.gz
++usr/man/man5/
++usr/man/man5/logind.conf.5.gz
++usr/man/man7/
++usr/man/man7/elogind.journal-fields.7.gz
++usr/man/man7/elogind.syntax.7.gz
++usr/man/man7/elogind.time.7.gz
++usr/man/man8/
++usr/man/man8/elogind.8.gz
++usr/man/man8/pam_elogind.8.gz
++usr/share/
++usr/share/bash-completion/
++usr/share/bash-completion/completions/
++usr/share/bash-completion/completions/loginctl
++usr/share/dbus-1/
++usr/share/dbus-1/system-services/
++usr/share/dbus-1/system-services/org.freedesktop.login1.service
++usr/share/dbus-1/system.d/
++usr/share/dbus-1/system.d/org.freedesktop.login1.conf
++usr/share/factory/
++usr/share/factory/etc/
++usr/share/factory/etc/pam.d/
++usr/share/factory/etc/pam.d/other
++usr/share/factory/etc/pam.d/system-auth
++usr/share/locale/
++usr/share/locale/be/
++usr/share/locale/be/LC_MESSAGES/
++usr/share/locale/be/LC_MESSAGES/elogind.mo
++usr/share/locale/be@latin/
++usr/share/locale/be@latin/LC_MESSAGES/
++usr/share/locale/be@latin/LC_MESSAGES/elogind.mo
++usr/share/locale/bg/
++usr/share/locale/bg/LC_MESSAGES/
++usr/share/locale/bg/LC_MESSAGES/elogind.mo
++usr/share/locale/ca/
++usr/share/locale/ca/LC_MESSAGES/
++usr/share/locale/ca/LC_MESSAGES/elogind.mo
++usr/share/locale/cs/
++usr/share/locale/cs/LC_MESSAGES/
++usr/share/locale/cs/LC_MESSAGES/elogind.mo
++usr/share/locale/da/
++usr/share/locale/da/LC_MESSAGES/
++usr/share/locale/da/LC_MESSAGES/elogind.mo
++usr/share/locale/de/
++usr/share/locale/de/LC_MESSAGES/
++usr/share/locale/de/LC_MESSAGES/elogind.mo
++usr/share/locale/el/
++usr/share/locale/el/LC_MESSAGES/
++usr/share/locale/el/LC_MESSAGES/elogind.mo
++usr/share/locale/es/
++usr/share/locale/es/LC_MESSAGES/
++usr/share/locale/es/LC_MESSAGES/elogind.mo
++usr/share/locale/fr/
++usr/share/locale/fr/LC_MESSAGES/
++usr/share/locale/fr/LC_MESSAGES/elogind.mo
++usr/share/locale/gl/
++usr/share/locale/gl/LC_MESSAGES/
++usr/share/locale/gl/LC_MESSAGES/elogind.mo
++usr/share/locale/hr/
++usr/share/locale/hr/LC_MESSAGES/
++usr/share/locale/hr/LC_MESSAGES/elogind.mo
++usr/share/locale/hu/
++usr/share/locale/hu/LC_MESSAGES/
++usr/share/locale/hu/LC_MESSAGES/elogind.mo
++usr/share/locale/id/
++usr/share/locale/id/LC_MESSAGES/
++usr/share/locale/id/LC_MESSAGES/elogind.mo
++usr/share/locale/it/
++usr/share/locale/it/LC_MESSAGES/
++usr/share/locale/it/LC_MESSAGES/elogind.mo
++usr/share/locale/ja/
++usr/share/locale/ja/LC_MESSAGES/
++usr/share/locale/ja/LC_MESSAGES/elogind.mo
++usr/share/locale/ko/
++usr/share/locale/ko/LC_MESSAGES/
++usr/share/locale/ko/LC_MESSAGES/elogind.mo
++usr/share/locale/lt/
++usr/share/locale/lt/LC_MESSAGES/
++usr/share/locale/lt/LC_MESSAGES/elogind.mo
++usr/share/locale/pl/
++usr/share/locale/pl/LC_MESSAGES/
++usr/share/locale/pl/LC_MESSAGES/elogind.mo
++usr/share/locale/pt_BR/
++usr/share/locale/pt_BR/LC_MESSAGES/
++usr/share/locale/pt_BR/LC_MESSAGES/elogind.mo
++usr/share/locale/ro/
++usr/share/locale/ro/LC_MESSAGES/
++usr/share/locale/ro/LC_MESSAGES/elogind.mo
++usr/share/locale/ru/
++usr/share/locale/ru/LC_MESSAGES/
++usr/share/locale/ru/LC_MESSAGES/elogind.mo
++usr/share/locale/sk/
++usr/share/locale/sk/LC_MESSAGES/
++usr/share/locale/sk/LC_MESSAGES/elogind.mo
++usr/share/locale/sr/
++usr/share/locale/sr/LC_MESSAGES/
++usr/share/locale/sr/LC_MESSAGES/elogind.mo
++usr/share/locale/sv/
++usr/share/locale/sv/LC_MESSAGES/
++usr/share/locale/sv/LC_MESSAGES/elogind.mo
++usr/share/locale/tr/
++usr/share/locale/tr/LC_MESSAGES/
++usr/share/locale/tr/LC_MESSAGES/elogind.mo
++usr/share/locale/uk/
++usr/share/locale/uk/LC_MESSAGES/
++usr/share/locale/uk/LC_MESSAGES/elogind.mo
++usr/share/locale/zh_CN/
++usr/share/locale/zh_CN/LC_MESSAGES/
++usr/share/locale/zh_CN/LC_MESSAGES/elogind.mo
++usr/share/locale/zh_TW/
++usr/share/locale/zh_TW/LC_MESSAGES/
++usr/share/locale/zh_TW/LC_MESSAGES/elogind.mo
++usr/share/polkit-1/
++usr/share/polkit-1/actions/
++usr/share/polkit-1/actions/org.freedesktop.login1.policy
++usr/share/polkit-1/rules.d/
++usr/share/polkit-1/rules.d/10-enable-session-power.rules
++usr/share/zsh/
++usr/share/zsh/site-functions/
++usr/share/zsh/site-functions/_loginctl
++
++Slackware package /tmp/elogind-246.9.2-x86_64-1.txz created.
++

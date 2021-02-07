@@ -1,0 +1,85 @@
+#!/bin/bash
+
+#####################################################################
+# trackbuild.liunxdoc-tools
+# by Stuart Winter <mozes@slackware.com>
+# Preform a few pre-build requirements then launch the build script
+# through slacktrack
+# 31-Jul-2009
+#####################################################################
+
+# Known build requirements:
+#  a/unzip for the docbook stuff
+#  l/libxml2 for /usr/bin/xmlcatalogue
+#  a/rpm2tgz to unpack some SRPMs
+#  d/python for AsciiDoc
+#  l/libxslt
+#  l/seamonkey-solibs for rpm2cpio
+#  t/tetex (not required for a bootstrap build, but will be required
+#           later for a full build of this linuxdoc-tools package).
+
+# Package info:
+PKGNAM=linuxdoc-tools
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+      i?86) export ARCH=i586 ;;
+      arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+         *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+export PKGVERSION=0.9.73 # use the version of linuxdoc-tools as the package version.
+BUILD=${BUILD:-8}
+PKGEXT=${PKGEXT:-txz}
+
+export CWD=$PWD
+export PKGSTORE=/tmp
+export TMP=/tmp/build-$PKGNAM/
+rm -rf $TMP
+
+####################### Clean up before build #####################
+
+# It's best to clear this stuff up prior to the build.
+# All of these directories (apart from /usr/share/xml/libglade) are
+# created by this build script:
+removepkg linuxdoc-tools
+rm -rf /etc/{xml,sgml}
+rm -rf /usr/share/doc/linuxdoc-tools
+rm -rf /usr/share/sgml
+rm -rf /etc/asciidoc # in case there are any '.conf.new' files remaining
+rm -rf /usr/share/xml/{docbook,xml-iso-entities*} # can't wipe the entire dir because of libglade
+rm -rf ~/.texmf-var/ # created by docbook-utils
+rm -rf ~/.texlive*   # incase you were using Texlive rather than Textex-3
+
+####################################################################
+
+######## WARNING ###################################################
+# This will touch nearly every file on your expendable development
+# box.  You wouldn't try this on a production system, right?
+######## WARNING ###################################################
+
+# This the faster option, but not the safest.  On a full Slackware
+# installation, you'll find new files in this directory which have
+# been 'touch'ed.  The --touch-filesystem-first will not do this,
+# but is slower.  However, if you really want extra speed, copy
+# this entire package source directory to a temporary location
+# and run it from there.
+# TFS="--touch-filesystem-faster"
+
+TFS="--touch-filesystem-first"
+
+# Launch the build script:
+slacktrack $TFS \
+   --notidy \
+   --showdeps \
+   --run-after-withlog $CWD/postbuildfixes.sh \
+   -T $TMP \
+   -l $CWD/build.$ARCH.log \
+   -b $PKGSTORE \
+   -rYQOcp $PKGNAM-$PKGVERSION-$ARCH-$BUILD.$PKGEXT ./linuxdoc-tools.build
+
+# Compress build log:
+bzip2 -9fvz $CWD/build.$ARCH.log

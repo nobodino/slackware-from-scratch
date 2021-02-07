@@ -1,0 +1,141 @@
+diff -ruBN /tmp/plzip/plzip.SlackBuild /source/a/plzip/plzip.SlackBuild
+--- /tmp/plzip/plzip.SlackBuild	2019-09-29 23:48:35.000000000 +0000
++++ /source/a/plzip/plzip.SlackBuild	2021-01-09 06:34:48.000000000 +0000
+@@ -64,7 +64,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "armv7hl" ]; then
+   SLKCFLAGS="-O3 -march=armv7-a -mfpu=vfpv3-d16"
+   LIBDIRSUFFIX=""
+@@ -101,7 +101,7 @@
+   --mandir=/usr/man \
+   --infodir=/usr/info \
+   --disable-static \
+-  --build=$ARCH-slackware-linux || exit 1
++  --build=$ARCH-slackware-linux-musl || exit 1
+ 
+ # Build and install:
+ make $NUMJOBS || make || exit 1
+diff -ruBN /tmp/plzip/plzip.SlackBuild.log /source/a/plzip/plzip.SlackBuild.log
+--- /tmp/plzip/plzip.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/a/plzip/plzip.SlackBuild.log	2021-01-09 06:34:55.000000000 +0000
+@@ -0,0 +1,116 @@
++plzip-1.9/AUTHORS
++plzip-1.9/COPYING
++plzip-1.9/ChangeLog
++plzip-1.9/INSTALL
++plzip-1.9/Makefile.in
++plzip-1.9/NEWS
++plzip-1.9/README
++plzip-1.9/configure
++plzip-1.9/doc/plzip.1
++plzip-1.9/doc/plzip.info
++plzip-1.9/doc/plzip.texi
++plzip-1.9/arg_parser.h
++plzip-1.9/lzip.h
++plzip-1.9/lzip_index.h
++plzip-1.9/arg_parser.cc
++plzip-1.9/compress.cc
++plzip-1.9/dec_stdout.cc
++plzip-1.9/dec_stream.cc
++plzip-1.9/decompress.cc
++plzip-1.9/list.cc
++plzip-1.9/lzip_index.cc
++plzip-1.9/main.cc
++plzip-1.9/testsuite/check.sh
++plzip-1.9/testsuite/test.txt
++plzip-1.9/testsuite/fox_bcrc.lz
++plzip-1.9/testsuite/fox_crc0.lz
++plzip-1.9/testsuite/fox_das46.lz
++plzip-1.9/testsuite/fox_de20.lz
++plzip-1.9/testsuite/fox_mes81.lz
++plzip-1.9/testsuite/fox_s11.lz
++plzip-1.9/testsuite/fox_v2.lz
++plzip-1.9/testsuite/test.txt.lz
++plzip-1.9/testsuite/test_em.txt.lz
++configure: WARNING: unrecognized option: '--sysconfdir=/etc'
++configure: WARNING: unrecognized option: '--libdir=/usr/lib'
++configure: WARNING: unrecognized option: '--disable-static'
++configure: WARNING: unrecognized option: '--build=x86_64-slackware-linux-musl'
++
++creating config.status
++creating Makefile
++VPATH = .
++prefix = /usr
++exec_prefix = $(prefix)
++bindir = $(exec_prefix)/bin
++datarootdir = $(prefix)/share
++infodir = /usr/info
++mandir = /usr/man
++CXX = g++
++CPPFLAGS = 
++CXXFLAGS = -O2 -fPIC
++LDFLAGS = 
++OK. Now you can run make.
++If make fails, verify that the compression library lzlib is correctly
++installed (see INSTALL).
++g++  -O2 -fPIC -c -o arg_parser.o arg_parser.cc
++g++  -O2 -fPIC -c -o lzip_index.o lzip_index.cc
++g++  -O2 -fPIC -c -o list.o list.cc
++g++  -O2 -fPIC -c -o compress.o compress.cc
++g++  -O2 -fPIC -c -o dec_stdout.o dec_stdout.cc
++g++  -O2 -fPIC -c -o dec_stream.o dec_stream.cc
++g++  -O2 -fPIC  -c -o decompress.o decompress.cc
++g++  -O2 -fPIC -DPROGVERSION=\"1.9\" -c -o main.o main.cc
++g++  -O2 -fPIC -o plzip arg_parser.o lzip_index.o list.o compress.o dec_stdout.o dec_stream.o decompress.o main.o -llz -lpthread
++if [ ! -d "/tmp/package-plzip/usr/bin" ] ; then install -d -m 755 "/tmp/package-plzip/usr/bin" ; fi
++install -m 755 ./plzip "/tmp/package-plzip/usr/bin/plzip"
++if [ ! -d "/tmp/package-plzip/usr/info" ] ; then install -d -m 755 "/tmp/package-plzip/usr/info" ; fi
++rm -f "/tmp/package-plzip/usr/info/plzip.info"*
++install -m 644 ./doc/plzip.info "/tmp/package-plzip/usr/info/plzip.info"
++if /bin/sh -c "install-info --version" > /dev/null 2>&1 ; then \
++  install-info --info-dir="/tmp/package-plzip/usr/info" "/tmp/package-plzip/usr/info/plzip.info" ; \
++fi
++if [ ! -d "/tmp/package-plzip/usr/man/man1" ] ; then install -d -m 755 "/tmp/package-plzip/usr/man/man1" ; fi
++rm -f "/tmp/package-plzip/usr/man/man1/plzip.1"*
++install -m 644 ./doc/plzip.1 "/tmp/package-plzip/usr/man/man1/plzip.1"
++cp: cannot stat 'THANKS': No such file or directory
++cp: cannot stat 'TODO': No such file or directory
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++
++No symbolic links were found, so we won't make an installation script.
++You can make your own later in ./install/doinst.sh and rebuild the
++package if you like.
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/plzip-1.9-x86_64-1.txz
++
++./
++install/
++install/slack-desc
++usr/
++usr/bin/
++usr/bin/plzip
++usr/doc/
++usr/doc/plzip-1.9/
++usr/doc/plzip-1.9/AUTHORS
++usr/doc/plzip-1.9/COPYING
++usr/doc/plzip-1.9/ChangeLog
++usr/doc/plzip-1.9/INSTALL
++usr/doc/plzip-1.9/NEWS
++usr/doc/plzip-1.9/README
++usr/info/
++usr/info/plzip.info.gz
++usr/man/
++usr/man/man1/
++usr/man/man1/plzip.1.gz
++
++Slackware package /tmp/plzip-1.9-x86_64-1.txz created.
++

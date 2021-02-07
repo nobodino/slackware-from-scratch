@@ -1,0 +1,13 @@
+VERSION=i20070206
+# Move things into /etc/X11 that are supposed to be there:
+if [ -d usr/lib/X11 ]; then
+  ( cd $PKG/usr/lib/X11
+    for dir in fs lbxproxy proxymngr rstart xdm xinit xsm ; do
+      if [ -d $dir ]; then
+        mkdir -p $PKG/etc/X11
+        mv $dir $PKG/etc/X11
+        ln -sf ../../../etc/X11/$dir .
+      done
+    done
+  )
+fi

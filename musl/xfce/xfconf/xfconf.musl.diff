@@ -1,0 +1,1279 @@
+diff -ruBN /tmp/xfconf/xfconf.SlackBuild /source/xfce/xfconf/xfconf.SlackBuild
+--- /tmp/xfconf/xfconf.SlackBuild	2020-12-25 18:19:10.000000000 +0000
++++ /source/xfce/xfconf/xfconf.SlackBuild	2021-01-23 23:03:51.000000000 +0000
+@@ -56,7 +56,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ else
+   SLKCFLAGS="-O2"
+   LIBDIRSUFFIX=""
+@@ -91,7 +91,7 @@
+   --enable-gsettings-backend \
+   --disable-static \
+   --disable-debug \
+-  --build=$ARCH-slackware-linux || exit 1
++  --build=$ARCH-slackware-linux-musl || exit 1
+ 
+ # Build and install:
+ make $NUMJOBS || make || exit 1
+diff -ruBN /tmp/xfconf/xfconf.SlackBuild.log /source/xfce/xfconf/xfconf.SlackBuild.log
+--- /tmp/xfconf/xfconf.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/xfce/xfconf/xfconf.SlackBuild.log	2021-01-23 23:05:04.000000000 +0000
+@@ -0,0 +1,1254 @@
++xfconf-4.16.0/
++xfconf-4.16.0/tests/
++xfconf-4.16.0/tests/tests-common.h
++xfconf-4.16.0/tests/get-properties/
++xfconf-4.16.0/tests/get-properties/t-get-double.c
++xfconf-4.16.0/tests/get-properties/t-get-stringlist.c
++xfconf-4.16.0/tests/get-properties/t-get-arrayv.c
++xfconf-4.16.0/tests/get-properties/t-get-boolean.c
++xfconf-4.16.0/tests/get-properties/t-get-int.c
++xfconf-4.16.0/tests/get-properties/t-get-string.c
++xfconf-4.16.0/tests/get-properties/t-get-uint64.c
++xfconf-4.16.0/tests/get-properties/Makefile.in
++xfconf-4.16.0/tests/get-properties/Makefile.am
++xfconf-4.16.0/tests/reset-properties/
++xfconf-4.16.0/tests/reset-properties/t-reset-double.c
++xfconf-4.16.0/tests/reset-properties/t-reset-int.c
++xfconf-4.16.0/tests/reset-properties/t-reset-stringlist.c
++xfconf-4.16.0/tests/reset-properties/t-reset-boolean.c
++xfconf-4.16.0/tests/reset-properties/Makefile.in
++xfconf-4.16.0/tests/reset-properties/Makefile.am
++xfconf-4.16.0/tests/reset-properties/t-reset-string.c
++xfconf-4.16.0/tests/reset-properties/t-reset-uint64.c
++xfconf-4.16.0/tests/reset-properties/t-reset-arrayv.c
++xfconf-4.16.0/tests/has-properties/
++xfconf-4.16.0/tests/has-properties/t-has-uint64.c
++xfconf-4.16.0/tests/has-properties/t-has-boolean.c
++xfconf-4.16.0/tests/has-properties/t-has-double.c
++xfconf-4.16.0/tests/has-properties/Makefile.in
++xfconf-4.16.0/tests/has-properties/t-has-string.c
++xfconf-4.16.0/tests/has-properties/Makefile.am
++xfconf-4.16.0/tests/has-properties/t-has-arrayv.c
++xfconf-4.16.0/tests/has-properties/t-has-stringlist.c
++xfconf-4.16.0/tests/tests-end/
++xfconf-4.16.0/tests/tests-end/t-tests-end.c
++xfconf-4.16.0/tests/tests-end/Makefile.in
++xfconf-4.16.0/tests/tests-end/Makefile.am
++xfconf-4.16.0/tests/Makefile.in
++xfconf-4.16.0/tests/Makefile.am
++xfconf-4.16.0/tests/tests-driver.sh
++xfconf-4.16.0/tests/property-changed-signal/
++xfconf-4.16.0/tests/property-changed-signal/t-string-changed-signal.c
++xfconf-4.16.0/tests/property-changed-signal/t-string-changed-signal-detailed.c
++xfconf-4.16.0/tests/property-changed-signal/Makefile.in
++xfconf-4.16.0/tests/property-changed-signal/Makefile.am
++xfconf-4.16.0/tests/others/
++xfconf-4.16.0/tests/others/t-issue-16.c
++xfconf-4.16.0/tests/others/Makefile.in
++xfconf-4.16.0/tests/others/Makefile.am
++xfconf-4.16.0/tests/Makefile.inc
++xfconf-4.16.0/tests/set-properties/
++xfconf-4.16.0/tests/set-properties/t-set-uint64.c
++xfconf-4.16.0/tests/set-properties/t-set-double.c
++xfconf-4.16.0/tests/set-properties/t-set-string.c
++xfconf-4.16.0/tests/set-properties/t-set-stringlist.c
++xfconf-4.16.0/tests/set-properties/t-set-boolean.c
++xfconf-4.16.0/tests/set-properties/t-set-int.c
++xfconf-4.16.0/tests/set-properties/Makefile.in
++xfconf-4.16.0/tests/set-properties/t-set-arrayv.c
++xfconf-4.16.0/tests/set-properties/Makefile.am
++xfconf-4.16.0/tests/object-bindings/
++xfconf-4.16.0/tests/object-bindings/t-object-bindings.c
++xfconf-4.16.0/tests/object-bindings/Makefile.in
++xfconf-4.16.0/tests/object-bindings/Makefile.am
++xfconf-4.16.0/common/
++xfconf-4.16.0/common/xfconf-dbus.xml
++xfconf-4.16.0/common/xfconf-marshal.h
++xfconf-4.16.0/common/xfconf-gdbus-bindings.c
++xfconf-4.16.0/common/xfconf-alias.h
++xfconf-4.16.0/common/xfconf-gdbus-bindings.h
++xfconf-4.16.0/common/xfconf-marshal.list
++xfconf-4.16.0/common/xfconf-errors.c
++xfconf-4.16.0/common/xfconf-marshal.c
++xfconf-4.16.0/common/Makefile.in
++xfconf-4.16.0/common/xfconf-gvaluefuncs.h
++xfconf-4.16.0/common/xfconf-aliasdef.c
++xfconf-4.16.0/common/xfconf-gvaluefuncs.c
++xfconf-4.16.0/common/Makefile.am
++xfconf-4.16.0/common/xfconf-common-private.h
++xfconf-4.16.0/common/xfconf-types.c
++xfconf-4.16.0/common/make-exo-alias.pl
++xfconf-4.16.0/depcomp
++xfconf-4.16.0/COPYING
++xfconf-4.16.0/aclocal.m4
++xfconf-4.16.0/xfconf/
++xfconf-4.16.0/xfconf/xfconf-binding.h
++xfconf-4.16.0/xfconf/xfconf.symbols
++xfconf-4.16.0/xfconf/xfconf-errors.h
++xfconf-4.16.0/xfconf/libxfconf-0.pc.in
++xfconf-4.16.0/xfconf/xfconf-cache.c
++xfconf-4.16.0/xfconf/xfconf.c
++xfconf-4.16.0/xfconf/xfconf-types.h
++xfconf-4.16.0/xfconf/xfconf.h
++xfconf-4.16.0/xfconf/libxfconf-0.deps
++xfconf-4.16.0/xfconf/xfconf-private.h
++xfconf-4.16.0/xfconf/Makefile.in
++xfconf-4.16.0/xfconf/xfconf-channel.c
++xfconf-4.16.0/xfconf/Makefile.am
++xfconf-4.16.0/xfconf/xfconf-cache.h
++xfconf-4.16.0/xfconf/abicheck.sh
++xfconf-4.16.0/xfconf/xfconf-channel.h
++xfconf-4.16.0/xfconf/xfconf-binding.c
++xfconf-4.16.0/config.guess
++xfconf-4.16.0/TODO
++xfconf-4.16.0/gtk-doc.make
++xfconf-4.16.0/install-sh
++xfconf-4.16.0/ltmain.sh
++xfconf-4.16.0/completions/
++xfconf-4.16.0/completions/Makefile.in
++xfconf-4.16.0/completions/Makefile.am
++xfconf-4.16.0/completions/xfconf-query
++xfconf-4.16.0/test-driver
++xfconf-4.16.0/configure
++xfconf-4.16.0/AUTHORS
++xfconf-4.16.0/docs/
++xfconf-4.16.0/docs/reference/
++xfconf-4.16.0/docs/reference/version.xml.in
++xfconf-4.16.0/docs/reference/xfconf-sections.txt
++xfconf-4.16.0/docs/reference/xfconf.types
++xfconf-4.16.0/docs/reference/version.xml
++xfconf-4.16.0/docs/reference/html/
++xfconf-4.16.0/docs/reference/html/left-insensitive.png
++xfconf-4.16.0/docs/reference/html/ch02.html
++xfconf-4.16.0/docs/reference/html/right.png
++xfconf-4.16.0/docs/reference/html/up-insensitive.png
++xfconf-4.16.0/docs/reference/html/ch03.html
++xfconf-4.16.0/docs/reference/html/xfconf.devhelp2
++xfconf-4.16.0/docs/reference/html/left.png
++xfconf-4.16.0/docs/reference/html/xfconf-Error-Reporting.html
++xfconf-4.16.0/docs/reference/html/up.png
++xfconf-4.16.0/docs/reference/html/xfconf-Xfconf-GObject-Binding.html
++xfconf-4.16.0/docs/reference/html/style.css
++xfconf-4.16.0/docs/reference/html/ch04.html
++xfconf-4.16.0/docs/reference/html/xfconf-Xfconf-Channel.html
++xfconf-4.16.0/docs/reference/html/right-insensitive.png
++xfconf-4.16.0/docs/reference/html/index.html
++xfconf-4.16.0/docs/reference/html/xfconf-Xfconf-Backend.html
++xfconf-4.16.0/docs/reference/html/xfconf-Xfconf-Types.html
++xfconf-4.16.0/docs/reference/html/ch01.html
++xfconf-4.16.0/docs/reference/html/xfconf-Xfconf-Library-Core.html
++xfconf-4.16.0/docs/reference/html/home.png
++xfconf-4.16.0/docs/reference/Makefile.in
++xfconf-4.16.0/docs/reference/Makefile.am
++xfconf-4.16.0/docs/reference/xfconf-overrides.txt
++xfconf-4.16.0/docs/reference/xfconf-docs.xml
++xfconf-4.16.0/docs/spec/
++xfconf-4.16.0/docs/spec/lockdown-behavior.txt
++xfconf-4.16.0/docs/spec/perchannel-xml.txt
++xfconf-4.16.0/docs/spec/perchannel-xml.dtd
++xfconf-4.16.0/docs/spec/general.txt
++xfconf-4.16.0/docs/spec/Makefile.in
++xfconf-4.16.0/docs/spec/Makefile.am
++xfconf-4.16.0/docs/Makefile.in
++xfconf-4.16.0/docs/Makefile.am
++xfconf-4.16.0/config.h.in
++xfconf-4.16.0/compile
++xfconf-4.16.0/config.sub
++xfconf-4.16.0/missing
++xfconf-4.16.0/NEWS
++xfconf-4.16.0/xfconfd/
++xfconf-4.16.0/xfconfd/xfconf-daemon.c
++xfconf-4.16.0/xfconfd/xfconf-backend-factory.h
++xfconf-4.16.0/xfconfd/xfconf-backend.h
++xfconf-4.16.0/xfconfd/org.xfce.Xfconf.service.in
++xfconf-4.16.0/xfconfd/xfconf-backend.c
++xfconf-4.16.0/xfconfd/xfconf-locking-utils.h
++xfconf-4.16.0/xfconfd/xfconf-backend-perchannel-xml.c
++xfconf-4.16.0/xfconfd/Makefile.in
++xfconf-4.16.0/xfconfd/main.c
++xfconf-4.16.0/xfconfd/xfconf-backend-factory.c
++xfconf-4.16.0/xfconfd/xfconf-backend-perchannel-xml.h
++xfconf-4.16.0/xfconfd/xfconf-locking-utils.c
++xfconf-4.16.0/xfconfd/Makefile.am
++xfconf-4.16.0/xfconfd/xfconf-daemon.h
++xfconf-4.16.0/po/
++xfconf-4.16.0/po/bg.po
++xfconf-4.16.0/po/nb.po
++xfconf-4.16.0/po/hye.po
++xfconf-4.16.0/po/ur_PK.po
++xfconf-4.16.0/po/ca.po
++xfconf-4.16.0/po/ug.po
++xfconf-4.16.0/po/de.po
++xfconf-4.16.0/po/ro.po
++xfconf-4.16.0/po/si.po
++xfconf-4.16.0/po/gl.po
++xfconf-4.16.0/po/hr.po
++xfconf-4.16.0/po/en_GB.po
++xfconf-4.16.0/po/en_AU.po
++xfconf-4.16.0/po/hy_AM.po
++xfconf-4.16.0/po/ast.po
++xfconf-4.16.0/po/nl.po
++xfconf-4.16.0/po/ur.po
++xfconf-4.16.0/po/te.po
++xfconf-4.16.0/po/th.po
++xfconf-4.16.0/po/ru.po
++xfconf-4.16.0/po/tr.po
++xfconf-4.16.0/po/sq.po
++xfconf-4.16.0/po/el.po
++xfconf-4.16.0/po/id.po
++xfconf-4.16.0/po/zh_CN.po
++xfconf-4.16.0/po/oc.po
++xfconf-4.16.0/po/ar.po
++xfconf-4.16.0/po/cs.po
++xfconf-4.16.0/po/sr.po
++xfconf-4.16.0/po/fr.po
++xfconf-4.16.0/po/pt_BR.po
++xfconf-4.16.0/po/is.po
++xfconf-4.16.0/po/ko.po
++xfconf-4.16.0/po/be.po
++xfconf-4.16.0/po/es.po
++xfconf-4.16.0/po/Makefile.in.in
++xfconf-4.16.0/po/bn.po
++xfconf-4.16.0/po/eu.po
++xfconf-4.16.0/po/zh_HK.po
++xfconf-4.16.0/po/sk.po
++xfconf-4.16.0/po/sv.po
++xfconf-4.16.0/po/da.po
++xfconf-4.16.0/po/pt.po
++xfconf-4.16.0/po/uk.po
++xfconf-4.16.0/po/it.po
++xfconf-4.16.0/po/he.po
++xfconf-4.16.0/po/lv.po
++xfconf-4.16.0/po/pa.po
++xfconf-4.16.0/po/lt.po
++xfconf-4.16.0/po/POTFILES.in
++xfconf-4.16.0/po/pl.po
++xfconf-4.16.0/po/zh_TW.po
++xfconf-4.16.0/po/ms.po
++xfconf-4.16.0/po/en_CA.po
++xfconf-4.16.0/po/fi.po
++xfconf-4.16.0/po/nn.po
++xfconf-4.16.0/po/kk.po
++xfconf-4.16.0/po/hu.po
++xfconf-4.16.0/po/sl.po
++xfconf-4.16.0/po/ja.po
++xfconf-4.16.0/ChangeLog
++xfconf-4.16.0/Makefile.in
++xfconf-4.16.0/configure.ac
++xfconf-4.16.0/m4/
++xfconf-4.16.0/m4/introspection.m4
++xfconf-4.16.0/m4/vapigen.m4
++xfconf-4.16.0/README.md
++xfconf-4.16.0/gsettings-backend/
++xfconf-4.16.0/gsettings-backend/xfconf-gsettings-backend.h
++xfconf-4.16.0/gsettings-backend/xfconf-gsettings-backend.c
++xfconf-4.16.0/gsettings-backend/Makefile.in
++xfconf-4.16.0/gsettings-backend/xfconf-giomodule.c
++xfconf-4.16.0/gsettings-backend/Makefile.am
++xfconf-4.16.0/Makefile.am
++xfconf-4.16.0/xfconf-query/
++xfconf-4.16.0/xfconf-query/Makefile.in
++xfconf-4.16.0/xfconf-query/main.c
++xfconf-4.16.0/xfconf-query/Makefile.am
++checking for a BSD-compatible install... /usr/bin/ginstall -c
++checking whether build environment is sane... yes
++checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
++checking for gawk... gawk
++checking whether make sets $(MAKE)... yes
++checking whether make supports nested variables... yes
++checking whether UID '0' is supported by ustar format... yes
++checking whether GID '0' is supported by ustar format... yes
++checking how to create a ustar tar archive... gnutar
++checking whether to enable maintainer-specific portions of Makefiles... no
++checking whether make supports nested variables... (cached) yes
++checking whether make supports the include directive... yes (GNU style)
++checking for gcc... gcc
++checking whether the C compiler works... yes
++checking for C compiler default output file name... a.out
++checking for suffix of executables... 
++checking whether we are cross compiling... no
++checking for suffix of object files... o
++checking whether we are using the GNU C compiler... yes
++checking whether gcc accepts -g... yes
++checking for gcc option to accept ISO C89... none needed
++checking whether gcc understands -c and -o together... yes
++checking dependency style of gcc... gcc3
++checking how to run the C preprocessor... gcc -E
++checking for grep that handles long lines and -e... /usr/bin/grep
++checking for egrep... /usr/bin/grep -E
++checking for ANSI C header files... yes
++checking for sys/types.h... yes
++checking for sys/stat.h... yes
++checking for stdlib.h... yes
++checking for string.h... yes
++checking for memory.h... yes
++checking for strings.h... yes
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking for unistd.h... yes
++checking minix/config.h usability... no
++checking minix/config.h presence... no
++checking for minix/config.h... no
++checking whether it is safe to define __EXTENSIONS__... yes
++checking for library containing strerror... none required
++checking for gcc... (cached) gcc
++checking whether we are using the GNU C compiler... (cached) yes
++checking whether gcc accepts -g... (cached) yes
++checking for gcc option to accept ISO C89... (cached) none needed
++checking whether gcc understands -c and -o together... (cached) yes
++checking dependency style of gcc... (cached) gcc3
++checking whether make sets $(MAKE)... (cached) yes
++checking whether ln -s works... yes
++checking whether NLS is requested... yes
++checking for intltool >= 0.35.0... 0.51.0 found
++checking for intltool-update... /usr/bin/intltool-update
++checking for intltool-merge... /usr/bin/intltool-merge
++checking for intltool-extract... /usr/bin/intltool-extract
++checking for xgettext... /usr/bin/xgettext
++checking for msgmerge... /usr/bin/msgmerge
++checking for msgfmt... /usr/bin/msgfmt
++checking for gmsgfmt... /usr/bin/msgfmt
++checking for perl... /usr/bin/perl
++checking for perl >= 5.8.1... 5.32.0
++checking for XML::Parser... ok
++checking build system type... x86_64-slackware-linux-musl
++checking host system type... x86_64-slackware-linux-musl
++checking how to print strings... printf
++checking for a sed that does not truncate output... /usr/bin/sed
++checking for fgrep... /usr/bin/grep -F
++checking for ld used by gcc... /usr/bin/ld
++checking if the linker (/usr/bin/ld) is GNU ld... yes
++checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
++checking the name lister (/usr/bin/nm -B) interface... BSD nm
++checking the maximum length of command line arguments... 98304
++checking how to convert x86_64-slackware-linux-musl file names to x86_64-slackware-linux-musl format... func_convert_file_noop
++checking how to convert x86_64-slackware-linux-musl file names to toolchain format... func_convert_file_noop
++checking for /usr/bin/ld option to reload object files... -r
++checking for objdump... objdump
++checking how to recognize dependent libraries... pass_all
++checking for dlltool... dlltool
++checking how to associate runtime and link libraries... printf %s\n
++checking for ar... ar
++checking for archiver @FILE support... @
++checking for strip... strip
++checking for ranlib... ranlib
++checking command to parse /usr/bin/nm -B output from gcc object... ok
++checking for sysroot... no
++checking for a working dd... /usr/bin/dd
++checking how to truncate binary pipes... /usr/bin/dd bs=4096 count=1
++checking for mt... mt
++checking if mt is a manifest tool... no
++checking for dlfcn.h... yes
++checking for objdir... .libs
++checking if gcc supports -fno-rtti -fno-exceptions... no
++checking for gcc option to produce PIC... -fPIC -DPIC
++checking if gcc PIC flag -fPIC -DPIC works... yes
++checking if gcc static flag -static works... yes
++checking if gcc supports -c -o file.o... yes
++checking if gcc supports -c -o file.o... (cached) yes
++checking whether the gcc linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
++checking whether -lc should be explicitly linked in... no
++checking dynamic linker characteristics... GNU/Linux ld.so
++checking how to hardcode library paths into programs... immediate
++checking whether stripping libraries is possible... yes
++checking if libtool supports shared libraries... yes
++checking whether to build shared libraries... yes
++checking whether to build static libraries... no
++checking for ANSI C header files... (cached) yes
++checking errno.h usability... yes
++checking errno.h presence... yes
++checking for errno.h... yes
++checking fcntl.h usability... yes
++checking fcntl.h presence... yes
++checking for fcntl.h... yes
++checking grp.h usability... yes
++checking grp.h presence... yes
++checking for grp.h... yes
++checking locale.h usability... yes
++checking locale.h presence... yes
++checking for locale.h... yes
++checking signal.h usability... yes
++checking signal.h presence... yes
++checking for signal.h... yes
++checking for stdlib.h... (cached) yes
++checking for string.h... (cached) yes
++checking for sys/stat.h... (cached) yes
++checking sys/time.h usability... yes
++checking sys/time.h presence... yes
++checking for sys/time.h... yes
++checking for sys/types.h... (cached) yes
++checking sys/wait.h usability... yes
++checking sys/wait.h presence... yes
++checking for sys/wait.h... yes
++checking for unistd.h... (cached) yes
++checking for fdatasync... yes
++checking for fsync... yes
++checking for setlocale... yes
++checking for locale.h... (cached) yes
++checking for LC_MESSAGES... yes
++checking for CFPreferencesCopyAppValue... no
++checking for CFLocaleCopyCurrent... no
++checking libintl.h usability... yes
++checking libintl.h presence... yes
++checking for libintl.h... yes
++checking for ngettext in libc... yes
++checking for dgettext in libc... yes
++checking for bind_textdomain_codeset... yes
++checking for msgfmt... (cached) /usr/bin/msgfmt
++checking for dcgettext... yes
++checking if msgfmt accepts -c... yes
++checking for gmsgfmt... (cached) /usr/bin/msgfmt
++checking for xgettext... (cached) /usr/bin/xgettext
++checking for catalogs to be installed...  ar ast be bg bn ca cs da de el en_AU en_CA en_GB es eu fi fr gl he hr hu hy_AM hye id is it ja kk ko lt lv ms nb nl nn oc pa pl pt pt_BR ro ru si sk sl sq sr sv te th tr ug uk ur ur_PK zh_CN zh_HK zh_TW
++checking for bind_textdomain_codeset... (cached) yes
++checking for locales directory... /usr/lib/locale
++checking for additional xgettext flags... --keyword=Q_ --from-code=UTF-8
++checking for gdbus-codegen... /usr/bin/gdbus-codegen
++checking pkg-config is at least version 0.9.0... yes
++checking for gobject-2.0 >= 2.50.0... 2.66.4
++checking GLIB_CFLAGS... -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include
++checking GLIB_LIBS... -lgobject-2.0 -lglib-2.0
++checking pkg-config is at least version 0.9.0... yes
++checking for gio-2.0 >= 2.50.0... 2.66.4
++checking GIO_CFLAGS... -pthread -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include
++checking GIO_LIBS... -lgio-2.0 -lgobject-2.0 -lglib-2.0
++checking pkg-config is at least version 0.9.0... yes
++checking for gio-unix-2.0 >= 2.50.0... 2.66.4
++checking GIO_UNIX_CFLAGS... -pthread -I/usr/include/gio-unix-2.0 -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include
++checking GIO_UNIX_LIBS... -lgio-2.0 -lgobject-2.0 -lglib-2.0
++checking pkg-config is at least version 0.9.0... yes
++checking for gthread-2.0 >= 2.50.0... 2.66.4
++checking GTHREAD_CFLAGS... -pthread -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include
++checking GTHREAD_LIBS... -lgthread-2.0 -pthread -lglib-2.0
++checking pkg-config is at least version 0.9.0... yes
++checking for libxfce4util-1.0 >= 4.14.0... 4.16.0
++checking LIBXFCE4UTIL_CFLAGS... -I/usr/include/xfce4 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include
++checking LIBXFCE4UTIL_LIBS... -lxfce4util -lglib-2.0
++checking for perl5.8... no
++checking for perl5.6... no
++checking for perl5... no
++checking for perl... /usr/bin/perl
++checking alignment of guchar... 1
++checking alignment of gchar... 1
++checking alignment of guint16... 2
++checking alignment of gint16... 2
++checking alignment of guint32... 4
++checking alignment of gint32... 4
++checking alignment of guint64... 8
++checking alignment of gint64... 8
++checking alignment of gfloat... 4
++checking alignment of gdouble... 8
++checking alignment of gboolean... 4
++checking alignment of gpointer... 8
++checking for gtk-doc... yes
++checking for gtkdoc-check... gtkdoc-check.test
++checking for gtkdoc-check... /usr/bin/gtkdoc-check
++checking for gtkdoc-rebase... /usr/bin/gtkdoc-rebase
++checking for gtkdoc-mkpdf... /usr/bin/gtkdoc-mkpdf
++checking whether to build gtk-doc documentation... no
++checking for GTKDOC_DEPS... yes
++checking whether to build the GSettings backend module... yes
++checking pkg-config is at least version 0.9.0... yes
++checking for gmodule-2.0 >= 2.50.0... 2.66.4
++checking GMODULE_CFLAGS... -pthread -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include
++checking GMODULE_LIBS... -Wl,--export-dynamic -lgmodule-2.0 -pthread -lglib-2.0
++checking for gobject-introspection... yes
++checking pkg-config is at least version 0.9.0... yes
++checking for vapigen... yes
++checking whether to build with debugging support... no
++checking if gcc supports -Wno-sign-compare... yes
++checking if gcc supports -Wall... yes
++checking if gcc supports -Werror... yes
++checking if gcc supports -Wno-unused-parameter... yes
++checking whether gcc supports the GNUC visibility attribute... yes
++checking if gcc supports -xldscope=hidden... no
++checking if gcc supports -fvisibility=hidden... yes
++checking whether /usr/bin/ld -m elf_x86_64 accepts --as-needed... yes
++checking whether /usr/bin/ld -m elf_x86_64 accepts -O1... yes
++checking for bash-completion directory... ${datadir}/bash-completion/completions
++checking that generated files are newer than configure... done
++configure: creating ./config.status
++config.status: creating Makefile
++config.status: creating common/Makefile
++config.status: creating docs/Makefile
++config.status: creating docs/reference/Makefile
++config.status: creating docs/reference/version.xml
++config.status: creating docs/spec/Makefile
++config.status: creating po/Makefile.in
++config.status: creating tests/Makefile
++config.status: creating tests/set-properties/Makefile
++config.status: creating tests/has-properties/Makefile
++config.status: creating tests/get-properties/Makefile
++config.status: creating tests/reset-properties/Makefile
++config.status: creating tests/object-bindings/Makefile
++config.status: creating tests/property-changed-signal/Makefile
++config.status: creating tests/others/Makefile
++config.status: creating tests/tests-end/Makefile
++config.status: creating xfconf/Makefile
++config.status: creating xfconf/libxfconf-0.pc
++config.status: creating xfconf-query/Makefile
++config.status: creating xfconfd/Makefile
++config.status: creating gsettings-backend/Makefile
++config.status: creating completions/Makefile
++config.status: creating config.h
++config.status: executing depfiles commands
++config.status: executing libtool commands
++config.status: executing default-1 commands
++config.status: executing po/stamp-it commands
++
++Build Configuration:
++
++  * GSettings Backend:         yes
++  * GObject Introspection:     yes
++  * Vala support:              yes
++  * Bash completion path:      ${datadir}/bash-completion/completions
++
++  * Debug:                     no
++
++make  all-recursive
++make[1]: Entering directory '/tmp/xfconf-4.16.0'
++Making all in common
++make[2]: Entering directory '/tmp/xfconf-4.16.0/common'
++  GEN      xfconf-marshal.c
++  GEN      xfconf-marshal.h
++  GEN      xfconf-gdbus-bindings.c
++INFO: Reading ./xfconf-marshal.list...
++INFO: Reading ./xfconf-marshal.list...
++make  all-am
++make[3]: Entering directory '/tmp/xfconf-4.16.0/common'
++  CC       libxfconf_common_la-xfconf-errors.lo
++  CC       libxfconf_common_la-xfconf-marshal.lo
++  CC       libxfconf_gvaluefuncs_la-xfconf-gvaluefuncs.lo
++  CC       libxfconf_dbus_la-xfconf-gdbus-bindings.lo
++  CCLD     libxfconf-common.la
++  CCLD     libxfconf-gvaluefuncs.la
++  CCLD     libxfconf-dbus.la
++make[3]: Leaving directory '/tmp/xfconf-4.16.0/common'
++make[2]: Leaving directory '/tmp/xfconf-4.16.0/common'
++Making all in xfconf
++make[2]: Entering directory '/tmp/xfconf-4.16.0/xfconf'
++  CC       libxfconf_0_la-xfconf-binding.lo
++  CC       libxfconf_0_la-xfconf-cache.lo
++  CC       libxfconf_0_la-xfconf-channel.lo
++  CC       libxfconf_0_la-xfconf.lo
++  CC       libxfconf_0_la-xfconf-types.lo
++  CCLD     libxfconf-0.la
++  GISCAN   Xfconf-0.gir
++  GICOMP   Xfconf-0.gir
++ VAPIGEN libxfconf-0.vapi
++make[2]: Leaving directory '/tmp/xfconf-4.16.0/xfconf'
++Making all in xfconfd
++make[2]: Entering directory '/tmp/xfconf-4.16.0/xfconfd'
++  CC       xfconfd-main.o
++  CC       xfconfd-xfconf-backend-factory.o
++  CC       xfconfd-xfconf-backend.o
++  CC       xfconfd-xfconf-daemon.o
++  CC       xfconfd-xfconf-locking-utils.o
++  CC       xfconfd-xfconf-backend-perchannel-xml.o
++  CC       xfconfd-xfconf-types.o
++  GEN      org.xfce.Xfconf.service
++  CCLD     xfconfd
++make[2]: Leaving directory '/tmp/xfconf-4.16.0/xfconfd'
++Making all in xfconf-query
++make[2]: Entering directory '/tmp/xfconf-4.16.0/xfconf-query'
++  CC       xfconf_query-main.o
++  CCLD     xfconf-query
++make[2]: Leaving directory '/tmp/xfconf-4.16.0/xfconf-query'
++Making all in po
++make[2]: Entering directory '/tmp/xfconf-4.16.0/po'
++  MSGFMT ar.gmo
++  MSGFMT ast.gmo
++  MSGFMT be.gmo
++  MSGFMT bg.gmo
++  MSGFMT bn.gmo
++  MSGFMT ca.gmo
++  MSGFMT cs.gmo
++  MSGFMT da.gmo
++  MSGFMT de.gmo
++  MSGFMT el.gmo
++  MSGFMT en_AU.gmo
++  MSGFMT en_CA.gmo
++  MSGFMT en_GB.gmo
++  MSGFMT es.gmo
++  MSGFMT eu.gmo
++  MSGFMT fi.gmo
++  MSGFMT fr.gmo
++  MSGFMT gl.gmo
++  MSGFMT he.gmo
++  MSGFMT hr.gmo
++  MSGFMT hu.gmo
++  MSGFMT hy_AM.gmo
++  MSGFMT hye.gmo
++  MSGFMT id.gmo
++  MSGFMT is.gmo
++  MSGFMT it.gmo
++  MSGFMT ja.gmo
++  MSGFMT kk.gmo
++  MSGFMT lt.gmo
++  MSGFMT ko.gmo
++  MSGFMT lv.gmo
++  MSGFMT ms.gmo
++  MSGFMT nb.gmo
++  MSGFMT nl.gmo
++  MSGFMT nn.gmo
++  MSGFMT oc.gmo
++  MSGFMT pa.gmo
++  MSGFMT pl.gmo
++  MSGFMT pt.gmo
++  MSGFMT pt_BR.gmo
++  MSGFMT ro.gmo
++  MSGFMT ru.gmo
++  MSGFMT si.gmo
++  MSGFMT sk.gmo
++  MSGFMT sl.gmo
++  MSGFMT sq.gmo
++  MSGFMT sr.gmo
++  MSGFMT sv.gmo
++  MSGFMT te.gmo
++  MSGFMT th.gmo
++  MSGFMT tr.gmo
++  MSGFMT ug.gmo
++  MSGFMT ur.gmo
++  MSGFMT uk.gmo
++  MSGFMT ur_PK.gmo
++  MSGFMT zh_CN.gmo
++  MSGFMT zh_HK.gmo
++  MSGFMT zh_TW.gmo
++make[2]: Leaving directory '/tmp/xfconf-4.16.0/po'
++Making all in docs
++make[2]: Entering directory '/tmp/xfconf-4.16.0/docs'
++Making all in reference
++make[3]: Entering directory '/tmp/xfconf-4.16.0/docs/reference'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/xfconf-4.16.0/docs/reference'
++Making all in spec
++make[3]: Entering directory '/tmp/xfconf-4.16.0/docs/spec'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/xfconf-4.16.0/docs/spec'
++make[3]: Entering directory '/tmp/xfconf-4.16.0/docs'
++make[3]: Nothing to be done for 'all-am'.
++make[3]: Leaving directory '/tmp/xfconf-4.16.0/docs'
++make[2]: Leaving directory '/tmp/xfconf-4.16.0/docs'
++Making all in tests
++make[2]: Entering directory '/tmp/xfconf-4.16.0/tests'
++Making all in set-properties
++make[3]: Entering directory '/tmp/xfconf-4.16.0/tests/set-properties'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/xfconf-4.16.0/tests/set-properties'
++Making all in has-properties
++make[3]: Entering directory '/tmp/xfconf-4.16.0/tests/has-properties'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/xfconf-4.16.0/tests/has-properties'
++Making all in get-properties
++make[3]: Entering directory '/tmp/xfconf-4.16.0/tests/get-properties'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/xfconf-4.16.0/tests/get-properties'
++Making all in reset-properties
++make[3]: Entering directory '/tmp/xfconf-4.16.0/tests/reset-properties'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/xfconf-4.16.0/tests/reset-properties'
++Making all in property-changed-signal
++make[3]: Entering directory '/tmp/xfconf-4.16.0/tests/property-changed-signal'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/xfconf-4.16.0/tests/property-changed-signal'
++Making all in object-bindings
++make[3]: Entering directory '/tmp/xfconf-4.16.0/tests/object-bindings'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/xfconf-4.16.0/tests/object-bindings'
++Making all in others
++make[3]: Entering directory '/tmp/xfconf-4.16.0/tests/others'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/xfconf-4.16.0/tests/others'
++Making all in tests-end
++make[3]: Entering directory '/tmp/xfconf-4.16.0/tests/tests-end'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/xfconf-4.16.0/tests/tests-end'
++make[3]: Entering directory '/tmp/xfconf-4.16.0/tests'
++make[3]: Nothing to be done for 'all-am'.
++make[3]: Leaving directory '/tmp/xfconf-4.16.0/tests'
++make[2]: Leaving directory '/tmp/xfconf-4.16.0/tests'
++Making all in completions
++make[2]: Entering directory '/tmp/xfconf-4.16.0/completions'
++make[2]: Nothing to be done for 'all'.
++make[2]: Leaving directory '/tmp/xfconf-4.16.0/completions'
++Making all in gsettings-backend
++make[2]: Entering directory '/tmp/xfconf-4.16.0/gsettings-backend'
++  CC       libxfconfgsettingsbackend_la-xfconf-giomodule.lo
++  CC       libxfconfgsettingsbackend_la-xfconf-gsettings-backend.lo
++  CCLD     libxfconfgsettingsbackend.la
++make[2]: Leaving directory '/tmp/xfconf-4.16.0/gsettings-backend'
++make[2]: Entering directory '/tmp/xfconf-4.16.0'
++make[2]: Leaving directory '/tmp/xfconf-4.16.0'
++make[1]: Leaving directory '/tmp/xfconf-4.16.0'
++Making install in common
++make[1]: Entering directory '/tmp/xfconf-4.16.0/common'
++make  install-am
++make[2]: Entering directory '/tmp/xfconf-4.16.0/common'
++make[3]: Entering directory '/tmp/xfconf-4.16.0/common'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/xfconf-4.16.0/common'
++make[2]: Leaving directory '/tmp/xfconf-4.16.0/common'
++make[1]: Leaving directory '/tmp/xfconf-4.16.0/common'
++Making install in xfconf
++make[1]: Entering directory '/tmp/xfconf-4.16.0/xfconf'
++make[2]: Entering directory '/tmp/xfconf-4.16.0/xfconf'
++ /usr/bin/mkdir -p '/tmp/package-xfconf/usr/lib'
++ /bin/sh ../libtool   --mode=install /usr/bin/ginstall -c   libxfconf-0.la '/tmp/package-xfconf/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/libxfconf-0.so.3.0.0 /tmp/package-xfconf/usr/lib/libxfconf-0.so.3.0.0
++libtool: install: (cd /tmp/package-xfconf/usr/lib && { ln -s -f libxfconf-0.so.3.0.0 libxfconf-0.so.3 || { rm -f libxfconf-0.so.3 && ln -s libxfconf-0.so.3.0.0 libxfconf-0.so.3; }; })
++libtool: install: (cd /tmp/package-xfconf/usr/lib && { ln -s -f libxfconf-0.so.3.0.0 libxfconf-0.so || { rm -f libxfconf-0.so && ln -s libxfconf-0.so.3.0.0 libxfconf-0.so; }; })
++libtool: install: /usr/bin/ginstall -c .libs/libxfconf-0.lai /tmp/package-xfconf/usr/lib/libxfconf-0.la
++libtool: warning: remember to run 'libtool --finish /usr/lib'
++ /usr/bin/mkdir -p '/tmp/package-xfconf/usr/share/gir-1.0'
++ /usr/bin/ginstall -c -m 644 Xfconf-0.gir '/tmp/package-xfconf/usr/share/gir-1.0'
++ /usr/bin/mkdir -p '/tmp/package-xfconf/usr/include/xfce4/xfconf-0/xfconf'
++ /usr/bin/ginstall -c -m 644 xfconf-binding.h xfconf-channel.h xfconf-errors.h xfconf-types.h xfconf.h '/tmp/package-xfconf/usr/include/xfce4/xfconf-0/xfconf'
++ /usr/bin/mkdir -p '/tmp/package-xfconf/usr/lib/pkgconfig'
++ /usr/bin/ginstall -c -m 644 libxfconf-0.pc '/tmp/package-xfconf/usr/lib/pkgconfig'
++ /usr/bin/mkdir -p '/tmp/package-xfconf/usr/lib/girepository-1.0'
++ /usr/bin/ginstall -c -m 644 Xfconf-0.typelib '/tmp/package-xfconf/usr/lib/girepository-1.0'
++ /usr/bin/mkdir -p '/tmp/package-xfconf/usr/share/vala/vapi'
++ /usr/bin/ginstall -c -m 644 libxfconf-0.vapi libxfconf-0.deps '/tmp/package-xfconf/usr/share/vala/vapi'
++make[2]: Leaving directory '/tmp/xfconf-4.16.0/xfconf'
++make[1]: Leaving directory '/tmp/xfconf-4.16.0/xfconf'
++Making install in xfconfd
++make[1]: Entering directory '/tmp/xfconf-4.16.0/xfconfd'
++make[2]: Entering directory '/tmp/xfconf-4.16.0/xfconfd'
++make[2]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-xfconf/usr/share/dbus-1/services'
++ /usr/bin/ginstall -c -m 644 org.xfce.Xfconf.service '/tmp/package-xfconf/usr/share/dbus-1/services'
++ /usr/bin/mkdir -p '/tmp/package-xfconf/usr/lib/xfce4/xfconf'
++  /bin/sh ../libtool   --mode=install /usr/bin/ginstall -c xfconfd '/tmp/package-xfconf/usr/lib/xfce4/xfconf'
++libtool: install: /usr/bin/ginstall -c xfconfd /tmp/package-xfconf/usr/lib/xfce4/xfconf/xfconfd
++make[2]: Leaving directory '/tmp/xfconf-4.16.0/xfconfd'
++make[1]: Leaving directory '/tmp/xfconf-4.16.0/xfconfd'
++Making install in xfconf-query
++make[1]: Entering directory '/tmp/xfconf-4.16.0/xfconf-query'
++make[2]: Entering directory '/tmp/xfconf-4.16.0/xfconf-query'
++ /usr/bin/mkdir -p '/tmp/package-xfconf/usr/bin'
++  /bin/sh ../libtool   --mode=install /usr/bin/ginstall -c xfconf-query '/tmp/package-xfconf/usr/bin'
++libtool: warning: '../xfconf/libxfconf-0.la' has not been installed in '/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/xfconf-query /tmp/package-xfconf/usr/bin/xfconf-query
++make[2]: Nothing to be done for 'install-data-am'.
++make[2]: Leaving directory '/tmp/xfconf-4.16.0/xfconf-query'
++make[1]: Leaving directory '/tmp/xfconf-4.16.0/xfconf-query'
++Making install in po
++make[1]: Entering directory '/tmp/xfconf-4.16.0/po'
++linguas="ar ast be bg bn ca cs da de el en_AU en_CA en_GB es eu fi fr gl he hr hu hy_AM hye id is it ja kk ko lt lv ms nb nl nn oc pa pl pt pt_BR ro ru si sk sl sq sr sv te th tr ug uk ur ur_PK zh_CN zh_HK zh_TW "; \
++for lang in $linguas; do \
++  dir=/tmp/package-xfconf/usr/lib/locale/$lang/LC_MESSAGES; \
++  /bin/sh /tmp/xfconf-4.16.0/install-sh -d $dir; \
++  if test -r $lang.gmo; then \
++    /usr/bin/ginstall -c -m 644 $lang.gmo $dir/xfconf.mo; \
++    echo "installing $lang.gmo as $dir/xfconf.mo"; \
++  else \
++    /usr/bin/ginstall -c -m 644 ./$lang.gmo $dir/xfconf.mo; \
++    echo "installing ./$lang.gmo as" \
++	 "$dir/xfconf.mo"; \
++  fi; \
++  if test -r $lang.gmo.m; then \
++    /usr/bin/ginstall -c -m 644 $lang.gmo.m $dir/xfconf.mo.m; \
++    echo "installing $lang.gmo.m as $dir/xfconf.mo.m"; \
++  else \
++    if test -r ./$lang.gmo.m ; then \
++      /usr/bin/ginstall -c -m 644 ./$lang.gmo.m \
++	$dir/xfconf.mo.m; \
++      echo "installing ./$lang.gmo.m as" \
++	   "$dir/xfconf.mo.m"; \
++    else \
++      true; \
++    fi; \
++  fi; \
++done
++installing ar.gmo as /tmp/package-xfconf/usr/lib/locale/ar/LC_MESSAGES/xfconf.mo
++installing ast.gmo as /tmp/package-xfconf/usr/lib/locale/ast/LC_MESSAGES/xfconf.mo
++installing be.gmo as /tmp/package-xfconf/usr/lib/locale/be/LC_MESSAGES/xfconf.mo
++installing bg.gmo as /tmp/package-xfconf/usr/lib/locale/bg/LC_MESSAGES/xfconf.mo
++installing bn.gmo as /tmp/package-xfconf/usr/lib/locale/bn/LC_MESSAGES/xfconf.mo
++installing ca.gmo as /tmp/package-xfconf/usr/lib/locale/ca/LC_MESSAGES/xfconf.mo
++installing cs.gmo as /tmp/package-xfconf/usr/lib/locale/cs/LC_MESSAGES/xfconf.mo
++installing da.gmo as /tmp/package-xfconf/usr/lib/locale/da/LC_MESSAGES/xfconf.mo
++installing de.gmo as /tmp/package-xfconf/usr/lib/locale/de/LC_MESSAGES/xfconf.mo
++installing el.gmo as /tmp/package-xfconf/usr/lib/locale/el/LC_MESSAGES/xfconf.mo
++installing en_AU.gmo as /tmp/package-xfconf/usr/lib/locale/en_AU/LC_MESSAGES/xfconf.mo
++installing en_CA.gmo as /tmp/package-xfconf/usr/lib/locale/en_CA/LC_MESSAGES/xfconf.mo
++installing en_GB.gmo as /tmp/package-xfconf/usr/lib/locale/en_GB/LC_MESSAGES/xfconf.mo
++installing es.gmo as /tmp/package-xfconf/usr/lib/locale/es/LC_MESSAGES/xfconf.mo
++installing eu.gmo as /tmp/package-xfconf/usr/lib/locale/eu/LC_MESSAGES/xfconf.mo
++installing fi.gmo as /tmp/package-xfconf/usr/lib/locale/fi/LC_MESSAGES/xfconf.mo
++installing fr.gmo as /tmp/package-xfconf/usr/lib/locale/fr/LC_MESSAGES/xfconf.mo
++installing gl.gmo as /tmp/package-xfconf/usr/lib/locale/gl/LC_MESSAGES/xfconf.mo
++installing he.gmo as /tmp/package-xfconf/usr/lib/locale/he/LC_MESSAGES/xfconf.mo
++installing hr.gmo as /tmp/package-xfconf/usr/lib/locale/hr/LC_MESSAGES/xfconf.mo
++installing hu.gmo as /tmp/package-xfconf/usr/lib/locale/hu/LC_MESSAGES/xfconf.mo
++installing hy_AM.gmo as /tmp/package-xfconf/usr/lib/locale/hy_AM/LC_MESSAGES/xfconf.mo
++installing hye.gmo as /tmp/package-xfconf/usr/lib/locale/hye/LC_MESSAGES/xfconf.mo
++installing id.gmo as /tmp/package-xfconf/usr/lib/locale/id/LC_MESSAGES/xfconf.mo
++installing is.gmo as /tmp/package-xfconf/usr/lib/locale/is/LC_MESSAGES/xfconf.mo
++installing it.gmo as /tmp/package-xfconf/usr/lib/locale/it/LC_MESSAGES/xfconf.mo
++installing ja.gmo as /tmp/package-xfconf/usr/lib/locale/ja/LC_MESSAGES/xfconf.mo
++installing kk.gmo as /tmp/package-xfconf/usr/lib/locale/kk/LC_MESSAGES/xfconf.mo
++installing ko.gmo as /tmp/package-xfconf/usr/lib/locale/ko/LC_MESSAGES/xfconf.mo
++installing lt.gmo as /tmp/package-xfconf/usr/lib/locale/lt/LC_MESSAGES/xfconf.mo
++installing lv.gmo as /tmp/package-xfconf/usr/lib/locale/lv/LC_MESSAGES/xfconf.mo
++installing ms.gmo as /tmp/package-xfconf/usr/lib/locale/ms/LC_MESSAGES/xfconf.mo
++installing nb.gmo as /tmp/package-xfconf/usr/lib/locale/nb/LC_MESSAGES/xfconf.mo
++installing nl.gmo as /tmp/package-xfconf/usr/lib/locale/nl/LC_MESSAGES/xfconf.mo
++installing nn.gmo as /tmp/package-xfconf/usr/lib/locale/nn/LC_MESSAGES/xfconf.mo
++installing oc.gmo as /tmp/package-xfconf/usr/lib/locale/oc/LC_MESSAGES/xfconf.mo
++installing pa.gmo as /tmp/package-xfconf/usr/lib/locale/pa/LC_MESSAGES/xfconf.mo
++installing pl.gmo as /tmp/package-xfconf/usr/lib/locale/pl/LC_MESSAGES/xfconf.mo
++installing pt.gmo as /tmp/package-xfconf/usr/lib/locale/pt/LC_MESSAGES/xfconf.mo
++installing pt_BR.gmo as /tmp/package-xfconf/usr/lib/locale/pt_BR/LC_MESSAGES/xfconf.mo
++installing ro.gmo as /tmp/package-xfconf/usr/lib/locale/ro/LC_MESSAGES/xfconf.mo
++installing ru.gmo as /tmp/package-xfconf/usr/lib/locale/ru/LC_MESSAGES/xfconf.mo
++installing si.gmo as /tmp/package-xfconf/usr/lib/locale/si/LC_MESSAGES/xfconf.mo
++installing sk.gmo as /tmp/package-xfconf/usr/lib/locale/sk/LC_MESSAGES/xfconf.mo
++installing sl.gmo as /tmp/package-xfconf/usr/lib/locale/sl/LC_MESSAGES/xfconf.mo
++installing sq.gmo as /tmp/package-xfconf/usr/lib/locale/sq/LC_MESSAGES/xfconf.mo
++installing sr.gmo as /tmp/package-xfconf/usr/lib/locale/sr/LC_MESSAGES/xfconf.mo
++installing sv.gmo as /tmp/package-xfconf/usr/lib/locale/sv/LC_MESSAGES/xfconf.mo
++installing te.gmo as /tmp/package-xfconf/usr/lib/locale/te/LC_MESSAGES/xfconf.mo
++installing th.gmo as /tmp/package-xfconf/usr/lib/locale/th/LC_MESSAGES/xfconf.mo
++installing tr.gmo as /tmp/package-xfconf/usr/lib/locale/tr/LC_MESSAGES/xfconf.mo
++installing ug.gmo as /tmp/package-xfconf/usr/lib/locale/ug/LC_MESSAGES/xfconf.mo
++installing uk.gmo as /tmp/package-xfconf/usr/lib/locale/uk/LC_MESSAGES/xfconf.mo
++installing ur.gmo as /tmp/package-xfconf/usr/lib/locale/ur/LC_MESSAGES/xfconf.mo
++installing ur_PK.gmo as /tmp/package-xfconf/usr/lib/locale/ur_PK/LC_MESSAGES/xfconf.mo
++installing zh_CN.gmo as /tmp/package-xfconf/usr/lib/locale/zh_CN/LC_MESSAGES/xfconf.mo
++installing zh_HK.gmo as /tmp/package-xfconf/usr/lib/locale/zh_HK/LC_MESSAGES/xfconf.mo
++installing zh_TW.gmo as /tmp/package-xfconf/usr/lib/locale/zh_TW/LC_MESSAGES/xfconf.mo
++make[1]: Leaving directory '/tmp/xfconf-4.16.0/po'
++Making install in docs
++make[1]: Entering directory '/tmp/xfconf-4.16.0/docs'
++Making install in reference
++make[2]: Entering directory '/tmp/xfconf-4.16.0/docs/reference'
++make[3]: Entering directory '/tmp/xfconf-4.16.0/docs/reference'
++make[3]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/ginstall -c -m 644 ./html/ch01.html
++ /usr/bin/ginstall -c -m 644 ./html/ch02.html
++ /usr/bin/ginstall -c -m 644 ./html/ch03.html
++ /usr/bin/ginstall -c -m 644 ./html/ch04.html
++ /usr/bin/ginstall -c -m 644 ./html/home.png
++ /usr/bin/ginstall -c -m 644 ./html/index.html
++ /usr/bin/ginstall -c -m 644 ./html/left-insensitive.png
++ /usr/bin/ginstall -c -m 644 ./html/left.png
++ /usr/bin/ginstall -c -m 644 ./html/right-insensitive.png
++ /usr/bin/ginstall -c -m 644 ./html/right.png
++ /usr/bin/ginstall -c -m 644 ./html/style.css
++ /usr/bin/ginstall -c -m 644 ./html/up-insensitive.png
++ /usr/bin/ginstall -c -m 644 ./html/up.png
++ /usr/bin/ginstall -c -m 644 ./html/xfconf-Error-Reporting.html
++ /usr/bin/ginstall -c -m 644 ./html/xfconf-Xfconf-Backend.html
++ /usr/bin/ginstall -c -m 644 ./html/xfconf-Xfconf-Channel.html
++ /usr/bin/ginstall -c -m 644 ./html/xfconf-Xfconf-GObject-Binding.html
++ /usr/bin/ginstall -c -m 644 ./html/xfconf-Xfconf-Library-Core.html
++ /usr/bin/ginstall -c -m 644 ./html/xfconf-Xfconf-Types.html
++ /usr/bin/ginstall -c -m 644 ./html/xfconf.devhelp2
++make[3]: Leaving directory '/tmp/xfconf-4.16.0/docs/reference'
++make[2]: Leaving directory '/tmp/xfconf-4.16.0/docs/reference'
++Making install in spec
++make[2]: Entering directory '/tmp/xfconf-4.16.0/docs/spec'
++make[3]: Entering directory '/tmp/xfconf-4.16.0/docs/spec'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/xfconf-4.16.0/docs/spec'
++make[2]: Leaving directory '/tmp/xfconf-4.16.0/docs/spec'
++make[2]: Entering directory '/tmp/xfconf-4.16.0/docs'
++make[3]: Entering directory '/tmp/xfconf-4.16.0/docs'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/xfconf-4.16.0/docs'
++make[2]: Leaving directory '/tmp/xfconf-4.16.0/docs'
++make[1]: Leaving directory '/tmp/xfconf-4.16.0/docs'
++Making install in tests
++make[1]: Entering directory '/tmp/xfconf-4.16.0/tests'
++Making install in set-properties
++make[2]: Entering directory '/tmp/xfconf-4.16.0/tests/set-properties'
++make[3]: Entering directory '/tmp/xfconf-4.16.0/tests/set-properties'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/xfconf-4.16.0/tests/set-properties'
++make[2]: Leaving directory '/tmp/xfconf-4.16.0/tests/set-properties'
++Making install in has-properties
++make[2]: Entering directory '/tmp/xfconf-4.16.0/tests/has-properties'
++make[3]: Entering directory '/tmp/xfconf-4.16.0/tests/has-properties'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/xfconf-4.16.0/tests/has-properties'
++make[2]: Leaving directory '/tmp/xfconf-4.16.0/tests/has-properties'
++Making install in get-properties
++make[2]: Entering directory '/tmp/xfconf-4.16.0/tests/get-properties'
++make[3]: Entering directory '/tmp/xfconf-4.16.0/tests/get-properties'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/xfconf-4.16.0/tests/get-properties'
++make[2]: Leaving directory '/tmp/xfconf-4.16.0/tests/get-properties'
++Making install in reset-properties
++make[2]: Entering directory '/tmp/xfconf-4.16.0/tests/reset-properties'
++make[3]: Entering directory '/tmp/xfconf-4.16.0/tests/reset-properties'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/xfconf-4.16.0/tests/reset-properties'
++make[2]: Leaving directory '/tmp/xfconf-4.16.0/tests/reset-properties'
++Making install in property-changed-signal
++make[2]: Entering directory '/tmp/xfconf-4.16.0/tests/property-changed-signal'
++make[3]: Entering directory '/tmp/xfconf-4.16.0/tests/property-changed-signal'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/xfconf-4.16.0/tests/property-changed-signal'
++make[2]: Leaving directory '/tmp/xfconf-4.16.0/tests/property-changed-signal'
++Making install in object-bindings
++make[2]: Entering directory '/tmp/xfconf-4.16.0/tests/object-bindings'
++make[3]: Entering directory '/tmp/xfconf-4.16.0/tests/object-bindings'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/xfconf-4.16.0/tests/object-bindings'
++make[2]: Leaving directory '/tmp/xfconf-4.16.0/tests/object-bindings'
++Making install in others
++make[2]: Entering directory '/tmp/xfconf-4.16.0/tests/others'
++make[3]: Entering directory '/tmp/xfconf-4.16.0/tests/others'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/xfconf-4.16.0/tests/others'
++make[2]: Leaving directory '/tmp/xfconf-4.16.0/tests/others'
++Making install in tests-end
++make[2]: Entering directory '/tmp/xfconf-4.16.0/tests/tests-end'
++make[3]: Entering directory '/tmp/xfconf-4.16.0/tests/tests-end'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/xfconf-4.16.0/tests/tests-end'
++make[2]: Leaving directory '/tmp/xfconf-4.16.0/tests/tests-end'
++make[2]: Entering directory '/tmp/xfconf-4.16.0/tests'
++make[3]: Entering directory '/tmp/xfconf-4.16.0/tests'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/xfconf-4.16.0/tests'
++make[2]: Leaving directory '/tmp/xfconf-4.16.0/tests'
++make[1]: Leaving directory '/tmp/xfconf-4.16.0/tests'
++Making install in completions
++make[1]: Entering directory '/tmp/xfconf-4.16.0/completions'
++make[2]: Entering directory '/tmp/xfconf-4.16.0/completions'
++make[2]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-xfconf/usr/share/bash-completion/completions'
++ /usr/bin/ginstall -c -m 644 xfconf-query '/tmp/package-xfconf/usr/share/bash-completion/completions'
++make[2]: Leaving directory '/tmp/xfconf-4.16.0/completions'
++make[1]: Leaving directory '/tmp/xfconf-4.16.0/completions'
++Making install in gsettings-backend
++make[1]: Entering directory '/tmp/xfconf-4.16.0/gsettings-backend'
++make[2]: Entering directory '/tmp/xfconf-4.16.0/gsettings-backend'
++make[2]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-xfconf/usr/lib/gio/modules'
++ /bin/sh ../libtool   --mode=install /usr/bin/ginstall -c   libxfconfgsettingsbackend.la '/tmp/package-xfconf/usr/lib/gio/modules'
++libtool: warning: relinking 'libxfconfgsettingsbackend.la'
++libtool: install: (cd /tmp/xfconf-4.16.0/gsettings-backend; /bin/sh "/tmp/xfconf-4.16.0/libtool"  --silent --tag CC --mode=relink gcc -I.. -I.. -pthread -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -pthread -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -O2 -fPIC -fvisibility=hidden -export-dynamic -avoid-version -module -export-symbols-regex "^[^_].*" -Wl,--as-needed -Wl,-O1 -o libxfconfgsettingsbackend.la -rpath /usr/lib/gio/modules libxfconfgsettingsbackend_la-xfconf-giomodule.lo libxfconfgsettingsbackend_la-xfconf-gsettings-backend.lo ../xfconf/libxfconf-0.la ../common/libxfconf-gvaluefuncs.la -inst-prefix-dir /tmp/package-xfconf)
++libtool: install: /usr/bin/ginstall -c .libs/libxfconfgsettingsbackend.soT /tmp/package-xfconf/usr/lib/gio/modules/libxfconfgsettingsbackend.so
++libtool: install: /usr/bin/ginstall -c .libs/libxfconfgsettingsbackend.lai /tmp/package-xfconf/usr/lib/gio/modules/libxfconfgsettingsbackend.la
++libtool: warning: remember to run 'libtool --finish /usr/lib/gio/modules'
++make[2]: Leaving directory '/tmp/xfconf-4.16.0/gsettings-backend'
++make[1]: Leaving directory '/tmp/xfconf-4.16.0/gsettings-backend'
++make[1]: Entering directory '/tmp/xfconf-4.16.0'
++make[2]: Entering directory '/tmp/xfconf-4.16.0'
++make[2]: Nothing to be done for 'install-exec-am'.
++make[2]: Nothing to be done for 'install-data-am'.
++make[2]: Leaving directory '/tmp/xfconf-4.16.0'
++make[1]: Leaving directory '/tmp/xfconf-4.16.0'
++find: ‘/tmp/package-xfconf/usr/share/icons’: No such file or directory
++cp: cannot stat 'BUGS': No such file or directory
++cp: cannot stat 'COMPOSITOR': No such file or directory
++cp: cannot stat 'FAQ': No such file or directory
++cp: cannot stat 'HACKING': No such file or directory
++cp: cannot stat 'INSTALL': No such file or directory
++cp: cannot stat 'NOTES': No such file or directory
++cp: cannot stat 'THANKS': No such file or directory
++cp: cannot stat 'example.gtkrc-2.0': No such file or directory
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++usr/doc/xfconf-4.16.0/html	/usr/share/gtk-doc/html/xfconf/
++usr/lib/libxfconf-0.so	libxfconf-0.so.3.0.0
++usr/lib/libxfconf-0.so.3	libxfconf-0.so.3.0.0
++
++Making symbolic link creation script:
++( cd usr/doc/xfconf-4.16.0 ; rm -rf html )
++( cd usr/doc/xfconf-4.16.0 ; ln -sf /usr/share/gtk-doc/html/xfconf/ html )
++( cd usr/lib ; rm -rf libxfconf-0.so )
++( cd usr/lib ; ln -sf libxfconf-0.so.3.0.0 libxfconf-0.so )
++( cd usr/lib ; rm -rf libxfconf-0.so.3 )
++( cd usr/lib ; ln -sf libxfconf-0.so.3.0.0 libxfconf-0.so.3 )
++
++It is recommended that you make these lines your new installation script.
++
++Would you like to make this stuff the install script for this package
++and remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './usr/doc/xfconf-4.16.0/html'
++removed './usr/lib/libxfconf-0.so'
++removed './usr/lib/libxfconf-0.so.3'
++
++Creating your new ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/xfconf-4.16.0-x86_64-1.txz
++
++./
++install/
++install/doinst.sh
++install/slack-desc
++usr/
++usr/bin/
++usr/bin/xfconf-query
++usr/doc/
++usr/doc/xfconf-4.16.0/
++usr/doc/xfconf-4.16.0/AUTHORS
++usr/doc/xfconf-4.16.0/COPYING
++usr/doc/xfconf-4.16.0/ChangeLog
++usr/doc/xfconf-4.16.0/NEWS
++usr/doc/xfconf-4.16.0/README.md
++usr/doc/xfconf-4.16.0/TODO
++usr/include/
++usr/include/xfce4/
++usr/include/xfce4/xfconf-0/
++usr/include/xfce4/xfconf-0/xfconf/
++usr/include/xfce4/xfconf-0/xfconf/xfconf-binding.h
++usr/include/xfce4/xfconf-0/xfconf/xfconf-channel.h
++usr/include/xfce4/xfconf-0/xfconf/xfconf-errors.h
++usr/include/xfce4/xfconf-0/xfconf/xfconf-types.h
++usr/include/xfce4/xfconf-0/xfconf/xfconf.h
++usr/lib/
++usr/lib/gio/
++usr/lib/gio/modules/
++usr/lib/gio/modules/libxfconfgsettingsbackend.la
++usr/lib/gio/modules/libxfconfgsettingsbackend.so
++usr/lib/girepository-1.0/
++usr/lib/girepository-1.0/Xfconf-0.typelib
++usr/lib/libxfconf-0.so.3.0.0
++usr/lib/locale/
++usr/lib/locale/ar/
++usr/lib/locale/ar/LC_MESSAGES/
++usr/lib/locale/ar/LC_MESSAGES/xfconf.mo
++usr/lib/locale/ast/
++usr/lib/locale/ast/LC_MESSAGES/
++usr/lib/locale/ast/LC_MESSAGES/xfconf.mo
++usr/lib/locale/be/
++usr/lib/locale/be/LC_MESSAGES/
++usr/lib/locale/be/LC_MESSAGES/xfconf.mo
++usr/lib/locale/bg/
++usr/lib/locale/bg/LC_MESSAGES/
++usr/lib/locale/bg/LC_MESSAGES/xfconf.mo
++usr/lib/locale/bn/
++usr/lib/locale/bn/LC_MESSAGES/
++usr/lib/locale/bn/LC_MESSAGES/xfconf.mo
++usr/lib/locale/ca/
++usr/lib/locale/ca/LC_MESSAGES/
++usr/lib/locale/ca/LC_MESSAGES/xfconf.mo
++usr/lib/locale/cs/
++usr/lib/locale/cs/LC_MESSAGES/
++usr/lib/locale/cs/LC_MESSAGES/xfconf.mo
++usr/lib/locale/da/
++usr/lib/locale/da/LC_MESSAGES/
++usr/lib/locale/da/LC_MESSAGES/xfconf.mo
++usr/lib/locale/de/
++usr/lib/locale/de/LC_MESSAGES/
++usr/lib/locale/de/LC_MESSAGES/xfconf.mo
++usr/lib/locale/el/
++usr/lib/locale/el/LC_MESSAGES/
++usr/lib/locale/el/LC_MESSAGES/xfconf.mo
++usr/lib/locale/en_AU/
++usr/lib/locale/en_AU/LC_MESSAGES/
++usr/lib/locale/en_AU/LC_MESSAGES/xfconf.mo
++usr/lib/locale/en_CA/
++usr/lib/locale/en_CA/LC_MESSAGES/
++usr/lib/locale/en_CA/LC_MESSAGES/xfconf.mo
++usr/lib/locale/en_GB/
++usr/lib/locale/en_GB/LC_MESSAGES/
++usr/lib/locale/en_GB/LC_MESSAGES/xfconf.mo
++usr/lib/locale/es/
++usr/lib/locale/es/LC_MESSAGES/
++usr/lib/locale/es/LC_MESSAGES/xfconf.mo
++usr/lib/locale/eu/
++usr/lib/locale/eu/LC_MESSAGES/
++usr/lib/locale/eu/LC_MESSAGES/xfconf.mo
++usr/lib/locale/fi/
++usr/lib/locale/fi/LC_MESSAGES/
++usr/lib/locale/fi/LC_MESSAGES/xfconf.mo
++usr/lib/locale/fr/
++usr/lib/locale/fr/LC_MESSAGES/
++usr/lib/locale/fr/LC_MESSAGES/xfconf.mo
++usr/lib/locale/gl/
++usr/lib/locale/gl/LC_MESSAGES/
++usr/lib/locale/gl/LC_MESSAGES/xfconf.mo
++usr/lib/locale/he/
++usr/lib/locale/he/LC_MESSAGES/
++usr/lib/locale/he/LC_MESSAGES/xfconf.mo
++usr/lib/locale/hr/
++usr/lib/locale/hr/LC_MESSAGES/
++usr/lib/locale/hr/LC_MESSAGES/xfconf.mo
++usr/lib/locale/hu/
++usr/lib/locale/hu/LC_MESSAGES/
++usr/lib/locale/hu/LC_MESSAGES/xfconf.mo
++usr/lib/locale/hy_AM/
++usr/lib/locale/hy_AM/LC_MESSAGES/
++usr/lib/locale/hy_AM/LC_MESSAGES/xfconf.mo
++usr/lib/locale/hye/
++usr/lib/locale/hye/LC_MESSAGES/
++usr/lib/locale/hye/LC_MESSAGES/xfconf.mo
++usr/lib/locale/id/
++usr/lib/locale/id/LC_MESSAGES/
++usr/lib/locale/id/LC_MESSAGES/xfconf.mo
++usr/lib/locale/is/
++usr/lib/locale/is/LC_MESSAGES/
++usr/lib/locale/is/LC_MESSAGES/xfconf.mo
++usr/lib/locale/it/
++usr/lib/locale/it/LC_MESSAGES/
++usr/lib/locale/it/LC_MESSAGES/xfconf.mo
++usr/lib/locale/ja/
++usr/lib/locale/ja/LC_MESSAGES/
++usr/lib/locale/ja/LC_MESSAGES/xfconf.mo
++usr/lib/locale/kk/
++usr/lib/locale/kk/LC_MESSAGES/
++usr/lib/locale/kk/LC_MESSAGES/xfconf.mo
++usr/lib/locale/ko/
++usr/lib/locale/ko/LC_MESSAGES/
++usr/lib/locale/ko/LC_MESSAGES/xfconf.mo
++usr/lib/locale/lt/
++usr/lib/locale/lt/LC_MESSAGES/
++usr/lib/locale/lt/LC_MESSAGES/xfconf.mo
++usr/lib/locale/lv/
++usr/lib/locale/lv/LC_MESSAGES/
++usr/lib/locale/lv/LC_MESSAGES/xfconf.mo
++usr/lib/locale/ms/
++usr/lib/locale/ms/LC_MESSAGES/
++usr/lib/locale/ms/LC_MESSAGES/xfconf.mo
++usr/lib/locale/nb/
++usr/lib/locale/nb/LC_MESSAGES/
++usr/lib/locale/nb/LC_MESSAGES/xfconf.mo
++usr/lib/locale/nl/
++usr/lib/locale/nl/LC_MESSAGES/
++usr/lib/locale/nl/LC_MESSAGES/xfconf.mo
++usr/lib/locale/nn/
++usr/lib/locale/nn/LC_MESSAGES/
++usr/lib/locale/nn/LC_MESSAGES/xfconf.mo
++usr/lib/locale/oc/
++usr/lib/locale/oc/LC_MESSAGES/
++usr/lib/locale/oc/LC_MESSAGES/xfconf.mo
++usr/lib/locale/pa/
++usr/lib/locale/pa/LC_MESSAGES/
++usr/lib/locale/pa/LC_MESSAGES/xfconf.mo
++usr/lib/locale/pl/
++usr/lib/locale/pl/LC_MESSAGES/
++usr/lib/locale/pl/LC_MESSAGES/xfconf.mo
++usr/lib/locale/pt/
++usr/lib/locale/pt/LC_MESSAGES/
++usr/lib/locale/pt/LC_MESSAGES/xfconf.mo
++usr/lib/locale/pt_BR/
++usr/lib/locale/pt_BR/LC_MESSAGES/
++usr/lib/locale/pt_BR/LC_MESSAGES/xfconf.mo
++usr/lib/locale/ro/
++usr/lib/locale/ro/LC_MESSAGES/
++usr/lib/locale/ro/LC_MESSAGES/xfconf.mo
++usr/lib/locale/ru/
++usr/lib/locale/ru/LC_MESSAGES/
++usr/lib/locale/ru/LC_MESSAGES/xfconf.mo
++usr/lib/locale/si/
++usr/lib/locale/si/LC_MESSAGES/
++usr/lib/locale/si/LC_MESSAGES/xfconf.mo
++usr/lib/locale/sk/
++usr/lib/locale/sk/LC_MESSAGES/
++usr/lib/locale/sk/LC_MESSAGES/xfconf.mo
++usr/lib/locale/sl/
++usr/lib/locale/sl/LC_MESSAGES/
++usr/lib/locale/sl/LC_MESSAGES/xfconf.mo
++usr/lib/locale/sq/
++usr/lib/locale/sq/LC_MESSAGES/
++usr/lib/locale/sq/LC_MESSAGES/xfconf.mo
++usr/lib/locale/sr/
++usr/lib/locale/sr/LC_MESSAGES/
++usr/lib/locale/sr/LC_MESSAGES/xfconf.mo
++usr/lib/locale/sv/
++usr/lib/locale/sv/LC_MESSAGES/
++usr/lib/locale/sv/LC_MESSAGES/xfconf.mo
++usr/lib/locale/te/
++usr/lib/locale/te/LC_MESSAGES/
++usr/lib/locale/te/LC_MESSAGES/xfconf.mo
++usr/lib/locale/th/
++usr/lib/locale/th/LC_MESSAGES/
++usr/lib/locale/th/LC_MESSAGES/xfconf.mo
++usr/lib/locale/tr/
++usr/lib/locale/tr/LC_MESSAGES/
++usr/lib/locale/tr/LC_MESSAGES/xfconf.mo
++usr/lib/locale/ug/
++usr/lib/locale/ug/LC_MESSAGES/
++usr/lib/locale/ug/LC_MESSAGES/xfconf.mo
++usr/lib/locale/uk/
++usr/lib/locale/uk/LC_MESSAGES/
++usr/lib/locale/uk/LC_MESSAGES/xfconf.mo
++usr/lib/locale/ur/
++usr/lib/locale/ur/LC_MESSAGES/
++usr/lib/locale/ur/LC_MESSAGES/xfconf.mo
++usr/lib/locale/ur_PK/
++usr/lib/locale/ur_PK/LC_MESSAGES/
++usr/lib/locale/ur_PK/LC_MESSAGES/xfconf.mo
++usr/lib/locale/zh_CN/
++usr/lib/locale/zh_CN/LC_MESSAGES/
++usr/lib/locale/zh_CN/LC_MESSAGES/xfconf.mo
++usr/lib/locale/zh_HK/
++usr/lib/locale/zh_HK/LC_MESSAGES/
++usr/lib/locale/zh_HK/LC_MESSAGES/xfconf.mo
++usr/lib/locale/zh_TW/
++usr/lib/locale/zh_TW/LC_MESSAGES/
++usr/lib/locale/zh_TW/LC_MESSAGES/xfconf.mo
++usr/lib/pkgconfig/
++usr/lib/pkgconfig/libxfconf-0.pc
++usr/lib/xfce4/
++usr/lib/xfce4/xfconf/
++usr/lib/xfce4/xfconf/xfconfd
++usr/share/
++usr/share/bash-completion/
++usr/share/bash-completion/completions/
++usr/share/bash-completion/completions/xfconf-query
++usr/share/dbus-1/
++usr/share/dbus-1/services/
++usr/share/dbus-1/services/org.xfce.Xfconf.service
++usr/share/gir-1.0/
++usr/share/gir-1.0/Xfconf-0.gir
++usr/share/gtk-doc/
++usr/share/gtk-doc/html/
++usr/share/gtk-doc/html/xfconf/
++usr/share/gtk-doc/html/xfconf/ch01.html
++usr/share/gtk-doc/html/xfconf/ch02.html
++usr/share/gtk-doc/html/xfconf/ch03.html
++usr/share/gtk-doc/html/xfconf/ch04.html
++usr/share/gtk-doc/html/xfconf/home.png
++usr/share/gtk-doc/html/xfconf/index.html
++usr/share/gtk-doc/html/xfconf/left-insensitive.png
++usr/share/gtk-doc/html/xfconf/left.png
++usr/share/gtk-doc/html/xfconf/right-insensitive.png
++usr/share/gtk-doc/html/xfconf/right.png
++usr/share/gtk-doc/html/xfconf/style.css
++usr/share/gtk-doc/html/xfconf/up-insensitive.png
++usr/share/gtk-doc/html/xfconf/up.png
++usr/share/gtk-doc/html/xfconf/xfconf-Error-Reporting.html
++usr/share/gtk-doc/html/xfconf/xfconf-Xfconf-Backend.html
++usr/share/gtk-doc/html/xfconf/xfconf-Xfconf-Channel.html
++usr/share/gtk-doc/html/xfconf/xfconf-Xfconf-GObject-Binding.html
++usr/share/gtk-doc/html/xfconf/xfconf-Xfconf-Library-Core.html
++usr/share/gtk-doc/html/xfconf/xfconf-Xfconf-Types.html
++usr/share/gtk-doc/html/xfconf/xfconf.devhelp2
++usr/share/vala/
++usr/share/vala/vapi/
++usr/share/vala/vapi/libxfconf-0.deps
++usr/share/vala/vapi/libxfconf-0.vapi
++
++Slackware package /tmp/xfconf-4.16.0-x86_64-1.txz created.
++

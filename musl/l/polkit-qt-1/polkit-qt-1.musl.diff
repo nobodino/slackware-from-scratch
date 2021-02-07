@@ -1,0 +1,634 @@
+diff -ruBN /tmp/polkit-qt-1/polkit-qt-1.SlackBuild /source/l/polkit-qt-1/polkit-qt-1.SlackBuild
+--- /tmp/polkit-qt-1/polkit-qt-1.SlackBuild	2020-11-30 20:49:40.000000000 +0000
++++ /source/l/polkit-qt-1/polkit-qt-1.SlackBuild	2021-01-22 20:51:25.000000000 +0000
+@@ -58,7 +58,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "armv7hl" ]; then
+   SLKCFLAGS="-O3 -march=armv7-a -mfpu=vfpv3-d16"
+   LIBDIRSUFFIX=""
+@@ -94,6 +94,7 @@
+     -DCMAKE_INSTALL_PREFIX=/usr \
+     -DMAN_INSTALL_DIR=/usr/man \
+     -DLIB_SUFFIX=${LIBDIRSUFFIX} \
++-DCMAKE_INSTALL_LIBDIR=lib$LIBDIRSUFFIX \
+     .. || exit 1
+   make $NUMJOBS || make || exit 1
+   make install DESTDIR=$PKG || exit 1
+diff -ruBN /tmp/polkit-qt-1/polkit-qt-1.SlackBuild.log /source/l/polkit-qt-1/polkit-qt-1.SlackBuild.log
+--- /tmp/polkit-qt-1/polkit-qt-1.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/l/polkit-qt-1/polkit-qt-1.SlackBuild.log	2021-01-22 20:52:02.000000000 +0000
+@@ -0,0 +1,610 @@
++polkit-qt-1-0.113.0/
++polkit-qt-1-0.113.0/.arcconfig
++polkit-qt-1-0.113.0/.gitignore
++polkit-qt-1-0.113.0/AUTHORS
++polkit-qt-1-0.113.0/CMakeLists.txt
++polkit-qt-1-0.113.0/COPYING
++polkit-qt-1-0.113.0/INSTALL
++polkit-qt-1-0.113.0/Mainpage.dox
++polkit-qt-1-0.113.0/PolkitQt-1Config.cmake.in
++polkit-qt-1-0.113.0/README
++polkit-qt-1-0.113.0/README.porting
++polkit-qt-1-0.113.0/TODO
++polkit-qt-1-0.113.0/agent/
++polkit-qt-1-0.113.0/agent/CMakeLists.txt
++polkit-qt-1-0.113.0/agent/listeneradapter.cpp
++polkit-qt-1-0.113.0/agent/listeneradapter_p.h
++polkit-qt-1-0.113.0/agent/polkitqt1-agent-listener.cpp
++polkit-qt-1-0.113.0/agent/polkitqt1-agent-listener.h
++polkit-qt-1-0.113.0/agent/polkitqt1-agent-session.cpp
++polkit-qt-1-0.113.0/agent/polkitqt1-agent-session.h
++polkit-qt-1-0.113.0/agent/polkitqtlistener.cpp
++polkit-qt-1-0.113.0/agent/polkitqtlistener_p.h
++polkit-qt-1-0.113.0/cmake/
++polkit-qt-1-0.113.0/cmake/CMakeLists.txt
++polkit-qt-1-0.113.0/cmake/modules/
++polkit-qt-1-0.113.0/cmake/modules/BasicFindPackageVersion.cmake.in
++polkit-qt-1-0.113.0/cmake/modules/CMakeLists.txt
++polkit-qt-1-0.113.0/cmake/modules/FindGIO.cmake
++polkit-qt-1-0.113.0/cmake/modules/FindGLIB2.cmake
++polkit-qt-1-0.113.0/cmake/modules/FindGObject.cmake
++polkit-qt-1-0.113.0/cmake/modules/FindPolkit.cmake
++polkit-qt-1-0.113.0/cmake/modules/FindPolkitQt-1.cmake
++polkit-qt-1-0.113.0/cmake/modules/InstallSettings.cmake
++polkit-qt-1-0.113.0/cmake/modules/MacroPushRequiredVars.cmake
++polkit-qt-1-0.113.0/cmake/modules/MacroWriteBasicCMakeVersionFile.cmake
++polkit-qt-1-0.113.0/cmake/modules/PolkitQt-1Dist.cmake
++polkit-qt-1-0.113.0/core/
++polkit-qt-1-0.113.0/core/CMakeLists.txt
++polkit-qt-1-0.113.0/core/polkitqt1-actiondescription.cpp
++polkit-qt-1-0.113.0/core/polkitqt1-actiondescription.h
++polkit-qt-1-0.113.0/core/polkitqt1-authority.cpp
++polkit-qt-1-0.113.0/core/polkitqt1-authority.h
++polkit-qt-1-0.113.0/core/polkitqt1-details.cpp
++polkit-qt-1-0.113.0/core/polkitqt1-details.h
++polkit-qt-1-0.113.0/core/polkitqt1-identity.cpp
++polkit-qt-1-0.113.0/core/polkitqt1-identity.h
++polkit-qt-1-0.113.0/core/polkitqt1-subject.cpp
++polkit-qt-1-0.113.0/core/polkitqt1-subject.h
++polkit-qt-1-0.113.0/core/polkitqt1-temporaryauthorization.cpp
++polkit-qt-1-0.113.0/core/polkitqt1-temporaryauthorization.h
++polkit-qt-1-0.113.0/examples/
++polkit-qt-1-0.113.0/examples/CMakeLists.txt
++polkit-qt-1-0.113.0/examples/COPYING
++polkit-qt-1-0.113.0/examples/PkExample.cpp
++polkit-qt-1-0.113.0/examples/PkExample.h
++polkit-qt-1-0.113.0/examples/PkExample.ui
++polkit-qt-1-0.113.0/examples/PkExampleHelper.cpp
++polkit-qt-1-0.113.0/examples/PkExampleHelper.h
++polkit-qt-1-0.113.0/examples/agent/
++polkit-qt-1-0.113.0/examples/agent/CMakeLists.txt
++polkit-qt-1-0.113.0/examples/agent/klistener.cpp
++polkit-qt-1-0.113.0/examples/agent/klistener.h
++polkit-qt-1-0.113.0/examples/agent/main.cpp
++polkit-qt-1-0.113.0/examples/agent/pkagentexample.cpp
++polkit-qt-1-0.113.0/examples/agent/pkagentexample.h
++polkit-qt-1-0.113.0/examples/icons/
++polkit-qt-1-0.113.0/examples/icons/action-locked-default.png
++polkit-qt-1-0.113.0/examples/icons/action-locked.png
++polkit-qt-1-0.113.0/examples/icons/action-unlocked.png
++polkit-qt-1-0.113.0/examples/icons/custom-no.png
++polkit-qt-1-0.113.0/examples/icons/custom-yes.png
++polkit-qt-1-0.113.0/examples/icons/icons.qrc
++polkit-qt-1-0.113.0/examples/main.cpp
++polkit-qt-1-0.113.0/examples/mainHelper.cpp
++polkit-qt-1-0.113.0/examples/org.qt.policykit.examples.conf
++polkit-qt-1-0.113.0/examples/org.qt.policykit.examples.policy
++polkit-qt-1-0.113.0/examples/org.qt.policykit.examples.policy.in
++polkit-qt-1-0.113.0/examples/org.qt.policykit.examples.service.in
++polkit-qt-1-0.113.0/examples/org.qt.policykit.examples.xml
++polkit-qt-1-0.113.0/gui/
++polkit-qt-1-0.113.0/gui/CMakeLists.txt
++polkit-qt-1-0.113.0/gui/polkitqt1-gui-action.cpp
++polkit-qt-1-0.113.0/gui/polkitqt1-gui-action.h
++polkit-qt-1-0.113.0/gui/polkitqt1-gui-actionbutton.cpp
++polkit-qt-1-0.113.0/gui/polkitqt1-gui-actionbutton.h
++polkit-qt-1-0.113.0/gui/polkitqt1-gui-actionbutton_p.h
++polkit-qt-1-0.113.0/gui/polkitqt1-gui-actionbuttons.cpp
++polkit-qt-1-0.113.0/gui/polkitqt1-gui-actionbuttons.h
++polkit-qt-1-0.113.0/gui/polkitqt1-gui-actionbuttons_p.h
++polkit-qt-1-0.113.0/includes/
++polkit-qt-1-0.113.0/includes/PolkitQt1/
++polkit-qt-1-0.113.0/includes/PolkitQt1/ActionDescription
++polkit-qt-1-0.113.0/includes/PolkitQt1/Agent/
++polkit-qt-1-0.113.0/includes/PolkitQt1/Agent/Listener
++polkit-qt-1-0.113.0/includes/PolkitQt1/Agent/Session
++polkit-qt-1-0.113.0/includes/PolkitQt1/Authority
++polkit-qt-1-0.113.0/includes/PolkitQt1/Details
++polkit-qt-1-0.113.0/includes/PolkitQt1/Gui/
++polkit-qt-1-0.113.0/includes/PolkitQt1/Gui/Action
++polkit-qt-1-0.113.0/includes/PolkitQt1/Gui/ActionButton
++polkit-qt-1-0.113.0/includes/PolkitQt1/Gui/ActionButtons
++polkit-qt-1-0.113.0/includes/PolkitQt1/Identity
++polkit-qt-1-0.113.0/includes/PolkitQt1/Subject
++polkit-qt-1-0.113.0/includes/PolkitQt1/TemporaryAuthorization
++polkit-qt-1-0.113.0/polkit-qt-1.pc.cmake
++polkit-qt-1-0.113.0/polkit-qt-agent-1.pc.cmake
++polkit-qt-1-0.113.0/polkit-qt-core-1.pc.cmake
++polkit-qt-1-0.113.0/polkit-qt-gui-1.pc.cmake
++polkit-qt-1-0.113.0/polkit-qt5-1.pc.cmake
++polkit-qt-1-0.113.0/polkit-qt5-agent-1.pc.cmake
++polkit-qt-1-0.113.0/polkit-qt5-core-1.pc.cmake
++polkit-qt-1-0.113.0/polkit-qt5-gui-1.pc.cmake
++polkit-qt-1-0.113.0/polkitqt1-config.h.cmake
++polkit-qt-1-0.113.0/polkitqt1-export.h
++polkit-qt-1-0.113.0/polkitqt1-version.h.cmake
++polkit-qt-1-0.113.0/test/
++polkit-qt-1-0.113.0/test/CMakeLists.txt
++polkit-qt-1-0.113.0/test/test.cpp
++polkit-qt-1-0.113.0/test/test.h
++CMake Deprecation Warning at CMakeLists.txt:1 (cmake_minimum_required):
++  Compatibility with CMake < 2.8.12 will be removed from a future version of
++  CMake.
++
++  Update the VERSION argument <min> value or use a ...<max> suffix to tell
++  CMake that the project does not need compatibility with older versions.
++
++
++-- The C compiler identification is GNU 10.2.0
++-- The CXX compiler identification is GNU 10.2.0
++-- Detecting C compiler ABI info
++-- Detecting C compiler ABI info - done
++-- Check for working C compiler: /usr/bin/cc - skipped
++-- Detecting C compile features
++-- Detecting C compile features - done
++-- Detecting CXX compiler ABI info
++-- Detecting CXX compiler ABI info - done
++-- Check for working CXX compiler: /usr/bin/c++ - skipped
++-- Detecting CXX compile features
++-- Detecting CXX compile features - done
++-- Found PkgConfig: /usr/bin/pkg-config (found version "0.29.2") 
++-- Checking for module 'polkit-gobject-1'
++--   Found polkit-gobject-1, version 0.118
++-- Checking for module 'polkit-agent-1'
++--   Found polkit-agent-1, version 0.118
++-- Checking for module 'glib-2.0'
++--   Found glib-2.0, version 2.66.4
++-- Found GLIB2: /usr/lib/libglib-2.0.so  
++-- Found Polkit: /usr/lib/libpolkit-gobject-1.so  
++-- Checking for module 'gobject-2.0'
++--   Found gobject-2.0, version 2.66.4
++CMake Warning (dev) at /usr/share/cmake-3.19/Modules/FindPackageHandleStandardArgs.cmake:426 (message):
++  The package name passed to `find_package_handle_standard_args` (GOBJECT)
++  does not match the name of the calling package (GObject).  This can lead to
++  problems in calling code that expects `find_package` result variables
++  (e.g., `_FOUND`) to follow a certain pattern.
++Call Stack (most recent call first):
++  cmake/modules/FindGObject.cmake:50 (FIND_PACKAGE_HANDLE_STANDARD_ARGS)
++  CMakeLists.txt:38 (find_package)
++This warning is for project developers.  Use -Wno-dev to suppress it.
++
++-- Found GOBJECT: /usr/lib/libgobject-2.0.so;/usr/lib/libgmodule-2.0.so;/usr/lib/libgthread-2.0.so;/usr/lib/libglib-2.0.so  
++-- WARNING: you are using the obsolete 'PKGCONFIG' macro, use FindPkgConfig
++-- gio include dir: /usr/include
++-- found gio main include dir: /usr/include/glib-2.0
++-- Found GIO: /usr/lib/libgio-2.0.so  
++-- Looking for polkit_agent_listener_register
++-- Looking for polkit_agent_listener_register - found
++-- Looking for polkit_authority_get_sync
++-- Looking for polkit_authority_get_sync - found
++-- Looking for polkit_system_bus_name_get_user_sync
++-- Looking for polkit_system_bus_name_get_user_sync - found
++-- Configuring done
++-- Generating done
++CMake Warning:
++  Manually-specified variables were not used by the project:
++
++    LIB_SUFFIX
++    MAN_INSTALL_DIR
++
++
++-- Build files have been written to: /tmp/polkit-qt-1-0.113.0/cmake-build
++Scanning dependencies of target polkit-qt5-core-1_autogen
++[  4%] Automatic MOC for target polkit-qt5-core-1
++[  4%] Built target polkit-qt5-core-1_autogen
++Scanning dependencies of target polkit-qt5-core-1
++[  9%] Building CXX object core/CMakeFiles/polkit-qt5-core-1.dir/polkit-qt5-core-1_autogen/mocs_compilation.cpp.o
++[ 13%] Building CXX object core/CMakeFiles/polkit-qt5-core-1.dir/polkitqt1-authority.cpp.o
++[ 18%] Building CXX object core/CMakeFiles/polkit-qt5-core-1.dir/polkitqt1-identity.cpp.o
++[ 22%] Building CXX object core/CMakeFiles/polkit-qt5-core-1.dir/polkitqt1-subject.cpp.o
++/tmp/polkit-qt-1-0.113.0/core/polkitqt1-subject.cpp: In constructor ‘PolkitQt1::Subject::Subject()’:
++/tmp/polkit-qt-1-0.113.0/core/polkitqt1-subject.cpp:55:17: warning: ‘void g_type_init()’ is deprecated [-Wdeprecated-declarations]
++   55 |     g_type_init();
++      |                 ^
++In file included from /usr/include/glib-2.0/gobject/gobject.h:24,
++                 from /usr/include/glib-2.0/gobject/gbinding.h:29,
++                 from /usr/include/glib-2.0/glib-object.h:22,
++                 from /usr/include/polkit-1/polkit/polkittypes.h:25,
++                 from /usr/include/polkit-1/polkit/polkit.h:27,
++                 from /tmp/polkit-qt-1-0.113.0/core/polkitqt1-subject.cpp:26:
++/usr/include/glib-2.0/gobject/gtype.h:691:23: note: declared here
++  691 | void                  g_type_init                    (void);
++      |                       ^~~~~~~~~~~
++/tmp/polkit-qt-1-0.113.0/core/polkitqt1-subject.cpp: In constructor ‘PolkitQt1::Subject::Subject(PolkitSubject*)’:
++/tmp/polkit-qt-1-0.113.0/core/polkitqt1-subject.cpp:61:17: warning: ‘void g_type_init()’ is deprecated [-Wdeprecated-declarations]
++   61 |     g_type_init();
++      |                 ^
++In file included from /usr/include/glib-2.0/gobject/gobject.h:24,
++                 from /usr/include/glib-2.0/gobject/gbinding.h:29,
++                 from /usr/include/glib-2.0/glib-object.h:22,
++                 from /usr/include/polkit-1/polkit/polkittypes.h:25,
++                 from /usr/include/polkit-1/polkit/polkit.h:27,
++                 from /tmp/polkit-qt-1-0.113.0/core/polkitqt1-subject.cpp:26:
++/usr/include/glib-2.0/gobject/gtype.h:691:23: note: declared here
++  691 | void                  g_type_init                    (void);
++      |                       ^~~~~~~~~~~
++/tmp/polkit-qt-1-0.113.0/core/polkitqt1-subject.cpp: In static member function ‘static PolkitQt1::Subject PolkitQt1::Subject::fromString(const QString&)’:
++/tmp/polkit-qt-1-0.113.0/core/polkitqt1-subject.cpp:112:17: warning: ‘void g_type_init()’ is deprecated [-Wdeprecated-declarations]
++  112 |     g_type_init();
++      |                 ^
++In file included from /usr/include/glib-2.0/gobject/gobject.h:24,
++                 from /usr/include/glib-2.0/gobject/gbinding.h:29,
++                 from /usr/include/glib-2.0/glib-object.h:22,
++                 from /usr/include/polkit-1/polkit/polkittypes.h:25,
++                 from /usr/include/polkit-1/polkit/polkit.h:27,
++                 from /tmp/polkit-qt-1-0.113.0/core/polkitqt1-subject.cpp:26:
++/usr/include/glib-2.0/gobject/gtype.h:691:23: note: declared here
++  691 | void                  g_type_init                    (void);
++      |                       ^~~~~~~~~~~
++/tmp/polkit-qt-1-0.113.0/core/polkitqt1-authority.cpp: In member function ‘void PolkitQt1::Authority::Private::init()’:
++/tmp/polkit-qt-1-0.113.0/core/polkitqt1-authority.cpp:188:17: warning: ‘void g_type_init()’ is deprecated [-Wdeprecated-declarations]
++  188 |     g_type_init();
++      |                 ^
++In file included from /usr/include/glib-2.0/gobject/gobject.h:24,
++                 from /usr/include/glib-2.0/gobject/gbinding.h:29,
++                 from /usr/include/glib-2.0/glib-object.h:22,
++                 from /usr/include/polkit-1/polkit/polkittypes.h:25,
++                 from /usr/include/polkit-1/polkit/polkit.h:27,
++                 from /tmp/polkit-qt-1-0.113.0/core/polkitqt1-authority.cpp:30:
++/usr/include/glib-2.0/gobject/gtype.h:691:23: note: declared here
++  691 | void                  g_type_init                    (void);
++      |                       ^~~~~~~~~~~
++/tmp/polkit-qt-1-0.113.0/core/polkitqt1-identity.cpp: In constructor ‘PolkitQt1::Identity::Identity()’:
++/tmp/polkit-qt-1-0.113.0/core/polkitqt1-identity.cpp:55:17: warning: ‘void g_type_init()’ is deprecated [-Wdeprecated-declarations]
++   55 |     g_type_init();
++      |                 ^
++In file included from /usr/include/glib-2.0/gobject/gobject.h:24,
++                 from /usr/include/glib-2.0/gobject/gbinding.h:29,
++                 from /usr/include/glib-2.0/glib-object.h:22,
++                 from /usr/include/polkit-1/polkit/polkittypes.h:25,
++                 from /usr/include/polkit-1/polkit/polkit.h:27,
++                 from /tmp/polkit-qt-1-0.113.0/core/polkitqt1-identity.cpp:23:
++/usr/include/glib-2.0/gobject/gtype.h:691:23: note: declared here
++  691 | void                  g_type_init                    (void);
++      |                       ^~~~~~~~~~~
++/tmp/polkit-qt-1-0.113.0/core/polkitqt1-identity.cpp: In constructor ‘PolkitQt1::Identity::Identity(PolkitIdentity*)’:
++/tmp/polkit-qt-1-0.113.0/core/polkitqt1-identity.cpp:61:17: warning: ‘void g_type_init()’ is deprecated [-Wdeprecated-declarations]
++   61 |     g_type_init();
++      |                 ^
++In file included from /usr/include/glib-2.0/gobject/gobject.h:24,
++                 from /usr/include/glib-2.0/gobject/gbinding.h:29,
++                 from /usr/include/glib-2.0/glib-object.h:22,
++                 from /usr/include/polkit-1/polkit/polkittypes.h:25,
++                 from /usr/include/polkit-1/polkit/polkit.h:27,
++                 from /tmp/polkit-qt-1-0.113.0/core/polkitqt1-identity.cpp:23:
++/usr/include/glib-2.0/gobject/gtype.h:691:23: note: declared here
++  691 | void                  g_type_init                    (void);
++      |                       ^~~~~~~~~~~
++[ 27%] Building CXX object core/CMakeFiles/polkit-qt5-core-1.dir/polkitqt1-temporaryauthorization.cpp.o
++[ 31%] Building CXX object core/CMakeFiles/polkit-qt5-core-1.dir/polkitqt1-details.cpp.o
++[ 36%] Building CXX object core/CMakeFiles/polkit-qt5-core-1.dir/polkitqt1-actiondescription.cpp.o
++/tmp/polkit-qt-1-0.113.0/core/polkitqt1-details.cpp: In constructor ‘PolkitQt1::Details::Details()’:
++/tmp/polkit-qt-1-0.113.0/core/polkitqt1-details.cpp:55:17: warning: ‘void g_type_init()’ is deprecated [-Wdeprecated-declarations]
++   55 |     g_type_init();
++      |                 ^
++In file included from /usr/include/glib-2.0/gobject/gobject.h:24,
++                 from /usr/include/glib-2.0/gobject/gbinding.h:29,
++                 from /usr/include/glib-2.0/glib-object.h:22,
++                 from /usr/include/polkit-1/polkit/polkittypes.h:25,
++                 from /usr/include/polkit-1/polkit/polkit.h:27,
++                 from /tmp/polkit-qt-1-0.113.0/core/polkitqt1-details.cpp:25:
++/usr/include/glib-2.0/gobject/gtype.h:691:23: note: declared here
++  691 | void                  g_type_init                    (void);
++      |                       ^~~~~~~~~~~
++/tmp/polkit-qt-1-0.113.0/core/polkitqt1-details.cpp: In constructor ‘PolkitQt1::Details::Details(PolkitDetails*)’:
++/tmp/polkit-qt-1-0.113.0/core/polkitqt1-details.cpp:62:17: warning: ‘void g_type_init()’ is deprecated [-Wdeprecated-declarations]
++   62 |     g_type_init();
++      |                 ^
++In file included from /usr/include/glib-2.0/gobject/gobject.h:24,
++                 from /usr/include/glib-2.0/gobject/gbinding.h:29,
++                 from /usr/include/glib-2.0/glib-object.h:22,
++                 from /usr/include/polkit-1/polkit/polkittypes.h:25,
++                 from /usr/include/polkit-1/polkit/polkit.h:27,
++                 from /tmp/polkit-qt-1-0.113.0/core/polkitqt1-details.cpp:25:
++/usr/include/glib-2.0/gobject/gtype.h:691:23: note: declared here
++  691 | void                  g_type_init                    (void);
++      |                       ^~~~~~~~~~~
++/tmp/polkit-qt-1-0.113.0/core/polkitqt1-temporaryauthorization.cpp: In constructor ‘PolkitQt1::TemporaryAuthorization::TemporaryAuthorization(PolkitTemporaryAuthorization*)’:
++/tmp/polkit-qt-1-0.113.0/core/polkitqt1-temporaryauthorization.cpp:54:17: warning: ‘void g_type_init()’ is deprecated [-Wdeprecated-declarations]
++   54 |     g_type_init();
++      |                 ^
++In file included from /usr/include/glib-2.0/gobject/gobject.h:24,
++                 from /usr/include/glib-2.0/gobject/gbinding.h:29,
++                 from /usr/include/glib-2.0/glib-object.h:22,
++                 from /usr/include/polkit-1/polkit/polkittypes.h:25,
++                 from /usr/include/polkit-1/polkit/polkit.h:27,
++                 from /tmp/polkit-qt-1-0.113.0/core/polkitqt1-temporaryauthorization.cpp:24:
++/usr/include/glib-2.0/gobject/gtype.h:691:23: note: declared here
++  691 | void                  g_type_init                    (void);
++      |                       ^~~~~~~~~~~
++/tmp/polkit-qt-1-0.113.0/core/polkitqt1-actiondescription.cpp: In constructor ‘PolkitQt1::ActionDescription::ActionDescription(PolkitActionDescription*)’:
++/tmp/polkit-qt-1-0.113.0/core/polkitqt1-actiondescription.cpp:71:17: warning: ‘void g_type_init()’ is deprecated [-Wdeprecated-declarations]
++   71 |     g_type_init();
++      |                 ^
++In file included from /usr/include/glib-2.0/gobject/gobject.h:24,
++                 from /usr/include/glib-2.0/gobject/gbinding.h:29,
++                 from /usr/include/glib-2.0/glib-object.h:22,
++                 from /usr/include/polkit-1/polkit/polkittypes.h:25,
++                 from /usr/include/polkit-1/polkit/polkit.h:27,
++                 from /tmp/polkit-qt-1-0.113.0/core/polkitqt1-actiondescription.cpp:26:
++/usr/include/glib-2.0/gobject/gtype.h:691:23: note: declared here
++  691 | void                  g_type_init                    (void);
++      |                       ^~~~~~~~~~~
++[ 40%] Linking CXX shared library libpolkit-qt5-core-1.so
++[ 40%] Built target polkit-qt5-core-1
++Scanning dependencies of target polkit-qt5-gui-1_autogen
++Scanning dependencies of target polkit-qt5-agent-1_autogen
++[ 45%] Automatic MOC for target polkit-qt5-gui-1
++[ 50%] Automatic MOC for target polkit-qt5-agent-1
++[ 50%] Built target polkit-qt5-agent-1_autogen
++Scanning dependencies of target polkit-qt5-agent-1
++[ 54%] Building CXX object agent/CMakeFiles/polkit-qt5-agent-1.dir/polkit-qt5-agent-1_autogen/mocs_compilation.cpp.o
++[ 59%] Building CXX object agent/CMakeFiles/polkit-qt5-agent-1.dir/polkitqt1-agent-session.cpp.o
++[ 59%] Built target polkit-qt5-gui-1_autogen
++[ 63%] Building CXX object agent/CMakeFiles/polkit-qt5-agent-1.dir/polkitqt1-agent-listener.cpp.o
++[ 68%] Building CXX object agent/CMakeFiles/polkit-qt5-agent-1.dir/listeneradapter.cpp.o
++/tmp/polkit-qt-1-0.113.0/agent/polkitqt1-agent-session.cpp: In member function ‘void PolkitQt1::Agent::AsyncResult::setCompleted()’:
++/tmp/polkit-qt-1-0.113.0/agent/polkitqt1-agent-session.cpp:160:45: warning: ‘void g_simple_async_result_complete(GSimpleAsyncResult*)’ is deprecated [-Wdeprecated-declarations]
++  160 |     g_simple_async_result_complete(d->result);
++      |                                             ^
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from /usr/include/polkit-1/polkit/polkitactiondescription.h:30,
++                 from /usr/include/polkit-1/polkit/polkit.h:30,
++                 from /usr/include/polkit-1/polkitagent/polkitagentlistener.h:29,
++                 from /usr/include/polkit-1/polkitagent/polkitagent.h:32,
++                 from /tmp/polkit-qt-1-0.113.0/agent/polkitqt1-agent-session.cpp:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:104:21: note: declared here
++  104 | void                g_simple_async_result_complete         (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++/tmp/polkit-qt-1-0.113.0/agent/polkitqt1-agent-session.cpp: In member function ‘void PolkitQt1::Agent::AsyncResult::setError(const QString&)’:
++/tmp/polkit-qt-1-0.113.0/agent/polkitqt1-agent-session.cpp:169:109: warning: ‘void g_simple_async_result_set_error(GSimpleAsyncResult*, GQuark, gint, const char*, ...)’ is deprecated [-Wdeprecated-declarations]
++  169 |     g_simple_async_result_set_error(d->result, POLKIT_ERROR, POLKIT_ERROR_FAILED, "%s", text.toUtf8().data());
++      |                                                                                                             ^
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from /usr/include/polkit-1/polkit/polkitactiondescription.h:30,
++                 from /usr/include/polkit-1/polkit/polkit.h:30,
++                 from /usr/include/polkit-1/polkitagent/polkitagentlistener.h:29,
++                 from /usr/include/polkit-1/polkitagent/polkitagent.h:32,
++                 from /tmp/polkit-qt-1-0.113.0/agent/polkitqt1-agent-session.cpp:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:122:21: note: declared here
++  122 | void                g_simple_async_result_set_error        (GSimpleAsyncResult      *simple,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++Scanning dependencies of target polkit-qt5-gui-1
++[ 72%] Building CXX object gui/CMakeFiles/polkit-qt5-gui-1.dir/polkit-qt5-gui-1_autogen/mocs_compilation.cpp.o
++/tmp/polkit-qt-1-0.113.0/agent/polkitqt1-agent-listener.cpp: In constructor ‘PolkitQt1::Agent::Listener::Listener(QObject*)’:
++/tmp/polkit-qt-1-0.113.0/agent/polkitqt1-agent-listener.cpp:50:17: warning: ‘void g_type_init()’ is deprecated [-Wdeprecated-declarations]
++   50 |     g_type_init();
++      |                 ^
++In file included from /usr/include/glib-2.0/gobject/gobject.h:24,
++                 from /usr/include/glib-2.0/gobject/gbinding.h:29,
++                 from /usr/include/glib-2.0/glib-object.h:22,
++                 from /usr/include/polkit-1/polkitagent/polkitagenttypes.h:29,
++                 from /usr/include/polkit-1/polkitagent/polkitagent.h:30,
++                 from /tmp/polkit-qt-1-0.113.0/agent/polkitqtlistener_p.h:30,
++                 from /tmp/polkit-qt-1-0.113.0/agent/polkitqt1-agent-listener.cpp:25:
++/usr/include/glib-2.0/gobject/gtype.h:691:23: note: declared here
++  691 | void                  g_type_init                    (void);
++      |                       ^~~~~~~~~~~
++/tmp/polkit-qt-1-0.113.0/agent/polkitqt1-agent-listener.cpp: In constructor ‘PolkitQt1::Agent::Listener::Listener(PolkitAgentListener*, QObject*)’:
++/tmp/polkit-qt-1-0.113.0/agent/polkitqt1-agent-listener.cpp:62:17: warning: ‘void g_type_init()’ is deprecated [-Wdeprecated-declarations]
++   62 |     g_type_init();
++      |                 ^
++In file included from /usr/include/glib-2.0/gobject/gobject.h:24,
++                 from /usr/include/glib-2.0/gobject/gbinding.h:29,
++                 from /usr/include/glib-2.0/glib-object.h:22,
++                 from /usr/include/polkit-1/polkitagent/polkitagenttypes.h:29,
++                 from /usr/include/polkit-1/polkitagent/polkitagent.h:30,
++                 from /tmp/polkit-qt-1-0.113.0/agent/polkitqtlistener_p.h:30,
++                 from /tmp/polkit-qt-1-0.113.0/agent/polkitqt1-agent-listener.cpp:25:
++/usr/include/glib-2.0/gobject/gtype.h:691:23: note: declared here
++  691 | void                  g_type_init                    (void);
++      |                       ^~~~~~~~~~~
++[ 77%] Building CXX object agent/CMakeFiles/polkit-qt5-agent-1.dir/polkitqtlistener.cpp.o
++/tmp/polkit-qt-1-0.113.0/agent/listeneradapter.cpp: In member function ‘gboolean PolkitQt1::Agent::ListenerAdapter::polkit_qt_listener_initiate_authentication_finish(PolkitAgentListener*, GAsyncResult*, GError**)’:
++/tmp/polkit-qt-1-0.113.0/agent/listeneradapter.cpp:112:60: warning: ‘gboolean g_simple_async_result_propagate_error(GSimpleAsyncResult*, GError**)’ is deprecated [-Wdeprecated-declarations]
++  112 |     if (g_simple_async_result_propagate_error(simple, error)) {
++      |                                                            ^
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from /usr/include/polkit-1/polkit/polkitactiondescription.h:30,
++                 from /usr/include/polkit-1/polkit/polkit.h:30,
++                 from /usr/include/polkit-1/polkitagent/polkitagentlistener.h:29,
++                 from /usr/include/polkit-1/polkitagent/polkitagent.h:32,
++                 from /tmp/polkit-qt-1-0.113.0/agent/listeneradapter.cpp:24:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:119:21: note: declared here
++  119 | gboolean            g_simple_async_result_propagate_error  (GSimpleAsyncResult      *simple,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++[ 81%] Building CXX object gui/CMakeFiles/polkit-qt5-gui-1.dir/polkitqt1-gui-action.cpp.o
++[ 86%] Building CXX object gui/CMakeFiles/polkit-qt5-gui-1.dir/polkitqt1-gui-actionbutton.cpp.o
++/tmp/polkit-qt-1-0.113.0/agent/polkitqtlistener.cpp: In function ‘void polkit_qt_listener_init(PolkitQtListener*)’:
++/tmp/polkit-qt-1-0.113.0/agent/polkitqtlistener.cpp:66:17: warning: ‘void g_type_init()’ is deprecated [-Wdeprecated-declarations]
++   66 |     g_type_init();
++      |                 ^
++In file included from /usr/include/glib-2.0/gobject/gobject.h:24,
++                 from /usr/include/glib-2.0/gobject/gbinding.h:29,
++                 from /usr/include/glib-2.0/glib-object.h:22,
++                 from /usr/include/polkit-1/polkitagent/polkitagenttypes.h:29,
++                 from /usr/include/polkit-1/polkitagent/polkitagent.h:30,
++                 from /tmp/polkit-qt-1-0.113.0/agent/polkitqtlistener_p.h:30,
++                 from /tmp/polkit-qt-1-0.113.0/agent/polkitqtlistener.cpp:24:
++/usr/include/glib-2.0/gobject/gtype.h:691:23: note: declared here
++  691 | void                  g_type_init                    (void);
++      |                       ^~~~~~~~~~~
++/tmp/polkit-qt-1-0.113.0/agent/polkitqtlistener.cpp: In function ‘void polkit_qt_listener_initiate_authentication(PolkitAgentListener*, const gchar*, const gchar*, const gchar*, PolkitDetails*, const gchar*, GList*, GCancellable*, GAsyncReadyCallback, gpointer)’:
++/tmp/polkit-qt-1-0.113.0/agent/polkitqtlistener.cpp:126:117: warning: ‘GSimpleAsyncResult* g_simple_async_result_new(GObject*, GAsyncReadyCallback, gpointer, gpointer)’ is deprecated: Use 'g_task_new' instead [-Wdeprecated-declarations]
++  126 |     GSimpleAsyncResult *result = g_simple_async_result_new((GObject *) listener, callback, user_data, agent_listener);
++      |                                                                                                                     ^
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from /usr/include/polkit-1/polkit/polkitactiondescription.h:30,
++                 from /usr/include/polkit-1/polkit/polkit.h:30,
++                 from /usr/include/polkit-1/polkitagent/polkitagentlistener.h:29,
++                 from /usr/include/polkit-1/polkitagent/polkitagent.h:32,
++                 from /tmp/polkit-qt-1-0.113.0/agent/polkitqtlistener_p.h:30,
++                 from /tmp/polkit-qt-1-0.113.0/agent/polkitqtlistener.cpp:24:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:51:21: note: declared here
++   51 | GSimpleAsyncResult *g_simple_async_result_new              (GObject                 *source_object,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~
++[ 90%] Linking CXX shared library libpolkit-qt5-agent-1.so
++[ 90%] Built target polkit-qt5-agent-1
++[ 95%] Building CXX object gui/CMakeFiles/polkit-qt5-gui-1.dir/polkitqt1-gui-actionbuttons.cpp.o
++[100%] Linking CXX shared library libpolkit-qt5-gui-1.so
++[100%] Built target polkit-qt5-gui-1
++[  4%] Automatic MOC for target polkit-qt5-core-1
++[  4%] Built target polkit-qt5-core-1_autogen
++[ 40%] Built target polkit-qt5-core-1
++[ 45%] Automatic MOC for target polkit-qt5-gui-1
++[ 45%] Built target polkit-qt5-gui-1_autogen
++[ 68%] Built target polkit-qt5-gui-1
++[ 72%] Automatic MOC for target polkit-qt5-agent-1
++[ 72%] Built target polkit-qt5-agent-1_autogen
++[100%] Built target polkit-qt5-agent-1
++Install the project...
++-- Install configuration: ""
++-- Installing: /tmp/package-polkit-qt-1/usr/include/polkit-qt5-1/polkitqt1-gui-action.h
++-- Installing: /tmp/package-polkit-qt-1/usr/include/polkit-qt5-1/polkitqt1-gui-actionbutton.h
++-- Installing: /tmp/package-polkit-qt-1/usr/include/polkit-qt5-1/polkitqt1-gui-actionbuttons.h
++-- Installing: /tmp/package-polkit-qt-1/usr/include/polkit-qt5-1/polkitqt1-authority.h
++-- Installing: /tmp/package-polkit-qt-1/usr/include/polkit-qt5-1/polkitqt1-details.h
++-- Installing: /tmp/package-polkit-qt-1/usr/include/polkit-qt5-1/polkitqt1-identity.h
++-- Installing: /tmp/package-polkit-qt-1/usr/include/polkit-qt5-1/polkitqt1-subject.h
++-- Installing: /tmp/package-polkit-qt-1/usr/include/polkit-qt5-1/polkitqt1-temporaryauthorization.h
++-- Installing: /tmp/package-polkit-qt-1/usr/include/polkit-qt5-1/polkitqt1-actiondescription.h
++-- Installing: /tmp/package-polkit-qt-1/usr/include/polkit-qt5-1/polkitqt1-agent-listener.h
++-- Installing: /tmp/package-polkit-qt-1/usr/include/polkit-qt5-1/polkitqt1-agent-session.h
++-- Installing: /tmp/package-polkit-qt-1/usr/include/polkit-qt5-1/polkitqt1-version.h
++-- Installing: /tmp/package-polkit-qt-1/usr/include/polkit-qt5-1/polkitqt1-export.h
++-- Installing: /tmp/package-polkit-qt-1/usr/include/polkit-qt5-1/PolkitQt1/Authority
++-- Installing: /tmp/package-polkit-qt-1/usr/include/polkit-qt5-1/PolkitQt1/Details
++-- Installing: /tmp/package-polkit-qt-1/usr/include/polkit-qt5-1/PolkitQt1/Identity
++-- Installing: /tmp/package-polkit-qt-1/usr/include/polkit-qt5-1/PolkitQt1/Subject
++-- Installing: /tmp/package-polkit-qt-1/usr/include/polkit-qt5-1/PolkitQt1/TemporaryAuthorization
++-- Installing: /tmp/package-polkit-qt-1/usr/include/polkit-qt5-1/PolkitQt1/ActionDescription
++-- Installing: /tmp/package-polkit-qt-1/usr/include/polkit-qt5-1/PolkitQt1/Gui/Action
++-- Installing: /tmp/package-polkit-qt-1/usr/include/polkit-qt5-1/PolkitQt1/Gui/ActionButton
++-- Installing: /tmp/package-polkit-qt-1/usr/include/polkit-qt5-1/PolkitQt1/Gui/ActionButtons
++-- Installing: /tmp/package-polkit-qt-1/usr/include/polkit-qt5-1/PolkitQt1/Agent/Listener
++-- Installing: /tmp/package-polkit-qt-1/usr/include/polkit-qt5-1/PolkitQt1/Agent/Session
++-- Installing: /tmp/package-polkit-qt-1/usr/lib/pkgconfig/polkit-qt5-1.pc
++-- Installing: /tmp/package-polkit-qt-1/usr/lib/pkgconfig/polkit-qt5-core-1.pc
++-- Installing: /tmp/package-polkit-qt-1/usr/lib/pkgconfig/polkit-qt5-gui-1.pc
++-- Installing: /tmp/package-polkit-qt-1/usr/lib/pkgconfig/polkit-qt5-agent-1.pc
++-- Installing: /tmp/package-polkit-qt-1/usr/lib/cmake/PolkitQt5-1/PolkitQt5-1Config.cmake
++-- Installing: /tmp/package-polkit-qt-1/usr/lib/cmake/PolkitQt5-1/PolkitQt5-1ConfigVersion.cmake
++-- Installing: /tmp/package-polkit-qt-1/usr/lib/cmake/PolkitQt5-1/PolkitQt5-1Targets.cmake
++-- Installing: /tmp/package-polkit-qt-1/usr/lib/cmake/PolkitQt5-1/PolkitQt5-1Targets-noconfig.cmake
++-- Installing: /tmp/package-polkit-qt-1/usr/lib/libpolkit-qt5-core-1.so.1.113.0
++-- Installing: /tmp/package-polkit-qt-1/usr/lib/libpolkit-qt5-core-1.so.1
++-- Installing: /tmp/package-polkit-qt-1/usr/lib/libpolkit-qt5-core-1.so
++-- Installing: /tmp/package-polkit-qt-1/usr/lib/libpolkit-qt5-gui-1.so.1.113.0
++-- Installing: /tmp/package-polkit-qt-1/usr/lib/libpolkit-qt5-gui-1.so.1
++-- Set runtime path of "/tmp/package-polkit-qt-1/usr/lib/libpolkit-qt5-gui-1.so.1.113.0" to ""
++-- Installing: /tmp/package-polkit-qt-1/usr/lib/libpolkit-qt5-gui-1.so
++-- Installing: /tmp/package-polkit-qt-1/usr/lib/libpolkit-qt5-agent-1.so.1.113.0
++-- Installing: /tmp/package-polkit-qt-1/usr/lib/libpolkit-qt5-agent-1.so.1
++-- Set runtime path of "/tmp/package-polkit-qt-1/usr/lib/libpolkit-qt5-agent-1.so.1.113.0" to ""
++-- Installing: /tmp/package-polkit-qt-1/usr/lib/libpolkit-qt5-agent-1.so
++find: ‘/tmp/package-polkit-qt-1/usr/man’: No such file or directory
++find: ‘/tmp/package-polkit-qt-1/usr/man’: No such file or directory
++cp: cannot stat 'ChangeLog': No such file or directory
++cp: cannot stat 'CHANGES': No such file or directory
++cp: cannot stat 'LICENSE*': No such file or directory
++cp: cannot stat 'NEWS*': No such file or directory
++cp: cannot stat 'THANKS*': No such file or directory
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++usr/lib/libpolkit-qt5-agent-1.so	libpolkit-qt5-agent-1.so.1
++usr/lib/libpolkit-qt5-agent-1.so.1	libpolkit-qt5-agent-1.so.1.113.0
++usr/lib/libpolkit-qt5-core-1.so	libpolkit-qt5-core-1.so.1
++usr/lib/libpolkit-qt5-core-1.so.1	libpolkit-qt5-core-1.so.1.113.0
++usr/lib/libpolkit-qt5-gui-1.so	libpolkit-qt5-gui-1.so.1
++usr/lib/libpolkit-qt5-gui-1.so.1	libpolkit-qt5-gui-1.so.1.113.0
++
++Making symbolic link creation script:
++( cd usr/lib ; rm -rf libpolkit-qt5-agent-1.so )
++( cd usr/lib ; ln -sf libpolkit-qt5-agent-1.so.1 libpolkit-qt5-agent-1.so )
++( cd usr/lib ; rm -rf libpolkit-qt5-agent-1.so.1 )
++( cd usr/lib ; ln -sf libpolkit-qt5-agent-1.so.1.113.0 libpolkit-qt5-agent-1.so.1 )
++( cd usr/lib ; rm -rf libpolkit-qt5-core-1.so )
++( cd usr/lib ; ln -sf libpolkit-qt5-core-1.so.1 libpolkit-qt5-core-1.so )
++( cd usr/lib ; rm -rf libpolkit-qt5-core-1.so.1 )
++( cd usr/lib ; ln -sf libpolkit-qt5-core-1.so.1.113.0 libpolkit-qt5-core-1.so.1 )
++( cd usr/lib ; rm -rf libpolkit-qt5-gui-1.so )
++( cd usr/lib ; ln -sf libpolkit-qt5-gui-1.so.1 libpolkit-qt5-gui-1.so )
++( cd usr/lib ; rm -rf libpolkit-qt5-gui-1.so.1 )
++( cd usr/lib ; ln -sf libpolkit-qt5-gui-1.so.1.113.0 libpolkit-qt5-gui-1.so.1 )
++
++It is recommended that you make these lines your new installation script.
++
++Would you like to make this stuff the install script for this package
++and remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './usr/lib/libpolkit-qt5-agent-1.so'
++removed './usr/lib/libpolkit-qt5-agent-1.so.1'
++removed './usr/lib/libpolkit-qt5-gui-1.so.1'
++removed './usr/lib/libpolkit-qt5-gui-1.so'
++removed './usr/lib/libpolkit-qt5-core-1.so'
++removed './usr/lib/libpolkit-qt5-core-1.so.1'
++
++Creating your new ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/polkit-qt-1-0.113.0-x86_64-1.txz
++
++./
++install/
++install/doinst.sh
++install/slack-desc
++usr/
++usr/doc/
++usr/doc/polkit-qt-1-0.113.0/
++usr/doc/polkit-qt-1-0.113.0/AUTHORS
++usr/doc/polkit-qt-1-0.113.0/COPYING
++usr/doc/polkit-qt-1-0.113.0/README
++usr/doc/polkit-qt-1-0.113.0/README.porting
++usr/doc/polkit-qt-1-0.113.0/TODO
++usr/include/
++usr/include/polkit-qt5-1/
++usr/include/polkit-qt5-1/PolkitQt1/
++usr/include/polkit-qt5-1/PolkitQt1/ActionDescription
++usr/include/polkit-qt5-1/PolkitQt1/Agent/
++usr/include/polkit-qt5-1/PolkitQt1/Agent/Listener
++usr/include/polkit-qt5-1/PolkitQt1/Agent/Session
++usr/include/polkit-qt5-1/PolkitQt1/Authority
++usr/include/polkit-qt5-1/PolkitQt1/Details
++usr/include/polkit-qt5-1/PolkitQt1/Gui/
++usr/include/polkit-qt5-1/PolkitQt1/Gui/Action
++usr/include/polkit-qt5-1/PolkitQt1/Gui/ActionButton
++usr/include/polkit-qt5-1/PolkitQt1/Gui/ActionButtons
++usr/include/polkit-qt5-1/PolkitQt1/Identity
++usr/include/polkit-qt5-1/PolkitQt1/Subject
++usr/include/polkit-qt5-1/PolkitQt1/TemporaryAuthorization
++usr/include/polkit-qt5-1/polkitqt1-actiondescription.h
++usr/include/polkit-qt5-1/polkitqt1-agent-listener.h
++usr/include/polkit-qt5-1/polkitqt1-agent-session.h
++usr/include/polkit-qt5-1/polkitqt1-authority.h
++usr/include/polkit-qt5-1/polkitqt1-details.h
++usr/include/polkit-qt5-1/polkitqt1-export.h
++usr/include/polkit-qt5-1/polkitqt1-gui-action.h
++usr/include/polkit-qt5-1/polkitqt1-gui-actionbutton.h
++usr/include/polkit-qt5-1/polkitqt1-gui-actionbuttons.h
++usr/include/polkit-qt5-1/polkitqt1-identity.h
++usr/include/polkit-qt5-1/polkitqt1-subject.h
++usr/include/polkit-qt5-1/polkitqt1-temporaryauthorization.h
++usr/include/polkit-qt5-1/polkitqt1-version.h
++usr/lib/
++usr/lib/cmake/
++usr/lib/cmake/PolkitQt5-1/
++usr/lib/cmake/PolkitQt5-1/PolkitQt5-1Config.cmake
++usr/lib/cmake/PolkitQt5-1/PolkitQt5-1ConfigVersion.cmake
++usr/lib/cmake/PolkitQt5-1/PolkitQt5-1Targets-noconfig.cmake
++usr/lib/cmake/PolkitQt5-1/PolkitQt5-1Targets.cmake
++usr/lib/libpolkit-qt5-agent-1.so.1.113.0
++usr/lib/libpolkit-qt5-core-1.so.1.113.0
++usr/lib/libpolkit-qt5-gui-1.so.1.113.0
++usr/lib/pkgconfig/
++usr/lib/pkgconfig/polkit-qt5-1.pc
++usr/lib/pkgconfig/polkit-qt5-agent-1.pc
++usr/lib/pkgconfig/polkit-qt5-core-1.pc
++usr/lib/pkgconfig/polkit-qt5-gui-1.pc
++
++Slackware package /tmp/polkit-qt-1-0.113.0-x86_64-1.txz created.
++

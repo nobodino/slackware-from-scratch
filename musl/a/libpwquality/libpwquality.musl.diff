@@ -1,0 +1,809 @@
+Binary files /tmp/libpwquality/.libpwquality.SlackBuild.un~ and /source/a/libpwquality/.libpwquality.SlackBuild.un~ differ
+diff -ruBN /tmp/libpwquality/libpwquality.SlackBuild /source/a/libpwquality/libpwquality.SlackBuild
+--- /tmp/libpwquality/libpwquality.SlackBuild	2021-01-03 18:18:22.000000000 +0000
++++ /source/a/libpwquality/libpwquality.SlackBuild	2021-01-03 18:18:41.000000000 +0000
+@@ -58,7 +58,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "armv7hl" ]; then
+   SLKCFLAGS="-O3 -march=armv7-a -mfpu=vfpv3-d16"
+   LIBDIRSUFFIX=""
+@@ -104,7 +104,7 @@
+   --enable-python-bindings \
+   --enable-pam \
+   --with-python-binary=python3 \
+-  --build=$ARCH-slackware-linux || exit 1
++  --build=$ARCH-slackware-linux-musl || exit 1
+ make $NUMJOBS || make || exit 1
+ make install DESTDIR=$PKG || exit 1
+ 
+diff -ruBN /tmp/libpwquality/libpwquality.SlackBuild.log /source/a/libpwquality/libpwquality.SlackBuild.log
+--- /tmp/libpwquality/libpwquality.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/a/libpwquality/libpwquality.SlackBuild.log	2021-01-03 18:18:49.000000000 +0000
+@@ -0,0 +1,783 @@
++libpwquality-1.4.4/
++libpwquality-1.4.4/m4/
++libpwquality-1.4.4/m4/gettext.m4
++libpwquality-1.4.4/m4/iconv.m4
++libpwquality-1.4.4/m4/intlmacosx.m4
++libpwquality-1.4.4/m4/lib-ld.m4
++libpwquality-1.4.4/m4/lib-link.m4
++libpwquality-1.4.4/m4/lib-prefix.m4
++libpwquality-1.4.4/m4/libtool.m4
++libpwquality-1.4.4/m4/ltoptions.m4
++libpwquality-1.4.4/m4/ltsugar.m4
++libpwquality-1.4.4/m4/ltversion.m4
++libpwquality-1.4.4/m4/lt~obsolete.m4
++libpwquality-1.4.4/m4/nls.m4
++libpwquality-1.4.4/m4/po.m4
++libpwquality-1.4.4/m4/progtest.m4
++libpwquality-1.4.4/Makefile.am
++libpwquality-1.4.4/configure
++libpwquality-1.4.4/configure.ac
++libpwquality-1.4.4/aclocal.m4
++libpwquality-1.4.4/Makefile.in
++libpwquality-1.4.4/config.h.in
++libpwquality-1.4.4/libpwquality.spec.in
++libpwquality-1.4.4/ABOUT-NLS
++libpwquality-1.4.4/AUTHORS
++libpwquality-1.4.4/COPYING
++libpwquality-1.4.4/ChangeLog
++libpwquality-1.4.4/INSTALL
++libpwquality-1.4.4/NEWS
++libpwquality-1.4.4/README
++libpwquality-1.4.4/ar-lib
++libpwquality-1.4.4/compile
++libpwquality-1.4.4/config.guess
++libpwquality-1.4.4/config.rpath
++libpwquality-1.4.4/config.sub
++libpwquality-1.4.4/depcomp
++libpwquality-1.4.4/install-sh
++libpwquality-1.4.4/ltmain.sh
++libpwquality-1.4.4/missing
++libpwquality-1.4.4/libpwquality.spec
++libpwquality-1.4.4/po/
++libpwquality-1.4.4/po/Makefile.in.in
++libpwquality-1.4.4/po/remove-potcdate.sin
++libpwquality-1.4.4/po/quot.sed
++libpwquality-1.4.4/po/boldquot.sed
++libpwquality-1.4.4/po/en@quot.header
++libpwquality-1.4.4/po/en@boldquot.header
++libpwquality-1.4.4/po/insert-header.sin
++libpwquality-1.4.4/po/Rules-quot
++libpwquality-1.4.4/po/Makevars
++libpwquality-1.4.4/po/POTFILES.in
++libpwquality-1.4.4/po/ar.po
++libpwquality-1.4.4/po/as.po
++libpwquality-1.4.4/po/bg.po
++libpwquality-1.4.4/po/bn_IN.po
++libpwquality-1.4.4/po/ca.po
++libpwquality-1.4.4/po/cs.po
++libpwquality-1.4.4/po/da.po
++libpwquality-1.4.4/po/de.po
++libpwquality-1.4.4/po/es.po
++libpwquality-1.4.4/po/eu.po
++libpwquality-1.4.4/po/fi.po
++libpwquality-1.4.4/po/fr.po
++libpwquality-1.4.4/po/fur.po
++libpwquality-1.4.4/po/gu.po
++libpwquality-1.4.4/po/he.po
++libpwquality-1.4.4/po/hi.po
++libpwquality-1.4.4/po/hu.po
++libpwquality-1.4.4/po/id.po
++libpwquality-1.4.4/po/it.po
++libpwquality-1.4.4/po/ja.po
++libpwquality-1.4.4/po/kk.po
++libpwquality-1.4.4/po/km.po
++libpwquality-1.4.4/po/kn.po
++libpwquality-1.4.4/po/ko.po
++libpwquality-1.4.4/po/ml.po
++libpwquality-1.4.4/po/mr.po
++libpwquality-1.4.4/po/nb.po
++libpwquality-1.4.4/po/nl.po
++libpwquality-1.4.4/po/or.po
++libpwquality-1.4.4/po/pa.po
++libpwquality-1.4.4/po/pl.po
++libpwquality-1.4.4/po/pt.po
++libpwquality-1.4.4/po/pt_BR.po
++libpwquality-1.4.4/po/ru.po
++libpwquality-1.4.4/po/si.po
++libpwquality-1.4.4/po/sk.po
++libpwquality-1.4.4/po/sq.po
++libpwquality-1.4.4/po/sr.po
++libpwquality-1.4.4/po/sr@latin.po
++libpwquality-1.4.4/po/sv.po
++libpwquality-1.4.4/po/ta.po
++libpwquality-1.4.4/po/te.po
++libpwquality-1.4.4/po/tr.po
++libpwquality-1.4.4/po/uk.po
++libpwquality-1.4.4/po/ur.po
++libpwquality-1.4.4/po/vi.po
++libpwquality-1.4.4/po/zh_CN.po
++libpwquality-1.4.4/po/zh_TW.po
++libpwquality-1.4.4/po/zu.po
++libpwquality-1.4.4/po/fa.po
++libpwquality-1.4.4/po/az.po
++libpwquality-1.4.4/po/ar.gmo
++libpwquality-1.4.4/po/as.gmo
++libpwquality-1.4.4/po/bg.gmo
++libpwquality-1.4.4/po/bn_IN.gmo
++libpwquality-1.4.4/po/ca.gmo
++libpwquality-1.4.4/po/cs.gmo
++libpwquality-1.4.4/po/da.gmo
++libpwquality-1.4.4/po/de.gmo
++libpwquality-1.4.4/po/es.gmo
++libpwquality-1.4.4/po/eu.gmo
++libpwquality-1.4.4/po/fi.gmo
++libpwquality-1.4.4/po/fr.gmo
++libpwquality-1.4.4/po/fur.gmo
++libpwquality-1.4.4/po/gu.gmo
++libpwquality-1.4.4/po/he.gmo
++libpwquality-1.4.4/po/hi.gmo
++libpwquality-1.4.4/po/hu.gmo
++libpwquality-1.4.4/po/id.gmo
++libpwquality-1.4.4/po/it.gmo
++libpwquality-1.4.4/po/ja.gmo
++libpwquality-1.4.4/po/kk.gmo
++libpwquality-1.4.4/po/km.gmo
++libpwquality-1.4.4/po/kn.gmo
++libpwquality-1.4.4/po/ko.gmo
++libpwquality-1.4.4/po/ml.gmo
++libpwquality-1.4.4/po/mr.gmo
++libpwquality-1.4.4/po/nb.gmo
++libpwquality-1.4.4/po/nl.gmo
++libpwquality-1.4.4/po/or.gmo
++libpwquality-1.4.4/po/pa.gmo
++libpwquality-1.4.4/po/pl.gmo
++libpwquality-1.4.4/po/pt.gmo
++libpwquality-1.4.4/po/pt_BR.gmo
++libpwquality-1.4.4/po/ru.gmo
++libpwquality-1.4.4/po/si.gmo
++libpwquality-1.4.4/po/sk.gmo
++libpwquality-1.4.4/po/sq.gmo
++libpwquality-1.4.4/po/sr.gmo
++libpwquality-1.4.4/po/sr@latin.gmo
++libpwquality-1.4.4/po/sv.gmo
++libpwquality-1.4.4/po/ta.gmo
++libpwquality-1.4.4/po/te.gmo
++libpwquality-1.4.4/po/tr.gmo
++libpwquality-1.4.4/po/uk.gmo
++libpwquality-1.4.4/po/ur.gmo
++libpwquality-1.4.4/po/vi.gmo
++libpwquality-1.4.4/po/zh_CN.gmo
++libpwquality-1.4.4/po/zh_TW.gmo
++libpwquality-1.4.4/po/zu.gmo
++libpwquality-1.4.4/po/fa.gmo
++libpwquality-1.4.4/po/az.gmo
++libpwquality-1.4.4/po/libpwquality.pot
++libpwquality-1.4.4/po/stamp-po
++libpwquality-1.4.4/po/ChangeLog
++libpwquality-1.4.4/po/LINGUAS
++libpwquality-1.4.4/src/
++libpwquality-1.4.4/src/Makefile.am
++libpwquality-1.4.4/src/pwquality.h
++libpwquality-1.4.4/src/pwqprivate.h
++libpwquality-1.4.4/src/Makefile.in
++libpwquality-1.4.4/src/pwquality.pc.in
++libpwquality-1.4.4/src/generate.c
++libpwquality-1.4.4/src/check.c
++libpwquality-1.4.4/src/settings.c
++libpwquality-1.4.4/src/error.c
++libpwquality-1.4.4/src/pam_pwquality.c
++libpwquality-1.4.4/src/pwmake.c
++libpwquality-1.4.4/src/pwscore.c
++libpwquality-1.4.4/src/libpwquality.map
++libpwquality-1.4.4/src/pwquality.conf
++libpwquality-1.4.4/src/pwquality.pc
++libpwquality-1.4.4/doc/
++libpwquality-1.4.4/doc/Makefile.am
++libpwquality-1.4.4/doc/Makefile.in
++libpwquality-1.4.4/doc/man/
++libpwquality-1.4.4/doc/man/Makefile.am
++libpwquality-1.4.4/doc/man/pwmake.1
++libpwquality-1.4.4/doc/man/pwscore.1
++libpwquality-1.4.4/doc/man/pwquality.conf.5
++libpwquality-1.4.4/doc/man/pwquality.3
++libpwquality-1.4.4/doc/man/pam_pwquality.8
++libpwquality-1.4.4/doc/man/Makefile.in
++libpwquality-1.4.4/doc/man/pam_pwquality.8.pod
++libpwquality-1.4.4/doc/man/pwmake.1.pod
++libpwquality-1.4.4/doc/man/pwscore.1.pod
++libpwquality-1.4.4/doc/man/pwquality.conf.5.pod
++libpwquality-1.4.4/doc/man/pwquality.3.pod
++libpwquality-1.4.4/python/
++libpwquality-1.4.4/python/Makefile.am
++libpwquality-1.4.4/python/Makefile.in
++libpwquality-1.4.4/python/setup.py.in
++libpwquality-1.4.4/python/pwquality.c
++libpwquality-1.4.4/python/setup.py
++checking for a BSD-compatible install... /usr/bin/ginstall -c
++checking whether build environment is sane... yes
++checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
++checking for gawk... gawk
++checking whether make sets $(MAKE)... yes
++checking whether make supports nested variables... yes
++checking build system type... x86_64-slackware-linux-musl
++checking host system type... x86_64-slackware-linux-musl
++checking whether make supports the include directive... yes (GNU style)
++checking for gcc... gcc
++checking whether the C compiler works... yes
++checking for C compiler default output file name... a.out
++checking for suffix of executables... 
++checking whether we are cross compiling... no
++checking for suffix of object files... o
++checking whether we are using the GNU C compiler... yes
++checking whether gcc accepts -g... yes
++checking for gcc option to accept ISO C89... none needed
++checking whether gcc understands -c and -o together... yes
++checking dependency style of gcc... gcc3
++checking how to run the C preprocessor... gcc -E
++checking for grep that handles long lines and -e... /usr/bin/grep
++checking for egrep... /usr/bin/grep -E
++checking for ANSI C header files... yes
++checking for sys/types.h... yes
++checking for sys/stat.h... yes
++checking for stdlib.h... yes
++checking for string.h... yes
++checking for memory.h... yes
++checking for strings.h... yes
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking for unistd.h... yes
++checking minix/config.h usability... no
++checking minix/config.h presence... no
++checking for minix/config.h... no
++checking whether it is safe to define __EXTENSIONS__... yes
++checking for ar... ar
++checking the archiver (ar) interface... ar
++checking for gcc... (cached) gcc
++checking whether we are using the GNU C compiler... (cached) yes
++checking whether gcc accepts -g... (cached) yes
++checking for gcc option to accept ISO C89... (cached) none needed
++checking whether gcc understands -c and -o together... (cached) yes
++checking dependency style of gcc... (cached) gcc3
++checking whether ln -s works... yes
++checking how to print strings... printf
++checking for a sed that does not truncate output... /usr/bin/sed
++checking for fgrep... /usr/bin/grep -F
++checking for ld used by gcc... /usr/bin/ld
++checking if the linker (/usr/bin/ld) is GNU ld... yes
++checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
++checking the name lister (/usr/bin/nm -B) interface... BSD nm
++checking the maximum length of command line arguments... 98304
++checking how to convert x86_64-slackware-linux-musl file names to x86_64-slackware-linux-musl format... func_convert_file_noop
++checking how to convert x86_64-slackware-linux-musl file names to toolchain format... func_convert_file_noop
++checking for /usr/bin/ld option to reload object files... -r
++checking for objdump... objdump
++checking how to recognize dependent libraries... pass_all
++checking for dlltool... dlltool
++checking how to associate runtime and link libraries... printf %s\n
++checking for archiver @FILE support... @
++checking for strip... strip
++checking for ranlib... ranlib
++checking command to parse /usr/bin/nm -B output from gcc object... ok
++checking for sysroot... no
++checking for a working dd... /usr/bin/dd
++checking how to truncate binary pipes... /usr/bin/dd bs=4096 count=1
++checking for mt... mt
++checking if mt is a manifest tool... no
++checking for dlfcn.h... yes
++checking for objdir... .libs
++checking if gcc supports -fno-rtti -fno-exceptions... no
++checking for gcc option to produce PIC... -fPIC -DPIC
++checking if gcc PIC flag -fPIC -DPIC works... yes
++checking if gcc static flag -static works... yes
++checking if gcc supports -c -o file.o... yes
++checking if gcc supports -c -o file.o... (cached) yes
++checking whether the gcc linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
++checking whether -lc should be explicitly linked in... no
++checking dynamic linker characteristics... GNU/Linux ld.so
++checking how to hardcode library paths into programs... immediate
++checking whether stripping libraries is possible... yes
++checking if libtool supports shared libraries... yes
++checking whether to build shared libraries... yes
++checking whether to build static libraries... no
++checking whether NLS is requested... yes
++checking for msgfmt... /usr/bin/msgfmt
++checking for gmsgfmt... /usr/bin/msgfmt
++checking for xgettext... /usr/bin/xgettext
++checking for msgmerge... /usr/bin/msgmerge
++checking for ld used by gcc... /usr/bin/ld -m elf_x86_64
++checking if the linker (/usr/bin/ld -m elf_x86_64) is GNU ld... yes
++checking for shared library run path origin... done
++checking for CFPreferencesCopyAppValue... no
++checking for CFLocaleCopyCurrent... no
++checking for GNU gettext in libc... no
++checking for iconv... yes
++checking for working iconv... yes
++checking for GNU gettext in libintl... yes
++checking whether to use NLS... yes
++checking where the gettext function comes from... external libintl
++checking how to link with libintl... /usr/lib/libintl.a
++checking for pam_start in -lpam... yes
++checking python version... 3.9
++checking python site directory... /usr/lib/python3.9/site-packages
++checking crack.h usability... yes
++checking crack.h presence... yes
++checking for crack.h... yes
++checking for FascistCheck in -lcrack... yes
++checking whether byte ordering is bigendian... no
++checking that generated files are newer than configure... done
++configure: creating ./config.status
++config.status: creating Makefile
++config.status: creating libpwquality.spec
++config.status: creating src/Makefile
++config.status: creating src/pwquality.pc
++config.status: creating po/Makefile.in
++config.status: creating python/Makefile
++config.status: creating doc/Makefile
++config.status: creating doc/man/Makefile
++config.status: creating python/setup.py
++config.status: creating config.h
++config.status: executing depfiles commands
++config.status: executing libtool commands
++config.status: executing po-directories commands
++config.status: creating po/POTFILES
++config.status: creating po/Makefile
++make  all-recursive
++make[1]: Entering directory '/tmp/libpwquality-1.4.4'
++Making all in po
++make[2]: Entering directory '/tmp/libpwquality-1.4.4/po'
++make[2]: Nothing to be done for 'all'.
++make[2]: Leaving directory '/tmp/libpwquality-1.4.4/po'
++Making all in src
++make[2]: Entering directory '/tmp/libpwquality-1.4.4/src'
++gcc -DHAVE_CONFIG_H -I. -I..     -O2 -fPIC -MT pwscore.o -MD -MP -MF .deps/pwscore.Tpo -c -o pwscore.o pwscore.c
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I..     -O2 -fPIC -MT generate.lo -MD -MP -MF .deps/generate.Tpo -c -o generate.lo generate.c
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I..     -O2 -fPIC -MT check.lo -MD -MP -MF .deps/check.Tpo -c -o check.lo check.c
++mv -f .deps/pwscore.Tpo .deps/pwscore.Po
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I..     -O2 -fPIC -MT settings.lo -MD -MP -MF .deps/settings.Tpo -c -o settings.lo settings.c
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I.. -O2 -fPIC -MT generate.lo -MD -MP -MF .deps/generate.Tpo -c generate.c  -fPIC -DPIC -o .libs/generate.o
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I.. -O2 -fPIC -MT check.lo -MD -MP -MF .deps/check.Tpo -c check.c  -fPIC -DPIC -o .libs/check.o
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I.. -O2 -fPIC -MT settings.lo -MD -MP -MF .deps/settings.Tpo -c settings.c  -fPIC -DPIC -o .libs/settings.o
++mv -f .deps/generate.Tpo .deps/generate.Plo
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I..     -O2 -fPIC -MT error.lo -MD -MP -MF .deps/error.Tpo -c -o error.lo error.c
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I.. -O2 -fPIC -MT error.lo -MD -MP -MF .deps/error.Tpo -c error.c  -fPIC -DPIC -o .libs/error.o
++mv -f .deps/settings.Tpo .deps/settings.Plo
++gcc -DHAVE_CONFIG_H -I. -I..     -O2 -fPIC -MT pwmake.o -MD -MP -MF .deps/pwmake.Tpo -c -o pwmake.o pwmake.c
++mv -f .deps/error.Tpo .deps/error.Plo
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I..     -O2 -fPIC -MT pam_pwquality.lo -MD -MP -MF .deps/pam_pwquality.Tpo -c -o pam_pwquality.lo pam_pwquality.c
++mv -f .deps/pwmake.Tpo .deps/pwmake.Po
++mv -f .deps/check.Tpo .deps/check.Plo
++/bin/sh ../libtool  --tag=CC   --mode=link gcc  -O2 -fPIC -no-undefined -Wl,--version-script=./libpwquality.map -version-info 1:2:0  -o libpwquality.la -rpath /usr/lib generate.lo check.lo settings.lo error.lo -lcrack /usr/lib/libintl.a -lpam 
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I.. -O2 -fPIC -MT pam_pwquality.lo -MD -MP -MF .deps/pam_pwquality.Tpo -c pam_pwquality.c  -fPIC -DPIC -o .libs/pam_pwquality.o
++pam_pwquality.c: In function ‘check_local_user’:
++pam_pwquality.c:115:24: warning: implicit declaration of function ‘fgetpwent_r’; did you mean ‘fgetpwent’? [-Wimplicit-function-declaration]
++  115 |                 errn = fgetpwent_r(fp, &pw, buf, sizeof (buf), &pwp);
++      |                        ^~~~~~~~~~~
++      |                        fgetpwent
++
++*** Warning: Linking the shared library libpwquality.la against the
++*** static library /usr/lib/libintl.a is not portable!
++libtool: link: gcc -shared  -fPIC -DPIC  .libs/generate.o .libs/check.o .libs/settings.o .libs/error.o   -lcrack /usr/lib/libintl.a -lpam  -O2 -Wl,--version-script=./libpwquality.map   -Wl,-soname -Wl,libpwquality.so.1 -o .libs/libpwquality.so.1.0.2
++libtool: link: (cd ".libs" && rm -f "libpwquality.so.1" && ln -s "libpwquality.so.1.0.2" "libpwquality.so.1")
++libtool: link: (cd ".libs" && rm -f "libpwquality.so" && ln -s "libpwquality.so.1.0.2" "libpwquality.so")
++libtool: link: ( cd ".libs" && rm -f "libpwquality.la" && ln -s "../libpwquality.la" "libpwquality.la" )
++/bin/sh ../libtool  --tag=CC   --mode=link gcc  -O2 -fPIC   -o pwscore pwscore.o libpwquality.la /usr/lib/libintl.a -lpam 
++/bin/sh ../libtool  --tag=CC   --mode=link gcc  -O2 -fPIC   -o pwmake pwmake.o libpwquality.la /usr/lib/libintl.a -lpam 
++mv -f .deps/pam_pwquality.Tpo .deps/pam_pwquality.Plo
++/bin/sh ../libtool  --tag=CC   --mode=link gcc  -O2 -fPIC -no-undefined -avoid-version -module  -o pam_pwquality.la -rpath /lib/security pam_pwquality.lo libpwquality.la -lpam /usr/lib/libintl.a -lpam 
++libtool: link: gcc -O2 -fPIC -o .libs/pwmake pwmake.o  ./.libs/libpwquality.so -lcrack /usr/lib/libintl.a -lpam
++libtool: link: gcc -O2 -fPIC -o .libs/pwscore pwscore.o  ./.libs/libpwquality.so -lcrack /usr/lib/libintl.a -lpam
++
++*** Warning: Linking the shared library pam_pwquality.la against the
++*** static library /usr/lib/libintl.a is not portable!
++libtool: link: gcc -shared  -fPIC -DPIC  .libs/pam_pwquality.o   -Wl,-rpath -Wl,/tmp/libpwquality-1.4.4/src/.libs ./.libs/libpwquality.so -lcrack /usr/lib/libintl.a -lpam  -O2   -Wl,-soname -Wl,pam_pwquality.so -o .libs/pam_pwquality.so
++libtool: link: ( cd ".libs" && rm -f "pam_pwquality.la" && ln -s "../pam_pwquality.la" "pam_pwquality.la" )
++make[2]: Leaving directory '/tmp/libpwquality-1.4.4/src'
++Making all in doc
++make[2]: Entering directory '/tmp/libpwquality-1.4.4/doc'
++Making all in man
++make[3]: Entering directory '/tmp/libpwquality-1.4.4/doc/man'
++bash -c 'declare -u ucname=pam_pwquality; pod2man --utf8 --name="$ucname" --section=8 --center="Linux-PAM Manual" --release="Red Hat, Inc." pam_pwquality.8.pod pam_pwquality.8'
++make[3]: Leaving directory '/tmp/libpwquality-1.4.4/doc/man'
++make[3]: Entering directory '/tmp/libpwquality-1.4.4/doc'
++make[3]: Nothing to be done for 'all-am'.
++make[3]: Leaving directory '/tmp/libpwquality-1.4.4/doc'
++make[2]: Leaving directory '/tmp/libpwquality-1.4.4/doc'
++Making all in python
++make[2]: Entering directory '/tmp/libpwquality-1.4.4/python'
++CFLAGS="-O2 -fPIC -fno-strict-aliasing" python3 setup.py build --build-base py3.9
++running build
++running build_ext
++building 'pwquality' extension
++creating py3.9
++creating py3.9/temp.linux-x86_64-3.9
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -O2 -fPIC -fno-strict-aliasing -fPIC -I../src -I/usr/include/python3.9 -c pwquality.c -o py3.9/temp.linux-x86_64-3.9/pwquality.o
++creating py3.9/lib.linux-x86_64-3.9
++gcc -shared -O2 -fPIC -fno-strict-aliasing py3.9/temp.linux-x86_64-3.9/pwquality.o -L../src/.libs -L/usr/lib -lpwquality -o py3.9/lib.linux-x86_64-3.9/pwquality.cpython-39-x86_64-linux-gnu.so
++make[2]: Leaving directory '/tmp/libpwquality-1.4.4/python'
++make[2]: Entering directory '/tmp/libpwquality-1.4.4'
++make[2]: Leaving directory '/tmp/libpwquality-1.4.4'
++make[1]: Leaving directory '/tmp/libpwquality-1.4.4'
++Making install in po
++make[1]: Entering directory '/tmp/libpwquality-1.4.4/po'
++installing ar.gmo as /tmp/package-libpwquality/usr/share/locale/ar/LC_MESSAGES/libpwquality.mo
++installing as.gmo as /tmp/package-libpwquality/usr/share/locale/as/LC_MESSAGES/libpwquality.mo
++installing bg.gmo as /tmp/package-libpwquality/usr/share/locale/bg/LC_MESSAGES/libpwquality.mo
++installing bn_IN.gmo as /tmp/package-libpwquality/usr/share/locale/bn_IN/LC_MESSAGES/libpwquality.mo
++installing ca.gmo as /tmp/package-libpwquality/usr/share/locale/ca/LC_MESSAGES/libpwquality.mo
++installing cs.gmo as /tmp/package-libpwquality/usr/share/locale/cs/LC_MESSAGES/libpwquality.mo
++installing da.gmo as /tmp/package-libpwquality/usr/share/locale/da/LC_MESSAGES/libpwquality.mo
++installing de.gmo as /tmp/package-libpwquality/usr/share/locale/de/LC_MESSAGES/libpwquality.mo
++installing es.gmo as /tmp/package-libpwquality/usr/share/locale/es/LC_MESSAGES/libpwquality.mo
++installing eu.gmo as /tmp/package-libpwquality/usr/share/locale/eu/LC_MESSAGES/libpwquality.mo
++installing fi.gmo as /tmp/package-libpwquality/usr/share/locale/fi/LC_MESSAGES/libpwquality.mo
++installing fr.gmo as /tmp/package-libpwquality/usr/share/locale/fr/LC_MESSAGES/libpwquality.mo
++installing fur.gmo as /tmp/package-libpwquality/usr/share/locale/fur/LC_MESSAGES/libpwquality.mo
++installing gu.gmo as /tmp/package-libpwquality/usr/share/locale/gu/LC_MESSAGES/libpwquality.mo
++installing he.gmo as /tmp/package-libpwquality/usr/share/locale/he/LC_MESSAGES/libpwquality.mo
++installing hi.gmo as /tmp/package-libpwquality/usr/share/locale/hi/LC_MESSAGES/libpwquality.mo
++installing hu.gmo as /tmp/package-libpwquality/usr/share/locale/hu/LC_MESSAGES/libpwquality.mo
++installing id.gmo as /tmp/package-libpwquality/usr/share/locale/id/LC_MESSAGES/libpwquality.mo
++installing it.gmo as /tmp/package-libpwquality/usr/share/locale/it/LC_MESSAGES/libpwquality.mo
++installing ja.gmo as /tmp/package-libpwquality/usr/share/locale/ja/LC_MESSAGES/libpwquality.mo
++installing kk.gmo as /tmp/package-libpwquality/usr/share/locale/kk/LC_MESSAGES/libpwquality.mo
++installing km.gmo as /tmp/package-libpwquality/usr/share/locale/km/LC_MESSAGES/libpwquality.mo
++installing kn.gmo as /tmp/package-libpwquality/usr/share/locale/kn/LC_MESSAGES/libpwquality.mo
++installing ko.gmo as /tmp/package-libpwquality/usr/share/locale/ko/LC_MESSAGES/libpwquality.mo
++installing ml.gmo as /tmp/package-libpwquality/usr/share/locale/ml/LC_MESSAGES/libpwquality.mo
++installing mr.gmo as /tmp/package-libpwquality/usr/share/locale/mr/LC_MESSAGES/libpwquality.mo
++installing nb.gmo as /tmp/package-libpwquality/usr/share/locale/nb/LC_MESSAGES/libpwquality.mo
++installing nl.gmo as /tmp/package-libpwquality/usr/share/locale/nl/LC_MESSAGES/libpwquality.mo
++installing or.gmo as /tmp/package-libpwquality/usr/share/locale/or/LC_MESSAGES/libpwquality.mo
++installing pa.gmo as /tmp/package-libpwquality/usr/share/locale/pa/LC_MESSAGES/libpwquality.mo
++installing pl.gmo as /tmp/package-libpwquality/usr/share/locale/pl/LC_MESSAGES/libpwquality.mo
++installing pt.gmo as /tmp/package-libpwquality/usr/share/locale/pt/LC_MESSAGES/libpwquality.mo
++installing pt_BR.gmo as /tmp/package-libpwquality/usr/share/locale/pt_BR/LC_MESSAGES/libpwquality.mo
++installing ru.gmo as /tmp/package-libpwquality/usr/share/locale/ru/LC_MESSAGES/libpwquality.mo
++installing si.gmo as /tmp/package-libpwquality/usr/share/locale/si/LC_MESSAGES/libpwquality.mo
++installing sk.gmo as /tmp/package-libpwquality/usr/share/locale/sk/LC_MESSAGES/libpwquality.mo
++installing sq.gmo as /tmp/package-libpwquality/usr/share/locale/sq/LC_MESSAGES/libpwquality.mo
++installing sr.gmo as /tmp/package-libpwquality/usr/share/locale/sr/LC_MESSAGES/libpwquality.mo
++installing sr@latin.gmo as /tmp/package-libpwquality/usr/share/locale/sr@latin/LC_MESSAGES/libpwquality.mo
++installing sv.gmo as /tmp/package-libpwquality/usr/share/locale/sv/LC_MESSAGES/libpwquality.mo
++installing ta.gmo as /tmp/package-libpwquality/usr/share/locale/ta/LC_MESSAGES/libpwquality.mo
++installing te.gmo as /tmp/package-libpwquality/usr/share/locale/te/LC_MESSAGES/libpwquality.mo
++installing tr.gmo as /tmp/package-libpwquality/usr/share/locale/tr/LC_MESSAGES/libpwquality.mo
++installing uk.gmo as /tmp/package-libpwquality/usr/share/locale/uk/LC_MESSAGES/libpwquality.mo
++installing ur.gmo as /tmp/package-libpwquality/usr/share/locale/ur/LC_MESSAGES/libpwquality.mo
++installing vi.gmo as /tmp/package-libpwquality/usr/share/locale/vi/LC_MESSAGES/libpwquality.mo
++installing zh_CN.gmo as /tmp/package-libpwquality/usr/share/locale/zh_CN/LC_MESSAGES/libpwquality.mo
++installing zh_TW.gmo as /tmp/package-libpwquality/usr/share/locale/zh_TW/LC_MESSAGES/libpwquality.mo
++installing zu.gmo as /tmp/package-libpwquality/usr/share/locale/zu/LC_MESSAGES/libpwquality.mo
++installing fa.gmo as /tmp/package-libpwquality/usr/share/locale/fa/LC_MESSAGES/libpwquality.mo
++installing az.gmo as /tmp/package-libpwquality/usr/share/locale/az/LC_MESSAGES/libpwquality.mo
++if test "libpwquality" = "gettext-tools"; then \
++  /usr/bin/mkdir -p /tmp/package-libpwquality/usr/share/gettext/po; \
++  for file in Makefile.in.in remove-potcdate.sin quot.sed boldquot.sed en@quot.header en@boldquot.header insert-header.sin Rules-quot   Makevars.template; do \
++    /usr/bin/ginstall -c -m 644 ./$file \
++		    /tmp/package-libpwquality/usr/share/gettext/po/$file; \
++  done; \
++  for file in Makevars; do \
++    rm -f /tmp/package-libpwquality/usr/share/gettext/po/$file; \
++  done; \
++else \
++  : ; \
++fi
++make[1]: Leaving directory '/tmp/libpwquality-1.4.4/po'
++Making install in src
++make[1]: Entering directory '/tmp/libpwquality-1.4.4/src'
++make[2]: Entering directory '/tmp/libpwquality-1.4.4/src'
++ /usr/bin/mkdir -p '/tmp/package-libpwquality/usr/lib'
++ /bin/sh ../libtool   --mode=install /usr/bin/ginstall -c   libpwquality.la '/tmp/package-libpwquality/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/libpwquality.so.1.0.2 /tmp/package-libpwquality/usr/lib/libpwquality.so.1.0.2
++libtool: install: (cd /tmp/package-libpwquality/usr/lib && { ln -s -f libpwquality.so.1.0.2 libpwquality.so.1 || { rm -f libpwquality.so.1 && ln -s libpwquality.so.1.0.2 libpwquality.so.1; }; })
++libtool: install: (cd /tmp/package-libpwquality/usr/lib && { ln -s -f libpwquality.so.1.0.2 libpwquality.so || { rm -f libpwquality.so && ln -s libpwquality.so.1.0.2 libpwquality.so; }; })
++libtool: install: /usr/bin/ginstall -c .libs/libpwquality.lai /tmp/package-libpwquality/usr/lib/libpwquality.la
++libtool: warning: remember to run 'libtool --finish /usr/lib'
++ /usr/bin/mkdir -p '/tmp/package-libpwquality/usr/bin'
++  /bin/sh ../libtool   --mode=install /usr/bin/ginstall -c pwscore pwmake '/tmp/package-libpwquality/usr/bin'
++libtool: warning: 'libpwquality.la' has not been installed in '/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/pwscore /tmp/package-libpwquality/usr/bin/pwscore
++libtool: warning: 'libpwquality.la' has not been installed in '/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/pwmake /tmp/package-libpwquality/usr/bin/pwmake
++ /usr/bin/mkdir -p '/tmp/package-libpwquality/usr/include'
++ /usr/bin/ginstall -c -m 644 pwquality.h '/tmp/package-libpwquality/usr/include'
++ /usr/bin/mkdir -p '/tmp/package-libpwquality/usr/lib/pkgconfig'
++ /usr/bin/ginstall -c -m 644 pwquality.pc '/tmp/package-libpwquality/usr/lib/pkgconfig'
++ /usr/bin/mkdir -p '/tmp/package-libpwquality/etc/security'
++ /usr/bin/ginstall -c -m 644 pwquality.conf '/tmp/package-libpwquality/etc/security'
++ /usr/bin/mkdir -p '/tmp/package-libpwquality/lib/security'
++ /bin/sh ../libtool   --mode=install /usr/bin/ginstall -c   pam_pwquality.la '/tmp/package-libpwquality/lib/security'
++libtool: warning: relinking 'pam_pwquality.la'
++libtool: install: (cd /tmp/libpwquality-1.4.4/src; /bin/sh "/tmp/libpwquality-1.4.4/libtool"  --tag CC --mode=relink gcc -O2 -fPIC -no-undefined -avoid-version -module -o pam_pwquality.la -rpath /lib/security pam_pwquality.lo libpwquality.la -lpam /usr/lib/libintl.a -lpam -inst-prefix-dir /tmp/package-libpwquality)
++
++*** Warning: Linking the shared library pam_pwquality.la against the
++*** static library /usr/lib/libintl.a is not portable!
++libtool: relink: gcc -shared  -fPIC -DPIC  .libs/pam_pwquality.o   -L/tmp/package-libpwquality/usr/lib -L/usr/lib -lpwquality -lcrack /usr/lib/libintl.a -lpam  -O2   -Wl,-soname -Wl,pam_pwquality.so -o .libs/pam_pwquality.so
++libtool: install: /usr/bin/ginstall -c .libs/pam_pwquality.soT /tmp/package-libpwquality/lib/security/pam_pwquality.so
++libtool: install: /usr/bin/ginstall -c .libs/pam_pwquality.lai /tmp/package-libpwquality/lib/security/pam_pwquality.la
++libtool: warning: remember to run 'libtool --finish /lib/security'
++make[2]: Leaving directory '/tmp/libpwquality-1.4.4/src'
++make[1]: Leaving directory '/tmp/libpwquality-1.4.4/src'
++Making install in doc
++make[1]: Entering directory '/tmp/libpwquality-1.4.4/doc'
++Making install in man
++make[2]: Entering directory '/tmp/libpwquality-1.4.4/doc/man'
++make[3]: Entering directory '/tmp/libpwquality-1.4.4/doc/man'
++make[3]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-libpwquality/usr/man/man1'
++ /usr/bin/ginstall -c -m 644 pwmake.1 pwscore.1 '/tmp/package-libpwquality/usr/man/man1'
++ /usr/bin/mkdir -p '/tmp/package-libpwquality/usr/man/man3'
++ /usr/bin/ginstall -c -m 644 pwquality.3 '/tmp/package-libpwquality/usr/man/man3'
++ /usr/bin/mkdir -p '/tmp/package-libpwquality/usr/man/man5'
++ /usr/bin/ginstall -c -m 644 pwquality.conf.5 '/tmp/package-libpwquality/usr/man/man5'
++ /usr/bin/mkdir -p '/tmp/package-libpwquality/usr/man/man8'
++ /usr/bin/ginstall -c -m 644 pam_pwquality.8 '/tmp/package-libpwquality/usr/man/man8'
++make[3]: Leaving directory '/tmp/libpwquality-1.4.4/doc/man'
++make[2]: Leaving directory '/tmp/libpwquality-1.4.4/doc/man'
++make[2]: Entering directory '/tmp/libpwquality-1.4.4/doc'
++make[3]: Entering directory '/tmp/libpwquality-1.4.4/doc'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/libpwquality-1.4.4/doc'
++make[2]: Leaving directory '/tmp/libpwquality-1.4.4/doc'
++make[1]: Leaving directory '/tmp/libpwquality-1.4.4/doc'
++Making install in python
++make[1]: Entering directory '/tmp/libpwquality-1.4.4/python'
++CFLAGS="-O2 -fPIC -fno-strict-aliasing" python3 setup.py build --build-base py3.9
++running build
++running build_ext
++make[2]: Entering directory '/tmp/libpwquality-1.4.4/python'
++CFLAGS="-O2 -fPIC -fno-strict-aliasing" python3 setup.py build --build-base py3.9 install --prefix=/tmp/package-libpwquality/usr
++running build
++running build_ext
++running install
++running install_lib
++creating /tmp/package-libpwquality/usr/lib/python3.9
++creating /tmp/package-libpwquality/usr/lib/python3.9/site-packages
++copying py3.9/lib.linux-x86_64-3.9/pwquality.cpython-39-x86_64-linux-gnu.so -> /tmp/package-libpwquality/usr/lib/python3.9/site-packages
++running install_egg_info
++Writing /tmp/package-libpwquality/usr/lib/python3.9/site-packages/pwquality-1.4.4-py3.9.egg-info
++make[2]: Nothing to be done for 'install-data-am'.
++make[2]: Leaving directory '/tmp/libpwquality-1.4.4/python'
++make[1]: Leaving directory '/tmp/libpwquality-1.4.4/python'
++make[1]: Entering directory '/tmp/libpwquality-1.4.4'
++make[2]: Entering directory '/tmp/libpwquality-1.4.4'
++make[2]: Nothing to be done for 'install-exec-am'.
++make[2]: Nothing to be done for 'install-data-am'.
++make[2]: Leaving directory '/tmp/libpwquality-1.4.4'
++make[1]: Leaving directory '/tmp/libpwquality-1.4.4'
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++usr/lib/libpwquality.so	libpwquality.so.1.0.2
++usr/lib/libpwquality.so.1	libpwquality.so.1.0.2
++
++Making symbolic link creation script:
++( cd usr/lib ; rm -rf libpwquality.so )
++( cd usr/lib ; ln -sf libpwquality.so.1.0.2 libpwquality.so )
++( cd usr/lib ; rm -rf libpwquality.so.1 )
++( cd usr/lib ; ln -sf libpwquality.so.1.0.2 libpwquality.so.1 )
++
++Unless your existing installation script already contains the code
++to create these links, you should append these lines to your existing
++install script. Now's your chance. :^)
++
++Would you like to add this stuff to the existing install script and
++remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './usr/lib/libpwquality.so.1'
++removed './usr/lib/libpwquality.so'
++
++Updating your ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/libpwquality-1.4.4-x86_64-2.txz
++
++./
++etc/
++etc/security/
++etc/security/pwquality.conf.new
++install/
++install/doinst.sh
++install/slack-desc
++lib/
++lib/security/
++lib/security/pam_pwquality.so
++usr/
++usr/bin/
++usr/bin/pwmake
++usr/bin/pwscore
++usr/doc/
++usr/doc/libpwquality-1.4.4/
++usr/doc/libpwquality-1.4.4/AUTHORS
++usr/doc/libpwquality-1.4.4/COPYING
++usr/doc/libpwquality-1.4.4/ChangeLog
++usr/doc/libpwquality-1.4.4/NEWS
++usr/doc/libpwquality-1.4.4/README
++usr/include/
++usr/include/pwquality.h
++usr/lib/
++usr/lib/libpwquality.so.1.0.2
++usr/lib/pkgconfig/
++usr/lib/pkgconfig/pwquality.pc
++usr/lib/python3.9/
++usr/lib/python3.9/site-packages/
++usr/lib/python3.9/site-packages/pwquality-1.4.4-py3.9.egg-info
++usr/lib/python3.9/site-packages/pwquality.cpython-39-x86_64-linux-gnu.so
++usr/man/
++usr/man/man1/
++usr/man/man1/pwmake.1.gz
++usr/man/man1/pwscore.1.gz
++usr/man/man3/
++usr/man/man3/pwquality.3.gz
++usr/man/man5/
++usr/man/man5/pwquality.conf.5.gz
++usr/man/man8/
++usr/man/man8/pam_pwquality.8.gz
++usr/share/
++usr/share/locale/
++usr/share/locale/ar/
++usr/share/locale/ar/LC_MESSAGES/
++usr/share/locale/ar/LC_MESSAGES/libpwquality.mo
++usr/share/locale/as/
++usr/share/locale/as/LC_MESSAGES/
++usr/share/locale/as/LC_MESSAGES/libpwquality.mo
++usr/share/locale/az/
++usr/share/locale/az/LC_MESSAGES/
++usr/share/locale/az/LC_MESSAGES/libpwquality.mo
++usr/share/locale/bg/
++usr/share/locale/bg/LC_MESSAGES/
++usr/share/locale/bg/LC_MESSAGES/libpwquality.mo
++usr/share/locale/bn_IN/
++usr/share/locale/bn_IN/LC_MESSAGES/
++usr/share/locale/bn_IN/LC_MESSAGES/libpwquality.mo
++usr/share/locale/ca/
++usr/share/locale/ca/LC_MESSAGES/
++usr/share/locale/ca/LC_MESSAGES/libpwquality.mo
++usr/share/locale/cs/
++usr/share/locale/cs/LC_MESSAGES/
++usr/share/locale/cs/LC_MESSAGES/libpwquality.mo
++usr/share/locale/da/
++usr/share/locale/da/LC_MESSAGES/
++usr/share/locale/da/LC_MESSAGES/libpwquality.mo
++usr/share/locale/de/
++usr/share/locale/de/LC_MESSAGES/
++usr/share/locale/de/LC_MESSAGES/libpwquality.mo
++usr/share/locale/es/
++usr/share/locale/es/LC_MESSAGES/
++usr/share/locale/es/LC_MESSAGES/libpwquality.mo
++usr/share/locale/eu/
++usr/share/locale/eu/LC_MESSAGES/
++usr/share/locale/eu/LC_MESSAGES/libpwquality.mo
++usr/share/locale/fa/
++usr/share/locale/fa/LC_MESSAGES/
++usr/share/locale/fa/LC_MESSAGES/libpwquality.mo
++usr/share/locale/fi/
++usr/share/locale/fi/LC_MESSAGES/
++usr/share/locale/fi/LC_MESSAGES/libpwquality.mo
++usr/share/locale/fr/
++usr/share/locale/fr/LC_MESSAGES/
++usr/share/locale/fr/LC_MESSAGES/libpwquality.mo
++usr/share/locale/fur/
++usr/share/locale/fur/LC_MESSAGES/
++usr/share/locale/fur/LC_MESSAGES/libpwquality.mo
++usr/share/locale/gu/
++usr/share/locale/gu/LC_MESSAGES/
++usr/share/locale/gu/LC_MESSAGES/libpwquality.mo
++usr/share/locale/he/
++usr/share/locale/he/LC_MESSAGES/
++usr/share/locale/he/LC_MESSAGES/libpwquality.mo
++usr/share/locale/hi/
++usr/share/locale/hi/LC_MESSAGES/
++usr/share/locale/hi/LC_MESSAGES/libpwquality.mo
++usr/share/locale/hu/
++usr/share/locale/hu/LC_MESSAGES/
++usr/share/locale/hu/LC_MESSAGES/libpwquality.mo
++usr/share/locale/id/
++usr/share/locale/id/LC_MESSAGES/
++usr/share/locale/id/LC_MESSAGES/libpwquality.mo
++usr/share/locale/it/
++usr/share/locale/it/LC_MESSAGES/
++usr/share/locale/it/LC_MESSAGES/libpwquality.mo
++usr/share/locale/ja/
++usr/share/locale/ja/LC_MESSAGES/
++usr/share/locale/ja/LC_MESSAGES/libpwquality.mo
++usr/share/locale/kk/
++usr/share/locale/kk/LC_MESSAGES/
++usr/share/locale/kk/LC_MESSAGES/libpwquality.mo
++usr/share/locale/km/
++usr/share/locale/km/LC_MESSAGES/
++usr/share/locale/km/LC_MESSAGES/libpwquality.mo
++usr/share/locale/kn/
++usr/share/locale/kn/LC_MESSAGES/
++usr/share/locale/kn/LC_MESSAGES/libpwquality.mo
++usr/share/locale/ko/
++usr/share/locale/ko/LC_MESSAGES/
++usr/share/locale/ko/LC_MESSAGES/libpwquality.mo
++usr/share/locale/ml/
++usr/share/locale/ml/LC_MESSAGES/
++usr/share/locale/ml/LC_MESSAGES/libpwquality.mo
++usr/share/locale/mr/
++usr/share/locale/mr/LC_MESSAGES/
++usr/share/locale/mr/LC_MESSAGES/libpwquality.mo
++usr/share/locale/nb/
++usr/share/locale/nb/LC_MESSAGES/
++usr/share/locale/nb/LC_MESSAGES/libpwquality.mo
++usr/share/locale/nl/
++usr/share/locale/nl/LC_MESSAGES/
++usr/share/locale/nl/LC_MESSAGES/libpwquality.mo
++usr/share/locale/or/
++usr/share/locale/or/LC_MESSAGES/
++usr/share/locale/or/LC_MESSAGES/libpwquality.mo
++usr/share/locale/pa/
++usr/share/locale/pa/LC_MESSAGES/
++usr/share/locale/pa/LC_MESSAGES/libpwquality.mo
++usr/share/locale/pl/
++usr/share/locale/pl/LC_MESSAGES/
++usr/share/locale/pl/LC_MESSAGES/libpwquality.mo
++usr/share/locale/pt/
++usr/share/locale/pt/LC_MESSAGES/
++usr/share/locale/pt/LC_MESSAGES/libpwquality.mo
++usr/share/locale/pt_BR/
++usr/share/locale/pt_BR/LC_MESSAGES/
++usr/share/locale/pt_BR/LC_MESSAGES/libpwquality.mo
++usr/share/locale/ru/
++usr/share/locale/ru/LC_MESSAGES/
++usr/share/locale/ru/LC_MESSAGES/libpwquality.mo
++usr/share/locale/si/
++usr/share/locale/si/LC_MESSAGES/
++usr/share/locale/si/LC_MESSAGES/libpwquality.mo
++usr/share/locale/sk/
++usr/share/locale/sk/LC_MESSAGES/
++usr/share/locale/sk/LC_MESSAGES/libpwquality.mo
++usr/share/locale/sq/
++usr/share/locale/sq/LC_MESSAGES/
++usr/share/locale/sq/LC_MESSAGES/libpwquality.mo
++usr/share/locale/sr/
++usr/share/locale/sr/LC_MESSAGES/
++usr/share/locale/sr/LC_MESSAGES/libpwquality.mo
++usr/share/locale/sr@latin/
++usr/share/locale/sr@latin/LC_MESSAGES/
++usr/share/locale/sr@latin/LC_MESSAGES/libpwquality.mo
++usr/share/locale/sv/
++usr/share/locale/sv/LC_MESSAGES/
++usr/share/locale/sv/LC_MESSAGES/libpwquality.mo
++usr/share/locale/ta/
++usr/share/locale/ta/LC_MESSAGES/
++usr/share/locale/ta/LC_MESSAGES/libpwquality.mo
++usr/share/locale/te/
++usr/share/locale/te/LC_MESSAGES/
++usr/share/locale/te/LC_MESSAGES/libpwquality.mo
++usr/share/locale/tr/
++usr/share/locale/tr/LC_MESSAGES/
++usr/share/locale/tr/LC_MESSAGES/libpwquality.mo
++usr/share/locale/uk/
++usr/share/locale/uk/LC_MESSAGES/
++usr/share/locale/uk/LC_MESSAGES/libpwquality.mo
++usr/share/locale/ur/
++usr/share/locale/ur/LC_MESSAGES/
++usr/share/locale/ur/LC_MESSAGES/libpwquality.mo
++usr/share/locale/vi/
++usr/share/locale/vi/LC_MESSAGES/
++usr/share/locale/vi/LC_MESSAGES/libpwquality.mo
++usr/share/locale/zh_CN/
++usr/share/locale/zh_CN/LC_MESSAGES/
++usr/share/locale/zh_CN/LC_MESSAGES/libpwquality.mo
++usr/share/locale/zh_TW/
++usr/share/locale/zh_TW/LC_MESSAGES/
++usr/share/locale/zh_TW/LC_MESSAGES/libpwquality.mo
++usr/share/locale/zu/
++usr/share/locale/zu/LC_MESSAGES/
++usr/share/locale/zu/LC_MESSAGES/libpwquality.mo
++
++Slackware package /tmp/libpwquality-1.4.4-x86_64-2.txz created.
++

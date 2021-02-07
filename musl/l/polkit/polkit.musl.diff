@@ -1,0 +1,3165 @@
+diff -ruBN /tmp/polkit/make-innetgr-optional.patch /source/l/polkit/make-innetgr-optional.patch
+--- /tmp/polkit/make-innetgr-optional.patch	1970-01-01 00:00:00.000000000 +0000
++++ /source/l/polkit/make-innetgr-optional.patch	2021-01-22 20:48:34.000000000 +0000
+@@ -0,0 +1,239 @@
++See https://gitlab.freedesktop.org/polkit/polkit/merge_requests/10
++
++From 778bb45e0e0cbabe2b04adf67a500af1dab09768 Mon Sep 17 00:00:00 2001
++From: "A. Wilcox" <AWilcox@Wilcox-Tech.com>
++Date: Wed, 11 Jul 2018 04:54:26 -0500
++Subject: [PATCH] make netgroup support optional
++
++On at least Linux/musl and Linux/uclibc, netgroup support is not
++available.  PolKit fails to compile on these systems for that reason.
++
++This change makes netgroup support conditional on the presence of the
++setnetgrent(3) function which is required for the support to work.  If
++that function is not available on the system, an error will be returned
++to the administrator if unix-netgroup: is specified in configuration.
++
++Fixes bug 50145.
++
++Closes polkit/polkit#14.
++
++Signed-off-by: A. Wilcox <AWilcox@Wilcox-Tech.com>
++---
++diff --git a/configure.ac b/configure.ac
++index 4ac2219..ca478df 100644
++--- a/configure.ac
+++++ b/configure.ac
++@@ -100,7 +100,7 @@ AC_CHECK_LIB(expat,XML_ParserCreate,[EXPAT_LIBS="-lexpat"],
++ 	     [AC_MSG_ERROR([Can't find expat library. Please install expat.])])
++ AC_SUBST(EXPAT_LIBS)
++ 
++-AC_CHECK_FUNCS(clearenv fdatasync)
+++AC_CHECK_FUNCS(clearenv fdatasync setnetgrent)
++ 
++ if test "x$GCC" = "xyes"; then
++   LDFLAGS="-Wl,--as-needed $LDFLAGS"
++diff --git a/src/polkit/polkitidentity.c b/src/polkit/polkitidentity.c
++index 3aa1f7f..10e9c17 100644
++--- a/src/polkit/polkitidentity.c
+++++ b/src/polkit/polkitidentity.c
++@@ -182,7 +182,15 @@ polkit_identity_from_string  (const gchar   *str,
++     }
++   else if (g_str_has_prefix (str, "unix-netgroup:"))
++     {
+++#ifndef HAVE_SETNETGRENT
+++      g_set_error (error,
+++                   POLKIT_ERROR,
+++                   POLKIT_ERROR_FAILED,
+++                   "Netgroups are not available on this machine ('%s')",
+++                   str);
+++#else
++       identity = polkit_unix_netgroup_new (str + sizeof "unix-netgroup:" - 1);
+++#endif
++     }
++ 
++   if (identity == NULL && (error != NULL && *error == NULL))
++@@ -344,6 +352,13 @@ polkit_identity_new_for_gvariant (GVariant  *variant,
++       GVariant *v;
++       const char *name;
++ 
+++#ifndef HAVE_SETNETGRENT
+++      g_set_error (error,
+++                   POLKIT_ERROR,
+++                   POLKIT_ERROR_FAILED,
+++                   "Netgroups are not available on this machine");
+++      goto out;
+++#else
++       v = lookup_asv (details_gvariant, "name", G_VARIANT_TYPE_STRING, error);
++       if (v == NULL)
++         {
++@@ -353,6 +368,7 @@ polkit_identity_new_for_gvariant (GVariant  *variant,
++       name = g_variant_get_string (v, NULL);
++       ret = polkit_unix_netgroup_new (name);
++       g_variant_unref (v);
+++#endif
++     }
++   else
++     {
++diff --git a/src/polkit/polkitunixnetgroup.c b/src/polkit/polkitunixnetgroup.c
++index 8a2b369..83f8d4a 100644
++--- a/src/polkit/polkitunixnetgroup.c
+++++ b/src/polkit/polkitunixnetgroup.c
++@@ -194,6 +194,9 @@ polkit_unix_netgroup_set_name (PolkitUnixNetgroup *group,
++ PolkitIdentity *
++ polkit_unix_netgroup_new (const gchar *name)
++ {
+++#ifndef HAVE_SETNETGRENT
+++  g_assert_not_reached();
+++#endif
++   g_return_val_if_fail (name != NULL, NULL);
++   return POLKIT_IDENTITY (g_object_new (POLKIT_TYPE_UNIX_NETGROUP,
++                                        "name", name,
++diff --git a/src/polkitbackend/polkitbackendinteractiveauthority.c b/src/polkitbackend/polkitbackendinteractiveauthority.c
++index 056d9a8..36c2f3d 100644
++--- a/src/polkitbackend/polkitbackendinteractiveauthority.c
+++++ b/src/polkitbackend/polkitbackendinteractiveauthority.c
++@@ -2233,25 +2233,26 @@ get_users_in_net_group (PolkitIdentity                    *group,
++   GList *ret;
++ 
++   ret = NULL;
+++#ifdef HAVE_SETNETGRENT
++   name = polkit_unix_netgroup_get_name (POLKIT_UNIX_NETGROUP (group));
++ 
++-#ifdef HAVE_SETNETGRENT_RETURN
+++# ifdef HAVE_SETNETGRENT_RETURN
++   if (setnetgrent (name) == 0)
++     {
++       g_warning ("Error looking up net group with name %s: %s", name, g_strerror (errno));
++       goto out;
++     }
++-#else
+++# else
++   setnetgrent (name);
++-#endif
+++# endif /* HAVE_SETNETGRENT_RETURN */
++ 
++   for (;;)
++     {
++-#if defined(HAVE_NETBSD) || defined(HAVE_OPENBSD)
+++# if defined(HAVE_NETBSD) || defined(HAVE_OPENBSD)
++       const char *hostname, *username, *domainname;
++-#else
+++# else
++       char *hostname, *username, *domainname;
++-#endif
+++# endif /* defined(HAVE_NETBSD) || defined(HAVE_OPENBSD) */
++       PolkitIdentity *user;
++       GError *error = NULL;
++ 
++@@ -2282,6 +2283,7 @@ get_users_in_net_group (PolkitIdentity                    *group,
++ 
++  out:
++   endnetgrent ();
+++#endif /* HAVE_SETNETGRENT */
++   return ret;
++ }
++ 
++diff --git a/src/polkitbackend/polkitbackendjsauthority.cpp b/src/polkitbackend/polkitbackendjsauthority.cpp
++index ca17108..da95180 100644
++--- a/src/polkitbackend/polkitbackendjsauthority.cpp
+++++ b/src/polkitbackend/polkitbackendjsauthority.cpp
++@@ -1520,6 +1520,7 @@ js_polkit_user_is_in_netgroup (JSContext  *cx,
++ 
++   JS::CallArgs args = JS::CallArgsFromVp (argc, vp);
++ 
+++#ifdef HAVE_SETNETGRENT
++   JS::RootedString usrstr (authority->priv->cx);
++   usrstr = args[0].toString();
++   user = JS_EncodeStringToUTF8 (cx, usrstr);
++@@ -1534,6 +1535,7 @@ js_polkit_user_is_in_netgroup (JSContext  *cx,
++     {
++       is_in_netgroup =  true;
++     }
+++ #endif
++ 
++   ret = true;
++ 
++diff --git a/test/polkit/polkitidentitytest.c b/test/polkit/polkitidentitytest.c
++index e91967b..e829aaa 100644
++--- a/test/polkit/polkitidentitytest.c
+++++ b/test/polkit/polkitidentitytest.c
++@@ -19,6 +19,7 @@
++  * Author: Nikki VonHollen <vonhollen@google.com>
++  */
++ 
+++#include "config.h"
++ #include "glib.h"
++ #include <polkit/polkit.h>
++ #include <polkit/polkitprivate.h>
++@@ -145,11 +146,15 @@ struct ComparisonTestData comparison_test_data [] = {
++   {"unix-group:root", "unix-group:jane", FALSE},
++   {"unix-group:jane", "unix-group:jane", TRUE},
++ 
+++#ifdef HAVE_SETNETGRENT
++   {"unix-netgroup:foo", "unix-netgroup:foo", TRUE},
++   {"unix-netgroup:foo", "unix-netgroup:bar", FALSE},
+++#endif
++ 
++   {"unix-user:root", "unix-group:root", FALSE},
+++#ifdef HAVE_SETNETGRENT
++   {"unix-user:jane", "unix-netgroup:foo", FALSE},
+++#endif
++ 
++   {NULL},
++ };
++@@ -181,11 +186,13 @@ main (int argc, char *argv[])
++   g_test_add_data_func ("/PolkitIdentity/group_string_2", "unix-group:jane", test_string);
++   g_test_add_data_func ("/PolkitIdentity/group_string_3", "unix-group:users", test_string);
++ 
+++#ifdef HAVE_SETNETGRENT
++   g_test_add_data_func ("/PolkitIdentity/netgroup_string", "unix-netgroup:foo", test_string);
+++  g_test_add_data_func ("/PolkitIdentity/netgroup_gvariant", "unix-netgroup:foo", test_gvariant);
+++#endif
++ 
++   g_test_add_data_func ("/PolkitIdentity/user_gvariant", "unix-user:root", test_gvariant);
++   g_test_add_data_func ("/PolkitIdentity/group_gvariant", "unix-group:root", test_gvariant);
++-  g_test_add_data_func ("/PolkitIdentity/netgroup_gvariant", "unix-netgroup:foo", test_gvariant);
++ 
++   add_comparison_tests ();
++ 
++diff --git a/test/polkit/polkitunixnetgrouptest.c b/test/polkit/polkitunixnetgrouptest.c
++index 3701ba1..e3352eb 100644
++--- a/test/polkit/polkitunixnetgrouptest.c
+++++ b/test/polkit/polkitunixnetgrouptest.c
++@@ -19,6 +19,7 @@
++  * Author: Nikki VonHollen <vonhollen@google.com>
++  */
++ 
+++#include "config.h"
++ #include "glib.h"
++ #include <polkit/polkit.h>
++ #include <string.h>
++@@ -69,7 +70,9 @@ int
++ main (int argc, char *argv[])
++ {
++   g_test_init (&argc, &argv, NULL);
+++#ifdef HAVE_SETNETGRENT
++   g_test_add_func ("/PolkitUnixNetgroup/new", test_new);
++   g_test_add_func ("/PolkitUnixNetgroup/set_name", test_set_name);
+++#endif
++   return g_test_run ();
++ }
++diff --git a/test/polkitbackend/test-polkitbackendjsauthority.c b/test/polkitbackend/test-polkitbackendjsauthority.c
++index f97e0e0..fc52149 100644
++--- a/test/polkitbackend/test-polkitbackendjsauthority.c
+++++ b/test/polkitbackend/test-polkitbackendjsauthority.c
++@@ -137,12 +137,14 @@ test_get_admin_identities (void)
++         "unix-group:users"
++       }
++     },
+++#ifdef HAVE_SETNETGRENT
++     {
++       "net.company.action3",
++       {
++         "unix-netgroup:foo"
++       }
++     },
+++#endif
++   };
++   guint n;
++ 
+diff -ruBN /tmp/polkit/polkit.SlackBuild /source/l/polkit/polkit.SlackBuild
+--- /tmp/polkit/polkit.SlackBuild	2020-12-13 03:07:29.000000000 +0000
++++ /source/l/polkit/polkit.SlackBuild	2021-01-22 20:48:34.000000000 +0000
+@@ -59,7 +59,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ else
+   SLKCFLAGS="-O2"
+   LIBDIRSUFFIX=""
+@@ -71,6 +71,7 @@
+ rm -rf $PKGNAM-$VERSION
+ tar xvf $CWD/$PKGNAM-$VERSION.tar.?z || exit 1
+ cd $PKGNAM-$VERSION || exit 1
++patch -p1 < $CWD/make-innetgr-optional.patch || exit 1
+ 
+ # Make sure ownerships and permissions are sane:
+ chown -R root:root .
+@@ -131,7 +132,7 @@
+   $SHADOW_OPTIONS \
+   --enable-verbose-mode \
+   --with-os-type=Slackware \
+-  --build=$ARCH-slackware-linux || exit 1
++  --build=$ARCH-slackware-linux-musl || exit 1
+ 
+ # Build and install:
+ make $NUMJOBS || make || exit 1
+diff -ruBN /tmp/polkit/polkit.SlackBuild.log /source/l/polkit/polkit.SlackBuild.log
+--- /tmp/polkit/polkit.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/l/polkit/polkit.SlackBuild.log	2021-01-22 20:50:42.000000000 +0000
+@@ -0,0 +1,2889 @@
++polkit-0.118/
++polkit-0.118/.dir-locals.el
++polkit-0.118/.gitignore
++polkit-0.118/.gitlab-ci.yml
++polkit-0.118/AUTHORS
++polkit-0.118/COPYING
++polkit-0.118/ChangeLog
++polkit-0.118/HACKING
++polkit-0.118/Makefile.am
++polkit-0.118/NEWS
++polkit-0.118/README
++polkit-0.118/actions/
++polkit-0.118/actions/Makefile.am
++polkit-0.118/actions/org.freedesktop.policykit.policy.in
++polkit-0.118/autogen.sh
++polkit-0.118/buildutil/
++polkit-0.118/buildutil/attributes.m4
++polkit-0.118/buildutil/ax_cxx_compile_stdcxx.m4
++polkit-0.118/configure.ac
++polkit-0.118/data/
++polkit-0.118/data/Makefile.am
++polkit-0.118/data/org.freedesktop.PolicyKit1.AuthenticationAgent.xml
++polkit-0.118/data/org.freedesktop.PolicyKit1.Authority.xml
++polkit-0.118/data/org.freedesktop.PolicyKit1.conf.in
++polkit-0.118/data/org.freedesktop.PolicyKit1.service.in
++polkit-0.118/data/polkit-1.in
++polkit-0.118/data/polkit-agent-1.pc.in
++polkit-0.118/data/polkit-gobject-1.pc.in
++polkit-0.118/data/polkit.its
++polkit-0.118/data/polkit.loc
++polkit-0.118/data/polkit.service.in
++polkit-0.118/docs/
++polkit-0.118/docs/Makefile.am
++polkit-0.118/docs/PORTING-GUIDE
++polkit-0.118/docs/TODO
++polkit-0.118/docs/extensiondir.xml.in
++polkit-0.118/docs/man/
++polkit-0.118/docs/man/Makefile.am
++polkit-0.118/docs/man/pkaction.xml
++polkit-0.118/docs/man/pkcheck.xml
++polkit-0.118/docs/man/pkexec.xml
++polkit-0.118/docs/man/pkttyagent.xml
++polkit-0.118/docs/man/polkit.xml
++polkit-0.118/docs/man/polkitd.xml
++polkit-0.118/docs/polkit-1-diagrams.svg
++polkit-0.118/docs/polkit-architecture.png
++polkit-0.118/docs/polkit-authentication-agent-example-wheel.png
++polkit-0.118/docs/polkit-authentication-agent-example.png
++polkit-0.118/docs/polkit/
++polkit-0.118/docs/polkit/Makefile.am
++polkit-0.118/docs/polkit/docbook-interface-org.freedesktop.PolicyKit1.AuthenticationAgent.xml
++polkit-0.118/docs/polkit/docbook-interface-org.freedesktop.PolicyKit1.Authority.xml
++polkit-0.118/docs/polkit/overview.xml
++polkit-0.118/docs/polkit/polkit-1-docs.xml
++polkit-0.118/docs/polkit/polkit-1-sections.txt
++polkit-0.118/docs/polkit/polkit-1.types
++polkit-0.118/docs/version.xml.in
++polkit-0.118/git.mk
++polkit-0.118/po/
++polkit-0.118/po/ChangeLog
++polkit-0.118/po/LINGUAS
++polkit-0.118/po/POTFILES.in
++polkit-0.118/po/POTFILES.skip
++polkit-0.118/po/cs.po
++polkit-0.118/po/da.po
++polkit-0.118/po/de.po
++polkit-0.118/po/hr.po
++polkit-0.118/po/hu.po
++polkit-0.118/po/id.po
++polkit-0.118/po/it.po
++polkit-0.118/po/nn.po
++polkit-0.118/po/pl.po
++polkit-0.118/po/pt_BR.po
++polkit-0.118/po/sk.po
++polkit-0.118/po/sv.po
++polkit-0.118/po/tr.po
++polkit-0.118/po/uk.po
++polkit-0.118/po/zh_CN.po
++polkit-0.118/po/zh_TW.po
++polkit-0.118/src/
++polkit-0.118/src/Makefile.am
++polkit-0.118/src/examples/
++polkit-0.118/src/examples/Makefile.am
++polkit-0.118/src/examples/cancel.c
++polkit-0.118/src/examples/frobnicate.c
++polkit-0.118/src/examples/org.freedesktop.policykit.examples.pkexec.policy.in
++polkit-0.118/src/examples/polkit-raw-dbus.py
++polkit-0.118/src/polkit/
++polkit-0.118/src/polkit/Makefile.am
++polkit-0.118/src/polkit/polkit.h
++polkit-0.118/src/polkit/polkitactiondescription.c
++polkit-0.118/src/polkit/polkitactiondescription.h
++polkit-0.118/src/polkit/polkitauthority.c
++polkit-0.118/src/polkit/polkitauthority.h
++polkit-0.118/src/polkit/polkitauthorityfeatures.c
++polkit-0.118/src/polkit/polkitauthorityfeatures.h
++polkit-0.118/src/polkit/polkitauthorizationresult.c
++polkit-0.118/src/polkit/polkitauthorizationresult.h
++polkit-0.118/src/polkit/polkitcheckauthorizationflags.c
++polkit-0.118/src/polkit/polkitcheckauthorizationflags.h
++polkit-0.118/src/polkit/polkitdetails.c
++polkit-0.118/src/polkit/polkitdetails.h
++polkit-0.118/src/polkit/polkitenumtypes.c.template
++polkit-0.118/src/polkit/polkitenumtypes.h.template
++polkit-0.118/src/polkit/polkiterror.c
++polkit-0.118/src/polkit/polkiterror.h
++polkit-0.118/src/polkit/polkitidentity.c
++polkit-0.118/src/polkit/polkitidentity.h
++polkit-0.118/src/polkit/polkitimplicitauthorization.c
++polkit-0.118/src/polkit/polkitimplicitauthorization.h
++polkit-0.118/src/polkit/polkitpermission.c
++polkit-0.118/src/polkit/polkitpermission.h
++polkit-0.118/src/polkit/polkitprivate.h
++polkit-0.118/src/polkit/polkitsubject.c
++polkit-0.118/src/polkit/polkitsubject.h
++polkit-0.118/src/polkit/polkitsystembusname.c
++polkit-0.118/src/polkit/polkitsystembusname.h
++polkit-0.118/src/polkit/polkittemporaryauthorization.c
++polkit-0.118/src/polkit/polkittemporaryauthorization.h
++polkit-0.118/src/polkit/polkittypes.h
++polkit-0.118/src/polkit/polkitunixgroup.c
++polkit-0.118/src/polkit/polkitunixgroup.h
++polkit-0.118/src/polkit/polkitunixnetgroup.c
++polkit-0.118/src/polkit/polkitunixnetgroup.h
++polkit-0.118/src/polkit/polkitunixprocess.c
++polkit-0.118/src/polkit/polkitunixprocess.h
++polkit-0.118/src/polkit/polkitunixsession-systemd.c
++polkit-0.118/src/polkit/polkitunixsession.c
++polkit-0.118/src/polkit/polkitunixsession.h
++polkit-0.118/src/polkit/polkitunixuser.c
++polkit-0.118/src/polkit/polkitunixuser.h
++polkit-0.118/src/polkitagent/
++polkit-0.118/src/polkitagent/Makefile.am
++polkit-0.118/src/polkitagent/polkitagent.h
++polkit-0.118/src/polkitagent/polkitagentenumtypes.c.template
++polkit-0.118/src/polkitagent/polkitagentenumtypes.h.template
++polkit-0.118/src/polkitagent/polkitagenthelper-bsdauth.c
++polkit-0.118/src/polkitagent/polkitagenthelper-pam.c
++polkit-0.118/src/polkitagent/polkitagenthelper-shadow.c
++polkit-0.118/src/polkitagent/polkitagenthelperprivate.c
++polkit-0.118/src/polkitagent/polkitagenthelperprivate.h
++polkit-0.118/src/polkitagent/polkitagentlistener.c
++polkit-0.118/src/polkitagent/polkitagentlistener.h
++polkit-0.118/src/polkitagent/polkitagentmarshal.list
++polkit-0.118/src/polkitagent/polkitagentsession.c
++polkit-0.118/src/polkitagent/polkitagentsession.h
++polkit-0.118/src/polkitagent/polkitagenttextlistener.c
++polkit-0.118/src/polkitagent/polkitagenttextlistener.h
++polkit-0.118/src/polkitagent/polkitagenttypes.h
++polkit-0.118/src/polkitbackend/
++polkit-0.118/src/polkitbackend/50-default.rules
++polkit-0.118/src/polkitbackend/Makefile.am
++polkit-0.118/src/polkitbackend/init.js
++polkit-0.118/src/polkitbackend/polkitbackend.h
++polkit-0.118/src/polkitbackend/polkitbackendactionlookup.c
++polkit-0.118/src/polkitbackend/polkitbackendactionlookup.h
++polkit-0.118/src/polkitbackend/polkitbackendactionpool.c
++polkit-0.118/src/polkitbackend/polkitbackendactionpool.h
++polkit-0.118/src/polkitbackend/polkitbackendauthority.c
++polkit-0.118/src/polkitbackend/polkitbackendauthority.h
++polkit-0.118/src/polkitbackend/polkitbackendinteractiveauthority.c
++polkit-0.118/src/polkitbackend/polkitbackendinteractiveauthority.h
++polkit-0.118/src/polkitbackend/polkitbackendjsauthority.cpp
++polkit-0.118/src/polkitbackend/polkitbackendjsauthority.h
++polkit-0.118/src/polkitbackend/polkitbackendprivate.h
++polkit-0.118/src/polkitbackend/polkitbackendsessionmonitor-systemd.c
++polkit-0.118/src/polkitbackend/polkitbackendsessionmonitor.c
++polkit-0.118/src/polkitbackend/polkitbackendsessionmonitor.h
++polkit-0.118/src/polkitbackend/polkitbackendtypes.h
++polkit-0.118/src/polkitbackend/polkitd.c
++polkit-0.118/src/polkitbackend/toarray.pl
++polkit-0.118/src/programs/
++polkit-0.118/src/programs/Makefile.am
++polkit-0.118/src/programs/pkaction.c
++polkit-0.118/src/programs/pkcheck.c
++polkit-0.118/src/programs/pkexec.c
++polkit-0.118/src/programs/pkttyagent.c
++polkit-0.118/test/
++polkit-0.118/test/Makefile.am
++polkit-0.118/test/data/
++polkit-0.118/test/data/etc/
++polkit-0.118/test/data/etc/group
++polkit-0.118/test/data/etc/netgroup
++polkit-0.118/test/data/etc/passwd
++polkit-0.118/test/data/etc/polkit-1/
++polkit-0.118/test/data/etc/polkit-1/localauthority.conf.d/
++polkit-0.118/test/data/etc/polkit-1/localauthority.conf.d/10-test.conf
++polkit-0.118/test/data/etc/polkit-1/localauthority/
++polkit-0.118/test/data/etc/polkit-1/localauthority/10-test/
++polkit-0.118/test/data/etc/polkit-1/localauthority/10-test/com.example.pkla
++polkit-0.118/test/data/etc/polkit-1/rules.d/
++polkit-0.118/test/data/etc/polkit-1/rules.d/10-testing.rules
++polkit-0.118/test/data/etc/polkit-1/rules.d/15-testing.rules
++polkit-0.118/test/data/usr/
++polkit-0.118/test/data/usr/share/
++polkit-0.118/test/data/usr/share/polkit-1/
++polkit-0.118/test/data/usr/share/polkit-1/rules.d/
++polkit-0.118/test/data/usr/share/polkit-1/rules.d/10-testing.rules
++polkit-0.118/test/data/usr/share/polkit-1/rules.d/20-testing.rules
++polkit-0.118/test/data/var/
++polkit-0.118/test/data/var/lib/
++polkit-0.118/test/data/var/lib/polkit-1/
++polkit-0.118/test/data/var/lib/polkit-1/localauthority/
++polkit-0.118/test/data/var/lib/polkit-1/localauthority/10-test/
++polkit-0.118/test/data/var/lib/polkit-1/localauthority/10-test/com.example.pkla
++polkit-0.118/test/mocklibc/
++polkit-0.118/test/mocklibc/AUTHORS
++polkit-0.118/test/mocklibc/COPYING
++polkit-0.118/test/mocklibc/ChangeLog
++polkit-0.118/test/mocklibc/INSTALL
++polkit-0.118/test/mocklibc/Makefile.am
++polkit-0.118/test/mocklibc/NEWS
++polkit-0.118/test/mocklibc/README
++polkit-0.118/test/mocklibc/bin/
++polkit-0.118/test/mocklibc/bin/Makefile.am
++polkit-0.118/test/mocklibc/bin/mocklibc-test.in
++polkit-0.118/test/mocklibc/bin/mocklibc.in
++polkit-0.118/test/mocklibc/configure.ac
++polkit-0.118/test/mocklibc/example/
++polkit-0.118/test/mocklibc/example/group
++polkit-0.118/test/mocklibc/example/netgroup
++polkit-0.118/test/mocklibc/example/passwd
++polkit-0.118/test/mocklibc/src/
++polkit-0.118/test/mocklibc/src/Makefile.am
++polkit-0.118/test/mocklibc/src/grp.c
++polkit-0.118/test/mocklibc/src/netdb.c
++polkit-0.118/test/mocklibc/src/netgroup-debug.c
++polkit-0.118/test/mocklibc/src/netgroup-debug.h
++polkit-0.118/test/mocklibc/src/netgroup.c
++polkit-0.118/test/mocklibc/src/netgroup.h
++polkit-0.118/test/mocklibc/src/pwd.c
++polkit-0.118/test/polkit/
++polkit-0.118/test/polkit/Makefile.am
++polkit-0.118/test/polkit/polkitidentitytest.c
++polkit-0.118/test/polkit/polkitunixgrouptest.c
++polkit-0.118/test/polkit/polkitunixnetgrouptest.c
++polkit-0.118/test/polkit/polkitunixusertest.c
++polkit-0.118/test/polkitbackend/
++polkit-0.118/test/polkitbackend/Makefile.am
++polkit-0.118/test/polkitbackend/polkitbackendjsauthoritytest-wrapper.py
++polkit-0.118/test/polkitbackend/test-polkitbackendjsauthority.c
++polkit-0.118/test/polkittesthelper.c
++polkit-0.118/test/polkittesthelper.h
++patching file configure.ac
++patching file src/polkit/polkitidentity.c
++patching file src/polkit/polkitunixnetgroup.c
++patching file src/polkitbackend/polkitbackendinteractiveauthority.c
++patching file src/polkitbackend/polkitbackendjsauthority.cpp
++patching file test/polkit/polkitidentitytest.c
++patching file test/polkit/polkitunixnetgrouptest.c
++patching file test/polkitbackend/test-polkitbackendjsauthority.c
++patching file src/polkitbackend/50-default.rules
++patching file configure.ac
++Hunk #1 succeeded at 222 (offset 1 line).
++**Warning**: I am going to run configure with no arguments.
++If you wish to pass any to it, please specify them on the
++./autogen.sh  command line.
++
++Running autoreconf on test/mocklibc ...
++libtoolize: putting auxiliary files in '.'.
++libtoolize: copying file './ltmain.sh'
++libtoolize: Consider adding 'AC_CONFIG_MACRO_DIRS([m4])' to configure.ac,
++libtoolize: and rerunning libtoolize and aclocal.
++libtoolize: Consider adding '-I m4' to ACLOCAL_AMFLAGS in Makefile.am.
++configure.ac:11: installing './compile'
++configure.ac:14: installing './config.guess'
++configure.ac:14: installing './config.sub'
++configure.ac:8: installing './install-sh'
++configure.ac:8: installing './missing'
++parallel-tests: installing './test-driver'
++src/Makefile.am: installing './depcomp'
++Running libtoolize...
++libtoolize: putting auxiliary files in '.'.
++libtoolize: copying file './ltmain.sh'
++libtoolize: putting macros in AC_CONFIG_MACRO_DIRS, 'buildutil'.
++libtoolize: copying file 'buildutil/libtool.m4'
++libtoolize: copying file 'buildutil/ltoptions.m4'
++libtoolize: copying file 'buildutil/ltsugar.m4'
++libtoolize: copying file 'buildutil/ltversion.m4'
++libtoolize: copying file 'buildutil/lt~obsolete.m4'
++libtoolize: Consider adding '-I buildutil' to ACLOCAL_AMFLAGS in Makefile.am.
++Running aclocal  ...
++Running autoheader...
++Running automake --gnu -Wno-portability  ...
++configure.ac:27: installing './compile'
++configure.ac:31: installing './config.guess'
++configure.ac:31: installing './config.sub'
++configure.ac:5: installing './install-sh'
++configure.ac:5: installing './missing'
++Makefile.am: installing './INSTALL'
++src/examples/Makefile.am: installing './depcomp'
++parallel-tests: installing './test-driver'
++Running autoconf ...
++Skipping configure process.
++checking for a BSD-compatible install... /usr/bin/ginstall -c
++checking whether build environment is sane... yes
++checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
++checking for gawk... gawk
++checking whether make sets $(MAKE)... yes
++checking whether make supports nested variables... yes
++checking whether to enable maintainer-specific portions of Makefiles... no
++checking whether make supports nested variables... (cached) yes
++checking whether make supports the include directive... yes (GNU style)
++checking for gcc... gcc
++checking whether the C compiler works... yes
++checking for C compiler default output file name... a.out
++checking for suffix of executables... 
++checking whether we are cross compiling... no
++checking for suffix of object files... o
++checking whether we are using the GNU C compiler... yes
++checking whether gcc accepts -g... yes
++checking for gcc option to accept ISO C89... none needed
++checking whether gcc understands -c and -o together... yes
++checking dependency style of gcc... gcc3
++checking how to run the C preprocessor... gcc -E
++checking for grep that handles long lines and -e... /usr/bin/grep
++checking for egrep... /usr/bin/grep -E
++checking for ANSI C header files... yes
++checking for sys/types.h... yes
++checking for sys/stat.h... yes
++checking for stdlib.h... yes
++checking for string.h... yes
++checking for memory.h... yes
++checking for strings.h... yes
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking for unistd.h... yes
++checking minix/config.h usability... no
++checking minix/config.h presence... no
++checking for minix/config.h... no
++checking whether it is safe to define __EXTENSIONS__... yes
++checking for library containing strerror... none required
++checking for gcc... (cached) gcc
++checking whether we are using the GNU C compiler... (cached) yes
++checking whether gcc accepts -g... (cached) yes
++checking for gcc option to accept ISO C89... (cached) none needed
++checking whether gcc understands -c and -o together... (cached) yes
++checking dependency style of gcc... (cached) gcc3
++checking for ANSI C header files... (cached) yes
++checking build system type... x86_64-slackware-linux-musl
++checking host system type... x86_64-slackware-linux-musl
++checking how to print strings... printf
++checking for a sed that does not truncate output... /usr/bin/sed
++checking for fgrep... /usr/bin/grep -F
++checking for ld used by gcc... /usr/bin/ld
++checking if the linker (/usr/bin/ld) is GNU ld... yes
++checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
++checking the name lister (/usr/bin/nm -B) interface... BSD nm
++checking whether ln -s works... yes
++checking the maximum length of command line arguments... 98304
++checking how to convert x86_64-slackware-linux-musl file names to x86_64-slackware-linux-musl format... func_convert_file_noop
++checking how to convert x86_64-slackware-linux-musl file names to toolchain format... func_convert_file_noop
++checking for /usr/bin/ld option to reload object files... -r
++checking for objdump... objdump
++checking how to recognize dependent libraries... pass_all
++checking for dlltool... dlltool
++checking how to associate runtime and link libraries... printf %s\n
++checking for ar... ar
++checking for archiver @FILE support... @
++checking for strip... strip
++checking for ranlib... ranlib
++checking command to parse /usr/bin/nm -B output from gcc object... ok
++checking for sysroot... no
++checking for a working dd... /usr/bin/dd
++checking how to truncate binary pipes... /usr/bin/dd bs=4096 count=1
++checking for mt... mt
++checking if mt is a manifest tool... no
++checking for dlfcn.h... yes
++checking for objdir... .libs
++checking if gcc supports -fno-rtti -fno-exceptions... no
++checking for gcc option to produce PIC... -fPIC -DPIC
++checking if gcc PIC flag -fPIC -DPIC works... yes
++checking if gcc static flag -static works... yes
++checking if gcc supports -c -o file.o... yes
++checking if gcc supports -c -o file.o... (cached) yes
++checking whether the gcc linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
++checking whether -lc should be explicitly linked in... no
++checking dynamic linker characteristics... GNU/Linux ld.so
++checking how to hardcode library paths into programs... immediate
++checking whether stripping libraries is possible... yes
++checking if libtool supports shared libraries... yes
++checking whether to build shared libraries... yes
++checking whether to build static libraries... no
++checking whether make sets $(MAKE)... (cached) yes
++checking whether ln -s works... yes
++checking for special C compiler options needed for large files... no
++checking for _FILE_OFFSET_BITS value needed for large files... no
++checking for g++... g++
++checking whether we are using the GNU C++ compiler... yes
++checking whether g++ accepts -g... yes
++checking dependency style of g++... gcc3
++checking how to run the C++ preprocessor... g++ -E
++checking for ld used by g++... /usr/bin/ld -m elf_x86_64
++checking if the linker (/usr/bin/ld -m elf_x86_64) is GNU ld... yes
++checking whether the g++ linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
++checking for g++ option to produce PIC... -fPIC -DPIC
++checking if g++ PIC flag -fPIC -DPIC works... yes
++checking if g++ static flag -static works... yes
++checking if g++ supports -c -o file.o... yes
++checking if g++ supports -c -o file.o... (cached) yes
++checking whether the g++ linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
++checking dynamic linker characteristics... (cached) GNU/Linux ld.so
++checking how to hardcode library paths into programs... immediate
++checking whether g++ supports C++17 features with -std=gnu++17... yes
++checking for xsltproc... /usr/bin/xsltproc
++checking pkg-config is at least version 0.9.0... yes
++checking for gtk-doc... yes
++checking for gtkdoc-check... gtkdoc-check.test
++checking for gtkdoc-check... /usr/bin/gtkdoc-check
++checking for gtkdoc-rebase... /usr/bin/gtkdoc-rebase
++checking for gtkdoc-mkpdf... /usr/bin/gtkdoc-mkpdf
++checking whether to build gtk-doc documentation... yes
++checking for glib-2.0 >= 2.10.0 gobject-2.0  >= 2.10.0... yes
++checking if gcc supports flag -pipe in envvar CFLAGS... yes
++checking if gcc supports flag -Wall in envvar CFLAGS... yes
++checking if gcc supports flag -Werror=empty-body in envvar CFLAGS... yes
++checking if gcc supports flag -Werror=strict-prototypes in envvar CFLAGS... yes
++checking if gcc supports flag -Werror=missing-prototypes in envvar CFLAGS... yes
++checking if gcc supports flag -Werror=implicit-function-declaration in envvar CFLAGS... yes
++checking if gcc supports flag -Werror=format=2 -Werror=format-security -Werror=format-nonliteral in envvar CFLAGS... yes
++checking if gcc supports flag -Werror=pointer-arith in envvar CFLAGS... yes
++checking if gcc supports flag -Werror=init-self in envvar CFLAGS... yes
++checking if gcc supports flag -Werror=missing-declarations in envvar CFLAGS... yes
++checking if gcc supports flag -Werror=return-type in envvar CFLAGS... yes
++checking if gcc supports flag -Werror=overflow in envvar CFLAGS... yes
++checking if gcc supports flag -Werror=int-conversion in envvar CFLAGS... yes
++checking if gcc supports flag -Werror=parenthesis in envvar CFLAGS... no
++checking if gcc supports flag -Werror=incompatible-pointer-types in envvar CFLAGS... yes
++checking if gcc supports flag -Werror=misleading-indentation in envvar CFLAGS... yes
++checking if gcc supports flag -Werror=missing-include-dirs in envvar CFLAGS... yes
++checking if gcc supports flag -Werror=aggregate-return in envvar CFLAGS... yes
++checking if gcc supports flag -Werror=declaration-after-statement in envvar CFLAGS... yes
++checking for gmodule-2.0 gio-unix-2.0 >= 2.30.0... yes
++checking for mozjs-78... yes
++checking expat.h usability... yes
++checking expat.h presence... yes
++checking for expat.h... yes
++checking for XML_ParserCreate in -lexpat... yes
++checking for clearenv... yes
++checking for fdatasync... yes
++checking for setnetgrent... no
++checking netgroup.h usability... no
++checking netgroup.h presence... no
++checking for netgroup.h... no
++checking for libelogind... yes
++checking for sd_uid_get_display... yes
++Package systemd was not found in the pkg-config search path.
++Perhaps you should add the directory containing `systemd.pc'
++to the PKG_CONFIG_PATH environment variable
++No package 'systemd' found
++checking for pam_start in -lpam... yes
++checking for sigtimedwait in -lc... yes
++checking how to call pam_strerror... two arguments
++checking security/pam_modutil.h usability... yes
++checking security/pam_modutil.h presence... yes
++checking for security/pam_modutil.h... yes
++checking security/pam_ext.h usability... yes
++checking security/pam_ext.h presence... yes
++checking for security/pam_ext.h... yes
++checking for pam_vsyslog in -lpam... yes
++checking for gobject-introspection... yes
++checking whether NLS is requested... yes
++checking for intltool >= 0.40.0... 0.51.0 found
++checking for intltool-update... /usr/bin/intltool-update
++checking for intltool-merge... /usr/bin/intltool-merge
++checking for intltool-extract... /usr/bin/intltool-extract
++checking for xgettext... /usr/bin/xgettext
++checking for msgmerge... /usr/bin/msgmerge
++checking for msgfmt... /usr/bin/msgfmt
++checking for gmsgfmt... /usr/bin/msgfmt
++checking for perl... /usr/bin/perl
++checking for perl >= 5.8.1... 5.32.0
++checking for XML::Parser... ok
++checking locale.h usability... yes
++checking locale.h presence... yes
++checking for locale.h... yes
++checking for LC_MESSAGES... yes
++checking for CFPreferencesCopyAppValue... no
++checking for CFLocaleCopyCurrent... no
++checking libintl.h usability... yes
++checking libintl.h presence... yes
++checking for libintl.h... yes
++checking for ngettext in libc... yes
++checking for dgettext in libc... yes
++checking for bind_textdomain_codeset... yes
++checking for msgfmt... (cached) /usr/bin/msgfmt
++checking for dcgettext... yes
++checking if msgfmt accepts -c... yes
++checking for gmsgfmt... (cached) /usr/bin/msgfmt
++checking for xgettext... (cached) /usr/bin/xgettext
++checking that generated files are newer than configure... done
++configure: creating ./config.status
++config.status: creating Makefile
++config.status: creating actions/Makefile
++config.status: creating data/Makefile
++config.status: creating data/polkit-1
++config.status: creating data/polkit-gobject-1.pc
++config.status: creating data/polkit-agent-1.pc
++config.status: creating src/Makefile
++config.status: creating src/polkit/Makefile
++config.status: creating src/polkitbackend/Makefile
++config.status: creating src/polkitagent/Makefile
++config.status: creating src/programs/Makefile
++config.status: creating src/examples/Makefile
++config.status: creating docs/version.xml
++config.status: creating docs/extensiondir.xml
++config.status: creating docs/Makefile
++config.status: creating docs/polkit/Makefile
++config.status: creating docs/man/Makefile
++config.status: creating po/Makefile.in
++config.status: creating test/Makefile
++config.status: creating test/polkit/Makefile
++config.status: creating test/polkitbackend/Makefile
++config.status: creating config.h
++config.status: executing depfiles commands
++config.status: executing libtool commands
++config.status: executing default-1 commands
++config.status: executing po/stamp-it commands
++=== configuring in test/mocklibc (/tmp/polkit-0.118/test/mocklibc)
++configure: running /bin/sh ./configure --disable-option-checking '--prefix=/usr'  '--libdir=/usr/lib' '--sysconfdir=/etc' '--localstatedir=/var' '--docdir=/usr/doc/polkit-0.118' '--enable-man-pages' '--enable-gtk-doc' '--mandir=/usr/man' '--disable-static' '--disable-examples' '--enable-introspection' '--enable-libsystemd-login=no' '--enable-libelogind=yes' '--with-authfw=pam' '--with-pam-module-dir=/lib/security' '--enable-verbose-mode' '--with-os-type=Slackware' '--build=x86_64-slackware-linux-musl' 'build_alias=x86_64-slackware-linux-musl' 'CFLAGS=-O2 -fPIC' 'CXXFLAGS=-O2 -fPIC' 'PKG_CONFIG=/usr/bin/pkg-config' 'PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig' 'LIBELOGIND_CFLAGS=-I/usr/include/elogind' 'LIBELOGIND_LIBS=-lelogind' --cache-file=/dev/null --srcdir=.
++checking for a BSD-compatible install... /usr/bin/ginstall -c
++checking whether build environment is sane... yes
++checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
++checking for gawk... gawk
++checking whether make sets $(MAKE)... yes
++checking whether make supports nested variables... yes
++checking for gcc... gcc
++checking whether the C compiler works... yes
++checking for C compiler default output file name... a.out
++checking for suffix of executables... 
++checking whether we are cross compiling... no
++checking for suffix of object files... o
++checking whether we are using the GNU C compiler... yes
++checking whether gcc accepts -g... yes
++checking for gcc option to accept ISO C89... none needed
++checking whether gcc understands -c and -o together... yes
++checking whether make supports the include directive... yes (GNU style)
++checking dependency style of gcc... gcc3
++checking build system type... x86_64-slackware-linux-musl
++checking host system type... x86_64-slackware-linux-musl
++checking how to print strings... printf
++checking for a sed that does not truncate output... /usr/bin/sed
++checking for grep that handles long lines and -e... /usr/bin/grep
++checking for egrep... /usr/bin/grep -E
++checking for fgrep... /usr/bin/grep -F
++checking for ld used by gcc... /usr/bin/ld
++checking if the linker (/usr/bin/ld) is GNU ld... yes
++checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
++checking the name lister (/usr/bin/nm -B) interface... BSD nm
++checking whether ln -s works... yes
++checking the maximum length of command line arguments... 98304
++checking how to convert x86_64-slackware-linux-musl file names to x86_64-slackware-linux-musl format... func_convert_file_noop
++checking how to convert x86_64-slackware-linux-musl file names to toolchain format... func_convert_file_noop
++checking for /usr/bin/ld option to reload object files... -r
++checking for objdump... objdump
++checking how to recognize dependent libraries... pass_all
++checking for dlltool... dlltool
++checking how to associate runtime and link libraries... printf %s\n
++checking for ar... ar
++checking for archiver @FILE support... @
++checking for strip... strip
++checking for ranlib... ranlib
++checking command to parse /usr/bin/nm -B output from gcc object... ok
++checking for sysroot... no
++checking for a working dd... /usr/bin/dd
++checking how to truncate binary pipes... /usr/bin/dd bs=4096 count=1
++checking for mt... mt
++checking if mt is a manifest tool... no
++checking how to run the C preprocessor... gcc -E
++checking for ANSI C header files... yes
++checking for sys/types.h... yes
++checking for sys/stat.h... yes
++checking for stdlib.h... yes
++checking for string.h... yes
++checking for memory.h... yes
++checking for strings.h... yes
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking for unistd.h... yes
++checking for dlfcn.h... yes
++checking for objdir... .libs
++checking if gcc supports -fno-rtti -fno-exceptions... no
++checking for gcc option to produce PIC... -fPIC -DPIC
++checking if gcc PIC flag -fPIC -DPIC works... yes
++checking if gcc static flag -static works... yes
++checking if gcc supports -c -o file.o... yes
++checking if gcc supports -c -o file.o... (cached) yes
++checking whether the gcc linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
++checking whether -lc should be explicitly linked in... no
++checking dynamic linker characteristics... GNU/Linux ld.so
++checking how to hardcode library paths into programs... immediate
++checking whether stripping libraries is possible... yes
++checking if libtool supports shared libraries... yes
++checking whether to build shared libraries... yes
++checking whether to build static libraries... no
++checking netdb.h usability... yes
++checking netdb.h presence... yes
++checking for netdb.h... yes
++checking for stdlib.h... (cached) yes
++checking for string.h... (cached) yes
++checking for uid_t in sys/types.h... yes
++checking for size_t... yes
++checking for ssize_t... yes
++checking for stdlib.h... (cached) yes
++checking for GNU libc compatible malloc... yes
++checking for endgrent... yes
++checking for endpwent... yes
++checking for memset... yes
++checking for regcomp... yes
++checking for strdup... yes
++checking that generated files are newer than configure... done
++configure: creating ./config.status
++config.status: creating Makefile
++config.status: creating src/Makefile
++config.status: creating bin/Makefile
++config.status: creating config.h
++config.status: executing depfiles commands
++config.status: executing libtool commands
++
++                  polkit 0.118
++                =================
++
++        prefix:                     /usr
++        libdir:                     /usr/lib
++        libexecdir:                 ${exec_prefix}/libexec
++        bindir:                     ${exec_prefix}/bin
++        sbindir:                    ${exec_prefix}/sbin
++        datadir:                    ${datarootdir}
++        sysconfdir:                 /etc
++        localstatedir:              /var
++        docdir:                     /usr/doc/polkit-0.118
++
++        compiler:                   gcc
++        cflags:                     -O2 -fPIC
++        cppflags:                   
++        xsltproc:                   /usr/bin/xsltproc
++	introspection:		    yes
++
++        Distribution/OS:            Slackware
++        Authentication framework:   pam
++        Session tracking:           libelogind
++        PAM support:                yes
++        systemdsystemunitdir:       
++        polkitd user:               polkitd
++
++        PAM file auth:              system-auth
++        PAM file account:           system-auth
++        PAM file password:          system-auth
++        PAM file session:           system-auth
++
++        Maintainer mode:            no
++        Building api docs:          yes
++        Building man pages:         yes
++        Building examples:          no
++
++
++NOTE: The file /usr/lib/polkit-1/polkit-agent-helper-1 must be owned
++      by root and have mode 4755 (setuid root binary)
++
++NOTE: The file ${exec_prefix}/bin/pkexec must be owned by root and
++      have mode 4755 (setuid root binary)
++
++NOTE: The directory /etc/polkit-1/rules.d must be owned
++      by user 'polkitd' and have mode 700
++
++NOTE: The directory ${datarootdir}/polkit-1/rules.d must be owned
++      by user 'polkitd' and have mode 700
++
++make  all-recursive
++make[1]: Entering directory '/tmp/polkit-0.118'
++Making all in actions
++make[2]: Entering directory '/tmp/polkit-0.118/actions'
++  ITMRG  org.freedesktop.policykit.policy
++git.mk: Generating .gitignore
++make[2]: Leaving directory '/tmp/polkit-0.118/actions'
++Making all in data
++make[2]: Entering directory '/tmp/polkit-0.118/data'
++git.mk: Generating .gitignore
++make[2]: Leaving directory '/tmp/polkit-0.118/data'
++Making all in src
++make[2]: Entering directory '/tmp/polkit-0.118/src'
++git.mk: Generating .gitignore
++make[3]: Entering directory '/tmp/polkit-0.118/src/examples'
++Making all in polkit
++git.mk: Generating .gitignore
++make[3]: Entering directory '/tmp/polkit-0.118/src/polkit'
++( top_builddir=`cd ../.. && pwd`; \
++ cd . && glib-mkenums --template polkitenumtypes.c.template polkitcheckauthorizationflags.h polkiterror.h polkitimplicitauthorization.h polkitauthorityfeatures.h) > \
++   polkitenumtypes.c.tmp && mv polkitenumtypes.c.tmp polkitenumtypes.c
++make[3]: Leaving directory '/tmp/polkit-0.118/src/examples'
++( top_builddir=`cd ../.. && pwd`; \
++ cd . && glib-mkenums --template polkitenumtypes.h.template polkitcheckauthorizationflags.h polkiterror.h polkitimplicitauthorization.h polkitauthorityfeatures.h) > \
++   polkitenumtypes.h.tmp && mv polkitenumtypes.h.tmp polkitenumtypes.h
++git.mk: Generating .gitignore
++make  all-am
++make[4]: Entering directory '/tmp/polkit-0.118/src/polkit'
++  CC       libpolkit_gobject_1_la-polkitenumtypes.lo
++  CC       libpolkit_gobject_1_la-polkitactiondescription.lo
++  CC       libpolkit_gobject_1_la-polkitauthorityfeatures.lo
++  CC       libpolkit_gobject_1_la-polkitdetails.lo
++  CC       libpolkit_gobject_1_la-polkitauthority.lo
++  CC       libpolkit_gobject_1_la-polkiterror.lo
++polkitauthority.c: In function ‘authority_get_async_cb’:
++polkitauthority.c:437:7: warning: ‘g_simple_async_result_set_from_error’ is deprecated [-Wdeprecated-declarations]
++  437 |       g_simple_async_result_set_from_error (simple, error);
++      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitauthority.h:30,
++                 from polkitauthority.c:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:113:21: note: declared here
++  113 | void                g_simple_async_result_set_from_error   (GSimpleAsyncResult      *simple,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitauthority.c:443:7: warning: ‘g_simple_async_result_set_op_res_gpointer’ is deprecated [-Wdeprecated-declarations]
++  443 |       g_simple_async_result_set_op_res_gpointer (simple,
++      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitauthority.h:30,
++                 from polkitauthority.c:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:75:21: note: declared here
++   75 | void                g_simple_async_result_set_op_res_gpointer (GSimpleAsyncResult      *simple,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitauthority.c:447:3: warning: ‘g_simple_async_result_complete_in_idle’ is deprecated [-Wdeprecated-declarations]
++  447 |   g_simple_async_result_complete_in_idle (simple);
++      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitauthority.h:30,
++                 from polkitauthority.c:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:106:21: note: declared here
++  106 | void                g_simple_async_result_complete_in_idle (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitauthority.c: In function ‘polkit_authority_get_async’:
++polkitauthority.c:477:3: warning: ‘g_simple_async_result_new’ is deprecated: Use 'g_task_new' instead [-Wdeprecated-declarations]
++  477 |   simple = g_simple_async_result_new (NULL,
++      |   ^~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitauthority.h:30,
++                 from polkitauthority.c:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:51:21: note: declared here
++   51 | GSimpleAsyncResult *g_simple_async_result_new              (GObject                 *source_object,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~
++polkitauthority.c:487:7: warning: ‘g_simple_async_result_set_from_error’ is deprecated [-Wdeprecated-declarations]
++  487 |       g_simple_async_result_set_from_error (simple, error);
++      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitauthority.h:30,
++                 from polkitauthority.c:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:113:21: note: declared here
++  113 | void                g_simple_async_result_set_from_error   (GSimpleAsyncResult      *simple,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitauthority.c:489:7: warning: ‘g_simple_async_result_complete_in_idle’ is deprecated [-Wdeprecated-declarations]
++  489 |       g_simple_async_result_complete_in_idle (simple);
++      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitauthority.h:30,
++                 from polkitauthority.c:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:106:21: note: declared here
++  106 | void                g_simple_async_result_complete_in_idle (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitauthority.c: In function ‘polkit_authority_get_finish’:
++polkitauthority.c:525:3: warning: ‘g_simple_async_result_get_source_tag’ is deprecated [-Wdeprecated-declarations]
++  525 |   g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == polkit_authority_get_async);
++      |   ^~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitauthority.h:30,
++                 from polkitauthority.c:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:99:21: note: declared here
++   99 | gpointer            g_simple_async_result_get_source_tag   (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitauthority.c:529:3: warning: ‘g_simple_async_result_propagate_error’ is deprecated [-Wdeprecated-declarations]
++  529 |   if (g_simple_async_result_propagate_error (simple, error))
++      |   ^~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitauthority.h:30,
++                 from polkitauthority.c:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:119:21: note: declared here
++  119 | gboolean            g_simple_async_result_propagate_error  (GSimpleAsyncResult      *simple,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitauthority.c:532:3: warning: ‘g_simple_async_result_get_op_res_gpointer’ is deprecated [-Wdeprecated-declarations]
++  532 |   object = g_simple_async_result_get_op_res_gpointer (simple);
++      |   ^~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitauthority.h:30,
++                 from polkitauthority.c:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:79:21: note: declared here
++   79 | gpointer            g_simple_async_result_get_op_res_gpointer (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitauthority.c: In function ‘generic_async_cb’:
++polkitauthority.c:631:3: warning: ‘g_simple_async_result_set_op_res_gpointer’ is deprecated [-Wdeprecated-declarations]
++  631 |   g_simple_async_result_set_op_res_gpointer (simple, g_object_ref (res), g_object_unref);
++      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitauthority.h:30,
++                 from polkitauthority.c:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:75:21: note: declared here
++   75 | void                g_simple_async_result_set_op_res_gpointer (GSimpleAsyncResult      *simple,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitauthority.c:632:3: warning: ‘g_simple_async_result_complete’ is deprecated [-Wdeprecated-declarations]
++  632 |   g_simple_async_result_complete (simple);
++      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitauthority.h:30,
++                 from polkitauthority.c:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:104:21: note: declared here
++  104 | void                g_simple_async_result_complete         (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitauthority.c: In function ‘polkit_authority_enumerate_actions’:
++polkitauthority.c:669:22: warning: ‘g_simple_async_result_new’ is deprecated: Use 'g_task_new' instead [-Wdeprecated-declarations]
++  669 |                      g_simple_async_result_new (G_OBJECT (authority),
++      |                      ^~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitauthority.h:30,
++                 from polkitauthority.c:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:51:21: note: declared here
++   51 | GSimpleAsyncResult *g_simple_async_result_new              (GObject                 *source_object,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~
++polkitauthority.c: In function ‘polkit_authority_enumerate_actions_finish’:
++polkitauthority.c:706:3: warning: ‘g_simple_async_result_get_source_tag’ is deprecated [-Wdeprecated-declarations]
++  706 |   g_warn_if_fail (g_simple_async_result_get_source_tag (G_SIMPLE_ASYNC_RESULT (res)) == polkit_authority_enumerate_actions);
++      |   ^~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitauthority.h:30,
++                 from polkitauthority.c:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:99:21: note: declared here
++   99 | gpointer            g_simple_async_result_get_source_tag   (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitauthority.c:707:3: warning: ‘g_simple_async_result_get_op_res_gpointer’ is deprecated [-Wdeprecated-declarations]
++  707 |   _res = G_ASYNC_RESULT (g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (res)));
++      |   ^~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitauthority.h:30,
++                 from polkitauthority.c:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:79:21: note: declared here
++   79 | gpointer            g_simple_async_result_get_op_res_gpointer (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitauthority.c: In function ‘check_authorization_cb’:
++polkitauthority.c:821:7: warning: ‘g_simple_async_result_set_from_error’ is deprecated [-Wdeprecated-declarations]
++  821 |       g_simple_async_result_set_from_error (data->simple, error);
++      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitauthority.h:30,
++                 from polkitauthority.c:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:113:21: note: declared here
++  113 | void                g_simple_async_result_set_from_error   (GSimpleAsyncResult      *simple,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitauthority.c:832:7: warning: ‘g_simple_async_result_set_op_res_gpointer’ is deprecated [-Wdeprecated-declarations]
++  832 |       g_simple_async_result_set_op_res_gpointer (data->simple, result, g_object_unref);
++      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitauthority.h:30,
++                 from polkitauthority.c:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:75:21: note: declared here
++   75 | void                g_simple_async_result_set_op_res_gpointer (GSimpleAsyncResult      *simple,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitauthority.c:835:3: warning: ‘g_simple_async_result_complete’ is deprecated [-Wdeprecated-declarations]
++  835 |   g_simple_async_result_complete (data->simple);
++      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitauthority.h:30,
++                 from polkitauthority.c:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:104:21: note: declared here
++  104 | void                g_simple_async_result_complete         (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitauthority.c: In function ‘polkit_authority_check_authorization’:
++polkitauthority.c:899:3: warning: ‘g_simple_async_result_new’ is deprecated: Use 'g_task_new' instead [-Wdeprecated-declarations]
++  899 |   data->simple = g_simple_async_result_new (G_OBJECT (authority),
++      |   ^~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitauthority.h:30,
++                 from polkitauthority.c:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:51:21: note: declared here
++   51 | GSimpleAsyncResult *g_simple_async_result_new              (GObject                 *source_object,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~
++polkitauthority.c: In function ‘polkit_authority_check_authorization_finish’:
++polkitauthority.c:947:3: warning: ‘g_simple_async_result_propagate_error’ is deprecated [-Wdeprecated-declarations]
++  947 |   if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (res), error))
++      |   ^~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitauthority.h:30,
++                 from polkitauthority.c:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:119:21: note: declared here
++  119 | gboolean            g_simple_async_result_propagate_error  (GSimpleAsyncResult      *simple,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitauthority.c:950:3: warning: ‘g_simple_async_result_get_op_res_gpointer’ is deprecated [-Wdeprecated-declarations]
++  950 |   ret = g_object_ref (g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (res)));
++      |   ^~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitauthority.h:30,
++                 from polkitauthority.c:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:79:21: note: declared here
++   79 | gpointer            g_simple_async_result_get_op_res_gpointer (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitauthority.c:950:3: warning: ‘g_simple_async_result_get_op_res_gpointer’ is deprecated [-Wdeprecated-declarations]
++  950 |   ret = g_object_ref (g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (res)));
++      |   ^~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitauthority.h:30,
++                 from polkitauthority.c:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:79:21: note: declared here
++   79 | gpointer            g_simple_async_result_get_op_res_gpointer (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitauthority.c: In function ‘polkit_authority_register_authentication_agent’:
++polkitauthority.c:1068:22: warning: ‘g_simple_async_result_new’ is deprecated: Use 'g_task_new' instead [-Wdeprecated-declarations]
++ 1068 |                      g_simple_async_result_new (G_OBJECT (authority),
++      |                      ^~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitauthority.h:30,
++                 from polkitauthority.c:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:51:21: note: declared here
++   51 | GSimpleAsyncResult *g_simple_async_result_new              (GObject                 *source_object,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~
++polkitauthority.c: In function ‘polkit_authority_register_authentication_agent_finish’:
++polkitauthority.c:1099:3: warning: ‘g_simple_async_result_get_source_tag’ is deprecated [-Wdeprecated-declarations]
++ 1099 |   g_warn_if_fail (g_simple_async_result_get_source_tag (G_SIMPLE_ASYNC_RESULT (res)) == polkit_authority_register_authentication_agent);
++      |   ^~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitauthority.h:30,
++                 from polkitauthority.c:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:99:21: note: declared here
++   99 | gpointer            g_simple_async_result_get_source_tag   (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitauthority.c:1100:3: warning: ‘g_simple_async_result_get_op_res_gpointer’ is deprecated [-Wdeprecated-declarations]
++ 1100 |   _res = G_ASYNC_RESULT (g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (res)));
++      |   ^~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitauthority.h:30,
++                 from polkitauthority.c:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:79:21: note: declared here
++   79 | gpointer            g_simple_async_result_get_op_res_gpointer (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++  CC       libpolkit_gobject_1_la-polkitsubject.lo
++polkitauthority.c: In function ‘polkit_authority_register_authentication_agent_with_options’:
++polkitauthority.c:1221:26: warning: ‘g_simple_async_result_new’ is deprecated: Use 'g_task_new' instead [-Wdeprecated-declarations]
++ 1221 |                          g_simple_async_result_new (G_OBJECT (authority),
++      |                          ^~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitauthority.h:30,
++                 from polkitauthority.c:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:51:21: note: declared here
++   51 | GSimpleAsyncResult *g_simple_async_result_new              (GObject                 *source_object,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~
++polkitauthority.c:1238:26: warning: ‘g_simple_async_result_new’ is deprecated: Use 'g_task_new' instead [-Wdeprecated-declarations]
++ 1238 |                          g_simple_async_result_new (G_OBJECT (authority),
++      |                          ^~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitauthority.h:30,
++                 from polkitauthority.c:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:51:21: note: declared here
++   51 | GSimpleAsyncResult *g_simple_async_result_new              (GObject                 *source_object,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~
++polkitauthority.c: In function ‘polkit_authority_register_authentication_agent_with_options_finish’:
++polkitauthority.c:1271:3: warning: ‘g_simple_async_result_get_source_tag’ is deprecated [-Wdeprecated-declarations]
++ 1271 |   g_warn_if_fail (g_simple_async_result_get_source_tag (G_SIMPLE_ASYNC_RESULT (res)) == polkit_authority_register_authentication_agent_with_options);
++      |   ^~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitauthority.h:30,
++                 from polkitauthority.c:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:99:21: note: declared here
++   99 | gpointer            g_simple_async_result_get_source_tag   (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitauthority.c:1272:3: warning: ‘g_simple_async_result_get_op_res_gpointer’ is deprecated [-Wdeprecated-declarations]
++ 1272 |   _res = G_ASYNC_RESULT (g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (res)));
++      |   ^~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitauthority.h:30,
++                 from polkitauthority.c:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:79:21: note: declared here
++   79 | gpointer            g_simple_async_result_get_op_res_gpointer (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitauthority.c: In function ‘polkit_authority_unregister_authentication_agent’:
++polkitauthority.c:1378:22: warning: ‘g_simple_async_result_new’ is deprecated: Use 'g_task_new' instead [-Wdeprecated-declarations]
++ 1378 |                      g_simple_async_result_new (G_OBJECT (authority),
++      |                      ^~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitauthority.h:30,
++                 from polkitauthority.c:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:51:21: note: declared here
++   51 | GSimpleAsyncResult *g_simple_async_result_new              (GObject                 *source_object,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~
++polkitauthority.c: In function ‘polkit_authority_unregister_authentication_agent_finish’:
++polkitauthority.c:1409:3: warning: ‘g_simple_async_result_get_source_tag’ is deprecated [-Wdeprecated-declarations]
++ 1409 |   g_warn_if_fail (g_simple_async_result_get_source_tag (G_SIMPLE_ASYNC_RESULT (res)) == polkit_authority_unregister_authentication_agent);
++      |   ^~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitauthority.h:30,
++                 from polkitauthority.c:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:99:21: note: declared here
++   99 | gpointer            g_simple_async_result_get_source_tag   (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitauthority.c:1410:3: warning: ‘g_simple_async_result_get_op_res_gpointer’ is deprecated [-Wdeprecated-declarations]
++ 1410 |   _res = G_ASYNC_RESULT (g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (res)));
++      |   ^~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitauthority.h:30,
++                 from polkitauthority.c:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:79:21: note: declared here
++   79 | gpointer            g_simple_async_result_get_op_res_gpointer (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitauthority.c: In function ‘polkit_authority_authentication_agent_response’:
++polkitauthority.c:1519:22: warning: ‘g_simple_async_result_new’ is deprecated: Use 'g_task_new' instead [-Wdeprecated-declarations]
++ 1519 |                      g_simple_async_result_new (G_OBJECT (authority),
++      |                      ^~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitauthority.h:30,
++                 from polkitauthority.c:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:51:21: note: declared here
++   51 | GSimpleAsyncResult *g_simple_async_result_new              (GObject                 *source_object,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~
++polkitauthority.c: In function ‘polkit_authority_authentication_agent_response_finish’:
++polkitauthority.c:1550:3: warning: ‘g_simple_async_result_get_source_tag’ is deprecated [-Wdeprecated-declarations]
++ 1550 |   g_warn_if_fail (g_simple_async_result_get_source_tag (G_SIMPLE_ASYNC_RESULT (res)) == polkit_authority_authentication_agent_response);
++      |   ^~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitauthority.h:30,
++                 from polkitauthority.c:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:99:21: note: declared here
++   99 | gpointer            g_simple_async_result_get_source_tag   (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitauthority.c:1551:3: warning: ‘g_simple_async_result_get_op_res_gpointer’ is deprecated [-Wdeprecated-declarations]
++ 1551 |   _res = G_ASYNC_RESULT (g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (res)));
++      |   ^~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitauthority.h:30,
++                 from polkitauthority.c:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:79:21: note: declared here
++   79 | gpointer            g_simple_async_result_get_op_res_gpointer (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitauthority.c: In function ‘polkit_authority_enumerate_temporary_authorizations’:
++polkitauthority.c:1645:22: warning: ‘g_simple_async_result_new’ is deprecated: Use 'g_task_new' instead [-Wdeprecated-declarations]
++ 1645 |                      g_simple_async_result_new (G_OBJECT (authority),
++      |                      ^~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitauthority.h:30,
++                 from polkitauthority.c:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:51:21: note: declared here
++   51 | GSimpleAsyncResult *g_simple_async_result_new              (GObject                 *source_object,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~
++polkitauthority.c: In function ‘polkit_authority_enumerate_temporary_authorizations_finish’:
++polkitauthority.c:1682:3: warning: ‘g_simple_async_result_get_source_tag’ is deprecated [-Wdeprecated-declarations]
++ 1682 |   g_warn_if_fail (g_simple_async_result_get_source_tag (G_SIMPLE_ASYNC_RESULT (res)) == polkit_authority_enumerate_temporary_authorizations);
++      |   ^~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitauthority.h:30,
++                 from polkitauthority.c:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:99:21: note: declared here
++   99 | gpointer            g_simple_async_result_get_source_tag   (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitauthority.c:1683:3: warning: ‘g_simple_async_result_get_op_res_gpointer’ is deprecated [-Wdeprecated-declarations]
++ 1683 |   _res = G_ASYNC_RESULT (g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (res)));
++      |   ^~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitauthority.h:30,
++                 from polkitauthority.c:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:79:21: note: declared here
++   79 | gpointer            g_simple_async_result_get_op_res_gpointer (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitauthority.c: In function ‘polkit_authority_revoke_temporary_authorizations’:
++polkitauthority.c:1794:22: warning: ‘g_simple_async_result_new’ is deprecated: Use 'g_task_new' instead [-Wdeprecated-declarations]
++ 1794 |                      g_simple_async_result_new (G_OBJECT (authority),
++      |                      ^~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitauthority.h:30,
++                 from polkitauthority.c:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:51:21: note: declared here
++   51 | GSimpleAsyncResult *g_simple_async_result_new              (GObject                 *source_object,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~
++polkitauthority.c: In function ‘polkit_authority_revoke_temporary_authorizations_finish’:
++polkitauthority.c:1825:3: warning: ‘g_simple_async_result_get_source_tag’ is deprecated [-Wdeprecated-declarations]
++ 1825 |   g_warn_if_fail (g_simple_async_result_get_source_tag (G_SIMPLE_ASYNC_RESULT (res)) == polkit_authority_revoke_temporary_authorizations);
++      |   ^~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitauthority.h:30,
++                 from polkitauthority.c:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:99:21: note: declared here
++   99 | gpointer            g_simple_async_result_get_source_tag   (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitauthority.c:1826:3: warning: ‘g_simple_async_result_get_op_res_gpointer’ is deprecated [-Wdeprecated-declarations]
++ 1826 |   _res = G_ASYNC_RESULT (g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (res)));
++      |   ^~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitauthority.h:30,
++                 from polkitauthority.c:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:79:21: note: declared here
++   79 | gpointer            g_simple_async_result_get_op_res_gpointer (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitauthority.c: In function ‘polkit_authority_revoke_temporary_authorization_by_id’:
++polkitauthority.c:1914:22: warning: ‘g_simple_async_result_new’ is deprecated: Use 'g_task_new' instead [-Wdeprecated-declarations]
++ 1914 |                      g_simple_async_result_new (G_OBJECT (authority),
++      |                      ^~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitauthority.h:30,
++                 from polkitauthority.c:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:51:21: note: declared here
++   51 | GSimpleAsyncResult *g_simple_async_result_new              (GObject                 *source_object,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~
++polkitauthority.c: In function ‘polkit_authority_revoke_temporary_authorization_by_id_finish’:
++polkitauthority.c:1945:3: warning: ‘g_simple_async_result_get_source_tag’ is deprecated [-Wdeprecated-declarations]
++ 1945 |   g_warn_if_fail (g_simple_async_result_get_source_tag (G_SIMPLE_ASYNC_RESULT (res)) == polkit_authority_revoke_temporary_authorization_by_id);
++      |   ^~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitauthority.h:30,
++                 from polkitauthority.c:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:99:21: note: declared here
++   99 | gpointer            g_simple_async_result_get_source_tag   (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitauthority.c:1946:3: warning: ‘g_simple_async_result_get_op_res_gpointer’ is deprecated [-Wdeprecated-declarations]
++ 1946 |   _res = G_ASYNC_RESULT (g_simple_async_result_get_op_res_gpointer (G_SIMPLE_ASYNC_RESULT (res)));
++      |   ^~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitauthority.h:30,
++                 from polkitauthority.c:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:79:21: note: declared here
++   79 | gpointer            g_simple_async_result_get_op_res_gpointer (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++  CC       libpolkit_gobject_1_la-polkitunixprocess.lo
++  CC       libpolkit_gobject_1_la-polkitsystembusname.lo
++  CC       libpolkit_gobject_1_la-polkitidentity.lo
++polkitunixprocess.c: In function ‘polkit_unix_process_exists’:
++polkitunixprocess.c:572:3: warning: ‘g_simple_async_result_new’ is deprecated: Use 'g_task_new' instead [-Wdeprecated-declarations]
++  572 |   simple = g_simple_async_result_new (G_OBJECT (subject),
++      |   ^~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitunixprocess.h:32,
++                 from polkitunixprocess.c:44:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:51:21: note: declared here
++   51 | GSimpleAsyncResult *g_simple_async_result_new              (GObject                 *source_object,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~
++polkitunixprocess.c:576:3: warning: ‘g_simple_async_result_complete’ is deprecated [-Wdeprecated-declarations]
++  576 |   g_simple_async_result_complete (simple);
++      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitunixprocess.h:32,
++                 from polkitunixprocess.c:44:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:104:21: note: declared here
++  104 | void                g_simple_async_result_complete         (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitunixprocess.c: In function ‘polkit_unix_process_exists_finish’:
++polkitunixprocess.c:587:3: warning: ‘g_simple_async_result_get_source_tag’ is deprecated [-Wdeprecated-declarations]
++  587 |   g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == polkit_unix_process_exists);
++      |   ^~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitunixprocess.h:32,
++                 from polkitunixprocess.c:44:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:99:21: note: declared here
++   99 | gpointer            g_simple_async_result_get_source_tag   (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++  CC       libpolkit_gobject_1_la-polkitunixuser.lo
++polkitsystembusname.c: In function ‘exists_in_thread_func’:
++polkitsystembusname.c:284:7: warning: ‘g_simple_async_result_set_from_error’ is deprecated [-Wdeprecated-declarations]
++  284 |       g_simple_async_result_set_from_error (res, error);
++      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitsystembusname.h:32,
++                 from polkitsystembusname.c:27:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:113:21: note: declared here
++  113 | void                g_simple_async_result_set_from_error   (GSimpleAsyncResult      *simple,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitsystembusname.c: In function ‘polkit_system_bus_name_exists’:
++polkitsystembusname.c:299:3: warning: ‘g_simple_async_result_new’ is deprecated: Use 'g_task_new' instead [-Wdeprecated-declarations]
++  299 |   simple = g_simple_async_result_new (G_OBJECT (subject),
++      |   ^~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitsystembusname.h:32,
++                 from polkitsystembusname.c:27:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:51:21: note: declared here
++   51 | GSimpleAsyncResult *g_simple_async_result_new              (GObject                 *source_object,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~
++polkitsystembusname.c:303:3: warning: ‘g_simple_async_result_run_in_thread’ is deprecated [-Wdeprecated-declarations]
++  303 |   g_simple_async_result_run_in_thread (simple,
++      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitsystembusname.h:32,
++                 from polkitsystembusname.c:27:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:108:21: note: declared here
++  108 | void                g_simple_async_result_run_in_thread    (GSimpleAsyncResult      *simple,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitsystembusname.c: In function ‘polkit_system_bus_name_exists_finish’:
++polkitsystembusname.c:318:3: warning: ‘g_simple_async_result_get_source_tag’ is deprecated [-Wdeprecated-declarations]
++  318 |   g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == polkit_system_bus_name_exists);
++      |   ^~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitsystembusname.h:32,
++                 from polkitsystembusname.c:27:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:99:21: note: declared here
++   99 | gpointer            g_simple_async_result_get_source_tag   (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitsystembusname.c:322:3: warning: ‘g_simple_async_result_propagate_error’ is deprecated [-Wdeprecated-declarations]
++  322 |   if (g_simple_async_result_propagate_error (simple, error))
++      |   ^~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitsystembusname.h:32,
++                 from polkitsystembusname.c:27:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:119:21: note: declared here
++  119 | gboolean            g_simple_async_result_propagate_error  (GSimpleAsyncResult      *simple,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitsystembusname.c:325:3: warning: ‘g_simple_async_result_get_op_res_gboolean’ is deprecated [-Wdeprecated-declarations]
++  325 |   ret = g_simple_async_result_get_op_res_gboolean (simple);
++      |   ^~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitsystembusname.h:32,
++                 from polkitsystembusname.c:27:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:91:21: note: declared here
++   91 | gboolean            g_simple_async_result_get_op_res_gboolean (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++  CC       libpolkit_gobject_1_la-polkitunixgroup.lo
++  CC       libpolkit_gobject_1_la-polkitunixnetgroup.lo
++  CC       libpolkit_gobject_1_la-polkitauthorizationresult.lo
++  CC       libpolkit_gobject_1_la-polkitcheckauthorizationflags.lo
++  CC       libpolkit_gobject_1_la-polkitimplicitauthorization.lo
++  CC       libpolkit_gobject_1_la-polkittemporaryauthorization.lo
++  CC       libpolkit_gobject_1_la-polkitpermission.lo
++  CC       libpolkit_gobject_1_la-polkitunixsession-systemd.lo
++polkitpermission.c: In function ‘acquire_cb’:
++polkitpermission.c:558:15: warning: ‘g_simple_async_result_set_error’ is deprecated [-Wdeprecated-declarations]
++  558 |               g_simple_async_result_set_error (data->simple,
++      |               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitpermission.c:30:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:122:21: note: declared here
++  122 | void                g_simple_async_result_set_error        (GSimpleAsyncResult      *simple,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitpermission.c:566:15: warning: ‘g_simple_async_result_set_error’ is deprecated [-Wdeprecated-declarations]
++  566 |               g_simple_async_result_set_error (data->simple,
++      |               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitpermission.c:30:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:122:21: note: declared here
++  122 | void                g_simple_async_result_set_error        (GSimpleAsyncResult      *simple,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitpermission.c:577:7: warning: ‘g_simple_async_result_set_from_error’ is deprecated [-Wdeprecated-declarations]
++  577 |       g_simple_async_result_set_from_error (data->simple, error);
++      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitpermission.c:30:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:113:21: note: declared here
++  113 | void                g_simple_async_result_set_from_error   (GSimpleAsyncResult      *simple,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitpermission.c:583:3: warning: ‘g_simple_async_result_complete’ is deprecated [-Wdeprecated-declarations]
++  583 |   g_simple_async_result_complete (data->simple);
++      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitpermission.c:30:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:104:21: note: declared here
++  104 | void                g_simple_async_result_complete         (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitpermission.c: In function ‘acquire_async’:
++polkitpermission.c:598:3: warning: ‘g_simple_async_result_new’ is deprecated: Use 'g_task_new' instead [-Wdeprecated-declarations]
++  598 |   data->simple = g_simple_async_result_new (G_OBJECT (permission),
++      |   ^~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitpermission.c:30:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:51:21: note: declared here
++   51 | GSimpleAsyncResult *g_simple_async_result_new              (GObject                 *source_object,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~
++polkitpermission.c: In function ‘acquire_finish’:
++polkitpermission.c:621:3: warning: ‘g_simple_async_result_get_source_tag’ is deprecated [-Wdeprecated-declarations]
++  621 |   g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == acquire_async);
++      |   ^~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitpermission.c:30:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:99:21: note: declared here
++   99 | gpointer            g_simple_async_result_get_source_tag   (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitpermission.c:623:3: warning: ‘g_simple_async_result_propagate_error’ is deprecated [-Wdeprecated-declarations]
++  623 |   if (g_simple_async_result_propagate_error (simple, error))
++      |   ^~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitpermission.c:30:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:119:21: note: declared here
++  119 | gboolean            g_simple_async_result_propagate_error  (GSimpleAsyncResult      *simple,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitpermission.c: In function ‘release_check_cb’:
++polkitpermission.c:710:7: warning: ‘g_simple_async_result_set_from_error’ is deprecated [-Wdeprecated-declarations]
++  710 |       g_simple_async_result_set_from_error (data->simple, error);
++      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitpermission.c:30:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:113:21: note: declared here
++  113 | void                g_simple_async_result_set_from_error   (GSimpleAsyncResult      *simple,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitpermission.c:721:3: warning: ‘g_simple_async_result_complete’ is deprecated [-Wdeprecated-declarations]
++  721 |   g_simple_async_result_complete (data->simple);
++      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitpermission.c:30:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:104:21: note: declared here
++  104 | void                g_simple_async_result_complete         (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitpermission.c: In function ‘release_cb’:
++polkitpermission.c:742:7: warning: ‘g_simple_async_result_set_from_error’ is deprecated [-Wdeprecated-declarations]
++  742 |       g_simple_async_result_set_from_error (data->simple, error);
++      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitpermission.c:30:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:113:21: note: declared here
++  113 | void                g_simple_async_result_set_from_error   (GSimpleAsyncResult      *simple,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitpermission.c:747:7: warning: ‘g_simple_async_result_complete’ is deprecated [-Wdeprecated-declarations]
++  747 |       g_simple_async_result_complete (data->simple);
++      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitpermission.c:30:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:104:21: note: declared here
++  104 | void                g_simple_async_result_complete         (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitpermission.c: In function ‘release_async’:
++polkitpermission.c:778:3: warning: ‘g_simple_async_result_new’ is deprecated: Use 'g_task_new' instead [-Wdeprecated-declarations]
++  778 |   data->simple = g_simple_async_result_new (G_OBJECT (permission),
++      |   ^~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitpermission.c:30:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:51:21: note: declared here
++   51 | GSimpleAsyncResult *g_simple_async_result_new              (GObject                 *source_object,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~
++polkitpermission.c:785:7: warning: ‘g_simple_async_result_set_error’ is deprecated [-Wdeprecated-declarations]
++  785 |       g_simple_async_result_set_error (data->simple,
++      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitpermission.c:30:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:122:21: note: declared here
++  122 | void                g_simple_async_result_set_error        (GSimpleAsyncResult      *simple,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitpermission.c:790:7: warning: ‘g_simple_async_result_complete_in_idle’ is deprecated [-Wdeprecated-declarations]
++  790 |       g_simple_async_result_complete_in_idle (data->simple);
++      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitpermission.c:30:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:106:21: note: declared here
++  106 | void                g_simple_async_result_complete_in_idle (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitpermission.c: In function ‘release_finish’:
++polkitpermission.c:812:3: warning: ‘g_simple_async_result_get_source_tag’ is deprecated [-Wdeprecated-declarations]
++  812 |   g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == release_async);
++      |   ^~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitpermission.c:30:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:99:21: note: declared here
++   99 | gpointer            g_simple_async_result_get_source_tag   (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitpermission.c:814:3: warning: ‘g_simple_async_result_propagate_error’ is deprecated [-Wdeprecated-declarations]
++  814 |   if (g_simple_async_result_propagate_error (simple, error))
++      |   ^~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitpermission.c:30:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:119:21: note: declared here
++  119 | gboolean            g_simple_async_result_propagate_error  (GSimpleAsyncResult      *simple,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitunixsession-systemd.c: In function ‘exists_in_thread_func’:
++polkitunixsession-systemd.c:388:7: warning: ‘g_simple_async_result_set_from_error’ is deprecated [-Wdeprecated-declarations]
++  388 |       g_simple_async_result_set_from_error (res, error);
++      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitunixsession.h:30,
++                 from polkitunixsession-systemd.c:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:113:21: note: declared here
++  113 | void                g_simple_async_result_set_from_error   (GSimpleAsyncResult      *simple,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitunixsession-systemd.c: In function ‘polkit_unix_session_exists’:
++polkitunixsession-systemd.c:403:3: warning: ‘g_simple_async_result_new’ is deprecated: Use 'g_task_new' instead [-Wdeprecated-declarations]
++  403 |   simple = g_simple_async_result_new (G_OBJECT (subject),
++      |   ^~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitunixsession.h:30,
++                 from polkitunixsession-systemd.c:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:51:21: note: declared here
++   51 | GSimpleAsyncResult *g_simple_async_result_new              (GObject                 *source_object,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~
++polkitunixsession-systemd.c:407:3: warning: ‘g_simple_async_result_run_in_thread’ is deprecated [-Wdeprecated-declarations]
++  407 |   g_simple_async_result_run_in_thread (simple,
++      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitunixsession.h:30,
++                 from polkitunixsession-systemd.c:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:108:21: note: declared here
++  108 | void                g_simple_async_result_run_in_thread    (GSimpleAsyncResult      *simple,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitunixsession-systemd.c: In function ‘polkit_unix_session_exists_finish’:
++polkitunixsession-systemd.c:422:3: warning: ‘g_simple_async_result_get_source_tag’ is deprecated [-Wdeprecated-declarations]
++  422 |   g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == polkit_unix_session_exists);
++      |   ^~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitunixsession.h:30,
++                 from polkitunixsession-systemd.c:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:99:21: note: declared here
++   99 | gpointer            g_simple_async_result_get_source_tag   (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitunixsession-systemd.c:426:3: warning: ‘g_simple_async_result_propagate_error’ is deprecated [-Wdeprecated-declarations]
++  426 |   if (g_simple_async_result_propagate_error (simple, error))
++      |   ^~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitunixsession.h:30,
++                 from polkitunixsession-systemd.c:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:119:21: note: declared here
++  119 | gboolean            g_simple_async_result_propagate_error  (GSimpleAsyncResult      *simple,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitunixsession-systemd.c:429:3: warning: ‘g_simple_async_result_get_op_res_gboolean’ is deprecated [-Wdeprecated-declarations]
++  429 |   ret = g_simple_async_result_get_op_res_gboolean (simple);
++      |   ^~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from polkitunixsession.h:30,
++                 from polkitunixsession-systemd.c:28:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:91:21: note: declared here
++   91 | gboolean            g_simple_async_result_get_op_res_gboolean (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++  CCLD     libpolkit-gobject-1.la
++  GISCAN   Polkit-1.0.gir
++  GICOMP   Polkit-1.0.gir
++make[4]: Leaving directory '/tmp/polkit-0.118/src/polkit'
++make[3]: Leaving directory '/tmp/polkit-0.118/src/polkit'
++Making all in polkitbackend
++make[3]: Entering directory '/tmp/polkit-0.118/src/polkitbackend'
++./toarray.pl ./init.js init_js > initjs.h
++git.mk: Generating .gitignore
++make  all-am
++make[4]: Entering directory '/tmp/polkit-0.118/src/polkitbackend'
++  CC       polkitd-polkitd.o
++  CC       libpolkit_backend_1_la-polkitbackendauthority.lo
++  CC       libpolkit_backend_1_la-polkitbackendinteractiveauthority.lo
++  CXX      libpolkit_backend_1_la-polkitbackendjsauthority.lo
++polkitbackendauthority.c: In function ‘polkit_backend_authority_check_authorization’:
++polkitbackendauthority.c:216:7: warning: ‘g_simple_async_result_new_error’ is deprecated: Use 'g_task_new' instead [-Wdeprecated-declarations]
++  216 |       simple = g_simple_async_result_new_error (G_OBJECT (authority),
++      |       ^~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from ../../src/polkit/polkitactiondescription.h:30,
++                 from ../../src/polkit/polkit.h:30,
++                 from polkitbackendauthority.c:29:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:56:21: note: declared here
++   56 | GSimpleAsyncResult *g_simple_async_result_new_error        (GObject                 *source_object,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendauthority.c:222:7: warning: ‘g_simple_async_result_complete’ is deprecated [-Wdeprecated-declarations]
++  222 |       g_simple_async_result_complete (simple);
++      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from ../../src/polkit/polkitactiondescription.h:30,
++                 from ../../src/polkit/polkit.h:30,
++                 from polkitbackendauthority.c:29:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:104:21: note: declared here
++  104 | void                g_simple_async_result_complete         (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendauthority.c: In function ‘polkit_backend_authority_check_authorization_finish’:
++polkitbackendauthority.c:253:7: warning: ‘g_simple_async_result_propagate_error’ is deprecated [-Wdeprecated-declarations]
++  253 |       g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (res), error);
++      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from ../../src/polkit/polkitactiondescription.h:30,
++                 from ../../src/polkit/polkit.h:30,
++                 from polkitbackendauthority.c:29:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:119:21: note: declared here
++  119 | gboolean            g_simple_async_result_propagate_error  (GSimpleAsyncResult      *simple,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendauthority.c: In function ‘polkit_backend_authority_log’:
++polkitbackendauthority.c:1522:3: warning: ‘GTimeVal’ is deprecated: Use 'GDateTime' instead [-Wdeprecated-declarations]
++ 1522 |   GTimeVal now;
++      |   ^~~~~~~~
++In file included from /usr/include/glib-2.0/glib/galloca.h:32,
++                 from /usr/include/glib-2.0/glib.h:30,
++                 from /usr/include/glib-2.0/gobject/gbinding.h:28,
++                 from /usr/include/glib-2.0/glib-object.h:22,
++                 from ../../src/polkit/polkittypes.h:25,
++                 from ../../src/polkit/polkit.h:27,
++                 from polkitbackendauthority.c:29:
++/usr/include/glib-2.0/glib/gtypes.h:547:8: note: declared here
++  547 | struct _GTimeVal
++      |        ^~~~~~~~~
++polkitbackendauthority.c:1537:3: warning: ‘g_get_current_time’ is deprecated: Use 'g_get_real_time' instead [-Wdeprecated-declarations]
++ 1537 |   g_get_current_time (&now);
++      |   ^~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/glib/giochannel.h:33,
++                 from /usr/include/glib-2.0/glib.h:54,
++                 from /usr/include/glib-2.0/gobject/gbinding.h:28,
++                 from /usr/include/glib-2.0/glib-object.h:22,
++                 from ../../src/polkit/polkittypes.h:25,
++                 from ../../src/polkit/polkit.h:27,
++                 from polkitbackendauthority.c:29:
++/usr/include/glib-2.0/glib/gmain.h:681:8: note: declared here
++  681 | void   g_get_current_time                 (GTimeVal       *result);
++      |        ^~~~~~~~~~~~~~~~~~
++polkitbackendinteractiveauthority.c: In function ‘polkit_backend_interactive_authority_init’:
++polkitbackendinteractiveauthority.c:300:13: warning: Deprecated pre-processor symbol, replace with 
++  300 |   priv = POLKIT_BACKEND_INTERACTIVE_AUTHORITY_GET_PRIVATE (authority);
++      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendinteractiveauthority.c: In function ‘polkit_backend_interactive_authority_finalize’:
++polkitbackendinteractiveauthority.c:354:13: warning: Deprecated pre-processor symbol, replace with 
++  354 |   priv = POLKIT_BACKEND_INTERACTIVE_AUTHORITY_GET_PRIVATE (interactive_authority);
++      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendinteractiveauthority.c: In function ‘polkit_backend_interactive_authority_class_init’:
++polkitbackendinteractiveauthority.c:419:3: warning: ‘g_type_class_add_private’ is deprecated [-Wdeprecated-declarations]
++  419 |   g_type_class_add_private (klass, sizeof (PolkitBackendInteractiveAuthorityPrivate));
++      |   ^~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gobject/gobject.h:24,
++                 from /usr/include/glib-2.0/gobject/gbinding.h:29,
++                 from /usr/include/glib-2.0/glib-object.h:22,
++                 from ../../src/polkit/polkittypes.h:25,
++                 from ../../src/polkit/polkit.h:27,
++                 from polkitbackendinteractiveauthority.c:35:
++/usr/include/glib-2.0/gobject/gtype.h:1304:10: note: declared here
++ 1304 | void     g_type_class_add_private       (gpointer                    g_class,
++      |          ^~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendinteractiveauthority.c: In function ‘polkit_backend_interactive_authority_enumerate_actions’:
++polkitbackendinteractiveauthority.c:435:13: warning: Deprecated pre-processor symbol, replace with 
++  435 |   priv = POLKIT_BACKEND_INTERACTIVE_AUTHORITY_GET_PRIVATE (interactive_authority);
++      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendinteractiveauthority.c: In function ‘log_result’:
++polkitbackendinteractiveauthority.c:572:13: warning: Deprecated pre-processor symbol, replace with 
++  572 |   priv = POLKIT_BACKEND_INTERACTIVE_AUTHORITY_GET_PRIVATE (authority);
++      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendinteractiveauthority.c: In function ‘check_authorization_challenge_cb’:
++polkitbackendinteractiveauthority.c:639:13: warning: Deprecated pre-processor symbol, replace with 
++  639 |   priv = POLKIT_BACKEND_INTERACTIVE_AUTHORITY_GET_PRIVATE (authority);
++      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendinteractiveauthority.c:741:3: warning: ‘g_simple_async_result_set_op_res_gpointer’ is deprecated [-Wdeprecated-declarations]
++  741 |   g_simple_async_result_set_op_res_gpointer (simple,
++      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from ../../src/polkit/polkitactiondescription.h:30,
++                 from ../../src/polkit/polkit.h:30,
++                 from polkitbackendinteractiveauthority.c:35:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:75:21: note: declared here
++   75 | void                g_simple_async_result_set_op_res_gpointer (GSimpleAsyncResult      *simple,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendinteractiveauthority.c:744:3: warning: ‘g_simple_async_result_complete’ is deprecated [-Wdeprecated-declarations]
++  744 |   g_simple_async_result_complete (simple);
++      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from ../../src/polkit/polkitactiondescription.h:30,
++                 from ../../src/polkit/polkit.h:30,
++                 from polkitbackendinteractiveauthority.c:35:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:104:21: note: declared here
++  104 | void                g_simple_async_result_complete         (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendinteractiveauthority.c: In function ‘polkit_backend_interactive_authority_check_authorization_finish’:
++polkitbackendinteractiveauthority.c:764:3: warning: ‘g_simple_async_result_get_source_tag’ is deprecated [-Wdeprecated-declarations]
++  764 |   g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == polkit_backend_interactive_authority_check_authorization);
++      |   ^~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from ../../src/polkit/polkitactiondescription.h:30,
++                 from ../../src/polkit/polkit.h:30,
++                 from polkitbackendinteractiveauthority.c:35:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:99:21: note: declared here
++   99 | gpointer            g_simple_async_result_get_source_tag   (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendinteractiveauthority.c:768:3: warning: ‘g_simple_async_result_propagate_error’ is deprecated [-Wdeprecated-declarations]
++  768 |   if (g_simple_async_result_propagate_error (simple, error))
++      |   ^~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from ../../src/polkit/polkitactiondescription.h:30,
++                 from ../../src/polkit/polkit.h:30,
++                 from polkitbackendinteractiveauthority.c:35:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:119:21: note: declared here
++  119 | gboolean            g_simple_async_result_propagate_error  (GSimpleAsyncResult      *simple,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendinteractiveauthority.c:771:3: warning: ‘g_simple_async_result_get_op_res_gpointer’ is deprecated [-Wdeprecated-declarations]
++  771 |   result = g_object_ref (g_simple_async_result_get_op_res_gpointer (simple));
++      |   ^~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from ../../src/polkit/polkitactiondescription.h:30,
++                 from ../../src/polkit/polkit.h:30,
++                 from polkitbackendinteractiveauthority.c:35:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:79:21: note: declared here
++   79 | gpointer            g_simple_async_result_get_op_res_gpointer (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendinteractiveauthority.c:771:3: warning: ‘g_simple_async_result_get_op_res_gpointer’ is deprecated [-Wdeprecated-declarations]
++  771 |   result = g_object_ref (g_simple_async_result_get_op_res_gpointer (simple));
++      |   ^~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from ../../src/polkit/polkitactiondescription.h:30,
++                 from ../../src/polkit/polkit.h:30,
++                 from polkitbackendinteractiveauthority.c:35:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:79:21: note: declared here
++   79 | gpointer            g_simple_async_result_get_op_res_gpointer (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendinteractiveauthority.c: In function ‘may_identity_check_authorization’:
++polkitbackendinteractiveauthority.c:782:13: warning: Deprecated pre-processor symbol, replace with 
++  782 |   PolkitBackendInteractiveAuthorityPrivate *priv = POLKIT_BACKEND_INTERACTIVE_AUTHORITY_GET_PRIVATE (interactive_authority);
++      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendinteractiveauthority.c: In function ‘polkit_backend_interactive_authority_check_authorization’:
++polkitbackendinteractiveauthority.c:861:13: warning: Deprecated pre-processor symbol, replace with 
++  861 |   priv = POLKIT_BACKEND_INTERACTIVE_AUTHORITY_GET_PRIVATE (interactive_authority);
++      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendinteractiveauthority.c:872:3: warning: ‘g_simple_async_result_new’ is deprecated: Use 'g_task_new' instead [-Wdeprecated-declarations]
++  872 |   simple = g_simple_async_result_new (G_OBJECT (authority),
++      |   ^~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from ../../src/polkit/polkitactiondescription.h:30,
++                 from ../../src/polkit/polkit.h:30,
++                 from polkitbackendinteractiveauthority.c:35:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:51:21: note: declared here
++   51 | GSimpleAsyncResult *g_simple_async_result_new              (GObject                 *source_object,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendinteractiveauthority.c:900:7: warning: ‘g_simple_async_result_set_from_error’ is deprecated [-Wdeprecated-declarations]
++  900 |       g_simple_async_result_set_from_error (simple, error);
++      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from ../../src/polkit/polkitactiondescription.h:30,
++                 from ../../src/polkit/polkit.h:30,
++                 from polkitbackendinteractiveauthority.c:35:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:113:21: note: declared here
++  113 | void                g_simple_async_result_set_from_error   (GSimpleAsyncResult      *simple,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendinteractiveauthority.c:901:7: warning: ‘g_simple_async_result_complete’ is deprecated [-Wdeprecated-declarations]
++  901 |       g_simple_async_result_complete (simple);
++      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from ../../src/polkit/polkitactiondescription.h:30,
++                 from ../../src/polkit/polkit.h:30,
++                 from polkitbackendinteractiveauthority.c:35:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:104:21: note: declared here
++  104 | void                g_simple_async_result_complete         (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendinteractiveauthority.c:915:7: warning: ‘g_simple_async_result_set_from_error’ is deprecated [-Wdeprecated-declarations]
++  915 |       g_simple_async_result_set_from_error (simple, error);
++      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from ../../src/polkit/polkitactiondescription.h:30,
++                 from ../../src/polkit/polkit.h:30,
++                 from polkitbackendinteractiveauthority.c:35:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:113:21: note: declared here
++  113 | void                g_simple_async_result_set_from_error   (GSimpleAsyncResult      *simple,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendinteractiveauthority.c:916:7: warning: ‘g_simple_async_result_complete’ is deprecated [-Wdeprecated-declarations]
++  916 |       g_simple_async_result_complete (simple);
++      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from ../../src/polkit/polkitactiondescription.h:30,
++                 from ../../src/polkit/polkit.h:30,
++                 from polkitbackendinteractiveauthority.c:35:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:104:21: note: declared here
++  104 | void                g_simple_async_result_complete         (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendinteractiveauthority.c:960:15: warning: ‘g_simple_async_result_set_error’ is deprecated [-Wdeprecated-declarations]
++  960 |               g_simple_async_result_set_error (simple,
++      |               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from ../../src/polkit/polkitactiondescription.h:30,
++                 from ../../src/polkit/polkit.h:30,
++                 from polkitbackendinteractiveauthority.c:35:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:122:21: note: declared here
++  122 | void                g_simple_async_result_set_error        (GSimpleAsyncResult      *simple,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendinteractiveauthority.c:968:15: warning: ‘g_simple_async_result_set_error’ is deprecated [-Wdeprecated-declarations]
++  968 |               g_simple_async_result_set_error (simple,
++      |               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from ../../src/polkit/polkitactiondescription.h:30,
++                 from ../../src/polkit/polkit.h:30,
++                 from polkitbackendinteractiveauthority.c:35:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:122:21: note: declared here
++  122 | void                g_simple_async_result_set_error        (GSimpleAsyncResult      *simple,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendinteractiveauthority.c:974:11: warning: ‘g_simple_async_result_complete’ is deprecated [-Wdeprecated-declarations]
++  974 |           g_simple_async_result_complete (simple);
++      |           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from ../../src/polkit/polkitactiondescription.h:30,
++                 from ../../src/polkit/polkit.h:30,
++                 from polkitbackendinteractiveauthority.c:35:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:104:21: note: declared here
++  104 | void                g_simple_async_result_complete         (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendinteractiveauthority.c:992:7: warning: ‘g_simple_async_result_set_from_error’ is deprecated [-Wdeprecated-declarations]
++  992 |       g_simple_async_result_set_from_error (simple, error);
++      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from ../../src/polkit/polkitactiondescription.h:30,
++                 from ../../src/polkit/polkit.h:30,
++                 from polkitbackendinteractiveauthority.c:35:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:113:21: note: declared here
++  113 | void                g_simple_async_result_set_from_error   (GSimpleAsyncResult      *simple,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendinteractiveauthority.c:993:7: warning: ‘g_simple_async_result_complete’ is deprecated [-Wdeprecated-declarations]
++  993 |       g_simple_async_result_complete (simple);
++      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from ../../src/polkit/polkitactiondescription.h:30,
++                 from ../../src/polkit/polkit.h:30,
++                 from polkitbackendinteractiveauthority.c:35:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:104:21: note: declared here
++  104 | void                g_simple_async_result_complete         (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendinteractiveauthority.c:1033:3: warning: ‘g_simple_async_result_set_op_res_gpointer’ is deprecated [-Wdeprecated-declarations]
++ 1033 |   g_simple_async_result_set_op_res_gpointer (simple,
++      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from ../../src/polkit/polkitactiondescription.h:30,
++                 from ../../src/polkit/polkit.h:30,
++                 from polkitbackendinteractiveauthority.c:35:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:75:21: note: declared here
++   75 | void                g_simple_async_result_set_op_res_gpointer (GSimpleAsyncResult      *simple,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendinteractiveauthority.c:1036:3: warning: ‘g_simple_async_result_complete’ is deprecated [-Wdeprecated-declarations]
++ 1036 |   g_simple_async_result_complete (simple);
++      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from ../../src/polkit/polkitactiondescription.h:30,
++                 from ../../src/polkit/polkit.h:30,
++                 from polkitbackendinteractiveauthority.c:35:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:104:21: note: declared here
++  104 | void                g_simple_async_result_complete         (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendinteractiveauthority.c: In function ‘check_authorization_sync’:
++polkitbackendinteractiveauthority.c:1085:13: warning: Deprecated pre-processor symbol, replace with 
++ 1085 |   priv = POLKIT_BACKEND_INTERACTIVE_AUTHORITY_GET_PRIVATE (interactive_authority);
++      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendinteractiveauthority.c: In function ‘get_authentication_agent_for_subject’:
++polkitbackendinteractiveauthority.c:1701:13: warning: Deprecated pre-processor symbol, replace with 
++ 1701 |   priv = POLKIT_BACKEND_INTERACTIVE_AUTHORITY_GET_PRIVATE (authority);
++      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendinteractiveauthority.c: In function ‘get_authentication_session_for_uid_and_cookie’:
++polkitbackendinteractiveauthority.c:1774:13: warning: Deprecated pre-processor symbol, replace with 
++ 1774 |   priv = POLKIT_BACKEND_INTERACTIVE_AUTHORITY_GET_PRIVATE (authority);
++      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendinteractiveauthority.c: In function ‘get_authentication_sessions_initiated_by_system_bus_unique_name’:
++polkitbackendinteractiveauthority.c:1827:13: warning: Deprecated pre-processor symbol, replace with 
++ 1827 |   priv = POLKIT_BACKEND_INTERACTIVE_AUTHORITY_GET_PRIVATE (authority);
++      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendinteractiveauthority.c: In function ‘get_authentication_sessions_for_system_bus_unique_name_subject’:
++polkitbackendinteractiveauthority.c:1861:13: warning: Deprecated pre-processor symbol, replace with 
++ 1861 |   priv = POLKIT_BACKEND_INTERACTIVE_AUTHORITY_GET_PRIVATE (authority);
++      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendinteractiveauthority.c: In function ‘get_authentication_agent_by_unique_system_bus_name’:
++polkitbackendinteractiveauthority.c:1893:13: warning: Deprecated pre-processor symbol, replace with 
++ 1893 |   priv = POLKIT_BACKEND_INTERACTIVE_AUTHORITY_GET_PRIVATE (authority);
++      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendinteractiveauthority.c: In function ‘get_localized_data_for_challenge’:
++polkitbackendinteractiveauthority.c:2057:13: warning: Deprecated pre-processor symbol, replace with 
++ 2057 |   priv = POLKIT_BACKEND_INTERACTIVE_AUTHORITY_GET_PRIVATE (authority);
++      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendinteractiveauthority.c: In function ‘authentication_agent_initiate_challenge’:
++polkitbackendinteractiveauthority.c:2305:13: warning: Deprecated pre-processor symbol, replace with 
++ 2305 |   PolkitBackendInteractiveAuthorityPrivate *priv = POLKIT_BACKEND_INTERACTIVE_AUTHORITY_GET_PRIVATE (authority);
++      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendinteractiveauthority.c: In function ‘polkit_backend_interactive_authority_register_authentication_agent’:
++polkitbackendinteractiveauthority.c:2508:13: warning: Deprecated pre-processor symbol, replace with 
++ 2508 |   priv = POLKIT_BACKEND_INTERACTIVE_AUTHORITY_GET_PRIVATE (interactive_authority);
++      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendinteractiveauthority.c: In function ‘polkit_backend_interactive_authority_unregister_authentication_agent’:
++polkitbackendinteractiveauthority.c:2663:13: warning: Deprecated pre-processor symbol, replace with 
++ 2663 |   priv = POLKIT_BACKEND_INTERACTIVE_AUTHORITY_GET_PRIVATE (interactive_authority);
++      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendinteractiveauthority.c: In function ‘polkit_backend_interactive_authority_authentication_agent_response’:
++polkitbackendinteractiveauthority.c:2823:13: warning: Deprecated pre-processor symbol, replace with 
++ 2823 |   priv = POLKIT_BACKEND_INTERACTIVE_AUTHORITY_GET_PRIVATE (interactive_authority);
++      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendinteractiveauthority.c: In function ‘polkit_backend_interactive_authority_system_bus_name_owner_changed’:
++polkitbackendinteractiveauthority.c:2907:13: warning: Deprecated pre-processor symbol, replace with 
++ 2907 |   priv = POLKIT_BACKEND_INTERACTIVE_AUTHORITY_GET_PRIVATE (interactive_authority);
++      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendinteractiveauthority.c: In function ‘polkit_backend_interactive_authority_enumerate_temporary_authorizations’:
++polkitbackendinteractiveauthority.c:3340:3: warning: ‘GTimeVal’ is deprecated: Use 'GDateTime' instead [-Wdeprecated-declarations]
++ 3340 |   GTimeVal real_now;
++      |   ^~~~~~~~
++In file included from /usr/include/glib-2.0/glib/galloca.h:32,
++                 from /usr/include/glib-2.0/glib.h:30,
++                 from /usr/include/glib-2.0/glib/gprintf.h:21,
++                 from /usr/include/glib-2.0/glib/gstdio.h:22,
++                 from polkitbackendinteractiveauthority.c:32:
++/usr/include/glib-2.0/glib/gtypes.h:547:8: note: declared here
++  547 | struct _GTimeVal
++      |        ^~~~~~~~~
++polkitbackendinteractiveauthority.c:3343:13: warning: Deprecated pre-processor symbol, replace with 
++ 3343 |   priv = POLKIT_BACKEND_INTERACTIVE_AUTHORITY_GET_PRIVATE (interactive_authority);
++      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendinteractiveauthority.c:3379:3: warning: ‘g_get_current_time’ is deprecated: Use 'g_get_real_time' instead [-Wdeprecated-declarations]
++ 3379 |   g_get_current_time (&real_now);
++      |   ^~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/glib/giochannel.h:33,
++                 from /usr/include/glib-2.0/glib.h:54,
++                 from /usr/include/glib-2.0/glib/gprintf.h:21,
++                 from /usr/include/glib-2.0/glib/gstdio.h:22,
++                 from polkitbackendinteractiveauthority.c:32:
++/usr/include/glib-2.0/glib/gmain.h:681:8: note: declared here
++  681 | void   g_get_current_time                 (GTimeVal       *result);
++      |        ^~~~~~~~~~~~~~~~~~
++polkitbackendinteractiveauthority.c: In function ‘polkit_backend_interactive_authority_revoke_temporary_authorizations’:
++polkitbackendinteractiveauthority.c:3427:13: warning: Deprecated pre-processor symbol, replace with 
++ 3427 |   priv = POLKIT_BACKEND_INTERACTIVE_AUTHORITY_GET_PRIVATE (interactive_authority);
++      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendinteractiveauthority.c: In function ‘polkit_backend_interactive_authority_revoke_temporary_authorization_by_id’:
++polkitbackendinteractiveauthority.c:3507:13: warning: Deprecated pre-processor symbol, replace with 
++ 3507 |   priv = POLKIT_BACKEND_INTERACTIVE_AUTHORITY_GET_PRIVATE (interactive_authority);
++      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++  CC       libpolkit_backend_1_la-polkitbackendactionpool.lo
++  CC       libpolkit_backend_1_la-polkitbackendactionlookup.lo
++polkitbackendactionpool.c: In function ‘polkit_backend_action_pool_init’:
++polkitbackendactionpool.c:131:13: warning: Deprecated pre-processor symbol, replace with 
++  131 |   priv = POLKIT_BACKEND_ACTION_POOL_GET_PRIVATE (pool);
++      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~     
++polkitbackendactionpool.c: In function ‘polkit_backend_action_pool_finalize’:
++polkitbackendactionpool.c:151:13: warning: Deprecated pre-processor symbol, replace with 
++  151 |   priv = POLKIT_BACKEND_ACTION_POOL_GET_PRIVATE (pool);
++      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~     
++polkitbackendactionpool.c: In function ‘polkit_backend_action_pool_get_property’:
++polkitbackendactionpool.c:178:13: warning: Deprecated pre-processor symbol, replace with 
++  178 |   priv = POLKIT_BACKEND_ACTION_POOL_GET_PRIVATE (pool);
++      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~     
++polkitbackendactionpool.c: In function ‘dir_monitor_changed’:
++polkitbackendactionpool.c:203:13: warning: Deprecated pre-processor symbol, replace with 
++  203 |   priv = POLKIT_BACKEND_ACTION_POOL_GET_PRIVATE (pool);
++      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~     
++polkitbackendactionpool.c: In function ‘polkit_backend_action_pool_set_property’:
++polkitbackendactionpool.c:251:13: warning: Deprecated pre-processor symbol, replace with 
++  251 |   priv = POLKIT_BACKEND_ACTION_POOL_GET_PRIVATE (pool);
++      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~     
++polkitbackendactionpool.c: In function ‘polkit_backend_action_pool_class_init’:
++polkitbackendactionpool.c:292:3: warning: ‘g_type_class_add_private’ is deprecated [-Wdeprecated-declarations]
++  292 |   g_type_class_add_private (klass, sizeof (PolkitBackendActionPoolPrivate));
++      |   ^~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gobject/gobject.h:24,
++                 from /usr/include/glib-2.0/gobject/gbinding.h:29,
++                 from /usr/include/glib-2.0/glib-object.h:22,
++                 from ../../src/polkit/polkittypes.h:25,
++                 from ../../src/polkit/polkit.h:27,
++                 from polkitbackendactionpool.c:28:
++/usr/include/glib-2.0/gobject/gtype.h:1304:10: note: declared here
++ 1304 | void     g_type_class_add_private       (gpointer                    g_class,
++      |          ^~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendactionpool.c: In function ‘polkit_backend_action_pool_get_action’:
++polkitbackendactionpool.c:372:13: warning: Deprecated pre-processor symbol, replace with 
++  372 |   priv = POLKIT_BACKEND_ACTION_POOL_GET_PRIVATE (pool);
++      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~     
++polkitbackendactionpool.c: In function ‘polkit_backend_action_pool_get_all_actions’:
++polkitbackendactionpool.c:430:13: warning: Deprecated pre-processor symbol, replace with 
++  430 |   priv = POLKIT_BACKEND_ACTION_POOL_GET_PRIVATE (pool);
++      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~     
++polkitbackendactionpool.c: In function ‘ensure_file’:
++polkitbackendactionpool.c:465:13: warning: Deprecated pre-processor symbol, replace with 
++  465 |   priv = POLKIT_BACKEND_ACTION_POOL_GET_PRIVATE (pool);
++      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~     
++polkitbackendactionpool.c: In function ‘ensure_all_files’:
++polkitbackendactionpool.c:511:13: warning: Deprecated pre-processor symbol, replace with 
++  511 |   priv = POLKIT_BACKEND_ACTION_POOL_GET_PRIVATE (pool);
++      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~     
++polkitbackendactionpool.c: In function ‘_end’:
++polkitbackendactionpool.c:974:13: warning: Deprecated pre-processor symbol, replace with 
++  974 |         priv = POLKIT_BACKEND_ACTION_POOL_GET_PRIVATE (pd->pool);
++      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++  CC       libpolkit_backend_1_la-polkitbackendsessionmonitor-systemd.lo
++polkitbackendjsauthority.cpp:229:13: warning: Deprecated pre-processor symbol, replace with 
++  229 |                                                  PolkitBackendJsAuthorityPrivate);
++      |             ^                                    ~~~~~~~~~~~
++polkitbackendjsauthority.cpp: In function ‘void polkit_backend_js_authority_class_init(PolkitBackendJsAuthorityClass*)’:
++polkitbackendjsauthority.cpp:667:76: warning: ‘void g_type_class_add_private(gpointer, gsize)’ is deprecated [-Wdeprecated-declarations]
++  667 |   g_type_class_add_private (klass, sizeof (PolkitBackendJsAuthorityPrivate));
++      |                                                                            ^
++In file included from /usr/include/glib-2.0/gobject/gobject.h:24,
++                 from /usr/include/glib-2.0/gobject/gbinding.h:29,
++                 from /usr/include/glib-2.0/glib-object.h:22,
++                 from ../../src/polkit/polkittypes.h:25,
++                 from ../../src/polkit/polkit.h:27,
++                 from polkitbackendjsauthority.cpp:37:
++/usr/include/glib-2.0/gobject/gtype.h:1304:10: note: declared here
++ 1304 | void     g_type_class_add_private       (gpointer                    g_class,
++      |          ^~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendjsauthority.cpp: In function ‘void utils_on_cancelled(GCancellable*, gpointer)’:
++polkitbackendjsauthority.cpp:1698:56: warning: ‘void g_simple_async_result_take_error(GSimpleAsyncResult*, GError*)’ is deprecated [-Wdeprecated-declarations]
++ 1698 |   g_simple_async_result_take_error (data->simple, error);
++      |                                                        ^
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from ../../src/polkit/polkitactiondescription.h:30,
++                 from ../../src/polkit/polkit.h:30,
++                 from polkitbackendjsauthority.cpp:37:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:116:21: note: declared here
++  116 | void                g_simple_async_result_take_error       (GSimpleAsyncResult      *simple,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendjsauthority.cpp:1699:55: warning: ‘void g_simple_async_result_complete_in_idle(GSimpleAsyncResult*)’ is deprecated [-Wdeprecated-declarations]
++ 1699 |   g_simple_async_result_complete_in_idle (data->simple);
++      |                                                       ^
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from ../../src/polkit/polkitactiondescription.h:30,
++                 from ../../src/polkit/polkit.h:30,
++                 from polkitbackendjsauthority.cpp:37:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:106:21: note: declared here
++  106 | void                g_simple_async_result_complete_in_idle (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendjsauthority.cpp: In function ‘void utils_child_watch_cb(GPid, gint, gpointer)’:
++polkitbackendjsauthority.cpp:1758:55: warning: ‘void g_simple_async_result_complete_in_idle(GSimpleAsyncResult*)’ is deprecated [-Wdeprecated-declarations]
++ 1758 |   g_simple_async_result_complete_in_idle (data->simple);
++      |                                                       ^
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from ../../src/polkit/polkitactiondescription.h:30,
++                 from ../../src/polkit/polkit.h:30,
++                 from polkitbackendjsauthority.cpp:37:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:106:21: note: declared here
++  106 | void                g_simple_async_result_complete_in_idle (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendjsauthority.cpp: In function ‘gboolean utils_timeout_cb(gpointer)’:
++polkitbackendjsauthority.cpp:1773:55: warning: ‘void g_simple_async_result_complete_in_idle(GSimpleAsyncResult*)’ is deprecated [-Wdeprecated-declarations]
++ 1773 |   g_simple_async_result_complete_in_idle (data->simple);
++      |                                                       ^
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from ../../src/polkit/polkitactiondescription.h:30,
++                 from ../../src/polkit/polkit.h:30,
++                 from polkitbackendjsauthority.cpp:37:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:106:21: note: declared here
++  106 | void                g_simple_async_result_complete_in_idle (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendjsauthority.cpp: In function ‘void utils_spawn(const gchar* const*, guint, GCancellable*, GAsyncReadyCallback, gpointer)’:
++polkitbackendjsauthority.cpp:1794:67: warning: ‘GSimpleAsyncResult* g_simple_async_result_new(GObject*, GAsyncReadyCallback, gpointer, gpointer)’ is deprecated: Use 'g_task_new' instead [-Wdeprecated-declarations]
++ 1794 |                                             (gpointer*)utils_spawn);
++      |                                                                   ^
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from ../../src/polkit/polkitactiondescription.h:30,
++                 from ../../src/polkit/polkit.h:30,
++                 from polkitbackendjsauthority.cpp:37:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:51:21: note: declared here
++   51 | GSimpleAsyncResult *g_simple_async_result_new              (GObject                 *source_object,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendjsauthority.cpp:1807:104: warning: ‘void g_simple_async_result_set_op_res_gpointer(GSimpleAsyncResult*, gpointer, GDestroyNotify)’ is deprecated [-Wdeprecated-declarations]
++ 1807 |   g_simple_async_result_set_op_res_gpointer (data->simple, data, (GDestroyNotify) utils_spawn_data_free);
++      |                                                                                                        ^
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from ../../src/polkit/polkitactiondescription.h:30,
++                 from ../../src/polkit/polkit.h:30,
++                 from polkitbackendjsauthority.cpp:37:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:75:21: note: declared here
++   75 | void                g_simple_async_result_set_op_res_gpointer (GSimpleAsyncResult      *simple,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendjsauthority.cpp:1816:64: warning: ‘void g_simple_async_result_take_error(GSimpleAsyncResult*, GError*)’ is deprecated [-Wdeprecated-declarations]
++ 1816 |           g_simple_async_result_take_error (data->simple, error);
++      |                                                                ^
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from ../../src/polkit/polkitactiondescription.h:30,
++                 from ../../src/polkit/polkit.h:30,
++                 from polkitbackendjsauthority.cpp:37:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:116:21: note: declared here
++  116 | void                g_simple_async_result_take_error       (GSimpleAsyncResult      *simple,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendjsauthority.cpp:1817:63: warning: ‘void g_simple_async_result_complete_in_idle(GSimpleAsyncResult*)’ is deprecated [-Wdeprecated-declarations]
++ 1817 |           g_simple_async_result_complete_in_idle (data->simple);
++      |                                                               ^
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from ../../src/polkit/polkitactiondescription.h:30,
++                 from ../../src/polkit/polkit.h:30,
++                 from polkitbackendjsauthority.cpp:37:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:106:21: note: declared here
++  106 | void                g_simple_async_result_complete_in_idle (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendjsauthority.cpp:1842:60: warning: ‘void g_simple_async_result_take_error(GSimpleAsyncResult*, GError*)’ is deprecated [-Wdeprecated-declarations]
++ 1842 |       g_simple_async_result_take_error (data->simple, error);
++      |                                                            ^
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from ../../src/polkit/polkitactiondescription.h:30,
++                 from ../../src/polkit/polkit.h:30,
++                 from polkitbackendjsauthority.cpp:37:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:116:21: note: declared here
++  116 | void                g_simple_async_result_take_error       (GSimpleAsyncResult      *simple,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendjsauthority.cpp:1843:59: warning: ‘void g_simple_async_result_complete_in_idle(GSimpleAsyncResult*)’ is deprecated [-Wdeprecated-declarations]
++ 1843 |       g_simple_async_result_complete_in_idle (data->simple);
++      |                                                           ^
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from ../../src/polkit/polkitactiondescription.h:30,
++                 from ../../src/polkit/polkit.h:30,
++                 from polkitbackendjsauthority.cpp:37:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:106:21: note: declared here
++  106 | void                g_simple_async_result_complete_in_idle (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/lib/glib-2.0/include/glibconfig.h:9,
++                 from /usr/include/glib-2.0/glib/gtypes.h:32,
++                 from /usr/include/glib-2.0/glib/galloca.h:32,
++                 from /usr/include/glib-2.0/glib.h:30,
++                 from /usr/include/glib-2.0/glib/gprintf.h:21,
++                 from /usr/include/glib-2.0/glib/gstdio.h:22,
++                 from polkitbackendjsauthority.cpp:33:
++polkitbackendjsauthority.cpp: In function ‘gboolean utils_spawn_finish(GAsyncResult*, gint*, gchar**, gchar**, GError**)’:
++polkitbackendjsauthority.cpp:1894:63: warning: ‘void* g_simple_async_result_get_source_tag(GSimpleAsyncResult*)’ is deprecated [-Wdeprecated-declarations]
++ 1894 |   g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == utils_spawn);
++      |                                                               ^
++/usr/include/glib-2.0/glib/gmacros.h:930:8: note: in definition of macro ‘_G_BOOLEAN_EXPR’
++  930 |    if (expr)                                    \
++      |        ^~~~
++/usr/include/glib-2.0/glib/gmessages.h:535:8: note: in expansion of macro ‘G_LIKELY’
++  535 |     if G_LIKELY (expr) ; \
++      |        ^~~~~~~~
++polkitbackendjsauthority.cpp:1894:3: note: in expansion of macro ‘g_warn_if_fail’
++ 1894 |   g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == utils_spawn);
++      |   ^~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from ../../src/polkit/polkitactiondescription.h:30,
++                 from ../../src/polkit/polkit.h:30,
++                 from polkitbackendjsauthority.cpp:37:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:99:21: note: declared here
++   99 | gpointer            g_simple_async_result_get_source_tag   (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendjsauthority.cpp:1896:59: warning: ‘gboolean g_simple_async_result_propagate_error(GSimpleAsyncResult*, GError**)’ is deprecated [-Wdeprecated-declarations]
++ 1896 |   if (g_simple_async_result_propagate_error (simple, error))
++      |                                                           ^
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from ../../src/polkit/polkitactiondescription.h:30,
++                 from ../../src/polkit/polkit.h:30,
++                 from polkitbackendjsauthority.cpp:37:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:119:21: note: declared here
++  119 | gboolean            g_simple_async_result_propagate_error  (GSimpleAsyncResult      *simple,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitbackendjsauthority.cpp:1899:76: warning: ‘void* g_simple_async_result_get_op_res_gpointer(GSimpleAsyncResult*)’ is deprecated [-Wdeprecated-declarations]
++ 1899 |   data = (UtilsSpawnData*)g_simple_async_result_get_op_res_gpointer (simple);
++      |                                                                            ^
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from ../../src/polkit/polkitactiondescription.h:30,
++                 from ../../src/polkit/polkit.h:30,
++                 from polkitbackendjsauthority.cpp:37:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:79:21: note: declared here
++   79 | gpointer            g_simple_async_result_get_op_res_gpointer (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++  CXXLD    libpolkit-backend-1.la
++  CXXLD    polkitd
++make[4]: Leaving directory '/tmp/polkit-0.118/src/polkitbackend'
++make[3]: Leaving directory '/tmp/polkit-0.118/src/polkitbackend'
++Making all in polkitagent
++make[3]: Entering directory '/tmp/polkit-0.118/src/polkitagent'
++glib-genmarshal --prefix=_polkit_agent_marshal ./polkitagentmarshal.list --header > polkitagentmarshal.h.tmp && mv polkitagentmarshal.h.tmp polkitagentmarshal.h
++( top_builddir=`cd ../.. && pwd`; \
++ cd . && glib-mkenums --template polkitagentenumtypes.c.template polkitagentlistener.h) > \
++   polkitagentenumtypes.c.tmp && mv polkitagentenumtypes.c.tmp polkitagentenumtypes.c
++( top_builddir=`cd ../.. && pwd`; \
++ cd . && glib-mkenums --template polkitagentenumtypes.h.template polkitagentlistener.h) > \
++   polkitagentenumtypes.h.tmp && mv polkitagentenumtypes.h.tmp polkitagentenumtypes.h
++git.mk: Generating .gitignore
++INFO: Reading ./polkitagentmarshal.list...
++(echo "#include \"polkitagentmarshal.h\""; glib-genmarshal --prefix=_polkit_agent_marshal ./polkitagentmarshal.list --body) > polkitagentmarshal.c.tmp && mv polkitagentmarshal.c.tmp polkitagentmarshal.c
++INFO: Reading ./polkitagentmarshal.list...
++touch marshal.stamp
++make  all-am
++make[4]: Entering directory '/tmp/polkit-0.118/src/polkitagent'
++  CC       polkit_agent_helper_1-polkitagenthelperprivate.o
++  CC       polkit_agent_helper_1-polkitagenthelper-pam.o
++  CC       libpolkit_agent_1_la-polkitagentenumtypes.lo
++  CC       libpolkit_agent_1_la-polkitagentmarshal.lo
++  CC       libpolkit_agent_1_la-polkitagentsession.lo
++  CC       libpolkit_agent_1_la-polkitagentlistener.lo
++  CC       libpolkit_agent_1_la-polkitagenttextlistener.lo
++  CCLD     polkit-agent-helper-1
++polkitagenttextlistener.c: In function ‘on_completed’:
++polkitagenttextlistener.c:215:3: warning: ‘g_simple_async_result_complete_in_idle’ is deprecated [-Wdeprecated-declarations]
++  215 |   g_simple_async_result_complete_in_idle (listener->simple);
++      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from ../../src/polkit/polkitactiondescription.h:30,
++                 from ../../src/polkit/polkitprivate.h:26,
++                 from polkitagenttextlistener.c:34:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:106:21: note: declared here
++  106 | void                g_simple_async_result_complete_in_idle (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitagenttextlistener.c: In function ‘polkit_agent_text_listener_initiate_authentication’:
++polkitagenttextlistener.c:457:3: warning: ‘g_simple_async_result_new’ is deprecated: Use 'g_task_new' instead [-Wdeprecated-declarations]
++  457 |   simple = g_simple_async_result_new (G_OBJECT (listener),
++      |   ^~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from ../../src/polkit/polkitactiondescription.h:30,
++                 from ../../src/polkit/polkitprivate.h:26,
++                 from polkitagenttextlistener.c:34:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:51:21: note: declared here
++   51 | GSimpleAsyncResult *g_simple_async_result_new              (GObject                 *source_object,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~
++polkitagenttextlistener.c:463:7: warning: ‘g_simple_async_result_set_error’ is deprecated [-Wdeprecated-declarations]
++  463 |       g_simple_async_result_set_error (simple,
++      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from ../../src/polkit/polkitactiondescription.h:30,
++                 from ../../src/polkit/polkitprivate.h:26,
++                 from polkitagenttextlistener.c:34:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:122:21: note: declared here
++  122 | void                g_simple_async_result_set_error        (GSimpleAsyncResult      *simple,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitagenttextlistener.c:467:7: warning: ‘g_simple_async_result_complete_in_idle’ is deprecated [-Wdeprecated-declarations]
++  467 |       g_simple_async_result_complete_in_idle (simple);
++      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from ../../src/polkit/polkitactiondescription.h:30,
++                 from ../../src/polkit/polkitprivate.h:26,
++                 from polkitagenttextlistener.c:34:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:106:21: note: declared here
++  106 | void                g_simple_async_result_complete_in_idle (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitagenttextlistener.c:493:11: warning: ‘g_simple_async_result_set_error’ is deprecated [-Wdeprecated-declarations]
++  493 |           g_simple_async_result_set_error (simple,
++      |           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from ../../src/polkit/polkitactiondescription.h:30,
++                 from ../../src/polkit/polkitprivate.h:26,
++                 from polkitagenttextlistener.c:34:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:122:21: note: declared here
++  122 | void                g_simple_async_result_set_error        (GSimpleAsyncResult      *simple,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitagenttextlistener.c:497:11: warning: ‘g_simple_async_result_complete_in_idle’ is deprecated [-Wdeprecated-declarations]
++  497 |           g_simple_async_result_complete_in_idle (simple);
++      |           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from ../../src/polkit/polkitactiondescription.h:30,
++                 from ../../src/polkit/polkitprivate.h:26,
++                 from polkitagenttextlistener.c:34:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:106:21: note: declared here
++  106 | void                g_simple_async_result_complete_in_idle (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitagenttextlistener.c: In function ‘polkit_agent_text_listener_initiate_authentication_finish’:
++polkitagenttextlistener.c:551:3: warning: ‘g_simple_async_result_get_source_tag’ is deprecated [-Wdeprecated-declarations]
++  551 |   g_warn_if_fail (g_simple_async_result_get_source_tag (G_SIMPLE_ASYNC_RESULT (res)) ==
++      |   ^~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from ../../src/polkit/polkitactiondescription.h:30,
++                 from ../../src/polkit/polkitprivate.h:26,
++                 from polkitagenttextlistener.c:34:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:99:21: note: declared here
++   99 | gpointer            g_simple_async_result_get_source_tag   (GSimpleAsyncResult      *simple);
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++polkitagenttextlistener.c:556:3: warning: ‘g_simple_async_result_propagate_error’ is deprecated [-Wdeprecated-declarations]
++  556 |   if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (res), error))
++      |   ^~
++In file included from /usr/include/glib-2.0/gio/gio.h:136,
++                 from ../../src/polkit/polkitactiondescription.h:30,
++                 from ../../src/polkit/polkitprivate.h:26,
++                 from polkitagenttextlistener.c:34:
++/usr/include/glib-2.0/gio/gsimpleasyncresult.h:119:21: note: declared here
++  119 | gboolean            g_simple_async_result_propagate_error  (GSimpleAsyncResult      *simple,
++      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++  CCLD     libpolkit-agent-1.la
++  GISCAN   PolkitAgent-1.0.gir
++  GICOMP   PolkitAgent-1.0.gir
++make[4]: Leaving directory '/tmp/polkit-0.118/src/polkitagent'
++make[3]: Leaving directory '/tmp/polkit-0.118/src/polkitagent'
++Making all in programs
++make[3]: Entering directory '/tmp/polkit-0.118/src/programs'
++  CC       pkexec-pkexec.o
++  CC       pkaction-pkaction.o
++  CC       pkcheck-pkcheck.o
++pkcheck.c: In function ‘do_list_or_revoke_temp_authz’:
++pkcheck.c:274:11: warning: ‘GTimeVal’ is deprecated: Use 'GDateTime' instead [-Wdeprecated-declarations]
++  274 |           GTimeVal now;
++      |           ^~~~~~~~
++In file included from /usr/include/glib-2.0/glib/galloca.h:32,
++                 from /usr/include/glib-2.0/glib.h:30,
++                 from /usr/include/glib-2.0/glib/gi18n.h:21,
++                 from pkcheck.c:28:
++/usr/include/glib-2.0/glib/gtypes.h:547:8: note: declared here
++  547 | struct _GTimeVal
++      |        ^~~~~~~~~
++pkcheck.c:290:11: warning: ‘g_get_current_time’ is deprecated: Use 'g_get_real_time' instead [-Wdeprecated-declarations]
++  290 |           g_get_current_time (&now);
++      |           ^~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/glib/giochannel.h:33,
++                 from /usr/include/glib-2.0/glib.h:54,
++                 from /usr/include/glib-2.0/glib/gi18n.h:21,
++                 from pkcheck.c:28:
++/usr/include/glib-2.0/glib/gmain.h:681:8: note: declared here
++  681 | void   g_get_current_time                 (GTimeVal       *result);
++      |        ^~~~~~~~~~~~~~~~~~
++  CC       pkttyagent-pkttyagent.o
++git.mk: Generating .gitignore
++  CCLD     pkcheck
++  CCLD     pkaction
++  CCLD     pkexec
++  CCLD     pkttyagent
++make[3]: Leaving directory '/tmp/polkit-0.118/src/programs'
++make[3]: Entering directory '/tmp/polkit-0.118/src'
++make[3]: Nothing to be done for 'all-am'.
++make[3]: Leaving directory '/tmp/polkit-0.118/src'
++make[2]: Leaving directory '/tmp/polkit-0.118/src'
++Making all in docs
++make[2]: Entering directory '/tmp/polkit-0.118/docs'
++git.mk: Generating .gitignore
++Making all in man
++make[3]: Entering directory '/tmp/polkit-0.118/docs/man'
++/usr/bin/xsltproc -nonet --stringparam man.base.url.for.relative.links /usr/share/gtk-doc/html/polkit-1/ --xinclude http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl polkit.xml
++/usr/bin/xsltproc -nonet --stringparam man.base.url.for.relative.links /usr/share/gtk-doc/html/polkit-1/ --xinclude http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl polkitd.xml
++/usr/bin/xsltproc -nonet --stringparam man.base.url.for.relative.links /usr/share/gtk-doc/html/polkit-1/ --xinclude http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl pkexec.xml
++Error: no ID for constraint linkend: "polkit.8".
++Error: no ID for constraint linkend: "polkit.8".
++Error: no ID for constraint linkend: "pkaction.1".
++Error: no ID for constraint linkend: "pkcheck.1".
++Error: no ID for constraint linkend: "pkexec.1".
++Error: no ID for constraint linkend: "pkttyagent.1".
++Note: Writing polkitd.8
++Error: no ID for constraint linkend: "polkitd.8".
++Error: no ID for constraint linkend: "polkit.8".
++Error: no ID for constraint linkend: "polkitd.8".
++Error: no ID for constraint linkend: "pkaction.1".
++Error: no ID for constraint linkend: "pkcheck.1".
++Error: no ID for constraint linkend: "pkttyagent.1".
++Error: no ID for constraint linkend: "pkcheck.1".
++Note: Writing pkexec.1
++Error: no ID for constraint linkend: "PolkitAgentTextListener-struct"./usr/bin/xsltproc -nonet --stringparam man.base.url.for.relative.links /usr/share/gtk-doc/html/polkit-1/ --xinclude http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl pkcheck.xml
++
++Error: no ID for constraint linkend: "pkttyagent.1".
++/usr/bin/xsltproc -nonet --stringparam man.base.url.for.relative.links /usr/share/gtk-doc/html/polkit-1/ --xinclude http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl pkaction.xml
++Error: no ID for constraint linkend: "pkaction.1".
++Error: no ID for constraint linkend: "pkexec.1".
++Error: no ID for constraint linkend: "PolkitIdentity-struct".
++Error: no ID for constraint linkend: "pkexec.1".
++Error: no ID for constraint linkend: "pkexec.1".
++Error: no ID for constraint linkend: "polkitd.8".
++Error: no ID for constraint linkend: "pkaction.1".
++Error: no ID for constraint linkend: "pkcheck.1".
++Error: no ID for constraint linkend: "pkexec.1".
++Error: no ID for constraint linkend: "pkttyagent.1".
++Note: Writing polkit.8
++/usr/bin/xsltproc -nonet --stringparam man.base.url.for.relative.links /usr/share/gtk-doc/html/polkit-1/ --xinclude http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl pkttyagent.xml
++Error: no ID for constraint linkend: "polkit.8".
++Error: no ID for constraint linkend: "polkitd.8".
++Error: no ID for constraint linkend: "pkaction.1".
++Error: no ID for constraint linkend: "pkexec.1".
++Error: no ID for constraint linkend: "pkttyagent.1".
++Note: Writing pkcheck.1
++Error: no ID for constraint linkend: "polkit.8".
++Error: no ID for constraint linkend: "polkitd.8".
++Error: no ID for constraint linkend: "pkcheck.1".
++Error: no ID for constraint linkend: "pkexec.1".
++Error: no ID for constraint linkend: "pkttyagent.1".
++Note: Writing pkaction.1
++git.mk: Generating .gitignore
++Error: no ID for constraint linkend: "eggdbus-signal-org.freedesktop.PolicyKit1.Authority::Changed".
++Error: no ID for constraint linkend: "polkit.8".
++Error: no ID for constraint linkend: "polkitd.8".
++Error: no ID for constraint linkend: "pkaction.1".
++Error: no ID for constraint linkend: "pkcheck.1".
++Error: no ID for constraint linkend: "pkexec.1".
++Note: Writing pkttyagent.1
++make[3]: Leaving directory '/tmp/polkit-0.118/docs/man'
++Making all in polkit
++make[3]: Entering directory '/tmp/polkit-0.118/docs/polkit'
++  DOC   Preparing build
++git.mk: Generating .gitignore
++  DOC   Building XML
++  DOC   Scanning header files
++  DOC   Introspecting gobjects
++  DOC   Building XML
++./polkit-1-unused.txt:1: warning: 7 unused declarations. They should be added to polkit-1-sections.txt in the appropriate place.
++  DOC   Building HTML
++  DOC   Fixing cross-references
++html/PolkitAuthorizationResult.html:345: warning: no link for: "api-index-0.101" -> (0.101).
++make[3]: Leaving directory '/tmp/polkit-0.118/docs/polkit'
++make[3]: Entering directory '/tmp/polkit-0.118/docs'
++make[3]: Nothing to be done for 'all-am'.
++make[3]: Leaving directory '/tmp/polkit-0.118/docs'
++make[2]: Leaving directory '/tmp/polkit-0.118/docs'
++Making all in po
++make[2]: Entering directory '/tmp/polkit-0.118/po'
++  MSGFMT cs.gmo
++  MSGFMT da.gmo
++  MSGFMT de.gmo
++  MSGFMT hr.gmo
++  MSGFMT hu.gmo
++  MSGFMT id.gmo
++  MSGFMT it.gmo
++  MSGFMT nn.gmo
++  MSGFMT pl.gmo
++  MSGFMT pt_BR.gmo
++  MSGFMT sk.gmo
++  MSGFMT sv.gmo
++  MSGFMT tr.gmo
++  MSGFMT uk.gmo
++  MSGFMT zh_CN.gmo
++  MSGFMT zh_TW.gmo
++make[2]: Leaving directory '/tmp/polkit-0.118/po'
++Making all in test
++make[2]: Entering directory '/tmp/polkit-0.118/test'
++git.mk: Generating .gitignore
++Making all in mocklibc
++make[3]: Entering directory '/tmp/polkit-0.118/test/mocklibc'
++make  all-recursive
++make[4]: Entering directory '/tmp/polkit-0.118/test/mocklibc'
++Making all in src
++make[5]: Entering directory '/tmp/polkit-0.118/test/mocklibc/src'
++gcc -DHAVE_CONFIG_H -I. -I..     -O2 -fPIC -MT netgroup-debug.o -MD -MP -MF .deps/netgroup-debug.Tpo -c -o netgroup-debug.o netgroup-debug.c
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I..     -O2 -fPIC -MT pwd.lo -MD -MP -MF .deps/pwd.Tpo -c -o pwd.lo pwd.c
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I..     -O2 -fPIC -MT grp.lo -MD -MP -MF .deps/grp.Tpo -c -o grp.lo grp.c
++netgroup-debug.c: In function ‘netgroup_debug_print_entry’:
++netgroup-debug.c:25:3: warning: implicit declaration of function ‘print_indent’ [-Wimplicit-function-declaration]
++   25 |   print_indent(stream, indent);
++      |   ^~~~~~~~~~~~
++mv -f .deps/netgroup-debug.Tpo .deps/netgroup-debug.Po
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I..     -O2 -fPIC -MT netdb.lo -MD -MP -MF .deps/netdb.Tpo -c -o netdb.lo netdb.c
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I.. -O2 -fPIC -MT pwd.lo -MD -MP -MF .deps/pwd.Tpo -c pwd.c  -fPIC -DPIC -o .libs/pwd.o
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I.. -O2 -fPIC -MT grp.lo -MD -MP -MF .deps/grp.Tpo -c grp.c  -fPIC -DPIC -o .libs/grp.o
++pwd.c: In function ‘getpwent’:
++pwd.c:48:10: warning: implicit declaration of function ‘fgetpwent’; did you mean ‘getpwent’? [-Wimplicit-function-declaration]
++   48 |   return fgetpwent(global_stream);
++      |          ^~~~~~~~~
++      |          getpwent
++pwd.c:48:10: warning: returning ‘int’ from a function with return type ‘struct passwd *’ makes pointer from integer without a cast [-Wint-conversion]
++   48 |   return fgetpwent(global_stream);
++      |          ^~~~~~~~~~~~~~~~~~~~~~~~
++pwd.c: In function ‘getpwnam’:
++pwd.c:69:17: warning: assignment to ‘struct passwd *’ from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
++   69 |   while ((entry = fgetpwent(stream))) {
++      |                 ^
++pwd.c: In function ‘getpwuid’:
++pwd.c:90:17: warning: assignment to ‘struct passwd *’ from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
++   90 |   while ((entry = fgetpwent(stream))) {
++      |                 ^
++grp.c: In function ‘getgrent’:
++grp.c:48:10: warning: implicit declaration of function ‘fgetgrent’; did you mean ‘getgrent’? [-Wimplicit-function-declaration]
++   48 |   return fgetgrent(global_stream);
++      |          ^~~~~~~~~
++      |          getgrent
++grp.c:48:10: warning: returning ‘int’ from a function with return type ‘struct group *’ makes pointer from integer without a cast [-Wint-conversion]
++   48 |   return fgetgrent(global_stream);
++      |          ^~~~~~~~~~~~~~~~~~~~~~~~
++grp.c: In function ‘getgrnam’:
++grp.c:69:17: warning: assignment to ‘struct group *’ from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
++   69 |   while ((entry = fgetgrent(stream))) {
++      |                 ^
++grp.c: In function ‘getgrgid’:
++grp.c:90:17: warning: assignment to ‘struct group *’ from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
++   90 |   while ((entry = fgetgrent(stream))) {
++      |                 ^
++grp.c: In function ‘getgrouplist’:
++grp.c:119:17: warning: assignment to ‘struct group *’ from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
++  119 |   while ((entry = fgetgrent(stream))) {
++      |                 ^
++mv -f .deps/pwd.Tpo .deps/pwd.Plo
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I..     -O2 -fPIC -MT netgroup.lo -MD -MP -MF .deps/netgroup.Tpo -c -o netgroup.lo netgroup.c
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I.. -O2 -fPIC -MT netdb.lo -MD -MP -MF .deps/netdb.Tpo -c netdb.c  -fPIC -DPIC -o .libs/netdb.o
++mv -f .deps/grp.Tpo .deps/grp.Plo
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I.. -O2 -fPIC -MT netgroup.lo -MD -MP -MF .deps/netgroup.Tpo -c netgroup.c  -fPIC -DPIC -o .libs/netgroup.o
++mv -f .deps/netdb.Tpo .deps/netdb.Plo
++mv -f .deps/netgroup.Tpo .deps/netgroup.Plo
++/bin/sh ../libtool  --tag=CC   --mode=link gcc  -O2 -fPIC   -o libmocklibc.la -rpath /usr/lib pwd.lo grp.lo netdb.lo netgroup.lo  
++libtool: link: gcc -shared  -fPIC -DPIC  .libs/pwd.o .libs/grp.o .libs/netdb.o .libs/netgroup.o    -O2   -Wl,-soname -Wl,libmocklibc.so.0 -o .libs/libmocklibc.so.0.0.0
++libtool: link: (cd ".libs" && rm -f "libmocklibc.so.0" && ln -s "libmocklibc.so.0.0.0" "libmocklibc.so.0")
++libtool: link: (cd ".libs" && rm -f "libmocklibc.so" && ln -s "libmocklibc.so.0.0.0" "libmocklibc.so")
++libtool: link: ( cd ".libs" && rm -f "libmocklibc.la" && ln -s "../libmocklibc.la" "libmocklibc.la" )
++/bin/sh ../libtool  --tag=CC   --mode=link gcc  -O2 -fPIC   -o mocklibc-debug-netgroup netgroup-debug.o libmocklibc.la 
++libtool: link: gcc -O2 -fPIC -o .libs/mocklibc-debug-netgroup netgroup-debug.o  ./.libs/libmocklibc.so
++make[5]: Leaving directory '/tmp/polkit-0.118/test/mocklibc/src'
++Making all in bin
++make[5]: Entering directory '/tmp/polkit-0.118/test/mocklibc/bin'
++sed -e 's|@libdir[@]|/usr/lib|g' -e 's|@libname[@]|libmocklibc.so|g' -e 's|@top_srcdir[@]|..|g' -e 's|@top_builddir[@]|..|g' ./mocklibc.in > mocklibc
++chmod a+x mocklibc
++make[5]: Leaving directory '/tmp/polkit-0.118/test/mocklibc/bin'
++make[5]: Entering directory '/tmp/polkit-0.118/test/mocklibc'
++make[5]: Leaving directory '/tmp/polkit-0.118/test/mocklibc'
++make[4]: Leaving directory '/tmp/polkit-0.118/test/mocklibc'
++make[3]: Leaving directory '/tmp/polkit-0.118/test/mocklibc'
++Making all in .
++make[3]: Entering directory '/tmp/polkit-0.118/test'
++  CC       polkittesthelper.lo
++  CCLD     libpolkit-test-helper.la
++make[3]: Leaving directory '/tmp/polkit-0.118/test'
++Making all in polkit
++make[3]: Entering directory '/tmp/polkit-0.118/test/polkit'
++git.mk: Generating .gitignore
++make[3]: Leaving directory '/tmp/polkit-0.118/test/polkit'
++Making all in polkitbackend
++make[3]: Entering directory '/tmp/polkit-0.118/test/polkitbackend'
++  CC       test-polkitbackendjsauthority.o
++git.mk: Generating .gitignore
++  CXXLD    polkitbackendjsauthoritytest
++make[3]: Leaving directory '/tmp/polkit-0.118/test/polkitbackend'
++make[2]: Leaving directory '/tmp/polkit-0.118/test'
++make[2]: Entering directory '/tmp/polkit-0.118'
++make[2]: Leaving directory '/tmp/polkit-0.118'
++make[1]: Leaving directory '/tmp/polkit-0.118'
++Making install in actions
++make[1]: Entering directory '/tmp/polkit-0.118/actions'
++make[2]: Entering directory '/tmp/polkit-0.118/actions'
++make[2]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-polkit/usr/share/polkit-1/actions'
++ /usr/bin/ginstall -c -m 644 org.freedesktop.policykit.policy '/tmp/package-polkit/usr/share/polkit-1/actions'
++make[2]: Leaving directory '/tmp/polkit-0.118/actions'
++make[1]: Leaving directory '/tmp/polkit-0.118/actions'
++Making install in data
++make[1]: Entering directory '/tmp/polkit-0.118/data'
++make[2]: Entering directory '/tmp/polkit-0.118/data'
++make[2]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-polkit/etc/dbus-1/system.d'
++ /usr/bin/ginstall -c -m 644 org.freedesktop.PolicyKit1.conf '/tmp/package-polkit/etc/dbus-1/system.d'
++ /usr/bin/mkdir -p '/tmp/package-polkit/usr/share/gettext/its'
++ /usr/bin/ginstall -c -m 644 polkit.loc polkit.its '/tmp/package-polkit/usr/share/gettext/its'
++ /usr/bin/mkdir -p '/tmp/package-polkit/etc/pam.d'
++ /usr/bin/ginstall -c -m 644 polkit-1 '/tmp/package-polkit/etc/pam.d'
++ /usr/bin/mkdir -p '/tmp/package-polkit/usr/lib/pkgconfig'
++ /usr/bin/ginstall -c -m 644 polkit-gobject-1.pc polkit-agent-1.pc '/tmp/package-polkit/usr/lib/pkgconfig'
++ /usr/bin/mkdir -p '/tmp/package-polkit/usr/share/dbus-1/system-services'
++ /usr/bin/ginstall -c -m 644 org.freedesktop.PolicyKit1.service '/tmp/package-polkit/usr/share/dbus-1/system-services'
++make[2]: Leaving directory '/tmp/polkit-0.118/data'
++make[1]: Leaving directory '/tmp/polkit-0.118/data'
++Making install in src
++make[1]: Entering directory '/tmp/polkit-0.118/src'
++Making install in polkit
++make[2]: Entering directory '/tmp/polkit-0.118/src/polkit'
++make  install-am
++make[3]: Entering directory '/tmp/polkit-0.118/src/polkit'
++make[4]: Entering directory '/tmp/polkit-0.118/src/polkit'
++ /usr/bin/mkdir -p '/tmp/package-polkit/usr/lib'
++ /bin/sh ../../libtool   --mode=install /usr/bin/ginstall -c   libpolkit-gobject-1.la '/tmp/package-polkit/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/libpolkit-gobject-1.so.0.0.0 /tmp/package-polkit/usr/lib/libpolkit-gobject-1.so.0.0.0
++libtool: install: (cd /tmp/package-polkit/usr/lib && { ln -s -f libpolkit-gobject-1.so.0.0.0 libpolkit-gobject-1.so.0 || { rm -f libpolkit-gobject-1.so.0 && ln -s libpolkit-gobject-1.so.0.0.0 libpolkit-gobject-1.so.0; }; })
++libtool: install: (cd /tmp/package-polkit/usr/lib && { ln -s -f libpolkit-gobject-1.so.0.0.0 libpolkit-gobject-1.so || { rm -f libpolkit-gobject-1.so && ln -s libpolkit-gobject-1.so.0.0.0 libpolkit-gobject-1.so; }; })
++libtool: install: /usr/bin/ginstall -c .libs/libpolkit-gobject-1.lai /tmp/package-polkit/usr/lib/libpolkit-gobject-1.la
++libtool: warning: remember to run 'libtool --finish /usr/lib'
++ /usr/bin/mkdir -p '/tmp/package-polkit/usr/share/gir-1.0'
++ /usr/bin/ginstall -c -m 644 Polkit-1.0.gir '/tmp/package-polkit/usr/share/gir-1.0'
++ /usr/bin/mkdir -p '/tmp/package-polkit/usr/include/polkit-1/polkit'
++ /usr/bin/ginstall -c -m 644 polkit.h polkitprivate.h polkittypes.h polkitenumtypes.h polkitactiondescription.h polkitauthorityfeatures.h polkitdetails.h polkitauthority.h polkiterror.h polkitsubject.h polkitunixprocess.h polkitunixsession.h polkitsystembusname.h polkitidentity.h polkitunixuser.h polkitunixgroup.h polkitunixnetgroup.h polkitauthorizationresult.h polkitcheckauthorizationflags.h polkitimplicitauthorization.h polkittemporaryauthorization.h polkitpermission.h '/tmp/package-polkit/usr/include/polkit-1/polkit'
++ /usr/bin/mkdir -p '/tmp/package-polkit/usr/lib/girepository-1.0'
++ /usr/bin/ginstall -c -m 644 Polkit-1.0.typelib '/tmp/package-polkit/usr/lib/girepository-1.0'
++make[4]: Leaving directory '/tmp/polkit-0.118/src/polkit'
++make[3]: Leaving directory '/tmp/polkit-0.118/src/polkit'
++make[2]: Leaving directory '/tmp/polkit-0.118/src/polkit'
++Making install in polkitbackend
++make[2]: Entering directory '/tmp/polkit-0.118/src/polkitbackend'
++make  install-am
++make[3]: Entering directory '/tmp/polkit-0.118/src/polkitbackend'
++make[4]: Entering directory '/tmp/polkit-0.118/src/polkitbackend'
++make[4]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-polkit/usr/lib/polkit-1'
++  /bin/sh ../../libtool   --mode=install /usr/bin/ginstall -c polkitd '/tmp/package-polkit/usr/lib/polkit-1'
++libtool: warning: '../../src/polkit/libpolkit-gobject-1.la' has not been installed in '/usr/lib'
++libtool: warning: '/tmp/polkit-0.118/src/polkit/libpolkit-gobject-1.la' has not been installed in '/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/polkitd /tmp/package-polkit/usr/lib/polkit-1/polkitd
++ /usr/bin/mkdir -p '/tmp/package-polkit/etc/polkit-1/rules.d'
++ /usr/bin/ginstall -c -m 644 50-default.rules '/tmp/package-polkit/etc/polkit-1/rules.d'
++make  install-data-hook
++make[5]: Entering directory '/tmp/polkit-0.118/src/polkitbackend'
++mkdir -p /tmp/package-polkit/etc/polkit-1/rules.d
++chmod 700 /tmp/package-polkit/etc/polkit-1/rules.d
++chown polkitd /tmp/package-polkit/etc/polkit-1/rules.d
++mkdir -p /tmp/package-polkit/usr/share/polkit-1/rules.d
++chmod 700 /tmp/package-polkit/usr/share/polkit-1/rules.d
++chown polkitd /tmp/package-polkit/usr/share/polkit-1/rules.d
++make[5]: Leaving directory '/tmp/polkit-0.118/src/polkitbackend'
++make[4]: Leaving directory '/tmp/polkit-0.118/src/polkitbackend'
++make[3]: Leaving directory '/tmp/polkit-0.118/src/polkitbackend'
++make[2]: Leaving directory '/tmp/polkit-0.118/src/polkitbackend'
++Making install in polkitagent
++make[2]: Entering directory '/tmp/polkit-0.118/src/polkitagent'
++make  install-am
++make[3]: Entering directory '/tmp/polkit-0.118/src/polkitagent'
++make[4]: Entering directory '/tmp/polkit-0.118/src/polkitagent'
++ /usr/bin/mkdir -p '/tmp/package-polkit/usr/lib'
++ /bin/sh ../../libtool   --mode=install /usr/bin/ginstall -c   libpolkit-agent-1.la '/tmp/package-polkit/usr/lib'
++libtool: warning: relinking 'libpolkit-agent-1.la'
++libtool: install: (cd /tmp/polkit-0.118/src/polkitagent; /bin/sh "/tmp/polkit-0.118/libtool"  --silent --tag CC --mode=relink gcc -D_POLKIT_COMPILATION -D_POLKIT_AGENT_COMPILATION -pthread -I/usr/include/gio-unix-2.0 -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -O2 -fPIC -export-symbols-regex "(^polkit_.*)" -Wl,--as-needed -o libpolkit-agent-1.la -rpath /usr/lib libpolkit_agent_1_la-polkitagentenumtypes.lo libpolkit_agent_1_la-polkitagentmarshal.lo libpolkit_agent_1_la-polkitagentsession.lo libpolkit_agent_1_la-polkitagentlistener.lo libpolkit_agent_1_la-polkitagenttextlistener.lo -Wl,--export-dynamic -lgmodule-2.0 -pthread -lgio-2.0 -lgobject-2.0 -lglib-2.0 ../../src/polkit/libpolkit-gobject-1.la -lexpat -inst-prefix-dir /tmp/package-polkit)
++libtool: install: /usr/bin/ginstall -c .libs/libpolkit-agent-1.so.0.0.0T /tmp/package-polkit/usr/lib/libpolkit-agent-1.so.0.0.0
++libtool: install: (cd /tmp/package-polkit/usr/lib && { ln -s -f libpolkit-agent-1.so.0.0.0 libpolkit-agent-1.so.0 || { rm -f libpolkit-agent-1.so.0 && ln -s libpolkit-agent-1.so.0.0.0 libpolkit-agent-1.so.0; }; })
++libtool: install: (cd /tmp/package-polkit/usr/lib && { ln -s -f libpolkit-agent-1.so.0.0.0 libpolkit-agent-1.so || { rm -f libpolkit-agent-1.so && ln -s libpolkit-agent-1.so.0.0.0 libpolkit-agent-1.so; }; })
++libtool: install: /usr/bin/ginstall -c .libs/libpolkit-agent-1.lai /tmp/package-polkit/usr/lib/libpolkit-agent-1.la
++libtool: warning: remember to run 'libtool --finish /usr/lib'
++ /usr/bin/mkdir -p '/tmp/package-polkit/usr/share/gir-1.0'
++ /usr/bin/ginstall -c -m 644 PolkitAgent-1.0.gir '/tmp/package-polkit/usr/share/gir-1.0'
++ /usr/bin/mkdir -p '/tmp/package-polkit/usr/include/polkit-1/polkitagent'
++ /usr/bin/ginstall -c -m 644 polkitagent.h polkitagentenumtypes.h polkitagenttypes.h polkitagentsession.h polkitagentlistener.h polkitagenttextlistener.h '/tmp/package-polkit/usr/include/polkit-1/polkitagent'
++ /usr/bin/mkdir -p '/tmp/package-polkit/usr/lib/polkit-1'
++  /bin/sh ../../libtool   --mode=install /usr/bin/ginstall -c polkit-agent-helper-1 '/tmp/package-polkit/usr/lib/polkit-1'
++libtool: warning: '../../src/polkit/libpolkit-gobject-1.la' has not been installed in '/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/polkit-agent-helper-1 /tmp/package-polkit/usr/lib/polkit-1/polkit-agent-helper-1
++ /usr/bin/mkdir -p '/tmp/package-polkit/usr/lib/girepository-1.0'
++ /usr/bin/ginstall -c -m 644 PolkitAgent-1.0.typelib '/tmp/package-polkit/usr/lib/girepository-1.0'
++make  install-data-hook
++make[5]: Entering directory '/tmp/polkit-0.118/src/polkitagent'
++chown root /tmp/package-polkit/usr/lib/polkit-1/polkit-agent-helper-1
++chmod 4755 /tmp/package-polkit/usr/lib/polkit-1/polkit-agent-helper-1
++make[5]: Leaving directory '/tmp/polkit-0.118/src/polkitagent'
++make[4]: Leaving directory '/tmp/polkit-0.118/src/polkitagent'
++make[3]: Leaving directory '/tmp/polkit-0.118/src/polkitagent'
++make[2]: Leaving directory '/tmp/polkit-0.118/src/polkitagent'
++Making install in programs
++make[2]: Entering directory '/tmp/polkit-0.118/src/programs'
++make[3]: Entering directory '/tmp/polkit-0.118/src/programs'
++ /usr/bin/mkdir -p '/tmp/package-polkit/usr/bin'
++  /bin/sh ../../libtool   --mode=install /usr/bin/ginstall -c pkexec pkcheck pkaction pkttyagent '/tmp/package-polkit/usr/bin'
++libtool: warning: '../../src/polkit/libpolkit-gobject-1.la' has not been installed in '/usr/lib'
++libtool: warning: '../../src/polkitagent/libpolkit-agent-1.la' has not been installed in '/usr/lib'
++libtool: warning: '/tmp/polkit-0.118/src/polkit/libpolkit-gobject-1.la' has not been installed in '/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/pkexec /tmp/package-polkit/usr/bin/pkexec
++libtool: warning: '../../src/polkit/libpolkit-gobject-1.la' has not been installed in '/usr/lib'
++libtool: warning: '../../src/polkitagent/libpolkit-agent-1.la' has not been installed in '/usr/lib'
++libtool: warning: '/tmp/polkit-0.118/src/polkit/libpolkit-gobject-1.la' has not been installed in '/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/pkcheck /tmp/package-polkit/usr/bin/pkcheck
++libtool: warning: '../../src/polkit/libpolkit-gobject-1.la' has not been installed in '/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/pkaction /tmp/package-polkit/usr/bin/pkaction
++libtool: warning: '../../src/polkit/libpolkit-gobject-1.la' has not been installed in '/usr/lib'
++libtool: warning: '../../src/polkitagent/libpolkit-agent-1.la' has not been installed in '/usr/lib'
++libtool: warning: '/tmp/polkit-0.118/src/polkit/libpolkit-gobject-1.la' has not been installed in '/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/pkttyagent /tmp/package-polkit/usr/bin/pkttyagent
++make  install-exec-hook
++make[4]: Entering directory '/tmp/polkit-0.118/src/programs'
++chmod 4755 /tmp/package-polkit/usr/bin/pkexec
++make[4]: Leaving directory '/tmp/polkit-0.118/src/programs'
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/polkit-0.118/src/programs'
++make[2]: Leaving directory '/tmp/polkit-0.118/src/programs'
++make[2]: Entering directory '/tmp/polkit-0.118/src'
++make[3]: Entering directory '/tmp/polkit-0.118/src'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/polkit-0.118/src'
++make[2]: Leaving directory '/tmp/polkit-0.118/src'
++make[1]: Leaving directory '/tmp/polkit-0.118/src'
++Making install in docs
++make[1]: Entering directory '/tmp/polkit-0.118/docs'
++Making install in man
++make[2]: Entering directory '/tmp/polkit-0.118/docs/man'
++make[3]: Entering directory '/tmp/polkit-0.118/docs/man'
++make[3]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-polkit/usr/man/man1'
++ /usr/bin/ginstall -c -m 644 pkexec.1 pkcheck.1 pkaction.1 pkttyagent.1 '/tmp/package-polkit/usr/man/man1'
++ /usr/bin/mkdir -p '/tmp/package-polkit/usr/man/man8'
++ /usr/bin/ginstall -c -m 644 polkit.8 polkitd.8 '/tmp/package-polkit/usr/man/man8'
++make[3]: Leaving directory '/tmp/polkit-0.118/docs/man'
++make[2]: Leaving directory '/tmp/polkit-0.118/docs/man'
++Making install in polkit
++make[2]: Entering directory '/tmp/polkit-0.118/docs/polkit'
++make[3]: Entering directory '/tmp/polkit-0.118/docs/polkit'
++make[3]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/ginstall -c -m 644 ./html/Identities.html
++ /usr/bin/ginstall -c -m 644 ./html/PolkitActionDescription.html
++ /usr/bin/ginstall -c -m 644 ./html/PolkitAgentListener.html
++ /usr/bin/ginstall -c -m 644 ./html/PolkitAgentSession.html
++ /usr/bin/ginstall -c -m 644 ./html/PolkitAgentTextListener.html
++ /usr/bin/ginstall -c -m 644 ./html/PolkitAuthority.html
++ /usr/bin/ginstall -c -m 644 ./html/PolkitAuthorizationResult.html
++ /usr/bin/ginstall -c -m 644 ./html/PolkitDetails.html
++ /usr/bin/ginstall -c -m 644 ./html/PolkitIdentity.html
++ /usr/bin/ginstall -c -m 644 ./html/PolkitPermission.html
++ /usr/bin/ginstall -c -m 644 ./html/PolkitSubject.html
++ /usr/bin/ginstall -c -m 644 ./html/PolkitSystemBusName.html
++ /usr/bin/ginstall -c -m 644 ./html/PolkitTemporaryAuthorization.html
++ /usr/bin/ginstall -c -m 644 ./html/PolkitUnixGroup.html
++ /usr/bin/ginstall -c -m 644 ./html/PolkitUnixNetgroup.html
++ /usr/bin/ginstall -c -m 644 ./html/PolkitUnixProcess.html
++ /usr/bin/ginstall -c -m 644 ./html/PolkitUnixSession.html
++ /usr/bin/ginstall -c -m 644 ./html/PolkitUnixUser.html
++ /usr/bin/ginstall -c -m 644 ./html/annotation-glossary.html
++ /usr/bin/ginstall -c -m 644 ./html/eggdbus-interface-org.freedesktop.PolicyKit1.AuthenticationAgent.html
++ /usr/bin/ginstall -c -m 644 ./html/eggdbus-interface-org.freedesktop.PolicyKit1.Authority.html
++ /usr/bin/ginstall -c -m 644 ./html/home.png
++ /usr/bin/ginstall -c -m 644 ./html/index.html
++ /usr/bin/ginstall -c -m 644 ./html/left-insensitive.png
++ /usr/bin/ginstall -c -m 644 ./html/left.png
++ /usr/bin/ginstall -c -m 644 ./html/license.html
++ /usr/bin/ginstall -c -m 644 ./html/manpages.html
++ /usr/bin/ginstall -c -m 644 ./html/overview.html
++ /usr/bin/ginstall -c -m 644 ./html/pkaction.1.html
++ /usr/bin/ginstall -c -m 644 ./html/pkcheck.1.html
++ /usr/bin/ginstall -c -m 644 ./html/pkexec.1.html
++ /usr/bin/ginstall -c -m 644 ./html/pkttyagent.1.html
++ /usr/bin/ginstall -c -m 644 ./html/polit-index.html
++ /usr/bin/ginstall -c -m 644 ./html/polkit-1-PolkitError.html
++ /usr/bin/ginstall -c -m 644 ./html/polkit-1.devhelp2
++ /usr/bin/ginstall -c -m 644 ./html/polkit-agents.html
++ /usr/bin/ginstall -c -m 644 ./html/polkit-apps.html
++ /usr/bin/ginstall -c -m 644 ./html/polkit-architecture.html
++ /usr/bin/ginstall -c -m 644 ./html/polkit-architecture.png
++ /usr/bin/ginstall -c -m 644 ./html/polkit-authentication-agent-example-wheel.html
++ /usr/bin/ginstall -c -m 644 ./html/polkit-authentication-agent-example-wheel.png
++ /usr/bin/ginstall -c -m 644 ./html/polkit-authentication-agent-example.html
++ /usr/bin/ginstall -c -m 644 ./html/polkit-authentication-agent-example.png
++ /usr/bin/ginstall -c -m 644 ./html/polkit-hierarchy.html
++ /usr/bin/ginstall -c -m 644 ./html/polkit-intro.html
++ /usr/bin/ginstall -c -m 644 ./html/polkit.8.html
++ /usr/bin/ginstall -c -m 644 ./html/polkitd.8.html
++ /usr/bin/ginstall -c -m 644 ./html/ref-api.html
++ /usr/bin/ginstall -c -m 644 ./html/ref-authentication-agent-api.html
++ /usr/bin/ginstall -c -m 644 ./html/ref-dbus-api.html
++ /usr/bin/ginstall -c -m 644 ./html/right-insensitive.png
++ /usr/bin/ginstall -c -m 644 ./html/right.png
++ /usr/bin/ginstall -c -m 644 ./html/style.css
++ /usr/bin/ginstall -c -m 644 ./html/subjects.html
++ /usr/bin/ginstall -c -m 644 ./html/up-insensitive.png
++ /usr/bin/ginstall -c -m 644 ./html/up.png
++../gio/ -> /usr/share/gtk-doc/html/gio (142)
++../glib/ -> /usr/share/gtk-doc/html/glib (437)
++../gobject/ -> /usr/share/gtk-doc/html/gobject (59)
++../gtk3/ -> /usr/share/gtk-doc/html/gtk3 (1)
++make[3]: Leaving directory '/tmp/polkit-0.118/docs/polkit'
++make[2]: Leaving directory '/tmp/polkit-0.118/docs/polkit'
++make[2]: Entering directory '/tmp/polkit-0.118/docs'
++make[3]: Entering directory '/tmp/polkit-0.118/docs'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/polkit-0.118/docs'
++make[2]: Leaving directory '/tmp/polkit-0.118/docs'
++make[1]: Leaving directory '/tmp/polkit-0.118/docs'
++Making install in po
++make[1]: Entering directory '/tmp/polkit-0.118/po'
++linguas="cs da de hr hu id it nn pl pt_BR sk sv tr uk zh_CN zh_TW "; \
++for lang in $linguas; do \
++  dir=/tmp/package-polkit/usr/share/locale/$lang/LC_MESSAGES; \
++  /bin/sh /tmp/polkit-0.118/install-sh -d $dir; \
++  if test -r $lang.gmo; then \
++    /usr/bin/ginstall -c -m 644 $lang.gmo $dir/polkit-1.mo; \
++    echo "installing $lang.gmo as $dir/polkit-1.mo"; \
++  else \
++    /usr/bin/ginstall -c -m 644 ./$lang.gmo $dir/polkit-1.mo; \
++    echo "installing ./$lang.gmo as" \
++	 "$dir/polkit-1.mo"; \
++  fi; \
++  if test -r $lang.gmo.m; then \
++    /usr/bin/ginstall -c -m 644 $lang.gmo.m $dir/polkit-1.mo.m; \
++    echo "installing $lang.gmo.m as $dir/polkit-1.mo.m"; \
++  else \
++    if test -r ./$lang.gmo.m ; then \
++      /usr/bin/ginstall -c -m 644 ./$lang.gmo.m \
++	$dir/polkit-1.mo.m; \
++      echo "installing ./$lang.gmo.m as" \
++	   "$dir/polkit-1.mo.m"; \
++    else \
++      true; \
++    fi; \
++  fi; \
++done
++installing cs.gmo as /tmp/package-polkit/usr/share/locale/cs/LC_MESSAGES/polkit-1.mo
++installing da.gmo as /tmp/package-polkit/usr/share/locale/da/LC_MESSAGES/polkit-1.mo
++installing de.gmo as /tmp/package-polkit/usr/share/locale/de/LC_MESSAGES/polkit-1.mo
++installing hr.gmo as /tmp/package-polkit/usr/share/locale/hr/LC_MESSAGES/polkit-1.mo
++installing hu.gmo as /tmp/package-polkit/usr/share/locale/hu/LC_MESSAGES/polkit-1.mo
++installing id.gmo as /tmp/package-polkit/usr/share/locale/id/LC_MESSAGES/polkit-1.mo
++installing it.gmo as /tmp/package-polkit/usr/share/locale/it/LC_MESSAGES/polkit-1.mo
++installing nn.gmo as /tmp/package-polkit/usr/share/locale/nn/LC_MESSAGES/polkit-1.mo
++installing pl.gmo as /tmp/package-polkit/usr/share/locale/pl/LC_MESSAGES/polkit-1.mo
++installing pt_BR.gmo as /tmp/package-polkit/usr/share/locale/pt_BR/LC_MESSAGES/polkit-1.mo
++installing sk.gmo as /tmp/package-polkit/usr/share/locale/sk/LC_MESSAGES/polkit-1.mo
++installing sv.gmo as /tmp/package-polkit/usr/share/locale/sv/LC_MESSAGES/polkit-1.mo
++installing tr.gmo as /tmp/package-polkit/usr/share/locale/tr/LC_MESSAGES/polkit-1.mo
++installing uk.gmo as /tmp/package-polkit/usr/share/locale/uk/LC_MESSAGES/polkit-1.mo
++installing zh_CN.gmo as /tmp/package-polkit/usr/share/locale/zh_CN/LC_MESSAGES/polkit-1.mo
++installing zh_TW.gmo as /tmp/package-polkit/usr/share/locale/zh_TW/LC_MESSAGES/polkit-1.mo
++make[1]: Leaving directory '/tmp/polkit-0.118/po'
++Making install in test
++make[1]: Entering directory '/tmp/polkit-0.118'
++make[2]: Entering directory '/tmp/polkit-0.118'
++make[2]: Nothing to be done for 'install-exec-am'.
++make[2]: Nothing to be done for 'install-data-am'.
++make[2]: Leaving directory '/tmp/polkit-0.118'
++make[1]: Leaving directory '/tmp/polkit-0.118'
++rmdir: failed to remove directory '/tmp/package-polkit/etc': Directory not empty
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++usr/doc/polkit-0.118/INSTALL	/usr/share/automake-1.16/INSTALL
++usr/doc/polkit-0.118/html	../../share/gtk-doc/html/polkit-1
++usr/lib/libpolkit-agent-1.so	libpolkit-agent-1.so.0.0.0
++usr/lib/libpolkit-agent-1.so.0	libpolkit-agent-1.so.0.0.0
++usr/lib/libpolkit-gobject-1.so	libpolkit-gobject-1.so.0.0.0
++usr/lib/libpolkit-gobject-1.so.0	libpolkit-gobject-1.so.0.0.0
++
++Making symbolic link creation script:
++( cd usr/doc/polkit-0.118 ; rm -rf INSTALL )
++( cd usr/doc/polkit-0.118 ; ln -sf /usr/share/automake-1.16/INSTALL INSTALL )
++( cd usr/doc/polkit-0.118 ; rm -rf html )
++( cd usr/doc/polkit-0.118 ; ln -sf ../../share/gtk-doc/html/polkit-1 html )
++( cd usr/lib ; rm -rf libpolkit-agent-1.so )
++( cd usr/lib ; ln -sf libpolkit-agent-1.so.0.0.0 libpolkit-agent-1.so )
++( cd usr/lib ; rm -rf libpolkit-agent-1.so.0 )
++( cd usr/lib ; ln -sf libpolkit-agent-1.so.0.0.0 libpolkit-agent-1.so.0 )
++( cd usr/lib ; rm -rf libpolkit-gobject-1.so )
++( cd usr/lib ; ln -sf libpolkit-gobject-1.so.0.0.0 libpolkit-gobject-1.so )
++( cd usr/lib ; rm -rf libpolkit-gobject-1.so.0 )
++( cd usr/lib ; ln -sf libpolkit-gobject-1.so.0.0.0 libpolkit-gobject-1.so.0 )
++
++Unless your existing installation script already contains the code
++to create these links, you should append these lines to your existing
++install script. Now's your chance. :^)
++
++Would you like to add this stuff to the existing install script and
++remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './usr/doc/polkit-0.118/INSTALL'
++removed './usr/doc/polkit-0.118/html'
++removed './usr/lib/libpolkit-gobject-1.so.0'
++removed './usr/lib/libpolkit-agent-1.so.0'
++removed './usr/lib/libpolkit-agent-1.so'
++removed './usr/lib/libpolkit-gobject-1.so'
++
++Updating your ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/polkit-0.118-x86_64-3.txz
++
++./
++etc/
++etc/pam.d/
++etc/pam.d/polkit-1.new
++etc/polkit-1/
++etc/polkit-1/rules.d/
++install/
++install/doinst.sh
++install/slack-desc
++usr/
++usr/bin/
++usr/bin/pkaction
++usr/bin/pkcheck
++usr/bin/pkexec
++usr/bin/pkttyagent
++usr/doc/
++usr/doc/polkit-0.118/
++usr/doc/polkit-0.118/AUTHORS
++usr/doc/polkit-0.118/COPYING
++usr/doc/polkit-0.118/ChangeLog
++usr/doc/polkit-0.118/HACKING
++usr/doc/polkit-0.118/NEWS
++usr/doc/polkit-0.118/README
++usr/include/
++usr/include/polkit-1/
++usr/include/polkit-1/polkit/
++usr/include/polkit-1/polkit/polkit.h
++usr/include/polkit-1/polkit/polkitactiondescription.h
++usr/include/polkit-1/polkit/polkitauthority.h
++usr/include/polkit-1/polkit/polkitauthorityfeatures.h
++usr/include/polkit-1/polkit/polkitauthorizationresult.h
++usr/include/polkit-1/polkit/polkitcheckauthorizationflags.h
++usr/include/polkit-1/polkit/polkitdetails.h
++usr/include/polkit-1/polkit/polkitenumtypes.h
++usr/include/polkit-1/polkit/polkiterror.h
++usr/include/polkit-1/polkit/polkitidentity.h
++usr/include/polkit-1/polkit/polkitimplicitauthorization.h
++usr/include/polkit-1/polkit/polkitpermission.h
++usr/include/polkit-1/polkit/polkitprivate.h
++usr/include/polkit-1/polkit/polkitsubject.h
++usr/include/polkit-1/polkit/polkitsystembusname.h
++usr/include/polkit-1/polkit/polkittemporaryauthorization.h
++usr/include/polkit-1/polkit/polkittypes.h
++usr/include/polkit-1/polkit/polkitunixgroup.h
++usr/include/polkit-1/polkit/polkitunixnetgroup.h
++usr/include/polkit-1/polkit/polkitunixprocess.h
++usr/include/polkit-1/polkit/polkitunixsession.h
++usr/include/polkit-1/polkit/polkitunixuser.h
++usr/include/polkit-1/polkitagent/
++usr/include/polkit-1/polkitagent/polkitagent.h
++usr/include/polkit-1/polkitagent/polkitagentenumtypes.h
++usr/include/polkit-1/polkitagent/polkitagentlistener.h
++usr/include/polkit-1/polkitagent/polkitagentsession.h
++usr/include/polkit-1/polkitagent/polkitagenttextlistener.h
++usr/include/polkit-1/polkitagent/polkitagenttypes.h
++usr/lib/
++usr/lib/girepository-1.0/
++usr/lib/girepository-1.0/Polkit-1.0.typelib
++usr/lib/girepository-1.0/PolkitAgent-1.0.typelib
++usr/lib/libpolkit-agent-1.so.0.0.0
++usr/lib/libpolkit-gobject-1.so.0.0.0
++usr/lib/pkgconfig/
++usr/lib/pkgconfig/polkit-agent-1.pc
++usr/lib/pkgconfig/polkit-gobject-1.pc
++usr/lib/polkit-1/
++usr/lib/polkit-1/polkit-agent-helper-1
++usr/lib/polkit-1/polkitd
++usr/man/
++usr/man/man1/
++usr/man/man1/pkaction.1.gz
++usr/man/man1/pkcheck.1.gz
++usr/man/man1/pkexec.1.gz
++usr/man/man1/pkttyagent.1.gz
++usr/man/man8/
++usr/man/man8/polkit.8.gz
++usr/man/man8/polkitd.8.gz
++usr/share/
++usr/share/dbus-1/
++usr/share/dbus-1/system-services/
++usr/share/dbus-1/system-services/org.freedesktop.PolicyKit1.service
++usr/share/dbus-1/system.d/
++usr/share/dbus-1/system.d/org.freedesktop.PolicyKit1.conf
++usr/share/gettext/
++usr/share/gettext/its/
++usr/share/gettext/its/polkit.its
++usr/share/gettext/its/polkit.loc
++usr/share/gir-1.0/
++usr/share/gir-1.0/Polkit-1.0.gir
++usr/share/gir-1.0/PolkitAgent-1.0.gir
++usr/share/gtk-doc/
++usr/share/gtk-doc/html/
++usr/share/gtk-doc/html/polkit-1/
++usr/share/gtk-doc/html/polkit-1/Identities.html
++usr/share/gtk-doc/html/polkit-1/PolkitActionDescription.html
++usr/share/gtk-doc/html/polkit-1/PolkitAgentListener.html
++usr/share/gtk-doc/html/polkit-1/PolkitAgentSession.html
++usr/share/gtk-doc/html/polkit-1/PolkitAgentTextListener.html
++usr/share/gtk-doc/html/polkit-1/PolkitAuthority.html
++usr/share/gtk-doc/html/polkit-1/PolkitAuthorizationResult.html
++usr/share/gtk-doc/html/polkit-1/PolkitDetails.html
++usr/share/gtk-doc/html/polkit-1/PolkitIdentity.html
++usr/share/gtk-doc/html/polkit-1/PolkitPermission.html
++usr/share/gtk-doc/html/polkit-1/PolkitSubject.html
++usr/share/gtk-doc/html/polkit-1/PolkitSystemBusName.html
++usr/share/gtk-doc/html/polkit-1/PolkitTemporaryAuthorization.html
++usr/share/gtk-doc/html/polkit-1/PolkitUnixGroup.html
++usr/share/gtk-doc/html/polkit-1/PolkitUnixNetgroup.html
++usr/share/gtk-doc/html/polkit-1/PolkitUnixProcess.html
++usr/share/gtk-doc/html/polkit-1/PolkitUnixSession.html
++usr/share/gtk-doc/html/polkit-1/PolkitUnixUser.html
++usr/share/gtk-doc/html/polkit-1/annotation-glossary.html
++usr/share/gtk-doc/html/polkit-1/eggdbus-interface-org.freedesktop.PolicyKit1.AuthenticationAgent.html
++usr/share/gtk-doc/html/polkit-1/eggdbus-interface-org.freedesktop.PolicyKit1.Authority.html
++usr/share/gtk-doc/html/polkit-1/home.png
++usr/share/gtk-doc/html/polkit-1/index.html
++usr/share/gtk-doc/html/polkit-1/left-insensitive.png
++usr/share/gtk-doc/html/polkit-1/left.png
++usr/share/gtk-doc/html/polkit-1/license.html
++usr/share/gtk-doc/html/polkit-1/manpages.html
++usr/share/gtk-doc/html/polkit-1/overview.html
++usr/share/gtk-doc/html/polkit-1/pkaction.1.html
++usr/share/gtk-doc/html/polkit-1/pkcheck.1.html
++usr/share/gtk-doc/html/polkit-1/pkexec.1.html
++usr/share/gtk-doc/html/polkit-1/pkttyagent.1.html
++usr/share/gtk-doc/html/polkit-1/polit-index.html
++usr/share/gtk-doc/html/polkit-1/polkit-1-PolkitError.html
++usr/share/gtk-doc/html/polkit-1/polkit-1.devhelp2
++usr/share/gtk-doc/html/polkit-1/polkit-agents.html
++usr/share/gtk-doc/html/polkit-1/polkit-apps.html
++usr/share/gtk-doc/html/polkit-1/polkit-architecture.html
++usr/share/gtk-doc/html/polkit-1/polkit-architecture.png
++usr/share/gtk-doc/html/polkit-1/polkit-authentication-agent-example-wheel.html
++usr/share/gtk-doc/html/polkit-1/polkit-authentication-agent-example-wheel.png
++usr/share/gtk-doc/html/polkit-1/polkit-authentication-agent-example.html
++usr/share/gtk-doc/html/polkit-1/polkit-authentication-agent-example.png
++usr/share/gtk-doc/html/polkit-1/polkit-hierarchy.html
++usr/share/gtk-doc/html/polkit-1/polkit-intro.html
++usr/share/gtk-doc/html/polkit-1/polkit.8.html
++usr/share/gtk-doc/html/polkit-1/polkitd.8.html
++usr/share/gtk-doc/html/polkit-1/ref-api.html
++usr/share/gtk-doc/html/polkit-1/ref-authentication-agent-api.html
++usr/share/gtk-doc/html/polkit-1/ref-dbus-api.html
++usr/share/gtk-doc/html/polkit-1/right-insensitive.png
++usr/share/gtk-doc/html/polkit-1/right.png
++usr/share/gtk-doc/html/polkit-1/style.css
++usr/share/gtk-doc/html/polkit-1/subjects.html
++usr/share/gtk-doc/html/polkit-1/up-insensitive.png
++usr/share/gtk-doc/html/polkit-1/up.png
++usr/share/locale/
++usr/share/locale/cs/
++usr/share/locale/cs/LC_MESSAGES/
++usr/share/locale/cs/LC_MESSAGES/polkit-1.mo
++usr/share/locale/da/
++usr/share/locale/da/LC_MESSAGES/
++usr/share/locale/da/LC_MESSAGES/polkit-1.mo
++usr/share/locale/de/
++usr/share/locale/de/LC_MESSAGES/
++usr/share/locale/de/LC_MESSAGES/polkit-1.mo
++usr/share/locale/hr/
++usr/share/locale/hr/LC_MESSAGES/
++usr/share/locale/hr/LC_MESSAGES/polkit-1.mo
++usr/share/locale/hu/
++usr/share/locale/hu/LC_MESSAGES/
++usr/share/locale/hu/LC_MESSAGES/polkit-1.mo
++usr/share/locale/id/
++usr/share/locale/id/LC_MESSAGES/
++usr/share/locale/id/LC_MESSAGES/polkit-1.mo
++usr/share/locale/it/
++usr/share/locale/it/LC_MESSAGES/
++usr/share/locale/it/LC_MESSAGES/polkit-1.mo
++usr/share/locale/nn/
++usr/share/locale/nn/LC_MESSAGES/
++usr/share/locale/nn/LC_MESSAGES/polkit-1.mo
++usr/share/locale/pl/
++usr/share/locale/pl/LC_MESSAGES/
++usr/share/locale/pl/LC_MESSAGES/polkit-1.mo
++usr/share/locale/pt_BR/
++usr/share/locale/pt_BR/LC_MESSAGES/
++usr/share/locale/pt_BR/LC_MESSAGES/polkit-1.mo
++usr/share/locale/sk/
++usr/share/locale/sk/LC_MESSAGES/
++usr/share/locale/sk/LC_MESSAGES/polkit-1.mo
++usr/share/locale/sv/
++usr/share/locale/sv/LC_MESSAGES/
++usr/share/locale/sv/LC_MESSAGES/polkit-1.mo
++usr/share/locale/tr/
++usr/share/locale/tr/LC_MESSAGES/
++usr/share/locale/tr/LC_MESSAGES/polkit-1.mo
++usr/share/locale/uk/
++usr/share/locale/uk/LC_MESSAGES/
++usr/share/locale/uk/LC_MESSAGES/polkit-1.mo
++usr/share/locale/zh_CN/
++usr/share/locale/zh_CN/LC_MESSAGES/
++usr/share/locale/zh_CN/LC_MESSAGES/polkit-1.mo
++usr/share/locale/zh_TW/
++usr/share/locale/zh_TW/LC_MESSAGES/
++usr/share/locale/zh_TW/LC_MESSAGES/polkit-1.mo
++usr/share/polkit-1/
++usr/share/polkit-1/actions/
++usr/share/polkit-1/actions/org.freedesktop.policykit.policy
++usr/share/polkit-1/rules.d/
++usr/share/polkit-1/rules.d/50-default.rules
++var/
++var/lib/
++var/lib/polkit/
++WARNING:  zero length file usr/doc/polkit-0.118/AUTHORS
++WARNING:  zero length file usr/doc/polkit-0.118/ChangeLog
++
++Slackware package /tmp/polkit-0.118-x86_64-3.txz created.
++

@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# This is just to gather information for use by PRINT_PACKAGE_NAME. Make any
+# changes to the ./trackbuild script.
+cd $(dirname $0)
+PKGNAM=linuxdoc-tools
+VERSION=$(grep PKGVERSION= trackbuild.linuxdoc-tools | cut -f 2 -d = | cut -f 1 -d ' ')
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+      i?86) export ARCH=i586 ;;
+      arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+         *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+BUILD=$(grep BUILD= trackbuild.linuxdoc-tools | cut -f 2 -d - | cut -f 1 -d })
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+./trackbuild.linuxdoc-tools

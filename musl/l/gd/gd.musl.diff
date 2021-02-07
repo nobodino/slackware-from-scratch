@@ -1,0 +1,1544 @@
+diff -ruBN /tmp/gd/gd.SlackBuild /source/l/gd/gd.SlackBuild
+--- /tmp/gd/gd.SlackBuild	2021-01-30 19:45:56.000000000 +0000
++++ /source/l/gd/gd.SlackBuild	2021-01-31 08:34:28.000000000 +0000
+@@ -60,7 +60,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ else
+   SLKCFLAGS="-O2"
+   LIBDIRSUFFIX=""
+@@ -89,7 +89,7 @@
+   --disable-static \
+   --program-prefix= \
+   --program-suffix= \
+-  --build=$ARCH-slackware-linux || exit 1
++  --build=$ARCH-slackware-linux-musl || exit 1
+ 
+ # Build and install:
+ make $NUMJOBS || make || exit 1
+diff -ruBN /tmp/gd/gd.SlackBuild.log /source/l/gd/gd.SlackBuild.log
+--- /tmp/gd/gd.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/l/gd/gd.SlackBuild.log	2021-01-31 08:35:24.000000000 +0000
+@@ -0,0 +1,1519 @@
++libgd-2.3.1/
++libgd-2.3.1/bootstrap.sh
++libgd-2.3.1/docs/
++libgd-2.3.1/docs/NEWS.historic
++libgd-2.3.1/docs/README.CMAKE
++libgd-2.3.1/docs/README.JPN
++libgd-2.3.1/docs/ChangeLog.historic
++libgd-2.3.1/docs/INSTALL
++libgd-2.3.1/docs/README.TXT
++libgd-2.3.1/docs/INSTALL.Solaris
++libgd-2.3.1/docs/naturaldocs/
++libgd-2.3.1/docs/naturaldocs/html/
++libgd-2.3.1/docs/naturaldocs/html/index.html
++libgd-2.3.1/docs/naturaldocs/html/search/
++libgd-2.3.1/docs/naturaldocs/html/search/FunctionsG.html
++libgd-2.3.1/docs/naturaldocs/html/search/GeneralA.html
++libgd-2.3.1/docs/naturaldocs/html/search/GeneralS.html
++libgd-2.3.1/docs/naturaldocs/html/search/FilesB.html
++libgd-2.3.1/docs/naturaldocs/html/search/GeneralC.html
++libgd-2.3.1/docs/naturaldocs/html/search/GeneralI.html
++libgd-2.3.1/docs/naturaldocs/html/search/GeneralG.html
++libgd-2.3.1/docs/naturaldocs/html/search/GeneralO.html
++libgd-2.3.1/docs/naturaldocs/html/search/FilesT.html
++libgd-2.3.1/docs/naturaldocs/html/search/MacrosG.html
++libgd-2.3.1/docs/naturaldocs/html/search/FilesP.html
++libgd-2.3.1/docs/naturaldocs/html/search/FilesM.html
++libgd-2.3.1/docs/naturaldocs/html/search/GeneralP.html
++libgd-2.3.1/docs/naturaldocs/html/search/FilesJ.html
++libgd-2.3.1/docs/naturaldocs/html/search/FilesW.html
++libgd-2.3.1/docs/naturaldocs/html/search/GeneralJ.html
++libgd-2.3.1/docs/naturaldocs/html/search/GeneralL.html
++libgd-2.3.1/docs/naturaldocs/html/search/FilesL.html
++libgd-2.3.1/docs/naturaldocs/html/search/FilesS.html
++libgd-2.3.1/docs/naturaldocs/html/search/ConstantsS.html
++libgd-2.3.1/docs/naturaldocs/html/search/TypesG.html
++libgd-2.3.1/docs/naturaldocs/html/search/NoResults.html
++libgd-2.3.1/docs/naturaldocs/html/search/ConstantsG.html
++libgd-2.3.1/docs/naturaldocs/html/search/GeneralM.html
++libgd-2.3.1/docs/naturaldocs/html/search/FilesI.html
++libgd-2.3.1/docs/naturaldocs/html/search/FilesF.html
++libgd-2.3.1/docs/naturaldocs/html/search/FilesG.html
++libgd-2.3.1/docs/naturaldocs/html/search/GeneralW.html
++libgd-2.3.1/docs/naturaldocs/html/search/GeneralB.html
++libgd-2.3.1/docs/naturaldocs/html/search/GeneralT.html
++libgd-2.3.1/docs/naturaldocs/html/search/FilesX.html
++libgd-2.3.1/docs/naturaldocs/html/search/FilesC.html
++libgd-2.3.1/docs/naturaldocs/html/search/GeneralE.html
++libgd-2.3.1/docs/naturaldocs/html/search/GeneralX.html
++libgd-2.3.1/docs/naturaldocs/html/search/GeneralNumbers.html
++libgd-2.3.1/docs/naturaldocs/html/search/GeneralF.html
++libgd-2.3.1/docs/naturaldocs/html/javascript/
++libgd-2.3.1/docs/naturaldocs/html/javascript/prettify.js
++libgd-2.3.1/docs/naturaldocs/html/javascript/searchdata.js
++libgd-2.3.1/docs/naturaldocs/html/javascript/main.js
++libgd-2.3.1/docs/naturaldocs/html/images/
++libgd-2.3.1/docs/naturaldocs/html/images/emboss.jpg
++libgd-2.3.1/docs/naturaldocs/html/images/smooth.jpg
++libgd-2.3.1/docs/naturaldocs/html/images/edge_detect_quick.jpg
++libgd-2.3.1/docs/naturaldocs/html/images/mean_removal.jpg
++libgd-2.3.1/docs/naturaldocs/html/index/
++libgd-2.3.1/docs/naturaldocs/html/index/General2.html
++libgd-2.3.1/docs/naturaldocs/html/index/Files.html
++libgd-2.3.1/docs/naturaldocs/html/index/Macros.html
++libgd-2.3.1/docs/naturaldocs/html/index/Constants.html
++libgd-2.3.1/docs/naturaldocs/html/index/General.html
++libgd-2.3.1/docs/naturaldocs/html/index/General3.html
++libgd-2.3.1/docs/naturaldocs/html/index/Types.html
++libgd-2.3.1/docs/naturaldocs/html/index/Functions.html
++libgd-2.3.1/docs/naturaldocs/html/styles/
++libgd-2.3.1/docs/naturaldocs/html/styles/2.css
++libgd-2.3.1/docs/naturaldocs/html/styles/1.css
++libgd-2.3.1/docs/naturaldocs/html/styles/main.css
++libgd-2.3.1/docs/naturaldocs/html/files/
++libgd-2.3.1/docs/naturaldocs/html/files/gd_filename-c.html
++libgd-2.3.1/docs/naturaldocs/html/files/gd_jpeg-c.html
++libgd-2.3.1/docs/naturaldocs/html/files/gd_gd2-c.html
++libgd-2.3.1/docs/naturaldocs/html/files/gdfontmb-c.html
++libgd-2.3.1/docs/naturaldocs/html/files/gdfontg-c.html
++libgd-2.3.1/docs/naturaldocs/html/files/gdfonts-c.html
++libgd-2.3.1/docs/naturaldocs/html/files/gd_matrix-c.html
++libgd-2.3.1/docs/naturaldocs/html/files/gdfx-c.html
++libgd-2.3.1/docs/naturaldocs/html/files/preamble-txt.html
++libgd-2.3.1/docs/naturaldocs/html/files/gdfontt-c.html
++libgd-2.3.1/docs/naturaldocs/html/files/gd_io_file-c.html
++libgd-2.3.1/docs/naturaldocs/html/files/gdfontl-c.html
++libgd-2.3.1/docs/naturaldocs/html/files/gd_color_map-c.html
++libgd-2.3.1/docs/naturaldocs/html/files/gd_nnquant-c.html
++libgd-2.3.1/docs/naturaldocs/html/files/gd_io_dp-c.html
++libgd-2.3.1/docs/naturaldocs/html/files/gd_version-c.html
++libgd-2.3.1/docs/naturaldocs/html/files/gd_tga-c.html
++libgd-2.3.1/docs/naturaldocs/html/files/gd_webp-c.html
++libgd-2.3.1/docs/naturaldocs/html/files/gdhelpers-c.html
++libgd-2.3.1/docs/naturaldocs/html/files/gd_gd-c.html
++libgd-2.3.1/docs/naturaldocs/html/files/gd_png-c.html
++libgd-2.3.1/docs/naturaldocs/html/files/gd_interpolation-c.html
++libgd-2.3.1/docs/naturaldocs/html/files/gd_transform-c.html
++libgd-2.3.1/docs/naturaldocs/html/files/gd_io-h.html
++libgd-2.3.1/docs/naturaldocs/html/files/gdft-c.html
++libgd-2.3.1/docs/naturaldocs/html/files/gd_gif_out-c.html
++libgd-2.3.1/docs/naturaldocs/html/files/gdxpm-c.html
++libgd-2.3.1/docs/naturaldocs/html/files/gd-h.html
++libgd-2.3.1/docs/naturaldocs/html/files/gd_color_match-c.html
++libgd-2.3.1/docs/naturaldocs/html/files/gd_wbmp-c.html
++libgd-2.3.1/docs/naturaldocs/html/files/gd-c.html
++libgd-2.3.1/docs/naturaldocs/html/files/gd_crop-c.html
++libgd-2.3.1/docs/naturaldocs/html/files/gd_xbm-c.html
++libgd-2.3.1/docs/naturaldocs/html/files/gd_filter-c.html
++libgd-2.3.1/docs/naturaldocs/html/files/license-txt.html
++libgd-2.3.1/docs/naturaldocs/html/files/gd_tiff-c.html
++libgd-2.3.1/docs/naturaldocs/html/files/gd_topal-c.html
++libgd-2.3.1/docs/naturaldocs/html/files/gd_bmp-c.html
++libgd-2.3.1/docs/naturaldocs/html/files/gd_ss-c.html
++libgd-2.3.1/docs/naturaldocs/html/files/gd_gif_in-c.html
++libgd-2.3.1/docs/naturaldocs/html/files/gd_io_ss-c.html
++libgd-2.3.1/docs/naturaldocs/run_docs.sh
++libgd-2.3.1/docs/naturaldocs/images/
++libgd-2.3.1/docs/naturaldocs/images/emboss.jpg
++libgd-2.3.1/docs/naturaldocs/images/smooth.jpg
++libgd-2.3.1/docs/naturaldocs/images/edge_detect_quick.jpg
++libgd-2.3.1/docs/naturaldocs/images/mean_removal.jpg
++libgd-2.3.1/docs/naturaldocs/project/
++libgd-2.3.1/docs/naturaldocs/project/.gitignore
++libgd-2.3.1/docs/naturaldocs/project/libgd.css
++libgd-2.3.1/docs/naturaldocs/project/Topics.txt
++libgd-2.3.1/docs/naturaldocs/project/Languages.txt
++libgd-2.3.1/docs/naturaldocs/project/Menu.txt
++libgd-2.3.1/docs/naturaldocs/project/Data/
++libgd-2.3.1/docs/naturaldocs/project/Data/SymbolTable.nd
++libgd-2.3.1/docs/naturaldocs/project/Data/ClassHierarchy.nd
++libgd-2.3.1/docs/naturaldocs/project/Data/ImageFileInfo.nd
++libgd-2.3.1/docs/naturaldocs/project/Data/ImageReferenceTable.nd
++libgd-2.3.1/docs/naturaldocs/project/Data/PreviousMenuState.nd
++libgd-2.3.1/docs/naturaldocs/project/Data/ConfigFileInfo.nd
++libgd-2.3.1/docs/naturaldocs/project/Data/IndexInfo.nd
++libgd-2.3.1/docs/naturaldocs/project/Data/PreviousSettings.nd
++libgd-2.3.1/docs/naturaldocs/project/Data/FileInfo.nd
++libgd-2.3.1/docs/naturaldocs/nobgd.pl
++libgd-2.3.1/docs/naturaldocs/preamble.txt
++libgd-2.3.1/docs/README.TESTING
++libgd-2.3.1/CMakeLists.txt
++libgd-2.3.1/examples/
++libgd-2.3.1/examples/copyrotated.c
++libgd-2.3.1/examples/resize.c
++libgd-2.3.1/examples/test_crop_threshold.png
++libgd-2.3.1/examples/noIcon.pic
++libgd-2.3.1/examples/noIcon.tga
++libgd-2.3.1/examples/arc.c
++libgd-2.3.1/examples/CMakeLists.txt
++libgd-2.3.1/examples/nnquant.c
++libgd-2.3.1/examples/cmake_install.cmake
++libgd-2.3.1/examples/windows.c
++libgd-2.3.1/examples/noIconAlpha.tga
++libgd-2.3.1/examples/crop.c
++libgd-2.3.1/examples/CMakeFiles/
++libgd-2.3.1/examples/CMakeFiles/gif.dir/
++libgd-2.3.1/examples/CMakeFiles/gif.dir/flags.make
++libgd-2.3.1/examples/CMakeFiles/gif.dir/cmake_clean.cmake
++libgd-2.3.1/examples/CMakeFiles/gif.dir/DependInfo.cmake
++libgd-2.3.1/examples/CMakeFiles/gif.dir/link.txt
++libgd-2.3.1/examples/CMakeFiles/gif.dir/depend.make
++libgd-2.3.1/examples/CMakeFiles/gif.dir/build.make
++libgd-2.3.1/examples/CMakeFiles/gif.dir/progress.make
++libgd-2.3.1/examples/CMakeFiles/CMakeDirectoryInformation.cmake
++libgd-2.3.1/examples/CMakeFiles/progress.marks
++libgd-2.3.1/examples/noIcon.sgi
++libgd-2.3.1/examples/Makefile
++libgd-2.3.1/examples/tgaread.c
++libgd-2.3.1/examples/tiffread.c
++libgd-2.3.1/examples/flip.c
++libgd-2.3.1/examples/gif.c
++libgd-2.3.1/cmake/
++libgd-2.3.1/cmake/modules/
++libgd-2.3.1/cmake/modules/FindXPM.cmake
++libgd-2.3.1/cmake/modules/FindGD.cmake
++libgd-2.3.1/cmake/modules/AC_HEADER_STDC.cmake
++libgd-2.3.1/cmake/modules/TestForHighBitCharacters.cmake
++libgd-2.3.1/cmake/modules/TestForHighBitCharacters.c
++libgd-2.3.1/cmake/modules/gd.cmake
++libgd-2.3.1/cmake/modules/CheckDIRSymbolExists.cmake
++libgd-2.3.1/cmake/modules/CheckPrototypeExists.cmake
++libgd-2.3.1/cmake/modules/FindPTHREAD.cmake
++libgd-2.3.1/cmake/modules/TestForStandardHeaderwait.cmake
++libgd-2.3.1/cmake/modules/FindICONV.cmake
++libgd-2.3.1/cmake/modules/FindRAQM.cmake
++libgd-2.3.1/cmake/modules/FindWEBP.cmake
++libgd-2.3.1/cmake/modules/FindFontConfig.cmake
++libgd-2.3.1/cmake/modules/FindLIQ.cmake
++libgd-2.3.1/cmake/distclean.sh
++libgd-2.3.1/Makefile.in
++libgd-2.3.1/VMS/
++libgd-2.3.1/VMS/CONFIGURE.COM
++libgd-2.3.1/VMS/README.VMS
++libgd-2.3.1/CONTRIBUTORS
++libgd-2.3.1/configure
++libgd-2.3.1/COPYING
++libgd-2.3.1/configure.ac
++libgd-2.3.1/m4/
++libgd-2.3.1/m4/ax_pthread.m4
++libgd-2.3.1/m4/ax_append_flag.m4
++libgd-2.3.1/m4/ax_cflags_warn_all.m4
++libgd-2.3.1/m4/ax_require_defined.m4
++libgd-2.3.1/m4/ax_openmp.m4
++libgd-2.3.1/m4/ltversion.m4
++libgd-2.3.1/m4/ltoptions.m4
++libgd-2.3.1/m4/ltsugar.m4
++libgd-2.3.1/m4/libtool.m4
++libgd-2.3.1/m4/w32.m4
++libgd-2.3.1/m4/visibility.m4
++libgd-2.3.1/m4/lt~obsolete.m4
++libgd-2.3.1/config/
++libgd-2.3.1/config/install-sh
++libgd-2.3.1/config/test-driver
++libgd-2.3.1/config/gdlib.pc.cmake
++libgd-2.3.1/config/ar-lib
++libgd-2.3.1/config/config.sub
++libgd-2.3.1/config/getlib.sh
++libgd-2.3.1/config/missing
++libgd-2.3.1/config/gdlib.pc.in
++libgd-2.3.1/config/Makefile.in
++libgd-2.3.1/config/ltmain.sh
++libgd-2.3.1/config/config.rpath
++libgd-2.3.1/config/Makefile.am
++libgd-2.3.1/config/compile
++libgd-2.3.1/config/config.guess
++libgd-2.3.1/config/depcomp
++libgd-2.3.1/config/getver.pl
++libgd-2.3.1/src/
++libgd-2.3.1/src/msinttypes/
++libgd-2.3.1/src/msinttypes/inttypes.h
++libgd-2.3.1/src/msinttypes/stdint.h
++libgd-2.3.1/src/gdfonts.h
++libgd-2.3.1/src/gd_color_match.c
++libgd-2.3.1/src/gd_xbm.c
++libgd-2.3.1/src/gdfontg.h
++libgd-2.3.1/src/gddemo.c
++libgd-2.3.1/src/bmp.h
++libgd-2.3.1/src/gd_interpolation.c
++libgd-2.3.1/src/gdfonts.c
++libgd-2.3.1/src/gd_tga.h
++libgd-2.3.1/src/pngtogd.c
++libgd-2.3.1/src/gdfontl.c
++libgd-2.3.1/src/gd2time.c
++libgd-2.3.1/src/snprintf.c
++libgd-2.3.1/src/gd_ss.c
++libgd-2.3.1/src/gd_topal.c
++libgd-2.3.1/src/gdparttopng.c
++libgd-2.3.1/src/gd_color.c
++libgd-2.3.1/src/testtr.c
++libgd-2.3.1/src/gd2copypal.c
++libgd-2.3.1/src/gdhelpers.c
++libgd-2.3.1/src/CMakeLists.txt
++libgd-2.3.1/src/entities.html
++libgd-2.3.1/src/gdcache.c
++libgd-2.3.1/src/gd_io_stream.h
++libgd-2.3.1/src/fontwheeltest.c
++libgd-2.3.1/src/gdtables.c
++libgd-2.3.1/src/gd_color_map.c
++libgd-2.3.1/src/gd_security.c
++libgd-2.3.1/src/gd_webp.c
++libgd-2.3.1/src/annotate.c
++libgd-2.3.1/src/gd_filter.c
++libgd-2.3.1/src/gdpp.cxx
++libgd-2.3.1/src/gd_io.h
++libgd-2.3.1/src/pngtogd2.c
++libgd-2.3.1/src/demoin.png
++libgd-2.3.1/src/Makefile.in
++libgd-2.3.1/src/gd_errors.h
++libgd-2.3.1/src/gd_version.c
++libgd-2.3.1/src/gdpp.h
++libgd-2.3.1/src/gdcmpgif.c
++libgd-2.3.1/src/gd_wbmp.c
++libgd-2.3.1/src/gd.c
++libgd-2.3.1/src/gd_color_map_test.c
++libgd-2.3.1/src/gd2togif.c
++libgd-2.3.1/src/gdfx.c
++libgd-2.3.1/src/gd_filename.c
++libgd-2.3.1/src/gdtest.c
++libgd-2.3.1/src/gdfontmb.h
++libgd-2.3.1/src/gd_tga.c
++libgd-2.3.1/src/gdxpm.c
++libgd-2.3.1/src/COPYING
++libgd-2.3.1/src/gd_io_file.c
++libgd-2.3.1/src/gd_matrix.c
++libgd-2.3.1/src/wbmp.c
++libgd-2.3.1/src/gd_color.h
++libgd-2.3.1/src/gd_gd2.c
++libgd-2.3.1/src/config.hin
++libgd-2.3.1/src/bdftogd
++libgd-2.3.1/src/gd_bmp.c
++libgd-2.3.1/src/gdfontl.h
++libgd-2.3.1/src/gdfx.h
++libgd-2.3.1/src/fontconfigtest.c
++libgd-2.3.1/src/gifanimtest.c
++libgd-2.3.1/src/gd2topng.c
++libgd-2.3.1/src/jisx0208.h
++libgd-2.3.1/src/gdfontt.c
++libgd-2.3.1/src/gd_png.c
++libgd-2.3.1/src/gd_io.c
++libgd-2.3.1/src/gd_intern.h
++libgd-2.3.1/src/gd_jpeg.c
++libgd-2.3.1/src/gd_gif_in.c
++libgd-2.3.1/src/gd_crop.c
++libgd-2.3.1/src/fontsizetest.c
++libgd-2.3.1/src/Makefile.am
++libgd-2.3.1/src/gd_tiff.c
++libgd-2.3.1/src/gdfontt.h
++libgd-2.3.1/src/testac.c
++libgd-2.3.1/src/gd.h
++libgd-2.3.1/src/gd_io_stream.cxx
++libgd-2.3.1/src/gdft.c
++libgd-2.3.1/src/gdfontg.c
++libgd-2.3.1/src/gdtopng.c
++libgd-2.3.1/src/gdhelpers.h
++libgd-2.3.1/src/depcomp
++libgd-2.3.1/src/gd_color_map.h
++libgd-2.3.1/src/getopt.c
++libgd-2.3.1/src/gdcache.h
++libgd-2.3.1/src/config.h.cmake
++libgd-2.3.1/src/entities.h
++libgd-2.3.1/src/gd_transform.c
++libgd-2.3.1/src/wbmp.h
++libgd-2.3.1/src/gdtestft.c
++libgd-2.3.1/src/gd_nnquant.c
++libgd-2.3.1/src/giftogd2.c
++libgd-2.3.1/src/gd_gd.c
++libgd-2.3.1/src/gdkanji.c
++libgd-2.3.1/src/gd_io_dp.c
++libgd-2.3.1/src/gdfontmb.c
++libgd-2.3.1/src/gd_rotate.c
++libgd-2.3.1/src/gd_io_ss.c
++libgd-2.3.1/src/circletexttest.c
++libgd-2.3.1/src/gd_nnquant.h
++libgd-2.3.1/src/webpng.c
++libgd-2.3.1/src/gd_gif_out.c
++libgd-2.3.1/src/entities.tcl
++libgd-2.3.1/Makefile.am
++libgd-2.3.1/README.md
++libgd-2.3.1/windows/
++libgd-2.3.1/windows/run_tests.bat
++libgd-2.3.1/windows/libgd.rc
++libgd-2.3.1/windows/Makefile.vc
++libgd-2.3.1/windows/msys/
++libgd-2.3.1/windows/msys/deps.mk
++libgd-2.3.1/windows/msys/run_tests.sh
++libgd-2.3.1/windows/msys/README.MSYS.md
++libgd-2.3.1/windows/msys/Makefile
++libgd-2.3.1/windows/readme.md
++libgd-2.3.1/windows/Makefiletest.vc
++libgd-2.3.1/windows/gentest.bat
++libgd-2.3.1/aclocal.m4
++libgd-2.3.1/test/
++libgd-2.3.1/test/gdtest_wbmp_to_png.png
++libgd-2.3.1/test/gdtest.gd2
++libgd-2.3.1/test/gdtest_merge.png
++libgd-2.3.1/test/gdtest.png
++libgd-2.3.1/test/gdtest_200_300_150_100.png
++libgd-2.3.1/tests/
++libgd-2.3.1/tests/gdimagefilltoborder/
++libgd-2.3.1/tests/gdimagefilltoborder/Makemodule.am
++libgd-2.3.1/tests/gdimagefilltoborder/github_bug_215.c
++libgd-2.3.1/tests/gdimagefilltoborder/CMakeLists.txt
++libgd-2.3.1/tests/gdimagefilltoborder/bug00037.c
++libgd-2.3.1/tests/gdimagerotate/
++libgd-2.3.1/tests/gdimagerotate/php_bug_64898.png
++libgd-2.3.1/tests/gdimagerotate/Makemodule.am
++libgd-2.3.1/tests/gdimagerotate/bug00067_090_exp.png
++libgd-2.3.1/tests/gdimagerotate/CMakeLists.txt
++libgd-2.3.1/tests/gdimagerotate/bug00067_135_exp.png
++libgd-2.3.1/tests/gdimagerotate/bug00067_165_exp.png
++libgd-2.3.1/tests/gdimagerotate/bug00067_120_exp.png
++libgd-2.3.1/tests/gdimagerotate/bug00067_030_exp.png
++libgd-2.3.1/tests/gdimagerotate/bug00067_045_exp.png
++libgd-2.3.1/tests/gdimagerotate/bug00067_000_exp.png
++libgd-2.3.1/tests/gdimagerotate/bug00067_075_exp.png
++libgd-2.3.1/tests/gdimagerotate/php_bug_65070.gif
++libgd-2.3.1/tests/gdimagerotate/bug00067_015_exp.png
++libgd-2.3.1/tests/gdimagerotate/php_bug_65070_exp.png
++libgd-2.3.1/tests/gdimagerotate/remirh128.png
++libgd-2.3.1/tests/gdimagerotate/php_bug_64898_exp.png
++libgd-2.3.1/tests/gdimagerotate/bug00067_150_exp.png
++libgd-2.3.1/tests/gdimagerotate/php_bug_65070.c
++libgd-2.3.1/tests/gdimagerotate/bug00067_060_exp.png
++libgd-2.3.1/tests/gdimagerotate/php_bug_64898.c
++libgd-2.3.1/tests/gdimagerotate/bug00067.c
++libgd-2.3.1/tests/gdimagerotate/bug00067_105_exp.png
++libgd-2.3.1/tests/gdimagerotate/bug00067_180_exp.png
++libgd-2.3.1/tests/gdimagestringftex/
++libgd-2.3.1/tests/gdimagestringftex/Makemodule.am
++libgd-2.3.1/tests/gdimagestringftex/CMakeLists.txt
++libgd-2.3.1/tests/gdimagestringftex/gdimagestringftex_returnfontpathname.c
++libgd-2.3.1/tests/gdimagestringft/
++libgd-2.3.1/tests/gdimagestringft/Makemodule.am
++libgd-2.3.1/tests/gdimagestringft/bug00615.c
++libgd-2.3.1/tests/gdimagestringft/CMakeLists.txt
++libgd-2.3.1/tests/gdimagestringft/gdimagestringft_bbox.c
++libgd-2.3.1/tests/bmp/
++libgd-2.3.1/tests/bmp/Makemodule.am
++libgd-2.3.1/tests/bmp/bmp_im2im.c
++libgd-2.3.1/tests/bmp/bug00275.c
++libgd-2.3.1/tests/bmp/bug00276.c
++libgd-2.3.1/tests/bmp/CMakeLists.txt
++libgd-2.3.1/tests/bmp/bug00450.bmp
++libgd-2.3.1/tests/bmp/bmp_null.c
++libgd-2.3.1/tests/bmp/bug00450.c
++libgd-2.3.1/tests/fontconfig/
++libgd-2.3.1/tests/fontconfig/Makemodule.am
++libgd-2.3.1/tests/fontconfig/CMakeLists.txt
++libgd-2.3.1/tests/fontconfig/basic.c
++libgd-2.3.1/tests/gdimageline/
++libgd-2.3.1/tests/gdimageline/Makemodule.am
++libgd-2.3.1/tests/gdimageline/bug00111_exp.png
++libgd-2.3.1/tests/gdimageline/CMakeLists.txt
++libgd-2.3.1/tests/gdimageline/bug00072.c
++libgd-2.3.1/tests/gdimageline/github_bug_167_exp.png
++libgd-2.3.1/tests/gdimageline/bug00315_exp.png
++libgd-2.3.1/tests/gdimageline/gdimageline_aa_d_0_exp.png
++libgd-2.3.1/tests/gdimageline/gdimageline_bug5.c
++libgd-2.3.1/tests/gdimageline/gdimageline_aa_c_1_exp.png
++libgd-2.3.1/tests/gdimageline/bug00111.c
++libgd-2.3.1/tests/gdimageline/bug00077.c
++libgd-2.3.1/tests/gdimageline/gdimageline_aa_a_0_exp.png
++libgd-2.3.1/tests/gdimageline/gdimageline_aa_d_1_exp.png
++libgd-2.3.1/tests/gdimageline/bug00077_exp.png
++libgd-2.3.1/tests/gdimageline/github_bug_167.c
++libgd-2.3.1/tests/gdimageline/gdimageline_aa_c_0_exp.png
++libgd-2.3.1/tests/gdimageline/gdimageline_aa.c
++libgd-2.3.1/tests/gdimageline/bug00072_exp.png
++libgd-2.3.1/tests/gdimageline/gdImageAALine_thickness_exp.png
++libgd-2.3.1/tests/gdimageline/gdimageline_aa_a_1_exp.png
++libgd-2.3.1/tests/gdimageline/gdimageline_aa_outofrange.c
++libgd-2.3.1/tests/gdimageline/gdImageAALine_thickness.c
++libgd-2.3.1/tests/gdimageline/gdimageline_aa_b_1_exp.png
++libgd-2.3.1/tests/gdimageline/bug00315.c
++libgd-2.3.1/tests/gdimageline/gdimageline_aa_b_0_exp.png
++libgd-2.3.1/tests/gdimagescale/
++libgd-2.3.1/tests/gdimagescale/Makemodule.am
++libgd-2.3.1/tests/gdimagescale/CMakeLists.txt
++libgd-2.3.1/tests/gdimagescale/github_bug_00218.c
++libgd-2.3.1/tests/gdimagescale/bug00330.c
++libgd-2.3.1/tests/gdimagescale/bug00329.c
++libgd-2.3.1/tests/gdimagescale/bug_overflow_large_new_size.c
++libgd-2.3.1/tests/gdimagestringup16/
++libgd-2.3.1/tests/gdimagestringup16/Makemodule.am
++libgd-2.3.1/tests/gdimagestringup16/CMakeLists.txt
++libgd-2.3.1/tests/gdimagestringup16/gdimagestringup16.c
++libgd-2.3.1/tests/gdimagestringup16/gdimagestringup16_exp.png
++libgd-2.3.1/tests/gd/
++libgd-2.3.1/tests/gd/gd_num_colors.c
++libgd-2.3.1/tests/gd/Makemodule.am
++libgd-2.3.1/tests/gd/CMakeLists.txt
++libgd-2.3.1/tests/gd/bug00383.gd
++libgd-2.3.1/tests/gd/gd_null.c
++libgd-2.3.1/tests/gd/crafted_num_colors.gd
++libgd-2.3.1/tests/gd/bug00383.c
++libgd-2.3.1/tests/gd/gd_im2im.c
++libgd-2.3.1/tests/gd/gd_versiontest.c
++libgd-2.3.1/tests/gdimagecompare/
++libgd-2.3.1/tests/gdimagecompare/gdimagecompare.c
++libgd-2.3.1/tests/gdimagecompare/Makemodule.am
++libgd-2.3.1/tests/gdimagecompare/CMakeLists.txt
++libgd-2.3.1/tests/gdimageopenpolygon/
++libgd-2.3.1/tests/gdimageopenpolygon/gdimageopenpolygon1.c
++libgd-2.3.1/tests/gdimageopenpolygon/Makemodule.am
++libgd-2.3.1/tests/gdimageopenpolygon/gdimageopenpolygon1.png
++libgd-2.3.1/tests/gdimageopenpolygon/CMakeLists.txt
++libgd-2.3.1/tests/gdimageopenpolygon/gdimageopenpolygon0.png
++libgd-2.3.1/tests/gdimageopenpolygon/gdimageopenpolygon2.c
++libgd-2.3.1/tests/gdimageopenpolygon/gdimageopenpolygon3.c
++libgd-2.3.1/tests/gdimageopenpolygon/gdimageopenpolygon2.png
++libgd-2.3.1/tests/gdimageopenpolygon/gdimageopenpolygon3.png
++libgd-2.3.1/tests/gdimageopenpolygon/gdimageopenpolygon0.c
++libgd-2.3.1/tests/gdimagefilledellipse/
++libgd-2.3.1/tests/gdimagefilledellipse/Makemodule.am
++libgd-2.3.1/tests/gdimagefilledellipse/github_bug_00238.c
++libgd-2.3.1/tests/gdimagefilledellipse/CMakeLists.txt
++libgd-2.3.1/tests/gdimagefilledellipse/bug00191.c
++libgd-2.3.1/tests/gdimagefilledellipse/bug00191.png
++libgd-2.3.1/tests/gdimagefilledellipse/bug00169.c
++libgd-2.3.1/tests/gdimagefilledellipse/bug00169_exp.png
++libgd-2.3.1/tests/gdimagefilledellipse/github_bug_00238_exp.png
++libgd-2.3.1/tests/gdimagefilledellipse/bug00010_exp.png
++libgd-2.3.1/tests/gdimagefilledellipse/bug00010.c
++libgd-2.3.1/tests/gdimagefill/
++libgd-2.3.1/tests/gdimagefill/bug00002_1.c
++libgd-2.3.1/tests/gdimagefill/Makemodule.am
++libgd-2.3.1/tests/gdimagefill/bug00002_4_exp.png
++libgd-2.3.1/tests/gdimagefill/bug00002_1_exp.png
++libgd-2.3.1/tests/gdimagefill/bug00002_3.c
++libgd-2.3.1/tests/gdimagefill/bug00104_1_exp.png
++libgd-2.3.1/tests/gdimagefill/CMakeLists.txt
++libgd-2.3.1/tests/gdimagefill/bug00002_2.c
++libgd-2.3.1/tests/gdimagefill/bug00002_4.c
++libgd-2.3.1/tests/gdimagefill/bug00104_1.c
++libgd-2.3.1/tests/gdimagefill/bug00002_2_exp.png
++libgd-2.3.1/tests/gdimagefill/bug00002_3_exp.png
++libgd-2.3.1/tests/png/
++libgd-2.3.1/tests/png/bug00088_1_exp.png
++libgd-2.3.1/tests/png/bug00086.c
++libgd-2.3.1/tests/png/Makemodule.am
++libgd-2.3.1/tests/png/bug00033.c
++libgd-2.3.1/tests/png/bug00381_2.c
++libgd-2.3.1/tests/png/CMakeLists.txt
++libgd-2.3.1/tests/png/png_null.c
++libgd-2.3.1/tests/png/bug00088_2_exp.png
++libgd-2.3.1/tests/png/bug00033.png
++libgd-2.3.1/tests/png/emptyfile
++libgd-2.3.1/tests/png/bug00193.c
++libgd-2.3.1/tests/png/png_im2im.c
++libgd-2.3.1/tests/png/bug00381_2.gd
++libgd-2.3.1/tests/png/bug00011.c
++libgd-2.3.1/tests/png/bug00381_1.c
++libgd-2.3.1/tests/png/bug00088.c
++libgd-2.3.1/tests/png/png_resolution.c
++libgd-2.3.1/tests/png/bug00088_2.png
++libgd-2.3.1/tests/png/bug00088_1.png
++libgd-2.3.1/tests/png/bug00338.c
++libgd-2.3.1/tests/gdimageclone/
++libgd-2.3.1/tests/gdimageclone/Makemodule.am
++libgd-2.3.1/tests/gdimageclone/style.c
++libgd-2.3.1/tests/gdimageclone/CMakeLists.txt
++libgd-2.3.1/tests/gdimageclone/bug00300.c
++libgd-2.3.1/tests/gdimageconvolution/
++libgd-2.3.1/tests/gdimageconvolution/basic_smooth.png
++libgd-2.3.1/tests/gdimageconvolution/Makemodule.am
++libgd-2.3.1/tests/gdimageconvolution/basic_emboss.png
++libgd-2.3.1/tests/gdimageconvolution/CMakeLists.txt
++libgd-2.3.1/tests/gdimageconvolution/basic_edge_detect_quick.png
++libgd-2.3.1/tests/gdimageconvolution/basic_mean_removal.png
++libgd-2.3.1/tests/gdimageconvolution/bug00369.c
++libgd-2.3.1/tests/gdimageconvolution/basic.c
++libgd-2.3.1/tests/gdimageconvolution/basic.png
++libgd-2.3.1/tests/gdinterpolatedscale/
++libgd-2.3.1/tests/gdinterpolatedscale/Makemodule.am
++libgd-2.3.1/tests/gdinterpolatedscale/CMakeLists.txt
++libgd-2.3.1/tests/gdinterpolatedscale/gdTrivialResize.c
++libgd-2.3.1/tests/gdinterpolatedscale/gdModesAndPalettes.c
++libgd-2.3.1/tests/gdhelpers.c
++libgd-2.3.1/tests/CMakeLists.txt
++libgd-2.3.1/tests/gdimagestring16/
++libgd-2.3.1/tests/gdimagestring16/Makemodule.am
++libgd-2.3.1/tests/gdimagestring16/gdimagestring16_exp.png
++libgd-2.3.1/tests/gdimagestring16/CMakeLists.txt
++libgd-2.3.1/tests/gdimagestring16/gdimagestring16.c
++libgd-2.3.1/tests/gdimagecolor/
++libgd-2.3.1/tests/gdimagecolor/Makemodule.am
++libgd-2.3.1/tests/gdimagecolor/CMakeLists.txt
++libgd-2.3.1/tests/gdimagecolor/basic_exp.png
++libgd-2.3.1/tests/gdimagecolor/basic.c
++libgd-2.3.1/tests/gdimagecolor/basic.png
++libgd-2.3.1/tests/gdimagestring/
++libgd-2.3.1/tests/gdimagestring/Makemodule.am
++libgd-2.3.1/tests/gdimagestring/CMakeLists.txt
++libgd-2.3.1/tests/gdimagestring/gdimagestring.c
++libgd-2.3.1/tests/gdimagestring/gdimagestring_exp.png
++libgd-2.3.1/tests/gdimagenegate/
++libgd-2.3.1/tests/gdimagenegate/Makemodule.am
++libgd-2.3.1/tests/gdimagenegate/CMakeLists.txt
++libgd-2.3.1/tests/gdimagenegate/basic_exp.png
++libgd-2.3.1/tests/gdimagenegate/basic.c
++libgd-2.3.1/tests/gdimagenegate/basic.png
++libgd-2.3.1/tests/gdimagecreate/
++libgd-2.3.1/tests/gdimagecreate/Makemodule.am
++libgd-2.3.1/tests/gdimagecreate/CMakeLists.txt
++libgd-2.3.1/tests/gdimagecreate/bug00340.c
++libgd-2.3.1/tests/gdimagepolygon/
++libgd-2.3.1/tests/gdimagepolygon/gdimagepolygon2.c
++libgd-2.3.1/tests/gdimagepolygon/Makemodule.am
++libgd-2.3.1/tests/gdimagepolygon/CMakeLists.txt
++libgd-2.3.1/tests/gdimagepolygon/gdimagepolygon1.c
++libgd-2.3.1/tests/gdimagepolygon/gdimagepolygon3.c
++libgd-2.3.1/tests/gdimagepolygon/gdimagepolygon0.png
++libgd-2.3.1/tests/gdimagepolygon/gdimagepolygon1.png
++libgd-2.3.1/tests/gdimagepolygon/gdimagepolygon3.png
++libgd-2.3.1/tests/gdimagepolygon/gdimagepolygon0.c
++libgd-2.3.1/tests/gdimagepolygon/gdimagepolygon2.png
++libgd-2.3.1/tests/gdimagestringup/
++libgd-2.3.1/tests/gdimagestringup/Makemodule.am
++libgd-2.3.1/tests/gdimagestringup/CMakeLists.txt
++libgd-2.3.1/tests/gdimagestringup/gdimagestringup.c
++libgd-2.3.1/tests/gdimagestringup/gdimagestringup_exp.png
++libgd-2.3.1/tests/gdimagefilledarc/
++libgd-2.3.1/tests/gdimagefilledarc/Makemodule.am
++libgd-2.3.1/tests/gdimagefilledarc/php_bug43828_exp.png
++libgd-2.3.1/tests/gdimagefilledarc/CMakeLists.txt
++libgd-2.3.1/tests/gdimagefilledarc/php_bug43828.c
++libgd-2.3.1/tests/gdimagefilledarc/bug00351.c
++libgd-2.3.1/tests/gdimagefilledarc/bug00351_exp.png
++libgd-2.3.1/tests/tiff/
++libgd-2.3.1/tests/tiff/tiff_dpi.c
++libgd-2.3.1/tests/tiff/Makemodule.am
++libgd-2.3.1/tests/tiff/tiff_invalid_read_3.tiff
++libgd-2.3.1/tests/tiff/CMakeLists.txt
++libgd-2.3.1/tests/tiff/tiff_null.c
++libgd-2.3.1/tests/tiff/tiff_im2im.c
++libgd-2.3.1/tests/tiff/tiff_read_bw.tiff
++libgd-2.3.1/tests/tiff/tiff_read_bw.c
++libgd-2.3.1/tests/tiff/tiff_invalid_read.c
++libgd-2.3.1/tests/tiff/tiff_read_bw_exp.png
++libgd-2.3.1/tests/tiff/tiff_invalid_read_2.tiff
++libgd-2.3.1/tests/tiff/tiff_invalid_read_1.tiff
++libgd-2.3.1/tests/gdnewfilectx/
++libgd-2.3.1/tests/gdnewfilectx/Makemodule.am
++libgd-2.3.1/tests/gdnewfilectx/CMakeLists.txt
++libgd-2.3.1/tests/gdnewfilectx/gdnewfilectx_null.c
++libgd-2.3.1/tests/webp/
++libgd-2.3.1/tests/webp/Makemodule.am
++libgd-2.3.1/tests/webp/bug_double_free.jpg
++libgd-2.3.1/tests/webp/CMakeLists.txt
++libgd-2.3.1/tests/webp/gdImageWebpEx.c
++libgd-2.3.1/tests/webp/bug00111.c
++libgd-2.3.1/tests/webp/bug_double_free.c
++libgd-2.3.1/tests/gdimagecolorexact/
++libgd-2.3.1/tests/gdimagecolorexact/Makemodule.am
++libgd-2.3.1/tests/gdimagecolorexact/CMakeLists.txt
++libgd-2.3.1/tests/gdimagecolorexact/gdimagecolorexact.c
++libgd-2.3.1/tests/Makefile.in
++libgd-2.3.1/tests/jpeg/
++libgd-2.3.1/tests/jpeg/Makemodule.am
++libgd-2.3.1/tests/jpeg/jpeg_im2im.c
++libgd-2.3.1/tests/jpeg/CMakeLists.txt
++libgd-2.3.1/tests/jpeg/empty.jpeg
++libgd-2.3.1/tests/jpeg/jpeg_empty_file.c
++libgd-2.3.1/tests/jpeg/github_bug_18.png
++libgd-2.3.1/tests/jpeg/jpeg_resolution.c
++libgd-2.3.1/tests/jpeg/jpeg_ptr_double_free.c
++libgd-2.3.1/tests/jpeg/jpeg_null.c
++libgd-2.3.1/tests/jpeg/bug_github_18.c
++libgd-2.3.1/tests/jpeg/conv_test.jpeg
++libgd-2.3.1/tests/jpeg/jpeg_read.c
++libgd-2.3.1/tests/jpeg/conv_test_exp.png
++libgd-2.3.1/tests/jpeg/github_bug_18_exp.jpeg
++libgd-2.3.1/tests/jpeg/bug00338.c
++libgd-2.3.1/tests/gdimagearc/
++libgd-2.3.1/tests/gdimagearc/Makemodule.am
++libgd-2.3.1/tests/gdimagearc/CMakeLists.txt
++libgd-2.3.1/tests/gdimagearc/bug00079.c
++libgd-2.3.1/tests/gdimagearc/bug00079_exp.png
++libgd-2.3.1/tests/tga/
++libgd-2.3.1/tests/tga/tga_null.c
++libgd-2.3.1/tests/tga/Makemodule.am
++libgd-2.3.1/tests/tga/tga_read_rgb_rle.tga
++libgd-2.3.1/tests/tga/heap_overflow.c
++libgd-2.3.1/tests/tga/bug00247.tga
++libgd-2.3.1/tests/tga/tga_read_rgb.tga
++libgd-2.3.1/tests/tga/bug00247.c
++libgd-2.3.1/tests/tga/bug00248.tga
++libgd-2.3.1/tests/tga/CMakeLists.txt
++libgd-2.3.1/tests/tga/tga_read_rgb.png
++libgd-2.3.1/tests/tga/bug00247a.c
++libgd-2.3.1/tests/tga/bug00084.tga
++libgd-2.3.1/tests/tga/bug00247a.tga
++libgd-2.3.1/tests/tga/bug00248.c
++libgd-2.3.1/tests/tga/heap_overflow_2.tga
++libgd-2.3.1/tests/tga/tga_read.c
++libgd-2.3.1/tests/tga/bug00248a.tga
++libgd-2.3.1/tests/tga/bug00084.c
++libgd-2.3.1/tests/tga/bug00248a.c
++libgd-2.3.1/tests/tga/heap_overflow_1.tga
++libgd-2.3.1/tests/gdimageellipse/
++libgd-2.3.1/tests/gdimageellipse/Makemodule.am
++libgd-2.3.1/tests/gdimageellipse/CMakeLists.txt
++libgd-2.3.1/tests/gdimageellipse/bug00169.c
++libgd-2.3.1/tests/gdimageellipse/bug00169_exp.png
++libgd-2.3.1/tests/gdimagetruecolortopalette/
++libgd-2.3.1/tests/gdimagetruecolortopalette/php_bug_67325.jpeg
++libgd-2.3.1/tests/gdimagetruecolortopalette/Makemodule.am
++libgd-2.3.1/tests/gdimagetruecolortopalette/CMakeLists.txt
++libgd-2.3.1/tests/gdimagetruecolortopalette/php_bug_67325.c
++libgd-2.3.1/tests/gdimagetruecolortopalette/bug00307.c
++libgd-2.3.1/tests/gdimagetruecolortopalette/php_bug_72512.c
++libgd-2.3.1/tests/gdtiled/
++libgd-2.3.1/tests/gdtiled/bug00032.c
++libgd-2.3.1/tests/gdtiled/Makemodule.am
++libgd-2.3.1/tests/gdtiled/bug00032_exp.png
++libgd-2.3.1/tests/gdtiled/CMakeLists.txt
++libgd-2.3.1/tests/gdimagecopy/
++libgd-2.3.1/tests/gdimagecopy/Makemodule.am
++libgd-2.3.1/tests/gdimagecopy/CMakeLists.txt
++libgd-2.3.1/tests/gdimagecopy/bug00081.c
++libgd-2.3.1/tests/gdimagecopy/bug00081_exp.png
++libgd-2.3.1/tests/gdimagecopy/bug00007.c
++libgd-2.3.1/tests/gdimagecolortransparent/
++libgd-2.3.1/tests/gdimagecolortransparent/Makemodule.am
++libgd-2.3.1/tests/gdimagecolortransparent/CMakeLists.txt
++libgd-2.3.1/tests/gdimagecolortransparent/gdimagecolortransparent.c
++libgd-2.3.1/tests/gdimagecrop/
++libgd-2.3.1/tests/gdimagecrop/Makemodule.am
++libgd-2.3.1/tests/gdimagecrop/bug00485_threshold.c
++libgd-2.3.1/tests/gdimagecrop/CMakeLists.txt
++libgd-2.3.1/tests/gdimagecrop/bug00486.c
++libgd-2.3.1/tests/gdimagecrop/bug00485_auto.c
++libgd-2.3.1/tests/gdimagecrop/bug00432.c
++libgd-2.3.1/tests/gdimagecrop/bug00297.c
++libgd-2.3.1/tests/gdimagecrop/php_bug_72494.c
++libgd-2.3.1/tests/gdimagefilledpolygon/
++libgd-2.3.1/tests/gdimagefilledpolygon/Makemodule.am
++libgd-2.3.1/tests/gdimagefilledpolygon/CMakeLists.txt
++libgd-2.3.1/tests/gdimagefilledpolygon/php_bug_64641.png
++libgd-2.3.1/tests/gdimagefilledpolygon/gdimagefilledpolygon3.png
++libgd-2.3.1/tests/gdimagefilledpolygon/php_bug_64641.c
++libgd-2.3.1/tests/gdimagefilledpolygon/gdimagefilledpolygon0.c
++libgd-2.3.1/tests/gdimagefilledpolygon/bug00100.c
++libgd-2.3.1/tests/gdimagefilledpolygon/self_intersecting_exp.png
++libgd-2.3.1/tests/gdimagefilledpolygon/gdimagefilledpolygon1.png
++libgd-2.3.1/tests/gdimagefilledpolygon/self_intersecting.c
++libgd-2.3.1/tests/gdimagefilledpolygon/gdimagefilledpolygon0.png
++libgd-2.3.1/tests/gdimagefilledpolygon/gdimagefilledpolygon3.c
++libgd-2.3.1/tests/gdimagefilledpolygon/bug00100.png
++libgd-2.3.1/tests/gdimagefilledpolygon/gdimagefilledpolygon2.c
++libgd-2.3.1/tests/gdimagefilledpolygon/gdimagefilledpolygon1.c
++libgd-2.3.1/tests/gdimagefilledpolygon/gdimagefilledpolygon2.png
++libgd-2.3.1/tests/gdtransformaffinecopy/
++libgd-2.3.1/tests/gdtransformaffinecopy/Makemodule.am
++libgd-2.3.1/tests/gdtransformaffinecopy/CMakeLists.txt
++libgd-2.3.1/tests/gdtransformaffinecopy/github_bug_00583.c
++libgd-2.3.1/tests/gdtransformaffinecopy/github_bug_00596.c
++libgd-2.3.1/tests/gdtransformaffinecopy/github_bug_00586.c
++libgd-2.3.1/tests/gdtransformaffinecopy/github_bug_00585.c
++libgd-2.3.1/tests/gdimagecolorclosest/
++libgd-2.3.1/tests/gdimagecolorclosest/Makemodule.am
++libgd-2.3.1/tests/gdimagecolorclosest/CMakeLists.txt
++libgd-2.3.1/tests/gdimagecolorclosest/gdimagecolorclosest.c
++libgd-2.3.1/tests/gdimagefile/
++libgd-2.3.1/tests/gdimagefile/Makemodule.am
++libgd-2.3.1/tests/gdimagefile/CMakeLists.txt
++libgd-2.3.1/tests/gdimagefile/gdnametest.c
++libgd-2.3.1/tests/gdimagefile/img-ref.tga
++libgd-2.3.1/tests/gdimagefile/img-ref.xpm
++libgd-2.3.1/tests/gdimagefile/img-ref.xbm
++libgd-2.3.1/tests/gdimagecolordeallocate/
++libgd-2.3.1/tests/gdimagecolordeallocate/Makemodule.am
++libgd-2.3.1/tests/gdimagecolordeallocate/CMakeLists.txt
++libgd-2.3.1/tests/gdimagecolordeallocate/gdimagecolordeallocate.c
++libgd-2.3.1/tests/wbmp/
++libgd-2.3.1/tests/wbmp/Makemodule.am
++libgd-2.3.1/tests/wbmp/CMakeLists.txt
++libgd-2.3.1/tests/wbmp/wbmp_null.c
++libgd-2.3.1/tests/wbmp/wbmp_im2im.c
++libgd-2.3.1/tests/gdimagefilledrectangle/
++libgd-2.3.1/tests/gdimagefilledrectangle/bug00078.c
++libgd-2.3.1/tests/gdimagefilledrectangle/Makemodule.am
++libgd-2.3.1/tests/gdimagefilledrectangle/CMakeLists.txt
++libgd-2.3.1/tests/gdimagefilledrectangle/bug00106_gdimagefilledrectangle.c
++libgd-2.3.1/tests/gdimagefilledrectangle/bug00004.c
++libgd-2.3.1/tests/gif/
++libgd-2.3.1/tests/gif/gif_null.c
++libgd-2.3.1/tests/gif/bug00060.c
++libgd-2.3.1/tests/gif/bug00066.c
++libgd-2.3.1/tests/gif/Makemodule.am
++libgd-2.3.1/tests/gif/bug00005.c
++libgd-2.3.1/tests/gif/CMakeLists.txt
++libgd-2.3.1/tests/gif/unitialized_memory_read.gif
++libgd-2.3.1/tests/gif/bug00181.c
++libgd-2.3.1/tests/gif/uninitialized_memory_read.c
++libgd-2.3.1/tests/gif/bug00066_exp.png
++libgd-2.3.1/tests/gif/bug00499.c
++libgd-2.3.1/tests/gif/bug00005_1.gif
++libgd-2.3.1/tests/gif/php_bug_75571.c
++libgd-2.3.1/tests/gif/ossfuzz5700.c
++libgd-2.3.1/tests/gif/bug00005_2.c
++libgd-2.3.1/tests/gif/php_bug_75571.gif
++libgd-2.3.1/tests/gif/bug00066.gif
++libgd-2.3.1/tests/gif/bug00005_2_exp.png
++libgd-2.3.1/tests/gif/bug00005_2.gif
++libgd-2.3.1/tests/gif/bug00005_0.gif
++libgd-2.3.1/tests/gif/bug00060.gif
++libgd-2.3.1/tests/gif/gif_im2im.c
++libgd-2.3.1/tests/gif/ossfuzz5700.gif
++libgd-2.3.1/tests/gif/bug00006.c
++libgd-2.3.1/tests/gif/bug00227.c
++libgd-2.3.1/tests/gif/bug00005_3.gif
++libgd-2.3.1/tests/gdimagecolorresolve/
++libgd-2.3.1/tests/gdimagecolorresolve/Makemodule.am
++libgd-2.3.1/tests/gdimagecolorresolve/CMakeLists.txt
++libgd-2.3.1/tests/gdimagecolorresolve/gdimagecolorresolve.c
++libgd-2.3.1/tests/gdimagesetinterpolationmethod/
++libgd-2.3.1/tests/gdimagesetinterpolationmethod/Makemodule.am
++libgd-2.3.1/tests/gdimagesetinterpolationmethod/CMakeLists.txt
++libgd-2.3.1/tests/gdimagesetinterpolationmethod/github_bug_00584.c
++libgd-2.3.1/tests/gdimagecopyresampled/
++libgd-2.3.1/tests/gdimagecopyresampled/Makemodule.am
++libgd-2.3.1/tests/gdimagecopyresampled/CMakeLists.txt
++libgd-2.3.1/tests/gdimagecopyresampled/basic_alpha.c
++libgd-2.3.1/tests/gdimagecopyresampled/exact_alpha.c
++libgd-2.3.1/tests/gdimagecopyresampled/bug00201_src.png
++libgd-2.3.1/tests/gdimagecopyresampled/basic_alpha_exp.png
++libgd-2.3.1/tests/gdimagecopyresampled/bug00201.c
++libgd-2.3.1/tests/gdimagecopyresampled/basic_exp.png
++libgd-2.3.1/tests/gdimagecopyresampled/bug00201_exp.png
++libgd-2.3.1/tests/gdimagecopyresampled/basic.c
++libgd-2.3.1/tests/gdimagescatterex/
++libgd-2.3.1/tests/gdimagescatterex/Makemodule.am
++libgd-2.3.1/tests/gdimagescatterex/CMakeLists.txt
++libgd-2.3.1/tests/gdimagescatterex/bug00208_2.c
++libgd-2.3.1/tests/gdimagescatterex/bug00208_2.png
++libgd-2.3.1/tests/gdimagescatterex/bug00208.png
++libgd-2.3.1/tests/gdimagescatterex/bug00208_1.c
++libgd-2.3.1/tests/gdimagescatterex/bug00208_1.png
++libgd-2.3.1/tests/gdimagesetpixel/
++libgd-2.3.1/tests/gdimagesetpixel/Makemodule.am
++libgd-2.3.1/tests/gdimagesetpixel/CMakeLists.txt
++libgd-2.3.1/tests/gdimagesetpixel/bug00186.c
++libgd-2.3.1/tests/gdimagesetpixel/gdeffectoverlay.c
++libgd-2.3.1/tests/gdimagesetpixel/gdeffectmultiply.c
++libgd-2.3.1/tests/gdimagesetpixel/alpha_blending.c
++libgd-2.3.1/tests/gdimagesetpixel/alphablending_exp.png
++libgd-2.3.1/tests/gdimagecopymergegray/
++libgd-2.3.1/tests/gdimagecopymergegray/Makemodule.am
++libgd-2.3.1/tests/gdimagecopymergegray/CMakeLists.txt
++libgd-2.3.1/tests/gdimagecopymergegray/gdimagecopymergegray_exp.png
++libgd-2.3.1/tests/gdimagecopymergegray/gdimagecopymergegray.c
++libgd-2.3.1/tests/gdimagesquaretocircle/
++libgd-2.3.1/tests/gdimagesquaretocircle/Makemodule.am
++libgd-2.3.1/tests/gdimagesquaretocircle/CMakeLists.txt
++libgd-2.3.1/tests/gdimagesquaretocircle/gdimagesquaretocircle.c
++libgd-2.3.1/tests/gdimagesquaretocircle/gdimagesquaretocircle_exp.png
++libgd-2.3.1/tests/gdimagecontrast/
++libgd-2.3.1/tests/gdimagecontrast/Makemodule.am
++libgd-2.3.1/tests/gdimagecontrast/CMakeLists.txt
++libgd-2.3.1/tests/gdimagecontrast/basic+50.png
++libgd-2.3.1/tests/gdimagecontrast/basic-50.png
++libgd-2.3.1/tests/gdimagecontrast/basic.c
++libgd-2.3.1/tests/gdimagecontrast/basic.png
++libgd-2.3.1/tests/Makefile.am
++libgd-2.3.1/tests/xpm/
++libgd-2.3.1/tests/xpm/Makemodule.am
++libgd-2.3.1/tests/xpm/bug00185.c
++libgd-2.3.1/tests/xpm/CMakeLists.txt
++libgd-2.3.1/tests/xpm/bug00185.xpm
++libgd-2.3.1/tests/xpm/bug00166.xpm
++libgd-2.3.1/tests/xpm/color_name.xpm
++libgd-2.3.1/tests/xpm/bug00185_damaged.xpm
++libgd-2.3.1/tests/xpm/bug00166.c
++libgd-2.3.1/tests/xpm/color_name.c
++libgd-2.3.1/tests/gdimagerectangle/
++libgd-2.3.1/tests/gdimagerectangle/Makemodule.am
++libgd-2.3.1/tests/gdimagerectangle/CMakeLists.txt
++libgd-2.3.1/tests/gdimagerectangle/github_bug_00172.c
++libgd-2.3.1/tests/gdimagerectangle/bug00003.c
++libgd-2.3.1/tests/gdimagerectangle/bug00299.c
++libgd-2.3.1/tests/gdimagerectangle/bug00299_exp.png
++libgd-2.3.1/tests/gdimagerectangle/point_ordering.c
++libgd-2.3.1/tests/gdimagerectangle/bug00106_gdimagerectangle.c
++libgd-2.3.1/tests/gdimagecolorreplace/
++libgd-2.3.1/tests/gdimagecolorreplace/Makemodule.am
++libgd-2.3.1/tests/gdimagecolorreplace/CMakeLists.txt
++libgd-2.3.1/tests/gdimagecolorreplace/gdimagecolorreplace.c
++libgd-2.3.1/tests/gdimageflip/
++libgd-2.3.1/tests/gdimageflip/Makemodule.am
++libgd-2.3.1/tests/gdimageflip/CMakeLists.txt
++libgd-2.3.1/tests/gdimageflip/remi.png
++libgd-2.3.1/tests/gdimageflip/gdimageflipboth_exp.png
++libgd-2.3.1/tests/gdimageflip/gdimagefliphorizontal_exp.png
++libgd-2.3.1/tests/gdimageflip/gdimageflipvertical_exp.png
++libgd-2.3.1/tests/gdimageflip/gdimageflip.c
++libgd-2.3.1/tests/gdimagecopymerge/
++libgd-2.3.1/tests/gdimagecopymerge/Makemodule.am
++libgd-2.3.1/tests/gdimagecopymerge/CMakeLists.txt
++libgd-2.3.1/tests/gdimagecopymerge/gdimagecopymerge_exp.png
++libgd-2.3.1/tests/gdimagecopymerge/gdimagecopymerge.c
++libgd-2.3.1/tests/gdimagecolorclosesthwb/
++libgd-2.3.1/tests/gdimagecolorclosesthwb/Makemodule.am
++libgd-2.3.1/tests/gdimagecolorclosesthwb/CMakeLists.txt
++libgd-2.3.1/tests/gdimagecolorclosesthwb/gdImageColorClosestHWB.c
++libgd-2.3.1/tests/gd2/
++libgd-2.3.1/tests/gd2/bug00354b.gd2
++libgd-2.3.1/tests/gd2/conv_gd2_exp.gd2
++libgd-2.3.1/tests/gd2/bug00209.gd2
++libgd-2.3.1/tests/gd2/Makemodule.am
++libgd-2.3.1/tests/gd2/php_bug_72339.c
++libgd-2.3.1/tests/gd2/invalid_header.gd2
++libgd-2.3.1/tests/gd2/too_few_image_data.c
++libgd-2.3.1/tests/gd2/CMakeLists.txt
++libgd-2.3.1/tests/gd2/bug00354a.gd2
++libgd-2.3.1/tests/gd2/gd2_im2im.c
++libgd-2.3.1/tests/gd2/invalid_neg_size.gd2
++libgd-2.3.1/tests/gd2/bug00354.c
++libgd-2.3.1/tests/gd2/too_few_image_data.gd2
++libgd-2.3.1/tests/gd2/createimagefromgd2part.c
++libgd-2.3.1/tests/gd2/createimagefromgd2partptr.c
++libgd-2.3.1/tests/gd2/bug00383.c
++libgd-2.3.1/tests/gd2/conv_test.gd2
++libgd-2.3.1/tests/gd2/gd2_null.c
++libgd-2.3.1/tests/gd2/bug_289.c
++libgd-2.3.1/tests/gd2/gd2_read_corrupt.c
++libgd-2.3.1/tests/gd2/empty.gd2
++libgd-2.3.1/tests/gd2/gd2_read.c
++libgd-2.3.1/tests/gd2/bug00209.c
++libgd-2.3.1/tests/gd2/gd2_empty_file.c
++libgd-2.3.1/tests/gd2/conv_test_exp.png
++libgd-2.3.1/tests/gd2/bug00383.gd2
++libgd-2.3.1/tests/gd2/bug00309.c
++libgd-2.3.1/tests/gdimagefilter/
++libgd-2.3.1/tests/gdimagefilter/Makemodule.am
++libgd-2.3.1/tests/gdimagefilter/CMakeLists.txt
++libgd-2.3.1/tests/gdimagefilter/gdCopyBlurred.c
++libgd-2.3.1/tests/xbm/
++libgd-2.3.1/tests/xbm/x10_basic_read.xbm
++libgd-2.3.1/tests/xbm/github_bug_501.xbm
++libgd-2.3.1/tests/xbm/Makemodule.am
++libgd-2.3.1/tests/xbm/CMakeLists.txt
++libgd-2.3.1/tests/xbm/x10_basic_read.c
++libgd-2.3.1/tests/xbm/github_bug_109.c
++libgd-2.3.1/tests/xbm/github_bug_109_exp.png
++libgd-2.3.1/tests/xbm/github_bug_170.c
++libgd-2.3.1/tests/xbm/github_bug_109.xbm
++libgd-2.3.1/tests/xbm/github_bug_501.c
++libgd-2.3.1/tests/xbm/x10_basic_read_exp.png
++libgd-2.3.1/tests/gdimagecopyrotated/
++libgd-2.3.1/tests/gdimagecopyrotated/Makemodule.am
++libgd-2.3.1/tests/gdimagecopyrotated/bug00020.c
++libgd-2.3.1/tests/gdimagecopyrotated/CMakeLists.txt
++libgd-2.3.1/tests/gdimagecopyrotated/bug00020_exp.png
++libgd-2.3.1/tests/gdimagecolormatch/
++libgd-2.3.1/tests/gdimagecolormatch/Makemodule.am
++libgd-2.3.1/tests/gdimagecolormatch/CMakeLists.txt
++libgd-2.3.1/tests/gdimagecolormatch/gdimagecolormatch.c
++libgd-2.3.1/tests/gdimagecolormatch/cve_2019_6977.c
++libgd-2.3.1/tests/gdimagepixelate/
++libgd-2.3.1/tests/gdimagepixelate/Makemodule.am
++libgd-2.3.1/tests/gdimagepixelate/CMakeLists.txt
++libgd-2.3.1/tests/gdimagepixelate/gdimagepixelate.c
++libgd-2.3.1/tests/gdimagecopyresized/
++libgd-2.3.1/tests/gdimagecopyresized/Makemodule.am
++libgd-2.3.1/tests/gdimagecopyresized/gdimagecopyresized_exp.png
++libgd-2.3.1/tests/gdimagecopyresized/CMakeLists.txt
++libgd-2.3.1/tests/gdimagecopyresized/gdimagecopyresized.c
++libgd-2.3.1/tests/freetype/
++libgd-2.3.1/tests/freetype/Makemodule.am
++libgd-2.3.1/tests/freetype/DejaVuSans.ttf
++libgd-2.3.1/tests/freetype/CMakeLists.txt
++libgd-2.3.1/tests/freetype/bug00132.c
++libgd-2.3.1/tests/freetype/bug00132_exp.png
++libgd-2.3.1/tests/gdtransformaffineboundingbox/
++libgd-2.3.1/tests/gdtransformaffineboundingbox/Makemodule.am
++libgd-2.3.1/tests/gdtransformaffineboundingbox/CMakeLists.txt
++libgd-2.3.1/tests/gdtransformaffineboundingbox/github_bug_00221.c
++libgd-2.3.1/tests/gdtest/
++libgd-2.3.1/tests/gdtest/gdtest.h
++libgd-2.3.1/tests/gdtest/Makemodule.am
++libgd-2.3.1/tests/gdtest/CMakeLists.txt
++libgd-2.3.1/tests/gdtest/gdtest.c
++libgd-2.3.1/tests/gdimagebrightness/
++libgd-2.3.1/tests/gdimagebrightness/Makemodule.am
++libgd-2.3.1/tests/gdimagebrightness/CMakeLists.txt
++libgd-2.3.1/tests/gdimagebrightness/basic-100.png
++libgd-2.3.1/tests/gdimagebrightness/basic+100.png
++libgd-2.3.1/tests/gdimagebrightness/basic.c
++libgd-2.3.1/tests/gdimagebrightness/basic.png
++libgd-2.3.1/tests/gdimagegrayscale/
++libgd-2.3.1/tests/gdimagegrayscale/Makemodule.am
++libgd-2.3.1/tests/gdimagegrayscale/bug00386.png
++libgd-2.3.1/tests/gdimagegrayscale/CMakeLists.txt
++libgd-2.3.1/tests/gdimagegrayscale/bug00386.c
++libgd-2.3.1/tests/gdimagegrayscale/basic_exp.png
++libgd-2.3.1/tests/gdimagegrayscale/basic.c
++libgd-2.3.1/tests/gdimagegrayscale/basic.png
++libgd-2.3.1/CONTRIBUTING.md
++libgd-2.3.1/CHANGELOG.md
++checking build system type... x86_64-slackware-linux-musl
++checking host system type... x86_64-slackware-linux-musl
++checking for a BSD-compatible install... /usr/bin/ginstall -c
++checking whether build environment is sane... yes
++checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
++checking for gawk... gawk
++checking whether make sets $(MAKE)... yes
++checking whether make supports nested variables... yes
++checking for style of include used by make... GNU
++checking for gcc... gcc
++checking whether the C compiler works... yes
++checking for C compiler default output file name... a.out
++checking for suffix of executables... 
++checking whether we are cross compiling... no
++checking for suffix of object files... o
++checking whether we are using the GNU C compiler... yes
++checking whether gcc accepts -g... yes
++checking for gcc option to accept ISO C89... none needed
++checking whether gcc understands -c and -o together... yes
++checking dependency style of gcc... gcc3
++checking for ar... ar
++checking the archiver (ar) interface... ar
++checking for gcc option to accept ISO C99... none needed
++checking for gcc option to accept ISO Standard C... (cached) none needed
++checking how to print strings... printf
++checking for a sed that does not truncate output... /usr/bin/sed
++checking for grep that handles long lines and -e... /usr/bin/grep
++checking for egrep... /usr/bin/grep -E
++checking for fgrep... /usr/bin/grep -F
++checking for ld used by gcc... /usr/bin/ld
++checking if the linker (/usr/bin/ld) is GNU ld... yes
++checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
++checking the name lister (/usr/bin/nm -B) interface... BSD nm
++checking whether ln -s works... yes
++checking the maximum length of command line arguments... 98304
++checking how to convert x86_64-slackware-linux-musl file names to x86_64-slackware-linux-musl format... func_convert_file_noop
++checking how to convert x86_64-slackware-linux-musl file names to toolchain format... func_convert_file_noop
++checking for /usr/bin/ld option to reload object files... -r
++checking for objdump... objdump
++checking how to recognize dependent libraries... pass_all
++checking for dlltool... dlltool
++checking how to associate runtime and link libraries... printf %s\n
++checking for archiver @FILE support... @
++checking for strip... strip
++checking for ranlib... ranlib
++checking command to parse /usr/bin/nm -B output from gcc object... ok
++checking for sysroot... no
++checking for a working dd... /usr/bin/dd
++checking how to truncate binary pipes... /usr/bin/dd bs=4096 count=1
++checking for mt... mt
++checking if mt is a manifest tool... no
++checking how to run the C preprocessor... gcc -E
++checking for ANSI C header files... yes
++checking for sys/types.h... yes
++checking for sys/stat.h... yes
++checking for stdlib.h... yes
++checking for string.h... yes
++checking for memory.h... yes
++checking for strings.h... yes
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking for unistd.h... yes
++checking for dlfcn.h... yes
++checking for objdir... .libs
++checking if gcc supports -fno-rtti -fno-exceptions... no
++checking for gcc option to produce PIC... -fPIC -DPIC
++checking if gcc PIC flag -fPIC -DPIC works... yes
++checking if gcc static flag -static works... yes
++checking if gcc supports -c -o file.o... yes
++checking if gcc supports -c -o file.o... (cached) yes
++checking whether the gcc linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
++checking whether -lc should be explicitly linked in... no
++checking dynamic linker characteristics... GNU/Linux ld.so
++checking how to hardcode library paths into programs... immediate
++checking whether stripping libraries is possible... yes
++checking if libtool supports shared libraries... yes
++checking whether to build shared libraries... yes
++checking whether to build static libraries... no
++checking whether ln -s works... yes
++checking whether make sets $(MAKE)... (cached) yes
++checking pkg-config is at least version 0.9.0... yes
++checking for X... libraries , headers 
++checking for ANSI C header files... (cached) yes
++checking for dirent.h... yes
++checking for inttypes.h... (cached) yes
++checking for stdint.h... (cached) yes
++checking for strings.h... (cached) yes
++checking for unistd.h... (cached) yes
++checking for sys/stat.h... (cached) yes
++checking for sys/types.h... (cached) yes
++checking for ld used by gcc... /usr/bin/ld -m elf_x86_64
++checking if the linker (/usr/bin/ld -m elf_x86_64) is GNU ld... yes
++checking for shared library run path origin... done
++checking for iconv... yes
++checking for working iconv... yes
++checking for iconv declaration... 
++         extern size_t iconv (iconv_t cd, char * *inbuf, size_t *inbytesleft, char * *outbuf, size_t *outbytesleft);
++checking iconv.h usability... yes
++checking iconv.h presence... yes
++checking for iconv.h... yes
++checking whether iconv.h defines iconv_t... yes
++checking for sin... yes
++checking whether gcc is Clang... no
++checking whether pthreads work with -pthread... yes
++checking for joinable pthread attribute... PTHREAD_CREATE_JOINABLE
++checking whether more special flags are required for pthreads... no
++checking for PTHREAD_PRIO_INHERIT... yes
++checking for OpenMP flag of C compiler... -fopenmp
++checking whether to support gd image formats... yes
++checking whether to support zlib... auto
++checking for LIBZ... yes
++checking whether to support png... auto
++checking for LIBPNG... yes
++checking whether to support freetype... auto
++checking for LIBFREETYPE... yes
++checking whether to support raqm... auto
++checking for LIBRAQM... no
++checking for raqm_create in -lraqm... no
++configure: Disabling support for raqm
++checking whether to support fontconfig... auto
++checking for LIBFONTCONFIG... yes
++checking whether to support jpeg... auto
++checking for LIBJPEG... yes
++checking whether to support liq... auto
++checking libimagequant.h usability... no
++checking libimagequant.h presence... no
++checking for libimagequant.h... no
++configure: Disabling support for liq
++checking whether to support xpm... auto
++checking for LIBXPM... yes
++checking whether to support tiff... auto
++checking for LIBTIFF... yes
++checking whether to support webp... auto
++checking for LIBWEBP... yes
++checking for simple visibility declarations... yes
++checking whether we are building for a Win32 host... no
++checking CFLAGS for maximum warnings... -Wall
++
++** Configuration summary for libgd 2.3.1:
++
++   Support for gd/gd2 images:        yes
++   Support for Zlib:                 yes
++   Support for PNG library:          yes
++   Support for JPEG library:         yes
++   Support for WebP library:         yes
++   Support for TIFF library:         yes
++   Support for Freetype 2.x library: yes
++   Support for Fontconfig library:   yes
++   Support for Xpm library:          yes
++   Support for liq library:          no
++   Support for complex text:         no
++   Support for pthreads:             yes
++
++checking that generated files are newer than configure... done
++configure: creating ./config.status
++config.status: creating Makefile
++config.status: creating src/Makefile
++config.status: creating tests/Makefile
++config.status: creating config/Makefile
++config.status: creating config/gdlib.pc
++config.status: creating src/config.h
++config.status: executing depfiles commands
++config.status: executing libtool commands
++Making all in src
++make[1]: Entering directory '/tmp/libgd-2.3.1/src'
++make  all-am
++make[2]: Entering directory '/tmp/libgd-2.3.1/src'
++depbase=`echo gd.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gd.lo -MD -MP -MF $depbase.Tpo -c -o gd.lo gd.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++depbase=`echo gd_bmp.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gd_bmp.lo -MD -MP -MF $depbase.Tpo -c -o gd_bmp.lo gd_bmp.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++depbase=`echo gd_color.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gd_color.lo -MD -MP -MF $depbase.Tpo -c -o gd_color.lo gd_color.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -O2 -fPIC -fvisibility=hidden -Wall -MT gd_bmp.lo -MD -MP -MF .deps/gd_bmp.Tpo -c gd_bmp.c  -fPIC -DPIC -o .libs/gd_bmp.o
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -O2 -fPIC -fvisibility=hidden -Wall -MT gd.lo -MD -MP -MF .deps/gd.Tpo -c gd.c  -fPIC -DPIC -o .libs/gd.o
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -O2 -fPIC -fvisibility=hidden -Wall -MT gd_color.lo -MD -MP -MF .deps/gd_color.Tpo -c gd_color.c  -fPIC -DPIC -o .libs/gd_color.o
++depbase=`echo gd_color_map.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gd_color_map.lo -MD -MP -MF $depbase.Tpo -c -o gd_color_map.lo gd_color_map.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -O2 -fPIC -fvisibility=hidden -Wall -MT gd_color_map.lo -MD -MP -MF .deps/gd_color_map.Tpo -c gd_color_map.c  -fPIC -DPIC -o .libs/gd_color_map.o
++depbase=`echo gd_color_match.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gd_color_match.lo -MD -MP -MF $depbase.Tpo -c -o gd_color_match.lo gd_color_match.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -O2 -fPIC -fvisibility=hidden -Wall -MT gd_color_match.lo -MD -MP -MF .deps/gd_color_match.Tpo -c gd_color_match.c  -fPIC -DPIC -o .libs/gd_color_match.o
++depbase=`echo gd_crop.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gd_crop.lo -MD -MP -MF $depbase.Tpo -c -o gd_crop.lo gd_crop.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -O2 -fPIC -fvisibility=hidden -Wall -MT gd_crop.lo -MD -MP -MF .deps/gd_crop.Tpo -c gd_crop.c  -fPIC -DPIC -o .libs/gd_crop.o
++depbase=`echo gd_filename.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gd_filename.lo -MD -MP -MF $depbase.Tpo -c -o gd_filename.lo gd_filename.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -O2 -fPIC -fvisibility=hidden -Wall -MT gd_filename.lo -MD -MP -MF .deps/gd_filename.Tpo -c gd_filename.c  -fPIC -DPIC -o .libs/gd_filename.o
++depbase=`echo gd_filter.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gd_filter.lo -MD -MP -MF $depbase.Tpo -c -o gd_filter.lo gd_filter.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++depbase=`echo gd_gd.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gd_gd.lo -MD -MP -MF $depbase.Tpo -c -o gd_gd.lo gd_gd.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -O2 -fPIC -fvisibility=hidden -Wall -MT gd_filter.lo -MD -MP -MF .deps/gd_filter.Tpo -c gd_filter.c  -fPIC -DPIC -o .libs/gd_filter.o
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -O2 -fPIC -fvisibility=hidden -Wall -MT gd_gd.lo -MD -MP -MF .deps/gd_gd.Tpo -c gd_gd.c  -fPIC -DPIC -o .libs/gd_gd.o
++depbase=`echo gd_gd2.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gd_gd2.lo -MD -MP -MF $depbase.Tpo -c -o gd_gd2.lo gd_gd2.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -O2 -fPIC -fvisibility=hidden -Wall -MT gd_gd2.lo -MD -MP -MF .deps/gd_gd2.Tpo -c gd_gd2.c  -fPIC -DPIC -o .libs/gd_gd2.o
++depbase=`echo gd_gif_in.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gd_gif_in.lo -MD -MP -MF $depbase.Tpo -c -o gd_gif_in.lo gd_gif_in.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -O2 -fPIC -fvisibility=hidden -Wall -MT gd_gif_in.lo -MD -MP -MF .deps/gd_gif_in.Tpo -c gd_gif_in.c  -fPIC -DPIC -o .libs/gd_gif_in.o
++depbase=`echo gd_gif_out.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gd_gif_out.lo -MD -MP -MF $depbase.Tpo -c -o gd_gif_out.lo gd_gif_out.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -O2 -fPIC -fvisibility=hidden -Wall -MT gd_gif_out.lo -MD -MP -MF .deps/gd_gif_out.Tpo -c gd_gif_out.c  -fPIC -DPIC -o .libs/gd_gif_out.o
++depbase=`echo gd_interpolation.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gd_interpolation.lo -MD -MP -MF $depbase.Tpo -c -o gd_interpolation.lo gd_interpolation.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -O2 -fPIC -fvisibility=hidden -Wall -MT gd_interpolation.lo -MD -MP -MF .deps/gd_interpolation.Tpo -c gd_interpolation.c  -fPIC -DPIC -o .libs/gd_interpolation.o
++depbase=`echo gd_io.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gd_io.lo -MD -MP -MF $depbase.Tpo -c -o gd_io.lo gd_io.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -O2 -fPIC -fvisibility=hidden -Wall -MT gd_io.lo -MD -MP -MF .deps/gd_io.Tpo -c gd_io.c  -fPIC -DPIC -o .libs/gd_io.o
++depbase=`echo gd_io_dp.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gd_io_dp.lo -MD -MP -MF $depbase.Tpo -c -o gd_io_dp.lo gd_io_dp.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++depbase=`echo gd_io_file.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gd_io_file.lo -MD -MP -MF $depbase.Tpo -c -o gd_io_file.lo gd_io_file.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -O2 -fPIC -fvisibility=hidden -Wall -MT gd_io_dp.lo -MD -MP -MF .deps/gd_io_dp.Tpo -c gd_io_dp.c  -fPIC -DPIC -o .libs/gd_io_dp.o
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -O2 -fPIC -fvisibility=hidden -Wall -MT gd_io_file.lo -MD -MP -MF .deps/gd_io_file.Tpo -c gd_io_file.c  -fPIC -DPIC -o .libs/gd_io_file.o
++depbase=`echo gd_io_ss.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gd_io_ss.lo -MD -MP -MF $depbase.Tpo -c -o gd_io_ss.lo gd_io_ss.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++depbase=`echo gd_jpeg.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gd_jpeg.lo -MD -MP -MF $depbase.Tpo -c -o gd_jpeg.lo gd_jpeg.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -O2 -fPIC -fvisibility=hidden -Wall -MT gd_io_ss.lo -MD -MP -MF .deps/gd_io_ss.Tpo -c gd_io_ss.c  -fPIC -DPIC -o .libs/gd_io_ss.o
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -O2 -fPIC -fvisibility=hidden -Wall -MT gd_jpeg.lo -MD -MP -MF .deps/gd_jpeg.Tpo -c gd_jpeg.c  -fPIC -DPIC -o .libs/gd_jpeg.o
++depbase=`echo gd_matrix.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gd_matrix.lo -MD -MP -MF $depbase.Tpo -c -o gd_matrix.lo gd_matrix.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -O2 -fPIC -fvisibility=hidden -Wall -MT gd_matrix.lo -MD -MP -MF .deps/gd_matrix.Tpo -c gd_matrix.c  -fPIC -DPIC -o .libs/gd_matrix.o
++depbase=`echo gd_nnquant.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gd_nnquant.lo -MD -MP -MF $depbase.Tpo -c -o gd_nnquant.lo gd_nnquant.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++depbase=`echo gd_png.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gd_png.lo -MD -MP -MF $depbase.Tpo -c -o gd_png.lo gd_png.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -O2 -fPIC -fvisibility=hidden -Wall -MT gd_nnquant.lo -MD -MP -MF .deps/gd_nnquant.Tpo -c gd_nnquant.c  -fPIC -DPIC -o .libs/gd_nnquant.o
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -O2 -fPIC -fvisibility=hidden -Wall -MT gd_png.lo -MD -MP -MF .deps/gd_png.Tpo -c gd_png.c  -fPIC -DPIC -o .libs/gd_png.o
++depbase=`echo gd_rotate.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gd_rotate.lo -MD -MP -MF $depbase.Tpo -c -o gd_rotate.lo gd_rotate.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -O2 -fPIC -fvisibility=hidden -Wall -MT gd_rotate.lo -MD -MP -MF .deps/gd_rotate.Tpo -c gd_rotate.c  -fPIC -DPIC -o .libs/gd_rotate.o
++depbase=`echo gd_security.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gd_security.lo -MD -MP -MF $depbase.Tpo -c -o gd_security.lo gd_security.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++depbase=`echo gd_ss.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gd_ss.lo -MD -MP -MF $depbase.Tpo -c -o gd_ss.lo gd_ss.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -O2 -fPIC -fvisibility=hidden -Wall -MT gd_security.lo -MD -MP -MF .deps/gd_security.Tpo -c gd_security.c  -fPIC -DPIC -o .libs/gd_security.o
++depbase=`echo gd_tga.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gd_tga.lo -MD -MP -MF $depbase.Tpo -c -o gd_tga.lo gd_tga.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++depbase=`echo gd_tiff.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gd_tiff.lo -MD -MP -MF $depbase.Tpo -c -o gd_tiff.lo gd_tiff.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -O2 -fPIC -fvisibility=hidden -Wall -MT gd_ss.lo -MD -MP -MF .deps/gd_ss.Tpo -c gd_ss.c  -fPIC -DPIC -o .libs/gd_ss.o
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -O2 -fPIC -fvisibility=hidden -Wall -MT gd_tga.lo -MD -MP -MF .deps/gd_tga.Tpo -c gd_tga.c  -fPIC -DPIC -o .libs/gd_tga.o
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -O2 -fPIC -fvisibility=hidden -Wall -MT gd_tiff.lo -MD -MP -MF .deps/gd_tiff.Tpo -c gd_tiff.c  -fPIC -DPIC -o .libs/gd_tiff.o
++depbase=`echo gd_topal.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gd_topal.lo -MD -MP -MF $depbase.Tpo -c -o gd_topal.lo gd_topal.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -O2 -fPIC -fvisibility=hidden -Wall -MT gd_topal.lo -MD -MP -MF .deps/gd_topal.Tpo -c gd_topal.c  -fPIC -DPIC -o .libs/gd_topal.o
++depbase=`echo gd_transform.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gd_transform.lo -MD -MP -MF $depbase.Tpo -c -o gd_transform.lo gd_transform.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -O2 -fPIC -fvisibility=hidden -Wall -MT gd_transform.lo -MD -MP -MF .deps/gd_transform.Tpo -c gd_transform.c  -fPIC -DPIC -o .libs/gd_transform.o
++depbase=`echo gd_version.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gd_version.lo -MD -MP -MF $depbase.Tpo -c -o gd_version.lo gd_version.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -O2 -fPIC -fvisibility=hidden -Wall -MT gd_version.lo -MD -MP -MF .deps/gd_version.Tpo -c gd_version.c  -fPIC -DPIC -o .libs/gd_version.o
++depbase=`echo gd_wbmp.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gd_wbmp.lo -MD -MP -MF $depbase.Tpo -c -o gd_wbmp.lo gd_wbmp.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++depbase=`echo gd_webp.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gd_webp.lo -MD -MP -MF $depbase.Tpo -c -o gd_webp.lo gd_webp.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -O2 -fPIC -fvisibility=hidden -Wall -MT gd_wbmp.lo -MD -MP -MF .deps/gd_wbmp.Tpo -c gd_wbmp.c  -fPIC -DPIC -o .libs/gd_wbmp.o
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -O2 -fPIC -fvisibility=hidden -Wall -MT gd_webp.lo -MD -MP -MF .deps/gd_webp.Tpo -c gd_webp.c  -fPIC -DPIC -o .libs/gd_webp.o
++depbase=`echo gd_xbm.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gd_xbm.lo -MD -MP -MF $depbase.Tpo -c -o gd_xbm.lo gd_xbm.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++depbase=`echo gdcache.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gdcache.lo -MD -MP -MF $depbase.Tpo -c -o gdcache.lo gdcache.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -O2 -fPIC -fvisibility=hidden -Wall -MT gd_xbm.lo -MD -MP -MF .deps/gd_xbm.Tpo -c gd_xbm.c  -fPIC -DPIC -o .libs/gd_xbm.o
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -O2 -fPIC -fvisibility=hidden -Wall -MT gdcache.lo -MD -MP -MF .deps/gdcache.Tpo -c gdcache.c  -fPIC -DPIC -o .libs/gdcache.o
++depbase=`echo gdfontg.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gdfontg.lo -MD -MP -MF $depbase.Tpo -c -o gdfontg.lo gdfontg.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++depbase=`echo gdfontl.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gdfontl.lo -MD -MP -MF $depbase.Tpo -c -o gdfontl.lo gdfontl.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -O2 -fPIC -fvisibility=hidden -Wall -MT gdfontg.lo -MD -MP -MF .deps/gdfontg.Tpo -c gdfontg.c  -fPIC -DPIC -o .libs/gdfontg.o
++depbase=`echo gdfontmb.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gdfontmb.lo -MD -MP -MF $depbase.Tpo -c -o gdfontmb.lo gdfontmb.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -O2 -fPIC -fvisibility=hidden -Wall -MT gdfontl.lo -MD -MP -MF .deps/gdfontl.Tpo -c gdfontl.c  -fPIC -DPIC -o .libs/gdfontl.o
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -O2 -fPIC -fvisibility=hidden -Wall -MT gdfontmb.lo -MD -MP -MF .deps/gdfontmb.Tpo -c gdfontmb.c  -fPIC -DPIC -o .libs/gdfontmb.o
++depbase=`echo gdfonts.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gdfonts.lo -MD -MP -MF $depbase.Tpo -c -o gdfonts.lo gdfonts.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++depbase=`echo gdfontt.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gdfontt.lo -MD -MP -MF $depbase.Tpo -c -o gdfontt.lo gdfontt.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -O2 -fPIC -fvisibility=hidden -Wall -MT gdfonts.lo -MD -MP -MF .deps/gdfonts.Tpo -c gdfonts.c  -fPIC -DPIC -o .libs/gdfonts.o
++depbase=`echo gdft.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gdft.lo -MD -MP -MF $depbase.Tpo -c -o gdft.lo gdft.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -O2 -fPIC -fvisibility=hidden -Wall -MT gdfontt.lo -MD -MP -MF .deps/gdfontt.Tpo -c gdfontt.c  -fPIC -DPIC -o .libs/gdfontt.o
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -O2 -fPIC -fvisibility=hidden -Wall -MT gdft.lo -MD -MP -MF .deps/gdft.Tpo -c gdft.c  -fPIC -DPIC -o .libs/gdft.o
++depbase=`echo gdfx.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gdfx.lo -MD -MP -MF $depbase.Tpo -c -o gdfx.lo gdfx.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++depbase=`echo gdhelpers.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gdhelpers.lo -MD -MP -MF $depbase.Tpo -c -o gdhelpers.lo gdhelpers.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -O2 -fPIC -fvisibility=hidden -Wall -MT gdfx.lo -MD -MP -MF .deps/gdfx.Tpo -c gdfx.c  -fPIC -DPIC -o .libs/gdfx.o
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -O2 -fPIC -fvisibility=hidden -Wall -MT gdhelpers.lo -MD -MP -MF .deps/gdhelpers.Tpo -c gdhelpers.c  -fPIC -DPIC -o .libs/gdhelpers.o
++depbase=`echo gdkanji.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gdkanji.lo -MD -MP -MF $depbase.Tpo -c -o gdkanji.lo gdkanji.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -O2 -fPIC -fvisibility=hidden -Wall -MT gdkanji.lo -MD -MP -MF .deps/gdkanji.Tpo -c gdkanji.c  -fPIC -DPIC -o .libs/gdkanji.o
++depbase=`echo gdtables.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gdtables.lo -MD -MP -MF $depbase.Tpo -c -o gdtables.lo gdtables.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -O2 -fPIC -fvisibility=hidden -Wall -MT gdtables.lo -MD -MP -MF .deps/gdtables.Tpo -c gdtables.c  -fPIC -DPIC -o .libs/gdtables.o
++depbase=`echo gdxpm.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gdxpm.lo -MD -MP -MF $depbase.Tpo -c -o gdxpm.lo gdxpm.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++depbase=`echo wbmp.lo | sed 's|[^/]*$|.deps/&|;s|\.lo$||'`;\
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT wbmp.lo -MD -MP -MF $depbase.Tpo -c -o wbmp.lo wbmp.c &&\
++mv -f $depbase.Tpo $depbase.Plo
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -O2 -fPIC -fvisibility=hidden -Wall -MT gdxpm.lo -MD -MP -MF .deps/gdxpm.Tpo -c gdxpm.c  -fPIC -DPIC -o .libs/gdxpm.o
++depbase=`echo gdcmpgif.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gdcmpgif.o -MD -MP -MF $depbase.Tpo -c -o gdcmpgif.o gdcmpgif.c &&\
++mv -f $depbase.Tpo $depbase.Po
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I/usr/include/libpng16 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -O2 -fPIC -fvisibility=hidden -Wall -MT wbmp.lo -MD -MP -MF .deps/wbmp.Tpo -c wbmp.c  -fPIC -DPIC -o .libs/wbmp.o
++depbase=`echo gdtopng.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gdtopng.o -MD -MP -MF $depbase.Tpo -c -o gdtopng.o gdtopng.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo pngtogd.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT pngtogd.o -MD -MP -MF $depbase.Tpo -c -o pngtogd.o pngtogd.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo webpng.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT webpng.o -MD -MP -MF $depbase.Tpo -c -o webpng.o webpng.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo gdparttopng.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gdparttopng.o -MD -MP -MF $depbase.Tpo -c -o gdparttopng.o gdparttopng.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo gd2topng.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gd2topng.o -MD -MP -MF $depbase.Tpo -c -o gd2topng.o gd2topng.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo pngtogd2.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT pngtogd2.o -MD -MP -MF $depbase.Tpo -c -o pngtogd2.o pngtogd2.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo annotate.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT annotate.o -MD -MP -MF $depbase.Tpo -c -o annotate.o annotate.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo gd2copypal.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gd2copypal.o -MD -MP -MF $depbase.Tpo -c -o gd2copypal.o gd2copypal.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo gd2togif.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT gd2togif.o -MD -MP -MF $depbase.Tpo -c -o gd2togif.o gd2togif.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo giftogd2.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H -I.   -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16          -O2 -fPIC -fvisibility=hidden -Wall -MT giftogd2.o -MD -MP -MF $depbase.Tpo -c -o giftogd2.o giftogd2.c &&\
++mv -f $depbase.Tpo $depbase.Po
++/bin/sh ../libtool  --tag=CC   --mode=link gcc  -O2 -fPIC -fvisibility=hidden -Wall -version-info 3:9:0 -no-undefined  -o libgd.la -rpath /usr/lib gd.lo gd_bmp.lo gd_color.lo gd_color_map.lo gd_color_match.lo gd_crop.lo gd_filename.lo gd_filter.lo gd_gd.lo gd_gd2.lo gd_gif_in.lo gd_gif_out.lo gd_interpolation.lo gd_io.lo gd_io_dp.lo gd_io_file.lo gd_io_ss.lo gd_jpeg.lo gd_matrix.lo gd_nnquant.lo gd_png.lo gd_rotate.lo gd_security.lo gd_ss.lo gd_tga.lo gd_tiff.lo gd_topal.lo gd_transform.lo gd_version.lo gd_wbmp.lo gd_webp.lo gd_xbm.lo gdcache.lo gdfontg.lo gdfontl.lo gdfontmb.lo gdfonts.lo gdfontt.lo gdft.lo gdfx.lo gdhelpers.lo gdkanji.lo gdtables.lo gdxpm.lo wbmp.lo  -lz  -lpng16 -lz  -lfreetype  -lfontconfig -lfreetype  -ljpeg  -lXpm -lX11  -ltiff  -lwebp
++libtool: link: gcc -shared  -fPIC -DPIC  .libs/gd.o .libs/gd_bmp.o .libs/gd_color.o .libs/gd_color_map.o .libs/gd_color_match.o .libs/gd_crop.o .libs/gd_filename.o .libs/gd_filter.o .libs/gd_gd.o .libs/gd_gd2.o .libs/gd_gif_in.o .libs/gd_gif_out.o .libs/gd_interpolation.o .libs/gd_io.o .libs/gd_io_dp.o .libs/gd_io_file.o .libs/gd_io_ss.o .libs/gd_jpeg.o .libs/gd_matrix.o .libs/gd_nnquant.o .libs/gd_png.o .libs/gd_rotate.o .libs/gd_security.o .libs/gd_ss.o .libs/gd_tga.o .libs/gd_tiff.o .libs/gd_topal.o .libs/gd_transform.o .libs/gd_version.o .libs/gd_wbmp.o .libs/gd_webp.o .libs/gd_xbm.o .libs/gdcache.o .libs/gdfontg.o .libs/gdfontl.o .libs/gdfontmb.o .libs/gdfonts.o .libs/gdfontt.o .libs/gdft.o .libs/gdfx.o .libs/gdhelpers.o .libs/gdkanji.o .libs/gdtables.o .libs/gdxpm.o .libs/wbmp.o   -lpng16 -lz -lfontconfig -lfreetype -ljpeg -lXpm -lX11 -ltiff -lwebp  -O2   -Wl,-soname -Wl,libgd.so.3 -o .libs/libgd.so.3.0.9
++libtool: link: (cd ".libs" && rm -f "libgd.so.3" && ln -s "libgd.so.3.0.9" "libgd.so.3")
++libtool: link: (cd ".libs" && rm -f "libgd.so" && ln -s "libgd.so.3.0.9" "libgd.so")
++libtool: link: ( cd ".libs" && rm -f "libgd.la" && ln -s "../libgd.la" "libgd.la" )
++/bin/sh ../libtool  --tag=CC   --mode=link gcc  -O2 -fPIC -fvisibility=hidden -Wall   -o gdcmpgif gdcmpgif.o libgd.la  -lz  -lpng16 -lz  -lfreetype  -lfontconfig -lfreetype  -ljpeg  -lXpm -lX11  -ltiff  -lwebp
++/bin/sh ../libtool  --tag=CC   --mode=link gcc  -O2 -fPIC -fvisibility=hidden -Wall   -o gdtopng gdtopng.o libgd.la  -lz  -lpng16 -lz  -lfreetype  -lfontconfig -lfreetype  -ljpeg  -lXpm -lX11  -ltiff  -lwebp
++/bin/sh ../libtool  --tag=CC   --mode=link gcc  -O2 -fPIC -fvisibility=hidden -Wall   -o pngtogd pngtogd.o libgd.la  -lz  -lpng16 -lz  -lfreetype  -lfontconfig -lfreetype  -ljpeg  -lXpm -lX11  -ltiff  -lwebp
++libtool: link: gcc -O2 -fPIC -fvisibility=hidden -Wall -o .libs/gdcmpgif gdcmpgif.o  ./.libs/libgd.so -lpng16 -lz -lfontconfig -lfreetype -ljpeg -lXpm -lX11 -ltiff -lwebp
++libtool: link: gcc -O2 -fPIC -fvisibility=hidden -Wall -o .libs/gdtopng gdtopng.o  ./.libs/libgd.so -lpng16 -lz -lfontconfig -lfreetype -ljpeg -lXpm -lX11 -ltiff -lwebp
++libtool: link: gcc -O2 -fPIC -fvisibility=hidden -Wall -o .libs/pngtogd pngtogd.o  ./.libs/libgd.so -lpng16 -lz -lfontconfig -lfreetype -ljpeg -lXpm -lX11 -ltiff -lwebp
++/bin/sh ../libtool  --tag=CC   --mode=link gcc  -O2 -fPIC -fvisibility=hidden -Wall   -o webpng webpng.o libgd.la  -lz  -lpng16 -lz  -lfreetype  -lfontconfig -lfreetype  -ljpeg  -lXpm -lX11  -ltiff  -lwebp
++/bin/sh ../libtool  --tag=CC   --mode=link gcc  -O2 -fPIC -fvisibility=hidden -Wall   -o gdparttopng gdparttopng.o libgd.la  -lz  -lpng16 -lz  -lfreetype  -lfontconfig -lfreetype  -ljpeg  -lXpm -lX11  -ltiff  -lwebp
++/bin/sh ../libtool  --tag=CC   --mode=link gcc  -O2 -fPIC -fvisibility=hidden -Wall   -o gd2topng gd2topng.o libgd.la  -lz  -lpng16 -lz  -lfreetype  -lfontconfig -lfreetype  -ljpeg  -lXpm -lX11  -ltiff  -lwebp
++libtool: link: gcc -O2 -fPIC -fvisibility=hidden -Wall -o .libs/webpng webpng.o  ./.libs/libgd.so -lpng16 -lz -lfontconfig -lfreetype -ljpeg -lXpm -lX11 -ltiff -lwebp
++libtool: link: gcc -O2 -fPIC -fvisibility=hidden -Wall -o .libs/gdparttopng gdparttopng.o  ./.libs/libgd.so -lpng16 -lz -lfontconfig -lfreetype -ljpeg -lXpm -lX11 -ltiff -lwebp
++libtool: link: gcc -O2 -fPIC -fvisibility=hidden -Wall -o .libs/gd2topng gd2topng.o  ./.libs/libgd.so -lpng16 -lz -lfontconfig -lfreetype -ljpeg -lXpm -lX11 -ltiff -lwebp
++/bin/sh ../libtool  --tag=CC   --mode=link gcc  -O2 -fPIC -fvisibility=hidden -Wall   -o pngtogd2 pngtogd2.o libgd.la  -lz  -lpng16 -lz  -lfreetype  -lfontconfig -lfreetype  -ljpeg  -lXpm -lX11  -ltiff  -lwebp
++/bin/sh ../libtool  --tag=CC   --mode=link gcc  -O2 -fPIC -fvisibility=hidden -Wall   -o annotate annotate.o libgd.la  -lz  -lpng16 -lz  -lfreetype  -lfontconfig -lfreetype  -ljpeg  -lXpm -lX11  -ltiff  -lwebp
++/bin/sh ../libtool  --tag=CC   --mode=link gcc  -O2 -fPIC -fvisibility=hidden -Wall   -o gd2copypal gd2copypal.o libgd.la  -lz  -lpng16 -lz  -lfreetype  -lfontconfig -lfreetype  -ljpeg  -lXpm -lX11  -ltiff  -lwebp
++libtool: link: gcc -O2 -fPIC -fvisibility=hidden -Wall -o .libs/pngtogd2 pngtogd2.o  ./.libs/libgd.so -lpng16 -lz -lfontconfig -lfreetype -ljpeg -lXpm -lX11 -ltiff -lwebp
++libtool: link: gcc -O2 -fPIC -fvisibility=hidden -Wall -o .libs/annotate annotate.o  ./.libs/libgd.so -lpng16 -lz -lfontconfig -lfreetype -ljpeg -lXpm -lX11 -ltiff -lwebp
++libtool: link: gcc -O2 -fPIC -fvisibility=hidden -Wall -o .libs/gd2copypal gd2copypal.o  ./.libs/libgd.so -lpng16 -lz -lfontconfig -lfreetype -ljpeg -lXpm -lX11 -ltiff -lwebp
++/bin/sh ../libtool  --tag=CC   --mode=link gcc  -O2 -fPIC -fvisibility=hidden -Wall   -o gd2togif gd2togif.o libgd.la  -lz  -lpng16 -lz  -lfreetype  -lfontconfig -lfreetype  -ljpeg  -lXpm -lX11  -ltiff  -lwebp
++/bin/sh ../libtool  --tag=CC   --mode=link gcc  -O2 -fPIC -fvisibility=hidden -Wall   -o giftogd2 giftogd2.o libgd.la  -lz  -lpng16 -lz  -lfreetype  -lfontconfig -lfreetype  -ljpeg  -lXpm -lX11  -ltiff  -lwebp
++libtool: link: gcc -O2 -fPIC -fvisibility=hidden -Wall -o .libs/gd2togif gd2togif.o  ./.libs/libgd.so -lpng16 -lz -lfontconfig -lfreetype -ljpeg -lXpm -lX11 -ltiff -lwebp
++libtool: link: gcc -O2 -fPIC -fvisibility=hidden -Wall -o .libs/giftogd2 giftogd2.o  ./.libs/libgd.so -lpng16 -lz -lfontconfig -lfreetype -ljpeg -lXpm -lX11 -ltiff -lwebp
++make[2]: Leaving directory '/tmp/libgd-2.3.1/src'
++make[1]: Leaving directory '/tmp/libgd-2.3.1/src'
++Making all in config
++make[1]: Entering directory '/tmp/libgd-2.3.1/config'
++make[1]: Nothing to be done for 'all'.
++make[1]: Leaving directory '/tmp/libgd-2.3.1/config'
++Making all in tests
++make[1]: Entering directory '/tmp/libgd-2.3.1/tests'
++make[1]: Nothing to be done for 'all'.
++make[1]: Leaving directory '/tmp/libgd-2.3.1/tests'
++make[1]: Entering directory '/tmp/libgd-2.3.1'
++make[1]: Nothing to be done for 'all-am'.
++make[1]: Leaving directory '/tmp/libgd-2.3.1'
++Making install in src
++make[1]: Entering directory '/tmp/libgd-2.3.1/src'
++make[2]: Entering directory '/tmp/libgd-2.3.1/src'
++ /usr/bin/mkdir -p '/tmp/package-gd/usr/lib'
++ /bin/sh ../libtool   --mode=install /usr/bin/ginstall -c   libgd.la '/tmp/package-gd/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/libgd.so.3.0.9 /tmp/package-gd/usr/lib/libgd.so.3.0.9
++libtool: install: (cd /tmp/package-gd/usr/lib && { ln -s -f libgd.so.3.0.9 libgd.so.3 || { rm -f libgd.so.3 && ln -s libgd.so.3.0.9 libgd.so.3; }; })
++libtool: install: (cd /tmp/package-gd/usr/lib && { ln -s -f libgd.so.3.0.9 libgd.so || { rm -f libgd.so && ln -s libgd.so.3.0.9 libgd.so; }; })
++libtool: install: /usr/bin/ginstall -c .libs/libgd.lai /tmp/package-gd/usr/lib/libgd.la
++libtool: warning: remember to run 'libtool --finish /usr/lib'
++ /usr/bin/mkdir -p '/tmp/package-gd/usr/bin'
++  /bin/sh ../libtool   --mode=install /usr/bin/ginstall -c gdcmpgif gdtopng pngtogd webpng gdparttopng gd2topng pngtogd2 annotate gd2copypal gd2togif giftogd2 '/tmp/package-gd/usr/bin'
++libtool: warning: 'libgd.la' has not been installed in '/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/gdcmpgif /tmp/package-gd/usr/bin/gdcmpgif
++libtool: warning: 'libgd.la' has not been installed in '/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/gdtopng /tmp/package-gd/usr/bin/gdtopng
++libtool: warning: 'libgd.la' has not been installed in '/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/pngtogd /tmp/package-gd/usr/bin/pngtogd
++libtool: warning: 'libgd.la' has not been installed in '/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/webpng /tmp/package-gd/usr/bin/webpng
++libtool: warning: 'libgd.la' has not been installed in '/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/gdparttopng /tmp/package-gd/usr/bin/gdparttopng
++libtool: warning: 'libgd.la' has not been installed in '/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/gd2topng /tmp/package-gd/usr/bin/gd2topng
++libtool: warning: 'libgd.la' has not been installed in '/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/pngtogd2 /tmp/package-gd/usr/bin/pngtogd2
++libtool: warning: 'libgd.la' has not been installed in '/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/annotate /tmp/package-gd/usr/bin/annotate
++libtool: warning: 'libgd.la' has not been installed in '/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/gd2copypal /tmp/package-gd/usr/bin/gd2copypal
++libtool: warning: 'libgd.la' has not been installed in '/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/gd2togif /tmp/package-gd/usr/bin/gd2togif
++libtool: warning: 'libgd.la' has not been installed in '/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/giftogd2 /tmp/package-gd/usr/bin/giftogd2
++ /usr/bin/mkdir -p '/tmp/package-gd/usr/bin'
++ /usr/bin/ginstall -c bdftogd '/tmp/package-gd/usr/bin'
++ /usr/bin/mkdir -p '/tmp/package-gd/usr/include'
++ /usr/bin/ginstall -c -m 644 gd.h gdfx.h gd_io.h gdcache.h gdfontg.h gdfontl.h gdfontmb.h gdfonts.h gdfontt.h entities.h gd_color_map.h gd_errors.h gdpp.h '/tmp/package-gd/usr/include'
++make[2]: Leaving directory '/tmp/libgd-2.3.1/src'
++make[1]: Leaving directory '/tmp/libgd-2.3.1/src'
++Making install in config
++make[1]: Entering directory '/tmp/libgd-2.3.1/config'
++make[2]: Entering directory '/tmp/libgd-2.3.1/config'
++make[2]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-gd/usr/lib/pkgconfig'
++ /usr/bin/ginstall -c -m 644 gdlib.pc '/tmp/package-gd/usr/lib/pkgconfig'
++make[2]: Leaving directory '/tmp/libgd-2.3.1/config'
++make[1]: Leaving directory '/tmp/libgd-2.3.1/config'
++Making install in tests
++make[1]: Entering directory '/tmp/libgd-2.3.1/tests'
++make[2]: Entering directory '/tmp/libgd-2.3.1/tests'
++make[2]: Nothing to be done for 'install-exec-am'.
++make[2]: Nothing to be done for 'install-data-am'.
++make[2]: Leaving directory '/tmp/libgd-2.3.1/tests'
++make[1]: Leaving directory '/tmp/libgd-2.3.1/tests'
++make[1]: Entering directory '/tmp/libgd-2.3.1'
++make[2]: Entering directory '/tmp/libgd-2.3.1'
++make[2]: Nothing to be done for 'install-exec-am'.
++make[2]: Nothing to be done for 'install-data-am'.
++make[2]: Leaving directory '/tmp/libgd-2.3.1'
++make[1]: Leaving directory '/tmp/libgd-2.3.1'
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++usr/lib/libgd.so	libgd.so.3.0.9
++usr/lib/libgd.so.3	libgd.so.3.0.9
++
++Making symbolic link creation script:
++( cd usr/lib ; rm -rf libgd.so )
++( cd usr/lib ; ln -sf libgd.so.3.0.9 libgd.so )
++( cd usr/lib ; rm -rf libgd.so.3 )
++( cd usr/lib ; ln -sf libgd.so.3.0.9 libgd.so.3 )
++
++It is recommended that you make these lines your new installation script.
++
++Would you like to make this stuff the install script for this package
++and remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './usr/lib/libgd.so'
++removed './usr/lib/libgd.so.3'
++
++Creating your new ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/gd-2.3.1-x86_64-1.txz
++
++./
++install/
++install/doinst.sh
++install/slack-desc
++usr/
++usr/bin/
++usr/bin/annotate
++usr/bin/bdftogd
++usr/bin/gd2copypal
++usr/bin/gd2togif
++usr/bin/gd2topng
++usr/bin/gdcmpgif
++usr/bin/gdparttopng
++usr/bin/gdtopng
++usr/bin/giftogd2
++usr/bin/pngtogd
++usr/bin/pngtogd2
++usr/bin/webpng
++usr/doc/
++usr/doc/gd-2.3.1/
++usr/doc/gd-2.3.1/CHANGELOG.md
++usr/doc/gd-2.3.1/CONTRIBUTORS
++usr/doc/gd-2.3.1/COPYING
++usr/doc/gd-2.3.1/README.md
++usr/include/
++usr/include/entities.h
++usr/include/gd.h
++usr/include/gd_color_map.h
++usr/include/gd_errors.h
++usr/include/gd_io.h
++usr/include/gdcache.h
++usr/include/gdfontg.h
++usr/include/gdfontl.h
++usr/include/gdfontmb.h
++usr/include/gdfonts.h
++usr/include/gdfontt.h
++usr/include/gdfx.h
++usr/include/gdpp.h
++usr/lib/
++usr/lib/libgd.so.3.0.9
++usr/lib/pkgconfig/
++usr/lib/pkgconfig/gdlib.pc
++
++Slackware package /tmp/gd-2.3.1-x86_64-1.txz created.
++

@@ -1,0 +1,580 @@
+diff -ruBN /tmp/screen/screen.SlackBuild /source/ap/screen/screen.SlackBuild
+--- /tmp/screen/screen.SlackBuild	2020-05-16 19:32:34.000000000 +0000
++++ /source/ap/screen/screen.SlackBuild	2021-01-06 04:30:41.000000000 +0000
+@@ -52,7 +52,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ else
+   SLKCFLAGS="-O2"
+   LIBDIRSUFFIX=""
+@@ -117,7 +117,7 @@
+   --enable-use-locale \
+   --enable-colors256 \
+   --enable-rxvt_osc \
+-  --build=$ARCH-slackware-linux || exit 1
++  --build=$ARCH-slackware-linux-musl || exit 1
+ 
+ # Substitutions:
+ perl -pi -e 's|.*#undef HAVE_BRAILLE.*|#define HAVE_BRAILLE 1|' config.h
+diff -ruBN /tmp/screen/screen.SlackBuild.log /source/ap/screen/screen.SlackBuild.log
+--- /tmp/screen/screen.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/ap/screen/screen.SlackBuild.log	2021-01-06 04:31:19.000000000 +0000
+@@ -0,0 +1,555 @@
++screen-4.8.0/
++screen-4.8.0/screen.h
++screen-4.8.0/NEWS.3.9
++screen-4.8.0/canvas.c
++screen-4.8.0/mark.c
++screen-4.8.0/display.c
++screen-4.8.0/config.h.in
++screen-4.8.0/pty.c
++screen-4.8.0/encoding.c
++screen-4.8.0/patchlevel.h
++screen-4.8.0/term.c
++screen-4.8.0/sched.c
++screen-4.8.0/FAQ
++screen-4.8.0/osdef.sh
++screen-4.8.0/acls.c
++screen-4.8.0/fileio.c
++screen-4.8.0/HACKING
++screen-4.8.0/comm.sh
++screen-4.8.0/TODO
++screen-4.8.0/utmp.c
++screen-4.8.0/resize.c
++screen-4.8.0/terminfo/
++screen-4.8.0/terminfo/8bits
++screen-4.8.0/terminfo/checktc.c
++screen-4.8.0/terminfo/README
++screen-4.8.0/terminfo/screencap
++screen-4.8.0/terminfo/test.txt
++screen-4.8.0/terminfo/tetris.c
++screen-4.8.0/terminfo/screeninfo.src
++screen-4.8.0/doc/
++screen-4.8.0/doc/FAQ
++screen-4.8.0/doc/make.help
++screen-4.8.0/doc/install.sh
++screen-4.8.0/doc/fdpat.ps
++screen-4.8.0/doc/screen.texinfo
++screen-4.8.0/doc/README.DOTSCREEN
++screen-4.8.0/doc/screen.1
++screen-4.8.0/doc/.gitignore
++screen-4.8.0/doc/window_to_display.ps
++screen-4.8.0/doc/Makefile.in
++screen-4.8.0/install.sh
++screen-4.8.0/NEWS.3.6
++screen-4.8.0/viewport.c
++screen-4.8.0/braille.c
++screen-4.8.0/os.h
++screen-4.8.0/input.c
++screen-4.8.0/sched.h
++screen-4.8.0/socket.c
++screen-4.8.0/layout.c
++screen-4.8.0/README
++screen-4.8.0/layer.c
++screen-4.8.0/configure.ac
++screen-4.8.0/list_generic.c
++screen-4.8.0/NEWS.3.5
++screen-4.8.0/comm.c
++screen-4.8.0/etc/
++screen-4.8.0/etc/countmail
++screen-4.8.0/etc/newsyntax38
++screen-4.8.0/etc/us-braille.tbl
++screen-4.8.0/etc/mkinstalldirs
++screen-4.8.0/etc/ccdefs
++screen-4.8.0/etc/gr-braille.tbl
++screen-4.8.0/etc/screenrc
++screen-4.8.0/etc/newsyntax
++screen-4.8.0/etc/completer.zsh
++screen-4.8.0/etc/toolcheck
++screen-4.8.0/etc/etcscreenrc
++screen-4.8.0/etc/gs-braille.tbl
++screen-4.8.0/INSTALL
++screen-4.8.0/process.c
++screen-4.8.0/screen.c
++screen-4.8.0/utf8encodings/
++screen-4.8.0/utf8encodings/cc
++screen-4.8.0/utf8encodings/c7
++screen-4.8.0/utf8encodings/c3
++screen-4.8.0/utf8encodings/cd
++screen-4.8.0/utf8encodings/04
++screen-4.8.0/utf8encodings/19
++screen-4.8.0/utf8encodings/bf
++screen-4.8.0/utf8encodings/a1
++screen-4.8.0/utf8encodings/c4
++screen-4.8.0/utf8encodings/02
++screen-4.8.0/utf8encodings/c8
++screen-4.8.0/utf8encodings/18
++screen-4.8.0/utf8encodings/01
++screen-4.8.0/utf8encodings/03
++screen-4.8.0/utf8encodings/d6
++screen-4.8.0/utf8encodings/c6
++screen-4.8.0/utf8encodings/c2
++screen-4.8.0/logfile.c
++screen-4.8.0/viewport.h
++screen-4.8.0/termcap.c
++screen-4.8.0/list_window.c
++screen-4.8.0/help.c
++screen-4.8.0/ansi.h
++screen-4.8.0/.gitignore
++screen-4.8.0/canvas.h
++screen-4.8.0/attacher.c
++screen-4.8.0/acconfig.h
++screen-4.8.0/NEWS
++screen-4.8.0/ansi.c
++screen-4.8.0/.iscreenrc
++screen-4.8.0/loadav.c
++screen-4.8.0/configure
++screen-4.8.0/braille.h
++screen-4.8.0/image.h
++screen-4.8.0/term.sh
++screen-4.8.0/mark.h
++screen-4.8.0/putenv.c
++screen-4.8.0/autogen.sh
++screen-4.8.0/NEWS.3.7
++screen-4.8.0/braille_tsi.c
++screen-4.8.0/window.c
++screen-4.8.0/COPYING
++screen-4.8.0/layout.h
++screen-4.8.0/misc.c
++screen-4.8.0/Makefile.in
++screen-4.8.0/logfile.h
++screen-4.8.0/search.c
++screen-4.8.0/display.h
++screen-4.8.0/extern.h
++screen-4.8.0/list_display.c
++screen-4.8.0/list_generic.h
++screen-4.8.0/window.h
++screen-4.8.0/nethack.c
++screen-4.8.0/osdef.h.in
++screen-4.8.0/tty.sh
++screen-4.8.0/ChangeLog
++screen-4.8.0/acls.h
++screen-4.8.0/teln.c
++screen-4.8.0/layer.h
++Hmm...  Looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|Author: Ben Finney <ben@benfinney.id.au>
++|Description: Replace the composed characters with their respective description.
++|--- a/process.c
++|+++ b/process.c
++--------------------------
++patching file process.c
++Using Plan A...
++Hunk #1 succeeded at 252 (offset 2 lines).
++done
++Hmm...  Looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|Author: Loic Minier <lool@dooz.org>
++|Description: Unbreak several useful keybindings.
++|--- a/termcap.c
++|+++ b/termcap.c
++--------------------------
++patching file termcap.c
++Using Plan A...
++Hunk #1 succeeded at 553 (offset 1 line).
++done
++Hmm...  Looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|## 52fix_screen_utf8_nfd.dpatch by Nobuhiro Iwamatsu <iwamatsu@debian.org>
++|##
++|## DP: screen outputs screen "ÿ" after a connected character.  
++|## DP: This is a character without the need. 
++|## DP: This happens in UTF-8 environment. 
++|## DP: Before : screen$ ruby1.9.1 -e 'puts "\u304b\u3099.."'
++|## DP:          がÿ...
++|## DP: patch applied :  screen $ ruby1.9.1 -e 'puts "\u304b\u3099.."'
++|## DP:          が..
++|## DP: Report from  http://d.hatena.ne.jp/mrkn/20101014/fix_screen_utf8_nfd_bug
++|## DP: Copyright Kenta Murata (mrkn) <mrkn@ruby-lang.org>
++|## DP: Modified by Nobuhiro Iwamatsu <iwamatsu@debian.org>
++|
++|Index: screen/ansi.c
++|===================================================================
++|--- screen.orig/ansi.c	2012-03-20 22:15:02.000000000 +0100
++|+++ screen/ansi.c	2012-03-20 22:41:45.000000000 +0100
++--------------------------
++patching file ansi.c
++Using Plan A...
++Hunk #1 succeeded at 728 (offset 3 lines).
++Hmm...  The next patch looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|Index: screen/display.c
++|===================================================================
++|--- screen.orig/display.c	2012-03-20 22:41:28.000000000 +0100
++|+++ screen/display.c	2012-03-20 22:41:45.000000000 +0100
++--------------------------
++patching file display.c
++Using Plan A...
++Hunk #1 succeeded at 613 (offset 10 lines).
++done
++Hmm...  Looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|--- screen-4.4.0/etc/etcscreenrc	2015-09-05 14:28:22.000000000 -0500
++|+++ screen-4.2.1/etc/etcscreenrc	2014-04-25 14:08:40.000000000 -0500
++--------------------------
++patching file etc/etcscreenrc
++Using Plan A...
++Hunk #1 succeeded at 68.
++done
++this is screen version 4.8.0
++checking for gcc... gcc
++checking whether the C compiler works... yes
++checking for C compiler default output file name... a.out
++checking for suffix of executables... 
++checking whether we are cross compiling... no
++checking for suffix of object files... o
++checking whether we are using the GNU C compiler... yes
++checking whether gcc accepts -g... yes
++checking for gcc option to accept ISO C89... none needed
++checking how to run the C preprocessor... gcc -E
++checking for grep that handles long lines and -e... /usr/bin/grep
++checking for egrep... /usr/bin/grep -E
++checking whether gcc needs -traditional... no
++checking for library containing strerror... none required
++checking for ANSI C header files... yes
++checking for sys/types.h... yes
++checking for sys/stat.h... yes
++checking for stdlib.h... yes
++checking for string.h... yes
++checking for memory.h... yes
++checking for strings.h... yes
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking for unistd.h... yes
++checking minix/config.h usability... no
++checking minix/config.h presence... no
++checking for minix/config.h... no
++checking whether it is safe to define __EXTENSIONS__... yes
++checking for gawk... gawk
++checking for a BSD-compatible install... /usr/bin/ginstall -c
++configure: checking for buggy tools...
++- sh  is 'GNU bash, version 5.1.4(1)-release (x86_64-slackware-linux-musl)'.
++checking if a system-wide socket dir should be used... no.  ~/.screen will be used instead.
++configure: checking for MIPS...
++configure: checking for Ultrix...
++configure: checking for butterfly...
++configure: checking for POSIX.1...
++- you have a POSIX system
++configure: checking for System V...
++configure: checking for sequent/ptx...
++configure: checking SVR4...
++checking stropts.h usability... yes
++checking stropts.h presence... yes
++checking for stropts.h... yes
++checking for string.h... (cached) yes
++checking for strings.h... (cached) yes
++configure: checking for Solaris 2.x...
++configure: checking BSD job jontrol...
++- you have jobcontrol
++configure: checking setresuid...
++configure: checking setreuid...
++configure: checking seteuid...
++configure: checking execvpe...
++configure: checking select...
++configure: checking fifos...
++- your fifos are usable
++configure: checking for broken fifo implementation...
++- your implementation is ok
++configure: checking sockets...
++- your sockets are usable
++configure: checking socket implementation...
++- you are normal
++- select is ok
++configure: checking for tgetent...
++configure: checking libcurses...
++- you use the terminfo database
++configure: checking ospeed...
++configure: checking for /dev/ptc...
++configure: checking for SVR4 ptys...
++checking for getpt... no
++configure: checking for ptyranges...
++configure: checking getutent...
++configure: checking ut_host...
++checking utempter.h usability... yes
++checking utempter.h presence... yes
++checking for utempter.h... yes
++configure: checking for libutil(s)...
++configure: checking getloadavg...
++assuming posix signal definition
++configure: checking for crypt and sec libraries...
++configure: checking crypt...
++configure: checking IRIX sun library...
++configure: checking syslog...
++configure: checking wait union...
++configure: checking for termio or termios...
++configure: checking getspnam...
++configure: checking getttyent...
++configure: checking fdwalk...
++configure: checking whether memcpy/memmove/bcopy handles overlapping arguments...
++checking for long file names... yes
++checking for vsprintf... yes
++checking for dirent.h that defines DIR... yes
++checking for library containing opendir... none required
++checking for setenv... checking for nl_langinfo(CODESET)... yes
++checking for library containing gethostname... none required
++checking for rename... yes
++checking for fchmod... yes
++checking for fchown... yes
++checking for strerror... yes
++checking for lstat... yes
++checking for _exit... yes
++checking for utimes... yes
++checking for vsnprintf... yes
++checking for getcwd... yes
++checking for setlocale... yes
++checking for strftime... yes
++checking for PAM support... yes
++checking for the global screenrc file... configure: creating ./config.status
++config.status: creating Makefile
++config.status: creating doc/Makefile
++config.status: creating config.h
++config.status: executing default commands
++
++Now please check the pathnames in the Makefile and in the user
++configuration section in config.h.
++Then type 'make' to make screen. Good luck.
++
++CPP="gcc -E -DETCSCREENRC='"/etc/screenrc"' -DSCREENENCODINGS='"/usr/share/screen/utf8encodings"'" srcdir=. sh ./osdef.sh
++AWK=gawk CC="gcc -O2 -fPIC -D_GNU_SOURCE" srcdir=. sh ./comm.sh
++AWK=gawk srcdir=. sh ./term.sh
++sh ./tty.sh tty.c
++gcc -c -I. -I.  -DETCSCREENRC='"/etc/screenrc"' -DSCREENENCODINGS='"/usr/share/screen/utf8encodings"' -DHAVE_CONFIG_H -DGIT_REV=\"\" \
++     -O2 -fPIC -D_GNU_SOURCE term.c
++gcc -c -I. -I.  -DETCSCREENRC='"/etc/screenrc"' -DSCREENENCODINGS='"/usr/share/screen/utf8encodings"' -DHAVE_CONFIG_H -DGIT_REV=\"\" \
++     -O2 -fPIC -D_GNU_SOURCE putenv.c
++gcc -c -I. -I.  -DETCSCREENRC='"/etc/screenrc"' -DSCREENENCODINGS='"/usr/share/screen/utf8encodings"' -DHAVE_CONFIG_H -DGIT_REV=\"\" \
++     -O2 -fPIC -D_GNU_SOURCE kmapdef.c
++gcc -c -I. -I.  -DETCSCREENRC='"/etc/screenrc"' -DSCREENENCODINGS='"/usr/share/screen/utf8encodings"' -DHAVE_CONFIG_H -DGIT_REV=\"\" \
++     -O2 -fPIC -D_GNU_SOURCE comm.c
++gcc -c -I. -I.  -DETCSCREENRC='"/etc/screenrc"' -DSCREENENCODINGS='"/usr/share/screen/utf8encodings"' -DHAVE_CONFIG_H -DGIT_REV=\"\" \
++     -O2 -fPIC -D_GNU_SOURCE screen.c
++gcc -c -I. -I.  -DETCSCREENRC='"/etc/screenrc"' -DSCREENENCODINGS='"/usr/share/screen/utf8encodings"' -DHAVE_CONFIG_H -DGIT_REV=\"\" \
++     -O2 -fPIC -D_GNU_SOURCE ansi.c
++gcc -c -I. -I.  -DETCSCREENRC='"/etc/screenrc"' -DSCREENENCODINGS='"/usr/share/screen/utf8encodings"' -DHAVE_CONFIG_H -DGIT_REV=\"\" \
++     -O2 -fPIC -D_GNU_SOURCE fileio.c
++gcc -c -I. -I.  -DETCSCREENRC='"/etc/screenrc"' -DSCREENENCODINGS='"/usr/share/screen/utf8encodings"' -DHAVE_CONFIG_H -DGIT_REV=\"\" \
++     -O2 -fPIC -D_GNU_SOURCE mark.c
++gcc -c -I. -I.  -DETCSCREENRC='"/etc/screenrc"' -DSCREENENCODINGS='"/usr/share/screen/utf8encodings"' -DHAVE_CONFIG_H -DGIT_REV=\"\" \
++     -O2 -fPIC -D_GNU_SOURCE misc.c
++gcc -c -I. -I.  -DETCSCREENRC='"/etc/screenrc"' -DSCREENENCODINGS='"/usr/share/screen/utf8encodings"' -DHAVE_CONFIG_H -DGIT_REV=\"\" \
++     -O2 -fPIC -D_GNU_SOURCE resize.c
++gcc -c -I. -I.  -DETCSCREENRC='"/etc/screenrc"' -DSCREENENCODINGS='"/usr/share/screen/utf8encodings"' -DHAVE_CONFIG_H -DGIT_REV=\"\" \
++     -O2 -fPIC -D_GNU_SOURCE socket.c
++gcc -c -I. -I.  -DETCSCREENRC='"/etc/screenrc"' -DSCREENENCODINGS='"/usr/share/screen/utf8encodings"' -DHAVE_CONFIG_H -DGIT_REV=\"\" \
++     -O2 -fPIC -D_GNU_SOURCE search.c
++gcc -c -I. -I.  -DETCSCREENRC='"/etc/screenrc"' -DSCREENENCODINGS='"/usr/share/screen/utf8encodings"' -DHAVE_CONFIG_H -DGIT_REV=\"\" \
++     -O2 -fPIC -D_GNU_SOURCE tty.c
++gcc -c -I. -I.  -DETCSCREENRC='"/etc/screenrc"' -DSCREENENCODINGS='"/usr/share/screen/utf8encodings"' -DHAVE_CONFIG_H -DGIT_REV=\"\" \
++     -O2 -fPIC -D_GNU_SOURCE window.c
++gcc -c -I. -I.  -DETCSCREENRC='"/etc/screenrc"' -DSCREENENCODINGS='"/usr/share/screen/utf8encodings"' -DHAVE_CONFIG_H -DGIT_REV=\"\" \
++     -O2 -fPIC -D_GNU_SOURCE utmp.c
++utmp.c: In function ‘pututslot’:
++utmp.c:582:2: warning: ‘addToUtmp’ is deprecated: better use utempter_add_record instead [-Wdeprecated-declarations]
++  582 |  addToUtmp(wi->w_tty, host, wi->w_ptyfd);
++      |  ^~~~~~~~~
++In file included from utmp.c:38:
++/usr/include/utempter.h:44:13: note: declared here
++   44 | extern void addToUtmp(const char *pty, const char *hostname, int master_fd)
++      |             ^~~~~~~~~
++utmp.c:584:2: warning: ‘removeLineFromUtmp’ is deprecated: better use utempter_remove_record instead [-Wdeprecated-declarations]
++  584 |  removeLineFromUtmp(wi->w_tty, wi->w_ptyfd);
++      |  ^~~~~~~~~~~~~~~~~~
++In file included from utmp.c:38:
++/usr/include/utempter.h:48:13: note: declared here
++   48 | extern void removeLineFromUtmp(const char *pty, int master_fd)
++      |             ^~~~~~~~~~~~~~~~~~
++gcc -c -I. -I.  -DETCSCREENRC='"/etc/screenrc"' -DSCREENENCODINGS='"/usr/share/screen/utf8encodings"' -DHAVE_CONFIG_H -DGIT_REV=\"\" \
++     -O2 -fPIC -D_GNU_SOURCE loadav.c
++gcc -c -I. -I.  -DETCSCREENRC='"/etc/screenrc"' -DSCREENENCODINGS='"/usr/share/screen/utf8encodings"' -DHAVE_CONFIG_H -DGIT_REV=\"\" \
++     -O2 -fPIC -D_GNU_SOURCE help.c
++gcc -c -I. -I.  -DETCSCREENRC='"/etc/screenrc"' -DSCREENENCODINGS='"/usr/share/screen/utf8encodings"' -DHAVE_CONFIG_H -DGIT_REV=\"\" \
++     -O2 -fPIC -D_GNU_SOURCE termcap.c
++gcc -c -I. -I.  -DETCSCREENRC='"/etc/screenrc"' -DSCREENENCODINGS='"/usr/share/screen/utf8encodings"' -DHAVE_CONFIG_H -DGIT_REV=\"\" \
++     -O2 -fPIC -D_GNU_SOURCE input.c
++gcc -c -I. -I.  -DETCSCREENRC='"/etc/screenrc"' -DSCREENENCODINGS='"/usr/share/screen/utf8encodings"' -DHAVE_CONFIG_H -DGIT_REV=\"\" \
++     -O2 -fPIC -D_GNU_SOURCE attacher.c
++gcc -c -I. -I.  -DETCSCREENRC='"/etc/screenrc"' -DSCREENENCODINGS='"/usr/share/screen/utf8encodings"' -DHAVE_CONFIG_H -DGIT_REV=\"\" \
++     -O2 -fPIC -D_GNU_SOURCE pty.c
++gcc -c -I. -I.  -DETCSCREENRC='"/etc/screenrc"' -DSCREENENCODINGS='"/usr/share/screen/utf8encodings"' -DHAVE_CONFIG_H -DGIT_REV=\"\" \
++     -O2 -fPIC -D_GNU_SOURCE process.c
++gcc -c -I. -I.  -DETCSCREENRC='"/etc/screenrc"' -DSCREENENCODINGS='"/usr/share/screen/utf8encodings"' -DHAVE_CONFIG_H -DGIT_REV=\"\" \
++     -O2 -fPIC -D_GNU_SOURCE display.c
++gcc -c -I. -I.  -DETCSCREENRC='"/etc/screenrc"' -DSCREENENCODINGS='"/usr/share/screen/utf8encodings"' -DHAVE_CONFIG_H -DGIT_REV=\"\" \
++     -O2 -fPIC -D_GNU_SOURCE acls.c
++gcc -c -I. -I.  -DETCSCREENRC='"/etc/screenrc"' -DSCREENENCODINGS='"/usr/share/screen/utf8encodings"' -DHAVE_CONFIG_H -DGIT_REV=\"\" \
++     -O2 -fPIC -D_GNU_SOURCE braille.c
++gcc -c -I. -I.  -DETCSCREENRC='"/etc/screenrc"' -DSCREENENCODINGS='"/usr/share/screen/utf8encodings"' -DHAVE_CONFIG_H -DGIT_REV=\"\" \
++     -O2 -fPIC -D_GNU_SOURCE braille_tsi.c
++gcc -c -I. -I.  -DETCSCREENRC='"/etc/screenrc"' -DSCREENENCODINGS='"/usr/share/screen/utf8encodings"' -DHAVE_CONFIG_H -DGIT_REV=\"\" \
++     -O2 -fPIC -D_GNU_SOURCE logfile.c
++gcc -c -I. -I.  -DETCSCREENRC='"/etc/screenrc"' -DSCREENENCODINGS='"/usr/share/screen/utf8encodings"' -DHAVE_CONFIG_H -DGIT_REV=\"\" \
++     -O2 -fPIC -D_GNU_SOURCE layer.c
++gcc -c -I. -I.  -DETCSCREENRC='"/etc/screenrc"' -DSCREENENCODINGS='"/usr/share/screen/utf8encodings"' -DHAVE_CONFIG_H -DGIT_REV=\"\" \
++     -O2 -fPIC -D_GNU_SOURCE list_generic.c
++gcc -c -I. -I.  -DETCSCREENRC='"/etc/screenrc"' -DSCREENENCODINGS='"/usr/share/screen/utf8encodings"' -DHAVE_CONFIG_H -DGIT_REV=\"\" \
++     -O2 -fPIC -D_GNU_SOURCE list_display.c
++gcc -c -I. -I.  -DETCSCREENRC='"/etc/screenrc"' -DSCREENENCODINGS='"/usr/share/screen/utf8encodings"' -DHAVE_CONFIG_H -DGIT_REV=\"\" \
++     -O2 -fPIC -D_GNU_SOURCE list_window.c
++gcc -c -I. -I.  -DETCSCREENRC='"/etc/screenrc"' -DSCREENENCODINGS='"/usr/share/screen/utf8encodings"' -DHAVE_CONFIG_H -DGIT_REV=\"\" \
++     -O2 -fPIC -D_GNU_SOURCE sched.c
++gcc -c -I. -I.  -DETCSCREENRC='"/etc/screenrc"' -DSCREENENCODINGS='"/usr/share/screen/utf8encodings"' -DHAVE_CONFIG_H -DGIT_REV=\"\" \
++     -O2 -fPIC -D_GNU_SOURCE teln.c
++gcc -c -I. -I.  -DETCSCREENRC='"/etc/screenrc"' -DSCREENENCODINGS='"/usr/share/screen/utf8encodings"' -DHAVE_CONFIG_H -DGIT_REV=\"\" \
++     -O2 -fPIC -D_GNU_SOURCE nethack.c
++gcc -c -I. -I.  -DETCSCREENRC='"/etc/screenrc"' -DSCREENENCODINGS='"/usr/share/screen/utf8encodings"' -DHAVE_CONFIG_H -DGIT_REV=\"\" \
++     -O2 -fPIC -D_GNU_SOURCE encoding.c
++In file included from screen.h:150,
++                 from encoding.c:27:
++encoding.c: In function ‘AddUtf8’:
++display.h:322:18: warning: overflow in conversion from ‘int’ to ‘char’ changes value from ‘c >> 12 & 12288^ 248’ to ‘-8’ [-Woverflow]
++  322 |     *D_obufp++ = (c);  \
++      |                  ^
++encoding.c:682:4: note: in expansion of macro ‘AddChar’
++  682 |    AddChar((c & 0x3000000) >> 12 ^ 0xf8);
++      |    ^~~~~~~
++encoding.c: In function ‘ToUtf8’:
++encoding.c:727:13: warning: overflow in conversion from ‘int’ to ‘char’ changes value from ‘c >> 12 & 12288^ 248’ to ‘-8’ [-Woverflow]
++  727 |      *p++ = (c & 0x3000000) >> 12 ^ 0xf8;
++      |             ^
++gcc -c -I. -I.  -DETCSCREENRC='"/etc/screenrc"' -DSCREENENCODINGS='"/usr/share/screen/utf8encodings"' -DHAVE_CONFIG_H -DGIT_REV=\"\" \
++     -O2 -fPIC -D_GNU_SOURCE canvas.c
++gcc -c -I. -I.  -DETCSCREENRC='"/etc/screenrc"' -DSCREENENCODINGS='"/usr/share/screen/utf8encodings"' -DHAVE_CONFIG_H -DGIT_REV=\"\" \
++     -O2 -fPIC -D_GNU_SOURCE layout.c
++gcc -c -I. -I.  -DETCSCREENRC='"/etc/screenrc"' -DSCREENENCODINGS='"/usr/share/screen/utf8encodings"' -DHAVE_CONFIG_H -DGIT_REV=\"\" \
++     -O2 -fPIC -D_GNU_SOURCE viewport.c
++gcc  -o screen screen.o ansi.o fileio.o mark.o misc.o resize.o socket.o search.o tty.o term.o window.o utmp.o loadav.o putenv.o help.o termcap.o input.o attacher.o pty.o process.o display.o comm.o kmapdef.o acls.o braille.o braille_tsi.o logfile.o layer.o list_generic.o list_display.o list_window.o sched.o teln.o nethack.o encoding.o canvas.o layout.o viewport.o -lcurses  -lutempter -lutil -lcrypt -lpam
++./etc/mkinstalldirs /tmp/package-screen/usr/bin /tmp/package-screen/usr/share/screen/utf8encodings
++mkdir /tmp/package-screen/usr
++mkdir /tmp/package-screen/usr/bin
++mkdir /tmp/package-screen/usr/share
++mkdir /tmp/package-screen/usr/share/screen
++mkdir /tmp/package-screen/usr/share/screen/utf8encodings
++cd doc ; make installdirs
++make[1]: Entering directory '/tmp/screen-4.8.0/doc'
++./../etc/mkinstalldirs /tmp/package-screen/usr/man/man1 /tmp/package-screen/usr/info
++mkdir /tmp/package-screen/usr/man
++mkdir /tmp/package-screen/usr/man/man1
++mkdir /tmp/package-screen/usr/info
++make[1]: Leaving directory '/tmp/screen-4.8.0/doc'
++if [ -f /tmp/package-screen/usr/bin/screen-4.8.0 ] && [ ! -f /tmp/package-screen/usr/bin/screen-4.8.0.old ]; \
++	then mv /tmp/package-screen/usr/bin/screen-4.8.0 /tmp/package-screen/usr/bin/screen-4.8.0.old; fi
++/usr/bin/ginstall -c screen /tmp/package-screen/usr/bin/screen-4.8.0
++chown root /tmp/package-screen/usr/bin/screen-4.8.0 && chmod 4755 /tmp/package-screen/usr/bin/screen-4.8.0
++if [ -f /tmp/package-screen/usr/bin/screen ] && [ ! -f /tmp/package-screen/usr/bin/screen.old ]; then mv /tmp/package-screen/usr/bin/screen /tmp/package-screen/usr/bin/screen.old; fi
++rm -f /tmp/package-screen/usr/bin/screen
++(cd /tmp/package-screen/usr/bin && ln -f -s screen-4.8.0 screen)
++cp ./utf8encodings/?? /tmp/package-screen/usr/share/screen/utf8encodings
++cd doc ; make install
++make[1]: Entering directory '/tmp/screen-4.8.0/doc'
++./../etc/mkinstalldirs /tmp/package-screen/usr/man/man1 /tmp/package-screen/usr/info
++/usr/bin/ginstall -c -m 644 ./screen.1 /tmp/package-screen/usr/man/man1/screen.1
++make screen.info
++make[2]: Entering directory '/tmp/screen-4.8.0/doc'
++makeinfo ./screen.texinfo -o screen.info
++make[2]: Leaving directory '/tmp/screen-4.8.0/doc'
++if test -f screen.info; then d=.; else d=.; fi; \
++if test -f $d/screen.info; then \
++for f in $d/screen.info*; do /usr/bin/ginstall -c -m 644 $f /tmp/package-screen/usr/info;done; \
++if /bin/sh -c 'install-info --version' >/dev/null 2>&1; then \
++  install-info --info-dir=/tmp/package-screen/usr/info $d/screen.info; \
++else true; fi; \
++fi
++make[1]: Leaving directory '/tmp/screen-4.8.0/doc'
++if [ -d /tmp/package-screen/usr/lib/terminfo ]; then \
++	PATH="$PATH:/usr/5bin" tic ./terminfo/screeninfo.src; \
++	chmod 644 /tmp/package-screen/usr/lib/terminfo/s/screen*; \
++fi
++termcap entry (./terminfo/screencap) should be installed manually.
++You may also want to install ./etc/etcscreenrc in /etc/screenrc
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++usr/bin/screen	screen-4.8.0
++
++Making symbolic link creation script:
++( cd usr/bin ; rm -rf screen )
++( cd usr/bin ; ln -sf screen-4.8.0 screen )
++
++Unless your existing installation script already contains the code
++to create these links, you should append these lines to your existing
++install script. Now's your chance. :^)
++
++Would you like to add this stuff to the existing install script and
++remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './usr/bin/screen'
++
++Updating your ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/screen-4.8.0-x86_64-2.txz
++
++./
++etc/
++etc/pam.d/
++etc/pam.d/screen.new
++etc/screenrc.new
++etc/skel/
++etc/skel/.screenrc.new
++install/
++install/doinst.sh
++install/slack-desc
++usr/
++usr/bin/
++usr/bin/screen-4.8.0
++usr/doc/
++usr/doc/screen-4.8.0/
++usr/doc/screen-4.8.0/COPYING
++usr/doc/screen-4.8.0/ChangeLog
++usr/doc/screen-4.8.0/FAQ
++usr/doc/screen-4.8.0/HACKING
++usr/doc/screen-4.8.0/INSTALL
++usr/doc/screen-4.8.0/NEWS
++usr/doc/screen-4.8.0/README
++usr/doc/screen-4.8.0/README.DOTSCREEN
++usr/doc/screen-4.8.0/TODO
++usr/info/
++usr/info/screen.info.gz
++usr/man/
++usr/man/man1/
++usr/man/man1/screen.1.gz
++usr/share/
++usr/share/screen/
++usr/share/screen/utf8encodings/
++usr/share/screen/utf8encodings/01
++usr/share/screen/utf8encodings/02
++usr/share/screen/utf8encodings/03
++usr/share/screen/utf8encodings/04
++usr/share/screen/utf8encodings/18
++usr/share/screen/utf8encodings/19
++usr/share/screen/utf8encodings/a1
++usr/share/screen/utf8encodings/bf
++usr/share/screen/utf8encodings/c2
++usr/share/screen/utf8encodings/c3
++usr/share/screen/utf8encodings/c4
++usr/share/screen/utf8encodings/c6
++usr/share/screen/utf8encodings/c7
++usr/share/screen/utf8encodings/c8
++usr/share/screen/utf8encodings/cc
++usr/share/screen/utf8encodings/cd
++usr/share/screen/utf8encodings/d6
++
++Slackware package /tmp/screen-4.8.0-x86_64-2.txz created.
++

@@ -1,0 +1,1706 @@
+diff -ruBN /tmp/openvpn/openvpn.SlackBuild /source/n/openvpn/openvpn.SlackBuild
+--- /tmp/openvpn/openvpn.SlackBuild	2020-10-28 18:24:33.000000000 +0000
++++ /source/n/openvpn/openvpn.SlackBuild	2021-01-06 05:00:27.000000000 +0000
+@@ -55,7 +55,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ else
+   SLKCFLAGS="-O2"
+   LIBDIRSUFFIX=""
+@@ -107,7 +107,7 @@
+   --enable-iproute2 \
+   $PAM_OPTIONS \
+   $SHADOW_OPTIONS \
+-  --build=$ARCH-slackware-linux || exit 1
++  --build=$ARCH-slackware-linux-musl || exit 1
+ 
+ make $NUMJOBS || make || exit 1
+ make install-strip DESTDIR=$PKG || exit 1
+diff -ruBN /tmp/openvpn/openvpn.SlackBuild.log /source/n/openvpn/openvpn.SlackBuild.log
+--- /tmp/openvpn/openvpn.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/n/openvpn/openvpn.SlackBuild.log	2021-01-06 05:02:27.000000000 +0000
+@@ -0,0 +1,1681 @@
++openvpn-2.5.0/
++openvpn-2.5.0/.mailmap
++openvpn-2.5.0/src/
++openvpn-2.5.0/src/plugins/
++openvpn-2.5.0/src/plugins/down-root/
++openvpn-2.5.0/src/plugins/down-root/down-root.c
++openvpn-2.5.0/src/plugins/down-root/README.down-root
++openvpn-2.5.0/src/plugins/down-root/down-root.exports
++openvpn-2.5.0/src/plugins/down-root/Makefile.am
++openvpn-2.5.0/src/plugins/auth-pam/
++openvpn-2.5.0/src/plugins/auth-pam/auth-pam.c
++openvpn-2.5.0/src/plugins/auth-pam/utils.c
++openvpn-2.5.0/src/plugins/auth-pam/auth-pam.exports
++openvpn-2.5.0/src/plugins/auth-pam/pamdl.c
++openvpn-2.5.0/src/plugins/auth-pam/README.auth-pam
++openvpn-2.5.0/src/plugins/auth-pam/pamdl.h
++openvpn-2.5.0/src/plugins/auth-pam/Makefile.am
++openvpn-2.5.0/src/plugins/auth-pam/utils.h
++openvpn-2.5.0/src/plugins/Makefile.am
++openvpn-2.5.0/src/tapctl/
++openvpn-2.5.0/src/tapctl/error.h
++openvpn-2.5.0/src/tapctl/tap.h
++openvpn-2.5.0/src/tapctl/tapctl.props
++openvpn-2.5.0/src/tapctl/tapctl.vcxproj
++openvpn-2.5.0/src/tapctl/main.c
++openvpn-2.5.0/src/tapctl/basic.h
++openvpn-2.5.0/src/tapctl/tapctl.vcxproj.filters
++openvpn-2.5.0/src/tapctl/tapctl_resources.rc
++openvpn-2.5.0/src/tapctl/tap.c
++openvpn-2.5.0/src/tapctl/tapctl.exe.manifest
++openvpn-2.5.0/src/tapctl/error.c
++openvpn-2.5.0/src/tapctl/Makefile.am
++openvpn-2.5.0/src/openvpnmsica/
++openvpn-2.5.0/src/openvpnmsica/openvpnmsica-Release.props
++openvpn-2.5.0/src/openvpnmsica/msiex.c
++openvpn-2.5.0/src/openvpnmsica/openvpnmsica.vcxproj
++openvpn-2.5.0/src/openvpnmsica/openvpnmsica.c
++openvpn-2.5.0/src/openvpnmsica/msiex.h
++openvpn-2.5.0/src/openvpnmsica/openvpnmsica.h
++openvpn-2.5.0/src/openvpnmsica/openvpnmsica_resources.rc
++openvpn-2.5.0/src/openvpnmsica/dllmain.c
++openvpn-2.5.0/src/openvpnmsica/openvpnmsica.vcxproj.filters
++openvpn-2.5.0/src/openvpnmsica/msica_arg.h
++openvpn-2.5.0/src/openvpnmsica/openvpnmsica.props
++openvpn-2.5.0/src/openvpnmsica/msica_arg.c
++openvpn-2.5.0/src/openvpnmsica/Makefile.am
++openvpn-2.5.0/src/openvpnmsica/openvpnmsica-Debug.props
++openvpn-2.5.0/src/openvpnserv/
++openvpn-2.5.0/src/openvpnserv/automatic.c
++openvpn-2.5.0/src/openvpnserv/service.h
++openvpn-2.5.0/src/openvpnserv/openvpnserv.vcxproj
++openvpn-2.5.0/src/openvpnserv/openvpnserv.vcxproj.filters
++openvpn-2.5.0/src/openvpnserv/validate.h
++openvpn-2.5.0/src/openvpnserv/common.c
++openvpn-2.5.0/src/openvpnserv/service.c
++openvpn-2.5.0/src/openvpnserv/interactive.c
++openvpn-2.5.0/src/openvpnserv/openvpnserv_resources.rc
++openvpn-2.5.0/src/openvpnserv/Makefile.am
++openvpn-2.5.0/src/openvpnserv/validate.c
++openvpn-2.5.0/src/compat/
++openvpn-2.5.0/src/compat/compat-inet_pton.c
++openvpn-2.5.0/src/compat/compat-dirname.c
++openvpn-2.5.0/src/compat/compat.vcxproj.filters
++openvpn-2.5.0/src/compat/compat-versionhelpers.h
++openvpn-2.5.0/src/compat/compat-gettimeofday.c
++openvpn-2.5.0/src/compat/PropertySheet.props
++openvpn-2.5.0/src/compat/compat-strsep.c
++openvpn-2.5.0/src/compat/Release.props
++openvpn-2.5.0/src/compat/compat-inet_ntop.c
++openvpn-2.5.0/src/compat/compat.h
++openvpn-2.5.0/src/compat/compat-lz4.c
++openvpn-2.5.0/src/compat/compat-daemon.c
++openvpn-2.5.0/src/compat/compat-lz4.h
++openvpn-2.5.0/src/compat/Makefile.am
++openvpn-2.5.0/src/compat/compat.vcxproj
++openvpn-2.5.0/src/compat/compat-basename.c
++openvpn-2.5.0/src/compat/Debug.props
++openvpn-2.5.0/src/openvpn/
++openvpn-2.5.0/src/openvpn/ping.h
++openvpn-2.5.0/src/openvpn/init.c
++openvpn-2.5.0/src/openvpn/comp-lz4.h
++openvpn-2.5.0/src/openvpn/perf.h
++openvpn-2.5.0/src/openvpn/circ_list.h
++openvpn-2.5.0/src/openvpn/crypto.c
++openvpn-2.5.0/src/openvpn/gremlin.h
++openvpn-2.5.0/src/openvpn/ps.h
++openvpn-2.5.0/src/openvpn/error.h
++openvpn-2.5.0/src/openvpn/pkcs11_backend.h
++openvpn-2.5.0/src/openvpn/mtu.c
++openvpn-2.5.0/src/openvpn/socks.h
++openvpn-2.5.0/src/openvpn/lladdr.c
++openvpn-2.5.0/src/openvpn/lzo.h
++openvpn-2.5.0/src/openvpn/mudp.c
++openvpn-2.5.0/src/openvpn/openvpn.vcxproj.filters
++openvpn-2.5.0/src/openvpn/packet_id.c
++openvpn-2.5.0/src/openvpn/crypto_mbedtls.c
++openvpn-2.5.0/src/openvpn/reliable.h
++openvpn-2.5.0/src/openvpn/multi.c
++openvpn-2.5.0/src/openvpn/base64.h
++openvpn-2.5.0/src/openvpn/ntlm.c
++openvpn-2.5.0/src/openvpn/tls_crypt.h
++openvpn-2.5.0/src/openvpn/crypto.h
++openvpn-2.5.0/src/openvpn/common.h
++openvpn-2.5.0/src/openvpn/argv.c
++openvpn-2.5.0/src/openvpn/mudp.h
++openvpn-2.5.0/src/openvpn/gremlin.c
++openvpn-2.5.0/src/openvpn/httpdigest.h
++openvpn-2.5.0/src/openvpn/route.c
++openvpn-2.5.0/src/openvpn/sitnl.h
++openvpn-2.5.0/src/openvpn/ssl_verify.c
++openvpn-2.5.0/src/openvpn/console.c
++openvpn-2.5.0/src/openvpn/syshead.h
++openvpn-2.5.0/src/openvpn/misc.c
++openvpn-2.5.0/src/openvpn/schedule.c
++openvpn-2.5.0/src/openvpn/fdmisc.c
++openvpn-2.5.0/src/openvpn/list.h
++openvpn-2.5.0/src/openvpn/pool.c
++openvpn-2.5.0/src/openvpn/auth_token.c
++openvpn-2.5.0/src/openvpn/crypto_openssl.h
++openvpn-2.5.0/src/openvpn/vlan.c
++openvpn-2.5.0/src/openvpn/openssl_compat.h
++openvpn-2.5.0/src/openvpn/pkcs11.h
++openvpn-2.5.0/src/openvpn/mss.h
++openvpn-2.5.0/src/openvpn/manage.c
++openvpn-2.5.0/src/openvpn/plugin.c
++openvpn-2.5.0/src/openvpn/schedule.h
++openvpn-2.5.0/src/openvpn/networking_iproute2.c
++openvpn-2.5.0/src/openvpn/ssl.c
++openvpn-2.5.0/src/openvpn/crypto_mbedtls.h
++openvpn-2.5.0/src/openvpn/packet_id.h
++openvpn-2.5.0/src/openvpn/socket.h
++openvpn-2.5.0/src/openvpn/integer.h
++openvpn-2.5.0/src/openvpn/mtu.h
++openvpn-2.5.0/src/openvpn/openvpn.h
++openvpn-2.5.0/src/openvpn/ps.c
++openvpn-2.5.0/src/openvpn/proto.h
++openvpn-2.5.0/src/openvpn/forward.c
++openvpn-2.5.0/src/openvpn/session_id.h
++openvpn-2.5.0/src/openvpn/mroute.c
++openvpn-2.5.0/src/openvpn/comp.c
++openvpn-2.5.0/src/openvpn/helper.c
++openvpn-2.5.0/src/openvpn/crypto_openssl.c
++openvpn-2.5.0/src/openvpn/event.h
++openvpn-2.5.0/src/openvpn/mstats.h
++openvpn-2.5.0/src/openvpn/tls_crypt.c
++openvpn-2.5.0/src/openvpn/console.h
++openvpn-2.5.0/src/openvpn/memdbg.h
++openvpn-2.5.0/src/openvpn/console_builtin.c
++openvpn-2.5.0/src/openvpn/plugin.h
++openvpn-2.5.0/src/openvpn/openvpn.c
++openvpn-2.5.0/src/openvpn/socket.c
++openvpn-2.5.0/src/openvpn/win32.c
++openvpn-2.5.0/src/openvpn/proxy.c
++openvpn-2.5.0/src/openvpn/mstats.c
++openvpn-2.5.0/src/openvpn/platform.h
++openvpn-2.5.0/src/openvpn/list.c
++openvpn-2.5.0/src/openvpn/socks.c
++openvpn-2.5.0/src/openvpn/env_set.h
++openvpn-2.5.0/src/openvpn/interval.h
++openvpn-2.5.0/src/openvpn/pool.h
++openvpn-2.5.0/src/openvpn/mss.c
++openvpn-2.5.0/src/openvpn/auth_token.h
++openvpn-2.5.0/src/openvpn/otime.h
++openvpn-2.5.0/src/openvpn/mtcp.c
++openvpn-2.5.0/src/openvpn/occ.h
++openvpn-2.5.0/src/openvpn/run_command.c
++openvpn-2.5.0/src/openvpn/multi.h
++openvpn-2.5.0/src/openvpn/lzo.c
++openvpn-2.5.0/src/openvpn/ssl_verify_mbedtls.h
++openvpn-2.5.0/src/openvpn/ssl.h
++openvpn-2.5.0/src/openvpn/crypto_backend.h
++openvpn-2.5.0/src/openvpn/networking_sitnl.h
++openvpn-2.5.0/src/openvpn/ssl_mbedtls.h
++openvpn-2.5.0/src/openvpn/ssl_openssl.c
++openvpn-2.5.0/src/openvpn/networking_sitnl.c
++openvpn-2.5.0/src/openvpn/basic.h
++openvpn-2.5.0/src/openvpn/push.h
++openvpn-2.5.0/src/openvpn/mbuf.c
++openvpn-2.5.0/src/openvpn/options.h
++openvpn-2.5.0/src/openvpn/event.c
++openvpn-2.5.0/src/openvpn/compstub.c
++openvpn-2.5.0/src/openvpn/manage.h
++openvpn-2.5.0/src/openvpn/ssl_common.h
++openvpn-2.5.0/src/openvpn/pkcs11_openssl.c
++openvpn-2.5.0/src/openvpn/ssl_verify_backend.h
++openvpn-2.5.0/src/openvpn/shaper.h
++openvpn-2.5.0/src/openvpn/proxy.h
++openvpn-2.5.0/src/openvpn/sig.h
++openvpn-2.5.0/src/openvpn/ntlm.h
++openvpn-2.5.0/src/openvpn/buffer.c
++openvpn-2.5.0/src/openvpn/ssl_ncp.c
++openvpn-2.5.0/src/openvpn/cryptoapi.h
++openvpn-2.5.0/src/openvpn/fdmisc.h
++openvpn-2.5.0/src/openvpn/fragment.c
++openvpn-2.5.0/src/openvpn/mroute.h
++openvpn-2.5.0/src/openvpn/env_set.c
++openvpn-2.5.0/src/openvpn/argv.h
++openvpn-2.5.0/src/openvpn/buffer.h
++openvpn-2.5.0/src/openvpn/misc.h
++openvpn-2.5.0/src/openvpn/options.c
++openvpn-2.5.0/src/openvpn/block_dns.h
++openvpn-2.5.0/src/openvpn/helper.h
++openvpn-2.5.0/src/openvpn/console_systemd.c
++openvpn-2.5.0/src/openvpn/block_dns.c
++openvpn-2.5.0/src/openvpn/occ.c
++openvpn-2.5.0/src/openvpn/ssl_verify.h
++openvpn-2.5.0/src/openvpn/comp-lz4.c
++openvpn-2.5.0/src/openvpn/ssl_verify_openssl.h
++openvpn-2.5.0/src/openvpn/clinat.c
++openvpn-2.5.0/src/openvpn/ssl_ncp.h
++openvpn-2.5.0/src/openvpn/pkcs11.c
++openvpn-2.5.0/src/openvpn/clinat.h
++openvpn-2.5.0/src/openvpn/status.h
++openvpn-2.5.0/src/openvpn/lladdr.h
++openvpn-2.5.0/src/openvpn/ring_buffer.h
++openvpn-2.5.0/src/openvpn/forward.h
++openvpn-2.5.0/src/openvpn/mtcp.h
++openvpn-2.5.0/src/openvpn/vlan.h
++openvpn-2.5.0/src/openvpn/reliable.c
++openvpn-2.5.0/src/openvpn/base64.c
++openvpn-2.5.0/src/openvpn/pf.h
++openvpn-2.5.0/src/openvpn/pf.c
++openvpn-2.5.0/src/openvpn/ssl_openssl.h
++openvpn-2.5.0/src/openvpn/comp.h
++openvpn-2.5.0/src/openvpn/openvpn.vcxproj
++openvpn-2.5.0/src/openvpn/push.c
++openvpn-2.5.0/src/openvpn/fragment.h
++openvpn-2.5.0/src/openvpn/pkcs11_mbedtls.c
++openvpn-2.5.0/src/openvpn/dhcp.h
++openvpn-2.5.0/src/openvpn/error.c
++openvpn-2.5.0/src/openvpn/httpdigest.c
++openvpn-2.5.0/src/openvpn/ping.c
++openvpn-2.5.0/src/openvpn/errlevel.h
++openvpn-2.5.0/src/openvpn/networking_iproute2.h
++openvpn-2.5.0/src/openvpn/tun.c
++openvpn-2.5.0/src/openvpn/route.h
++openvpn-2.5.0/src/openvpn/run_command.h
++openvpn-2.5.0/src/openvpn/win32.h
++openvpn-2.5.0/src/openvpn/openvpn_win32_resources.rc
++openvpn-2.5.0/src/openvpn/init.h
++openvpn-2.5.0/src/openvpn/Makefile.am
++openvpn-2.5.0/src/openvpn/shaper.c
++openvpn-2.5.0/src/openvpn/networking.h
++openvpn-2.5.0/src/openvpn/openvpn.manifest
++openvpn-2.5.0/src/openvpn/interval.c
++openvpn-2.5.0/src/openvpn/tun.h
++openvpn-2.5.0/src/openvpn/platform.c
++openvpn-2.5.0/src/openvpn/ssl_backend.h
++openvpn-2.5.0/src/openvpn/proto.c
++openvpn-2.5.0/src/openvpn/ssl_verify_mbedtls.c
++openvpn-2.5.0/src/openvpn/otime.c
++openvpn-2.5.0/src/openvpn/session_id.c
++openvpn-2.5.0/src/openvpn/status.c
++openvpn-2.5.0/src/openvpn/ssl_mbedtls.c
++openvpn-2.5.0/src/openvpn/perf.c
++openvpn-2.5.0/src/openvpn/pushlist.h
++openvpn-2.5.0/src/openvpn/cryptoapi.c
++openvpn-2.5.0/src/openvpn/dhcp.c
++openvpn-2.5.0/src/openvpn/mbuf.h
++openvpn-2.5.0/src/openvpn/ssl_verify_openssl.c
++openvpn-2.5.0/src/openvpn/sig.c
++openvpn-2.5.0/src/Makefile.am
++openvpn-2.5.0/version.sh.in
++openvpn-2.5.0/distro/
++openvpn-2.5.0/distro/systemd/
++openvpn-2.5.0/distro/systemd/openvpn-server@.service.in
++openvpn-2.5.0/distro/systemd/tmpfiles-openvpn.conf
++openvpn-2.5.0/distro/systemd/openvpn-client@.service.in
++openvpn-2.5.0/distro/systemd/README.systemd
++openvpn-2.5.0/distro/systemd/Makefile.am
++openvpn-2.5.0/distro/Makefile.am
++openvpn-2.5.0/msvc-build.bat
++openvpn-2.5.0/config-msvc-version.h.in
++openvpn-2.5.0/README.IPv6
++openvpn-2.5.0/COPYRIGHT.GPL
++openvpn-2.5.0/README
++openvpn-2.5.0/doc/
++openvpn-2.5.0/doc/man-sections/
++openvpn-2.5.0/doc/man-sections/connection-profiles.rst
++openvpn-2.5.0/doc/man-sections/plugin-options.rst
++openvpn-2.5.0/doc/man-sections/renegotiation.rst
++openvpn-2.5.0/doc/man-sections/management-options.rst
++openvpn-2.5.0/doc/man-sections/proxy-options.rst
++openvpn-2.5.0/doc/man-sections/script-options.rst
++openvpn-2.5.0/doc/man-sections/server-options.rst
++openvpn-2.5.0/doc/man-sections/tls-options.rst
++openvpn-2.5.0/doc/man-sections/network-config.rst
++openvpn-2.5.0/doc/man-sections/windows-options.rst
++openvpn-2.5.0/doc/man-sections/client-options.rst
++openvpn-2.5.0/doc/man-sections/cipher-negotiation.rst
++openvpn-2.5.0/doc/man-sections/inline-files.rst
++openvpn-2.5.0/doc/man-sections/vpn-network-options.rst
++openvpn-2.5.0/doc/man-sections/protocol-options.rst
++openvpn-2.5.0/doc/man-sections/encryption-options.rst
++openvpn-2.5.0/doc/man-sections/pkcs11-options.rst
++openvpn-2.5.0/doc/man-sections/generic-options.rst
++openvpn-2.5.0/doc/man-sections/signals.rst
++openvpn-2.5.0/doc/man-sections/examples.rst
++openvpn-2.5.0/doc/man-sections/unsupported-options.rst
++openvpn-2.5.0/doc/man-sections/advanced-options.rst
++openvpn-2.5.0/doc/man-sections/virtual-routing-and-forwarding.rst
++openvpn-2.5.0/doc/man-sections/link-options.rst
++openvpn-2.5.0/doc/man-sections/log-options.rst
++openvpn-2.5.0/doc/doxygen/
++openvpn-2.5.0/doc/doxygen/doc_data_crypto.h
++openvpn-2.5.0/doc/doxygen/doc_fragmentation.h
++openvpn-2.5.0/doc/doxygen/doc_tunnel_state.h
++openvpn-2.5.0/doc/doxygen/doc_protocol_overview.h
++openvpn-2.5.0/doc/doxygen/doc_external_multiplexer.h
++openvpn-2.5.0/doc/doxygen/doc_mainpage.h
++openvpn-2.5.0/doc/doxygen/doc_compression.h
++openvpn-2.5.0/doc/doxygen/doc_eventloop.h
++openvpn-2.5.0/doc/doxygen/doc_reliable.h
++openvpn-2.5.0/doc/doxygen/doc_control_tls.h
++openvpn-2.5.0/doc/doxygen/openvpn.doxyfile.in
++openvpn-2.5.0/doc/doxygen/doc_control_processor.h
++openvpn-2.5.0/doc/doxygen/doc_key_generation.h
++openvpn-2.5.0/doc/doxygen/Makefile.am
++openvpn-2.5.0/doc/doxygen/doc_internal_multiplexer.h
++openvpn-2.5.0/doc/doxygen/doc_data_control.h
++openvpn-2.5.0/doc/doxygen/doc_memory_management.h
++openvpn-2.5.0/doc/tls-crypt-v2.txt
++openvpn-2.5.0/doc/README.man
++openvpn-2.5.0/doc/keying-material-exporter.txt
++openvpn-2.5.0/doc/interactive-service-notes.rst
++openvpn-2.5.0/doc/android.txt
++openvpn-2.5.0/doc/openvpn.8.rst
++openvpn-2.5.0/doc/management-notes.txt
++openvpn-2.5.0/doc/README.plugins
++openvpn-2.5.0/doc/Makefile.am
++openvpn-2.5.0/build/
++openvpn-2.5.0/build/msvc/
++openvpn-2.5.0/build/msvc/msvc-generate/
++openvpn-2.5.0/build/msvc/msvc-generate/Makefile.mak
++openvpn-2.5.0/build/msvc/msvc-generate/version.m4.in
++openvpn-2.5.0/build/msvc/msvc-generate/msvc-generate.vcxproj
++openvpn-2.5.0/build/msvc/msvc-generate/msvc-generate.js
++openvpn-2.5.0/build/msvc/msvc-generate/Makefile.am
++openvpn-2.5.0/build/msvc/Makefile.am
++openvpn-2.5.0/build/Makefile.am
++openvpn-2.5.0/build/ltrc.inc
++openvpn-2.5.0/m4/
++openvpn-2.5.0/m4/pkg.m4
++openvpn-2.5.0/m4/ax_varargs.m4
++openvpn-2.5.0/m4/ax_socklen_t.m4
++openvpn-2.5.0/m4/.keep
++openvpn-2.5.0/m4/ax_emptyarray.m4
++openvpn-2.5.0/PORTS
++openvpn-2.5.0/ChangeLog
++openvpn-2.5.0/.github/
++openvpn-2.5.0/.github/PULL_REQUEST_TEMPLATE.md
++openvpn-2.5.0/msvc-dev.bat
++openvpn-2.5.0/openvpn.sln
++openvpn-2.5.0/COPYING
++openvpn-2.5.0/configure.ac
++openvpn-2.5.0/INSTALL
++openvpn-2.5.0/.travis/
++openvpn-2.5.0/.travis/coverity.sh
++openvpn-2.5.0/.travis/build-deps.sh
++openvpn-2.5.0/.travis/build-check.sh
++openvpn-2.5.0/tests/
++openvpn-2.5.0/tests/t_lpback.sh
++openvpn-2.5.0/tests/update_t_client_ips.sh
++openvpn-2.5.0/tests/t_cltsrv.sh
++openvpn-2.5.0/tests/t_cltsrv-down.sh
++openvpn-2.5.0/tests/unit_tests/
++openvpn-2.5.0/tests/unit_tests/README.md
++openvpn-2.5.0/tests/unit_tests/plugins/
++openvpn-2.5.0/tests/unit_tests/plugins/auth-pam/
++openvpn-2.5.0/tests/unit_tests/plugins/auth-pam/test_search_and_replace.c
++openvpn-2.5.0/tests/unit_tests/plugins/auth-pam/Makefile.am
++openvpn-2.5.0/tests/unit_tests/plugins/Makefile.am
++openvpn-2.5.0/tests/unit_tests/example_test/
++openvpn-2.5.0/tests/unit_tests/example_test/README.md
++openvpn-2.5.0/tests/unit_tests/example_test/test2.c
++openvpn-2.5.0/tests/unit_tests/example_test/test.c
++openvpn-2.5.0/tests/unit_tests/example_test/Makefile.am
++openvpn-2.5.0/tests/unit_tests/engine-key/
++openvpn-2.5.0/tests/unit_tests/engine-key/openssl.cnf.in
++openvpn-2.5.0/tests/unit_tests/engine-key/check_engine_keys.sh
++openvpn-2.5.0/tests/unit_tests/engine-key/libtestengine.c
++openvpn-2.5.0/tests/unit_tests/engine-key/Makefile.am
++openvpn-2.5.0/tests/unit_tests/openvpn/
++openvpn-2.5.0/tests/unit_tests/openvpn/mock_get_random.c
++openvpn-2.5.0/tests/unit_tests/openvpn/mock_msg.h
++openvpn-2.5.0/tests/unit_tests/openvpn/test_packet_id.c
++openvpn-2.5.0/tests/unit_tests/openvpn/test_networking.c
++openvpn-2.5.0/tests/unit_tests/openvpn/test_crypto.c
++openvpn-2.5.0/tests/unit_tests/openvpn/test_ncp.c
++openvpn-2.5.0/tests/unit_tests/openvpn/test_tls_crypt.c
++openvpn-2.5.0/tests/unit_tests/openvpn/mock_msg.c
++openvpn-2.5.0/tests/unit_tests/openvpn/test_auth_token.c
++openvpn-2.5.0/tests/unit_tests/openvpn/test_buffer.c
++openvpn-2.5.0/tests/unit_tests/openvpn/Makefile.am
++openvpn-2.5.0/tests/unit_tests/openvpn/test_argv.c
++openvpn-2.5.0/tests/unit_tests/Makefile.am
++openvpn-2.5.0/tests/t_net.sh
++openvpn-2.5.0/tests/t_client.sh.in
++openvpn-2.5.0/tests/Makefile.am
++openvpn-2.5.0/tests/t_client.rc-sample
++openvpn-2.5.0/CONTRIBUTING.rst
++openvpn-2.5.0/.svncommitters
++openvpn-2.5.0/msvc-env.bat
++openvpn-2.5.0/README.mbedtls
++openvpn-2.5.0/TODO.IPv6
++openvpn-2.5.0/contrib/
++openvpn-2.5.0/contrib/README
++openvpn-2.5.0/contrib/OCSP_check/
++openvpn-2.5.0/contrib/OCSP_check/OCSP_check.sh
++openvpn-2.5.0/contrib/openvpn-fwmarkroute-1.00/
++openvpn-2.5.0/contrib/openvpn-fwmarkroute-1.00/fwmarkroute.up
++openvpn-2.5.0/contrib/openvpn-fwmarkroute-1.00/README
++openvpn-2.5.0/contrib/openvpn-fwmarkroute-1.00/fwmarkroute.down
++openvpn-2.5.0/contrib/pull-resolv-conf/
++openvpn-2.5.0/contrib/pull-resolv-conf/client.down
++openvpn-2.5.0/contrib/pull-resolv-conf/client.up
++openvpn-2.5.0/contrib/multilevel-init.patch
++openvpn-2.5.0/README.ec
++openvpn-2.5.0/debug/
++openvpn-2.5.0/debug/valgrind-suppress
++openvpn-2.5.0/debug/doval
++openvpn-2.5.0/debug/dovalns
++openvpn-2.5.0/NEWS
++openvpn-2.5.0/compat.m4
++openvpn-2.5.0/config-msvc.h
++openvpn-2.5.0/.gitattributes
++openvpn-2.5.0/version.m4
++openvpn-2.5.0/sample/
++openvpn-2.5.0/sample/sample-keys/
++openvpn-2.5.0/sample/sample-keys/client.crt
++openvpn-2.5.0/sample/sample-keys/README
++openvpn-2.5.0/sample/sample-keys/gen-sample-keys.sh
++openvpn-2.5.0/sample/sample-keys/client.p12
++openvpn-2.5.0/sample/sample-keys/server-ec.key
++openvpn-2.5.0/sample/sample-keys/dh2048.pem
++openvpn-2.5.0/sample/sample-keys/server-ec.crt
++openvpn-2.5.0/sample/sample-keys/ca.crt
++openvpn-2.5.0/sample/sample-keys/client.key
++openvpn-2.5.0/sample/sample-keys/client-ec.key
++openvpn-2.5.0/sample/sample-keys/server.crt
++openvpn-2.5.0/sample/sample-keys/server.key
++openvpn-2.5.0/sample/sample-keys/client-ec.crt
++openvpn-2.5.0/sample/sample-keys/client-pass.key
++openvpn-2.5.0/sample/sample-keys/openssl.cnf
++openvpn-2.5.0/sample/sample-keys/ta.key
++openvpn-2.5.0/sample/sample-keys/ca.key
++openvpn-2.5.0/sample/sample-config-files/
++openvpn-2.5.0/sample/sample-config-files/xinetd-server-config
++openvpn-2.5.0/sample/sample-config-files/openvpn-shutdown.sh
++openvpn-2.5.0/sample/sample-config-files/office.up
++openvpn-2.5.0/sample/sample-config-files/README
++openvpn-2.5.0/sample/sample-config-files/xinetd-client-config
++openvpn-2.5.0/sample/sample-config-files/home.up
++openvpn-2.5.0/sample/sample-config-files/tls-office.conf
++openvpn-2.5.0/sample/sample-config-files/tls-home.conf
++openvpn-2.5.0/sample/sample-config-files/firewall.sh
++openvpn-2.5.0/sample/sample-config-files/loopback-client
++openvpn-2.5.0/sample/sample-config-files/client.conf
++openvpn-2.5.0/sample/sample-config-files/loopback-server
++openvpn-2.5.0/sample/sample-config-files/server.conf
++openvpn-2.5.0/sample/sample-config-files/openvpn-startup.sh
++openvpn-2.5.0/sample/sample-scripts/
++openvpn-2.5.0/sample/sample-scripts/auth-pam.pl
++openvpn-2.5.0/sample/sample-scripts/bridge-start
++openvpn-2.5.0/sample/sample-scripts/bridge-stop
++openvpn-2.5.0/sample/sample-scripts/verify-cn
++openvpn-2.5.0/sample/sample-scripts/ucn.pl
++openvpn-2.5.0/sample/sample-windows/
++openvpn-2.5.0/sample/sample-windows/sample.ovpn
++openvpn-2.5.0/sample/sample-plugins/
++openvpn-2.5.0/sample/sample-plugins/README
++openvpn-2.5.0/sample/sample-plugins/simple/
++openvpn-2.5.0/sample/sample-plugins/simple/winbuild
++openvpn-2.5.0/sample/sample-plugins/simple/simple.c
++openvpn-2.5.0/sample/sample-plugins/simple/simple.def
++openvpn-2.5.0/sample/sample-plugins/simple/base64.c
++openvpn-2.5.0/sample/sample-plugins/client-connect/
++openvpn-2.5.0/sample/sample-plugins/client-connect/README
++openvpn-2.5.0/sample/sample-plugins/client-connect/sample-client-connect.c
++openvpn-2.5.0/sample/sample-plugins/keying-material-exporter-demo/
++openvpn-2.5.0/sample/sample-plugins/keying-material-exporter-demo/README
++openvpn-2.5.0/sample/sample-plugins/keying-material-exporter-demo/http-server.py
++openvpn-2.5.0/sample/sample-plugins/keying-material-exporter-demo/server.ovpn
++openvpn-2.5.0/sample/sample-plugins/keying-material-exporter-demo/http-client.py
++openvpn-2.5.0/sample/sample-plugins/keying-material-exporter-demo/client.ovpn
++openvpn-2.5.0/sample/sample-plugins/keying-material-exporter-demo/keyingmaterialexporter.c
++openvpn-2.5.0/sample/sample-plugins/Makefile.plugins
++openvpn-2.5.0/sample/sample-plugins/log/
++openvpn-2.5.0/sample/sample-plugins/log/winbuild
++openvpn-2.5.0/sample/sample-plugins/log/log.c
++openvpn-2.5.0/sample/sample-plugins/log/log_v3.c
++openvpn-2.5.0/sample/sample-plugins/Makefile.am
++openvpn-2.5.0/sample/sample-plugins/defer/
++openvpn-2.5.0/sample/sample-plugins/defer/winbuild
++openvpn-2.5.0/sample/sample-plugins/defer/simple.c
++openvpn-2.5.0/sample/sample-plugins/defer/simple.def
++openvpn-2.5.0/sample/Makefile.am
++openvpn-2.5.0/.git-blame-ignore-revs
++openvpn-2.5.0/include/
++openvpn-2.5.0/include/openvpn-msg.h
++openvpn-2.5.0/include/openvpn-plugin.h.in
++openvpn-2.5.0/include/Makefile.am
++openvpn-2.5.0/Makefile.am
++openvpn-2.5.0/AUTHORS
++openvpn-2.5.0/.gitignore
++openvpn-2.5.0/.travis.yml
++openvpn-2.5.0/dev-tools/
++openvpn-2.5.0/dev-tools/gen-release-tarballs.sh
++openvpn-2.5.0/dev-tools/reformat-patches/
++openvpn-2.5.0/dev-tools/reformat-patches/before_include_openvpn-plugin.h.in.patch
++openvpn-2.5.0/dev-tools/reformat-patches/after_include_openvpn-plugin.h.in.patch
++openvpn-2.5.0/dev-tools/special-files.lst
++openvpn-2.5.0/dev-tools/lz4-rebaser.sh
++openvpn-2.5.0/dev-tools/update-copyright.sh
++openvpn-2.5.0/dev-tools/reformat-all.sh
++openvpn-2.5.0/dev-tools/uncrustify.conf
++openvpn-2.5.0/Changes.rst
++autoreconf: export WARNINGS=
++autoreconf: Entering directory '.'
++autoreconf: configure.ac: not using Gettext
++autoreconf: running: aclocal --force -I m4
++autoreconf: configure.ac: tracing
++autoreconf: running: libtoolize --copy --force
++libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, '.'.
++libtoolize: copying file './ltmain.sh'
++libtoolize: putting macros in AC_CONFIG_MACRO_DIRS, 'm4'.
++libtoolize: copying file 'm4/libtool.m4'
++libtoolize: copying file 'm4/ltoptions.m4'
++libtoolize: copying file 'm4/ltsugar.m4'
++libtoolize: copying file 'm4/ltversion.m4'
++libtoolize: copying file 'm4/lt~obsolete.m4'
++libtoolize: Remember to add 'LT_INIT' to configure.ac.
++autoreconf: configure.ac: not using Intltool
++autoreconf: configure.ac: not using Gtkdoc
++autoreconf: running: aclocal --force -I m4
++autoreconf: running: /usr/bin/autoconf --force
++configure.ac:420: warning: The macro `AC_TYPE_SIGNAL' is obsolete.
++configure.ac:420: You should run autoupdate.
++./lib/autoconf/types.m4:776: AC_TYPE_SIGNAL is expanded from...
++configure.ac:420: the top level
++configure.ac:552: warning: The macro `AC_CHECKING' is obsolete.
++configure.ac:552: You should run autoupdate.
++./lib/autoconf/general.m4:2498: AC_CHECKING is expanded from...
++configure.ac:552: the top level
++autoreconf: running: /usr/bin/autoheader --force
++autoreconf: running: automake --add-missing --copy --force-missing
++configure.ac:61: installing './compile'
++configure.ac:60: installing './config.guess'
++configure.ac:60: installing './config.sub'
++configure.ac:59: installing './install-sh'
++configure.ac:59: installing './missing'
++src/compat/Makefile.am: installing './depcomp'
++src/openvpnmsica/Makefile.am:48: warning: source file '$(top_srcdir)/src/tapctl/error.c' is in a subdirectory,
++src/openvpnmsica/Makefile.am:48: but option 'subdir-objects' is disabled
++automake: warning: possible forward-incompatibility.
++automake: At least a source file is in a subdirectory, but the 'subdir-objects'
++automake: automake option hasn't been enabled.  For now, the corresponding output
++automake: object file(s) will be placed in the top-level directory.  However,
++automake: this behaviour will change in future Automake versions: they will
++automake: unconditionally cause object files to be placed in the same subdirectory
++automake: of the corresponding sources.
++automake: You are advised to start using 'subdir-objects' option throughout your
++automake: project, to avoid future incompatibilities.
++src/openvpnmsica/Makefile.am:48: warning: source file '$(top_srcdir)/src/tapctl/tap.c' is in a subdirectory,
++src/openvpnmsica/Makefile.am:48: but option 'subdir-objects' is disabled
++src/openvpnserv/Makefile.am:32: warning: source file '$(top_srcdir)/src/openvpn/block_dns.c' is in a subdirectory,
++src/openvpnserv/Makefile.am:32: but option 'subdir-objects' is disabled
++tests/unit_tests/openvpn/Makefile.am:27: warning: source file '$(openvpn_srcdir)/platform.c' is in a subdirectory,
++tests/unit_tests/openvpn/Makefile.am:27: but option 'subdir-objects' is disabled
++tests/unit_tests/openvpn/Makefile.am:27: warning: source file '$(openvpn_srcdir)/buffer.c' is in a subdirectory,
++tests/unit_tests/openvpn/Makefile.am:27: but option 'subdir-objects' is disabled
++tests/unit_tests/openvpn/Makefile.am:27: warning: source file '$(openvpn_srcdir)/argv.c' is in a subdirectory,
++tests/unit_tests/openvpn/Makefile.am:27: but option 'subdir-objects' is disabled
++tests/unit_tests/openvpn/Makefile.am:104: warning: source file '$(openvpn_srcdir)/buffer.c' is in a subdirectory,
++tests/unit_tests/openvpn/Makefile.am:104: but option 'subdir-objects' is disabled
++tests/unit_tests/openvpn/Makefile.am:104: warning: source file '$(openvpn_srcdir)/crypto.c' is in a subdirectory,
++tests/unit_tests/openvpn/Makefile.am:104: but option 'subdir-objects' is disabled
++tests/unit_tests/openvpn/Makefile.am:104: warning: source file '$(openvpn_srcdir)/crypto_mbedtls.c' is in a subdirectory,
++tests/unit_tests/openvpn/Makefile.am:104: but option 'subdir-objects' is disabled
++tests/unit_tests/openvpn/Makefile.am:104: warning: source file '$(openvpn_srcdir)/crypto_openssl.c' is in a subdirectory,
++tests/unit_tests/openvpn/Makefile.am:104: but option 'subdir-objects' is disabled
++tests/unit_tests/openvpn/Makefile.am:104: warning: source file '$(openvpn_srcdir)/otime.c' is in a subdirectory,
++tests/unit_tests/openvpn/Makefile.am:104: but option 'subdir-objects' is disabled
++tests/unit_tests/openvpn/Makefile.am:104: warning: source file '$(openvpn_srcdir)/packet_id.c' is in a subdirectory,
++tests/unit_tests/openvpn/Makefile.am:104: but option 'subdir-objects' is disabled
++tests/unit_tests/openvpn/Makefile.am:104: warning: source file '$(openvpn_srcdir)/platform.c' is in a subdirectory,
++tests/unit_tests/openvpn/Makefile.am:104: but option 'subdir-objects' is disabled
++tests/unit_tests/openvpn/Makefile.am:104: warning: source file '$(openvpn_srcdir)/base64.c' is in a subdirectory,
++tests/unit_tests/openvpn/Makefile.am:104: but option 'subdir-objects' is disabled
++tests/unit_tests/openvpn/Makefile.am:35: warning: source file '$(openvpn_srcdir)/platform.c' is in a subdirectory,
++tests/unit_tests/openvpn/Makefile.am:35: but option 'subdir-objects' is disabled
++tests/unit_tests/openvpn/Makefile.am:42: warning: source file '$(openvpn_srcdir)/buffer.c' is in a subdirectory,
++tests/unit_tests/openvpn/Makefile.am:42: but option 'subdir-objects' is disabled
++tests/unit_tests/openvpn/Makefile.am:42: warning: source file '$(openvpn_srcdir)/crypto.c' is in a subdirectory,
++tests/unit_tests/openvpn/Makefile.am:42: but option 'subdir-objects' is disabled
++tests/unit_tests/openvpn/Makefile.am:42: warning: source file '$(openvpn_srcdir)/crypto_mbedtls.c' is in a subdirectory,
++tests/unit_tests/openvpn/Makefile.am:42: but option 'subdir-objects' is disabled
++tests/unit_tests/openvpn/Makefile.am:42: warning: source file '$(openvpn_srcdir)/crypto_openssl.c' is in a subdirectory,
++tests/unit_tests/openvpn/Makefile.am:42: but option 'subdir-objects' is disabled
++tests/unit_tests/openvpn/Makefile.am:42: warning: source file '$(openvpn_srcdir)/otime.c' is in a subdirectory,
++tests/unit_tests/openvpn/Makefile.am:42: but option 'subdir-objects' is disabled
++tests/unit_tests/openvpn/Makefile.am:42: warning: source file '$(openvpn_srcdir)/packet_id.c' is in a subdirectory,
++tests/unit_tests/openvpn/Makefile.am:42: but option 'subdir-objects' is disabled
++tests/unit_tests/openvpn/Makefile.am:42: warning: source file '$(openvpn_srcdir)/platform.c' is in a subdirectory,
++tests/unit_tests/openvpn/Makefile.am:42: but option 'subdir-objects' is disabled
++tests/unit_tests/openvpn/Makefile.am:121: warning: source file '$(openvpn_srcdir)/buffer.c' is in a subdirectory,
++tests/unit_tests/openvpn/Makefile.am:121: but option 'subdir-objects' is disabled
++tests/unit_tests/openvpn/Makefile.am:121: warning: source file '$(openvpn_srcdir)/crypto.c' is in a subdirectory,
++tests/unit_tests/openvpn/Makefile.am:121: but option 'subdir-objects' is disabled
++tests/unit_tests/openvpn/Makefile.am:121: warning: source file '$(openvpn_srcdir)/crypto_mbedtls.c' is in a subdirectory,
++tests/unit_tests/openvpn/Makefile.am:121: but option 'subdir-objects' is disabled
++tests/unit_tests/openvpn/Makefile.am:121: warning: source file '$(openvpn_srcdir)/crypto_openssl.c' is in a subdirectory,
++tests/unit_tests/openvpn/Makefile.am:121: but option 'subdir-objects' is disabled
++tests/unit_tests/openvpn/Makefile.am:121: warning: source file '$(openvpn_srcdir)/otime.c' is in a subdirectory,
++tests/unit_tests/openvpn/Makefile.am:121: but option 'subdir-objects' is disabled
++tests/unit_tests/openvpn/Makefile.am:121: warning: source file '$(openvpn_srcdir)/packet_id.c' is in a subdirectory,
++tests/unit_tests/openvpn/Makefile.am:121: but option 'subdir-objects' is disabled
++tests/unit_tests/openvpn/Makefile.am:121: warning: source file '$(openvpn_srcdir)/platform.c' is in a subdirectory,
++tests/unit_tests/openvpn/Makefile.am:121: but option 'subdir-objects' is disabled
++tests/unit_tests/openvpn/Makefile.am:87: warning: source file '$(openvpn_srcdir)/networking_sitnl.c' is in a subdirectory,
++tests/unit_tests/openvpn/Makefile.am:87: but option 'subdir-objects' is disabled
++tests/unit_tests/openvpn/Makefile.am:87: warning: source file '$(openvpn_srcdir)/buffer.c' is in a subdirectory,
++tests/unit_tests/openvpn/Makefile.am:87: but option 'subdir-objects' is disabled
++tests/unit_tests/openvpn/Makefile.am:87: warning: source file '$(openvpn_srcdir)/crypto.c' is in a subdirectory,
++tests/unit_tests/openvpn/Makefile.am:87: but option 'subdir-objects' is disabled
++tests/unit_tests/openvpn/Makefile.am:87: warning: source file '$(openvpn_srcdir)/crypto_mbedtls.c' is in a subdirectory,
++tests/unit_tests/openvpn/Makefile.am:87: but option 'subdir-objects' is disabled
++tests/unit_tests/openvpn/Makefile.am:87: warning: source file '$(openvpn_srcdir)/crypto_openssl.c' is in a subdirectory,
++tests/unit_tests/openvpn/Makefile.am:87: but option 'subdir-objects' is disabled
++tests/unit_tests/openvpn/Makefile.am:87: warning: source file '$(openvpn_srcdir)/otime.c' is in a subdirectory,
++tests/unit_tests/openvpn/Makefile.am:87: but option 'subdir-objects' is disabled
++tests/unit_tests/openvpn/Makefile.am:87: warning: source file '$(openvpn_srcdir)/packet_id.c' is in a subdirectory,
++tests/unit_tests/openvpn/Makefile.am:87: but option 'subdir-objects' is disabled
++tests/unit_tests/openvpn/Makefile.am:87: warning: source file '$(openvpn_srcdir)/platform.c' is in a subdirectory,
++tests/unit_tests/openvpn/Makefile.am:87: but option 'subdir-objects' is disabled
++tests/unit_tests/openvpn/Makefile.am:54: warning: source file '$(openvpn_srcdir)/buffer.c' is in a subdirectory,
++tests/unit_tests/openvpn/Makefile.am:54: but option 'subdir-objects' is disabled
++tests/unit_tests/openvpn/Makefile.am:54: warning: source file '$(openvpn_srcdir)/otime.c' is in a subdirectory,
++tests/unit_tests/openvpn/Makefile.am:54: but option 'subdir-objects' is disabled
++tests/unit_tests/openvpn/Makefile.am:54: warning: source file '$(openvpn_srcdir)/packet_id.c' is in a subdirectory,
++tests/unit_tests/openvpn/Makefile.am:54: but option 'subdir-objects' is disabled
++tests/unit_tests/openvpn/Makefile.am:54: warning: source file '$(openvpn_srcdir)/platform.c' is in a subdirectory,
++tests/unit_tests/openvpn/Makefile.am:54: but option 'subdir-objects' is disabled
++tests/unit_tests/openvpn/Makefile.am:68: warning: source file '$(openvpn_srcdir)/argv.c' is in a subdirectory,
++tests/unit_tests/openvpn/Makefile.am:68: but option 'subdir-objects' is disabled
++tests/unit_tests/openvpn/Makefile.am:68: warning: source file '$(openvpn_srcdir)/base64.c' is in a subdirectory,
++tests/unit_tests/openvpn/Makefile.am:68: but option 'subdir-objects' is disabled
++tests/unit_tests/openvpn/Makefile.am:68: warning: source file '$(openvpn_srcdir)/buffer.c' is in a subdirectory,
++tests/unit_tests/openvpn/Makefile.am:68: but option 'subdir-objects' is disabled
++tests/unit_tests/openvpn/Makefile.am:68: warning: source file '$(openvpn_srcdir)/crypto.c' is in a subdirectory,
++tests/unit_tests/openvpn/Makefile.am:68: but option 'subdir-objects' is disabled
++tests/unit_tests/openvpn/Makefile.am:68: warning: source file '$(openvpn_srcdir)/crypto_mbedtls.c' is in a subdirectory,
++tests/unit_tests/openvpn/Makefile.am:68: but option 'subdir-objects' is disabled
++tests/unit_tests/openvpn/Makefile.am:68: warning: source file '$(openvpn_srcdir)/crypto_openssl.c' is in a subdirectory,
++tests/unit_tests/openvpn/Makefile.am:68: but option 'subdir-objects' is disabled
++tests/unit_tests/openvpn/Makefile.am:68: warning: source file '$(openvpn_srcdir)/env_set.c' is in a subdirectory,
++tests/unit_tests/openvpn/Makefile.am:68: but option 'subdir-objects' is disabled
++tests/unit_tests/openvpn/Makefile.am:68: warning: source file '$(openvpn_srcdir)/otime.c' is in a subdirectory,
++tests/unit_tests/openvpn/Makefile.am:68: but option 'subdir-objects' is disabled
++tests/unit_tests/openvpn/Makefile.am:68: warning: source file '$(openvpn_srcdir)/packet_id.c' is in a subdirectory,
++tests/unit_tests/openvpn/Makefile.am:68: but option 'subdir-objects' is disabled
++tests/unit_tests/openvpn/Makefile.am:68: warning: source file '$(openvpn_srcdir)/platform.c' is in a subdirectory,
++tests/unit_tests/openvpn/Makefile.am:68: but option 'subdir-objects' is disabled
++tests/unit_tests/openvpn/Makefile.am:68: warning: source file '$(openvpn_srcdir)/run_command.c' is in a subdirectory,
++tests/unit_tests/openvpn/Makefile.am:68: but option 'subdir-objects' is disabled
++tests/unit_tests/plugins/auth-pam/Makefile.am:10: warning: source file '$(sut_sourcedir)/utils.c' is in a subdirectory,
++tests/unit_tests/plugins/auth-pam/Makefile.am:10: but option 'subdir-objects' is disabled
++autoreconf: './config.sub' is updated
++autoreconf: './config.guess' is updated
++autoreconf: Leaving directory '.'
++checking for a BSD-compatible install... /usr/bin/ginstall -c
++checking whether build environment is sane... yes
++checking for a race-free mkdir -p... /usr/bin/mkdir -p
++checking for gawk... gawk
++checking whether make sets $(MAKE)... yes
++checking whether make supports nested variables... yes
++checking build system type... x86_64-slackware-linux-musl
++checking host system type... x86_64-slackware-linux-musl
++checking whether make supports the include directive... yes (GNU style)
++checking for gcc... gcc
++checking whether the C compiler works... yes
++checking for C compiler default output file name... a.out
++checking for suffix of executables... 
++checking whether we are cross compiling... no
++checking for suffix of object files... o
++checking whether the compiler supports GNU C... yes
++checking whether gcc accepts -g... yes
++checking for gcc option to enable C11 features... none needed
++checking whether gcc understands -c and -o together... yes
++checking dependency style of gcc... gcc3
++checking for stdio.h... yes
++checking for stdlib.h... yes
++checking for string.h... yes
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking for strings.h... yes
++checking for sys/stat.h... yes
++checking for sys/types.h... yes
++checking for unistd.h... yes
++checking for wchar.h... yes
++checking for minix/config.h... no
++checking for vfork.h... no
++checking whether it is safe to define __EXTENSIONS__... yes
++checking whether _XOPEN_SOURCE should be defined... no
++checking pkg-config is at least version 0.9.0... yes
++checking how to run the C preprocessor... gcc -E
++checking whether ln -s works... yes
++checking for a sed that does not truncate output... /usr/bin/sed
++checking whether make sets $(MAKE)... (cached) yes
++checking for ifconfig... /sbin/ifconfig
++checking for route... /sbin/route
++checking for ip... /usr/sbin/ip
++checking for systemd-ask-password... no
++checking for netstat... netstat
++checking for git... no
++checking for rst2man... rst2man
++checking for rst2html... rst2html
++checking how to print strings... printf
++checking for a sed that does not truncate output... (cached) /usr/bin/sed
++checking for grep that handles long lines and -e... /usr/bin/grep
++checking for egrep... /usr/bin/grep -E
++checking for fgrep... /usr/bin/grep -F
++checking for ld used by gcc... /usr/bin/ld
++checking if the linker (/usr/bin/ld) is GNU ld... yes
++checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
++checking the name lister (/usr/bin/nm -B) interface... BSD nm
++checking the maximum length of command line arguments... 98304
++checking how to convert x86_64-slackware-linux-musl file names to x86_64-slackware-linux-musl format... func_convert_file_noop
++checking how to convert x86_64-slackware-linux-musl file names to toolchain format... func_convert_file_noop
++checking for /usr/bin/ld option to reload object files... -r
++checking for objdump... objdump
++checking how to recognize dependent libraries... pass_all
++checking for dlltool... dlltool
++checking how to associate runtime and link libraries... printf %s\n
++checking for ar... ar
++checking for archiver @FILE support... @
++checking for strip... strip
++checking for ranlib... ranlib
++checking command to parse /usr/bin/nm -B output from gcc object... ok
++checking for sysroot... no
++checking for a working dd... /usr/bin/dd
++checking how to truncate binary pipes... /usr/bin/dd bs=4096 count=1
++checking for mt... mt
++checking if mt is a manifest tool... no
++checking for dlfcn.h... yes
++checking for objdir... .libs
++checking if gcc supports -fno-rtti -fno-exceptions... no
++checking for gcc option to produce PIC... -fPIC -DPIC
++checking if gcc PIC flag -fPIC -DPIC works... yes
++checking if gcc static flag -static works... yes
++checking if gcc supports -c -o file.o... yes
++checking if gcc supports -c -o file.o... (cached) yes
++checking whether the gcc linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
++checking whether -lc should be explicitly linked in... no
++checking dynamic linker characteristics... GNU/Linux ld.so
++checking how to hardcode library paths into programs... immediate
++checking whether stripping libraries is possible... yes
++checking if libtool supports shared libraries... yes
++checking whether to build shared libraries... yes
++checking whether to build static libraries... yes
++checking for windres... windres
++checking for an ANSI C-conforming const... yes
++checking for inline... inline
++checking for working volatile... yes
++checking for off_t... yes
++checking for pid_t... yes
++checking for size_t... yes
++checking for uid_t in sys/types.h... yes
++checking for int8_t... yes
++checking for int16_t... yes
++checking for int32_t... yes
++checking for int64_t... yes
++checking for uint8_t... yes
++checking for uint16_t... yes
++checking for uint32_t... yes
++checking for uint64_t... yes
++checking return type of signal handlers... void
++checking for ISO C 1999 vararg macro support... yes
++checking for GNU GCC vararg macro support... yes
++checking for socklen_t... yes
++checking for C compiler empty array size... 0
++checking size of unsigned int... 4
++checking size of unsigned long... 8
++checking for stdio.h... (cached) yes
++checking for stdarg.h... yes
++checking for limits.h... yes
++checking for time.h... yes
++checking for errno.h... yes
++checking for fcntl.h... yes
++checking for io.h... no
++checking for direct.h... no
++checking for ctype.h... yes
++checking for sys/types.h... (cached) yes
++checking for sys/socket.h... yes
++checking for signal.h... yes
++checking for unistd.h... (cached) yes
++checking for dlfcn.h... (cached) yes
++checking for netinet/in.h... yes
++checking for netinet/in_systm.h... yes
++checking for netinet/tcp.h... yes
++checking for arpa/inet.h... yes
++checking for netdb.h... yes
++checking for windows.h... no
++checking for winsock2.h... no
++checking for ws2tcpip.h... no
++checking for versionhelpers.h... no
++checking for sys/time.h... yes
++checking for sys/ioctl.h... yes
++checking for sys/stat.h... (cached) yes
++checking for sys/mman.h... yes
++checking for sys/file.h... yes
++checking for sys/wait.h... yes
++checking for unistd.h... (cached) yes
++checking for signal.h... (cached) yes
++checking for libgen.h... yes
++checking for stropts.h... yes
++checking for syslog.h... yes
++checking for pwd.h... yes
++checking for grp.h... yes
++checking for sys/sockio.h... no
++checking for sys/uio.h... yes
++checking for linux/sockios.h... yes
++checking for linux/types.h... yes
++checking for poll.h... yes
++checking for sys/epoll.h... yes
++checking for err.h... yes
++checking for net/if.h... yes
++checking for netinet/ip.h... yes
++checking for resolv.h... yes
++checking for sys/un.h... yes
++checking for net/if_utun.h... no
++checking for sys/kern_control.h... no
++checking for in_addr_t... yes
++checking for in_port_t... yes
++checking for struct iphdr... yes
++checking for struct sock_extended_err... no
++checking for struct msghdr... yes
++checking for struct cmsghdr... yes
++checking for struct in_pktinfo... yes
++checking for sa_family_t... yes
++checking for struct in_pktinfo.ipi_spec_dst... yes
++checking for struct sockaddr_in6... yes
++checking how gcc reports undeclared, standard C functions... error
++checking whether SO_MARK is declared... yes
++configure: checking anonymous union support...
++yes
++checking linker supports --wrap... yes
++checking whether SIGHUP is declared... yes
++checking whether SIGINT is declared... yes
++checking whether SIGUSR1 is declared... yes
++checking whether SIGUSR2 is declared... yes
++checking whether SIGTERM is declared... yes
++checking for fork... yes
++checking for vfork... yes
++checking for working fork... yes
++checking for working vfork... (cached) yes
++checking for daemon... yes
++checking for chroot... yes
++checking for getpwnam... yes
++checking for setuid... yes
++checking for nice... yes
++checking for system... yes
++checking for getpid... yes
++checking for dup... yes
++checking for dup2... yes
++checking for getpass... yes
++checking for syslog... yes
++checking for openlog... yes
++checking for mlockall... yes
++checking for getgrnam... yes
++checking for setgid... yes
++checking for setgroups... yes
++checking for stat... yes
++checking for flock... yes
++checking for readv... yes
++checking for writev... yes
++checking for time... yes
++checking for gettimeofday... yes
++checking for ctime... yes
++checking for memset... yes
++checking for vsnprintf... yes
++checking for strdup... yes
++checking for setsid... yes
++checking for chdir... yes
++checking for putenv... yes
++checking for getpeername... yes
++checking for unlink... yes
++checking for chsize... no
++checking for ftruncate... yes
++checking for execve... yes
++checking for getpeereid... no
++checking for umask... yes
++checking for basename... yes
++checking for dirname... yes
++checking for access... yes
++checking for epoll_create... yes
++checking for strsep... yes
++checking for dlopen in -ldl... yes
++checking for inet_ntoa in -lnsl... yes
++checking for socket in -lsocket... no
++checking for gethostbyname in -lresolv... yes
++checking for sendmsg... yes
++checking for recvmsg... yes
++checking for inet_ntop... yes
++checking for inet_pton... yes
++checking for socket... yes
++checking for recv... yes
++checking for recvfrom... yes
++checking for send... yes
++checking for sendto... yes
++checking for listen... yes
++checking for accept... yes
++checking for connect... yes
++checking for bind... yes
++checking for select... yes
++checking for gethostbyname... yes
++checking for inet_ntoa... yes
++checking for setsockopt... yes
++checking for getsockopt... yes
++checking for getsockname... yes
++checking for poll... yes
++checking for library containing __res_init... no
++checking for library containing res_9_init... no
++checking for library containing res_init... none required
++checking for net/if_tun.h... no
++checking for net/tun/if_tun.h... no
++checking for linux/if_tun.h... yes
++checking for tap-windows.h... no
++checking whether TUNSETPERSIST is declared... yes
++checking for setcon in -lselinux... no
++checking for pam_start in -lpam... yes
++checking for PKCS11_HELPER... no
++checking for OPENSSL... yes
++checking for SSL_CTX_new... yes
++checking for EVP_CIPHER_CTX_set_key_length... yes
++checking for ENGINE_load_builtin_engines... yes
++checking for ENGINE_register_all_complete... yes
++checking for ENGINE_cleanup... no
++checking whether ENGINE_cleanup is declared... yes
++checking for EVP_aes_256_gcm... yes
++checking for HMAC_CTX_new... yes
++checking for HMAC_CTX_free... yes
++checking for HMAC_CTX_reset... yes
++checking for EVP_MD_CTX_new... yes
++checking for EVP_MD_CTX_free... yes
++checking for EVP_MD_CTX_reset... yes
++checking for EVP_CIPHER_CTX_reset... yes
++checking for OpenSSL_version... yes
++checking for SSL_CTX_get_default_passwd_cb... yes
++checking for SSL_CTX_get_default_passwd_cb_userdata... yes
++checking for SSL_CTX_set1_groups... no
++checking for SSL_CTX_set_security_level... yes
++checking for X509_get0_notBefore... yes
++checking for X509_get0_notAfter... yes
++checking for X509_get0_pubkey... yes
++checking for X509_STORE_get0_objects... yes
++checking for X509_OBJECT_free... yes
++checking for X509_OBJECT_get_type... yes
++checking for EVP_PKEY_get0_RSA... yes
++checking for EVP_PKEY_get0_DSA... yes
++checking for EVP_PKEY_get0_EC_KEY... yes
++checking for RSA_set_flags... yes
++checking for RSA_bits... yes
++checking for RSA_get0_key... yes
++checking for RSA_set0_key... yes
++checking for DSA_get0_pqg... yes
++checking for DSA_bits... yes
++checking for RSA_meth_new... yes
++checking for RSA_meth_free... yes
++checking for RSA_meth_set_pub_enc... yes
++checking for RSA_meth_set_pub_dec... yes
++checking for RSA_meth_set_priv_enc... yes
++checking for RSA_meth_set_priv_dec... yes
++checking for RSA_meth_set_init... yes
++checking for RSA_meth_set_sign... yes
++checking for RSA_meth_set_finish... yes
++checking for RSA_meth_set0_app_data... yes
++checking for RSA_meth_get0_app_data... yes
++checking for EC_GROUP_order_bits... yes
++checking for lzo1x_1_15_compress in -llzo2... yes
++checking for lzo/lzoutil.h... yes
++checking for lzo/lzo1x.h... yes
++checking for LZ4... yes
++checking for LZ4_compress_default in -llz4... yes
++checking for LZ4_decompress_safe in -llz4... yes
++checking git checkout... no
++checking whether the compiler accepts -Wno-stringop-truncation... yes
++checking whether the compiler accepts -Wno-unused-function... yes
++checking whether the compiler accepts -Wno-unused-parameter... yes
++checking whether the compiler accepts -Wall... yes
++checking for CMOCKA... no
++configure: WARNING: cmocka.pc not found on the system.  Unit tests disabled
++checking that generated files are newer than configure... done
++configure: creating ./config.status
++config.status: creating version.sh
++config.status: creating Makefile
++config.status: creating build/Makefile
++config.status: creating build/msvc/Makefile
++config.status: creating build/msvc/msvc-generate/Makefile
++config.status: creating distro/Makefile
++config.status: creating distro/systemd/Makefile
++config.status: creating doc/Makefile
++config.status: creating doc/doxygen/Makefile
++config.status: creating doc/doxygen/openvpn.doxyfile
++config.status: creating include/Makefile
++config.status: creating sample/sample-plugins/Makefile
++config.status: creating src/Makefile
++config.status: creating src/compat/Makefile
++config.status: creating src/openvpn/Makefile
++config.status: creating src/openvpnmsica/Makefile
++config.status: creating src/openvpnserv/Makefile
++config.status: creating src/plugins/Makefile
++config.status: creating src/plugins/auth-pam/Makefile
++config.status: creating src/plugins/down-root/Makefile
++config.status: creating src/tapctl/Makefile
++config.status: creating tests/Makefile
++config.status: creating tests/unit_tests/Makefile
++config.status: creating tests/unit_tests/example_test/Makefile
++config.status: creating tests/unit_tests/openvpn/Makefile
++config.status: creating tests/unit_tests/plugins/Makefile
++config.status: creating tests/unit_tests/plugins/auth-pam/Makefile
++config.status: creating tests/unit_tests/engine-key/Makefile
++config.status: creating sample/Makefile
++config.status: creating tests/t_client.sh
++config.status: creating config.h
++config.status: creating include/openvpn-plugin.h
++config.status: executing depfiles commands
++config.status: executing libtool commands
++make  all-recursive
++make[1]: Entering directory '/tmp/openvpn-2.5.0'
++Making all in build
++make[2]: Entering directory '/tmp/openvpn-2.5.0/build'
++Making all in msvc
++make[3]: Entering directory '/tmp/openvpn-2.5.0/build/msvc'
++Making all in msvc-generate
++make[4]: Entering directory '/tmp/openvpn-2.5.0/build/msvc/msvc-generate'
++make[4]: Nothing to be done for 'all'.
++make[4]: Leaving directory '/tmp/openvpn-2.5.0/build/msvc/msvc-generate'
++make[4]: Entering directory '/tmp/openvpn-2.5.0/build/msvc'
++make[4]: Nothing to be done for 'all-am'.
++make[4]: Leaving directory '/tmp/openvpn-2.5.0/build/msvc'
++make[3]: Leaving directory '/tmp/openvpn-2.5.0/build/msvc'
++make[3]: Entering directory '/tmp/openvpn-2.5.0/build'
++make[3]: Nothing to be done for 'all-am'.
++make[3]: Leaving directory '/tmp/openvpn-2.5.0/build'
++make[2]: Leaving directory '/tmp/openvpn-2.5.0/build'
++Making all in distro
++make[2]: Entering directory '/tmp/openvpn-2.5.0/distro'
++Making all in systemd
++make[3]: Entering directory '/tmp/openvpn-2.5.0/distro/systemd'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/openvpn-2.5.0/distro/systemd'
++make[3]: Entering directory '/tmp/openvpn-2.5.0/distro'
++make[3]: Nothing to be done for 'all-am'.
++make[3]: Leaving directory '/tmp/openvpn-2.5.0/distro'
++make[2]: Leaving directory '/tmp/openvpn-2.5.0/distro'
++Making all in include
++make[2]: Entering directory '/tmp/openvpn-2.5.0/include'
++make  all-am
++make[3]: Entering directory '/tmp/openvpn-2.5.0/include'
++make[3]: Leaving directory '/tmp/openvpn-2.5.0/include'
++make[2]: Leaving directory '/tmp/openvpn-2.5.0/include'
++Making all in src
++make[2]: Entering directory '/tmp/openvpn-2.5.0/src'
++Making all in compat
++make[3]: Entering directory '/tmp/openvpn-2.5.0/src/compat'
++/bin/sh ../../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include     -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT compat-dirname.lo -MD -MP -MF .deps/compat-dirname.Tpo -c -o compat-dirname.lo compat-dirname.c
++/bin/sh ../../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include     -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT compat-basename.lo -MD -MP -MF .deps/compat-basename.Tpo -c -o compat-basename.lo compat-basename.c
++/bin/sh ../../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include     -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT compat-gettimeofday.lo -MD -MP -MF .deps/compat-gettimeofday.Tpo -c -o compat-gettimeofday.lo compat-gettimeofday.c
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT compat-dirname.lo -MD -MP -MF .deps/compat-dirname.Tpo -c compat-dirname.c  -fPIC -DPIC -o .libs/compat-dirname.o
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT compat-gettimeofday.lo -MD -MP -MF .deps/compat-gettimeofday.Tpo -c compat-gettimeofday.c  -fPIC -DPIC -o .libs/compat-gettimeofday.o
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT compat-basename.lo -MD -MP -MF .deps/compat-basename.Tpo -c compat-basename.c  -fPIC -DPIC -o .libs/compat-basename.o
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT compat-dirname.lo -MD -MP -MF .deps/compat-dirname.Tpo -c compat-dirname.c -o compat-dirname.o >/dev/null 2>&1
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT compat-gettimeofday.lo -MD -MP -MF .deps/compat-gettimeofday.Tpo -c compat-gettimeofday.c -o compat-gettimeofday.o >/dev/null 2>&1
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT compat-basename.lo -MD -MP -MF .deps/compat-basename.Tpo -c compat-basename.c -o compat-basename.o >/dev/null 2>&1
++mv -f .deps/compat-dirname.Tpo .deps/compat-dirname.Plo
++/bin/sh ../../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include     -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT compat-daemon.lo -MD -MP -MF .deps/compat-daemon.Tpo -c -o compat-daemon.lo compat-daemon.c
++mv -f .deps/compat-gettimeofday.Tpo .deps/compat-gettimeofday.Plo
++/bin/sh ../../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include     -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT compat-inet_ntop.lo -MD -MP -MF .deps/compat-inet_ntop.Tpo -c -o compat-inet_ntop.lo compat-inet_ntop.c
++mv -f .deps/compat-basename.Tpo .deps/compat-basename.Plo
++/bin/sh ../../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include     -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT compat-inet_pton.lo -MD -MP -MF .deps/compat-inet_pton.Tpo -c -o compat-inet_pton.lo compat-inet_pton.c
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT compat-daemon.lo -MD -MP -MF .deps/compat-daemon.Tpo -c compat-daemon.c  -fPIC -DPIC -o .libs/compat-daemon.o
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT compat-inet_ntop.lo -MD -MP -MF .deps/compat-inet_ntop.Tpo -c compat-inet_ntop.c  -fPIC -DPIC -o .libs/compat-inet_ntop.o
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT compat-daemon.lo -MD -MP -MF .deps/compat-daemon.Tpo -c compat-daemon.c -o compat-daemon.o >/dev/null 2>&1
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT compat-inet_ntop.lo -MD -MP -MF .deps/compat-inet_ntop.Tpo -c compat-inet_ntop.c -o compat-inet_ntop.o >/dev/null 2>&1
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT compat-inet_pton.lo -MD -MP -MF .deps/compat-inet_pton.Tpo -c compat-inet_pton.c  -fPIC -DPIC -o .libs/compat-inet_pton.o
++mv -f .deps/compat-daemon.Tpo .deps/compat-daemon.Plo
++/bin/sh ../../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include     -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT compat-lz4.lo -MD -MP -MF .deps/compat-lz4.Tpo -c -o compat-lz4.lo compat-lz4.c
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT compat-inet_pton.lo -MD -MP -MF .deps/compat-inet_pton.Tpo -c compat-inet_pton.c -o compat-inet_pton.o >/dev/null 2>&1
++mv -f .deps/compat-inet_ntop.Tpo .deps/compat-inet_ntop.Plo
++/bin/sh ../../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include     -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT compat-strsep.lo -MD -MP -MF .deps/compat-strsep.Tpo -c -o compat-strsep.lo compat-strsep.c
++mv -f .deps/compat-inet_pton.Tpo .deps/compat-inet_pton.Plo
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT compat-strsep.lo -MD -MP -MF .deps/compat-strsep.Tpo -c compat-strsep.c  -fPIC -DPIC -o .libs/compat-strsep.o
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT compat-lz4.lo -MD -MP -MF .deps/compat-lz4.Tpo -c compat-lz4.c  -fPIC -DPIC -o .libs/compat-lz4.o
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT compat-strsep.lo -MD -MP -MF .deps/compat-strsep.Tpo -c compat-strsep.c -o compat-strsep.o >/dev/null 2>&1
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT compat-lz4.lo -MD -MP -MF .deps/compat-lz4.Tpo -c compat-lz4.c -o compat-lz4.o >/dev/null 2>&1
++mv -f .deps/compat-lz4.Tpo .deps/compat-lz4.Plo
++mv -f .deps/compat-strsep.Tpo .deps/compat-strsep.Plo
++/bin/sh ../../libtool  --tag=CC   --mode=link gcc  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99   -o libcompat.la  compat-dirname.lo compat-basename.lo compat-gettimeofday.lo compat-daemon.lo compat-inet_ntop.lo compat-inet_pton.lo compat-lz4.lo compat-strsep.lo  
++libtool: link: ar cru .libs/libcompat.a .libs/compat-dirname.o .libs/compat-basename.o .libs/compat-gettimeofday.o .libs/compat-daemon.o .libs/compat-inet_ntop.o .libs/compat-inet_pton.o .libs/compat-lz4.o .libs/compat-strsep.o 
++libtool: link: ranlib .libs/libcompat.a
++libtool: link: ( cd ".libs" && rm -f "libcompat.la" && ln -s "../libcompat.la" "libcompat.la" )
++make[3]: Leaving directory '/tmp/openvpn-2.5.0/src/compat'
++Making all in openvpn
++make[3]: Entering directory '/tmp/openvpn-2.5.0/src/openvpn'
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT argv.o -MD -MP -MF .deps/argv.Tpo -c -o argv.o argv.c
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT auth_token.o -MD -MP -MF .deps/auth_token.Tpo -c -o auth_token.o auth_token.c
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT base64.o -MD -MP -MF .deps/base64.Tpo -c -o base64.o base64.c
++mv -f .deps/base64.Tpo .deps/base64.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT buffer.o -MD -MP -MF .deps/buffer.Tpo -c -o buffer.o buffer.c
++mv -f .deps/argv.Tpo .deps/argv.Po
++mv -f .deps/auth_token.Tpo .deps/auth_token.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT clinat.o -MD -MP -MF .deps/clinat.Tpo -c -o clinat.o clinat.c
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT comp.o -MD -MP -MF .deps/comp.Tpo -c -o comp.o comp.c
++mv -f .deps/buffer.Tpo .deps/buffer.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT compstub.o -MD -MP -MF .deps/compstub.Tpo -c -o compstub.o compstub.c
++mv -f .deps/comp.Tpo .deps/comp.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT comp-lz4.o -MD -MP -MF .deps/comp-lz4.Tpo -c -o comp-lz4.o comp-lz4.c
++mv -f .deps/clinat.Tpo .deps/clinat.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT crypto.o -MD -MP -MF .deps/crypto.Tpo -c -o crypto.o crypto.c
++mv -f .deps/compstub.Tpo .deps/compstub.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT crypto_openssl.o -MD -MP -MF .deps/crypto_openssl.Tpo -c -o crypto_openssl.o crypto_openssl.c
++mv -f .deps/comp-lz4.Tpo .deps/comp-lz4.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT crypto_mbedtls.o -MD -MP -MF .deps/crypto_mbedtls.Tpo -c -o crypto_mbedtls.o crypto_mbedtls.c
++mv -f .deps/crypto_mbedtls.Tpo .deps/crypto_mbedtls.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT dhcp.o -MD -MP -MF .deps/dhcp.Tpo -c -o dhcp.o dhcp.c
++mv -f .deps/dhcp.Tpo .deps/dhcp.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT env_set.o -MD -MP -MF .deps/env_set.Tpo -c -o env_set.o env_set.c
++mv -f .deps/crypto_openssl.Tpo .deps/crypto_openssl.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT error.o -MD -MP -MF .deps/error.Tpo -c -o error.o error.c
++mv -f .deps/env_set.Tpo .deps/env_set.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT event.o -MD -MP -MF .deps/event.Tpo -c -o event.o event.c
++mv -f .deps/error.Tpo .deps/error.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT fdmisc.o -MD -MP -MF .deps/fdmisc.Tpo -c -o fdmisc.o fdmisc.c
++mv -f .deps/fdmisc.Tpo .deps/fdmisc.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT forward.o -MD -MP -MF .deps/forward.Tpo -c -o forward.o forward.c
++mv -f .deps/event.Tpo .deps/event.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT fragment.o -MD -MP -MF .deps/fragment.Tpo -c -o fragment.o fragment.c
++mv -f .deps/crypto.Tpo .deps/crypto.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT gremlin.o -MD -MP -MF .deps/gremlin.Tpo -c -o gremlin.o gremlin.c
++mv -f .deps/gremlin.Tpo .deps/gremlin.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT helper.o -MD -MP -MF .deps/helper.Tpo -c -o helper.o helper.c
++mv -f .deps/fragment.Tpo .deps/fragment.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT httpdigest.o -MD -MP -MF .deps/httpdigest.Tpo -c -o httpdigest.o httpdigest.c
++mv -f .deps/httpdigest.Tpo .deps/httpdigest.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT lladdr.o -MD -MP -MF .deps/lladdr.Tpo -c -o lladdr.o lladdr.c
++mv -f .deps/lladdr.Tpo .deps/lladdr.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT init.o -MD -MP -MF .deps/init.Tpo -c -o init.o init.c
++mv -f .deps/helper.Tpo .deps/helper.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT interval.o -MD -MP -MF .deps/interval.Tpo -c -o interval.o interval.c
++mv -f .deps/interval.Tpo .deps/interval.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT list.o -MD -MP -MF .deps/list.Tpo -c -o list.o list.c
++mv -f .deps/forward.Tpo .deps/forward.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT lzo.o -MD -MP -MF .deps/lzo.Tpo -c -o lzo.o lzo.c
++mv -f .deps/list.Tpo .deps/list.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT manage.o -MD -MP -MF .deps/manage.Tpo -c -o manage.o manage.c
++mv -f .deps/lzo.Tpo .deps/lzo.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT mbuf.o -MD -MP -MF .deps/mbuf.Tpo -c -o mbuf.o mbuf.c
++mv -f .deps/mbuf.Tpo .deps/mbuf.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT misc.o -MD -MP -MF .deps/misc.Tpo -c -o misc.o misc.c
++mv -f .deps/misc.Tpo .deps/misc.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT platform.o -MD -MP -MF .deps/platform.Tpo -c -o platform.o platform.c
++mv -f .deps/init.Tpo .deps/init.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT console.o -MD -MP -MF .deps/console.Tpo -c -o console.o console.c
++mv -f .deps/console.Tpo .deps/console.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT console_builtin.o -MD -MP -MF .deps/console_builtin.Tpo -c -o console_builtin.o console_builtin.c
++mv -f .deps/platform.Tpo .deps/platform.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT console_systemd.o -MD -MP -MF .deps/console_systemd.Tpo -c -o console_systemd.o console_systemd.c
++mv -f .deps/console_builtin.Tpo .deps/console_builtin.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT mroute.o -MD -MP -MF .deps/mroute.Tpo -c -o mroute.o mroute.c
++mv -f .deps/console_systemd.Tpo .deps/console_systemd.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT mss.o -MD -MP -MF .deps/mss.Tpo -c -o mss.o mss.c
++mv -f .deps/mss.Tpo .deps/mss.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT mstats.o -MD -MP -MF .deps/mstats.Tpo -c -o mstats.o mstats.c
++mv -f .deps/mstats.Tpo .deps/mstats.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT mtcp.o -MD -MP -MF .deps/mtcp.Tpo -c -o mtcp.o mtcp.c
++mv -f .deps/mroute.Tpo .deps/mroute.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT mtu.o -MD -MP -MF .deps/mtu.Tpo -c -o mtu.o mtu.c
++mv -f .deps/mtu.Tpo .deps/mtu.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT mudp.o -MD -MP -MF .deps/mudp.Tpo -c -o mudp.o mudp.c
++mv -f .deps/manage.Tpo .deps/manage.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT multi.o -MD -MP -MF .deps/multi.Tpo -c -o multi.o multi.c
++mv -f .deps/mtcp.Tpo .deps/mtcp.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT networking_iproute2.o -MD -MP -MF .deps/networking_iproute2.Tpo -c -o networking_iproute2.o networking_iproute2.c
++mv -f .deps/mudp.Tpo .deps/mudp.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT networking_sitnl.o -MD -MP -MF .deps/networking_sitnl.Tpo -c -o networking_sitnl.o networking_sitnl.c
++mv -f .deps/networking_iproute2.Tpo .deps/networking_iproute2.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT ntlm.o -MD -MP -MF .deps/ntlm.Tpo -c -o ntlm.o ntlm.c
++mv -f .deps/networking_sitnl.Tpo .deps/networking_sitnl.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT occ.o -MD -MP -MF .deps/occ.Tpo -c -o occ.o occ.c
++mv -f .deps/ntlm.Tpo .deps/ntlm.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT pkcs11.o -MD -MP -MF .deps/pkcs11.Tpo -c -o pkcs11.o pkcs11.c
++mv -f .deps/pkcs11.Tpo .deps/pkcs11.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT pkcs11_openssl.o -MD -MP -MF .deps/pkcs11_openssl.Tpo -c -o pkcs11_openssl.o pkcs11_openssl.c
++mv -f .deps/pkcs11_openssl.Tpo .deps/pkcs11_openssl.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT pkcs11_mbedtls.o -MD -MP -MF .deps/pkcs11_mbedtls.Tpo -c -o pkcs11_mbedtls.o pkcs11_mbedtls.c
++mv -f .deps/pkcs11_mbedtls.Tpo .deps/pkcs11_mbedtls.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT openvpn.o -MD -MP -MF .deps/openvpn.Tpo -c -o openvpn.o openvpn.c
++mv -f .deps/occ.Tpo .deps/occ.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT options.o -MD -MP -MF .deps/options.Tpo -c -o options.o options.c
++mv -f .deps/openvpn.Tpo .deps/openvpn.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT otime.o -MD -MP -MF .deps/otime.Tpo -c -o otime.o otime.c
++mv -f .deps/otime.Tpo .deps/otime.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT packet_id.o -MD -MP -MF .deps/packet_id.Tpo -c -o packet_id.o packet_id.c
++mv -f .deps/multi.Tpo .deps/multi.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT perf.o -MD -MP -MF .deps/perf.Tpo -c -o perf.o perf.c
++mv -f .deps/perf.Tpo .deps/perf.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT pf.o -MD -MP -MF .deps/pf.Tpo -c -o pf.o pf.c
++mv -f .deps/packet_id.Tpo .deps/packet_id.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT ping.o -MD -MP -MF .deps/ping.Tpo -c -o ping.o ping.c
++mv -f .deps/pf.Tpo .deps/pf.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT plugin.o -MD -MP -MF .deps/plugin.Tpo -c -o plugin.o plugin.c
++mv -f .deps/ping.Tpo .deps/ping.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT pool.o -MD -MP -MF .deps/pool.Tpo -c -o pool.o pool.c
++mv -f .deps/pool.Tpo .deps/pool.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT proto.o -MD -MP -MF .deps/proto.Tpo -c -o proto.o proto.c
++mv -f .deps/proto.Tpo .deps/proto.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT proxy.o -MD -MP -MF .deps/proxy.Tpo -c -o proxy.o proxy.c
++mv -f .deps/plugin.Tpo .deps/plugin.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT ps.o -MD -MP -MF .deps/ps.Tpo -c -o ps.o ps.c
++mv -f .deps/proxy.Tpo .deps/proxy.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT push.o -MD -MP -MF .deps/push.Tpo -c -o push.o push.c
++mv -f .deps/ps.Tpo .deps/ps.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT reliable.o -MD -MP -MF .deps/reliable.Tpo -c -o reliable.o reliable.c
++mv -f .deps/reliable.Tpo .deps/reliable.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT route.o -MD -MP -MF .deps/route.Tpo -c -o route.o route.c
++mv -f .deps/push.Tpo .deps/push.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT run_command.o -MD -MP -MF .deps/run_command.Tpo -c -o run_command.o run_command.c
++mv -f .deps/run_command.Tpo .deps/run_command.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT schedule.o -MD -MP -MF .deps/schedule.Tpo -c -o schedule.o schedule.c
++mv -f .deps/schedule.Tpo .deps/schedule.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT session_id.o -MD -MP -MF .deps/session_id.Tpo -c -o session_id.o session_id.c
++mv -f .deps/session_id.Tpo .deps/session_id.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT shaper.o -MD -MP -MF .deps/shaper.Tpo -c -o shaper.o shaper.c
++mv -f .deps/shaper.Tpo .deps/shaper.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT sig.o -MD -MP -MF .deps/sig.Tpo -c -o sig.o sig.c
++mv -f .deps/sig.Tpo .deps/sig.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT socket.o -MD -MP -MF .deps/socket.Tpo -c -o socket.o socket.c
++mv -f .deps/route.Tpo .deps/route.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT socks.o -MD -MP -MF .deps/socks.Tpo -c -o socks.o socks.c
++mv -f .deps/socks.Tpo .deps/socks.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT ssl.o -MD -MP -MF .deps/ssl.Tpo -c -o ssl.o ssl.c
++mv -f .deps/socket.Tpo .deps/socket.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT ssl_openssl.o -MD -MP -MF .deps/ssl_openssl.Tpo -c -o ssl_openssl.o ssl_openssl.c
++mv -f .deps/options.Tpo .deps/options.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT ssl_mbedtls.o -MD -MP -MF .deps/ssl_mbedtls.Tpo -c -o ssl_mbedtls.o ssl_mbedtls.c
++mv -f .deps/ssl_mbedtls.Tpo .deps/ssl_mbedtls.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT ssl_ncp.o -MD -MP -MF .deps/ssl_ncp.Tpo -c -o ssl_ncp.o ssl_ncp.c
++mv -f .deps/ssl_ncp.Tpo .deps/ssl_ncp.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT ssl_verify.o -MD -MP -MF .deps/ssl_verify.Tpo -c -o ssl_verify.o ssl_verify.c
++mv -f .deps/ssl_openssl.Tpo .deps/ssl_openssl.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT ssl_verify_openssl.o -MD -MP -MF .deps/ssl_verify_openssl.Tpo -c -o ssl_verify_openssl.o ssl_verify_openssl.c
++mv -f .deps/ssl.Tpo .deps/ssl.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT ssl_verify_mbedtls.o -MD -MP -MF .deps/ssl_verify_mbedtls.Tpo -c -o ssl_verify_mbedtls.o ssl_verify_mbedtls.c
++mv -f .deps/ssl_verify_mbedtls.Tpo .deps/ssl_verify_mbedtls.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT status.o -MD -MP -MF .deps/status.Tpo -c -o status.o status.c
++mv -f .deps/status.Tpo .deps/status.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT tls_crypt.o -MD -MP -MF .deps/tls_crypt.Tpo -c -o tls_crypt.o tls_crypt.c
++mv -f .deps/ssl_verify_openssl.Tpo .deps/ssl_verify_openssl.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT tun.o -MD -MP -MF .deps/tun.Tpo -c -o tun.o tun.c
++mv -f .deps/ssl_verify.Tpo .deps/ssl_verify.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT vlan.o -MD -MP -MF .deps/vlan.Tpo -c -o vlan.o vlan.c
++mv -f .deps/tun.Tpo .deps/tun.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT win32.o -MD -MP -MF .deps/win32.Tpo -c -o win32.o win32.c
++mv -f .deps/win32.Tpo .deps/win32.Po
++gcc -DHAVE_CONFIG_H -I. -I../.. -I../../include  -I../../include -I../../src/compat        -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT cryptoapi.o -MD -MP -MF .deps/cryptoapi.Tpo -c -o cryptoapi.o cryptoapi.c
++mv -f .deps/vlan.Tpo .deps/vlan.Po
++mv -f .deps/cryptoapi.Tpo .deps/cryptoapi.Po
++mv -f .deps/tls_crypt.Tpo .deps/tls_crypt.Po
++/bin/sh ../../libtool  --tag=CC   --mode=link gcc       -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\"  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99   -o openvpn argv.o auth_token.o base64.o buffer.o clinat.o comp.o compstub.o comp-lz4.o crypto.o crypto_openssl.o crypto_mbedtls.o dhcp.o env_set.o error.o event.o fdmisc.o forward.o fragment.o gremlin.o helper.o httpdigest.o lladdr.o init.o interval.o list.o lzo.o manage.o mbuf.o misc.o platform.o console.o console_builtin.o console_systemd.o mroute.o mss.o mstats.o mtcp.o mtu.o mudp.o multi.o networking_iproute2.o networking_sitnl.o ntlm.o occ.o pkcs11.o pkcs11_openssl.o pkcs11_mbedtls.o openvpn.o options.o otime.o packet_id.o perf.o pf.o ping.o plugin.o pool.o proto.o proxy.o ps.o push.o reliable.o route.o run_command.o schedule.o session_id.o shaper.o sig.o socket.o socks.o ssl.o ssl_openssl.o ssl_mbedtls.o ssl_ncp.o ssl_verify.o ssl_verify_openssl.o ssl_verify_mbedtls.o status.o tls_crypt.o tun.o vlan.o win32.o cryptoapi.o  ../../src/compat/libcompat.la -lnsl -lresolv -llzo2 -llz4  -lssl -lcrypto   -ldl   
++libtool: link: gcc -DPLUGIN_LIBDIR=\"/usr/lib/openvpn/plugins\" -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -o openvpn argv.o auth_token.o base64.o buffer.o clinat.o comp.o compstub.o comp-lz4.o crypto.o crypto_openssl.o crypto_mbedtls.o dhcp.o env_set.o error.o event.o fdmisc.o forward.o fragment.o gremlin.o helper.o httpdigest.o lladdr.o init.o interval.o list.o lzo.o manage.o mbuf.o misc.o platform.o console.o console_builtin.o console_systemd.o mroute.o mss.o mstats.o mtcp.o mtu.o mudp.o multi.o networking_iproute2.o networking_sitnl.o ntlm.o occ.o pkcs11.o pkcs11_openssl.o pkcs11_mbedtls.o openvpn.o options.o otime.o packet_id.o perf.o pf.o ping.o plugin.o pool.o proto.o proxy.o ps.o push.o reliable.o route.o run_command.o schedule.o session_id.o shaper.o sig.o socket.o socks.o ssl.o ssl_openssl.o ssl_mbedtls.o ssl_ncp.o ssl_verify.o ssl_verify_openssl.o ssl_verify_mbedtls.o status.o tls_crypt.o tun.o vlan.o win32.o cryptoapi.o  ../../src/compat/.libs/libcompat.a -lnsl -lresolv -llzo2 -llz4 -lssl -lcrypto -ldl
++make[3]: Leaving directory '/tmp/openvpn-2.5.0/src/openvpn'
++Making all in openvpnmsica
++make[3]: Entering directory '/tmp/openvpn-2.5.0/src/openvpnmsica'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/openvpn-2.5.0/src/openvpnmsica'
++Making all in openvpnserv
++make[3]: Entering directory '/tmp/openvpn-2.5.0/src/openvpnserv'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/openvpn-2.5.0/src/openvpnserv'
++Making all in plugins
++make[3]: Entering directory '/tmp/openvpn-2.5.0/src/plugins'
++Making all in auth-pam
++make[4]: Entering directory '/tmp/openvpn-2.5.0/src/plugins/auth-pam'
++/bin/sh ../../../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I../../.. -I../../../include    -I../../../include   -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT utils.lo -MD -MP -MF .deps/utils.Tpo -c -o utils.lo utils.c
++/bin/sh ../../../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I../../.. -I../../../include    -I../../../include   -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT auth-pam.lo -MD -MP -MF .deps/auth-pam.Tpo -c -o auth-pam.lo auth-pam.c
++/bin/sh ../../../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I../../.. -I../../../include    -I../../../include   -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT pamdl.lo -MD -MP -MF .deps/pamdl.Tpo -c -o pamdl.lo pamdl.c
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I../../.. -I../../../include -I../../../include -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT utils.lo -MD -MP -MF .deps/utils.Tpo -c utils.c  -fPIC -DPIC -o .libs/utils.o
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I../../.. -I../../../include -I../../../include -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT pamdl.lo -MD -MP -MF .deps/pamdl.Tpo -c pamdl.c  -fPIC -DPIC -o .libs/pamdl.o
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I../../.. -I../../../include -I../../../include -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT auth-pam.lo -MD -MP -MF .deps/auth-pam.Tpo -c auth-pam.c  -fPIC -DPIC -o .libs/auth-pam.o
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I../../.. -I../../../include -I../../../include -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT pamdl.lo -MD -MP -MF .deps/pamdl.Tpo -c pamdl.c -o pamdl.o >/dev/null 2>&1
++mv -f .deps/pamdl.Tpo .deps/pamdl.Plo
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I../../.. -I../../../include -I../../../include -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT utils.lo -MD -MP -MF .deps/utils.Tpo -c utils.c -o utils.o >/dev/null 2>&1
++mv -f .deps/utils.Tpo .deps/utils.Plo
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I../../.. -I../../../include -I../../../include -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT auth-pam.lo -MD -MP -MF .deps/auth-pam.Tpo -c auth-pam.c -o auth-pam.o >/dev/null 2>&1
++mv -f .deps/auth-pam.Tpo .deps/auth-pam.Plo
++/bin/sh ../../../libtool  --tag=CC   --mode=link gcc -I../../../include   -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99  -export-symbols "./auth-pam.exports" -module -shared -avoid-version -no-undefined  -o openvpn-plugin-auth-pam.la -rpath /usr/lib/openvpn/plugins utils.lo auth-pam.lo pamdl.lo -lpam 
++libtool: link: echo "{ global:" > .libs/openvpn-plugin-auth-pam.ver
++libtool: link:  cat ./auth-pam.exports | sed -e "s/\(.*\)/\1;/" >> .libs/openvpn-plugin-auth-pam.ver
++libtool: link:  echo "local: *; };" >> .libs/openvpn-plugin-auth-pam.ver
++libtool: link:  gcc -shared  -fPIC -DPIC  .libs/utils.o .libs/auth-pam.o .libs/pamdl.o   -lpam  -O2   -Wl,-soname -Wl,openvpn-plugin-auth-pam.so -Wl,-version-script -Wl,.libs/openvpn-plugin-auth-pam.ver -o .libs/openvpn-plugin-auth-pam.so
++libtool: link: ( cd ".libs" && rm -f "openvpn-plugin-auth-pam.la" && ln -s "../openvpn-plugin-auth-pam.la" "openvpn-plugin-auth-pam.la" )
++make[4]: Leaving directory '/tmp/openvpn-2.5.0/src/plugins/auth-pam'
++Making all in down-root
++make[4]: Entering directory '/tmp/openvpn-2.5.0/src/plugins/down-root'
++/bin/sh ../../../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I../../.. -I../../../include    -I../../../include  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT down-root.lo -MD -MP -MF .deps/down-root.Tpo -c -o down-root.lo down-root.c
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I../../.. -I../../../include -I../../../include -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT down-root.lo -MD -MP -MF .deps/down-root.Tpo -c down-root.c  -fPIC -DPIC -o .libs/down-root.o
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I../../.. -I../../../include -I../../../include -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99 -MT down-root.lo -MD -MP -MF .deps/down-root.Tpo -c down-root.c -o down-root.o >/dev/null 2>&1
++mv -f .deps/down-root.Tpo .deps/down-root.Plo
++/bin/sh ../../../libtool  --tag=CC   --mode=link gcc -I../../../include  -Wall -Wno-unused-parameter -Wno-unused-function -Wno-stringop-truncation -O2 -fPIC -std=c99  -export-symbols "./down-root.exports" -module -shared -avoid-version -no-undefined  -o openvpn-plugin-down-root.la -rpath /usr/lib/openvpn/plugins down-root.lo  
++libtool: link: echo "{ global:" > .libs/openvpn-plugin-down-root.ver
++libtool: link:  cat ./down-root.exports | sed -e "s/\(.*\)/\1;/" >> .libs/openvpn-plugin-down-root.ver
++libtool: link:  echo "local: *; };" >> .libs/openvpn-plugin-down-root.ver
++libtool: link:  gcc -shared  -fPIC -DPIC  .libs/down-root.o    -O2   -Wl,-soname -Wl,openvpn-plugin-down-root.so -Wl,-version-script -Wl,.libs/openvpn-plugin-down-root.ver -o .libs/openvpn-plugin-down-root.so
++libtool: link: ( cd ".libs" && rm -f "openvpn-plugin-down-root.la" && ln -s "../openvpn-plugin-down-root.la" "openvpn-plugin-down-root.la" )
++make[4]: Leaving directory '/tmp/openvpn-2.5.0/src/plugins/down-root'
++make[4]: Entering directory '/tmp/openvpn-2.5.0/src/plugins'
++make[4]: Nothing to be done for 'all-am'.
++make[4]: Leaving directory '/tmp/openvpn-2.5.0/src/plugins'
++make[3]: Leaving directory '/tmp/openvpn-2.5.0/src/plugins'
++Making all in tapctl
++make[3]: Entering directory '/tmp/openvpn-2.5.0/src/tapctl'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/openvpn-2.5.0/src/tapctl'
++make[3]: Entering directory '/tmp/openvpn-2.5.0/src'
++make[3]: Nothing to be done for 'all-am'.
++make[3]: Leaving directory '/tmp/openvpn-2.5.0/src'
++make[2]: Leaving directory '/tmp/openvpn-2.5.0/src'
++Making all in sample
++make[2]: Entering directory '/tmp/openvpn-2.5.0/sample'
++make[2]: Nothing to be done for 'all'.
++make[2]: Leaving directory '/tmp/openvpn-2.5.0/sample'
++Making all in doc
++make[2]: Entering directory '/tmp/openvpn-2.5.0/doc'
++Making all in doxygen
++make[3]: Entering directory '/tmp/openvpn-2.5.0/doc/doxygen'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/openvpn-2.5.0/doc/doxygen'
++make[3]: Entering directory '/tmp/openvpn-2.5.0/doc'
++rst2man ./openvpn.8.rst > openvpn.8
++rst2html ./openvpn.8.rst > openvpn.8.html
++make[3]: Leaving directory '/tmp/openvpn-2.5.0/doc'
++make[2]: Leaving directory '/tmp/openvpn-2.5.0/doc'
++Making all in tests
++make[2]: Entering directory '/tmp/openvpn-2.5.0/tests'
++Making all in unit_tests
++make[3]: Entering directory '/tmp/openvpn-2.5.0/tests/unit_tests'
++make[4]: Entering directory '/tmp/openvpn-2.5.0/tests/unit_tests'
++make[4]: Nothing to be done for 'all-am'.
++make[4]: Leaving directory '/tmp/openvpn-2.5.0/tests/unit_tests'
++make[3]: Leaving directory '/tmp/openvpn-2.5.0/tests/unit_tests'
++make[3]: Entering directory '/tmp/openvpn-2.5.0/tests'
++make[3]: Nothing to be done for 'all-am'.
++make[3]: Leaving directory '/tmp/openvpn-2.5.0/tests'
++make[2]: Leaving directory '/tmp/openvpn-2.5.0/tests'
++make[2]: Entering directory '/tmp/openvpn-2.5.0'
++make[2]: Leaving directory '/tmp/openvpn-2.5.0'
++make[1]: Leaving directory '/tmp/openvpn-2.5.0'
++if test -z 'strip'; then \
++  make  INSTALL_PROGRAM="/bin/sh /tmp/openvpn-2.5.0/install-sh -c -s" \
++    install_sh_PROGRAM="/bin/sh /tmp/openvpn-2.5.0/install-sh -c -s" INSTALL_STRIP_FLAG=-s \
++      install; \
++else \
++  make  INSTALL_PROGRAM="/bin/sh /tmp/openvpn-2.5.0/install-sh -c -s" \
++    install_sh_PROGRAM="/bin/sh /tmp/openvpn-2.5.0/install-sh -c -s" INSTALL_STRIP_FLAG=-s \
++    "INSTALL_PROGRAM_ENV=STRIPPROG='strip'" install; \
++fi
++make[1]: Entering directory '/tmp/openvpn-2.5.0'
++make  install-recursive
++make[2]: Entering directory '/tmp/openvpn-2.5.0'
++Making install in build
++make[3]: Entering directory '/tmp/openvpn-2.5.0/build'
++Making install in msvc
++make[4]: Entering directory '/tmp/openvpn-2.5.0/build/msvc'
++Making install in msvc-generate
++make[5]: Entering directory '/tmp/openvpn-2.5.0/build/msvc/msvc-generate'
++make[6]: Entering directory '/tmp/openvpn-2.5.0/build/msvc/msvc-generate'
++make[6]: Nothing to be done for 'install-exec-am'.
++make[6]: Nothing to be done for 'install-data-am'.
++make[6]: Leaving directory '/tmp/openvpn-2.5.0/build/msvc/msvc-generate'
++make[5]: Leaving directory '/tmp/openvpn-2.5.0/build/msvc/msvc-generate'
++make[5]: Entering directory '/tmp/openvpn-2.5.0/build/msvc'
++make[6]: Entering directory '/tmp/openvpn-2.5.0/build/msvc'
++make[6]: Nothing to be done for 'install-exec-am'.
++make[6]: Nothing to be done for 'install-data-am'.
++make[6]: Leaving directory '/tmp/openvpn-2.5.0/build/msvc'
++make[5]: Leaving directory '/tmp/openvpn-2.5.0/build/msvc'
++make[4]: Leaving directory '/tmp/openvpn-2.5.0/build/msvc'
++make[4]: Entering directory '/tmp/openvpn-2.5.0/build'
++make[5]: Entering directory '/tmp/openvpn-2.5.0/build'
++make[5]: Nothing to be done for 'install-exec-am'.
++make[5]: Nothing to be done for 'install-data-am'.
++make[5]: Leaving directory '/tmp/openvpn-2.5.0/build'
++make[4]: Leaving directory '/tmp/openvpn-2.5.0/build'
++make[3]: Leaving directory '/tmp/openvpn-2.5.0/build'
++Making install in distro
++make[3]: Entering directory '/tmp/openvpn-2.5.0/distro'
++Making install in systemd
++make[4]: Entering directory '/tmp/openvpn-2.5.0/distro/systemd'
++make[5]: Entering directory '/tmp/openvpn-2.5.0/distro/systemd'
++make[5]: Nothing to be done for 'install-exec-am'.
++make  install-data-hook
++make[6]: Entering directory '/tmp/openvpn-2.5.0/distro/systemd'
++make[6]: Nothing to be done for 'install-data-hook'.
++make[6]: Leaving directory '/tmp/openvpn-2.5.0/distro/systemd'
++make[5]: Leaving directory '/tmp/openvpn-2.5.0/distro/systemd'
++make[4]: Leaving directory '/tmp/openvpn-2.5.0/distro/systemd'
++make[4]: Entering directory '/tmp/openvpn-2.5.0/distro'
++make[5]: Entering directory '/tmp/openvpn-2.5.0/distro'
++make[5]: Nothing to be done for 'install-exec-am'.
++make[5]: Nothing to be done for 'install-data-am'.
++make[5]: Leaving directory '/tmp/openvpn-2.5.0/distro'
++make[4]: Leaving directory '/tmp/openvpn-2.5.0/distro'
++make[3]: Leaving directory '/tmp/openvpn-2.5.0/distro'
++Making install in include
++make[3]: Entering directory '/tmp/openvpn-2.5.0/include'
++make[4]: Entering directory '/tmp/openvpn-2.5.0/include'
++make[4]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-openvpn/usr/include'
++ /usr/bin/ginstall -c -m 644 openvpn-plugin.h openvpn-msg.h '/tmp/package-openvpn/usr/include'
++make[4]: Leaving directory '/tmp/openvpn-2.5.0/include'
++make[3]: Leaving directory '/tmp/openvpn-2.5.0/include'
++Making install in src
++make[3]: Entering directory '/tmp/openvpn-2.5.0/src'
++Making install in compat
++make[4]: Entering directory '/tmp/openvpn-2.5.0/src/compat'
++make[5]: Entering directory '/tmp/openvpn-2.5.0/src/compat'
++make[5]: Nothing to be done for 'install-exec-am'.
++make[5]: Nothing to be done for 'install-data-am'.
++make[5]: Leaving directory '/tmp/openvpn-2.5.0/src/compat'
++make[4]: Leaving directory '/tmp/openvpn-2.5.0/src/compat'
++Making install in openvpn
++make[4]: Entering directory '/tmp/openvpn-2.5.0/src/openvpn'
++make[5]: Entering directory '/tmp/openvpn-2.5.0/src/openvpn'
++ /usr/bin/mkdir -p '/tmp/package-openvpn/usr/sbin'
++ STRIPPROG='strip' /bin/sh ../../libtool   --mode=install /bin/sh /tmp/openvpn-2.5.0/install-sh -c -s openvpn '/tmp/package-openvpn/usr/sbin'
++libtool: install: /bin/sh /tmp/openvpn-2.5.0/install-sh -c -s openvpn /tmp/package-openvpn/usr/sbin/openvpn
++make[5]: Nothing to be done for 'install-data-am'.
++make[5]: Leaving directory '/tmp/openvpn-2.5.0/src/openvpn'
++make[4]: Leaving directory '/tmp/openvpn-2.5.0/src/openvpn'
++Making install in openvpnmsica
++make[4]: Entering directory '/tmp/openvpn-2.5.0/src/openvpnmsica'
++make[5]: Entering directory '/tmp/openvpn-2.5.0/src/openvpnmsica'
++make[5]: Nothing to be done for 'install-data-am'.
++make[5]: Leaving directory '/tmp/openvpn-2.5.0/src/openvpnmsica'
++make[4]: Leaving directory '/tmp/openvpn-2.5.0/src/openvpnmsica'
++Making install in openvpnserv
++make[4]: Entering directory '/tmp/openvpn-2.5.0/src/openvpnserv'
++make[5]: Entering directory '/tmp/openvpn-2.5.0/src/openvpnserv'
++make[5]: Nothing to be done for 'install-data-am'.
++make[5]: Leaving directory '/tmp/openvpn-2.5.0/src/openvpnserv'
++make[4]: Leaving directory '/tmp/openvpn-2.5.0/src/openvpnserv'
++Making install in plugins
++make[4]: Entering directory '/tmp/openvpn-2.5.0/src/plugins'
++Making install in auth-pam
++make[5]: Entering directory '/tmp/openvpn-2.5.0/src/plugins/auth-pam'
++make[6]: Entering directory '/tmp/openvpn-2.5.0/src/plugins/auth-pam'
++make[6]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-openvpn/usr/doc/openvpn-2.5.0'
++ /usr/bin/ginstall -c -m 644 README.auth-pam '/tmp/package-openvpn/usr/doc/openvpn-2.5.0'
++ /usr/bin/mkdir -p '/tmp/package-openvpn/usr/lib/openvpn/plugins'
++ /bin/sh ../../../libtool   --mode=install /usr/bin/ginstall -c -s  openvpn-plugin-auth-pam.la '/tmp/package-openvpn/usr/lib/openvpn/plugins'
++libtool: install: /usr/bin/ginstall -c .libs/openvpn-plugin-auth-pam.so /tmp/package-openvpn/usr/lib/openvpn/plugins/openvpn-plugin-auth-pam.so
++libtool: install: strip --strip-unneeded /tmp/package-openvpn/usr/lib/openvpn/plugins/openvpn-plugin-auth-pam.so
++libtool: install: /usr/bin/ginstall -c .libs/openvpn-plugin-auth-pam.lai /tmp/package-openvpn/usr/lib/openvpn/plugins/openvpn-plugin-auth-pam.la
++libtool: warning: remember to run 'libtool --finish /usr/lib/openvpn/plugins'
++make[6]: Leaving directory '/tmp/openvpn-2.5.0/src/plugins/auth-pam'
++make[5]: Leaving directory '/tmp/openvpn-2.5.0/src/plugins/auth-pam'
++Making install in down-root
++make[5]: Entering directory '/tmp/openvpn-2.5.0/src/plugins/down-root'
++make[6]: Entering directory '/tmp/openvpn-2.5.0/src/plugins/down-root'
++make[6]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-openvpn/usr/doc/openvpn-2.5.0'
++ /usr/bin/ginstall -c -m 644 README.down-root '/tmp/package-openvpn/usr/doc/openvpn-2.5.0'
++ /usr/bin/mkdir -p '/tmp/package-openvpn/usr/lib/openvpn/plugins'
++ /bin/sh ../../../libtool   --mode=install /usr/bin/ginstall -c -s  openvpn-plugin-down-root.la '/tmp/package-openvpn/usr/lib/openvpn/plugins'
++libtool: install: /usr/bin/ginstall -c .libs/openvpn-plugin-down-root.so /tmp/package-openvpn/usr/lib/openvpn/plugins/openvpn-plugin-down-root.so
++libtool: install: strip --strip-unneeded /tmp/package-openvpn/usr/lib/openvpn/plugins/openvpn-plugin-down-root.so
++libtool: install: /usr/bin/ginstall -c .libs/openvpn-plugin-down-root.lai /tmp/package-openvpn/usr/lib/openvpn/plugins/openvpn-plugin-down-root.la
++libtool: warning: remember to run 'libtool --finish /usr/lib/openvpn/plugins'
++make[6]: Leaving directory '/tmp/openvpn-2.5.0/src/plugins/down-root'
++make[5]: Leaving directory '/tmp/openvpn-2.5.0/src/plugins/down-root'
++make[5]: Entering directory '/tmp/openvpn-2.5.0/src/plugins'
++make[6]: Entering directory '/tmp/openvpn-2.5.0/src/plugins'
++make[6]: Nothing to be done for 'install-exec-am'.
++make[6]: Nothing to be done for 'install-data-am'.
++make[6]: Leaving directory '/tmp/openvpn-2.5.0/src/plugins'
++make[5]: Leaving directory '/tmp/openvpn-2.5.0/src/plugins'
++make[4]: Leaving directory '/tmp/openvpn-2.5.0/src/plugins'
++Making install in tapctl
++make[4]: Entering directory '/tmp/openvpn-2.5.0/src/tapctl'
++make[5]: Entering directory '/tmp/openvpn-2.5.0/src/tapctl'
++make[5]: Nothing to be done for 'install-data-am'.
++make[5]: Leaving directory '/tmp/openvpn-2.5.0/src/tapctl'
++make[4]: Leaving directory '/tmp/openvpn-2.5.0/src/tapctl'
++make[4]: Entering directory '/tmp/openvpn-2.5.0/src'
++make[5]: Entering directory '/tmp/openvpn-2.5.0/src'
++make[5]: Nothing to be done for 'install-exec-am'.
++make[5]: Nothing to be done for 'install-data-am'.
++make[5]: Leaving directory '/tmp/openvpn-2.5.0/src'
++make[4]: Leaving directory '/tmp/openvpn-2.5.0/src'
++make[3]: Leaving directory '/tmp/openvpn-2.5.0/src'
++Making install in sample
++make[3]: Entering directory '/tmp/openvpn-2.5.0/sample'
++make[4]: Entering directory '/tmp/openvpn-2.5.0/sample'
++make[4]: Nothing to be done for 'install-exec-am'.
++make[4]: Leaving directory '/tmp/openvpn-2.5.0/sample'
++make[3]: Leaving directory '/tmp/openvpn-2.5.0/sample'
++Making install in doc
++make[3]: Entering directory '/tmp/openvpn-2.5.0/doc'
++Making install in doxygen
++make[4]: Entering directory '/tmp/openvpn-2.5.0/doc/doxygen'
++make[5]: Entering directory '/tmp/openvpn-2.5.0/doc/doxygen'
++make[5]: Nothing to be done for 'install-exec-am'.
++make[5]: Nothing to be done for 'install-data-am'.
++make[5]: Leaving directory '/tmp/openvpn-2.5.0/doc/doxygen'
++make[4]: Leaving directory '/tmp/openvpn-2.5.0/doc/doxygen'
++make[4]: Entering directory '/tmp/openvpn-2.5.0/doc'
++make[5]: Entering directory '/tmp/openvpn-2.5.0/doc'
++make[5]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-openvpn/usr/doc/openvpn-2.5.0'
++ /usr/bin/ginstall -c -m 644 management-notes.txt '/tmp/package-openvpn/usr/doc/openvpn-2.5.0'
++ /usr/bin/mkdir -p '/tmp/package-openvpn/usr/doc/openvpn-2.5.0'
++ /usr/bin/ginstall -c -m 644 openvpn.8.html '/tmp/package-openvpn/usr/doc/openvpn-2.5.0'
++ /usr/bin/mkdir -p '/tmp/package-openvpn/usr/man/man8'
++ /usr/bin/ginstall -c -m 644 openvpn.8 '/tmp/package-openvpn/usr/man/man8'
++make[5]: Leaving directory '/tmp/openvpn-2.5.0/doc'
++make[4]: Leaving directory '/tmp/openvpn-2.5.0/doc'
++make[3]: Leaving directory '/tmp/openvpn-2.5.0/doc'
++Making install in tests
++make[3]: Entering directory '/tmp/openvpn-2.5.0/tests'
++Making install in unit_tests
++make[4]: Entering directory '/tmp/openvpn-2.5.0/tests/unit_tests'
++make[5]: Entering directory '/tmp/openvpn-2.5.0/tests/unit_tests'
++make[6]: Entering directory '/tmp/openvpn-2.5.0/tests/unit_tests'
++make[6]: Nothing to be done for 'install-exec-am'.
++make[6]: Nothing to be done for 'install-data-am'.
++make[6]: Leaving directory '/tmp/openvpn-2.5.0/tests/unit_tests'
++make[5]: Leaving directory '/tmp/openvpn-2.5.0/tests/unit_tests'
++make[4]: Leaving directory '/tmp/openvpn-2.5.0/tests/unit_tests'
++make[4]: Entering directory '/tmp/openvpn-2.5.0/tests'
++make[5]: Entering directory '/tmp/openvpn-2.5.0/tests'
++make[5]: Nothing to be done for 'install-exec-am'.
++make[5]: Nothing to be done for 'install-data-am'.
++make[5]: Leaving directory '/tmp/openvpn-2.5.0/tests'
++make[4]: Leaving directory '/tmp/openvpn-2.5.0/tests'
++make[3]: Leaving directory '/tmp/openvpn-2.5.0/tests'
++make[3]: Entering directory '/tmp/openvpn-2.5.0'
++make[4]: Entering directory '/tmp/openvpn-2.5.0'
++make[4]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-openvpn/usr/doc/openvpn-2.5.0'
++ /usr/bin/ginstall -c -m 644 README README.IPv6 README.mbedtls Changes.rst COPYRIGHT.GPL COPYING '/tmp/package-openvpn/usr/doc/openvpn-2.5.0'
++make[4]: Leaving directory '/tmp/openvpn-2.5.0'
++make[3]: Leaving directory '/tmp/openvpn-2.5.0'
++make[2]: Leaving directory '/tmp/openvpn-2.5.0'
++make[1]: Leaving directory '/tmp/openvpn-2.5.0'
++make: *** plugin/auth-pam: No such file or directory.  Stop.
++strip: 'plugin/auth-pam/openvpn-auth-pam.so': No such file
++cp: cannot stat 'plugin/auth-pam/openvpn-auth-pam.so': No such file or directory
++mv: cannot stat 'plugin/auth-pam/README': No such file or directory
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++etc/openvpn/sample-config-files	/usr/doc/openvpn-2.5.0/sample-config-files
++
++Making symbolic link creation script:
++( cd etc/openvpn ; rm -rf sample-config-files )
++( cd etc/openvpn ; ln -sf /usr/doc/openvpn-2.5.0/sample-config-files sample-config-files )
++
++Unless your existing installation script already contains the code
++to create these links, you should append these lines to your existing
++install script. Now's your chance. :^)
++
++Would you like to add this stuff to the existing install script and
++remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './etc/openvpn/sample-config-files'
++
++Updating your ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/openvpn-2.5.0-x86_64-1.txz
++
++./
++etc/
++etc/openvpn/
++etc/openvpn/README.TXT
++etc/openvpn/certs/
++etc/openvpn/keys/
++etc/rc.d/
++etc/rc.d/rc.openvpn.new
++install/
++install/doinst.sh
++install/slack-desc
++usr/
++usr/doc/
++usr/doc/openvpn-2.5.0/
++usr/doc/openvpn-2.5.0/AUTHORS
++usr/doc/openvpn-2.5.0/COPYING
++usr/doc/openvpn-2.5.0/COPYRIGHT.GPL
++usr/doc/openvpn-2.5.0/ChangeLog
++usr/doc/openvpn-2.5.0/Changes.rst
++usr/doc/openvpn-2.5.0/INSTALL
++usr/doc/openvpn-2.5.0/NEWS
++usr/doc/openvpn-2.5.0/PORTS
++usr/doc/openvpn-2.5.0/README
++usr/doc/openvpn-2.5.0/README.IPv6
++usr/doc/openvpn-2.5.0/README.auth-pam
++usr/doc/openvpn-2.5.0/README.down-root
++usr/doc/openvpn-2.5.0/README.ec
++usr/doc/openvpn-2.5.0/README.mbedtls
++usr/doc/openvpn-2.5.0/management-notes.txt
++usr/doc/openvpn-2.5.0/openvpn.8.html
++usr/doc/openvpn-2.5.0/sample-config-files/
++usr/doc/openvpn-2.5.0/sample-config-files/README
++usr/doc/openvpn-2.5.0/sample-config-files/client.conf
++usr/doc/openvpn-2.5.0/sample-config-files/firewall.sh
++usr/doc/openvpn-2.5.0/sample-config-files/home.up
++usr/doc/openvpn-2.5.0/sample-config-files/loopback-client
++usr/doc/openvpn-2.5.0/sample-config-files/loopback-server
++usr/doc/openvpn-2.5.0/sample-config-files/office.up
++usr/doc/openvpn-2.5.0/sample-config-files/openvpn-shutdown.sh
++usr/doc/openvpn-2.5.0/sample-config-files/openvpn-startup.sh
++usr/doc/openvpn-2.5.0/sample-config-files/server.conf
++usr/doc/openvpn-2.5.0/sample-config-files/slackware.conf
++usr/doc/openvpn-2.5.0/sample-config-files/tls-home.conf
++usr/doc/openvpn-2.5.0/sample-config-files/tls-office.conf
++usr/doc/openvpn-2.5.0/sample-config-files/xinetd-client-config
++usr/doc/openvpn-2.5.0/sample-config-files/xinetd-server-config
++usr/doc/openvpn-2.5.0/sample-keys/
++usr/doc/openvpn-2.5.0/sample-keys/README
++usr/doc/openvpn-2.5.0/sample-keys/ca.crt
++usr/doc/openvpn-2.5.0/sample-keys/ca.key
++usr/doc/openvpn-2.5.0/sample-keys/client-ec.crt
++usr/doc/openvpn-2.5.0/sample-keys/client-ec.key
++usr/doc/openvpn-2.5.0/sample-keys/client-pass.key
++usr/doc/openvpn-2.5.0/sample-keys/client.crt
++usr/doc/openvpn-2.5.0/sample-keys/client.key
++usr/doc/openvpn-2.5.0/sample-keys/client.p12
++usr/doc/openvpn-2.5.0/sample-keys/dh2048.pem
++usr/doc/openvpn-2.5.0/sample-keys/gen-sample-keys.sh
++usr/doc/openvpn-2.5.0/sample-keys/openssl.cnf
++usr/doc/openvpn-2.5.0/sample-keys/server-ec.crt
++usr/doc/openvpn-2.5.0/sample-keys/server-ec.key
++usr/doc/openvpn-2.5.0/sample-keys/server.crt
++usr/doc/openvpn-2.5.0/sample-keys/server.key
++usr/doc/openvpn-2.5.0/sample-keys/ta.key
++usr/doc/openvpn-2.5.0/sample-scripts/
++usr/doc/openvpn-2.5.0/sample-scripts/auth-pam.pl
++usr/doc/openvpn-2.5.0/sample-scripts/bridge-start
++usr/doc/openvpn-2.5.0/sample-scripts/bridge-stop
++usr/doc/openvpn-2.5.0/sample-scripts/ucn.pl
++usr/doc/openvpn-2.5.0/sample-scripts/verify-cn
++usr/include/
++usr/include/openvpn-msg.h
++usr/include/openvpn-plugin.h
++usr/lib/
++usr/lib/openvpn/
++usr/lib/openvpn/plugins/
++usr/lib/openvpn/plugins/openvpn-plugin-auth-pam.la
++usr/lib/openvpn/plugins/openvpn-plugin-auth-pam.so
++usr/lib/openvpn/plugins/openvpn-plugin-down-root.la
++usr/lib/openvpn/plugins/openvpn-plugin-down-root.so
++usr/man/
++usr/man/man8/
++usr/man/man8/openvpn.8.gz
++usr/sbin/
++usr/sbin/openvpn
++WARNING:  zero length file usr/doc/openvpn-2.5.0/NEWS
++
++Slackware package /tmp/openvpn-2.5.0-x86_64-1.txz created.
++

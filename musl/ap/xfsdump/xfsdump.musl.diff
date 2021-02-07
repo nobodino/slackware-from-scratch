@@ -1,0 +1,875 @@
+diff -ruBN /tmp/xfsdump/xfsdump.SlackBuild /source/ap/xfsdump/xfsdump.SlackBuild
+--- /tmp/xfsdump/xfsdump.SlackBuild	2020-02-03 20:03:35.000000000 +0000
++++ /source/ap/xfsdump/xfsdump.SlackBuild	2021-01-02 10:12:29.000000000 +0000
+@@ -75,7 +75,7 @@
+   --enable-gettext=yes \
+   --mandir=/usr/man \
+   --datadir=/usr/share \
+-  --build=$ARCH-slackware-linux || exit 1
++  --build=$ARCH-slackware-linux-musl || exit 1
+ 
+ make $NUMJOBS || make || exit 1
+ make install DESTDIR=$PKG || exit 1
+diff -ruBN /tmp/xfsdump/xfsdump.SlackBuild.log /source/ap/xfsdump/xfsdump.SlackBuild.log
+--- /tmp/xfsdump/xfsdump.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/ap/xfsdump/xfsdump.SlackBuild.log	2021-01-02 10:12:59.000000000 +0000
+@@ -0,0 +1,859 @@
++xfsdump-3.1.9/.gitignore
++xfsdump-3.1.9/Makefile
++xfsdump-3.1.9/README
++xfsdump-3.1.9/VERSION
++xfsdump-3.1.9/common/Makefile
++xfsdump-3.1.9/common/arch_xlate.c
++xfsdump-3.1.9/common/arch_xlate.h
++xfsdump-3.1.9/common/cldmgr.c
++xfsdump-3.1.9/common/cldmgr.h
++xfsdump-3.1.9/common/cleanup.c
++xfsdump-3.1.9/common/cleanup.h
++xfsdump-3.1.9/common/content.h
++xfsdump-3.1.9/common/content_common.c
++xfsdump-3.1.9/common/content_common.h
++xfsdump-3.1.9/common/content_inode.h
++xfsdump-3.1.9/common/dlog.c
++xfsdump-3.1.9/common/dlog.h
++xfsdump-3.1.9/common/drive.c
++xfsdump-3.1.9/common/drive.h
++xfsdump-3.1.9/common/drive_minrmt.c
++xfsdump-3.1.9/common/drive_scsitape.c
++xfsdump-3.1.9/common/drive_simple.c
++xfsdump-3.1.9/common/exit.h
++xfsdump-3.1.9/common/fs.c
++xfsdump-3.1.9/common/fs.h
++xfsdump-3.1.9/common/getdents.c
++xfsdump-3.1.9/common/getdents.h
++xfsdump-3.1.9/common/global.c
++xfsdump-3.1.9/common/global.h
++xfsdump-3.1.9/common/hsmapi.c
++xfsdump-3.1.9/common/hsmapi.h
++xfsdump-3.1.9/common/inventory.c
++xfsdump-3.1.9/common/inventory.h
++xfsdump-3.1.9/common/lock.c
++xfsdump-3.1.9/common/lock.h
++xfsdump-3.1.9/common/main.c
++xfsdump-3.1.9/common/media.c
++xfsdump-3.1.9/common/media.h
++xfsdump-3.1.9/common/media_rmvtape.h
++xfsdump-3.1.9/common/mlog.c
++xfsdump-3.1.9/common/mlog.h
++xfsdump-3.1.9/common/openutil.c
++xfsdump-3.1.9/common/openutil.h
++xfsdump-3.1.9/common/path.c
++xfsdump-3.1.9/common/path.h
++xfsdump-3.1.9/common/qlock.c
++xfsdump-3.1.9/common/qlock.h
++xfsdump-3.1.9/common/rec_hdr.h
++xfsdump-3.1.9/common/ring.c
++xfsdump-3.1.9/common/ring.h
++xfsdump-3.1.9/common/stream.c
++xfsdump-3.1.9/common/stream.h
++xfsdump-3.1.9/common/timeutil.c
++xfsdump-3.1.9/common/timeutil.h
++xfsdump-3.1.9/common/ts_mtio.h
++xfsdump-3.1.9/common/types.h
++xfsdump-3.1.9/common/util.c
++xfsdump-3.1.9/common/util.h
++xfsdump-3.1.9/configure.ac
++xfsdump-3.1.9/debian/Makefile
++xfsdump-3.1.9/debian/changelog
++xfsdump-3.1.9/debian/compat
++xfsdump-3.1.9/debian/control
++xfsdump-3.1.9/debian/copyright
++xfsdump-3.1.9/debian/rules
++xfsdump-3.1.9/debian/shlibs.local
++xfsdump-3.1.9/debian/watch
++xfsdump-3.1.9/doc/CHANGES
++xfsdump-3.1.9/doc/COPYING
++xfsdump-3.1.9/doc/INSTALL
++xfsdump-3.1.9/doc/Makefile
++xfsdump-3.1.9/doc/README.xfsdump
++xfsdump-3.1.9/doc/directories.gif
++xfsdump-3.1.9/doc/directories.obj
++xfsdump-3.1.9/doc/files.gif
++xfsdump-3.1.9/doc/files.obj
++xfsdump-3.1.9/doc/global_hdr.gif
++xfsdump-3.1.9/doc/global_hdr.obj
++xfsdump-3.1.9/doc/inode_map.gif
++xfsdump-3.1.9/doc/inode_map.obj
++xfsdump-3.1.9/doc/inventory.gif
++xfsdump-3.1.9/doc/inventory.obj
++xfsdump-3.1.9/doc/media_files.gif
++xfsdump-3.1.9/doc/media_files.obj
++xfsdump-3.1.9/doc/split_algorithm.gif
++xfsdump-3.1.9/doc/split_algorithm.obj
++xfsdump-3.1.9/doc/xfsdump.html
++xfsdump-3.1.9/doc/xfsdump_ts.txt
++xfsdump-3.1.9/dump/Makefile
++xfsdump-3.1.9/dump/content.c
++xfsdump-3.1.9/dump/getopt.h
++xfsdump-3.1.9/dump/inomap.c
++xfsdump-3.1.9/dump/inomap.h
++xfsdump-3.1.9/dump/var.c
++xfsdump-3.1.9/dump/var.h
++xfsdump-3.1.9/include/Makefile
++xfsdump-3.1.9/include/builddefs.in
++xfsdump-3.1.9/include/buildmacros
++xfsdump-3.1.9/include/buildrules
++xfsdump-3.1.9/include/config.h.in
++xfsdump-3.1.9/include/install-sh
++xfsdump-3.1.9/include/swab.h
++xfsdump-3.1.9/include/swap.h
++xfsdump-3.1.9/inventory/Makefile
++xfsdump-3.1.9/inventory/getopt.h
++xfsdump-3.1.9/inventory/inv_api.c
++xfsdump-3.1.9/inventory/inv_core.c
++xfsdump-3.1.9/inventory/inv_files.c
++xfsdump-3.1.9/inventory/inv_fstab.c
++xfsdump-3.1.9/inventory/inv_idx.c
++xfsdump-3.1.9/inventory/inv_mgr.c
++xfsdump-3.1.9/inventory/inv_oref.c
++xfsdump-3.1.9/inventory/inv_oref.h
++xfsdump-3.1.9/inventory/inv_priv.h
++xfsdump-3.1.9/inventory/inv_stobj.c
++xfsdump-3.1.9/inventory/inventory.h
++xfsdump-3.1.9/inventory/testmain.c
++xfsdump-3.1.9/invutil/Makefile
++xfsdump-3.1.9/invutil/cmenu.c
++xfsdump-3.1.9/invutil/cmenu.h
++xfsdump-3.1.9/invutil/fstab.c
++xfsdump-3.1.9/invutil/fstab.h
++xfsdump-3.1.9/invutil/getopt.h
++xfsdump-3.1.9/invutil/invidx.c
++xfsdump-3.1.9/invutil/invidx.h
++xfsdump-3.1.9/invutil/invutil.c
++xfsdump-3.1.9/invutil/invutil.h
++xfsdump-3.1.9/invutil/list.c
++xfsdump-3.1.9/invutil/list.h
++xfsdump-3.1.9/invutil/menu.c
++xfsdump-3.1.9/invutil/screen.c
++xfsdump-3.1.9/invutil/stobj.c
++xfsdump-3.1.9/invutil/stobj.h
++xfsdump-3.1.9/librmt/Makefile
++xfsdump-3.1.9/librmt/isrmt.c
++xfsdump-3.1.9/librmt/rmtabort.c
++xfsdump-3.1.9/librmt/rmtaccess.c
++xfsdump-3.1.9/librmt/rmtclose.c
++xfsdump-3.1.9/librmt/rmtcommand.c
++xfsdump-3.1.9/librmt/rmtcreat.c
++xfsdump-3.1.9/librmt/rmtdev.c
++xfsdump-3.1.9/librmt/rmtfstat.c
++xfsdump-3.1.9/librmt/rmtioctl.c
++xfsdump-3.1.9/librmt/rmtisatty.c
++xfsdump-3.1.9/librmt/rmtlib.h
++xfsdump-3.1.9/librmt/rmtlseek.c
++xfsdump-3.1.9/librmt/rmtmsg.c
++xfsdump-3.1.9/librmt/rmtopen.c
++xfsdump-3.1.9/librmt/rmtread.c
++xfsdump-3.1.9/librmt/rmtstatus.c
++xfsdump-3.1.9/librmt/rmtwrite.c
++xfsdump-3.1.9/m4/Makefile
++xfsdump-3.1.9/m4/manual_format.m4
++xfsdump-3.1.9/m4/multilib.m4
++xfsdump-3.1.9/m4/package_attrdev.m4
++xfsdump-3.1.9/m4/package_globals.m4
++xfsdump-3.1.9/m4/package_libcdev.m4
++xfsdump-3.1.9/m4/package_ncurses.m4
++xfsdump-3.1.9/m4/package_pthread.m4
++xfsdump-3.1.9/m4/package_utilies.m4
++xfsdump-3.1.9/m4/package_uuiddev.m4
++xfsdump-3.1.9/m4/package_xfslibs.m4
++xfsdump-3.1.9/man/Makefile
++xfsdump-3.1.9/man/man8/Makefile
++xfsdump-3.1.9/man/man8/xfsdump.8
++xfsdump-3.1.9/man/man8/xfsinvutil.8
++xfsdump-3.1.9/man/man8/xfsrestore.8
++xfsdump-3.1.9/po/Makefile
++xfsdump-3.1.9/po/de.po
++xfsdump-3.1.9/po/pl.po
++xfsdump-3.1.9/release.sh
++xfsdump-3.1.9/restore/Makefile
++xfsdump-3.1.9/restore/bag.c
++xfsdump-3.1.9/restore/bag.h
++xfsdump-3.1.9/restore/content.c
++xfsdump-3.1.9/restore/dirattr.c
++xfsdump-3.1.9/restore/dirattr.h
++xfsdump-3.1.9/restore/getopt.h
++xfsdump-3.1.9/restore/inomap.c
++xfsdump-3.1.9/restore/inomap.h
++xfsdump-3.1.9/restore/mmap.c
++xfsdump-3.1.9/restore/mmap.h
++xfsdump-3.1.9/restore/namreg.c
++xfsdump-3.1.9/restore/namreg.h
++xfsdump-3.1.9/restore/node.c
++xfsdump-3.1.9/restore/node.h
++xfsdump-3.1.9/restore/tree.c
++xfsdump-3.1.9/restore/tree.h
++xfsdump-3.1.9/restore/win.c
++xfsdump-3.1.9/restore/win.h
++xfsdump-3.1.9/m4/libtool.m4
++xfsdump-3.1.9/m4/lt~obsolete.m4
++xfsdump-3.1.9/m4/ltoptions.m4
++xfsdump-3.1.9/m4/ltsugar.m4
++xfsdump-3.1.9/m4/ltversion.m4
++xfsdump-3.1.9/.gitcensus
++xfsdump-3.1.9/aclocal.m4
++xfsdump-3.1.9/configure
++xfsdump-3.1.9/config.guess
++xfsdump-3.1.9/config.sub
++xfsdump-3.1.9/install-sh
++xfsdump-3.1.9/ltmain.sh
++checking for gcc... gcc
++checking whether the C compiler works... yes
++checking for C compiler default output file name... a.out
++checking for suffix of executables... 
++checking whether we are cross compiling... no
++checking for suffix of object files... o
++checking whether we are using the GNU C compiler... yes
++checking whether gcc accepts -g... yes
++checking for gcc option to accept ISO C89... none needed
++checking for special C compiler options needed for large files... no
++checking for _FILE_OFFSET_BITS value needed for large files... no
++checking build system type... x86_64-slackware-linux-musl
++checking host system type... x86_64-slackware-linux-musl
++checking how to print strings... printf
++checking for a sed that does not truncate output... /usr/bin/sed
++checking for grep that handles long lines and -e... /usr/bin/grep
++checking for egrep... /usr/bin/grep -E
++checking for fgrep... /usr/bin/grep -F
++checking for ld used by gcc... /usr/bin/ld
++checking if the linker (/usr/bin/ld) is GNU ld... yes
++checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
++checking the name lister (/usr/bin/nm -B) interface... BSD nm
++checking whether ln -s works... yes
++checking the maximum length of command line arguments... 98304
++checking whether the shell understands some XSI constructs... yes
++checking whether the shell understands "+="... yes
++checking how to convert x86_64-slackware-linux-musl file names to x86_64-slackware-linux-musl format... func_convert_file_noop
++checking how to convert x86_64-slackware-linux-musl file names to toolchain format... func_convert_file_noop
++checking for /usr/bin/ld option to reload object files... -r
++checking for objdump... objdump
++checking how to recognize dependent libraries... pass_all
++checking for dlltool... dlltool
++checking how to associate runtime and link libraries... printf %s\n
++checking for ar... ar
++checking for archiver @FILE support... @
++checking for strip... strip
++checking for ranlib... ranlib
++checking for gawk... gawk
++checking command to parse /usr/bin/nm -B output from gcc object... ok
++checking for sysroot... no
++checking for mt... mt
++checking if mt is a manifest tool... no
++checking how to run the C preprocessor... gcc -E
++checking for ANSI C header files... yes
++checking for sys/types.h... yes
++checking for sys/stat.h... yes
++checking for stdlib.h... yes
++checking for string.h... yes
++checking for memory.h... yes
++checking for strings.h... yes
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking for unistd.h... yes
++checking for dlfcn.h... yes
++checking for objdir... .libs
++checking if gcc supports -fno-rtti -fno-exceptions... no
++checking for gcc option to produce PIC... -fPIC -DPIC
++checking if gcc PIC flag -fPIC -DPIC works... yes
++checking if gcc static flag -static works... yes
++checking if gcc supports -c -o file.o... yes
++checking if gcc supports -c -o file.o... (cached) yes
++checking whether the gcc linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
++checking whether -lc should be explicitly linked in... no
++checking dynamic linker characteristics... GNU/Linux ld.so
++checking how to hardcode library paths into programs... immediate
++checking whether stripping libraries is possible... yes
++checking if libtool supports shared libraries... yes
++checking whether to build shared libraries... yes
++checking whether to build static libraries... yes
++checking for gcc... (cached) gcc
++checking whether we are using the GNU C compiler... (cached) yes
++checking whether gcc accepts -g... (cached) yes
++checking for gcc option to accept ISO C89... (cached) none needed
++checking for gcc... (cached) gcc
++checking whether we are using the GNU C compiler... (cached) yes
++checking whether gcc accepts -g... (cached) yes
++checking for gcc option to accept ISO C89... (cached) none needed
++checking for gmake... /usr/bin/gmake
++checking for tar... /bin/tar
++checking for gzip... /bin/gzip
++checking whether gcc -MM is supported... yes
++checking for sort... /bin/sort
++checking whether ln -s works... yes
++checking for msgfmt... /usr/bin/msgfmt
++checking for msgmerge... /usr/bin/msgmerge
++checking for xgettext... /usr/bin/xgettext
++checking for rpm... no
++checking uuid.h usability... no
++checking uuid.h presence... no
++checking for uuid.h... no
++checking sys/uuid.h usability... no
++checking sys/uuid.h presence... no
++checking for sys/uuid.h... no
++checking uuid/uuid.h usability... yes
++checking uuid/uuid.h presence... yes
++checking for uuid/uuid.h... yes
++checking for uuid_compare... no
++checking for uuid_compare in -luuid... yes
++checking pthread.h usability... yes
++checking pthread.h presence... yes
++checking for pthread.h... yes
++checking for pthread_mutex_init in -lpthread... yes
++checking ncurses.h usability... yes
++checking ncurses.h presence... yes
++checking for ncurses.h... yes
++checking for initscr in -lncurses... yes
++checking for bad glibc/ncurses header interaction... ok
++checking xfs/xfs.h usability... yes
++checking xfs/xfs.h presence... yes
++checking for xfs/xfs.h... yes
++checking xfs/handle.h usability... yes
++checking xfs/handle.h presence... yes
++checking for xfs/handle.h... yes
++checking for open_by_fshandle in -lhandle... yes
++checking attr/attributes.h usability... yes
++checking attr/attributes.h presence... yes
++checking for attr/attributes.h... yes
++checking sys/attributes.h usability... no
++checking sys/attributes.h presence... no
++checking for sys/attributes.h... no
++checking macros in attr/attributes.h... ok
++checking for attr_get in -lattr... yes
++configure: creating ./config.status
++config.status: creating include/builddefs
++config.status: creating include/config.h
++config.status: executing libtool commands
++Building include
++Building librmt
++Building common
++Building inventory
++    [LTDEP]
++    [LTDEP]
++Building m4
++gcc: fatal error: no input files
++compilation terminated.
++Building man
++Building doc
++Building man8
++    [ZIP]    CHANGES.gz
++Building po
++Building debian
++    [GETTXT] xfsdump.pot
++    [MSGFMT] de.mo
++    [MSGFMT] pl.mo
++    [CC]     isrmt.lo
++    [CC]     rmtclose.lo
++    [CC]     rmtdev.lo
++    [CC]     rmtisatty.lo
++    [CC]     rmtread.lo
++    [CC]     rmtabort.lo
++    [CC]     rmtcommand.lo
++    [CC]     rmtfstat.lo
++    [CC]     rmtlseek.lo
++    [CC]     rmtstatus.lo
++    [CC]     rmtaccess.lo
++    [CC]     rmtcreat.lo
++    [CC]     rmtioctl.lo
++    [CC]     rmtopen.lo
++    [CC]     rmtwrite.lo
++    [CC]     rmtmsg.lo
++    [LD]     librmt.la
++Building invutil
++Building dump
++Building restore
++    [LN]     arch_xlate.h
++    [LN]     global.h
++    [LN]     cldmgr.h
++    [LN]     arch_xlate.h
++    [LN]     mlog.h
++    [LN]     content.h
++    [LN]     cldmgr.h
++    [LN]     timeutil.h
++    [LN]     content_common.h
++    [LN]     content.h
++    [LN]     types.h
++    [LN]     content_inode.h
++    [LN]     content_inode.h
++    [LN]     timeutil.c
++    [LN]     dlog.h
++    [LN]     inventory.h
++    [LN]     drive.h
++    [LN]     dlog.h
++    [LN]     inv_priv.h
++    [LN]     drive.h
++    [LN]     exit.h
++    [LN]     inv_files.c
++    [LN]     exit.h
++    [LN]     fs.h
++    [DEP]
++    [LN]     fs.h
++    [LN]     getdents.h
++    [LN]     global.h
++    [LN]     getdents.h
++    [LN]     hsmapi.h
++    [LN]     global.h
++    [LN]     hsmapi.h
++    [LN]     lock.h
++    [LN]     media.h
++    [LN]     lock.h
++    [LN]     mlog.h
++    [LN]     media.h
++    [LN]     openutil.h
++    [LN]     mlog.h
++    [LN]     path.h
++    [LN]     openutil.h
++    [LN]     qlock.h
++    [LN]     path.h
++    [LN]     rec_hdr.h
++    [LN]     qlock.h
++    [LN]     ring.h
++    [LN]     ring.h
++    [LN]     stream.h
++    [LN]     stream.h
++    [LN]     timeutil.h
++    [LN]     ts_mtio.h
++    [LN]     timeutil.h
++    [LN]     types.h
++    [LN]     util.h
++    [LN]     arch_xlate.c
++    [LN]     ts_mtio.h
++    [LN]     types.h
++    [LN]     cldmgr.c
++    [LN]     util.h
++    [LN]     rec_hdr.h
++    [LN]     arch_xlate.c
++    [LN]     dlog.c
++    [LN]     cldmgr.c
++    [LN]     content_common.c
++    [LN]     dlog.c
++    [LN]     drive.c
++    [LN]     drive.c
++    [LN]     drive_scsitape.c
++    [LN]     drive_simple.c
++    [LN]     drive_scsitape.c
++    [LN]     drive_minrmt.c
++    [LN]     fs.c
++    [LN]     drive_simple.c
++    [LN]     drive_minrmt.c
++    [LN]     getdents.c
++    [LN]     fs.c
++    [LN]     global.c
++    [LN]     hsmapi.c
++    [LN]     getdents.c
++    [LN]     lock.c
++    [LN]     global.c
++    [LN]     main.c
++    [LN]     mlog.c
++    [LN]     hsmapi.c
++    [LN]     lock.c
++    [LN]     main.c
++    [LN]     openutil.c
++    [LN]     qlock.c
++    [LN]     path.c
++    [LN]     mlog.c
++    [LN]     ring.c
++    [LN]     stream.c
++    [LN]     openutil.c
++    [LN]     path.c
++    [LN]     qlock.c
++    [LN]     timeutil.c
++    [LN]     ring.c
++    [LN]     stream.c
++    [LN]     timeutil.c
++    [LN]     util.c
++    [LN]     inventory.h
++    [LN]     inv_priv.h
++    [LN]     util.c
++    [LN]     inventory.h
++    [LN]     inv_api.c
++    [LN]     inv_core.c
++    [LN]     inv_files.c
++    [LN]     inv_priv.h
++    [LN]     inv_fstab.c
++    [LN]     inv_idx.c
++    [LN]     inv_mgr.c
++    [LN]     inv_stobj.c
++    [DEP]
++    [LN]     inv_api.c
++    [LN]     inv_core.c
++    [LN]     inv_files.c
++    [LN]     inv_fstab.c
++    [CC]     timeutil.o
++    [LN]     inv_idx.c
++    [LN]     inv_mgr.c
++    [CC]     inv_files.o
++    [LN]     inv_stobj.c
++    [DEP]
++    [CC]     arch_xlate.o
++    [CC]     invutil.o
++    [CC]     arch_xlate.o
++    [CC]     cmenu.o
++    [CC]     fstab.o
++fstab.c: In function ‘fstab_highlight’:
++fstab.c:167:41: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size 248 [-Wformat-truncation=]
++  167 |     snprintf(txt, sizeof(txt), "device: %s", fstabentry->ft_devpath);
++      |                                         ^~
++fstab.c:167:5: note: ‘snprintf’ output between 9 and 264 bytes into a destination of size 256
++  167 |     snprintf(txt, sizeof(txt), "device: %s", fstabentry->ft_devpath);
++      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++    [CC]     cldmgr.o
++    [CC]     invidx.o
++    [CC]     content_common.o
++invidx.c: In function ‘invidx_highlight’:
++invidx.c:705:40: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size 249 [-Wformat-truncation=]
++  705 |     snprintf(txt, sizeof(txt), "path:  %s", invtentry->ie_filename);
++      |                                        ^~
++invidx.c:705:5: note: ‘snprintf’ output between 8 and 263 bytes into a destination of size 256
++  705 |     snprintf(txt, sizeof(txt), "path:  %s", invtentry->ie_filename);
++      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++    [CC]     cldmgr.o
++    [CC]     dlog.o
++    [CC]     dlog.o
++invidx.c: In function ‘invidx_commit’:
++invidx.c:253:37: warning: ‘%s’ directive output may be truncated writing up to 4095 bytes into a region of size 1020 [-Wformat-truncation=]
++  253 |   snprintf(cmd, sizeof(cmd), "cp %s %s", stobjfile, dst_stobjfile);
++      |                                     ^~              ~~~~~~~~~~~~~
++invidx.c:253:3: note: ‘snprintf’ output 5 or more bytes (assuming 4100) into a destination of size 1024
++  253 |   snprintf(cmd, sizeof(cmd), "cp %s %s", stobjfile, dst_stobjfile);
++      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++invidx.c:323:40: warning: ‘%s’ directive output may be truncated writing up to 4095 bytes into a region of size 1020 [-Wformat-truncation=]
++  323 |      snprintf(cmd, sizeof(cmd), "cp %s %s", stobjfile, dst_stobjfile);
++      |                                        ^~              ~~~~~~~~~~~~~
++invidx.c:323:6: note: ‘snprintf’ output 5 or more bytes (assuming 4100) into a destination of size 1024
++  323 |      snprintf(cmd, sizeof(cmd), "cp %s %s", stobjfile, dst_stobjfile);
++      |      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++    [CC]     drive.o
++    [CC]     list.o
++    [CC]     drive.o
++    [CC]     drive_scsitape.o
++    [CC]     menu.o
++    [CC]     drive_scsitape.o
++    [CC]     screen.o
++    [CC]     stobj.o
++stobj.c: In function ‘stobjstrm_highlight’:
++stobj.c:227:58: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 230 and 231 [-Wformat-truncation=]
++  227 |     snprintf(txt, sizeof(txt), "interrupted: %s, cmdarg: %s",
++      |                                                          ^~
++stobj.c:227:5: note: ‘snprintf’ output between 26 and 282 bytes into a destination of size 256
++  227 |     snprintf(txt, sizeof(txt), "interrupted: %s, cmdarg: %s",
++      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++  228 |      (stobjstrm->st_interrupted == BOOL_TRUE) ? "yes" : "no",
++      |      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++  229 |      stobjstrm->st_cmdarg);
++      |      ~~~~~~~~~~~~~~~~~~~~~
++stobj.c: In function ‘stobjsess_highlight’:
++stobj.c:199:42: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size 247 [-Wformat-truncation=]
++  199 |     snprintf(txt, sizeof(txt), "mountpt: %s, fsid: %s", stobjses->s_mountpt, uuidstr);
++      |                                          ^~
++stobj.c:199:5: note: ‘snprintf’ output between 18 and 310 bytes into a destination of size 256
++  199 |     snprintf(txt, sizeof(txt), "mountpt: %s, fsid: %s", stobjses->s_mountpt, uuidstr);
++      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++stobj.c:203:42: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size 247 [-Wformat-truncation=]
++  203 |     snprintf(txt, sizeof(txt), "device:  %s, sesid: %s", stobjses->s_devpath, uuidstr);
++      |                                          ^~
++stobj.c:203:5: note: ‘snprintf’ output between 19 and 311 bytes into a destination of size 256
++  203 |     snprintf(txt, sizeof(txt), "device:  %s, sesid: %s", stobjses->s_devpath, uuidstr);
++      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++    [LD]     xfsinvutil
++    [CC]     drive_simple.o
++    [CC]     drive_minrmt.o
++    [CC]     drive_simple.o
++    [CC]     drive_minrmt.o
++    [CC]     fs.o
++    [CC]     getdents.o
++    [CC]     global.o
++global.c: In function ‘global_hdr_alloc’:
++global.c:85:2: warning: ‘strncpy’ output truncated before terminating nul copying 8 bytes from a string of the same length [-Wstringop-truncation]
++   85 |  strncpy(ghdrp->gh_magic, GLOBAL_HDR_MAGIC, GLOBAL_HDR_MAGIC_SZ);
++      |  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++    [CC]     hsmapi.o
++    [CC]     fs.o
++hsmapi.c: In function ‘HsmBeginRestoreFile’:
++hsmapi.c:802:3: warning: ‘attr_setf’ is deprecated: Use fsetxattr instead [-Wdeprecated-declarations]
++  802 |   rv = attr_setf(fd,
++      |   ^~
++In file included from hsmapi.c:28:
++/usr/include/attr/attributes.h:143:12: note: declared here
++  143 | extern int attr_setf (int __fd, const char *__attrname,
++      |            ^~~~~~~~~
++hsmapi.c: In function ‘HsmEndRestoreFile’:
++hsmapi.c:874:3: warning: ‘attr_removef’ is deprecated: Use fremovexattr instead [-Wdeprecated-declarations]
++  874 |   rv = attr_removef(fd, DMF_ATTR_NAME, ATTR_ROOT);
++      |   ^~
++In file included from hsmapi.c:28:
++/usr/include/attr/attributes.h:155:12: note: declared here
++  155 | extern int attr_removef (int __fd, const char *__attrname, int __flags)
++      |            ^~~~~~~~~~~~
++    [CC]     lock.o
++    [CC]     main.o
++    [CC]     getdents.o
++    [CC]     global.o
++global.c: In function ‘global_hdr_alloc’:
++global.c:85:2: warning: ‘strncpy’ output truncated before terminating nul copying 8 bytes from a string of the same length [-Wstringop-truncation]
++   85 |  strncpy(ghdrp->gh_magic, GLOBAL_HDR_MAGIC, GLOBAL_HDR_MAGIC_SZ);
++      |  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++    [CC]     hsmapi.o
++    [CC]     lock.o
++    [CC]     main.o
++hsmapi.c: In function ‘HsmBeginRestoreFile’:
++hsmapi.c:802:3: warning: ‘attr_setf’ is deprecated: Use fsetxattr instead [-Wdeprecated-declarations]
++  802 |   rv = attr_setf(fd,
++      |   ^~
++In file included from hsmapi.c:28:
++/usr/include/attr/attributes.h:143:12: note: declared here
++  143 | extern int attr_setf (int __fd, const char *__attrname,
++      |            ^~~~~~~~~
++hsmapi.c: In function ‘HsmEndRestoreFile’:
++hsmapi.c:874:3: warning: ‘attr_removef’ is deprecated: Use fremovexattr instead [-Wdeprecated-declarations]
++  874 |   rv = attr_removef(fd, DMF_ATTR_NAME, ATTR_ROOT);
++      |   ^~
++In file included from hsmapi.c:28:
++/usr/include/attr/attributes.h:155:12: note: declared here
++  155 | extern int attr_removef (int __fd, const char *__attrname, int __flags)
++      |            ^~~~~~~~~~~~
++    [CC]     mlog.o
++    [CC]     openutil.o
++    [CC]     mlog.o
++    [CC]     path.o
++    [CC]     qlock.o
++    [CC]     ring.o
++    [CC]     openutil.o
++    [CC]     stream.o
++    [CC]     qlock.o
++    [CC]     timeutil.o
++    [CC]     util.o
++    [CC]     inv_api.o
++    [CC]     path.o
++    [CC]     ring.o
++    [CC]     inv_core.o
++    [CC]     inv_files.o
++    [CC]     stream.o
++    [CC]     inv_fstab.o
++    [CC]     inv_idx.o
++    [CC]     timeutil.o
++    [CC]     inv_mgr.o
++    [CC]     util.o
++    [CC]     inv_stobj.o
++    [CC]     bag.o
++    [CC]     inv_api.o
++    [CC]     content.o
++content.c: In function ‘setextattr’:
++content.c:8875:2: warning: ‘attr_set’ is deprecated: Use setxattr or lsetxattr instead [-Wdeprecated-declarations]
++ 8875 |  rval = attr_set(path,
++      |  ^~~~
++In file included from content.c:27:
++/usr/include/attr/attributes.h:139:12: note: declared here
++  139 | extern int attr_set (const char *__path, const char *__attrname,
++      |            ^~~~~~~~
++    [CC]     inv_core.o
++    [CC]     dirattr.o
++    [CC]     inv_files.o
++    [CC]     inv_fstab.o
++    [CC]     inv_idx.o
++    [CC]     inomap.o
++    [CC]     inv_mgr.o
++content.c: In function ‘addobj’:
++content.c:6752:2: warning: ‘strncpy’ specified bound 256 equals destination size [-Wstringop-truncation]
++ 6752 |  strncpy(bagobjp->label,
++      |  ^~~~~~~~~~~~~~~~~~~~~~~
++ 6753 |    label,
++      |    ~~~~~~
++ 6754 |    sizeof(bagobjp->label));
++      |    ~~~~~~~~~~~~~~~~~~~~~~~
++    [CC]     mmap.o
++    [CC]     namreg.o
++content.c: In function ‘pi_insertfile.constprop’:
++content.c:5084:3: warning: ‘strncpy’ specified bound 256 equals destination size [-Wstringop-truncation]
++ 5084 |   strncpy(DH2O(objh)->o_lab,
++      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~
++ 5085 |     medialabel,
++      |     ~~~~~~~~~~~
++ 5086 |     sizeof(DH2O(objh)->o_lab));
++      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~
++content.c:5114:3: warning: ‘strncpy’ specified bound 256 equals destination size [-Wstringop-truncation]
++ 5114 |   strncpy(DH2O(prevobjh)->o_lab,
++      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 5115 |           prevmedialabel,
++      |           ~~~~~~~~~~~~~~~
++ 5116 |           sizeof(DH2O(prevobjh)->o_lab));
++      |           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++    [CC]     inv_stobj.o
++    [CC]     node.o
++    [CC]     tree.o
++    [CC]     content.o
++content.c: In function ‘Media_prompt_erase’:
++content.c:6369:4: warning: ‘sprintf’ writing a terminating nul past the end of the destination [-Wformat-overflow=]
++ 6369 |    "pre-erase (-%c) option specified "
++      |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++content.c:6372:15: note: format string is defined here
++ 6372 |    "drive %u\n",
++      |               ^
++content.c:6368:2: note: ‘sprintf’ output between 101 and 110 bytes into a destination of size 100
++ 6368 |  sprintf(question,
++      |  ^~~~~~~~~~~~~~~~~
++ 6369 |    "pre-erase (-%c) option specified "
++      |    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 6370 |    "and non-blank media encountered:\n"
++      |    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 6371 |    "please confirm media erase "
++      |    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 6372 |    "drive %u\n",
++      |    ~~~~~~~~~~~~~
++ 6373 |    GETOPT_ERASE,
++      |    ~~~~~~~~~~~~~
++ 6374 |    (unsigned int)drivep->d_index);
++      |    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++    [CC]     win.o
++    [CC]     inomap.o
++    [LD]     xfsrestore
++    [CC]     var.o
++    [LD]     xfsdump
++Building include
++Building librmt
++Building common
++Building inventory
++Building invutil
++Building dump
++Building restore
++Building m4
++Building man
++Building man8
++Building doc
++Building po
++Building debian
++gmake[1]: Entering directory '/tmp/xfsdump-3.1.9/include'
++gmake[1]: Nothing to be done for 'install'.
++gmake[1]: Leaving directory '/tmp/xfsdump-3.1.9/include'
++gmake[1]: Entering directory '/tmp/xfsdump-3.1.9/librmt'
++gmake[1]: Nothing to be done for 'install'.
++gmake[1]: Leaving directory '/tmp/xfsdump-3.1.9/librmt'
++gmake[1]: Entering directory '/tmp/xfsdump-3.1.9/common'
++gmake[1]: Nothing to be done for 'install'.
++gmake[1]: Leaving directory '/tmp/xfsdump-3.1.9/common'
++gmake[1]: Entering directory '/tmp/xfsdump-3.1.9/inventory'
++gmake[1]: Nothing to be done for 'install'.
++gmake[1]: Leaving directory '/tmp/xfsdump-3.1.9/inventory'
++gmake[1]: Entering directory '/tmp/xfsdump-3.1.9/invutil'
++../install-sh -o root -g root -m 755 -d /usr/sbin
++/bin/sh ../libtool --quiet --mode=install ../install-sh -o root -g root -m 755 xfsinvutil /usr/sbin
++gmake[1]: Leaving directory '/tmp/xfsdump-3.1.9/invutil'
++gmake[1]: Entering directory '/tmp/xfsdump-3.1.9/dump'
++../install-sh -o root -g root -m 755 -d /sbin
++/bin/sh ../libtool --quiet --mode=install ../install-sh -o root -g root -m 755 xfsdump /sbin
++../install-sh -o root -g root -m 755 -d /usr/sbin
++# skip symlink when /sbin is alread symlinked to /usr/sbin, like on Fedora
++test /sbin -ef /usr/sbin || \
++	../install-sh -o root -g root -S /sbin/xfsdump /usr/sbin/xfsdump
++gmake[1]: Leaving directory '/tmp/xfsdump-3.1.9/dump'
++gmake[1]: Entering directory '/tmp/xfsdump-3.1.9/restore'
++../install-sh -o root -g root -m 755 -d /sbin
++/bin/sh ../libtool --quiet --mode=install ../install-sh -o root -g root -m 755 xfsrestore /sbin
++../install-sh -o root -g root -m 755 -d /usr/sbin
++# skip symlink when /sbin is alread symlinked to /usr/sbin, like on Fedora
++test /sbin -ef /usr/sbin || \
++	../install-sh -o root -g root -S /sbin/xfsrestore /usr/sbin/xfsrestore
++gmake[1]: Leaving directory '/tmp/xfsdump-3.1.9/restore'
++gmake[1]: Entering directory '/tmp/xfsdump-3.1.9/m4'
++gmake[1]: Nothing to be done for 'install'.
++gmake[1]: Leaving directory '/tmp/xfsdump-3.1.9/m4'
++gmake[1]: Entering directory '/tmp/xfsdump-3.1.9/man'
++/usr/bin/gmake -C man8 install
++gmake[2]: Entering directory '/tmp/xfsdump-3.1.9/man/man8'
++../../install-sh -o root -g root -m 755 -d /usr/man/man8
++../../install-sh -o root -g root -m 644 xfsdump.8 /usr/man/man8/xfsdump.8
++../../install-sh -o root -g root -m 644 xfsinvutil.8 /usr/man/man8/xfsinvutil.8
++../../install-sh -o root -g root -m 644 xfsrestore.8 /usr/man/man8/xfsrestore.8
++gmake[2]: Leaving directory '/tmp/xfsdump-3.1.9/man/man8'
++gmake[1]: Leaving directory '/tmp/xfsdump-3.1.9/man'
++gmake[1]: Entering directory '/tmp/xfsdump-3.1.9/doc'
++../install-sh -o root -g root -m 755 -d /usr/share/doc/xfsdump
++../install-sh -o root -g root -m 644 CHANGES.gz README.xfsdump /usr/share/doc/xfsdump
++../install-sh -o root -g root -m 644 COPYING /usr/share/doc/xfsdump
++gmake[1]: Leaving directory '/tmp/xfsdump-3.1.9/doc'
++gmake[1]: Entering directory '/tmp/xfsdump-3.1.9/po'
++gmake[1]: Leaving directory '/tmp/xfsdump-3.1.9/po'
++gmake[1]: Entering directory '/tmp/xfsdump-3.1.9/debian'
++gmake[1]: Nothing to be done for 'install'.
++gmake[1]: Leaving directory '/tmp/xfsdump-3.1.9/debian'
++./install-sh -o root -g root -m 755 -d /usr/share/doc/xfsdump
++./install-sh -o root -g root -m 644 README /usr/share/doc/xfsdump
++cp: cannot stat 'doc/CREDITS': No such file or directory
++cp: cannot stat 'doc/PORTING': No such file or directory
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++usr/sbin/xfsdump	/sbin/xfsdump
++usr/sbin/xfsrestore	/sbin/xfsrestore
++
++Making symbolic link creation script:
++( cd usr/sbin ; rm -rf xfsdump )
++( cd usr/sbin ; ln -sf /sbin/xfsdump xfsdump )
++( cd usr/sbin ; rm -rf xfsrestore )
++( cd usr/sbin ; ln -sf /sbin/xfsrestore xfsrestore )
++
++It is recommended that you make these lines your new installation script.
++
++Would you like to make this stuff the install script for this package
++and remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './usr/sbin/xfsrestore'
++removed './usr/sbin/xfsdump'
++
++Creating your new ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/xfsdump-3.1.9-x86_64-1.txz
++
++./
++install/
++install/doinst.sh
++install/slack-desc
++sbin/
++sbin/xfsdump
++sbin/xfsrestore
++usr/
++usr/doc/
++usr/doc/xfsdump-3.1.9/
++usr/doc/xfsdump-3.1.9/CHANGES
++usr/doc/xfsdump-3.1.9/COPYING
++usr/doc/xfsdump-3.1.9/README
++usr/doc/xfsdump-3.1.9/README.xfsdump
++usr/doc/xfsdump-3.1.9/html/
++usr/doc/xfsdump-3.1.9/html/directories.gif
++usr/doc/xfsdump-3.1.9/html/files.gif
++usr/doc/xfsdump-3.1.9/html/global_hdr.gif
++usr/doc/xfsdump-3.1.9/html/inode_map.gif
++usr/doc/xfsdump-3.1.9/html/inventory.gif
++usr/doc/xfsdump-3.1.9/html/media_files.gif
++usr/doc/xfsdump-3.1.9/html/split_algorithm.gif
++usr/doc/xfsdump-3.1.9/html/xfsdump.html
++usr/man/
++usr/man/man8/
++usr/man/man8/xfsdump.8.gz
++usr/man/man8/xfsinvutil.8.gz
++usr/man/man8/xfsrestore.8.gz
++usr/sbin/
++usr/sbin/xfsinvutil
++usr/share/
++usr/share/locale/
++usr/share/locale/de/
++usr/share/locale/de/LC_MESSAGES/
++usr/share/locale/de/LC_MESSAGES/xfsdump.mo
++usr/share/locale/pl/
++usr/share/locale/pl/LC_MESSAGES/
++usr/share/locale/pl/LC_MESSAGES/xfsdump.mo
++
++Slackware package /tmp/xfsdump-3.1.9-x86_64-1.txz created.
++

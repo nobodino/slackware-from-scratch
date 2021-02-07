@@ -1,0 +1,624 @@
+diff -ruBN /tmp/openobex/openobex.SlackBuild /source/n/openobex/openobex.SlackBuild
+--- /tmp/openobex/openobex.SlackBuild	2019-09-29 23:48:36.000000000 +0000
++++ /source/n/openobex/openobex.SlackBuild	2021-01-11 08:27:40.000000000 +0000
+@@ -56,7 +56,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ else
+   SLKCFLAGS="-O2"
+   LIBDIRSUFFIX=""
+@@ -84,6 +84,7 @@
+     -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
+     -DCMAKE_INSTALL_PREFIX=/usr \
+     -DLIB_SUFFIX=${LIBDIRSUFFIX} \
++-DCMAKE_INSTALL_LIBDIR=lib$LIBDIRSUFFIX \
+     -DCMAKE_INSTALL_DOCDIR=/usr/doc/$PKGNAM-$VERSION \
+     -DCMAKE_BUILD_TYPE=Release ..
+   make $NUMJOBS || make || exit 1
+diff -ruBN /tmp/openobex/openobex.SlackBuild.log /source/n/openobex/openobex.SlackBuild.log
+--- /tmp/openobex/openobex.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/n/openobex/openobex.SlackBuild.log	2021-01-11 08:28:13.000000000 +0000
+@@ -0,0 +1,600 @@
++openobex-1.7.2-Source/AUTHORS
++openobex-1.7.2-Source/CMakeModules/
++openobex-1.7.2-Source/CMakeModules/FindDocbook.cmake
++openobex-1.7.2-Source/CMakeModules/FindIrda.cmake
++openobex-1.7.2-Source/CMakeModules/FindBluetooth.cmake
++openobex-1.7.2-Source/CMakeModules/MaintainerMode.cmake
++openobex-1.7.2-Source/CMakeModules/exportheader.cmake.in
++openobex-1.7.2-Source/CMakeModules/GenerateExportHeader.cmake
++openobex-1.7.2-Source/CMakeModules/FindXslt.cmake
++openobex-1.7.2-Source/CMakeModules/UseDocbook.cmake
++openobex-1.7.2-Source/CMakeModules/UseXslt.cmake
++openobex-1.7.2-Source/CMakeModules/FindLibUSB.cmake
++openobex-1.7.2-Source/COPYING
++openobex-1.7.2-Source/COPYING.LIB
++openobex-1.7.2-Source/NEWS
++openobex-1.7.2-Source/apps/
++openobex-1.7.2-Source/apps/ChangeLog
++openobex-1.7.2-Source/apps/ircp/
++openobex-1.7.2-Source/apps/ircp/ChangeLog
++openobex-1.7.2-Source/apps/ircp/debug.h
++openobex-1.7.2-Source/apps/ircp/dirtraverse.h
++openobex-1.7.2-Source/apps/ircp/ircp.c
++openobex-1.7.2-Source/apps/ircp/ircp.h
++openobex-1.7.2-Source/apps/ircp/ircp_client.h
++openobex-1.7.2-Source/apps/ircp/ircp_io.h
++openobex-1.7.2-Source/apps/ircp/ircp_server.h
++openobex-1.7.2-Source/apps/ircp/dirtraverse.c
++openobex-1.7.2-Source/apps/ircp/CMakeLists.txt
++openobex-1.7.2-Source/apps/ircp/ircp_server.c
++openobex-1.7.2-Source/apps/ircp/ircp_io.c
++openobex-1.7.2-Source/apps/ircp/ircp_client.c
++openobex-1.7.2-Source/apps/lib/
++openobex-1.7.2-Source/apps/lib/obex_io.h
++openobex-1.7.2-Source/apps/lib/obex_put_common.h
++openobex-1.7.2-Source/apps/lib/CMakeLists.txt
++openobex-1.7.2-Source/apps/lib/obex_io.c
++openobex-1.7.2-Source/apps/lib/obex_put_common.c
++openobex-1.7.2-Source/apps/obex_test/
++openobex-1.7.2-Source/apps/obex_test/obex_test_client.h
++openobex-1.7.2-Source/apps/obex_test/obex_test_server.h
++openobex-1.7.2-Source/apps/obex_test/CMakeLists.txt
++openobex-1.7.2-Source/apps/obex_test/obex_test.h
++openobex-1.7.2-Source/apps/obex_test/obex_test_client.c
++openobex-1.7.2-Source/apps/obex_test/obex_test_server.c
++openobex-1.7.2-Source/apps/obex_test/obex_test.c
++openobex-1.7.2-Source/apps/CMakeLists.txt
++openobex-1.7.2-Source/apps/irobex_palm3.c
++openobex-1.7.2-Source/apps/irxfer.c
++openobex-1.7.2-Source/apps/obex_find.c
++openobex-1.7.2-Source/apps/obex_tcp.c
++openobex-1.7.2-Source/doc/
++openobex-1.7.2-Source/doc/Doxyfile.in
++openobex-1.7.2-Source/doc/openobex.coverpage
++openobex-1.7.2-Source/doc/ircp.xml
++openobex-1.7.2-Source/doc/irobex_palm3.xml
++openobex-1.7.2-Source/doc/irxfer.xml
++openobex-1.7.2-Source/doc/obex_find.xml
++openobex-1.7.2-Source/doc/obex_tcp.xml
++openobex-1.7.2-Source/doc/obex_test.xml
++openobex-1.7.2-Source/doc/openobex-apps.xml
++openobex-1.7.2-Source/doc/referenceinfo.xml.in
++openobex-1.7.2-Source/doc/CMakeLists.txt
++openobex-1.7.2-Source/include/
++openobex-1.7.2-Source/include/linux/
++openobex-1.7.2-Source/include/linux/irda.h
++openobex-1.7.2-Source/include/msvc/
++openobex-1.7.2-Source/include/msvc/inttypes.h
++openobex-1.7.2-Source/include/msvc/stdint.h
++openobex-1.7.2-Source/include/msvc/stdbool.h
++openobex-1.7.2-Source/include/msvc/unistd.h
++openobex-1.7.2-Source/include/openobex/
++openobex-1.7.2-Source/include/openobex/CMakeLists.txt
++openobex-1.7.2-Source/include/openobex/version.h.in
++openobex-1.7.2-Source/include/openobex/obex.h
++openobex-1.7.2-Source/include/openobex/obex_const.h
++openobex-1.7.2-Source/lib/
++openobex-1.7.2-Source/lib/ChangeLog
++openobex-1.7.2-Source/lib/obex_hdr.h
++openobex-1.7.2-Source/lib/obex_hdr_membuf.c
++openobex-1.7.2-Source/lib/obex_hdr_ptr.c
++openobex-1.7.2-Source/lib/obex_msg.h
++openobex-1.7.2-Source/lib/obex_object.h
++openobex-1.7.2-Source/lib/obex_server.c
++openobex-1.7.2-Source/lib/obex_server.h
++openobex-1.7.2-Source/lib/api.c
++openobex-1.7.2-Source/lib/obex_connect.h
++openobex-1.7.2-Source/lib/obex_hdr_stream.c
++openobex-1.7.2-Source/lib/openobex.rc.in
++openobex-1.7.2-Source/lib/obex_object.c
++openobex-1.7.2-Source/lib/cloexec.h
++openobex-1.7.2-Source/lib/win32compat.c
++openobex-1.7.2-Source/lib/openobex-build-settings.cmake.in
++openobex-1.7.2-Source/lib/debug.h
++openobex-1.7.2-Source/lib/transport/
++openobex-1.7.2-Source/lib/transport/usbutils.h
++openobex-1.7.2-Source/lib/transport/irda_wrap.h
++openobex-1.7.2-Source/lib/transport/fdobex.c
++openobex-1.7.2-Source/lib/transport/inobex.h
++openobex-1.7.2-Source/lib/transport/usbobex.c
++openobex-1.7.2-Source/lib/transport/btobex.h
++openobex-1.7.2-Source/lib/transport/fdobex.h
++openobex-1.7.2-Source/lib/transport/irobex.c
++openobex-1.7.2-Source/lib/transport/usbobex.h
++openobex-1.7.2-Source/lib/transport/bluez_compat.h
++openobex-1.7.2-Source/lib/transport/customtrans.h
++openobex-1.7.2-Source/lib/transport/irobex.h
++openobex-1.7.2-Source/lib/transport/usbutils.c
++openobex-1.7.2-Source/lib/transport/btobex.c
++openobex-1.7.2-Source/lib/transport/customtrans.c
++openobex-1.7.2-Source/lib/transport/inobex.c
++openobex-1.7.2-Source/lib/transport/usb1obex.c
++openobex-1.7.2-Source/lib/membuf.h
++openobex-1.7.2-Source/lib/obex_body.c
++openobex-1.7.2-Source/lib/obex_body.h
++openobex-1.7.2-Source/lib/obex_client.c
++openobex-1.7.2-Source/lib/obex_client.h
++openobex-1.7.2-Source/lib/obex_connect.c
++openobex-1.7.2-Source/lib/obex_hdr.c
++openobex-1.7.2-Source/lib/obex_incl.h
++openobex-1.7.2-Source/lib/obex_main.c
++openobex-1.7.2-Source/lib/obex_main.h
++openobex-1.7.2-Source/lib/obex_transport.c
++openobex-1.7.2-Source/lib/obex_transport.h
++openobex-1.7.2-Source/lib/obex_transport_sock.c
++openobex-1.7.2-Source/lib/obex_transport_sock.h
++openobex-1.7.2-Source/lib/nonblock.h
++openobex-1.7.2-Source/lib/membuf.c
++openobex-1.7.2-Source/lib/obex.sym
++openobex-1.7.2-Source/lib/obex_msg.c
++openobex-1.7.2-Source/lib/CMakeLists.txt
++openobex-1.7.2-Source/lib/databuffer.c
++openobex-1.7.2-Source/lib/databuffer.h
++openobex-1.7.2-Source/lib/defines.h
++openobex-1.7.2-Source/openobex.pc.in
++openobex-1.7.2-Source/udev/
++openobex-1.7.2-Source/udev/openobex.rules.in
++openobex-1.7.2-Source/udev/CMakeLists.txt
++openobex-1.7.2-Source/udev/obex-check-device.c
++openobex-1.7.2-Source/README
++openobex-1.7.2-Source/openobex-config.cmake.in
++openobex-1.7.2-Source/UPGRADING.txt
++openobex-1.7.2-Source/INSTALL_Win32.txt
++openobex-1.7.2-Source/CMakeLists.txt
++openobex-1.7.2-Source/ChangeLog
++openobex-1.7.2-Source/INSTALL.txt
++openobex-1.7.2-Source/openobex-config-version.cmake.in
++-- The C compiler identification is GNU 10.2.0
++-- Detecting C compiler ABI info
++-- Detecting C compiler ABI info - done
++-- Check for working C compiler: /usr/bin/cc - skipped
++-- Detecting C compile features
++-- Detecting C compile features - done
++-- Performing Test COMPILER_HAS_HIDDEN_VISIBILITY
++-- Performing Test COMPILER_HAS_HIDDEN_VISIBILITY - Success
++-- Performing Test COMPILER_HAS_DEPRECATED_ATTR
++-- Performing Test COMPILER_HAS_DEPRECATED_ATTR - Success
++-- Performing Test COMPILER_SUPPORT_NOUNDEFINED
++-- Performing Test COMPILER_SUPPORT_NOUNDEFINED - Success
++-- Found PkgConfig: /usr/bin/pkg-config (found version "0.29.2") 
++-- Checking for module 'bluez'
++--   Found bluez, version 5.55
++-- Checking for module 'libusb-1.0'
++--   Found libusb-1.0, version 1.0.24
++-- Looking for libusb_get_device_list in /usr/lib/libusb-1.0.so
++-- Looking for libusb_get_device_list in /usr/lib/libusb-1.0.so - found
++-- Checking for module 'udev'
++--   Found udev, version 243
++-- Found Doxygen: /usr/bin/doxygen (found version "1.8.20") found components: doxygen missing components: dot
++-- Could NOT find Java (missing: Java_JAVA_EXECUTABLE Java_JAR_EXECUTABLE Java_JAVAC_EXECUTABLE Java_JAVAH_EXECUTABLE Java_JAVADOC_EXECUTABLE) 
++-- Configuring done
++-- Generating done
++CMake Warning:
++  Manually-specified variables were not used by the project:
++
++    CMAKE_CXX_FLAGS
++    LIB_SUFFIX
++
++
++-- Build files have been written to: /tmp/openobex-1.7.2-Source/build
++Scanning dependencies of target apidoc_html
++[  3%] Generating html/index.html
++Doxygen version used: 1.8.20
++Searching for include files...
++Searching for example files...
++Searching for images...
++Searching for dot files...
++Searching for msc files...
++Searching for dia files...
++Searching for files to exclude
++Searching INPUT for files to process...
++Reading and parsing tag files
++Parsing files
++Preprocessing /tmp/openobex-1.7.2-Source/lib/api.c...
++Parsing file /tmp/openobex-1.7.2-Source/lib/api.c...
++Preprocessing /tmp/openobex-1.7.2-Source/include/openobex/obex.h...
++Parsing file /tmp/openobex-1.7.2-Source/include/openobex/obex.h...
++Preprocessing /tmp/openobex-1.7.2-Source/include/openobex/obex_const.h...
++Parsing file /tmp/openobex-1.7.2-Source/include/openobex/obex_const.h...
++Reading /tmp/openobex-1.7.2-Source/doc/openobex.coverpage...
++Building macro definition list...
++Building group list...
++Building directory list...
++Building namespace list...
++Building file list...
++Building class list...
++Computing nesting relations for classes...
++Associating documentation with classes...
++Building example list...
++Searching for enumerations...
++Searching for documented typedefs...
++Searching for members imported via using declarations...
++Searching for included using directives...
++Searching for documented variables...
++Building interface member list...
++Building member list...
++Searching for friends...
++Searching for documented defines...
++Computing class inheritance relations...
++Computing class usage relations...
++Flushing cached template relations that have become invalid...
++Computing class relations...
++Add enum values to enums...
++Searching for member function documentation...
++Creating members for template instances...
++Building page list...
++Search for main page...
++Computing page relations...
++Determining the scope of groups...
++Sorting lists...
++Determining which enums are documented
++Computing member relations...
++Building full member lists recursively...
++Adding members to member groups.
++Computing member references...
++Inheriting documentation...
++Generating disk names...
++Adding source references...
++Adding xrefitems...
++Sorting member lists...
++Setting anonymous enum type...
++Computing dependencies between directories...
++Generating citations page...
++Counting members...
++Counting data structures...
++Resolving user defined references...
++Finding anchors and sections in the documentation...
++Transferring function references...
++Combining using relations...
++Adding members to index pages...
++Correcting members for VHDL...
++Generating style sheet...
++Generating search indices...
++Generating example documentation...
++Generating file sources...
++Generating file documentation...
++Generating docs for file api.c...
++Generating docs for file obex.h...
++Generating docs for file obex_const.h...
++Generating docs for file openobex.coverpage...
++Generating page documentation...
++Generating group documentation...
++Generating class documentation...
++Generating docs for compound obex_ctrans_t...
++Generating docs for compound obex_headerdata_t...
++Generating docs for compound obex_interface_t...
++Generating docs for compound obex_irda_intf_t...
++Generating docs for compound obex_usb_intf_service_t...
++Generating docs for compound obex_usb_intf_t...
++Generating namespace index...
++Generating graph info page...
++Generating directory documentation...
++Generating index page...
++Generating page index...
++Generating module index...
++Generating namespace index...
++Generating namespace member index...
++Generating annotated compound index...
++Generating alphabetical compound index...
++Generating hierarchical class index...
++Generating member index...
++Generating file index...
++Generating file member index...
++Generating example index...
++finalizing index lists...
++writing tag file...
++Running plantuml with JAVA...
++lookup cache used 184/65536 hits=965 misses=190
++finished...
++[  3%] Built target apidoc_html
++Scanning dependencies of target openobex
++[  7%] Building C object lib/CMakeFiles/openobex.dir/api.c.o
++[ 11%] Building C object lib/CMakeFiles/openobex.dir/obex_client.c.o
++[ 14%] Building C object lib/CMakeFiles/openobex.dir/obex_connect.c.o
++[ 18%] Building C object lib/CMakeFiles/openobex.dir/obex_hdr.c.o
++[ 22%] Building C object lib/CMakeFiles/openobex.dir/obex_hdr_membuf.c.o
++[ 25%] Building C object lib/CMakeFiles/openobex.dir/obex_hdr_ptr.c.o
++[ 29%] Building C object lib/CMakeFiles/openobex.dir/obex_hdr_stream.c.o
++[ 33%] Building C object lib/CMakeFiles/openobex.dir/obex_body.c.o
++[ 37%] Building C object lib/CMakeFiles/openobex.dir/obex_main.c.o
++[ 40%] Building C object lib/CMakeFiles/openobex.dir/obex_msg.c.o
++[ 44%] Building C object lib/CMakeFiles/openobex.dir/obex_object.c.o
++[ 48%] Building C object lib/CMakeFiles/openobex.dir/obex_server.c.o
++[ 51%] Building C object lib/CMakeFiles/openobex.dir/obex_transport.c.o
++[ 55%] Building C object lib/CMakeFiles/openobex.dir/obex_transport_sock.c.o
++[ 59%] Building C object lib/CMakeFiles/openobex.dir/databuffer.c.o
++[ 62%] Building C object lib/CMakeFiles/openobex.dir/membuf.c.o
++[ 66%] Building C object lib/CMakeFiles/openobex.dir/transport/inobex.c.o
++[ 70%] Building C object lib/CMakeFiles/openobex.dir/transport/fdobex.c.o
++[ 74%] Building C object lib/CMakeFiles/openobex.dir/transport/customtrans.c.o
++[ 77%] Building C object lib/CMakeFiles/openobex.dir/transport/irobex.c.o
++[ 81%] Building C object lib/CMakeFiles/openobex.dir/transport/btobex.c.o
++[ 85%] Building C object lib/CMakeFiles/openobex.dir/transport/usb1obex.c.o
++[ 88%] Building C object lib/CMakeFiles/openobex.dir/transport/usbutils.c.o
++[ 92%] Linking C shared library libopenobex.so
++[ 92%] Built target openobex
++Scanning dependencies of target obex-check-device
++[ 96%] Building C object udev/CMakeFiles/obex-check-device.dir/obex-check-device.c.o
++[100%] Linking C executable obex-check-device
++[100%] Built target obex-check-device
++Scanning dependencies of target openobex-apps-doc
++[  2%] Built target apidoc_html
++[  4%] Generating ircp.1, irobex_palm3.1, irxfer.1, obex_find.1, obex_tcp.1, obex_test.1
++[ 55%] Built target openobex
++Scanning dependencies of target openobex-apps-common
++Scanning dependencies of target ircp
++[ 57%] Building C object apps/lib/CMakeFiles/openobex-apps-common.dir/obex_io.c.o
++[ 59%] Building C object apps/ircp/CMakeFiles/ircp.dir/dirtraverse.c.o
++[ 61%] Building C object apps/ircp/CMakeFiles/ircp.dir/ircp.c.o
++[ 63%] Building C object apps/lib/CMakeFiles/openobex-apps-common.dir/obex_put_common.c.o
++[ 65%] Building C object apps/ircp/CMakeFiles/ircp.dir/ircp_client.c.o
++[ 68%] Linking C static library libopenobex-apps-common.a
++[ 68%] Built target openobex-apps-common
++Scanning dependencies of target obex_find
++[ 70%] Building C object apps/CMakeFiles/obex_find.dir/obex_find.c.o
++[ 72%] Building C object apps/ircp/CMakeFiles/ircp.dir/ircp_io.c.o
++[ 74%] Linking C executable obex_find
++[ 76%] Building C object apps/ircp/CMakeFiles/ircp.dir/ircp_server.c.o
++[ 76%] Built target obex_find
++Scanning dependencies of target obex_tcp
++[ 78%] Building C object apps/CMakeFiles/obex_tcp.dir/obex_tcp.c.o
++[ 80%] Linking C executable obex_tcp
++[ 82%] Linking C executable ircp
++[ 82%] Built target obex_tcp
++Scanning dependencies of target obex_test
++[ 82%] Built target ircp
++[ 85%] Building C object apps/obex_test/CMakeFiles/obex_test.dir/obex_test.c.o
++Scanning dependencies of target irobex_palm3
++[ 87%] Building C object apps/CMakeFiles/irobex_palm3.dir/irobex_palm3.c.o
++[ 89%] Linking C executable irobex_palm3
++[ 89%] Built target irobex_palm3
++[ 91%] Building C object apps/obex_test/CMakeFiles/obex_test.dir/obex_test_client.c.o
++Scanning dependencies of target irxfer
++[ 93%] Building C object apps/CMakeFiles/irxfer.dir/irxfer.c.o
++[ 95%] Linking C executable irxfer
++[ 95%] Built target irxfer
++[ 97%] Building C object apps/obex_test/CMakeFiles/obex_test.dir/obex_test_server.c.o
++[100%] Linking C executable obex_test
++[100%] Built target obex_test
++Note: Writing ircp.1
++Note: Writing irobex_palm3.1
++Note: Writing irxfer.1
++Note: Writing obex_find.1
++Note: Writing obex_tcp.1
++Note: Writing obex_test.1
++[100%] Built target openobex-apps-doc
++Scanning dependencies of target openobex-apps
++[100%] Built target openobex-apps
++[ 50%] Built target openobex-apps-doc
++[100%] Built target apidoc_html
++Scanning dependencies of target doc
++[100%] Built target doc
++[  3%] Built target apidoc_html
++[ 92%] Built target openobex
++[100%] Built target obex-check-device
++Install the project...
++-- Install configuration: "Release"
++-- Installing: /tmp/package-openobex/usr/include/openobex/obex.h
++-- Installing: /tmp/package-openobex/usr/include/openobex/obex_const.h
++-- Installing: /tmp/package-openobex/usr/include/openobex/version.h
++-- Installing: /tmp/package-openobex/usr/lib/libopenobex.so.1.7.2
++-- Installing: /tmp/package-openobex/usr/lib/libopenobex.so.2
++-- Installing: /tmp/package-openobex/usr/lib/libopenobex.so
++-- Installing: /tmp/package-openobex/usr/lib/cmake/OpenObex-1.7.2/openobex-config.cmake
++-- Installing: /tmp/package-openobex/usr/lib/cmake/OpenObex-1.7.2/openobex-config-version.cmake
++-- Installing: /tmp/package-openobex/usr/lib/cmake/OpenObex-1.7.2/openobex-target.cmake
++-- Installing: /tmp/package-openobex/usr/lib/cmake/OpenObex-1.7.2/openobex-target-release.cmake
++-- Installing: /tmp/package-openobex/usr/lib/pkgconfig/openobex.pc
++-- Installing: /tmp/package-openobex/usr/sbin/obex-check-device
++-- Set runtime path of "/tmp/package-openobex/usr/sbin/obex-check-device" to ""
++-- Installing: /tmp/package-openobex/lib/udev/rules.d/60-openobex.rules
++-- Installing: /tmp/package-openobex/usr/bin/obex_find
++-- Installing: /tmp/package-openobex/usr/bin/irxfer
++-- Installing: /tmp/package-openobex/usr/bin/irobex_palm3
++-- Installing: /tmp/package-openobex/usr/bin/obex_tcp
++-- Installing: /tmp/package-openobex/usr/bin/obex_test
++-- Installing: /tmp/package-openobex/usr/bin/ircp
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/menudata.js
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/splitbar.png
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/folderopen.png
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/structobex__irda__intf__t.html
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/obex_8h.html
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/unionobex__headerdata__t.html
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/doc.png
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/structobex__usb__intf__t.html
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/structobex__usb__intf__service__t.html
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/tabs.css
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/dir_d44c64559bbebec7f509842c48db8b23.html
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/tab_h.png
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/bc_s.png
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/api_8c.html
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/globals_o.html
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/doxygen.css
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/globals.html
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/functions.html
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/globals_i.html
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/folderclosed.png
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/menu.js
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/functions_vars.html
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/tab_a.png
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/obex__const_8h.html
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/tab_s.png
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/globals_f.html
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/globals_type.html
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/files.html
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/unionobex__interface__t.html
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/globals_t.html
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/structobex__ctrans__t.html
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/dir_97aefd0d527b934f1d99a682da8fe6a9.html
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/classes.html
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/nav_g.png
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/bdwn.png
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/openobex_8coverpage.html
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/globals_func.html
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/annotated.html
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/sync_off.png
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/dir_1d588721a3bfadf2de93b304da302d42.html
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/globals_enum.html
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/globals_eval.html
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/jquery.js
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/open.png
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/closed.png
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/dir_e68e8157741866f444e17edd764ebbae.html
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/dynsections.js
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/nav_h.png
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/doxygen.svg
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/tab_b.png
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/index.html
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/sync_on.png
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/nav_f.png
++-- Installing: /tmp/package-openobex/usr/doc/openobex-1.7.2/html/globals_defs.html
++-- Installing: /tmp/package-openobex/usr/share/man/man1/ircp.1
++-- Installing: /tmp/package-openobex/usr/share/man/man1/irobex_palm3.1
++-- Installing: /tmp/package-openobex/usr/share/man/man1/irxfer.1
++-- Installing: /tmp/package-openobex/usr/share/man/man1/obex_find.1
++-- Installing: /tmp/package-openobex/usr/share/man/man1/obex_tcp.1
++-- Installing: /tmp/package-openobex/usr/share/man/man1/obex_test.1
++cp: cannot stat 'INSTALL': No such file or directory
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++usr/lib/libopenobex.so	libopenobex.so.2
++usr/lib/libopenobex.so.2	libopenobex.so.1.7.2
++
++Making symbolic link creation script:
++( cd usr/lib ; rm -rf libopenobex.so )
++( cd usr/lib ; ln -sf libopenobex.so.2 libopenobex.so )
++( cd usr/lib ; rm -rf libopenobex.so.2 )
++( cd usr/lib ; ln -sf libopenobex.so.1.7.2 libopenobex.so.2 )
++
++It is recommended that you make these lines your new installation script.
++
++Would you like to make this stuff the install script for this package
++and remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './usr/lib/libopenobex.so.2'
++removed './usr/lib/libopenobex.so'
++
++Creating your new ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/openobex-1.7.2-x86_64-3.txz
++
++./
++install/
++install/doinst.sh
++install/slack-desc
++lib/
++lib/udev/
++lib/udev/rules.d/
++lib/udev/rules.d/60-openobex.rules
++usr/
++usr/bin/
++usr/bin/ircp
++usr/bin/irobex_palm3
++usr/bin/irxfer
++usr/bin/obex_find
++usr/bin/obex_tcp
++usr/bin/obex_test
++usr/doc/
++usr/doc/openobex-1.7.2/
++usr/doc/openobex-1.7.2/AUTHORS
++usr/doc/openobex-1.7.2/COPYING
++usr/doc/openobex-1.7.2/COPYING.LIB
++usr/doc/openobex-1.7.2/ChangeLog
++usr/doc/openobex-1.7.2/NEWS
++usr/doc/openobex-1.7.2/README
++usr/doc/openobex-1.7.2/html/
++usr/doc/openobex-1.7.2/html/annotated.html
++usr/doc/openobex-1.7.2/html/api_8c.html
++usr/doc/openobex-1.7.2/html/bc_s.png
++usr/doc/openobex-1.7.2/html/bdwn.png
++usr/doc/openobex-1.7.2/html/classes.html
++usr/doc/openobex-1.7.2/html/closed.png
++usr/doc/openobex-1.7.2/html/dir_1d588721a3bfadf2de93b304da302d42.html
++usr/doc/openobex-1.7.2/html/dir_97aefd0d527b934f1d99a682da8fe6a9.html
++usr/doc/openobex-1.7.2/html/dir_d44c64559bbebec7f509842c48db8b23.html
++usr/doc/openobex-1.7.2/html/dir_e68e8157741866f444e17edd764ebbae.html
++usr/doc/openobex-1.7.2/html/doc.png
++usr/doc/openobex-1.7.2/html/doxygen.css
++usr/doc/openobex-1.7.2/html/doxygen.svg
++usr/doc/openobex-1.7.2/html/dynsections.js
++usr/doc/openobex-1.7.2/html/files.html
++usr/doc/openobex-1.7.2/html/folderclosed.png
++usr/doc/openobex-1.7.2/html/folderopen.png
++usr/doc/openobex-1.7.2/html/functions.html
++usr/doc/openobex-1.7.2/html/functions_vars.html
++usr/doc/openobex-1.7.2/html/globals.html
++usr/doc/openobex-1.7.2/html/globals_defs.html
++usr/doc/openobex-1.7.2/html/globals_enum.html
++usr/doc/openobex-1.7.2/html/globals_eval.html
++usr/doc/openobex-1.7.2/html/globals_f.html
++usr/doc/openobex-1.7.2/html/globals_func.html
++usr/doc/openobex-1.7.2/html/globals_i.html
++usr/doc/openobex-1.7.2/html/globals_o.html
++usr/doc/openobex-1.7.2/html/globals_t.html
++usr/doc/openobex-1.7.2/html/globals_type.html
++usr/doc/openobex-1.7.2/html/index.html
++usr/doc/openobex-1.7.2/html/jquery.js
++usr/doc/openobex-1.7.2/html/menu.js
++usr/doc/openobex-1.7.2/html/menudata.js
++usr/doc/openobex-1.7.2/html/nav_f.png
++usr/doc/openobex-1.7.2/html/nav_g.png
++usr/doc/openobex-1.7.2/html/nav_h.png
++usr/doc/openobex-1.7.2/html/obex_8h.html
++usr/doc/openobex-1.7.2/html/obex__const_8h.html
++usr/doc/openobex-1.7.2/html/open.png
++usr/doc/openobex-1.7.2/html/openobex_8coverpage.html
++usr/doc/openobex-1.7.2/html/splitbar.png
++usr/doc/openobex-1.7.2/html/structobex__ctrans__t.html
++usr/doc/openobex-1.7.2/html/structobex__irda__intf__t.html
++usr/doc/openobex-1.7.2/html/structobex__usb__intf__service__t.html
++usr/doc/openobex-1.7.2/html/structobex__usb__intf__t.html
++usr/doc/openobex-1.7.2/html/sync_off.png
++usr/doc/openobex-1.7.2/html/sync_on.png
++usr/doc/openobex-1.7.2/html/tab_a.png
++usr/doc/openobex-1.7.2/html/tab_b.png
++usr/doc/openobex-1.7.2/html/tab_h.png
++usr/doc/openobex-1.7.2/html/tab_s.png
++usr/doc/openobex-1.7.2/html/tabs.css
++usr/doc/openobex-1.7.2/html/unionobex__headerdata__t.html
++usr/doc/openobex-1.7.2/html/unionobex__interface__t.html
++usr/include/
++usr/include/openobex/
++usr/include/openobex/obex.h
++usr/include/openobex/obex_const.h
++usr/include/openobex/version.h
++usr/lib/
++usr/lib/cmake/
++usr/lib/cmake/OpenObex-1.7.2/
++usr/lib/cmake/OpenObex-1.7.2/openobex-config-version.cmake
++usr/lib/cmake/OpenObex-1.7.2/openobex-config.cmake
++usr/lib/cmake/OpenObex-1.7.2/openobex-target-release.cmake
++usr/lib/cmake/OpenObex-1.7.2/openobex-target.cmake
++usr/lib/libopenobex.so.1.7.2
++usr/lib/pkgconfig/
++usr/lib/pkgconfig/openobex.pc
++usr/man/
++usr/man/man1/
++usr/man/man1/ircp.1.gz
++usr/man/man1/irobex_palm3.1.gz
++usr/man/man1/irxfer.1.gz
++usr/man/man1/obex_find.1.gz
++usr/man/man1/obex_tcp.1.gz
++usr/man/man1/obex_test.1.gz
++usr/sbin/
++usr/sbin/obex-check-device
++WARNING:  zero length file usr/doc/openobex-1.7.2/NEWS
++
++Slackware package /tmp/openobex-1.7.2-x86_64-3.txz created.
++

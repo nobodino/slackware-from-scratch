@@ -1,0 +1,159 @@
+#!/bin/bash
+
+# Copyright 2015, 2016, 2018, 2020  Patrick J. Volkerding, Sebeka, Minnesota, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=glibc-zoneinfo
+ZONE_VERSIONS="$(echo tzdata* | cut -f1 -d . | cut -b7-11)"
+BUILD=${BUILD:-1}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$(uname -m)" in
+    i?86) ARCH=i586 ;;
+    arm*) readelf /usr/bin/file -A | egrep -q "Tag_CPU.*[4,5]" && ARCH=arm || ARCH=armv7hl ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+    *) ARCH=$(uname -m) ;;
+  esac
+  export ARCH
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$ZONE_VERSIONS-noarch-$BUILD.txz"
+  exit 0
+fi
+
+NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+
+if [ "$ARCH" = "i386" ]; then
+  SLKCFLAGS="-DHAVE_SNPRINTF=1 -O2 -march=i386 -mcpu=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i486" ]; then
+  SLKCFLAGS="-DHAVE_SNPRINTF=1 -O2 -march=i486 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-DHAVE_SNPRINTF=1 -O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i686" ]; then
+  SLKCFLAGS="-DHAVE_SNPRINTF=1 -O2 -march=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-DHAVE_SNPRINTF=1 -O2"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-DHAVE_SNPRINTF=1 -O2 -fPIC"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "armv7hl" ]; then
+  SLKCFLAGS="-DHAVE_SNPRINTF=1 -O3 -march=armv7-a -mfpu=vfpv3-d16"
+  LIBDIRSUFFIX=""
+else
+  SLKCFLAGS="-DHAVE_SNPRINTF=1 -O2"
+  LIBDIRSUFFIX=""
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-$PKGNAM
+
+rm -rf $PKG
+mkdir -p $TMP $PKG/etc
+
+# Build and install the zoneinfo database:
+cd $TMP
+rm -rf tzcodedata-build
+mkdir tzcodedata-build
+cd tzcodedata-build
+tar xzf $CWD/tzcode?????.tar.gz || exit 1
+tar xzf $CWD/tzdata?????.tar.gz || exit 1
+
+# Default to more bloated (but more compatible) "fat" format with zic.
+# This was the default prior to tzcode2020b.
+zcat $CWD/zic.default.fat.diff.gz | patch -p1 --verbose || exit 1
+
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \+ -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \+
+
+sed -i "s,/usr/local,$(pwd),g" Makefile
+sed -i "s,/etc/zoneinfo,/zoneinfo,g" Makefile
+sed -i "s,^CFLAGS=,CFLAGS=		$SLKCFLAGS,g" Makefile
+make || exit 1
+make install DESTDIR=$PKG/stage || exit 1
+
+# Install the primary zone files:
+mkdir -p $PKG/usr/share
+mv $PKG/stage/usr/share/zoneinfo $PKG/usr/share
+
+# These are all identical to the normal zoneinfo files, so let's hard link
+# them to save space:
+cp -al $PKG/usr/share/zoneinfo $PKG/usr/share/posix
+mv $PKG/usr/share/posix $PKG/usr/share/zoneinfo
+
+# Install the "right" files:
+mkdir -p $PKG/usr/share/zoneinfo/right
+cp -a $PKG/stage/usr/share/zoneinfo-leaps/* $PKG/usr/share/zoneinfo/right
+
+# Clean up staged file residue:
+rm -rf $PKG/stage
+
+# Remove $PKG/usr/share/zoneinfo/localtime -- the install script will
+# create it as a link to /etc/localtime.
+rm -f $PKG/usr/share/zoneinfo/localtime
+
+# Install some scripts to help select a timezone:
+mkdir -p $PKG/var/log/setup
+cp -a $CWD/timezone-scripts/setup.timeconfig $PKG/var/log/setup
+chown root:root $PKG/var/log/setup/setup.timeconfig
+chmod 755 $PKG/var/log/setup/setup.timeconfig
+mkdir -p $PKG/usr/sbin
+cp -a $CWD/timezone-scripts/timeconfig $PKG/usr/sbin
+chown root:root $PKG/usr/sbin/timeconfig
+chmod 755 $PKG/usr/sbin/timeconfig
+( cd $CWD/timezone-scripts
+  # Try to rebuild this:
+  sh output-updated-timeconfig.sh $PKG/usr/share/zoneinfo > $PKG/usr/sbin/timeconfig 2> /dev/null
+)
+# Note in timeconfig which zoneinfo database was used:
+sed -i "s/# ChangeLog:/# ChangeLog:\n# $(date '+%Y-%m-%d'):   Updated timezones from tzdata${ZONE_VERSIONS}. <pjv>/g" $PKG/usr/sbin/timeconfig
+
+# Don't forget to add the /usr/share/zoneinfo/localtime -> /etc/localtime symlink! :)
+if [ ! -r $PKG/usr/share/zoneinfo/localtime ]; then
+  ( cd $PKG/usr/share/zoneinfo ; ln -sf /etc/localtime . )
+fi
+
+mkdir -p $PKG/usr/doc/glibc-zoneinfo-$ZONE_VERSIONS
+cp -a \
+  CONTRIBUTING LICENSE NEWS README Theory \
+  $PKG/usr/doc/glibc-zoneinfo-$ZONE_VERSIONS
+
+mkdir -p $PKG/install
+zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+makepkg -l y -c n $TMP/glibc-zoneinfo-$ZONE_VERSIONS-noarch-$BUILD.txz
+

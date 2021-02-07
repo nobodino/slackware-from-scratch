@@ -1,0 +1,17 @@
+mkdir -p $PKG/etc/X11
+( cd $PKG/usr/lib/X11
+  mv xinit $PKG/etc/X11
+  ln -sf ../../../etc/X11/xinit .
+)
+cp -a $CWD/post-install/xinit/README.Xmodmap $PKG/etc/X11/xinit
+chown root:root $PKG/etc/X11/xinit/README.Xmodmap
+chmod 644 $PKG/etc/X11/xinit/README.Xmodmap
+
+# This should be selected by xwmconfig, and should not be included in the
+# package at all.  Since this was included in the older package (and not
+# as "new") upgrading this will erase your xinitrc, and you'll have to
+# run xwmconfig again.  Sorry about that, but it's better than having your
+# xinitrc overwritten with the TWM version...
+
+rm -f $PKG/etc/X11/xinit/xinitrc
+

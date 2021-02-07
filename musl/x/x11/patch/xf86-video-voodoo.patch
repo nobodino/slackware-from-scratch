@@ -1,0 +1,10 @@
+# Remove obsolete references to mibstore.h and miInitializeBackingStore():
+grep -r -l '#include "mibstore.h"' * | while read file ; do
+  sed -i "s/#include \"mibstore.h\"//g" $file
+done
+grep -r -l 'miInitializeBackingStore(pScreen);' | while read file ; do
+  sed -i "s/miInitializeBackingStore(pScreen);//g" $file
+done
+
+zcat $CWD/patch/xf86-video-voodoo/0001-don-t-use-PCITAG-in-struct-anymore.patch.gz \
+  | patch -p1 --verbose || { touch ${SLACK_X_BUILD_DIR}/${PKGNAME}.failed ; continue ; }

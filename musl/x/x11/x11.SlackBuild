@@ -1,0 +1,421 @@
+#!/bin/bash
+# Copyright 2007-2018  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# To build only a single package group, specify it as $1, like:
+# ./x11.SlackBuild lib
+# To build only a single package, specify both the source directory
+# and the name of the package, like:
+# ./x11.SlackBuild lib libX11
+
+# Upgrade packages as they are built.
+# Default is to always upgrade newly-built packages (UPGRADE_PACKAGES=always).
+# To install newly built packages only if a package with the exact name is not
+# already installed, use UPGRADE_PACKAGES=yes
+# To not upgrade as packages are built, pass UPGRADE_PACKAGES=no
+UPGRADE_PACKAGES=${UPGRADE_PACKAGES:-always}
+
+pkgbase() {
+  PKGEXT=$(echo $1 | rev | cut -f 1 -d . | rev)
+  case $PKGEXT in
+  'gz' )
+    PKGRETURN=$(basename $1 .tar.gz)
+    ;;
+  'bz2' )
+    PKGRETURN=$(basename $1 .tar.bz2)
+    ;;
+  'lzma' )
+    PKGRETURN=$(basename $1 .tar.lzma)
+    ;;
+  'xz' )
+    PKGRETURN=$(basename $1 .tar.xz)
+    ;;
+  *)
+    PKGRETURN=$(basename $1)
+    ;;
+  esac
+  echo $PKGRETURN
+}
+
+# Set initial variables:
+cd $(dirname $0) ; CWD=$(pwd)
+if [ -z "$TMP" ]; then
+  TMP=/tmp
+  # Old default output directory. If $TMP wasn't predefined, we'll default to
+  # using it unless a different value is provided:
+  SLACK_X_BUILD_DIR=${SLACK_X_BUILD_DIR:-/tmp/x11-build}
+else
+  # $TMP already set. We'll also use it for the output directory unless
+  # a different value is provided:
+  SLACK_X_BUILD_DIR=${SLACK_X_BUILD_DIR:-$TMP}
+fi
+mkdir -p $TMP $SLACK_X_BUILD_DIR
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# A lot of this stuff just controls the package names this time:
+VERSION=${VERSION:-7.5}
+BUILD=${BUILD:-1}
+PKGARCH=$ARCH
+NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+
+if [ "$ARCH" = "x86_64" ]; then
+  LIBDIRSUFFIX=""
+else
+  LIBDIRSUFFIX=""
+fi
+
+# Set up a few useful functions:
+
+fix_perms() {
+  chown -R root:root .
+  find . \
+   \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+   -exec chmod 755 {} \+ -o \
+   \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+   -exec chmod 644 {} \+
+}
+
+process_man_pages() {
+  # Compress and if needed symlink the man pages:
+  if [ -d usr/man ]; then
+    ( cd usr/man
+      for manpagedir in $(find . -type d -name "man*") ; do
+      ( cd $manpagedir
+        for eachpage in $( find . -type l -maxdepth 1) ; do
+          ln -s $( readlink $eachpage ).gz $eachpage.gz
+          rm $eachpage
+        done
+        gzip -9 *.*
+      )
+      done
+    )
+  fi
+}
+
+process_info_pages() {
+  # Compress info pages and purge "dir" file from the package:
+  if [ -d usr/info ]; then
+    ( cd usr/info
+      rm -f dir
+      gzip -9 *
+    )
+  fi
+}
+
+no_usr_share_doc() {
+  # If there are docs, move them:
+  if [ -d usr/share/doc ]; then
+    mkdir -p usr/doc
+    mv usr/share/doc/* usr/doc
+    rmdir usr/share/doc
+  fi
+}
+
+# Set the compile options for the $ARCH being used:
+. $CWD/arch.use.flags
+
+# Better have some binaries installed first, as this may not be
+# in the "magic order".  I built mine by hand through trial-and-error
+# before getting this script to work.  It wasn't that hard...  I think.  ;-)
+( cd src
+  for x_source_dir in proto data util xcb lib app doc xserver driver font ; do
+    # See if $1 is a source directory like "lib":
+    if [ ! -z "$1" ]; then
+      if [ ! "$1" = "${x_source_dir}" ]; then
+        continue
+      fi
+    fi
+    PKG=${SLACK_X_BUILD_DIR}/package-${x_source_dir}
+    rm -rf $PKG
+    mkdir -p $PKG
+    ( cd $x_source_dir
+      for x_pkg in *.tar.?z* ; do
+        # Reset $PKGARCH to its initial value:
+        PKGARCH=$ARCH
+        PKGNAME=$(echo $x_pkg | rev | cut -f 2- -d - | rev)
+        # Perhaps $PKGARCH should be something different:
+        if grep -wq "^$PKGNAME" ${CWD}/noarch ; then
+          PKGARCH=noarch
+        fi 
+        if grep -wq "^$PKGNAME" ${CWD}/package-blacklist ; then
+          continue
+        fi
+        cd $SLACK_X_BUILD_DIR
+        # If $2 is set, we only want to build one package:
+        if [ ! -z "$2" ]; then
+          if [ "$2" = "$PKGNAME" ]; then
+            # Set $PKG to a private dir for the modular package build:
+            PKG=$SLACK_X_BUILD_DIR/package-$PKGNAME
+            rm -rf $PKG
+            mkdir -p $PKG
+          else
+            continue
+          fi
+        else
+          if [ -z "$PRINT_PACKAGE_NAME" ]; then
+            echo
+            echo "Building from source ${x_pkg}"
+            echo
+          fi
+        fi
+        if grep -wq "^$PKGNAME" ${CWD}/modularize ; then
+          # Set $PKG to a private dir for the modular package build:
+          PKG=$SLACK_X_BUILD_DIR/package-$PKGNAME
+          rm -rf $PKG
+          mkdir -p $PKG
+        fi
+
+        # Let's figure out the version number on the modular package:
+        MODULAR_PACKAGE_VERSION=$(echo $x_pkg | rev | cut -f 3- -d . | cut -f 1 -d - | rev)
+
+        # If this variable is passed to the script, nothing will be built.
+        # Instead, a list of packages to be built will be output.
+        if [ ! -z "$PRINT_PACKAGE_NAME" ]; then
+          if [ -r $CWD/build/${PKGNAME} ]; then
+            MODBUILD=$(cat $CWD/build/${PKGNAME})
+          else
+            MODBUILD=$BUILD
+          fi
+          if [ ! "${PKGNAME}" = "xorg-server" ]; then
+            echo "${PKGNAME}-${MODULAR_PACKAGE_VERSION}-${PKGARCH}-${MODBUILD}.txz"
+          else
+            echo "xorg-server-xnest-${MODULAR_PACKAGE_VERSION}-${PKGARCH}-${MODBUILD}.txz"
+            echo "xorg-server-xvfb-${MODULAR_PACKAGE_VERSION}-${PKGARCH}-${MODBUILD}.txz"
+            echo "xorg-server-xephyr-${MODULAR_PACKAGE_VERSION}-${PKGARCH}-${MODBUILD}.txz"
+            echo "xorg-server-xwayland-${MODULAR_PACKAGE_VERSION}-${PKGARCH}-${MODBUILD}.txz"
+            echo "xorg-server-${MODULAR_PACKAGE_VERSION}-${PKGARCH}-${MODBUILD}.txz"
+          fi
+          continue
+        fi
+
+        rm -rf $(pkgbase $x_pkg)
+        tar xf $CWD/src/${x_source_dir}/${x_pkg} || exit 1
+        cd $(pkgbase $x_pkg) || exit 1
+
+        fix_perms
+
+        # If any patches are needed, call this script to apply them:
+        if [ -r $CWD/patch/${PKGNAME}.patch ]; then
+          . $CWD/patch/${PKGNAME}.patch
+        fi
+
+        # I heard somewhere that -O2 breaks some chipset or another.  If you encounter
+        # problems, please contact volkerdi@slackware.com.  Thanks! :-)
+
+        # ./configure, using custom configure script if needed:
+        if [ -r $CWD/configure/${PKGNAME} ]; then
+          . $CWD/configure/${PKGNAME}
+        else
+          # This is the default configure script:
+          . $CWD/configure/configure
+        fi
+
+        # Run make, using custom make script if needed:
+        if [ -r $CWD/make/${PKGNAME} ]; then
+          . $CWD/make/${PKGNAME}
+        else
+          # This is the default make && make install routine:
+          if ! make $NUMJOBS ; then
+            touch ${SLACK_X_BUILD_DIR}/${PKGNAME}.failed
+            continue
+          fi
+
+          make install DESTDIR=$PKG
+        fi
+
+        mkdir -p $PKG/usr/doc/${PKGNAME}-${MODULAR_PACKAGE_VERSION}
+        cp -a \
+          AUTHORS* COPYING* INSTALL* README* NEWS* TODO* \
+          $PKG/usr/doc/${PKGNAME}-${MODULAR_PACKAGE_VERSION}
+
+        # If there's a ChangeLog, installing at least part of the recent history
+        # is useful, but don't let it get totally out of control:
+        if [ -r ChangeLog ]; then
+          DOCSDIR=$(echo $PKG/usr/doc/${PKGNAME}-$MODULAR_PACKAGE_VERSION)
+          cat ChangeLog | head -n 1000 > $DOCSDIR/ChangeLog
+          touch -r ChangeLog $DOCSDIR/ChangeLog
+        fi
+
+        # Get rid of zero-length junk files:
+        find $PKG/usr/doc/${PKGNAME}-$MODULAR_PACKAGE_VERSION -type f -size 0 -exec rm --verbose "{}" \+
+        rmdir --verbose $PKG/usr/doc/${PKGNAME}-$MODULAR_PACKAGE_VERSION 2> /dev/null
+   
+        # Strip binaries:
+        ( cd $PKG
+          find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+          find . | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+          find . | xargs file | grep "current ar archive" | grep ELF | cut -f 1 -d : | xargs strip -g 2> /dev/null
+        )
+
+        # Don't ship .la files:
+        rm -f $PKG/{,usr/}lib${LIBDIRSUFFIX}/*.la
+
+        # If there's any special post-install things to do, do them:
+        if [ -r $CWD/post-install/${PKGNAME}.post-install ]; then
+          RUNSCRIPT=$(mktemp -p $TMP) || exit 1
+          cat $CWD/post-install/${PKGNAME}.post-install \
+            | sed -e "s#usr/lib#usr/lib${LIBDIRSUFFIX}#g" > $RUNSCRIPT
+          . $RUNSCRIPT
+          rm -f $RUNSCRIPT
+        fi
+
+        # If this package requires some doinst.sh material, add it here:
+        if [ -r $CWD/doinst.sh/${PKGNAME} ]; then
+          mkdir -p $PKG/install
+          cat $CWD/doinst.sh/${PKGNAME} \
+            | sed -e "s#usr/lib#usr/lib${LIBDIRSUFFIX}#g" \
+            >> $PKG/install/doinst.sh
+        fi
+
+        # If this is a modular package, build it here:
+        if [ -d $SLACK_X_BUILD_DIR/package-$PKGNAME ]; then
+          cd $PKG
+          process_man_pages
+          process_info_pages
+          no_usr_share_doc          
+          mkdir -p $PKG/install
+          if [ -r $CWD/slack-desc/${PKGNAME} ]; then
+            cat $CWD/slack-desc/${PKGNAME} > $PKG/install/slack-desc
+          else
+            touch $PKG/install/slack-desc-missing
+          fi
+          if [ -r $CWD/build/${PKGNAME} ]; then
+            MODBUILD=$(cat $CWD/build/${PKGNAME})
+          else
+            MODBUILD=$BUILD
+          fi
+          if [ -r $CWD/makepkg/${PKGNAME} ]; then
+            BUILD=$MODBUILD . $CWD/makepkg/${PKGNAME}
+          else
+            /sbin/makepkg -l y -c n ${SLACK_X_BUILD_DIR}/${PKGNAME}-${MODULAR_PACKAGE_VERSION}-${PKGARCH}-${MODBUILD}.txz
+            if [ "$UPGRADE_PACKAGES" = "yes" ]; then
+              /sbin/upgradepkg --install-new ${SLACK_X_BUILD_DIR}/${PKGNAME}-${MODULAR_PACKAGE_VERSION}-${PKGARCH}-${MODBUILD}.txz
+            elif [ "$UPGRADE_PACKAGES" = "always" ]; then
+              /sbin/upgradepkg --install-new --reinstall ${SLACK_X_BUILD_DIR}/${PKGNAME}-${MODULAR_PACKAGE_VERSION}-${PKGARCH}-${MODBUILD}.txz
+            fi
+          fi
+        fi
+
+        # Reset $PKG to assume we're building the whole source dir:
+        PKG=${SLACK_X_BUILD_DIR}/package-${x_source_dir}
+
+      done
+
+      # If we have anything here in /etc or /usr, then the build was not fully
+      # modular and we should package up whatever's there as an x11-<sourcedir>
+      # package:
+      if [ -d ${SLACK_X_BUILD_DIR}/package-${x_source_dir}/etc -o \
+        -d ${SLACK_X_BUILD_DIR}/package-${x_source_dir}/usr ]; then
+
+        # Build an "x11-<sourcedir>" package for anything that wasn't built modular:
+        # It's safer to consider these to have binaries in them. ;-)
+        PKGARCH=$ARCH
+        cd $PKG
+        process_man_pages
+        process_info_pages
+        no_usr_share_doc
+        # If there are post-install things to do for the combined package,
+        # we do them here.  This could be used for things like making a
+        # VERSION number for a combined package.  :-)
+        if [ -r $CWD/post-install/x11-${x_source_dir}.post-install ]; then
+          RUNSCRIPT=$(mktemp -p $TMP) || exit 1
+          cat $CWD/post-install/x11-${x_source_dir}.post-install \
+            | sed -e "s#usr/lib#usr/lib${LIBDIRSUFFIX}#g" > $RUNSCRIPT
+          . $RUNSCRIPT
+          rm -f $RUNSCRIPT
+        fi
+        mkdir -p $PKG/install
+        if [ -r $CWD/slack-desc/x11-${x_source_dir} ]; then
+          cat $CWD/slack-desc/x11-${x_source_dir} > $PKG/install/slack-desc
+        else
+          touch $PKG/install/slack-desc-missing
+        fi
+        if [ -r $CWD/doinst.sh/x11-${x_source_dir} ]; then
+          cat $CWD/doinst.sh/x11-${x_source_dir} \
+            | sed -e "s#usr/lib#usr/lib${LIBDIRSUFFIX}#g" \
+            >> $PKG/install/doinst.sh
+        fi
+        if [ -r $CWD/build/x11-${PKGNAME} ]; then
+          SRCDIRBUILD=$(cat $CWD/build/x11-${PKGNAME})
+        else
+          SRCDIRBUILD=$BUILD
+        fi
+        if [ -r $CWD/makepkg/${PKGNAME} ]; then
+          BUILD=$MODBUILD . $CWD/makepkg/${PKGNAME}
+        else
+          /sbin/makepkg -l y -c n ${SLACK_X_BUILD_DIR}/x11-${x_source_dir}-${VERSION}-${PKGARCH}-${SRCDIRBUILD}.txz
+          if [ "$UPGRADE_PACKAGES" = "yes" ]; then
+            /sbin/upgradepkg --install-new ${SLACK_X_BUILD_DIR}/x11-${x_source_dir}-${VERSION}-${PKGARCH}-${SRCDIRBUILD}.txz
+          elif [ "$UPGRADE_PACKAGES" = "always" ]; then
+            /sbin/upgradepkg --install-new --reinstall ${SLACK_X_BUILD_DIR}/x11-${x_source_dir}-${VERSION}-${PKGARCH}-${SRCDIRBUILD}.txz
+          fi
+        fi
+
+      fi # build x11-<sourcedir> package
+    )
+  done
+)
+
+exit 0
+
+# I don't think I'll be using the following stuff, since I went for the latest in
+# "individual", rather than a release.  That was mostly because version 7.1 depends
+# on a version of Mesa that won't build against kernel headers this new (&etc.).
+
+# If environment variable "REFRESH" is exported, start by refreshing the source tree:
+# export REFRESH yes
+if [ ! -z "$REFRESH" ]; then
+  # Only works once, unless you uncomment above.
+  unset REFRESH
+  ( cd patches
+    lftp -c \
+    "lftp ftp://ftp.x.org:/pub/X11R7.1/patches
+     mirror --delete --dereference .
+     exit"
+    chmod 644 *
+  )
+  ( cd src
+    mkdir -p update everything
+    for dir in app data deprecated doc driver extras font lib proto util xserver ; do
+      # We won't really download "update", as problems ensue.  Plus, --dereference is
+      # bringing us updated files when needed, so it's redundant (like "everything").
+      if [ ! -d $dir ]; then
+        mkdir $dir
+      fi
+      ( cd $dir
+        lftp -c \
+        "lftp ftp://ftp.x.org:/pub/X11R7.1/src/$dir
+         mirror -c --delete --dereference --include-glob "*.tar.bz2" .
+         exit"
+        chmod 644 *
+      )
+    done
+  )
+fi
+

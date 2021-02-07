@@ -1,0 +1,463 @@
+diff -ruBN /tmp/smartmontools/smartmontools.SlackBuild /source/a/smartmontools/smartmontools.SlackBuild
+--- /tmp/smartmontools/smartmontools.SlackBuild	2021-01-02 20:19:27.000000000 +0000
++++ /source/a/smartmontools/smartmontools.SlackBuild	2021-01-04 16:49:18.000000000 +0000
+@@ -47,7 +47,7 @@
+ NUMJOBS=${NUMJOBS:-" -j $(expr $(nproc) + 1) "}
+ 
+ if [ "$ARCH" = "x86_64" ]; then
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ else
+   LIBDIRSUFFIX=""
+ fi
+@@ -70,7 +70,7 @@
+   --mandir=/usr/man \
+   --sysconfdir=/etc \
+   --docdir=/usr/doc/smartmontools-$VERSION \
+-  --build=$ARCH-slackware-linux || exit 1
++  --build=$ARCH-slackware-linux-musl || exit 1
+ 
+ make $NUMJOBS || make || exit 1
+ make install DESTDIR=$PKG || exit 1
+diff -ruBN /tmp/smartmontools/smartmontools.SlackBuild.log /source/a/smartmontools/smartmontools.SlackBuild.log
+--- /tmp/smartmontools/smartmontools.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/a/smartmontools/smartmontools.SlackBuild.log	2021-01-04 16:50:06.000000000 +0000
+@@ -0,0 +1,438 @@
++smartmontools-7.2/
++smartmontools-7.2/.editorconfig
++smartmontools-7.2/aacraid.h
++smartmontools-7.2/aclocal.m4
++smartmontools-7.2/atacmdnames.cpp
++smartmontools-7.2/atacmdnames.h
++smartmontools-7.2/atacmds.cpp
++smartmontools-7.2/atacmds.h
++smartmontools-7.2/ataidentify.cpp
++smartmontools-7.2/ataidentify.h
++smartmontools-7.2/ataprint.cpp
++smartmontools-7.2/ataprint.h
++smartmontools-7.2/AUTHORS
++smartmontools-7.2/autogen.sh
++smartmontools-7.2/cciss.cpp
++smartmontools-7.2/cciss.h
++smartmontools-7.2/ChangeLog
++smartmontools-7.2/ChangeLog-5.0-6.0
++smartmontools-7.2/ChangeLog-6.0-7.0
++smartmontools-7.2/cissio_freebsd.h
++smartmontools-7.2/compile
++smartmontools-7.2/config.guess
++smartmontools-7.2/config.h.in
++smartmontools-7.2/config.sub
++smartmontools-7.2/configure
++smartmontools-7.2/configure.ac
++smartmontools-7.2/COPYING
++smartmontools-7.2/cppcheck.sh
++smartmontools-7.2/csmisas.h
++smartmontools-7.2/depcomp
++smartmontools-7.2/dev_areca.cpp
++smartmontools-7.2/dev_areca.h
++smartmontools-7.2/dev_ata_cmd_set.cpp
++smartmontools-7.2/dev_ata_cmd_set.h
++smartmontools-7.2/dev_intelliprop.cpp
++smartmontools-7.2/dev_interface.cpp
++smartmontools-7.2/dev_interface.h
++smartmontools-7.2/dev_jmb39x_raid.cpp
++smartmontools-7.2/dev_legacy.cpp
++smartmontools-7.2/dev_tunnelled.h
++smartmontools-7.2/drivedb.h
++smartmontools-7.2/examplescripts/
++smartmontools-7.2/examplescripts/Example1
++smartmontools-7.2/examplescripts/Example2
++smartmontools-7.2/examplescripts/Example3
++smartmontools-7.2/examplescripts/Example4
++smartmontools-7.2/examplescripts/Example5
++smartmontools-7.2/examplescripts/Example6
++smartmontools-7.2/examplescripts/Example7
++smartmontools-7.2/examplescripts/Example8
++smartmontools-7.2/examplescripts/README
++smartmontools-7.2/freebsd_nvme_ioctl.h
++smartmontools-7.2/getopt/
++smartmontools-7.2/getopt/bits/
++smartmontools-7.2/getopt/bits/getopt_core.h
++smartmontools-7.2/getopt/bits/getopt_ext.h
++smartmontools-7.2/getopt/getopt.c
++smartmontools-7.2/getopt/getopt.h
++smartmontools-7.2/getopt/getopt1.c
++smartmontools-7.2/getopt/getopt_int.h
++smartmontools-7.2/INSTALL
++smartmontools-7.2/install-sh
++smartmontools-7.2/json.cpp
++smartmontools-7.2/json.h
++smartmontools-7.2/knowndrives.cpp
++smartmontools-7.2/knowndrives.h
++smartmontools-7.2/linux_nvme_ioctl.h
++smartmontools-7.2/m4/
++smartmontools-7.2/m4/pkg.m4
++smartmontools-7.2/Makefile.am
++smartmontools-7.2/Makefile.in
++smartmontools-7.2/megaraid.h
++smartmontools-7.2/missing
++smartmontools-7.2/netbsd_nvme_ioctl.h
++smartmontools-7.2/NEWS
++smartmontools-7.2/nvmecmds.cpp
++smartmontools-7.2/nvmecmds.h
++smartmontools-7.2/nvmeprint.cpp
++smartmontools-7.2/nvmeprint.h
++smartmontools-7.2/os_darwin/
++smartmontools-7.2/os_darwin/com.smartmontools.smartd.plist.in
++smartmontools-7.2/os_darwin/pkg/
++smartmontools-7.2/os_darwin/pkg/Distribution.in
++smartmontools-7.2/os_darwin/pkg/installer/
++smartmontools-7.2/os_darwin/pkg/installer/README.html
++smartmontools-7.2/os_darwin/pkg/PackageInfo.in
++smartmontools-7.2/os_darwin/pkg/root/
++smartmontools-7.2/os_darwin/pkg/root/usr/
++smartmontools-7.2/os_darwin/pkg/root/usr/local/
++smartmontools-7.2/os_darwin/pkg/root/usr/local/sbin/
++smartmontools-7.2/os_darwin/pkg/root/usr/local/sbin/smart-pkg-uninstall
++smartmontools-7.2/os_darwin.cpp
++smartmontools-7.2/os_darwin.h
++smartmontools-7.2/os_freebsd.cpp
++smartmontools-7.2/os_freebsd.h
++smartmontools-7.2/os_generic.cpp
++smartmontools-7.2/os_generic.h
++smartmontools-7.2/os_linux.cpp
++smartmontools-7.2/os_linux.h
++smartmontools-7.2/os_netbsd.cpp
++smartmontools-7.2/os_netbsd.h
++smartmontools-7.2/os_openbsd.cpp
++smartmontools-7.2/os_openbsd.h
++smartmontools-7.2/os_os2.cpp
++smartmontools-7.2/os_os2.h
++smartmontools-7.2/os_qnxnto.cpp
++smartmontools-7.2/os_qnxnto.h
++smartmontools-7.2/os_solaris.cpp
++smartmontools-7.2/os_solaris.h
++smartmontools-7.2/os_win32/
++smartmontools-7.2/os_win32/daemon_win32.cpp
++smartmontools-7.2/os_win32/daemon_win32.h
++smartmontools-7.2/os_win32/default.manifest
++smartmontools-7.2/os_win32/installer.nsi
++smartmontools-7.2/os_win32/popen.h
++smartmontools-7.2/os_win32/popen_win32.cpp
++smartmontools-7.2/os_win32/runcmd.c
++smartmontools-7.2/os_win32/smartd_mailer.conf.sample.ps1
++smartmontools-7.2/os_win32/smartd_mailer.ps1
++smartmontools-7.2/os_win32/smartd_warning.cmd
++smartmontools-7.2/os_win32/syslog.h
++smartmontools-7.2/os_win32/syslogevt.mc
++smartmontools-7.2/os_win32/syslog_win32.cpp
++smartmontools-7.2/os_win32/update-smart-drivedb.nsi
++smartmontools-7.2/os_win32/versioninfo.rc.in
++smartmontools-7.2/os_win32/wmiquery.cpp
++smartmontools-7.2/os_win32/wmiquery.h
++smartmontools-7.2/os_win32/wtssendmsg.c
++smartmontools-7.2/os_win32.cpp
++smartmontools-7.2/README
++smartmontools-7.2/regex/
++smartmontools-7.2/regex/regcomp.c
++smartmontools-7.2/regex/regex.c
++smartmontools-7.2/regex/regex.h
++smartmontools-7.2/regex/regexec.c
++smartmontools-7.2/regex/regex_internal.c
++smartmontools-7.2/regex/regex_internal.h
++smartmontools-7.2/scsiata.cpp
++smartmontools-7.2/scsicmds.cpp
++smartmontools-7.2/scsicmds.h
++smartmontools-7.2/scsinvme.cpp
++smartmontools-7.2/scsiprint.cpp
++smartmontools-7.2/scsiprint.h
++smartmontools-7.2/sg_unaligned.h
++smartmontools-7.2/smartctl.8.in
++smartmontools-7.2/smartctl.cpp
++smartmontools-7.2/smartctl.h
++smartmontools-7.2/smartd.8.in
++smartmontools-7.2/smartd.conf
++smartmontools-7.2/smartd.conf.5.in
++smartmontools-7.2/smartd.cpp
++smartmontools-7.2/smartd.cygwin.initd.in
++smartmontools-7.2/smartd.freebsd.initd.in
++smartmontools-7.2/smartd.initd.in
++smartmontools-7.2/smartd.service.in
++smartmontools-7.2/smartd_warning.sh.in
++smartmontools-7.2/static_assert.h
++smartmontools-7.2/TODO
++smartmontools-7.2/update-smart-drivedb.8.in
++smartmontools-7.2/update-smart-drivedb.in
++smartmontools-7.2/utility.cpp
++smartmontools-7.2/utility.h
++checking for a BSD-compatible install... /usr/bin/ginstall -c
++checking whether build environment is sane... yes
++checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
++checking for gawk... gawk
++checking whether make sets $(MAKE)... yes
++checking whether make supports nested variables... yes
++checking whether to enable maintainer-specific portions of Makefiles... no
++checking for g++... g++
++checking whether the C++ compiler works... yes
++checking for C++ compiler default output file name... a.out
++checking for suffix of executables... 
++checking whether we are cross compiling... no
++checking for suffix of object files... o
++checking whether we are using the GNU C++ compiler... yes
++checking whether g++ accepts -g... yes
++checking whether make supports the include directive... yes (GNU style)
++checking dependency style of g++... gcc3
++checking for gcc... gcc
++checking whether we are using the GNU C compiler... yes
++checking whether gcc accepts -g... yes
++checking for gcc option to accept ISO C89... none needed
++checking whether gcc understands -c and -o together... yes
++checking dependency style of gcc... gcc3
++checking dependency style of gcc... gcc3
++checking pkg-config is at least version 0.9.0... yes
++checking build system type... x86_64-slackware-linux-musl
++checking host system type... x86_64-slackware-linux-musl
++checking for nm... nm
++checking whether this is a build from SVN... no
++checking how to run the C++ preprocessor... g++ -E
++checking for grep that handles long lines and -e... /usr/bin/grep
++checking for egrep... /usr/bin/grep -E
++checking for ANSI C header files... yes
++checking for sys/types.h... yes
++checking for sys/stat.h... yes
++checking for stdlib.h... yes
++checking for string.h... yes
++checking for memory.h... yes
++checking for strings.h... yes
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking for unistd.h... yes
++checking locale.h usability... yes
++checking locale.h presence... yes
++checking for locale.h... yes
++checking byteswap.h usability... yes
++checking byteswap.h presence... yes
++checking for byteswap.h... yes
++checking sys/sysmacros.h usability... yes
++checking sys/sysmacros.h presence... yes
++checking for sys/sysmacros.h... yes
++checking linux/compiler.h usability... no
++checking linux/compiler.h presence... no
++checking for linux/compiler.h... no
++checking for linux/cciss_ioctl.h... yes
++checking for __int128... yes
++checking for long double with more range or precision than double... yes
++checking for getopt_long... yes
++checking for clock_gettime... yes
++checking for ftime... yes
++checking for gettimeofday... yes
++checking whether byte ordering is bigendian... no
++checking whether g++ supports __attribute__((packed))... yes
++checking cap-ng.h usability... yes
++checking cap-ng.h presence... yes
++checking for cap-ng.h... yes
++checking for capng_clear in -lcap-ng... yes
++checking systemd/sd-daemon.h usability... no
++checking systemd/sd-daemon.h presence... no
++checking for systemd/sd-daemon.h... no
++checking for sigaction... yes
++checking for g++ option to accept C++11... none needed
++checking for regcomp... yes
++checking whether os_linux.cpp uses new interface... yes
++checking whether NVMe device scanning could be safely enabled... yes
++checking whether g++ supports -Wformat=2... yes
++checking whether g++ supports -fstack-protector-strong... yes
++checking whether _FORTIFY_SOURCE is predefined... yes
++checking that generated files are newer than configure... done
++configure: creating ./config.status
++config.status: creating Makefile
++config.status: creating config.h
++config.status: executing depfiles commands
++checking whether make sets $(MAKE)... (cached) yes
++configure:
++-----------------------------------------------------------------------------
++smartmontools-7.2 configuration:
++host operating system:  x86_64-slackware-linux-musl
++C++ compiler:           g++
++C compiler:             gcc
++preprocessor flags:     
++C++ compiler flags:     -g -O2 -Wall -W -Wformat=2 -fstack-protector-strong
++C compiler flags:       -g -O2
++linker flags:           
++OS specific modules:    os_linux.o cciss.o dev_areca.o  
++binary install path:    /usr/sbin
++man page install path:  /usr/man
++doc file install path:  /usr/doc/smartmontools-7.2
++examples install path:  /usr/doc/smartmontools-7.2/examplescripts
++drive database file:    /usr/share/smartmontools/drivedb.h
++database update script: /usr/sbin/update-smart-drivedb
++database update branch: branches/RELEASE_7_2_DRIVEDB
++download tools:         curl wget lynx svn
++GnuPG for verification: gpg
++local drive database:   /etc/smart_drivedb.h
++smartd config file:     /etc/smartd.conf
++smartd warning script:  /etc/smartd_warning.sh
++smartd plugin path:     /etc/smartd_warning.d
++PATH within scripts:    /usr/local/bin:/usr/bin:/bin
++smartd initd script:    [disabled]
++smartd save files:      [disabled]
++smartd attribute logs:  [disabled]
++SELinux support:        no
++libcap-ng support:      yes
++systemd notify support: no
++NVMe DEVICESCAN:        yes
++-----------------------------------------------------------------------------
++
++configure: WARNING:
++The default for the inclusion of NVME devices in smartd.conf
++'DEVICESCAN' and 'smartctl --scan' has been changed to 'yes' on
++this platform.  If '--without-nvme-devicescan' is still needed,
++please inform smartmontools-support@listi.jpberlin.de.
++Use option '--with-nvme-devicescan' to suppress this warning.
++
++make  all-am
++make[1]: Entering directory '/tmp/smartmontools-7.2'
++g++ -DHAVE_CONFIG_H -I.  -DBUILD_INFO='"(local build)"' -DSMARTMONTOOLS_SYSCONFDIR='"/etc"' -DSMARTMONTOOLS_SMARTDSCRIPTDIR='"/etc"' -DSMARTMONTOOLS_DRIVEDBDIR='"/usr/share/smartmontools"'        -g -O2 -Wall -W -Wformat=2 -fstack-protector-strong -MT atacmdnames.o -MD -MP -MF .deps/atacmdnames.Tpo -c -o atacmdnames.o atacmdnames.cpp
++ cat ChangeLog NEWS $(SOURCES) | $(VERSION_FROM_SVN_IDS) > svnversion.h
++g++ -DHAVE_CONFIG_H -I.  -DBUILD_INFO='"(local build)"' -DSMARTMONTOOLS_SYSCONFDIR='"/etc"' -DSMARTMONTOOLS_SMARTDSCRIPTDIR='"/etc"' -DSMARTMONTOOLS_DRIVEDBDIR='"/usr/share/smartmontools"'        -g -O2 -Wall -W -Wformat=2 -fstack-protector-strong -MT atacmds.o -MD -MP -MF .deps/atacmds.Tpo -c -o atacmds.o atacmds.cpp
++g++ -DHAVE_CONFIG_H -I.  -DBUILD_INFO='"(local build)"' -DSMARTMONTOOLS_SYSCONFDIR='"/etc"' -DSMARTMONTOOLS_SMARTDSCRIPTDIR='"/etc"' -DSMARTMONTOOLS_DRIVEDBDIR='"/usr/share/smartmontools"'        -g -O2 -Wall -W -Wformat=2 -fstack-protector-strong -MT ataidentify.o -MD -MP -MF .deps/ataidentify.Tpo -c -o ataidentify.o ataidentify.cpp
++mv -f .deps/atacmdnames.Tpo .deps/atacmdnames.Po
++g++ -DHAVE_CONFIG_H -I.  -DBUILD_INFO='"(local build)"' -DSMARTMONTOOLS_SYSCONFDIR='"/etc"' -DSMARTMONTOOLS_SMARTDSCRIPTDIR='"/etc"' -DSMARTMONTOOLS_DRIVEDBDIR='"/usr/share/smartmontools"'        -g -O2 -Wall -W -Wformat=2 -fstack-protector-strong -MT ataprint.o -MD -MP -MF .deps/ataprint.Tpo -c -o ataprint.o ataprint.cpp
++mv -f .deps/ataidentify.Tpo .deps/ataidentify.Po
++g++ -DHAVE_CONFIG_H -I.  -DBUILD_INFO='"(local build)"' -DSMARTMONTOOLS_SYSCONFDIR='"/etc"' -DSMARTMONTOOLS_SMARTDSCRIPTDIR='"/etc"' -DSMARTMONTOOLS_DRIVEDBDIR='"/usr/share/smartmontools"'        -g -O2 -Wall -W -Wformat=2 -fstack-protector-strong -MT dev_ata_cmd_set.o -MD -MP -MF .deps/dev_ata_cmd_set.Tpo -c -o dev_ata_cmd_set.o dev_ata_cmd_set.cpp
++mv -f .deps/dev_ata_cmd_set.Tpo .deps/dev_ata_cmd_set.Po
++g++ -DHAVE_CONFIG_H -I.  -DBUILD_INFO='"(local build)"' -DSMARTMONTOOLS_SYSCONFDIR='"/etc"' -DSMARTMONTOOLS_SMARTDSCRIPTDIR='"/etc"' -DSMARTMONTOOLS_DRIVEDBDIR='"/usr/share/smartmontools"'        -g -O2 -Wall -W -Wformat=2 -fstack-protector-strong -MT dev_intelliprop.o -MD -MP -MF .deps/dev_intelliprop.Tpo -c -o dev_intelliprop.o dev_intelliprop.cpp
++mv -f .deps/dev_intelliprop.Tpo .deps/dev_intelliprop.Po
++g++ -DHAVE_CONFIG_H -I.  -DBUILD_INFO='"(local build)"' -DSMARTMONTOOLS_SYSCONFDIR='"/etc"' -DSMARTMONTOOLS_SMARTDSCRIPTDIR='"/etc"' -DSMARTMONTOOLS_DRIVEDBDIR='"/usr/share/smartmontools"'        -g -O2 -Wall -W -Wformat=2 -fstack-protector-strong -MT dev_interface.o -MD -MP -MF .deps/dev_interface.Tpo -c -o dev_interface.o dev_interface.cpp
++mv -f .deps/atacmds.Tpo .deps/atacmds.Po
++g++ -DHAVE_CONFIG_H -I.  -DBUILD_INFO='"(local build)"' -DSMARTMONTOOLS_SYSCONFDIR='"/etc"' -DSMARTMONTOOLS_SMARTDSCRIPTDIR='"/etc"' -DSMARTMONTOOLS_DRIVEDBDIR='"/usr/share/smartmontools"'        -g -O2 -Wall -W -Wformat=2 -fstack-protector-strong -MT dev_jmb39x_raid.o -MD -MP -MF .deps/dev_jmb39x_raid.Tpo -c -o dev_jmb39x_raid.o dev_jmb39x_raid.cpp
++mv -f .deps/dev_interface.Tpo .deps/dev_interface.Po
++g++ -DHAVE_CONFIG_H -I.  -DBUILD_INFO='"(local build)"' -DSMARTMONTOOLS_SYSCONFDIR='"/etc"' -DSMARTMONTOOLS_SMARTDSCRIPTDIR='"/etc"' -DSMARTMONTOOLS_DRIVEDBDIR='"/usr/share/smartmontools"'        -g -O2 -Wall -W -Wformat=2 -fstack-protector-strong -MT json.o -MD -MP -MF .deps/json.Tpo -c -o json.o json.cpp
++mv -f .deps/dev_jmb39x_raid.Tpo .deps/dev_jmb39x_raid.Po
++g++ -DHAVE_CONFIG_H -I.  -DBUILD_INFO='"(local build)"' -DSMARTMONTOOLS_SYSCONFDIR='"/etc"' -DSMARTMONTOOLS_SMARTDSCRIPTDIR='"/etc"' -DSMARTMONTOOLS_DRIVEDBDIR='"/usr/share/smartmontools"'        -g -O2 -Wall -W -Wformat=2 -fstack-protector-strong -MT knowndrives.o -MD -MP -MF .deps/knowndrives.Tpo -c -o knowndrives.o knowndrives.cpp
++mv -f .deps/knowndrives.Tpo .deps/knowndrives.Po
++g++ -DHAVE_CONFIG_H -I.  -DBUILD_INFO='"(local build)"' -DSMARTMONTOOLS_SYSCONFDIR='"/etc"' -DSMARTMONTOOLS_SMARTDSCRIPTDIR='"/etc"' -DSMARTMONTOOLS_DRIVEDBDIR='"/usr/share/smartmontools"'        -g -O2 -Wall -W -Wformat=2 -fstack-protector-strong -MT nvmecmds.o -MD -MP -MF .deps/nvmecmds.Tpo -c -o nvmecmds.o nvmecmds.cpp
++mv -f .deps/json.Tpo .deps/json.Po
++g++ -DHAVE_CONFIG_H -I.  -DBUILD_INFO='"(local build)"' -DSMARTMONTOOLS_SYSCONFDIR='"/etc"' -DSMARTMONTOOLS_SMARTDSCRIPTDIR='"/etc"' -DSMARTMONTOOLS_DRIVEDBDIR='"/usr/share/smartmontools"'        -g -O2 -Wall -W -Wformat=2 -fstack-protector-strong -MT nvmeprint.o -MD -MP -MF .deps/nvmeprint.Tpo -c -o nvmeprint.o nvmeprint.cpp
++mv -f .deps/nvmecmds.Tpo .deps/nvmecmds.Po
++g++ -DHAVE_CONFIG_H -I.  -DBUILD_INFO='"(local build)"' -DSMARTMONTOOLS_SYSCONFDIR='"/etc"' -DSMARTMONTOOLS_SMARTDSCRIPTDIR='"/etc"' -DSMARTMONTOOLS_DRIVEDBDIR='"/usr/share/smartmontools"'        -g -O2 -Wall -W -Wformat=2 -fstack-protector-strong -MT scsicmds.o -MD -MP -MF .deps/scsicmds.Tpo -c -o scsicmds.o scsicmds.cpp
++mv -f .deps/ataprint.Tpo .deps/ataprint.Po
++g++ -DHAVE_CONFIG_H -I.  -DBUILD_INFO='"(local build)"' -DSMARTMONTOOLS_SYSCONFDIR='"/etc"' -DSMARTMONTOOLS_SMARTDSCRIPTDIR='"/etc"' -DSMARTMONTOOLS_DRIVEDBDIR='"/usr/share/smartmontools"'        -g -O2 -Wall -W -Wformat=2 -fstack-protector-strong -MT scsiata.o -MD -MP -MF .deps/scsiata.Tpo -c -o scsiata.o scsiata.cpp
++mv -f .deps/nvmeprint.Tpo .deps/nvmeprint.Po
++g++ -DHAVE_CONFIG_H -I.  -DBUILD_INFO='"(local build)"' -DSMARTMONTOOLS_SYSCONFDIR='"/etc"' -DSMARTMONTOOLS_SMARTDSCRIPTDIR='"/etc"' -DSMARTMONTOOLS_DRIVEDBDIR='"/usr/share/smartmontools"'        -g -O2 -Wall -W -Wformat=2 -fstack-protector-strong -MT scsinvme.o -MD -MP -MF .deps/scsinvme.Tpo -c -o scsinvme.o scsinvme.cpp
++mv -f .deps/scsicmds.Tpo .deps/scsicmds.Po
++g++ -DHAVE_CONFIG_H -I.  -DBUILD_INFO='"(local build)"' -DSMARTMONTOOLS_SYSCONFDIR='"/etc"' -DSMARTMONTOOLS_SMARTDSCRIPTDIR='"/etc"' -DSMARTMONTOOLS_DRIVEDBDIR='"/usr/share/smartmontools"'        -g -O2 -Wall -W -Wformat=2 -fstack-protector-strong -MT scsiprint.o -MD -MP -MF .deps/scsiprint.Tpo -c -o scsiprint.o scsiprint.cpp
++mv -f .deps/scsinvme.Tpo .deps/scsinvme.Po
++g++ -DHAVE_CONFIG_H -I.  -DBUILD_INFO='"(local build)"' -DSMARTMONTOOLS_SYSCONFDIR='"/etc"' -DSMARTMONTOOLS_SMARTDSCRIPTDIR='"/etc"' -DSMARTMONTOOLS_DRIVEDBDIR='"/usr/share/smartmontools"'        -g -O2 -Wall -W -Wformat=2 -fstack-protector-strong -MT utility.o -MD -MP -MF .deps/utility.Tpo -c -o utility.o utility.cpp
++mv -f .deps/scsiata.Tpo .deps/scsiata.Po
++g++ -DHAVE_CONFIG_H -I.  -DBUILD_INFO='"(local build)"' -DSMARTMONTOOLS_SYSCONFDIR='"/etc"' -DSMARTMONTOOLS_SMARTDSCRIPTDIR='"/etc"' -DSMARTMONTOOLS_DRIVEDBDIR='"/usr/share/smartmontools"'        -g -O2 -Wall -W -Wformat=2 -fstack-protector-strong -MT os_linux.o -MD -MP -MF .deps/os_linux.Tpo -c -o os_linux.o os_linux.cpp
++mv -f .deps/utility.Tpo .deps/utility.Po
++g++ -DHAVE_CONFIG_H -I.  -DBUILD_INFO='"(local build)"' -DSMARTMONTOOLS_SYSCONFDIR='"/etc"' -DSMARTMONTOOLS_SMARTDSCRIPTDIR='"/etc"' -DSMARTMONTOOLS_DRIVEDBDIR='"/usr/share/smartmontools"'        -g -O2 -Wall -W -Wformat=2 -fstack-protector-strong -MT cciss.o -MD -MP -MF .deps/cciss.Tpo -c -o cciss.o cciss.cpp
++mv -f .deps/cciss.Tpo .deps/cciss.Po
++g++ -DHAVE_CONFIG_H -I.  -DBUILD_INFO='"(local build)"' -DSMARTMONTOOLS_SYSCONFDIR='"/etc"' -DSMARTMONTOOLS_SMARTDSCRIPTDIR='"/etc"' -DSMARTMONTOOLS_DRIVEDBDIR='"/usr/share/smartmontools"'        -g -O2 -Wall -W -Wformat=2 -fstack-protector-strong -MT dev_areca.o -MD -MP -MF .deps/dev_areca.Tpo -c -o dev_areca.o dev_areca.cpp
++mv -f .deps/scsiprint.Tpo .deps/scsiprint.Po
++g++ -DHAVE_CONFIG_H -I.  -DBUILD_INFO='"(local build)"' -DSMARTMONTOOLS_SYSCONFDIR='"/etc"' -DSMARTMONTOOLS_SMARTDSCRIPTDIR='"/etc"' -DSMARTMONTOOLS_DRIVEDBDIR='"/usr/share/smartmontools"'        -g -O2 -Wall -W -Wformat=2 -fstack-protector-strong -MT smartd.o -MD -MP -MF .deps/smartd.Tpo -c -o smartd.o smartd.cpp
++mv -f .deps/dev_areca.Tpo .deps/dev_areca.Po
++/bin/sh ./config.status --file=update-smart-drivedb
++config.status: creating update-smart-drivedb
++chmod +x update-smart-drivedb
++/bin/sh ./config.status --file=smartd_warning.sh
++config.status: creating smartd_warning.sh
++chmod +x smartd_warning.sh
++ $(MAN_FILTER) < ./smartd.conf.5.in > smartd.conf.5
++ $(MAN_FILTER) < ./smartctl.8.in > smartctl.8
++ $(MAN_FILTER) < ./smartd.8.in > smartd.8
++ $(MAN_FILTER) < ./update-smart-drivedb.8.in > update-smart-drivedb.8
++g++ -DHAVE_CONFIG_H -I.  -DBUILD_INFO='"(local build)"' -DSMARTMONTOOLS_SYSCONFDIR='"/etc"' -DSMARTMONTOOLS_SMARTDSCRIPTDIR='"/etc"' -DSMARTMONTOOLS_DRIVEDBDIR='"/usr/share/smartmontools"'        -g -O2 -Wall -W -Wformat=2 -fstack-protector-strong -MT smartctl.o -MD -MP -MF .deps/smartctl.Tpo -c -o smartctl.o smartctl.cpp
++mv -f .deps/os_linux.Tpo .deps/os_linux.Po
++mv -f .deps/smartctl.Tpo .deps/smartctl.Po
++g++  -g -O2 -Wall -W -Wformat=2 -fstack-protector-strong   -o smartctl smartctl.o atacmdnames.o atacmds.o ataidentify.o ataprint.o dev_ata_cmd_set.o dev_intelliprop.o dev_interface.o dev_jmb39x_raid.o json.o knowndrives.o nvmecmds.o nvmeprint.o scsicmds.o scsiata.o scsinvme.o scsiprint.o utility.o     os_linux.o cciss.o dev_areca.o    
++mv -f .deps/smartd.Tpo .deps/smartd.Po
++g++  -g -O2 -Wall -W -Wformat=2 -fstack-protector-strong   -o smartd smartd.o atacmdnames.o atacmds.o dev_ata_cmd_set.o dev_intelliprop.o dev_interface.o dev_jmb39x_raid.o knowndrives.o nvmecmds.o scsicmds.o scsiata.o scsinvme.o utility.o     os_linux.o cciss.o dev_areca.o  -lcap-ng    
++make[1]: Leaving directory '/tmp/smartmontools-7.2'
++make[1]: Entering directory '/tmp/smartmontools-7.2'
++ /usr/bin/mkdir -p '/tmp/package-smartmontools/usr/sbin'
++  /usr/bin/ginstall -c smartctl smartd '/tmp/package-smartmontools/usr/sbin'
++ /usr/bin/mkdir -p '/tmp/package-smartmontools/usr/sbin'
++ /usr/bin/ginstall -c update-smart-drivedb '/tmp/package-smartmontools/usr/sbin'
++/usr/bin/mkdir -p '/tmp/package-smartmontools/etc'
++ /usr/bin/ginstall -c -m 644 './smartd.conf' '/tmp/package-smartmontools/etc/smartd.conf'
++ /usr/bin/mkdir -p '/tmp/package-smartmontools/etc/smartd_warning.d'
++ /usr/bin/mkdir -p '/tmp/package-smartmontools/usr/doc/smartmontools-7.2'
++ /usr/bin/ginstall -c -m 644 AUTHORS ChangeLog ChangeLog-6.0-7.0 COPYING INSTALL NEWS README TODO smartd.conf '/tmp/package-smartmontools/usr/doc/smartmontools-7.2'
++ /usr/bin/mkdir -p '/tmp/package-smartmontools/usr/share/smartmontools'
++ /usr/bin/ginstall -c -m 644 drivedb.h '/tmp/package-smartmontools/usr/share/smartmontools'
++ /usr/bin/mkdir -p '/tmp/package-smartmontools/usr/doc/smartmontools-7.2/examplescripts'
++ /usr/bin/ginstall -c -m 644 examplescripts/README '/tmp/package-smartmontools/usr/doc/smartmontools-7.2/examplescripts'
++ /usr/bin/mkdir -p '/tmp/package-smartmontools/usr/doc/smartmontools-7.2/examplescripts'
++ /usr/bin/ginstall -c examplescripts/Example1 examplescripts/Example2 examplescripts/Example3 examplescripts/Example4 examplescripts/Example5 examplescripts/Example6 examplescripts/Example7 examplescripts/Example8 '/tmp/package-smartmontools/usr/doc/smartmontools-7.2/examplescripts'
++ /usr/bin/mkdir -p '/tmp/package-smartmontools/usr/man/man5'
++ /usr/bin/ginstall -c -m 644 smartd.conf.5 '/tmp/package-smartmontools/usr/man/man5'
++ /usr/bin/mkdir -p '/tmp/package-smartmontools/usr/man/man8'
++ /usr/bin/ginstall -c -m 644 smartctl.8 smartd.8 update-smart-drivedb.8 '/tmp/package-smartmontools/usr/man/man8'
++ /usr/bin/mkdir -p '/tmp/package-smartmontools/etc'
++ /usr/bin/ginstall -c smartd_warning.sh '/tmp/package-smartmontools/etc'
++make[1]: Leaving directory '/tmp/smartmontools-7.2'
++cp: cannot stat 'WARNINGS': No such file or directory
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++
++No symbolic links were found, so we won't make an installation script.
++You can make your own later in ./install/doinst.sh and rebuild the
++package if you like.
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/smartmontools-7.2-x86_64-1.txz
++
++./
++etc/
++etc/rc.d/
++etc/rc.d/rc.smartd.new
++etc/smartd.conf.new
++etc/smartd_warning.d/
++etc/smartd_warning.sh
++install/
++install/doinst.sh
++install/slack-desc
++usr/
++usr/doc/
++usr/doc/smartmontools-7.2/
++usr/doc/smartmontools-7.2/AUTHORS
++usr/doc/smartmontools-7.2/COPYING
++usr/doc/smartmontools-7.2/ChangeLog
++usr/doc/smartmontools-7.2/ChangeLog-6.0-7.0
++usr/doc/smartmontools-7.2/INSTALL
++usr/doc/smartmontools-7.2/NEWS
++usr/doc/smartmontools-7.2/README
++usr/doc/smartmontools-7.2/TODO
++usr/doc/smartmontools-7.2/examplescripts/
++usr/doc/smartmontools-7.2/examplescripts/Example1
++usr/doc/smartmontools-7.2/examplescripts/Example2
++usr/doc/smartmontools-7.2/examplescripts/Example3
++usr/doc/smartmontools-7.2/examplescripts/Example4
++usr/doc/smartmontools-7.2/examplescripts/Example5
++usr/doc/smartmontools-7.2/examplescripts/Example6
++usr/doc/smartmontools-7.2/examplescripts/Example7
++usr/doc/smartmontools-7.2/examplescripts/Example8
++usr/doc/smartmontools-7.2/examplescripts/README
++usr/doc/smartmontools-7.2/smartd.conf
++usr/man/
++usr/man/man5/
++usr/man/man5/smartd.conf.5.gz
++usr/man/man8/
++usr/man/man8/smartctl.8.gz
++usr/man/man8/smartd.8.gz
++usr/man/man8/update-smart-drivedb.8.gz
++usr/sbin/
++usr/sbin/smartctl
++usr/sbin/smartd
++usr/sbin/update-smart-drivedb
++usr/share/
++usr/share/smartmontools/
++usr/share/smartmontools/drivedb.h
++
++Slackware package /tmp/smartmontools-7.2-x86_64-1.txz created.
++

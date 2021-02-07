@@ -1,0 +1,251 @@
+#!/bin/sh
+
+# Slackware build script for musl
+
+# Copyright 2014 Weldon Goree <weldon@langurwallah.org>
+# Copyright 2019 - 2020 Johannes Schoepfer, Germany
+# All rights reserved
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR "AS IS" AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=musl
+#VERSION=${VERSION:-1.2.1}
+VERSION=${VERSION:-1.2.2}
+BUILD=${BUILD:-1}
+FTS_version=${FTS_version:-1.2.7}
+OBSTACK_version=${OBSTACK_version:-1.1}
+LIBEXECINFO_version=${OBSTACK_version:-1.1}
+
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) ARCH=i586 ;;
+    arm*) ARCH=arm ;;
+       *) ARCH=$( uname -m ) ;;
+  esac
+fi
+
+NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-$PKGNAM
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i686" ]; then
+  SLKCFLAGS="-O2 -march=i686 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC "
+  LIBDIRSUFFIX=""
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+set -e
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+cd $TMP
+rm -rf $PKGNAM-$VERSION
+tar xvf $CWD/$PKGNAM-$VERSION.tar.gz
+cd $PKGNAM-$VERSION
+#cd 1e4204d522670a1d8b8ab85f1cfefa960547e8af
+
+# version 1.2.1 is affected
+# patch -p1 < $CWD/patches/CVE-2020-28928.patch || exit 1
+
+chown -R root:root .
+find -L . \
+ \( -perm 777 -o -perm 775 -o -perm 750 -o -perm 711 -o -perm 555 \
+  -o -perm 511 \) -exec chmod 755 {} \; -o \
+ \( -perm 666 -o -perm 664 -o -perm 640 -o -perm 600 -o -perm 444 \
+  -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
+
+LDFLAGS="-Wl,-soname,libc.musl-${ARCH}.so.1" \
+CFLAGS="$SLKCFLAGS" \
+CXXFLAGS="$SLKCFLAGS" \
+./configure \
+  --prefix=/usr \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
+  --mandir=/usr/man \
+  --infodir=/usr/info \
+  --build=$ARCH-slackware-linux-musl
+
+make $NUMJOBS || exit 1
+make DESTDIR=$PKG install
+
+LDSO=$(make -f Makefile --eval "$(echo -e 'print-ldso:\n\t@echo $$(basename $(LDSO_PATHNAME))')" print-ldso)
+mv -f $PKG/usr/lib/libc.so $PKG/lib/$LDSO
+ln -sf $LDSO $PKG/lib/libc.musl-${CARCH}.so.1
+ln -sf ../../lib/$LDSO $PKG/usr/lib/libc.so
+
+# compatibility links for glibc
+#_ld="lib64/ld-linux-x86-64.so.2"
+#mkdir -p $PKG/${_ld%/*}
+#ln -sf /lib/libc.musl-${ARCH}.so.1 $PKG/$_ld
+
+for i in libc.so.6 libcrypt.so.1 libm.so.6 libpthread.so.0 librt.so.1 libutil.so.1; do
+  ln -s /lib/libc.musl-${ARCH}.so.1 $PKG/lib/$i
+done
+
+mkdir -p $PKG/usr/bin
+cat >>$PKG/usr/bin/ldd <<-EOF
+#!/bin/sh
+exec /lib/ld-musl-$ARCH.so.1 --list "\$@"
+EOF
+chmod 755 $PKG/usr/bin/ldd
+
+
+## Not provided by musl ##
+
+mkdir $PKG/sbin
+cp $CWD/ldconfig $PKG/sbin/ldconfig
+chmod 755 $PKG/sbin/ldconfig
+
+# getconf/getent/iconv
+for i in getconf getent iconv ; do
+  gcc $SLKCFLAGS $CWD/$i.c -o $PKG/usr/bin/$i || exit 1
+done
+
+ARGP_version=${ARGP_version:-1.3}
+tar xvf $CWD/argp-standalone-$ARGP_version.tar.gz
+cd argp-standalone-$ARGP_version
+  patch -p1 < $CWD/patches/001-throw-in-funcdef.patch || exit 1
+  patch -p1 < $CWD/patches/gnu89-inline.patch || exit 1
+  autoreconf -vif
+  CFLAGS="$SLKCFLAGS" \
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --mandir=/usr/man \
+    --infodir=/usr/info \
+    --host=$ARCH-slackware-linux-musl \
+    --build=$ARCH-slackware-linux-musl
+  make $NUMJOBS || exit 1
+  make check || exit 1
+  mkdir -p $PKG/usr/include
+  install -D -m644 argp.h $PKG/usr/include/argp.h
+  install -D -m755 libargp.a $PKG/usr/lib/libargp.a
+cd ..
+
+# Provides the fts(3) functions, which are missing in musl libc
+# https://github.com/pullmoll/musl-fts/"
+unzip $CWD/fts-$FTS_version.zip
+cd musl-fts-$FTS_version
+./bootstrap.sh
+CFLAGS=-fPIC ./configure \
+  --prefix=/usr \
+  --sysconfdir=/etc \
+  --mandir=/usr/man \
+  --localstatedir=/var \
+  --build=$ARCH-slackware-linux-musl
+
+  make || exit 1
+  make check || exit 1
+  make DESTDIR=$PKG install
+
+  mkdir -p $PKG/usr/lib/pkgconfig
+  cp musl-fts.pc $PKG/usr/lib/pkgconfig/libfts.pc
+cd ..
+
+tar vxf $CWD/obstack-$OBSTACK_version.tar.gz || exit 1
+cd musl-obstack-$OBSTACK_version
+  ./bootstrap.sh
+  ./configure --prefix=/usr
+  make || exit 1
+  make DESTDIR=$PKG install
+cd ..
+
+# "Implementation of nscd for nsswitch modules for musl"
+# https://github.com/pikhq/musl-nscd/
+tar vxf $CWD/musl-nscd-1.0.3.tar.gz
+cd musl-nscd-1.0.3
+patch -p1 < $CWD/patches/0001-Fix-build-under-GCC-fno-common.patch || exit 1
+
+# export CC to be able to build msul-nscd in SFS 'tools' environment
+export CC=/tools/bin/gcc
+
+./configure \
+--build=$ARCH-slackware-linux-musl \
+--host=$ARCH-slackware-linux-musl \
+--prefix=/usr \
+--sysconfdir=/etc \
+--mandir=/usr/man \
+--localstatedir=/var
+make
+make DESTDIR=$PKG install
+
+install -m644 -D include/nss.h \
+$PKG/usr/include
+
+install -m644 -D COPYRIGHT \
+	$PKG/usr/doc/musl-$VERSION/COPYRIGHT-musl-nscd
+
+#	install -m755 -D "$srcdir"/$pkgname.initd \
+#		"$pkgdir"/etc/init.d/nscd
+cd ..
+
+# This seems not to be a help for qt5 and probably others,
+# as execinfo doesn't provide the same as glibc's execinfo
+# But seems needed for llvm
+
+#BSD licensed clone of the GNU libc backtrace facility.
+#url https://www.freshports.org/devel/libexecinfo
+tar vxf $CWD/libexecinfo-$LIBEXECINFO_version.tar.bz2 || exit
+cd libexecinfo-$LIBEXECINFO_version
+  patch -p1 < $CWD/patches/10-execinfo.patch
+  patch -p1 < $CWD/patches/20-define-gnu-source.patch 
+  patch -p1 < $CWD/patches/30-linux-makefile.patch
+  export CFLAGS="$SLKCFLAGS -fno-omit-frame-pointer"
+  make
+  cp execinfo.h \
+    $PKG/usr/include/execinfo.h
+  cp stacktraverse.h \
+    $PKG/usr/include/stacktraverse.h
+  cp libexecinfo.a \
+    $PKG/usr/lib/libexecinfo.a
+  cp libexecinfo.so.1 \
+    $PKG/usr/lib/libexecinfo.so.1
+  ln -s libexecinfo.so.1 \
+    $PKG/usr/lib/libexecinfo.so
+cd ..
+
+# BSD compatibility headers
+mkdir -p $PKG/usr/include/sys
+install -D $CWD/bsd_headers/sys-cdefs.h $PKG/usr/include/sys/cdefs.h
+install -D $CWD/bsd_headers/sys-queue.h $PKG/usr/include/sys/queue.h
+install -D $CWD/bsd_headers/sys-tree.h $PKG/usr/include/sys/tree.h
+
+find $PKG -print0 | xargs -0 file | grep -e "executable" -e "shared object" | grep ELF \
+  | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
+
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION
+cp -a COPYRIGHT INSTALL README VERSION WHATSNEW $PKG/usr/doc/$PKGNAM-$VERSION
+cat $CWD/$PKGNAM.SlackBuild > $PKG/usr/doc/$PKGNAM-$VERSION/$PKGNAM.SlackBuild
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/$PKGNAM-$VERSION-$ARCH-$BUILD.txz

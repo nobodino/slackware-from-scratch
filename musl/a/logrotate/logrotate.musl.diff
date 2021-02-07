@@ -1,0 +1,420 @@
+diff -ruBN /tmp/logrotate/logrotate.SlackBuild /source/a/logrotate/logrotate.SlackBuild
+--- /tmp/logrotate/logrotate.SlackBuild	2020-07-10 17:59:27.000000000 +0000
++++ /source/a/logrotate/logrotate.SlackBuild	2021-01-09 06:18:57.000000000 +0000
+@@ -57,7 +57,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ else
+   SLKCFLAGS="-O2"
+   LIBDIRSUFFIX=""
+@@ -88,7 +88,7 @@
+   --localstatedir=/var \
+   --mandir=/usr/man \
+   --docdir=/usr/doc/logrotate-$VERSION \
+-  --build=$ARCH-slackware-linux || exit 1
++  --build=$ARCH-slackware-linux-musl || exit 1
+ 
+ make $NUMJOBS || make || exit 1
+ make install DESTDIR=$PKG || exit 1
+diff -ruBN /tmp/logrotate/logrotate.SlackBuild.log /source/a/logrotate/logrotate.SlackBuild.log
+--- /tmp/logrotate/logrotate.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/a/logrotate/logrotate.SlackBuild.log	2021-01-09 06:19:08.000000000 +0000
+@@ -0,0 +1,395 @@
++logrotate-3.18.0/
++logrotate-3.18.0/Makefile.am
++logrotate-3.18.0/configure
++logrotate-3.18.0/configure.ac
++logrotate-3.18.0/aclocal.m4
++logrotate-3.18.0/logrotate.spec
++logrotate-3.18.0/logrotate.8
++logrotate-3.18.0/logrotate.conf.5
++logrotate-3.18.0/Makefile.in
++logrotate-3.18.0/config.h.in
++logrotate-3.18.0/logrotate.8.in
++logrotate-3.18.0/logrotate.spec.in
++logrotate-3.18.0/COPYING
++logrotate-3.18.0/INSTALL
++logrotate-3.18.0/compile
++logrotate-3.18.0/config.guess
++logrotate-3.18.0/config.sub
++logrotate-3.18.0/depcomp
++logrotate-3.18.0/install-sh
++logrotate-3.18.0/missing
++logrotate-3.18.0/config.c
++logrotate-3.18.0/log.c
++logrotate-3.18.0/logrotate.c
++logrotate-3.18.0/log.h
++logrotate-3.18.0/logrotate.h
++logrotate-3.18.0/queue.h
++logrotate-3.18.0/ChangeLog.md
++logrotate-3.18.0/README.md
++logrotate-3.18.0/autogen.sh
++logrotate-3.18.0/build-aux/
++logrotate-3.18.0/build-aux/git-version-gen
++logrotate-3.18.0/examples/
++logrotate-3.18.0/examples/btmp
++logrotate-3.18.0/examples/logrotate.cron
++logrotate-3.18.0/examples/logrotate.timer
++logrotate-3.18.0/examples/wtmp
++logrotate-3.18.0/examples/logrotate.conf
++logrotate-3.18.0/examples/logrotate.service
++logrotate-3.18.0/.version
++logrotate-3.18.0/test/
++logrotate-3.18.0/test/Makefile.am
++logrotate-3.18.0/test/Makefile.in
++logrotate-3.18.0/test/compress
++logrotate-3.18.0/test/compress-error
++logrotate-3.18.0/test/mailer
++logrotate-3.18.0/test/test-common.sh
++logrotate-3.18.0/test/test-common-acl.sh
++logrotate-3.18.0/test/test-common-selinux.sh
++logrotate-3.18.0/test/test-0001.sh
++logrotate-3.18.0/test/test-0002.sh
++logrotate-3.18.0/test/test-0003.sh
++logrotate-3.18.0/test/test-0004.sh
++logrotate-3.18.0/test/test-0005.sh
++logrotate-3.18.0/test/test-0006.sh
++logrotate-3.18.0/test/test-0007.sh
++logrotate-3.18.0/test/test-0008.sh
++logrotate-3.18.0/test/test-0009.sh
++logrotate-3.18.0/test/test-0010.sh
++logrotate-3.18.0/test/test-0011.sh
++logrotate-3.18.0/test/test-0012.sh
++logrotate-3.18.0/test/test-0013.sh
++logrotate-3.18.0/test/test-0014.sh
++logrotate-3.18.0/test/test-0015.sh
++logrotate-3.18.0/test/test-0016.sh
++logrotate-3.18.0/test/test-0017.sh
++logrotate-3.18.0/test/test-0018.sh
++logrotate-3.18.0/test/test-0019.sh
++logrotate-3.18.0/test/test-0020.sh
++logrotate-3.18.0/test/test-0021.sh
++logrotate-3.18.0/test/test-0022.sh
++logrotate-3.18.0/test/test-0023.sh
++logrotate-3.18.0/test/test-0024.sh
++logrotate-3.18.0/test/test-0025.sh
++logrotate-3.18.0/test/test-0026.sh
++logrotate-3.18.0/test/test-0027.sh
++logrotate-3.18.0/test/test-0028.sh
++logrotate-3.18.0/test/test-0029.sh
++logrotate-3.18.0/test/test-0030.sh
++logrotate-3.18.0/test/test-0031.sh
++logrotate-3.18.0/test/test-0032.sh
++logrotate-3.18.0/test/test-0033.sh
++logrotate-3.18.0/test/test-0034.sh
++logrotate-3.18.0/test/test-0035.sh
++logrotate-3.18.0/test/test-0036.sh
++logrotate-3.18.0/test/test-0037.sh
++logrotate-3.18.0/test/test-0038.sh
++logrotate-3.18.0/test/test-0039.sh
++logrotate-3.18.0/test/test-0040.sh
++logrotate-3.18.0/test/test-0041.sh
++logrotate-3.18.0/test/test-0042.sh
++logrotate-3.18.0/test/test-0043.sh
++logrotate-3.18.0/test/test-0044.sh
++logrotate-3.18.0/test/test-0045.sh
++logrotate-3.18.0/test/test-0046.sh
++logrotate-3.18.0/test/test-0047.sh
++logrotate-3.18.0/test/test-0048.sh
++logrotate-3.18.0/test/test-0049.sh
++logrotate-3.18.0/test/test-0050.sh
++logrotate-3.18.0/test/test-0051.sh
++logrotate-3.18.0/test/test-0052.sh
++logrotate-3.18.0/test/test-0053.sh
++logrotate-3.18.0/test/test-0054.sh
++logrotate-3.18.0/test/test-0055.sh
++logrotate-3.18.0/test/test-0056.sh
++logrotate-3.18.0/test/test-0057.sh
++logrotate-3.18.0/test/test-0058.sh
++logrotate-3.18.0/test/test-0059.sh
++logrotate-3.18.0/test/test-0060.sh
++logrotate-3.18.0/test/test-0061.sh
++logrotate-3.18.0/test/test-0062.sh
++logrotate-3.18.0/test/test-0063.sh
++logrotate-3.18.0/test/test-0064.sh
++logrotate-3.18.0/test/test-0065.sh
++logrotate-3.18.0/test/test-0066.sh
++logrotate-3.18.0/test/test-0067.sh
++logrotate-3.18.0/test/test-0068.sh
++logrotate-3.18.0/test/test-0069.sh
++logrotate-3.18.0/test/test-0070.sh
++logrotate-3.18.0/test/test-0071.sh
++logrotate-3.18.0/test/test-0072.sh
++logrotate-3.18.0/test/test-0073.sh
++logrotate-3.18.0/test/test-0074.sh
++logrotate-3.18.0/test/test-0075.sh
++logrotate-3.18.0/test/test-0076.sh
++logrotate-3.18.0/test/test-0077.sh
++logrotate-3.18.0/test/test-0078.sh
++logrotate-3.18.0/test/test-0079.sh
++logrotate-3.18.0/test/test-0080.sh
++logrotate-3.18.0/test/test-0081.sh
++logrotate-3.18.0/test/test-0082.sh
++logrotate-3.18.0/test/test-0083.sh
++logrotate-3.18.0/test/test-0084.sh
++logrotate-3.18.0/test/test-0085.sh
++logrotate-3.18.0/test/test-0086.sh
++logrotate-3.18.0/test/test-0087.sh
++logrotate-3.18.0/test/test-0088.sh
++logrotate-3.18.0/test/test-0100.sh
++logrotate-3.18.0/test/test-0101.sh
++logrotate-3.18.0/test/test-config.100.in
++logrotate-3.18.0/test/test-config.101.in
++logrotate-3.18.0/test/test-config.10.in
++logrotate-3.18.0/test/test-config.11.in
++logrotate-3.18.0/test/test-config.12.in
++logrotate-3.18.0/test/test-config.13.in
++logrotate-3.18.0/test/test-config.14.in
++logrotate-3.18.0/test/test-config.15.in
++logrotate-3.18.0/test/test-config.16.in
++logrotate-3.18.0/test/test-config.17.in
++logrotate-3.18.0/test/test-config.18.in
++logrotate-3.18.0/test/test-config.19.in
++logrotate-3.18.0/test/test-config.1.in
++logrotate-3.18.0/test/test-config.20.in
++logrotate-3.18.0/test/test-config.21.in
++logrotate-3.18.0/test/test-config.22.in
++logrotate-3.18.0/test/test-config.23.in
++logrotate-3.18.0/test/test-config.24.in
++logrotate-3.18.0/test/test-config.25.in
++logrotate-3.18.0/test/test-config.26.in
++logrotate-3.18.0/test/test-config.27.in
++logrotate-3.18.0/test/test-config.28.in
++logrotate-3.18.0/test/test-config.29.in
++logrotate-3.18.0/test/test-config.2.in
++logrotate-3.18.0/test/test-config.30.in
++logrotate-3.18.0/test/test-config.31.in
++logrotate-3.18.0/test/test-config.32.in
++logrotate-3.18.0/test/test-config.33.in
++logrotate-3.18.0/test/test-config.34.in
++logrotate-3.18.0/test/test-config.35.in
++logrotate-3.18.0/test/test-config.36.in
++logrotate-3.18.0/test/test-config.37.in
++logrotate-3.18.0/test/test-config.38.in
++logrotate-3.18.0/test/test-config.39.in
++logrotate-3.18.0/test/test-config.3.in
++logrotate-3.18.0/test/test-config.40.in
++logrotate-3.18.0/test/test-config.41.in
++logrotate-3.18.0/test/test-config.42.in
++logrotate-3.18.0/test/test-config.43.in
++logrotate-3.18.0/test/test-config.44.in
++logrotate-3.18.0/test/test-config.45.in
++logrotate-3.18.0/test/test-config.46.in
++logrotate-3.18.0/test/test-config.47.in
++logrotate-3.18.0/test/test-config.48.in
++logrotate-3.18.0/test/test-config.49.in
++logrotate-3.18.0/test/test-config.4.in
++logrotate-3.18.0/test/test-config.50.in
++logrotate-3.18.0/test/test-config.51.in
++logrotate-3.18.0/test/test-config.52.in
++logrotate-3.18.0/test/test-config.53.in
++logrotate-3.18.0/test/test-config.54.in
++logrotate-3.18.0/test/test-config.55.in
++logrotate-3.18.0/test/test-config.56.in
++logrotate-3.18.0/test/test-config.57.in
++logrotate-3.18.0/test/test-config.58.in
++logrotate-3.18.0/test/test-config.59.in
++logrotate-3.18.0/test/test-config.5.in
++logrotate-3.18.0/test/test-config.60.in
++logrotate-3.18.0/test/test-config.61.in
++logrotate-3.18.0/test/test-config.62.in
++logrotate-3.18.0/test/test-config.63.in
++logrotate-3.18.0/test/test-config.64.in
++logrotate-3.18.0/test/test-config.65.in
++logrotate-3.18.0/test/test-config.66.in
++logrotate-3.18.0/test/test-config.67.in
++logrotate-3.18.0/test/test-config.68.in
++logrotate-3.18.0/test/test-config.69.in
++logrotate-3.18.0/test/test-config.6.in
++logrotate-3.18.0/test/test-config.70.in
++logrotate-3.18.0/test/test-config.71.in
++logrotate-3.18.0/test/test-config.72.in
++logrotate-3.18.0/test/test-config.73.in
++logrotate-3.18.0/test/test-config.74.in
++logrotate-3.18.0/test/test-config.75.in
++logrotate-3.18.0/test/test-config.76.in
++logrotate-3.18.0/test/test-config.77.in
++logrotate-3.18.0/test/test-config.78.in
++logrotate-3.18.0/test/test-config.79.in
++logrotate-3.18.0/test/test-config.7.in
++logrotate-3.18.0/test/test-config.80.in
++logrotate-3.18.0/test/test-config.81.in
++logrotate-3.18.0/test/test-config.82.in
++logrotate-3.18.0/test/test-config.83.in
++logrotate-3.18.0/test/test-config.84.in
++logrotate-3.18.0/test/test-config.85.in
++logrotate-3.18.0/test/test-config.86.in
++logrotate-3.18.0/test/test-config.87.in
++logrotate-3.18.0/test/test-config.88.in
++logrotate-3.18.0/test/test-config.8.in
++logrotate-3.18.0/test/test-config.9.in
++logrotate-3.18.0/test-driver
++logrotate-3.18.0/.tarball-version
++patching file logrotate.8
++Hunk #1 succeeded at 363 (offset 22 lines).
++patching file logrotate.8.in
++Hunk #1 succeeded at 363 (offset 22 lines).
++patching file config.c
++Hunk #1 succeeded at 147 with fuzz 1.
++checking for a BSD-compatible install... /usr/bin/ginstall -c
++checking whether build environment is sane... yes
++checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
++checking for gawk... gawk
++checking whether make sets $(MAKE)... yes
++checking whether make supports nested variables... yes
++checking whether make supports nested variables... (cached) yes
++checking whether make supports the include directive... yes (GNU style)
++checking for gcc... gcc
++checking whether the C compiler works... yes
++checking for C compiler default output file name... a.out
++checking for suffix of executables... 
++checking whether we are cross compiling... no
++checking for suffix of object files... o
++checking whether we are using the GNU C compiler... yes
++checking whether gcc accepts -g... yes
++checking for gcc option to accept ISO C89... none needed
++checking whether gcc understands -c and -o together... yes
++checking dependency style of gcc... gcc3
++checking how to run the C preprocessor... gcc -E
++checking for grep that handles long lines and -e... /usr/bin/grep
++checking for egrep... /usr/bin/grep -E
++checking for ANSI C header files... yes
++checking for sys/types.h... yes
++checking for sys/stat.h... yes
++checking for stdlib.h... yes
++checking for string.h... yes
++checking for memory.h... yes
++checking for strings.h... yes
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking for unistd.h... yes
++checking minix/config.h usability... no
++checking minix/config.h presence... no
++checking for minix/config.h... no
++checking whether it is safe to define __EXTENSIONS__... yes
++checking for gcc... (cached) gcc
++checking whether we are using the GNU C compiler... (cached) yes
++checking whether gcc accepts -g... (cached) yes
++checking for gcc option to accept ISO C89... (cached) none needed
++checking whether gcc understands -c and -o together... (cached) yes
++checking dependency style of gcc... (cached) gcc3
++checking for struct stat.st_blksize... yes
++checking for struct stat.st_blocks... yes
++checking build system type... x86_64-slackware-linux-musl
++checking host system type... x86_64-slackware-linux-musl
++checking for special C compiler options needed for large files... no
++checking for _FILE_OFFSET_BITS value needed for large files... no
++checking libgen.h usability... yes
++checking libgen.h presence... yes
++checking for libgen.h... yes
++checking for poptParseArgvString in -lpopt... yes
++checking for getfscreatecon_raw in -lselinux... no
++checking for acl_get_file in -lacl... yes
++checking for asprintf... yes
++checking for madvise... yes
++checking for qsort... yes
++checking for secure_getenv... yes
++checking for strndup... yes
++checking for strptime... yes
++checking for utimensat... yes
++checking for vsyslog... yes
++checking that generated files are newer than configure... done
++configure: creating ./config.status
++config.status: creating Makefile
++config.status: creating test/Makefile
++config.status: creating logrotate.8
++config.status: creating logrotate.spec
++config.status: creating config.h
++config.status: executing depfiles commands
++
++  logrotate 3.18.0
++
++  SELinux support:        no
++  ACL support:            yes
++  default mail command:   /bin/mail
++  compress command:       /bin/gzip
++  uncompress command:     /bin/gunzip
++  compress extension:     .gz
++  statefile path:         /var/lib/logrotate.status
++
++make  all-recursive
++make[1]: Entering directory '/tmp/logrotate-3.18.0'
++Making all in .
++make[2]: Entering directory '/tmp/logrotate-3.18.0'
++  CC       config.o
++  CC       log.o
++  CC       logrotate.o
++  CCLD     logrotate
++make[2]: Leaving directory '/tmp/logrotate-3.18.0'
++Making all in test
++make[2]: Entering directory '/tmp/logrotate-3.18.0/test'
++test .. = .. || ln -fs ../test/* .
++make[2]: Leaving directory '/tmp/logrotate-3.18.0/test'
++make[1]: Leaving directory '/tmp/logrotate-3.18.0'
++make  install-recursive
++make[1]: Entering directory '/tmp/logrotate-3.18.0'
++Making install in .
++make[2]: Entering directory '/tmp/logrotate-3.18.0'
++make[3]: Entering directory '/tmp/logrotate-3.18.0'
++ /usr/bin/mkdir -p '/tmp/package-logrotate/usr/sbin'
++  /usr/bin/ginstall -c logrotate '/tmp/package-logrotate/usr/sbin'
++ /usr/bin/mkdir -p '/tmp/package-logrotate/usr/man/man5'
++ /usr/bin/ginstall -c -m 644 logrotate.conf.5 '/tmp/package-logrotate/usr/man/man5'
++ /usr/bin/mkdir -p '/tmp/package-logrotate/usr/man/man8'
++ /usr/bin/ginstall -c -m 644 logrotate.8 '/tmp/package-logrotate/usr/man/man8'
++make[3]: Leaving directory '/tmp/logrotate-3.18.0'
++make[2]: Leaving directory '/tmp/logrotate-3.18.0'
++Making install in test
++make[2]: Entering directory '/tmp/logrotate-3.18.0/test'
++make[3]: Entering directory '/tmp/logrotate-3.18.0/test'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/logrotate-3.18.0/test'
++make[2]: Leaving directory '/tmp/logrotate-3.18.0/test'
++make[1]: Leaving directory '/tmp/logrotate-3.18.0'
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++
++No symbolic links were found, so we won't make an installation script.
++You can make your own later in ./install/doinst.sh and rebuild the
++package if you like.
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/logrotate-3.18.0-x86_64-1.txz
++
++./
++etc/
++etc/cron.daily/
++etc/cron.daily/logrotate
++etc/logrotate.conf.new
++etc/logrotate.d/
++install/
++install/doinst.sh
++install/slack-desc
++usr/
++usr/doc/
++usr/doc/logrotate-3.18.0/
++usr/doc/logrotate-3.18.0/COPYING
++usr/doc/logrotate-3.18.0/ChangeLog.md
++usr/doc/logrotate-3.18.0/README.md
++usr/man/
++usr/man/man5/
++usr/man/man5/logrotate.conf.5.gz
++usr/man/man8/
++usr/man/man8/logrotate.8.gz
++usr/sbin/
++usr/sbin/logrotate
++
++Slackware package /tmp/logrotate-3.18.0-x86_64-1.txz created.
++

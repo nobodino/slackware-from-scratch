@@ -1,0 +1,47 @@
+#!/bin/bash
+
+# armel/build
+# Check package dependencies, set metadata and launch
+# package build script.
+# by Stuart Winter <stuart@armedslack.org>
+#
+source /usr/share/slackdev/buildkit.sh
+
+# Package metadata:
+export PKGNAM=linuxdoc-tools
+export VERSION=${VERSION:-0.9.73}
+export BUILD=${BUILD:-1}
+export PKGSERIES=${PKGSERIES:-ap}
+export SLACKPACKAGE=$PKGNAM-$VERSION-$PKGARCH-$BUILD.txz
+export PKGEXT=${PKGEXT:-txz}
+
+# Ensure base ARM packages are installed first:
+slackbasedeps
+
+# Ensure $PKGNAM isn't already installed:
+slackfailpkgdeps $PKGNAM || removepkg $PKGNAM
+
+# Ensure specific build dependencies - libraries and development tools.
+# There are many more dependencies but these are the core ones I picked out
+# as I was building the software included within this package.
+#
+#slackcheckpkgdeps libxml2 || installpkg $PKGSTORE/l/libxml2-*.t?z
+# to unpack some SRPMs:
+#slackcheckpkgdeps rpm     || installpkg $PKGSTORE/ap/rpm-*.t?z
+# for OpenJade:
+#slackcheckpkgdeps tetex   || installpkg $PKGSTORE/t/tetex-[0-9]*.t?z
+# for AsciiDoc:
+#slackcheckpkgdeps python  || installpkg $PKGSTORE/d/python-[0-9]*.t?z
+# Ensure the packages are installed; exit if not.
+#slackcheckpkgdeps python,libxml2,rpm,tetex || exit 99
+
+# Stop daemons/processes which tend to modify the contents of the filesystem:
+altertrackprep
+
+# Launch the package build script:
+BUILDLOG=$( basename $SLACKPACKAGE .t?z ).build.log
+# ( ./$PKGNAM.SlackBuild ) >& /dev/stdout | tee $BUILDLOG
+( ./trackbuild.$PKGNAM ) >& /dev/stdout | tee $BUILDLOG
+
+# Compress the build log:
+bzip2 -9fvz $BUILDLOG

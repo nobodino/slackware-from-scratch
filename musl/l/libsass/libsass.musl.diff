@@ -1,0 +1,744 @@
+diff -ruBN /tmp/libsass/libsass.SlackBuild /source/l/libsass/libsass.SlackBuild
+--- /tmp/libsass/libsass.SlackBuild	2020-11-26 23:26:54.000000000 +0000
++++ /source/l/libsass/libsass.SlackBuild	2021-01-20 22:39:44.000000000 +0000
+@@ -59,7 +59,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "armv7hl" ]; then
+   SLKCFLAGS="-O3 -march=armv7-a -mfpu=vfpv3-d16"
+   LIBDIRSUFFIX=""
+@@ -105,7 +105,7 @@
+   --mandir=/usr/man \
+   --infodir=/usr/info \
+   --disable-static \
+-  --build=$ARCH-slackware-linux || exit 1
++  --build=$ARCH-slackware-linux-musl || exit 1
+ make $NUMJOBS || make || exit 1
+ make install DESTDIR=$PKG || exit 1
+ 
+diff -ruBN /tmp/libsass/libsass.SlackBuild.log /source/l/libsass/libsass.SlackBuild.log
+--- /tmp/libsass/libsass.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/l/libsass/libsass.SlackBuild.log	2021-01-20 22:49:36.000000000 +0000
+@@ -0,0 +1,719 @@
++libsass-3.6.4/
++libsass-3.6.4/INSTALL
++libsass-3.6.4/Makefile
++libsass-3.6.4/docs/
++libsass-3.6.4/docs/build-with-mingw.md
++libsass-3.6.4/docs/triage.md
++libsass-3.6.4/docs/api-context-example.md
++libsass-3.6.4/docs/api-value-example.md
++libsass-3.6.4/docs/api-context.md
++libsass-3.6.4/docs/api-context-internal.md
++libsass-3.6.4/docs/api-value.md
++libsass-3.6.4/docs/contributing.md
++libsass-3.6.4/docs/build-on-darwin.md
++libsass-3.6.4/docs/allocator.md
++libsass-3.6.4/docs/developing.md
++libsass-3.6.4/docs/README.md
++libsass-3.6.4/docs/custom-functions-internal.md
++libsass-3.6.4/docs/dev-profiling.md
++libsass-3.6.4/docs/trace.md
++libsass-3.6.4/docs/api-value-internal.md
++libsass-3.6.4/docs/build-on-windows.md
++libsass-3.6.4/docs/api-importer-internal.md
++libsass-3.6.4/docs/build-with-autotools.md
++libsass-3.6.4/docs/build-on-gentoo.md
++libsass-3.6.4/docs/api-doc.md
++libsass-3.6.4/docs/build-with-makefiles.md
++libsass-3.6.4/docs/plugins.md
++libsass-3.6.4/docs/build.md
++libsass-3.6.4/docs/api-function.md
++libsass-3.6.4/docs/api-function-example.md
++libsass-3.6.4/docs/build-shared-library.md
++libsass-3.6.4/docs/unicode.md
++libsass-3.6.4/docs/api-importer-example.md
++libsass-3.6.4/docs/api-importer.md
++libsass-3.6.4/docs/api-function-internal.md
++libsass-3.6.4/docs/implementations.md
++libsass-3.6.4/docs/setup-environment.md
++libsass-3.6.4/docs/dev-ast-memory.md
++libsass-3.6.4/docs/source-map-internals.md
++libsass-3.6.4/docs/build-with-visual-studio.md
++libsass-3.6.4/include/
++libsass-3.6.4/include/sass2scss.h
++libsass-3.6.4/include/sass/
++libsass-3.6.4/include/sass/base.h
++libsass-3.6.4/include/sass/values.h
++libsass-3.6.4/include/sass/version.h
++libsass-3.6.4/include/sass/functions.h
++libsass-3.6.4/include/sass/context.h
++libsass-3.6.4/include/sass/version.h.in
++libsass-3.6.4/include/sass.h
++libsass-3.6.4/.gitattributes
++libsass-3.6.4/configure.ac
++libsass-3.6.4/test/
++libsass-3.6.4/test/go.mod
++libsass-3.6.4/test/test_util_string.cpp
++libsass-3.6.4/test/Makefile
++libsass-3.6.4/test/e2e/
++libsass-3.6.4/test/e2e/unicode-pwd/
++libsass-3.6.4/test/e2e/unicode-pwd/Sáss-UŢF8/
++libsass-3.6.4/test/e2e/unicode-pwd/Sáss-UŢF8/output.css
++libsass-3.6.4/test/e2e/unicode-pwd/Sáss-UŢF8/input.scss
++libsass-3.6.4/test/e2e/unicode-pwd/Sáss-UŢF8/
++libsass-3.6.4/test/e2e/unicode-pwd/Sáss-UŢF8/output.css
++libsass-3.6.4/test/e2e/unicode-pwd/Sáss-UŢF8/input.scss
++libsass-3.6.4/test/test_shared_ptr.cpp
++libsass-3.6.4/SECURITY.md
++libsass-3.6.4/appveyor.yml
++libsass-3.6.4/res/
++libsass-3.6.4/res/resource.rc
++libsass-3.6.4/Readme.md
++libsass-3.6.4/COPYING
++libsass-3.6.4/CODE_OF_CONDUCT.md
++libsass-3.6.4/contrib/
++libsass-3.6.4/contrib/plugin.cpp
++libsass-3.6.4/contrib/libsass.spec
++libsass-3.6.4/.gitignore
++libsass-3.6.4/Makefile.conf
++libsass-3.6.4/.editorconfig
++libsass-3.6.4/.travis.yml
++libsass-3.6.4/version.sh
++libsass-3.6.4/GNUmakefile.am
++libsass-3.6.4/win/
++libsass-3.6.4/win/libsass.vcxproj
++libsass-3.6.4/win/libsass.sln
++libsass-3.6.4/win/libsass.sln.DotSettings
++libsass-3.6.4/win/libsass.targets
++libsass-3.6.4/win/libsass.vcxproj.filters
++libsass-3.6.4/script/
++libsass-3.6.4/script/tap-driver
++libsass-3.6.4/script/tap-runner
++libsass-3.6.4/script/ci-build-plugin
++libsass-3.6.4/script/spec
++libsass-3.6.4/script/bootstrap
++libsass-3.6.4/script/ci-install-deps
++libsass-3.6.4/script/branding
++libsass-3.6.4/script/ci-install-compiler
++libsass-3.6.4/script/ci-report-coverage
++libsass-3.6.4/script/test-leaks.pl
++libsass-3.6.4/script/ci-build-libsass
++libsass-3.6.4/src/
++libsass-3.6.4/src/plugins.hpp
++libsass-3.6.4/src/source_map.hpp
++libsass-3.6.4/src/operators.hpp
++libsass-3.6.4/src/error_handling.cpp
++libsass-3.6.4/src/values.cpp
++libsass-3.6.4/src/debug.hpp
++libsass-3.6.4/src/ast.cpp
++libsass-3.6.4/src/sass_values.hpp
++libsass-3.6.4/src/position.cpp
++libsass-3.6.4/src/output.cpp
++libsass-3.6.4/src/fn_lists.hpp
++libsass-3.6.4/src/fn_strings.hpp
++libsass-3.6.4/src/backtrace.hpp
++libsass-3.6.4/src/ast_selectors.hpp
++libsass-3.6.4/src/ast_sel_weave.cpp
++libsass-3.6.4/src/operation.hpp
++libsass-3.6.4/src/sass_functions.hpp
++libsass-3.6.4/src/file.cpp
++libsass-3.6.4/src/stylesheet.cpp
++libsass-3.6.4/src/extension.hpp
++libsass-3.6.4/src/source.hpp
++libsass-3.6.4/src/parser.cpp
++libsass-3.6.4/src/emitter.cpp
++libsass-3.6.4/src/parser.hpp
++libsass-3.6.4/src/fn_colors.hpp
++libsass-3.6.4/src/memory.hpp
++libsass-3.6.4/src/output.hpp
++libsass-3.6.4/src/ast2c.hpp
++libsass-3.6.4/src/remove_placeholders.hpp
++libsass-3.6.4/src/fn_lists.cpp
++libsass-3.6.4/src/ast_sel_unify.cpp
++libsass-3.6.4/src/fn_maps.hpp
++libsass-3.6.4/src/sass_values.cpp
++libsass-3.6.4/src/constants.hpp
++libsass-3.6.4/src/listize.hpp
++libsass-3.6.4/src/debugger.hpp
++libsass-3.6.4/src/error_handling.hpp
++libsass-3.6.4/src/ast_supports.cpp
++libsass-3.6.4/src/values.hpp
++libsass-3.6.4/src/sass.cpp
++libsass-3.6.4/src/expand.hpp
++libsass-3.6.4/src/fn_colors.cpp
++libsass-3.6.4/src/prelexer.cpp
++libsass-3.6.4/src/json.cpp
++libsass-3.6.4/src/emitter.hpp
++libsass-3.6.4/src/to_value.cpp
++libsass-3.6.4/src/plugins.cpp
++libsass-3.6.4/src/operators.cpp
++libsass-3.6.4/src/extender.hpp
++libsass-3.6.4/src/source_data.hpp
++libsass-3.6.4/src/constants.cpp
++libsass-3.6.4/src/MurmurHash2.hpp
++libsass-3.6.4/src/kwd_arg_macros.hpp
++libsass-3.6.4/src/fn_numbers.cpp
++libsass-3.6.4/src/c2ast.hpp
++libsass-3.6.4/src/fn_miscs.cpp
++libsass-3.6.4/src/ast_sel_super.cpp
++libsass-3.6.4/src/units.hpp
++libsass-3.6.4/src/sass_context.cpp
++libsass-3.6.4/src/remove_placeholders.cpp
++libsass-3.6.4/src/ast_fwd_decl.cpp
++libsass-3.6.4/src/utf8_string.hpp
++libsass-3.6.4/src/fn_utils.cpp
++libsass-3.6.4/src/ast_values.cpp
++libsass-3.6.4/src/utf8_string.cpp
++libsass-3.6.4/src/base64vlq.cpp
++libsass-3.6.4/src/sass_context.hpp
++libsass-3.6.4/src/to_value.hpp
++libsass-3.6.4/src/utf8.h
++libsass-3.6.4/src/listize.cpp
++libsass-3.6.4/src/extender.cpp
++libsass-3.6.4/src/memory/
++libsass-3.6.4/src/memory/shared_ptr.cpp
++libsass-3.6.4/src/memory/allocator.cpp
++libsass-3.6.4/src/memory/allocator.hpp
++libsass-3.6.4/src/memory/memory_pool.hpp
++libsass-3.6.4/src/memory/config.hpp
++libsass-3.6.4/src/memory/shared_ptr.hpp
++libsass-3.6.4/src/dart_helpers.hpp
++libsass-3.6.4/src/environment.cpp
++libsass-3.6.4/src/ast_sel_cmp.cpp
++libsass-3.6.4/src/cencode.c
++libsass-3.6.4/src/stylesheet.hpp
++libsass-3.6.4/src/cssize.hpp
++libsass-3.6.4/src/source_map.cpp
++libsass-3.6.4/src/ast_helpers.hpp
++libsass-3.6.4/src/base64vlq.hpp
++libsass-3.6.4/src/eval.hpp
++libsass-3.6.4/src/fn_strings.cpp
++libsass-3.6.4/src/ast_selectors.cpp
++libsass-3.6.4/src/GNUmakefile.am
++libsass-3.6.4/src/backtrace.cpp
++libsass-3.6.4/src/expand.cpp
++libsass-3.6.4/src/ast_supports.hpp
++libsass-3.6.4/src/inspect.hpp
++libsass-3.6.4/src/ast_fwd_decl.hpp
++libsass-3.6.4/src/context.cpp
++libsass-3.6.4/src/eval_selectors.cpp
++libsass-3.6.4/src/context.hpp
++libsass-3.6.4/src/settings.hpp
++libsass-3.6.4/src/ast.hpp
++libsass-3.6.4/src/sass_functions.cpp
++libsass-3.6.4/src/ordered_map.hpp
++libsass-3.6.4/src/bind.cpp
++libsass-3.6.4/src/mapping.hpp
++libsass-3.6.4/src/ast_def_macros.hpp
++libsass-3.6.4/src/json.hpp
++libsass-3.6.4/src/cssize.cpp
++libsass-3.6.4/src/util.hpp
++libsass-3.6.4/src/units.cpp
++libsass-3.6.4/src/b64/
++libsass-3.6.4/src/b64/cencode.h
++libsass-3.6.4/src/b64/encode.h
++libsass-3.6.4/src/check_nesting.cpp
++libsass-3.6.4/src/check_nesting.hpp
++libsass-3.6.4/src/file.hpp
++libsass-3.6.4/src/permutate.hpp
++libsass-3.6.4/src/fn_selectors.hpp
++libsass-3.6.4/src/fn_utils.hpp
++libsass-3.6.4/src/sass2scss.cpp
++libsass-3.6.4/src/util_string.cpp
++libsass-3.6.4/src/prelexer.hpp
++libsass-3.6.4/src/util.cpp
++libsass-3.6.4/src/bind.hpp
++libsass-3.6.4/src/parser_selectors.cpp
++libsass-3.6.4/src/position.hpp
++libsass-3.6.4/src/fn_maps.cpp
++libsass-3.6.4/src/fn_numbers.hpp
++libsass-3.6.4/src/ast2c.cpp
++libsass-3.6.4/src/lexer.hpp
++libsass-3.6.4/src/util_string.hpp
++libsass-3.6.4/src/extension.cpp
++libsass-3.6.4/src/support/
++libsass-3.6.4/src/support/libsass.pc.in
++libsass-3.6.4/src/source.cpp
++libsass-3.6.4/src/sass.hpp
++libsass-3.6.4/src/lexer.cpp
++libsass-3.6.4/src/color_maps.hpp
++libsass-3.6.4/src/environment.hpp
++libsass-3.6.4/src/c99func.c
++libsass-3.6.4/src/ast_values.hpp
++libsass-3.6.4/src/fn_miscs.hpp
++libsass-3.6.4/src/inspect.cpp
++libsass-3.6.4/src/eval.cpp
++libsass-3.6.4/src/color_maps.cpp
++libsass-3.6.4/src/fn_selectors.cpp
++libsass-3.6.4/src/utf8/
++libsass-3.6.4/src/utf8/core.h
++libsass-3.6.4/src/utf8/unchecked.h
++libsass-3.6.4/src/utf8/checked.h
++libsass-3.6.4/src/c2ast.cpp
++libsass-3.6.4/.github/
++libsass-3.6.4/.github/CONTRIBUTING.md
++libsass-3.6.4/.github/ISSUE_TEMPLATE.md
++libsass-3.6.4/LICENSE
++libsass-3.6.4/m4/
++libsass-3.6.4/m4/m4-ax_cxx_compile_stdcxx_11.m4
++libsass-3.6.4/m4/.gitkeep
++autoreconf: Entering directory `.'
++autoreconf: configure.ac: not using Gettext
++autoreconf: running: aclocal --force 
++autoreconf: configure.ac: tracing
++autoreconf: running: libtoolize --copy --force
++libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, 'script'.
++libtoolize: copying file 'script/ltmain.sh'
++libtoolize: putting macros in AC_CONFIG_MACRO_DIRS, 'm4'.
++libtoolize: copying file 'm4/libtool.m4'
++libtoolize: copying file 'm4/ltoptions.m4'
++libtoolize: copying file 'm4/ltsugar.m4'
++libtoolize: copying file 'm4/ltversion.m4'
++libtoolize: copying file 'm4/lt~obsolete.m4'
++libtoolize: Consider adding '-I m4' to ACLOCAL_AMFLAGS in Makefile.am.
++autoreconf: running: /usr/bin/autoconf --force
++autoreconf: running: /usr/bin/autoheader --force
++autoreconf: running: automake --add-missing --copy --force-missing
++configure.ac:30: installing 'script/ar-lib'
++configure.ac:19: installing 'script/compile'
++configure.ac:31: installing 'script/config.guess'
++configure.ac:31: installing 'script/config.sub'
++configure.ac:15: installing 'script/install-sh'
++configure.ac:15: installing 'script/missing'
++GNUmakefile.am:37: warning: source file '$(SASS_SASSC_PATH)/sassc.c' is in a subdirectory,
++GNUmakefile.am:37: but option 'subdir-objects' is disabled
++automake: warning: possible forward-incompatibility.
++automake: At least a source file is in a subdirectory, but the 'subdir-objects'
++automake: automake option hasn't been enabled.  For now, the corresponding output
++automake: object file(s) will be placed in the top-level directory.  However,
++automake: this behaviour will change in future Automake versions: they will
++automake: unconditionally cause object files to be placed in the same subdirectory
++automake: of the corresponding sources.
++automake: You are advised to start using 'subdir-objects' option throughout your
++automake: project, to avoid future incompatibilities.
++GNUmakefile.am: installing 'script/depcomp'
++parallel-tests: installing 'script/test-driver'
++Makefile.conf:8: warning: source file 'memory/allocator.cpp' is in a subdirectory,
++Makefile.conf:8: but option 'subdir-objects' is disabled
++src/GNUmakefile.am:29:   'Makefile.conf' included from here
++Makefile.conf:8: warning: source file 'memory/shared_ptr.cpp' is in a subdirectory,
++Makefile.conf:8: but option 'subdir-objects' is disabled
++src/GNUmakefile.am:29:   'Makefile.conf' included from here
++autoreconf: Leaving directory `.'
++checking for a BSD-compatible install... /usr/bin/ginstall -c
++checking whether build environment is sane... yes
++checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
++checking for gawk... gawk
++checking whether make sets $(MAKE)... yes
++checking whether make supports nested variables... yes
++checking whether make supports nested variables... (cached) yes
++checking for gcc... gcc
++checking whether the C compiler works... yes
++checking for C compiler default output file name... a.out
++checking for suffix of executables... 
++checking whether we are cross compiling... no
++checking for suffix of object files... o
++checking whether we are using the GNU C compiler... yes
++checking whether gcc accepts -g... yes
++checking for gcc option to accept ISO C89... none needed
++checking whether gcc understands -c and -o together... yes
++checking whether make supports the include directive... yes (GNU style)
++checking dependency style of gcc... gcc3
++checking for g++... g++
++checking whether we are using the GNU C++ compiler... yes
++checking whether g++ accepts -g... yes
++checking dependency style of g++... gcc3
++checking how to run the C++ preprocessor... g++ -E
++checking for grep that handles long lines and -e... /usr/bin/grep
++checking for egrep... /usr/bin/grep -E
++checking for ANSI C header files... yes
++checking for sys/types.h... yes
++checking for sys/stat.h... yes
++checking for stdlib.h... yes
++checking for string.h... yes
++checking for memory.h... yes
++checking for strings.h... yes
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking for unistd.h... yes
++checking minix/config.h usability... no
++checking minix/config.h presence... no
++checking for minix/config.h... no
++checking whether it is safe to define __EXTENSIONS__... yes
++checking for ar... ar
++checking for dlltool... dlltool
++checking for dllwrap... dllwrap
++checking for windres... windres
++checking the archiver (ar) interface... ar
++checking build system type... x86_64-slackware-linux-musl
++checking host system type... x86_64-slackware-linux-musl
++checking how to print strings... printf
++checking for a sed that does not truncate output... /usr/bin/sed
++checking for fgrep... /usr/bin/grep -F
++checking for ld used by gcc... /usr/bin/ld
++checking if the linker (/usr/bin/ld) is GNU ld... yes
++checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
++checking the name lister (/usr/bin/nm -B) interface... BSD nm
++checking whether ln -s works... yes
++checking the maximum length of command line arguments... 98304
++checking how to convert x86_64-slackware-linux-musl file names to x86_64-slackware-linux-musl format... func_convert_file_noop
++checking how to convert x86_64-slackware-linux-musl file names to toolchain format... func_convert_file_noop
++checking for /usr/bin/ld option to reload object files... -r
++checking for objdump... objdump
++checking how to recognize dependent libraries... pass_all
++checking for dlltool... (cached) dlltool
++checking how to associate runtime and link libraries... printf %s\n
++checking for archiver @FILE support... @
++checking for strip... strip
++checking for ranlib... ranlib
++checking command to parse /usr/bin/nm -B output from gcc object... ok
++checking for sysroot... no
++checking for a working dd... /usr/bin/dd
++checking how to truncate binary pipes... /usr/bin/dd bs=4096 count=1
++checking for mt... mt
++checking if mt is a manifest tool... no
++checking for dlfcn.h... yes
++checking for objdir... .libs
++checking if gcc supports -fno-rtti -fno-exceptions... no
++checking for gcc option to produce PIC... -fPIC -DPIC
++checking if gcc PIC flag -fPIC -DPIC works... yes
++checking if gcc static flag -static works... yes
++checking if gcc supports -c -o file.o... yes
++checking if gcc supports -c -o file.o... (cached) yes
++checking whether the gcc linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
++checking whether -lc should be explicitly linked in... no
++checking dynamic linker characteristics... GNU/Linux ld.so
++checking how to hardcode library paths into programs... immediate
++checking for shl_load... no
++checking for shl_load in -ldld... no
++checking for dlopen... yes
++checking whether a program can dlopen itself... yes
++checking whether a statically linked program can dlopen itself... no
++checking whether stripping libraries is possible... yes
++checking if libtool supports shared libraries... yes
++checking whether to build shared libraries... yes
++checking whether to build static libraries... no
++checking how to run the C++ preprocessor... g++ -E
++checking for ld used by g++... /usr/bin/ld -m elf_x86_64
++checking if the linker (/usr/bin/ld -m elf_x86_64) is GNU ld... yes
++checking whether the g++ linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
++checking for g++ option to produce PIC... -fPIC -DPIC
++checking if g++ PIC flag -fPIC -DPIC works... yes
++checking if g++ static flag -static works... yes
++checking if g++ supports -c -o file.o... yes
++checking if g++ supports -c -o file.o... (cached) yes
++checking whether the g++ linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
++checking dynamic linker characteristics... (cached) GNU/Linux ld.so
++checking how to hardcode library paths into programs... immediate
++checking for unistd.h... (cached) yes
++checking for size_t... yes
++checking for stdlib.h... (cached) yes
++checking for GNU libc compatible malloc... yes
++checking for floor... yes
++checking for getcwd... yes
++checking for strtol... yes
++checking for library containing dlopen... none required
++configure: Building libsass (na)
++checking that generated files are newer than configure... done
++configure: creating ./config.status
++config.status: creating include/sass/version.h
++config.status: creating GNUmakefile
++config.status: creating src/GNUmakefile
++config.status: creating src/support/libsass.pc
++config.status: creating src/config.h
++config.status: executing depfiles commands
++config.status: executing libtool commands
++Making all in src
++make[1]: Entering directory '/tmp/libsass-3.6.4/src'
++make  all-am
++make[2]: Entering directory '/tmp/libsass-3.6.4/src'
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -O2 -fPIC -MT cencode.lo -MD -MP -MF .deps/cencode.Tpo -c -o cencode.lo cencode.c
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT ast.lo -MD -MP -MF .deps/ast.Tpo -c -o ast.lo ast.cpp
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT ast_values.lo -MD -MP -MF .deps/ast_values.Tpo -c -o ast_values.lo ast_values.cpp
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -O2 -fPIC -MT cencode.lo -MD -MP -MF .deps/cencode.Tpo -c cencode.c  -fPIC -DPIC -o .libs/cencode.o
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT ast.lo -MD -MP -MF .deps/ast.Tpo -c ast.cpp  -fPIC -DPIC -o .libs/ast.o
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT ast_values.lo -MD -MP -MF .deps/ast_values.Tpo -c ast_values.cpp  -fPIC -DPIC -o .libs/ast_values.o
++mv -f .deps/cencode.Tpo .deps/cencode.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT ast_supports.lo -MD -MP -MF .deps/ast_supports.Tpo -c -o ast_supports.lo ast_supports.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT ast_supports.lo -MD -MP -MF .deps/ast_supports.Tpo -c ast_supports.cpp  -fPIC -DPIC -o .libs/ast_supports.o
++mv -f .deps/ast_supports.Tpo .deps/ast_supports.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT ast_sel_cmp.lo -MD -MP -MF .deps/ast_sel_cmp.Tpo -c -o ast_sel_cmp.lo ast_sel_cmp.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT ast_sel_cmp.lo -MD -MP -MF .deps/ast_sel_cmp.Tpo -c ast_sel_cmp.cpp  -fPIC -DPIC -o .libs/ast_sel_cmp.o
++mv -f .deps/ast_sel_cmp.Tpo .deps/ast_sel_cmp.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT ast_sel_unify.lo -MD -MP -MF .deps/ast_sel_unify.Tpo -c -o ast_sel_unify.lo ast_sel_unify.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT ast_sel_unify.lo -MD -MP -MF .deps/ast_sel_unify.Tpo -c ast_sel_unify.cpp  -fPIC -DPIC -o .libs/ast_sel_unify.o
++mv -f .deps/ast_values.Tpo .deps/ast_values.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT ast_sel_super.lo -MD -MP -MF .deps/ast_sel_super.Tpo -c -o ast_sel_super.lo ast_sel_super.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT ast_sel_super.lo -MD -MP -MF .deps/ast_sel_super.Tpo -c ast_sel_super.cpp  -fPIC -DPIC -o .libs/ast_sel_super.o
++mv -f .deps/ast.Tpo .deps/ast.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT ast_sel_weave.lo -MD -MP -MF .deps/ast_sel_weave.Tpo -c -o ast_sel_weave.lo ast_sel_weave.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT ast_sel_weave.lo -MD -MP -MF .deps/ast_sel_weave.Tpo -c ast_sel_weave.cpp  -fPIC -DPIC -o .libs/ast_sel_weave.o
++mv -f .deps/ast_sel_unify.Tpo .deps/ast_sel_unify.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT ast_selectors.lo -MD -MP -MF .deps/ast_selectors.Tpo -c -o ast_selectors.lo ast_selectors.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT ast_selectors.lo -MD -MP -MF .deps/ast_selectors.Tpo -c ast_selectors.cpp  -fPIC -DPIC -o .libs/ast_selectors.o
++mv -f .deps/ast_sel_super.Tpo .deps/ast_sel_super.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT context.lo -MD -MP -MF .deps/context.Tpo -c -o context.lo context.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT context.lo -MD -MP -MF .deps/context.Tpo -c context.cpp  -fPIC -DPIC -o .libs/context.o
++mv -f .deps/ast_sel_weave.Tpo .deps/ast_sel_weave.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT constants.lo -MD -MP -MF .deps/constants.Tpo -c -o constants.lo constants.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT constants.lo -MD -MP -MF .deps/constants.Tpo -c constants.cpp  -fPIC -DPIC -o .libs/constants.o
++mv -f .deps/constants.Tpo .deps/constants.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT fn_utils.lo -MD -MP -MF .deps/fn_utils.Tpo -c -o fn_utils.lo fn_utils.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT fn_utils.lo -MD -MP -MF .deps/fn_utils.Tpo -c fn_utils.cpp  -fPIC -DPIC -o .libs/fn_utils.o
++mv -f .deps/ast_selectors.Tpo .deps/ast_selectors.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT fn_miscs.lo -MD -MP -MF .deps/fn_miscs.Tpo -c -o fn_miscs.lo fn_miscs.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT fn_miscs.lo -MD -MP -MF .deps/fn_miscs.Tpo -c fn_miscs.cpp  -fPIC -DPIC -o .libs/fn_miscs.o
++mv -f .deps/fn_utils.Tpo .deps/fn_utils.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT fn_maps.lo -MD -MP -MF .deps/fn_maps.Tpo -c -o fn_maps.lo fn_maps.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT fn_maps.lo -MD -MP -MF .deps/fn_maps.Tpo -c fn_maps.cpp  -fPIC -DPIC -o .libs/fn_maps.o
++mv -f .deps/context.Tpo .deps/context.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT fn_lists.lo -MD -MP -MF .deps/fn_lists.Tpo -c -o fn_lists.lo fn_lists.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT fn_lists.lo -MD -MP -MF .deps/fn_lists.Tpo -c fn_lists.cpp  -fPIC -DPIC -o .libs/fn_lists.o
++mv -f .deps/fn_miscs.Tpo .deps/fn_miscs.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT fn_colors.lo -MD -MP -MF .deps/fn_colors.Tpo -c -o fn_colors.lo fn_colors.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT fn_colors.lo -MD -MP -MF .deps/fn_colors.Tpo -c fn_colors.cpp  -fPIC -DPIC -o .libs/fn_colors.o
++mv -f .deps/fn_maps.Tpo .deps/fn_maps.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT fn_numbers.lo -MD -MP -MF .deps/fn_numbers.Tpo -c -o fn_numbers.lo fn_numbers.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT fn_numbers.lo -MD -MP -MF .deps/fn_numbers.Tpo -c fn_numbers.cpp  -fPIC -DPIC -o .libs/fn_numbers.o
++mv -f .deps/fn_lists.Tpo .deps/fn_lists.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT fn_strings.lo -MD -MP -MF .deps/fn_strings.Tpo -c -o fn_strings.lo fn_strings.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT fn_strings.lo -MD -MP -MF .deps/fn_strings.Tpo -c fn_strings.cpp  -fPIC -DPIC -o .libs/fn_strings.o
++mv -f .deps/fn_numbers.Tpo .deps/fn_numbers.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT fn_selectors.lo -MD -MP -MF .deps/fn_selectors.Tpo -c -o fn_selectors.lo fn_selectors.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT fn_selectors.lo -MD -MP -MF .deps/fn_selectors.Tpo -c fn_selectors.cpp  -fPIC -DPIC -o .libs/fn_selectors.o
++mv -f .deps/fn_colors.Tpo .deps/fn_colors.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT color_maps.lo -MD -MP -MF .deps/color_maps.Tpo -c -o color_maps.lo color_maps.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT color_maps.lo -MD -MP -MF .deps/color_maps.Tpo -c color_maps.cpp  -fPIC -DPIC -o .libs/color_maps.o
++mv -f .deps/fn_strings.Tpo .deps/fn_strings.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT environment.lo -MD -MP -MF .deps/environment.Tpo -c -o environment.lo environment.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT environment.lo -MD -MP -MF .deps/environment.Tpo -c environment.cpp  -fPIC -DPIC -o .libs/environment.o
++mv -f .deps/fn_selectors.Tpo .deps/fn_selectors.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT ast_fwd_decl.lo -MD -MP -MF .deps/ast_fwd_decl.Tpo -c -o ast_fwd_decl.lo ast_fwd_decl.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT ast_fwd_decl.lo -MD -MP -MF .deps/ast_fwd_decl.Tpo -c ast_fwd_decl.cpp  -fPIC -DPIC -o .libs/ast_fwd_decl.o
++mv -f .deps/environment.Tpo .deps/environment.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT bind.lo -MD -MP -MF .deps/bind.Tpo -c -o bind.lo bind.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT bind.lo -MD -MP -MF .deps/bind.Tpo -c bind.cpp  -fPIC -DPIC -o .libs/bind.o
++mv -f .deps/ast_fwd_decl.Tpo .deps/ast_fwd_decl.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT file.lo -MD -MP -MF .deps/file.Tpo -c -o file.lo file.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT file.lo -MD -MP -MF .deps/file.Tpo -c file.cpp  -fPIC -DPIC -o .libs/file.o
++mv -f .deps/color_maps.Tpo .deps/color_maps.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT util.lo -MD -MP -MF .deps/util.Tpo -c -o util.lo util.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT util.lo -MD -MP -MF .deps/util.Tpo -c util.cpp  -fPIC -DPIC -o .libs/util.o
++mv -f .deps/util.Tpo .deps/util.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT util_string.lo -MD -MP -MF .deps/util_string.Tpo -c -o util_string.lo util_string.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT util_string.lo -MD -MP -MF .deps/util_string.Tpo -c util_string.cpp  -fPIC -DPIC -o .libs/util_string.o
++mv -f .deps/file.Tpo .deps/file.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT json.lo -MD -MP -MF .deps/json.Tpo -c -o json.lo json.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT json.lo -MD -MP -MF .deps/json.Tpo -c json.cpp  -fPIC -DPIC -o .libs/json.o
++mv -f .deps/bind.Tpo .deps/bind.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT units.lo -MD -MP -MF .deps/units.Tpo -c -o units.lo units.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT units.lo -MD -MP -MF .deps/units.Tpo -c units.cpp  -fPIC -DPIC -o .libs/units.o
++mv -f .deps/util_string.Tpo .deps/util_string.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT values.lo -MD -MP -MF .deps/values.Tpo -c -o values.lo values.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT values.lo -MD -MP -MF .deps/values.Tpo -c values.cpp  -fPIC -DPIC -o .libs/values.o
++mv -f .deps/json.Tpo .deps/json.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT plugins.lo -MD -MP -MF .deps/plugins.Tpo -c -o plugins.lo plugins.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT plugins.lo -MD -MP -MF .deps/plugins.Tpo -c plugins.cpp  -fPIC -DPIC -o .libs/plugins.o
++mv -f .deps/units.Tpo .deps/units.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT source.lo -MD -MP -MF .deps/source.Tpo -c -o source.lo source.cpp
++mv -f .deps/plugins.Tpo .deps/plugins.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT position.lo -MD -MP -MF .deps/position.Tpo -c -o position.lo position.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT source.lo -MD -MP -MF .deps/source.Tpo -c source.cpp  -fPIC -DPIC -o .libs/source.o
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT position.lo -MD -MP -MF .deps/position.Tpo -c position.cpp  -fPIC -DPIC -o .libs/position.o
++mv -f .deps/values.Tpo .deps/values.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT lexer.lo -MD -MP -MF .deps/lexer.Tpo -c -o lexer.lo lexer.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT lexer.lo -MD -MP -MF .deps/lexer.Tpo -c lexer.cpp  -fPIC -DPIC -o .libs/lexer.o
++mv -f .deps/source.Tpo .deps/source.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT parser.lo -MD -MP -MF .deps/parser.Tpo -c -o parser.lo parser.cpp
++mv -f .deps/position.Tpo .deps/position.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT parser_selectors.lo -MD -MP -MF .deps/parser_selectors.Tpo -c -o parser_selectors.lo parser_selectors.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT parser.lo -MD -MP -MF .deps/parser.Tpo -c parser.cpp  -fPIC -DPIC -o .libs/parser.o
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT parser_selectors.lo -MD -MP -MF .deps/parser_selectors.Tpo -c parser_selectors.cpp  -fPIC -DPIC -o .libs/parser_selectors.o
++mv -f .deps/lexer.Tpo .deps/lexer.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT prelexer.lo -MD -MP -MF .deps/prelexer.Tpo -c -o prelexer.lo prelexer.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT prelexer.lo -MD -MP -MF .deps/prelexer.Tpo -c prelexer.cpp  -fPIC -DPIC -o .libs/prelexer.o
++mv -f .deps/parser_selectors.Tpo .deps/parser_selectors.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT eval.lo -MD -MP -MF .deps/eval.Tpo -c -o eval.lo eval.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT eval.lo -MD -MP -MF .deps/eval.Tpo -c eval.cpp  -fPIC -DPIC -o .libs/eval.o
++mv -f .deps/prelexer.Tpo .deps/prelexer.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT eval_selectors.lo -MD -MP -MF .deps/eval_selectors.Tpo -c -o eval_selectors.lo eval_selectors.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT eval_selectors.lo -MD -MP -MF .deps/eval_selectors.Tpo -c eval_selectors.cpp  -fPIC -DPIC -o .libs/eval_selectors.o
++mv -f .deps/eval_selectors.Tpo .deps/eval_selectors.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT expand.lo -MD -MP -MF .deps/expand.Tpo -c -o expand.lo expand.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT expand.lo -MD -MP -MF .deps/expand.Tpo -c expand.cpp  -fPIC -DPIC -o .libs/expand.o
++mv -f .deps/eval.Tpo .deps/eval.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT listize.lo -MD -MP -MF .deps/listize.Tpo -c -o listize.lo listize.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT listize.lo -MD -MP -MF .deps/listize.Tpo -c listize.cpp  -fPIC -DPIC -o .libs/listize.o
++mv -f .deps/expand.Tpo .deps/expand.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT cssize.lo -MD -MP -MF .deps/cssize.Tpo -c -o cssize.lo cssize.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT cssize.lo -MD -MP -MF .deps/cssize.Tpo -c cssize.cpp  -fPIC -DPIC -o .libs/cssize.o
++mv -f .deps/listize.Tpo .deps/listize.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT extender.lo -MD -MP -MF .deps/extender.Tpo -c -o extender.lo extender.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT extender.lo -MD -MP -MF .deps/extender.Tpo -c extender.cpp  -fPIC -DPIC -o .libs/extender.o
++mv -f .deps/parser.Tpo .deps/parser.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT extension.lo -MD -MP -MF .deps/extension.Tpo -c -o extension.lo extension.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT extension.lo -MD -MP -MF .deps/extension.Tpo -c extension.cpp  -fPIC -DPIC -o .libs/extension.o
++mv -f .deps/cssize.Tpo .deps/cssize.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT stylesheet.lo -MD -MP -MF .deps/stylesheet.Tpo -c -o stylesheet.lo stylesheet.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT stylesheet.lo -MD -MP -MF .deps/stylesheet.Tpo -c stylesheet.cpp  -fPIC -DPIC -o .libs/stylesheet.o
++mv -f .deps/stylesheet.Tpo .deps/stylesheet.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT output.lo -MD -MP -MF .deps/output.Tpo -c -o output.lo output.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT output.lo -MD -MP -MF .deps/output.Tpo -c output.cpp  -fPIC -DPIC -o .libs/output.o
++mv -f .deps/extension.Tpo .deps/extension.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT inspect.lo -MD -MP -MF .deps/inspect.Tpo -c -o inspect.lo inspect.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT inspect.lo -MD -MP -MF .deps/inspect.Tpo -c inspect.cpp  -fPIC -DPIC -o .libs/inspect.o
++mv -f .deps/output.Tpo .deps/output.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT emitter.lo -MD -MP -MF .deps/emitter.Tpo -c -o emitter.lo emitter.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT emitter.lo -MD -MP -MF .deps/emitter.Tpo -c emitter.cpp  -fPIC -DPIC -o .libs/emitter.o
++mv -f .deps/extender.Tpo .deps/extender.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT check_nesting.lo -MD -MP -MF .deps/check_nesting.Tpo -c -o check_nesting.lo check_nesting.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT check_nesting.lo -MD -MP -MF .deps/check_nesting.Tpo -c check_nesting.cpp  -fPIC -DPIC -o .libs/check_nesting.o
++mv -f .deps/emitter.Tpo .deps/emitter.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT remove_placeholders.lo -MD -MP -MF .deps/remove_placeholders.Tpo -c -o remove_placeholders.lo remove_placeholders.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT remove_placeholders.lo -MD -MP -MF .deps/remove_placeholders.Tpo -c remove_placeholders.cpp  -fPIC -DPIC -o .libs/remove_placeholders.o
++mv -f .deps/inspect.Tpo .deps/inspect.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT sass.lo -MD -MP -MF .deps/sass.Tpo -c -o sass.lo sass.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT sass.lo -MD -MP -MF .deps/sass.Tpo -c sass.cpp  -fPIC -DPIC -o .libs/sass.o
++mv -f .deps/check_nesting.Tpo .deps/check_nesting.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT sass_values.lo -MD -MP -MF .deps/sass_values.Tpo -c -o sass_values.lo sass_values.cpp
++mv -f .deps/remove_placeholders.Tpo .deps/remove_placeholders.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT sass_context.lo -MD -MP -MF .deps/sass_context.Tpo -c -o sass_context.lo sass_context.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT sass_values.lo -MD -MP -MF .deps/sass_values.Tpo -c sass_values.cpp  -fPIC -DPIC -o .libs/sass_values.o
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT sass_context.lo -MD -MP -MF .deps/sass_context.Tpo -c sass_context.cpp  -fPIC -DPIC -o .libs/sass_context.o
++mv -f .deps/sass.Tpo .deps/sass.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT sass_functions.lo -MD -MP -MF .deps/sass_functions.Tpo -c -o sass_functions.lo sass_functions.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT sass_functions.lo -MD -MP -MF .deps/sass_functions.Tpo -c sass_functions.cpp  -fPIC -DPIC -o .libs/sass_functions.o
++mv -f .deps/sass_values.Tpo .deps/sass_values.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT sass2scss.lo -MD -MP -MF .deps/sass2scss.Tpo -c -o sass2scss.lo sass2scss.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT sass2scss.lo -MD -MP -MF .deps/sass2scss.Tpo -c sass2scss.cpp  -fPIC -DPIC -o .libs/sass2scss.o
++mv -f .deps/sass_context.Tpo .deps/sass_context.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT backtrace.lo -MD -MP -MF .deps/backtrace.Tpo -c -o backtrace.lo backtrace.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT backtrace.lo -MD -MP -MF .deps/backtrace.Tpo -c backtrace.cpp  -fPIC -DPIC -o .libs/backtrace.o
++mv -f .deps/sass_functions.Tpo .deps/sass_functions.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT operators.lo -MD -MP -MF .deps/operators.Tpo -c -o operators.lo operators.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT operators.lo -MD -MP -MF .deps/operators.Tpo -c operators.cpp  -fPIC -DPIC -o .libs/operators.o
++mv -f .deps/backtrace.Tpo .deps/backtrace.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT ast2c.lo -MD -MP -MF .deps/ast2c.Tpo -c -o ast2c.lo ast2c.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT ast2c.lo -MD -MP -MF .deps/ast2c.Tpo -c ast2c.cpp  -fPIC -DPIC -o .libs/ast2c.o
++mv -f .deps/sass2scss.Tpo .deps/sass2scss.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT c2ast.lo -MD -MP -MF .deps/c2ast.Tpo -c -o c2ast.lo c2ast.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT c2ast.lo -MD -MP -MF .deps/c2ast.Tpo -c c2ast.cpp  -fPIC -DPIC -o .libs/c2ast.o
++mv -f .deps/ast2c.Tpo .deps/ast2c.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT to_value.lo -MD -MP -MF .deps/to_value.Tpo -c -o to_value.lo to_value.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT to_value.lo -MD -MP -MF .deps/to_value.Tpo -c to_value.cpp  -fPIC -DPIC -o .libs/to_value.o
++mv -f .deps/operators.Tpo .deps/operators.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT source_map.lo -MD -MP -MF .deps/source_map.Tpo -c -o source_map.lo source_map.cpp
++mv -f .deps/c2ast.Tpo .deps/c2ast.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT error_handling.lo -MD -MP -MF .deps/error_handling.Tpo -c -o error_handling.lo error_handling.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT source_map.lo -MD -MP -MF .deps/source_map.Tpo -c source_map.cpp  -fPIC -DPIC -o .libs/source_map.o
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT error_handling.lo -MD -MP -MF .deps/error_handling.Tpo -c error_handling.cpp  -fPIC -DPIC -o .libs/error_handling.o
++mv -f .deps/source_map.Tpo .deps/source_map.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT allocator.lo -MD -MP -MF .deps/allocator.Tpo -c -o allocator.lo `test -f 'memory/allocator.cpp' || echo './'`memory/allocator.cpp
++mv -f .deps/to_value.Tpo .deps/to_value.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT shared_ptr.lo -MD -MP -MF .deps/shared_ptr.Tpo -c -o shared_ptr.lo `test -f 'memory/shared_ptr.cpp' || echo './'`memory/shared_ptr.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT allocator.lo -MD -MP -MF .deps/allocator.Tpo -c memory/allocator.cpp  -fPIC -DPIC -o .libs/allocator.o
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT shared_ptr.lo -MD -MP -MF .deps/shared_ptr.Tpo -c memory/shared_ptr.cpp  -fPIC -DPIC -o .libs/shared_ptr.o
++mv -f .deps/allocator.Tpo .deps/allocator.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT utf8_string.lo -MD -MP -MF .deps/utf8_string.Tpo -c -o utf8_string.lo utf8_string.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT utf8_string.lo -MD -MP -MF .deps/utf8_string.Tpo -c utf8_string.cpp  -fPIC -DPIC -o .libs/utf8_string.o
++mv -f .deps/shared_ptr.Tpo .deps/shared_ptr.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=compile g++ -DHAVE_CONFIG_H -I.  -I../include  -Wall -O2 -std=c++11 -O2 -fPIC -MT base64vlq.lo -MD -MP -MF .deps/base64vlq.Tpo -c -o base64vlq.lo base64vlq.cpp
++libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I../include -Wall -O2 -std=c++11 -O2 -fPIC -MT base64vlq.lo -MD -MP -MF .deps/base64vlq.Tpo -c base64vlq.cpp  -fPIC -DPIC -o .libs/base64vlq.o
++mv -f .deps/base64vlq.Tpo .deps/base64vlq.Plo
++mv -f .deps/error_handling.Tpo .deps/error_handling.Plo
++mv -f .deps/utf8_string.Tpo .deps/utf8_string.Plo
++/bin/sh ../libtool  --tag=CXX   --mode=link g++ -Wall -O2 -std=c++11 -O2 -fPIC -Wall -O2  -no-undefined -version-info 1:0:0  -o libsass.la -rpath /usr/lib cencode.lo ast.lo ast_values.lo ast_supports.lo ast_sel_cmp.lo ast_sel_unify.lo ast_sel_super.lo ast_sel_weave.lo ast_selectors.lo context.lo constants.lo fn_utils.lo fn_miscs.lo fn_maps.lo fn_lists.lo fn_colors.lo fn_numbers.lo fn_strings.lo fn_selectors.lo color_maps.lo environment.lo ast_fwd_decl.lo bind.lo file.lo util.lo util_string.lo json.lo units.lo values.lo plugins.lo source.lo position.lo lexer.lo parser.lo parser_selectors.lo prelexer.lo eval.lo eval_selectors.lo expand.lo listize.lo cssize.lo extender.lo extension.lo stylesheet.lo output.lo inspect.lo emitter.lo check_nesting.lo remove_placeholders.lo sass.lo sass_values.lo sass_context.lo sass_functions.lo sass2scss.lo backtrace.lo operators.lo ast2c.lo c2ast.lo to_value.lo source_map.lo error_handling.lo allocator.lo shared_ptr.lo utf8_string.lo base64vlq.lo  
++libtool: link: g++  -fPIC -DPIC -shared -nostdlib /usr/lib/gcc/x86_64-slackware-linux-musl/10.2.0/../../../../lib/crti.o /usr/lib/gcc/x86_64-slackware-linux-musl/10.2.0/crtbeginS.o  .libs/cencode.o .libs/ast.o .libs/ast_values.o .libs/ast_supports.o .libs/ast_sel_cmp.o .libs/ast_sel_unify.o .libs/ast_sel_super.o .libs/ast_sel_weave.o .libs/ast_selectors.o .libs/context.o .libs/constants.o .libs/fn_utils.o .libs/fn_miscs.o .libs/fn_maps.o .libs/fn_lists.o .libs/fn_colors.o .libs/fn_numbers.o .libs/fn_strings.o .libs/fn_selectors.o .libs/color_maps.o .libs/environment.o .libs/ast_fwd_decl.o .libs/bind.o .libs/file.o .libs/util.o .libs/util_string.o .libs/json.o .libs/units.o .libs/values.o .libs/plugins.o .libs/source.o .libs/position.o .libs/lexer.o .libs/parser.o .libs/parser_selectors.o .libs/prelexer.o .libs/eval.o .libs/eval_selectors.o .libs/expand.o .libs/listize.o .libs/cssize.o .libs/extender.o .libs/extension.o .libs/stylesheet.o .libs/output.o .libs/inspect.o .libs/emitter.o .libs/check_nesting.o .libs/remove_placeholders.o .libs/sass.o .libs/sass_values.o .libs/sass_context.o .libs/sass_functions.o .libs/sass2scss.o .libs/backtrace.o .libs/operators.o .libs/ast2c.o .libs/c2ast.o .libs/to_value.o .libs/source_map.o .libs/error_handling.o .libs/allocator.o .libs/shared_ptr.o .libs/utf8_string.o .libs/base64vlq.o   -L/usr/lib/gcc/x86_64-slackware-linux-musl/10.2.0 -L/usr/lib/gcc/x86_64-slackware-linux-musl/10.2.0/../../../../x86_64-slackware-linux-musl/lib/../lib -L/usr/lib/gcc/x86_64-slackware-linux-musl/10.2.0/../../../../lib -L/lib/../lib -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-slackware-linux-musl/10.2.0/../../../../x86_64-slackware-linux-musl/lib -L/usr/lib/gcc/x86_64-slackware-linux-musl/10.2.0/../../.. -lstdc++ -lm -lc -lgcc_s /usr/lib/gcc/x86_64-slackware-linux-musl/10.2.0/crtendS.o /usr/lib/gcc/x86_64-slackware-linux-musl/10.2.0/../../../../lib/crtn.o  -O2 -O2 -O2   -Wl,-soname -Wl,libsass.so.1 -o .libs/libsass.so.1.0.0
++libtool: link: (cd ".libs" && rm -f "libsass.so.1" && ln -s "libsass.so.1.0.0" "libsass.so.1")
++libtool: link: (cd ".libs" && rm -f "libsass.so" && ln -s "libsass.so.1.0.0" "libsass.so")
++libtool: link: ( cd ".libs" && rm -f "libsass.la" && ln -s "../libsass.la" "libsass.la" )
++make[2]: Leaving directory '/tmp/libsass-3.6.4/src'
++make[1]: Leaving directory '/tmp/libsass-3.6.4/src'
++make[1]: Entering directory '/tmp/libsass-3.6.4'
++make[1]: Nothing to be done for 'all-am'.
++make[1]: Leaving directory '/tmp/libsass-3.6.4'
++Making install in src
++make[1]: Entering directory '/tmp/libsass-3.6.4/src'
++make[2]: Entering directory '/tmp/libsass-3.6.4/src'
++ /usr/bin/mkdir -p '/tmp/package-libsass/usr/lib'
++ /bin/sh ../libtool   --mode=install /usr/bin/ginstall -c   libsass.la '/tmp/package-libsass/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/libsass.so.1.0.0 /tmp/package-libsass/usr/lib/libsass.so.1.0.0
++libtool: install: (cd /tmp/package-libsass/usr/lib && { ln -s -f libsass.so.1.0.0 libsass.so.1 || { rm -f libsass.so.1 && ln -s libsass.so.1.0.0 libsass.so.1; }; })
++libtool: install: (cd /tmp/package-libsass/usr/lib && { ln -s -f libsass.so.1.0.0 libsass.so || { rm -f libsass.so && ln -s libsass.so.1.0.0 libsass.so; }; })
++libtool: install: /usr/bin/ginstall -c .libs/libsass.lai /tmp/package-libsass/usr/lib/libsass.la
++libtool: warning: remember to run 'libtool --finish /usr/lib'
++ /usr/bin/mkdir -p '/tmp/package-libsass/usr/include'
++ /usr/bin/ginstall -c -m 644 ../include/sass.h ../include/sass2scss.h '/tmp/package-libsass/usr/include'
++ /usr/bin/mkdir -p '/tmp/package-libsass/usr/lib/pkgconfig'
++ /usr/bin/ginstall -c -m 644 support/libsass.pc '/tmp/package-libsass/usr/lib/pkgconfig'
++ /usr/bin/mkdir -p '/tmp/package-libsass/usr/include/sass'
++ /usr/bin/ginstall -c -m 644 ../include/sass/base.h ../include/sass/values.h ../include/sass/version.h ../include/sass/context.h ../include/sass/functions.h '/tmp/package-libsass/usr/include/sass'
++make[2]: Leaving directory '/tmp/libsass-3.6.4/src'
++make[1]: Leaving directory '/tmp/libsass-3.6.4/src'
++make[1]: Entering directory '/tmp/libsass-3.6.4'
++make[2]: Entering directory '/tmp/libsass-3.6.4'
++make[2]: Nothing to be done for 'install-exec-am'.
++make[2]: Nothing to be done for 'install-data-am'.
++make[2]: Leaving directory '/tmp/libsass-3.6.4'
++make[1]: Leaving directory '/tmp/libsass-3.6.4'
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++usr/lib/libsass.so	libsass.so.1.0.0
++usr/lib/libsass.so.1	libsass.so.1.0.0
++
++Making symbolic link creation script:
++( cd usr/lib ; rm -rf libsass.so )
++( cd usr/lib ; ln -sf libsass.so.1.0.0 libsass.so )
++( cd usr/lib ; rm -rf libsass.so.1 )
++( cd usr/lib ; ln -sf libsass.so.1.0.0 libsass.so.1 )
++
++It is recommended that you make these lines your new installation script.
++
++Would you like to make this stuff the install script for this package
++and remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './usr/lib/libsass.so'
++removed './usr/lib/libsass.so.1'
++
++Creating your new ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/libsass-3.6.4-x86_64-1.txz
++
++./
++install/
++install/doinst.sh
++install/slack-desc
++usr/
++usr/doc/
++usr/doc/libsass-3.6.4/
++usr/doc/libsass-3.6.4/CODE_OF_CONDUCT.md
++usr/doc/libsass-3.6.4/COPYING
++usr/doc/libsass-3.6.4/LICENSE
++usr/doc/libsass-3.6.4/Readme.md
++usr/doc/libsass-3.6.4/SECURITY.md
++usr/include/
++usr/include/sass/
++usr/include/sass.h
++usr/include/sass/base.h
++usr/include/sass/context.h
++usr/include/sass/functions.h
++usr/include/sass/values.h
++usr/include/sass/version.h
++usr/include/sass2scss.h
++usr/lib/
++usr/lib/libsass.so.1.0.0
++usr/lib/pkgconfig/
++usr/lib/pkgconfig/libsass.pc
++
++Slackware package /tmp/libsass-3.6.4-x86_64-1.txz created.
++

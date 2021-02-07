@@ -1,0 +1,716 @@
+diff -ruBN /tmp/lensfun/lensfun.SlackBuild /source/l/lensfun/lensfun.SlackBuild
+--- /tmp/lensfun/lensfun.SlackBuild	2020-11-30 20:49:40.000000000 +0000
++++ /source/l/lensfun/lensfun.SlackBuild	2021-01-11 11:17:34.000000000 +0000
+@@ -59,7 +59,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "armv7hl" ]; then
+   SLKCFLAGS="-O3 -march=armv7-a -mfpu=vfpv3-d16"
+   LIBDIRSUFFIX=""
+@@ -97,6 +97,7 @@
+     -DCMAKE_CXX_FLAGS_RELEASE:STRING="$SLKCFLAGS" \
+     -DCMAKE_INSTALL_PREFIX=/usr \
+     -DLIB_SUFFIX=${LIBDIRSUFFIX} \
++-DCMAKE_INSTALL_LIBDIR=lib$LIBDIRSUFFIX \
+     -DBUILD_LENSTOOL=ON \
+     -DBUILD_FOR_SSE=ON \
+     -DBUILD_FOR_SSE2=ON \
+diff -ruBN /tmp/lensfun/lensfun.SlackBuild.log /source/l/lensfun/lensfun.SlackBuild.log
+--- /tmp/lensfun/lensfun.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/l/lensfun/lensfun.SlackBuild.log	2021-01-11 11:18:06.000000000 +0000
+@@ -0,0 +1,692 @@
++lensfun-0.3.95/
++lensfun-0.3.95/libs/
++lensfun-0.3.95/libs/getopt/
++lensfun-0.3.95/libs/getopt/getopt.h
++lensfun-0.3.95/libs/getopt/CMakeLists.txt
++lensfun-0.3.95/libs/getopt/getopt.c
++lensfun-0.3.95/libs/getopt/LICENSE
++lensfun-0.3.95/libs/CMakeLists.txt
++lensfun-0.3.95/libs/lensfun/
++lensfun-0.3.95/libs/lensfun/mod-coord.cpp
++lensfun-0.3.95/libs/lensfun/mod-subpix.cpp
++lensfun-0.3.95/libs/lensfun/lensfun.pc.cmake
++lensfun-0.3.95/libs/lensfun/database.cpp
++lensfun-0.3.95/libs/lensfun/camera.cpp
++lensfun-0.3.95/libs/lensfun/mod-color-sse.cpp
++lensfun-0.3.95/libs/lensfun/CMakeLists.txt
++lensfun-0.3.95/libs/lensfun/cpuid.cpp
++lensfun-0.3.95/libs/lensfun/mod-coord-sse.cpp
++lensfun-0.3.95/libs/lensfun/mount.cpp
++lensfun-0.3.95/libs/lensfun/lens.cpp
++lensfun-0.3.95/libs/lensfun/mod-color.cpp
++lensfun-0.3.95/libs/lensfun/windows/
++lensfun-0.3.95/libs/lensfun/windows/mathconstants.h
++lensfun-0.3.95/libs/lensfun/auxfun.cpp
++lensfun-0.3.95/libs/lensfun/mod-pc.cpp
++lensfun-0.3.95/libs/lensfun/mod-color-sse2.cpp
++lensfun-0.3.95/libs/lensfun/modifier.cpp
++lensfun-0.3.95/libs/lensfun/lensfunprv.h
++lensfun-0.3.95/tools/
++lensfun-0.3.95/tools/database-ng/
++lensfun-0.3.95/tools/database-ng/transform_db.py
++lensfun-0.3.95/tools/check_database/
++lensfun-0.3.95/tools/check_database/reformat_database.sh
++lensfun-0.3.95/tools/check_database/min_max_parameters.py
++lensfun-0.3.95/tools/check_database/check_database.py
++lensfun-0.3.95/tools/find_missing_cameras/
++lensfun-0.3.95/tools/find_missing_cameras/find_missing_cameras.py
++lensfun-0.3.95/tools/git-hooks/
++lensfun-0.3.95/tools/git-hooks/post-commit
++lensfun-0.3.95/tools/git-hooks/pre-commit
++lensfun-0.3.95/tools/testimage/
++lensfun-0.3.95/tools/testimage/testimage.py
++lensfun-0.3.95/tools/calibration_webserver/
++lensfun-0.3.95/tools/calibration_webserver/calibration/
++lensfun-0.3.95/tools/calibration_webserver/calibration/__init__.py
++lensfun-0.3.95/tools/calibration_webserver/calibration/views.py
++lensfun-0.3.95/tools/calibration_webserver/calibration/context_processors.py
++lensfun-0.3.95/tools/calibration_webserver/calibration/templates/
++lensfun-0.3.95/tools/calibration_webserver/calibration/templates/calibration/
++lensfun-0.3.95/tools/calibration_webserver/calibration/templates/calibration/base.html
++lensfun-0.3.95/tools/calibration_webserver/calibration/templates/calibration/upload.html
++lensfun-0.3.95/tools/calibration_webserver/calibration/templates/calibration/good_bad_ugly.html
++lensfun-0.3.95/tools/calibration_webserver/calibration/templates/calibration/pending.html
++lensfun-0.3.95/tools/calibration_webserver/calibration/templates/calibration/success.html
++lensfun-0.3.95/tools/calibration_webserver/calibration/templates/calibration/missing_exif.html
++lensfun-0.3.95/tools/calibration_webserver/calibration/templates/calibration/error.html
++lensfun-0.3.95/tools/calibration_webserver/calibration/templates/404.html
++lensfun-0.3.95/tools/calibration_webserver/calibration/urls.py
++lensfun-0.3.95/tools/calibration_webserver/calibration/static/
++lensfun-0.3.95/tools/calibration_webserver/calibration/static/calibration/
++lensfun-0.3.95/tools/calibration_webserver/calibration/static/calibration/images/
++lensfun-0.3.95/tools/calibration_webserver/calibration/static/calibration/images/too_far_away.jpg
++lensfun-0.3.95/tools/calibration_webserver/calibration/static/calibration/images/no_long_line.jpg
++lensfun-0.3.95/tools/calibration_webserver/calibration/static/calibration/images/good_test_picture.jpg
++lensfun-0.3.95/tools/calibration_webserver/calibration/static/calibration/css/
++lensfun-0.3.95/tools/calibration_webserver/calibration/static/calibration/css/main.css
++lensfun-0.3.95/tools/calibration_webserver/workflow.rst
++lensfun-0.3.95/tools/calibration_webserver/__init__.py
++lensfun-0.3.95/tools/calibration_webserver/owncloud.py
++lensfun-0.3.95/tools/calibration_webserver/settings.py
++lensfun-0.3.95/tools/calibration_webserver/manage.py
++lensfun-0.3.95/tools/calibration_webserver/process_upload.py
++lensfun-0.3.95/tools/calibration_webserver/calibration_webserver.ini
++lensfun-0.3.95/tools/calibration_webserver/django.wsgi
++lensfun-0.3.95/tools/calibration_webserver/README.rst
++lensfun-0.3.95/tools/calibration_webserver/calibration.rst
++lensfun-0.3.95/tools/test_autoscale/
++lensfun-0.3.95/tools/test_autoscale/test_autoscale.py
++lensfun-0.3.95/tools/vagrant/
++lensfun-0.3.95/tools/vagrant/Vagrantfile
++lensfun-0.3.95/tools/vagrant/clean.sh
++lensfun-0.3.95/tools/vagrant/buildpackages.sh
++lensfun-0.3.95/tools/ptlensconv/
++lensfun-0.3.95/tools/ptlensconv/ptlensconv.py
++lensfun-0.3.95/tools/perspective_control/
++lensfun-0.3.95/tools/perspective_control/testimages/
++lensfun-0.3.95/tools/perspective_control/testimages/DSC02281.json
++lensfun-0.3.95/tools/perspective_control/testimages/DSC02384.png
++lensfun-0.3.95/tools/perspective_control/testimages/DSC02278.json
++lensfun-0.3.95/tools/perspective_control/testimages/DSC02277.json
++lensfun-0.3.95/tools/perspective_control/testimages/DSC02275.png
++lensfun-0.3.95/tools/perspective_control/testimages/DSC02281_with_7_points.json
++lensfun-0.3.95/tools/perspective_control/testimages/DSC02275.json
++lensfun-0.3.95/tools/perspective_control/testimages/DSC02279.png
++lensfun-0.3.95/tools/perspective_control/testimages/DSC02277.png
++lensfun-0.3.95/tools/perspective_control/testimages/DSC02281.png
++lensfun-0.3.95/tools/perspective_control/testimages/DSC02384.json
++lensfun-0.3.95/tools/perspective_control/testimages/DSC02279.json
++lensfun-0.3.95/tools/perspective_control/testimages/DSC02280.png
++lensfun-0.3.95/tools/perspective_control/testimages/DSC02278.png
++lensfun-0.3.95/tools/perspective_control/test_image.svg
++lensfun-0.3.95/tools/perspective_control/perspective_control.py
++lensfun-0.3.95/tools/calibration-webserver/
++lensfun-0.3.95/tools/calibration-webserver/workflow.rst
++lensfun-0.3.95/tools/calibration-webserver/calibration.rst
++lensfun-0.3.95/tools/abi-compliance-check/
++lensfun-0.3.95/tools/abi-compliance-check/LF_tmp_old.xml
++lensfun-0.3.95/tools/abi-compliance-check/LF_tmp_new.xml
++lensfun-0.3.95/tools/abi-compliance-check/run_check.sh
++lensfun-0.3.95/tools/update_database/
++lensfun-0.3.95/tools/update_database/follow_db_changes.py
++lensfun-0.3.95/tools/calibrate/
++lensfun-0.3.95/tools/calibrate/nd_correction.py
++lensfun-0.3.95/tools/calibrate/calibrate.py
++lensfun-0.3.95/tools/spline/
++lensfun-0.3.95/tools/spline/spline.py
++lensfun-0.3.95/tools/lenslist/
++lensfun-0.3.95/tools/lenslist/show_lensfun_coverage.py
++lensfun-0.3.95/docs/
++lensfun-0.3.95/docs/calibration_tutorial/
++lensfun-0.3.95/docs/calibration_tutorial/DSC03194.jpg
++lensfun-0.3.95/docs/calibration_tutorial/vignetting_setup_tn.jpg
++lensfun-0.3.95/docs/calibration_tutorial/lens_calibration_tutorial.rst
++lensfun-0.3.95/docs/calibration_tutorial/vignetting_setup.jpg
++lensfun-0.3.95/docs/calibration_tutorial/hugin_half.png
++lensfun-0.3.95/docs/calibration_tutorial/lens.cpp.patch
++lensfun-0.3.95/docs/website/
++lensfun-0.3.95/docs/website/faq.md
++lensfun-0.3.95/docs/website/_config.yml
++lensfun-0.3.95/docs/website/_layouts/
++lensfun-0.3.95/docs/website/_layouts/default.html
++lensfun-0.3.95/docs/website/imgs/
++lensfun-0.3.95/docs/website/imgs/logo.png
++lensfun-0.3.95/docs/website/calibration-tutorial/
++lensfun-0.3.95/docs/website/calibration-tutorial/.htaccess
++lensfun-0.3.95/docs/website/calibration-tutorial/dist-hugin-optimizer.png
++lensfun-0.3.95/docs/website/calibration-tutorial/lens-vignetting.html
++lensfun-0.3.95/docs/website/calibration-tutorial/dist-hugin-controlpoints.jpg
++lensfun-0.3.95/docs/website/calibration-tutorial/lens-calibration.html
++lensfun-0.3.95/docs/website/calibration-tutorial/lens-tca.html
++lensfun-0.3.95/docs/website/calibration-tutorial/vign-hugin-exposure.png
++lensfun-0.3.95/docs/website/calibration-tutorial/docs.css
++lensfun-0.3.95/docs/website/calibration-tutorial/lens-distortion.html
++lensfun-0.3.95/docs/website/_posts/
++lensfun-0.3.95/docs/website/_posts/changelogs/
++lensfun-0.3.95/docs/website/_posts/changelogs/2015-05-10-Release-0.3.1-Changelog.md
++lensfun-0.3.95/docs/website/_posts/changelogs/2014-09-30-Release-0.3.0-Changelog.md
++lensfun-0.3.95/docs/website/_posts/changelogs/2013-10-20-Release-0.2.8-Changelog.md
++lensfun-0.3.95/docs/website/_posts/changelogs/2018-06-29-Release-0.3.95-Changelog.md
++lensfun-0.3.95/docs/website/_posts/changelogs/2015-11-16-Release-0.3.2-Changelog.md
++lensfun-0.3.95/docs/website/_posts/lenslist/
++lensfun-0.3.95/docs/website/_posts/lenslist/2015-05-10-Lenslist-0.3.1.md
++lensfun-0.3.95/docs/website/_posts/lenslist/2015-11-16-Lenslist-0.3.2.md
++lensfun-0.3.95/docs/website/_posts/lenslist/2014-09-30-Lenslist-0.3.0.md
++lensfun-0.3.95/docs/website/_posts/news/
++lensfun-0.3.95/docs/website/_posts/news/2015-11-16-Release-0.3.2.md
++lensfun-0.3.95/docs/website/_posts/news/2013-02-10-Lensfun-0.2.7.md
++lensfun-0.3.95/docs/website/_posts/news/2014-04-03-Sourceforge.md
++lensfun-0.3.95/docs/website/_posts/news/2014-09-30-Release-0.3.0.md
++lensfun-0.3.95/docs/website/_posts/news/2013-06-23-New-website.md
++lensfun-0.3.95/docs/website/_posts/news/2015-05-10-Release-0.3.1.md
++lensfun-0.3.95/docs/website/_posts/news/2018-06-29-Release-0.3.95.md
++lensfun-0.3.95/docs/website/_posts/news/2013-10-20-Release-0.2.8.md
++lensfun-0.3.95/docs/website/_posts/news/2012-06-23-Release-0.2.6.md
++lensfun-0.3.95/docs/website/_posts/news/2012-12-13-New-release-is-on-its-way.md
++lensfun-0.3.95/docs/website/README.md
++lensfun-0.3.95/docs/website/styles.css
++lensfun-0.3.95/docs/website/_includes/
++lensfun-0.3.95/docs/website/_includes/navigation.html
++lensfun-0.3.95/docs/website/_includes/header.html
++lensfun-0.3.95/docs/website/_includes/top-navigation.html
++lensfun-0.3.95/docs/website/_includes/footer.html
++lensfun-0.3.95/docs/website/usage.md
++lensfun-0.3.95/docs/website/news.md
++lensfun-0.3.95/docs/website/development.md
++lensfun-0.3.95/docs/website/calibration.md
++lensfun-0.3.95/docs/website/index.md
++lensfun-0.3.95/docs/website/lenslist.md
++lensfun-0.3.95/docs/manual-doc.conf
++lensfun-0.3.95/docs/man/
++lensfun-0.3.95/docs/man/lensfun-update-data.1.rst
++lensfun-0.3.95/docs/man/lensfun-convert-lcp.1.rst
++lensfun-0.3.95/docs/man/README
++lensfun-0.3.95/docs/man/lensfun-add-adapter.1.rst
++lensfun-0.3.95/docs/man/g-lensfun-update-data.1.rst
++lensfun-0.3.95/docs/images/
++lensfun-0.3.95/docs/images/pc-8-points.svg
++lensfun-0.3.95/docs/images/pc-4-points.svg
++lensfun-0.3.95/docs/images/pc-examples.svg.gz
++lensfun-0.3.95/docs/images/pc-6-points.svg
++lensfun-0.3.95/docs/images/pc-7-points.svg
++lensfun-0.3.95/docs/images/pc-5-points.svg
++lensfun-0.3.95/docs/images/pc-d-parameter.svg
++lensfun-0.3.95/docs/doxyfile.in.cmake
++lensfun-0.3.95/docs/CMakeLists.txt
++lensfun-0.3.95/docs/manual-main.txt
++lensfun-0.3.95/docs/example/
++lensfun-0.3.95/docs/example/tfun.cpp
++lensfun-0.3.95/docs/example/example.c
++lensfun-0.3.95/docs/gpl-3.0.txt
++lensfun-0.3.95/docs/cc-by-sa-3.0.txt
++lensfun-0.3.95/docs/mathjaxConfiguration.js
++lensfun-0.3.95/docs/lensfun-manual.css
++lensfun-0.3.95/docs/lensfun-logo.svg
++lensfun-0.3.95/docs/lgpl-3.0.txt
++lensfun-0.3.95/docs/mounts.txt
++lensfun-0.3.95/include/
++lensfun-0.3.95/include/lensfun/
++lensfun-0.3.95/include/lensfun/lensfun.h.in
++lensfun-0.3.95/include/lensfun/config.h.in.cmake
++lensfun-0.3.95/cmake/
++lensfun-0.3.95/cmake/modules/
++lensfun-0.3.95/cmake/modules/CodeCoverage.cmake
++lensfun-0.3.95/cmake/modules/FindGLIB2.cmake
++lensfun-0.3.95/cmake/modules/toolchain_win32.cmake
++lensfun-0.3.95/README.md
++lensfun-0.3.95/data/
++lensfun-0.3.95/data/db/
++lensfun-0.3.95/data/db/mil-canon.xml
++lensfun-0.3.95/data/db/mil-olympus.xml
++lensfun-0.3.95/data/db/compact-samsung.xml
++lensfun-0.3.95/data/db/mil-panasonic.xml
++lensfun-0.3.95/data/db/compact-panasonic.xml
++lensfun-0.3.95/data/db/compact-leica.xml
++lensfun-0.3.95/data/db/lensfun-database.xsd
++lensfun-0.3.95/data/db/generic.xml
++lensfun-0.3.95/data/db/compact-ricoh.xml
++lensfun-0.3.95/data/db/slr-tokina.xml
++lensfun-0.3.95/data/db/mil-nikon.xml
++lensfun-0.3.95/data/db/slr-samyang.xml
++lensfun-0.3.95/data/db/compact-kodak.xml
++lensfun-0.3.95/data/db/compact-olympus.xml
++lensfun-0.3.95/data/db/mil-tamron.xml
++lensfun-0.3.95/data/db/compact-pentax.xml
++lensfun-0.3.95/data/db/compact-casio.xml
++lensfun-0.3.95/data/db/mil-zeiss.xml
++lensfun-0.3.95/data/db/compact-canon.xml
++lensfun-0.3.95/data/db/slr-ussr.xml
++lensfun-0.3.95/data/db/compact-konica-minolta.xml
++lensfun-0.3.95/data/db/slr-samsung.xml
++lensfun-0.3.95/data/db/compact-sigma.xml
++lensfun-0.3.95/data/db/slr-nikon.xml
++lensfun-0.3.95/data/db/mil-samyang.xml
++lensfun-0.3.95/data/db/timestamp.txt
++lensfun-0.3.95/data/db/contax.xml
++lensfun-0.3.95/data/db/mil-sony.xml
++lensfun-0.3.95/data/db/compact-sony.xml
++lensfun-0.3.95/data/db/slr-tamron.xml
++lensfun-0.3.95/data/db/mil-fujifilm.xml
++lensfun-0.3.95/data/db/slr-canon.xml
++lensfun-0.3.95/data/db/compact-nikon.xml
++lensfun-0.3.95/data/db/slr-hasselblad.xml
++lensfun-0.3.95/data/db/slr-pentax.xml
++lensfun-0.3.95/data/db/slr-leica.xml
++lensfun-0.3.95/data/db/slr-sony.xml
++lensfun-0.3.95/data/db/mil-samsung.xml
++lensfun-0.3.95/data/db/slr-olympus.xml
++lensfun-0.3.95/data/db/slr-konica-minolta.xml
++lensfun-0.3.95/data/db/slr-ricoh.xml
++lensfun-0.3.95/data/db/slr-sigma.xml
++lensfun-0.3.95/data/db/rf-leica.xml
++lensfun-0.3.95/data/db/misc.xml
++lensfun-0.3.95/data/db/slr-schneider.xml
++lensfun-0.3.95/data/db/actioncams.xml
++lensfun-0.3.95/data/db/mil-tokina.xml
++lensfun-0.3.95/data/db/6x6.xml
++lensfun-0.3.95/data/db/mil-sigma.xml
++lensfun-0.3.95/data/db/slr-vivitar.xml
++lensfun-0.3.95/data/db/slr-panasonic.xml
++lensfun-0.3.95/data/db/slr-zeiss.xml
++lensfun-0.3.95/data/db/lensfun-database.dtd
++lensfun-0.3.95/data/db/slr-soligor.xml
++lensfun-0.3.95/data/db/compact-fujifilm.xml
++lensfun-0.3.95/data/db/mil-pentax.xml
++lensfun-0.3.95/CMakeLists.txt
++lensfun-0.3.95/tests/
++lensfun-0.3.95/tests/test_modifier_regression_old.cpp
++lensfun-0.3.95/tests/test_modifier_color.cpp
++lensfun-0.3.95/tests/test_modifier_performance.cpp
++lensfun-0.3.95/tests/test_modifier_coord_centering.cpp
++lensfun-0.3.95/tests/test_modifier_color_old.cpp
++lensfun-0.3.95/tests/test_modifier_coord_centering_old.cpp
++lensfun-0.3.95/tests/common_code.hpp
++lensfun-0.3.95/tests/README.md
++lensfun-0.3.95/tests/test_modifier_regression.cpp
++lensfun-0.3.95/tests/test_modifier_coord_tiny_image.cpp
++lensfun-0.3.95/tests/test_lffuzzystrcmp.cpp
++lensfun-0.3.95/tests/test_database.cpp
++lensfun-0.3.95/tests/CMakeLists.txt
++lensfun-0.3.95/tests/test_modifier_coord_scale_old.cpp
++lensfun-0.3.95/tests/test_modifier_coord_scale.cpp
++lensfun-0.3.95/tests/test_modifier.cpp
++lensfun-0.3.95/tests/test_modifier_coord_geometry.cpp
++lensfun-0.3.95/tests/test_lens.cpp
++lensfun-0.3.95/tests/test_modifier_coord_distortion_old.cpp
++lensfun-0.3.95/tests/test_modifier_old.cpp
++lensfun-0.3.95/tests/test_modifier_subpix.cpp
++lensfun-0.3.95/tests/test_modifier_coord_tiny_image_old.cpp
++lensfun-0.3.95/tests/test_modifier_coord_perspective_correction.cpp
++lensfun-0.3.95/tests/test_modifier_subpix_old.cpp
++lensfun-0.3.95/tests/test_modifier_coord_distortion.cpp
++lensfun-0.3.95/tests/test_database_old.cpp
++lensfun-0.3.95/tests/test_modifier_coord_geometry_old.cpp
++lensfun-0.3.95/tests/test_modifier_coord_perspective_correction_old.cpp
++lensfun-0.3.95/apps/
++lensfun-0.3.95/apps/setup.py.in
++lensfun-0.3.95/apps/lenstool/
++lensfun-0.3.95/apps/lenstool/image.h
++lensfun-0.3.95/apps/lenstool/image.cpp
++lensfun-0.3.95/apps/lenstool/auxfun.h
++lensfun-0.3.95/apps/lenstool/rgbpixel.h
++lensfun-0.3.95/apps/lenstool/lenstool.cpp
++lensfun-0.3.95/apps/lensfun-convert-lcp
++lensfun-0.3.95/apps/CMakeLists.txt
++lensfun-0.3.95/apps/lensfun-update-data
++lensfun-0.3.95/apps/lensfun/
++lensfun-0.3.95/apps/lensfun/__init__.py.in
++lensfun-0.3.95/apps/g-lensfun-update-data
++lensfun-0.3.95/apps/lensfun-add-adapter
++lensfun-0.3.95/ChangeLog
++CMake Deprecation Warning at CMakeLists.txt:2 (CMAKE_MINIMUM_REQUIRED):
++  Compatibility with CMake < 2.8.12 will be removed from a future version of
++  CMake.
++
++  Update the VERSION argument <min> value or use a ...<max> suffix to tell
++  CMake that the project does not need compatibility with older versions.
++
++
++-- The C compiler identification is GNU 10.2.0
++-- The CXX compiler identification is GNU 10.2.0
++-- Detecting C compiler ABI info
++-- Detecting C compiler ABI info - done
++-- Check for working C compiler: /usr/bin/cc - skipped
++-- Detecting C compile features
++-- Detecting C compile features - done
++-- Detecting CXX compiler ABI info
++-- Detecting CXX compiler ABI info - done
++-- Check for working CXX compiler: /usr/bin/c++ - skipped
++-- Detecting CXX compile features
++-- Detecting CXX compile features - done
++-- Looking for include file endian.h
++-- Looking for include file endian.h - found
++CMake Warning (dev) at /usr/share/cmake-3.19/Modules/FindPackageHandleStandardArgs.cmake:426 (message):
++  The package name passed to `find_package_handle_standard_args` (PkgConfig)
++  does not match the name of the calling package (GLIB2).  This can lead to
++  problems in calling code that expects `find_package` result variables
++  (e.g., `_FOUND`) to follow a certain pattern.
++Call Stack (most recent call first):
++  /usr/share/cmake-3.19/Modules/FindPkgConfig.cmake:67 (find_package_handle_standard_args)
++  cmake/modules/FindGLIB2.cmake:2 (INCLUDE)
++  CMakeLists.txt:100 (FIND_PACKAGE)
++This warning is for project developers.  Use -Wno-dev to suppress it.
++
++-- Found PkgConfig: /usr/bin/pkg-config (found version "0.29.2") 
++-- Checking for one of the modules 'glib-2.0'
++-- Found ZLIB: /usr/lib/libz.so (found version "1.2.11") 
++-- Found PNG: /usr/lib/libpng.so (found version "1.6.37") 
++-- -------------------------------------------------------------------------------------
++-- Building Lensfun 0.3.95.0
++-- -------------------------------------------------------------------------------------
++-- Build as dynamic/shared library
++-- Build type: Release
++-- Build doc: OFF
++-- Build test suite: OFF
++-- Build lenstool: ON
++-- Build with support for SSE: ON
++-- Build with support for SSE2: ON
++-- Install helper scripts: ON
++-- 
++Install prefix: /usr
++-- 
++Using: 
++-- GLIB2 include dir: /usr/include/glib-2.0;/usr/lib/glib-2.0/include
++-- GLIB2 library: glib-2.0
++-- Configuring done
++-- Generating done
++CMake Warning:
++  Manually-specified variables were not used by the project:
++
++    CMAKE_C_FLAGS_RELEASE
++    LIB_SUFFIX
++
++
++-- Build files have been written to: /tmp/lensfun-0.3.95/cmake-build
++Scanning dependencies of target lensfun
++Scanning dependencies of target python-package
++[  5%] Generating build/timestamp
++[ 15%] Building CXX object libs/lensfun/CMakeFiles/lensfun.dir/camera.cpp.o
++[ 15%] Building CXX object libs/lensfun/CMakeFiles/lensfun.dir/database.cpp.o
++running build
++running build_py
++creating build
++creating build/lib
++creating build/lib/lensfun
++copying /tmp/lensfun-0.3.95/cmake-build/apps/lensfun/__init__.py -> build/lib/lensfun
++[ 15%] Built target python-package
++[ 21%] Building CXX object libs/lensfun/CMakeFiles/lensfun.dir/lens.cpp.o
++[ 26%] Building CXX object libs/lensfun/CMakeFiles/lensfun.dir/mount.cpp.o
++/tmp/lensfun-0.3.95/libs/lensfun/database.cpp:26:51: warning: missing sentinel in function call [-Wformat=]
++   26 |                                 CONF_PACKAGE, NULL);
++      |                                                   ^
++/tmp/lensfun-0.3.95/libs/lensfun/database.cpp:28:57: warning: missing sentinel in function call [-Wformat=]
++   28 |                                    DATABASE_SUBDIR, NULL);
++      |                                                         ^
++/tmp/lensfun-0.3.95/libs/lensfun/database.cpp:30:40: warning: missing sentinel in function call [-Wformat=]
++   30 |                                    NULL);
++      |                                        ^
++/tmp/lensfun-0.3.95/libs/lensfun/database.cpp:32:64: warning: missing sentinel in function call [-Wformat=]
++   32 |                                           DATABASE_SUBDIR, NULL);
++      |                                                                ^
++/tmp/lensfun-0.3.95/libs/lensfun/database.cpp: In static member function ‘static long int lfDatabase::ReadTimestamp(const char*)’:
++/tmp/lensfun-0.3.95/libs/lensfun/database.cpp:74:79: warning: missing sentinel in function call [-Wformat=]
++   74 |             gchar *filename = g_build_filename (dirname, "timestamp.txt", NULL);
++      |                                                                               ^
++/tmp/lensfun-0.3.95/libs/lensfun/database.cpp: In member function ‘lfError lfDatabase::Load(const char*)’:
++/tmp/lensfun-0.3.95/libs/lensfun/database.cpp:143:70: warning: missing sentinel in function call [-Wformat=]
++  143 |                     gchar *ffn = g_build_filename (pathname, fn, NULL);
++      |                                                                      ^
++/tmp/lensfun-0.3.95/libs/lensfun/mount.cpp: In member function ‘void lfMount::AddCompat(const char*)’:
++/tmp/lensfun-0.3.95/libs/lensfun/mount.cpp:64:15: warning: ‘char* strcpy(char*, const char*)’ writing one too many bytes into a region of a size that depends on ‘strlen’ [-Wstringop-overflow=]
++   64 |         strcpy(p, val);
++      |         ~~~~~~^~~~~~~~
++/tmp/lensfun-0.3.95/libs/lensfun/mount.cpp:63:32: note: at offset 0 to an object allocated by ‘malloc’ here
++   63 |         char* p = (char*)malloc(strlen(val));
++      |                          ~~~~~~^~~~~~~~~~~~~
++[ 31%] Building CXX object libs/lensfun/CMakeFiles/lensfun.dir/cpuid.cpp.o
++[ 36%] Building CXX object libs/lensfun/CMakeFiles/lensfun.dir/mod-color-sse.cpp.o
++[ 42%] Building CXX object libs/lensfun/CMakeFiles/lensfun.dir/mod-color-sse2.cpp.o
++[ 47%] Building CXX object libs/lensfun/CMakeFiles/lensfun.dir/mod-color.cpp.o
++[ 52%] Building CXX object libs/lensfun/CMakeFiles/lensfun.dir/mod-coord-sse.cpp.o
++[ 57%] Building CXX object libs/lensfun/CMakeFiles/lensfun.dir/mod-coord.cpp.o
++[ 63%] Building CXX object libs/lensfun/CMakeFiles/lensfun.dir/mod-pc.cpp.o
++/tmp/lensfun-0.3.95/libs/lensfun/lens.cpp: In member function ‘void lfLens::AddMount(const char*)’:
++/tmp/lensfun-0.3.95/libs/lensfun/lens.cpp:134:15: warning: ‘char* strcpy(char*, const char*)’ writing one too many bytes into a region of a size that depends on ‘strlen’ [-Wstringop-overflow=]
++  134 |         strcpy(p, val);
++      |         ~~~~~~^~~~~~~~
++/tmp/lensfun-0.3.95/libs/lensfun/lens.cpp:133:32: note: at offset 0 to an object allocated by ‘malloc’ here
++  133 |         char* p = (char*)malloc(strlen(val));
++      |                          ~~~~~~^~~~~~~~~~~~~
++[ 68%] Building CXX object libs/lensfun/CMakeFiles/lensfun.dir/mod-subpix.cpp.o
++[ 73%] Building CXX object libs/lensfun/CMakeFiles/lensfun.dir/modifier.cpp.o
++[ 78%] Building CXX object libs/lensfun/CMakeFiles/lensfun.dir/auxfun.cpp.o
++In file included from /tmp/lensfun-0.3.95/libs/lensfun/modifier.cpp:7:
++/tmp/lensfun-0.3.95/cmake-build/lensfun.h: In constructor ‘lfModifier::lfModifier(float, int, int, lfPixelFormat, bool)’:
++/tmp/lensfun-0.3.95/cmake-build/lensfun.h:3058:19: warning: ‘lfModifier::PixelFormat’ will be initialized after [-Wreorder]
++ 3058 |     lfPixelFormat PixelFormat;
++      |                   ^~~~~~~~~~~
++/tmp/lensfun-0.3.95/cmake-build/lensfun.h:3048:12: warning:   ‘double lfModifier::Crop’ [-Wreorder]
++ 3048 |     double Crop;
++      |            ^~~~
++/tmp/lensfun-0.3.95/libs/lensfun/modifier.cpp:132:1: warning:   when initialized here [-Wreorder]
++  132 | lfModifier::lfModifier (float imgcrop, int imgwidth, int imgheight,
++      | ^~~~~~~~~~
++[ 84%] Linking CXX shared library liblensfun.so
++[ 84%] Built target lensfun
++Scanning dependencies of target lenstool
++[ 89%] Building CXX object apps/CMakeFiles/lenstool.dir/lenstool/image.cpp.o
++[ 94%] Building CXX object apps/CMakeFiles/lenstool.dir/lenstool/lenstool.cpp.o
++In file included from /tmp/lensfun-0.3.95/apps/lenstool/image.h:22,
++                 from /tmp/lensfun-0.3.95/apps/lenstool/lenstool.cpp:15:
++/tmp/lensfun-0.3.95/apps/lenstool/rgbpixel.h:39: warning: "__BYTE_ORDER" redefined
++   39 | #  define __BYTE_ORDER __LITTLE_ENDIAN
++      | 
++In file included from /usr/include/stdint.h:20,
++                 from /usr/include/c++/10.2.0/cstdint:41,
++                 from /usr/include/c++/10.2.0/bits/char_traits.h:685,
++                 from /usr/include/c++/10.2.0/string:40,
++                 from /tmp/lensfun-0.3.95/cmake-build/lensfun.h:39,
++                 from /tmp/lensfun-0.3.95/apps/lenstool/lenstool.cpp:14:
++/usr/include/bits/alltypes.h:5: note: this is the location of the previous definition
++    5 | #define __BYTE_ORDER 1234
++      | 
++[100%] Linking CXX executable lenstool
++[100%] Built target lenstool
++[ 78%] Built target lensfun
++[ 84%] Built target python-package
++[100%] Built target lenstool
++Install the project...
++-- Install configuration: "Release"
++-- Installing: /tmp/package-lensfun/usr/include/lensfun/lensfun.h
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/6x6.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/actioncams.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/compact-canon.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/compact-casio.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/compact-fujifilm.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/compact-kodak.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/compact-konica-minolta.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/compact-leica.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/compact-nikon.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/compact-olympus.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/compact-panasonic.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/compact-pentax.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/compact-ricoh.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/compact-samsung.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/compact-sigma.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/compact-sony.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/contax.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/generic.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/mil-canon.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/mil-fujifilm.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/mil-nikon.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/mil-olympus.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/mil-panasonic.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/mil-pentax.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/mil-samsung.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/mil-samyang.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/mil-sigma.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/mil-sony.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/mil-tamron.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/mil-tokina.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/mil-zeiss.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/misc.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/rf-leica.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/slr-canon.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/slr-hasselblad.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/slr-konica-minolta.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/slr-leica.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/slr-nikon.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/slr-olympus.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/slr-panasonic.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/slr-pentax.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/slr-ricoh.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/slr-samsung.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/slr-samyang.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/slr-schneider.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/slr-sigma.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/slr-soligor.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/slr-sony.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/slr-tamron.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/slr-tokina.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/slr-ussr.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/slr-vivitar.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/slr-zeiss.xml
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/timestamp.txt
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/lensfun-database.dtd
++-- Installing: /tmp/package-lensfun/usr/share/lensfun/version_2/lensfun-database.xsd
++-- Installing: /tmp/package-lensfun/usr/lib/liblensfun.so.0.3.95
++-- Installing: /tmp/package-lensfun/usr/lib/liblensfun.so.2
++-- Installing: /tmp/package-lensfun/usr/lib/liblensfun.so
++-- Installing: /tmp/package-lensfun/usr/lib/pkgconfig/lensfun.pc
++-- Installing: /tmp/package-lensfun/usr/bin/lenstool
++-- Set runtime path of "/tmp/package-lensfun/usr/bin/lenstool" to ""
++-- Installing: /tmp/package-lensfun/usr/bin/g-lensfun-update-data
++-- Installing: /tmp/package-lensfun/usr/bin/lensfun-add-adapter
++-- Installing: /tmp/package-lensfun/usr/bin/lensfun-update-data
++-- Installing: /tmp/package-lensfun/usr/bin/lensfun-convert-lcp
++running install
++running build
++running build_py
++creating build
++creating build/lib
++creating build/lib/lensfun
++copying /tmp/lensfun-0.3.95/cmake-build/apps/lensfun/__init__.py -> build/lib/lensfun
++running install_lib
++creating /tmp/package-lensfun/usr/lib/python3.9
++creating /tmp/package-lensfun/usr/lib/python3.9/site-packages
++creating /tmp/package-lensfun/usr/lib/python3.9/site-packages/lensfun
++copying build/lib/lensfun/__init__.py -> /tmp/package-lensfun/usr/lib/python3.9/site-packages/lensfun
++byte-compiling /tmp/package-lensfun/usr/lib/python3.9/site-packages/lensfun/__init__.py to __init__.cpython-39.pyc
++running install_egg_info
++Writing /tmp/package-lensfun/usr/lib/python3.9/site-packages/lensfun-0.3.95-py3.9.egg-info
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++usr/lib/liblensfun.so	liblensfun.so.2
++usr/lib/liblensfun.so.2	liblensfun.so.0.3.95
++
++Making symbolic link creation script:
++( cd usr/lib ; rm -rf liblensfun.so )
++( cd usr/lib ; ln -sf liblensfun.so.2 liblensfun.so )
++( cd usr/lib ; rm -rf liblensfun.so.2 )
++( cd usr/lib ; ln -sf liblensfun.so.0.3.95 liblensfun.so.2 )
++
++It is recommended that you make these lines your new installation script.
++
++Would you like to make this stuff the install script for this package
++and remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './usr/lib/liblensfun.so'
++removed './usr/lib/liblensfun.so.2'
++
++Creating your new ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/lensfun-0.3.95-x86_64-1.txz
++
++./
++install/
++install/doinst.sh
++install/slack-desc
++usr/
++usr/bin/
++usr/bin/g-lensfun-update-data
++usr/bin/lensfun-add-adapter
++usr/bin/lensfun-convert-lcp
++usr/bin/lensfun-update-data
++usr/bin/lenstool
++usr/doc/
++usr/doc/lensfun-0.3.95/
++usr/doc/lensfun-0.3.95/CMakeLists.txt
++usr/doc/lensfun-0.3.95/ChangeLog
++usr/doc/lensfun-0.3.95/README.md
++usr/doc/lensfun-0.3.95/cc-by-sa-3.0.txt
++usr/doc/lensfun-0.3.95/gpl-3.0.txt
++usr/doc/lensfun-0.3.95/lgpl-3.0.txt
++usr/doc/lensfun-0.3.95/manual-main.txt
++usr/doc/lensfun-0.3.95/mounts.txt
++usr/include/
++usr/include/lensfun/
++usr/include/lensfun/lensfun.h
++usr/lib/
++usr/lib/liblensfun.so.0.3.95
++usr/lib/pkgconfig/
++usr/lib/pkgconfig/lensfun.pc
++usr/lib/python3.9/
++usr/lib/python3.9/site-packages/
++usr/lib/python3.9/site-packages/lensfun/
++usr/lib/python3.9/site-packages/lensfun-0.3.95-py3.9.egg-info
++usr/lib/python3.9/site-packages/lensfun/__init__.py
++usr/lib/python3.9/site-packages/lensfun/__pycache__/
++usr/lib/python3.9/site-packages/lensfun/__pycache__/__init__.cpython-39.pyc
++usr/share/
++usr/share/lensfun/
++usr/share/lensfun/version_2/
++usr/share/lensfun/version_2/6x6.xml
++usr/share/lensfun/version_2/actioncams.xml
++usr/share/lensfun/version_2/compact-canon.xml
++usr/share/lensfun/version_2/compact-casio.xml
++usr/share/lensfun/version_2/compact-fujifilm.xml
++usr/share/lensfun/version_2/compact-kodak.xml
++usr/share/lensfun/version_2/compact-konica-minolta.xml
++usr/share/lensfun/version_2/compact-leica.xml
++usr/share/lensfun/version_2/compact-nikon.xml
++usr/share/lensfun/version_2/compact-olympus.xml
++usr/share/lensfun/version_2/compact-panasonic.xml
++usr/share/lensfun/version_2/compact-pentax.xml
++usr/share/lensfun/version_2/compact-ricoh.xml
++usr/share/lensfun/version_2/compact-samsung.xml
++usr/share/lensfun/version_2/compact-sigma.xml
++usr/share/lensfun/version_2/compact-sony.xml
++usr/share/lensfun/version_2/contax.xml
++usr/share/lensfun/version_2/generic.xml
++usr/share/lensfun/version_2/lensfun-database.dtd
++usr/share/lensfun/version_2/lensfun-database.xsd
++usr/share/lensfun/version_2/mil-canon.xml
++usr/share/lensfun/version_2/mil-fujifilm.xml
++usr/share/lensfun/version_2/mil-nikon.xml
++usr/share/lensfun/version_2/mil-olympus.xml
++usr/share/lensfun/version_2/mil-panasonic.xml
++usr/share/lensfun/version_2/mil-pentax.xml
++usr/share/lensfun/version_2/mil-samsung.xml
++usr/share/lensfun/version_2/mil-samyang.xml
++usr/share/lensfun/version_2/mil-sigma.xml
++usr/share/lensfun/version_2/mil-sony.xml
++usr/share/lensfun/version_2/mil-tamron.xml
++usr/share/lensfun/version_2/mil-tokina.xml
++usr/share/lensfun/version_2/mil-zeiss.xml
++usr/share/lensfun/version_2/misc.xml
++usr/share/lensfun/version_2/rf-leica.xml
++usr/share/lensfun/version_2/slr-canon.xml
++usr/share/lensfun/version_2/slr-hasselblad.xml
++usr/share/lensfun/version_2/slr-konica-minolta.xml
++usr/share/lensfun/version_2/slr-leica.xml
++usr/share/lensfun/version_2/slr-nikon.xml
++usr/share/lensfun/version_2/slr-olympus.xml
++usr/share/lensfun/version_2/slr-panasonic.xml
++usr/share/lensfun/version_2/slr-pentax.xml
++usr/share/lensfun/version_2/slr-ricoh.xml
++usr/share/lensfun/version_2/slr-samsung.xml
++usr/share/lensfun/version_2/slr-samyang.xml
++usr/share/lensfun/version_2/slr-schneider.xml
++usr/share/lensfun/version_2/slr-sigma.xml
++usr/share/lensfun/version_2/slr-soligor.xml
++usr/share/lensfun/version_2/slr-sony.xml
++usr/share/lensfun/version_2/slr-tamron.xml
++usr/share/lensfun/version_2/slr-tokina.xml
++usr/share/lensfun/version_2/slr-ussr.xml
++usr/share/lensfun/version_2/slr-vivitar.xml
++usr/share/lensfun/version_2/slr-zeiss.xml
++usr/share/lensfun/version_2/timestamp.txt
++
++Slackware package /tmp/lensfun-0.3.95-x86_64-1.txz created.
++

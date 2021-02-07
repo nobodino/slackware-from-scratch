@@ -1,0 +1,1230 @@
+#!/bin/bash
+
+#######################################################################################
+# Script:  linuxdoc-tools.build
+# Purpose: Build & install all components that form the linuxdoc-tools
+#          Slackware Package.
+# Credit:  written by Stuart Winter <mozes@slackware.com>
+#          with the docbook build code by Jerome Pinot <ngc891@gmail.com>
+#          and some script code taken from Debian, Red Hat/Fedora &
+#          Linux From Scratch documentation
+#          http://www.linuxfromscratch.org/blfs/view/svn/index.html
+#          http://cblfs.cross-lfs.org/index.php/Category:DocBook_SGML
+#          Thanks guys! :-)
+#######################################################################################
+# Misc notes
+# 1. Bug: Problem when validating docbook 4.5 documents
+#    Res: Won't Fix: Address such problems locally.
+#         See this thread for a discussion on this subject.
+#         https://www.linuxquestions.org/questions/showthread.php?p=5820741#post5820741
+#######################################################################################
+
+# Version of LDT (which is also the .t?z package version)
+LINUXDOCTOOLSVER=$PKGVERSION
+
+# Bundled package versions:
+ASCIIDOCVER=8.6.10
+DSSSLSTYLESHEETSVER=1.79 # docbook-dsssl-*.tar.xz (plus -doc- source archive), not SRPM.
+XSLSTYLESHEETSVER=1.79.2 # docbook-style-xsl-*src.rpm ("DocBook XSL Stylesheets" in our ChangeLog.txt)
+DOCBOOKUTILSVER=0.6.14
+SGMLDTD3VER=3.1
+SGMLDTD4VER=4.5
+XMLDTDVER=4.5
+GNOMEDOCUTILSVER=0.20.10
+GTKDOCVER=1.32
+SGMLSPLVER=1.03ii
+OPENJADEVER=1.3.2
+OPENSPVER=1.5.2
+SGMLCOMMONVER=0.6.3
+XMLTOVER=0.0.28
+DOCBOOK2XVER=0.8.8
+
+# Global settings:
+XML_CATALOG=/etc/xml/catalog
+XML_DOCBOOKCATALOG=/etc/xml/docbook
+
+# Determine the general CFLAGS for the known architectures:
+case $ARCH in
+  arm*)    export SLKCFLAGS="-O2 -march=armv7-a -mfpu=vfpv3-d16 -mfloat-abi=hard -mtune=generic-armv7-a -mabi=aapcs-linux"
+           export LIBDIRSUFFIX=""
+           export HOSTTARGET="-gnueabihf"
+           ;;
+  aarch64) export SLKCFLAGS="-O2"
+           export LIBDIRSUFFIX=""
+           export HOSTTARGET=""
+           ;;
+  i?86)    export SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+           export LIBDIRSUFFIX=""
+           export HOSTTARGET=""
+           ;;
+  s390)    export SLKCFLAGS="-O2"
+           export LIBDIRSUFFIX=""
+           export HOSTTARGET=""
+           ;;
+  x86_64)  export SLKCFLAGS="-O2 -fPIC"
+           export LIBDIRSUFFIX=""
+           export HOSTTARGET=""
+           ;;
+esac
+
+# The build order is purposive.
+# The build order for the XML style sheets & docbook stuff comes from
+# the Linux from Scratch documentation; the other rest is because of
+# dependency build order.
+
+####################### Build AsciiDoc: Pass 1 of 2 #################
+
+function build_asciidoc() {
+# Extract source:
+cd $TMP
+rm -rf asciidoc
+mkdir asciidoc && cd asciidoc
+rpm2cpio $CWD/sources/asciidoc-${ASCIIDOCVER}*.src.rpm | cpio -div || exit 1
+tar xvf asciidoc-py3-*.tar.*z
+cd asciidoc-py3-*/ || exit 1
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \; -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \;
+
+# Apply patches:
+#
+# Assemble patch list from spec file:
+# egrep '^Patch[0-9].*: ' *.spec | awk -F: '{print $2" \\"}'
+for i in \
+ \
+ asciidoc-python3.patch \
+ asciidoc-python3-a2x-decode-fix.patch \
+ asciidoc-python3-deprecation-warning.patch \
+  \
+  ; do patch -p1 --verbose < ../${i} || exit 1
+done || exit 1
+
+# Configure:
+autoreconf -v
+./configure \
+  --prefix=/usr \
+  --sysconfdir=/etc \
+  --docdir=/usr/doc/asciidoc-$ASCIIDOCVER \
+  --mandir=/usr/man || exit 1
+
+# Install:
+if [ "$1" = "nodocs" ]; then
+   echo "*********************************************************************"
+   echo "*** Building asciidoc without documentation - expect errors below ***"
+   echo "*********************************************************************"
+   make -i install
+   echo "******************************************************************"
+   echo "*** Built asciidoc without documentation - expect errors above ***"
+   echo "******************************************************************"
+ else
+   make install docs || exit 1
+fi
+
+find /etc/asciidoc -type f -print0 | xargs -0 chmod 644
+
+# After the build completes, we'll rename the asciidoc config files to '.new'
+# (see 'postbuildfixes.sh'), but for now we need them in place so that the
+# application works, since asciidoc is used to build some of this monolithic package.
+
+# Copy docs:
+mkdir -vpm755 /usr/doc/asciidoc-$ASCIIDOCVER
+cp -fav \
+  BUGS.txt CHANGELOG.txt COPY* README.asciidoc \
+  /usr/doc/asciidoc-$ASCIIDOCVER/
+}
+
+# Build asciidoc without any documentation (man pages).  We'll have
+# a 2nd pass once we have the pre-requisites installed (docbook-style-xsl) later on:
+build_asciidoc nodocs
+
+####################### Build sgml-common ############################
+
+# Extract source.  We're using a source RPM since it contains a number of
+# patches that we need:
+cd $TMP
+mkdir sgml-common && cd sgml-common
+rpm2cpio $CWD/sources/sgml-common-${SGMLCOMMONVER}*.src.rpm | cpio -div || exit 1
+# The real source archive is stored inside the source RPM, you see:
+tar xvf sgml-common-$SGMLCOMMONVER.tgz
+cd sgml-common-$SGMLCOMMONVER || exit 1
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \; -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \;
+
+# Apply patches (these are included in the source rpm):
+# Don't include the XML dir patch 'sgml-common-xmldir.patch' because we keep our stuff in /usr/share/sgml.
+for i in \
+  sgml-common-quotes.patch \
+  sgml-common-umask.patch ; do
+    patch --verbose -p1 < ../$i
+done || exit 1
+
+# Configure:
+# autoconf doesn't work anymore..
+#aclocal
+#automake --add-missing --copy
+#autoreconf -vif
+# but this does..
+for file in COPYING INSTALL install-sh missing mkinstalldirs; do
+   rm -f $file
+   cp -fav /usr/share/automake-*/$file .
+done
+./configure \
+  --prefix=/usr \
+  --mandir=/usr/man \
+  --infodir=/usr/info \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --sysconfdir=/etc \
+  || exit 1
+
+# Build & install:
+make -e 'mkdir_p=mkdir -p' install || exit 1
+
+# Create catalog:
+install-catalog --add /etc/sgml/sgml-ent.cat \
+  /usr/share/sgml/sgml-iso-entities-8879.1986/catalog
+install-catalog --add /etc/sgml/sgml-docbook.cat \
+  /etc/sgml/sgml-ent.cat
+
+# Copy docs:
+mkdir -vpm755 /usr/doc/sgml-common-$SGMLCOMMONVER
+cp -fav \
+  COPYING AUTHORS INSTALL NEWS README ChangeLog \
+  /usr/doc/sgml-common-$SGMLCOMMONVER
+
+####################### Install docbooks ############################
+
+# Extract source:
+cd $TMP
+mkdir sgml-dtd
+cd sgml-dtd
+# Debian handily package all docbooks past and present in one archive
+# but they version number the archive with the latest version.
+tar xvf $CWD/sources/docbook_*orig*.tar.*z*
+cd docbook* || exit 1
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \; -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \;
+
+
+###############
+## sgml-dtd3 ##
+###############
+
+( cd docbook-$SGMLDTD3VER
+  pwd
+
+ # Remove the ENT definitions from the catalog file:
+  sed -i -e '/ISO 8879/d' docbook.cat
+ # Replace the DTDDECL catalog entry, which is not supported by Linux SGML tools,
+ # with the SGMLDECL catalog entry
+  sed -i -e 's|DTDDECL "-//OASIS//DTD Docbook V3.1//EN"|SGMLDECL|g' docbook.cat
+
+  # Install:
+  mkdir -vpm755 /etc/sgml
+   mkdir -vpm755 /usr/share/sgml/docbook/sgml-dtd-$SGMLDTD3VER
+   install -vpm644 docbook.cat /usr/share/sgml/docbook/sgml-dtd-$SGMLDTD3VER/catalog
+   install -vpm644 *.dtd *.mod *.dcl /usr/share/sgml/docbook/sgml-dtd-$SGMLDTD3VER/
+
+   # Update SGML catalog:
+   install-catalog --add /etc/sgml/sgml-docbook-dtd-$SGMLDTD3VER.cat \
+     /usr/share/sgml/docbook/sgml-dtd-$SGMLDTD3VER/catalog
+   install-catalog --add /etc/sgml/sgml-docbook-dtd-$SGMLDTD3VER.cat \
+     /etc/sgml/sgml-docbook.cat
+
+# Use only the most current 3.x version of DocBook SGML DTD:
+cat >> /usr/share/sgml/docbook/sgml-dtd-$SGMLDTD3VER/catalog << "EOF"
+  -- Begin Single Major Version catalog changes --
+
+PUBLIC "-//Davenport//DTD DocBook V3.0//EN" "docbook.dtd"
+
+  -- End Single Major Version catalog changes --
+EOF
+
+  # Copy docs:
+  mkdir -vpm755 /usr/doc/sgml-dtd-$SGMLDTD3VER
+  cp -fav \
+    ChangeLog *.txt \
+    /usr/doc/sgml-dtd-$SGMLDTD3VER/
+)
+
+###############
+## sgml-dtd4 ##
+###############
+# For reference:
+# http://cblfs.cross-lfs.org/index.php/DocBook_SGML_DTD-4.x
+# http://www.linuxfromscratch.org/blfs/view/svn/pst/sgml-dtd.html
+
+
+( cd docbook-$SGMLDTD4VER
+  pwd
+
+  # Remove the ENT definitions from the catalog file:
+  sed -i -e '/ISO 8879/d' -e '/gml/d' docbook.cat
+
+  # Install:
+  mkdir -vpm755 /usr/share/sgml/docbook/sgml-dtd-$SGMLDTD4VER
+  install -vpm644 docbook.cat /usr/share/sgml/docbook/sgml-dtd-$SGMLDTD4VER/catalog
+  cp -fav *.dtd *.mod *.dcl /usr/share/sgml/docbook/sgml-dtd-$SGMLDTD4VER
+  # Update SGML catalog:
+  install-catalog --add /etc/sgml/sgml-docbook-dtd-$SGMLDTD4VER.cat \
+    /usr/share/sgml/docbook/sgml-dtd-$SGMLDTD4VER/catalog
+  install-catalog --add /etc/sgml/sgml-docbook-dtd-$SGMLDTD4VER.cat \
+    /etc/sgml/sgml-docbook.cat
+
+  # Use only the most current 4.x version of DocBook SGML DTD :
+  # When you upgrade sgml-dtd4, put the PREVIOUS version number in
+  # with the lines below.
+cat << EOF >> /usr/share/sgml/docbook/sgml-dtd-$SGMLDTD4VER/catalog
+  -- Begin Single Major Version catalog changes --
+EOF
+for i in 4.4 4.3 4.2 4.1 4.0; do
+cat << EOF >> /usr/share/sgml/docbook/sgml-dtd-$SGMLDTD4VER/catalog
+PUBLIC "-//OASIS//DTD DocBook V${i}//EN" "docbook.dtd"
+EOF
+done
+cat << EOF >> /usr/share/sgml/docbook/sgml-dtd-$SGMLDTD4VER/catalog
+
+  -- End Single Major Version catalog changes --
+EOF
+
+  # Copy docs:
+  mkdir -vpm755 /usr/doc/sgml-dtd4-$SGMLDTD4VER
+  cp -fav \
+    README \
+    /usr/doc/sgml-dtd4-$SGMLDTD4VER/
+
+)
+
+####################### Build OpenSP ############################
+
+# Extract source:
+cd $TMP
+mkdir opensp && cd opensp
+rpm2cpio $CWD/sources/opensp-${OPENSPVER}*.src.rpm | cpio -div || exit 1
+tar xvf OpenSP-$OPENSPVER.tar.gz
+cd OpenSP-$OPENSPVER || exit 1
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \; -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \;
+
+sed -i 's:32,:253,:' lib/Syntax.cxx
+sed -i 's:LITLEN          240 :LITLEN          8092:' unicode/{gensyntax.pl,unicode.syn}
+
+# Stop OpenJade from segfaulting:
+patch --verbose -p1 < ../opensp-sigsegv.patch || exit 1
+# Inconsistency between help & man page:
+patch --verbose -p1 < ../opensp-manpage.patch || exit 1
+patch --verbose -p1 < ../opensp-nodeids.patch || exit 1
+
+# Configure without optimisation.  OpenSP & OpenJade
+# are sensitive to optimisations, resulting in segfaults,
+# particularly on the ARM platform.  Apparently -O1 will work but
+# let's just leave it as is.
+#
+# This is configured not to build the documentation.  If anybody really needs
+# it, let me know and I'll adjust the build script - it's just a PITA to
+# get working.
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --mandir=/usr/man \
+  --datadir=/usr/share \
+  --infodir=/usr/info \
+  --disable-dependency-tracking \
+  --disable-static \
+  --disable-doc-build \
+  --enable-http \
+  --enable-default-catalog=/etc/sgml/catalog \
+  --enable-default-search-path=/usr/share/sgml \
+  || exit 1
+
+# Build:
+make pkgdatadir=/usr/share/sgml/OpenSP-$OPENSPVER || exit 1
+
+# Install:
+make install DESTDIR=/ || exit 1
+
+# This allows OpenJade to link with OpenSP.
+( cd /usr/lib${LIBDIRSUFFIX} && ln -vsf libosp.so libsp.so )
+
+# Rename sx to sgml2xml & create symlinks:
+mv -f /usr/bin/osx /usr/bin/osgml2xml
+( cd /usr/bin ; ln -vfs osgml2xml osx )
+
+# Create symlinks to binaries:
+( cd /usr/bin
+  for file in nsgmls sgmlnorm spam spent sgml2xml ; do
+     rm -fv $file
+     ln -vfs o$file $file
+  done
+)
+
+# Fix man pages:
+# Sorry, but OpenSP needs xmlto installed to create its man pages and documentation.
+# Due to build dependency order, we build xmlto later on.  I did try and move xmlto earlier
+# in the build but didn't get the build order correct. If anybody REALLY misses this documentation,
+# email mozes@slackware.com and I'll have another go at adjusting the build order.
+#
+# Building man pages has been disabled with ./configure --disable-doc-build.
+#
+#( cd /usr/man/man1
+#  mv -fv osx.1 osgml2xml.1
+#  ln -vfs osgml2xml.1 osx.1
+#  for file in nsgmls sgmlnorm spam spent sgml2xml ; do
+#     rm -f ${file}.1*
+#     ln -vfs o${file}.1 ${file}.1
+#  done
+#)
+
+# Rename docs directory:
+mv -fv /usr/doc/OpenSP /usr/doc/OpenSP-$OPENSPVER
+
+####################### Build OpenJade ############################
+# Reference:
+#  http://cblfs.cross-lfs.org/index.php/OpenJade
+
+# Extract source:
+cd $TMP
+tar xvf $CWD/sources/openjade-${OPENJADEVER}.tar.xz
+cd openjade*/ || exit 1
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \; -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \;
+
+# Apply patches:
+#
+# GCC >=4.6 patch:
+xz -dc $CWD/sources/openjade-1.3.2-gcc46.patch.xz | patch -p1 --verbose || exit 1
+
+# Migrate from Perl 4 'getopts' function which was deprecated in Perl 5.16:
+sed -i -e '/getopts/{N;s#&G#g#;s#do .getopts.pl.;##;}' -e '/use POSIX/ause Getopt::Std;' msggen.pl
+
+# Configure:
+CXXFLAGS="$SLKCFLAGS -fno-lifetime-dse" \
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --enable-splibdir=/usr/lib${LIBDIRSUFFIX} \
+  --disable-static \
+  --mandir=/usr/man \
+  --infodir=/usr/info \
+  --disable-static \
+  --enable-http \
+  --enable-default-catalog=/etc/sgml/catalog \
+  --enable-default-search-path=/usr/share/sgml \
+  --datadir=/usr/share/sgml/openjade-$OPENJADEVER \
+  || exit 1
+
+# Build:
+make || exit 1
+
+# Install:
+mkdir -p /etc/sgml
+make install || exit 1
+make install-man || exit 1
+( cd /usr/bin && ln -vfs openjade jade )
+( cd /usr/man/man1 && ln -vfs openjade.1 jade.1 )
+ln -vsf libogrove.so /usr/lib${LIBDIRSUFFIX}/libgrove.so
+ln -vsf libospgrove.so /usr/lib${LIBDIRSUFFIX}/libspgrove.so
+ln -vsf libostyle.so /usr/lib${LIBDIRSUFFIX}/libstyle.so
+install -vpm644 dsssl/catalog /usr/share/sgml/openjade-$OPENJADEVER
+install -vpm644 dsssl/*.{dtd,dsl,sgm} /usr/share/sgml/openjade-$OPENJADEVER
+
+# Update SGML catalog:
+install-catalog --add /etc/sgml/openjade-$OPENJADEVER.cat \
+  /usr/share/sgml/openjade-$OPENJADEVER/catalog
+install-catalog --add /etc/sgml/sgml-docbook.cat \
+  /etc/sgml/openjade-$OPENJADEVER.cat
+
+# Update system configuration:
+echo "SYSTEM \"http://www.oasis-open.org/docbook/xml/${XMLDTDVER}/docbookx.dtd\" \
+    \"/usr/share/xml/docbook/xml-dtd-${XMLDTDVER}/docbookx.dtd\"" >> \
+    /usr/share/sgml/openjade-${OPENJADEVER}/catalog
+
+# Copy docs:
+mkdir -vpm755 /usr/doc/openjade-$OPENJADEVER
+cp -fav \
+  COPYING NEWS README VERSION \
+  doc/* dsssl/README.jadetex pubtext jadedoc \
+  /usr/doc/openjade-$OPENJADEVER
+
+####################### Build dsssl-stylesheets ####################
+
+# Extract source:
+cd $TMP
+mkdir docbook-dsssl-$DSSSLSTYLESHEETSVER
+cd docbook-dsssl-$DSSSLSTYLESHEETSVER
+tar xvf $CWD/sources/docbook-dsssl-$DSSSLSTYLESHEETSVER.tar.*z* || exit 1
+tar xvf $CWD/sources/docbook-dsssl-doc-$DSSSLSTYLESHEETSVER.tar.*z* || exit 1
+cd docbook-dsssl-$DSSSLSTYLESHEETSVER || exit 1
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \; -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \;
+
+# Install:
+install -pm755 bin/collateindex.pl /usr/bin
+install -pm644 bin/collateindex.pl.1 /usr/man/man1
+# Eeek!  Debian trim this down but we'll leave it for the moment:
+mkdir -vpm755 /usr/share/sgml/docbook/dsssl-stylesheets-$DSSSLSTYLESHEETSVER/common
+cp -fav * /usr/share/sgml/docbook/dsssl-stylesheets-$DSSSLSTYLESHEETSVER
+
+# Update catalog:
+install-catalog --add /etc/sgml/dsssl-docbook-stylesheets.cat \
+  /usr/share/sgml/docbook/dsssl-stylesheets-$DSSSLSTYLESHEETSVER/catalog
+install-catalog --add /etc/sgml/dsssl-docbook-stylesheets.cat \
+  /usr/share/sgml/docbook/dsssl-stylesheets-$DSSSLSTYLESHEETSVER/common/catalog
+install-catalog --add /etc/sgml/sgml-docbook.cat \
+  /etc/sgml/dsssl-docbook-stylesheets.cat
+
+# Copy docs:
+mkdir -vpm755 /usr/doc/dsssl-stylesheets-$DSSSLSTYLESHEETSVER
+cp -fav \
+  WhatsNew VERSION RELEASE-NOTES.txt README ChangeLog BUGS \
+  /usr/doc/dsssl-stylesheets-$DSSSLSTYLESHEETSVER
+cp -fav \
+  frames/README \
+  /usr/doc/dsssl-stylesheets-$DSSSLSTYLESHEETSVER/README.frames
+
+####################### Build docbook-utils ########################
+
+# docbook-utils requires some of the docbook docs to be installed
+# prior to being built.
+
+# Extract source:
+cd $TMP
+mkdir docbook-utils && cd docbook-utils
+rpm2cpio $CWD/sources/docbook-utils-${DOCBOOKUTILSVER}*.src.rpm | cpio -div || exit 1
+tar xvf docbook-utils-$DOCBOOKUTILSVER.tar.gz
+cd docbook-utils-$DOCBOOKUTILSVER || exit 1
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \; -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \;
+
+# Extract patch set from Spec file:
+#  egrep '^Patch[0-9].*: ' *.spec | awk -F: '{print $2" \\"}'
+#
+# Apply patches:
+for i in \
+ \
+ docbook-utils-spaces.patch \
+ docbook-utils-2ndspaces.patch \
+ docbook-utils-w3mtxtconvert.patch \
+ docbook-utils-grepnocolors.patch \
+ docbook-utils-sgmlinclude.patch \
+ docbook-utils-rtfmanpage.patch \
+ docbook-utils-papersize.patch \
+ docbook-utils-nofinalecho.patch \
+ docbook-utils-newgrep.patch \
+  \
+  ; do patch --verbose -p1 < ../$i
+done || exit 1
+
+# Configure:
+CFLAGS="$SLKCFLAGS" \
+CXXFLAGS="$SLKCFLAGS" \
+CPPFLAGS="$SLKCFLAGS" \
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
+  --mandir=/usr/man \
+  || exit 1
+
+# Build:
+make || exit 1
+
+# Install:
+make install htmldir=/usr/doc/docbook-utils-$DOCBOOKUTILSVER/html || exit 1
+
+# grep-2.7 demands [[:space:]] instead of [:space:]
+if ! fgrep '[[:space:]]' /usr/bin/jw ; then
+  sed -i "s/\[:space:\]/\[\[:space:\]\]/g" /usr/bin/jw
+fi
+
+# db2html is not just a symlink, as it has to create the output directory:
+rm -f /usr/bin/db2html
+install -vpm755 ../db2html /usr/bin
+install -vpm644 ../gdp-both.dsl /usr/share/sgml/docbook/utils-$DOCBOOKUTILSVER/docbook-utils.dsl
+
+# Make binary symlinks:
+( cd /usr/bin
+  for util in dvi html pdf ps rtf ; do
+     rm -f db2$util
+     ln -vfs docbook2$util db2$util
+  done
+)
+
+# Make man page symlinks:
+( cd /usr/man/man1
+  for util in dvi html pdf ps rtf ; do
+     rm -f db2$util.1*
+     ln -vfs jw.1 db2$util.1
+  done
+)
+
+# Copy docs:
+mkdir -vpm755 /usr/doc/docbook-utils-$DOCBOOKUTILSVER
+cp -fav \
+  AUTHORS NEWS README TODO \
+  /usr/doc/docbook-utils-$DOCBOOKUTILSVER
+
+############################
+## xml-dtd / docbook-xml  ##
+############################
+
+# Extract source:
+cd $TMP
+mkdir xml-dtd-$XMLDTDVER
+cd xml-dtd-$XMLDTDVER
+unzip $CWD/sources/docbook-xml-$XMLDTDVER.zip || exit 1
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \; -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \;
+
+# Install 4.x catalog:
+mkdir -vpm755 /usr/share/xml/docbook/xml-dtd-$XMLDTDVER
+cp -fav docbook.cat *.dtd *.mod ent/ \
+  /usr/share/xml/docbook/xml-dtd-$XMLDTDVER
+
+# Use the Unicode-4 entities from sgml-common to fix errors such as
+# "1D6C2" is not a character number in the document character set
+( cd /usr/share/xml/docbook/xml-dtd-$XMLDTDVER/ent
+  rm -fv isogrk4.ent
+  ln -vfs ../../../../sgml/xml-iso-entities-*.*/ISOgrk4.ent isogrk4.ent )
+
+# Create config files:
+mkdir -vpm755 /etc/xml
+
+# This code is taken directly from:
+# http://www.linuxfromscratch.org/blfs/view/svn/pst/xml.html#DocBook
+#
+# Populate /etc/xml/docbook:
+#
+if [ ! -e $XML_DOCBOOKCATALOG ]; then
+    xmlcatalog --noout --create $XML_DOCBOOKCATALOG
+fi &&
+xmlcatalog --noout --add "public" \
+    "-//OASIS//DTD DocBook XML V${XMLDTDVER}//EN" \
+    "http://www.oasis-open.org/docbook/xml/${XMLDTDVER}/docbookx.dtd" \
+    $XML_DOCBOOKCATALOG &&
+xmlcatalog --noout --add "public" \
+    "-//OASIS//DTD DocBook XML CALS Table Model V${XMLDTDVER}//EN" \
+    "file:///usr/share/xml/docbook/xml-dtd-${XMLDTDVER}/calstblx.dtd" \
+    $XML_DOCBOOKCATALOG &&
+xmlcatalog --noout --add "public" \
+    "-//OASIS//DTD XML Exchange Table Model 19990315//EN" \
+    "file:///usr/share/xml/docbook/xml-dtd-${XMLDTDVER}/soextblx.dtd" \
+    $XML_DOCBOOKCATALOG &&
+xmlcatalog --noout --add "public" \
+    "-//OASIS//ELEMENTS DocBook XML Information Pool V${XMLDTDVER}//EN" \
+    "file:///usr/share/xml/docbook/xml-dtd-${XMLDTDVER}/dbpoolx.mod" \
+    $XML_DOCBOOKCATALOG &&
+xmlcatalog --noout --add "public" \
+    "-//OASIS//ELEMENTS DocBook XML Document Hierarchy V${XMLDTDVER}//EN" \
+    "file:///usr/share/xml/docbook/xml-dtd-${XMLDTDVER}/dbhierx.mod" \
+    $XML_DOCBOOKCATALOG &&
+xmlcatalog --noout --add "public" \
+    "-//OASIS//ELEMENTS DocBook XML HTML Tables V${XMLDTDVER}//EN" \
+    "file:///usr/share/xml/docbook/xml-dtd-${XMLDTDVER}/htmltblx.mod" \
+    $XML_DOCBOOKCATALOG &&
+xmlcatalog --noout --add "public" \
+    "-//OASIS//ENTITIES DocBook XML Notations V${XMLDTDVER}//EN" \
+    "file:///usr/share/xml/docbook/xml-dtd-${XMLDTDVER}/dbnotnx.mod" \
+    $XML_DOCBOOKCATALOG &&
+xmlcatalog --noout --add "public" \
+    "-//OASIS//ENTITIES DocBook XML Character Entities V${XMLDTDVER}//EN" \
+    "file:///usr/share/xml/docbook/xml-dtd-${XMLDTDVER}/dbcentx.mod" \
+    $XML_DOCBOOKCATALOG &&
+xmlcatalog --noout --add "public" \
+    "-//OASIS//ENTITIES DocBook XML Additional General Entities V${XMLDTDVER}//EN" \
+    "file:///usr/share/xml/docbook/xml-dtd-${XMLDTDVER}/dbgenent.mod" \
+    $XML_DOCBOOKCATALOG &&
+xmlcatalog --noout --add "rewriteSystem" \
+    "http://www.oasis-open.org/docbook/xml/${XMLDTDVER}" \
+    "file:///usr/share/xml/docbook/xml-dtd-${XMLDTDVER}" \
+    $XML_DOCBOOKCATALOG &&
+xmlcatalog --noout --add "rewriteURI" \
+    "http://www.oasis-open.org/docbook/xml/${XMLDTDVER}" \
+    "file:///usr/share/xml/docbook/xml-dtd-${XMLDTDVER}" \
+    $XML_DOCBOOKCATALOG || exit 1
+
+#
+# Populate /etc/xml/catalog:
+#
+if [ ! -e $XML_CATALOG ]; then
+    xmlcatalog --noout --create $XML_CATALOG
+fi &&
+xmlcatalog --noout --add "delegatePublic" \
+    "-//OASIS//ENTITIES DocBook XML" \
+    "file:///etc/xml/docbook" \
+    $XML_CATALOG &&
+xmlcatalog --noout --add "delegatePublic" \
+    "-//OASIS//DTD DocBook XML" \
+    "file:///etc/xml/docbook" \
+    $XML_CATALOG &&
+xmlcatalog --noout --add "delegateSystem" \
+    "http://www.oasis-open.org/docbook/" \
+    "file:///etc/xml/docbook" \
+    $XML_CATALOG &&
+xmlcatalog --noout --add "delegateURI" \
+    "http://www.oasis-open.org/docbook/" \
+    "file:///etc/xml/docbook" \
+    $XML_CATALOG || exit 1
+
+# Rewrites for older docbooks.  This allows older docbooks to be referenced.
+# It means, however, that you __*shouldn't* have these older docbooks__
+# installed on your system;
+# so if you just keep the Slackware linuxdoc-tools package you'll be fine:
+#
+for DTDVERSION in 4.1.2 4.2 4.3 4.4
+do
+  xmlcatalog --noout --add "public" \
+    "-//OASIS//DTD DocBook XML V$DTDVERSION//EN" \
+    "http://www.oasis-open.org/docbook/xml/$DTDVERSION/docbookx.dtd" \
+    $XML_DOCBOOKCATALOG || exit 1
+  xmlcatalog --noout --add "rewriteSystem" \
+    "http://www.oasis-open.org/docbook/xml/$DTDVERSION" \
+    "file:///usr/share/xml/docbook/xml-dtd-$XMLDTDVER" \
+    $XML_DOCBOOKCATALOG || exit 1
+  xmlcatalog --noout --add "rewriteURI" \
+    "http://www.oasis-open.org/docbook/xml/$DTDVERSION" \
+    "file:///usr/share/xml/docbook/xml-dtd-$XMLDTDVER" \
+    $XML_DOCBOOKCATALOG || exit 1
+  xmlcatalog --noout --add "delegateSystem" \
+    "http://www.oasis-open.org/docbook/xml/$DTDVERSION/" \
+    "file:///etc/xml/docbook" \
+    $XML_CATALOG || exit 1
+  xmlcatalog --noout --add "delegateURI" \
+    "http://www.oasis-open.org/docbook/xml/$DTDVERSION/" \
+    "file:///etc/xml/docbook" \
+    $XML_CATALOG || exit 1
+done
+
+# Copy docs:
+mkdir -pm755 /usr/doc/xml-dtd-$XMLDTDVER
+cp -favv \
+  ChangeLog README \
+  /usr/doc/xml-dtd-$XMLDTDVER
+
+###############################
+## docbook-xsl (stylesheets) ##
+###############################
+# Build receipes:
+# [1] http://www.linuxfromscratch.org/blfs/view/8.1/pst/docbook-xsl.html
+# [2] Fedora's .spec file - included witin the SRPM we extract.
+#
+# Extract source:
+cd $TMP
+mkdir docbook-style-xsl && cd docbook-style-xsl
+# This directory holds the sources and patches extracted from the SRPM:
+rpm2cpio $CWD/sources/docbook-style-xsl-*.src.rpm | cpio -div || exit 1
+# Create a build directory to contain the two source archives:
+#
+# Rename the "-nons-" package name back to the original, "docbook-xsl-<version>"
+mkdir -p build/docbook-xsl-$XSLSTYLESHEETSVER ; cd build/docbook-xsl-$XSLSTYLESHEETSVER
+tar xvf ../../docbook-xsl-nons-$XSLSTYLESHEETSVER.tar.bz2 || exit 1
+mv -fv  docbook-xsl-nons-$XSLSTYLESHEETSVER/* .
+cd ..
+# Merge doc package into a single source tree (unpacks in to docbook-xsl-$XSLSTYLESHEETSVER)
+tar xvf ../docbook-xsl-doc-$XSLSTYLESHEETSVER.tar.bz2 || exit 1
+cd docbook-xsl-$XSLSTYLESHEETSVER || exit 1
+
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \; -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \;
+
+# Assemble patch list from spec file (and see individual level-2 patch outside of 'for' loop below):
+# egrep '^Patch[0-9].*: ' *.spec | awk -F: '{print $2" \\"}'
+# Apply patches:
+for i in \
+ \
+ docbook-xsl-pagesetup.patch \
+ docbook-xsl-marginleft.patch \
+ docbook-xsl-newmethods.patch \
+ docbook-xsl-non-constant-expressions.patch \
+ docbook-xsl-list-item-body.patch \
+ docbook-xsl-mandir.patch \
+ \
+ ; do patch --verbose -p1 < ../../$i
+done || exit 1
+patch -p2 < ../../docbook-style-xsl-non-recursive-string-subst.patch || exit 1
+
+cp -fav ../../docbook-style-xsl.Makefile Makefile
+# Switch to UTF-8 files:
+for fhtml in $(find ./doc -name '*.html' -type f) ; do
+  iconv -f ISO-8859-1 -t UTF-8 "$fhtml" -o "$fhtml".tmp
+  mv -f "$fhtml".tmp "$fhtml"
+  sed -i 's/charset=ISO-8859-1/charset=UTF-8/' "$fhtml"
+done
+for f in $(find -name "*'*") ; do
+ mv -fv "$f" $(echo "$f" | tr -d "'")
+done
+
+# Build and install:
+make install \
+   BINDIR=/usr/bin \
+   DESTDIR=/usr/share/xml/docbook/xsl-stylesheets-$XSLSTYLESHEETSVER || exit 1
+install -vpm644 \
+   VERSION.xsl \
+   /usr/share/xml/docbook/xsl-stylesheets-$XSLSTYLESHEETSVER/ || exit 1
+ln -vfs xsl-stylesheets-$XSLSTYLESHEETSVER \
+        /usr/share/xml/docbook/xsl-stylesheets
+# Don't ship the extensions (https://bugzilla.redhat.com/show_bug.cgi?id=177256)
+rm -rf /usr/share/xml/docbook/xsl-stylesheets/extensions/*
+
+# Some Linux distributions have this here, so we install a compatibility symlink:
+# (this convoluted way of doing it is for makepkg's benefit)
+mkdir -vpm755 /usr/share/xml/docbook/stylesheet
+( cd /usr/share/xml/docbook/stylesheet
+  rm -fv docbook-xsl
+  ln -vfs ../xsl-stylesheets-$XSLSTYLESHEETSVER docbook-xsl
+  # Some stylesheets will look for 'VERSION.xsl' or 'VERSION'
+  # Migrating from docbook-xsl to docbook-xsl-nons has meant both are
+  # now present, and differ by a couple of lines.
+  # However, if 'VERSION' ceases to exist, let's symlink it to .xsl
+  # (which will be present, since we put it there during the install phase above).
+  cd docbook-xsl
+  [ ! -r VERSION ] && ln -vsf VERSION.xsl VERSION
+ )
+
+# Copy docs:
+mkdir -vpm755 /usr/doc/docbook-xsl-$XSLSTYLESHEETSVER
+cp -fav doc/* README* RELEASE-NOTES* NEWS* \
+         /usr/doc/docbook-xsl-$XSLSTYLESHEETSVER
+
+# Create config files:
+mkdir -vpm755 /etc/xml
+if [ ! -f $XML_CATALOG ]; then
+   xmlcatalog --noout --create $XML_CATALOG
+fi
+# Configure system:
+xmlcatalog --noout --add "rewriteSystem" \
+ "http://cdn.docbook.org/release/xsl-nons/$XSLSTYLESHEETSVER" \
+ "file://usr/share/xml/docbook/xsl-stylesheets-$XSLSTYLESHEETSVER" \
+  $XML_CATALOG || exit 1
+xmlcatalog --noout --add "rewriteURI" \
+ "http://cdn.docbook.org/release/xsl-nons/$XSLSTYLESHEETSVER" \
+ "file://usr/share/xml/docbook/xsl-stylesheets-$XSLSTYLESHEETSVER" \
+  $XML_CATALOG || exit 1
+xmlcatalog --noout --add "rewriteSystem" \
+ "http://cdn.docbook.org/release/xsl-nons/current" \
+ "file://usr/share/xml/docbook/xsl-stylesheets-$XSLSTYLESHEETSVER" \
+  $XML_CATALOG || exit 1
+xmlcatalog --noout --add "rewriteURI" \
+ "http://cdn.docbook.org/release/xsl-nons/current/" \
+ "file://usr/share/xml/docbook/xsl-stylesheets-$XSLSTYLESHEETSVER" \
+  $XML_CATALOG || exit 1
+
+## Note:
+## These are the sourceforge URIs, for the previous package before
+## it was renamed to "-nons".  We'll keep these around for a while, but
+## check that they still exist when next updating this package.
+xmlcatalog --noout --add "rewriteSystem" \
+  "http://docbook.sourceforge.net/release/xsl/current" \
+  "/usr/share/xml/docbook/xsl-stylesheets-$XSLSTYLESHEETSVER" \
+  $XML_CATALOG || exit 1
+xmlcatalog --noout --add "rewriteURI" \
+  "http://docbook.sourceforge.net/release/xsl/current" \
+  "/usr/share/xml/docbook/xsl-stylesheets-$XSLSTYLESHEETSVER" \
+  $XML_CATALOG || exit 1
+
+####################### Build xmlto ################################
+
+# Extract source:
+cd $TMP
+mkdir xmlto && cd xmlto
+#tar xvf $CWD/sources/xmlto-$XMLTOVER.tar.*z*
+rpm2cpio $CWD/sources/xmlto-${XMLTOVER}*.src.rpm | cpio -div || exit 1
+tar xvvf xmlto-$XMLTOVER.tar.*z*
+cd xmlto-$XMLTOVER || exit 1
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \; -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \;
+
+# Configure:
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --mandir=/usr/man \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
+  || exit 1
+
+# Build:
+make || exit 1
+
+# Install:
+make install || exit 1
+
+# Copy docs:
+mkdir -vpm755 /usr/doc/xmlto-$XMLTOVER
+cp -fav \
+  AUTHORS COPYING ChangeLog FAQ INSTALL NEWS README \
+  /usr/doc/xmlto-$XMLTOVER
+
+####################### Build SGMLSPL ##############################
+
+# Extract source:
+cd $TMP
+tar xvf $CWD/sources/libsgmls-perl_$SGMLSPLVER.orig.tar.*z* || exit 1
+cd libsgmls-perl-$SGMLSPLVER.orig
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \; -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \;
+tar xvvf $CWD/sources/libsgmls-perl_$SGMLSPLVER-*.debian.tar.xz || exit 1
+
+# Apply patches from Debian:
+cat debian/patches/series | while read dpf ; do
+  patch -p1 --verbose < debian/patches/$dpf || exit 1
+done || exit 1
+
+# Configure:
+perl Makefile.PL INSTALLDIRS=vendor || exit 1
+sed -i 's?/share/man?/man/?g' Makefile
+
+# Build:
+make OPTIMIZE="$SLKCFLAGS" || exit 1
+
+# Install:
+make install PREFIX=/usr
+sed 's?usr/share/doc/sgmls-doc/?usr/doc/sgmlspl-'"$SGMLSPLVER"'/?g' sgmlspl.1 > /usr/man/man1/sgmlspl.1
+mv -fv /usr/bin/sgmlspl{.pl,}
+
+# Copy docs:
+mkdir -vpm755 /usr/doc/sgmlspl-$SGMLSPLVER
+cp -fav \
+  BUGS COPYING README TODO \
+  /usr/doc/sgmlspl-$SGMLSPLVER
+cp -fav \
+  DOC/HTML/{SGMLSpm,sgmlspl} \
+  /usr/doc/sgmlspl-$SGMLSPLVER
+
+####################### Build linuxdoc-tools ########################
+
+# Extract source:
+cd $TMP
+mkdir linuxdoc-tools && cd linuxdoc-tools
+#rpm2cpio $CWD/sources/linuxdoc-tools-${LINUXDOCTOOLSVER}*.src.rpm | cpio -div || exit 1
+#tar xvf linuxdoc-tools_$LINUXDOCTOOLSVER.tar.gz
+tar xvf $CWD/sources/linuxdoc-tools_$LINUXDOCTOOLSVER.tar.xz
+cd linuxdoc-tools-$LINUXDOCTOOLSVER || exit 1
+
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \; -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \;
+
+# Remove Tex from the $PATH so that we don't build formats of the linuxdoc-tools
+# guide which don't work with tetex-3.  These do work with texlive, but Slackware doesn't
+# ship that, and just how many alternate versions of the documentation do we need anyway? :-)
+OPATH=$PATH
+export PATH=$( echo $PATH | sed -e 's?:/usr/share/texmf/bin??g' -e 's?/usr/share/texmf/bin:??g' )
+
+# Apply patches (these were originally taken from the Fedora SRPM but broken out later
+# when the 'original' source from Debian began to be used)
+for i in \
+  linuxdoc-tools-0.9.13-letter.patch.xz \
+  linuxdoc-tools-0.9.20-lib64.patch.xz ; do
+    xzcat $CWD/sources/$i | patch -p1 || exit 1
+done || exit 1
+
+# Find out what our Vendor perl directory is:
+eval $(perl '-V:installvendorlib')
+mkdir -p $PKG/$installvendorlib
+
+# Configure:
+CFLAGS="$SLKCFLAGS" \
+CXXFLAGS="$SLKCFLAGS" \
+CPPFLAGS="$SLKCFLAGS" \
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --with-perllibdir=$installvendorlib \
+  --mandir=/usr/man \
+  --with-installed-nsgmls \
+  --infodir=/usr/info \
+  --enable-docs="txt html info" \
+  || exit 1
+#  --with-installed-iso-entities \
+#  --with-texdir=/usr/share/texmf/tex/latex/ \
+
+# Adjust doc dir location:
+sed -i 's?share/doc/linuxdoc-tools?doc/linuxdoc-tools-'"$LINUXDOCTOOLSVER"'?g' Makefile
+
+( cd entity-map && autoconf && ./configure --prefix=/usr )
+
+# Build serial.  This does build in parallel but
+# I find linuxdoc-tools to be fragile between versions:
+make \
+   perl5libdir=$PKG/$installvendorlib \
+   OPTIMIZE="$SLKCFLAGS" \
+   PERL=/usr/bin/perl \
+   DESTDIR=/ \
+   LINUXDOCDOC=/usr/doc/linuxdoc-tools-$LINUXDOCTOOLSVER || exit 1
+
+# Install:
+make install \
+   PERL=/usr/bin/perl \
+   perl5libdir=$PKG/$installvendorlib \
+   DESTDIR=/ \
+   LINUXDOCDOC=/usr/doc/linuxdoc-tools-$LINUXDOCTOOLSVER || exit 1
+
+# Install info page:
+cat debian/linuxdoc-tools.info-base doc/guide.info > /usr/info/linuxdoc-sgml.info
+
+# This package contains a number of programs.
+# We maintain our own change log for this package.  Since the package name is
+# 'linuxdoc-tools', let's put our changelog into here:
+install -vpm644 $CWD/ChangeLog.txt /usr/doc/linuxdoc-tools-$LINUXDOCTOOLSVER/Slackware-ChangeLog.txt
+
+# Restore $PATH:
+export PATH=$OPATH
+
+####################### Build gnome-doc-utils #######################
+
+# Extract source:
+cd $TMP
+mkdir gnome-doc-utils && cd gnome-doc-utils
+rpm2cpio $CWD/sources/gnome-doc-utils-*.src.rpm | cpio -div || exit 1
+tar xvf gnome-doc-utils-$GNOMEDOCUTILSVER.tar.*z*
+cd gnome-doc-utils-*/ || exit 1
+
+chown -R root:root .
+find . \
+ \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+ -exec chmod 755 {} \; -o \
+ \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+ -exec chmod 644 {} \;
+
+# Apply patches:
+# Extract patch set from Spec file:
+#  egrep '^Patch[0-9].*: ' *.spec | awk -F: '{print $2" \\"}'
+#
+# Note: exclude patch 'gnome-doc-utils-0.14.0-package.patch' as it's an RH bug from 2008
+# and we've never included it.
+for i in \
+ \
+  gnome-doc-utils-0.20.10-python3.patch \
+  \
+  ; do patch --verbose -p1 < ../$i
+done || exit 1
+
+# Configure:
+CFLAGS="$SLKCFLAGS" \
+CXXFLAGS="$SLKCFLAGS" \
+CPPFLAGS="$SLKCFLAGS" \
+PYTHON=/usr/bin/python3 \
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
+  --mandir=/usr/man \
+  --disable-scrollkeeper \
+  --enable-build-utils \
+  --build=$ARCH-slackware-linux$HOSTTARGET || exit 1
+
+# No parallel build here because it doesn't work:
+make || exit 1
+
+# Install:
+make install DESTDIR=/ || exit 1
+
+# Copy docs:
+mkdir -p $PKG/usr/doc/gnome-doc-utils-$GNOMEDOCUTILSVER
+cp -fav \
+  AUTHORS ChangeLog COPYING* INSTALL NEWS README \
+  /usr/doc/gnome-doc-utils-$GNOMEDOCUTILSVER
+
+####################### Build gtk-doc ###############################
+
+# Extract source:
+cd $TMP
+mkdir gtk-doc && cd gtk-doc
+rpm2cpio $CWD/sources/gtk-doc-*.src.rpm | cpio -div || exit 1
+tar xvf gtk-doc-$GTKDOCVER.tar.*z*
+cd gtk-doc-*/ || exit 1
+
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \; -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \;
+
+# Apply patches:
+# Extract patch set from Spec file:
+#  egrep '^Patch[0-9].*: ' *.spec | awk -F: '{print $2" \\"}'
+# Note: exclude patch 'gnome-doc-utils-0.14.0-package.patch' as it's an RH bug from 2008
+# and we've never included it.
+for i in \
+ \
+ 0001-Partially-revert-a-gtk-doc-1.31-change-that-broke-e-.patch \
+  \
+  ; do patch --verbose -p1 < ../$i
+done || exit 1
+
+# Configure:
+CFLAGS="$SLKCFLAGS" \
+CXXFLAGS="$SLKCFLAGS" \
+CPPFLAGS="$SLKCFLAGS" \
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --mandir=/usr/man || exit 1
+
+# Build:
+make || exit 1
+
+# Install:
+make install || exit 1
+
+# Copy docs:
+mkdir -vpm755 /usr/doc/gtk-doc-$GTKDOCVER
+cp -fav \
+  AUTHORS COPYING INSTALL MAINTAINERS NEWS README TODO \
+  /usr/doc/gtk-doc-$GTKDOCVER
+
+####################### Build docbook2X ###############################
+
+cd $TMP
+
+# Build supporting PERL libraries first:
+( mkdir XML-NamespaceSupport && cd XML-NamespaceSupport
+  rpm2cpio $CWD/sources/perl-XML-NamespaceSupport-*.src.rpm | cpio -di
+  tar xvf XML-NamespaceSupport-*.tar.gz
+  cd XML-NamespaceSupport*/ || exit 1
+  perl Makefile.PL INSTALLDIRS=vendor
+  # Make sure the man pages go where we want them:
+  fgrep -lr -- '/share/man/' . | xargs sed -i 's?/share/man/?/man/?g'
+  make || exit 1
+  make test || exit 1
+  make pure_install || exit 1 || exit 1 ) || exit 1
+
+( mkdir perl-XML-SAX-Base && cd perl-XML-SAX-Base
+  rpm2cpio $CWD/sources/perl-XML-SAX-Base-*.src.rpm | cpio -di
+  tar xvf XML-SAX-Base-*z
+  cd XML-SAX-Base-*/ || exit 1
+  perl Makefile.PL INSTALLDIRS=vendor
+  fgrep -lr -- '/share/man/' . | xargs sed -i 's?/share/man/?/man/?g'
+  make || exit 1
+  make test || exit 1
+  make pure_install || exit 1 ) || exit 1
+
+( mkdir XML-SAX && cd XML-SAX
+  rpm2cpio $CWD/sources/perl-XML-SAX-[0-9]*.src.rpm | cpio -di
+  tar xvf XML-SAX-*nopatents.tar*
+  cd XML-SAX-*/ || exit 1
+  patch -p1 < ../perl-XML-SAX-0.99-rt20126.patch || exit 1
+  # Answer Y to updating ParserDetails.ini:
+  yes | perl Makefile.PL INSTALLDIRS=vendor
+  fgrep -lr -- '/share/man/' . | xargs sed -i 's?/share/man/?/man/?g'
+  make || exit 1
+  make test || exit 1
+  make pure_install || exit 1
+  # We need to make a ParserDetails.ini file, as suggested here:
+  # http://perl-xml.sourceforge.net/faq/#parserdetails.ini
+  perl -MXML::SAX -e "XML::SAX->add_parser(q(XML::SAX::PurePerl))->save_parsers()" ) || exit 1
+
+# Build docbook2X:
+# Extract source:
+tar xvf $CWD/sources/docbook2x*.orig.tar.xz
+cd docbook2X-*/ || exit 1
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \; -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \;
+
+# Apply patches:
+tar xvvf $CWD/sources/docbook2x*debian*z || exit 1
+for i in \
+   01_fix_static_datadir_evaluation.patch \
+   02_fix_418703_dont_use_abbreviated_sfnet_address.patch \
+   03_fix_420153_filename_whitespace_handling.patch \
+   04_fix_442782_preprocessor_declaration_syntax.patch \
+   05_fix_439214_error_on_missing_refentry.patch \
+   06_fix_man_typo.patch ; do
+    patch --verbose -p1 < debian/patches/$i || exit 1
+done
+
+# Configure:
+CFLAGS="$SLKCFLAGS" \
+CXXFLAGS="$SLKCFLAGS" \
+CPPFLAGS="$SLKCFLAGS" \
+./configure \
+   --prefix=/usr \
+   --libdir=/usr/lib${LIBDIRSUFFIX} \
+   --mandir=/usr/man \
+   --infodir=/usr/info \
+   --docdir=/usr/doc/docbook2X-$DOCBOOK2XVER \
+   --sysconfdir=/etc \
+   --localstatedir=/var \
+   --disable-dependency-tracking \
+   --program-transform-name="s/^docbook2/docbook2x-/" \
+   --with-html-xsl \
+   --build=$ARCH-slackware-linux$HOSTTARGET || exit 1
+
+# Build:
+make || exit 1
+
+# Install:
+make install || exit 1
+mv -fv /usr/share/doc/docbook2X /usr/doc/docbook2X-$DOCBOOK2XVER
+
+# Copy docs:
+mkdir -vpm755 /usr/doc/docbook2X-$DOCBOOK2XVER
+cp -fav \
+   AUTHORS COPYING ChangeLog NEWS README THANKS TODO \
+   /usr/doc/docbook2X-$DOCBOOK2XVER
+
+####################### Build AsciiDoc: Pass 2 of 2 #################
+
+# Now build asciidoc with documentation:
+build_asciidoc
+
+#######################################################################
+
+# Install the package description and post installation script:
+rm -rf /install
+mkdir -vpm755 /install
+install -vpm644 $CWD/slack-desc /install
+zcat $CWD/doinst.sh.gz > /install/doinst.sh

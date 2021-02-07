@@ -1,0 +1,1578 @@
+diff -ruBN /tmp/minicom/minicom.SlackBuild /source/a/minicom/minicom.SlackBuild
+--- /tmp/minicom/minicom.SlackBuild	2021-01-15 04:30:34.000000000 +0000
++++ /source/a/minicom/minicom.SlackBuild	2021-01-17 23:24:21.000000000 +0000
+@@ -83,7 +83,7 @@
+   --prefix=/usr \
+   --sysconfdir=/etc \
+   --mandir=/usr/man \
+-  --build=$ARCH-slackware-linux || exit 1
++  --build=$ARCH-slackware-linux-musl || exit 1
+ 
+ make $NUMJOBS || make || exit 1
+ make install DESTDIR=$PKG || exit 1
+@@ -126,7 +126,7 @@
+ ./configure \
+   --prefix=/usr \
+   --mandir=/usr/man \
+-  --build=$ARCH-slackware-linux
++  --build=$ARCH-slackware-linux-musl
+ 
+ touch stamp-h.in # to stop autoheader from running
+ touch -d yesterday aclocal.m4 # to stop automake from running
+diff -ruBN /tmp/minicom/minicom.SlackBuild.log /source/a/minicom/minicom.SlackBuild.log
+--- /tmp/minicom/minicom.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/a/minicom/minicom.SlackBuild.log	2021-01-17 23:29:03.000000000 +0000
+@@ -0,0 +1,1553 @@
++minicom-2.8/
++minicom-2.8/ABOUT-NLS
++minicom-2.8/AUTHORS
++minicom-2.8/COPYING
++minicom-2.8/ChangeLog
++minicom-2.8/FILE_ID.DIZ
++minicom-2.8/INSTALL
++minicom-2.8/Makefile.am
++minicom-2.8/Makefile.in
++minicom-2.8/NEWS
++minicom-2.8/README
++minicom-2.8/TODO
++minicom-2.8/aclocal.m4
++minicom-2.8/ar-lib
++minicom-2.8/autogen.sh
++minicom-2.8/compile
++minicom-2.8/config.guess
++minicom-2.8/config.h.in
++minicom-2.8/config.rpath
++minicom-2.8/config.sub
++minicom-2.8/configure
++minicom-2.8/configure.ac
++minicom-2.8/depcomp
++minicom-2.8/doc/
++minicom-2.8/doc/Announce-1.78
++minicom-2.8/doc/Announce-1.82
++minicom-2.8/doc/Announce-1.82.1
++minicom-2.8/doc/Announce-1.83
++minicom-2.8/doc/COMPATABILITY.lrzsz
++minicom-2.8/doc/ChangeLog.old
++minicom-2.8/doc/HistSearch
++minicom-2.8/doc/Locales
++minicom-2.8/doc/Macros
++minicom-2.8/doc/Makefile.am
++minicom-2.8/doc/Makefile.in
++minicom-2.8/doc/QuickStart.modemu
++minicom-2.8/doc/README.lrzsz
++minicom-2.8/doc/TODO.lrzsz
++minicom-2.8/doc/Todo
++minicom-2.8/doc/Todo.175
++minicom-2.8/doc/Todo.Irix.dif
++minicom-2.8/doc/Todo.emacskey.dif
++minicom-2.8/doc/Todo.fsel
++minicom-2.8/doc/copyright.modemu
++minicom-2.8/doc/fselector.txt
++minicom-2.8/doc/japanese
++minicom-2.8/doc/minicom.FAQ
++minicom-2.8/doc/minirc.dfl
++minicom-2.8/doc/modemu.README
++minicom-2.8/doc/pl-translation.txt
++minicom-2.8/doc/portugues-brasil
++minicom-2.8/doc/suomeksi
++minicom-2.8/extras/
++minicom-2.8/extras/Makefile.am
++minicom-2.8/extras/Makefile.in
++minicom-2.8/extras/htsalogin
++minicom-2.8/extras/linux/
++minicom-2.8/extras/linux/INSTALL
++minicom-2.8/extras/linux/Makefile.am
++minicom-2.8/extras/linux/Makefile.in
++minicom-2.8/extras/linux/README-FIRST
++minicom-2.8/extras/linux/mtelnet
++minicom-2.8/extras/saralogin
++minicom-2.8/extras/scriptdemo
++minicom-2.8/extras/tables/
++minicom-2.8/extras/tables/Makefile.am
++minicom-2.8/extras/tables/Makefile.in
++minicom-2.8/extras/tables/mc.iso
++minicom-2.8/extras/tables/mc.noconv
++minicom-2.8/extras/tables/mc.pc8
++minicom-2.8/extras/tables/mc.sf7
++minicom-2.8/extras/termcap/
++minicom-2.8/extras/termcap/Makefile.am
++minicom-2.8/extras/termcap/Makefile.in
++minicom-2.8/extras/termcap/README
++minicom-2.8/extras/termcap/termcap.long
++minicom-2.8/extras/termcap/termcap.short
++minicom-2.8/extras/terminfo/
++minicom-2.8/extras/terminfo/Makefile.am
++minicom-2.8/extras/terminfo/Makefile.in
++minicom-2.8/extras/terminfo/README
++minicom-2.8/extras/terminfo/minicom
++minicom-2.8/extras/unixlogin
++minicom-2.8/install-sh
++minicom-2.8/lib/
++minicom-2.8/lib/Makefile.am
++minicom-2.8/lib/Makefile.in
++minicom-2.8/lib/error.c
++minicom-2.8/lib/error.h
++minicom-2.8/lib/getopt.c
++minicom-2.8/lib/getopt.h
++minicom-2.8/lib/getopt_long.c
++minicom-2.8/lib/libport.h
++minicom-2.8/lib/snprintf.c
++minicom-2.8/lib/usleep.c
++minicom-2.8/man/
++minicom-2.8/man/Makefile.am
++minicom-2.8/man/Makefile.in
++minicom-2.8/man/ascii-xfr.1
++minicom-2.8/man/minicom.1
++minicom-2.8/man/runscript.1
++minicom-2.8/man/xminicom.1
++minicom-2.8/minicom.spec
++minicom-2.8/minicom.spec.in
++minicom-2.8/missing
++minicom-2.8/po/
++minicom-2.8/po/ChangeLog
++minicom-2.8/po/Makefile.in.in
++minicom-2.8/po/Makevars
++minicom-2.8/po/POTFILES.in
++minicom-2.8/po/cs.gmo
++minicom-2.8/po/cs.po
++minicom-2.8/po/da.gmo
++minicom-2.8/po/da.po
++minicom-2.8/po/de.gmo
++minicom-2.8/po/de.po
++minicom-2.8/po/es.gmo
++minicom-2.8/po/es.po
++minicom-2.8/po/fi.gmo
++minicom-2.8/po/fi.po
++minicom-2.8/po/fr.gmo
++minicom-2.8/po/fr.po
++minicom-2.8/po/hu.gmo
++minicom-2.8/po/hu.po
++minicom-2.8/po/id.gmo
++minicom-2.8/po/id.po
++minicom-2.8/po/ja.gmo
++minicom-2.8/po/ja.po
++minicom-2.8/po/minicom.pot
++minicom-2.8/po/nb.gmo
++minicom-2.8/po/nb.po
++minicom-2.8/po/pl.gmo
++minicom-2.8/po/pl.po
++minicom-2.8/po/pt_BR.gmo
++minicom-2.8/po/pt_BR.po
++minicom-2.8/po/remove-potcdate.sin
++minicom-2.8/po/ro.gmo
++minicom-2.8/po/ro.po
++minicom-2.8/po/ru.gmo
++minicom-2.8/po/ru.po
++minicom-2.8/po/rw.gmo
++minicom-2.8/po/rw.po
++minicom-2.8/po/sr.gmo
++minicom-2.8/po/sr.po
++minicom-2.8/po/stamp-po
++minicom-2.8/po/sv.gmo
++minicom-2.8/po/sv.po
++minicom-2.8/po/vi.gmo
++minicom-2.8/po/vi.po
++minicom-2.8/po/zh_CN.gmo
++minicom-2.8/po/zh_CN.po
++minicom-2.8/po/zh_TW.gmo
++minicom-2.8/po/zh_TW.po
++minicom-2.8/src/
++minicom-2.8/src/Makefile.am
++minicom-2.8/src/Makefile.in
++minicom-2.8/src/ascii-xfr.c
++minicom-2.8/src/common.c
++minicom-2.8/src/config.c
++minicom-2.8/src/configsym.h
++minicom-2.8/src/defmap.h
++minicom-2.8/src/dial.c
++minicom-2.8/src/file.c
++minicom-2.8/src/functions.c
++minicom-2.8/src/getsdir.c
++minicom-2.8/src/getsdir.h
++minicom-2.8/src/help.c
++minicom-2.8/src/intl.h
++minicom-2.8/src/ipc.c
++minicom-2.8/src/keyboard.h
++minicom-2.8/src/keyserv.c
++minicom-2.8/src/main.c
++minicom-2.8/src/minicom.c
++minicom-2.8/src/minicom.h
++minicom-2.8/src/port.h
++minicom-2.8/src/rwconf.c
++minicom-2.8/src/script.c
++minicom-2.8/src/sysdep.h
++minicom-2.8/src/sysdep1.c
++minicom-2.8/src/sysdep1_s.c
++minicom-2.8/src/sysdep2.c
++minicom-2.8/src/updown.c
++minicom-2.8/src/util.c
++minicom-2.8/src/vt100.c
++minicom-2.8/src/vt100.h
++minicom-2.8/src/wildmat.c
++minicom-2.8/src/windiv.c
++minicom-2.8/src/window.c
++minicom-2.8/src/window.h
++minicom-2.8/src/wkeys.c
++minicom-2.8/src/xminicom
++autoreconf: Entering directory `.'
++autoreconf: running: autopoint --force
++autoreconf: running: aclocal --force -I m4
++autoreconf: configure.ac: tracing
++autoreconf: configure.ac: not using Libtool
++autoreconf: running: /usr/bin/autoconf --force
++autoreconf: running: /usr/bin/autoheader --force
++autoreconf: running: automake --add-missing --copy --force-missing
++autoreconf: Leaving directory `.'
++checking for a BSD-compatible install... /usr/bin/ginstall -c
++checking whether build environment is sane... yes
++checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
++checking for gawk... gawk
++checking whether make sets $(MAKE)... yes
++checking whether make supports nested variables... yes
++checking whether make supports the include directive... yes (GNU style)
++checking for gcc... gcc
++checking whether the C compiler works... yes
++checking for C compiler default output file name... a.out
++checking for suffix of executables... 
++checking whether we are cross compiling... no
++checking for suffix of object files... o
++checking whether we are using the GNU C compiler... yes
++checking whether gcc accepts -g... yes
++checking for gcc option to accept ISO C89... none needed
++checking whether gcc understands -c and -o together... yes
++checking dependency style of gcc... gcc3
++checking how to run the C preprocessor... gcc -E
++checking for grep that handles long lines and -e... /usr/bin/grep
++checking for egrep... /usr/bin/grep -E
++checking for ANSI C header files... yes
++checking for sys/types.h... yes
++checking for sys/stat.h... yes
++checking for stdlib.h... yes
++checking for string.h... yes
++checking for memory.h... yes
++checking for strings.h... yes
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking for unistd.h... yes
++checking minix/config.h usability... no
++checking minix/config.h presence... no
++checking for minix/config.h... no
++checking whether it is safe to define __EXTENSIONS__... yes
++checking for gcc... (cached) gcc
++checking whether we are using the GNU C compiler... (cached) yes
++checking whether gcc accepts -g... (cached) yes
++checking for gcc option to accept ISO C89... (cached) none needed
++checking whether gcc understands -c and -o together... (cached) yes
++checking dependency style of gcc... (cached) gcc3
++checking for ar... ar
++checking the archiver (ar) interface... ar
++checking for ranlib... ranlib
++checking for library containing strerror... none required
++checking build system type... x86_64-slackware-linux-musl
++checking host system type... x86_64-slackware-linux-musl
++checking for ld used by gcc... /usr/bin/ld
++checking if the linker (/usr/bin/ld) is GNU ld... yes
++checking for shared library run path origin... done
++checking for the common suffixes of directories in the library search path... lib,lib
++checking for iconv... yes
++checking for working iconv... yes
++checking pkg-config is at least version 0.9.0... yes
++checking for lockdev... no
++checking for a sed that does not truncate output... /usr/bin/sed
++checking whether NLS is requested... yes
++checking for msgfmt... /usr/bin/msgfmt
++checking for gmsgfmt... /usr/bin/msgfmt
++checking for xgettext... /usr/bin/xgettext
++checking for msgmerge... /usr/bin/msgmerge
++checking for CFPreferencesCopyAppValue... no
++checking for CFLocaleCopyCurrent... no
++checking for GNU gettext in libc... yes
++checking whether to use NLS... yes
++checking where the gettext function comes from... libc
++checking for kermit... no
++checking for tputs in -ltinfo... yes
++checking termcap.h usability... yes
++checking termcap.h presence... yes
++checking for termcap.h... yes
++checking for socket in -lsocket... no
++checking for dirent.h that defines DIR... yes
++checking for library containing opendir... none required
++checking for ANSI C header files... (cached) yes
++checking for sys/wait.h that is POSIX.1 compatible... yes
++checking whether stat file-mode macros are broken... no
++checking whether time.h and sys/time.h may both be included... yes
++checking POSIX termios... yes
++checking whether termios.h defines TIOCGWINSZ... no
++checking whether sys/ioctl.h defines TIOCGWINSZ... yes
++checking stdarg.h usability... yes
++checking stdarg.h presence... yes
++checking for stdarg.h... yes
++checking varargs.h usability... no
++checking varargs.h presence... no
++checking for varargs.h... no
++checking termio.h usability... no
++checking termio.h presence... no
++checking for termio.h... no
++checking termios.h usability... yes
++checking termios.h presence... yes
++checking for termios.h... yes
++checking setjmp.h usability... yes
++checking setjmp.h presence... yes
++checking for setjmp.h... yes
++checking errno.h usability... yes
++checking errno.h presence... yes
++checking for errno.h... yes
++checking pwd.h usability... yes
++checking pwd.h presence... yes
++checking for pwd.h... yes
++checking signal.h usability... yes
++checking signal.h presence... yes
++checking for signal.h... yes
++checking fcntl.h usability... yes
++checking fcntl.h presence... yes
++checking for fcntl.h... yes
++checking sgtty.h usability... no
++checking sgtty.h presence... no
++checking for sgtty.h... no
++checking locale.h usability... yes
++checking locale.h presence... yes
++checking for locale.h... yes
++checking for sys/stat.h... (cached) yes
++checking sys/file.h usability... yes
++checking sys/file.h presence... yes
++checking for sys/file.h... yes
++checking sys/ioctl.h usability... yes
++checking sys/ioctl.h presence... yes
++checking for sys/ioctl.h... yes
++checking sys/time.h usability... yes
++checking sys/time.h presence... yes
++checking for sys/time.h... yes
++checking sys/ttold.h usability... no
++checking sys/ttold.h presence... no
++checking for sys/ttold.h... no
++checking sys/param.h usability... yes
++checking sys/param.h presence... yes
++checking for sys/param.h... yes
++checking for unistd.h... (cached) yes
++checking posix1_lim.h usability... no
++checking posix1_lim.h presence... no
++checking for posix1_lim.h... no
++checking for sgtty.h... (cached) no
++checking features.h usability... yes
++checking features.h presence... yes
++checking for features.h... yes
++checking for an ANSI C-conforming const... yes
++checking for uid_t in sys/types.h... yes
++checking for mode_t... yes
++checking for pid_t... yes
++checking for size_t... yes
++checking whether struct tm is in sys/time.h or time.h... time.h
++checking return type of signal handlers... void
++checking for error_at_line... no
++checking whether closedir returns void... no
++checking if malloc debugging is wanted... no
++checking for getcwd... yes
++checking for getwd... no
++checking for memmove... yes
++checking for strerror... yes
++checking for strstr... yes
++checking for vsnprintf... yes
++checking for vprintf... yes
++checking for select... yes
++checking for snprintf... yes
++checking for usleep... yes
++checking for getopt... yes
++checking for getopt_long... yes
++checking for long file names... yes
++checking for com line lock directory... /var/lock
++checking for default serial port device... /dev/ttyS1
++checking for default baud rate... 115200
++checking that generated files are newer than configure... done
++configure: creating ./config.status
++config.status: creating Makefile
++config.status: creating doc/Makefile
++config.status: creating extras/Makefile
++config.status: creating extras/linux/Makefile
++config.status: creating extras/tables/Makefile
++config.status: creating extras/termcap/Makefile
++config.status: creating extras/terminfo/Makefile
++config.status: creating man/Makefile
++config.status: creating lib/Makefile
++config.status: creating src/Makefile
++config.status: creating po/Makefile.in
++config.status: creating minicom.spec
++config.status: creating config.h
++config.status: executing depfiles commands
++config.status: executing po-directories commands
++config.status: creating po/POTFILES
++config.status: creating po/Makefile
++make  all-recursive
++make[1]: Entering directory '/tmp/minicom-2.8'
++Making all in doc
++make[2]: Entering directory '/tmp/minicom-2.8/doc'
++make[2]: Nothing to be done for 'all'.
++make[2]: Leaving directory '/tmp/minicom-2.8/doc'
++Making all in extras
++make[2]: Entering directory '/tmp/minicom-2.8/extras'
++Making all in linux
++make[3]: Entering directory '/tmp/minicom-2.8/extras/linux'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/minicom-2.8/extras/linux'
++Making all in tables
++make[3]: Entering directory '/tmp/minicom-2.8/extras/tables'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/minicom-2.8/extras/tables'
++Making all in termcap
++make[3]: Entering directory '/tmp/minicom-2.8/extras/termcap'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/minicom-2.8/extras/termcap'
++Making all in terminfo
++make[3]: Entering directory '/tmp/minicom-2.8/extras/terminfo'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/minicom-2.8/extras/terminfo'
++make[3]: Entering directory '/tmp/minicom-2.8/extras'
++make[3]: Nothing to be done for 'all-am'.
++make[3]: Leaving directory '/tmp/minicom-2.8/extras'
++make[2]: Leaving directory '/tmp/minicom-2.8/extras'
++Making all in man
++make[2]: Entering directory '/tmp/minicom-2.8/man'
++make[2]: Nothing to be done for 'all'.
++make[2]: Leaving directory '/tmp/minicom-2.8/man'
++Making all in po
++make[2]: Entering directory '/tmp/minicom-2.8/po'
++test -z "cs.po da.po de.po es.po fr.po fi.po hu.po id.po ja.po nb.po pl.po pt_BR.po ro.po ru.po rw.po sr.po sv.po vi.po zh_CN.po zh_TW.po" || make cs.po da.po de.po es.po fr.po fi.po hu.po id.po ja.po nb.po pl.po pt_BR.po ro.po ru.po rw.po sr.po sv.po vi.po zh_CN.po zh_TW.po
++if test -n "cs.gmo da.gmo de.gmo es.gmo fr.gmo fi.gmo hu.gmo id.gmo ja.gmo nb.gmo pl.gmo pt_BR.gmo ro.gmo ru.gmo rw.gmo sr.gmo sv.gmo vi.gmo zh_CN.gmo zh_TW.gmo"; then \
++	make cs.gmo da.gmo de.gmo es.gmo fr.gmo fi.gmo hu.gmo id.gmo ja.gmo nb.gmo pl.gmo pt_BR.gmo ro.gmo ru.gmo rw.gmo sr.gmo sv.gmo vi.gmo zh_CN.gmo zh_TW.gmo; \
++else \
++	test "@MOFILES@" = "@MOFILES@" || make @MOFILES@; \
++fi
++make[3]: Entering directory '/tmp/minicom-2.8/po'
++make[3]: Nothing to be done for 'cs.po'.
++make[3]: Nothing to be done for 'da.po'.
++make[3]: Nothing to be done for 'de.po'.
++make[3]: Nothing to be done for 'es.po'.
++make[3]: Nothing to be done for 'fr.po'.
++make[3]: Nothing to be done for 'fi.po'.
++make[3]: Nothing to be done for 'hu.po'.
++make[3]: Nothing to be done for 'id.po'.
++make[3]: Nothing to be done for 'ja.po'.
++make[3]: Nothing to be done for 'nb.po'.
++make[3]: Nothing to be done for 'pl.po'.
++make[3]: Nothing to be done for 'pt_BR.po'.
++make[3]: Nothing to be done for 'ro.po'.
++make[3]: Nothing to be done for 'ru.po'.
++make[3]: Nothing to be done for 'rw.po'.
++make[3]: Nothing to be done for 'sr.po'.
++make[3]: Nothing to be done for 'sv.po'.
++make[3]: Nothing to be done for 'vi.po'.
++make[3]: Nothing to be done for 'zh_CN.po'.
++make[3]: Nothing to be done for 'zh_TW.po'.
++make[3]: Leaving directory '/tmp/minicom-2.8/po'
++make[3]: Entering directory '/tmp/minicom-2.8/po'
++make[3]: 'cs.gmo' is up to date.
++make[3]: 'da.gmo' is up to date.
++make[3]: 'de.gmo' is up to date.
++make[3]: 'es.gmo' is up to date.
++make[3]: 'fr.gmo' is up to date.
++make[3]: 'fi.gmo' is up to date.
++make[3]: 'hu.gmo' is up to date.
++make[3]: 'id.gmo' is up to date.
++make[3]: 'ja.gmo' is up to date.
++make[3]: 'nb.gmo' is up to date.
++make[3]: 'pl.gmo' is up to date.
++make[3]: 'pt_BR.gmo' is up to date.
++make[3]: 'ro.gmo' is up to date.
++make[3]: 'ru.gmo' is up to date.
++make[3]: 'rw.gmo' is up to date.
++make[3]: 'sr.gmo' is up to date.
++make[3]: 'sv.gmo' is up to date.
++make[3]: 'vi.gmo' is up to date.
++make[3]: 'zh_CN.gmo' is up to date.
++make[3]: 'zh_TW.gmo' is up to date.
++make[3]: Leaving directory '/tmp/minicom-2.8/po'
++make[2]: Leaving directory '/tmp/minicom-2.8/po'
++Making all in lib
++make[2]: Entering directory '/tmp/minicom-2.8/lib'
++gcc -DHAVE_CONFIG_H -I. -I..     -O2 -fPIC -W -Wall -Wextra -std=gnu99 -fno-common -Wno-format-truncation -MT error.o -MD -MP -MF .deps/error.Tpo -c -o error.o error.c
++mv -f .deps/error.Tpo .deps/error.Po
++rm -f libport.a
++ar cru libport.a  error.o 
++ranlib libport.a
++make[2]: Leaving directory '/tmp/minicom-2.8/lib'
++Making all in src
++make[2]: Entering directory '/tmp/minicom-2.8/src'
++gcc -DHAVE_CONFIG_H -I. -I..  -I../lib -DCONFDIR=\"/etc\" -DLOCALEDIR=\"/usr/share/locale\"   -O2 -fPIC -W -Wall -Wextra -std=gnu99 -fno-common -Wno-format-truncation -MT minicom.o -MD -MP -MF .deps/minicom.Tpo -c -o minicom.o minicom.c
++gcc -DHAVE_CONFIG_H -I. -I..  -I../lib -DCONFDIR=\"/etc\" -DLOCALEDIR=\"/usr/share/locale\"   -O2 -fPIC -W -Wall -Wextra -std=gnu99 -fno-common -Wno-format-truncation -MT vt100.o -MD -MP -MF .deps/vt100.Tpo -c -o vt100.o vt100.c
++gcc -DHAVE_CONFIG_H -I. -I..  -I../lib -DCONFDIR=\"/etc\" -DLOCALEDIR=\"/usr/share/locale\"   -O2 -fPIC -W -Wall -Wextra -std=gnu99 -fno-common -Wno-format-truncation -MT config.o -MD -MP -MF .deps/config.Tpo -c -o config.o config.c
++mv -f .deps/vt100.Tpo .deps/vt100.Po
++gcc -DHAVE_CONFIG_H -I. -I..  -I../lib -DCONFDIR=\"/etc\" -DLOCALEDIR=\"/usr/share/locale\"   -O2 -fPIC -W -Wall -Wextra -std=gnu99 -fno-common -Wno-format-truncation -MT help.o -MD -MP -MF .deps/help.Tpo -c -o help.o help.c
++mv -f .deps/help.Tpo .deps/help.Po
++gcc -DHAVE_CONFIG_H -I. -I..  -I../lib -DCONFDIR=\"/etc\" -DLOCALEDIR=\"/usr/share/locale\"   -O2 -fPIC -W -Wall -Wextra -std=gnu99 -fno-common -Wno-format-truncation -MT updown.o -MD -MP -MF .deps/updown.Tpo -c -o updown.o updown.c
++mv -f .deps/minicom.Tpo .deps/minicom.Po
++gcc -DHAVE_CONFIG_H -I. -I..  -I../lib -DCONFDIR=\"/etc\" -DLOCALEDIR=\"/usr/share/locale\"   -O2 -fPIC -W -Wall -Wextra -std=gnu99 -fno-common -Wno-format-truncation -MT util.o -MD -MP -MF .deps/util.Tpo -c -o util.o util.c
++mv -f .deps/util.Tpo .deps/util.Po
++gcc -DHAVE_CONFIG_H -I. -I..  -I../lib -DCONFDIR=\"/etc\" -DLOCALEDIR=\"/usr/share/locale\"   -O2 -fPIC -W -Wall -Wextra -std=gnu99 -fno-common -Wno-format-truncation -MT dial.o -MD -MP -MF .deps/dial.Tpo -c -o dial.o dial.c
++mv -f .deps/updown.Tpo .deps/updown.Po
++gcc -DHAVE_CONFIG_H -I. -I..  -I../lib -DCONFDIR=\"/etc\" -DLOCALEDIR=\"/usr/share/locale\"   -O2 -fPIC -W -Wall -Wextra -std=gnu99 -fno-common -Wno-format-truncation -MT window.o -MD -MP -MF .deps/window.Tpo -c -o window.o window.c
++mv -f .deps/config.Tpo .deps/config.Po
++gcc -DHAVE_CONFIG_H -I. -I..  -I../lib -DCONFDIR=\"/etc\" -DLOCALEDIR=\"/usr/share/locale\"   -O2 -fPIC -W -Wall -Wextra -std=gnu99 -fno-common -Wno-format-truncation -MT wkeys.o -MD -MP -MF .deps/wkeys.Tpo -c -o wkeys.o wkeys.c
++mv -f .deps/wkeys.Tpo .deps/wkeys.Po
++gcc -DHAVE_CONFIG_H -I. -I..  -I../lib -DCONFDIR=\"/etc\" -DLOCALEDIR=\"/usr/share/locale\"   -O2 -fPIC -W -Wall -Wextra -std=gnu99 -fno-common -Wno-format-truncation -MT ipc.o -MD -MP -MF .deps/ipc.Tpo -c -o ipc.o ipc.c
++mv -f .deps/ipc.Tpo .deps/ipc.Po
++gcc -DHAVE_CONFIG_H -I. -I..  -I../lib -DCONFDIR=\"/etc\" -DLOCALEDIR=\"/usr/share/locale\"   -O2 -fPIC -W -Wall -Wextra -std=gnu99 -fno-common -Wno-format-truncation -MT windiv.o -MD -MP -MF .deps/windiv.Tpo -c -o windiv.o windiv.c
++mv -f .deps/windiv.Tpo .deps/windiv.Po
++gcc -DHAVE_CONFIG_H -I. -I..  -I../lib -DCONFDIR=\"/etc\" -DLOCALEDIR=\"/usr/share/locale\"   -O2 -fPIC -W -Wall -Wextra -std=gnu99 -fno-common -Wno-format-truncation -MT sysdep1.o -MD -MP -MF .deps/sysdep1.Tpo -c -o sysdep1.o sysdep1.c
++mv -f .deps/sysdep1.Tpo .deps/sysdep1.Po
++gcc -DHAVE_CONFIG_H -I. -I..  -I../lib -DCONFDIR=\"/etc\" -DLOCALEDIR=\"/usr/share/locale\"   -O2 -fPIC -W -Wall -Wextra -std=gnu99 -fno-common -Wno-format-truncation -MT sysdep1_s.o -MD -MP -MF .deps/sysdep1_s.Tpo -c -o sysdep1_s.o sysdep1_s.c
++mv -f .deps/sysdep1_s.Tpo .deps/sysdep1_s.Po
++gcc -DHAVE_CONFIG_H -I. -I..  -I../lib -DCONFDIR=\"/etc\" -DLOCALEDIR=\"/usr/share/locale\"   -O2 -fPIC -W -Wall -Wextra -std=gnu99 -fno-common -Wno-format-truncation -MT sysdep2.o -MD -MP -MF .deps/sysdep2.Tpo -c -o sysdep2.o sysdep2.c
++mv -f .deps/sysdep2.Tpo .deps/sysdep2.Po
++gcc -DHAVE_CONFIG_H -I. -I..  -I../lib -DCONFDIR=\"/etc\" -DLOCALEDIR=\"/usr/share/locale\"   -O2 -fPIC -W -Wall -Wextra -std=gnu99 -fno-common -Wno-format-truncation -MT rwconf.o -MD -MP -MF .deps/rwconf.Tpo -c -o rwconf.o rwconf.c
++mv -f .deps/dial.Tpo .deps/dial.Po
++gcc -DHAVE_CONFIG_H -I. -I..  -I../lib -DCONFDIR=\"/etc\" -DLOCALEDIR=\"/usr/share/locale\"   -O2 -fPIC -W -Wall -Wextra -std=gnu99 -fno-common -Wno-format-truncation -MT main.o -MD -MP -MF .deps/main.Tpo -c -o main.o main.c
++mv -f .deps/window.Tpo .deps/window.Po
++gcc -DHAVE_CONFIG_H -I. -I..  -I../lib -DCONFDIR=\"/etc\" -DLOCALEDIR=\"/usr/share/locale\"   -O2 -fPIC -W -Wall -Wextra -std=gnu99 -fno-common -Wno-format-truncation -MT file.o -MD -MP -MF .deps/file.Tpo -c -o file.o file.c
++mv -f .deps/rwconf.Tpo .deps/rwconf.Po
++gcc -DHAVE_CONFIG_H -I. -I..  -I../lib -DCONFDIR=\"/etc\" -DLOCALEDIR=\"/usr/share/locale\"   -O2 -fPIC -W -Wall -Wextra -std=gnu99 -fno-common -Wno-format-truncation -MT getsdir.o -MD -MP -MF .deps/getsdir.Tpo -c -o getsdir.o getsdir.c
++mv -f .deps/getsdir.Tpo .deps/getsdir.Po
++gcc -DHAVE_CONFIG_H -I. -I..  -I../lib -DCONFDIR=\"/etc\" -DLOCALEDIR=\"/usr/share/locale\"   -O2 -fPIC -W -Wall -Wextra -std=gnu99 -fno-common -Wno-format-truncation -MT wildmat.o -MD -MP -MF .deps/wildmat.Tpo -c -o wildmat.o wildmat.c
++mv -f .deps/wildmat.Tpo .deps/wildmat.Po
++gcc -DHAVE_CONFIG_H -I. -I..  -I../lib -DCONFDIR=\"/etc\" -DLOCALEDIR=\"/usr/share/locale\"   -O2 -fPIC -W -Wall -Wextra -std=gnu99 -fno-common -Wno-format-truncation -MT common.o -MD -MP -MF .deps/common.Tpo -c -o common.o common.c
++mv -f .deps/common.Tpo .deps/common.Po
++gcc -DHAVE_CONFIG_H -I. -I..  -I../lib -DCONFDIR=\"/etc\" -DLOCALEDIR=\"/usr/share/locale\"   -O2 -fPIC -W -Wall -Wextra -std=gnu99 -fno-common -Wno-format-truncation -MT script.o -MD -MP -MF .deps/script.Tpo -c -o script.o script.c
++mv -f .deps/file.Tpo .deps/file.Po
++gcc -DHAVE_CONFIG_H -I. -I..  -I../lib -DCONFDIR=\"/etc\" -DLOCALEDIR=\"/usr/share/locale\"   -O2 -fPIC -W -Wall -Wextra -std=gnu99 -fno-common -Wno-format-truncation -MT ascii-xfr.o -MD -MP -MF .deps/ascii-xfr.Tpo -c -o ascii-xfr.o ascii-xfr.c
++mv -f .deps/main.Tpo .deps/main.Po
++gcc  -O2 -fPIC -W -Wall -Wextra -std=gnu99 -fno-common -Wno-format-truncation   -o minicom minicom.o vt100.o config.o help.o updown.o util.o dial.o window.o wkeys.o ipc.o windiv.o sysdep1.o sysdep1_s.o sysdep2.o rwconf.o main.o file.o getsdir.o wildmat.o common.o  ../lib/libport.a  -ltinfo
++mv -f .deps/ascii-xfr.Tpo .deps/ascii-xfr.Po
++gcc  -O2 -fPIC -W -Wall -Wextra -std=gnu99 -fno-common -Wno-format-truncation   -o ascii-xfr ascii-xfr.o  -ltinfo
++mv -f .deps/script.Tpo .deps/script.Po
++gcc  -O2 -fPIC -W -Wall -Wextra -std=gnu99 -fno-common -Wno-format-truncation   -o runscript script.o sysdep1_s.o common.o ../lib/libport.a -ltinfo
++make[2]: Leaving directory '/tmp/minicom-2.8/src'
++make[2]: Entering directory '/tmp/minicom-2.8'
++make[2]: Leaving directory '/tmp/minicom-2.8'
++make[1]: Leaving directory '/tmp/minicom-2.8'
++Making install in doc
++make[1]: Entering directory '/tmp/minicom-2.8/doc'
++make[2]: Entering directory '/tmp/minicom-2.8/doc'
++make[2]: Nothing to be done for 'install-exec-am'.
++make[2]: Nothing to be done for 'install-data-am'.
++make[2]: Leaving directory '/tmp/minicom-2.8/doc'
++make[1]: Leaving directory '/tmp/minicom-2.8/doc'
++Making install in extras
++make[1]: Entering directory '/tmp/minicom-2.8/extras'
++Making install in linux
++make[2]: Entering directory '/tmp/minicom-2.8/extras/linux'
++make[3]: Entering directory '/tmp/minicom-2.8/extras/linux'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/minicom-2.8/extras/linux'
++make[2]: Leaving directory '/tmp/minicom-2.8/extras/linux'
++Making install in tables
++make[2]: Entering directory '/tmp/minicom-2.8/extras/tables'
++make[3]: Entering directory '/tmp/minicom-2.8/extras/tables'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/minicom-2.8/extras/tables'
++make[2]: Leaving directory '/tmp/minicom-2.8/extras/tables'
++Making install in termcap
++make[2]: Entering directory '/tmp/minicom-2.8/extras/termcap'
++make[3]: Entering directory '/tmp/minicom-2.8/extras/termcap'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/minicom-2.8/extras/termcap'
++make[2]: Leaving directory '/tmp/minicom-2.8/extras/termcap'
++Making install in terminfo
++make[2]: Entering directory '/tmp/minicom-2.8/extras/terminfo'
++make[3]: Entering directory '/tmp/minicom-2.8/extras/terminfo'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/minicom-2.8/extras/terminfo'
++make[2]: Leaving directory '/tmp/minicom-2.8/extras/terminfo'
++make[2]: Entering directory '/tmp/minicom-2.8/extras'
++make[3]: Entering directory '/tmp/minicom-2.8/extras'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/minicom-2.8/extras'
++make[2]: Leaving directory '/tmp/minicom-2.8/extras'
++make[1]: Leaving directory '/tmp/minicom-2.8/extras'
++Making install in man
++make[1]: Entering directory '/tmp/minicom-2.8/man'
++make[2]: Entering directory '/tmp/minicom-2.8/man'
++make[2]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-minicom/usr/man/man1'
++ /usr/bin/ginstall -c -m 644 ascii-xfr.1 minicom.1 runscript.1 xminicom.1 '/tmp/package-minicom/usr/man/man1'
++make[2]: Leaving directory '/tmp/minicom-2.8/man'
++make[1]: Leaving directory '/tmp/minicom-2.8/man'
++Making install in po
++make[1]: Entering directory '/tmp/minicom-2.8/po'
++test -z "cs.po da.po de.po es.po fr.po fi.po hu.po id.po ja.po nb.po pl.po pt_BR.po ro.po ru.po rw.po sr.po sv.po vi.po zh_CN.po zh_TW.po" || make cs.po da.po de.po es.po fr.po fi.po hu.po id.po ja.po nb.po pl.po pt_BR.po ro.po ru.po rw.po sr.po sv.po vi.po zh_CN.po zh_TW.po
++make[2]: Entering directory '/tmp/minicom-2.8/po'
++make[2]: Nothing to be done for 'cs.po'.
++make[2]: Nothing to be done for 'da.po'.
++make[2]: Nothing to be done for 'de.po'.
++make[2]: Nothing to be done for 'es.po'.
++make[2]: Nothing to be done for 'fr.po'.
++make[2]: Nothing to be done for 'fi.po'.
++make[2]: Nothing to be done for 'hu.po'.
++make[2]: Nothing to be done for 'id.po'.
++make[2]: Nothing to be done for 'ja.po'.
++make[2]: Nothing to be done for 'nb.po'.
++make[2]: Nothing to be done for 'pl.po'.
++make[2]: Nothing to be done for 'pt_BR.po'.
++make[2]: Nothing to be done for 'ro.po'.
++make[2]: Nothing to be done for 'ru.po'.
++make[2]: Nothing to be done for 'rw.po'.
++make[2]: Nothing to be done for 'sr.po'.
++make[2]: Nothing to be done for 'sv.po'.
++make[2]: Nothing to be done for 'vi.po'.
++make[2]: Nothing to be done for 'zh_CN.po'.
++make[2]: Nothing to be done for 'zh_TW.po'.
++make[2]: Leaving directory '/tmp/minicom-2.8/po'
++if test -n "cs.gmo da.gmo de.gmo es.gmo fr.gmo fi.gmo hu.gmo id.gmo ja.gmo nb.gmo pl.gmo pt_BR.gmo ro.gmo ru.gmo rw.gmo sr.gmo sv.gmo vi.gmo zh_CN.gmo zh_TW.gmo"; then \
++	make cs.gmo da.gmo de.gmo es.gmo fr.gmo fi.gmo hu.gmo id.gmo ja.gmo nb.gmo pl.gmo pt_BR.gmo ro.gmo ru.gmo rw.gmo sr.gmo sv.gmo vi.gmo zh_CN.gmo zh_TW.gmo; \
++else \
++	test "@MOFILES@" = "@MOFILES@" || make @MOFILES@; \
++fi
++make[2]: Entering directory '/tmp/minicom-2.8/po'
++make[2]: 'cs.gmo' is up to date.
++make[2]: 'da.gmo' is up to date.
++make[2]: 'de.gmo' is up to date.
++make[2]: 'es.gmo' is up to date.
++make[2]: 'fr.gmo' is up to date.
++make[2]: 'fi.gmo' is up to date.
++make[2]: 'hu.gmo' is up to date.
++make[2]: 'id.gmo' is up to date.
++make[2]: 'ja.gmo' is up to date.
++make[2]: 'nb.gmo' is up to date.
++make[2]: 'pl.gmo' is up to date.
++make[2]: 'pt_BR.gmo' is up to date.
++make[2]: 'ro.gmo' is up to date.
++make[2]: 'ru.gmo' is up to date.
++make[2]: 'rw.gmo' is up to date.
++make[2]: 'sr.gmo' is up to date.
++make[2]: 'sv.gmo' is up to date.
++make[2]: 'vi.gmo' is up to date.
++make[2]: 'zh_CN.gmo' is up to date.
++make[2]: 'zh_TW.gmo' is up to date.
++make[2]: Leaving directory '/tmp/minicom-2.8/po'
++installing cs.gmo as /tmp/package-minicom/usr/share/locale/cs/LC_MESSAGES/minicom.mo
++installing da.gmo as /tmp/package-minicom/usr/share/locale/da/LC_MESSAGES/minicom.mo
++installing de.gmo as /tmp/package-minicom/usr/share/locale/de/LC_MESSAGES/minicom.mo
++installing es.gmo as /tmp/package-minicom/usr/share/locale/es/LC_MESSAGES/minicom.mo
++installing fr.gmo as /tmp/package-minicom/usr/share/locale/fr/LC_MESSAGES/minicom.mo
++installing fi.gmo as /tmp/package-minicom/usr/share/locale/fi/LC_MESSAGES/minicom.mo
++installing hu.gmo as /tmp/package-minicom/usr/share/locale/hu/LC_MESSAGES/minicom.mo
++installing id.gmo as /tmp/package-minicom/usr/share/locale/id/LC_MESSAGES/minicom.mo
++installing ja.gmo as /tmp/package-minicom/usr/share/locale/ja/LC_MESSAGES/minicom.mo
++installing nb.gmo as /tmp/package-minicom/usr/share/locale/nb/LC_MESSAGES/minicom.mo
++installing pl.gmo as /tmp/package-minicom/usr/share/locale/pl/LC_MESSAGES/minicom.mo
++installing pt_BR.gmo as /tmp/package-minicom/usr/share/locale/pt_BR/LC_MESSAGES/minicom.mo
++installing ro.gmo as /tmp/package-minicom/usr/share/locale/ro/LC_MESSAGES/minicom.mo
++installing ru.gmo as /tmp/package-minicom/usr/share/locale/ru/LC_MESSAGES/minicom.mo
++installing rw.gmo as /tmp/package-minicom/usr/share/locale/rw/LC_MESSAGES/minicom.mo
++installing sr.gmo as /tmp/package-minicom/usr/share/locale/sr/LC_MESSAGES/minicom.mo
++installing sv.gmo as /tmp/package-minicom/usr/share/locale/sv/LC_MESSAGES/minicom.mo
++installing vi.gmo as /tmp/package-minicom/usr/share/locale/vi/LC_MESSAGES/minicom.mo
++installing zh_CN.gmo as /tmp/package-minicom/usr/share/locale/zh_CN/LC_MESSAGES/minicom.mo
++installing zh_TW.gmo as /tmp/package-minicom/usr/share/locale/zh_TW/LC_MESSAGES/minicom.mo
++make[1]: Leaving directory '/tmp/minicom-2.8/po'
++Making install in lib
++make[1]: Entering directory '/tmp/minicom-2.8/lib'
++make[2]: Entering directory '/tmp/minicom-2.8/lib'
++make[2]: Nothing to be done for 'install-exec-am'.
++make[2]: Nothing to be done for 'install-data-am'.
++make[2]: Leaving directory '/tmp/minicom-2.8/lib'
++make[1]: Leaving directory '/tmp/minicom-2.8/lib'
++Making install in src
++make[1]: Entering directory '/tmp/minicom-2.8/src'
++make[2]: Entering directory '/tmp/minicom-2.8/src'
++ /usr/bin/mkdir -p '/tmp/package-minicom/usr/bin'
++  /usr/bin/ginstall -c minicom runscript ascii-xfr '/tmp/package-minicom/usr/bin'
++ /usr/bin/mkdir -p '/tmp/package-minicom/usr/bin'
++ /usr/bin/ginstall -c xminicom '/tmp/package-minicom/usr/bin'
++make[2]: Nothing to be done for 'install-data-am'.
++make[2]: Leaving directory '/tmp/minicom-2.8/src'
++make[1]: Leaving directory '/tmp/minicom-2.8/src'
++make[1]: Entering directory '/tmp/minicom-2.8'
++make[2]: Entering directory '/tmp/minicom-2.8'
++make[2]: Nothing to be done for 'install-exec-am'.
++make[2]: Nothing to be done for 'install-data-am'.
++make[2]: Leaving directory '/tmp/minicom-2.8'
++make[1]: Leaving directory '/tmp/minicom-2.8'
++rm: cannot remove '/tmp/package-minicom/usr/doc/minicom-2.8/doc/Makefile                  extras': Is a directory
++lrzsz-990823/
++lrzsz-990823/CVS/
++lrzsz-990823/CVS/Root
++lrzsz-990823/CVS/Repository
++lrzsz-990823/CVS/Entries
++lrzsz-990823/ABOUT-NLS
++lrzsz-990823/AUTHORS
++lrzsz-990823/COMPATABILITY
++lrzsz-990823/COPYING
++lrzsz-990823/ChangeLog
++lrzsz-990823/INSTALL
++lrzsz-990823/Makefile.am
++lrzsz-990823/Makefile.in
++lrzsz-990823/NEWS
++lrzsz-990823/README
++lrzsz-990823/README-alpha
++lrzsz-990823/README.cvs
++lrzsz-990823/README.gettext
++lrzsz-990823/README.isdn4linux
++lrzsz-990823/README.systems
++lrzsz-990823/README.tests
++lrzsz-990823/Specfile.in
++lrzsz-990823/THANKS
++lrzsz-990823/TODO
++lrzsz-990823/acconfig.h
++lrzsz-990823/acinclude.m4
++lrzsz-990823/aclocal.m4
++lrzsz-990823/beos-runpiped.c
++lrzsz-990823/buildrpm
++lrzsz-990823/check.lrzsz
++lrzsz-990823/config.guess
++lrzsz-990823/config.h.in
++lrzsz-990823/config.sub
++lrzsz-990823/configure
++lrzsz-990823/configure.in
++lrzsz-990823/fastcheck.beos
++lrzsz-990823/fastcheck.sh
++lrzsz-990823/install-sh
++lrzsz-990823/missing
++lrzsz-990823/mkinstalldirs
++lrzsz-990823/rpmrc
++lrzsz-990823/stamp-h.in
++lrzsz-990823/systype.in
++lrzsz-990823/debian/
++lrzsz-990823/debian/CVS/
++lrzsz-990823/debian/CVS/Root
++lrzsz-990823/debian/CVS/Repository
++lrzsz-990823/debian/CVS/Entries
++lrzsz-990823/intl/
++lrzsz-990823/intl/CVS/
++lrzsz-990823/intl/CVS/Root
++lrzsz-990823/intl/CVS/Repository
++lrzsz-990823/intl/CVS/Entries
++lrzsz-990823/intl/ChangeLog
++lrzsz-990823/intl/Makefile.in
++lrzsz-990823/intl/VERSION
++lrzsz-990823/intl/bindtextdom.c
++lrzsz-990823/intl/cat-compat.c
++lrzsz-990823/intl/dcgettext.c
++lrzsz-990823/intl/dgettext.c
++lrzsz-990823/intl/explodename.c
++lrzsz-990823/intl/finddomain.c
++lrzsz-990823/intl/gettext.c
++lrzsz-990823/intl/gettext.h
++lrzsz-990823/intl/gettextP.h
++lrzsz-990823/intl/hash-string.h
++lrzsz-990823/intl/intl-compat.c
++lrzsz-990823/intl/l10nflist.c
++lrzsz-990823/intl/libgettext.h
++lrzsz-990823/intl/linux-msg.sed
++lrzsz-990823/intl/loadinfo.h
++lrzsz-990823/intl/loadmsgcat.c
++lrzsz-990823/intl/localealias.c
++lrzsz-990823/intl/po2tbl.sed.in
++lrzsz-990823/intl/textdomain.c
++lrzsz-990823/intl/xopen-msg.sed
++lrzsz-990823/lib/
++lrzsz-990823/lib/CVS/
++lrzsz-990823/lib/CVS/Root
++lrzsz-990823/lib/CVS/Repository
++lrzsz-990823/lib/CVS/Entries
++lrzsz-990823/lib/Makefile.am
++lrzsz-990823/lib/Makefile.in
++lrzsz-990823/lib/alloca.c
++lrzsz-990823/lib/ansi2knr.1
++lrzsz-990823/lib/ansi2knr.c
++lrzsz-990823/lib/error.c
++lrzsz-990823/lib/error.h
++lrzsz-990823/lib/getopt.c
++lrzsz-990823/lib/getopt.h
++lrzsz-990823/lib/getopt1.c
++lrzsz-990823/lib/long-options.c
++lrzsz-990823/lib/long-options.h
++lrzsz-990823/lib/mkdir.c
++lrzsz-990823/lib/mktime.c
++lrzsz-990823/lib/stpcpy.c
++lrzsz-990823/lib/strdup.c
++lrzsz-990823/lib/strerror.c
++lrzsz-990823/lib/strftime.c
++lrzsz-990823/lib/strpbrk.c
++lrzsz-990823/lib/strstr.c
++lrzsz-990823/lib/strtol.c
++lrzsz-990823/lib/strtoul.c
++lrzsz-990823/lib/vasprintf.c
++lrzsz-990823/lib/xstrtol.c
++lrzsz-990823/lib/xstrtol.h
++lrzsz-990823/lib/xstrtoul.c
++lrzsz-990823/lib/xstrtoul.h
++lrzsz-990823/man/
++lrzsz-990823/man/CVS/
++lrzsz-990823/man/CVS/Root
++lrzsz-990823/man/CVS/Repository
++lrzsz-990823/man/CVS/Entries
++lrzsz-990823/man/Makefile.am
++lrzsz-990823/man/Makefile.in
++lrzsz-990823/man/lrz.1
++lrzsz-990823/man/lsz.1
++lrzsz-990823/po/
++lrzsz-990823/po/CVS/
++lrzsz-990823/po/CVS/Root
++lrzsz-990823/po/CVS/Repository
++lrzsz-990823/po/CVS/Entries
++lrzsz-990823/po/ChangeLog
++lrzsz-990823/po/Makefile.in.in
++lrzsz-990823/po/POTFILES.in
++lrzsz-990823/po/cat-id-tbl.c
++lrzsz-990823/po/de.gmo
++lrzsz-990823/po/de.po
++lrzsz-990823/po/lrzsz.pot
++lrzsz-990823/po/stamp-cat-id
++lrzsz-990823/src/
++lrzsz-990823/src/CVS/
++lrzsz-990823/src/CVS/Root
++lrzsz-990823/src/CVS/Repository
++lrzsz-990823/src/CVS/Entries
++lrzsz-990823/src/Makefile.am
++lrzsz-990823/src/Makefile.in
++lrzsz-990823/src/ansi2knr.1
++lrzsz-990823/src/ansi2knr.c
++lrzsz-990823/src/canit.c
++lrzsz-990823/src/crctab.c
++lrzsz-990823/src/lrz.c
++lrzsz-990823/src/lrzszbug.in
++lrzsz-990823/src/lsyslog.c
++lrzsz-990823/src/lsz.c
++lrzsz-990823/src/protname.c
++lrzsz-990823/src/rbsb.c
++lrzsz-990823/src/tcp.c
++lrzsz-990823/src/timing.c
++lrzsz-990823/src/timing.h
++lrzsz-990823/src/zglobal.h
++lrzsz-990823/src/zm.c
++lrzsz-990823/src/zmodem.h
++lrzsz-990823/src/zperr.c
++lrzsz-990823/src/zreadline.c
++lrzsz-990823/testsuite/
++lrzsz-990823/testsuite/CVS/
++lrzsz-990823/testsuite/CVS/Root
++lrzsz-990823/testsuite/CVS/Repository
++lrzsz-990823/testsuite/CVS/Entries
++lrzsz-990823/testsuite/Makefile.am
++lrzsz-990823/testsuite/Makefile.in
++lrzsz-990823/testsuite/config/
++lrzsz-990823/testsuite/config/CVS/
++lrzsz-990823/testsuite/config/CVS/Root
++lrzsz-990823/testsuite/config/CVS/Repository
++lrzsz-990823/testsuite/config/CVS/Entries
++lrzsz-990823/testsuite/config/unix.exp
++lrzsz-990823/testsuite/lib/
++lrzsz-990823/testsuite/lib/CVS/
++lrzsz-990823/testsuite/lib/CVS/Root
++lrzsz-990823/testsuite/lib/CVS/Repository
++lrzsz-990823/testsuite/lib/CVS/Entries
++lrzsz-990823/testsuite/lib/lrzsz.exp
++lrzsz-990823/testsuite/lrzsz/
++lrzsz-990823/testsuite/lrzsz/CVS/
++lrzsz-990823/testsuite/lrzsz/CVS/Root
++lrzsz-990823/testsuite/lrzsz/CVS/Repository
++lrzsz-990823/testsuite/lrzsz/CVS/Entries
++lrzsz-990823/testsuite/lrzsz/abuse.exp
++lrzsz-990823/testsuite/lrzsz/command.exp
++lrzsz-990823/testsuite/lrzsz/compatability.exp
++lrzsz-990823/testsuite/lrzsz/crc.exp
++lrzsz-990823/testsuite/lrzsz/manage.exp
++lrzsz-990823/testsuite/lrzsz/newer.exp
++lrzsz-990823/testsuite/lrzsz/null.exp
++lrzsz-990823/testsuite/lrzsz/path.exp
++lrzsz-990823/testsuite/lrzsz/resume.exp
++lrzsz-990823/testsuite/lrzsz/timing.exp
++lrzsz-990823/testsuite/lrzsz/uppercase.exp
++lrzsz-990823/testsuite/lrzsz/window.exp
++lrzsz-990823/testsuite/lrzsz/xmodem.exp
++lrzsz-990823/testsuite/lrzsz/ymodem.exp
++lrzsz-990823/testsuite/lrzsz/zmodem-crc16.exp
++lrzsz-990823/testsuite/lrzsz/zmodem-escape.exp
++lrzsz-990823/testsuite/lrzsz/zmodem.exp
++Hmm...  Looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|--- ./config.sub.orig	1998-04-26 17:20:59.000000000 +0400
++|+++ ./config.sub	2007-08-30 09:48:46.000000000 +0400
++--------------------------
++patching file config.sub
++Using Plan A...
++Hunk #1 succeeded at 129.
++Hunk #2 succeeded at 144.
++done
++Hmm...  Looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|--- lrzsz-0.12.21.orig/po/de.po
++|+++ lrzsz-0.12.21/po/de.po
++--------------------------
++patching file po/de.po
++Using Plan A...
++Hunk #1 succeeded at 28.
++Hunk #2 succeeded at 50.
++Hunk #3 succeeded at 58.
++Hunk #4 succeeded at 70.
++Hunk #5 succeeded at 86.
++Hunk #6 succeeded at 102.
++Hunk #7 succeeded at 117.
++Hunk #8 succeeded at 137.
++Hunk #9 succeeded at 161.
++Hunk #10 succeeded at 188.
++Hunk #11 succeeded at 213.
++Hunk #12 succeeded at 228.
++Hunk #13 succeeded at 245.
++Hunk #14 succeeded at 267.
++Hunk #15 succeeded at 280.
++Hunk #16 succeeded at 308.
++Hunk #17 succeeded at 317.
++Hunk #18 succeeded at 347.
++Hunk #19 succeeded at 400.
++Hunk #20 succeeded at 434.
++Hunk #21 succeeded at 453.
++Hunk #22 succeeded at 473.
++Hunk #23 succeeded at 512.
++Hunk #24 succeeded at 526.
++Hunk #25 succeeded at 542.
++Hunk #26 succeeded at 596.
++Hunk #27 succeeded at 662.
++Hunk #28 succeeded at 682.
++Hunk #29 succeeded at 695.
++Hunk #30 succeeded at 715.
++Hunk #31 succeeded at 739.
++Hunk #32 succeeded at 749.
++Hunk #33 succeeded at 765.
++Hunk #34 succeeded at 785.
++Hunk #35 succeeded at 797.
++Hunk #36 succeeded at 809.
++Hmm...  The next patch looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|--- lrzsz-0.12.21.orig/debian/copyright
++|+++ lrzsz-0.12.21/debian/copyright
++--------------------------
++patching file debian/copyright
++Using Plan A...
++Hunk #1 succeeded at 1.
++Hmm...  The next patch looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|--- lrzsz-0.12.21.orig/debian/control
++|+++ lrzsz-0.12.21/debian/control
++--------------------------
++patching file debian/control
++Using Plan A...
++Hunk #1 succeeded at 1.
++Hmm...  The next patch looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|--- lrzsz-0.12.21.orig/debian/changelog
++|+++ lrzsz-0.12.21/debian/changelog
++--------------------------
++patching file debian/changelog
++Using Plan A...
++Hunk #1 succeeded at 1.
++Hmm...  The next patch looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|--- lrzsz-0.12.21.orig/debian/rules
++|+++ lrzsz-0.12.21/debian/rules
++--------------------------
++patching file debian/rules
++Using Plan A...
++Hunk #1 succeeded at 1.
++Hmm...  The next patch looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|--- lrzsz-0.12.21.orig/debian/patches/206648_dszlog.diff.unchecked
++|+++ lrzsz-0.12.21/debian/patches/206648_dszlog.diff.unchecked
++--------------------------
++patching file debian/patches/206648_dszlog.diff.unchecked
++Using Plan A...
++Hunk #1 succeeded at 1.
++Hmm...  The next patch looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|--- lrzsz-0.12.21.orig/debian/patches/include.diff
++|+++ lrzsz-0.12.21/debian/patches/include.diff
++--------------------------
++patching file debian/patches/include.diff
++Using Plan A...
++Hunk #1 succeeded at 1.
++Hmm...  The next patch looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|--- lrzsz-0.12.21.orig/debian/patches/mantypos.diff
++|+++ lrzsz-0.12.21/debian/patches/mantypos.diff
++--------------------------
++patching file debian/patches/mantypos.diff
++Using Plan A...
++Hunk #1 succeeded at 1.
++Hmm...  The next patch looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|--- lrzsz-0.12.21.orig/debian/patches/strstr.diff
++|+++ lrzsz-0.12.21/debian/patches/strstr.diff
++--------------------------
++patching file debian/patches/strstr.diff
++Using Plan A...
++Hunk #1 succeeded at 1.
++Hmm...  The next patch looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|--- lrzsz-0.12.21.orig/debian/patches/build.diff
++|+++ lrzsz-0.12.21/debian/patches/build.diff
++--------------------------
++patching file debian/patches/build.diff
++Using Plan A...
++Hunk #1 succeeded at 1.
++Hmm...  The next patch looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|--- lrzsz-0.12.21.orig/debian/patches/cat-id-tbl.diff
++|+++ lrzsz-0.12.21/debian/patches/cat-id-tbl.diff
++--------------------------
++patching file debian/patches/cat-id-tbl.diff
++Using Plan A...
++Hunk #1 succeeded at 1.
++Hmm...  The next patch looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|--- lrzsz-0.12.21.orig/debian/patches/206499_ymodemg.diff.unchecked
++|+++ lrzsz-0.12.21/debian/patches/206499_ymodemg.diff.unchecked
++--------------------------
++patching file debian/patches/206499_ymodemg.diff.unchecked
++Using Plan A...
++Hunk #1 succeeded at 1.
++Hmm...  The next patch looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|--- lrzsz-0.12.21.orig/debian/patches/313992_de_po.diff
++|+++ lrzsz-0.12.21/debian/patches/313992_de_po.diff
++--------------------------
++patching file debian/patches/313992_de_po.diff
++Using Plan A...
++Hunk #1 succeeded at 1.
++done
++patching file po/de.po
++patching file Makefile.in
++patching file aclocal.m4
++patching file configure
++patching file lib/Makefile.in
++patching file man/Makefile.in
++patching file src/Makefile.in
++patching file testsuite/Makefile.in
++patching file po/cat-id-tbl.c
++patching file lib/long-options.c
++patching file src/lsyslog.c
++patching file man/lsz.1
++patching file src/lrz.c
++patching file src/lsz.c
++creating cache ./config.cache
++checking for a BSD compatible install... /usr/bin/ginstall -c
++checking whether build environment is sane... yes
++checking whether make sets ${MAKE}... yes
++checking for working aclocal... found
++checking for working autoconf... found
++checking for working automake... found
++checking for working autoheader... found
++checking for working makeinfo... found
++checking for gcc... gcc
++checking whether the C compiler (gcc  ) works... yes
++checking whether the C compiler (gcc  ) is a cross-compiler... no
++checking whether we are using GNU C... yes
++checking whether gcc accepts -g... yes
++checking how to run the C preprocessor... gcc -E
++checking whether gcc needs -traditional... no
++checking for ranlib... ranlib
++checking for POSIXized ISC... no
++checking for AIX... no
++checking for minix/config.h... no
++checking for gcc option to accept ANSI C... none needed
++checking for function prototypes... yes
++checking for working const... yes
++checking for inline... inline
++checking for syslog in -lsocket... no
++checking for ANSI C header files... yes
++checking for fcntl.h... yes
++checking for limits.h... yes
++checking for sys/ioctl.h... yes
++checking for sys/time.h... yes
++checking for unistd.h... yes
++checking for sys/times.h... yes
++checking for termios.h... yes
++checking for sys/termios.h... no
++checking for termio.h... no
++checking for sys/termio.h... no
++checking for sgtty.h... no
++checking for termios.h... (cached) yes
++checking for sys/termios.h... (cached) no
++checking for termio.h... (cached) no
++checking for sys/termio.h... (cached) no
++checking for sgtty.h... (cached) no
++checking for sys/mman.h... yes
++checking for utime.h... yes
++checking for syslog.h... yes
++checking for sys/syslog.h... yes
++checking for sys/param.h... yes
++checking for sys/select.h... yes
++checking for strings.h... yes
++checking for arpa/inet.h... yes
++checking for size_t... yes
++checking for mode_t... yes
++checking for off_t... yes
++checking for speed_t... yes
++checking for st_rdev in struct stat... yes
++checking whether time.h and sys/time.h may both be included... yes
++checking for socklen_t... yes
++checking whether sys/time.h and sys/select.h may both be included... yes
++checking whether struct tm is in sys/time.h or time.h... time.h
++checking for errno declaration... yes
++checking whether setvbuf arguments are reversed... no
++checking return type of signal handlers... void
++checking for unistd.h... (cached) yes
++checking for getpagesize... yes
++checking for working mmap... yes
++checking for working alloca.h... yes
++checking for alloca... yes
++checking for gettimeofday... yes
++checking for settimeofday... yes
++checking for strchr... yes
++checking for memcpy... yes
++checking for select... yes
++checking for vprintf... yes
++checking for times... yes
++checking for rdchk... no
++checking for utime... yes
++checking for syslog... yes
++checking for siginterrupt... yes
++checking for mkdir... yes
++checking for mktime... yes
++checking for strerror... yes
++checking for strstr... yes
++checking for strdup... yes
++checking for strtoul... yes
++checking for strtol... yes
++checking for strpbrk... yes
++checking for stpcpy... yes
++checking for strftime... yes
++checking for vasprintf... yes
++checking for getopt_long... yes
++checking for ftime... yes
++checking that ftime works correctly... yes
++checking for timezone variable... yes
++checking for LOG_UUCP... yes
++checking for argz.h... no
++checking for limits.h... (cached) yes
++checking for locale.h... yes
++checking for nl_types.h... yes
++checking for malloc.h... yes
++checking for string.h... yes
++checking for unistd.h... (cached) yes
++checking for sys/param.h... (cached) yes
++checking for getcwd... yes
++checking for munmap... yes
++checking for putenv... yes
++checking for setenv... yes
++checking for setlocale... yes
++checking for strchr... (cached) yes
++checking for strcasecmp... yes
++checking for strdup... (cached) yes
++checking for __argz_count... no
++checking for __argz_stringify... no
++checking for __argz_next... no
++checking for LC_MESSAGES... yes
++checking whether NLS is requested... yes
++checking whether included gettext is requested... no
++checking for libintl.h... yes
++checking for gettext in libc... yes
++checking for msgfmt... /usr/bin/msgfmt
++checking for dcgettext... yes
++checking for gmsgfmt... /usr/bin/msgfmt
++checking for xgettext... /usr/bin/xgettext
++checking for catalogs to be installed...  de
++updating cache ./config.cache
++creating ./config.status
++creating Makefile
++creating intl/Makefile
++creating lib/Makefile
++creating testsuite/Makefile
++creating man/Makefile
++creating po/Makefile.in
++creating src/Makefile
++creating Specfile
++creating systype
++creating src/lrzszbug
++creating config.h
++make  all-recursive
++make[1]: Entering directory '/tmp/lrzsz-990823'
++Making all in lib
++make[2]: Entering directory '/tmp/lrzsz-990823/lib'
++gcc -DHAVE_CONFIG_H -I. -I. -I..     -g -O2 -c long-options.c
++gcc -DHAVE_CONFIG_H -I. -I. -I..     -g -O2 -c xstrtol.c
++gcc -DHAVE_CONFIG_H -I. -I. -I..     -g -O2 -c xstrtoul.c
++gcc -DHAVE_CONFIG_H -I. -I. -I..     -g -O2 -c error.c
++rm -f libzmodem.a
++ar cru libzmodem.a long-options.o xstrtol.o xstrtoul.o error.o 
++ranlib libzmodem.a
++make[2]: Leaving directory '/tmp/lrzsz-990823/lib'
++Making all in intl
++make[2]: Entering directory '/tmp/lrzsz-990823/intl'
++make[2]: Nothing to be done for 'all'.
++make[2]: Leaving directory '/tmp/lrzsz-990823/intl'
++Making all in src
++make[2]: Entering directory '/tmp/lrzsz-990823/src'
++gcc -DNFGVMIN -DHAVE_CONFIG_H -DLOCALEDIR=\"/usr/lib/locale\" -I.. -I. -I../src -I../intl -I../lib    -g -O2 -c lrz.c
++gcc -DNFGVMIN -DHAVE_CONFIG_H -DLOCALEDIR=\"/usr/lib/locale\" -I.. -I. -I../src -I../intl -I../lib    -g -O2 -c timing.c
++gcc -DNFGVMIN -DHAVE_CONFIG_H -DLOCALEDIR=\"/usr/lib/locale\" -I.. -I. -I../src -I../intl -I../lib    -g -O2 -c zperr.c
++lrz.c: In function ‘exec2’:
++lrz.c:2298:2: warning: missing sentinel in function call [-Wformat=]
++ 2298 |  execl("/bin/sh", "sh", "-c", s);
++      |  ^~~~~
++gcc -DNFGVMIN -DHAVE_CONFIG_H -DLOCALEDIR=\"/usr/lib/locale\" -I.. -I. -I../src -I../intl -I../lib    -g -O2 -c zreadline.c
++gcc -DNFGVMIN -DHAVE_CONFIG_H -DLOCALEDIR=\"/usr/lib/locale\" -I.. -I. -I../src -I../intl -I../lib    -g -O2 -c crctab.c
++In file included from zreadline.c:26:
++zreadline.c: In function ‘readline_internal’:
++zreadline.c:71:13: warning: format ‘%d’ expects argument of type ‘int’, but argument 4 has type ‘size_t’ {aka ‘long unsigned int’} [-Wformat=]
++   71 |    vstringf("Calling read: alarm=%d  Readnum=%d ",
++      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++   72 |      n, readline_readnum);
++      |         ~~~~~~~~~~~~~~~~
++      |         |
++      |         size_t {aka long unsigned int}
++zglobal.h:397:49: note: in definition of macro ‘vstringf’
++  397 | #define vstringf(format,args...) fprintf(stderr,format, ##args)
++      |                                                 ^~~~~~
++zreadline.c:71:47: note: format string is defined here
++   71 |    vstringf("Calling read: alarm=%d  Readnum=%d ",
++      |                                              ~^
++      |                                               |
++      |                                               int
++      |                                              %ld
++In file included from zreadline.c:26:
++zreadline.c:77:12: warning: format ‘%d’ expects argument of type ‘int’, but argument 3 has type ‘size_t’ {aka ‘long unsigned int’} [-Wformat=]
++   77 |   vstringf("Calling read: Readnum=%d ",
++      |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~
++   78 |     readline_readnum);
++      |     ~~~~~~~~~~~~~~~~
++      |     |
++      |     size_t {aka long unsigned int}
++zglobal.h:397:49: note: in definition of macro ‘vstringf’
++  397 | #define vstringf(format,args...) fprintf(stderr,format, ##args)
++      |                                                 ^~~~~~
++zreadline.c:77:36: note: format string is defined here
++   77 |   vstringf("Calling read: Readnum=%d ",
++      |                                   ~^
++      |                                    |
++      |                                    int
++      |                                   %ld
++gcc -DNFGVMIN -DHAVE_CONFIG_H -DLOCALEDIR=\"/usr/lib/locale\" -I.. -I. -I../src -I../intl -I../lib    -g -O2 -c rbsb.c
++gcc -DNFGVMIN -DHAVE_CONFIG_H -DLOCALEDIR=\"/usr/lib/locale\" -I.. -I. -I../src -I../intl -I../lib    -g -O2 -c zm.c
++gcc -DNFGVMIN -DHAVE_CONFIG_H -DLOCALEDIR=\"/usr/lib/locale\" -I.. -I. -I../src -I../intl -I../lib    -g -O2 -c protname.c
++In file included from zm.c:39:
++zm.c: In function ‘zsda32’:
++zm.c:455:13: warning: format ‘%d’ expects argument of type ‘int’, but argument 3 has type ‘size_t’ {aka ‘long unsigned int’} [-Wformat=]
++  455 |  VPRINTF(3,("zsdat32: %d %s", length, Zendnames[(frameend-ZCRCE)&3]));
++      |             ^~~~~~~~~~~~~~~~  ~~~~~~
++      |                               |
++      |                               size_t {aka long unsigned int}
++zglobal.h:397:49: note: in definition of macro ‘vstringf’
++  397 | #define vstringf(format,args...) fprintf(stderr,format, ##args)
++      |                                                 ^~~~~~
++zm.c:455:2: note: in expansion of macro ‘VPRINTF’
++  455 |  VPRINTF(3,("zsdat32: %d %s", length, Zendnames[(frameend-ZCRCE)&3]));
++      |  ^~~~~~~
++zm.c:455:24: note: format string is defined here
++  455 |  VPRINTF(3,("zsdat32: %d %s", length, Zendnames[(frameend-ZCRCE)&3]));
++      |                       ~^
++      |                        |
++      |                        int
++      |                       %ld
++gcc -DNFGVMIN -DHAVE_CONFIG_H -DLOCALEDIR=\"/usr/lib/locale\" -I.. -I. -I../src -I../intl -I../lib    -g -O2 -c tcp.c
++gcc -DNFGVMIN -DHAVE_CONFIG_H -DLOCALEDIR=\"/usr/lib/locale\" -I.. -I. -I../src -I../intl -I../lib    -g -O2 -c lsyslog.c
++gcc -DNFGVMIN -DHAVE_CONFIG_H -DLOCALEDIR=\"/usr/lib/locale\" -I.. -I. -I../src -I../intl -I../lib    -g -O2 -c canit.c
++gcc -DNFGVMIN -DHAVE_CONFIG_H -DLOCALEDIR=\"/usr/lib/locale\" -I.. -I. -I../src -I../intl -I../lib    -g -O2 -c lsz.c
++In file included from lsz.c:24:
++lsz.c: In function ‘zsendfdata’:
++lsz.c:1990:16: warning: format ‘%d’ expects argument of type ‘int’, but argument 3 has type ‘size_t’ {aka ‘long unsigned int’} [-Wformat=]
++ 1990 |    vstringf (_("blklen now %d\n"), blklen);
++      |                ^~~~~~~~~~~~~~~~~
++zglobal.h:397:49: note: in definition of macro ‘vstringf’
++  397 | #define vstringf(format,args...) fprintf(stderr,format, ##args)
++      |                                                 ^~~~~~
++lsz.c:1990:14: note: in expansion of macro ‘_’
++ 1990 |    vstringf (_("blklen now %d\n"), blklen);
++      |              ^
++lsz.c:1990:29: note: format string is defined here
++ 1990 |    vstringf (_("blklen now %d\n"), blklen);
++      |                            ~^
++      |                             |
++      |                             int
++      |                            %ld
++gcc  -g -O2  -o lrz  lrz.o timing.o zperr.o zreadline.o crctab.o rbsb.o zm.o protname.o tcp.o lsyslog.o canit.o ../lib/libzmodem.a  
++gcc  -g -O2  -o lsz  lsz.o timing.o zperr.o zreadline.o crctab.o rbsb.o zm.o protname.o tcp.o lsyslog.o canit.o ../lib/libzmodem.a  
++make[2]: Leaving directory '/tmp/lrzsz-990823/src'
++Making all in po
++make[2]: Entering directory '/tmp/lrzsz-990823/po'
++PATH=../src:$PATH /usr/bin/xgettext --default-domain=lrzsz --directory=.. \
++  --add-comments --keyword=_ --keyword=N_ \
++  --files-from=./POTFILES.in
++/usr/bin/msgfmt -o de.mo de.po
++rm -f ./lrzsz.pot
++mv lrzsz.po ./lrzsz.pot
++rm -f cat-id-tbl.tmp
++sed -f ../intl/po2tbl.sed ./lrzsz.pot \
++	| sed -e "s/@PACKAGE NAME@/lrzsz/" > cat-id-tbl.tmp
++if cmp -s cat-id-tbl.tmp ./cat-id-tbl.c; then \
++  rm cat-id-tbl.tmp; \
++else \
++  echo cat-id-tbl.c changed; \
++  rm -f ./cat-id-tbl.c; \
++  mv cat-id-tbl.tmp ./cat-id-tbl.c; \
++fi
++cat-id-tbl.c changed
++cd . && rm -f stamp-cat-id && echo timestamp > stamp-cat-id
++make[2]: Leaving directory '/tmp/lrzsz-990823/po'
++Making all in man
++make[2]: Entering directory '/tmp/lrzsz-990823/man'
++make[2]: Nothing to be done for 'all'.
++make[2]: Leaving directory '/tmp/lrzsz-990823/man'
++Making all in testsuite
++make[2]: Entering directory '/tmp/lrzsz-990823/testsuite'
++make[2]: Nothing to be done for 'all'.
++make[2]: Leaving directory '/tmp/lrzsz-990823/testsuite'
++make[2]: Entering directory '/tmp/lrzsz-990823'
++make[2]: Leaving directory '/tmp/lrzsz-990823'
++make[1]: Leaving directory '/tmp/lrzsz-990823'
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++usr/bin/lrb	lrz
++usr/bin/lrx	lrz
++usr/bin/lsb	lsz
++usr/bin/lsx	lsz
++usr/bin/rb	rz
++usr/bin/rx	rz
++usr/bin/rz	lrz
++usr/bin/sb	sz
++usr/bin/sx	sz
++usr/bin/sz	lsz
++
++Making symbolic link creation script:
++( cd usr/bin ; rm -rf lrb )
++( cd usr/bin ; ln -sf lrz lrb )
++( cd usr/bin ; rm -rf lrx )
++( cd usr/bin ; ln -sf lrz lrx )
++( cd usr/bin ; rm -rf lsb )
++( cd usr/bin ; ln -sf lsz lsb )
++( cd usr/bin ; rm -rf lsx )
++( cd usr/bin ; ln -sf lsz lsx )
++( cd usr/bin ; rm -rf rb )
++( cd usr/bin ; ln -sf rz rb )
++( cd usr/bin ; rm -rf rx )
++( cd usr/bin ; ln -sf rz rx )
++( cd usr/bin ; rm -rf rz )
++( cd usr/bin ; ln -sf lrz rz )
++( cd usr/bin ; rm -rf sb )
++( cd usr/bin ; ln -sf sz sb )
++( cd usr/bin ; rm -rf sx )
++( cd usr/bin ; ln -sf sz sx )
++( cd usr/bin ; rm -rf sz )
++( cd usr/bin ; ln -sf lsz sz )
++
++Unless your existing installation script already contains the code
++to create these links, you should append these lines to your existing
++install script. Now's your chance. :^)
++
++Would you like to add this stuff to the existing install script and
++remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './usr/bin/lrb'
++removed './usr/bin/rb'
++removed './usr/bin/lsb'
++removed './usr/bin/lrx'
++removed './usr/bin/sx'
++removed './usr/bin/sz'
++removed './usr/bin/rx'
++removed './usr/bin/sb'
++removed './usr/bin/rz'
++removed './usr/bin/lsx'
++
++Updating your ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/minicom-2.8-x86_64-1.txz
++
++./
++etc/
++etc/minicom.users.new
++etc/minirc.dfl.new
++install/
++install/doinst.sh
++install/slack-desc
++usr/
++usr/bin/
++usr/bin/ascii-xfr
++usr/bin/lrz
++usr/bin/lsz
++usr/bin/minicom
++usr/bin/runscript
++usr/bin/xminicom
++usr/doc/
++usr/doc/lrzsz-0.12.21/
++usr/doc/lrzsz-0.12.21/AUTHORS
++usr/doc/lrzsz-0.12.21/COMPATABILITY
++usr/doc/lrzsz-0.12.21/COPYING
++usr/doc/lrzsz-0.12.21/INSTALL
++usr/doc/lrzsz-0.12.21/NEWS
++usr/doc/lrzsz-0.12.21/README
++usr/doc/lrzsz-0.12.21/README-alpha
++usr/doc/lrzsz-0.12.21/README.cvs
++usr/doc/lrzsz-0.12.21/README.gettext
++usr/doc/lrzsz-0.12.21/README.isdn4linux
++usr/doc/lrzsz-0.12.21/README.systems
++usr/doc/lrzsz-0.12.21/README.tests
++usr/doc/lrzsz-0.12.21/THANKS
++usr/doc/lrzsz-0.12.21/TODO
++usr/doc/minicom-2.8/
++usr/doc/minicom-2.8/AUTHORS
++usr/doc/minicom-2.8/COPYING
++usr/doc/minicom-2.8/ChangeLog
++usr/doc/minicom-2.8/FILE_ID.DIZ
++usr/doc/minicom-2.8/INSTALL
++usr/doc/minicom-2.8/NEWS
++usr/doc/minicom-2.8/README
++usr/doc/minicom-2.8/TODO
++usr/doc/minicom-2.8/doc/
++usr/doc/minicom-2.8/doc/Announce-1.78
++usr/doc/minicom-2.8/doc/Announce-1.82
++usr/doc/minicom-2.8/doc/Announce-1.82.1
++usr/doc/minicom-2.8/doc/Announce-1.83
++usr/doc/minicom-2.8/doc/COMPATABILITY.lrzsz
++usr/doc/minicom-2.8/doc/HistSearch
++usr/doc/minicom-2.8/doc/Locales
++usr/doc/minicom-2.8/doc/Macros
++usr/doc/minicom-2.8/doc/Makefile                  extras/
++usr/doc/minicom-2.8/doc/Makefile                  extras/Makefile \t\t extras/
++usr/doc/minicom-2.8/doc/Makefile                  extras/Makefile \t\t extras/linux/
++usr/doc/minicom-2.8/doc/Makefile                  extras/Makefile \t\t extras/linux/Makefile \t\t extras/
++usr/doc/minicom-2.8/doc/Makefile                  extras/Makefile \t\t extras/linux/Makefile \t\t extras/tables/
++usr/doc/minicom-2.8/doc/Makefile                  extras/Makefile \t\t extras/linux/Makefile \t\t extras/tables/Makefile \t\t extras/
++usr/doc/minicom-2.8/doc/Makefile                  extras/Makefile \t\t extras/linux/Makefile \t\t extras/tables/Makefile \t\t extras/termcap/
++usr/doc/minicom-2.8/doc/Makefile                  extras/Makefile \t\t extras/linux/Makefile \t\t extras/tables/Makefile \t\t extras/termcap/Makefile \t\t extras/
++usr/doc/minicom-2.8/doc/Makefile                  extras/Makefile \t\t extras/linux/Makefile \t\t extras/tables/Makefile \t\t extras/termcap/Makefile \t\t extras/terminfo/
++usr/doc/minicom-2.8/doc/Makefile                  extras/Makefile \t\t extras/linux/Makefile \t\t extras/tables/Makefile \t\t extras/termcap/Makefile \t\t extras/terminfo/Makefile \t\t man/
++usr/doc/minicom-2.8/doc/Makefile                  extras/Makefile \t\t extras/linux/Makefile \t\t extras/tables/Makefile \t\t extras/termcap/Makefile \t\t extras/terminfo/Makefile \t\t man/Makefile \t\t lib/
++usr/doc/minicom-2.8/doc/Makefile                  extras/Makefile \t\t extras/linux/Makefile \t\t extras/tables/Makefile \t\t extras/termcap/Makefile \t\t extras/terminfo/Makefile \t\t man/Makefile \t\t lib/Makefile \t\t src/
++usr/doc/minicom-2.8/doc/Makefile                  extras/Makefile \t\t extras/linux/Makefile \t\t extras/tables/Makefile \t\t extras/termcap/Makefile \t\t extras/terminfo/Makefile \t\t man/Makefile \t\t lib/Makefile \t\t src/Makefile \t\t /
++usr/doc/minicom-2.8/doc/Makefile                  extras/Makefile \t\t extras/linux/Makefile \t\t extras/tables/Makefile \t\t extras/termcap/Makefile \t\t extras/terminfo/Makefile \t\t man/Makefile \t\t lib/Makefile \t\t src/Makefile \t\t /po/
++usr/doc/minicom-2.8/doc/Makefile                  extras/Makefile \t\t extras/linux/Makefile \t\t extras/tables/Makefile \t\t extras/termcap/Makefile \t\t extras/terminfo/Makefile \t\t man/Makefile \t\t lib/Makefile \t\t src/Makefile \t\t /po/Makefile.in.in
++usr/doc/minicom-2.8/doc/QuickStart.modemu
++usr/doc/minicom-2.8/doc/README.lrzsz
++usr/doc/minicom-2.8/doc/TODO.lrzsz
++usr/doc/minicom-2.8/doc/Todo
++usr/doc/minicom-2.8/doc/Todo.175
++usr/doc/minicom-2.8/doc/Todo.Irix.dif
++usr/doc/minicom-2.8/doc/Todo.emacskey.dif
++usr/doc/minicom-2.8/doc/Todo.fsel
++usr/doc/minicom-2.8/doc/copyright.modemu
++usr/doc/minicom-2.8/doc/fselector.txt
++usr/doc/minicom-2.8/doc/japanese
++usr/doc/minicom-2.8/doc/minicom.FAQ
++usr/doc/minicom-2.8/doc/minirc.dfl
++usr/doc/minicom-2.8/doc/modemu.README
++usr/doc/minicom-2.8/doc/pl-translation.txt
++usr/doc/minicom-2.8/doc/portugues-brasil
++usr/doc/minicom-2.8/doc/suomeksi
++usr/man/
++usr/man/man1/
++usr/man/man1/ascii-xfr.1.gz
++usr/man/man1/lrz.1.gz
++usr/man/man1/lsz.1.gz
++usr/man/man1/minicom.1.gz
++usr/man/man1/runscript.1.gz
++usr/man/man1/rz.1.gz
++usr/man/man1/sz.1.gz
++usr/man/man1/xminicom.1.gz
++usr/share/
++usr/share/locale/
++usr/share/locale/cs/
++usr/share/locale/cs/LC_MESSAGES/
++usr/share/locale/cs/LC_MESSAGES/minicom.mo
++usr/share/locale/da/
++usr/share/locale/da/LC_MESSAGES/
++usr/share/locale/da/LC_MESSAGES/minicom.mo
++usr/share/locale/de/
++usr/share/locale/de/LC_MESSAGES/
++usr/share/locale/de/LC_MESSAGES/lrzsz.mo
++usr/share/locale/de/LC_MESSAGES/minicom.mo
++usr/share/locale/es/
++usr/share/locale/es/LC_MESSAGES/
++usr/share/locale/es/LC_MESSAGES/minicom.mo
++usr/share/locale/fi/
++usr/share/locale/fi/LC_MESSAGES/
++usr/share/locale/fi/LC_MESSAGES/minicom.mo
++usr/share/locale/fr/
++usr/share/locale/fr/LC_MESSAGES/
++usr/share/locale/fr/LC_MESSAGES/minicom.mo
++usr/share/locale/hu/
++usr/share/locale/hu/LC_MESSAGES/
++usr/share/locale/hu/LC_MESSAGES/minicom.mo
++usr/share/locale/id/
++usr/share/locale/id/LC_MESSAGES/
++usr/share/locale/id/LC_MESSAGES/minicom.mo
++usr/share/locale/ja/
++usr/share/locale/ja/LC_MESSAGES/
++usr/share/locale/ja/LC_MESSAGES/minicom.mo
++usr/share/locale/nb/
++usr/share/locale/nb/LC_MESSAGES/
++usr/share/locale/nb/LC_MESSAGES/minicom.mo
++usr/share/locale/pl/
++usr/share/locale/pl/LC_MESSAGES/
++usr/share/locale/pl/LC_MESSAGES/minicom.mo
++usr/share/locale/pt_BR/
++usr/share/locale/pt_BR/LC_MESSAGES/
++usr/share/locale/pt_BR/LC_MESSAGES/minicom.mo
++usr/share/locale/ro/
++usr/share/locale/ro/LC_MESSAGES/
++usr/share/locale/ro/LC_MESSAGES/minicom.mo
++usr/share/locale/ru/
++usr/share/locale/ru/LC_MESSAGES/
++usr/share/locale/ru/LC_MESSAGES/minicom.mo
++usr/share/locale/rw/
++usr/share/locale/rw/LC_MESSAGES/
++usr/share/locale/rw/LC_MESSAGES/minicom.mo
++usr/share/locale/sr/
++usr/share/locale/sr/LC_MESSAGES/
++usr/share/locale/sr/LC_MESSAGES/minicom.mo
++usr/share/locale/sv/
++usr/share/locale/sv/LC_MESSAGES/
++usr/share/locale/sv/LC_MESSAGES/minicom.mo
++usr/share/locale/vi/
++usr/share/locale/vi/LC_MESSAGES/
++usr/share/locale/vi/LC_MESSAGES/minicom.mo
++usr/share/locale/zh_CN/
++usr/share/locale/zh_CN/LC_MESSAGES/
++usr/share/locale/zh_CN/LC_MESSAGES/minicom.mo
++usr/share/locale/zh_TW/
++usr/share/locale/zh_TW/LC_MESSAGES/
++usr/share/locale/zh_TW/LC_MESSAGES/minicom.mo
++
++Slackware package /tmp/minicom-2.8-x86_64-1.txz created.
++

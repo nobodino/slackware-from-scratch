@@ -1,0 +1,748 @@
+diff -ruBN /tmp/socat/socat.SlackBuild /source/n/socat/socat.SlackBuild
+--- /tmp/socat/socat.SlackBuild	2021-01-12 19:40:39.000000000 +0000
++++ /source/n/socat/socat.SlackBuild	2021-01-16 00:27:06.000000000 +0000
+@@ -59,7 +59,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "armv7hl" ]; then
+   SLKCFLAGS="-O3 -march=armv7-a -mfpu=vfpv3-d16"
+   LIBDIRSUFFIX=""
+@@ -102,7 +102,7 @@
+   --mandir=/usr/man \
+   --infodir=/usr/info \
+   --disable-readline \
+-  --build=$ARCH-slackware-linux || exit 1
++  --build=$ARCH-slackware-linux-musl || exit 1
+ make $NUMJOBS || make || exit 1
+ make install DESTDIR=$PKG || exit 1
+ 
+diff -ruBN /tmp/socat/socat.SlackBuild.log /source/n/socat/socat.SlackBuild.log
+--- /tmp/socat/socat.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/n/socat/socat.SlackBuild.log	2021-01-16 00:30:23.000000000 +0000
+@@ -0,0 +1,723 @@
++socat-1.7.4.1/
++socat-1.7.4.1/xio-fdnum.c
++socat-1.7.4.1/xio-streams.h
++socat-1.7.4.1/xioshutdown.c
++socat-1.7.4.1/mytypes.h
++socat-1.7.4.1/sysincludes.h
++socat-1.7.4.1/hostan.h
++socat-1.7.4.1/xio-unix.h
++socat-1.7.4.1/nestlex.c
++socat-1.7.4.1/ftp.sh
++socat-1.7.4.1/proxy.sh
++socat-1.7.4.1/xio-udp.c
++socat-1.7.4.1/snprinterr.h
++socat-1.7.4.1/xio-readline.c
++socat-1.7.4.1/xio-file.h
++socat-1.7.4.1/xio-pipe.c
++socat-1.7.4.1/xio-tcpwrap.c
++socat-1.7.4.1/utils.h
++socat-1.7.4.1/configure.ac
++socat-1.7.4.1/compat.h
++socat-1.7.4.1/fdname.c
++socat-1.7.4.1/error.h
++socat-1.7.4.1/README.FIPS
++socat-1.7.4.1/xio-ip6.h
++socat-1.7.4.1/xio-named.c
++socat-1.7.4.1/xio.h
++socat-1.7.4.1/xio-pty.c
++socat-1.7.4.1/xio-rawip.h
++socat-1.7.4.1/snprinterr.c
++socat-1.7.4.1/xioconfig.h
++socat-1.7.4.1/vsnprintf_r.h
++socat-1.7.4.1/xio-ip4.h
++socat-1.7.4.1/xio-sctp.c
++socat-1.7.4.1/xio-stdio.h
++socat-1.7.4.1/xio-ipapp.h
++socat-1.7.4.1/xio-tun.h
++socat-1.7.4.1/socat.c
++socat-1.7.4.1/xio-socket.h
++socat-1.7.4.1/xio-progcall.h
++socat-1.7.4.1/xio-socket.c
++socat-1.7.4.1/xio-ip6.c
++socat-1.7.4.1/readline.sh
++socat-1.7.4.1/xio-stdio.c
++socat-1.7.4.1/COPYING
++socat-1.7.4.1/filan.h
++socat-1.7.4.1/proxyecho.sh
++socat-1.7.4.1/xio-openssl.c
++socat-1.7.4.1/doc/
++socat-1.7.4.1/doc/socat-multicast.html
++socat-1.7.4.1/doc/socat.yo
++socat-1.7.4.1/doc/socat.1
++socat-1.7.4.1/doc/socat.html
++socat-1.7.4.1/doc/xio.help
++socat-1.7.4.1/doc/socat-tun.html
++socat-1.7.4.1/doc/socat-genericsocket.html
++socat-1.7.4.1/doc/socat-openssltunnel.html
++socat-1.7.4.1/doc/dest-unreach.css
++socat-1.7.4.1/xio-listen.c
++socat-1.7.4.1/xiosigchld.c
++socat-1.7.4.1/xio-creat.c
++socat-1.7.4.1/xio-unix.c
++socat-1.7.4.1/xio-readline.h
++socat-1.7.4.1/utils.c
++socat-1.7.4.1/xiolayer.c
++socat-1.7.4.1/xiodiag.c
++socat-1.7.4.1/readline-test.sh
++socat-1.7.4.1/filan_main.c
++socat-1.7.4.1/xio-socks.c
++socat-1.7.4.1/xio-sctp.h
++socat-1.7.4.1/xio-rawip.c
++socat-1.7.4.1/xio-ip.c
++socat-1.7.4.1/test.sh
++socat-1.7.4.1/xio-tcp.c
++socat-1.7.4.1/xiolockfile.c
++socat-1.7.4.1/xio-ipapp.c
++socat-1.7.4.1/xio-pipe.h
++socat-1.7.4.1/dalan.c
++socat-1.7.4.1/configure.in
++socat-1.7.4.1/install-sh
++socat-1.7.4.1/xio-tcpwrap.h
++socat-1.7.4.1/socat.spec
++socat-1.7.4.1/xio-socks.h
++socat-1.7.4.1/mail.sh
++socat-1.7.4.1/xio-system.c
++socat-1.7.4.1/configure
++socat-1.7.4.1/BUGREPORTS
++socat-1.7.4.1/xiowrite.c
++socat-1.7.4.1/DEVELOPMENT
++socat-1.7.4.1/xiosysincludes.h
++socat-1.7.4.1/COPYING.OpenSSL
++socat-1.7.4.1/README
++socat-1.7.4.1/FILES
++socat-1.7.4.1/xioread.c
++socat-1.7.4.1/procan.c
++socat-1.7.4.1/xio-proxy.h
++socat-1.7.4.1/xio-interface.h
++socat-1.7.4.1/xio-system.h
++socat-1.7.4.1/error.c
++socat-1.7.4.1/hostan.c
++socat-1.7.4.1/gatherinfo.sh
++socat-1.7.4.1/xiohelp.h
++socat-1.7.4.1/xioclose.c
++socat-1.7.4.1/xioparam.c
++socat-1.7.4.1/FAQ
++socat-1.7.4.1/xio-vsock.h
++socat-1.7.4.1/xioopts.c
++socat-1.7.4.1/xiolockfile.h
++socat-1.7.4.1/xio-fd.h
++socat-1.7.4.1/xio-fdnum.h
++socat-1.7.4.1/xioopen.c
++socat-1.7.4.1/sycls.c
++socat-1.7.4.1/socks4echo.sh
++socat-1.7.4.1/Makefile.in
++socat-1.7.4.1/xio-vsock.c
++socat-1.7.4.1/xio-fs.c
++socat-1.7.4.1/xioinitialize.c
++socat-1.7.4.1/procan_main.c
++socat-1.7.4.1/xiodiag.h
++socat-1.7.4.1/EXAMPLES
++socat-1.7.4.1/sysutils.c
++socat-1.7.4.1/config.h.in
++socat-1.7.4.1/xio-openssl.h
++socat-1.7.4.1/xio-exec.c
++socat-1.7.4.1/sslcls.h
++socat-1.7.4.1/daemon.sh
++socat-1.7.4.1/xio-gopen.h
++socat-1.7.4.1/CHANGES
++socat-1.7.4.1/xiohelp.c
++socat-1.7.4.1/sycls.h
++socat-1.7.4.1/xio-tun.c
++socat-1.7.4.1/xio-fd.c
++socat-1.7.4.1/nestlex.h
++socat-1.7.4.1/xio-progcall.c
++socat-1.7.4.1/xio-listen.h
++socat-1.7.4.1/socat_buildscript_for_android.sh
++socat-1.7.4.1/xioopen.h
++socat-1.7.4.1/xioopts.h
++socat-1.7.4.1/xio-termios.h
++socat-1.7.4.1/xio-streams.c
++socat-1.7.4.1/procan.h
++socat-1.7.4.1/sysutils.h
++socat-1.7.4.1/xioexit.c
++socat-1.7.4.1/xiosignal.c
++socat-1.7.4.1/xio-process.c
++socat-1.7.4.1/dalan.h
++socat-1.7.4.1/xio-exec.h
++socat-1.7.4.1/Config/
++socat-1.7.4.1/Config/config.NetBSD-5-1.h
++socat-1.7.4.1/Config/config.MacOSX-10-5.h
++socat-1.7.4.1/Config/Makefile.MacOSX-10-5
++socat-1.7.4.1/Config/config.Cygwin-1-5-25.h
++socat-1.7.4.1/Config/config.AIX-5-3.h
++socat-1.7.4.1/Config/Makefile.SunOS-5-10
++socat-1.7.4.1/Config/config.SunOS-5-10.h
++socat-1.7.4.1/Config/Makefile.OpenBSD-4-3
++socat-1.7.4.1/Config/Makefile.Linux-2-6-24
++socat-1.7.4.1/Config/config.FreeBSD-6-1.h
++socat-1.7.4.1/Config/config.OpenBSD-4-3.h
++socat-1.7.4.1/Config/config.DragonFly-2-8-2.h
++socat-1.7.4.1/Config/config.Linux-2-6-24.h
++socat-1.7.4.1/Config/Makefile.AIX-5-3
++socat-1.7.4.1/Config/Makefile.DragonFly-2-8-2
++socat-1.7.4.1/Config/Makefile.FreeBSD-6-1
++socat-1.7.4.1/Config/Makefile.Cygwin-1-5-25
++socat-1.7.4.1/Config/Makefile.NetBSD-5-1
++socat-1.7.4.1/xio-interface.c
++socat-1.7.4.1/PORTING
++socat-1.7.4.1/xio-pty.h
++socat-1.7.4.1/xio-gopen.c
++socat-1.7.4.1/xio-named.h
++socat-1.7.4.1/xio-termios.c
++socat-1.7.4.1/xio-ip.h
++socat-1.7.4.1/xio-ascii.h
++socat-1.7.4.1/filan.c
++socat-1.7.4.1/xio-proxy.c
++socat-1.7.4.1/xio-file.c
++socat-1.7.4.1/sslcls.c
++socat-1.7.4.1/xio-fs.h
++socat-1.7.4.1/xio-process.h
++socat-1.7.4.1/SECURITY
++socat-1.7.4.1/xio-ascii.c
++socat-1.7.4.1/VERSION
++socat-1.7.4.1/xio-ip4.c
++socat-1.7.4.1/xio-tcp.h
++socat-1.7.4.1/xio-udp.h
++socat-1.7.4.1/xiomodes.h
++socat-1.7.4.1/procan-cdefs.c
++socat-1.7.4.1/vsnprintf_r.c
++socat-1.7.4.1/xio-creat.h
++socat-1.7.4.1/socks4a-echo.sh
++socat-1.7.4.1/xiolayer.h
++checking which defines needed for makedepend... 
++checking for a BSD-compatible install... /usr/bin/ginstall -c
++checking for gcc... gcc
++checking whether the C compiler works... yes
++checking for C compiler default output file name... a.out
++checking for suffix of executables... 
++checking whether we are cross compiling... no
++checking for suffix of object files... o
++checking whether we are using the GNU C compiler... yes
++checking whether gcc accepts -g... yes
++checking for gcc option to accept ISO C89... none needed
++checking for ranlib... ranlib
++checking for ar... ar
++checking how to run the C preprocessor... gcc -E
++checking for grep that handles long lines and -e... /usr/bin/grep
++checking for egrep... /usr/bin/grep -E
++checking for ANSI C header files... yes
++checking for sys/types.h... yes
++checking for sys/stat.h... yes
++checking for stdlib.h... yes
++checking for string.h... yes
++checking for memory.h... yes
++checking for strings.h... yes
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking for unistd.h... yes
++checking stdbool.h usability... yes
++checking stdbool.h presence... yes
++checking for stdbool.h... yes
++checking for inttypes.h... (cached) yes
++checking for sys/wait.h that is POSIX.1 compatible... yes
++checking fcntl.h usability... yes
++checking fcntl.h presence... yes
++checking for fcntl.h... yes
++checking limits.h usability... yes
++checking limits.h presence... yes
++checking for limits.h... yes
++checking for strings.h... (cached) yes
++checking sys/param.h usability... yes
++checking sys/param.h presence... yes
++checking for sys/param.h... yes
++checking sys/ioctl.h usability... yes
++checking sys/ioctl.h presence... yes
++checking for sys/ioctl.h... yes
++checking sys/time.h usability... yes
++checking sys/time.h presence... yes
++checking for sys/time.h... yes
++checking syslog.h usability... yes
++checking syslog.h presence... yes
++checking for syslog.h... yes
++checking for unistd.h... (cached) yes
++checking pwd.h usability... yes
++checking pwd.h presence... yes
++checking for pwd.h... yes
++checking grp.h usability... yes
++checking grp.h presence... yes
++checking for grp.h... yes
++checking for stdint.h... (cached) yes
++checking for sys/types.h... (cached) yes
++checking poll.h usability... yes
++checking poll.h presence... yes
++checking for poll.h... yes
++checking sys/poll.h usability... yes
++checking sys/poll.h presence... yes
++checking for sys/poll.h... yes
++checking sys/socket.h usability... yes
++checking sys/socket.h presence... yes
++checking for sys/socket.h... yes
++checking sys/uio.h usability... yes
++checking sys/uio.h presence... yes
++checking for sys/uio.h... yes
++checking for sys/stat.h... (cached) yes
++checking netdb.h usability... yes
++checking netdb.h presence... yes
++checking for netdb.h... yes
++checking sys/un.h usability... yes
++checking sys/un.h presence... yes
++checking for sys/un.h... yes
++checking pty.h usability... yes
++checking pty.h presence... yes
++checking for pty.h... yes
++checking netinet/in.h usability... yes
++checking netinet/in.h presence... yes
++checking for netinet/in.h... yes
++checking netinet/in_systm.h usability... yes
++checking netinet/in_systm.h presence... yes
++checking for netinet/in_systm.h... yes
++checking for netinet/ip.h... yes
++checking netinet/tcp.h usability... yes
++checking netinet/tcp.h presence... yes
++checking for netinet/tcp.h... yes
++checking for net/if.h... yes
++checking arpa/nameser.h usability... yes
++checking arpa/nameser.h presence... yes
++checking for arpa/nameser.h... yes
++checking for sys/types.h... (cached) yes
++checking for netinet/in.h... (cached) yes
++checking for arpa/nameser.h... (cached) yes
++checking for netdb.h... (cached) yes
++checking for resolv.h... yes
++checking termios.h usability... yes
++checking termios.h presence... yes
++checking for termios.h... yes
++checking linux/if_tun.h usability... yes
++checking linux/if_tun.h presence... yes
++checking for linux/if_tun.h... yes
++checking net/if_dl.h usability... no
++checking net/if_dl.h presence... no
++checking for net/if_dl.h... no
++checking linux/types.h usability... yes
++checking linux/types.h presence... yes
++checking for linux/types.h... yes
++checking for linux/errqueue.h... yes
++checking sys/utsname.h usability... yes
++checking sys/utsname.h presence... yes
++checking for sys/utsname.h... yes
++checking sys/select.h usability... yes
++checking sys/select.h presence... yes
++checking for sys/select.h... yes
++checking sys/file.h usability... yes
++checking sys/file.h presence... yes
++checking for sys/file.h... yes
++checking util.h usability... no
++checking util.h presence... no
++checking for util.h... no
++checking bsd/libutil.h usability... no
++checking bsd/libutil.h presence... no
++checking for bsd/libutil.h... no
++checking libutil.h usability... no
++checking libutil.h presence... no
++checking for libutil.h... no
++checking sys/stropts.h usability... yes
++checking sys/stropts.h presence... yes
++checking for sys/stropts.h... yes
++checking regex.h usability... yes
++checking regex.h presence... yes
++checking for regex.h... yes
++checking linux/fs.h usability... yes
++checking linux/fs.h presence... yes
++checking for linux/fs.h... yes
++checking linux/ext2_fs.h usability... no
++checking linux/ext2_fs.h presence... no
++checking for linux/ext2_fs.h... no
++checking for setgrent... yes
++checking for getgrent... yes
++checking for endgrent... yes
++checking for getgrouplist... yes
++checking for cfmakeraw... yes
++checking for library containing res_9_init... no
++checking for hstrerror... yes
++checking for gethostent... yes
++checking for setsockopt... yes
++checking for hstrerror prototype... yes
++checking whether to include help... yes
++checking whether to include STDIO support... yes
++checking whether to include FD-number support... yes
++checking whether to include direct file support... yes
++checking whether to include direct create support... yes
++checking whether to include gopen support... yes
++checking whether to include explicit pipe support... yes
++checking whether to include explicit termios support... yes
++checking whether to include UNIX socket support... yes
++checking whether to include abstract UNIX socket support... yes
++checking whether to include IPv4 support... yes
++checking whether to include IPv6 support... yes
++checking for netinet/ip6.h... yes
++checking netinet6/in6.h usability... no
++checking netinet6/in6.h presence... no
++checking for netinet6/in6.h... no
++checking if __APPLE_USE_RFC_2292 is helpful... no
++checking whether to include raw IP support... yes
++checking whether to include generic socket support... yes
++checking whether to include generic network interface support... yes
++checking netpacket/packet.h usability... yes
++checking netpacket/packet.h presence... yes
++checking for netpacket/packet.h... yes
++checking for netinet/if_ether.h... yes
++checking whether to include TCP support... yes
++checking whether to include UDP support... yes
++checking whether to include SCTP support... yes
++checking for IPPROTO_SCTP... yes
++checking whether to include vsock support... yes
++checking for linux/vm_sockets.h... yes
++checking whether to include listen support... yes
++checking whether to include socks4 support... yes
++checking whether to include socks4a support... yes
++checking whether to include proxy connect support... yes
++checking whether to include exec support... yes
++checking whether to include system (shell) support... yes
++checking whether to include pty address support... yes
++checking whether to include fs attributes support... yes
++checking whether to include readline support... no
++checking whether to include openssl support... yes
++configure: checking for components of OpenSSL
++configure: checked for openssl/ssl.h... yes
++checking for libssl... yes
++checking for OPENSSL_init_ssl... yes
++checking for SSL_library_init... no
++checking whether to include OpenSSL method option... no
++checking whether to include deprecated resolver option... no
++checking whether to include openssl fips support... no
++checking whether to include tun/tap address support... yes
++checking whether to include system call tracing... yes
++checking whether to include file descriptor analyzer... yes
++checking whether to include retry support... yes
++checking included message level... debug
++checking for an ANSI C-conforming const... yes
++checking for uid_t in sys/types.h... yes
++checking for mode_t... yes
++checking for off_t... yes
++checking for pid_t... yes
++checking for size_t... yes
++checking for struct stat.st_blksize... yes
++checking for struct stat.st_blocks... yes
++checking for struct stat.st_rdev... yes
++checking whether time.h and sys/time.h may both be included... yes
++checking for nanosleep... yes
++checking whether gcc needs -traditional... no
++checking for working memcmp... yes
++checking return type of signal handlers... void
++checking for strftime... yes
++checking for putenv... yes
++checking for select... yes
++checking for pselect... yes
++checking for poll... yes
++checking for socket... yes
++checking for strtod... yes
++checking for strtol... yes
++checking for strtoul... yes
++checking for uname... yes
++checking for getpgid... yes
++checking for getsid... yes
++checking for gethostbyname... yes
++checking for getaddrinfo... yes
++checking for getprotobynumber... yes
++checking for getprotobynumber_r... no
++checking for setgroups... yes
++checking for inet_aton... yes
++checking for grantpt... yes
++checking for unlockpt... yes
++checking for cfsetispeed... yes
++checking for cfgetispeed... yes
++checking for cfsetospeed... yes
++checking for cfgetospeed... yes
++checking for posix_memalign prototype... yes
++checking for strdup prototype... yes
++checking for strerror prototype... yes
++checking for strstr prototype... yes
++checking for getipnodebyname prototype... no
++checking for strndup prototype... yes
++checking for memrchr prototype... yes
++checking for if_indextoname prototype... yes
++checking for ptsname prototype... yes
++checking for long long... yes
++checking for sig_atomic_t... yes
++checking for bool... yes
++checking for socklen_t... yes
++checking for struct stat64... yes
++checking for off64_t... yes
++checking for sighandler_t... yes
++checking for uint8_t... yes
++checking for uint16_t... yes
++checking for uint32_t... yes
++checking for uint64_t... yes
++checking for fdset->fds_bits... yes
++checking for struct termios . c_ispeed... no
++checking for struct termios . c_ospeed... no
++checking for sa_family_t... yes
++checking for struct sock_extended_err... yes
++checking for struct sigaction.sa_sigaction... yes
++checking if _SVID3 is helpful... no
++checking if _XPG4_2 is helpful... no
++checking for struct timespec... yes
++checking for struct linger... yes
++checking for struct ip... yes
++checking for struct ip_mreq... yes
++checking for struct ip_mreqn... yes
++checking for struct ipv6_mreq... yes
++checking for struct ip_mreq_source... yes
++checking for struct ifreq... yes
++checking for struct ifreq.ifr_index... no
++checking for struct ifreq.ifr_ifindex... yes
++checking for struct sockaddr.sa_len... no
++checking for component names of sockaddr_in6... s6_addr
++checking for struct iovec... yes
++checking for struct msghdr.msg_control... yes
++checking for struct msghdr.msg_controllen... yes
++checking for struct msghdr.msgflags... yes
++checking for struct cmsghdr... yes
++checking for struct in_pktinfo... yes
++checking for ipi_spec_dst in struct in_pktinfo... yes
++checking for struct in6_pktinfo... yes
++checking for struct ip.ip_hl... yes
++checking for sigaction... yes
++checking for stat64... yes
++checking for fstat64... yes
++checking for lstat64... yes
++checking for lseek64... yes
++checking for truncate64... yes
++checking for ftruncate64... yes
++checking for strtoll... yes
++checking for hstrerror... (cached) yes
++checking for inet_ntop... yes
++checking for openpty... yes
++checking for openpty in -lbsd... no
++checking for openpty in -lutil... yes
++checking for clock_gettime in -lrt... yes
++checking for flock... yes
++checking for setenv... yes
++checking for unsetenv... yes
++checking for TLS_client_method... yes
++checking for TLS_server_method... yes
++checking for DTLS_client_method... yes
++checking for DTLS_server_method... yes
++checking for SSL_CTX_set_default_verify_paths... yes
++checking for RAND_egd... no
++checking for RAND_egd in -lcrypt... no
++checking for DH_set0_pqg... yes
++checking for ASN1_STRING_get0_data... yes
++checking for RAND_status... yes
++checking for SSL_CTX_clear_mode... no
++checking for SSL_set_tlsext_host_name... no
++checking for SSL_library_init... (cached) no
++checking for ERR_error_string... yes
++checking for type EC_KEY... yes
++checking if snprintf conforms to C99... yes
++checking if printf has Z modifier... no
++checking shift offset of CRDLY... 9
++checking shift offset of TABDLY... 11
++checking shift offset of CSIZE... 4
++configure: using compile -Werror method to find basic types
++checking for equivalent simple type of uint16_t... 2 /* unsigned short */
++checking for equivalent simple type of uint32_t... 4 /* unsigned int */
++checking for equivalent simple type of uint64_t... 6 /* unsigned long */
++checking for equivalent simple type of int16_t... 1 /* short */
++checking for equivalent simple type of int32_t... 3 /* int */
++checking for equivalent simple type of int64_t... 5 /* long */
++checking for equivalent simple type of size_t... 6 /* unsigned long */
++checking for equivalent simple type of mode_t... 4 /* unsigned int */
++checking for equivalent simple type of pid_t... 3 /* int */
++checking for equivalent simple type of uid_t... 4 /* unsigned int */
++checking for equivalent simple type of gid_t... 4 /* unsigned int */
++checking for equivalent simple type of time_t... 5 /* long */
++checking for equivalent simple type of socklen_t... 4 /* unsigned int */
++checking for equivalent simple type of off_t... 5 /* long */
++checking for equivalent simple type of off64_t... 5 /* long */
++checking for equivalent simple type of dev_t... 6 /* unsigned long */
++checking for equivalent simple type of speed_t... 4 /* unsigned int */
++checking for basic type of struct stat.st_ino... 6 /* unsigned long */
++checking for basic type of struct stat.st_nlink... 6 /* unsigned long */
++checking for basic type of struct stat.st_size... 5 /* long */
++checking for basic type of struct stat.st_blksize... 5 /* long */
++checking for basic type of struct stat.st_blocks... 5 /* long */
++checking for basic type of struct stat64.st_dev... 6 /* unsigned long */
++checking for basic type of struct stat64.st_ino... 6 /* unsigned long */
++checking for basic type of struct stat64.st_nlink... 6 /* unsigned long */
++checking for basic type of struct stat64.st_size... 5 /* long */
++checking for basic type of struct stat64.st_blksize... 5 /* long */
++checking for basic type of struct stat64.st_blocks... 5 /* long */
++checking for basic type of struct timeval.tv_usec... 5 /* long */
++checking for basic type of struct timespec.tv_nsec... 5 /* long */
++checking for basic type of struct rlimit.rlim_max... 8 /* unsigned long long */
++checking for basic type of struct cmsghdr.cmsg_len... 4 /* unsigned int */
++checking for /dev/ptmx... yes
++checking for /proc... yes
++checking for /proc/*/fd... yes
++checking whether to include libwrap support... yes
++checking for components of libwrap... configure: checked for tcpd.h... no
++configure: WARNING: not all components of tcp wrappers found, disabling it
++checking for hosts_allow_table... no
++checking for declaration of environ... yes
++checking for var environ... yes
++configure: creating ./config.status
++config.status: creating Makefile
++config.status: creating config.h
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o socat.o socat.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xioinitialize.o xioinitialize.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xiohelp.o xiohelp.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xioparam.o xioparam.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xiodiag.o xiodiag.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xioopen.o xioopen.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xioopts.o xioopts.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xiosignal.o xiosignal.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xiosigchld.o xiosigchld.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xioread.o xioread.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xiowrite.o xiowrite.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xiolayer.o xiolayer.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xioshutdown.o xioshutdown.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xioclose.o xioclose.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xioexit.o xioexit.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xio-process.o xio-process.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xio-fd.o xio-fd.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xio-fdnum.o xio-fdnum.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xio-stdio.o xio-stdio.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xio-pipe.o xio-pipe.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xio-gopen.o xio-gopen.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xio-creat.o xio-creat.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xio-file.o xio-file.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xio-named.o xio-named.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xio-socket.o xio-socket.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xio-interface.o xio-interface.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xio-listen.o xio-listen.c
++xio-socket.c: In function ‘xiocheckpeer’:
++xio-socket.c:1780:8: warning: unused variable ‘result’ [-Wunused-variable]
++ 1780 |    int result;
++      |        ^~~~~~
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xio-unix.o xio-unix.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xio-vsock.o xio-vsock.c
++xio-unix.c: In function ‘xiosetunix’:
++xio-unix.c:104:4: warning: ‘strncpy’ specified bound 108 equals destination size [-Wstringop-truncation]
++  104 |    strncpy(saun->sun_path, path, sizeof(saun->sun_path)); /* ok */
++      |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xio-ip.o xio-ip.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xio-ip4.o xio-ip4.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xio-ip6.o xio-ip6.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xio-ipapp.o xio-ipapp.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xio-tcp.o xio-tcp.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xio-sctp.o xio-sctp.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xio-rawip.o xio-rawip.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xio-socks.o xio-socks.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xio-proxy.o xio-proxy.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xio-udp.o xio-udp.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xio-progcall.o xio-progcall.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xio-exec.o xio-exec.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xio-system.o xio-system.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xio-termios.o xio-termios.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xio-readline.o xio-readline.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xio-pty.o xio-pty.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xio-openssl.o xio-openssl.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xio-streams.o xio-streams.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xio-ascii.o xio-ascii.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xiolockfile.o xiolockfile.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xio-tcpwrap.o xio-tcpwrap.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xio-fs.o xio-fs.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o xio-tun.o xio-tun.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o error.o error.c
++xio-tun.c: In function ‘xioopen_tun’:
++xio-tun.c:109:7: warning: ‘strncpy’ specified bound 16 equals destination size [-Wstringop-truncation]
++  109 |       strncpy(ifr.ifr_name, tunname, IFNAMSIZ); /* ok */
++      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o dalan.o dalan.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o procan.o procan.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o procan-cdefs.o procan-cdefs.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o hostan.o hostan.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o fdname.o fdname.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o sysutils.o sysutils.c
++fdname.c: In function ‘sockname’:
++fdname.c:235:8: warning: unused variable ‘rc’ [-Wunused-variable]
++  235 |    int rc;
++      |        ^~
++fdname.c:212:20: warning: unused variable ‘protoent’ [-Wunused-variable]
++  212 |    struct protoent protoent, *protoentp;
++      |                    ^~~~~~~~
++fdname.c:265:4: warning: ‘strncpy’ specified bound 1024 equals destination size [-Wstringop-truncation]
++  265 |    strncpy(protoname, protoentp->p_name, sizeof(protoname));
++      |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++sysutils.c: In function ‘sockaddr_info’:
++sysutils.c:197:7: warning: ‘strncat’ specified bound 1 equals source length [-Wstringop-overflow=]
++  197 |       strncat(cp+1, "\"", 1);
++      |       ^~~~~~~~~~~~~~~~~~~~~~
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o utils.o utils.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o nestlex.o nestlex.c
++sysutils.c: In function ‘ifindexbyname’:
++sysutils.c:657:4: warning: ‘strncpy’ specified bound 16 equals destination size [-Wstringop-truncation]
++  657 |    strncpy(ifr.ifr_name, ifname, IFNAMSIZ); /* ok */
++      |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o vsnprintf_r.o vsnprintf_r.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o snprinterr.o snprinterr.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o filan.o filan.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o sycls.o sycls.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o sslcls.o sslcls.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o procan_main.o procan_main.c
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.  -I.   -c -o filan_main.o filan_main.c
++ar r libxio.a xioinitialize.o xiohelp.o xioparam.o xiodiag.o xioopen.o xioopts.o xiosignal.o xiosigchld.o xioread.o xiowrite.o xiolayer.o xioshutdown.o xioclose.o xioexit.o xio-process.o xio-fd.o xio-fdnum.o xio-stdio.o xio-pipe.o xio-gopen.o xio-creat.o xio-file.o xio-named.o xio-socket.o xio-interface.o xio-listen.o xio-unix.o xio-vsock.o xio-ip.o xio-ip4.o xio-ip6.o xio-ipapp.o xio-tcp.o xio-sctp.o xio-rawip.o xio-socks.o xio-proxy.o xio-udp.o xio-progcall.o xio-exec.o xio-system.o xio-termios.o xio-readline.o xio-pty.o xio-openssl.o xio-streams.o xio-ascii.o xiolockfile.o xio-tcpwrap.o xio-fs.o xio-tun.o error.o dalan.o procan.o procan-cdefs.o hostan.o fdname.o sysutils.o utils.o nestlex.o vsnprintf_r.o snprinterr.o filan.o sycls.o sslcls.o
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.   -o procan procan_main.o procan.o procan-cdefs.o hostan.o error.o sycls.o sysutils.o utils.o vsnprintf_r.o snprinterr.o -lrt -lutil  -lssl -lcrypto
++ar: creating libxio.a
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.   -o filan filan_main.o filan.o fdname.o error.o sycls.o sysutils.o utils.o vsnprintf_r.o snprinterr.o -lrt -lutil  -lssl -lcrypto
++ranlib libxio.a
++gcc -O2 -fPIC -D_GNU_SOURCE -Wall -Wno-parentheses  -DHAVE_CONFIG_H -I.   -o socat socat.o libxio.a -lrt -lutil  -lssl -lcrypto
++mkdir -p /tmp/package-socat/usr/bin
++/usr/bin/ginstall -c -m 755 socat /tmp/package-socat/usr/bin
++/usr/bin/ginstall -c -m 755 procan /tmp/package-socat/usr/bin
++/usr/bin/ginstall -c -m 755 filan /tmp/package-socat/usr/bin
++mkdir -p /tmp/package-socat/usr/man/man1
++/usr/bin/ginstall -c -m 644 ./doc/socat.1 /tmp/package-socat/usr/man/man1/
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++
++No symbolic links were found, so we won't make an installation script.
++You can make your own later in ./install/doinst.sh and rebuild the
++package if you like.
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/socat-1.7.4.1-x86_64-1.txz
++
++./
++install/
++install/slack-desc
++usr/
++usr/bin/
++usr/bin/filan
++usr/bin/procan
++usr/bin/socat
++usr/doc/
++usr/doc/socat-1.7.4.1/
++usr/doc/socat-1.7.4.1/BUGREPORTS
++usr/doc/socat-1.7.4.1/CHANGES
++usr/doc/socat-1.7.4.1/COPYING
++usr/doc/socat-1.7.4.1/COPYING.OpenSSL
++usr/doc/socat-1.7.4.1/DEVELOPMENT
++usr/doc/socat-1.7.4.1/EXAMPLES
++usr/doc/socat-1.7.4.1/FAQ
++usr/doc/socat-1.7.4.1/FILES
++usr/doc/socat-1.7.4.1/PORTING
++usr/doc/socat-1.7.4.1/README
++usr/doc/socat-1.7.4.1/README.FIPS
++usr/doc/socat-1.7.4.1/SECURITY
++usr/doc/socat-1.7.4.1/VERSION
++usr/man/
++usr/man/man1/
++usr/man/man1/socat.1.gz
++
++Slackware package /tmp/socat-1.7.4.1-x86_64-1.txz created.
++

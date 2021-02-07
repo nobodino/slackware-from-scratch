@@ -1,0 +1,1012 @@
+diff -ruBN /tmp/xfce4-taskmanager/xfce4-taskmanager.SlackBuild /source/xfce/xfce4-taskmanager/xfce4-taskmanager.SlackBuild
+--- /tmp/xfce4-taskmanager/xfce4-taskmanager.SlackBuild	2020-12-29 00:35:59.000000000 +0000
++++ /source/xfce/xfce4-taskmanager/xfce4-taskmanager.SlackBuild	2021-01-23 22:55:18.000000000 +0000
+@@ -57,7 +57,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ else
+   SLKCFLAGS="-O2"
+   LIBDIRSUFFIX=""
+@@ -85,7 +85,7 @@
+   --enable-shared=yes \
+   --enable-static=no \
+   --enable-debug=no \
+-  --build=$ARCH-slackware-linux || exit 1
++  --build=$ARCH-slackware-linux-musl || exit 1
+ 
+ make $NUMJOBS || make || exit 1
+ make install DESTDIR=$PKG || exit 1
+diff -ruBN /tmp/xfce4-taskmanager/xfce4-taskmanager.SlackBuild.log /source/xfce/xfce4-taskmanager/xfce4-taskmanager.SlackBuild.log
+--- /tmp/xfce4-taskmanager/xfce4-taskmanager.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/xfce/xfce4-taskmanager/xfce4-taskmanager.SlackBuild.log	2021-01-23 22:56:28.000000000 +0000
+@@ -0,0 +1,987 @@
++xfce4-taskmanager-1.4.0/
++xfce4-taskmanager-1.4.0/missing
++xfce4-taskmanager-1.4.0/Makefile.am
++xfce4-taskmanager-1.4.0/config.h.in
++xfce4-taskmanager-1.4.0/NEWS
++xfce4-taskmanager-1.4.0/ChangeLog
++xfce4-taskmanager-1.4.0/depcomp
++xfce4-taskmanager-1.4.0/COPYING
++xfce4-taskmanager-1.4.0/AUTHORS
++xfce4-taskmanager-1.4.0/intltool-extract.in
++xfce4-taskmanager-1.4.0/configure.ac
++xfce4-taskmanager-1.4.0/aclocal.m4
++xfce4-taskmanager-1.4.0/xfce4-taskmanager.desktop.in
++xfce4-taskmanager-1.4.0/configure
++xfce4-taskmanager-1.4.0/Makefile.in
++xfce4-taskmanager-1.4.0/src/
++xfce4-taskmanager-1.4.0/src/task-manager.h
++xfce4-taskmanager-1.4.0/src/settings.h
++xfce4-taskmanager-1.4.0/src/Makefile.am
++xfce4-taskmanager-1.4.0/src/settings-dialog.c
++xfce4-taskmanager-1.4.0/src/process-tree-model.c
++xfce4-taskmanager-1.4.0/src/process-statusbar.h
++xfce4-taskmanager-1.4.0/src/task-manager-skel.c
++xfce4-taskmanager-1.4.0/src/task-manager.c
++xfce4-taskmanager-1.4.0/src/process-tree-view.c
++xfce4-taskmanager-1.4.0/src/exec-tool-button.h
++xfce4-taskmanager-1.4.0/src/exec-tool-button.c
++xfce4-taskmanager-1.4.0/src/process-monitor.h
++xfce4-taskmanager-1.4.0/src/task-manager-freebsd.c
++xfce4-taskmanager-1.4.0/src/process-tree-view.h
++xfce4-taskmanager-1.4.0/src/task-manager-linux.c
++xfce4-taskmanager-1.4.0/src/task-manager-solaris.c
++xfce4-taskmanager-1.4.0/src/process-tree-model.h
++xfce4-taskmanager-1.4.0/src/Makefile.in
++xfce4-taskmanager-1.4.0/src/app-manager.h
++xfce4-taskmanager-1.4.0/src/settings-dialog_ui.h
++xfce4-taskmanager-1.4.0/src/process-window.ui
++xfce4-taskmanager-1.4.0/src/task-manager-bsd.c
++xfce4-taskmanager-1.4.0/src/settings-tool-button.h
++xfce4-taskmanager-1.4.0/src/settings-tool-button.c
++xfce4-taskmanager-1.4.0/src/process-monitor.c
++xfce4-taskmanager-1.4.0/src/process-window.h
++xfce4-taskmanager-1.4.0/src/process-window.c
++xfce4-taskmanager-1.4.0/src/process-statusbar.c
++xfce4-taskmanager-1.4.0/src/settings.c
++xfce4-taskmanager-1.4.0/src/app-manager.c
++xfce4-taskmanager-1.4.0/src/process-window_ui.h
++xfce4-taskmanager-1.4.0/src/settings-dialog.h
++xfce4-taskmanager-1.4.0/src/settings-dialog.ui
++xfce4-taskmanager-1.4.0/src/main.c
++xfce4-taskmanager-1.4.0/INSTALL
++xfce4-taskmanager-1.4.0/data/
++xfce4-taskmanager-1.4.0/data/Makefile.am
++xfce4-taskmanager-1.4.0/data/Makefile.in
++xfce4-taskmanager-1.4.0/data/icons/
++xfce4-taskmanager-1.4.0/data/icons/scalable/
++xfce4-taskmanager-1.4.0/data/icons/scalable/Makefile.am
++xfce4-taskmanager-1.4.0/data/icons/scalable/xc_crosshair.svg
++xfce4-taskmanager-1.4.0/data/icons/scalable/org.xfce.taskmanager.svg
++xfce4-taskmanager-1.4.0/data/icons/scalable/Makefile.in
++xfce4-taskmanager-1.4.0/data/icons/Makefile.am
++xfce4-taskmanager-1.4.0/data/icons/16x16/
++xfce4-taskmanager-1.4.0/data/icons/16x16/Makefile.am
++xfce4-taskmanager-1.4.0/data/icons/16x16/xc_crosshair.png
++xfce4-taskmanager-1.4.0/data/icons/16x16/Makefile.in
++xfce4-taskmanager-1.4.0/data/icons/16x16/org.xfce.taskmanager.png
++xfce4-taskmanager-1.4.0/data/icons/24x24/
++xfce4-taskmanager-1.4.0/data/icons/24x24/Makefile.am
++xfce4-taskmanager-1.4.0/data/icons/24x24/xc_crosshair.png
++xfce4-taskmanager-1.4.0/data/icons/24x24/Makefile.in
++xfce4-taskmanager-1.4.0/data/icons/48x48/
++xfce4-taskmanager-1.4.0/data/icons/48x48/Makefile.am
++xfce4-taskmanager-1.4.0/data/icons/48x48/Makefile.in
++xfce4-taskmanager-1.4.0/data/icons/48x48/org.xfce.taskmanager.png
++xfce4-taskmanager-1.4.0/data/icons/Makefile.in
++xfce4-taskmanager-1.4.0/data/icons/128x128/
++xfce4-taskmanager-1.4.0/data/icons/128x128/Makefile.am
++xfce4-taskmanager-1.4.0/data/icons/128x128/Makefile.in
++xfce4-taskmanager-1.4.0/data/icons/128x128/org.xfce.taskmanager.png
++xfce4-taskmanager-1.4.0/intltool-merge.in
++xfce4-taskmanager-1.4.0/ltmain.sh
++xfce4-taskmanager-1.4.0/compile
++xfce4-taskmanager-1.4.0/config.sub
++xfce4-taskmanager-1.4.0/config.guess
++xfce4-taskmanager-1.4.0/install-sh
++xfce4-taskmanager-1.4.0/README.md
++xfce4-taskmanager-1.4.0/THANKS
++xfce4-taskmanager-1.4.0/po/
++xfce4-taskmanager-1.4.0/po/en_GB.po
++xfce4-taskmanager-1.4.0/po/ca.po
++xfce4-taskmanager-1.4.0/po/zh_CN.po
++xfce4-taskmanager-1.4.0/po/nb.po
++xfce4-taskmanager-1.4.0/po/tr.po
++xfce4-taskmanager-1.4.0/po/en_AU.po
++xfce4-taskmanager-1.4.0/po/fr.po
++xfce4-taskmanager-1.4.0/po/eu.po
++xfce4-taskmanager-1.4.0/po/gl.po
++xfce4-taskmanager-1.4.0/po/be.po
++xfce4-taskmanager-1.4.0/po/zh_TW.po
++xfce4-taskmanager-1.4.0/po/th.po
++xfce4-taskmanager-1.4.0/po/Makefile.in.in
++xfce4-taskmanager-1.4.0/po/sr.po
++xfce4-taskmanager-1.4.0/po/fi.po
++xfce4-taskmanager-1.4.0/po/pl.po
++xfce4-taskmanager-1.4.0/po/ast.po
++xfce4-taskmanager-1.4.0/po/it.po
++xfce4-taskmanager-1.4.0/po/he.po
++xfce4-taskmanager-1.4.0/po/et.po
++xfce4-taskmanager-1.4.0/po/pt_BR.po
++xfce4-taskmanager-1.4.0/po/de.po
++xfce4-taskmanager-1.4.0/po/sl.po
++xfce4-taskmanager-1.4.0/po/pa.po
++xfce4-taskmanager-1.4.0/po/zh_HK.po
++xfce4-taskmanager-1.4.0/po/nl.po
++xfce4-taskmanager-1.4.0/po/hy_AM.po
++xfce4-taskmanager-1.4.0/po/ja.po
++xfce4-taskmanager-1.4.0/po/hu.po
++xfce4-taskmanager-1.4.0/po/POTFILES.in
++xfce4-taskmanager-1.4.0/po/si.po
++xfce4-taskmanager-1.4.0/po/ar.po
++xfce4-taskmanager-1.4.0/po/ko.po
++xfce4-taskmanager-1.4.0/po/es.po
++xfce4-taskmanager-1.4.0/po/kk.po
++xfce4-taskmanager-1.4.0/po/ur.po
++xfce4-taskmanager-1.4.0/po/sk.po
++xfce4-taskmanager-1.4.0/po/POTFILES.skip
++xfce4-taskmanager-1.4.0/po/te.po
++xfce4-taskmanager-1.4.0/po/hr.po
++xfce4-taskmanager-1.4.0/po/sq.po
++xfce4-taskmanager-1.4.0/po/pt.po
++xfce4-taskmanager-1.4.0/po/cs.po
++xfce4-taskmanager-1.4.0/po/is.po
++xfce4-taskmanager-1.4.0/po/uk.po
++xfce4-taskmanager-1.4.0/po/hye.po
++xfce4-taskmanager-1.4.0/po/ur_PK.po
++xfce4-taskmanager-1.4.0/po/id.po
++xfce4-taskmanager-1.4.0/po/vi.po
++xfce4-taskmanager-1.4.0/po/da.po
++xfce4-taskmanager-1.4.0/po/ug.po
++xfce4-taskmanager-1.4.0/po/lv.po
++xfce4-taskmanager-1.4.0/po/el.po
++xfce4-taskmanager-1.4.0/po/sv.po
++xfce4-taskmanager-1.4.0/po/ru.po
++xfce4-taskmanager-1.4.0/po/ie.po
++xfce4-taskmanager-1.4.0/po/lt.po
++xfce4-taskmanager-1.4.0/po/ms.po
++xfce4-taskmanager-1.4.0/po/bg.po
++xfce4-taskmanager-1.4.0/po/oc.po
++xfce4-taskmanager-1.4.0/intltool-update.in
++checking build system type... x86_64-slackware-linux-musl
++checking host system type... x86_64-slackware-linux-musl
++checking target system type... x86_64-slackware-linux-musl
++checking for a BSD-compatible install... /usr/bin/ginstall -c
++checking whether build environment is sane... yes
++checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
++checking for gawk... gawk
++checking whether make sets $(MAKE)... yes
++checking whether make supports nested variables... yes
++checking whether to enable maintainer-specific portions of Makefiles... no
++checking whether make supports nested variables... (cached) yes
++checking how to print strings... printf
++checking whether make supports the include directive... yes (GNU style)
++checking for gcc... gcc
++checking whether the C compiler works... yes
++checking for C compiler default output file name... a.out
++checking for suffix of executables... 
++checking whether we are cross compiling... no
++checking for suffix of object files... o
++checking whether we are using the GNU C compiler... yes
++checking whether gcc accepts -g... yes
++checking for gcc option to accept ISO C89... none needed
++checking whether gcc understands -c and -o together... yes
++checking dependency style of gcc... gcc3
++checking for a sed that does not truncate output... /usr/bin/sed
++checking for grep that handles long lines and -e... /usr/bin/grep
++checking for egrep... /usr/bin/grep -E
++checking for fgrep... /usr/bin/grep -F
++checking for ld used by gcc... /usr/bin/ld
++checking if the linker (/usr/bin/ld) is GNU ld... yes
++checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
++checking the name lister (/usr/bin/nm -B) interface... BSD nm
++checking whether ln -s works... yes
++checking the maximum length of command line arguments... 98304
++checking how to convert x86_64-slackware-linux-musl file names to x86_64-slackware-linux-musl format... func_convert_file_noop
++checking how to convert x86_64-slackware-linux-musl file names to toolchain format... func_convert_file_noop
++checking for /usr/bin/ld option to reload object files... -r
++checking for objdump... objdump
++checking how to recognize dependent libraries... pass_all
++checking for dlltool... dlltool
++checking how to associate runtime and link libraries... printf %s\n
++checking for ar... ar
++checking for archiver @FILE support... @
++checking for strip... strip
++checking for ranlib... ranlib
++checking command to parse /usr/bin/nm -B output from gcc object... ok
++checking for sysroot... no
++checking for a working dd... /usr/bin/dd
++checking how to truncate binary pipes... /usr/bin/dd bs=4096 count=1
++checking for mt... mt
++checking if mt is a manifest tool... no
++checking how to run the C preprocessor... gcc -E
++checking for ANSI C header files... yes
++checking for sys/types.h... yes
++checking for sys/stat.h... yes
++checking for stdlib.h... yes
++checking for string.h... yes
++checking for memory.h... yes
++checking for strings.h... yes
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking for unistd.h... yes
++checking for dlfcn.h... yes
++checking for objdir... .libs
++checking if gcc supports -fno-rtti -fno-exceptions... no
++checking for gcc option to produce PIC... -fPIC -DPIC
++checking if gcc PIC flag -fPIC -DPIC works... yes
++checking if gcc static flag -static works... yes
++checking if gcc supports -c -o file.o... yes
++checking if gcc supports -c -o file.o... (cached) yes
++checking whether the gcc linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
++checking whether -lc should be explicitly linked in... no
++checking dynamic linker characteristics... GNU/Linux ld.so
++checking how to hardcode library paths into programs... immediate
++checking whether stripping libraries is possible... yes
++checking if libtool supports shared libraries... yes
++checking whether to build shared libraries... yes
++checking whether to build static libraries... no
++checking for gcc... (cached) gcc
++checking whether we are using the GNU C compiler... (cached) yes
++checking whether gcc accepts -g... (cached) yes
++checking for gcc option to accept ISO C89... (cached) none needed
++checking whether gcc understands -c and -o together... (cached) yes
++checking dependency style of gcc... (cached) gcc3
++checking for ld used by gcc... (cached) /usr/bin/ld
++checking if the linker (/usr/bin/ld) is GNU ld... (cached) yes
++checking whether NLS is requested... yes
++checking for intltool-update... /usr/bin/intltool-update
++checking for intltool-merge... /usr/bin/intltool-merge
++checking for intltool-extract... /usr/bin/intltool-extract
++checking for xgettext... /usr/bin/xgettext
++checking for msgmerge... /usr/bin/msgmerge
++checking for msgfmt... /usr/bin/msgfmt
++checking for gmsgfmt... /usr/bin/msgfmt
++checking for perl... /usr/bin/perl
++checking for perl >= 5.8.1... 5.32.0
++checking for XML::Parser... ok
++checking for an ANSI C-conforming const... yes
++checking for ANSI C header files... (cached) yes
++checking for stdlib.h... (cached) yes
++checking for string.h... (cached) yes
++checking locale.h usability... yes
++checking locale.h presence... yes
++checking for locale.h... yes
++checking for LC_MESSAGES... yes
++checking for CFPreferencesCopyAppValue... no
++checking for CFLocaleCopyCurrent... no
++checking libintl.h usability... yes
++checking libintl.h presence... yes
++checking for libintl.h... yes
++checking for ngettext in libc... yes
++checking for dgettext in libc... yes
++checking for bind_textdomain_codeset... yes
++checking for msgfmt... (cached) /usr/bin/msgfmt
++checking for dcgettext... yes
++checking if msgfmt accepts -c... yes
++checking for gmsgfmt... (cached) /usr/bin/msgfmt
++checking for xgettext... (cached) /usr/bin/xgettext
++checking for catalogs to be installed...  ar ast be bg ca cs da de el en_AU en_GB es et eu fi fr gl he hr hu hy_AM hye id ie is it ja kk ko lt lv ms nb nl oc pa pl pt pt_BR ru si sk sl sq sr sv te th tr ug uk ur ur_PK vi zh_CN zh_HK zh_TW
++checking for bind_textdomain_codeset... (cached) yes
++checking for locales directory... /usr/lib/locale
++checking for additional xgettext flags... --keyword=Q_ --from-code=UTF-8
++checking for X... libraries , headers 
++checking for gethostbyname... yes
++checking for connect... yes
++checking for remove... yes
++checking for shmat... yes
++checking for IceConnectionNumber in -lICE... yes
++checking for main in -lX11... yes
++checking pkg-config is at least version 0.9.0... yes
++checking for xmu >= 1.1.2... 1.1.3
++checking LIBXMU_CFLAGS... 
++checking LIBXMU_LIBS... -lXmu -lXt -lX11
++checking pkg-config is at least version 0.9.0... yes
++checking for gtk+-3.0 >= 3.22.0... 3.24.24
++checking GTK3_CFLAGS... -pthread -I/usr/include/gtk-3.0 -I/usr/include/at-spi2-atk/2.0 -I/usr/include/at-spi-2.0 -I/usr/include/dbus-1.0 -I/usr/lib/dbus-1.0/include -I/usr/include/gtk-3.0 -I/usr/include/gio-unix-2.0 -I/usr/include/cairo -I/usr/include/pango-1.0 -I/usr/include/fribidi -I/usr/include/harfbuzz -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pixman-1 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include
++checking GTK3_LIBS... -lgtk-3 -lgdk-3 -lz -lpangocairo-1.0 -lpango-1.0 -lharfbuzz -latk-1.0 -lcairo-gobject -lcairo -lgdk_pixbuf-2.0 -lgio-2.0 -lgobject-2.0 -lglib-2.0
++checking pkg-config is at least version 0.9.0... yes
++checking for cairo >= 1.5.0... 1.16.0
++checking CAIRO_CFLAGS... -I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/pixman-1 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16
++checking CAIRO_LIBS... -lcairo
++checking pkg-config is at least version 0.9.0... yes
++checking for libwnck-3.0 >= 3.2... 3.36.0
++checking WNCK_CFLAGS... -pthread -I/usr/include/libwnck-3.0 -I/usr/include/startup-notification-1.0 -I/usr/include/gtk-3.0 -I/usr/include/at-spi2-atk/2.0 -I/usr/include/at-spi-2.0 -I/usr/include/dbus-1.0 -I/usr/lib/dbus-1.0/include -I/usr/include/gtk-3.0 -I/usr/include/gio-unix-2.0 -I/usr/include/cairo -I/usr/include/pango-1.0 -I/usr/include/fribidi -I/usr/include/harfbuzz -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pixman-1 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include
++checking WNCK_LIBS... -lwnck-3 -lgtk-3 -lgdk-3 -lz -lpangocairo-1.0 -lpango-1.0 -lharfbuzz -latk-1.0 -lcairo-gobject -lcairo -lgdk_pixbuf-2.0 -lgio-2.0 -lgobject-2.0 -lglib-2.0
++checking pwd.h usability... yes
++checking pwd.h presence... yes
++checking for pwd.h... yes
++checking signal.h usability... yes
++checking signal.h presence... yes
++checking for signal.h... yes
++checking stdio.h usability... yes
++checking stdio.h presence... yes
++checking for stdio.h... yes
++checking for string.h... (cached) yes
++checking sys/resource.h usability... yes
++checking sys/resource.h presence... yes
++checking for sys/resource.h... yes
++checking for sys/stat.h... (cached) yes
++checking for sys/types.h... (cached) yes
++checking for unistd.h... (cached) yes
++checking for OS implementation... linux
++checking whether to build with debugging support... no
++checking that generated files are newer than configure... done
++configure: creating ./config.status
++config.status: creating Makefile
++config.status: creating src/Makefile
++config.status: creating data/Makefile
++config.status: creating data/icons/Makefile
++config.status: creating data/icons/16x16/Makefile
++config.status: creating data/icons/24x24/Makefile
++config.status: creating data/icons/48x48/Makefile
++config.status: creating data/icons/128x128/Makefile
++config.status: creating data/icons/scalable/Makefile
++config.status: creating po/Makefile.in
++config.status: creating config.h
++config.status: executing depfiles commands
++config.status: executing libtool commands
++config.status: executing default-1 commands
++config.status: executing po/stamp-it commands
++
++Build Configuration:
++
++* Wnck:          3.36.0
++* Cairo:         1.16.0
++* GTK+:          3.24.24
++* Target OS:     linux-musl (linux)
++* Debug:         no
++
++make  all-recursive
++make[1]: Entering directory '/tmp/xfce4-taskmanager-1.4.0'
++Making all in data
++make[2]: Entering directory '/tmp/xfce4-taskmanager-1.4.0/data'
++Making all in icons
++make[3]: Entering directory '/tmp/xfce4-taskmanager-1.4.0/data/icons'
++Making all in 16x16
++make[4]: Entering directory '/tmp/xfce4-taskmanager-1.4.0/data/icons/16x16'
++make[4]: Nothing to be done for 'all'.
++make[4]: Leaving directory '/tmp/xfce4-taskmanager-1.4.0/data/icons/16x16'
++Making all in 24x24
++make[4]: Entering directory '/tmp/xfce4-taskmanager-1.4.0/data/icons/24x24'
++make[4]: Nothing to be done for 'all'.
++make[4]: Leaving directory '/tmp/xfce4-taskmanager-1.4.0/data/icons/24x24'
++Making all in 48x48
++make[4]: Entering directory '/tmp/xfce4-taskmanager-1.4.0/data/icons/48x48'
++make[4]: Nothing to be done for 'all'.
++make[4]: Leaving directory '/tmp/xfce4-taskmanager-1.4.0/data/icons/48x48'
++Making all in 128x128
++make[4]: Entering directory '/tmp/xfce4-taskmanager-1.4.0/data/icons/128x128'
++make[4]: Nothing to be done for 'all'.
++make[4]: Leaving directory '/tmp/xfce4-taskmanager-1.4.0/data/icons/128x128'
++Making all in scalable
++make[4]: Entering directory '/tmp/xfce4-taskmanager-1.4.0/data/icons/scalable'
++make[4]: Nothing to be done for 'all'.
++make[4]: Leaving directory '/tmp/xfce4-taskmanager-1.4.0/data/icons/scalable'
++make[4]: Entering directory '/tmp/xfce4-taskmanager-1.4.0/data/icons'
++make[4]: Nothing to be done for 'all-am'.
++make[4]: Leaving directory '/tmp/xfce4-taskmanager-1.4.0/data/icons'
++make[3]: Leaving directory '/tmp/xfce4-taskmanager-1.4.0/data/icons'
++make[3]: Entering directory '/tmp/xfce4-taskmanager-1.4.0/data'
++make[3]: Nothing to be done for 'all-am'.
++make[3]: Leaving directory '/tmp/xfce4-taskmanager-1.4.0/data'
++make[2]: Leaving directory '/tmp/xfce4-taskmanager-1.4.0/data'
++Making all in po
++make[2]: Entering directory '/tmp/xfce4-taskmanager-1.4.0/po'
++  MSGFMT ar.gmo
++  MSGFMT be.gmo
++  MSGFMT ast.gmo
++  MSGFMT bg.gmo
++  MSGFMT ca.gmo
++  MSGFMT cs.gmo
++  MSGFMT da.gmo
++  MSGFMT el.gmo
++  MSGFMT de.gmo
++  MSGFMT en_AU.gmo
++  MSGFMT en_GB.gmo
++  MSGFMT es.gmo
++  MSGFMT et.gmo
++  MSGFMT eu.gmo
++  MSGFMT fi.gmo
++  MSGFMT fr.gmo
++  MSGFMT gl.gmo
++  MSGFMT he.gmo
++  MSGFMT hr.gmo
++  MSGFMT hu.gmo
++  MSGFMT hy_AM.gmo
++  MSGFMT hye.gmo
++  MSGFMT id.gmo
++  MSGFMT ie.gmo
++  MSGFMT is.gmo
++  MSGFMT it.gmo
++  MSGFMT ja.gmo
++  MSGFMT kk.gmo
++  MSGFMT ko.gmo
++  MSGFMT lt.gmo
++  MSGFMT lv.gmo
++  MSGFMT ms.gmo
++  MSGFMT nb.gmo
++  MSGFMT nl.gmo
++  MSGFMT oc.gmo
++  MSGFMT pa.gmo
++  MSGFMT pl.gmo
++  MSGFMT pt.gmo
++  MSGFMT pt_BR.gmo
++  MSGFMT ru.gmo
++  MSGFMT si.gmo
++  MSGFMT sl.gmo
++  MSGFMT sk.gmo
++  MSGFMT sq.gmo
++  MSGFMT sr.gmo
++  MSGFMT sv.gmo
++  MSGFMT te.gmo
++  MSGFMT th.gmo
++  MSGFMT tr.gmo
++  MSGFMT ug.gmo
++  MSGFMT uk.gmo
++  MSGFMT ur.gmo
++  MSGFMT ur_PK.gmo
++  MSGFMT vi.gmo
++  MSGFMT zh_CN.gmo
++  MSGFMT zh_HK.gmo
++  MSGFMT zh_TW.gmo
++make[2]: Leaving directory '/tmp/xfce4-taskmanager-1.4.0/po'
++Making all in src
++make[2]: Entering directory '/tmp/xfce4-taskmanager-1.4.0/src'
++make  all-am
++make[3]: Entering directory '/tmp/xfce4-taskmanager-1.4.0/src'
++  CC       xfce4_taskmanager-main.o
++  CC       xfce4_taskmanager-process-window.o
++  CC       xfce4_taskmanager-process-monitor.o
++main.c: In function ‘status_icon_popup_menu’:
++main.c:58:3: warning: ‘gtk_image_menu_item_new_from_stock’ is deprecated: Use 'gtk_menu_item_new' instead [-Wdeprecated-declarations]
++   58 |   mi = gtk_image_menu_item_new_from_stock (GTK_STOCK_QUIT, NULL);
++      |   ^~
++In file included from /usr/include/gtk-3.0/gtk/gtk.h:269,
++                 from main.c:16:
++/usr/include/gtk-3.0/gtk/deprecated/gtkimagemenuitem.h:84:12: note: declared here
++   84 | GtkWidget* gtk_image_menu_item_new_from_stock    (const gchar      *stock_id,
++      |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++main.c:58:3: warning: ‘GtkStock’ is deprecated [-Wdeprecated-declarations]
++   58 |   mi = gtk_image_menu_item_new_from_stock (GTK_STOCK_QUIT, NULL);
++      |   ^~
++main.c:64:2: warning: ‘gtk_menu_popup’ is deprecated: Use '(gtk_menu_popup_at_widget, gtk_menu_popup_at_pointer, gtk_menu_popup_at_rect)' instead [-Wdeprecated-declarations]
++   64 |  gtk_menu_popup (GTK_MENU (menu), NULL, NULL, gtk_status_icon_position_menu, _status_icon, button, activate_time);
++      |  ^~~~~~~~~~~~~~
++In file included from /usr/include/gtk-3.0/gtk/gtklabel.h:34,
++                 from /usr/include/gtk-3.0/gtk/gtkaccellabel.h:35,
++                 from /usr/include/gtk-3.0/gtk/gtk.h:33,
++                 from main.c:16:
++/usr/include/gtk-3.0/gtk/gtkmenu.h:138:9: note: declared here
++  138 | void    gtk_menu_popup    (GtkMenu        *menu,
++      |         ^~~~~~~~~~~~~~
++main.c:64:2: warning: ‘gtk_status_icon_position_menu’ is deprecated [-Wdeprecated-declarations]
++   64 |  gtk_menu_popup (GTK_MENU (menu), NULL, NULL, gtk_status_icon_position_menu, _status_icon, button, activate_time);
++      |  ^~~~~~~~~~~~~~
++In file included from /usr/include/gtk-3.0/gtk/gtk.h:275,
++                 from main.c:16:
++/usr/include/gtk-3.0/gtk/deprecated/gtkstatusicon.h:160:23: note: declared here
++  160 | void                  gtk_status_icon_position_menu      (GtkMenu            *menu,
++      |                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++main.c: In function ‘show_hide_status_icon’:
++main.c:72:2: warning: ‘gtk_status_icon_set_visible’ is deprecated [-Wdeprecated-declarations]
++   72 |  gtk_status_icon_set_visible (status_icon, show_status_icon);
++      |  ^~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/gtk-3.0/gtk/gtk.h:275,
++                 from main.c:16:
++/usr/include/gtk-3.0/gtk/deprecated/gtkstatusicon.h:151:23: note: declared here
++  151 | void                  gtk_status_icon_set_visible        (GtkStatusIcon      *status_icon,
++      |                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~
++main.c: In function ‘delete_window’:
++main.c:87:2: warning: ‘gtk_status_icon_get_visible’ is deprecated [-Wdeprecated-declarations]
++   87 |  if (!gtk_status_icon_get_visible (status_icon))
++      |  ^~
++In file included from /usr/include/gtk-3.0/gtk/gtk.h:275,
++                 from main.c:16:
++/usr/include/gtk-3.0/gtk/deprecated/gtkstatusicon.h:154:23: note: declared here
++  154 | gboolean              gtk_status_icon_get_visible        (GtkStatusIcon      *status_icon);
++      |                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~
++main.c: In function ‘init_timeout’:
++main.c:127:2: warning: ‘gtk_status_icon_get_visible’ is deprecated [-Wdeprecated-declarations]
++  127 |  if (gtk_status_icon_get_visible (status_icon))
++      |  ^~
++In file included from /usr/include/gtk-3.0/gtk/gtk.h:275,
++                 from main.c:16:
++/usr/include/gtk-3.0/gtk/deprecated/gtkstatusicon.h:154:23: note: declared here
++  154 | gboolean              gtk_status_icon_get_visible        (GtkStatusIcon      *status_icon);
++      |                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~
++main.c:135:3: warning: ‘gtk_status_icon_set_tooltip_markup’ is deprecated [-Wdeprecated-declarations]
++  135 |   gtk_status_icon_set_tooltip_markup (GTK_STATUS_ICON (status_icon), tooltip);
++      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/gtk-3.0/gtk/gtk.h:275,
++                 from main.c:16:
++/usr/include/gtk-3.0/gtk/deprecated/gtkstatusicon.h:140:23: note: declared here
++  140 | void                  gtk_status_icon_set_tooltip_markup (GtkStatusIcon      *status_icon,
++      |                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++main.c: In function ‘main’:
++main.c:214:2: warning: ‘gtk_status_icon_new_from_icon_name’ is deprecated [-Wdeprecated-declarations]
++  214 |  status_icon = gtk_status_icon_new_from_icon_name ("org.xfce.taskmanager");
++      |  ^~~~~~~~~~~
++In file included from /usr/include/gtk-3.0/gtk/gtk.h:275,
++                 from main.c:16:
++/usr/include/gtk-3.0/gtk/deprecated/gtkstatusicon.h:92:23: note: declared here
++   92 | GtkStatusIcon        *gtk_status_icon_new_from_icon_name (const gchar        *icon_name);
++      |                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++main.c:239:2: warning: ‘gtk_status_icon_get_visible’ is deprecated [-Wdeprecated-declarations]
++  239 |  if (gtk_widget_get_visible (window) || gtk_status_icon_get_visible (status_icon))
++      |  ^~
++In file included from /usr/include/gtk-3.0/gtk/gtk.h:275,
++                 from main.c:16:
++/usr/include/gtk-3.0/gtk/deprecated/gtkstatusicon.h:154:23: note: declared here
++  154 | gboolean              gtk_status_icon_get_visible        (GtkStatusIcon      *status_icon);
++      |                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~
++  CC       xfce4_taskmanager-process-tree-model.o
++  CC       xfce4_taskmanager-process-tree-view.o
++  CC       xfce4_taskmanager-process-statusbar.o
++process-statusbar.c: In function ‘xtm_process_statusbar_set_property’:
++process-statusbar.c:140:3: warning: ‘gtk_widget_override_color’ is deprecated [-Wdeprecated-declarations]
++  140 |   gtk_widget_override_color (statusbar->label_cpu, GTK_STATE_NORMAL, &color);
++      |   ^~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/gtk-3.0/gtk/gtkapplication.h:27,
++                 from /usr/include/gtk-3.0/gtk/gtkwindow.h:33,
++                 from /usr/include/gtk-3.0/gtk/gtkdialog.h:32,
++                 from /usr/include/gtk-3.0/gtk/gtkaboutdialog.h:30,
++                 from /usr/include/gtk-3.0/gtk/gtk.h:31,
++                 from process-statusbar.c:16:
++/usr/include/gtk-3.0/gtk/gtkwidget.h:1144:14: note: declared here
++ 1144 | void         gtk_widget_override_color            (GtkWidget     *widget,
++      |              ^~~~~~~~~~~~~~~~~~~~~~~~~
++process-statusbar.c:150:3: warning: ‘gtk_widget_override_color’ is deprecated [-Wdeprecated-declarations]
++  150 |   gtk_widget_override_color (statusbar->label_memory, GTK_STATE_NORMAL, &color);
++      |   ^~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/gtk-3.0/gtk/gtkapplication.h:27,
++                 from /usr/include/gtk-3.0/gtk/gtkwindow.h:33,
++                 from /usr/include/gtk-3.0/gtk/gtkdialog.h:32,
++                 from /usr/include/gtk-3.0/gtk/gtkaboutdialog.h:30,
++                 from /usr/include/gtk-3.0/gtk/gtk.h:31,
++                 from process-statusbar.c:16:
++/usr/include/gtk-3.0/gtk/gtkwidget.h:1144:14: note: declared here
++ 1144 | void         gtk_widget_override_color            (GtkWidget     *widget,
++      |              ^~~~~~~~~~~~~~~~~~~~~~~~~
++  CC       xfce4_taskmanager-exec-tool-button.o
++  CC       xfce4_taskmanager-settings-tool-button.o
++  CC       xfce4_taskmanager-settings-dialog.o
++exec-tool-button.c: In function ‘menu_append_item’:
++exec-tool-button.c:145:2: warning: ‘gtk_image_menu_item_new_with_label’ is deprecated: Use 'gtk_menu_item_new_with_label' instead [-Wdeprecated-declarations]
++  145 |  GtkWidget *mi = gtk_image_menu_item_new_with_label (title);
++      |  ^~~~~~~~~
++In file included from /usr/include/gtk-3.0/gtk/gtk.h:269,
++                 from exec-tool-button.c:16:
++/usr/include/gtk-3.0/gtk/deprecated/gtkimagemenuitem.h:80:12: note: declared here
++   80 | GtkWidget* gtk_image_menu_item_new_with_label    (const gchar      *label);
++      |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++exec-tool-button.c:146:2: warning: ‘gtk_image_menu_item_set_image’ is deprecated [-Wdeprecated-declarations]
++  146 |  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (mi), image);
++      |  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/gtk-3.0/gtk/gtk.h:269,
++                 from exec-tool-button.c:16:
++/usr/include/gtk-3.0/gtk/deprecated/gtkimagemenuitem.h:92:12: note: declared here
++   92 | void       gtk_image_menu_item_set_image         (GtkImageMenuItem *image_menu_item,
++      |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++  CC       xfce4_taskmanager-settings.o
++  CC       xfce4_taskmanager-task-manager.o
++  CC       xfce4_taskmanager-app-manager.o
++  CC       xfce4_taskmanager-task-manager-linux.o
++  CCLD     xfce4-taskmanager
++make[3]: Leaving directory '/tmp/xfce4-taskmanager-1.4.0/src'
++make[2]: Leaving directory '/tmp/xfce4-taskmanager-1.4.0/src'
++make[2]: Entering directory '/tmp/xfce4-taskmanager-1.4.0'
++  ITMRG  xfce4-taskmanager.desktop
++make[2]: Leaving directory '/tmp/xfce4-taskmanager-1.4.0'
++make[1]: Leaving directory '/tmp/xfce4-taskmanager-1.4.0'
++Making install in data
++make[1]: Entering directory '/tmp/xfce4-taskmanager-1.4.0/data'
++Making install in icons
++make[2]: Entering directory '/tmp/xfce4-taskmanager-1.4.0/data/icons'
++Making install in 16x16
++make[3]: Entering directory '/tmp/xfce4-taskmanager-1.4.0/data/icons/16x16'
++make[4]: Entering directory '/tmp/xfce4-taskmanager-1.4.0/data/icons/16x16'
++make[4]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-xfce4-taskmanager/usr/share/icons/hicolor/16x16/apps'
++ /usr/bin/ginstall -c -m 644 org.xfce.taskmanager.png '/tmp/package-xfce4-taskmanager/usr/share/icons/hicolor/16x16/apps'
++ /usr/bin/mkdir -p '/tmp/package-xfce4-taskmanager/usr/share/icons/hicolor/16x16/actions'
++ /usr/bin/ginstall -c -m 644 xc_crosshair.png '/tmp/package-xfce4-taskmanager/usr/share/icons/hicolor/16x16/actions'
++make[4]: Leaving directory '/tmp/xfce4-taskmanager-1.4.0/data/icons/16x16'
++make[3]: Leaving directory '/tmp/xfce4-taskmanager-1.4.0/data/icons/16x16'
++Making install in 24x24
++make[3]: Entering directory '/tmp/xfce4-taskmanager-1.4.0/data/icons/24x24'
++make[4]: Entering directory '/tmp/xfce4-taskmanager-1.4.0/data/icons/24x24'
++make[4]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-xfce4-taskmanager/usr/share/icons/hicolor/24x24/actions'
++ /usr/bin/ginstall -c -m 644 xc_crosshair.png '/tmp/package-xfce4-taskmanager/usr/share/icons/hicolor/24x24/actions'
++make[4]: Leaving directory '/tmp/xfce4-taskmanager-1.4.0/data/icons/24x24'
++make[3]: Leaving directory '/tmp/xfce4-taskmanager-1.4.0/data/icons/24x24'
++Making install in 48x48
++make[3]: Entering directory '/tmp/xfce4-taskmanager-1.4.0/data/icons/48x48'
++make[4]: Entering directory '/tmp/xfce4-taskmanager-1.4.0/data/icons/48x48'
++make[4]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-xfce4-taskmanager/usr/share/icons/hicolor/48x48/apps'
++ /usr/bin/ginstall -c -m 644 org.xfce.taskmanager.png '/tmp/package-xfce4-taskmanager/usr/share/icons/hicolor/48x48/apps'
++make[4]: Leaving directory '/tmp/xfce4-taskmanager-1.4.0/data/icons/48x48'
++make[3]: Leaving directory '/tmp/xfce4-taskmanager-1.4.0/data/icons/48x48'
++Making install in 128x128
++make[3]: Entering directory '/tmp/xfce4-taskmanager-1.4.0/data/icons/128x128'
++make[4]: Entering directory '/tmp/xfce4-taskmanager-1.4.0/data/icons/128x128'
++make[4]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-xfce4-taskmanager/usr/share/icons/hicolor/128x128/apps'
++ /usr/bin/ginstall -c -m 644 org.xfce.taskmanager.png '/tmp/package-xfce4-taskmanager/usr/share/icons/hicolor/128x128/apps'
++make[4]: Leaving directory '/tmp/xfce4-taskmanager-1.4.0/data/icons/128x128'
++make[3]: Leaving directory '/tmp/xfce4-taskmanager-1.4.0/data/icons/128x128'
++Making install in scalable
++make[3]: Entering directory '/tmp/xfce4-taskmanager-1.4.0/data/icons/scalable'
++make[4]: Entering directory '/tmp/xfce4-taskmanager-1.4.0/data/icons/scalable'
++make[4]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-xfce4-taskmanager/usr/share/icons/hicolor/scalable/apps'
++ /usr/bin/ginstall -c -m 644 org.xfce.taskmanager.svg '/tmp/package-xfce4-taskmanager/usr/share/icons/hicolor/scalable/apps'
++ /usr/bin/mkdir -p '/tmp/package-xfce4-taskmanager/usr/share/icons/hicolor/scalable/actions'
++ /usr/bin/ginstall -c -m 644 xc_crosshair.svg '/tmp/package-xfce4-taskmanager/usr/share/icons/hicolor/scalable/actions'
++make[4]: Leaving directory '/tmp/xfce4-taskmanager-1.4.0/data/icons/scalable'
++make[3]: Leaving directory '/tmp/xfce4-taskmanager-1.4.0/data/icons/scalable'
++make[3]: Entering directory '/tmp/xfce4-taskmanager-1.4.0/data/icons'
++make[4]: Entering directory '/tmp/xfce4-taskmanager-1.4.0/data/icons'
++make[4]: Nothing to be done for 'install-exec-am'.
++make  install-data-hook
++make[5]: Entering directory '/tmp/xfce4-taskmanager-1.4.0/data/icons'
++*** Icon cache not updated. Remember to run:
++***
++***   gtk-update-icon-cache -f -t /usr/share/icons/hicolor
++***
++make[5]: Leaving directory '/tmp/xfce4-taskmanager-1.4.0/data/icons'
++make[4]: Leaving directory '/tmp/xfce4-taskmanager-1.4.0/data/icons'
++make[3]: Leaving directory '/tmp/xfce4-taskmanager-1.4.0/data/icons'
++make[2]: Leaving directory '/tmp/xfce4-taskmanager-1.4.0/data/icons'
++make[2]: Entering directory '/tmp/xfce4-taskmanager-1.4.0/data'
++make[3]: Entering directory '/tmp/xfce4-taskmanager-1.4.0/data'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/xfce4-taskmanager-1.4.0/data'
++make[2]: Leaving directory '/tmp/xfce4-taskmanager-1.4.0/data'
++make[1]: Leaving directory '/tmp/xfce4-taskmanager-1.4.0/data'
++Making install in po
++make[1]: Entering directory '/tmp/xfce4-taskmanager-1.4.0/po'
++linguas="ar ast be bg ca cs da de el en_AU en_GB es et eu fi fr gl he hr hu hy_AM hye id ie is it ja kk ko lt lv ms nb nl oc pa pl pt pt_BR ru si sk sl sq sr sv te th tr ug uk ur ur_PK vi zh_CN zh_HK zh_TW "; \
++for lang in $linguas; do \
++  dir=/tmp/package-xfce4-taskmanager/usr/lib/locale/$lang/LC_MESSAGES; \
++  /bin/sh /tmp/xfce4-taskmanager-1.4.0/install-sh -d $dir; \
++  if test -r $lang.gmo; then \
++    /usr/bin/ginstall -c -m 644 $lang.gmo $dir/xfce4-taskmanager.mo; \
++    echo "installing $lang.gmo as $dir/xfce4-taskmanager.mo"; \
++  else \
++    /usr/bin/ginstall -c -m 644 ./$lang.gmo $dir/xfce4-taskmanager.mo; \
++    echo "installing ./$lang.gmo as" \
++	 "$dir/xfce4-taskmanager.mo"; \
++  fi; \
++  if test -r $lang.gmo.m; then \
++    /usr/bin/ginstall -c -m 644 $lang.gmo.m $dir/xfce4-taskmanager.mo.m; \
++    echo "installing $lang.gmo.m as $dir/xfce4-taskmanager.mo.m"; \
++  else \
++    if test -r ./$lang.gmo.m ; then \
++      /usr/bin/ginstall -c -m 644 ./$lang.gmo.m \
++	$dir/xfce4-taskmanager.mo.m; \
++      echo "installing ./$lang.gmo.m as" \
++	   "$dir/xfce4-taskmanager.mo.m"; \
++    else \
++      true; \
++    fi; \
++  fi; \
++done
++installing ar.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/ar/LC_MESSAGES/xfce4-taskmanager.mo
++installing ast.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/ast/LC_MESSAGES/xfce4-taskmanager.mo
++installing be.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/be/LC_MESSAGES/xfce4-taskmanager.mo
++installing bg.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/bg/LC_MESSAGES/xfce4-taskmanager.mo
++installing ca.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/ca/LC_MESSAGES/xfce4-taskmanager.mo
++installing cs.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/cs/LC_MESSAGES/xfce4-taskmanager.mo
++installing da.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/da/LC_MESSAGES/xfce4-taskmanager.mo
++installing de.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/de/LC_MESSAGES/xfce4-taskmanager.mo
++installing el.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/el/LC_MESSAGES/xfce4-taskmanager.mo
++installing en_AU.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/en_AU/LC_MESSAGES/xfce4-taskmanager.mo
++installing en_GB.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/en_GB/LC_MESSAGES/xfce4-taskmanager.mo
++installing es.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/es/LC_MESSAGES/xfce4-taskmanager.mo
++installing et.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/et/LC_MESSAGES/xfce4-taskmanager.mo
++installing eu.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/eu/LC_MESSAGES/xfce4-taskmanager.mo
++installing fi.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/fi/LC_MESSAGES/xfce4-taskmanager.mo
++installing fr.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/fr/LC_MESSAGES/xfce4-taskmanager.mo
++installing gl.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/gl/LC_MESSAGES/xfce4-taskmanager.mo
++installing he.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/he/LC_MESSAGES/xfce4-taskmanager.mo
++installing hr.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/hr/LC_MESSAGES/xfce4-taskmanager.mo
++installing hu.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/hu/LC_MESSAGES/xfce4-taskmanager.mo
++installing hy_AM.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/hy_AM/LC_MESSAGES/xfce4-taskmanager.mo
++installing hye.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/hye/LC_MESSAGES/xfce4-taskmanager.mo
++installing id.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/id/LC_MESSAGES/xfce4-taskmanager.mo
++installing ie.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/ie/LC_MESSAGES/xfce4-taskmanager.mo
++installing is.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/is/LC_MESSAGES/xfce4-taskmanager.mo
++installing it.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/it/LC_MESSAGES/xfce4-taskmanager.mo
++installing ja.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/ja/LC_MESSAGES/xfce4-taskmanager.mo
++installing kk.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/kk/LC_MESSAGES/xfce4-taskmanager.mo
++installing ko.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/ko/LC_MESSAGES/xfce4-taskmanager.mo
++installing lt.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/lt/LC_MESSAGES/xfce4-taskmanager.mo
++installing lv.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/lv/LC_MESSAGES/xfce4-taskmanager.mo
++installing ms.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/ms/LC_MESSAGES/xfce4-taskmanager.mo
++installing nb.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/nb/LC_MESSAGES/xfce4-taskmanager.mo
++installing nl.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/nl/LC_MESSAGES/xfce4-taskmanager.mo
++installing oc.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/oc/LC_MESSAGES/xfce4-taskmanager.mo
++installing pa.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/pa/LC_MESSAGES/xfce4-taskmanager.mo
++installing pl.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/pl/LC_MESSAGES/xfce4-taskmanager.mo
++installing pt.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/pt/LC_MESSAGES/xfce4-taskmanager.mo
++installing pt_BR.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/pt_BR/LC_MESSAGES/xfce4-taskmanager.mo
++installing ru.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/ru/LC_MESSAGES/xfce4-taskmanager.mo
++installing si.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/si/LC_MESSAGES/xfce4-taskmanager.mo
++installing sk.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/sk/LC_MESSAGES/xfce4-taskmanager.mo
++installing sl.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/sl/LC_MESSAGES/xfce4-taskmanager.mo
++installing sq.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/sq/LC_MESSAGES/xfce4-taskmanager.mo
++installing sr.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/sr/LC_MESSAGES/xfce4-taskmanager.mo
++installing sv.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/sv/LC_MESSAGES/xfce4-taskmanager.mo
++installing te.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/te/LC_MESSAGES/xfce4-taskmanager.mo
++installing th.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/th/LC_MESSAGES/xfce4-taskmanager.mo
++installing tr.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/tr/LC_MESSAGES/xfce4-taskmanager.mo
++installing ug.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/ug/LC_MESSAGES/xfce4-taskmanager.mo
++installing uk.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/uk/LC_MESSAGES/xfce4-taskmanager.mo
++installing ur.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/ur/LC_MESSAGES/xfce4-taskmanager.mo
++installing ur_PK.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/ur_PK/LC_MESSAGES/xfce4-taskmanager.mo
++installing vi.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/vi/LC_MESSAGES/xfce4-taskmanager.mo
++installing zh_CN.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/zh_CN/LC_MESSAGES/xfce4-taskmanager.mo
++installing zh_HK.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/zh_HK/LC_MESSAGES/xfce4-taskmanager.mo
++installing zh_TW.gmo as /tmp/package-xfce4-taskmanager/usr/lib/locale/zh_TW/LC_MESSAGES/xfce4-taskmanager.mo
++make[1]: Leaving directory '/tmp/xfce4-taskmanager-1.4.0/po'
++Making install in src
++make[1]: Entering directory '/tmp/xfce4-taskmanager-1.4.0/src'
++make  install-am
++make[2]: Entering directory '/tmp/xfce4-taskmanager-1.4.0/src'
++make[3]: Entering directory '/tmp/xfce4-taskmanager-1.4.0/src'
++ /usr/bin/mkdir -p '/tmp/package-xfce4-taskmanager/usr/bin'
++  /bin/sh ../libtool   --mode=install /usr/bin/ginstall -c xfce4-taskmanager '/tmp/package-xfce4-taskmanager/usr/bin'
++libtool: install: /usr/bin/ginstall -c xfce4-taskmanager /tmp/package-xfce4-taskmanager/usr/bin/xfce4-taskmanager
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/xfce4-taskmanager-1.4.0/src'
++make[2]: Leaving directory '/tmp/xfce4-taskmanager-1.4.0/src'
++make[1]: Leaving directory '/tmp/xfce4-taskmanager-1.4.0/src'
++make[1]: Entering directory '/tmp/xfce4-taskmanager-1.4.0'
++make[2]: Entering directory '/tmp/xfce4-taskmanager-1.4.0'
++make[2]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-xfce4-taskmanager/usr/share/applications'
++ /usr/bin/ginstall -c -m 644 xfce4-taskmanager.desktop '/tmp/package-xfce4-taskmanager/usr/share/applications'
++make[2]: Leaving directory '/tmp/xfce4-taskmanager-1.4.0'
++make[1]: Leaving directory '/tmp/xfce4-taskmanager-1.4.0'
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++
++No symbolic links were found, so we won't make an installation script.
++You can make your own later in ./install/doinst.sh and rebuild the
++package if you like.
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/xfce4-taskmanager-1.4.0-x86_64-1.txz
++
++./
++install/
++install/doinst.sh
++install/slack-desc
++usr/
++usr/bin/
++usr/bin/xfce4-taskmanager
++usr/doc/
++usr/doc/xfce4-taskmanager-1.4.0/
++usr/doc/xfce4-taskmanager-1.4.0/AUTHORS
++usr/doc/xfce4-taskmanager-1.4.0/COPYING
++usr/doc/xfce4-taskmanager-1.4.0/ChangeLog
++usr/doc/xfce4-taskmanager-1.4.0/INSTALL
++usr/doc/xfce4-taskmanager-1.4.0/NEWS
++usr/doc/xfce4-taskmanager-1.4.0/README.md
++usr/lib/
++usr/lib/locale/
++usr/lib/locale/ar/
++usr/lib/locale/ar/LC_MESSAGES/
++usr/lib/locale/ar/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/ast/
++usr/lib/locale/ast/LC_MESSAGES/
++usr/lib/locale/ast/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/be/
++usr/lib/locale/be/LC_MESSAGES/
++usr/lib/locale/be/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/bg/
++usr/lib/locale/bg/LC_MESSAGES/
++usr/lib/locale/bg/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/ca/
++usr/lib/locale/ca/LC_MESSAGES/
++usr/lib/locale/ca/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/cs/
++usr/lib/locale/cs/LC_MESSAGES/
++usr/lib/locale/cs/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/da/
++usr/lib/locale/da/LC_MESSAGES/
++usr/lib/locale/da/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/de/
++usr/lib/locale/de/LC_MESSAGES/
++usr/lib/locale/de/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/el/
++usr/lib/locale/el/LC_MESSAGES/
++usr/lib/locale/el/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/en_AU/
++usr/lib/locale/en_AU/LC_MESSAGES/
++usr/lib/locale/en_AU/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/en_GB/
++usr/lib/locale/en_GB/LC_MESSAGES/
++usr/lib/locale/en_GB/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/es/
++usr/lib/locale/es/LC_MESSAGES/
++usr/lib/locale/es/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/et/
++usr/lib/locale/et/LC_MESSAGES/
++usr/lib/locale/et/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/eu/
++usr/lib/locale/eu/LC_MESSAGES/
++usr/lib/locale/eu/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/fi/
++usr/lib/locale/fi/LC_MESSAGES/
++usr/lib/locale/fi/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/fr/
++usr/lib/locale/fr/LC_MESSAGES/
++usr/lib/locale/fr/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/gl/
++usr/lib/locale/gl/LC_MESSAGES/
++usr/lib/locale/gl/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/he/
++usr/lib/locale/he/LC_MESSAGES/
++usr/lib/locale/he/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/hr/
++usr/lib/locale/hr/LC_MESSAGES/
++usr/lib/locale/hr/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/hu/
++usr/lib/locale/hu/LC_MESSAGES/
++usr/lib/locale/hu/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/hy_AM/
++usr/lib/locale/hy_AM/LC_MESSAGES/
++usr/lib/locale/hy_AM/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/hye/
++usr/lib/locale/hye/LC_MESSAGES/
++usr/lib/locale/hye/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/id/
++usr/lib/locale/id/LC_MESSAGES/
++usr/lib/locale/id/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/ie/
++usr/lib/locale/ie/LC_MESSAGES/
++usr/lib/locale/ie/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/is/
++usr/lib/locale/is/LC_MESSAGES/
++usr/lib/locale/is/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/it/
++usr/lib/locale/it/LC_MESSAGES/
++usr/lib/locale/it/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/ja/
++usr/lib/locale/ja/LC_MESSAGES/
++usr/lib/locale/ja/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/kk/
++usr/lib/locale/kk/LC_MESSAGES/
++usr/lib/locale/kk/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/ko/
++usr/lib/locale/ko/LC_MESSAGES/
++usr/lib/locale/ko/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/lt/
++usr/lib/locale/lt/LC_MESSAGES/
++usr/lib/locale/lt/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/lv/
++usr/lib/locale/lv/LC_MESSAGES/
++usr/lib/locale/lv/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/ms/
++usr/lib/locale/ms/LC_MESSAGES/
++usr/lib/locale/ms/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/nb/
++usr/lib/locale/nb/LC_MESSAGES/
++usr/lib/locale/nb/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/nl/
++usr/lib/locale/nl/LC_MESSAGES/
++usr/lib/locale/nl/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/oc/
++usr/lib/locale/oc/LC_MESSAGES/
++usr/lib/locale/oc/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/pa/
++usr/lib/locale/pa/LC_MESSAGES/
++usr/lib/locale/pa/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/pl/
++usr/lib/locale/pl/LC_MESSAGES/
++usr/lib/locale/pl/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/pt/
++usr/lib/locale/pt/LC_MESSAGES/
++usr/lib/locale/pt/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/pt_BR/
++usr/lib/locale/pt_BR/LC_MESSAGES/
++usr/lib/locale/pt_BR/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/ru/
++usr/lib/locale/ru/LC_MESSAGES/
++usr/lib/locale/ru/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/si/
++usr/lib/locale/si/LC_MESSAGES/
++usr/lib/locale/si/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/sk/
++usr/lib/locale/sk/LC_MESSAGES/
++usr/lib/locale/sk/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/sl/
++usr/lib/locale/sl/LC_MESSAGES/
++usr/lib/locale/sl/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/sq/
++usr/lib/locale/sq/LC_MESSAGES/
++usr/lib/locale/sq/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/sr/
++usr/lib/locale/sr/LC_MESSAGES/
++usr/lib/locale/sr/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/sv/
++usr/lib/locale/sv/LC_MESSAGES/
++usr/lib/locale/sv/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/te/
++usr/lib/locale/te/LC_MESSAGES/
++usr/lib/locale/te/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/th/
++usr/lib/locale/th/LC_MESSAGES/
++usr/lib/locale/th/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/tr/
++usr/lib/locale/tr/LC_MESSAGES/
++usr/lib/locale/tr/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/ug/
++usr/lib/locale/ug/LC_MESSAGES/
++usr/lib/locale/ug/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/uk/
++usr/lib/locale/uk/LC_MESSAGES/
++usr/lib/locale/uk/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/ur/
++usr/lib/locale/ur/LC_MESSAGES/
++usr/lib/locale/ur/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/ur_PK/
++usr/lib/locale/ur_PK/LC_MESSAGES/
++usr/lib/locale/ur_PK/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/vi/
++usr/lib/locale/vi/LC_MESSAGES/
++usr/lib/locale/vi/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/zh_CN/
++usr/lib/locale/zh_CN/LC_MESSAGES/
++usr/lib/locale/zh_CN/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/zh_HK/
++usr/lib/locale/zh_HK/LC_MESSAGES/
++usr/lib/locale/zh_HK/LC_MESSAGES/xfce4-taskmanager.mo
++usr/lib/locale/zh_TW/
++usr/lib/locale/zh_TW/LC_MESSAGES/
++usr/lib/locale/zh_TW/LC_MESSAGES/xfce4-taskmanager.mo
++usr/share/
++usr/share/applications/
++usr/share/applications/xfce4-taskmanager.desktop
++usr/share/icons/
++usr/share/icons/hicolor/
++usr/share/icons/hicolor/128x128/
++usr/share/icons/hicolor/128x128/apps/
++usr/share/icons/hicolor/128x128/apps/org.xfce.taskmanager.png
++usr/share/icons/hicolor/16x16/
++usr/share/icons/hicolor/16x16/actions/
++usr/share/icons/hicolor/16x16/actions/xc_crosshair.png
++usr/share/icons/hicolor/16x16/apps/
++usr/share/icons/hicolor/16x16/apps/org.xfce.taskmanager.png
++usr/share/icons/hicolor/24x24/
++usr/share/icons/hicolor/24x24/actions/
++usr/share/icons/hicolor/24x24/actions/xc_crosshair.png
++usr/share/icons/hicolor/48x48/
++usr/share/icons/hicolor/48x48/apps/
++usr/share/icons/hicolor/48x48/apps/org.xfce.taskmanager.png
++usr/share/icons/hicolor/scalable/
++usr/share/icons/hicolor/scalable/actions/
++usr/share/icons/hicolor/scalable/actions/xc_crosshair.svg
++usr/share/icons/hicolor/scalable/apps/
++usr/share/icons/hicolor/scalable/apps/org.xfce.taskmanager.svg
++WARNING:  zero length file usr/doc/xfce4-taskmanager-1.4.0/ChangeLog
++
++Slackware package /tmp/xfce4-taskmanager-1.4.0-x86_64-1.txz created.
++

@@ -1,0 +1,1250 @@
+diff -ruBN /tmp/libqmi/libqmi.SlackBuild /source/n/libqmi/libqmi.SlackBuild
+--- /tmp/libqmi/libqmi.SlackBuild	2019-09-29 23:48:36.000000000 +0000
++++ /source/n/libqmi/libqmi.SlackBuild	2021-01-15 21:54:31.000000000 +0000
+@@ -56,7 +56,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ else
+   SLKCFLAGS="-O2"
+   LIBDIRSUFFIX=""
+@@ -92,7 +92,7 @@
+   --disable-gtk-doc \
+   --disable-gtk-doc-html \
+   --disable-static \
+-  --build=$ARCH-slackware-linux || exit 1
++  --build=$ARCH-slackware-linux-musl || exit 1
+ 
+ make $NUMJOBS || make || exit 1
+ make install DESTDIR=$PKG || exit 1
+diff -ruBN /tmp/libqmi/libqmi.SlackBuild.log /source/n/libqmi/libqmi.SlackBuild.log
+--- /tmp/libqmi/libqmi.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/n/libqmi/libqmi.SlackBuild.log	2021-01-15 22:00:16.000000000 +0000
+@@ -0,0 +1,1225 @@
++checking for a BSD-compatible install... /usr/bin/ginstall -c
++checking whether build environment is sane... yes
++checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
++checking for gawk... gawk
++checking whether make sets $(MAKE)... yes
++checking whether make supports nested variables... yes
++checking whether UID '0' is supported by ustar format... yes
++checking whether GID '0' is supported by ustar format... yes
++checking how to create a ustar tar archive... gnutar
++checking whether to enable maintainer-specific portions of Makefiles... yes
++checking whether make supports nested variables... (cached) yes
++checking for gcc... gcc
++checking whether the C compiler works... yes
++checking for C compiler default output file name... a.out
++checking for suffix of executables... 
++checking whether we are cross compiling... no
++checking for suffix of object files... o
++checking whether we are using the GNU C compiler... yes
++checking whether gcc accepts -g... yes
++checking for gcc option to accept ISO C89... none needed
++checking whether gcc understands -c and -o together... yes
++checking whether make supports the include directive... yes (GNU style)
++checking dependency style of gcc... gcc3
++checking build system type... x86_64-slackware-linux-musl
++checking host system type... x86_64-slackware-linux-musl
++checking how to print strings... printf
++checking for a sed that does not truncate output... /usr/bin/sed
++checking for grep that handles long lines and -e... /usr/bin/grep
++checking for egrep... /usr/bin/grep -E
++checking for fgrep... /usr/bin/grep -F
++checking for ld used by gcc... /usr/bin/ld
++checking if the linker (/usr/bin/ld) is GNU ld... yes
++checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
++checking the name lister (/usr/bin/nm -B) interface... BSD nm
++checking whether ln -s works... yes
++checking the maximum length of command line arguments... 98304
++checking how to convert x86_64-slackware-linux-musl file names to x86_64-slackware-linux-musl format... func_convert_file_noop
++checking how to convert x86_64-slackware-linux-musl file names to toolchain format... func_convert_file_noop
++checking for /usr/bin/ld option to reload object files... -r
++checking for objdump... objdump
++checking how to recognize dependent libraries... pass_all
++checking for dlltool... dlltool
++checking how to associate runtime and link libraries... printf %s\n
++checking for ar... ar
++checking for archiver @FILE support... @
++checking for strip... strip
++checking for ranlib... ranlib
++checking command to parse /usr/bin/nm -B output from gcc object... ok
++checking for sysroot... no
++checking for a working dd... /usr/bin/dd
++checking how to truncate binary pipes... /usr/bin/dd bs=4096 count=1
++checking for mt... mt
++checking if mt is a manifest tool... no
++checking how to run the C preprocessor... gcc -E
++checking for ANSI C header files... yes
++checking for sys/types.h... yes
++checking for sys/stat.h... yes
++checking for stdlib.h... yes
++checking for string.h... yes
++checking for memory.h... yes
++checking for strings.h... yes
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking for unistd.h... yes
++checking for dlfcn.h... yes
++checking for objdir... .libs
++checking if gcc supports -fno-rtti -fno-exceptions... no
++checking for gcc option to produce PIC... -fPIC -DPIC
++checking if gcc PIC flag -fPIC -DPIC works... yes
++checking if gcc static flag -static works... yes
++checking if gcc supports -c -o file.o... yes
++checking if gcc supports -c -o file.o... (cached) yes
++checking whether the gcc linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
++checking whether -lc should be explicitly linked in... no
++checking dynamic linker characteristics... GNU/Linux ld.so
++checking how to hardcode library paths into programs... immediate
++checking whether stripping libraries is possible... yes
++checking if libtool supports shared libraries... yes
++checking whether to build shared libraries... yes
++checking whether to build static libraries... no
++checking whether C compiler accepts -Werror=unknown-warning-option... no
++checking whether C compiler accepts -Wno-suggest-attribute=format... yes
++checking whether C compiler accepts -fno-strict-aliasing... yes
++checking whether C compiler accepts -Wnested-externs... yes
++checking whether C compiler accepts -Wmissing-prototypes... yes
++checking whether C compiler accepts -Wstrict-prototypes... yes
++checking whether C compiler accepts -Wdeclaration-after-statement... yes
++checking whether C compiler accepts -Wimplicit-function-declaration... yes
++checking whether C compiler accepts -Wold-style-definition... yes
++checking whether C compiler accepts -Wjump-misses-init... yes
++checking whether C compiler accepts -Wall... yes
++checking whether C compiler accepts -Wextra... yes
++checking whether C compiler accepts -Wundef... yes
++checking whether C compiler accepts -Wwrite-strings... yes
++checking whether C compiler accepts -Wpointer-arith... yes
++checking whether C compiler accepts -Wmissing-declarations... yes
++checking whether C compiler accepts -Wredundant-decls... yes
++checking whether C compiler accepts -Wno-unused-parameter... yes
++checking whether C compiler accepts -Wno-missing-field-initializers... yes
++checking whether C compiler accepts -Wformat=2... yes
++checking whether C compiler accepts -Wcast-align... yes
++checking whether C compiler accepts -Wformat-nonliteral... yes
++checking whether C compiler accepts -Wformat-security... yes
++checking whether C compiler accepts -Wsign-compare... yes
++checking whether C compiler accepts -Wstrict-aliasing... yes
++checking whether C compiler accepts -Wshadow... yes
++checking whether C compiler accepts -Winline... yes
++checking whether C compiler accepts -Wpacked... yes
++checking whether C compiler accepts -Wmissing-format-attribute... yes
++checking whether C compiler accepts -Wmissing-noreturn... yes
++checking whether C compiler accepts -Winit-self... yes
++checking whether C compiler accepts -Wredundant-decls... (cached) yes
++checking whether C compiler accepts -Wmissing-include-dirs... yes
++checking whether C compiler accepts -Wunused-but-set-variable... yes
++checking whether C compiler accepts -Warray-bounds... yes
++checking whether C compiler accepts -Wreturn-type... yes
++checking whether C compiler accepts -Wswitch-enum... yes
++checking whether C compiler accepts -Wswitch-default... yes
++checking whether C compiler accepts -Wduplicated-cond... yes
++checking whether C compiler accepts -Wduplicated-branches... yes
++checking whether C compiler accepts -Wlogical-op... yes
++checking whether C compiler accepts -Wrestrict... yes
++checking whether C compiler accepts -Wnull-dereference... yes
++checking whether C compiler accepts -Wdouble-promotion... yes
++checking whether C compiler accepts -Wno-error=unused-parameter... yes
++checking whether C compiler accepts -Wno-error=missing-field-initializers... yes
++checking whether C compiler accepts -Werror=unknown-warning-option... (cached) no
++checking whether the linker accepts -Wl,--as-needed... yes
++checking whether the linker accepts -Wl,--as-needed... yes
++checking whether the linker accepts -Wl,-z,relro... yes
++checking whether the linker accepts -Wl,-z,relro... yes
++checking whether the linker accepts -Wl,-z,now... yes
++checking whether the linker accepts -Wl,-z,now... yes
++checking whether the linker accepts -Wl,-z,noexecstack... yes
++checking whether the linker accepts -Wl,-z,noexecstack... yes
++checking whether the linker accepts -Wl,--no-as-needed... yes
++checking whether the linker accepts -Wl,--fatal-warnings... yes
++checking whether the linker accepts -Wl,-fatal_warnings... no
++checking whether the linker accepts -Wl,--no-as-needed... yes
++checking whether C compiler accepts -Werror=unknown-warning-option... (cached) no
++checking whether C compiler accepts -Wno-suggest-attribute=format... (cached) yes
++checking whether C compiler accepts -fno-strict-aliasing... (cached) yes
++checking whether C compiler accepts -Wnested-externs... (cached) yes
++checking whether C compiler accepts -Wmissing-prototypes... (cached) yes
++checking whether C compiler accepts -Wstrict-prototypes... (cached) yes
++checking whether C compiler accepts -Wdeclaration-after-statement... (cached) yes
++checking whether C compiler accepts -Wimplicit-function-declaration... (cached) yes
++checking whether C compiler accepts -Wold-style-definition... (cached) yes
++checking whether C compiler accepts -Wjump-misses-init... (cached) yes
++checking whether C compiler accepts -Wall... (cached) yes
++checking whether C compiler accepts -Wextra... (cached) yes
++checking whether C compiler accepts -Wundef... (cached) yes
++checking whether C compiler accepts -Wwrite-strings... (cached) yes
++checking whether C compiler accepts -Wpointer-arith... (cached) yes
++checking whether C compiler accepts -Wmissing-declarations... (cached) yes
++checking whether C compiler accepts -Wredundant-decls... (cached) yes
++checking whether C compiler accepts -Wno-unused-parameter... (cached) yes
++checking whether C compiler accepts -Wno-missing-field-initializers... (cached) yes
++checking whether C compiler accepts -Wformat=2... (cached) yes
++checking whether C compiler accepts -Wcast-align... (cached) yes
++checking whether C compiler accepts -Wformat-nonliteral... (cached) yes
++checking whether C compiler accepts -Wformat-security... (cached) yes
++checking whether C compiler accepts -Wsign-compare... (cached) yes
++checking whether C compiler accepts -Wstrict-aliasing... (cached) yes
++checking whether C compiler accepts -Wshadow... (cached) yes
++checking whether C compiler accepts -Winline... (cached) yes
++checking whether C compiler accepts -Wpacked... (cached) yes
++checking whether C compiler accepts -Wmissing-format-attribute... (cached) yes
++checking whether C compiler accepts -Wmissing-noreturn... (cached) yes
++checking whether C compiler accepts -Winit-self... (cached) yes
++checking whether C compiler accepts -Wredundant-decls... (cached) yes
++checking whether C compiler accepts -Wmissing-include-dirs... (cached) yes
++checking whether C compiler accepts -Wunused-but-set-variable... (cached) yes
++checking whether C compiler accepts -Warray-bounds... (cached) yes
++checking whether C compiler accepts -Wreturn-type... (cached) yes
++checking whether C compiler accepts -Wswitch-enum... (cached) yes
++checking whether C compiler accepts -Wswitch-default... (cached) yes
++checking whether C compiler accepts -Wduplicated-cond... (cached) yes
++checking whether C compiler accepts -Wduplicated-branches... (cached) yes
++checking whether C compiler accepts -Wlogical-op... (cached) yes
++checking whether C compiler accepts -Wrestrict... (cached) yes
++checking whether C compiler accepts -Wnull-dereference... (cached) yes
++checking whether C compiler accepts -Wdouble-promotion... (cached) yes
++checking whether C compiler accepts -Wno-cast-function-type... yes
++checking whether C compiler accepts -Wno-packed... yes
++checking whether C compiler accepts -Wno-error=unused-parameter... (cached) yes
++checking whether C compiler accepts -Wno-error=missing-field-initializers... (cached) yes
++checking whether C compiler accepts -Wno-error=cast-function-type... yes
++checking whether C compiler accepts -Wno-error=packed... yes
++checking pkg-config is at least version 0.9.0... yes
++checking for GLIB... yes
++checking for python... /usr/bin/python
++checking for python version... 2.7
++checking for python platform... linux2
++checking for python script directory... ${prefix}/lib/python2.7/site-packages
++checking for python extension module directory... ${exec_prefix}/lib/python2.7/site-packages
++checking for gobject-introspection... yes
++checking for GUDEV... yes
++checking for gtk-doc... yes
++checking for gtkdoc-check... gtkdoc-check.test
++checking for gtkdoc-check... /usr/bin/gtkdoc-check
++checking for gtkdoc-rebase... /usr/bin/gtkdoc-rebase
++checking for gtkdoc-mkpdf... /usr/bin/gtkdoc-mkpdf
++checking whether to build gtk-doc documentation... no
++checking for GTKDOC_DEPS... yes
++checking for MBIM... yes
++checking linux/qrtr.h usability... yes
++checking linux/qrtr.h presence... yes
++checking for linux/qrtr.h... yes
++checking for help2man... /usr/bin/help2man
++checking that generated files are newer than configure... done
++configure: creating ./config.status
++config.status: creating Makefile
++config.status: creating data/Makefile
++config.status: creating data/pkg-config/Makefile
++config.status: creating data/pkg-config/qmi-glib.pc
++config.status: creating build-aux/Makefile
++config.status: creating build-aux/templates/Makefile
++config.status: creating build-aux/qmi-codegen/Makefile
++config.status: creating src/Makefile
++config.status: creating src/libqrtr-glib/Makefile
++config.status: creating src/libqmi-glib/Makefile
++config.status: creating src/libqmi-glib/qmi-version.h
++config.status: creating src/libqmi-glib/generated/Makefile
++config.status: creating src/libqmi-glib/test/Makefile
++config.status: creating src/qmicli/Makefile
++config.status: creating src/qmicli/test/Makefile
++config.status: creating src/qmi-proxy/Makefile
++config.status: creating src/qmi-firmware-update/Makefile
++config.status: creating src/qmi-firmware-update/test/Makefile
++config.status: creating utils/Makefile
++config.status: creating examples/Makefile
++config.status: creating examples/simple-tester-python/Makefile
++config.status: creating docs/Makefile
++config.status: creating docs/reference/Makefile
++config.status: creating docs/reference/libqmi-glib/Makefile
++config.status: creating docs/reference/libqmi-glib/version.xml
++config.status: creating docs/man/Makefile
++config.status: creating config.h
++config.status: executing depfiles commands
++config.status: executing libtool commands
++
++    libqmi 1.26.8
++    ==============================================
++
++    Build:
++      compiler:                 gcc
++      cflags:                   -O2 -fPIC -std=gnu89
++      ldflags:                  
++      warn cflags:              -fno-strict-aliasing -Wnested-externs -Wmissing-prototypes -Wstrict-prototypes -Wdeclaration-after-statement -Wimplicit-function-declaration -Wold-style-definition -Wjump-misses-init -Wall -Wextra -Wundef -Wwrite-strings -Wpointer-arith -Wmissing-declarations -Wredundant-decls -Wno-unused-parameter -Wno-missing-field-initializers -Wformat=2 -Wcast-align -Wformat-nonliteral -Wformat-security -Wsign-compare -Wstrict-aliasing -Wshadow -Winline -Wpacked -Wmissing-format-attribute -Wmissing-noreturn -Winit-self -Wmissing-include-dirs -Wunused-but-set-variable -Warray-bounds -Wreturn-type -Wswitch-enum -Wswitch-default -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wrestrict -Wnull-dereference -Wdouble-promotion -Wno-error=unused-parameter -Wno-error=missing-field-initializers -Wno-cast-function-type -Wno-packed -Wno-error=cast-function-type -Wno-error=packed
++      warn ldflags:             -Wl,--no-as-needed
++      Maintainer mode:          yes
++      Documentation:            no
++      gobject introspection:    yes
++
++    System paths:
++      prefix:                   /usr
++      udev base directory:      /lib/udev
++
++    Features:
++      QMUX over MBIM:           yes
++      QMI username:             no (root)
++
++    Built items:
++      libqrtr-glib:             no
++      libqmi-glib:              yes (full)
++      qmicli:                   yes
++      qmi-firmware-update:      yes
++          with udev:                    yes
++          with MM runtime check:        yes
++
++make  all-recursive
++make[1]: Entering directory '/tmp/libqmi-1.26.8'
++Making all in .
++make[2]: Entering directory '/tmp/libqmi-1.26.8'
++make[2]: Leaving directory '/tmp/libqmi-1.26.8'
++Making all in data
++make[2]: Entering directory '/tmp/libqmi-1.26.8/data'
++Making all in .
++make[3]: Entering directory '/tmp/libqmi-1.26.8/data'
++make[3]: Nothing to be done for 'all-am'.
++make[3]: Leaving directory '/tmp/libqmi-1.26.8/data'
++Making all in pkg-config
++make[3]: Entering directory '/tmp/libqmi-1.26.8/data/pkg-config'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/libqmi-1.26.8/data/pkg-config'
++make[2]: Leaving directory '/tmp/libqmi-1.26.8/data'
++Making all in build-aux
++make[2]: Entering directory '/tmp/libqmi-1.26.8/build-aux'
++Making all in templates
++make[3]: Entering directory '/tmp/libqmi-1.26.8/build-aux/templates'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/libqmi-1.26.8/build-aux/templates'
++Making all in qmi-codegen
++make[3]: Entering directory '/tmp/libqmi-1.26.8/build-aux/qmi-codegen'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/libqmi-1.26.8/build-aux/qmi-codegen'
++Making all in .
++make[3]: Entering directory '/tmp/libqmi-1.26.8/build-aux'
++make[3]: Nothing to be done for 'all-am'.
++make[3]: Leaving directory '/tmp/libqmi-1.26.8/build-aux'
++make[2]: Leaving directory '/tmp/libqmi-1.26.8/build-aux'
++Making all in src
++make[2]: Entering directory '/tmp/libqmi-1.26.8/src'
++Making all in libqrtr-glib
++make[3]: Entering directory '/tmp/libqmi-1.26.8/src/libqrtr-glib'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/libqmi-1.26.8/src/libqrtr-glib'
++Making all in libqmi-glib
++make[3]: Entering directory '/tmp/libqmi-1.26.8/src/libqmi-glib'
++Making all in generated
++make[4]: Entering directory '/tmp/libqmi-1.26.8/src/libqmi-glib/generated'
++  GEN      qmi-error-types.h
++  GEN      qmi-enum-types.h
++  GEN      qmi-enum-types-private.h
++  GEN      qmi-flags64-types.h
++  GEN      qmi-ctl.h
++  GEN      qmi-dms.h
++  GEN      qmi-nas.h
++  GEN      qmi-wds.h
++  GEN      qmi-wms.h
++  GEN      qmi-pds.h
++  GEN      qmi-pdc.h
++  GEN      qmi-pbm.h
++  GEN      qmi-uim.h
++  GEN      qmi-oma.h
++  GEN      qmi-wda.h
++  GEN      qmi-voice.h
++  GEN      qmi-loc.h
++  GEN      qmi-qos.h
++  GEN      qmi-gas.h
++  GEN      qmi-gms.h
++  GEN      qmi-dsd.h
++  GEN      qmi-error-types.c
++  GEN      qmi-error-quarks.c
++  GEN      qmi-enum-types-private.c
++  GEN      qmi-flags64-types.c
++  GEN      qmi-enum-types.c
++make  all-am
++make[5]: Entering directory '/tmp/libqmi-1.26.8/src/libqmi-glib/generated'
++  CC       libqmi_glib_generated_la-qmi-error-types.lo
++  CC       libqmi_glib_generated_la-qmi-error-quarks.lo
++  CC       libqmi_glib_generated_la-qmi-enum-types.lo
++  CC       libqmi_glib_generated_la-qmi-enum-types-private.lo
++  CC       libqmi_glib_generated_la-qmi-flags64-types.lo
++  CC       libqmi_glib_generated_la-qmi-ctl.lo
++  CC       libqmi_glib_generated_la-qmi-dms.lo
++  CC       libqmi_glib_generated_la-qmi-nas.lo
++  CC       libqmi_glib_generated_la-qmi-wds.lo
++  CC       libqmi_glib_generated_la-qmi-wms.lo
++  CC       libqmi_glib_generated_la-qmi-pds.lo
++  CC       libqmi_glib_generated_la-qmi-pdc.lo
++  CC       libqmi_glib_generated_la-qmi-pbm.lo
++  CC       libqmi_glib_generated_la-qmi-uim.lo
++  CC       libqmi_glib_generated_la-qmi-oma.lo
++  CC       libqmi_glib_generated_la-qmi-wda.lo
++  CC       libqmi_glib_generated_la-qmi-voice.lo
++  CC       libqmi_glib_generated_la-qmi-loc.lo
++  CC       libqmi_glib_generated_la-qmi-qos.lo
++  CC       libqmi_glib_generated_la-qmi-gas.lo
++  CC       libqmi_glib_generated_la-qmi-gms.lo
++  CC       libqmi_glib_generated_la-qmi-dsd.lo
++  CCLD     libqmi-glib-generated.la
++make[5]: Leaving directory '/tmp/libqmi-1.26.8/src/libqmi-glib/generated'
++make[4]: Leaving directory '/tmp/libqmi-1.26.8/src/libqmi-glib/generated'
++Making all in .
++make[4]: Entering directory '/tmp/libqmi-1.26.8/src/libqmi-glib'
++  CC       libqmi_glib_la-qmi-enums-wds.lo
++  CC       libqmi_glib_la-qmi-enums-dms.lo
++  CC       libqmi_glib_la-qmi-enums-nas.lo
++  CC       libqmi_glib_la-qmi-utils.lo
++  CC       libqmi_glib_la-qmi-message.lo
++  CC       libqmi_glib_la-qmi-message-context.lo
++  CC       libqmi_glib_la-qmi-device.lo
++  CC       libqmi_glib_la-qmi-client.lo
++  CC       libqmi_glib_la-qmi-proxy.lo
++  CC       libqmi_glib_la-qmi-file.lo
++  CC       libqmi_glib_la-qmi-endpoint.lo
++  CC       libqmi_glib_la-qmi-endpoint-qmux.lo
++  CC       libqmi_glib_la-qmi-endpoint-mbim.lo
++  CC       libqmi_glib_compat_la-qmi-compat.lo
++  CCLD     libqmi-glib-compat.la
++  CCLD     libqmi-glib.la
++  GISCAN   Qmi-1.0.gir
++  GICOMP   Qmi-1.0.gir
++make[4]: Leaving directory '/tmp/libqmi-1.26.8/src/libqmi-glib'
++Making all in test
++make[4]: Entering directory '/tmp/libqmi-1.26.8/src/libqmi-glib/test'
++  CC       test-utils.o
++  CC       test_compat_utils-test-compat-utils.o
++  CC       test-message.o
++  CC       test-fixture.o
++  CC       test-port-context.o
++  CC       test-generated.o
++  CCLD     test-utils
++  CCLD     test-compat-utils
++  CCLD     test-message
++  CCLD     test-generated
++make[4]: Leaving directory '/tmp/libqmi-1.26.8/src/libqmi-glib/test'
++make[3]: Leaving directory '/tmp/libqmi-1.26.8/src/libqmi-glib'
++Making all in qmicli
++make[3]: Entering directory '/tmp/libqmi-1.26.8/src/qmicli'
++Making all in .
++make[4]: Entering directory '/tmp/libqmi-1.26.8/src/qmicli'
++  CC       qmicli-qmicli.o
++  CC       qmicli-qmicli-dms.o
++  CC       qmicli-qmicli-wds.o
++  CC       qmicli-qmicli-nas.o
++  CC       qmicli-qmicli-pbm.o
++  CC       qmicli-qmicli-pdc.o
++  CC       qmicli-qmicli-uim.o
++  CC       qmicli-qmicli-wms.o
++  CC       qmicli-qmicli-wda.o
++  CC       qmicli-qmicli-voice.o
++  CC       qmicli-qmicli-loc.o
++  CC       qmicli-qmicli-qos.o
++  CC       qmicli-qmicli-gas.o
++  CC       qmicli-qmicli-gms.o
++  CC       qmicli-qmicli-dsd.o
++  CC       libhelpers_la-qmicli-helpers.lo
++  CCLD     libhelpers.la
++  CCLD     qmicli
++make[4]: Leaving directory '/tmp/libqmi-1.26.8/src/qmicli'
++Making all in test
++make[4]: Entering directory '/tmp/libqmi-1.26.8/src/qmicli/test'
++  CC       test_helpers-test-helpers.o
++  CCLD     test-helpers
++make[4]: Leaving directory '/tmp/libqmi-1.26.8/src/qmicli/test'
++make[3]: Leaving directory '/tmp/libqmi-1.26.8/src/qmicli'
++Making all in qmi-proxy
++make[3]: Entering directory '/tmp/libqmi-1.26.8/src/qmi-proxy'
++  CC       qmi_proxy-qmi-proxy.o
++  CCLD     qmi-proxy
++make[3]: Leaving directory '/tmp/libqmi-1.26.8/src/qmi-proxy'
++Making all in qmi-firmware-update
++make[3]: Entering directory '/tmp/libqmi-1.26.8/src/qmi-firmware-update'
++  GEN      qfu-enum-types.h
++  GEN      qfu-enum-types.c
++make  all-recursive
++make[4]: Entering directory '/tmp/libqmi-1.26.8/src/qmi-firmware-update'
++Making all in .
++make[5]: Entering directory '/tmp/libqmi-1.26.8/src/qmi-firmware-update'
++  CC       qmi_firmware_update-qfu-main.o
++  CC       qmi_firmware_update-qfu-device-selection.o
++  CC       qmi_firmware_update-qfu-operation-update.o
++  CC       qmi_firmware_update-qfu-operation-verify.o
++  CC       qmi_firmware_update-qfu-operation-reset.o
++  CC       qmi_firmware_update-qfu-log.o
++  CC       qmi_firmware_update-qfu-updater.o
++  CC       qmi_firmware_update-qfu-udev-helpers.o
++  CC       qmi_firmware_update-qfu-image.o
++  CC       qmi_firmware_update-qfu-image-cwe.o
++  CC       qmi_firmware_update-qfu-image-factory.o
++  CC       qmi_firmware_update-qfu-dload-message.o
++  CC       qmi_firmware_update-qfu-qdl-message.o
++  CC       qmi_firmware_update-qfu-qdl-device.o
++  CC       qmi_firmware_update-qfu-sahara-message.o
++  CC       qmi_firmware_update-qfu-sahara-device.o
++  CC       qmi_firmware_update-qfu-reseter.o
++  CC       qmi_firmware_update-qfu-at-device.o
++  CC       qmi_firmware_update-qfu-enum-types.o
++  CC       libutils_la-qfu-utils.lo
++  CC       libfirehose_la-qfu-firehose-message.lo
++  CCLD     libfirehose.la
++  CCLD     libutils.la
++  CCLD     qmi-firmware-update
++make[5]: Leaving directory '/tmp/libqmi-1.26.8/src/qmi-firmware-update'
++Making all in test
++make[5]: Entering directory '/tmp/libqmi-1.26.8/src/qmi-firmware-update/test'
++  CC       test-utils.o
++  CC       test-firehose.o
++  CCLD     test-firehose
++  CCLD     test-utils
++make[5]: Leaving directory '/tmp/libqmi-1.26.8/src/qmi-firmware-update/test'
++make[4]: Leaving directory '/tmp/libqmi-1.26.8/src/qmi-firmware-update'
++make[3]: Leaving directory '/tmp/libqmi-1.26.8/src/qmi-firmware-update'
++make[3]: Entering directory '/tmp/libqmi-1.26.8/src'
++make[3]: Nothing to be done for 'all-am'.
++make[3]: Leaving directory '/tmp/libqmi-1.26.8/src'
++make[2]: Leaving directory '/tmp/libqmi-1.26.8/src'
++Making all in examples
++make[2]: Entering directory '/tmp/libqmi-1.26.8/examples'
++Making all in simple-tester-python
++make[3]: Entering directory '/tmp/libqmi-1.26.8/examples/simple-tester-python'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/libqmi-1.26.8/examples/simple-tester-python'
++make[3]: Entering directory '/tmp/libqmi-1.26.8/examples'
++make[3]: Nothing to be done for 'all-am'.
++make[3]: Leaving directory '/tmp/libqmi-1.26.8/examples'
++make[2]: Leaving directory '/tmp/libqmi-1.26.8/examples'
++Making all in utils
++make[2]: Entering directory '/tmp/libqmi-1.26.8/utils'
++  CC       swi-update.o
++  GEN      qmi-network
++  CCLD     swi-update
++make[2]: Leaving directory '/tmp/libqmi-1.26.8/utils'
++Making all in docs
++make[2]: Entering directory '/tmp/libqmi-1.26.8/docs'
++Making all in reference
++make[3]: Entering directory '/tmp/libqmi-1.26.8/docs/reference'
++Making all in libqmi-glib
++make[4]: Entering directory '/tmp/libqmi-1.26.8/docs/reference/libqmi-glib'
++  GEN      libqmi-glib-sections.mstamp
++make  all-am
++make[5]: Entering directory '/tmp/libqmi-1.26.8/docs/reference/libqmi-glib'
++make[5]: Nothing to be done for 'all-am'.
++make[5]: Leaving directory '/tmp/libqmi-1.26.8/docs/reference/libqmi-glib'
++make[4]: Leaving directory '/tmp/libqmi-1.26.8/docs/reference/libqmi-glib'
++make[4]: Entering directory '/tmp/libqmi-1.26.8/docs/reference'
++make[4]: Nothing to be done for 'all-am'.
++make[4]: Leaving directory '/tmp/libqmi-1.26.8/docs/reference'
++make[3]: Leaving directory '/tmp/libqmi-1.26.8/docs/reference'
++Making all in man
++make[3]: Entering directory '/tmp/libqmi-1.26.8/docs/man'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/libqmi-1.26.8/docs/man'
++make[3]: Entering directory '/tmp/libqmi-1.26.8/docs'
++make[3]: Nothing to be done for 'all-am'.
++make[3]: Leaving directory '/tmp/libqmi-1.26.8/docs'
++make[2]: Leaving directory '/tmp/libqmi-1.26.8/docs'
++make[1]: Leaving directory '/tmp/libqmi-1.26.8'
++Making install in .
++make[1]: Entering directory '/tmp/libqmi-1.26.8'
++make[2]: Entering directory '/tmp/libqmi-1.26.8'
++make[2]: Nothing to be done for 'install-exec-am'.
++make[2]: Nothing to be done for 'install-data-am'.
++make[2]: Leaving directory '/tmp/libqmi-1.26.8'
++make[1]: Leaving directory '/tmp/libqmi-1.26.8'
++Making install in data
++make[1]: Entering directory '/tmp/libqmi-1.26.8/data'
++Making install in .
++make[2]: Entering directory '/tmp/libqmi-1.26.8/data'
++make[3]: Entering directory '/tmp/libqmi-1.26.8/data'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/libqmi-1.26.8/data'
++make[2]: Leaving directory '/tmp/libqmi-1.26.8/data'
++Making install in pkg-config
++make[2]: Entering directory '/tmp/libqmi-1.26.8/data/pkg-config'
++make[3]: Entering directory '/tmp/libqmi-1.26.8/data/pkg-config'
++make[3]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-libqmi/usr/lib/pkgconfig'
++ /usr/bin/ginstall -c -m 644 qmi-glib.pc '/tmp/package-libqmi/usr/lib/pkgconfig'
++make[3]: Leaving directory '/tmp/libqmi-1.26.8/data/pkg-config'
++make[2]: Leaving directory '/tmp/libqmi-1.26.8/data/pkg-config'
++make[1]: Leaving directory '/tmp/libqmi-1.26.8/data'
++Making install in build-aux
++make[1]: Entering directory '/tmp/libqmi-1.26.8/build-aux'
++Making install in templates
++make[2]: Entering directory '/tmp/libqmi-1.26.8/build-aux/templates'
++make[3]: Entering directory '/tmp/libqmi-1.26.8/build-aux/templates'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/libqmi-1.26.8/build-aux/templates'
++make[2]: Leaving directory '/tmp/libqmi-1.26.8/build-aux/templates'
++Making install in qmi-codegen
++make[2]: Entering directory '/tmp/libqmi-1.26.8/build-aux/qmi-codegen'
++make[3]: Entering directory '/tmp/libqmi-1.26.8/build-aux/qmi-codegen'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/libqmi-1.26.8/build-aux/qmi-codegen'
++make[2]: Leaving directory '/tmp/libqmi-1.26.8/build-aux/qmi-codegen'
++Making install in .
++make[2]: Entering directory '/tmp/libqmi-1.26.8/build-aux'
++make[3]: Entering directory '/tmp/libqmi-1.26.8/build-aux'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/libqmi-1.26.8/build-aux'
++make[2]: Leaving directory '/tmp/libqmi-1.26.8/build-aux'
++make[1]: Leaving directory '/tmp/libqmi-1.26.8/build-aux'
++Making install in src
++make[1]: Entering directory '/tmp/libqmi-1.26.8/src'
++Making install in libqrtr-glib
++make[2]: Entering directory '/tmp/libqmi-1.26.8/src/libqrtr-glib'
++make[3]: Entering directory '/tmp/libqmi-1.26.8/src/libqrtr-glib'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Leaving directory '/tmp/libqmi-1.26.8/src/libqrtr-glib'
++make[2]: Leaving directory '/tmp/libqmi-1.26.8/src/libqrtr-glib'
++Making install in libqmi-glib
++make[2]: Entering directory '/tmp/libqmi-1.26.8/src/libqmi-glib'
++Making install in generated
++make[3]: Entering directory '/tmp/libqmi-1.26.8/src/libqmi-glib/generated'
++make  install-am
++make[4]: Entering directory '/tmp/libqmi-1.26.8/src/libqmi-glib/generated'
++make[5]: Entering directory '/tmp/libqmi-1.26.8/src/libqmi-glib/generated'
++make[5]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-libqmi/usr/include/libqmi-glib'
++ /usr/bin/ginstall -c -m 644 qmi-error-types.h qmi-enum-types.h qmi-flags64-types.h qmi-dms.h qmi-nas.h qmi-wds.h qmi-wms.h qmi-pds.h qmi-pdc.h qmi-pbm.h qmi-uim.h qmi-oma.h qmi-wda.h qmi-voice.h qmi-loc.h qmi-qos.h qmi-gas.h qmi-gms.h qmi-dsd.h '/tmp/package-libqmi/usr/include/libqmi-glib'
++make[5]: Leaving directory '/tmp/libqmi-1.26.8/src/libqmi-glib/generated'
++make[4]: Leaving directory '/tmp/libqmi-1.26.8/src/libqmi-glib/generated'
++make[3]: Leaving directory '/tmp/libqmi-1.26.8/src/libqmi-glib/generated'
++Making install in .
++make[3]: Entering directory '/tmp/libqmi-1.26.8/src/libqmi-glib'
++make[4]: Entering directory '/tmp/libqmi-1.26.8/src/libqmi-glib'
++ /usr/bin/mkdir -p '/tmp/package-libqmi/usr/lib'
++ /bin/sh ../../libtool   --mode=install /usr/bin/ginstall -c   libqmi-glib.la '/tmp/package-libqmi/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/libqmi-glib.so.5.7.0 /tmp/package-libqmi/usr/lib/libqmi-glib.so.5.7.0
++libtool: install: (cd /tmp/package-libqmi/usr/lib && { ln -s -f libqmi-glib.so.5.7.0 libqmi-glib.so.5 || { rm -f libqmi-glib.so.5 && ln -s libqmi-glib.so.5.7.0 libqmi-glib.so.5; }; })
++libtool: install: (cd /tmp/package-libqmi/usr/lib && { ln -s -f libqmi-glib.so.5.7.0 libqmi-glib.so || { rm -f libqmi-glib.so && ln -s libqmi-glib.so.5.7.0 libqmi-glib.so; }; })
++libtool: install: /usr/bin/ginstall -c .libs/libqmi-glib.lai /tmp/package-libqmi/usr/lib/libqmi-glib.la
++libtool: warning: remember to run 'libtool --finish /usr/lib'
++ /usr/bin/mkdir -p '/tmp/package-libqmi/usr/include/libqmi-glib'
++ /usr/bin/ginstall -c -m 644 libqmi-glib.h qmi-errors.h qmi-enums.h qmi-enums-private.h qmi-compat.h qmi-enums-dms.h qmi-flags64-dms.h qmi-enums-wds.h qmi-enums-nas.h qmi-flags64-nas.h qmi-enums-wms.h qmi-enums-pds.h qmi-enums-pdc.h qmi-enums-pbm.h qmi-enums-uim.h qmi-enums-oma.h qmi-enums-wda.h qmi-enums-voice.h qmi-enums-loc.h qmi-flags64-loc.h qmi-enums-qos.h qmi-enums-gas.h qmi-enums-dsd.h qmi-flags64-dsd.h qmi-utils.h qmi-message.h qmi-message-context.h qmi-device.h qmi-client.h qmi-proxy.h '/tmp/package-libqmi/usr/include/libqmi-glib'
++ /usr/bin/mkdir -p '/tmp/package-libqmi/usr/share/gir-1.0'
++ /usr/bin/ginstall -c -m 644 Qmi-1.0.gir '/tmp/package-libqmi/usr/share/gir-1.0'
++ /usr/bin/mkdir -p '/tmp/package-libqmi/usr/include/libqmi-glib'
++ /usr/bin/ginstall -c -m 644 qmi-version.h '/tmp/package-libqmi/usr/include/libqmi-glib'
++ /usr/bin/mkdir -p '/tmp/package-libqmi/usr/lib/girepository-1.0'
++ /usr/bin/ginstall -c -m 644 Qmi-1.0.typelib '/tmp/package-libqmi/usr/lib/girepository-1.0'
++make[4]: Leaving directory '/tmp/libqmi-1.26.8/src/libqmi-glib'
++make[3]: Leaving directory '/tmp/libqmi-1.26.8/src/libqmi-glib'
++Making install in test
++make[3]: Entering directory '/tmp/libqmi-1.26.8/src/libqmi-glib/test'
++make[4]: Entering directory '/tmp/libqmi-1.26.8/src/libqmi-glib/test'
++make[4]: Nothing to be done for 'install-exec-am'.
++make[4]: Nothing to be done for 'install-data-am'.
++make[4]: Leaving directory '/tmp/libqmi-1.26.8/src/libqmi-glib/test'
++make[3]: Leaving directory '/tmp/libqmi-1.26.8/src/libqmi-glib/test'
++make[2]: Leaving directory '/tmp/libqmi-1.26.8/src/libqmi-glib'
++Making install in qmicli
++make[2]: Entering directory '/tmp/libqmi-1.26.8/src/qmicli'
++Making install in .
++make[3]: Entering directory '/tmp/libqmi-1.26.8/src/qmicli'
++make[4]: Entering directory '/tmp/libqmi-1.26.8/src/qmicli'
++ /usr/bin/mkdir -p '/tmp/package-libqmi/usr/bin'
++  /bin/sh ../../libtool   --mode=install /usr/bin/ginstall -c qmicli '/tmp/package-libqmi/usr/bin'
++libtool: warning: '../../src/libqmi-glib/libqmi-glib.la' has not been installed in '/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/qmicli /tmp/package-libqmi/usr/bin/qmicli
++make  install-data-hook
++make[5]: Entering directory '/tmp/libqmi-1.26.8/src/qmicli'
++/bin/sh /tmp/libqmi-1.26.8/install-sh -d /tmp/package-libqmi/usr/share/bash-completion/completions
++/usr/bin/ginstall -c -m 644 ./qmicli-completion /tmp/package-libqmi/usr/share/bash-completion/completions/qmicli
++make[5]: Leaving directory '/tmp/libqmi-1.26.8/src/qmicli'
++make[4]: Leaving directory '/tmp/libqmi-1.26.8/src/qmicli'
++make[3]: Leaving directory '/tmp/libqmi-1.26.8/src/qmicli'
++Making install in test
++make[3]: Entering directory '/tmp/libqmi-1.26.8/src/qmicli/test'
++make[4]: Entering directory '/tmp/libqmi-1.26.8/src/qmicli/test'
++make[4]: Nothing to be done for 'install-exec-am'.
++make[4]: Nothing to be done for 'install-data-am'.
++make[4]: Leaving directory '/tmp/libqmi-1.26.8/src/qmicli/test'
++make[3]: Leaving directory '/tmp/libqmi-1.26.8/src/qmicli/test'
++make[2]: Leaving directory '/tmp/libqmi-1.26.8/src/qmicli'
++Making install in qmi-proxy
++make[2]: Entering directory '/tmp/libqmi-1.26.8/src/qmi-proxy'
++make[3]: Entering directory '/tmp/libqmi-1.26.8/src/qmi-proxy'
++ /usr/bin/mkdir -p '/tmp/package-libqmi/usr/libexec'
++  /bin/sh ../../libtool   --mode=install /usr/bin/ginstall -c qmi-proxy '/tmp/package-libqmi/usr/libexec'
++libtool: warning: '../../src/libqmi-glib/libqmi-glib.la' has not been installed in '/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/qmi-proxy /tmp/package-libqmi/usr/libexec/qmi-proxy
++make[3]: Leaving directory '/tmp/libqmi-1.26.8/src/qmi-proxy'
++make[2]: Leaving directory '/tmp/libqmi-1.26.8/src/qmi-proxy'
++Making install in qmi-firmware-update
++make[2]: Entering directory '/tmp/libqmi-1.26.8/src/qmi-firmware-update'
++make  install-recursive
++make[3]: Entering directory '/tmp/libqmi-1.26.8/src/qmi-firmware-update'
++Making install in .
++make[4]: Entering directory '/tmp/libqmi-1.26.8/src/qmi-firmware-update'
++make[5]: Entering directory '/tmp/libqmi-1.26.8/src/qmi-firmware-update'
++ /usr/bin/mkdir -p '/tmp/package-libqmi/usr/bin'
++  /bin/sh ../../libtool   --mode=install /usr/bin/ginstall -c qmi-firmware-update '/tmp/package-libqmi/usr/bin'
++libtool: warning: '/tmp/libqmi-1.26.8/src/libqmi-glib/libqmi-glib.la' has not been installed in '/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/qmi-firmware-update /tmp/package-libqmi/usr/bin/qmi-firmware-update
++make[5]: Nothing to be done for 'install-data-am'.
++make[5]: Leaving directory '/tmp/libqmi-1.26.8/src/qmi-firmware-update'
++make[4]: Leaving directory '/tmp/libqmi-1.26.8/src/qmi-firmware-update'
++Making install in test
++make[4]: Entering directory '/tmp/libqmi-1.26.8/src/qmi-firmware-update/test'
++make[5]: Entering directory '/tmp/libqmi-1.26.8/src/qmi-firmware-update/test'
++make[5]: Nothing to be done for 'install-exec-am'.
++make[5]: Nothing to be done for 'install-data-am'.
++make[5]: Leaving directory '/tmp/libqmi-1.26.8/src/qmi-firmware-update/test'
++make[4]: Leaving directory '/tmp/libqmi-1.26.8/src/qmi-firmware-update/test'
++make[3]: Leaving directory '/tmp/libqmi-1.26.8/src/qmi-firmware-update'
++make[2]: Leaving directory '/tmp/libqmi-1.26.8/src/qmi-firmware-update'
++make[2]: Entering directory '/tmp/libqmi-1.26.8/src'
++make[3]: Entering directory '/tmp/libqmi-1.26.8/src'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/libqmi-1.26.8/src'
++make[2]: Leaving directory '/tmp/libqmi-1.26.8/src'
++make[1]: Leaving directory '/tmp/libqmi-1.26.8/src'
++Making install in examples
++make[1]: Entering directory '/tmp/libqmi-1.26.8/examples'
++Making install in simple-tester-python
++make[2]: Entering directory '/tmp/libqmi-1.26.8/examples/simple-tester-python'
++make[3]: Entering directory '/tmp/libqmi-1.26.8/examples/simple-tester-python'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/libqmi-1.26.8/examples/simple-tester-python'
++make[2]: Leaving directory '/tmp/libqmi-1.26.8/examples/simple-tester-python'
++make[2]: Entering directory '/tmp/libqmi-1.26.8/examples'
++make[3]: Entering directory '/tmp/libqmi-1.26.8/examples'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/libqmi-1.26.8/examples'
++make[2]: Leaving directory '/tmp/libqmi-1.26.8/examples'
++make[1]: Leaving directory '/tmp/libqmi-1.26.8/examples'
++Making install in utils
++make[1]: Entering directory '/tmp/libqmi-1.26.8/utils'
++make[2]: Entering directory '/tmp/libqmi-1.26.8/utils'
++ /usr/bin/mkdir -p '/tmp/package-libqmi/usr/bin'
++ /usr/bin/ginstall -c qmi-network '/tmp/package-libqmi/usr/bin'
++make[2]: Nothing to be done for 'install-data-am'.
++make[2]: Leaving directory '/tmp/libqmi-1.26.8/utils'
++make[1]: Leaving directory '/tmp/libqmi-1.26.8/utils'
++Making install in docs
++make[1]: Entering directory '/tmp/libqmi-1.26.8/docs'
++Making install in reference
++make[2]: Entering directory '/tmp/libqmi-1.26.8/docs/reference'
++Making install in libqmi-glib
++make[3]: Entering directory '/tmp/libqmi-1.26.8/docs/reference/libqmi-glib'
++make  install-am
++make[4]: Entering directory '/tmp/libqmi-1.26.8/docs/reference/libqmi-glib'
++make[5]: Entering directory '/tmp/libqmi-1.26.8/docs/reference/libqmi-glib'
++make[5]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/ginstall -c -m 644 ./html/QmiClient.html
++ /usr/bin/ginstall -c -m 644 ./html/QmiClientDms.html
++ /usr/bin/ginstall -c -m 644 ./html/QmiClientDsd.html
++ /usr/bin/ginstall -c -m 644 ./html/QmiClientGas.html
++ /usr/bin/ginstall -c -m 644 ./html/QmiClientGms.html
++ /usr/bin/ginstall -c -m 644 ./html/QmiClientLoc.html
++ /usr/bin/ginstall -c -m 644 ./html/QmiClientNas.html
++ /usr/bin/ginstall -c -m 644 ./html/QmiClientOma.html
++ /usr/bin/ginstall -c -m 644 ./html/QmiClientPbm.html
++ /usr/bin/ginstall -c -m 644 ./html/QmiClientPdc.html
++ /usr/bin/ginstall -c -m 644 ./html/QmiClientPds.html
++ /usr/bin/ginstall -c -m 644 ./html/QmiClientQos.html
++ /usr/bin/ginstall -c -m 644 ./html/QmiClientUim.html
++ /usr/bin/ginstall -c -m 644 ./html/QmiClientVoice.html
++ /usr/bin/ginstall -c -m 644 ./html/QmiClientWda.html
++ /usr/bin/ginstall -c -m 644 ./html/QmiClientWds.html
++ /usr/bin/ginstall -c -m 644 ./html/QmiClientWms.html
++ /usr/bin/ginstall -c -m 644 ./html/QmiDevice.html
++ /usr/bin/ginstall -c -m 644 ./html/QmiMessageContext.html
++ /usr/bin/ginstall -c -m 644 ./html/QmiProxy.html
++ /usr/bin/ginstall -c -m 644 ./html/annotation-glossary.html
++ /usr/bin/ginstall -c -m 644 ./html/api-index-1-0.html
++ /usr/bin/ginstall -c -m 644 ./html/api-index-1-10.html
++ /usr/bin/ginstall -c -m 644 ./html/api-index-1-12.html
++ /usr/bin/ginstall -c -m 644 ./html/api-index-1-14.html
++ /usr/bin/ginstall -c -m 644 ./html/api-index-1-16.html
++ /usr/bin/ginstall -c -m 644 ./html/api-index-1-18.html
++ /usr/bin/ginstall -c -m 644 ./html/api-index-1-20.html
++ /usr/bin/ginstall -c -m 644 ./html/api-index-1-22-4.html
++ /usr/bin/ginstall -c -m 644 ./html/api-index-1-22.html
++ /usr/bin/ginstall -c -m 644 ./html/api-index-1-24-6.html
++ /usr/bin/ginstall -c -m 644 ./html/api-index-1-24.html
++ /usr/bin/ginstall -c -m 644 ./html/api-index-1-26-2.html
++ /usr/bin/ginstall -c -m 644 ./html/api-index-1-26-6.html
++ /usr/bin/ginstall -c -m 644 ./html/api-index-1-26.html
++ /usr/bin/ginstall -c -m 644 ./html/api-index-1-4.html
++ /usr/bin/ginstall -c -m 644 ./html/api-index-1-6.html
++ /usr/bin/ginstall -c -m 644 ./html/api-index-1-8.html
++ /usr/bin/ginstall -c -m 644 ./html/api-index-deprecated.html
++ /usr/bin/ginstall -c -m 644 ./html/api-index-full.html
++ /usr/bin/ginstall -c -m 644 ./html/ch01.html
++ /usr/bin/ginstall -c -m 644 ./html/ch02.html
++ /usr/bin/ginstall -c -m 644 ./html/ch02s02.html
++ /usr/bin/ginstall -c -m 644 ./html/ch03.html
++ /usr/bin/ginstall -c -m 644 ./html/ch03s02.html
++ /usr/bin/ginstall -c -m 644 ./html/ch04.html
++ /usr/bin/ginstall -c -m 644 ./html/ch04s02.html
++ /usr/bin/ginstall -c -m 644 ./html/ch05.html
++ /usr/bin/ginstall -c -m 644 ./html/ch05s02.html
++ /usr/bin/ginstall -c -m 644 ./html/ch06.html
++ /usr/bin/ginstall -c -m 644 ./html/ch06s02.html
++ /usr/bin/ginstall -c -m 644 ./html/ch07.html
++ /usr/bin/ginstall -c -m 644 ./html/ch07s02.html
++ /usr/bin/ginstall -c -m 644 ./html/ch08.html
++ /usr/bin/ginstall -c -m 644 ./html/ch09.html
++ /usr/bin/ginstall -c -m 644 ./html/ch09s02.html
++ /usr/bin/ginstall -c -m 644 ./html/ch10.html
++ /usr/bin/ginstall -c -m 644 ./html/ch10s02.html
++ /usr/bin/ginstall -c -m 644 ./html/ch11.html
++ /usr/bin/ginstall -c -m 644 ./html/ch12.html
++ /usr/bin/ginstall -c -m 644 ./html/ch12s02.html
++ /usr/bin/ginstall -c -m 644 ./html/ch13.html
++ /usr/bin/ginstall -c -m 644 ./html/ch13s02.html
++ /usr/bin/ginstall -c -m 644 ./html/ch14.html
++ /usr/bin/ginstall -c -m 644 ./html/ch14s02.html
++ /usr/bin/ginstall -c -m 644 ./html/ch15.html
++ /usr/bin/ginstall -c -m 644 ./html/ch16.html
++ /usr/bin/ginstall -c -m 644 ./html/ch17.html
++ /usr/bin/ginstall -c -m 644 ./html/ch18.html
++ /usr/bin/ginstall -c -m 644 ./html/home.png
++ /usr/bin/ginstall -c -m 644 ./html/index.html
++ /usr/bin/ginstall -c -m 644 ./html/left-insensitive.png
++ /usr/bin/ginstall -c -m 644 ./html/left.png
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-Common-enumerations-and-flags.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-Common-utilities.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-Activate-Automatic-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-Activate-Manual-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-Delete-Stored-Image-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-Event-Report-indication.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-Foxconn-Change-Device-Mode-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-Foxconn-Get-Firmware-Version-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-Get-Activation-State-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-Get-Alt-Net-Config-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-Get-Band-Capabilities-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-Get-Boot-Image-Download-Mode-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-Get-Capabilities-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-Get-Factory-SKU-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-Get-Firmware-Preference-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-Get-Hardware-Revision-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-Get-IDs-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-Get-MAC-Address-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-Get-MSISDN-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-Get-Manufacturer-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-Get-Model-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-Get-Operating-Mode-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-Get-PRL-Version-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-Get-Power-State-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-Get-Revision-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-Get-Software-Version-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-Get-Stored-Image-Info-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-Get-Supported-Messages-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-Get-Time-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-Get-User-Lock-State-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-HP-Change-Device-Mode-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-List-Stored-Images-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-Read-ERI-File-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-Read-User-Data-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-Reset-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-Restore-Factory-Defaults-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-Set-Alt-Net-Config-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-Set-Boot-Image-Download-Mode-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-Set-Event-Report-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-Set-FCC-Authentication-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-Set-Firmware-ID-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-Set-Firmware-Preference-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-Set-Operating-Mode-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-Set-Service-Programming-Code-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-Set-Time-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-Set-User-Lock-Code-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-Set-User-Lock-State-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-Swi-Get-Current-Firmware-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-Swi-Get-USB-Composition-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-Swi-Set-USB-Composition-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-UIM-Change-PIN-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-UIM-Get-CK-Status-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-UIM-Get-ICCID-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-UIM-Get-IMSI-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-UIM-Get-PIN-Status-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-UIM-Get-State-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-UIM-Set-CK-Protection-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-UIM-Set-PIN-Protection-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-UIM-Unblock-CK-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-UIM-Unblock-PIN-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-UIM-Verify-PIN-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-Validate-Service-Programming-Code-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-Write-User-Data-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DMS-enumerations-and-flags.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DSD-Get-APN-Info-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DSD-Set-APN-Type-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-DSD-enumerations-and-flags.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-Deprecated-Interface.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-Errors.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-GAS-DMS-Get-Firmware-List-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-GAS-DMS-Set-Active-Firmware-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-GAS-enumerations-and-flags.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-GMS-Test-Get-Value-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-GMS-Test-Set-Value-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-LOC-Delete-Assistance-Data-indication.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-LOC-Delete-Assistance-Data-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-LOC-Engine-State-indication.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-LOC-Fix-Recurrence-Type-indication.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-LOC-GNSS-Sv-Info-indication.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-LOC-Get-NMEA-Types-indication.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-LOC-Get-NMEA-Types-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-LOC-Get-Operation-Mode-indication.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-LOC-Get-Operation-Mode-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-LOC-Get-Predicted-Orbits-Data-Source-indication.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-LOC-Get-Predicted-Orbits-Data-Source-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-LOC-Get-Server-indication.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-LOC-Get-Server-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-LOC-Inject-Predicted-Orbits-Data-indication.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-LOC-Inject-Predicted-Orbits-Data-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-LOC-Inject-Xtra-Data-indication.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-LOC-Inject-Xtra-Data-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-LOC-NMEA-indication.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-LOC-Position-Report-indication.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-LOC-Register-Events-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-LOC-Set-NMEA-Types-indication.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-LOC-Set-NMEA-Types-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-LOC-Set-Operation-Mode-indication.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-LOC-Set-Operation-Mode-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-LOC-Set-Server-indication.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-LOC-Set-Server-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-LOC-Start-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-LOC-Stop-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-LOC-enumerations-and-flags.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-NAS-Attach-Detach-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-NAS-Config-Signal-Info-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-NAS-Event-Report-indication.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-NAS-Force-Network-Search-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-NAS-Get-CDMA-Position-Info-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-NAS-Get-Cell-Location-Info-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-NAS-Get-Home-Network-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-NAS-Get-LTE-Cphy-CA-Info-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-NAS-Get-Operator-Name-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-NAS-Get-RF-Band-Information-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-NAS-Get-Serving-System-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-NAS-Get-Signal-Info-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-NAS-Get-Signal-Strength-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-NAS-Get-Supported-Messages-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-NAS-Get-System-Info-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-NAS-Get-System-Selection-Preference-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-NAS-Get-Technology-Preference-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-NAS-Get-Tx-Rx-Info-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-NAS-Initiate-Network-Register-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-NAS-Network-Scan-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-NAS-Network-Time-indication.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-NAS-Operator-Name-indication.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-NAS-Register-Indications-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-NAS-Reset-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-NAS-Serving-System-indication.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-NAS-Set-Event-Report-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-NAS-Set-System-Selection-Preference-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-NAS-Set-Technology-Preference-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-NAS-Signal-Info-indication.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-NAS-Swi-Get-Status-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-NAS-System-Info-indication.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-NAS-enumerations-and-flags.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-OMA-Cancel-Session-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-OMA-Event-Report-indication.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-OMA-Get-Feature-Setting-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-OMA-Get-Session-Info-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-OMA-Reset-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-OMA-Send-Selection-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-OMA-Set-Event-Report-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-OMA-Set-Feature-Setting-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-OMA-Start-Session-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-OMA-enumerations-and-flags.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-PBM-Get-All-Capabilities-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-PBM-Get-Capabilities-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-PBM-Indication-Register-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-PBM-enumerations-and-flags.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-PDC-Activate-Config-indication.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-PDC-Activate-Config-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-PDC-Config-Change-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-PDC-Deactivate-Config-indication.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-PDC-Deactivate-Config-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-PDC-Delete-Config-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-PDC-Get-Config-Info-indication.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-PDC-Get-Config-Info-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-PDC-Get-Config-Limits-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-PDC-Get-Default-Config-Info-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-PDC-Get-Selected-Config-indication.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-PDC-Get-Selected-Config-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-PDC-List-Configs-indication.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-PDC-List-Configs-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-PDC-Load-Config-indication.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-PDC-Load-Config-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-PDC-Register-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-PDC-Reset-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-PDC-Set-Selected-Config-indication.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-PDC-Set-Selected-Config-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-PDC-enumerations-and-flags.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-PDS-Event-Report-indication.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-PDS-Get-AGPS-Config-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-PDS-Get-Auto-Tracking-State-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-PDS-Get-Default-Tracking-Session-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-PDS-Get-GPS-Service-State-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-PDS-Reset-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-PDS-Set-AGPS-Config-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-PDS-Set-Auto-Tracking-State-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-PDS-Set-Default-Tracking-Session-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-PDS-Set-Event-Report-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-PDS-Set-GPS-Service-State-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-PDS-enumerations-and-flags.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-QOS-Flow-Status-indication.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-QOS-Get-Flow-Status-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-QOS-Get-Network-Status-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-QOS-Network-Status-indication.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-QOS-Reset-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-QOS-Swi-Read-Data-Stats-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-QOS-enumerations-and-flags.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-QmiMessage.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-UIM-Card-Status-indication.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-UIM-Change-PIN-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-UIM-Change-Provisioning-Session-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-UIM-Get-Card-Status-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-UIM-Get-File-Attributes-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-UIM-Get-Slot-Status-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-UIM-Get-Supported-Messages-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-UIM-Power-Off-SIM-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-UIM-Power-On-SIM-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-UIM-Read-Record-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-UIM-Read-Transparent-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-UIM-Register-Events-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-UIM-Reset-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-UIM-Set-PIN-Protection-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-UIM-Slot-Status-indication.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-UIM-Switch-Slot-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-UIM-Unblock-PIN-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-UIM-Verify-PIN-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-UIM-enumerations-and-flags.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-VOICE-All-Call-Status-indication.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-VOICE-Answer-Call-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-VOICE-Answer-USSD-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-VOICE-Cancel-USSD-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-VOICE-Dial-Call-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-VOICE-End-Call-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-VOICE-Get-Config-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-VOICE-Get-Supported-Messages-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-VOICE-Indication-Register-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-VOICE-Originate-USSD-No-Wait-indication.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-VOICE-Originate-USSD-No-Wait-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-VOICE-Originate-USSD-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-VOICE-Release-USSD-indication.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-VOICE-USSD-indication.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-Version-and-feature-checks.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-Voice-enumerations-and-flags.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WDA-Get-Data-Format-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WDA-Get-Supported-Messages-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WDA-Set-Data-Format-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WDA-enumerations-and-flags.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WDS-Bind-Mux-Data-Port-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WDS-Create-Profile-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WDS-Delete-Profile-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WDS-Event-Report-indication.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WDS-Get-Autoconnect-Settings-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WDS-Get-Channel-Rates-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WDS-Get-Current-Data-Bearer-Technology-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WDS-Get-Current-Settings-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WDS-Get-Data-Bearer-Technology-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WDS-Get-Default-Profile-Num-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WDS-Get-Default-Settings-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WDS-Get-Dormancy-Status-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WDS-Get-PDN-Throttle-Info-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WDS-Get-Packet-Service-Status-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WDS-Get-Packet-Statistics-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WDS-Get-Profile-List-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WDS-Get-Profile-Settings-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WDS-Get-Supported-Messages-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WDS-Go-Active-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WDS-Go-Dormant-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WDS-Modify-Profile-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WDS-Packet-Service-Status-indication.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WDS-Reset-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WDS-Set-Autoconnect-Settings-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WDS-Set-Default-Profile-Num-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WDS-Set-Event-Report-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WDS-Set-IP-Family-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WDS-Start-Network-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WDS-Stop-Network-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WDS-Swi-Create-Profile-Indexed-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WDS-enumerations-and-flags.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WMS-Delete-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WMS-Event-Report-indication.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WMS-Get-Message-Protocol-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WMS-Get-Routes-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WMS-Get-Supported-Messages-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WMS-List-Messages-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WMS-Modify-Tag-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WMS-Raw-Read-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WMS-Raw-Send-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WMS-Raw-Write-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WMS-Reset-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WMS-SMSC-Address-indication.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WMS-Send-From-Memory-Storage-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WMS-Set-Event-Report-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WMS-Set-Routes-request.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib-WMS-enumerations-and-flags.html
++ /usr/bin/ginstall -c -m 644 ./html/libqmi-glib.devhelp2
++ /usr/bin/ginstall -c -m 644 ./html/object-tree.html
++ /usr/bin/ginstall -c -m 644 ./html/right-insensitive.png
++ /usr/bin/ginstall -c -m 644 ./html/right.png
++ /usr/bin/ginstall -c -m 644 ./html/style.css
++ /usr/bin/ginstall -c -m 644 ./html/up-insensitive.png
++ /usr/bin/ginstall -c -m 644 ./html/up.png
++https://developer.gnome.org/gio/unstable/ -> /usr/share/gtk-doc/html/gio (1571)
++https://developer.gnome.org/glib/unstable/ -> /usr/share/gtk-doc/html/glib (19666)
++https://developer.gnome.org/gobject/unstable/ -> /usr/share/gtk-doc/html/gobject (120)
++make[5]: Leaving directory '/tmp/libqmi-1.26.8/docs/reference/libqmi-glib'
++make[4]: Leaving directory '/tmp/libqmi-1.26.8/docs/reference/libqmi-glib'
++make[3]: Leaving directory '/tmp/libqmi-1.26.8/docs/reference/libqmi-glib'
++make[3]: Entering directory '/tmp/libqmi-1.26.8/docs/reference'
++make[4]: Entering directory '/tmp/libqmi-1.26.8/docs/reference'
++make[4]: Nothing to be done for 'install-exec-am'.
++make[4]: Nothing to be done for 'install-data-am'.
++make[4]: Leaving directory '/tmp/libqmi-1.26.8/docs/reference'
++make[3]: Leaving directory '/tmp/libqmi-1.26.8/docs/reference'
++make[2]: Leaving directory '/tmp/libqmi-1.26.8/docs/reference'
++Making install in man
++make[2]: Entering directory '/tmp/libqmi-1.26.8/docs/man'
++make[3]: Entering directory '/tmp/libqmi-1.26.8/docs/man'
++make[3]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-libqmi/usr/man/man1'
++ /usr/bin/ginstall -c -m 644 qmicli.1 qmi-network.1 qmi-firmware-update.1 '/tmp/package-libqmi/usr/man/man1'
++make[3]: Leaving directory '/tmp/libqmi-1.26.8/docs/man'
++make[2]: Leaving directory '/tmp/libqmi-1.26.8/docs/man'
++make[2]: Entering directory '/tmp/libqmi-1.26.8/docs'
++make[3]: Entering directory '/tmp/libqmi-1.26.8/docs'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/libqmi-1.26.8/docs'
++make[2]: Leaving directory '/tmp/libqmi-1.26.8/docs'
++make[1]: Leaving directory '/tmp/libqmi-1.26.8/docs'
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++usr/lib/libqmi-glib.so	libqmi-glib.so.5.7.0
++usr/lib/libqmi-glib.so.5	libqmi-glib.so.5.7.0
++
++Making symbolic link creation script:
++( cd usr/lib ; rm -rf libqmi-glib.so )
++( cd usr/lib ; ln -sf libqmi-glib.so.5.7.0 libqmi-glib.so )
++( cd usr/lib ; rm -rf libqmi-glib.so.5 )
++( cd usr/lib ; ln -sf libqmi-glib.so.5.7.0 libqmi-glib.so.5 )
++
++It is recommended that you make these lines your new installation script.
++
++Would you like to make this stuff the install script for this package
++and remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './usr/lib/libqmi-glib.so.5'
++removed './usr/lib/libqmi-glib.so'
++
++Creating your new ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/libqmi-1.26.8-x86_64-1.txz
++
++./
++install/
++install/doinst.sh
++install/slack-desc
++usr/
++usr/bin/
++usr/bin/qmi-firmware-update
++usr/bin/qmi-network
++usr/bin/qmicli
++usr/doc/
++usr/doc/libqmi-1.26.8/
++usr/doc/libqmi-1.26.8/AUTHORS
++usr/doc/libqmi-1.26.8/COPYING
++usr/doc/libqmi-1.26.8/ChangeLog
++usr/doc/libqmi-1.26.8/NEWS
++usr/doc/libqmi-1.26.8/README
++usr/doc/libqmi-1.26.8/TODO
++usr/include/
++usr/include/libqmi-glib/
++usr/include/libqmi-glib/libqmi-glib.h
++usr/include/libqmi-glib/qmi-client.h
++usr/include/libqmi-glib/qmi-compat.h
++usr/include/libqmi-glib/qmi-device.h
++usr/include/libqmi-glib/qmi-dms.h
++usr/include/libqmi-glib/qmi-dsd.h
++usr/include/libqmi-glib/qmi-enum-types.h
++usr/include/libqmi-glib/qmi-enums-dms.h
++usr/include/libqmi-glib/qmi-enums-dsd.h
++usr/include/libqmi-glib/qmi-enums-gas.h
++usr/include/libqmi-glib/qmi-enums-loc.h
++usr/include/libqmi-glib/qmi-enums-nas.h
++usr/include/libqmi-glib/qmi-enums-oma.h
++usr/include/libqmi-glib/qmi-enums-pbm.h
++usr/include/libqmi-glib/qmi-enums-pdc.h
++usr/include/libqmi-glib/qmi-enums-pds.h
++usr/include/libqmi-glib/qmi-enums-private.h
++usr/include/libqmi-glib/qmi-enums-qos.h
++usr/include/libqmi-glib/qmi-enums-uim.h
++usr/include/libqmi-glib/qmi-enums-voice.h
++usr/include/libqmi-glib/qmi-enums-wda.h
++usr/include/libqmi-glib/qmi-enums-wds.h
++usr/include/libqmi-glib/qmi-enums-wms.h
++usr/include/libqmi-glib/qmi-enums.h
++usr/include/libqmi-glib/qmi-error-types.h
++usr/include/libqmi-glib/qmi-errors.h
++usr/include/libqmi-glib/qmi-flags64-dms.h
++usr/include/libqmi-glib/qmi-flags64-dsd.h
++usr/include/libqmi-glib/qmi-flags64-loc.h
++usr/include/libqmi-glib/qmi-flags64-nas.h
++usr/include/libqmi-glib/qmi-flags64-types.h
++usr/include/libqmi-glib/qmi-gas.h
++usr/include/libqmi-glib/qmi-gms.h
++usr/include/libqmi-glib/qmi-loc.h
++usr/include/libqmi-glib/qmi-message-context.h
++usr/include/libqmi-glib/qmi-message.h
++usr/include/libqmi-glib/qmi-nas.h
++usr/include/libqmi-glib/qmi-oma.h
++usr/include/libqmi-glib/qmi-pbm.h
++usr/include/libqmi-glib/qmi-pdc.h
++usr/include/libqmi-glib/qmi-pds.h
++usr/include/libqmi-glib/qmi-proxy.h
++usr/include/libqmi-glib/qmi-qos.h
++usr/include/libqmi-glib/qmi-uim.h
++usr/include/libqmi-glib/qmi-utils.h
++usr/include/libqmi-glib/qmi-version.h
++usr/include/libqmi-glib/qmi-voice.h
++usr/include/libqmi-glib/qmi-wda.h
++usr/include/libqmi-glib/qmi-wds.h
++usr/include/libqmi-glib/qmi-wms.h
++usr/lib/
++usr/lib/girepository-1.0/
++usr/lib/girepository-1.0/Qmi-1.0.typelib
++usr/lib/libqmi-glib.so.5.7.0
++usr/lib/pkgconfig/
++usr/lib/pkgconfig/qmi-glib.pc
++usr/libexec/
++usr/libexec/qmi-proxy
++usr/man/
++usr/man/man1/
++usr/man/man1/qmi-firmware-update.1.gz
++usr/man/man1/qmi-network.1.gz
++usr/man/man1/qmicli.1.gz
++usr/share/
++usr/share/bash-completion/
++usr/share/bash-completion/completions/
++usr/share/bash-completion/completions/qmicli
++usr/share/gir-1.0/
++usr/share/gir-1.0/Qmi-1.0.gir
++
++Slackware package /tmp/libqmi-1.26.8-x86_64-1.txz created.
++

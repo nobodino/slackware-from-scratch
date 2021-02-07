@@ -1,0 +1,7 @@
+if [ "$(uname -m)" = "x86_64" ]; then
+  ( cd $PKG/usr/lib/X11/config
+    zcat $CWD/post-install/xorg-cf-files/x11.tmpl.lib64.kludge.diff.gz | patch -p1 || exit 1
+  )
+fi
+# Remove the empty host.def:
+rm -f $PKG/usr/lib/X11/config/host.def

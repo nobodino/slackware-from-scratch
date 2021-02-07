@@ -1,0 +1,1882 @@
+diff -ruBN /tmp/make/make.SlackBuild /source/d/make/make.SlackBuild
+--- /tmp/make/make.SlackBuild	2021-01-25 19:30:15.000000000 +0000
++++ /source/d/make/make.SlackBuild	2021-01-26 07:52:14.000000000 +0000
+@@ -57,7 +57,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ else
+   SLKCFLAGS="-O2"
+   LIBDIRSUFFIX=""
+@@ -91,7 +91,7 @@
+   --libdir=/usr/lib${LIBDIRSUFFIX} \
+   --mandir=/usr/man \
+   --infodir=/usr/info \
+-  --build=$ARCH-slackware-linux || exit 1
++  --build=$ARCH-slackware-linux-musl || exit 1
+ 
+ # Build and install:
+ make $NUMJOBS || make || exit 1
+diff -ruBN /tmp/make/make.SlackBuild.log /source/d/make/make.SlackBuild.log
+--- /tmp/make/make.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/d/make/make.SlackBuild.log	2021-01-26 07:54:11.000000000 +0000
+@@ -0,0 +1,1857 @@
++make-4.3/
++make-4.3/README
++make-4.3/configure.ac
++make-4.3/README.W32
++make-4.3/COPYING
++make-4.3/README.DOS
++make-4.3/README.OS2
++make-4.3/aclocal.m4
++make-4.3/vms_export_symbol_test.com
++make-4.3/NEWS
++make-4.3/src/
++make-4.3/src/vms_export_symbol.c
++make-4.3/src/getopt.h
++make-4.3/src/job.h
++make-4.3/src/job.c
++make-4.3/src/dir.c
++make-4.3/src/implicit.c
++make-4.3/src/default.c
++make-4.3/src/configh.dos
++make-4.3/src/posixos.c
++make-4.3/src/variable.c
++make-4.3/src/loadapi.c
++make-4.3/src/getopt1.c
++make-4.3/src/output.h
++make-4.3/src/config.h.W32
++make-4.3/src/version.c
++make-4.3/src/hash.c
++make-4.3/src/remote-cstms.c
++make-4.3/src/gmk-default.scm
++make-4.3/src/variable.h
++make-4.3/src/remote-stub.c
++make-4.3/src/config.h.in
++make-4.3/src/strcache.c
++make-4.3/src/vmsfunctions.c
++make-4.3/src/file.c
++make-4.3/src/commands.c
++make-4.3/src/main.c
++make-4.3/src/filedef.h
++make-4.3/src/makeint.h
++make-4.3/src/w32/
++make-4.3/src/w32/compat/
++make-4.3/src/w32/compat/posixfcn.c
++make-4.3/src/w32/compat/dirent.c
++make-4.3/src/w32/w32os.c
++make-4.3/src/w32/pathstuff.c
++make-4.3/src/w32/subproc/
++make-4.3/src/w32/subproc/w32err.c
++make-4.3/src/w32/subproc/sub_proc.c
++make-4.3/src/w32/subproc/misc.c
++make-4.3/src/w32/subproc/proc.h
++make-4.3/src/w32/include/
++make-4.3/src/w32/include/sub_proc.h
++make-4.3/src/w32/include/dirent.h
++make-4.3/src/w32/include/dlfcn.h
++make-4.3/src/w32/include/pathstuff.h
++make-4.3/src/w32/include/w32err.h
++make-4.3/src/os.h
++make-4.3/src/config.ami
++make-4.3/src/vms_progname.c
++make-4.3/src/gmk-default.h
++make-4.3/src/gettext.h
++make-4.3/src/vmsdir.h
++make-4.3/src/vmsjobs.c
++make-4.3/src/output.c
++make-4.3/src/read.c
++make-4.3/src/amiga.h
++make-4.3/src/vpath.c
++make-4.3/src/vms_exit.c
++make-4.3/src/hash.h
++make-4.3/src/load.c
++make-4.3/src/commands.h
++make-4.3/src/arscan.c
++make-4.3/src/amiga.c
++make-4.3/src/signame.c
++make-4.3/src/function.c
++make-4.3/src/config.h-vms
++make-4.3/src/guile.c
++make-4.3/src/vmsify.c
++make-4.3/src/ar.c
++make-4.3/src/getopt.c
++make-4.3/src/rule.c
++make-4.3/src/misc.c
++make-4.3/src/rule.h
++make-4.3/src/remake.c
++make-4.3/src/dep.h
++make-4.3/src/expand.c
++make-4.3/src/gnumake.h
++make-4.3/src/debug.h
++make-4.3/AUTHORS
++make-4.3/ChangeLog
++make-4.3/Makefile.in
++make-4.3/po/
++make-4.3/po/insert-header.sin
++make-4.3/po/stamp-po
++make-4.3/po/be.gmo
++make-4.3/po/hr.gmo
++make-4.3/po/pl.po
++make-4.3/po/fr.po
++make-4.3/po/zh_CN.gmo
++make-4.3/po/boldquot.sed
++make-4.3/po/cs.gmo
++make-4.3/po/Makevars
++make-4.3/po/tr.po
++make-4.3/po/pt.gmo
++make-4.3/po/zh_CN.po
++make-4.3/po/es.gmo
++make-4.3/po/ga.po
++make-4.3/po/pt_BR.po
++make-4.3/po/lt.gmo
++make-4.3/po/LINGUAS
++make-4.3/po/sr.po
++make-4.3/po/en@boldquot.header
++make-4.3/po/ja.gmo
++make-4.3/po/bg.gmo
++make-4.3/po/Makefile.in.in
++make-4.3/po/ko.gmo
++make-4.3/po/fr.gmo
++make-4.3/po/nl.gmo
++make-4.3/po/zh_TW.po
++make-4.3/po/tr.gmo
++make-4.3/po/he.gmo
++make-4.3/po/pl.gmo
++make-4.3/po/POTFILES.in
++make-4.3/po/pt_BR.gmo
++make-4.3/po/uk.gmo
++make-4.3/po/es.po
++make-4.3/po/de.gmo
++make-4.3/po/de.po
++make-4.3/po/cs.po
++make-4.3/po/ja.po
++make-4.3/po/be.po
++make-4.3/po/fi.gmo
++make-4.3/po/hr.po
++make-4.3/po/quot.sed
++make-4.3/po/make.pot
++make-4.3/po/da.gmo
++make-4.3/po/en@quot.header
++make-4.3/po/ko.po
++make-4.3/po/fi.po
++make-4.3/po/sr.gmo
++make-4.3/po/it.gmo
++make-4.3/po/vi.po
++make-4.3/po/da.po
++make-4.3/po/pt.po
++make-4.3/po/sv.gmo
++make-4.3/po/it.po
++make-4.3/po/ru.gmo
++make-4.3/po/gl.po
++make-4.3/po/ga.gmo
++make-4.3/po/vi.gmo
++make-4.3/po/bg.po
++make-4.3/po/nl.po
++make-4.3/po/sv.po
++make-4.3/po/remove-potcdate.sin
++make-4.3/po/he.po
++make-4.3/po/id.gmo
++make-4.3/po/uk.po
++make-4.3/po/id.po
++make-4.3/po/ru.po
++make-4.3/po/Rules-quot
++make-4.3/po/lt.po
++make-4.3/po/gl.gmo
++make-4.3/po/zh_TW.gmo
++make-4.3/build_w32.bat
++make-4.3/SCOPTIONS
++make-4.3/build-aux/
++make-4.3/build-aux/install-sh
++make-4.3/build-aux/depcomp
++make-4.3/build-aux/texinfo.tex
++make-4.3/build-aux/missing
++make-4.3/build-aux/config.guess
++make-4.3/build-aux/compile
++make-4.3/build-aux/config.rpath
++make-4.3/build-aux/config.sub
++make-4.3/build-aux/mdate-sh
++make-4.3/README.Amiga
++make-4.3/lib/
++make-4.3/lib/fnmatch.c
++make-4.3/lib/getprogname.h
++make-4.3/lib/xconcat-filename.c
++make-4.3/lib/xalloc-oversized.h
++make-4.3/lib/exitfail.h
++make-4.3/lib/getloadavg.c
++make-4.3/lib/limits.in.h
++make-4.3/lib/stripslash.c
++make-4.3/lib/glob.in.h
++make-4.3/lib/findprog-in.c
++make-4.3/lib/close.c
++make-4.3/lib/Makefile.in
++make-4.3/lib/xmalloc.c
++make-4.3/lib/xalloc.h
++make-4.3/lib/dosname.h
++make-4.3/lib/_Noreturn.h
++make-4.3/lib/findprog.h
++make-4.3/lib/fd-hook.c
++make-4.3/lib/stdbool.in.h
++make-4.3/lib/msvc-inval.h
++make-4.3/lib/verify.h
++make-4.3/lib/fnmatch.in.h
++make-4.3/lib/alloca.c
++make-4.3/lib/getdtablesize.c
++make-4.3/lib/getprogname.c
++make-4.3/lib/msvc-inval.c
++make-4.3/lib/unistd.in.h
++make-4.3/lib/xalloc-die.c
++make-4.3/lib/gettext.h
++make-4.3/lib/dirname.h
++make-4.3/lib/strerror.c
++make-4.3/lib/c++defs.h
++make-4.3/lib/stdio.in.h
++make-4.3/lib/basename-lgpl.c
++make-4.3/lib/concat-filename.c
++make-4.3/lib/error.c
++make-4.3/lib/strerror-override.h
++make-4.3/lib/access.c
++make-4.3/lib/errno.in.h
++make-4.3/lib/warn-on-use.h
++make-4.3/lib/stdint.in.h
++make-4.3/lib/exitfail.c
++make-4.3/lib/stdlib.in.h
++make-4.3/lib/dirname-lgpl.c
++make-4.3/lib/dup2.c
++make-4.3/lib/alloca.in.h
++make-4.3/lib/fcntl.c
++make-4.3/lib/glob.c
++make-4.3/lib/malloc.c
++make-4.3/lib/fcntl.in.h
++make-4.3/lib/Makefile.am
++make-4.3/lib/msvc-nothrow.h
++make-4.3/lib/stpcpy.c
++make-4.3/lib/filename.h
++make-4.3/lib/fd-hook.h
++make-4.3/lib/string.in.h
++make-4.3/lib/strerror-override.c
++make-4.3/lib/unistd.c
++make-4.3/lib/msvc-nothrow.c
++make-4.3/lib/arg-nonnull.h
++make-4.3/lib/error.h
++make-4.3/lib/sys_types.in.h
++make-4.3/lib/concat-filename.h
++make-4.3/lib/stddef.in.h
++make-4.3/lib/intprops.h
++make-4.3/mk/
++make-4.3/mk/Windows32.mk
++make-4.3/mk/msdosdjgpp.mk
++make-4.3/mk/VMS.mk
++make-4.3/mk/Amiga.mk
++make-4.3/builddos.bat
++make-4.3/makefile.com
++make-4.3/doc/
++make-4.3/doc/make.info-1
++make-4.3/doc/make.texi
++make-4.3/doc/fdl.texi
++make-4.3/doc/make-stds.texi
++make-4.3/doc/make.info
++make-4.3/doc/Makefile.in
++make-4.3/doc/make.info-2
++make-4.3/doc/make.1
++make-4.3/doc/version.texi
++make-4.3/doc/Makefile.am
++make-4.3/doc/stamp-vti
++make-4.3/m4/
++make-4.3/m4/limits-h.m4
++make-4.3/m4/fcntl.m4
++make-4.3/m4/msvc-inval.m4
++make-4.3/m4/stpcpy.m4
++make-4.3/m4/gnulib-cache.m4
++make-4.3/m4/dup2.m4
++make-4.3/m4/access.m4
++make-4.3/m4/dirname.m4
++make-4.3/m4/00gnulib.m4
++make-4.3/m4/iconv.m4
++make-4.3/m4/malloc.m4
++make-4.3/m4/gnulib-comp.m4
++make-4.3/m4/errno_h.m4
++make-4.3/m4/strerror.m4
++make-4.3/m4/ssize_t.m4
++make-4.3/m4/acinclude.m4
++make-4.3/m4/progtest.m4
++make-4.3/m4/nls.m4
++make-4.3/m4/msvc-nothrow.m4
++make-4.3/m4/lib-link.m4
++make-4.3/m4/string_h.m4
++make-4.3/m4/stdio_h.m4
++make-4.3/m4/getloadavg.m4
++make-4.3/m4/dospaths.m4
++make-4.3/m4/absolute-header.m4
++make-4.3/m4/fcntl-o.m4
++make-4.3/m4/sys_types_h.m4
++make-4.3/m4/off_t.m4
++make-4.3/m4/alloca.m4
++make-4.3/m4/stdbool.m4
++make-4.3/m4/xalloc.m4
++make-4.3/m4/extensions.m4
++make-4.3/m4/gettext.m4
++make-4.3/m4/host-cpu-c-abi.m4
++make-4.3/m4/stdlib_h.m4
++make-4.3/m4/lib-ld.m4
++make-4.3/m4/warn-on-use.m4
++make-4.3/m4/lib-prefix.m4
++make-4.3/m4/gnulib-common.m4
++make-4.3/m4/stdint.m4
++make-4.3/m4/wchar_t.m4
++make-4.3/m4/wint_t.m4
++make-4.3/m4/asm-underscore.m4
++make-4.3/m4/fcntl_h.m4
++make-4.3/m4/getdtablesize.m4
++make-4.3/m4/extern-inline.m4
++make-4.3/m4/intlmacosx.m4
++make-4.3/m4/getprogname.m4
++make-4.3/m4/stddef_h.m4
++make-4.3/m4/close.m4
++make-4.3/m4/double-slash-root.m4
++make-4.3/m4/longlong.m4
++make-4.3/m4/sys_socket_h.m4
++make-4.3/m4/multiarch.m4
++make-4.3/m4/eaccess.m4
++make-4.3/m4/include_next.m4
++make-4.3/m4/unistd_h.m4
++make-4.3/m4/findprog-in.m4
++make-4.3/m4/error.m4
++make-4.3/m4/po.m4
++make-4.3/tests/
++make-4.3/tests/mkshadow
++make-4.3/tests/README
++make-4.3/tests/config_flags_pm.com
++make-4.3/tests/guile.supp
++make-4.3/tests/config-flags.pm.W32
++make-4.3/tests/run_make_tests.pl
++make-4.3/tests/run_make_tests
++make-4.3/tests/thelp.pl
++make-4.3/tests/test_driver.pl
++make-4.3/tests/scripts/
++make-4.3/tests/scripts/test_template
++make-4.3/tests/scripts/targets/
++make-4.3/tests/scripts/targets/FORCE
++make-4.3/tests/scripts/targets/PHONY
++make-4.3/tests/scripts/targets/INTERMEDIATE
++make-4.3/tests/scripts/targets/DELETE_ON_ERROR
++make-4.3/tests/scripts/targets/clean
++make-4.3/tests/scripts/targets/DEFAULT
++make-4.3/tests/scripts/targets/SECONDARY
++make-4.3/tests/scripts/targets/POSIX
++make-4.3/tests/scripts/targets/SILENT
++make-4.3/tests/scripts/targets/ONESHELL
++make-4.3/tests/scripts/functions/
++make-4.3/tests/scripts/functions/strip
++make-4.3/tests/scripts/functions/realpath
++make-4.3/tests/scripts/functions/guile
++make-4.3/tests/scripts/functions/findstring
++make-4.3/tests/scripts/functions/call
++make-4.3/tests/scripts/functions/sort
++make-4.3/tests/scripts/functions/if
++make-4.3/tests/scripts/functions/basename
++make-4.3/tests/scripts/functions/word
++make-4.3/tests/scripts/functions/shell
++make-4.3/tests/scripts/functions/notdir
++make-4.3/tests/scripts/functions/file
++make-4.3/tests/scripts/functions/foreach
++make-4.3/tests/scripts/functions/addprefix
++make-4.3/tests/scripts/functions/origin
++make-4.3/tests/scripts/functions/addsuffix
++make-4.3/tests/scripts/functions/filter-out
++make-4.3/tests/scripts/functions/flavor
++make-4.3/tests/scripts/functions/substitution
++make-4.3/tests/scripts/functions/wildcard
++make-4.3/tests/scripts/functions/andor
++make-4.3/tests/scripts/functions/suffix
++make-4.3/tests/scripts/functions/abspath
++make-4.3/tests/scripts/functions/join
++make-4.3/tests/scripts/functions/value
++make-4.3/tests/scripts/functions/warning
++make-4.3/tests/scripts/functions/dir
++make-4.3/tests/scripts/functions/eval
++make-4.3/tests/scripts/functions/error
++make-4.3/tests/scripts/variables/
++make-4.3/tests/scripts/variables/DEFAULT_GOAL
++make-4.3/tests/scripts/variables/MAKEFLAGS
++make-4.3/tests/scripts/variables/INCLUDE_DIRS
++make-4.3/tests/scripts/variables/MAKEFILES
++make-4.3/tests/scripts/variables/LIBPATTERNS
++make-4.3/tests/scripts/variables/private
++make-4.3/tests/scripts/variables/MAKECMDGOALS
++make-4.3/tests/scripts/variables/negative
++make-4.3/tests/scripts/variables/MAKE_RESTARTS
++make-4.3/tests/scripts/variables/MAKE
++make-4.3/tests/scripts/variables/SHELL
++make-4.3/tests/scripts/variables/MAKELEVEL
++make-4.3/tests/scripts/variables/MFILE_LIST
++make-4.3/tests/scripts/variables/flavors
++make-4.3/tests/scripts/variables/undefine
++make-4.3/tests/scripts/variables/EXTRA_PREREQS
++make-4.3/tests/scripts/variables/CURDIR
++make-4.3/tests/scripts/variables/special
++make-4.3/tests/scripts/variables/GNUMAKEFLAGS
++make-4.3/tests/scripts/variables/automatic
++make-4.3/tests/scripts/variables/define
++make-4.3/tests/scripts/options/
++make-4.3/tests/scripts/options/dash-e
++make-4.3/tests/scripts/options/dash-k
++make-4.3/tests/scripts/options/dash-f
++make-4.3/tests/scripts/options/dash-B
++make-4.3/tests/scripts/options/dash-W
++make-4.3/tests/scripts/options/dash-C
++make-4.3/tests/scripts/options/print-directory
++make-4.3/tests/scripts/options/warn-undefined-variables
++make-4.3/tests/scripts/options/dash-l
++make-4.3/tests/scripts/options/dash-t
++make-4.3/tests/scripts/options/dash-I
++make-4.3/tests/scripts/options/general
++make-4.3/tests/scripts/options/eval
++make-4.3/tests/scripts/options/dash-q
++make-4.3/tests/scripts/options/dash-s
++make-4.3/tests/scripts/options/symlinks
++make-4.3/tests/scripts/options/dash-n
++make-4.3/tests/scripts/vms/
++make-4.3/tests/scripts/vms/library
++make-4.3/tests/scripts/features/
++make-4.3/tests/scripts/features/se_implicit
++make-4.3/tests/scripts/features/se_explicit
++make-4.3/tests/scripts/features/output-sync
++make-4.3/tests/scripts/features/archives
++make-4.3/tests/scripts/features/load
++make-4.3/tests/scripts/features/exec
++make-4.3/tests/scripts/features/loadapi
++make-4.3/tests/scripts/features/escape
++make-4.3/tests/scripts/features/override
++make-4.3/tests/scripts/features/patspecific_vars
++make-4.3/tests/scripts/features/recursion
++make-4.3/tests/scripts/features/echoing
++make-4.3/tests/scripts/features/targetvars
++make-4.3/tests/scripts/features/vpath2
++make-4.3/tests/scripts/features/errors
++make-4.3/tests/scripts/features/rule_glob
++make-4.3/tests/scripts/features/default_names
++make-4.3/tests/scripts/features/varnesting
++make-4.3/tests/scripts/features/patternrules
++make-4.3/tests/scripts/features/reinvoke
++make-4.3/tests/scripts/features/vpathplus
++make-4.3/tests/scripts/features/vpathgpath
++make-4.3/tests/scripts/features/order_only
++make-4.3/tests/scripts/features/mult_targets
++make-4.3/tests/scripts/features/grouped_targets
++make-4.3/tests/scripts/features/vpath3
++make-4.3/tests/scripts/features/quoting
++make-4.3/tests/scripts/features/double_colon
++make-4.3/tests/scripts/features/parallelism
++make-4.3/tests/scripts/features/jobserver
++make-4.3/tests/scripts/features/suffixrules
++make-4.3/tests/scripts/features/shell_assignment
++make-4.3/tests/scripts/features/utf8
++make-4.3/tests/scripts/features/vpath
++make-4.3/tests/scripts/features/statipattrules
++make-4.3/tests/scripts/features/conditionals
++make-4.3/tests/scripts/features/comments
++make-4.3/tests/scripts/features/se_statpat
++make-4.3/tests/scripts/features/mult_rules
++make-4.3/tests/scripts/features/export
++make-4.3/tests/scripts/features/include
++make-4.3/tests/scripts/misc/
++make-4.3/tests/scripts/misc/general1
++make-4.3/tests/scripts/misc/close_stdout
++make-4.3/tests/scripts/misc/general3
++make-4.3/tests/scripts/misc/bs-nl
++make-4.3/tests/scripts/misc/general4
++make-4.3/tests/scripts/misc/general2
++make-4.3/tests/scripts/misc/fopen-fail
++make-4.3/tests/scripts/misc/utf8
++make-4.3/tests/config-flags.pm.in
++make-4.3/tests/run_make_tests.bat
++make-4.3/configure
++make-4.3/README.VMS
++make-4.3/build.cfg.in
++make-4.3/README.customs
++make-4.3/Makefile.am
++make-4.3/Basic.mk
++make-4.3/build.sh
++make-4.3/ABOUT-NLS
++Hmm...  Looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|diff -up make-3.82/configure\~ make-3.82/configure
++|--- make-3.82/configure~	2010-07-28 07:41:51.000000000 +0200
++|+++ make-3.82/configure	2010-08-11 15:07:50.000000000 +0200
++--------------------------
++patching file configure
++Using Plan A...
++Hunk #1 succeeded at 16054 (offset 8839 lines).
++Hmm...  Ignoring the trailing garbage.
++done
++Hmm...  Looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|diff -Nrup a/src/makeint.h b/src/makeint.h
++|--- a/src/makeint.h	2016-05-21 16:22:32.000000000 -0400
++|+++ b/src/makeint.h	2016-09-22 16:12:38.606702160 -0400
++--------------------------
++patching file src/makeint.h
++Using Plan A...
++Hunk #1 succeeded at 622 (offset 26 lines).
++done
++Hmm...  Looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|diff -Nrup a/src/main.c b/src/main.c
++|--- a/src/main.c	2016-05-31 03:17:26.000000000 -0400
++|+++ b/src/main.c	2016-09-22 16:18:52.283889265 -0400
++--------------------------
++patching file src/main.c
++Using Plan A...
++Hunk #1 succeeded at 2072 (offset 21 lines).
++done
++autoreconf: Entering directory `.'
++autoreconf: running: autopoint --force
++autoreconf: running: aclocal --force -I m4
++autoreconf: configure.ac: tracing
++autoreconf: configure.ac: not using Libtool
++autoreconf: running: /usr/bin/autoconf --force
++autoreconf: running: /usr/bin/autoheader --force
++autoreconf: running: automake --add-missing --copy --force-missing
++autoreconf: Leaving directory `.'
++checking for a BSD-compatible install... /usr/bin/ginstall -c
++checking whether build environment is sane... yes
++checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
++checking for gawk... gawk
++checking whether make sets $(MAKE)... yes
++checking whether make supports nested variables... yes
++checking whether make supports the include directive... yes (GNU style)
++checking for gcc... gcc
++checking whether the C compiler works... yes
++checking for C compiler default output file name... a.out
++checking for suffix of executables... 
++checking whether we are cross compiling... no
++checking for suffix of object files... o
++checking whether we are using the GNU C compiler... yes
++checking whether gcc accepts -g... yes
++checking for gcc option to accept ISO C89... none needed
++checking whether gcc understands -c and -o together... yes
++checking dependency style of gcc... gcc3
++checking how to run the C preprocessor... gcc -E
++checking for grep that handles long lines and -e... /usr/bin/grep
++checking for egrep... /usr/bin/grep -E
++checking for ANSI C header files... yes
++checking for sys/types.h... yes
++checking for sys/stat.h... yes
++checking for stdlib.h... yes
++checking for string.h... yes
++checking for memory.h... yes
++checking for strings.h... yes
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking for unistd.h... yes
++checking minix/config.h usability... no
++checking minix/config.h presence... no
++checking for minix/config.h... no
++checking whether it is safe to define __EXTENSIONS__... yes
++checking whether _XOPEN_SOURCE should be defined... no
++checking for gcc... (cached) gcc
++checking whether we are using the GNU C compiler... (cached) yes
++checking whether gcc accepts -g... (cached) yes
++checking for gcc option to accept ISO C89... (cached) none needed
++checking whether gcc understands -c and -o together... (cached) yes
++checking dependency style of gcc... (cached) gcc3
++checking for Minix Amsterdam compiler... no
++checking for ar... ar
++checking for ranlib... ranlib
++checking build system type... x86_64-slackware-linux-musl
++checking host system type... x86_64-slackware-linux-musl
++checking for size_t... yes
++checking for working alloca.h... yes
++checking for alloca... yes
++checking for _set_invalid_parameter_handler... no
++checking for fcntl... yes
++checking for symlink... yes
++checking for getdtablesize... yes
++checking for getprogname... no
++checking for getexecname... no
++checking for sys/socket.h... yes
++checking for unistd.h... (cached) yes
++checking for sys/param.h... yes
++checking for limits.h... yes
++checking for wchar.h... yes
++checking for stdint.h... (cached) yes
++checking whether // is distinct from /... no
++checking whether the preprocessor supports include_next... yes
++checking whether system header files limit the line length... no
++checking for complete errno.h... yes
++checking whether strerror_r is declared... yes
++checking for strerror_r... yes
++checking whether strerror_r returns char *... no
++checking for working fcntl.h... yes
++checking for pid_t... yes
++checking for mode_t... yes
++checking for eaccess... yes
++checking whether getdtablesize is declared... yes
++checking host CPU and C ABI... x86_64
++checking whether limits.h has LLONG_MAX, WORD_BIT, ULLONG_WIDTH etc.... no
++checking whether malloc, realloc, calloc are POSIX compliant... yes
++checking for stdbool.h that conforms to C99... yes
++checking for _Bool... yes
++checking for wchar_t... yes
++checking for wint_t... yes
++checking whether wint_t is too small... no
++checking whether stdint.h conforms to C99... yes
++checking whether stdint.h predates C++11... no
++checking whether stdint.h has UINTMAX_WIDTH etc.... no
++checking for C/C++ restrict keyword... __restrict
++checking whether strerror(0) succeeds... yes
++checking for alloca as a compiler built-in... yes
++checking whether // is distinct from /... (cached) no
++checking whether dup2 works... yes
++checking for error_at_line... no
++checking whether fcntl handles F_DUPFD correctly... yes
++checking whether fcntl understands F_DUPFD_CLOEXEC... needs runtime check
++checking whether getdtablesize works... yes
++checking for getloadavg... yes
++checking sys/loadavg.h usability... no
++checking sys/loadavg.h presence... no
++checking for sys/loadavg.h... no
++checking whether getloadavg is declared... yes
++checking whether program_invocation_name is declared... yes
++checking whether program_invocation_short_name is declared... yes
++checking whether __argv is declared... no
++checking if system libc has GNU glob... no
++checking for ssize_t... yes
++checking for good max_align_t... yes
++checking whether NULL can be used in arbitrary expressions... yes
++checking which flavor of printf attribute matches inttypes macros... system
++checking for stpcpy... yes
++checking for working strerror function... yes
++checking for ranlib... (cached) ranlib
++checking how to run the C preprocessor... gcc -E
++checking for ar... ar
++checking for perl... perl
++checking for library containing strerror... none required
++checking whether byte ordering is bigendian... no
++checking for a sed that does not truncate output... /usr/bin/sed
++checking whether NLS is requested... yes
++checking for msgfmt... /usr/bin/msgfmt
++checking for gmsgfmt... /usr/bin/msgfmt
++checking for xgettext... /usr/bin/xgettext
++checking for msgmerge... /usr/bin/msgmerge
++checking for ld used by gcc... /usr/bin/ld
++checking if the linker (/usr/bin/ld) is GNU ld... yes
++checking for shared library run path origin... done
++checking for the common suffixes of directories in the library search path... lib,lib
++checking for CFPreferencesCopyAppValue... no
++checking for CFLocaleCopyCurrent... no
++checking for GNU gettext in libc... yes
++checking whether to use NLS... yes
++checking where the gettext function comes from... libc
++checking for special C compiler options needed for large files... no
++checking for _FILE_OFFSET_BITS value needed for large files... no
++checking for library containing getpwnam... none required
++checking for ANSI C header files... (cached) yes
++checking for dirent.h that defines DIR... yes
++checking for library containing opendir... none required
++checking whether stat file-mode macros are broken... no
++checking whether time.h and sys/time.h may both be included... yes
++checking for stdlib.h... (cached) yes
++checking locale.h usability... yes
++checking locale.h presence... yes
++checking for locale.h... yes
++checking for unistd.h... (cached) yes
++checking for limits.h... (cached) yes
++checking fcntl.h usability... yes
++checking fcntl.h presence... yes
++checking for fcntl.h... yes
++checking for string.h... (cached) yes
++checking for memory.h... (cached) yes
++checking for sys/param.h... (cached) yes
++checking sys/resource.h usability... yes
++checking sys/resource.h presence... yes
++checking for sys/resource.h... yes
++checking sys/time.h usability... yes
++checking sys/time.h presence... yes
++checking for sys/time.h... yes
++checking sys/timeb.h usability... yes
++checking sys/timeb.h presence... yes
++checking for sys/timeb.h... yes
++checking sys/select.h usability... yes
++checking sys/select.h presence... yes
++checking for sys/select.h... yes
++checking sys/file.h usability... yes
++checking sys/file.h presence... yes
++checking for sys/file.h... yes
++checking spawn.h usability... yes
++checking spawn.h presence... yes
++checking for spawn.h... yes
++checking for an ANSI C-conforming const... yes
++checking return type of signal handlers... void
++checking for uid_t in sys/types.h... yes
++checking for pid_t... (cached) yes
++checking for off_t... yes
++checking for size_t... (cached) yes
++checking for ssize_t... yes
++checking for unsigned long long int... yes
++checking for uintmax_t... yes
++checking for nanoseconds field of struct stat... st_mtim.tv_nsec
++checking whether to use high resolution file timestamps... yes
++checking for library containing clock_gettime... none required
++checking whether system uses MSDOS-style paths... no
++checking for standard gettimeofday... yes
++checking for strdup... yes
++checking for strndup... yes
++checking for memrchr... yes
++checking for umask... yes
++checking for mkstemp... yes
++checking for mktemp... yes
++checking for fdopen... yes
++checking for dup... yes
++checking for dup2... yes
++checking for getcwd... yes
++checking for realpath... yes
++checking for sigsetmask... no
++checking for sigaction... yes
++checking for getgroups... yes
++checking for seteuid... yes
++checking for setegid... yes
++checking for setlinebuf... yes
++checking for setreuid... yes
++checking for setregid... yes
++checking for getrlimit... yes
++checking for setrlimit... yes
++checking for setvbuf... yes
++checking for pipe... yes
++checking for strsignal... yes
++checking for lstat... yes
++checking for readlink... yes
++checking for atexit... yes
++checking for isatty... yes
++checking for ttyname... yes
++checking for pselect... yes
++checking for posix_spawn... yes
++checking for posix_spawnattr_setsigmask... yes
++checking whether bsd_signal is declared... yes
++checking vfork.h usability... no
++checking vfork.h presence... no
++checking for vfork.h... no
++checking for fork... yes
++checking for vfork... yes
++checking for working fork... yes
++checking for working vfork... (cached) yes
++checking for strcasecmp... yes
++checking for strncasecmp... yes
++checking for strcmpi... no
++checking for strncmpi... no
++checking for stricmp... no
++checking for strnicmp... no
++checking for working strcoll... yes
++checking whether closedir returns void... no
++checking for struct dirent.d_type... yes
++checking pkg-config is at least version 0.9.0... yes
++checking for GNU Guile... 3.0
++checking for guile-3.0... yes
++checking for libguile.h... yes
++checking whether sys_siglist is declared... no
++checking whether _sys_siglist is declared... no
++checking whether __sys_siglist is declared... no
++checking for sys/wait.h... yes
++checking for waitpid... yes
++checking for wait3... yes
++checking for union wait... no
++checking for SA_RESTART... yes
++checking whether dlopen is declared... yes
++checking whether dlsym is declared... yes
++checking whether dlerror is declared... yes
++checking for library containing dlopen... none required
++checking If the linker accepts -Wl,--export-dynamic... yes
++checking for posix_spawn that fails synchronously... yes
++checking for location of SCCS get command... get
++checking if malloc debugging is wanted... no
++checking that generated files are newer than configure... done
++configure: creating ./config.status
++config.status: creating Makefile
++config.status: creating build.cfg
++config.status: creating lib/Makefile
++config.status: creating po/Makefile.in
++config.status: creating doc/Makefile
++config.status: creating tests/config-flags.pm
++config.status: creating src/config.h
++config.status: executing depfiles commands
++config.status: executing po-directories commands
++config.status: creating po/POTFILES
++config.status: creating po/Makefile
++Making all in lib
++make[1]: Entering directory '/tmp/make-4.3/lib'
++rm -f alloca.h-t alloca.h && \
++{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */'; \
++  sed -e 's|@''HAVE_ALLOCA_H''@|1|g' < ./alloca.in.h; \
++} > alloca.h-t && \
++mv -f alloca.h-t alloca.h
++rm -f fcntl.h-t fcntl.h && \
++{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */'; \
++  sed -e 's|@''GUARD_PREFIX''@|GL|g' \
++      -e 's|@''INCLUDE_NEXT''@|include_next|g' \
++      -e 's|@''PRAGMA_SYSTEM_HEADER''@|#pragma GCC system_header|g' \
++      -e 's|@''PRAGMA_COLUMNS''@||g' \
++      -e 's|@''NEXT_FCNTL_H''@|<fcntl.h>|g' \
++      -e 's/@''GNULIB_CREAT''@/0/g' \
++      -e 's/@''GNULIB_FCNTL''@/1/g' \
++      -e 's/@''GNULIB_NONBLOCKING''@/0/g' \
++      -e 's/@''GNULIB_OPEN''@/0/g' \
++      -e 's/@''GNULIB_OPENAT''@/0/g' \
++      -e 's|@''HAVE_FCNTL''@|1|g' \
++      -e 's|@''HAVE_OPENAT''@|1|g' \
++      -e 's|@''REPLACE_CREAT''@|0|g' \
++      -e 's|@''REPLACE_FCNTL''@|1|g' \
++      -e 's|@''REPLACE_OPEN''@|0|g' \
++      -e 's|@''REPLACE_OPENAT''@|0|g' \
++      -e '/definitions of _GL_FUNCDECL_RPL/r ./c++defs.h' \
++      -e '/definition of _GL_ARG_NONNULL/r ./arg-nonnull.h' \
++      -e '/definition of _GL_WARN_ON_USE/r ./warn-on-use.h' \
++      < ./fcntl.in.h; \
++} > fcntl.h-t && \
++mv fcntl.h-t fcntl.h
++rm -f limits.h-t limits.h && \
++{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */' && \
++  sed -e 's|@''GUARD_PREFIX''@|GL|g' \
++      -e 's|@''INCLUDE_NEXT''@|include_next|g' \
++      -e 's|@''PRAGMA_SYSTEM_HEADER''@|#pragma GCC system_header|g' \
++      -e 's|@''PRAGMA_COLUMNS''@||g' \
++      -e 's|@''NEXT_LIMITS_H''@|<limits.h>|g' \
++      < ./limits.in.h; \
++} > limits.h-t && \
++mv limits.h-t limits.h
++rm -f fnmatch.h-t fnmatch.h && \
++{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */'; \
++  cat ./fnmatch.in.h; \
++} > fnmatch.h-t && \
++mv -f fnmatch.h-t fnmatch.h
++rm -f glob.h-t glob.h && \
++{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */'; \
++  cat ./glob.in.h; \
++} > glob.h-t && \
++mv -f glob.h-t glob.h
++rm -f stdint.h-t stdint.h && \
++{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */'; \
++  sed -e 's|@''GUARD_PREFIX''@|GL|g' \
++      -e 's/@''HAVE_STDINT_H''@/1/g' \
++      -e 's|@''INCLUDE_NEXT''@|include_next|g' \
++      -e 's|@''PRAGMA_SYSTEM_HEADER''@|#pragma GCC system_header|g' \
++      -e 's|@''PRAGMA_COLUMNS''@||g' \
++      -e 's|@''NEXT_STDINT_H''@|<stdint.h>|g' \
++      -e 's/@''HAVE_C99_STDINT_H''@/1/g' \
++      -e 's/@''HAVE_SYS_TYPES_H''@/1/g' \
++      -e 's/@''HAVE_INTTYPES_H''@/1/g' \
++      -e 's/@''HAVE_SYS_INTTYPES_H''@/0/g' \
++      -e 's/@''HAVE_SYS_BITYPES_H''@/0/g' \
++      -e 's/@''HAVE_WCHAR_H''@/1/g' \
++      -e 's/@''APPLE_UNIVERSAL_BUILD''@/0/g' \
++      -e 's/@''BITSIZEOF_PTRDIFF_T''@//g' \
++      -e 's/@''PTRDIFF_T_SUFFIX''@//g' \
++      -e 's/@''BITSIZEOF_SIG_ATOMIC_T''@//g' \
++      -e 's/@''HAVE_SIGNED_SIG_ATOMIC_T''@//g' \
++      -e 's/@''SIG_ATOMIC_T_SUFFIX''@//g' \
++      -e 's/@''BITSIZEOF_SIZE_T''@//g' \
++      -e 's/@''SIZE_T_SUFFIX''@//g' \
++      -e 's/@''BITSIZEOF_WCHAR_T''@//g' \
++      -e 's/@''HAVE_SIGNED_WCHAR_T''@//g' \
++      -e 's/@''WCHAR_T_SUFFIX''@//g' \
++      -e 's/@''BITSIZEOF_WINT_T''@//g' \
++      -e 's/@''HAVE_SIGNED_WINT_T''@//g' \
++      -e 's/@''WINT_T_SUFFIX''@//g' \
++      -e 's/@''GNULIB_OVERRIDES_WINT_T''@/0/g' \
++      < ./stdint.in.h; \
++} > stdint.h-t && \
++mv stdint.h-t stdint.h
++rm -f stdio.h-t stdio.h && \
++{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */' && \
++  sed -e 's|@''GUARD_PREFIX''@|GL|g' \
++      -e 's|@''INCLUDE_NEXT''@|include_next|g' \
++      -e 's|@''PRAGMA_SYSTEM_HEADER''@|#pragma GCC system_header|g' \
++      -e 's|@''PRAGMA_COLUMNS''@||g' \
++      -e 's|@''NEXT_STDIO_H''@|<stdio.h>|g' \
++      -e 's/@''GNULIB_DPRINTF''@/0/g' \
++      -e 's/@''GNULIB_FCLOSE''@/0/g' \
++      -e 's/@''GNULIB_FDOPEN''@/0/g' \
++      -e 's/@''GNULIB_FFLUSH''@/0/g' \
++      -e 's/@''GNULIB_FGETC''@/1/g' \
++      -e 's/@''GNULIB_FGETS''@/1/g' \
++      -e 's/@''GNULIB_FOPEN''@/0/g' \
++      -e 's/@''GNULIB_FPRINTF''@/1/g' \
++      -e 's/@''GNULIB_FPRINTF_POSIX''@/0/g' \
++      -e 's/@''GNULIB_FPURGE''@/0/g' \
++      -e 's/@''GNULIB_FPUTC''@/1/g' \
++      -e 's/@''GNULIB_FPUTS''@/1/g' \
++      -e 's/@''GNULIB_FREAD''@/1/g' \
++      -e 's/@''GNULIB_FREOPEN''@/0/g' \
++      -e 's/@''GNULIB_FSCANF''@/1/g' \
++      -e 's/@''GNULIB_FSEEK''@/0/g' \
++      -e 's/@''GNULIB_FSEEKO''@/0/g' \
++      -e 's/@''GNULIB_FTELL''@/0/g' \
++      -e 's/@''GNULIB_FTELLO''@/0/g' \
++      -e 's/@''GNULIB_FWRITE''@/1/g' \
++      -e 's/@''GNULIB_GETC''@/1/g' \
++      -e 's/@''GNULIB_GETCHAR''@/1/g' \
++      -e 's/@''GNULIB_GETDELIM''@/0/g' \
++      -e 's/@''GNULIB_GETLINE''@/0/g' \
++      -e 's/@''GNULIB_OBSTACK_PRINTF''@/0/g' \
++      -e 's/@''GNULIB_OBSTACK_PRINTF_POSIX''@/0/g' \
++      -e 's/@''GNULIB_PCLOSE''@/0/g' \
++      -e 's/@''GNULIB_PERROR''@/0/g' \
++      -e 's/@''GNULIB_POPEN''@/0/g' \
++      -e 's/@''GNULIB_PRINTF''@/1/g' \
++      -e 's/@''GNULIB_PRINTF_POSIX''@/0/g' \
++      -e 's/@''GNULIB_PUTC''@/1/g' \
++      -e 's/@''GNULIB_PUTCHAR''@/1/g' \
++      -e 's/@''GNULIB_PUTS''@/1/g' \
++      -e 's/@''GNULIB_REMOVE''@/0/g' \
++      -e 's/@''GNULIB_RENAME''@/0/g' \
++      -e 's/@''GNULIB_RENAMEAT''@/0/g' \
++      -e 's/@''GNULIB_SCANF''@/1/g' \
++      -e 's/@''GNULIB_SNPRINTF''@/0/g' \
++      -e 's/@''GNULIB_SPRINTF_POSIX''@/0/g' \
++      -e 's/@''GNULIB_STDIO_H_NONBLOCKING''@/0/g' \
++      -e 's/@''GNULIB_STDIO_H_SIGPIPE''@/0/g' \
++      -e 's/@''GNULIB_TMPFILE''@/0/g' \
++      -e 's/@''GNULIB_VASPRINTF''@/0/g' \
++      -e 's/@''GNULIB_VDPRINTF''@/0/g' \
++      -e 's/@''GNULIB_VFPRINTF''@/1/g' \
++      -e 's/@''GNULIB_VFPRINTF_POSIX''@/0/g' \
++      -e 's/@''GNULIB_VFSCANF''@/0/g' \
++      -e 's/@''GNULIB_VSCANF''@/0/g' \
++      -e 's/@''GNULIB_VPRINTF''@/1/g' \
++      -e 's/@''GNULIB_VPRINTF_POSIX''@/0/g' \
++      -e 's/@''GNULIB_VSNPRINTF''@/0/g' \
++      -e 's/@''GNULIB_VSPRINTF_POSIX''@/0/g' \
++      < ./stdio.in.h | \
++  sed -e 's|@''HAVE_DECL_FPURGE''@|1|g' \
++      -e 's|@''HAVE_DECL_FSEEKO''@|1|g' \
++      -e 's|@''HAVE_DECL_FTELLO''@|1|g' \
++      -e 's|@''HAVE_DECL_GETDELIM''@|1|g' \
++      -e 's|@''HAVE_DECL_GETLINE''@|1|g' \
++      -e 's|@''HAVE_DECL_OBSTACK_PRINTF''@|1|g' \
++      -e 's|@''HAVE_DECL_SNPRINTF''@|1|g' \
++      -e 's|@''HAVE_DECL_VSNPRINTF''@|1|g' \
++      -e 's|@''HAVE_DPRINTF''@|1|g' \
++      -e 's|@''HAVE_FSEEKO''@|1|g' \
++      -e 's|@''HAVE_FTELLO''@|1|g' \
++      -e 's|@''HAVE_PCLOSE''@|1|g' \
++      -e 's|@''HAVE_POPEN''@|1|g' \
++      -e 's|@''HAVE_RENAMEAT''@|1|g' \
++      -e 's|@''HAVE_VASPRINTF''@|1|g' \
++      -e 's|@''HAVE_VDPRINTF''@|1|g' \
++      -e 's|@''REPLACE_DPRINTF''@|0|g' \
++      -e 's|@''REPLACE_FCLOSE''@|0|g' \
++      -e 's|@''REPLACE_FDOPEN''@|0|g' \
++      -e 's|@''REPLACE_FFLUSH''@|0|g' \
++      -e 's|@''REPLACE_FOPEN''@|0|g' \
++      -e 's|@''REPLACE_FPRINTF''@|0|g' \
++      -e 's|@''REPLACE_FPURGE''@|0|g' \
++      -e 's|@''REPLACE_FREOPEN''@|0|g' \
++      -e 's|@''REPLACE_FSEEK''@|0|g' \
++      -e 's|@''REPLACE_FSEEKO''@|0|g' \
++      -e 's|@''REPLACE_FTELL''@|0|g' \
++      -e 's|@''REPLACE_FTELLO''@|0|g' \
++      -e 's|@''REPLACE_GETDELIM''@|0|g' \
++      -e 's|@''REPLACE_GETLINE''@|0|g' \
++      -e 's|@''REPLACE_OBSTACK_PRINTF''@|0|g' \
++      -e 's|@''REPLACE_PERROR''@|0|g' \
++      -e 's|@''REPLACE_POPEN''@|0|g' \
++      -e 's|@''REPLACE_PRINTF''@|0|g' \
++      -e 's|@''REPLACE_REMOVE''@|0|g' \
++      -e 's|@''REPLACE_RENAME''@|0|g' \
++      -e 's|@''REPLACE_RENAMEAT''@|0|g' \
++      -e 's|@''REPLACE_SNPRINTF''@|0|g' \
++      -e 's|@''REPLACE_SPRINTF''@|0|g' \
++      -e 's|@''REPLACE_STDIO_READ_FUNCS''@|0|g' \
++      -e 's|@''REPLACE_STDIO_WRITE_FUNCS''@|0|g' \
++      -e 's|@''REPLACE_TMPFILE''@|0|g' \
++      -e 's|@''REPLACE_VASPRINTF''@|0|g' \
++      -e 's|@''REPLACE_VDPRINTF''@|0|g' \
++      -e 's|@''REPLACE_VFPRINTF''@|0|g' \
++      -e 's|@''REPLACE_VPRINTF''@|0|g' \
++      -e 's|@''REPLACE_VSNPRINTF''@|0|g' \
++      -e 's|@''REPLACE_VSPRINTF''@|0|g' \
++      -e 's|@''ASM_SYMBOL_PREFIX''@||g' \
++      -e '/definitions of _GL_FUNCDECL_RPL/r ./c++defs.h' \
++      -e '/definition of _GL_ARG_NONNULL/r ./arg-nonnull.h' \
++      -e '/definition of _GL_WARN_ON_USE/r ./warn-on-use.h'; \
++} > stdio.h-t && \
++mv stdio.h-t stdio.h
++rm -f stdlib.h-t stdlib.h && \
++{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */' && \
++  sed -e 's|@''GUARD_PREFIX''@|GL|g' \
++      -e 's|@''INCLUDE_NEXT''@|include_next|g' \
++      -e 's|@''PRAGMA_SYSTEM_HEADER''@|#pragma GCC system_header|g' \
++      -e 's|@''PRAGMA_COLUMNS''@||g' \
++      -e 's|@''NEXT_STDLIB_H''@|<stdlib.h>|g' \
++      -e 's/@''GNULIB__EXIT''@/0/g' \
++      -e 's/@''GNULIB_ATOLL''@/0/g' \
++      -e 's/@''GNULIB_CALLOC_POSIX''@/0/g' \
++      -e 's/@''GNULIB_CANONICALIZE_FILE_NAME''@/0/g' \
++      -e 's/@''GNULIB_GETLOADAVG''@/1/g' \
++      -e 's/@''GNULIB_GETSUBOPT''@/0/g' \
++      -e 's/@''GNULIB_GRANTPT''@/0/g' \
++      -e 's/@''GNULIB_MALLOC_POSIX''@/1/g' \
++      -e 's/@''GNULIB_MBTOWC''@/0/g' \
++      -e 's/@''GNULIB_MKDTEMP''@/0/g' \
++      -e 's/@''GNULIB_MKOSTEMP''@/0/g' \
++      -e 's/@''GNULIB_MKOSTEMPS''@/0/g' \
++      -e 's/@''GNULIB_MKSTEMP''@/0/g' \
++      -e 's/@''GNULIB_MKSTEMPS''@/0/g' \
++      -e 's/@''GNULIB_POSIX_OPENPT''@/0/g' \
++      -e 's/@''GNULIB_PTSNAME''@/0/g' \
++      -e 's/@''GNULIB_PTSNAME_R''@/0/g' \
++      -e 's/@''GNULIB_PUTENV''@/0/g' \
++      -e 's/@''GNULIB_QSORT_R''@/0/g' \
++      -e 's/@''GNULIB_RANDOM''@/0/g' \
++      -e 's/@''GNULIB_RANDOM_R''@/0/g' \
++      -e 's/@''GNULIB_REALLOC_POSIX''@/0/g' \
++      -e 's/@''GNULIB_REALLOCARRAY''@/0/g' \
++      -e 's/@''GNULIB_REALPATH''@/0/g' \
++      -e 's/@''GNULIB_RPMATCH''@/0/g' \
++      -e 's/@''GNULIB_SECURE_GETENV''@/0/g' \
++      -e 's/@''GNULIB_SETENV''@/0/g' \
++      -e 's/@''GNULIB_STRTOD''@/0/g' \
++      -e 's/@''GNULIB_STRTOLD''@/0/g' \
++      -e 's/@''GNULIB_STRTOLL''@/0/g' \
++      -e 's/@''GNULIB_STRTOULL''@/0/g' \
++      -e 's/@''GNULIB_SYSTEM_POSIX''@/0/g' \
++      -e 's/@''GNULIB_UNLOCKPT''@/0/g' \
++      -e 's/@''GNULIB_UNSETENV''@/0/g' \
++      -e 's/@''GNULIB_WCTOMB''@/0/g' \
++      < ./stdlib.in.h | \
++  sed -e 's|@''HAVE__EXIT''@|1|g' \
++      -e 's|@''HAVE_ATOLL''@|1|g' \
++      -e 's|@''HAVE_CANONICALIZE_FILE_NAME''@|1|g' \
++      -e 's|@''HAVE_DECL_GETLOADAVG''@|1|g' \
++      -e 's|@''HAVE_GETSUBOPT''@|1|g' \
++      -e 's|@''HAVE_GRANTPT''@|1|g' \
++      -e 's|@''HAVE_INITSTATE''@|1|g' \
++      -e 's|@''HAVE_DECL_INITSTATE''@|1|g' \
++      -e 's|@''HAVE_MBTOWC''@|1|g' \
++      -e 's|@''HAVE_MKDTEMP''@|1|g' \
++      -e 's|@''HAVE_MKOSTEMP''@|1|g' \
++      -e 's|@''HAVE_MKOSTEMPS''@|1|g' \
++      -e 's|@''HAVE_MKSTEMP''@|1|g' \
++      -e 's|@''HAVE_MKSTEMPS''@|1|g' \
++      -e 's|@''HAVE_POSIX_OPENPT''@|1|g' \
++      -e 's|@''HAVE_PTSNAME''@|1|g' \
++      -e 's|@''HAVE_PTSNAME_R''@|1|g' \
++      -e 's|@''HAVE_QSORT_R''@|1|g' \
++      -e 's|@''HAVE_RANDOM''@|1|g' \
++      -e 's|@''HAVE_RANDOM_H''@|1|g' \
++      -e 's|@''HAVE_RANDOM_R''@|1|g' \
++      -e 's|@''HAVE_REALLOCARRAY''@|1|g' \
++      -e 's|@''HAVE_REALPATH''@|1|g' \
++      -e 's|@''HAVE_RPMATCH''@|1|g' \
++      -e 's|@''HAVE_SECURE_GETENV''@|1|g' \
++      -e 's|@''HAVE_DECL_SETENV''@|1|g' \
++      -e 's|@''HAVE_SETSTATE''@|1|g' \
++      -e 's|@''HAVE_DECL_SETSTATE''@|1|g' \
++      -e 's|@''HAVE_STRTOD''@|1|g' \
++      -e 's|@''HAVE_STRTOLD''@|1|g' \
++      -e 's|@''HAVE_STRTOLL''@|1|g' \
++      -e 's|@''HAVE_STRTOULL''@|1|g' \
++      -e 's|@''HAVE_STRUCT_RANDOM_DATA''@|1|g' \
++      -e 's|@''HAVE_SYS_LOADAVG_H''@|0|g' \
++      -e 's|@''HAVE_UNLOCKPT''@|1|g' \
++      -e 's|@''HAVE_DECL_UNSETENV''@|1|g' \
++      -e 's|@''REPLACE_CALLOC''@|0|g' \
++      -e 's|@''REPLACE_CANONICALIZE_FILE_NAME''@|0|g' \
++      -e 's|@''REPLACE_INITSTATE''@|0|g' \
++      -e 's|@''REPLACE_MALLOC''@|0|g' \
++      -e 's|@''REPLACE_MBTOWC''@|0|g' \
++      -e 's|@''REPLACE_MKSTEMP''@|0|g' \
++      -e 's|@''REPLACE_PTSNAME''@|0|g' \
++      -e 's|@''REPLACE_PTSNAME_R''@|0|g' \
++      -e 's|@''REPLACE_PUTENV''@|0|g' \
++      -e 's|@''REPLACE_QSORT_R''@|0|g' \
++      -e 's|@''REPLACE_RANDOM''@|0|g' \
++      -e 's|@''REPLACE_RANDOM_R''@|0|g' \
++      -e 's|@''REPLACE_REALLOC''@|0|g' \
++      -e 's|@''REPLACE_REALPATH''@|0|g' \
++      -e 's|@''REPLACE_SETENV''@|0|g' \
++      -e 's|@''REPLACE_SETSTATE''@|0|g' \
++      -e 's|@''REPLACE_STRTOD''@|0|g' \
++      -e 's|@''REPLACE_STRTOLD''@|0|g' \
++      -e 's|@''REPLACE_UNSETENV''@|0|g' \
++      -e 's|@''REPLACE_WCTOMB''@|0|g' \
++      -e '/definitions of _GL_FUNCDECL_RPL/r ./c++defs.h' \
++      -e '/definition of _Noreturn/r ./_Noreturn.h' \
++      -e '/definition of _GL_ARG_NONNULL/r ./arg-nonnull.h' \
++      -e '/definition of _GL_WARN_ON_USE/r ./warn-on-use.h'; \
++} > stdlib.h-t && \
++mv stdlib.h-t stdlib.h
++rm -f string.h-t string.h && \
++{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */' && \
++  sed -e 's|@''GUARD_PREFIX''@|GL|g' \
++      -e 's|@''INCLUDE_NEXT''@|include_next|g' \
++      -e 's|@''PRAGMA_SYSTEM_HEADER''@|#pragma GCC system_header|g' \
++      -e 's|@''PRAGMA_COLUMNS''@||g' \
++      -e 's|@''NEXT_STRING_H''@|<string.h>|g' \
++      -e 's/@''GNULIB_EXPLICIT_BZERO''@/0/g' \
++      -e 's/@''GNULIB_FFSL''@/0/g' \
++      -e 's/@''GNULIB_FFSLL''@/0/g' \
++      -e 's/@''GNULIB_MBSLEN''@/0/g' \
++      -e 's/@''GNULIB_MBSNLEN''@/0/g' \
++      -e 's/@''GNULIB_MBSCHR''@/0/g' \
++      -e 's/@''GNULIB_MBSRCHR''@/0/g' \
++      -e 's/@''GNULIB_MBSSTR''@/0/g' \
++      -e 's/@''GNULIB_MBSCASECMP''@/0/g' \
++      -e 's/@''GNULIB_MBSNCASECMP''@/0/g' \
++      -e 's/@''GNULIB_MBSPCASECMP''@/0/g' \
++      -e 's/@''GNULIB_MBSCASESTR''@/0/g' \
++      -e 's/@''GNULIB_MBSCSPN''@/0/g' \
++      -e 's/@''GNULIB_MBSPBRK''@/0/g' \
++      -e 's/@''GNULIB_MBSSPN''@/0/g' \
++      -e 's/@''GNULIB_MBSSEP''@/0/g' \
++      -e 's/@''GNULIB_MBSTOK_R''@/0/g' \
++      -e 's/@''GNULIB_MEMCHR''@/0/g' \
++      -e 's/@''GNULIB_MEMMEM''@/0/g' \
++      -e 's/@''GNULIB_MEMPCPY''@/0/g' \
++      -e 's/@''GNULIB_MEMRCHR''@/0/g' \
++      -e 's/@''GNULIB_RAWMEMCHR''@/0/g' \
++      -e 's/@''GNULIB_STPCPY''@/1/g' \
++      -e 's/@''GNULIB_STPNCPY''@/0/g' \
++      -e 's/@''GNULIB_STRCHRNUL''@/0/g' \
++      -e 's/@''GNULIB_STRDUP''@/0/g' \
++      -e 's/@''GNULIB_STRNCAT''@/0/g' \
++      -e 's/@''GNULIB_STRNDUP''@/0/g' \
++      -e 's/@''GNULIB_STRNLEN''@/0/g' \
++      -e 's/@''GNULIB_STRPBRK''@/0/g' \
++      -e 's/@''GNULIB_STRSEP''@/0/g' \
++      -e 's/@''GNULIB_STRSTR''@/0/g' \
++      -e 's/@''GNULIB_STRCASESTR''@/0/g' \
++      -e 's/@''GNULIB_STRTOK_R''@/0/g' \
++      -e 's/@''GNULIB_STRERROR''@/1/g' \
++      -e 's/@''GNULIB_STRERROR_R''@/0/g' \
++      -e 's/@''GNULIB_STRSIGNAL''@/0/g' \
++      -e 's/@''GNULIB_STRVERSCMP''@/0/g' \
++      < ./string.in.h | \
++  sed -e 's|@''HAVE_EXPLICIT_BZERO''@|1|g' \
++      -e 's|@''HAVE_FFSL''@|1|g' \
++      -e 's|@''HAVE_FFSLL''@|1|g' \
++      -e 's|@''HAVE_MBSLEN''@|0|g' \
++      -e 's|@''HAVE_MEMCHR''@|1|g' \
++      -e 's|@''HAVE_DECL_MEMMEM''@|1|g' \
++      -e 's|@''HAVE_MEMPCPY''@|1|g' \
++      -e 's|@''HAVE_DECL_MEMRCHR''@|1|g' \
++      -e 's|@''HAVE_RAWMEMCHR''@|1|g' \
++      -e 's|@''HAVE_STPCPY''@|1|g' \
++      -e 's|@''HAVE_STPNCPY''@|1|g' \
++      -e 's|@''HAVE_STRCHRNUL''@|1|g' \
++      -e 's|@''HAVE_DECL_STRDUP''@|1|g' \
++      -e 's|@''HAVE_DECL_STRNDUP''@|1|g' \
++      -e 's|@''HAVE_DECL_STRNLEN''@|1|g' \
++      -e 's|@''HAVE_STRPBRK''@|1|g' \
++      -e 's|@''HAVE_STRSEP''@|1|g' \
++      -e 's|@''HAVE_STRCASESTR''@|1|g' \
++      -e 's|@''HAVE_DECL_STRTOK_R''@|1|g' \
++      -e 's|@''HAVE_DECL_STRERROR_R''@|1|g' \
++      -e 's|@''HAVE_DECL_STRSIGNAL''@|1|g' \
++      -e 's|@''HAVE_STRVERSCMP''@|1|g' \
++      -e 's|@''REPLACE_MEMCHR''@|0|g' \
++      -e 's|@''REPLACE_MEMMEM''@|0|g' \
++      -e 's|@''REPLACE_STPNCPY''@|0|g' \
++      -e 's|@''REPLACE_STRCHRNUL''@|0|g' \
++      -e 's|@''REPLACE_STRDUP''@|0|g' \
++      -e 's|@''REPLACE_STRNCAT''@|0|g' \
++      -e 's|@''REPLACE_STRNDUP''@|0|g' \
++      -e 's|@''REPLACE_STRNLEN''@|0|g' \
++      -e 's|@''REPLACE_STRSTR''@|0|g' \
++      -e 's|@''REPLACE_STRCASESTR''@|0|g' \
++      -e 's|@''REPLACE_STRTOK_R''@|0|g' \
++      -e 's|@''REPLACE_STRERROR''@|0|g' \
++      -e 's|@''REPLACE_STRERROR_R''@|0|g' \
++      -e 's|@''REPLACE_STRSIGNAL''@|0|g' \
++      -e 's|@''UNDEFINE_STRTOK_R''@|0|g' \
++      -e '/definitions of _GL_FUNCDECL_RPL/r ./c++defs.h' \
++      -e '/definition of _GL_ARG_NONNULL/r ./arg-nonnull.h' \
++      -e '/definition of _GL_WARN_ON_USE/r ./warn-on-use.h'; \
++      < ./string.in.h; \
++} > string.h-t && \
++mv string.h-t string.h
++/usr/bin/mkdir -p sys
++rm -f unistd.h-t unistd.h && \
++{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */'; \
++  sed -e 's|@''GUARD_PREFIX''@|GL|g' \
++      -e 's|@''HAVE_UNISTD_H''@|1|g' \
++      -e 's|@''INCLUDE_NEXT''@|include_next|g' \
++      -e 's|@''PRAGMA_SYSTEM_HEADER''@|#pragma GCC system_header|g' \
++      -e 's|@''PRAGMA_COLUMNS''@||g' \
++      -e 's|@''NEXT_UNISTD_H''@|<unistd.h>|g' \
++      -e 's|@''WINDOWS_64_BIT_OFF_T''@|0|g' \
++      -e 's/@''GNULIB_ACCESS''@/1/g' \
++      -e 's/@''GNULIB_CHDIR''@/0/g' \
++      -e 's/@''GNULIB_CHOWN''@/0/g' \
++      -e 's/@''GNULIB_CLOSE''@/1/g' \
++      -e 's/@''GNULIB_COPY_FILE_RANGE''@/0/g' \
++      -e 's/@''GNULIB_DUP''@/0/g' \
++      -e 's/@''GNULIB_DUP2''@/1/g' \
++      -e 's/@''GNULIB_DUP3''@/0/g' \
++      -e 's/@''GNULIB_ENVIRON''@/0/g' \
++      -e 's/@''GNULIB_EUIDACCESS''@/0/g' \
++      -e 's/@''GNULIB_FACCESSAT''@/0/g' \
++      -e 's/@''GNULIB_FCHDIR''@/0/g' \
++      -e 's/@''GNULIB_FCHOWNAT''@/0/g' \
++      -e 's/@''GNULIB_FDATASYNC''@/0/g' \
++      -e 's/@''GNULIB_FSYNC''@/0/g' \
++      -e 's/@''GNULIB_FTRUNCATE''@/0/g' \
++      -e 's/@''GNULIB_GETCWD''@/0/g' \
++      -e 's/@''GNULIB_GETDOMAINNAME''@/0/g' \
++      -e 's/@''GNULIB_GETDTABLESIZE''@/1/g' \
++      -e 's/@''GNULIB_GETGROUPS''@/0/g' \
++      -e 's/@''GNULIB_GETHOSTNAME''@/0/g' \
++      -e 's/@''GNULIB_GETLOGIN''@/0/g' \
++      -e 's/@''GNULIB_GETLOGIN_R''@/0/g' \
++      -e 's/@''GNULIB_GETPAGESIZE''@/0/g' \
++      -e 's/@''GNULIB_GETPASS''@/0/g' \
++      -e 's/@''GNULIB_GETUSERSHELL''@/0/g' \
++      -e 's/@''GNULIB_GROUP_MEMBER''@/0/g' \
++      -e 's/@''GNULIB_ISATTY''@/0/g' \
++      -e 's/@''GNULIB_LCHOWN''@/0/g' \
++      -e 's/@''GNULIB_LINK''@/0/g' \
++      -e 's/@''GNULIB_LINKAT''@/0/g' \
++      -e 's/@''GNULIB_LSEEK''@/0/g' \
++      -e 's/@''GNULIB_PIPE''@/0/g' \
++      -e 's/@''GNULIB_PIPE2''@/0/g' \
++      -e 's/@''GNULIB_PREAD''@/0/g' \
++      -e 's/@''GNULIB_PWRITE''@/0/g' \
++      -e 's/@''GNULIB_READ''@/0/g' \
++      -e 's/@''GNULIB_READLINK''@/0/g' \
++      -e 's/@''GNULIB_READLINKAT''@/0/g' \
++      -e 's/@''GNULIB_RMDIR''@/0/g' \
++      -e 's/@''GNULIB_SETHOSTNAME''@/0/g' \
++      -e 's/@''GNULIB_SLEEP''@/0/g' \
++      -e 's/@''GNULIB_SYMLINK''@/0/g' \
++      -e 's/@''GNULIB_SYMLINKAT''@/0/g' \
++      -e 's/@''GNULIB_TRUNCATE''@/0/g' \
++      -e 's/@''GNULIB_TTYNAME_R''@/0/g' \
++      -e 's/@''GNULIB_UNISTD_H_GETOPT''@/0/g' \
++      -e 's/@''GNULIB_UNISTD_H_NONBLOCKING''@/0/g' \
++      -e 's/@''GNULIB_UNISTD_H_SIGPIPE''@/0/g' \
++      -e 's/@''GNULIB_UNLINK''@/0/g' \
++      -e 's/@''GNULIB_UNLINKAT''@/0/g' \
++      -e 's/@''GNULIB_USLEEP''@/0/g' \
++      -e 's/@''GNULIB_WRITE''@/0/g' \
++      < ./unistd.in.h | \
++  sed -e 's|@''HAVE_CHOWN''@|1|g' \
++      -e 's|@''HAVE_COPY_FILE_RANGE''@|1|g' \
++      -e 's|@''HAVE_DUP2''@|1|g' \
++      -e 's|@''HAVE_DUP3''@|1|g' \
++      -e 's|@''HAVE_EUIDACCESS''@|1|g' \
++      -e 's|@''HAVE_FACCESSAT''@|1|g' \
++      -e 's|@''HAVE_FCHDIR''@|1|g' \
++      -e 's|@''HAVE_FCHOWNAT''@|1|g' \
++      -e 's|@''HAVE_FDATASYNC''@|1|g' \
++      -e 's|@''HAVE_FSYNC''@|1|g' \
++      -e 's|@''HAVE_FTRUNCATE''@|1|g' \
++      -e 's|@''HAVE_GETDTABLESIZE''@|1|g' \
++      -e 's|@''HAVE_GETGROUPS''@|1|g' \
++      -e 's|@''HAVE_GETHOSTNAME''@|1|g' \
++      -e 's|@''HAVE_GETPAGESIZE''@|1|g' \
++      -e 's|@''HAVE_GETPASS''@|1|g' \
++      -e 's|@''HAVE_GROUP_MEMBER''@|1|g' \
++      -e 's|@''HAVE_LCHOWN''@|1|g' \
++      -e 's|@''HAVE_LINK''@|1|g' \
++      -e 's|@''HAVE_LINKAT''@|1|g' \
++      -e 's|@''HAVE_PIPE''@|1|g' \
++      -e 's|@''HAVE_PIPE2''@|1|g' \
++      -e 's|@''HAVE_PREAD''@|1|g' \
++      -e 's|@''HAVE_PWRITE''@|1|g' \
++      -e 's|@''HAVE_READLINK''@|1|g' \
++      -e 's|@''HAVE_READLINKAT''@|1|g' \
++      -e 's|@''HAVE_SETHOSTNAME''@|1|g' \
++      -e 's|@''HAVE_SLEEP''@|1|g' \
++      -e 's|@''HAVE_SYMLINK''@|1|g' \
++      -e 's|@''HAVE_SYMLINKAT''@|1|g' \
++      -e 's|@''HAVE_UNLINKAT''@|1|g' \
++      -e 's|@''HAVE_USLEEP''@|1|g' \
++      -e 's|@''HAVE_DECL_ENVIRON''@|1|g' \
++      -e 's|@''HAVE_DECL_FCHDIR''@|1|g' \
++      -e 's|@''HAVE_DECL_FDATASYNC''@|1|g' \
++      -e 's|@''HAVE_DECL_GETDOMAINNAME''@|1|g' \
++      -e 's|@''HAVE_DECL_GETLOGIN''@|1|g' \
++      -e 's|@''HAVE_DECL_GETLOGIN_R''@|1|g' \
++      -e 's|@''HAVE_DECL_GETPAGESIZE''@|1|g' \
++      -e 's|@''HAVE_DECL_GETUSERSHELL''@|1|g' \
++      -e 's|@''HAVE_DECL_SETHOSTNAME''@|1|g' \
++      -e 's|@''HAVE_DECL_TRUNCATE''@|1|g' \
++      -e 's|@''HAVE_DECL_TTYNAME_R''@|1|g' \
++      -e 's|@''HAVE_OS_H''@|0|g' \
++      -e 's|@''HAVE_SYS_PARAM_H''@|0|g' \
++  | \
++  sed -e 's|@''REPLACE_ACCESS''@|0|g' \
++      -e 's|@''REPLACE_CHOWN''@|0|g' \
++      -e 's|@''REPLACE_CLOSE''@|0|g' \
++      -e 's|@''REPLACE_DUP''@|0|g' \
++      -e 's|@''REPLACE_DUP2''@|0|g' \
++      -e 's|@''REPLACE_FACCESSAT''@|0|g' \
++      -e 's|@''REPLACE_FCHOWNAT''@|0|g' \
++      -e 's|@''REPLACE_FTRUNCATE''@|0|g' \
++      -e 's|@''REPLACE_GETCWD''@|0|g' \
++      -e 's|@''REPLACE_GETDOMAINNAME''@|0|g' \
++      -e 's|@''REPLACE_GETDTABLESIZE''@|0|g' \
++      -e 's|@''REPLACE_GETLOGIN_R''@|0|g' \
++      -e 's|@''REPLACE_GETGROUPS''@|0|g' \
++      -e 's|@''REPLACE_GETPAGESIZE''@|0|g' \
++      -e 's|@''REPLACE_GETPASS''@|0|g' \
++      -e 's|@''REPLACE_ISATTY''@|0|g' \
++      -e 's|@''REPLACE_LCHOWN''@|0|g' \
++      -e 's|@''REPLACE_LINK''@|0|g' \
++      -e 's|@''REPLACE_LINKAT''@|0|g' \
++      -e 's|@''REPLACE_LSEEK''@|0|g' \
++      -e 's|@''REPLACE_PREAD''@|0|g' \
++      -e 's|@''REPLACE_PWRITE''@|0|g' \
++      -e 's|@''REPLACE_READ''@|0|g' \
++      -e 's|@''REPLACE_READLINK''@|0|g' \
++      -e 's|@''REPLACE_READLINKAT''@|0|g' \
++      -e 's|@''REPLACE_RMDIR''@|0|g' \
++      -e 's|@''REPLACE_SLEEP''@|0|g' \
++      -e 's|@''REPLACE_SYMLINK''@|0|g' \
++      -e 's|@''REPLACE_SYMLINKAT''@|0|g' \
++      -e 's|@''REPLACE_TRUNCATE''@|0|g' \
++      -e 's|@''REPLACE_TTYNAME_R''@|0|g' \
++      -e 's|@''REPLACE_UNLINK''@|0|g' \
++      -e 's|@''REPLACE_UNLINKAT''@|0|g' \
++      -e 's|@''REPLACE_USLEEP''@|0|g' \
++      -e 's|@''REPLACE_WRITE''@|0|g' \
++      -e 's|@''UNISTD_H_HAVE_WINSOCK2_H''@|0|g' \
++      -e 's|@''UNISTD_H_HAVE_WINSOCK2_H_AND_USE_SOCKETS''@|0|g' \
++      -e '/definitions of _GL_FUNCDECL_RPL/r ./c++defs.h' \
++      -e '/definition of _GL_ARG_NONNULL/r ./arg-nonnull.h' \
++      -e '/definition of _GL_WARN_ON_USE/r ./warn-on-use.h'; \
++} > unistd.h-t && \
++mv unistd.h-t unistd.h
++rm -f sys/types.h-t sys/types.h && \
++{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */'; \
++  sed -e 's|@''GUARD_PREFIX''@|GL|g' \
++      -e 's|@''INCLUDE_NEXT''@|include_next|g' \
++      -e 's|@''PRAGMA_SYSTEM_HEADER''@|#pragma GCC system_header|g' \
++      -e 's|@''PRAGMA_COLUMNS''@||g' \
++      -e 's|@''NEXT_SYS_TYPES_H''@|<sys/types.h>|g' \
++      -e 's|@''WINDOWS_64_BIT_OFF_T''@|0|g' \
++      -e 's|@''WINDOWS_STAT_INODES''@|0|g' \
++      < ./sys_types.in.h; \
++} > sys/types.h-t && \
++mv sys/types.h-t sys/types.h
++make  all-recursive
++make[2]: Entering directory '/tmp/make-4.3/lib'
++make[3]: Entering directory '/tmp/make-4.3/lib'
++gcc -DHAVE_CONFIG_H -I. -I../src     -O2 -fPIC -MT concat-filename.o -MD -MP -MF .deps/concat-filename.Tpo -c -o concat-filename.o concat-filename.c
++gcc -DHAVE_CONFIG_H -I. -I../src     -O2 -fPIC -MT dirname-lgpl.o -MD -MP -MF .deps/dirname-lgpl.Tpo -c -o dirname-lgpl.o dirname-lgpl.c
++gcc -DHAVE_CONFIG_H -I. -I../src     -O2 -fPIC -MT basename-lgpl.o -MD -MP -MF .deps/basename-lgpl.Tpo -c -o basename-lgpl.o basename-lgpl.c
++mv -f .deps/basename-lgpl.Tpo .deps/basename-lgpl.Po
++mv -f .deps/concat-filename.Tpo .deps/concat-filename.Po
++mv -f .deps/dirname-lgpl.Tpo .deps/dirname-lgpl.Po
++gcc -DHAVE_CONFIG_H -I. -I../src     -O2 -fPIC -MT stripslash.o -MD -MP -MF .deps/stripslash.Tpo -c -o stripslash.o stripslash.c
++gcc -DHAVE_CONFIG_H -I. -I../src     -O2 -fPIC -MT exitfail.o -MD -MP -MF .deps/exitfail.Tpo -c -o exitfail.o exitfail.c
++gcc -DHAVE_CONFIG_H -I. -I../src     -O2 -fPIC -MT fd-hook.o -MD -MP -MF .deps/fd-hook.Tpo -c -o fd-hook.o fd-hook.c
++mv -f .deps/fd-hook.Tpo .deps/fd-hook.Po
++mv -f .deps/exitfail.Tpo .deps/exitfail.Po
++gcc -DHAVE_CONFIG_H -I. -I../src     -O2 -fPIC -MT findprog-in.o -MD -MP -MF .deps/findprog-in.Tpo -c -o findprog-in.o findprog-in.c
++gcc -DHAVE_CONFIG_H -I. -I../src     -O2 -fPIC -MT getprogname.o -MD -MP -MF .deps/getprogname.Tpo -c -o getprogname.o getprogname.c
++mv -f .deps/stripslash.Tpo .deps/stripslash.Po
++gcc -DHAVE_CONFIG_H -I. -I../src     -O2 -fPIC -MT fnmatch.o -MD -MP -MF .deps/fnmatch.Tpo -c -o fnmatch.o fnmatch.c
++mv -f .deps/getprogname.Tpo .deps/getprogname.Po
++gcc -DHAVE_CONFIG_H -I. -I../src     -O2 -fPIC -MT glob.o -MD -MP -MF .deps/glob.Tpo -c -o glob.o glob.c
++mv -f .deps/findprog-in.Tpo .deps/findprog-in.Po
++gcc -DHAVE_CONFIG_H -I. -I../src     -O2 -fPIC -MT unistd.o -MD -MP -MF .deps/unistd.Tpo -c -o unistd.o unistd.c
++mv -f .deps/unistd.Tpo .deps/unistd.Po
++gcc -DHAVE_CONFIG_H -I. -I../src     -O2 -fPIC -MT xmalloc.o -MD -MP -MF .deps/xmalloc.Tpo -c -o xmalloc.o xmalloc.c
++mv -f .deps/xmalloc.Tpo .deps/xmalloc.Po
++gcc -DHAVE_CONFIG_H -I. -I../src     -O2 -fPIC -MT xalloc-die.o -MD -MP -MF .deps/xalloc-die.Tpo -c -o xalloc-die.o xalloc-die.c
++mv -f .deps/fnmatch.Tpo .deps/fnmatch.Po
++mv -f .deps/xalloc-die.Tpo .deps/xalloc-die.Po
++gcc -DHAVE_CONFIG_H -I. -I../src     -O2 -fPIC -MT xconcat-filename.o -MD -MP -MF .deps/xconcat-filename.Tpo -c -o xconcat-filename.o xconcat-filename.c
++gcc -DHAVE_CONFIG_H -I. -I../src     -O2 -fPIC -MT error.o -MD -MP -MF .deps/error.Tpo -c -o error.o error.c
++mv -f .deps/xconcat-filename.Tpo .deps/xconcat-filename.Po
++gcc -DHAVE_CONFIG_H -I. -I../src     -O2 -fPIC -MT fcntl.o -MD -MP -MF .deps/fcntl.Tpo -c -o fcntl.o fcntl.c
++mv -f .deps/error.Tpo .deps/error.Po
++mv -f .deps/fcntl.Tpo .deps/fcntl.Po
++mv -f .deps/glob.Tpo .deps/glob.Po
++rm -f libgnu.a
++ar cr libgnu.a concat-filename.o dirname-lgpl.o basename-lgpl.o stripslash.o exitfail.o fd-hook.o findprog-in.o getprogname.o fnmatch.o glob.o unistd.o xmalloc.o xalloc-die.o xconcat-filename.o error.o fcntl.o 
++ranlib libgnu.a
++make[3]: Leaving directory '/tmp/make-4.3/lib'
++make[2]: Leaving directory '/tmp/make-4.3/lib'
++make[1]: Leaving directory '/tmp/make-4.3/lib'
++Making all in po
++make[1]: Entering directory '/tmp/make-4.3/po'
++test -z "be.po bg.po cs.po da.po de.po es.po fi.po fr.po ga.po gl.po he.po hr.po id.po it.po ja.po ko.po lt.po nl.po pl.po pt.po pt_BR.po ru.po sr.po sv.po tr.po uk.po vi.po zh_CN.po zh_TW.po" || make be.po bg.po cs.po da.po de.po es.po fi.po fr.po ga.po gl.po he.po hr.po id.po it.po ja.po ko.po lt.po nl.po pl.po pt.po pt_BR.po ru.po sr.po sv.po tr.po uk.po vi.po zh_CN.po zh_TW.po
++if test -n "be.gmo bg.gmo cs.gmo da.gmo de.gmo es.gmo fi.gmo fr.gmo ga.gmo gl.gmo he.gmo hr.gmo id.gmo it.gmo ja.gmo ko.gmo lt.gmo nl.gmo pl.gmo pt.gmo pt_BR.gmo ru.gmo sr.gmo sv.gmo tr.gmo uk.gmo vi.gmo zh_CN.gmo zh_TW.gmo"; then \
++	make be.gmo bg.gmo cs.gmo da.gmo de.gmo es.gmo fi.gmo fr.gmo ga.gmo gl.gmo he.gmo hr.gmo id.gmo it.gmo ja.gmo ko.gmo lt.gmo nl.gmo pl.gmo pt.gmo pt_BR.gmo ru.gmo sr.gmo sv.gmo tr.gmo uk.gmo vi.gmo zh_CN.gmo zh_TW.gmo; \
++else \
++	test "@MOFILES@" = "@MOFILES@" || make @MOFILES@; \
++fi
++make[2]: Entering directory '/tmp/make-4.3/po'
++make[2]: Nothing to be done for 'be.po'.
++make[2]: Nothing to be done for 'bg.po'.
++make[2]: Nothing to be done for 'cs.po'.
++make[2]: Nothing to be done for 'da.po'.
++make[2]: Nothing to be done for 'de.po'.
++make[2]: Nothing to be done for 'es.po'.
++make[2]: Nothing to be done for 'fi.po'.
++make[2]: Nothing to be done for 'fr.po'.
++make[2]: Nothing to be done for 'ga.po'.
++make[2]: Nothing to be done for 'gl.po'.
++make[2]: Nothing to be done for 'he.po'.
++make[2]: Nothing to be done for 'hr.po'.
++make[2]: Nothing to be done for 'id.po'.
++make[2]: Nothing to be done for 'it.po'.
++make[2]: Nothing to be done for 'ja.po'.
++make[2]: Nothing to be done for 'ko.po'.
++make[2]: Nothing to be done for 'lt.po'.
++make[2]: Nothing to be done for 'nl.po'.
++make[2]: Nothing to be done for 'pl.po'.
++make[2]: Nothing to be done for 'pt.po'.
++make[2]: Nothing to be done for 'pt_BR.po'.
++make[2]: Nothing to be done for 'ru.po'.
++make[2]: Nothing to be done for 'sr.po'.
++make[2]: Nothing to be done for 'sv.po'.
++make[2]: Nothing to be done for 'tr.po'.
++make[2]: Nothing to be done for 'uk.po'.
++make[2]: Nothing to be done for 'vi.po'.
++make[2]: Nothing to be done for 'zh_CN.po'.
++make[2]: Nothing to be done for 'zh_TW.po'.
++make[2]: Leaving directory '/tmp/make-4.3/po'
++make[2]: Entering directory '/tmp/make-4.3/po'
++make[2]: 'be.gmo' is up to date.
++make[2]: 'bg.gmo' is up to date.
++make[2]: 'cs.gmo' is up to date.
++make[2]: 'da.gmo' is up to date.
++make[2]: 'de.gmo' is up to date.
++make[2]: 'es.gmo' is up to date.
++make[2]: 'fi.gmo' is up to date.
++make[2]: 'fr.gmo' is up to date.
++make[2]: 'ga.gmo' is up to date.
++make[2]: 'gl.gmo' is up to date.
++make[2]: 'he.gmo' is up to date.
++make[2]: 'hr.gmo' is up to date.
++make[2]: 'id.gmo' is up to date.
++make[2]: 'it.gmo' is up to date.
++make[2]: 'ja.gmo' is up to date.
++make[2]: 'ko.gmo' is up to date.
++make[2]: 'lt.gmo' is up to date.
++make[2]: 'nl.gmo' is up to date.
++make[2]: 'pl.gmo' is up to date.
++make[2]: 'pt.gmo' is up to date.
++make[2]: 'pt_BR.gmo' is up to date.
++make[2]: 'ru.gmo' is up to date.
++make[2]: 'sr.gmo' is up to date.
++make[2]: 'sv.gmo' is up to date.
++make[2]: 'tr.gmo' is up to date.
++make[2]: 'uk.gmo' is up to date.
++make[2]: 'vi.gmo' is up to date.
++make[2]: 'zh_CN.gmo' is up to date.
++make[2]: 'zh_TW.gmo' is up to date.
++make[2]: Leaving directory '/tmp/make-4.3/po'
++make[1]: Leaving directory '/tmp/make-4.3/po'
++Making all in doc
++make[1]: Entering directory '/tmp/make-4.3/doc'
++make[1]: Leaving directory '/tmp/make-4.3/doc'
++make[1]: Entering directory '/tmp/make-4.3'
++depbase=`echo src/ar.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H   -Isrc -I./src -Ilib -I./lib -DLIBDIR=\"/usr/lib\" -DINCLUDEDIR=\"/usr/include\" -DLOCALEDIR=\"/usr/share/locale\"   -I/usr/include/guile/3.0 -O2 -fPIC -MT src/ar.o -MD -MP -MF $depbase.Tpo -c -o src/ar.o src/ar.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo src/arscan.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H   -Isrc -I./src -Ilib -I./lib -DLIBDIR=\"/usr/lib\" -DINCLUDEDIR=\"/usr/include\" -DLOCALEDIR=\"/usr/share/locale\"   -I/usr/include/guile/3.0 -O2 -fPIC -MT src/arscan.o -MD -MP -MF $depbase.Tpo -c -o src/arscan.o src/arscan.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo src/commands.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H   -Isrc -I./src -Ilib -I./lib -DLIBDIR=\"/usr/lib\" -DINCLUDEDIR=\"/usr/include\" -DLOCALEDIR=\"/usr/share/locale\"   -I/usr/include/guile/3.0 -O2 -fPIC -MT src/commands.o -MD -MP -MF $depbase.Tpo -c -o src/commands.o src/commands.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo src/default.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H   -Isrc -I./src -Ilib -I./lib -DLIBDIR=\"/usr/lib\" -DINCLUDEDIR=\"/usr/include\" -DLOCALEDIR=\"/usr/share/locale\"   -I/usr/include/guile/3.0 -O2 -fPIC -MT src/default.o -MD -MP -MF $depbase.Tpo -c -o src/default.o src/default.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo src/dir.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H   -Isrc -I./src -Ilib -I./lib -DLIBDIR=\"/usr/lib\" -DINCLUDEDIR=\"/usr/include\" -DLOCALEDIR=\"/usr/share/locale\"   -I/usr/include/guile/3.0 -O2 -fPIC -MT src/dir.o -MD -MP -MF $depbase.Tpo -c -o src/dir.o src/dir.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo src/expand.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H   -Isrc -I./src -Ilib -I./lib -DLIBDIR=\"/usr/lib\" -DINCLUDEDIR=\"/usr/include\" -DLOCALEDIR=\"/usr/share/locale\"   -I/usr/include/guile/3.0 -O2 -fPIC -MT src/expand.o -MD -MP -MF $depbase.Tpo -c -o src/expand.o src/expand.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo src/file.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H   -Isrc -I./src -Ilib -I./lib -DLIBDIR=\"/usr/lib\" -DINCLUDEDIR=\"/usr/include\" -DLOCALEDIR=\"/usr/share/locale\"   -I/usr/include/guile/3.0 -O2 -fPIC -MT src/file.o -MD -MP -MF $depbase.Tpo -c -o src/file.o src/file.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo src/function.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H   -Isrc -I./src -Ilib -I./lib -DLIBDIR=\"/usr/lib\" -DINCLUDEDIR=\"/usr/include\" -DLOCALEDIR=\"/usr/share/locale\"   -I/usr/include/guile/3.0 -O2 -fPIC -MT src/function.o -MD -MP -MF $depbase.Tpo -c -o src/function.o src/function.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo src/getopt.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H   -Isrc -I./src -Ilib -I./lib -DLIBDIR=\"/usr/lib\" -DINCLUDEDIR=\"/usr/include\" -DLOCALEDIR=\"/usr/share/locale\"   -I/usr/include/guile/3.0 -O2 -fPIC -MT src/getopt.o -MD -MP -MF $depbase.Tpo -c -o src/getopt.o src/getopt.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo src/getopt1.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H   -Isrc -I./src -Ilib -I./lib -DLIBDIR=\"/usr/lib\" -DINCLUDEDIR=\"/usr/include\" -DLOCALEDIR=\"/usr/share/locale\"   -I/usr/include/guile/3.0 -O2 -fPIC -MT src/getopt1.o -MD -MP -MF $depbase.Tpo -c -o src/getopt1.o src/getopt1.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo src/guile.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H   -Isrc -I./src -Ilib -I./lib -DLIBDIR=\"/usr/lib\" -DINCLUDEDIR=\"/usr/include\" -DLOCALEDIR=\"/usr/share/locale\"   -I/usr/include/guile/3.0 -O2 -fPIC -MT src/guile.o -MD -MP -MF $depbase.Tpo -c -o src/guile.o src/guile.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo src/hash.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H   -Isrc -I./src -Ilib -I./lib -DLIBDIR=\"/usr/lib\" -DINCLUDEDIR=\"/usr/include\" -DLOCALEDIR=\"/usr/share/locale\"   -I/usr/include/guile/3.0 -O2 -fPIC -MT src/hash.o -MD -MP -MF $depbase.Tpo -c -o src/hash.o src/hash.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo src/implicit.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H   -Isrc -I./src -Ilib -I./lib -DLIBDIR=\"/usr/lib\" -DINCLUDEDIR=\"/usr/include\" -DLOCALEDIR=\"/usr/share/locale\"   -I/usr/include/guile/3.0 -O2 -fPIC -MT src/implicit.o -MD -MP -MF $depbase.Tpo -c -o src/implicit.o src/implicit.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo src/job.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H   -Isrc -I./src -Ilib -I./lib -DLIBDIR=\"/usr/lib\" -DINCLUDEDIR=\"/usr/include\" -DLOCALEDIR=\"/usr/share/locale\"   -I/usr/include/guile/3.0 -O2 -fPIC -MT src/job.o -MD -MP -MF $depbase.Tpo -c -o src/job.o src/job.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo src/load.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H   -Isrc -I./src -Ilib -I./lib -DLIBDIR=\"/usr/lib\" -DINCLUDEDIR=\"/usr/include\" -DLOCALEDIR=\"/usr/share/locale\"   -I/usr/include/guile/3.0 -O2 -fPIC -MT src/load.o -MD -MP -MF $depbase.Tpo -c -o src/load.o src/load.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo src/loadapi.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H   -Isrc -I./src -Ilib -I./lib -DLIBDIR=\"/usr/lib\" -DINCLUDEDIR=\"/usr/include\" -DLOCALEDIR=\"/usr/share/locale\"   -I/usr/include/guile/3.0 -O2 -fPIC -MT src/loadapi.o -MD -MP -MF $depbase.Tpo -c -o src/loadapi.o src/loadapi.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo src/main.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H   -Isrc -I./src -Ilib -I./lib -DLIBDIR=\"/usr/lib\" -DINCLUDEDIR=\"/usr/include\" -DLOCALEDIR=\"/usr/share/locale\"   -I/usr/include/guile/3.0 -O2 -fPIC -MT src/main.o -MD -MP -MF $depbase.Tpo -c -o src/main.o src/main.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo src/misc.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H   -Isrc -I./src -Ilib -I./lib -DLIBDIR=\"/usr/lib\" -DINCLUDEDIR=\"/usr/include\" -DLOCALEDIR=\"/usr/share/locale\"   -I/usr/include/guile/3.0 -O2 -fPIC -MT src/misc.o -MD -MP -MF $depbase.Tpo -c -o src/misc.o src/misc.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo src/output.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H   -Isrc -I./src -Ilib -I./lib -DLIBDIR=\"/usr/lib\" -DINCLUDEDIR=\"/usr/include\" -DLOCALEDIR=\"/usr/share/locale\"   -I/usr/include/guile/3.0 -O2 -fPIC -MT src/output.o -MD -MP -MF $depbase.Tpo -c -o src/output.o src/output.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo src/read.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H   -Isrc -I./src -Ilib -I./lib -DLIBDIR=\"/usr/lib\" -DINCLUDEDIR=\"/usr/include\" -DLOCALEDIR=\"/usr/share/locale\"   -I/usr/include/guile/3.0 -O2 -fPIC -MT src/read.o -MD -MP -MF $depbase.Tpo -c -o src/read.o src/read.c &&\
++mv -f $depbase.Tpo $depbase.Po
++In file included from src/makeint.h:31,
++                 from src/read.c:17:
++src/read.c: In function ‘eval_makefile’:
++lib/alloca.h:46:18: warning: ignoring return value of ‘__builtin_alloca’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
++   46 | #  define alloca __builtin_alloca
++src/read.c:443:3: note: in expansion of macro ‘alloca’
++  443 |   alloca (0);
++      |   ^~~~~~
++src/read.c: In function ‘eval_buffer’:
++lib/alloca.h:46:18: warning: ignoring return value of ‘__builtin_alloca’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
++   46 | #  define alloca __builtin_alloca
++src/read.c:485:3: note: in expansion of macro ‘alloca’
++  485 |   alloca (0);
++      |   ^~~~~~
++depbase=`echo src/remake.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H   -Isrc -I./src -Ilib -I./lib -DLIBDIR=\"/usr/lib\" -DINCLUDEDIR=\"/usr/include\" -DLOCALEDIR=\"/usr/share/locale\"   -I/usr/include/guile/3.0 -O2 -fPIC -MT src/remake.o -MD -MP -MF $depbase.Tpo -c -o src/remake.o src/remake.c &&\
++mv -f $depbase.Tpo $depbase.Po
++In file included from src/makeint.h:31,
++                 from src/remake.c:17:
++src/remake.c: In function ‘update_file’:
++lib/alloca.h:46:18: warning: ignoring return value of ‘__builtin_alloca’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
++   46 | #  define alloca __builtin_alloca
++src/remake.c:340:7: note: in expansion of macro ‘alloca’
++  340 |       alloca (0);
++      |       ^~~~~~
++src/read.c: In function ‘find_percent_cached’:
++cc1: warning: function may return address of local variable [-Wreturn-local-addr]
++lib/alloca.h:46:18: note: declared here
++   46 | #  define alloca __builtin_alloca
++src/read.c:2511:19: note: in expansion of macro ‘alloca’
++ 2511 |             new = alloca (slen + 1);
++      |                   ^~~~~~
++depbase=`echo src/rule.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H   -Isrc -I./src -Ilib -I./lib -DLIBDIR=\"/usr/lib\" -DINCLUDEDIR=\"/usr/include\" -DLOCALEDIR=\"/usr/share/locale\"   -I/usr/include/guile/3.0 -O2 -fPIC -MT src/rule.o -MD -MP -MF $depbase.Tpo -c -o src/rule.o src/rule.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo src/signame.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H   -Isrc -I./src -Ilib -I./lib -DLIBDIR=\"/usr/lib\" -DINCLUDEDIR=\"/usr/include\" -DLOCALEDIR=\"/usr/share/locale\"   -I/usr/include/guile/3.0 -O2 -fPIC -MT src/signame.o -MD -MP -MF $depbase.Tpo -c -o src/signame.o src/signame.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo src/strcache.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H   -Isrc -I./src -Ilib -I./lib -DLIBDIR=\"/usr/lib\" -DINCLUDEDIR=\"/usr/include\" -DLOCALEDIR=\"/usr/share/locale\"   -I/usr/include/guile/3.0 -O2 -fPIC -MT src/strcache.o -MD -MP -MF $depbase.Tpo -c -o src/strcache.o src/strcache.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo src/variable.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H   -Isrc -I./src -Ilib -I./lib -DLIBDIR=\"/usr/lib\" -DINCLUDEDIR=\"/usr/include\" -DLOCALEDIR=\"/usr/share/locale\"   -I/usr/include/guile/3.0 -O2 -fPIC -MT src/variable.o -MD -MP -MF $depbase.Tpo -c -o src/variable.o src/variable.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo src/version.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H   -Isrc -I./src -Ilib -I./lib -DLIBDIR=\"/usr/lib\" -DINCLUDEDIR=\"/usr/include\" -DLOCALEDIR=\"/usr/share/locale\"   -I/usr/include/guile/3.0 -O2 -fPIC -MT src/version.o -MD -MP -MF $depbase.Tpo -c -o src/version.o src/version.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo src/vpath.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H   -Isrc -I./src -Ilib -I./lib -DLIBDIR=\"/usr/lib\" -DINCLUDEDIR=\"/usr/include\" -DLOCALEDIR=\"/usr/share/locale\"   -I/usr/include/guile/3.0 -O2 -fPIC -MT src/vpath.o -MD -MP -MF $depbase.Tpo -c -o src/vpath.o src/vpath.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo src/posixos.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H   -Isrc -I./src -Ilib -I./lib -DLIBDIR=\"/usr/lib\" -DINCLUDEDIR=\"/usr/include\" -DLOCALEDIR=\"/usr/share/locale\"   -I/usr/include/guile/3.0 -O2 -fPIC -MT src/posixos.o -MD -MP -MF $depbase.Tpo -c -o src/posixos.o src/posixos.c &&\
++mv -f $depbase.Tpo $depbase.Po
++depbase=`echo src/remote-stub.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
++gcc -DHAVE_CONFIG_H   -Isrc -I./src -Ilib -I./lib -DLIBDIR=\"/usr/lib\" -DINCLUDEDIR=\"/usr/include\" -DLOCALEDIR=\"/usr/share/locale\"   -I/usr/include/guile/3.0 -O2 -fPIC -MT src/remote-stub.o -MD -MP -MF $depbase.Tpo -c -o src/remote-stub.o src/remote-stub.c &&\
++mv -f $depbase.Tpo $depbase.Po
++gcc -I/usr/include/guile/3.0 -O2 -fPIC -Wl,--export-dynamic  -o make src/ar.o src/arscan.o src/commands.o src/default.o src/dir.o src/expand.o src/file.o src/function.o src/getopt.o src/getopt1.o src/guile.o src/hash.o src/implicit.o src/job.o src/load.o src/loadapi.o src/main.o src/misc.o src/output.o src/read.o src/remake.o src/rule.o src/signame.o src/strcache.o src/variable.o src/version.o src/vpath.o  src/posixos.o  src/remote-stub.o  -lguile-3.0 -lgc lib/libgnu.a   
++make[1]: Leaving directory '/tmp/make-4.3'
++Making install in lib
++make[1]: Entering directory '/tmp/make-4.3/lib'
++make  install-recursive
++make[2]: Entering directory '/tmp/make-4.3/lib'
++make[3]: Entering directory '/tmp/make-4.3/lib'
++make[4]: Entering directory '/tmp/make-4.3/lib'
++make[4]: Nothing to be done for 'install-exec-am'.
++make[4]: Nothing to be done for 'install-data-am'.
++make[4]: Leaving directory '/tmp/make-4.3/lib'
++make[3]: Leaving directory '/tmp/make-4.3/lib'
++make[2]: Leaving directory '/tmp/make-4.3/lib'
++make[1]: Leaving directory '/tmp/make-4.3/lib'
++Making install in po
++make[1]: Entering directory '/tmp/make-4.3/po'
++test -z "be.po bg.po cs.po da.po de.po es.po fi.po fr.po ga.po gl.po he.po hr.po id.po it.po ja.po ko.po lt.po nl.po pl.po pt.po pt_BR.po ru.po sr.po sv.po tr.po uk.po vi.po zh_CN.po zh_TW.po" || make be.po bg.po cs.po da.po de.po es.po fi.po fr.po ga.po gl.po he.po hr.po id.po it.po ja.po ko.po lt.po nl.po pl.po pt.po pt_BR.po ru.po sr.po sv.po tr.po uk.po vi.po zh_CN.po zh_TW.po
++make[2]: Entering directory '/tmp/make-4.3/po'
++make[2]: Nothing to be done for 'be.po'.
++make[2]: Nothing to be done for 'bg.po'.
++make[2]: Nothing to be done for 'cs.po'.
++make[2]: Nothing to be done for 'da.po'.
++make[2]: Nothing to be done for 'de.po'.
++make[2]: Nothing to be done for 'es.po'.
++make[2]: Nothing to be done for 'fi.po'.
++make[2]: Nothing to be done for 'fr.po'.
++make[2]: Nothing to be done for 'ga.po'.
++make[2]: Nothing to be done for 'gl.po'.
++make[2]: Nothing to be done for 'he.po'.
++make[2]: Nothing to be done for 'hr.po'.
++make[2]: Nothing to be done for 'id.po'.
++make[2]: Nothing to be done for 'it.po'.
++make[2]: Nothing to be done for 'ja.po'.
++make[2]: Nothing to be done for 'ko.po'.
++make[2]: Nothing to be done for 'lt.po'.
++make[2]: Nothing to be done for 'nl.po'.
++make[2]: Nothing to be done for 'pl.po'.
++make[2]: Nothing to be done for 'pt.po'.
++make[2]: Nothing to be done for 'pt_BR.po'.
++make[2]: Nothing to be done for 'ru.po'.
++make[2]: Nothing to be done for 'sr.po'.
++make[2]: Nothing to be done for 'sv.po'.
++make[2]: Nothing to be done for 'tr.po'.
++make[2]: Nothing to be done for 'uk.po'.
++make[2]: Nothing to be done for 'vi.po'.
++make[2]: Nothing to be done for 'zh_CN.po'.
++make[2]: Nothing to be done for 'zh_TW.po'.
++make[2]: Leaving directory '/tmp/make-4.3/po'
++if test -n "be.gmo bg.gmo cs.gmo da.gmo de.gmo es.gmo fi.gmo fr.gmo ga.gmo gl.gmo he.gmo hr.gmo id.gmo it.gmo ja.gmo ko.gmo lt.gmo nl.gmo pl.gmo pt.gmo pt_BR.gmo ru.gmo sr.gmo sv.gmo tr.gmo uk.gmo vi.gmo zh_CN.gmo zh_TW.gmo"; then \
++	make be.gmo bg.gmo cs.gmo da.gmo de.gmo es.gmo fi.gmo fr.gmo ga.gmo gl.gmo he.gmo hr.gmo id.gmo it.gmo ja.gmo ko.gmo lt.gmo nl.gmo pl.gmo pt.gmo pt_BR.gmo ru.gmo sr.gmo sv.gmo tr.gmo uk.gmo vi.gmo zh_CN.gmo zh_TW.gmo; \
++else \
++	test "@MOFILES@" = "@MOFILES@" || make @MOFILES@; \
++fi
++make[2]: Entering directory '/tmp/make-4.3/po'
++make[2]: 'be.gmo' is up to date.
++make[2]: 'bg.gmo' is up to date.
++make[2]: 'cs.gmo' is up to date.
++make[2]: 'da.gmo' is up to date.
++make[2]: 'de.gmo' is up to date.
++make[2]: 'es.gmo' is up to date.
++make[2]: 'fi.gmo' is up to date.
++make[2]: 'fr.gmo' is up to date.
++make[2]: 'ga.gmo' is up to date.
++make[2]: 'gl.gmo' is up to date.
++make[2]: 'he.gmo' is up to date.
++make[2]: 'hr.gmo' is up to date.
++make[2]: 'id.gmo' is up to date.
++make[2]: 'it.gmo' is up to date.
++make[2]: 'ja.gmo' is up to date.
++make[2]: 'ko.gmo' is up to date.
++make[2]: 'lt.gmo' is up to date.
++make[2]: 'nl.gmo' is up to date.
++make[2]: 'pl.gmo' is up to date.
++make[2]: 'pt.gmo' is up to date.
++make[2]: 'pt_BR.gmo' is up to date.
++make[2]: 'ru.gmo' is up to date.
++make[2]: 'sr.gmo' is up to date.
++make[2]: 'sv.gmo' is up to date.
++make[2]: 'tr.gmo' is up to date.
++make[2]: 'uk.gmo' is up to date.
++make[2]: 'vi.gmo' is up to date.
++make[2]: 'zh_CN.gmo' is up to date.
++make[2]: 'zh_TW.gmo' is up to date.
++make[2]: Leaving directory '/tmp/make-4.3/po'
++installing be.gmo as /tmp/package-make/usr/share/locale/be/LC_MESSAGES/make.mo
++installing bg.gmo as /tmp/package-make/usr/share/locale/bg/LC_MESSAGES/make.mo
++installing cs.gmo as /tmp/package-make/usr/share/locale/cs/LC_MESSAGES/make.mo
++installing da.gmo as /tmp/package-make/usr/share/locale/da/LC_MESSAGES/make.mo
++installing de.gmo as /tmp/package-make/usr/share/locale/de/LC_MESSAGES/make.mo
++installing es.gmo as /tmp/package-make/usr/share/locale/es/LC_MESSAGES/make.mo
++installing fi.gmo as /tmp/package-make/usr/share/locale/fi/LC_MESSAGES/make.mo
++installing fr.gmo as /tmp/package-make/usr/share/locale/fr/LC_MESSAGES/make.mo
++installing ga.gmo as /tmp/package-make/usr/share/locale/ga/LC_MESSAGES/make.mo
++installing gl.gmo as /tmp/package-make/usr/share/locale/gl/LC_MESSAGES/make.mo
++installing he.gmo as /tmp/package-make/usr/share/locale/he/LC_MESSAGES/make.mo
++installing hr.gmo as /tmp/package-make/usr/share/locale/hr/LC_MESSAGES/make.mo
++installing id.gmo as /tmp/package-make/usr/share/locale/id/LC_MESSAGES/make.mo
++installing it.gmo as /tmp/package-make/usr/share/locale/it/LC_MESSAGES/make.mo
++installing ja.gmo as /tmp/package-make/usr/share/locale/ja/LC_MESSAGES/make.mo
++installing ko.gmo as /tmp/package-make/usr/share/locale/ko/LC_MESSAGES/make.mo
++installing lt.gmo as /tmp/package-make/usr/share/locale/lt/LC_MESSAGES/make.mo
++installing nl.gmo as /tmp/package-make/usr/share/locale/nl/LC_MESSAGES/make.mo
++installing pl.gmo as /tmp/package-make/usr/share/locale/pl/LC_MESSAGES/make.mo
++installing pt.gmo as /tmp/package-make/usr/share/locale/pt/LC_MESSAGES/make.mo
++installing pt_BR.gmo as /tmp/package-make/usr/share/locale/pt_BR/LC_MESSAGES/make.mo
++installing ru.gmo as /tmp/package-make/usr/share/locale/ru/LC_MESSAGES/make.mo
++installing sr.gmo as /tmp/package-make/usr/share/locale/sr/LC_MESSAGES/make.mo
++installing sv.gmo as /tmp/package-make/usr/share/locale/sv/LC_MESSAGES/make.mo
++installing tr.gmo as /tmp/package-make/usr/share/locale/tr/LC_MESSAGES/make.mo
++installing uk.gmo as /tmp/package-make/usr/share/locale/uk/LC_MESSAGES/make.mo
++installing vi.gmo as /tmp/package-make/usr/share/locale/vi/LC_MESSAGES/make.mo
++installing zh_CN.gmo as /tmp/package-make/usr/share/locale/zh_CN/LC_MESSAGES/make.mo
++installing zh_TW.gmo as /tmp/package-make/usr/share/locale/zh_TW/LC_MESSAGES/make.mo
++make[1]: Leaving directory '/tmp/make-4.3/po'
++Making install in doc
++make[1]: Entering directory '/tmp/make-4.3/doc'
++make[2]: Entering directory '/tmp/make-4.3/doc'
++make[2]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-make/usr/info'
++ /usr/bin/ginstall -c -m 644 ./make.info ./make.info-1 ./make.info-2 '/tmp/package-make/usr/info'
++ install-info --info-dir='/tmp/package-make/usr/info' '/tmp/package-make/usr/info/make.info'
++make[2]: Leaving directory '/tmp/make-4.3/doc'
++make[1]: Leaving directory '/tmp/make-4.3/doc'
++make[1]: Entering directory '/tmp/make-4.3'
++make[2]: Entering directory '/tmp/make-4.3'
++ /usr/bin/mkdir -p '/tmp/package-make/usr/bin'
++  /usr/bin/ginstall -c make '/tmp/package-make/usr/bin'
++ /usr/bin/mkdir -p '/tmp/package-make/usr/include'
++ /usr/bin/ginstall -c -m 644 src/gnumake.h '/tmp/package-make/usr/include'
++ /usr/bin/mkdir -p '/tmp/package-make/usr/man/man1'
++ /usr/bin/ginstall -c -m 644 doc/make.1 '/tmp/package-make/usr/man/man1'
++make[2]: Leaving directory '/tmp/make-4.3'
++make[1]: Leaving directory '/tmp/make-4.3'
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++usr/bin/gmake	make
++
++Making symbolic link creation script:
++( cd usr/bin ; rm -rf gmake )
++( cd usr/bin ; ln -sf make gmake )
++
++It is recommended that you make these lines your new installation script.
++
++Would you like to make this stuff the install script for this package
++and remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './usr/bin/gmake'
++
++Creating your new ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/make-4.3-x86_64-2.txz
++
++./
++install/
++install/doinst.sh
++install/slack-desc
++usr/
++usr/bin/
++usr/bin/make
++usr/doc/
++usr/doc/make-4.3/
++usr/doc/make-4.3/AUTHORS
++usr/doc/make-4.3/COPYING
++usr/doc/make-4.3/ChangeLog
++usr/doc/make-4.3/NEWS
++usr/doc/make-4.3/README
++usr/doc/make-4.3/README.Amiga
++usr/doc/make-4.3/README.DOS
++usr/doc/make-4.3/README.OS2
++usr/doc/make-4.3/README.VMS
++usr/doc/make-4.3/README.W32
++usr/doc/make-4.3/README.customs
++usr/include/
++usr/include/gnumake.h
++usr/info/
++usr/info/make.info-1.gz
++usr/info/make.info-2.gz
++usr/info/make.info.gz
++usr/man/
++usr/man/man1/
++usr/man/man1/make.1.gz
++usr/share/
++usr/share/locale/
++usr/share/locale/be/
++usr/share/locale/be/LC_MESSAGES/
++usr/share/locale/be/LC_MESSAGES/make.mo
++usr/share/locale/bg/
++usr/share/locale/bg/LC_MESSAGES/
++usr/share/locale/bg/LC_MESSAGES/make.mo
++usr/share/locale/cs/
++usr/share/locale/cs/LC_MESSAGES/
++usr/share/locale/cs/LC_MESSAGES/make.mo
++usr/share/locale/da/
++usr/share/locale/da/LC_MESSAGES/
++usr/share/locale/da/LC_MESSAGES/make.mo
++usr/share/locale/de/
++usr/share/locale/de/LC_MESSAGES/
++usr/share/locale/de/LC_MESSAGES/make.mo
++usr/share/locale/es/
++usr/share/locale/es/LC_MESSAGES/
++usr/share/locale/es/LC_MESSAGES/make.mo
++usr/share/locale/fi/
++usr/share/locale/fi/LC_MESSAGES/
++usr/share/locale/fi/LC_MESSAGES/make.mo
++usr/share/locale/fr/
++usr/share/locale/fr/LC_MESSAGES/
++usr/share/locale/fr/LC_MESSAGES/make.mo
++usr/share/locale/ga/
++usr/share/locale/ga/LC_MESSAGES/
++usr/share/locale/ga/LC_MESSAGES/make.mo
++usr/share/locale/gl/
++usr/share/locale/gl/LC_MESSAGES/
++usr/share/locale/gl/LC_MESSAGES/make.mo
++usr/share/locale/he/
++usr/share/locale/he/LC_MESSAGES/
++usr/share/locale/he/LC_MESSAGES/make.mo
++usr/share/locale/hr/
++usr/share/locale/hr/LC_MESSAGES/
++usr/share/locale/hr/LC_MESSAGES/make.mo
++usr/share/locale/id/
++usr/share/locale/id/LC_MESSAGES/
++usr/share/locale/id/LC_MESSAGES/make.mo
++usr/share/locale/it/
++usr/share/locale/it/LC_MESSAGES/
++usr/share/locale/it/LC_MESSAGES/make.mo
++usr/share/locale/ja/
++usr/share/locale/ja/LC_MESSAGES/
++usr/share/locale/ja/LC_MESSAGES/make.mo
++usr/share/locale/ko/
++usr/share/locale/ko/LC_MESSAGES/
++usr/share/locale/ko/LC_MESSAGES/make.mo
++usr/share/locale/lt/
++usr/share/locale/lt/LC_MESSAGES/
++usr/share/locale/lt/LC_MESSAGES/make.mo
++usr/share/locale/nl/
++usr/share/locale/nl/LC_MESSAGES/
++usr/share/locale/nl/LC_MESSAGES/make.mo
++usr/share/locale/pl/
++usr/share/locale/pl/LC_MESSAGES/
++usr/share/locale/pl/LC_MESSAGES/make.mo
++usr/share/locale/pt/
++usr/share/locale/pt/LC_MESSAGES/
++usr/share/locale/pt/LC_MESSAGES/make.mo
++usr/share/locale/pt_BR/
++usr/share/locale/pt_BR/LC_MESSAGES/
++usr/share/locale/pt_BR/LC_MESSAGES/make.mo
++usr/share/locale/ru/
++usr/share/locale/ru/LC_MESSAGES/
++usr/share/locale/ru/LC_MESSAGES/make.mo
++usr/share/locale/sr/
++usr/share/locale/sr/LC_MESSAGES/
++usr/share/locale/sr/LC_MESSAGES/make.mo
++usr/share/locale/sv/
++usr/share/locale/sv/LC_MESSAGES/
++usr/share/locale/sv/LC_MESSAGES/make.mo
++usr/share/locale/tr/
++usr/share/locale/tr/LC_MESSAGES/
++usr/share/locale/tr/LC_MESSAGES/make.mo
++usr/share/locale/uk/
++usr/share/locale/uk/LC_MESSAGES/
++usr/share/locale/uk/LC_MESSAGES/make.mo
++usr/share/locale/vi/
++usr/share/locale/vi/LC_MESSAGES/
++usr/share/locale/vi/LC_MESSAGES/make.mo
++usr/share/locale/zh_CN/
++usr/share/locale/zh_CN/LC_MESSAGES/
++usr/share/locale/zh_CN/LC_MESSAGES/make.mo
++usr/share/locale/zh_TW/
++usr/share/locale/zh_TW/LC_MESSAGES/
++usr/share/locale/zh_TW/LC_MESSAGES/make.mo
++
++Slackware package /tmp/make-4.3-x86_64-2.txz created.
++

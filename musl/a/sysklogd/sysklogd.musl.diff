@@ -1,0 +1,405 @@
+diff -ruBN /tmp/sysklogd/sysklogd.SlackBuild /source/a/sysklogd/sysklogd.SlackBuild
+--- /tmp/sysklogd/sysklogd.SlackBuild	2021-01-30 19:50:22.000000000 +0000
++++ /source/a/sysklogd/sysklogd.SlackBuild	2021-01-31 08:33:52.000000000 +0000
+@@ -58,7 +58,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "armv7hl" ]; then
+   SLKCFLAGS="-O3 -march=armv7-a -mfpu=vfpv3-d16"
+   LIBDIRSUFFIX=""
+@@ -98,7 +98,7 @@
+   --infodir=/usr/info \
+   --disable-static \
+   --without-logger \
+-  --build=$ARCH-slackware-linux || exit 1
++  --build=$ARCH-slackware-linux-musl || exit 1
+ make $NUMJOBS || make || exit 1
+ make install DESTDIR=$PKG || exit 1
+ 
+diff -ruBN /tmp/sysklogd/sysklogd.SlackBuild.log /source/a/sysklogd/sysklogd.SlackBuild.log
+--- /tmp/sysklogd/sysklogd.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/a/sysklogd/sysklogd.SlackBuild.log	2021-01-31 08:34:16.000000000 +0000
+@@ -0,0 +1,380 @@
++sysklogd-2.2.1/
++sysklogd-2.2.1/Makefile.in
++sysklogd-2.2.1/m4/
++sysklogd-2.2.1/m4/libtool.m4
++sysklogd-2.2.1/m4/ltoptions.m4
++sysklogd-2.2.1/m4/ltsugar.m4
++sysklogd-2.2.1/m4/lt~obsolete.m4
++sysklogd-2.2.1/m4/ltversion.m4
++sysklogd-2.2.1/syslogd.service.in
++sysklogd-2.2.1/Makefile.am
++sysklogd-2.2.1/aclocal.m4
++sysklogd-2.2.1/src/
++sysklogd-2.2.1/src/syslogd.c
++sysklogd-2.2.1/src/Makefile.in
++sysklogd-2.2.1/src/socket.h
++sysklogd-2.2.1/src/Makefile.am
++sysklogd-2.2.1/src/queue.h
++sysklogd-2.2.1/src/socket.c
++sysklogd-2.2.1/src/syslog.h
++sysklogd-2.2.1/src/compat.h
++sysklogd-2.2.1/src/timer.h
++sysklogd-2.2.1/src/logger.c
++sysklogd-2.2.1/src/syslogd.h
++sysklogd-2.2.1/src/libsyslog.pc.in
++sysklogd-2.2.1/src/timer.c
++sysklogd-2.2.1/src/syslog.c
++sysklogd-2.2.1/syslog.conf
++sysklogd-2.2.1/aux/
++sysklogd-2.2.1/aux/missing
++sysklogd-2.2.1/aux/install-sh
++sysklogd-2.2.1/aux/compile
++sysklogd-2.2.1/aux/depcomp
++sysklogd-2.2.1/aux/config.guess
++sysklogd-2.2.1/aux/ltmain.sh
++sysklogd-2.2.1/aux/config.sub
++sysklogd-2.2.1/aux/test-driver
++sysklogd-2.2.1/LICENSE
++sysklogd-2.2.1/lib/
++sysklogd-2.2.1/lib/utimensat.c
++sysklogd-2.2.1/lib/pidfile.c
++sysklogd-2.2.1/lib/strlcpy.c
++sysklogd-2.2.1/lib/strlcat.c
++sysklogd-2.2.1/configure
++sysklogd-2.2.1/man/
++sysklogd-2.2.1/man/Makefile.in
++sysklogd-2.2.1/man/syslog.conf.5
++sysklogd-2.2.1/man/syslogd.8
++sysklogd-2.2.1/man/Makefile.am
++sysklogd-2.2.1/man/logger.1
++sysklogd-2.2.1/man/syslogp.3
++sysklogd-2.2.1/README.md
++sysklogd-2.2.1/example/
++sysklogd-2.2.1/example/Makefile.in
++sysklogd-2.2.1/example/Makefile.am
++sysklogd-2.2.1/example/example.mk
++sysklogd-2.2.1/example/README.md
++sysklogd-2.2.1/example/example.c
++sysklogd-2.2.1/configure.ac
++sysklogd-2.2.1/config.h.in
++sysklogd-2.2.1/test/
++sysklogd-2.2.1/test/test.rc
++sysklogd-2.2.1/test/opts.sh
++sysklogd-2.2.1/test/Makefile.in
++sysklogd-2.2.1/test/Makefile.am
++sysklogd-2.2.1/test/mark.sh
++sysklogd-2.2.1/test/fwd.sh
++sysklogd-2.2.1/test/remote.sh
++sysklogd-2.2.1/test/start.sh
++sysklogd-2.2.1/test/stop.sh
++sysklogd-2.2.1/test/api.c
++sysklogd-2.2.1/test/local.sh
++sysklogd-2.2.1/test/api.sh
++sysklogd-2.2.1/ChangeLog.md
++checking for a BSD-compatible install... /usr/bin/ginstall -c
++checking whether build environment is sane... yes
++checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
++checking for gawk... gawk
++checking whether make sets $(MAKE)... yes
++checking whether make supports nested variables... yes
++checking build system type... x86_64-slackware-linux-musl
++checking host system type... x86_64-slackware-linux-musl
++checking how to print strings... printf
++checking whether make supports the include directive... yes (GNU style)
++checking for gcc... gcc
++checking whether the C compiler works... yes
++checking for C compiler default output file name... a.out
++checking for suffix of executables... 
++checking whether we are cross compiling... no
++checking for suffix of object files... o
++checking whether we are using the GNU C compiler... yes
++checking whether gcc accepts -g... yes
++checking for gcc option to accept ISO C89... none needed
++checking whether gcc understands -c and -o together... yes
++checking dependency style of gcc... gcc3
++checking for a sed that does not truncate output... /usr/bin/sed
++checking for grep that handles long lines and -e... /usr/bin/grep
++checking for egrep... /usr/bin/grep -E
++checking for fgrep... /usr/bin/grep -F
++checking for ld used by gcc... /usr/bin/ld
++checking if the linker (/usr/bin/ld) is GNU ld... yes
++checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
++checking the name lister (/usr/bin/nm -B) interface... BSD nm
++checking whether ln -s works... yes
++checking the maximum length of command line arguments... 98304
++checking how to convert x86_64-slackware-linux-musl file names to x86_64-slackware-linux-musl format... func_convert_file_noop
++checking how to convert x86_64-slackware-linux-musl file names to toolchain format... func_convert_file_noop
++checking for /usr/bin/ld option to reload object files... -r
++checking for objdump... objdump
++checking how to recognize dependent libraries... pass_all
++checking for dlltool... dlltool
++checking how to associate runtime and link libraries... printf %s\n
++checking for ar... ar
++checking for archiver @FILE support... @
++checking for strip... strip
++checking for ranlib... ranlib
++checking command to parse /usr/bin/nm -B output from gcc object... ok
++checking for sysroot... no
++checking for a working dd... /usr/bin/dd
++checking how to truncate binary pipes... /usr/bin/dd bs=4096 count=1
++checking for mt... mt
++checking if mt is a manifest tool... no
++checking how to run the C preprocessor... gcc -E
++checking for ANSI C header files... yes
++checking for sys/types.h... yes
++checking for sys/stat.h... yes
++checking for stdlib.h... yes
++checking for string.h... yes
++checking for memory.h... yes
++checking for strings.h... yes
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking for unistd.h... yes
++checking for dlfcn.h... yes
++checking for objdir... .libs
++checking if gcc supports -fno-rtti -fno-exceptions... no
++checking for gcc option to produce PIC... -fPIC -DPIC
++checking if gcc PIC flag -fPIC -DPIC works... yes
++checking if gcc static flag -static works... yes
++checking if gcc supports -c -o file.o... yes
++checking if gcc supports -c -o file.o... (cached) yes
++checking whether the gcc linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
++checking whether -lc should be explicitly linked in... no
++checking dynamic linker characteristics... GNU/Linux ld.so
++checking how to hardcode library paths into programs... immediate
++checking whether stripping libraries is possible... yes
++checking if libtool supports shared libraries... yes
++checking whether to build shared libraries... yes
++checking whether to build static libraries... no
++checking whether make supports nested variables... (cached) yes
++checking for gcc... (cached) gcc
++checking whether we are using the GNU C compiler... (cached) yes
++checking whether gcc accepts -g... (cached) yes
++checking for gcc option to accept ISO C89... (cached) none needed
++checking whether gcc understands -c and -o together... (cached) yes
++checking dependency style of gcc... (cached) gcc3
++checking for ANSI C header files... (cached) yes
++checking pkg-config is at least version 0.9.0... yes
++checking for pidfile... no
++checking for strlcpy... yes
++checking for strlcat... yes
++checking for utimensat... yes
++checking for getprogname... no
++checking for strtobytes... no
++Package systemd was not found in the pkg-config search path.
++Perhaps you should add the directory containing `systemd.pc'
++to the PKG_CONFIG_PATH environment variable
++No package 'systemd' found
++checking that generated files are newer than configure... done
++configure: creating ./config.status
++config.status: creating Makefile
++config.status: creating example/Makefile
++config.status: creating man/Makefile
++config.status: creating src/Makefile
++config.status: creating src/libsyslog.pc
++config.status: creating test/Makefile
++config.status: creating syslogd.service
++config.status: creating config.h
++config.status: executing depfiles commands
++config.status: executing libtool commands
++
++------------------ Summary ------------------
++ sysklogd version 2.2.1
++  Prefix.........: /usr
++  Sysconfdir.....: /etc
++  Runstatedir....: /var/run
++  C Compiler.....: gcc -O2 -fPIC   
++
++ Optional features:
++  logger.........: no
++  suspend time...: 180 sec
++  systemd........: no
++
++------------- Compiler version --------------
++gcc (GCC) 10.2.0
++Copyright (C) 2020 Free Software Foundation, Inc.
++This is free software; see the source for copying conditions.  There is NO
++warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
++---------------------------------------------
++
++Check the above options and compile with:
++ make
++
++make  all-recursive
++make[1]: Entering directory '/tmp/sysklogd-2.2.1'
++Making all in example
++make[2]: Entering directory '/tmp/sysklogd-2.2.1/example'
++make[2]: Nothing to be done for 'all'.
++make[2]: Leaving directory '/tmp/sysklogd-2.2.1/example'
++Making all in man
++make[2]: Entering directory '/tmp/sysklogd-2.2.1/man'
++make[2]: Nothing to be done for 'all'.
++make[2]: Leaving directory '/tmp/sysklogd-2.2.1/man'
++Making all in src
++make[2]: Entering directory '/tmp/sysklogd-2.2.1/src'
++  CC       syslogd-syslogd.o
++  CC       syslogd-socket.o
++  CC       syslogd-timer.o
++  CC       libsyslog_la-syslog.lo
++  CC       ../lib/pidfile.lo
++  CCLD     libsyslog.la
++  CC       ../lib/pidfile.o
++  CCLD     syslogd
++make[2]: Leaving directory '/tmp/sysklogd-2.2.1/src'
++Making all in test
++make[2]: Entering directory '/tmp/sysklogd-2.2.1/test'
++make[2]: Nothing to be done for 'all'.
++make[2]: Leaving directory '/tmp/sysklogd-2.2.1/test'
++make[2]: Entering directory '/tmp/sysklogd-2.2.1'
++make[2]: Leaving directory '/tmp/sysklogd-2.2.1'
++make[1]: Leaving directory '/tmp/sysklogd-2.2.1'
++Making install in example
++make[1]: Entering directory '/tmp/sysklogd-2.2.1/example'
++make[2]: Entering directory '/tmp/sysklogd-2.2.1/example'
++make[2]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-sysklogd/usr/doc/sysklogd-2.2.1/example'
++ /usr/bin/ginstall -c -m 644 README.md example.c example.mk '/tmp/package-sysklogd/usr/doc/sysklogd-2.2.1/example'
++make[2]: Leaving directory '/tmp/sysklogd-2.2.1/example'
++make[1]: Leaving directory '/tmp/sysklogd-2.2.1/example'
++Making install in man
++make[1]: Entering directory '/tmp/sysklogd-2.2.1/man'
++make[2]: Entering directory '/tmp/sysklogd-2.2.1/man'
++make[2]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-sysklogd/usr/man/man3'
++ /usr/bin/ginstall -c -m 644 syslogp.3 '/tmp/package-sysklogd/usr/man/man3'
++ /usr/bin/mkdir -p '/tmp/package-sysklogd/usr/man/man5'
++ /usr/bin/ginstall -c -m 644 syslog.conf.5 '/tmp/package-sysklogd/usr/man/man5'
++ /usr/bin/mkdir -p '/tmp/package-sysklogd/usr/man/man8'
++ /usr/bin/ginstall -c -m 644 syslogd.8 '/tmp/package-sysklogd/usr/man/man8'
++make[2]: Leaving directory '/tmp/sysklogd-2.2.1/man'
++make[1]: Leaving directory '/tmp/sysklogd-2.2.1/man'
++Making install in src
++make[1]: Entering directory '/tmp/sysklogd-2.2.1/src'
++make[2]: Entering directory '/tmp/sysklogd-2.2.1/src'
++ /usr/bin/mkdir -p '/tmp/package-sysklogd/usr/lib'
++ /bin/sh ../libtool   --mode=install /usr/bin/ginstall -c   libsyslog.la '/tmp/package-sysklogd/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/libsyslog.so.0.0.0 /tmp/package-sysklogd/usr/lib/libsyslog.so.0.0.0
++libtool: install: (cd /tmp/package-sysklogd/usr/lib && { ln -s -f libsyslog.so.0.0.0 libsyslog.so.0 || { rm -f libsyslog.so.0 && ln -s libsyslog.so.0.0.0 libsyslog.so.0; }; })
++libtool: install: (cd /tmp/package-sysklogd/usr/lib && { ln -s -f libsyslog.so.0.0.0 libsyslog.so || { rm -f libsyslog.so && ln -s libsyslog.so.0.0.0 libsyslog.so; }; })
++libtool: install: /usr/bin/ginstall -c .libs/libsyslog.lai /tmp/package-sysklogd/usr/lib/libsyslog.la
++libtool: warning: remember to run 'libtool --finish /usr/lib'
++ /usr/bin/mkdir -p '/tmp/package-sysklogd/usr/sbin'
++  /bin/sh ../libtool   --mode=install /usr/bin/ginstall -c syslogd '/tmp/package-sysklogd/usr/sbin'
++libtool: install: /usr/bin/ginstall -c syslogd /tmp/package-sysklogd/usr/sbin/syslogd
++ /usr/bin/mkdir -p '/tmp/package-sysklogd/usr/lib/pkgconfig'
++ /usr/bin/ginstall -c -m 644 libsyslog.pc '/tmp/package-sysklogd/usr/lib/pkgconfig'
++ /usr/bin/mkdir -p '/tmp/package-sysklogd/usr/include/syslog'
++ /usr/bin/ginstall -c -m 644 syslog.h '/tmp/package-sysklogd/usr/include/syslog'
++make[2]: Leaving directory '/tmp/sysklogd-2.2.1/src'
++make[1]: Leaving directory '/tmp/sysklogd-2.2.1/src'
++Making install in test
++make[1]: Entering directory '/tmp/sysklogd-2.2.1/test'
++make[2]: Entering directory '/tmp/sysklogd-2.2.1/test'
++make[2]: Nothing to be done for 'install-exec-am'.
++make[2]: Nothing to be done for 'install-data-am'.
++make[2]: Leaving directory '/tmp/sysklogd-2.2.1/test'
++make[1]: Leaving directory '/tmp/sysklogd-2.2.1/test'
++make[1]: Entering directory '/tmp/sysklogd-2.2.1'
++make[2]: Entering directory '/tmp/sysklogd-2.2.1'
++make[2]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-sysklogd/usr/doc/sysklogd-2.2.1'
++ /usr/bin/ginstall -c -m 644 README.md LICENSE ChangeLog.md syslog.conf '/tmp/package-sysklogd/usr/doc/sysklogd-2.2.1'
++make[2]: Leaving directory '/tmp/sysklogd-2.2.1'
++make[1]: Leaving directory '/tmp/sysklogd-2.2.1'
++cp: cannot stat 'COPYING*': No such file or directory
++cp: cannot stat 'NEWS*': No such file or directory
++cp: cannot stat 'THANKS*': No such file or directory
++cp: cannot stat 'TODO*': No such file or directory
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++usr/lib/libsyslog.so	libsyslog.so.0.0.0
++usr/lib/libsyslog.so.0	libsyslog.so.0.0.0
++
++Making symbolic link creation script:
++( cd usr/lib ; rm -rf libsyslog.so )
++( cd usr/lib ; ln -sf libsyslog.so.0.0.0 libsyslog.so )
++( cd usr/lib ; rm -rf libsyslog.so.0 )
++( cd usr/lib ; ln -sf libsyslog.so.0.0.0 libsyslog.so.0 )
++
++Unless your existing installation script already contains the code
++to create these links, you should append these lines to your existing
++install script. Now's your chance. :^)
++
++Would you like to add this stuff to the existing install script and
++remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './usr/lib/libsyslog.so.0'
++removed './usr/lib/libsyslog.so'
++
++Updating your ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/sysklogd-2.2.1-x86_64-1.txz
++
++./
++etc/
++etc/default/
++etc/default/syslogd.new
++etc/logrotate.d/
++etc/logrotate.d/syslog.new
++etc/rc.d/
++etc/rc.d/rc.syslog.new
++etc/syslog.conf.new
++etc/syslog.d/
++install/
++install/doinst.sh
++install/slack-desc
++usr/
++usr/doc/
++usr/doc/sysklogd-2.2.1/
++usr/doc/sysklogd-2.2.1/ChangeLog.md
++usr/doc/sysklogd-2.2.1/LICENSE
++usr/doc/sysklogd-2.2.1/README.md
++usr/doc/sysklogd-2.2.1/example/
++usr/doc/sysklogd-2.2.1/example/README.md
++usr/doc/sysklogd-2.2.1/example/example.c
++usr/doc/sysklogd-2.2.1/example/example.mk
++usr/doc/sysklogd-2.2.1/syslog.conf
++usr/include/
++usr/include/syslog/
++usr/include/syslog/syslog.h
++usr/lib/
++usr/lib/libsyslog.so.0.0.0
++usr/lib/pkgconfig/
++usr/lib/pkgconfig/libsyslog.pc
++usr/man/
++usr/man/man3/
++usr/man/man3/syslogp.3.gz
++usr/man/man5/
++usr/man/man5/syslog.conf.5.gz
++usr/man/man8/
++usr/man/man8/syslogd.8.gz
++usr/sbin/
++usr/sbin/syslogd
++var/
++var/log/
++var/log/cron.new
++var/log/debug.new
++var/log/maillog.new
++var/log/messages.new
++var/log/secure.new
++var/log/syslog.new
++WARNING:  zero length file var/log/debug.new
++WARNING:  zero length file var/log/secure.new
++WARNING:  zero length file var/log/maillog.new
++WARNING:  zero length file var/log/messages.new
++WARNING:  zero length file var/log/syslog.new
++WARNING:  zero length file var/log/cron.new
++
++Slackware package /tmp/sysklogd-2.2.1-x86_64-1.txz created.
++

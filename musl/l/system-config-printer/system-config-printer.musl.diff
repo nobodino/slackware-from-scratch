@@ -1,0 +1,1397 @@
+diff -ruBN /tmp/system-config-printer/system-config-printer.SlackBuild /source/l/system-config-printer/system-config-printer.SlackBuild
+--- /tmp/system-config-printer/system-config-printer.SlackBuild	2021-01-09 19:12:49.000000000 +0000
++++ /source/l/system-config-printer/system-config-printer.SlackBuild	2021-01-17 21:35:14.000000000 +0000
+@@ -57,7 +57,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "armv7hl" ]; then
+   SLKCFLAGS="-O2 -march=armv7-a -mfpu=vfpv3-d16"
+   LIBDIRSUFFIX=""
+@@ -68,7 +68,7 @@
+ 
+ case "$ARCH" in
+     arm*) TARGET=$ARCH-slackware-linux-gnueabi ;;
+-    *)    TARGET=$ARCH-slackware-linux ;;
++    *)    TARGET=$ARCH-slackware-linux-musl ;;
+ esac
+ 
+ TMP=${TMP:-/tmp}
+diff -ruBN /tmp/system-config-printer/system-config-printer.SlackBuild.log /source/l/system-config-printer/system-config-printer.SlackBuild.log
+--- /tmp/system-config-printer/system-config-printer.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/l/system-config-printer/system-config-printer.SlackBuild.log	2021-01-17 21:38:38.000000000 +0000
+@@ -0,0 +1,1372 @@
++system-config-printer-1.5.15/
++system-config-printer-1.5.15/dnssdresolve.py
++system-config-printer-1.5.15/gui.py
++system-config-printer-1.5.15/timedops.py
++system-config-printer-1.5.15/debug.py
++system-config-printer-1.5.15/monitor.py
++system-config-printer-1.5.15/xml/
++system-config-printer-1.5.15/xml/validate.py
++system-config-printer-1.5.15/xml/preferreddrivers.xml
++system-config-printer-1.5.15/xml/preferreddrivers.rng
++system-config-printer-1.5.15/config.py
++system-config-printer-1.5.15/setup.py
++system-config-printer-1.5.15/troubleshoot/
++system-config-printer-1.5.15/troubleshoot/CheckSELinux.py
++system-config-printer-1.5.15/troubleshoot/ChoosePrinter.py
++system-config-printer-1.5.15/troubleshoot/ServerFirewalled.py
++system-config-printer-1.5.15/troubleshoot/VerifyPackages.py
++system-config-printer-1.5.15/troubleshoot/CheckLocalServerPublishing.py
++system-config-printer-1.5.15/troubleshoot/ErrorLogFetch.py
++system-config-printer-1.5.15/troubleshoot/PrinterStateReasons.py
++system-config-printer-1.5.15/troubleshoot/QueueNotEnabled.py
++system-config-printer-1.5.15/troubleshoot/Locale.py
++system-config-printer-1.5.15/troubleshoot/NetworkCUPSPrinterShared.py
++system-config-printer-1.5.15/troubleshoot/ErrorLogParse.py
++system-config-printer-1.5.15/troubleshoot/ErrorLogCheckpoint.py
++system-config-printer-1.5.15/troubleshoot/PrintTestPage.py
++system-config-printer-1.5.15/troubleshoot/__init__.py
++system-config-printer-1.5.15/troubleshoot/ChooseNetworkPrinter.py
++system-config-printer-1.5.15/troubleshoot/RemoteAddress.py
++system-config-printer-1.5.15/troubleshoot/Shrug.py
++system-config-printer-1.5.15/troubleshoot/CheckPrinterSanity.py
++system-config-printer-1.5.15/troubleshoot/CheckUSBPermissions.py
++system-config-printer-1.5.15/troubleshoot/CheckNetworkServerSanity.py
++system-config-printer-1.5.15/troubleshoot/LocalOrRemote.py
++system-config-printer-1.5.15/troubleshoot/Welcome.py
++system-config-printer-1.5.15/troubleshoot/DeviceListed.py
++system-config-printer-1.5.15/troubleshoot/SchedulerNotRunning.py
++system-config-printer-1.5.15/troubleshoot/CheckPPDSanity.py
++system-config-printer-1.5.15/troubleshoot/QueueRejectingJobs.py
++system-config-printer-1.5.15/troubleshoot/base.py
++system-config-printer-1.5.15/NEWS
++system-config-printer-1.5.15/gtkinklevel.py
++system-config-printer-1.5.15/firewallsettings.py
++system-config-printer-1.5.15/mkinstalldirs
++system-config-printer-1.5.15/compile
++system-config-printer-1.5.15/AUTHORS
++system-config-printer-1.5.15/asyncpk1.py
++system-config-printer-1.5.15/config.sub
++system-config-printer-1.5.15/check-device-ids.py
++system-config-printer-1.5.15/scp-dbus-service.py
++system-config-printer-1.5.15/config.py.in
++system-config-printer-1.5.15/INSTALL
++system-config-printer-1.5.15/system-config-printer.desktop.in
++system-config-printer-1.5.15/system-config-printer.py
++system-config-printer-1.5.15/intltool-merge.in
++system-config-printer-1.5.15/po/
++system-config-printer-1.5.15/po/hu.po
++system-config-printer-1.5.15/po/id.po
++system-config-printer-1.5.15/po/zh_TW.po
++system-config-printer-1.5.15/po/ml.po
++system-config-printer-1.5.15/po/en_GB.po
++system-config-printer-1.5.15/po/te.po
++system-config-printer-1.5.15/po/mai.po
++system-config-printer-1.5.15/po/kn.po
++system-config-printer-1.5.15/po/bn_IN.po
++system-config-printer-1.5.15/po/hr.po
++system-config-printer-1.5.15/po/da.po
++system-config-printer-1.5.15/po/is.po
++system-config-printer-1.5.15/po/fr.po
++system-config-printer-1.5.15/po/nb.po
++system-config-printer-1.5.15/po/lt.po
++system-config-printer-1.5.15/po/ast.po
++system-config-printer-1.5.15/po/br.po
++system-config-printer-1.5.15/po/si.po
++system-config-printer-1.5.15/po/ms.po
++system-config-printer-1.5.15/po/sr@latin.po
++system-config-printer-1.5.15/po/ca.po
++system-config-printer-1.5.15/po/Makefile.in.in
++system-config-printer-1.5.15/po/fa.po
++system-config-printer-1.5.15/po/sr.po
++system-config-printer-1.5.15/po/it.po
++system-config-printer-1.5.15/po/POTFILES.in
++system-config-printer-1.5.15/po/bg.po
++system-config-printer-1.5.15/po/zh_CN.po
++system-config-printer-1.5.15/po/tr.po
++system-config-printer-1.5.15/po/nds.po
++system-config-printer-1.5.15/po/ja.po
++system-config-printer-1.5.15/po/ko.po
++system-config-printer-1.5.15/po/ar.po
++system-config-printer-1.5.15/po/sl.po
++system-config-printer-1.5.15/po/nn.po
++system-config-printer-1.5.15/po/as.po
++system-config-printer-1.5.15/po/pt_BR.po
++system-config-printer-1.5.15/po/or.po
++system-config-printer-1.5.15/po/vi.po
++system-config-printer-1.5.15/po/ta.po
++system-config-printer-1.5.15/po/th.po
++system-config-printer-1.5.15/po/el.po
++system-config-printer-1.5.15/po/de.po
++system-config-printer-1.5.15/po/ro.po
++system-config-printer-1.5.15/po/he.po
++system-config-printer-1.5.15/po/cy.po
++system-config-printer-1.5.15/po/es.po
++system-config-printer-1.5.15/po/pt.po
++system-config-printer-1.5.15/po/mr.po
++system-config-printer-1.5.15/po/gu.po
++system-config-printer-1.5.15/po/sv.po
++system-config-printer-1.5.15/po/uk.po
++system-config-printer-1.5.15/po/fi.po
++system-config-printer-1.5.15/po/bs.po
++system-config-printer-1.5.15/po/sk.po
++system-config-printer-1.5.15/po/ru.po
++system-config-printer-1.5.15/po/et.po
++system-config-printer-1.5.15/po/oc.po
++system-config-printer-1.5.15/po/pl.po
++system-config-printer-1.5.15/po/hi.po
++system-config-printer-1.5.15/po/lv.po
++system-config-printer-1.5.15/po/cs.po
++system-config-printer-1.5.15/po/pa.po
++system-config-printer-1.5.15/po/bn.po
++system-config-printer-1.5.15/po/nl.po
++system-config-printer-1.5.15/po/fur.po
++system-config-printer-1.5.15/po/ChangeLog
++system-config-printer-1.5.15/po/Makevars
++system-config-printer-1.5.15/jobviewer.py
++system-config-printer-1.5.15/configure.ac
++system-config-printer-1.5.15/userdefault.py
++system-config-printer-1.5.15/newprinter.py
++system-config-printer-1.5.15/icons/
++system-config-printer-1.5.15/icons/i-network-printer.png
++system-config-printer-1.5.15/cupshelpers/
++system-config-printer-1.5.15/cupshelpers/openprinting.py
++system-config-printer-1.5.15/cupshelpers/config.py.in
++system-config-printer-1.5.15/cupshelpers/xmldriverprefs.py
++system-config-printer-1.5.15/cupshelpers/__init__.py
++system-config-printer-1.5.15/cupshelpers/ppds.py
++system-config-printer-1.5.15/cupshelpers/installdriver.py
++system-config-printer-1.5.15/cupshelpers/cupshelpers.py
++system-config-printer-1.5.15/asyncconn.py
++system-config-printer-1.5.15/missing
++system-config-printer-1.5.15/SearchCriterion.py
++system-config-printer-1.5.15/system-config-printer.in
++system-config-printer-1.5.15/serversettings.py
++system-config-printer-1.5.15/killtimer.py
++system-config-printer-1.5.15/dbus/
++system-config-printer-1.5.15/dbus/com.redhat.PrinterDriversInstaller.conf
++system-config-printer-1.5.15/dbus/scp-dbus-service.in
++system-config-printer-1.5.15/dbus/com.redhat.NewPrinterNotification.conf
++system-config-printer-1.5.15/dbus/org.fedoraproject.Config.Printing.xml
++system-config-printer-1.5.15/dbus/org.fedoraproject.Config.Printing.service.in
++system-config-printer-1.5.15/aclocal.m4
++system-config-printer-1.5.15/authconn.py
++system-config-printer-1.5.15/optionwidgets.py
++system-config-printer-1.5.15/options.py
++system-config-printer-1.5.15/HIG.py
++system-config-printer-1.5.15/ppdsloader.py
++system-config-printer-1.5.15/OpenPrintingRequest.py
++system-config-printer-1.5.15/pysmb.py
++system-config-printer-1.5.15/smburi.py
++system-config-printer-1.5.15/PhysicalDevice.py
++system-config-printer-1.5.15/installpackage.py
++system-config-printer-1.5.15/config.guess
++system-config-printer-1.5.15/man/
++system-config-printer-1.5.15/man/system-config-printer.xml
++system-config-printer-1.5.15/applet.py
++system-config-printer-1.5.15/statereason.py
++system-config-printer-1.5.15/ppdcache.py
++system-config-printer-1.5.15/ABOUT-NLS
++system-config-printer-1.5.15/install-sh
++system-config-printer-1.5.15/test_PhysicalDevice.py
++system-config-printer-1.5.15/install-printerdriver.py
++system-config-printer-1.5.15/intltool-extract.in
++system-config-printer-1.5.15/asyncipp.py
++system-config-printer-1.5.15/ppdippstr.py
++system-config-printer-1.5.15/intltool-update.in
++system-config-printer-1.5.15/probe_printer.py
++system-config-printer-1.5.15/ToolbarSearchEntry.py
++system-config-printer-1.5.15/print-applet.desktop.in
++system-config-printer-1.5.15/errordialogs.py
++system-config-printer-1.5.15/README
++system-config-printer-1.5.15/test-driver
++system-config-printer-1.5.15/cupspk.py
++system-config-printer-1.5.15/ui/
++system-config-printer-1.5.15/ui/PrinterPropertiesDialog.ui
++system-config-printer-1.5.15/ui/AboutDialog.ui
++system-config-printer-1.5.15/ui/JobsWindow.ui
++system-config-printer-1.5.15/ui/ServerSettingsDialog.ui
++system-config-printer-1.5.15/ui/InstallDialog.ui
++system-config-printer-1.5.15/ui/statusicon_popupmenu.ui
++system-config-printer-1.5.15/ui/ConnectDialog.ui
++system-config-printer-1.5.15/ui/PrintersWindow.ui
++system-config-printer-1.5.15/ui/NewPrinterWindow.ui
++system-config-printer-1.5.15/ui/SMBBrowseDialog.ui
++system-config-printer-1.5.15/ui/WaitWindow.ui
++system-config-printer-1.5.15/ui/NewPrinterName.ui
++system-config-printer-1.5.15/ui/ConnectingDialog.ui
++system-config-printer-1.5.15/Makefile.in
++system-config-printer-1.5.15/bootstrap
++system-config-printer-1.5.15/printerproperties.py
++system-config-printer-1.5.15/profile-ppds.py
++system-config-printer-1.5.15/ChangeLog-OLD
++system-config-printer-1.5.15/udev/
++system-config-printer-1.5.15/udev/udev-add-printer
++system-config-printer-1.5.15/udev/udev-configure-printer.c
++system-config-printer-1.5.15/udev/70-printers.rules
++system-config-printer-1.5.15/udev/configure-printer@.service.in
++system-config-printer-1.5.15/Makefile.am
++system-config-printer-1.5.15/configure
++system-config-printer-1.5.15/COPYING
++system-config-printer-1.5.15/config.rpath
++system-config-printer-1.5.15/system-config-printer.appdata.xml.in
++system-config-printer-1.5.15/system-config-printer-applet.in
++system-config-printer-1.5.15/ChangeLog
++system-config-printer-1.5.15/install-printerdriver.in
++system-config-printer-1.5.15/depcomp
++checking for a BSD-compatible install... /usr/bin/ginstall -c
++checking whether build environment is sane... yes
++checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
++checking for gawk... gawk
++checking whether make sets $(MAKE)... yes
++checking whether make supports nested variables... yes
++checking whether NLS is requested... yes
++checking for intltool-update... /usr/bin/intltool-update
++checking for intltool-merge... /usr/bin/intltool-merge
++checking for intltool-extract... /usr/bin/intltool-extract
++checking for xgettext... /usr/bin/xgettext
++checking for msgmerge... /usr/bin/msgmerge
++checking for msgfmt... /usr/bin/msgfmt
++checking for gmsgfmt... /usr/bin/msgfmt
++checking for perl... /usr/bin/perl
++checking for perl >= 5.8.1... 5.32.0
++checking for XML::Parser... ok
++checking for a sed that does not truncate output... /usr/bin/sed
++checking for msgfmt... (cached) /usr/bin/msgfmt
++checking for gmsgfmt... (cached) /usr/bin/msgfmt
++checking for xgettext... (cached) /usr/bin/xgettext
++checking for msgmerge... (cached) /usr/bin/msgmerge
++checking whether make supports the include directive... yes (GNU style)
++checking for gcc... gcc
++checking whether the C compiler works... yes
++checking for C compiler default output file name... a.out
++checking for suffix of executables... 
++checking whether we are cross compiling... no
++checking for suffix of object files... o
++checking whether we are using the GNU C compiler... yes
++checking whether gcc accepts -g... yes
++checking for gcc option to accept ISO C89... none needed
++checking whether gcc understands -c and -o together... yes
++checking dependency style of gcc... gcc3
++checking build system type... x86_64-slackware-linux-musl
++checking host system type... x86_64-slackware-linux-musl
++checking for ld used by gcc... /usr/bin/ld
++checking if the linker (/usr/bin/ld) is GNU ld... yes
++checking for shared library run path origin... done
++checking 32-bit host C ABI... no
++checking how to run the C preprocessor... gcc -E
++checking for grep that handles long lines and -e... /usr/bin/grep
++checking for egrep... /usr/bin/grep -E
++checking for ELF binary format... yes
++checking for the common suffixes of directories in the library search path... lib,lib,lib64
++checking for CFPreferencesCopyAppValue... no
++checking for CFLocaleCopyPreferredLanguages... no
++checking for GNU gettext in libc... yes
++checking whether to use NLS... yes
++checking where the gettext function comes from... libc
++checking whether /usr/bin/python3 version is >= 3... yes
++checking for /usr/bin/python3 version... 3.9
++checking for /usr/bin/python3 platform... linux
++checking for /usr/bin/python3 script directory... ${prefix}/lib/python3.9/site-packages
++checking for /usr/bin/python3 extension module directory... ${exec_prefix}/lib/python3.9/site-packages
++checking pkg-config is at least version 0.9.0... yes
++checking for GLIB... yes
++checking for libudev... yes
++checking for libusb... yes
++checking pkg-config is at least version 0.9.0... yes
++Package systemd was not found in the pkg-config search path.
++Perhaps you should add the directory containing `systemd.pc'
++to the PKG_CONFIG_PATH environment variable
++No package 'systemd' found
++checking that generated files are newer than configure... done
++configure: creating ./config.status
++config.status: creating Makefile
++config.status: creating po/Makefile.in
++config.status: creating system-config-printer
++config.status: creating system-config-printer-applet
++config.status: creating install-printerdriver
++config.status: creating dbus/scp-dbus-service
++config.status: creating udev/configure-printer@.service
++config.status: executing po-directories commands
++config.status: creating po/POTFILES
++config.status: creating po/Makefile
++config.status: executing depfiles commands
++config.status: executing po/stamp-it commands
++Making all in po
++make[1]: Entering directory '/tmp/system-config-printer-1.5.15/po'
++file=`echo ar | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file ar.po
++file=`echo as | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file as.po
++file=`echo ast | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file ast.po
++file=`echo bg | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file bg.po
++file=`echo bn_IN | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file bn_IN.po
++file=`echo bn | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file bn.po
++file=`echo br | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file br.po
++file=`echo bs | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file bs.po
++file=`echo ca | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file ca.po
++file=`echo cs | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file cs.po
++file=`echo cy | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file cy.po
++file=`echo da | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file da.po
++file=`echo de | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file de.po
++file=`echo el | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file el.po
++file=`echo en_GB | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file en_GB.po
++file=`echo es | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file es.po
++file=`echo et | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file et.po
++file=`echo fa | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file fa.po
++file=`echo fi | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file fi.po
++file=`echo fr | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file fr.po
++file=`echo fur | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file fur.po
++file=`echo gu | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file gu.po
++file=`echo he | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file he.po
++file=`echo hi | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file hi.po
++file=`echo hr | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file hr.po
++file=`echo hu | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file hu.po
++file=`echo id | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file id.po
++file=`echo is | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file is.po
++file=`echo it | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file it.po
++file=`echo ja | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file ja.po
++file=`echo kn | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file kn.po
++file=`echo ko | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file ko.po
++file=`echo lt | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file lt.po
++file=`echo lv | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file lv.po
++file=`echo mai | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file mai.po
++file=`echo ml | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file ml.po
++file=`echo mr | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file mr.po
++file=`echo ms | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file ms.po
++file=`echo nb | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file nb.po
++file=`echo nds | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file nds.po
++file=`echo nl | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file nl.po
++file=`echo nn | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file nn.po
++file=`echo oc | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file oc.po
++file=`echo or | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file or.po
++file=`echo pa | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file pa.po
++file=`echo pl | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file pl.po
++file=`echo pt_BR | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file pt_BR.po
++file=`echo pt | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file pt.po
++file=`echo ro | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file ro.po
++file=`echo ru | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file ru.po
++file=`echo si | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file si.po
++file=`echo sk | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file sk.po
++file=`echo sl | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file sl.po
++file=`echo sr@latin | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file sr@latin.po
++file=`echo sr | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file sr.po
++file=`echo sv | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file sv.po
++file=`echo ta | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file ta.po
++file=`echo te | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file te.po
++file=`echo th | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file th.po
++file=`echo tr | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file tr.po
++file=`echo uk | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file uk.po
++file=`echo vi | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file vi.po
++file=`echo zh_CN | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file zh_CN.po
++file=`echo zh_TW | sed 's,.*/,,'`.gmo \
++  && rm -f $file && /usr/bin/msgfmt -o $file zh_TW.po
++make[1]: Leaving directory '/tmp/system-config-printer-1.5.15/po'
++make[1]: Entering directory '/tmp/system-config-printer-1.5.15'
++xmlto man -o man man/system-config-printer.xml
++LC_ALL=C /usr/bin/intltool-merge  -x -u -c ./po/.intltool-merge-cache ./po system-config-printer.appdata.xml.in system-config-printer.appdata.xml
++LC_ALL=C /usr/bin/intltool-merge  -d -u -c ./po/.intltool-merge-cache ./po system-config-printer.desktop.in system-config-printer.desktop
++Generating and caching the translation database
++Merging translations into system-config-printer.desktop.
++LC_ALL=C /usr/bin/intltool-merge  -d -u -c ./po/.intltool-merge-cache ./po print-applet.desktop.in print-applet.desktop
++Found cached translation database
++Merging translations into print-applet.desktop.
++sed \
++  -e "s|\@prefix\@|/usr|" \
++  -e "s|\@datadir\@|/usr/share|" \
++  -e "s|\@localedir\@|/usr/share/locale|" \
++  -e "s|\@VERSION\@|1.5.15|" \
++  -e "s|\@PACKAGE\@|system-config-printer|" \
++  config.py.in > config.py
++sed \
++-e "s|\@bindir\@|/usr/bin|" \
++dbus/org.fedoraproject.Config.Printing.service.in >dbus/org.fedoraproject.Config.Printing.service
++if [ "." != "." ]; then	\
++	cp ./setup.py .;			\
++	/usr/bin/mkdir -p cupshelpers;				\
++	for file in cupshelpers/__init__.py cupshelpers/cupshelpers.py cupshelpers/installdriver.py cupshelpers/ppds.py cupshelpers/openprinting.py cupshelpers/xmldriverprefs.py; do		\
++		cp ./$file $file;		\
++	done;						\
++fi
++touch .stamp-distutils-in-builddir
++/usr/bin/mkdir -p cupshelpers
++sed \
++  -e "s|\@prefix\@|/usr|" \
++  -e "s|\@sysconfdir\@|/etc|" \
++  -e "s|\@cupsserverbindir\@|/usr/lib/cups|" \
++  cupshelpers/config.py.in > cupshelpers/config.py
++gcc -DPACKAGE_NAME=\"system-config-printer\" -DPACKAGE_TARNAME=\"system-config-printer\" -DPACKAGE_VERSION=\"1.5.15\" -DPACKAGE_STRING=\"system-config-printer\ 1.5.15\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE_URL=\"\" -DPACKAGE=\"system-config-printer\" -DVERSION=\"1.5.15\" -DENABLE_NLS=1 -DHAVE_GETTEXT=1 -DHAVE_DCGETTEXT=1 -I.     -I/usr/include/libusb-1.0 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -O2 -fPIC -MT udev/udev_configure_printer-udev-configure-printer.o -MD -MP -MF udev/.deps/udev_configure_printer-udev-configure-printer.Tpo -c -o udev/udev_configure_printer-udev-configure-printer.o `test -f 'udev/udev-configure-printer.c' || echo './'`udev/udev-configure-printer.c
++Generating and caching the translation database
++Merging translations into system-config-printer.appdata.xml.
++CREATED system-config-printer.appdata.xml
++/usr/bin/python3 setup.py build
++running build
++running build_py
++creating build
++creating build/lib
++creating build/lib/cupshelpers
++copying cupshelpers/ppds.py -> build/lib/cupshelpers
++copying cupshelpers/openprinting.py -> build/lib/cupshelpers
++copying cupshelpers/xmldriverprefs.py -> build/lib/cupshelpers
++copying cupshelpers/config.py -> build/lib/cupshelpers
++copying cupshelpers/__init__.py -> build/lib/cupshelpers
++copying cupshelpers/installdriver.py -> build/lib/cupshelpers
++copying cupshelpers/cupshelpers.py -> build/lib/cupshelpers
++udev/udev-configure-printer.c: In function ‘find_matching_device_uris’:
++udev/udev-configure-printer.c:1024:3: warning: ‘httpConnectEncrypt’ is deprecated: Use httpConnect2 instead. [-Wdeprecated-declarations]
++ 1024 |   cups = httpConnectEncrypt (cupsServer (), ippPort(), cupsEncryption ());
++      |   ^~~~
++In file included from /usr/include/cups/ipp.h:18,
++                 from /usr/include/cups/cups.h:27,
++                 from udev/udev-configure-printer.c:36:
++/usr/include/cups/http.h:458:17: note: declared here
++  458 | extern http_t  *httpConnectEncrypt(const char *host, int port, http_encryption_t encryption) _CUPS_DEPRECATED_1_7_MSG("Use httpConnect2 instead.");
++      |                 ^~~~~~~~~~~~~~~~~~
++udev/udev-configure-printer.c: In function ‘for_each_matching_queue’:
++udev/udev-configure-printer.c:1356:3: warning: ‘httpConnectEncrypt’ is deprecated: Use httpConnect2 instead. [-Wdeprecated-declarations]
++ 1356 |   http_t *cups = httpConnectEncrypt (cupsServer (), ippPort (),
++      |   ^~~~~~
++In file included from /usr/include/cups/ipp.h:18,
++                 from /usr/include/cups/cups.h:27,
++                 from udev/udev-configure-printer.c:36:
++/usr/include/cups/http.h:458:17: note: declared here
++  458 | extern http_t  *httpConnectEncrypt(const char *host, int port, http_encryption_t encryption) _CUPS_DEPRECATED_1_7_MSG("Use httpConnect2 instead.");
++      |                 ^~~~~~~~~~~~~~~~~~
++udev/udev-configure-printer.c: In function ‘enable_queue’:
++udev/udev-configure-printer.c:1542:3: warning: ‘httpConnectEncrypt’ is deprecated: Use httpConnect2 instead. [-Wdeprecated-declarations]
++ 1542 |   http_t *cups = httpConnectEncrypt (cupsServer (), ippPort (),
++      |   ^~~~~~
++In file included from /usr/include/cups/ipp.h:18,
++                 from /usr/include/cups/cups.h:27,
++                 from udev/udev-configure-printer.c:36:
++/usr/include/cups/http.h:458:17: note: declared here
++  458 | extern http_t  *httpConnectEncrypt(const char *host, int port, http_encryption_t encryption) _CUPS_DEPRECATED_1_7_MSG("Use httpConnect2 instead.");
++      |                 ^~~~~~~~~~~~~~~~~~
++udev/udev-configure-printer.c: In function ‘remove_queue’:
++udev/udev-configure-printer.c:1733:3: warning: ‘httpConnectEncrypt’ is deprecated: Use httpConnect2 instead. [-Wdeprecated-declarations]
++ 1733 |   http_t *cups = httpConnectEncrypt (cupsServer (), ippPort (),
++      |   ^~~~~~
++In file included from /usr/include/cups/ipp.h:18,
++                 from /usr/include/cups/cups.h:27,
++                 from udev/udev-configure-printer.c:36:
++/usr/include/cups/http.h:458:17: note: declared here
++  458 | extern http_t  *httpConnectEncrypt(const char *host, int port, http_encryption_t encryption) _CUPS_DEPRECATED_1_7_MSG("Use httpConnect2 instead.");
++      |                 ^~~~~~~~~~~~~~~~~~
++udev/udev-configure-printer.c: In function ‘disable_queue’:
++udev/udev-configure-printer.c:1765:3: warning: ‘httpConnectEncrypt’ is deprecated: Use httpConnect2 instead. [-Wdeprecated-declarations]
++ 1765 |   http_t *cups = httpConnectEncrypt (cupsServer (), ippPort (),
++      |   ^~~~~~
++In file included from /usr/include/cups/ipp.h:18,
++                 from /usr/include/cups/cups.h:27,
++                 from udev/udev-configure-printer.c:36:
++/usr/include/cups/http.h:458:17: note: declared here
++  458 | extern http_t  *httpConnectEncrypt(const char *host, int port, http_encryption_t encryption) _CUPS_DEPRECATED_1_7_MSG("Use httpConnect2 instead.");
++      |                 ^~~~~~~~~~~~~~~~~~
++mv -f udev/.deps/udev_configure_printer-udev-configure-printer.Tpo udev/.deps/udev_configure_printer-udev-configure-printer.Po
++gcc  -I/usr/include/libusb-1.0 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -O2 -fPIC   -o udev/udev-configure-printer udev/udev_configure_printer-udev-configure-printer.o -lcups -ludev -lusb-1.0 -lglib-2.0 
++Warn: AUTHOR sect.: no personblurb|contrib for Tim Waugh           
++Note: AUTHOR sect.: see http://www.docbook.org/tdg5/en/html/contr  
++Note: AUTHOR sect.: see http://www.docbook.org/tdg5/en/html/perso  
++Note: Writing system-config-printer.1
++Warn: AUTHOR sect.: no personblurb|contrib for Tim Waugh           
++Note: AUTHOR sect.: see http://www.docbook.org/tdg5/en/html/contr  
++Note: AUTHOR sect.: see http://www.docbook.org/tdg5/en/html/perso  
++Note: Writing system-config-printer-applet.1
++touch .stamp-man-pages-built
++make[1]: Leaving directory '/tmp/system-config-printer-1.5.15'
++Making install in po
++make[1]: Entering directory '/tmp/system-config-printer-1.5.15/po'
++linguas="ar as ast bg bn_IN bn br bs ca cs cy da de el en_GB es et fa fi fr fur gu he hi hr hu id is it ja kn ko lt lv mai ml mr ms nb nds nl nn oc or pa pl pt_BR pt ro ru si sk sl sr@latin sr sv ta te th tr uk vi zh_CN zh_TW "; \
++for lang in $linguas; do \
++  dir=/tmp/package-system-config-printer/usr/share/locale/$lang/LC_MESSAGES; \
++  /bin/sh /tmp/system-config-printer-1.5.15/install-sh -d $dir; \
++  if test -r $lang.gmo; then \
++    /usr/bin/ginstall -c -m 644 $lang.gmo $dir/system-config-printer.mo; \
++    echo "installing $lang.gmo as $dir/system-config-printer.mo"; \
++  else \
++    /usr/bin/ginstall -c -m 644 ./$lang.gmo $dir/system-config-printer.mo; \
++    echo "installing ./$lang.gmo as" \
++	 "$dir/system-config-printer.mo"; \
++  fi; \
++  if test -r $lang.gmo.m; then \
++    /usr/bin/ginstall -c -m 644 $lang.gmo.m $dir/system-config-printer.mo.m; \
++    echo "installing $lang.gmo.m as $dir/system-config-printer.mo.m"; \
++  else \
++    if test -r ./$lang.gmo.m ; then \
++      /usr/bin/ginstall -c -m 644 ./$lang.gmo.m \
++	$dir/system-config-printer.mo.m; \
++      echo "installing ./$lang.gmo.m as" \
++	   "$dir/system-config-printer.mo.m"; \
++    else \
++      true; \
++    fi; \
++  fi; \
++done
++installing ar.gmo as /tmp/package-system-config-printer/usr/share/locale/ar/LC_MESSAGES/system-config-printer.mo
++installing as.gmo as /tmp/package-system-config-printer/usr/share/locale/as/LC_MESSAGES/system-config-printer.mo
++installing ast.gmo as /tmp/package-system-config-printer/usr/share/locale/ast/LC_MESSAGES/system-config-printer.mo
++installing bg.gmo as /tmp/package-system-config-printer/usr/share/locale/bg/LC_MESSAGES/system-config-printer.mo
++installing bn_IN.gmo as /tmp/package-system-config-printer/usr/share/locale/bn_IN/LC_MESSAGES/system-config-printer.mo
++installing bn.gmo as /tmp/package-system-config-printer/usr/share/locale/bn/LC_MESSAGES/system-config-printer.mo
++installing br.gmo as /tmp/package-system-config-printer/usr/share/locale/br/LC_MESSAGES/system-config-printer.mo
++installing bs.gmo as /tmp/package-system-config-printer/usr/share/locale/bs/LC_MESSAGES/system-config-printer.mo
++installing ca.gmo as /tmp/package-system-config-printer/usr/share/locale/ca/LC_MESSAGES/system-config-printer.mo
++installing cs.gmo as /tmp/package-system-config-printer/usr/share/locale/cs/LC_MESSAGES/system-config-printer.mo
++installing cy.gmo as /tmp/package-system-config-printer/usr/share/locale/cy/LC_MESSAGES/system-config-printer.mo
++installing da.gmo as /tmp/package-system-config-printer/usr/share/locale/da/LC_MESSAGES/system-config-printer.mo
++installing de.gmo as /tmp/package-system-config-printer/usr/share/locale/de/LC_MESSAGES/system-config-printer.mo
++installing el.gmo as /tmp/package-system-config-printer/usr/share/locale/el/LC_MESSAGES/system-config-printer.mo
++installing en_GB.gmo as /tmp/package-system-config-printer/usr/share/locale/en_GB/LC_MESSAGES/system-config-printer.mo
++installing es.gmo as /tmp/package-system-config-printer/usr/share/locale/es/LC_MESSAGES/system-config-printer.mo
++installing et.gmo as /tmp/package-system-config-printer/usr/share/locale/et/LC_MESSAGES/system-config-printer.mo
++installing fa.gmo as /tmp/package-system-config-printer/usr/share/locale/fa/LC_MESSAGES/system-config-printer.mo
++installing fi.gmo as /tmp/package-system-config-printer/usr/share/locale/fi/LC_MESSAGES/system-config-printer.mo
++installing fr.gmo as /tmp/package-system-config-printer/usr/share/locale/fr/LC_MESSAGES/system-config-printer.mo
++installing fur.gmo as /tmp/package-system-config-printer/usr/share/locale/fur/LC_MESSAGES/system-config-printer.mo
++installing gu.gmo as /tmp/package-system-config-printer/usr/share/locale/gu/LC_MESSAGES/system-config-printer.mo
++installing he.gmo as /tmp/package-system-config-printer/usr/share/locale/he/LC_MESSAGES/system-config-printer.mo
++installing hi.gmo as /tmp/package-system-config-printer/usr/share/locale/hi/LC_MESSAGES/system-config-printer.mo
++installing hr.gmo as /tmp/package-system-config-printer/usr/share/locale/hr/LC_MESSAGES/system-config-printer.mo
++installing hu.gmo as /tmp/package-system-config-printer/usr/share/locale/hu/LC_MESSAGES/system-config-printer.mo
++installing id.gmo as /tmp/package-system-config-printer/usr/share/locale/id/LC_MESSAGES/system-config-printer.mo
++installing is.gmo as /tmp/package-system-config-printer/usr/share/locale/is/LC_MESSAGES/system-config-printer.mo
++installing it.gmo as /tmp/package-system-config-printer/usr/share/locale/it/LC_MESSAGES/system-config-printer.mo
++installing ja.gmo as /tmp/package-system-config-printer/usr/share/locale/ja/LC_MESSAGES/system-config-printer.mo
++installing kn.gmo as /tmp/package-system-config-printer/usr/share/locale/kn/LC_MESSAGES/system-config-printer.mo
++installing ko.gmo as /tmp/package-system-config-printer/usr/share/locale/ko/LC_MESSAGES/system-config-printer.mo
++installing lt.gmo as /tmp/package-system-config-printer/usr/share/locale/lt/LC_MESSAGES/system-config-printer.mo
++installing lv.gmo as /tmp/package-system-config-printer/usr/share/locale/lv/LC_MESSAGES/system-config-printer.mo
++installing mai.gmo as /tmp/package-system-config-printer/usr/share/locale/mai/LC_MESSAGES/system-config-printer.mo
++installing ml.gmo as /tmp/package-system-config-printer/usr/share/locale/ml/LC_MESSAGES/system-config-printer.mo
++installing mr.gmo as /tmp/package-system-config-printer/usr/share/locale/mr/LC_MESSAGES/system-config-printer.mo
++installing ms.gmo as /tmp/package-system-config-printer/usr/share/locale/ms/LC_MESSAGES/system-config-printer.mo
++installing nb.gmo as /tmp/package-system-config-printer/usr/share/locale/nb/LC_MESSAGES/system-config-printer.mo
++installing nds.gmo as /tmp/package-system-config-printer/usr/share/locale/nds/LC_MESSAGES/system-config-printer.mo
++installing nl.gmo as /tmp/package-system-config-printer/usr/share/locale/nl/LC_MESSAGES/system-config-printer.mo
++installing nn.gmo as /tmp/package-system-config-printer/usr/share/locale/nn/LC_MESSAGES/system-config-printer.mo
++installing oc.gmo as /tmp/package-system-config-printer/usr/share/locale/oc/LC_MESSAGES/system-config-printer.mo
++installing or.gmo as /tmp/package-system-config-printer/usr/share/locale/or/LC_MESSAGES/system-config-printer.mo
++installing pa.gmo as /tmp/package-system-config-printer/usr/share/locale/pa/LC_MESSAGES/system-config-printer.mo
++installing pl.gmo as /tmp/package-system-config-printer/usr/share/locale/pl/LC_MESSAGES/system-config-printer.mo
++installing pt_BR.gmo as /tmp/package-system-config-printer/usr/share/locale/pt_BR/LC_MESSAGES/system-config-printer.mo
++installing pt.gmo as /tmp/package-system-config-printer/usr/share/locale/pt/LC_MESSAGES/system-config-printer.mo
++installing ro.gmo as /tmp/package-system-config-printer/usr/share/locale/ro/LC_MESSAGES/system-config-printer.mo
++installing ru.gmo as /tmp/package-system-config-printer/usr/share/locale/ru/LC_MESSAGES/system-config-printer.mo
++installing si.gmo as /tmp/package-system-config-printer/usr/share/locale/si/LC_MESSAGES/system-config-printer.mo
++installing sk.gmo as /tmp/package-system-config-printer/usr/share/locale/sk/LC_MESSAGES/system-config-printer.mo
++installing sl.gmo as /tmp/package-system-config-printer/usr/share/locale/sl/LC_MESSAGES/system-config-printer.mo
++installing sr@latin.gmo as /tmp/package-system-config-printer/usr/share/locale/sr@latin/LC_MESSAGES/system-config-printer.mo
++installing sr.gmo as /tmp/package-system-config-printer/usr/share/locale/sr/LC_MESSAGES/system-config-printer.mo
++installing sv.gmo as /tmp/package-system-config-printer/usr/share/locale/sv/LC_MESSAGES/system-config-printer.mo
++installing ta.gmo as /tmp/package-system-config-printer/usr/share/locale/ta/LC_MESSAGES/system-config-printer.mo
++installing te.gmo as /tmp/package-system-config-printer/usr/share/locale/te/LC_MESSAGES/system-config-printer.mo
++installing th.gmo as /tmp/package-system-config-printer/usr/share/locale/th/LC_MESSAGES/system-config-printer.mo
++installing tr.gmo as /tmp/package-system-config-printer/usr/share/locale/tr/LC_MESSAGES/system-config-printer.mo
++installing uk.gmo as /tmp/package-system-config-printer/usr/share/locale/uk/LC_MESSAGES/system-config-printer.mo
++installing vi.gmo as /tmp/package-system-config-printer/usr/share/locale/vi/LC_MESSAGES/system-config-printer.mo
++installing zh_CN.gmo as /tmp/package-system-config-printer/usr/share/locale/zh_CN/LC_MESSAGES/system-config-printer.mo
++installing zh_TW.gmo as /tmp/package-system-config-printer/usr/share/locale/zh_TW/LC_MESSAGES/system-config-printer.mo
++make[1]: Leaving directory '/tmp/system-config-printer-1.5.15/po'
++make[1]: Entering directory '/tmp/system-config-printer-1.5.15'
++/usr/bin/python3 setup.py build
++running build
++running build_py
++make[2]: Entering directory '/tmp/system-config-printer-1.5.15'
++/usr/bin/python3 setup.py install --prefix=/tmp/package-system-config-printer/usr
++running install
++running build
++running build_py
++running install_lib
++creating /tmp/package-system-config-printer/usr/lib
++creating /tmp/package-system-config-printer/usr/lib/python3.9
++creating /tmp/package-system-config-printer/usr/lib/python3.9/site-packages
++creating /tmp/package-system-config-printer/usr/lib/python3.9/site-packages/cupshelpers
++copying build/lib/cupshelpers/ppds.py -> /tmp/package-system-config-printer/usr/lib/python3.9/site-packages/cupshelpers
++copying build/lib/cupshelpers/openprinting.py -> /tmp/package-system-config-printer/usr/lib/python3.9/site-packages/cupshelpers
++copying build/lib/cupshelpers/xmldriverprefs.py -> /tmp/package-system-config-printer/usr/lib/python3.9/site-packages/cupshelpers
++copying build/lib/cupshelpers/config.py -> /tmp/package-system-config-printer/usr/lib/python3.9/site-packages/cupshelpers
++copying build/lib/cupshelpers/__init__.py -> /tmp/package-system-config-printer/usr/lib/python3.9/site-packages/cupshelpers
++copying build/lib/cupshelpers/installdriver.py -> /tmp/package-system-config-printer/usr/lib/python3.9/site-packages/cupshelpers
++copying build/lib/cupshelpers/cupshelpers.py -> /tmp/package-system-config-printer/usr/lib/python3.9/site-packages/cupshelpers
++byte-compiling /tmp/package-system-config-printer/usr/lib/python3.9/site-packages/cupshelpers/ppds.py to ppds.cpython-39.pyc
++byte-compiling /tmp/package-system-config-printer/usr/lib/python3.9/site-packages/cupshelpers/openprinting.py to openprinting.cpython-39.pyc
++byte-compiling /tmp/package-system-config-printer/usr/lib/python3.9/site-packages/cupshelpers/xmldriverprefs.py to xmldriverprefs.cpython-39.pyc
++byte-compiling /tmp/package-system-config-printer/usr/lib/python3.9/site-packages/cupshelpers/config.py to config.cpython-39.pyc
++byte-compiling /tmp/package-system-config-printer/usr/lib/python3.9/site-packages/cupshelpers/__init__.py to __init__.cpython-39.pyc
++byte-compiling /tmp/package-system-config-printer/usr/lib/python3.9/site-packages/cupshelpers/installdriver.py to installdriver.cpython-39.pyc
++byte-compiling /tmp/package-system-config-printer/usr/lib/python3.9/site-packages/cupshelpers/cupshelpers.py to cupshelpers.cpython-39.pyc
++running install_egg_info
++Writing /tmp/package-system-config-printer/usr/lib/python3.9/site-packages/cupshelpers-1.0-py3.9.egg-info
++ /usr/bin/mkdir -p '/tmp/package-system-config-printer/usr/bin'
++ /usr/bin/ginstall -c system-config-printer install-printerdriver system-config-printer-applet dbus/scp-dbus-service '/tmp/package-system-config-printer/usr/bin'
++ /usr/bin/mkdir -p '/tmp/package-system-config-printer/usr/share/metainfo'
++ /usr/bin/ginstall -c -m 644 system-config-printer.appdata.xml '/tmp/package-system-config-printer/usr/share/metainfo'
++ /usr/bin/mkdir -p '/tmp/package-system-config-printer/etc/cupshelpers'
++ /usr/bin/ginstall -c -m 644 xml/preferreddrivers.xml '/tmp/package-system-config-printer/etc/cupshelpers'
++ /usr/bin/mkdir -p '/tmp/package-system-config-printer/etc/dbus-1/system.d/'
++ /usr/bin/ginstall -c -m 644 dbus/com.redhat.NewPrinterNotification.conf dbus/com.redhat.PrinterDriversInstaller.conf '/tmp/package-system-config-printer/etc/dbus-1/system.d/'
++ /usr/bin/mkdir -p '/tmp/package-system-config-printer/usr/share/dbus-1/interfaces/'
++ /usr/bin/ginstall -c -m 644 dbus/org.fedoraproject.Config.Printing.xml '/tmp/package-system-config-printer/usr/share/dbus-1/interfaces/'
++mkdir -p /tmp/package-system-config-printer/usr/share/applications/
++mkdir -p /tmp/package-system-config-printer/usr/share/applications/
++desktop-file-install 	\
++  --dir /tmp/package-system-config-printer/usr/share/applications/		\
++  --add-category System			\
++  --add-category Settings		\
++  --add-category HardwareSettings	\
++  --add-category Printing		\
++  --add-category GTK			\
++  system-config-printer.desktop
++desktop-file-install 	\
++  --dir /tmp/package-system-config-printer/etc/xdg/autostart/	\
++  --add-category System			\
++  --add-category Monitor		\
++  --add-category GTK			\
++  print-applet.desktop
++ /usr/bin/mkdir -p '/tmp/package-system-config-printer/usr/man/man1'
++ /usr/bin/ginstall -c -m 644 man/system-config-printer.1 man/system-config-printer-applet.1 '/tmp/package-system-config-printer/usr/man/man1'
++ /usr/bin/mkdir -p '/tmp/package-system-config-printer/usr/share/system-config-printer'
++ /usr/bin/mkdir -p '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot'
++ /usr/bin/ginstall -c -m 644  troubleshoot/base.py troubleshoot/CheckLocalServerPublishing.py troubleshoot/CheckNetworkServerSanity.py troubleshoot/CheckPPDSanity.py troubleshoot/CheckPrinterSanity.py troubleshoot/CheckSELinux.py troubleshoot/CheckUSBPermissions.py troubleshoot/ChooseNetworkPrinter.py troubleshoot/ChoosePrinter.py troubleshoot/DeviceListed.py troubleshoot/ErrorLogCheckpoint.py troubleshoot/ErrorLogFetch.py troubleshoot/ErrorLogParse.py troubleshoot/Locale.py troubleshoot/LocalOrRemote.py troubleshoot/NetworkCUPSPrinterShared.py troubleshoot/PrinterStateReasons.py troubleshoot/PrintTestPage.py troubleshoot/QueueNotEnabled.py troubleshoot/QueueRejectingJobs.py troubleshoot/RemoteAddress.py troubleshoot/SchedulerNotRunning.py troubleshoot/ServerFirewalled.py troubleshoot/Shrug.py troubleshoot/VerifyPackages.py troubleshoot/Welcome.py '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot'
++ /usr/bin/mkdir -p '/tmp/package-system-config-printer/usr/share/system-config-printer/ui'
++ /usr/bin/ginstall -c -m 644  ui/AboutDialog.ui ui/ConnectDialog.ui ui/ConnectingDialog.ui ui/InstallDialog.ui ui/JobsWindow.ui ui/NewPrinterName.ui ui/NewPrinterWindow.ui ui/PrinterPropertiesDialog.ui ui/PrintersWindow.ui ui/ServerSettingsDialog.ui ui/SMBBrowseDialog.ui ui/statusicon_popupmenu.ui ui/WaitWindow.ui '/tmp/package-system-config-printer/usr/share/system-config-printer/ui'
++ /usr/bin/ginstall -c -m 644  asyncconn.py asyncipp.py asyncpk1.py authconn.py config.py cupspk.py debug.py dnssdresolve.py errordialogs.py HIG.py firewallsettings.py gui.py gtkinklevel.py installpackage.py jobviewer.py killtimer.py monitor.py newprinter.py OpenPrintingRequest.py options.py optionwidgets.py PhysicalDevice.py ppdcache.py ppdippstr.py ppdsloader.py printerproperties.py probe_printer.py SearchCriterion.py serversettings.py smburi.py statereason.py timedops.py ToolbarSearchEntry.py userdefault.py '/tmp/package-system-config-printer/usr/share/system-config-printer/.'
++ /usr/bin/mkdir -p '/tmp/package-system-config-printer/usr/share/system-config-printer/xml'
++ /usr/bin/ginstall -c -m 644  xml/preferreddrivers.rng xml/validate.py '/tmp/package-system-config-printer/usr/share/system-config-printer/xml'
++ /usr/bin/mkdir -p '/tmp/package-system-config-printer/usr/share/system-config-printer/icons'
++ /usr/bin/ginstall -c -m 644  icons/i-network-printer.png '/tmp/package-system-config-printer/usr/share/system-config-printer/icons'
++ /usr/bin/mkdir -p '/tmp/package-system-config-printer/usr/share/system-config-printer'
++ /usr/bin/mkdir -p '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/'
++ /usr/bin/ginstall -c troubleshoot/__init__.py '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/'
++ /usr/bin/ginstall -c check-device-ids.py pysmb.py scp-dbus-service.py system-config-printer.py install-printerdriver.py applet.py '/tmp/package-system-config-printer/usr/share/system-config-printer'
++ /usr/bin/mkdir -p '/tmp/package-system-config-printer/usr/share/dbus-1/services/'
++ /usr/bin/ginstall -c -m 644 dbus/org.fedoraproject.Config.Printing.service '/tmp/package-system-config-printer/usr/share/dbus-1/services/'
++ /usr/bin/mkdir -p '/tmp/package-system-config-printer/lib/udev'
++  /usr/bin/ginstall -c udev/udev-configure-printer '/tmp/package-system-config-printer/lib/udev'
++ /usr/bin/mkdir -p '/tmp/package-system-config-printer/lib/udev'
++ /usr/bin/ginstall -c udev/udev-add-printer '/tmp/package-system-config-printer/lib/udev'
++ /usr/bin/mkdir -p '/tmp/package-system-config-printer/lib/udev/rules.d'
++ /usr/bin/ginstall -c -m 644 udev/70-printers.rules '/tmp/package-system-config-printer/lib/udev/rules.d'
++make[2]: Leaving directory '/tmp/system-config-printer-1.5.15'
++make[1]: Leaving directory '/tmp/system-config-printer-1.5.15'
++running install
++running build
++running build_py
++running install_lib
++running install_egg_info
++Removing /tmp/package-system-config-printer/usr/lib/python3.9/site-packages/cupshelpers-1.0-py3.9.egg-info
++Writing /tmp/package-system-config-printer/usr/lib/python3.9/site-packages/cupshelpers-1.0-py3.9.egg-info
++Listing '/tmp/package-system-config-printer/usr/share/system-config-printer'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/HIG.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/OpenPrintingRequest.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/PhysicalDevice.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/SearchCriterion.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/ToolbarSearchEntry.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/applet.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/asyncconn.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/asyncipp.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/asyncpk1.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/authconn.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/check-device-ids.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/config.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/cupspk.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/debug.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/dnssdresolve.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/errordialogs.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/firewallsettings.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/gtkinklevel.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/gui.py'...
++Listing '/tmp/package-system-config-printer/usr/share/system-config-printer/icons'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/install-printerdriver.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/installpackage.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/jobviewer.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/killtimer.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/monitor.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/newprinter.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/options.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/optionwidgets.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/ppdcache.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/ppdippstr.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/ppdsloader.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/printerproperties.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/probe_printer.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/pysmb.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/scp-dbus-service.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/serversettings.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/smburi.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/statereason.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/system-config-printer.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/timedops.py'...
++Listing '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/CheckLocalServerPublishing.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/CheckNetworkServerSanity.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/CheckPPDSanity.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/CheckPrinterSanity.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/CheckSELinux.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/CheckUSBPermissions.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/ChooseNetworkPrinter.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/ChoosePrinter.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/DeviceListed.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/ErrorLogCheckpoint.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/ErrorLogFetch.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/ErrorLogParse.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/LocalOrRemote.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/Locale.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/NetworkCUPSPrinterShared.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/PrintTestPage.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/PrinterStateReasons.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/QueueNotEnabled.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/QueueRejectingJobs.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/RemoteAddress.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/SchedulerNotRunning.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/ServerFirewalled.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/Shrug.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/VerifyPackages.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/Welcome.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/__init__.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/base.py'...
++Listing '/tmp/package-system-config-printer/usr/share/system-config-printer/ui'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/userdefault.py'...
++Listing '/tmp/package-system-config-printer/usr/share/system-config-printer/xml'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/xml/validate.py'...
++Listing '/tmp/package-system-config-printer/usr/share/system-config-printer'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/HIG.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/OpenPrintingRequest.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/PhysicalDevice.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/SearchCriterion.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/ToolbarSearchEntry.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/applet.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/asyncconn.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/asyncipp.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/asyncpk1.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/authconn.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/check-device-ids.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/config.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/cupspk.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/debug.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/dnssdresolve.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/errordialogs.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/firewallsettings.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/gtkinklevel.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/gui.py'...
++Listing '/tmp/package-system-config-printer/usr/share/system-config-printer/icons'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/install-printerdriver.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/installpackage.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/jobviewer.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/killtimer.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/monitor.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/newprinter.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/options.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/optionwidgets.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/ppdcache.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/ppdippstr.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/ppdsloader.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/printerproperties.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/probe_printer.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/pysmb.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/scp-dbus-service.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/serversettings.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/smburi.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/statereason.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/system-config-printer.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/timedops.py'...
++Listing '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/CheckLocalServerPublishing.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/CheckNetworkServerSanity.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/CheckPPDSanity.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/CheckPrinterSanity.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/CheckSELinux.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/CheckUSBPermissions.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/ChooseNetworkPrinter.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/ChoosePrinter.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/DeviceListed.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/ErrorLogCheckpoint.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/ErrorLogFetch.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/ErrorLogParse.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/LocalOrRemote.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/Locale.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/NetworkCUPSPrinterShared.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/PrintTestPage.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/PrinterStateReasons.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/QueueNotEnabled.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/QueueRejectingJobs.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/RemoteAddress.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/SchedulerNotRunning.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/ServerFirewalled.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/Shrug.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/VerifyPackages.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/Welcome.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/__init__.py'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/troubleshoot/base.py'...
++Listing '/tmp/package-system-config-printer/usr/share/system-config-printer/ui'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/userdefault.py'...
++Listing '/tmp/package-system-config-printer/usr/share/system-config-printer/xml'...
++Compiling '/tmp/package-system-config-printer/usr/share/system-config-printer/xml/validate.py'...
++mv: cannot stat '/tmp/package-system-config-printer/etc/udev': No such file or directory
++rmdir: failed to remove directory '/tmp/package-system-config-printer/etc': Directory not empty
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++
++No symbolic links were found, so we won't make an installation script.
++You can make your own later in ./install/doinst.sh and rebuild the
++package if you like.
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/system-config-printer-1.5.15-x86_64-1.txz
++
++./
++etc/
++etc/cupshelpers/
++etc/cupshelpers/preferreddrivers.xml
++etc/xdg/
++etc/xdg/autostart/
++etc/xdg/autostart/print-applet.desktop
++install/
++install/doinst.sh
++install/slack-desc
++lib/
++lib/udev/
++lib/udev/rules.d/
++lib/udev/rules.d/70-printers.rules
++lib/udev/udev-add-printer
++lib/udev/udev-configure-printer
++usr/
++usr/bin/
++usr/bin/install-printerdriver
++usr/bin/scp-dbus-service
++usr/bin/system-config-printer
++usr/bin/system-config-printer-applet
++usr/doc/
++usr/doc/system-config-printer-1.5.15/
++usr/doc/system-config-printer-1.5.15/AUTHORS
++usr/doc/system-config-printer-1.5.15/COPYING
++usr/doc/system-config-printer-1.5.15/README
++usr/lib/
++usr/lib/python3.9/
++usr/lib/python3.9/site-packages/
++usr/lib/python3.9/site-packages/cupshelpers/
++usr/lib/python3.9/site-packages/cupshelpers-1.0-py3.9.egg-info
++usr/lib/python3.9/site-packages/cupshelpers/__init__.py
++usr/lib/python3.9/site-packages/cupshelpers/__pycache__/
++usr/lib/python3.9/site-packages/cupshelpers/__pycache__/__init__.cpython-39.pyc
++usr/lib/python3.9/site-packages/cupshelpers/__pycache__/config.cpython-39.pyc
++usr/lib/python3.9/site-packages/cupshelpers/__pycache__/cupshelpers.cpython-39.pyc
++usr/lib/python3.9/site-packages/cupshelpers/__pycache__/installdriver.cpython-39.pyc
++usr/lib/python3.9/site-packages/cupshelpers/__pycache__/openprinting.cpython-39.pyc
++usr/lib/python3.9/site-packages/cupshelpers/__pycache__/ppds.cpython-39.pyc
++usr/lib/python3.9/site-packages/cupshelpers/__pycache__/xmldriverprefs.cpython-39.pyc
++usr/lib/python3.9/site-packages/cupshelpers/config.py
++usr/lib/python3.9/site-packages/cupshelpers/cupshelpers.py
++usr/lib/python3.9/site-packages/cupshelpers/installdriver.py
++usr/lib/python3.9/site-packages/cupshelpers/openprinting.py
++usr/lib/python3.9/site-packages/cupshelpers/ppds.py
++usr/lib/python3.9/site-packages/cupshelpers/xmldriverprefs.py
++usr/man/
++usr/man/man1/
++usr/man/man1/system-config-printer-applet.1.gz
++usr/man/man1/system-config-printer.1.gz
++usr/share/
++usr/share/applications/
++usr/share/applications/system-config-printer.desktop
++usr/share/dbus-1/
++usr/share/dbus-1/interfaces/
++usr/share/dbus-1/interfaces/org.fedoraproject.Config.Printing.xml
++usr/share/dbus-1/services/
++usr/share/dbus-1/services/org.fedoraproject.Config.Printing.service
++usr/share/dbus-1/system.d/
++usr/share/dbus-1/system.d/com.redhat.NewPrinterNotification.conf
++usr/share/dbus-1/system.d/com.redhat.PrinterDriversInstaller.conf
++usr/share/locale/
++usr/share/locale/ar/
++usr/share/locale/ar/LC_MESSAGES/
++usr/share/locale/ar/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/as/
++usr/share/locale/as/LC_MESSAGES/
++usr/share/locale/as/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/ast/
++usr/share/locale/ast/LC_MESSAGES/
++usr/share/locale/ast/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/bg/
++usr/share/locale/bg/LC_MESSAGES/
++usr/share/locale/bg/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/bn/
++usr/share/locale/bn/LC_MESSAGES/
++usr/share/locale/bn/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/bn_IN/
++usr/share/locale/bn_IN/LC_MESSAGES/
++usr/share/locale/bn_IN/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/br/
++usr/share/locale/br/LC_MESSAGES/
++usr/share/locale/br/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/bs/
++usr/share/locale/bs/LC_MESSAGES/
++usr/share/locale/bs/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/ca/
++usr/share/locale/ca/LC_MESSAGES/
++usr/share/locale/ca/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/cs/
++usr/share/locale/cs/LC_MESSAGES/
++usr/share/locale/cs/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/cy/
++usr/share/locale/cy/LC_MESSAGES/
++usr/share/locale/cy/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/da/
++usr/share/locale/da/LC_MESSAGES/
++usr/share/locale/da/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/de/
++usr/share/locale/de/LC_MESSAGES/
++usr/share/locale/de/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/el/
++usr/share/locale/el/LC_MESSAGES/
++usr/share/locale/el/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/en_GB/
++usr/share/locale/en_GB/LC_MESSAGES/
++usr/share/locale/en_GB/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/es/
++usr/share/locale/es/LC_MESSAGES/
++usr/share/locale/es/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/et/
++usr/share/locale/et/LC_MESSAGES/
++usr/share/locale/et/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/fa/
++usr/share/locale/fa/LC_MESSAGES/
++usr/share/locale/fa/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/fi/
++usr/share/locale/fi/LC_MESSAGES/
++usr/share/locale/fi/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/fr/
++usr/share/locale/fr/LC_MESSAGES/
++usr/share/locale/fr/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/fur/
++usr/share/locale/fur/LC_MESSAGES/
++usr/share/locale/fur/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/gu/
++usr/share/locale/gu/LC_MESSAGES/
++usr/share/locale/gu/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/he/
++usr/share/locale/he/LC_MESSAGES/
++usr/share/locale/he/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/hi/
++usr/share/locale/hi/LC_MESSAGES/
++usr/share/locale/hi/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/hr/
++usr/share/locale/hr/LC_MESSAGES/
++usr/share/locale/hr/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/hu/
++usr/share/locale/hu/LC_MESSAGES/
++usr/share/locale/hu/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/id/
++usr/share/locale/id/LC_MESSAGES/
++usr/share/locale/id/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/is/
++usr/share/locale/is/LC_MESSAGES/
++usr/share/locale/is/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/it/
++usr/share/locale/it/LC_MESSAGES/
++usr/share/locale/it/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/ja/
++usr/share/locale/ja/LC_MESSAGES/
++usr/share/locale/ja/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/kn/
++usr/share/locale/kn/LC_MESSAGES/
++usr/share/locale/kn/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/ko/
++usr/share/locale/ko/LC_MESSAGES/
++usr/share/locale/ko/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/lt/
++usr/share/locale/lt/LC_MESSAGES/
++usr/share/locale/lt/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/lv/
++usr/share/locale/lv/LC_MESSAGES/
++usr/share/locale/lv/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/mai/
++usr/share/locale/mai/LC_MESSAGES/
++usr/share/locale/mai/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/ml/
++usr/share/locale/ml/LC_MESSAGES/
++usr/share/locale/ml/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/mr/
++usr/share/locale/mr/LC_MESSAGES/
++usr/share/locale/mr/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/ms/
++usr/share/locale/ms/LC_MESSAGES/
++usr/share/locale/ms/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/nb/
++usr/share/locale/nb/LC_MESSAGES/
++usr/share/locale/nb/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/nds/
++usr/share/locale/nds/LC_MESSAGES/
++usr/share/locale/nds/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/nl/
++usr/share/locale/nl/LC_MESSAGES/
++usr/share/locale/nl/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/nn/
++usr/share/locale/nn/LC_MESSAGES/
++usr/share/locale/nn/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/oc/
++usr/share/locale/oc/LC_MESSAGES/
++usr/share/locale/oc/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/or/
++usr/share/locale/or/LC_MESSAGES/
++usr/share/locale/or/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/pa/
++usr/share/locale/pa/LC_MESSAGES/
++usr/share/locale/pa/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/pl/
++usr/share/locale/pl/LC_MESSAGES/
++usr/share/locale/pl/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/pt/
++usr/share/locale/pt/LC_MESSAGES/
++usr/share/locale/pt/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/pt_BR/
++usr/share/locale/pt_BR/LC_MESSAGES/
++usr/share/locale/pt_BR/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/ro/
++usr/share/locale/ro/LC_MESSAGES/
++usr/share/locale/ro/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/ru/
++usr/share/locale/ru/LC_MESSAGES/
++usr/share/locale/ru/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/si/
++usr/share/locale/si/LC_MESSAGES/
++usr/share/locale/si/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/sk/
++usr/share/locale/sk/LC_MESSAGES/
++usr/share/locale/sk/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/sl/
++usr/share/locale/sl/LC_MESSAGES/
++usr/share/locale/sl/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/sr/
++usr/share/locale/sr/LC_MESSAGES/
++usr/share/locale/sr/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/sr@latin/
++usr/share/locale/sr@latin/LC_MESSAGES/
++usr/share/locale/sr@latin/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/sv/
++usr/share/locale/sv/LC_MESSAGES/
++usr/share/locale/sv/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/ta/
++usr/share/locale/ta/LC_MESSAGES/
++usr/share/locale/ta/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/te/
++usr/share/locale/te/LC_MESSAGES/
++usr/share/locale/te/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/th/
++usr/share/locale/th/LC_MESSAGES/
++usr/share/locale/th/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/tr/
++usr/share/locale/tr/LC_MESSAGES/
++usr/share/locale/tr/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/uk/
++usr/share/locale/uk/LC_MESSAGES/
++usr/share/locale/uk/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/vi/
++usr/share/locale/vi/LC_MESSAGES/
++usr/share/locale/vi/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/zh_CN/
++usr/share/locale/zh_CN/LC_MESSAGES/
++usr/share/locale/zh_CN/LC_MESSAGES/system-config-printer.mo
++usr/share/locale/zh_TW/
++usr/share/locale/zh_TW/LC_MESSAGES/
++usr/share/locale/zh_TW/LC_MESSAGES/system-config-printer.mo
++usr/share/metainfo/
++usr/share/metainfo/system-config-printer.appdata.xml
++usr/share/system-config-printer/
++usr/share/system-config-printer/HIG.py
++usr/share/system-config-printer/OpenPrintingRequest.py
++usr/share/system-config-printer/PhysicalDevice.py
++usr/share/system-config-printer/SearchCriterion.py
++usr/share/system-config-printer/ToolbarSearchEntry.py
++usr/share/system-config-printer/__pycache__/
++usr/share/system-config-printer/__pycache__/HIG.cpython-39.opt-1.pyc
++usr/share/system-config-printer/__pycache__/HIG.cpython-39.pyc
++usr/share/system-config-printer/__pycache__/OpenPrintingRequest.cpython-39.opt-1.pyc
++usr/share/system-config-printer/__pycache__/OpenPrintingRequest.cpython-39.pyc
++usr/share/system-config-printer/__pycache__/PhysicalDevice.cpython-39.opt-1.pyc
++usr/share/system-config-printer/__pycache__/PhysicalDevice.cpython-39.pyc
++usr/share/system-config-printer/__pycache__/SearchCriterion.cpython-39.opt-1.pyc
++usr/share/system-config-printer/__pycache__/SearchCriterion.cpython-39.pyc
++usr/share/system-config-printer/__pycache__/ToolbarSearchEntry.cpython-39.opt-1.pyc
++usr/share/system-config-printer/__pycache__/ToolbarSearchEntry.cpython-39.pyc
++usr/share/system-config-printer/__pycache__/applet.cpython-39.opt-1.pyc
++usr/share/system-config-printer/__pycache__/applet.cpython-39.pyc
++usr/share/system-config-printer/__pycache__/asyncconn.cpython-39.opt-1.pyc
++usr/share/system-config-printer/__pycache__/asyncconn.cpython-39.pyc
++usr/share/system-config-printer/__pycache__/asyncipp.cpython-39.opt-1.pyc
++usr/share/system-config-printer/__pycache__/asyncipp.cpython-39.pyc
++usr/share/system-config-printer/__pycache__/asyncpk1.cpython-39.opt-1.pyc
++usr/share/system-config-printer/__pycache__/asyncpk1.cpython-39.pyc
++usr/share/system-config-printer/__pycache__/authconn.cpython-39.opt-1.pyc
++usr/share/system-config-printer/__pycache__/authconn.cpython-39.pyc
++usr/share/system-config-printer/__pycache__/check-device-ids.cpython-39.opt-1.pyc
++usr/share/system-config-printer/__pycache__/check-device-ids.cpython-39.pyc
++usr/share/system-config-printer/__pycache__/config.cpython-39.opt-1.pyc
++usr/share/system-config-printer/__pycache__/config.cpython-39.pyc
++usr/share/system-config-printer/__pycache__/cupspk.cpython-39.opt-1.pyc
++usr/share/system-config-printer/__pycache__/cupspk.cpython-39.pyc
++usr/share/system-config-printer/__pycache__/debug.cpython-39.opt-1.pyc
++usr/share/system-config-printer/__pycache__/debug.cpython-39.pyc
++usr/share/system-config-printer/__pycache__/dnssdresolve.cpython-39.opt-1.pyc
++usr/share/system-config-printer/__pycache__/dnssdresolve.cpython-39.pyc
++usr/share/system-config-printer/__pycache__/errordialogs.cpython-39.opt-1.pyc
++usr/share/system-config-printer/__pycache__/errordialogs.cpython-39.pyc
++usr/share/system-config-printer/__pycache__/firewallsettings.cpython-39.opt-1.pyc
++usr/share/system-config-printer/__pycache__/firewallsettings.cpython-39.pyc
++usr/share/system-config-printer/__pycache__/gtkinklevel.cpython-39.opt-1.pyc
++usr/share/system-config-printer/__pycache__/gtkinklevel.cpython-39.pyc
++usr/share/system-config-printer/__pycache__/gui.cpython-39.opt-1.pyc
++usr/share/system-config-printer/__pycache__/gui.cpython-39.pyc
++usr/share/system-config-printer/__pycache__/install-printerdriver.cpython-39.opt-1.pyc
++usr/share/system-config-printer/__pycache__/install-printerdriver.cpython-39.pyc
++usr/share/system-config-printer/__pycache__/installpackage.cpython-39.opt-1.pyc
++usr/share/system-config-printer/__pycache__/installpackage.cpython-39.pyc
++usr/share/system-config-printer/__pycache__/jobviewer.cpython-39.opt-1.pyc
++usr/share/system-config-printer/__pycache__/jobviewer.cpython-39.pyc
++usr/share/system-config-printer/__pycache__/killtimer.cpython-39.opt-1.pyc
++usr/share/system-config-printer/__pycache__/killtimer.cpython-39.pyc
++usr/share/system-config-printer/__pycache__/monitor.cpython-39.opt-1.pyc
++usr/share/system-config-printer/__pycache__/monitor.cpython-39.pyc
++usr/share/system-config-printer/__pycache__/newprinter.cpython-39.opt-1.pyc
++usr/share/system-config-printer/__pycache__/newprinter.cpython-39.pyc
++usr/share/system-config-printer/__pycache__/options.cpython-39.opt-1.pyc
++usr/share/system-config-printer/__pycache__/options.cpython-39.pyc
++usr/share/system-config-printer/__pycache__/optionwidgets.cpython-39.opt-1.pyc
++usr/share/system-config-printer/__pycache__/optionwidgets.cpython-39.pyc
++usr/share/system-config-printer/__pycache__/ppdcache.cpython-39.opt-1.pyc
++usr/share/system-config-printer/__pycache__/ppdcache.cpython-39.pyc
++usr/share/system-config-printer/__pycache__/ppdippstr.cpython-39.opt-1.pyc
++usr/share/system-config-printer/__pycache__/ppdippstr.cpython-39.pyc
++usr/share/system-config-printer/__pycache__/ppdsloader.cpython-39.opt-1.pyc
++usr/share/system-config-printer/__pycache__/ppdsloader.cpython-39.pyc
++usr/share/system-config-printer/__pycache__/printerproperties.cpython-39.opt-1.pyc
++usr/share/system-config-printer/__pycache__/printerproperties.cpython-39.pyc
++usr/share/system-config-printer/__pycache__/probe_printer.cpython-39.opt-1.pyc
++usr/share/system-config-printer/__pycache__/probe_printer.cpython-39.pyc
++usr/share/system-config-printer/__pycache__/pysmb.cpython-39.opt-1.pyc
++usr/share/system-config-printer/__pycache__/pysmb.cpython-39.pyc
++usr/share/system-config-printer/__pycache__/scp-dbus-service.cpython-39.opt-1.pyc
++usr/share/system-config-printer/__pycache__/scp-dbus-service.cpython-39.pyc
++usr/share/system-config-printer/__pycache__/serversettings.cpython-39.opt-1.pyc
++usr/share/system-config-printer/__pycache__/serversettings.cpython-39.pyc
++usr/share/system-config-printer/__pycache__/smburi.cpython-39.opt-1.pyc
++usr/share/system-config-printer/__pycache__/smburi.cpython-39.pyc
++usr/share/system-config-printer/__pycache__/statereason.cpython-39.opt-1.pyc
++usr/share/system-config-printer/__pycache__/statereason.cpython-39.pyc
++usr/share/system-config-printer/__pycache__/system-config-printer.cpython-39.opt-1.pyc
++usr/share/system-config-printer/__pycache__/system-config-printer.cpython-39.pyc
++usr/share/system-config-printer/__pycache__/timedops.cpython-39.opt-1.pyc
++usr/share/system-config-printer/__pycache__/timedops.cpython-39.pyc
++usr/share/system-config-printer/__pycache__/userdefault.cpython-39.opt-1.pyc
++usr/share/system-config-printer/__pycache__/userdefault.cpython-39.pyc
++usr/share/system-config-printer/applet.py
++usr/share/system-config-printer/asyncconn.py
++usr/share/system-config-printer/asyncipp.py
++usr/share/system-config-printer/asyncpk1.py
++usr/share/system-config-printer/authconn.py
++usr/share/system-config-printer/check-device-ids.py
++usr/share/system-config-printer/config.py
++usr/share/system-config-printer/cupspk.py
++usr/share/system-config-printer/debug.py
++usr/share/system-config-printer/dnssdresolve.py
++usr/share/system-config-printer/errordialogs.py
++usr/share/system-config-printer/firewallsettings.py
++usr/share/system-config-printer/gtkinklevel.py
++usr/share/system-config-printer/gui.py
++usr/share/system-config-printer/icons/
++usr/share/system-config-printer/icons/i-network-printer.png
++usr/share/system-config-printer/install-printerdriver.py
++usr/share/system-config-printer/installpackage.py
++usr/share/system-config-printer/jobviewer.py
++usr/share/system-config-printer/killtimer.py
++usr/share/system-config-printer/monitor.py
++usr/share/system-config-printer/newprinter.py
++usr/share/system-config-printer/options.py
++usr/share/system-config-printer/optionwidgets.py
++usr/share/system-config-printer/ppdcache.py
++usr/share/system-config-printer/ppdippstr.py
++usr/share/system-config-printer/ppdsloader.py
++usr/share/system-config-printer/printerproperties.py
++usr/share/system-config-printer/probe_printer.py
++usr/share/system-config-printer/pysmb.py
++usr/share/system-config-printer/scp-dbus-service.py
++usr/share/system-config-printer/serversettings.py
++usr/share/system-config-printer/smburi.py
++usr/share/system-config-printer/statereason.py
++usr/share/system-config-printer/system-config-printer.py
++usr/share/system-config-printer/timedops.py
++usr/share/system-config-printer/troubleshoot/
++usr/share/system-config-printer/troubleshoot/CheckLocalServerPublishing.py
++usr/share/system-config-printer/troubleshoot/CheckNetworkServerSanity.py
++usr/share/system-config-printer/troubleshoot/CheckPPDSanity.py
++usr/share/system-config-printer/troubleshoot/CheckPrinterSanity.py
++usr/share/system-config-printer/troubleshoot/CheckSELinux.py
++usr/share/system-config-printer/troubleshoot/CheckUSBPermissions.py
++usr/share/system-config-printer/troubleshoot/ChooseNetworkPrinter.py
++usr/share/system-config-printer/troubleshoot/ChoosePrinter.py
++usr/share/system-config-printer/troubleshoot/DeviceListed.py
++usr/share/system-config-printer/troubleshoot/ErrorLogCheckpoint.py
++usr/share/system-config-printer/troubleshoot/ErrorLogFetch.py
++usr/share/system-config-printer/troubleshoot/ErrorLogParse.py
++usr/share/system-config-printer/troubleshoot/LocalOrRemote.py
++usr/share/system-config-printer/troubleshoot/Locale.py
++usr/share/system-config-printer/troubleshoot/NetworkCUPSPrinterShared.py
++usr/share/system-config-printer/troubleshoot/PrintTestPage.py
++usr/share/system-config-printer/troubleshoot/PrinterStateReasons.py
++usr/share/system-config-printer/troubleshoot/QueueNotEnabled.py
++usr/share/system-config-printer/troubleshoot/QueueRejectingJobs.py
++usr/share/system-config-printer/troubleshoot/RemoteAddress.py
++usr/share/system-config-printer/troubleshoot/SchedulerNotRunning.py
++usr/share/system-config-printer/troubleshoot/ServerFirewalled.py
++usr/share/system-config-printer/troubleshoot/Shrug.py
++usr/share/system-config-printer/troubleshoot/VerifyPackages.py
++usr/share/system-config-printer/troubleshoot/Welcome.py
++usr/share/system-config-printer/troubleshoot/__init__.py
++usr/share/system-config-printer/troubleshoot/__pycache__/
++usr/share/system-config-printer/troubleshoot/__pycache__/CheckLocalServerPublishing.cpython-39.opt-1.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/CheckLocalServerPublishing.cpython-39.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/CheckNetworkServerSanity.cpython-39.opt-1.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/CheckNetworkServerSanity.cpython-39.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/CheckPPDSanity.cpython-39.opt-1.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/CheckPPDSanity.cpython-39.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/CheckPrinterSanity.cpython-39.opt-1.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/CheckPrinterSanity.cpython-39.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/CheckSELinux.cpython-39.opt-1.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/CheckSELinux.cpython-39.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/CheckUSBPermissions.cpython-39.opt-1.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/CheckUSBPermissions.cpython-39.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/ChooseNetworkPrinter.cpython-39.opt-1.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/ChooseNetworkPrinter.cpython-39.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/ChoosePrinter.cpython-39.opt-1.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/ChoosePrinter.cpython-39.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/DeviceListed.cpython-39.opt-1.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/DeviceListed.cpython-39.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/ErrorLogCheckpoint.cpython-39.opt-1.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/ErrorLogCheckpoint.cpython-39.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/ErrorLogFetch.cpython-39.opt-1.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/ErrorLogFetch.cpython-39.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/ErrorLogParse.cpython-39.opt-1.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/ErrorLogParse.cpython-39.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/LocalOrRemote.cpython-39.opt-1.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/LocalOrRemote.cpython-39.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/Locale.cpython-39.opt-1.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/Locale.cpython-39.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/NetworkCUPSPrinterShared.cpython-39.opt-1.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/NetworkCUPSPrinterShared.cpython-39.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/PrintTestPage.cpython-39.opt-1.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/PrintTestPage.cpython-39.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/PrinterStateReasons.cpython-39.opt-1.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/PrinterStateReasons.cpython-39.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/QueueNotEnabled.cpython-39.opt-1.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/QueueNotEnabled.cpython-39.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/QueueRejectingJobs.cpython-39.opt-1.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/QueueRejectingJobs.cpython-39.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/RemoteAddress.cpython-39.opt-1.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/RemoteAddress.cpython-39.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/SchedulerNotRunning.cpython-39.opt-1.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/SchedulerNotRunning.cpython-39.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/ServerFirewalled.cpython-39.opt-1.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/ServerFirewalled.cpython-39.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/Shrug.cpython-39.opt-1.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/Shrug.cpython-39.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/VerifyPackages.cpython-39.opt-1.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/VerifyPackages.cpython-39.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/Welcome.cpython-39.opt-1.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/Welcome.cpython-39.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/__init__.cpython-39.opt-1.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/__init__.cpython-39.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/base.cpython-39.opt-1.pyc
++usr/share/system-config-printer/troubleshoot/__pycache__/base.cpython-39.pyc
++usr/share/system-config-printer/troubleshoot/base.py
++usr/share/system-config-printer/ui/
++usr/share/system-config-printer/ui/AboutDialog.ui
++usr/share/system-config-printer/ui/ConnectDialog.ui
++usr/share/system-config-printer/ui/ConnectingDialog.ui
++usr/share/system-config-printer/ui/InstallDialog.ui
++usr/share/system-config-printer/ui/JobsWindow.ui
++usr/share/system-config-printer/ui/NewPrinterName.ui
++usr/share/system-config-printer/ui/NewPrinterWindow.ui
++usr/share/system-config-printer/ui/PrinterPropertiesDialog.ui
++usr/share/system-config-printer/ui/PrintersWindow.ui
++usr/share/system-config-printer/ui/SMBBrowseDialog.ui
++usr/share/system-config-printer/ui/ServerSettingsDialog.ui
++usr/share/system-config-printer/ui/WaitWindow.ui
++usr/share/system-config-printer/ui/statusicon_popupmenu.ui
++usr/share/system-config-printer/userdefault.py
++usr/share/system-config-printer/xml/
++usr/share/system-config-printer/xml/__pycache__/
++usr/share/system-config-printer/xml/__pycache__/validate.cpython-39.opt-1.pyc
++usr/share/system-config-printer/xml/__pycache__/validate.cpython-39.pyc
++usr/share/system-config-printer/xml/preferreddrivers.rng
++usr/share/system-config-printer/xml/validate.py
++WARNING:  zero length file usr/doc/system-config-printer-1.5.15/README
++
++Slackware package /tmp/system-config-printer-1.5.15-x86_64-1.txz created.
++

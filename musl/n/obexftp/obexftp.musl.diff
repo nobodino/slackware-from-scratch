@@ -1,0 +1,746 @@
+diff -ruBN /tmp/obexftp/obexftp.SlackBuild /source/n/obexftp/obexftp.SlackBuild
+--- /tmp/obexftp/obexftp.SlackBuild	2020-10-24 18:47:44.000000000 +0000
++++ /source/n/obexftp/obexftp.SlackBuild	2021-01-11 08:51:22.000000000 +0000
+@@ -56,7 +56,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ else
+   SLKCFLAGS="-O2"
+   LIBDIRSUFFIX=""
+@@ -91,6 +91,7 @@
+     -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
+     -DCMAKE_INSTALL_PREFIX=/usr \
+     -DLIB_SUFFIX=${LIBDIRSUFFIX} \
++-DCMAKE_INSTALL_LIBDIR=lib$LIBDIRSUFFIX \
+     -DCMAKE_INSTALL_DOCDIR=/usr/doc/$PKGNAM-$VERSION \
+     -DCMAKE_BUILD_TYPE=Release ..
+   make $NUMJOBS || make || exit 1
+@@ -105,6 +106,7 @@
+     -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
+     -DCMAKE_INSTALL_PREFIX=/usr \
+     -DLIB_SUFFIX=${LIBDIRSUFFIX} \
++-DCMAKE_INSTALL_LIBDIR=lib$LIBDIRSUFFIX \
+     -DCMAKE_INSTALL_DOCDIR=/usr/doc/$PKGNAM-$VERSION \
+     -DCMAKE_BUILD_TYPE=Release \
+     -DPython_ADDITIONAL_VERSIONS=2.7 ..
+diff -ruBN /tmp/obexftp/obexftp.SlackBuild.log /source/n/obexftp/obexftp.SlackBuild.log
+--- /tmp/obexftp/obexftp.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/n/obexftp/obexftp.SlackBuild.log	2021-01-11 08:52:37.000000000 +0000
+@@ -0,0 +1,714 @@
++obexftp-0.24.2-Source/AUTHORS
++obexftp-0.24.2-Source/Doxyfile
++obexftp-0.24.2-Source/Doxyfile.coverpage
++obexftp-0.24.2-Source/Doxyfile.developer
++obexftp-0.24.2-Source/NEWS
++obexftp-0.24.2-Source/README
++obexftp-0.24.2-Source/THANKS
++obexftp-0.24.2-Source/TODO
++obexftp-0.24.2-Source/apps/
++obexftp-0.24.2-Source/apps/CMakeLists.txt
++obexftp-0.24.2-Source/apps/discovery.c
++obexftp-0.24.2-Source/apps/obexftpd.c
++obexftp-0.24.2-Source/apps/obexftp.c
++obexftp-0.24.2-Source/bfb/
++obexftp-0.24.2-Source/bfb/irda_fcs.c
++obexftp-0.24.2-Source/bfb/crctable.c
++obexftp-0.24.2-Source/bfb/CMakeLists.txt
++obexftp-0.24.2-Source/bfb/bfb.c
++obexftp-0.24.2-Source/bfb/bfb.h
++obexftp-0.24.2-Source/bfb/bfb_io.c
++obexftp-0.24.2-Source/bfb/bfb_io.h
++obexftp-0.24.2-Source/bfb/crcmodel.h
++obexftp-0.24.2-Source/bfb/crcmodel.c
++obexftp-0.24.2-Source/bfb/irda_fcs.h
++obexftp-0.24.2-Source/doc/
++obexftp-0.24.2-Source/doc/obexftp.1.txt
++obexftp-0.24.2-Source/doc/obexftpd.1.txt
++obexftp-0.24.2-Source/doc/CMakeLists.txt
++obexftp-0.24.2-Source/examples/
++obexftp-0.24.2-Source/examples/README_obexftpbackup
++obexftp-0.24.2-Source/examples/c_example.c
++obexftp-0.24.2-Source/examples/c_example_obex_push.c
++obexftp-0.24.2-Source/examples/obexftpbackup
++obexftp-0.24.2-Source/examples/perl_example.pl
++obexftp-0.24.2-Source/examples/picture-mover
++obexftp-0.24.2-Source/examples/python_example.py
++obexftp-0.24.2-Source/examples/ruby_example.rb
++obexftp-0.24.2-Source/examples/ruby_list_devices.rb
++obexftp-0.24.2-Source/examples/ruby_obex_push.rb
++obexftp-0.24.2-Source/examples/ruby_obexftp.rb
++obexftp-0.24.2-Source/examples/tcl_example.tcl
++obexftp-0.24.2-Source/includes/
++obexftp-0.24.2-Source/includes/common.h
++obexftp-0.24.2-Source/multicobex/
++obexftp-0.24.2-Source/multicobex/multi_cobex.h
++obexftp-0.24.2-Source/multicobex/multi_cobex_private.h
++obexftp-0.24.2-Source/multicobex/multi_cobex_io.c
++obexftp-0.24.2-Source/multicobex/multi_cobex_io.h
++obexftp-0.24.2-Source/multicobex/CMakeLists.txt
++obexftp-0.24.2-Source/multicobex/multi_cobex.c
++obexftp-0.24.2-Source/obexftp.pc.in
++obexftp-0.24.2-Source/obexftp/
++obexftp-0.24.2-Source/obexftp/cache.h
++obexftp-0.24.2-Source/obexftp/obexftp.h
++obexftp-0.24.2-Source/obexftp/obexftp_io.h
++obexftp-0.24.2-Source/obexftp/unicode.h
++obexftp-0.24.2-Source/obexftp/uuid.h
++obexftp-0.24.2-Source/obexftp/bt_kit_test.c
++obexftp-0.24.2-Source/obexftp/object.h
++obexftp-0.24.2-Source/obexftp/bt_kit.c
++obexftp-0.24.2-Source/obexftp/obexftp_io.c
++obexftp-0.24.2-Source/obexftp/client.c
++obexftp-0.24.2-Source/obexftp/client.h
++obexftp-0.24.2-Source/obexftp/bt_kit.h
++obexftp-0.24.2-Source/obexftp/cache.c
++obexftp-0.24.2-Source/obexftp/object.c
++obexftp-0.24.2-Source/obexftp/unicode.c
++obexftp-0.24.2-Source/obexftp/CMakeLists.txt
++obexftp-0.24.2-Source/swig/
++obexftp-0.24.2-Source/swig/perl/
++obexftp-0.24.2-Source/swig/perl/Makefile.PL.in
++obexftp-0.24.2-Source/swig/perl/CMakeLists.txt
++obexftp-0.24.2-Source/swig/python/
++obexftp-0.24.2-Source/swig/python/setup.py.in
++obexftp-0.24.2-Source/swig/python/CMakeLists.txt
++obexftp-0.24.2-Source/swig/ruby/
++obexftp-0.24.2-Source/swig/ruby/extconf.rb
++obexftp-0.24.2-Source/swig/ruby/CMakeLists.txt
++obexftp-0.24.2-Source/swig/tcl/
++obexftp-0.24.2-Source/swig/tcl/CMakeLists.txt
++obexftp-0.24.2-Source/swig/charmap.i
++obexftp-0.24.2-Source/swig/CMakeLists.txt
++obexftp-0.24.2-Source/swig/client.i
++obexftp-0.24.2-Source/CMakeModules/
++obexftp-0.24.2-Source/CMakeModules/MaintainerMode.cmake
++obexftp-0.24.2-Source/CMakeModules/FindFuse.cmake
++obexftp-0.24.2-Source/CMakeModules/FindIconv.cmake
++obexftp-0.24.2-Source/CMakeModules/FindBluetooth.cmake
++obexftp-0.24.2-Source/ChangeLog
++obexftp-0.24.2-Source/CMakeLists.txt
++obexftp-0.24.2-Source/fuse/
++obexftp-0.24.2-Source/fuse/obexautofs.c
++obexftp-0.24.2-Source/fuse/CMakeLists.txt
++obexftp-0.24.2-Source/fuse/obexfs.c
++obexftp-0.24.2-Source/License.txt
++obexftp-0.24.2-Source/GPL-2.txt
++obexftp-0.24.2-Source/LGPL-2.1.txt
++patching file swig/python/CMakeLists.txt
++Hunk #1 succeeded at 37 (offset 1 line).
++patching file swig/perl/Makefile.PL.in
++-- The C compiler identification is GNU 10.2.0
++-- Detecting C compiler ABI info
++-- Detecting C compiler ABI info - done
++-- Check for working C compiler: /usr/bin/cc - skipped
++-- Detecting C compile features
++-- Detecting C compile features - done
++-- Found PkgConfig: /usr/bin/pkg-config (found version "0.29.2") 
++-- Checking for module 'bluez'
++--   Found bluez, version 5.55
++-- Looking for iconv_open
++-- Looking for iconv_open - found
++-- Performing Test ICONV_USES_CONST
++-- Performing Test ICONV_USES_CONST - Failed
++-- Checking for module 'fuse'
++--   Found fuse, version 2.9.9
++-- Found EXPAT: /usr/lib/libexpat.so (found version "2.2.10") 
++-- Found SWIG: /usr/bin/swig (found version "4.0.2")  
++-- Found Perl: /usr/bin/perl (found version "5.32.0") 
++-- Found PerlLibs: /usr/lib/perl5/CORE/libperl.so (found version "5.32.0") 
++CMake Deprecation Warning at /usr/share/cmake-3.19/Modules/UseSWIG.cmake:620 (message):
++  SWIG_ADD_MODULE is deprecated.  Use SWIG_ADD_LIBRARY instead.
++Call Stack (most recent call first):
++  swig/perl/CMakeLists.txt:21 (swig_add_module)
++
++
++CMake Warning (dev) at /usr/share/cmake-3.19/Modules/UseSWIG.cmake:661 (message):
++  Policy CMP0078 is not set: UseSWIG generates standard target names.  Run
++  "cmake --help-policy CMP0078" for policy details.  Use the cmake_policy
++  command to set the policy and suppress this warning.
++
++Call Stack (most recent call first):
++  /usr/share/cmake-3.19/Modules/UseSWIG.cmake:621 (swig_add_library)
++  swig/perl/CMakeLists.txt:21 (swig_add_module)
++This warning is for project developers.  Use -Wno-dev to suppress it.
++
++CMake Warning (dev) at /usr/share/cmake-3.19/Modules/UseSWIG.cmake:513 (message):
++  Policy CMP0086 is not set: UseSWIG honors SWIG_MODULE_NAME via -module
++  flag.  Run "cmake --help-policy CMP0086" for policy details.  Use the
++  cmake_policy command to set the policy and suppress this warning.
++
++Call Stack (most recent call first):
++  /usr/share/cmake-3.19/Modules/UseSWIG.cmake:764 (SWIG_ADD_SOURCE_TO_MODULE)
++  /usr/share/cmake-3.19/Modules/UseSWIG.cmake:621 (swig_add_library)
++  swig/perl/CMakeLists.txt:21 (swig_add_module)
++This warning is for project developers.  Use -Wno-dev to suppress it.
++
++-- Found PythonLibs: /usr/lib/libpython3.9.so (found version "3.9.1") 
++-- Found PythonInterp: /usr/bin/python3.9 (found version "3.9.1") 
++CMake Deprecation Warning at /usr/share/cmake-3.19/Modules/UseSWIG.cmake:620 (message):
++  SWIG_ADD_MODULE is deprecated.  Use SWIG_ADD_LIBRARY instead.
++Call Stack (most recent call first):
++  swig/python/CMakeLists.txt:23 (swig_add_module)
++
++
++CMake Warning (dev) at /usr/share/cmake-3.19/Modules/UseSWIG.cmake:661 (message):
++  Policy CMP0078 is not set: UseSWIG generates standard target names.  Run
++  "cmake --help-policy CMP0078" for policy details.  Use the cmake_policy
++  command to set the policy and suppress this warning.
++
++Call Stack (most recent call first):
++  /usr/share/cmake-3.19/Modules/UseSWIG.cmake:621 (swig_add_library)
++  swig/python/CMakeLists.txt:23 (swig_add_module)
++This warning is for project developers.  Use -Wno-dev to suppress it.
++
++CMake Warning (dev) at /usr/share/cmake-3.19/Modules/UseSWIG.cmake:513 (message):
++  Policy CMP0086 is not set: UseSWIG honors SWIG_MODULE_NAME via -module
++  flag.  Run "cmake --help-policy CMP0086" for policy details.  Use the
++  cmake_policy command to set the policy and suppress this warning.
++
++Call Stack (most recent call first):
++  /usr/share/cmake-3.19/Modules/UseSWIG.cmake:764 (SWIG_ADD_SOURCE_TO_MODULE)
++  /usr/share/cmake-3.19/Modules/UseSWIG.cmake:621 (swig_add_library)
++  swig/python/CMakeLists.txt:23 (swig_add_module)
++This warning is for project developers.  Use -Wno-dev to suppress it.
++
++-- Found Ruby: /usr/bin/ruby (found suitable version "3.0.0", minimum required is "1.8.0") 
++CMake Deprecation Warning at /usr/share/cmake-3.19/Modules/UseSWIG.cmake:620 (message):
++  SWIG_ADD_MODULE is deprecated.  Use SWIG_ADD_LIBRARY instead.
++Call Stack (most recent call first):
++  swig/ruby/CMakeLists.txt:15 (swig_add_module)
++
++
++CMake Warning (dev) at /usr/share/cmake-3.19/Modules/UseSWIG.cmake:661 (message):
++  Policy CMP0078 is not set: UseSWIG generates standard target names.  Run
++  "cmake --help-policy CMP0078" for policy details.  Use the cmake_policy
++  command to set the policy and suppress this warning.
++
++Call Stack (most recent call first):
++  /usr/share/cmake-3.19/Modules/UseSWIG.cmake:621 (swig_add_library)
++  swig/ruby/CMakeLists.txt:15 (swig_add_module)
++This warning is for project developers.  Use -Wno-dev to suppress it.
++
++CMake Warning (dev) at /usr/share/cmake-3.19/Modules/UseSWIG.cmake:513 (message):
++  Policy CMP0086 is not set: UseSWIG honors SWIG_MODULE_NAME via -module
++  flag.  Run "cmake --help-policy CMP0086" for policy details.  Use the
++  cmake_policy command to set the policy and suppress this warning.
++
++Call Stack (most recent call first):
++  /usr/share/cmake-3.19/Modules/UseSWIG.cmake:764 (SWIG_ADD_SOURCE_TO_MODULE)
++  /usr/share/cmake-3.19/Modules/UseSWIG.cmake:621 (swig_add_library)
++  swig/ruby/CMakeLists.txt:15 (swig_add_module)
++This warning is for project developers.  Use -Wno-dev to suppress it.
++
++-- Configuring done
++-- Generating done
++CMake Warning:
++  Manually-specified variables were not used by the project:
++
++    CMAKE_CXX_FLAGS
++    LIB_SUFFIX
++
++
++-- Build files have been written to: /tmp/obexftp-0.24.2-Source/build
++Scanning dependencies of target obexftp-perl_swig_compilation
++Scanning dependencies of target crctable
++Scanning dependencies of target obexftp-python_swig_compilation
++[  2%] Building C object bfb/CMakeFiles/crctable.dir/crcmodel.c.o
++[  4%] Swig compile ../client.i for python
++[  7%] Swig compile ../client.i for perl
++[  9%] Building C object bfb/CMakeFiles/crctable.dir/crctable.c.o
++[ 11%] Linking C executable crctable
++[ 11%] Built target crctable
++Scanning dependencies of target obexftp-ruby_swig_compilation
++[ 14%] Swig compile ../client.i for ruby
++[ 14%] Built target obexftp-perl_swig_compilation
++Scanning dependencies of target doc
++[ 16%] Generating obexftp.1.xml
++[ 16%] Built target obexftp-python_swig_compilation
++[ 19%] Generating irda_fcs_table.c
++
++Rocksoft^tm Model CRC Algorithm Table Generation Program V1.0
++-------------------------------------------------------------
++Output file is "irda_fcs_table.c".
++
++SUCCESS: The table has been successfully written.
++Scanning dependencies of target bfb
++[ 21%] Building C object bfb/CMakeFiles/bfb.dir/bfb.c.o
++[ 21%] Built target obexftp-ruby_swig_compilation
++[ 23%] Building C object bfb/CMakeFiles/bfb.dir/bfb_io.c.o
++[ 26%] Building C object bfb/CMakeFiles/bfb.dir/irda_fcs.c.o
++[ 28%] Building C object bfb/CMakeFiles/bfb.dir/irda_fcs_table.c.o
++[ 30%] Generating obexftpd.1.xml
++[ 33%] Linking C shared library libbfb.so
++[ 33%] Built target bfb
++Scanning dependencies of target multicobex
++[ 35%] Building C object multicobex/CMakeFiles/multicobex.dir/multi_cobex.c.o
++[ 38%] Building C object multicobex/CMakeFiles/multicobex.dir/multi_cobex_io.c.o
++[ 40%] Linking C shared library libmulticobex.so
++[ 40%] Built target multicobex
++Scanning dependencies of target obexftp
++[ 42%] Building C object obexftp/CMakeFiles/obexftp.dir/object.c.o
++[ 45%] Generating obexftpd.1
++[ 47%] Building C object obexftp/CMakeFiles/obexftp.dir/client.c.o
++[ 50%] Generating obexftp.1
++[ 52%] Building C object obexftp/CMakeFiles/obexftp.dir/obexftp_io.c.o
++[ 54%] Building C object obexftp/CMakeFiles/obexftp.dir/cache.c.o
++Note: Writing obexftpd.1
++Note: Writing obexftp.1
++[ 57%] Building C object obexftp/CMakeFiles/obexftp.dir/unicode.c.o
++[ 57%] Built target doc
++[ 59%] Building C object obexftp/CMakeFiles/obexftp.dir/bt_kit.c.o
++[ 61%] Linking C shared library libobexftp.so
++[ 61%] Built target obexftp
++Scanning dependencies of target discovery_app
++Scanning dependencies of target obexftpd_app
++Scanning dependencies of target obexftp_app
++[ 64%] Building C object apps/CMakeFiles/discovery_app.dir/discovery.c.o
++[ 66%] Building C object apps/CMakeFiles/obexftpd_app.dir/obexftpd.c.o
++[ 69%] Building C object apps/CMakeFiles/obexftp_app.dir/obexftp.c.o
++[ 71%] Linking C executable obexftp-discovery
++[ 71%] Built target discovery_app
++Scanning dependencies of target obexautofs
++[ 73%] Building C object fuse/CMakeFiles/obexautofs.dir/obexautofs.c.o
++[ 76%] Linking C executable obexftp
++[ 76%] Built target obexftp_app
++Scanning dependencies of target obexfs
++[ 78%] Building C object fuse/CMakeFiles/obexfs.dir/obexfs.c.o
++/tmp/obexftp-0.24.2-Source/fuse/obexfs.c: In function ‘ofs_statfs’:
++/tmp/obexftp-0.24.2-Source/fuse/obexfs.c:733:10: warning: format ‘%d’ expects argument of type ‘int’, but argument 5 has type ‘XML_Size’ {aka ‘long unsigned int’} [-Wformat=]
++  733 |    DEBUG("%s(): PARSE ERROR: %s at line %d\n", __func__,
++      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++  734 |     XML_ErrorString(XML_GetErrorCode(parser)),
++  735 |     XML_GetCurrentLineNumber(parser)
++      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++      |     |
++      |     XML_Size {aka long unsigned int}
++/tmp/obexftp-0.24.2-Source/fuse/obexfs.c:54:36: note: in definition of macro ‘DEBUG’
++   54 | #define DEBUG(...) fprintf(stderr, __VA_ARGS__)
++      |                                    ^~~~~~~~~~~
++/tmp/obexftp-0.24.2-Source/fuse/obexfs.c:733:42: note: format string is defined here
++  733 |    DEBUG("%s(): PARSE ERROR: %s at line %d\n", __func__,
++      |                                         ~^
++      |                                          |
++      |                                          int
++      |                                         %ld
++[ 80%] Linking C executable obexftpd
++[ 80%] Built target obexftpd_app
++Scanning dependencies of target obexftp-perl
++[ 83%] Linking C executable obexautofs
++[ 83%] Built target obexautofs
++Scanning dependencies of target _obexftp-python
++[ 85%] Linking C executable obexfs
++[ 85%] Built target obexfs
++Scanning dependencies of target obexftp-ruby
++[ 88%] Building C object swig/python/CMakeFiles/_obexftp-python.dir/CMakeFiles/_obexftp-python.dir/clientPYTHON_wrap.c.o
++/tmp/obexftp-0.24.2-Source/build/swig/python/CMakeFiles/_obexftp-python.dir/clientPYTHON_wrap.c: In function ‘_wrap_client_get’:
++/tmp/obexftp-0.24.2-Source/build/swig/python/CMakeFiles/_obexftp-python.dir/clientPYTHON_wrap.c:3693:17: warning: implicit declaration of function ‘PyString_FromStringAndSize’; did you mean ‘PyBytes_FromStringAndSize’? [-Wimplicit-function-declaration]
++ 3693 |     resultobj = PyString_FromStringAndSize(arg1->buf_data, arg1->buf_size);
++      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~
++      |                 PyBytes_FromStringAndSize
++/tmp/obexftp-0.24.2-Source/build/swig/python/CMakeFiles/_obexftp-python.dir/clientPYTHON_wrap.c:3693:15: warning: assignment to ‘PyObject *’ {aka ‘struct _object *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
++ 3693 |     resultobj = PyString_FromStringAndSize(arg1->buf_data, arg1->buf_size);
++      |               ^
++/tmp/obexftp-0.24.2-Source/build/swig/python/CMakeFiles/_obexftp-python.dir/clientPYTHON_wrap.c: In function ‘_wrap_client_list’:
++/tmp/obexftp-0.24.2-Source/build/swig/python/CMakeFiles/_obexftp-python.dir/clientPYTHON_wrap.c:3737:15: warning: assignment to ‘PyObject *’ {aka ‘struct _object *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
++ 3737 |     resultobj = PyString_FromStringAndSize(arg1->buf_data, arg1->buf_size);
++      |               ^
++/tmp/obexftp-0.24.2-Source/build/swig/python/CMakeFiles/_obexftp-python.dir/clientPYTHON_wrap.c: In function ‘_wrap_client_get_capability’:
++/tmp/obexftp-0.24.2-Source/build/swig/python/CMakeFiles/_obexftp-python.dir/clientPYTHON_wrap.c:3781:15: warning: assignment to ‘PyObject *’ {aka ‘struct _object *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
++ 3781 |     resultobj = PyString_FromStringAndSize(arg1->buf_data, arg1->buf_size);
++      |               ^
++[ 90%] Building C object swig/perl/CMakeFiles/obexftp-perl.dir/CMakeFiles/obexftp-perl.dir/clientPERL_wrap.c.o
++[ 92%] Building C object swig/ruby/CMakeFiles/obexftp-ruby.dir/CMakeFiles/obexftp-ruby.dir/clientRUBY_wrap.c.o
++[ 95%] Linking C shared module obexftp.so
++[ 95%] Built target obexftp-ruby
++[ 97%] Linking C shared module _obexftp.so
++[ 97%] Built target _obexftp-python
++[100%] Linking C shared module OBEXFTP.so
++[100%] Built target obexftp-perl
++[100%] Built target doc
++[  7%] Built target crctable
++[ 21%] Built target bfb
++[ 28%] Built target multicobex
++[ 45%] Built target obexftp
++[ 50%] Built target discovery_app
++[ 54%] Built target obexftpd_app
++[ 59%] Built target obexftp_app
++[ 64%] Built target obexautofs
++[ 69%] Built target obexfs
++[ 71%] Built target obexftp-perl_swig_compilation
++[ 76%] Built target obexftp-perl
++[ 78%] Built target obexftp-python_swig_compilation
++[ 83%] Built target _obexftp-python
++[ 85%] Built target obexftp-ruby_swig_compilation
++[ 90%] Built target obexftp-ruby
++[100%] Built target doc
++Install the project...
++-- Install configuration: "Release"
++-- Installing: /tmp/package-obexftp/usr/lib/pkgconfig/obexftp.pc
++-- Installing: /tmp/package-obexftp/usr/lib/libbfb.so.0.0.6
++-- Installing: /tmp/package-obexftp/usr/lib/libbfb.so.1
++-- Installing: /tmp/package-obexftp/usr/lib/libbfb.so
++-- Installing: /tmp/package-obexftp/usr/include/bfb/bfb.h
++-- Installing: /tmp/package-obexftp/usr/include/bfb/bfb_io.h
++-- Installing: /tmp/package-obexftp/usr/lib/libmulticobex.so.1.0.2
++-- Installing: /tmp/package-obexftp/usr/lib/libmulticobex.so.1
++-- Set runtime path of "/tmp/package-obexftp/usr/lib/libmulticobex.so.1.0.2" to ""
++-- Installing: /tmp/package-obexftp/usr/lib/libmulticobex.so
++-- Installing: /tmp/package-obexftp/usr/include/multicobex/multi_cobex.h
++-- Installing: /tmp/package-obexftp/usr/lib/libobexftp.so.0.3.0
++-- Installing: /tmp/package-obexftp/usr/lib/libobexftp.so.0
++-- Set runtime path of "/tmp/package-obexftp/usr/lib/libobexftp.so.0.3.0" to ""
++-- Installing: /tmp/package-obexftp/usr/lib/libobexftp.so
++-- Installing: /tmp/package-obexftp/usr/include/obexftp/obexftp.h
++-- Installing: /tmp/package-obexftp/usr/include/obexftp/client.h
++-- Installing: /tmp/package-obexftp/usr/include/obexftp/uuid.h
++-- Installing: /tmp/package-obexftp/usr/include/obexftp/object.h
++-- Installing: /tmp/package-obexftp/usr/bin/obexftp
++-- Set runtime path of "/tmp/package-obexftp/usr/bin/obexftp" to ""
++-- Installing: /tmp/package-obexftp/usr/bin/obexftpd
++-- Set runtime path of "/tmp/package-obexftp/usr/bin/obexftpd" to ""
++-- Installing: /tmp/package-obexftp/usr/bin/obexfs
++-- Set runtime path of "/tmp/package-obexftp/usr/bin/obexfs" to ""
++-- Installing: /tmp/package-obexftp/usr/bin/obexautofs
++-- Set runtime path of "/tmp/package-obexftp/usr/bin/obexautofs" to ""
++-- Installing: /tmp/package-obexftp/usr/lib/perl5/vendor_perl/auto/OBEXFTP/OBEXFTP.so
++-- Set runtime path of "/tmp/package-obexftp/usr/lib/perl5/vendor_perl/auto/OBEXFTP/OBEXFTP.so" to ""
++-- Installing: /tmp/package-obexftp/usr/lib/perl5/vendor_perl/OBEXFTP.pm
++-- Installing: /tmp/package-obexftp/usr/lib/python3.9/site-packages/_obexftp.so
++-- Set runtime path of "/tmp/package-obexftp/usr/lib/python3.9/site-packages/_obexftp.so" to ""
++-- Installing: /tmp/package-obexftp/usr/lib/python3.9/site-packages/obexftp.py
++-- Installing: /tmp/package-obexftp/usr/lib/ruby/vendor_ruby/3.0.0/x86_64-linux-musl/obexftp.so
++-- Set runtime path of "/tmp/package-obexftp/usr/lib/ruby/vendor_ruby/3.0.0/x86_64-linux-musl/obexftp.so" to ""
++-- Installing: /tmp/package-obexftp/usr/share/man/man1/obexftp.1
++-- Installing: /tmp/package-obexftp/usr/share/man/man1/obexftpd.1
++-- The C compiler identification is GNU 10.2.0
++-- Detecting C compiler ABI info
++-- Detecting C compiler ABI info - done
++-- Check for working C compiler: /usr/bin/cc - skipped
++-- Detecting C compile features
++-- Detecting C compile features - done
++-- Found PkgConfig: /usr/bin/pkg-config (found version "0.29.2") 
++-- Checking for module 'bluez'
++--   Found bluez, version 5.55
++-- Looking for iconv_open
++-- Looking for iconv_open - found
++-- Performing Test ICONV_USES_CONST
++-- Performing Test ICONV_USES_CONST - Failed
++-- Checking for module 'fuse'
++--   Found fuse, version 2.9.9
++-- Found EXPAT: /usr/lib/libexpat.so (found version "2.2.10") 
++-- Found SWIG: /usr/bin/swig (found version "4.0.2")  
++-- Found Perl: /usr/bin/perl (found version "5.32.0") 
++-- Found PerlLibs: /usr/lib/perl5/CORE/libperl.so (found version "5.32.0") 
++CMake Deprecation Warning at /usr/share/cmake-3.19/Modules/UseSWIG.cmake:620 (message):
++  SWIG_ADD_MODULE is deprecated.  Use SWIG_ADD_LIBRARY instead.
++Call Stack (most recent call first):
++  swig/perl/CMakeLists.txt:21 (swig_add_module)
++
++
++CMake Warning (dev) at /usr/share/cmake-3.19/Modules/UseSWIG.cmake:661 (message):
++  Policy CMP0078 is not set: UseSWIG generates standard target names.  Run
++  "cmake --help-policy CMP0078" for policy details.  Use the cmake_policy
++  command to set the policy and suppress this warning.
++
++Call Stack (most recent call first):
++  /usr/share/cmake-3.19/Modules/UseSWIG.cmake:621 (swig_add_library)
++  swig/perl/CMakeLists.txt:21 (swig_add_module)
++This warning is for project developers.  Use -Wno-dev to suppress it.
++
++CMake Warning (dev) at /usr/share/cmake-3.19/Modules/UseSWIG.cmake:513 (message):
++  Policy CMP0086 is not set: UseSWIG honors SWIG_MODULE_NAME via -module
++  flag.  Run "cmake --help-policy CMP0086" for policy details.  Use the
++  cmake_policy command to set the policy and suppress this warning.
++
++Call Stack (most recent call first):
++  /usr/share/cmake-3.19/Modules/UseSWIG.cmake:764 (SWIG_ADD_SOURCE_TO_MODULE)
++  /usr/share/cmake-3.19/Modules/UseSWIG.cmake:621 (swig_add_library)
++  swig/perl/CMakeLists.txt:21 (swig_add_module)
++This warning is for project developers.  Use -Wno-dev to suppress it.
++
++-- Found PythonLibs: /usr/lib/libpython2.7.so (found version "2.7.18") 
++-- Found PythonInterp: /usr/bin/python2.7 (found version "2.7.18") 
++CMake Deprecation Warning at /usr/share/cmake-3.19/Modules/UseSWIG.cmake:620 (message):
++  SWIG_ADD_MODULE is deprecated.  Use SWIG_ADD_LIBRARY instead.
++Call Stack (most recent call first):
++  swig/python/CMakeLists.txt:23 (swig_add_module)
++
++
++CMake Warning (dev) at /usr/share/cmake-3.19/Modules/UseSWIG.cmake:661 (message):
++  Policy CMP0078 is not set: UseSWIG generates standard target names.  Run
++  "cmake --help-policy CMP0078" for policy details.  Use the cmake_policy
++  command to set the policy and suppress this warning.
++
++Call Stack (most recent call first):
++  /usr/share/cmake-3.19/Modules/UseSWIG.cmake:621 (swig_add_library)
++  swig/python/CMakeLists.txt:23 (swig_add_module)
++This warning is for project developers.  Use -Wno-dev to suppress it.
++
++CMake Warning (dev) at /usr/share/cmake-3.19/Modules/UseSWIG.cmake:513 (message):
++  Policy CMP0086 is not set: UseSWIG honors SWIG_MODULE_NAME via -module
++  flag.  Run "cmake --help-policy CMP0086" for policy details.  Use the
++  cmake_policy command to set the policy and suppress this warning.
++
++Call Stack (most recent call first):
++  /usr/share/cmake-3.19/Modules/UseSWIG.cmake:764 (SWIG_ADD_SOURCE_TO_MODULE)
++  /usr/share/cmake-3.19/Modules/UseSWIG.cmake:621 (swig_add_library)
++  swig/python/CMakeLists.txt:23 (swig_add_module)
++This warning is for project developers.  Use -Wno-dev to suppress it.
++
++-- Found Ruby: /usr/bin/ruby (found suitable version "3.0.0", minimum required is "1.8.0") 
++CMake Deprecation Warning at /usr/share/cmake-3.19/Modules/UseSWIG.cmake:620 (message):
++  SWIG_ADD_MODULE is deprecated.  Use SWIG_ADD_LIBRARY instead.
++Call Stack (most recent call first):
++  swig/ruby/CMakeLists.txt:15 (swig_add_module)
++
++
++CMake Warning (dev) at /usr/share/cmake-3.19/Modules/UseSWIG.cmake:661 (message):
++  Policy CMP0078 is not set: UseSWIG generates standard target names.  Run
++  "cmake --help-policy CMP0078" for policy details.  Use the cmake_policy
++  command to set the policy and suppress this warning.
++
++Call Stack (most recent call first):
++  /usr/share/cmake-3.19/Modules/UseSWIG.cmake:621 (swig_add_library)
++  swig/ruby/CMakeLists.txt:15 (swig_add_module)
++This warning is for project developers.  Use -Wno-dev to suppress it.
++
++CMake Warning (dev) at /usr/share/cmake-3.19/Modules/UseSWIG.cmake:513 (message):
++  Policy CMP0086 is not set: UseSWIG honors SWIG_MODULE_NAME via -module
++  flag.  Run "cmake --help-policy CMP0086" for policy details.  Use the
++  cmake_policy command to set the policy and suppress this warning.
++
++Call Stack (most recent call first):
++  /usr/share/cmake-3.19/Modules/UseSWIG.cmake:764 (SWIG_ADD_SOURCE_TO_MODULE)
++  /usr/share/cmake-3.19/Modules/UseSWIG.cmake:621 (swig_add_library)
++  swig/ruby/CMakeLists.txt:15 (swig_add_module)
++This warning is for project developers.  Use -Wno-dev to suppress it.
++
++-- Configuring done
++-- Generating done
++CMake Warning:
++  Manually-specified variables were not used by the project:
++
++    CMAKE_CXX_FLAGS
++    LIB_SUFFIX
++
++
++-- Build files have been written to: /tmp/obexftp-0.24.2-Source/build-python2
++Scanning dependencies of target crctable
++Scanning dependencies of target obexftp-python_swig_compilation
++[  4%] Swig compile ../client.i for python
++[  9%] Building C object bfb/CMakeFiles/crctable.dir/crcmodel.c.o
++[ 13%] Building C object bfb/CMakeFiles/crctable.dir/crctable.c.o
++[ 18%] Linking C executable crctable
++[ 18%] Built target crctable
++[ 22%] Generating irda_fcs_table.c
++
++Rocksoft^tm Model CRC Algorithm Table Generation Program V1.0
++-------------------------------------------------------------
++Output file is "irda_fcs_table.c".
++
++SUCCESS: The table has been successfully written.
++Scanning dependencies of target bfb
++[ 27%] Building C object bfb/CMakeFiles/bfb.dir/bfb.c.o
++[ 31%] Building C object bfb/CMakeFiles/bfb.dir/bfb_io.c.o
++[ 31%] Built target obexftp-python_swig_compilation
++[ 36%] Building C object bfb/CMakeFiles/bfb.dir/irda_fcs.c.o
++[ 40%] Building C object bfb/CMakeFiles/bfb.dir/irda_fcs_table.c.o
++[ 45%] Linking C shared library libbfb.so
++[ 45%] Built target bfb
++Scanning dependencies of target multicobex
++[ 50%] Building C object multicobex/CMakeFiles/multicobex.dir/multi_cobex.c.o
++[ 54%] Building C object multicobex/CMakeFiles/multicobex.dir/multi_cobex_io.c.o
++[ 59%] Linking C shared library libmulticobex.so
++[ 59%] Built target multicobex
++Scanning dependencies of target obexftp
++[ 63%] Building C object obexftp/CMakeFiles/obexftp.dir/object.c.o
++[ 68%] Building C object obexftp/CMakeFiles/obexftp.dir/client.c.o
++[ 72%] Building C object obexftp/CMakeFiles/obexftp.dir/obexftp_io.c.o
++[ 77%] Building C object obexftp/CMakeFiles/obexftp.dir/cache.c.o
++[ 81%] Building C object obexftp/CMakeFiles/obexftp.dir/unicode.c.o
++[ 86%] Building C object obexftp/CMakeFiles/obexftp.dir/bt_kit.c.o
++[ 90%] Linking C shared library libobexftp.so
++[ 90%] Built target obexftp
++Scanning dependencies of target _obexftp-python
++[ 95%] Building C object swig/python/CMakeFiles/_obexftp-python.dir/CMakeFiles/_obexftp-python.dir/clientPYTHON_wrap.c.o
++[100%] Linking C shared module _obexftp.so
++[100%] Built target _obexftp-python
++[ 13%] Built target crctable
++[ 40%] Built target bfb
++[ 54%] Built target multicobex
++[ 86%] Built target obexftp
++[ 90%] Built target obexftp-python_swig_compilation
++[100%] Built target _obexftp-python
++Install the project...
++-- Install configuration: "Release"
++-- Installing: /tmp/package-obexftp/usr/lib/python2.7/site-packages/_obexftp.so
++-- Set runtime path of "/tmp/package-obexftp/usr/lib/python2.7/site-packages/_obexftp.so" to ""
++-- Installing: /tmp/package-obexftp/usr/lib/python2.7/site-packages/obexftp.py
++Listing /tmp/package-obexftp/usr/lib/python2.7/site-packages ...
++Compiling /tmp/package-obexftp/usr/lib/python2.7/site-packages/obexftp.py ...
++Listing /tmp/package-obexftp/usr/lib/python2.7/site-packages ...
++Compiling /tmp/package-obexftp/usr/lib/python2.7/site-packages/obexftp.py ...
++Listing '/tmp/package-obexftp/usr/lib/python3.9/site-packages'...
++Compiling '/tmp/package-obexftp/usr/lib/python3.9/site-packages/obexftp.py'...
++Listing '/tmp/package-obexftp/usr/lib/python3.9/site-packages'...
++Compiling '/tmp/package-obexftp/usr/lib/python3.9/site-packages/obexftp.py'...
++gzip: obexget.1.gz: Symbolic link loop
++gzip: obexls.1.gz: Symbolic link loop
++gzip: obexput.1.gz: Symbolic link loop
++gzip: obexrm.1.gz: Symbolic link loop
++cp: cannot stat 'COPYING*': No such file or directory
++cp: cannot stat 'INSTALL': No such file or directory
++cp: cannot stat 'contrib': No such file or directory
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++usr/bin/obexget	obexftp
++usr/bin/obexls	obexftp
++usr/bin/obexput	obexftp
++usr/bin/obexrm	obexftp
++usr/lib/libbfb.so	libbfb.so.1
++usr/lib/libbfb.so.1	libbfb.so.0.0.6
++usr/lib/libmulticobex.so	libmulticobex.so.1
++usr/lib/libmulticobex.so.1	libmulticobex.so.1.0.2
++usr/lib/libobexftp.so	libobexftp.so.0
++usr/lib/libobexftp.so.0	libobexftp.so.0.3.0
++usr/man/man1/obexget.1.gz	obexftp.1.gz
++usr/man/man1/obexls.1.gz	obexftp.1.gz
++usr/man/man1/obexput.1.gz	obexftp.1.gz
++usr/man/man1/obexrm.1.gz	obexftp.1.gz
++
++Making symbolic link creation script:
++( cd usr/bin ; rm -rf obexget )
++( cd usr/bin ; ln -sf obexftp obexget )
++( cd usr/bin ; rm -rf obexls )
++( cd usr/bin ; ln -sf obexftp obexls )
++( cd usr/bin ; rm -rf obexput )
++( cd usr/bin ; ln -sf obexftp obexput )
++( cd usr/bin ; rm -rf obexrm )
++( cd usr/bin ; ln -sf obexftp obexrm )
++( cd usr/lib ; rm -rf libbfb.so )
++( cd usr/lib ; ln -sf libbfb.so.1 libbfb.so )
++( cd usr/lib ; rm -rf libbfb.so.1 )
++( cd usr/lib ; ln -sf libbfb.so.0.0.6 libbfb.so.1 )
++( cd usr/lib ; rm -rf libmulticobex.so )
++( cd usr/lib ; ln -sf libmulticobex.so.1 libmulticobex.so )
++( cd usr/lib ; rm -rf libmulticobex.so.1 )
++( cd usr/lib ; ln -sf libmulticobex.so.1.0.2 libmulticobex.so.1 )
++( cd usr/lib ; rm -rf libobexftp.so )
++( cd usr/lib ; ln -sf libobexftp.so.0 libobexftp.so )
++( cd usr/lib ; rm -rf libobexftp.so.0 )
++( cd usr/lib ; ln -sf libobexftp.so.0.3.0 libobexftp.so.0 )
++( cd usr/man/man1 ; rm -rf obexget.1.gz )
++( cd usr/man/man1 ; ln -sf obexftp.1.gz obexget.1.gz )
++( cd usr/man/man1 ; rm -rf obexls.1.gz )
++( cd usr/man/man1 ; ln -sf obexftp.1.gz obexls.1.gz )
++( cd usr/man/man1 ; rm -rf obexput.1.gz )
++( cd usr/man/man1 ; ln -sf obexftp.1.gz obexput.1.gz )
++( cd usr/man/man1 ; rm -rf obexrm.1.gz )
++( cd usr/man/man1 ; ln -sf obexftp.1.gz obexrm.1.gz )
++
++It is recommended that you make these lines your new installation script.
++
++Would you like to make this stuff the install script for this package
++and remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './usr/man/man1/obexrm.1.gz'
++removed './usr/man/man1/obexls.1.gz'
++removed './usr/man/man1/obexput.1.gz'
++removed './usr/man/man1/obexget.1.gz'
++removed './usr/lib/libmulticobex.so'
++removed './usr/lib/libmulticobex.so.1'
++removed './usr/lib/libbfb.so.1'
++removed './usr/lib/libbfb.so'
++removed './usr/lib/libobexftp.so'
++removed './usr/lib/libobexftp.so.0'
++removed './usr/bin/obexput'
++removed './usr/bin/obexget'
++removed './usr/bin/obexls'
++removed './usr/bin/obexrm'
++
++Creating your new ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/obexftp-0.24.2-x86_64-6.txz
++
++./
++install/
++install/doinst.sh
++install/slack-desc
++usr/
++usr/bin/
++usr/bin/obexautofs
++usr/bin/obexfs
++usr/bin/obexftp
++usr/doc/
++usr/doc/obexftp-0.24.2/
++usr/doc/obexftp-0.24.2/AUTHORS
++usr/doc/obexftp-0.24.2/ChangeLog
++usr/doc/obexftp-0.24.2/NEWS
++usr/doc/obexftp-0.24.2/README
++usr/doc/obexftp-0.24.2/THANKS
++usr/doc/obexftp-0.24.2/TODO
++usr/doc/obexftp-0.24.2/html/
++usr/include/
++usr/include/bfb/
++usr/include/bfb/bfb.h
++usr/include/bfb/bfb_io.h
++usr/include/multicobex/
++usr/include/multicobex/multi_cobex.h
++usr/include/obexftp/
++usr/include/obexftp/client.h
++usr/include/obexftp/obexftp.h
++usr/include/obexftp/object.h
++usr/include/obexftp/uuid.h
++usr/lib/
++usr/lib/libbfb.so.0.0.6
++usr/lib/libmulticobex.so.1.0.2
++usr/lib/libobexftp.so.0.3.0
++usr/lib/perl5/
++usr/lib/perl5/vendor_perl/
++usr/lib/perl5/vendor_perl/OBEXFTP.pm
++usr/lib/perl5/vendor_perl/auto/
++usr/lib/perl5/vendor_perl/auto/OBEXFTP/
++usr/lib/perl5/vendor_perl/auto/OBEXFTP/OBEXFTP.so
++usr/lib/pkgconfig/
++usr/lib/pkgconfig/obexftp.pc
++usr/lib/python2.7/
++usr/lib/python2.7/site-packages/
++usr/lib/python2.7/site-packages/_obexftp.so
++usr/lib/python2.7/site-packages/obexftp.py
++usr/lib/python2.7/site-packages/obexftp.pyc
++usr/lib/python2.7/site-packages/obexftp.pyo
++usr/lib/python3.9/
++usr/lib/python3.9/site-packages/
++usr/lib/python3.9/site-packages/__pycache__/
++usr/lib/python3.9/site-packages/__pycache__/obexftp.cpython-39.opt-1.pyc
++usr/lib/python3.9/site-packages/__pycache__/obexftp.cpython-39.pyc
++usr/lib/python3.9/site-packages/_obexftp.so
++usr/lib/python3.9/site-packages/obexftp.py
++usr/lib/ruby/
++usr/lib/ruby/vendor_ruby/
++usr/lib/ruby/vendor_ruby/3.0.0/
++usr/lib/ruby/vendor_ruby/3.0.0/x86_64-linux-musl/
++usr/lib/ruby/vendor_ruby/3.0.0/x86_64-linux-musl/obexftp.so
++usr/man/
++usr/man/man1/
++usr/man/man1/obexftp.1.gz
++usr/man/man1/obexftpd.1.gz
++usr/sbin/
++usr/sbin/obexftpd
++
++Slackware package /tmp/obexftp-0.24.2-x86_64-6.txz created.
++

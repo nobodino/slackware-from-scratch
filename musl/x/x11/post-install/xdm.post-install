@@ -1,0 +1,49 @@
+mkdir -p $PKG/etc/X11
+mv $PKG/usr/lib/X11/xdm $PKG/etc/X11
+ln -sf ../../../etc/X11/xdm $PKG/usr/lib/X11/xdm
+
+#( cd $PKG/usr/lib/X11
+#  mv xdm $PKG/etc/X11
+#  ln -sf ../../../etc/X11/xdm .
+#)
+
+mkdir -p $PKG/usr/doc/xdm-$MODULAR_PACKAGE_VERSION
+mv $PKG/etc/X11/xdm/Xsession $PKG/usr/doc/xdm-$MODULAR_PACKAGE_VERSION/Xsession.orig
+mv $PKG/etc/X11/xdm/Xsetup_0 $PKG/usr/doc/xdm-$MODULAR_PACKAGE_VERSION/Xsetup_0.orig
+
+cp -a $CWD/post-install/xdm/Xsession $PKG/etc/X11/xdm/Xsession
+cp -a $CWD/post-install/xdm/Xsetup_0 $PKG/etc/X11/xdm/Xsetup_0
+
+if [ -L /lib${LIBDIRSUFFIX}/libpam.so.? ]; then
+  mkdir -p $PKG/etc/pam.d
+  cat $CWD/post-install/xdm/xdm.pamd > $PKG/etc/pam.d/xdm.new
+fi
+
+chown root:root $PKG/etc/X11/xdm/Xsession $PKG/etc/X11/xdm/Xsetup_0
+chmod 0755 $PKG/etc/X11/xdm/Xsession $PKG/etc/X11/xdm/Xsetup_0
+
+for conffile in \
+  Xaccess Xreset Xresources Xservers Xsession Xsetup_0 Xstartup Xwilling \
+  GiveConsole TakeConsole xdm-config ../app-defaults/Chooser ; 
+do
+  # Use awk to strip leading blank lines...  weird bug that cropped up in the
+  # pre Slackware-14.1 development cycle.
+  awk "/[^ ]/ { copy=1 }; copy { print }" $PKG/etc/X11/xdm/${conffile} > $PKG/etc/X11/xdm/${conffile}.new
+  touch -r $PKG/etc/X11/xdm/${conffile} $PKG/etc/X11/xdm/${conffile}.new
+  chmod --reference=$PKG/etc/X11/xdm/${conffile} $PKG/etc/X11/xdm/${conffile}.new
+  rm -f $PKG/etc/X11/xdm/${conffile}
+done
+
+# Change default auth type:
+cat << EOF >> $PKG/etc/X11/xdm/xdm-config.new
+
+! In xdm-config, default to MIT-MAGIC-COOKIE-1 authorization as
+! the XDM-AUTHORIZATION-1 method (which is the default otherwise) is
+! mostly broken (i.e. with SDL2 apps):
+DisplayManager.*.authName:      MIT-MAGIC-COOKIE-1
+EOF
+
+mkdir -p $PKG/var/lib/xdm
+chown root:root $PKG/var/lib/xdm
+chmod 755 $PKG/var/lib/xdm
+

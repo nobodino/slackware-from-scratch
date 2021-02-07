@@ -1,0 +1,705 @@
+diff -ruBN /tmp/diffstat/diffstat.SlackBuild /source/ap/diffstat/diffstat.SlackBuild
+--- /tmp/diffstat/diffstat.SlackBuild	2019-09-29 23:48:33.000000000 +0000
++++ /source/ap/diffstat/diffstat.SlackBuild	2021-01-17 21:23:50.000000000 +0000
+@@ -79,7 +79,7 @@
+ ./configure \
+   --prefix=/usr \
+   --mandir=/usr/man \
+-  --build=$ARCH-slackware-linux || exit 1
++  --build=$ARCH-slackware-linux-musl || exit 1
+ 
+ # Build and install:
+ make $NUMJOBS || make || exit 1
+diff -ruBN /tmp/diffstat/diffstat.SlackBuild.log /source/ap/diffstat/diffstat.SlackBuild.log
+--- /tmp/diffstat/diffstat.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/ap/diffstat/diffstat.SlackBuild.log	2021-01-17 21:23:59.000000000 +0000
+@@ -0,0 +1,689 @@
++diffstat-1.64/
++diffstat-1.64/porting/
++diffstat-1.64/porting/system.h
++diffstat-1.64/porting/wildcard.c
++diffstat-1.64/porting/getopt.h
++diffstat-1.64/porting/getopt.c
++diffstat-1.64/configure.in
++diffstat-1.64/config.guess
++diffstat-1.64/makefile.in
++diffstat-1.64/diffstat.c
++diffstat-1.64/configure
++diffstat-1.64/package/
++diffstat-1.64/package/diffstat.spec
++diffstat-1.64/package/debian/
++diffstat-1.64/package/debian/source/
++diffstat-1.64/package/debian/source/format
++diffstat-1.64/package/debian/control
++diffstat-1.64/package/debian/watch
++diffstat-1.64/package/debian/rules
++diffstat-1.64/package/debian/copyright
++diffstat-1.64/package/debian/compat
++diffstat-1.64/package/debian/docs
++diffstat-1.64/package/debian/changelog
++diffstat-1.64/COPYING.asc
++diffstat-1.64/config.sub
++diffstat-1.64/COPYING
++diffstat-1.64/config_h.in
++diffstat-1.64/CHANGES
++diffstat-1.64/makefile.wnt
++diffstat-1.64/diffstat.1
++diffstat-1.64/testing/
++diffstat-1.64/testing/case19Rp0.ref
++diffstat-1.64/testing/case03p9.ref
++diffstat-1.64/testing/case18p1.ref
++diffstat-1.64/testing/case19b.ref
++diffstat-1.64/testing/case05u.ref
++diffstat-1.64/testing/case37r2.ref
++diffstat-1.64/testing/case31u.ref
++diffstat-1.64/testing/case17b.ref
++diffstat-1.64/testing/case35.ref
++diffstat-1.64/testing/case06.ref
++diffstat-1.64/testing/case21Rp0.ref
++diffstat-1.64/testing/case12.pat
++diffstat-1.64/testing/case05r1.ref
++diffstat-1.64/testing/case32.ref
++diffstat-1.64/testing/case16b.ref
++diffstat-1.64/testing/case12p9.ref
++diffstat-1.64/testing/case15.pat
++diffstat-1.64/testing/case38rr2.ref
++diffstat-1.64/testing/case04k.ref
++diffstat-1.64/testing/case19p9.ref
++diffstat-1.64/testing/case34.ref
++diffstat-1.64/testing/case33.pat
++diffstat-1.64/testing/case06p9.ref
++diffstat-1.64/testing/case18u.ref
++diffstat-1.64/testing/case24u.ref
++diffstat-1.64/testing/case41r1.ref
++diffstat-1.64/testing/case33b.ref
++diffstat-1.64/testing/case04r1.ref
++diffstat-1.64/testing/case25r2.ref
++diffstat-1.64/testing/case38r.pat
++diffstat-1.64/testing/case20p1.ref
++diffstat-1.64/testing/case38lb.ref
++diffstat-1.64/testing/case31uu.ref
++diffstat-1.64/testing/case04p9.ref
++diffstat-1.64/testing/case06u.ref
++diffstat-1.64/testing/case28r2.ref
++diffstat-1.64/testing/case24.ref
++diffstat-1.64/testing/case22Rp0.ref
++diffstat-1.64/testing/case18.pat
++diffstat-1.64/testing/case31lb.ref
++diffstat-1.64/testing/case26.pat
++diffstat-1.64/testing/case08b.ref
++diffstat-1.64/testing/case32.pat
++diffstat-1.64/testing/case23Rp0.ref
++diffstat-1.64/testing/case02p9.ref
++diffstat-1.64/testing/case20r2.ref
++diffstat-1.64/testing/case06b.ref
++diffstat-1.64/testing/case15.ref
++diffstat-1.64/testing/case07R.ref
++diffstat-1.64/testing/case38r.ref
++diffstat-1.64/testing/case10f0.ref
++diffstat-1.64/testing/case16r1.ref
++diffstat-1.64/testing/case10b.ref
++diffstat-1.64/testing/case10p9.ref
++diffstat-1.64/testing/case05p1.ref
++diffstat-1.64/testing/case11r1.ref
++diffstat-1.64/testing/case40r1.ref
++diffstat-1.64/testing/case34r1.ref
++diffstat-1.64/testing/case32p1.ref
++diffstat-1.64/testing/case08r2.ref
++diffstat-1.64/testing/case32r2.ref
++diffstat-1.64/testing/case07k.ref
++diffstat-1.64/testing/case08p1.ref
++diffstat-1.64/testing/case23r2.ref
++diffstat-1.64/testing/case06r2.ref
++diffstat-1.64/testing/case34f0.ref
++diffstat-1.64/testing/case25u.ref
++diffstat-1.64/testing/case41k.ref
++diffstat-1.64/testing/case31lp1.ref
++diffstat-1.64/testing/case28k.ref
++diffstat-1.64/testing/case24R.ref
++diffstat-1.64/testing/case33r1.ref
++diffstat-1.64/testing/case07.pat
++diffstat-1.64/testing/case39.pat
++diffstat-1.64/testing/case24k.ref
++diffstat-1.64/testing/case06.pat
++diffstat-1.64/testing/case23R.ref
++diffstat-1.64/testing/case33Rp0.ref
++diffstat-1.64/testing/case05.pat
++diffstat-1.64/testing/case41r2.ref
++diffstat-1.64/testing/case11p1.ref
++diffstat-1.64/testing/case41f0.ref
++diffstat-1.64/testing/case19k.ref
++diffstat-1.64/testing/case41R.ref
++diffstat-1.64/testing/case04R.ref
++diffstat-1.64/testing/case01b.ref
++diffstat-1.64/testing/case16R.ref
++diffstat-1.64/testing/case40k.ref
++diffstat-1.64/testing/case35R.ref
++diffstat-1.64/testing/case34p9.ref
++diffstat-1.64/testing/case27f0.ref
++diffstat-1.64/testing/case19R.ref
++diffstat-1.64/testing/case13f0.ref
++diffstat-1.64/testing/case20.pat
++diffstat-1.64/testing/case05p9.ref
++diffstat-1.64/testing/case37R.ref
++diffstat-1.64/testing/case33f0.ref
++diffstat-1.64/testing/case11f0.ref
++diffstat-1.64/testing/case31l.ref
++diffstat-1.64/testing/case39b.ref
++diffstat-1.64/testing/case03f0.ref
++diffstat-1.64/testing/case06R.ref
++diffstat-1.64/testing/case18b.ref
++diffstat-1.64/testing/case02r2.ref
++diffstat-1.64/testing/case29u.ref
++diffstat-1.64/testing/case28p9.ref
++diffstat-1.64/testing/case24r1.ref
++diffstat-1.64/testing/case25p9.ref
++diffstat-1.64/testing/case01k.ref
++diffstat-1.64/testing/case37f0.ref
++diffstat-1.64/testing/case19p1.ref
++diffstat-1.64/testing/case10.ref
++diffstat-1.64/testing/run_atac.sh
++diffstat-1.64/testing/case05k.ref
++diffstat-1.64/testing/case05b.ref
++diffstat-1.64/testing/case10u.ref
++diffstat-1.64/testing/case31lRp0.ref
++diffstat-1.64/testing/case12R.ref
++diffstat-1.64/testing/case31lr2.ref
++diffstat-1.64/testing/case03.pat
++diffstat-1.64/testing/case20u.ref
++diffstat-1.64/testing/case24.pat
++diffstat-1.64/testing/case36r2.ref
++diffstat-1.64/testing/case11.pat
++diffstat-1.64/testing/case01u.ref
++diffstat-1.64/testing/case33p9.ref
++diffstat-1.64/testing/case29p1.ref
++diffstat-1.64/testing/case02u.ref
++diffstat-1.64/testing/case27u.ref
++diffstat-1.64/testing/case18f0.ref
++diffstat-1.64/testing/case17k.ref
++diffstat-1.64/testing/case31ur1.ref
++diffstat-1.64/testing/case20R.ref
++diffstat-1.64/testing/case35Rp0.ref
++diffstat-1.64/testing/case01p1.ref
++diffstat-1.64/testing/case10r1.ref
++diffstat-1.64/testing/case26b.ref
++diffstat-1.64/testing/case39r1.ref
++diffstat-1.64/testing/case31uk.ref
++diffstat-1.64/testing/case19f0.ref
++diffstat-1.64/testing/case38lu.ref
++diffstat-1.64/testing/case28u.ref
++diffstat-1.64/testing/case04.pat
++diffstat-1.64/testing/case41.ref
++diffstat-1.64/testing/case15b.ref
++diffstat-1.64/testing/case07u.ref
++diffstat-1.64/testing/case09b.ref
++diffstat-1.64/testing/case17f0.ref
++diffstat-1.64/testing/case04f0.ref
++diffstat-1.64/testing/case14b.ref
++diffstat-1.64/testing/case36k.ref
++diffstat-1.64/testing/case03Rp0.ref
++diffstat-1.64/testing/case28.pat
++diffstat-1.64/testing/case17p9.ref
++diffstat-1.64/testing/case26.ref
++diffstat-1.64/testing/case20f0.ref
++diffstat-1.64/testing/case26R.ref
++diffstat-1.64/testing/case01p9.ref
++diffstat-1.64/testing/case14u.ref
++diffstat-1.64/testing/case09k.ref
++diffstat-1.64/testing/case33r2.ref
++diffstat-1.64/testing/case41.pat
++diffstat-1.64/testing/case06f0.ref
++diffstat-1.64/testing/case22p9.ref
++diffstat-1.64/testing/case16.ref
++diffstat-1.64/testing/case34.pat
++diffstat-1.64/testing/case38rR.ref
++diffstat-1.64/testing/case31.pat
++diffstat-1.64/testing/case38lRp0.ref
++diffstat-1.64/testing/case02.pat
++diffstat-1.64/testing/case06r1.ref
++diffstat-1.64/testing/case31lu.ref
++diffstat-1.64/testing/case35r2.ref
++diffstat-1.64/testing/case39r2.ref
++diffstat-1.64/testing/case37r1.ref
++diffstat-1.64/testing/case03r1.ref
++diffstat-1.64/testing/case01Rp0.ref
++diffstat-1.64/testing/case21.ref
++diffstat-1.64/testing/case34Rp0.ref
++diffstat-1.64/testing/case40r2.ref
++diffstat-1.64/testing/case38lr2.ref
++diffstat-1.64/testing/case39k.ref
++diffstat-1.64/testing/case41p1.ref
++diffstat-1.64/testing/case05r2.ref
++diffstat-1.64/testing/case34p1.ref
++diffstat-1.64/testing/case14R.ref
++diffstat-1.64/testing/case31lf0.ref
++diffstat-1.64/testing/case37p1.ref
++diffstat-1.64/testing/case31uRp0.ref
++diffstat-1.64/testing/case19r1.ref
++diffstat-1.64/testing/case29r2.ref
++diffstat-1.64/testing/case38rf0.ref
++diffstat-1.64/testing/case06Rp0.ref
++diffstat-1.64/testing/case19.ref
++diffstat-1.64/testing/case31p9.ref
++diffstat-1.64/testing/case31up1.ref
++diffstat-1.64/testing/case28f0.ref
++diffstat-1.64/testing/case06p1.ref
++diffstat-1.64/testing/case31f0.ref
++diffstat-1.64/testing/case27p1.ref
++diffstat-1.64/testing/case09.ref
++diffstat-1.64/testing/case01R.ref
++diffstat-1.64/testing/case06k.ref
++diffstat-1.64/testing/case39R.ref
++diffstat-1.64/testing/case15f0.ref
++diffstat-1.64/testing/case01r2.ref
++diffstat-1.64/testing/case08u.ref
++diffstat-1.64/testing/case17.ref
++diffstat-1.64/testing/case21.pat
++diffstat-1.64/testing/case02R.ref
++diffstat-1.64/testing/case40.ref
++diffstat-1.64/testing/case11b.ref
++diffstat-1.64/testing/case14.pat
++diffstat-1.64/testing/case21p9.ref
++diffstat-1.64/testing/case38lp1.ref
++diffstat-1.64/testing/case23.ref
++diffstat-1.64/testing/case28b.ref
++diffstat-1.64/testing/case02b.ref
++diffstat-1.64/testing/case11k.ref
++diffstat-1.64/testing/case05.ref
++diffstat-1.64/testing/case40b.ref
++diffstat-1.64/testing/case03R.ref
++diffstat-1.64/testing/case40.pat
++diffstat-1.64/testing/case35p9.ref
++diffstat-1.64/testing/run_test.sh
++diffstat-1.64/testing/case07p9.ref
++diffstat-1.64/testing/case23r1.ref
++diffstat-1.64/testing/case24f0.ref
++diffstat-1.64/testing/case13b.ref
++diffstat-1.64/testing/case31R.ref
++diffstat-1.64/testing/case35f0.ref
++diffstat-1.64/testing/case23p9.ref
++diffstat-1.64/testing/case32u.ref
++diffstat-1.64/testing/case26k.ref
++diffstat-1.64/testing/case16k.ref
++diffstat-1.64/testing/case12r2.ref
++diffstat-1.64/testing/case12u.ref
++diffstat-1.64/testing/case25Rp0.ref
++diffstat-1.64/testing/case20.ref
++diffstat-1.64/testing/case21b.ref
++diffstat-1.64/testing/case02.ref
++diffstat-1.64/testing/case31k.ref
++diffstat-1.64/testing/case13.pat
++diffstat-1.64/testing/case01.pat
++diffstat-1.64/testing/case29.pat
++diffstat-1.64/testing/case22p1.ref
++diffstat-1.64/testing/case41u.ref
++diffstat-1.64/testing/case35u.ref
++diffstat-1.64/testing/case23u.ref
++diffstat-1.64/testing/case31uR.ref
++diffstat-1.64/testing/case27r1.ref
++diffstat-1.64/testing/case23k.ref
++diffstat-1.64/testing/case14f0.ref
++diffstat-1.64/testing/case39p9.ref
++diffstat-1.64/testing/case01.ref
++diffstat-1.64/testing/case09u.ref
++diffstat-1.64/testing/case40p1.ref
++diffstat-1.64/testing/case31u.pat
++diffstat-1.64/testing/case18Rp0.ref
++diffstat-1.64/testing/case38lf0.ref
++diffstat-1.64/testing/case13u.ref
++diffstat-1.64/testing/case03u.ref
++diffstat-1.64/testing/case36b.ref
++diffstat-1.64/testing/case28p1.ref
++diffstat-1.64/testing/case13p9.ref
++diffstat-1.64/testing/case02r1.ref
++diffstat-1.64/testing/case22k.ref
++diffstat-1.64/testing/case39Rp0.ref
++diffstat-1.64/testing/case38rp1.ref
++diffstat-1.64/testing/case40f0.ref
++diffstat-1.64/testing/case08.ref
++diffstat-1.64/testing/case10k.ref
++diffstat-1.64/testing/case36.ref
++diffstat-1.64/testing/case38lk.ref
++diffstat-1.64/testing/case20b.ref
++diffstat-1.64/testing/case27Rp0.ref
++diffstat-1.64/testing/case39p1.ref
++diffstat-1.64/testing/case40u.ref
++diffstat-1.64/testing/case38lp9.ref
++diffstat-1.64/testing/case37.ref
++diffstat-1.64/testing/case38l.pat
++diffstat-1.64/testing/case38rr1.ref
++diffstat-1.64/testing/case20p9.ref
++diffstat-1.64/testing/case32k.ref
++diffstat-1.64/testing/case20r1.ref
++diffstat-1.64/testing/case09.pat
++diffstat-1.64/testing/case32R.ref
++diffstat-1.64/testing/case09r1.ref
++diffstat-1.64/testing/case31l.pat
++diffstat-1.64/testing/case29Rp0.ref
++diffstat-1.64/testing/case31up9.ref
++diffstat-1.64/testing/case21f0.ref
++diffstat-1.64/testing/case07b.ref
++diffstat-1.64/testing/case38ru.ref
++diffstat-1.64/testing/case39.ref
++diffstat-1.64/testing/case08Rp0.ref
++diffstat-1.64/testing/case25.ref
++diffstat-1.64/testing/case07f0.ref
++diffstat-1.64/testing/case15r1.ref
++diffstat-1.64/testing/case15p9.ref
++diffstat-1.64/testing/case22f0.ref
++diffstat-1.64/testing/case15u.ref
++diffstat-1.64/testing/case21r2.ref
++diffstat-1.64/testing/case24b.ref
++diffstat-1.64/testing/case04.ref
++diffstat-1.64/testing/case13Rp0.ref
++diffstat-1.64/testing/case27b.ref
++diffstat-1.64/testing/case11Rp0.ref
++diffstat-1.64/testing/case38rk.ref
++diffstat-1.64/testing/case21R.ref
++diffstat-1.64/testing/case41b.ref
++diffstat-1.64/testing/case31b.ref
++diffstat-1.64/testing/case27.ref
++diffstat-1.64/testing/case24p1.ref
++diffstat-1.64/testing/case31ur2.ref
++diffstat-1.64/testing/case31lp9.ref
++diffstat-1.64/testing/case14r2.ref
++diffstat-1.64/testing/case13r1.ref
++diffstat-1.64/testing/case01f0.ref
++diffstat-1.64/testing/case04p1.ref
++diffstat-1.64/testing/case37.pat
++diffstat-1.64/testing/case17R.ref
++diffstat-1.64/testing/case08.pat
++diffstat-1.64/testing/case18k.ref
++diffstat-1.64/testing/case12Rp0.ref
++diffstat-1.64/testing/case26r2.ref
++diffstat-1.64/testing/case35b.ref
++diffstat-1.64/testing/case41Rp0.ref
++diffstat-1.64/testing/case16u.ref
++diffstat-1.64/testing/case35r1.ref
++diffstat-1.64/testing/case29k.ref
++diffstat-1.64/testing/case29f0.ref
++diffstat-1.64/testing/case22r2.ref
++diffstat-1.64/testing/case25p1.ref
++diffstat-1.64/testing/case12r1.ref
++diffstat-1.64/testing/case31ub.ref
++diffstat-1.64/testing/case26u.ref
++diffstat-1.64/testing/case17r2.ref
++diffstat-1.64/testing/case36p1.ref
++diffstat-1.64/testing/case40R.ref
++diffstat-1.64/testing/case26p1.ref
++diffstat-1.64/testing/case09r2.ref
++diffstat-1.64/testing/case19.pat
++diffstat-1.64/testing/case37u.ref
++diffstat-1.64/testing/case38l.ref
++diffstat-1.64/testing/case09f0.ref
++diffstat-1.64/testing/case28R.ref
++diffstat-1.64/testing/case08k.ref
++diffstat-1.64/testing/case11u.ref
++diffstat-1.64/testing/case08r1.ref
++diffstat-1.64/testing/case40p9.ref
++diffstat-1.64/testing/case33k.ref
++diffstat-1.64/testing/case37k.ref
++diffstat-1.64/testing/case15R.ref
++diffstat-1.64/testing/case18.ref
++diffstat-1.64/testing/case28Rp0.ref
++diffstat-1.64/testing/case24r2.ref
++diffstat-1.64/testing/case03b.ref
++diffstat-1.64/testing/case05R.ref
++diffstat-1.64/testing/case37Rp0.ref
++diffstat-1.64/testing/case11r2.ref
++diffstat-1.64/testing/case31uf0.ref
++diffstat-1.64/testing/case01r1.ref
++diffstat-1.64/testing/case23p1.ref
++diffstat-1.64/testing/case36u.ref
++diffstat-1.64/testing/case13r2.ref
++diffstat-1.64/testing/case25k.ref
++diffstat-1.64/testing/case19r2.ref
++diffstat-1.64/testing/case04b.ref
++diffstat-1.64/testing/case09p9.ref
++diffstat-1.64/testing/case29p9.ref
++diffstat-1.64/testing/case18r1.ref
++diffstat-1.64/testing/case22.pat
++diffstat-1.64/testing/case16Rp0.ref
++diffstat-1.64/testing/case32p9.ref
++diffstat-1.64/testing/case11p9.ref
++diffstat-1.64/testing/case13k.ref
++diffstat-1.64/testing/case38lR.ref
++diffstat-1.64/testing/case03p1.ref
++diffstat-1.64/testing/case07.ref
++diffstat-1.64/testing/case24p9.ref
++diffstat-1.64/testing/case15p1.ref
++diffstat-1.64/testing/case11.ref
++diffstat-1.64/testing/case37p9.ref
++diffstat-1.64/testing/case20Rp0.ref
++diffstat-1.64/testing/case32r1.ref
++diffstat-1.64/testing/case29R.ref
++diffstat-1.64/testing/case08R.ref
++diffstat-1.64/testing/case26r1.ref
++diffstat-1.64/testing/case22r1.ref
++diffstat-1.64/testing/case27p9.ref
++diffstat-1.64/testing/case07Rp0.ref
++diffstat-1.64/testing/case31lR.ref
++diffstat-1.64/testing/case17u.ref
++diffstat-1.64/testing/case02Rp0.ref
++diffstat-1.64/testing/case09R.ref
++diffstat-1.64/testing/case31Rp0.ref
++diffstat-1.64/testing/case05Rp0.ref
++diffstat-1.64/testing/case17.pat
++diffstat-1.64/testing/case13R.ref
++diffstat-1.64/testing/case16r2.ref
++diffstat-1.64/testing/case34R.ref
++diffstat-1.64/testing/case27k.ref
++diffstat-1.64/testing/case16p9.ref
++diffstat-1.64/testing/case19u.ref
++diffstat-1.64/testing/case39u.ref
++diffstat-1.64/testing/case10r2.ref
++diffstat-1.64/testing/case20k.ref
++diffstat-1.64/testing/case12.ref
++diffstat-1.64/testing/case11R.ref
++diffstat-1.64/testing/case21p1.ref
++diffstat-1.64/testing/case15r2.ref
++diffstat-1.64/testing/case22.ref
++diffstat-1.64/testing/case34r2.ref
++diffstat-1.64/testing/case31.ref
++diffstat-1.64/testing/case14r1.ref
++diffstat-1.64/testing/case12b.ref
++diffstat-1.64/testing/case12p1.ref
++diffstat-1.64/testing/case26f0.ref
++diffstat-1.64/testing/case36R.ref
++diffstat-1.64/testing/case32f0.ref
++diffstat-1.64/testing/case38rRp0.ref
++diffstat-1.64/testing/case15k.ref
++diffstat-1.64/testing/case40Rp0.ref
++diffstat-1.64/testing/case04u.ref
++diffstat-1.64/testing/case03.ref
++diffstat-1.64/testing/case10R.ref
++diffstat-1.64/testing/case16f0.ref
++diffstat-1.64/testing/case38lr1.ref
++diffstat-1.64/testing/case14p9.ref
++diffstat-1.64/testing/case17r1.ref
++diffstat-1.64/testing/case37b.ref
++diffstat-1.64/testing/case02f0.ref
++diffstat-1.64/testing/case29.ref
++diffstat-1.64/testing/case33p1.ref
++diffstat-1.64/testing/case18p9.ref
++diffstat-1.64/testing/case28r1.ref
++diffstat-1.64/testing/case25f0.ref
++diffstat-1.64/testing/case16.pat
++diffstat-1.64/testing/case22b.ref
++diffstat-1.64/testing/case18r2.ref
++diffstat-1.64/testing/case25r1.ref
++diffstat-1.64/testing/case31r2.ref
++diffstat-1.64/testing/case36p9.ref
++diffstat-1.64/testing/case35k.ref
++diffstat-1.64/testing/README
++diffstat-1.64/testing/case09p1.ref
++diffstat-1.64/testing/case36.pat
++diffstat-1.64/testing/case07r2.ref
++diffstat-1.64/testing/case21r1.ref
++diffstat-1.64/testing/case21u.ref
++diffstat-1.64/testing/case08f0.ref
++diffstat-1.64/testing/case10.pat
++diffstat-1.64/testing/case10p1.ref
++diffstat-1.64/testing/case35p1.ref
++diffstat-1.64/testing/case29r1.ref
++diffstat-1.64/testing/case32b.ref
++diffstat-1.64/testing/case07p1.ref
++diffstat-1.64/testing/case14.ref
++diffstat-1.64/testing/case02p1.ref
++diffstat-1.64/testing/case34b.ref
++diffstat-1.64/testing/case32Rp0.ref
++diffstat-1.64/testing/case41p9.ref
++diffstat-1.64/testing/case25.pat
++diffstat-1.64/testing/case23b.ref
++diffstat-1.64/testing/case26p9.ref
++diffstat-1.64/testing/case36Rp0.ref
++diffstat-1.64/testing/case16p1.ref
++diffstat-1.64/testing/case31lr1.ref
++diffstat-1.64/testing/case39f0.ref
++diffstat-1.64/testing/case38rb.ref
++diffstat-1.64/testing/case14k.ref
++diffstat-1.64/testing/case33R.ref
++diffstat-1.64/testing/case28.ref
++diffstat-1.64/testing/case12f0.ref
++diffstat-1.64/testing/case13.ref
++diffstat-1.64/testing/case23.pat
++diffstat-1.64/testing/case31r1.ref
++diffstat-1.64/testing/case17Rp0.ref
++diffstat-1.64/testing/case02k.ref
++diffstat-1.64/testing/case22u.ref
++diffstat-1.64/testing/case34u.ref
++diffstat-1.64/testing/case23f0.ref
++diffstat-1.64/testing/case10Rp0.ref
++diffstat-1.64/testing/case25R.ref
++diffstat-1.64/testing/case17p1.ref
++diffstat-1.64/testing/case05f0.ref
++diffstat-1.64/testing/case31p1.ref
++diffstat-1.64/testing/case34k.ref
++diffstat-1.64/testing/case04Rp0.ref
++diffstat-1.64/testing/case12k.ref
++diffstat-1.64/testing/case04r2.ref
++diffstat-1.64/testing/case09Rp0.ref
++diffstat-1.64/testing/case31lk.ref
++diffstat-1.64/testing/case33.ref
++diffstat-1.64/testing/case15Rp0.ref
++diffstat-1.64/testing/case14p1.ref
++diffstat-1.64/testing/case36f0.ref
++diffstat-1.64/testing/case29b.ref
++diffstat-1.64/testing/case38rp9.ref
++diffstat-1.64/testing/case18R.ref
++diffstat-1.64/testing/case25b.ref
++diffstat-1.64/testing/case22R.ref
++diffstat-1.64/testing/case03k.ref
++diffstat-1.64/testing/case36r1.ref
++diffstat-1.64/testing/case13p1.ref
++diffstat-1.64/testing/case07r1.ref
++diffstat-1.64/testing/case03r2.ref
++diffstat-1.64/testing/case21k.ref
++diffstat-1.64/testing/case27R.ref
++diffstat-1.64/testing/case27.pat
++diffstat-1.64/testing/case08p9.ref
++diffstat-1.64/testing/case33u.ref
++diffstat-1.64/testing/case27r2.ref
++diffstat-1.64/testing/case14Rp0.ref
++diffstat-1.64/testing/case24Rp0.ref
++diffstat-1.64/testing/case26Rp0.ref
++diffstat-1.64/testing/case35.pat
++diffstat-1.64/aclocal.m4
++diffstat-1.64/install-sh
++diffstat-1.64/README
++checking build system type... x86_64-slackware-linux-musl
++checking host system type... x86_64-slackware-linux-musl
++checking for gcc... gcc
++checking for C compiler default output... a.out
++checking whether the C compiler works... yes
++checking whether we are cross compiling... no
++checking for executable suffix... 
++checking for object suffix... o
++checking whether we are using the GNU C compiler... yes
++checking whether gcc accepts -g... yes
++checking version of gcc... 10.2.0
++checking if this is really Intel C compiler... no
++checking if this is really Clang C compiler... no
++checking for gcc option to accept ANSI C... none needed
++checking $CFLAGS variable... ok
++checking $CC variable... ok
++checking for a BSD compatible install... /usr/bin/ginstall -c
++checking for lint... no
++checking for cppcheck... no
++checking for splint... no
++checking if filesystem supports mixed-case filenames... yes
++checking for exctags... no
++checking for ctags... ctags
++checking for exetags... no
++checking for etags... etags
++checking for ctags... yes
++checking for etags... yes
++checking if you want to see long compiling messages... yes
++checking for install-prefix... no
++checking for PATH separator... :
++checking for bzcat... /usr/bin/bzcat
++checking for bzip2... /usr/bin/bzip2
++checking for compress... /usr/bin/compress
++checking for gzip... /usr/bin/gzip
++checking for lzcat... /usr/bin/lzcat
++checking for pcat... no
++checking for pcat... no
++checking for uncompress.real... no
++checking for uncompress.real... no
++checking for uncompress... /usr/bin/uncompress
++checking for xz... /usr/bin/xz
++checking for zcat... /usr/bin/zcat
++checking if the POSIX test-macros are already defined... no
++checking if this is the GNU C library... no
++checking if _XOPEN_SOURCE really is set... yes
++checking for ggrep... no
++checking for grep... grep
++checking for fgrep... grep -F
++checking if you want to check for gcc warnings... no
++checking for an ANSI C-conforming const... yes
++checking for egrep... grep -E
++checking how to run the C preprocessor... gcc -E
++checking for ANSI C header files... yes
++checking for malloc.h... yes
++checking for search.h... yes
++checking for string.h... yes
++checking for sys/types.h... yes
++checking for sys/stat.h... yes
++checking for stdlib.h... yes
++checking for string.h... (cached) yes
++checking for memory.h... yes
++checking for strings.h... yes
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking for unistd.h... yes
++checking for size_t... yes
++checking for setlocale()... yes
++checking for mkdtemp... yes
++checking for opendir... yes
++checking for strdup... yes
++checking for tsearch... yes
++checking for lstat... yes 
++checking for unistd.h... (cached) yes
++checking for getopt.h... yes
++checking for header declaring getopt variables... unistd.h
++checking for getopt... yes
++checking for popen... yes
++checking for conflicting prototype for popen... yes
++checking for mbsrtowcs and wcwidth... yes
++checking for getc_unlocked... yes
++checking if we should define _REENTRANT... no
++checking for ioctl.h... no
++checking for sys/ioctl.h... yes
++checking for nonconflicting termios.h... yes
++checking for groff... /usr/bin/groff
++checking for nroff... /usr/bin/nroff
++checking for tbl... /usr/bin/tbl
++checking for man2html... no
++checking for program to convert manpage to html... /usr/bin/groff
++checking if you want to use dmalloc for testing... no
++checking if you want to use dbmalloc for testing... no
++checking if you want to use valgrind for testing... no
++checking if you want to perform memory-leak testing... no
++configure: creating ./config.status
++config.status: creating makefile
++config.status: creating config.h
++gcc -c -I. -I. -DHAVE_CONFIG_H  -O2 -fPIC  diffstat.c
++gcc  -o diffstat diffstat.o  
++mkdir -p /tmp/package-diffstat/usr/bin /tmp/package-diffstat/usr/man/man1
++/usr/bin/ginstall -c diffstat /tmp/package-diffstat/usr/bin/diffstat
++/usr/bin/ginstall -c -m 644 ./diffstat.1 /tmp/package-diffstat/usr/man/man1/diffstat.1
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++
++No symbolic links were found, so we won't make an installation script.
++You can make your own later in ./install/doinst.sh and rebuild the
++package if you like.
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/diffstat-1.64-x86_64-1.txz
++
++./
++install/
++install/slack-desc
++usr/
++usr/bin/
++usr/bin/diffstat
++usr/doc/
++usr/doc/diffstat-1.64/
++usr/doc/diffstat-1.64/CHANGES
++usr/doc/diffstat-1.64/COPYING
++usr/doc/diffstat-1.64/COPYING.asc
++usr/doc/diffstat-1.64/README
++usr/man/
++usr/man/man1/
++usr/man/man1/diffstat.1.gz
++
++Slackware package /tmp/diffstat-1.64-x86_64-1.txz created.
++

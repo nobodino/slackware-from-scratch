@@ -1,0 +1,49 @@
+# Create the configuration directories for xorg-server 1.9.x
+mkdir -p $PKG/etc/X11/xorg.conf.d $PKG/usr/share/X11/xorg.conf.d
+
+# Create a sample keyboard layout 
+# Enable zapping by default
+cat << EOF > $PKG/usr/share/X11/xorg.conf.d/91-keyboard-layout-libinput.conf
+Section "InputClass"
+	Identifier "libinput keyboard catchall"
+	MatchIsKeyboard "on"
+	MatchDevicePath "/dev/input/event*"
+	Driver "libinput"
+	Option "XkbLayout" "us"
+	#Option "XkbVariant" ""
+	Option "XkbOptions" "terminate:ctrl_alt_bksp"
+EndSection
+
+# READ THIS FOR CUSTOM KEYBOARD INFORMATION
+#
+#  If you want to add a custom model/layout/variant to X, you will need to COPY
+#  this file to /etc/X11/xorg.conf.d/ and edit that copy.  After editing it to
+#  suit, you will need to restart X.
+#
+#  Here's an example of the lines from above:
+#
+# Section "InputClass"
+#	Identifier "libinput keyboard catchall"
+#	MatchIsKeyboard "on"
+#	MatchDevicePath "/dev/input/event*"
+#	Driver "libinput"
+#	Option "XkbLayout" "us"
+#	Option "XkbVariant" "intl"
+#	Option "XkbOptions" "compose:rwin,terminate:ctrl_alt_bksp"
+# EndSection
+#
+#  Many desktop environments, including KDE and Xfce, have their own methods to
+#  configure keyboard layouts and such if you'd like to use them.
+#
+#  If you prefer to use the "old" way of configuring keyboards (without input 
+#  device hotplugging), then you'll need to add the following lines to the 
+#  ServerFlags section of /etc/X11/xorg.conf:
+#    Option   "AllowEmptyInput"     "false"
+#    Option   "AutoAddDevices"      "false"
+#    Option   "AutoEnableDevices"   "false"
+#  Alternatively, you can break this up into separate "stubs" in the xorg.conf.d/
+#  directory, but that's your call.  Assuming you elect to keep a monolithic 
+#  /etc/X11/xorg.conf file, you can now edit the Keyboard section as usual.
+
+EOF
+

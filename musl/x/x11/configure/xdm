@@ -1,0 +1,19 @@
+if [ -L /lib${LIBDIRSUFFIX}/libpam.so.? ]; then
+  XDM_PAM_OPTION="--with-pam"
+else
+  unset XDM_PAM_OPTION
+fi
+
+CFLAGS=$SLKCFLAGS \
+CXXFLAGS=$SLKCFLAGS \
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
+  --infodir=/usr/info \
+  --mandir=/usr/man \
+  --docdir=/usr/doc/${PKGNAME}-${MODULAR_PACKAGE_VERSION} \
+  $XDM_PAM_OPTION \
+  --disable-static \
+  --build=$ARCH-slackware-linux

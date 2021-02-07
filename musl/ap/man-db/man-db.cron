@@ -1,0 +1,14 @@
+#!/bin/sh
+# man-db daily cronjob, part of the man-db package.
+
+# Unset $MANPATH so that mandb will get it from man_db.conf rather than
+# the environment:
+unset MANPATH
+
+# Make sure the man-db cache directory exists:
+mkdir -p /var/cache/man
+
+# Regenerate the index databases caches used by man-db.
+# These increase perfomance and provide features such as whatis and apropos.
+ionice -c3 nice -n 19 /usr/bin/mandb --no-purge --quiet
+

@@ -1,0 +1,1153 @@
+diff -ruBN /tmp/eudev/eudev.SlackBuild /source/a/eudev/eudev.SlackBuild
+--- /tmp/eudev/eudev.SlackBuild	2020-12-28 00:09:41.000000000 +0000
++++ /source/a/eudev/eudev.SlackBuild	2021-01-04 17:53:35.000000000 +0000
+@@ -47,7 +47,7 @@
+ fi
+ 
+ if [ "$ARCH" = "x86_64" ]; then
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ else
+   LIBDIRSUFFIX=""
+ fi
+@@ -101,7 +101,7 @@
+   --disable-static \
+   --enable-rule_generator \
+   --enable-split-usr \
+-  --build=$ARCH-slackware-linux || exit 1
++  --build=$ARCH-slackware-linux-musl || exit 1
+ 
+ make $NUMJOBS || make || exit 1
+ make install DESTDIR=$PKG || exit 1
+diff -ruBN /tmp/eudev/eudev.SlackBuild.log /source/a/eudev/eudev.SlackBuild.log
+--- /tmp/eudev/eudev.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/a/eudev/eudev.SlackBuild.log	2021-01-04 17:54:26.000000000 +0000
+@@ -0,0 +1,1128 @@
++eudev-3.2.9/
++eudev-3.2.9/src/
++eudev-3.2.9/src/mtd_probe/
++eudev-3.2.9/src/mtd_probe/probe_smartmedia.c
++eudev-3.2.9/src/mtd_probe/Makefile.in
++eudev-3.2.9/src/mtd_probe/mtd_probe.c
++eudev-3.2.9/src/mtd_probe/mtd_probe.h
++eudev-3.2.9/src/mtd_probe/Makefile.am
++eudev-3.2.9/src/udev/
++eudev-3.2.9/src/udev/udevadm-trigger.c
++eudev-3.2.9/src/udev/udev.h
++eudev-3.2.9/src/udev/udev-builtin-path_id.c
++eudev-3.2.9/src/udev/udev-builtin-keyboard.c
++eudev-3.2.9/src/udev/udevadm.c
++eudev-3.2.9/src/udev/udevadm-test-builtin.c
++eudev-3.2.9/src/udev/udevadm-test.c
++eudev-3.2.9/src/udev/udev-builtin-blkid.c
++eudev-3.2.9/src/udev/udevadm-util.h
++eudev-3.2.9/src/udev/udevadm-util.c
++eudev-3.2.9/src/udev/udevadm-hwdb.c
++eudev-3.2.9/src/udev/udev-ctrl.c
++eudev-3.2.9/src/udev/Makefile.in
++eudev-3.2.9/src/udev/udevadm-info.c
++eudev-3.2.9/src/udev/udev-builtin.c
++eudev-3.2.9/src/udev/udevadm-settle.c
++eudev-3.2.9/src/udev/udev-builtin-input_id.c
++eudev-3.2.9/src/udev/udev.conf
++eudev-3.2.9/src/udev/udev-builtin-btrfs.c
++eudev-3.2.9/src/udev/udev-builtin-usb_id.c
++eudev-3.2.9/src/udev/udev-event.c
++eudev-3.2.9/src/udev/udev-node.c
++eudev-3.2.9/src/udev/udevadm-monitor.c
++eudev-3.2.9/src/udev/udevadm-control.c
++eudev-3.2.9/src/udev/udev-watch.c
++eudev-3.2.9/src/udev/udev-builtin-hwdb.c
++eudev-3.2.9/src/udev/udev.pc.in
++eudev-3.2.9/src/udev/udev-builtin-net_id.c
++eudev-3.2.9/src/udev/udevd.c
++eudev-3.2.9/src/udev/udev-builtin-kmod.c
++eudev-3.2.9/src/udev/Makefile.am
++eudev-3.2.9/src/udev/udev-rules.c
++eudev-3.2.9/src/ata_id/
++eudev-3.2.9/src/ata_id/ata_id.c
++eudev-3.2.9/src/ata_id/Makefile.in
++eudev-3.2.9/src/ata_id/Makefile.am
++eudev-3.2.9/src/collect/
++eudev-3.2.9/src/collect/Makefile.in
++eudev-3.2.9/src/collect/collect.c
++eudev-3.2.9/src/collect/Makefile.am
++eudev-3.2.9/src/Makefile.in
++eudev-3.2.9/src/shared/
++eudev-3.2.9/src/shared/time-util.c
++eudev-3.2.9/src/shared/strbuf.c
++eudev-3.2.9/src/shared/hashmap.h
++eudev-3.2.9/src/shared/socket-util.h
++eudev-3.2.9/src/shared/hashmap.c
++eudev-3.2.9/src/shared/list.h
++eudev-3.2.9/src/shared/util.h
++eudev-3.2.9/src/shared/path-util.h
++eudev-3.2.9/src/shared/random-util.h
++eudev-3.2.9/src/shared/sparse-endian.h
++eudev-3.2.9/src/shared/sysctl-util.c
++eudev-3.2.9/src/shared/terminal-util.c
++eudev-3.2.9/src/shared/label.c
++eudev-3.2.9/src/shared/virt.h
++eudev-3.2.9/src/shared/conf-files.h
++eudev-3.2.9/src/shared/util.c
++eudev-3.2.9/src/shared/mempool.c
++eudev-3.2.9/src/shared/macro.h
++eudev-3.2.9/src/shared/strv.h
++eudev-3.2.9/src/shared/mkdir-label.c
++eudev-3.2.9/src/shared/terminal-util.h
++eudev-3.2.9/src/shared/random-util.c
++eudev-3.2.9/src/shared/fileio.h
++eudev-3.2.9/src/shared/smack-util.c
++eudev-3.2.9/src/shared/sysctl-util.h
++eudev-3.2.9/src/shared/selinux-util.c
++eudev-3.2.9/src/shared/Makefile.in
++eudev-3.2.9/src/shared/missing.h
++eudev-3.2.9/src/shared/udev-util.h
++eudev-3.2.9/src/shared/mkdir.h
++eudev-3.2.9/src/shared/device-nodes.c
++eudev-3.2.9/src/shared/path-util.c
++eudev-3.2.9/src/shared/virt.c
++eudev-3.2.9/src/shared/formats-util.h
++eudev-3.2.9/src/shared/log.c
++eudev-3.2.9/src/shared/device-nodes.h
++eudev-3.2.9/src/shared/MurmurHash2.h
++eudev-3.2.9/src/shared/log.h
++eudev-3.2.9/src/shared/ioprio.h
++eudev-3.2.9/src/shared/dev-setup.h
++eudev-3.2.9/src/shared/utf8.h
++eudev-3.2.9/src/shared/mempool.h
++eudev-3.2.9/src/shared/selinux-util.h
++eudev-3.2.9/src/shared/strv.c
++eudev-3.2.9/src/shared/fileio.c
++eudev-3.2.9/src/shared/conf-files.c
++eudev-3.2.9/src/shared/process-util.c
++eudev-3.2.9/src/shared/siphash24.h
++eudev-3.2.9/src/shared/label.h
++eudev-3.2.9/src/shared/strxcpyx.c
++eudev-3.2.9/src/shared/MurmurHash2.c
++eudev-3.2.9/src/shared/set.h
++eudev-3.2.9/src/shared/strbuf.h
++eudev-3.2.9/src/shared/strxcpyx.h
++eudev-3.2.9/src/shared/smack-util.h
++eudev-3.2.9/src/shared/process-util.h
++eudev-3.2.9/src/shared/utf8.c
++eudev-3.2.9/src/shared/time-util.h
++eudev-3.2.9/src/shared/dev-setup.c
++eudev-3.2.9/src/shared/siphash24.c
++eudev-3.2.9/src/shared/def.h
++eudev-3.2.9/src/shared/mkdir.c
++eudev-3.2.9/src/shared/Makefile.am
++eudev-3.2.9/src/cdrom_id/
++eudev-3.2.9/src/cdrom_id/cdrom_id.c
++eudev-3.2.9/src/cdrom_id/Makefile.in
++eudev-3.2.9/src/cdrom_id/Makefile.am
++eudev-3.2.9/src/scsi_id/
++eudev-3.2.9/src/scsi_id/scsi_serial.c
++eudev-3.2.9/src/scsi_id/README
++eudev-3.2.9/src/scsi_id/Makefile.in
++eudev-3.2.9/src/scsi_id/scsi.h
++eudev-3.2.9/src/scsi_id/scsi_id.c
++eudev-3.2.9/src/scsi_id/scsi_id.h
++eudev-3.2.9/src/scsi_id/Makefile.am
++eudev-3.2.9/src/libudev/
++eudev-3.2.9/src/libudev/libudev-queue.c
++eudev-3.2.9/src/libudev/libudev.c
++eudev-3.2.9/src/libudev/Makefile.in
++eudev-3.2.9/src/libudev/libudev-monitor.c
++eudev-3.2.9/src/libudev/libudev-hwdb-def.h
++eudev-3.2.9/src/libudev/libudev.pc.in
++eudev-3.2.9/src/libudev/libudev-enumerate.c
++eudev-3.2.9/src/libudev/libudev-device.c
++eudev-3.2.9/src/libudev/libudev.h
++eudev-3.2.9/src/libudev/libudev-util.c
++eudev-3.2.9/src/libudev/libudev-list.c
++eudev-3.2.9/src/libudev/libudev-hwdb.c
++eudev-3.2.9/src/libudev/libudev-device-private.c
++eudev-3.2.9/src/libudev/libudev.sym
++eudev-3.2.9/src/libudev/Makefile.am
++eudev-3.2.9/src/libudev/libudev-private.h
++eudev-3.2.9/src/v4l_id/
++eudev-3.2.9/src/v4l_id/Makefile.in
++eudev-3.2.9/src/v4l_id/v4l_id.c
++eudev-3.2.9/src/v4l_id/Makefile.am
++eudev-3.2.9/src/Makefile.am
++eudev-3.2.9/m4/
++eudev-3.2.9/m4/ltoptions.m4
++eudev-3.2.9/m4/introspection.m4
++eudev-3.2.9/m4/libtool.m4
++eudev-3.2.9/m4/ltsugar.m4
++eudev-3.2.9/m4/ltversion.m4
++eudev-3.2.9/m4/lt~obsolete.m4
++eudev-3.2.9/rules/
++eudev-3.2.9/rules/80-drivers.rules
++eudev-3.2.9/rules/78-sound-card.rules
++eudev-3.2.9/rules/60-persistent-storage-tape.rules
++eudev-3.2.9/rules/70-joystick.rules
++eudev-3.2.9/rules/Makefile.in
++eudev-3.2.9/rules/60-evdev.rules
++eudev-3.2.9/rules/75-probe_mtd.rules
++eudev-3.2.9/rules/75-net-description.rules
++eudev-3.2.9/rules/70-mouse.rules
++eudev-3.2.9/rules/60-block.rules
++eudev-3.2.9/rules/70-touchpad.rules
++eudev-3.2.9/rules/60-persistent-v4l.rules
++eudev-3.2.9/rules/60-serial.rules
++eudev-3.2.9/rules/64-btrfs.rules
++eudev-3.2.9/rules/60-sensor.rules
++eudev-3.2.9/rules/60-persistent-storage.rules
++eudev-3.2.9/rules/60-input-id.rules
++eudev-3.2.9/rules/60-persistent-input.rules
++eudev-3.2.9/rules/64-btrfs.rules.in
++eudev-3.2.9/rules/60-cdrom_id.rules
++eudev-3.2.9/rules/60-drm.rules
++eudev-3.2.9/rules/50-udev-default.rules
++eudev-3.2.9/rules/80-net-name-slot.rules
++eudev-3.2.9/rules/60-persistent-alsa.rules
++eudev-3.2.9/rules/Makefile.am
++eudev-3.2.9/rule_generator/
++eudev-3.2.9/rule_generator/write_net_rules.in
++eudev-3.2.9/rule_generator/write_net_rules
++eudev-3.2.9/rule_generator/75-persistent-net-generator.rules
++eudev-3.2.9/rule_generator/Makefile.in
++eudev-3.2.9/rule_generator/rule_generator.functions
++eudev-3.2.9/rule_generator/Makefile.am
++eudev-3.2.9/configure.ac
++eudev-3.2.9/config.h.in
++eudev-3.2.9/depcomp
++eudev-3.2.9/man/
++eudev-3.2.9/man/udevd.8
++eudev-3.2.9/man/udev.7
++eudev-3.2.9/man/udevd.xml
++eudev-3.2.9/man/Makefile.in
++eudev-3.2.9/man/udev.conf.xml
++eudev-3.2.9/man/udevadm.xml
++eudev-3.2.9/man/udev.conf.5
++eudev-3.2.9/man/udevadm.8
++eudev-3.2.9/man/udev.xml
++eudev-3.2.9/man/Makefile.am
++eudev-3.2.9/test/
++eudev-3.2.9/test/test-udev.c
++eudev-3.2.9/test/udev-test.pl
++eudev-3.2.9/test/Makefile.in
++eudev-3.2.9/test/sys.tar.xz
++eudev-3.2.9/test/rules-test.sh
++eudev-3.2.9/test/rule-syntax-check.py
++eudev-3.2.9/test/test-libudev.c
++eudev-3.2.9/test/Makefile.am
++eudev-3.2.9/Makefile.in
++eudev-3.2.9/install-sh
++eudev-3.2.9/config.guess
++eudev-3.2.9/COPYING
++eudev-3.2.9/aclocal.m4
++eudev-3.2.9/configure
++eudev-3.2.9/compile
++eudev-3.2.9/ltmain.sh
++eudev-3.2.9/test-driver
++eudev-3.2.9/hwdb/
++eudev-3.2.9/hwdb/20-bluetooth-vendor-product.hwdb
++eudev-3.2.9/hwdb/20-usb-classes.hwdb
++eudev-3.2.9/hwdb/70-pointingstick.hwdb
++eudev-3.2.9/hwdb/20-vmbus-class.hwdb
++eudev-3.2.9/hwdb/20-sdio-classes.hwdb
++eudev-3.2.9/hwdb/20-acpi-vendor.hwdb
++eudev-3.2.9/hwdb/60-sensor.hwdb
++eudev-3.2.9/hwdb/Makefile.in
++eudev-3.2.9/hwdb/20-net-ifname.hwdb
++eudev-3.2.9/hwdb/60-keyboard.hwdb
++eudev-3.2.9/hwdb/70-mouse.hwdb
++eudev-3.2.9/hwdb/20-usb-vendor-model.hwdb
++eudev-3.2.9/hwdb/60-evdev.hwdb
++eudev-3.2.9/hwdb/20-pci-classes.hwdb
++eudev-3.2.9/hwdb/20-OUI.hwdb
++eudev-3.2.9/hwdb/20-pci-vendor-model.hwdb
++eudev-3.2.9/hwdb/20-sdio-vendor-model.hwdb
++eudev-3.2.9/hwdb/70-touchpad.hwdb
++eudev-3.2.9/hwdb/Makefile.am
++eudev-3.2.9/missing
++eudev-3.2.9/Makefile.am
++eudev-3.2.9/config.sub
++Hmm...  Looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|From 9aadd2bfd66333318461c97cc7744ccdb84c24b5 Mon Sep 17 00:00:00 2001
++|From: Max Verevkin <me@maxverevkin.tk>
++|Date: Thu, 5 Nov 2020 14:16:32 +0200
++|Subject: [PATCH 4/4] Pavilion 13 x360 keys
++|
++|Signed-off-by: Anthony G. Basile <blueness@gentoo.org>
++|---
++| hwdb/60-keyboard.hwdb | 8 ++++++++
++| 1 file changed, 8 insertions(+)
++|
++|diff --git a/hwdb/60-keyboard.hwdb b/hwdb/60-keyboard.hwdb
++|index 15f0a970b..b8ffac2b8 100644
++|--- a/hwdb/60-keyboard.hwdb
++|+++ b/hwdb/60-keyboard.hwdb
++--------------------------
++patching file hwdb/60-keyboard.hwdb
++Using Plan A...
++Hunk #1 succeeded at 508.
++Hmm...  Ignoring the trailing garbage.
++done
++Hmm...  Looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|diff -rNaud eudev-3.1.old/rules/60-cdrom_id.rules eudev-3.1/rules/60-cdrom_id.rules
++|--- eudev-3.1.old/rules/60-cdrom_id.rules	2015-03-19 22:57:28.000000000 +0100
++|+++ eudev-3.1/rules/60-cdrom_id.rules	2015-10-24 12:36:13.350966101 +0200
++--------------------------
++patching file rules/60-cdrom_id.rules
++Using Plan A...
++Hunk #1 succeeded at 24 (offset 4 lines).
++done
++Hmm...  Looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|diff --git a/src/udev/udev-event.c b/src/udev/udev-event.c
++|index d0befba29..790498c97 100644
++|--- a/src/udev/udev-event.c
++|+++ b/src/udev/udev-event.c
++--------------------------
++patching file src/udev/udev-event.c
++Using Plan A...
++Hunk #1 succeeded at 881 (offset 26 lines).
++Hmm...  Ignoring the trailing garbage.
++done
++Hmm...  Looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|--- ./rules/50-udev-default.rules.orig	2018-09-21 07:22:02.000000000 -0500
++|+++ ./rules/50-udev-default.rules	2019-03-01 17:36:14.830219588 -0600
++--------------------------
++patching file rules/50-udev-default.rules
++Using Plan A...
++Hunk #1 succeeded at 31.
++Hunk #2 succeeded at 78.
++done
++checking for gcc... gcc
++checking whether the C compiler works... yes
++checking for C compiler default output file name... a.out
++checking for suffix of executables... 
++checking whether we are cross compiling... no
++checking for suffix of object files... o
++checking whether we are using the GNU C compiler... yes
++checking whether gcc accepts -g... yes
++checking for gcc option to accept ISO C89... none needed
++checking whether gcc understands -c and -o together... yes
++checking how to run the C preprocessor... gcc -E
++checking for grep that handles long lines and -e... /usr/bin/grep
++checking for egrep... /usr/bin/grep -E
++checking for ANSI C header files... yes
++checking for sys/types.h... yes
++checking for sys/stat.h... yes
++checking for stdlib.h... yes
++checking for string.h... yes
++checking for memory.h... yes
++checking for strings.h... yes
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking for unistd.h... yes
++checking minix/config.h usability... no
++checking minix/config.h presence... no
++checking for minix/config.h... no
++checking whether it is safe to define __EXTENSIONS__... yes
++checking for special C compiler options needed for large files... no
++checking for _FILE_OFFSET_BITS value needed for large files... no
++checking for a BSD-compatible install... /usr/bin/ginstall -c
++checking whether build environment is sane... yes
++checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
++checking for gawk... gawk
++checking whether make sets $(MAKE)... yes
++checking whether make supports the include directive... yes (GNU style)
++checking whether make supports nested variables... yes
++checking dependency style of gcc... gcc3
++checking whether make supports nested variables... (cached) yes
++checking build system type... x86_64-slackware-linux-musl
++checking host system type... x86_64-slackware-linux-musl
++checking how to print strings... printf
++checking for a sed that does not truncate output... /usr/bin/sed
++checking for fgrep... /usr/bin/grep -F
++checking for ld used by gcc... /usr/bin/ld
++checking if the linker (/usr/bin/ld) is GNU ld... yes
++checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
++checking the name lister (/usr/bin/nm -B) interface... BSD nm
++checking whether ln -s works... yes
++checking the maximum length of command line arguments... 98304
++checking how to convert x86_64-slackware-linux-musl file names to x86_64-slackware-linux-musl format... func_convert_file_noop
++checking how to convert x86_64-slackware-linux-musl file names to toolchain format... func_convert_file_noop
++checking for /usr/bin/ld option to reload object files... -r
++checking for objdump... objdump
++checking how to recognize dependent libraries... pass_all
++checking for dlltool... dlltool
++checking how to associate runtime and link libraries... printf %s\n
++checking for ar... ar
++checking for archiver @FILE support... @
++checking for strip... strip
++checking for ranlib... ranlib
++checking command to parse /usr/bin/nm -B output from gcc object... ok
++checking for sysroot... no
++checking for a working dd... /usr/bin/dd
++checking how to truncate binary pipes... /usr/bin/dd bs=4096 count=1
++checking for mt... mt
++checking if mt is a manifest tool... no
++checking for dlfcn.h... yes
++checking for objdir... .libs
++checking if gcc supports -fno-rtti -fno-exceptions... no
++checking for gcc option to produce PIC... -fPIC -DPIC
++checking if gcc PIC flag -fPIC -DPIC works... yes
++checking if gcc static flag -static works... yes
++checking if gcc supports -c -o file.o... yes
++checking if gcc supports -c -o file.o... (cached) yes
++checking whether the gcc linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
++checking whether -lc should be explicitly linked in... no
++checking dynamic linker characteristics... GNU/Linux ld.so
++checking how to hardcode library paths into programs... immediate
++checking whether stripping libraries is possible... yes
++checking if libtool supports shared libraries... yes
++checking whether to build shared libraries... yes
++checking whether to build static libraries... no
++checking whether ln -s works... yes
++checking for a sed that does not truncate output... (cached) /usr/bin/sed
++checking for grep that handles long lines and -e... (cached) /usr/bin/grep
++checking for gawk... (cached) gawk
++checking for gcc option to accept ISO C99... none needed
++checking for g++... g++
++checking whether we are using the GNU C++ compiler... yes
++checking whether g++ accepts -g... yes
++checking dependency style of g++... gcc3
++checking how to run the C++ preprocessor... g++ -E
++checking for ld used by g++... /usr/bin/ld -m elf_x86_64
++checking if the linker (/usr/bin/ld -m elf_x86_64) is GNU ld... yes
++checking whether the g++ linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
++checking for g++ option to produce PIC... -fPIC -DPIC
++checking if g++ PIC flag -fPIC -DPIC works... yes
++checking if g++ static flag -static works... yes
++checking if g++ supports -c -o file.o... yes
++checking if g++ supports -c -o file.o... (cached) yes
++checking whether the g++ linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
++checking dynamic linker characteristics... (cached) GNU/Linux ld.so
++checking how to hardcode library paths into programs... immediate
++checking how to run the C preprocessor... gcc -E
++checking whether ln -s works... yes
++checking whether make sets $(MAKE)... (cached) yes
++checking for m4... /usr/bin/m4
++checking arpa/inet.h usability... yes
++checking arpa/inet.h presence... yes
++checking for arpa/inet.h... yes
++checking fcntl.h usability... yes
++checking fcntl.h presence... yes
++checking for fcntl.h... yes
++checking for inttypes.h... (cached) yes
++checking limits.h usability... yes
++checking limits.h presence... yes
++checking for limits.h... yes
++checking locale.h usability... yes
++checking locale.h presence... yes
++checking for locale.h... yes
++checking netinet/in.h usability... yes
++checking netinet/in.h presence... yes
++checking for netinet/in.h... yes
++checking sys/ioctl.h usability... yes
++checking sys/ioctl.h presence... yes
++checking for sys/ioctl.h... yes
++checking sys/mount.h usability... yes
++checking sys/mount.h presence... yes
++checking for sys/mount.h... yes
++checking sys/param.h usability... yes
++checking sys/param.h presence... yes
++checking for sys/param.h... yes
++checking sys/socket.h usability... yes
++checking sys/socket.h presence... yes
++checking for sys/socket.h... yes
++checking sys/statvfs.h usability... yes
++checking sys/statvfs.h presence... yes
++checking for sys/statvfs.h... yes
++checking sys/time.h usability... yes
++checking sys/time.h presence... yes
++checking for sys/time.h... yes
++checking sys/vfs.h usability... yes
++checking sys/vfs.h presence... yes
++checking for sys/vfs.h... yes
++checking syslog.h usability... yes
++checking syslog.h presence... yes
++checking for syslog.h... yes
++checking termios.h usability... yes
++checking termios.h presence... yes
++checking for termios.h... yes
++checking for unistd.h... (cached) yes
++checking mtd/mtd-user.h usability... yes
++checking mtd/mtd-user.h presence... yes
++checking for mtd/mtd-user.h... yes
++checking linux/btrfs.h usability... yes
++checking linux/btrfs.h presence... yes
++checking for linux/btrfs.h... yes
++checking for uid_t in sys/types.h... yes
++checking for inline... inline
++checking for mode_t... yes
++checking for pid_t... yes
++checking for struct stat.st_rdev... yes
++checking whether getrandom is declared... no
++checking whether gettid is declared... no
++checking whether name_to_handle_at is declared... yes
++checking whether accept4 is declared... yes
++checking whether mkostemp is declared... yes
++checking whether ppoll is declared... yes
++checking whether strndupa is declared... no
++checking size of pid_t... 4
++checking size of uid_t... 4
++checking size of gid_t... 4
++checking size of dev_t... 8
++checking size of time_t... 8
++checking size of rlim_t... 8
++checking for unistd.h... (cached) yes
++checking for working chown... yes
++checking vfork.h usability... no
++checking vfork.h presence... no
++checking for vfork.h... no
++checking for fork... yes
++checking for vfork... yes
++checking for working fork... yes
++checking for working vfork... (cached) yes
++checking for _LARGEFILE_SOURCE value needed for large files... no
++checking type of array argument to getgroups... gid_t
++checking for size_t... yes
++checking for getgroups... yes
++checking for working getgroups... yes
++checking whether lstat correctly handles trailing slash... yes
++checking whether sys/types.h defines makedev... no
++checking sys/mkdev.h usability... no
++checking sys/mkdev.h presence... no
++checking for sys/mkdev.h... no
++checking sys/sysmacros.h usability... yes
++checking sys/sysmacros.h presence... yes
++checking for sys/sysmacros.h... yes
++checking for stdlib.h... (cached) yes
++checking for unistd.h... (cached) yes
++checking for sys/param.h... (cached) yes
++checking for getpagesize... yes
++checking for working mmap... yes
++checking for alarm... yes
++checking for dup2... yes
++checking for ftruncate... yes
++checking for localtime_r... yes
++checking for mempcpy... yes
++checking for mkdir... yes
++checking for munmap... yes
++checking for nl_langinfo... yes
++checking for rmdir... yes
++checking for setlocale... yes
++checking for socket... yes
++checking for stpcpy... yes
++checking for uname... yes
++checking for library containing clock_gettime... none required
++checking for cos in -lm... yes
++checking pkg-config is at least version 0.9.0... yes
++checking for gobject-introspection... yes
++checking for blkid >= 2.20... yes
++checking for libselinux >= 2.1.9... no
++checking for mallinfo... no
++checking whether unshare is declared... yes
++checking for gperf... /usr/bin/gperf
++checking for  libkmod >= 15 ... yes
++checking that generated files are newer than configure... done
++configure: creating ./config.status
++config.status: creating Makefile
++config.status: creating hwdb/Makefile
++config.status: creating man/Makefile
++config.status: creating rule_generator/Makefile
++config.status: creating rule_generator/write_net_rules
++config.status: creating rules/Makefile
++config.status: creating rules/64-btrfs.rules
++config.status: creating src/Makefile
++config.status: creating src/ata_id/Makefile
++config.status: creating src/cdrom_id/Makefile
++config.status: creating src/collect/Makefile
++config.status: creating src/mtd_probe/Makefile
++config.status: creating src/scsi_id/Makefile
++config.status: creating src/v4l_id/Makefile
++config.status: creating src/shared/Makefile
++config.status: creating src/libudev/Makefile
++config.status: creating src/libudev/libudev.pc
++config.status: creating src/udev/Makefile
++config.status: creating src/udev/udev.pc
++config.status: creating test/Makefile
++config.status: creating config.h
++config.status: executing depfiles commands
++config.status: executing libtool commands
++
++        prefix:                  /usr
++        exec_prefix:             ${prefix}
++        sysconfdir:              /etc
++        datadir:                 ${datarootdir}
++        includedir:              ${prefix}/include
++        bindir:                  /sbin
++        libdir:                  /usr/lib
++
++        rootprefix:              /
++        rootlibdir:              /lib
++        rootlibexecdir:          /lib/udev
++        datarootdir:             ${prefix}/share
++        rootrundir:              /run
++
++        udevconfdir:             /etc/udev
++        udevconffile:            /etc/udev/udev.conf
++        udevhwdbdir:             /etc/udev/hwdb.d
++        udevhwdbbin:             /etc/udev/hwdb.bin
++        udevlibexecdir:          /lib/udev
++        udevkeymapdir:           /lib/udev/keymaps
++        udevkeymapforceredir:    /lib/udev/keymaps/force-release
++        udevrulesdir:            /lib/udev/rules.d
++
++        pkgconfiglibdir:         /usr/lib/pkgconfig
++        sharepkgconfigdir        ${datarootdir}/pkgconfig
++
++        girdir                   ${datarootdir}/gir-1.0
++        typelibsdir              /usr/lib/girepository-1.0
++
++make  all-recursive
++make[1]: Entering directory '/tmp/eudev-3.2.9'
++Making all in src
++make[2]: Entering directory '/tmp/eudev-3.2.9/src'
++Making all in shared
++make[3]: Entering directory '/tmp/eudev-3.2.9/src/shared'
++  CC       conf-files.lo
++  CC       device-nodes.lo
++  CC       dev-setup.lo
++  CC       fileio.lo
++  CC       hashmap.lo
++  CC       label.lo
++  CC       log.lo
++  CC       mempool.lo
++  CC       mkdir.lo
++  CC       mkdir-label.lo
++  CC       MurmurHash2.lo
++  CC       path-util.lo
++  CC       process-util.lo
++  CC       random-util.lo
++  CC       selinux-util.lo
++  CC       siphash24.lo
++  CC       smack-util.lo
++  CC       strbuf.lo
++  CC       strv.lo
++  CC       strxcpyx.lo
++  CC       sysctl-util.lo
++  CC       terminal-util.lo
++  CC       time-util.lo
++  CC       util.lo
++  CC       utf8.lo
++  CC       virt.lo
++  CCLD     libudev_shared.la
++make[3]: Leaving directory '/tmp/eudev-3.2.9/src/shared'
++Making all in libudev
++make[3]: Entering directory '/tmp/eudev-3.2.9/src/libudev'
++  CC       libudev_la-libudev-list.lo
++  CC       libudev_la-libudev-util.lo
++  CC       libudev_la-libudev.lo
++  CC       libudev_la-libudev-device.lo
++  CC       libudev_la-libudev-enumerate.lo
++  CC       libudev_la-libudev-monitor.lo
++  CC       libudev_la-libudev-queue.lo
++  CC       libudev_la-libudev-hwdb.lo
++  CC       libudev_private_la-libudev.lo
++  CC       libudev_private_la-libudev-list.lo
++  CC       libudev_private_la-libudev-util.lo
++  CC       libudev_private_la-libudev-device.lo
++  CC       libudev_private_la-libudev-enumerate.lo
++  CC       libudev_private_la-libudev-monitor.lo
++  CC       libudev_private_la-libudev-queue.lo
++  CC       libudev_private_la-libudev-hwdb.lo
++  CC       libudev_private_la-libudev-device-private.lo
++  CCLD     libudev.la
++  CCLD     libudev-private.la
++make[3]: Leaving directory '/tmp/eudev-3.2.9/src/libudev'
++Making all in udev
++make[3]: Entering directory '/tmp/eudev-3.2.9/src/udev'
++  GEN      keyboard-keys.txt
++  GEN      keyboard-keys-from-name.gperf
++  GEN      keyboard-keys-to-name.h
++/usr/bin/gperf -L ANSI-C -t -N keyboard_lookup_key -H hash_key_name -p -C < keyboard-keys-from-name.gperf > keyboard-keys-from-name.h
++make  all-am
++make[4]: Entering directory '/tmp/eudev-3.2.9/src/udev'
++  CC       udevadm-info.o
++  CC       udevadm.o
++  CC       udevadm-control.o
++  CC       udevadm-monitor.o
++  CC       udevadm-hwdb.o
++  CC       udevadm-settle.o
++  CC       udevadm-trigger.o
++  CC       udevadm-test.o
++  CC       udevadm-test-builtin.o
++  CC       udevadm-util.o
++  CC       libudev_core_la-udev-event.lo
++  CC       libudev_core_la-udev-watch.lo
++  CC       libudev_core_la-udev-node.lo
++  CC       libudev_core_la-udev-rules.lo
++  CC       libudev_core_la-udev-ctrl.lo
++  CC       libudev_core_la-udev-builtin.lo
++  CC       libudev_core_la-udev-builtin-btrfs.lo
++  CC       libudev_core_la-udev-builtin-hwdb.lo
++  CC       libudev_core_la-udev-builtin-input_id.lo
++  CC       libudev_core_la-udev-builtin-net_id.lo
++  CC       libudev_core_la-udev-builtin-path_id.lo
++  CC       libudev_core_la-udev-builtin-usb_id.lo
++  CC       libudev_core_la-udev-builtin-blkid.lo
++  CC       libudev_core_la-udev-builtin-kmod.lo
++  CC       libudev_core_la-udev-builtin-keyboard.lo
++  CC       udevd.o
++  CCLD     libudev-core.la
++  CCLD     udevadm
++  CCLD     udevd
++make[4]: Leaving directory '/tmp/eudev-3.2.9/src/udev'
++make[3]: Leaving directory '/tmp/eudev-3.2.9/src/udev'
++Making all in ata_id
++make[3]: Entering directory '/tmp/eudev-3.2.9/src/ata_id'
++  CC       ata_id.o
++  CCLD     ata_id
++make[3]: Leaving directory '/tmp/eudev-3.2.9/src/ata_id'
++Making all in cdrom_id
++make[3]: Entering directory '/tmp/eudev-3.2.9/src/cdrom_id'
++  CC       cdrom_id.o
++  CCLD     cdrom_id
++make[3]: Leaving directory '/tmp/eudev-3.2.9/src/cdrom_id'
++Making all in collect
++make[3]: Entering directory '/tmp/eudev-3.2.9/src/collect'
++  CC       collect.o
++  CCLD     collect
++make[3]: Leaving directory '/tmp/eudev-3.2.9/src/collect'
++Making all in scsi_id
++make[3]: Entering directory '/tmp/eudev-3.2.9/src/scsi_id'
++  CC       scsi_id.o
++  CC       scsi_serial.o
++  CCLD     scsi_id
++make[3]: Leaving directory '/tmp/eudev-3.2.9/src/scsi_id'
++Making all in v4l_id
++make[3]: Entering directory '/tmp/eudev-3.2.9/src/v4l_id'
++  CC       v4l_id.o
++  CCLD     v4l_id
++make[3]: Leaving directory '/tmp/eudev-3.2.9/src/v4l_id'
++Making all in mtd_probe
++make[3]: Entering directory '/tmp/eudev-3.2.9/src/mtd_probe'
++  CC       mtd_probe.o
++  CC       probe_smartmedia.o
++  CCLD     mtd_probe
++make[3]: Leaving directory '/tmp/eudev-3.2.9/src/mtd_probe'
++make[3]: Entering directory '/tmp/eudev-3.2.9/src'
++make[3]: Nothing to be done for 'all-am'.
++make[3]: Leaving directory '/tmp/eudev-3.2.9/src'
++make[2]: Leaving directory '/tmp/eudev-3.2.9/src'
++Making all in rules
++make[2]: Entering directory '/tmp/eudev-3.2.9/rules'
++make[2]: Nothing to be done for 'all'.
++make[2]: Leaving directory '/tmp/eudev-3.2.9/rules'
++Making all in test
++make[2]: Entering directory '/tmp/eudev-3.2.9/test'
++  CC       test_libudev-test-libudev.o
++  CC       test_udev-test-udev.o
++  CCLD     test-udev
++  CCLD     test-libudev
++make[2]: Leaving directory '/tmp/eudev-3.2.9/test'
++Making all in man
++make[2]: Entering directory '/tmp/eudev-3.2.9/man'
++make[2]: Nothing to be done for 'all'.
++make[2]: Leaving directory '/tmp/eudev-3.2.9/man'
++Making all in hwdb
++make[2]: Entering directory '/tmp/eudev-3.2.9/hwdb'
++make[2]: Nothing to be done for 'all'.
++make[2]: Leaving directory '/tmp/eudev-3.2.9/hwdb'
++Making all in rule_generator
++make[2]: Entering directory '/tmp/eudev-3.2.9/rule_generator'
++make[2]: Nothing to be done for 'all'.
++make[2]: Leaving directory '/tmp/eudev-3.2.9/rule_generator'
++make[2]: Entering directory '/tmp/eudev-3.2.9'
++make[2]: Leaving directory '/tmp/eudev-3.2.9'
++make[1]: Leaving directory '/tmp/eudev-3.2.9'
++Making install in src
++make[1]: Entering directory '/tmp/eudev-3.2.9/src'
++Making install in shared
++make[2]: Entering directory '/tmp/eudev-3.2.9/src/shared'
++make[3]: Entering directory '/tmp/eudev-3.2.9/src/shared'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/eudev-3.2.9/src/shared'
++make[2]: Leaving directory '/tmp/eudev-3.2.9/src/shared'
++Making install in libudev
++make[2]: Entering directory '/tmp/eudev-3.2.9/src/libudev'
++make[3]: Entering directory '/tmp/eudev-3.2.9/src/libudev'
++ /usr/bin/mkdir -p '/tmp/package-eudev/usr/lib'
++ /bin/sh ../../libtool   --mode=install /usr/bin/ginstall -c   libudev.la '/tmp/package-eudev/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/libudev.so.1.6.3 /tmp/package-eudev/usr/lib/libudev.so.1.6.3
++libtool: install: (cd /tmp/package-eudev/usr/lib && { ln -s -f libudev.so.1.6.3 libudev.so.1 || { rm -f libudev.so.1 && ln -s libudev.so.1.6.3 libudev.so.1; }; })
++libtool: install: (cd /tmp/package-eudev/usr/lib && { ln -s -f libudev.so.1.6.3 libudev.so || { rm -f libudev.so && ln -s libudev.so.1.6.3 libudev.so; }; })
++libtool: install: /usr/bin/ginstall -c .libs/libudev.lai /tmp/package-eudev/usr/lib/libudev.la
++libtool: warning: remember to run 'libtool --finish /usr/lib'
++make  install-exec-hook
++make[4]: Entering directory '/tmp/eudev-3.2.9/src/libudev'
++libname=libudev.so && 	if test "/usr/lib" != "/lib"; then /usr/bin/mkdir -p /tmp/package-eudev/lib && so_img_name=$(readlink /tmp/package-eudev/usr/lib/$libname) && so_img_rel_target_prefix=$(echo /usr/lib | sed 's,\(^/\|\)[^/][^/]*,..,g') && ln -s -f $so_img_rel_target_prefix/lib/$so_img_name /tmp/package-eudev/usr/lib/$libname && mv /tmp/package-eudev/usr/lib/$libname.* /tmp/package-eudev/lib; fi
++make[4]: Leaving directory '/tmp/eudev-3.2.9/src/libudev'
++ /usr/bin/mkdir -p '/tmp/package-eudev/usr/include'
++ /usr/bin/ginstall -c -m 644 libudev.h '/tmp/package-eudev/usr/include'
++ /usr/bin/mkdir -p '/tmp/package-eudev/usr/lib/pkgconfig'
++ /usr/bin/ginstall -c -m 644 libudev.pc '/tmp/package-eudev/usr/lib/pkgconfig'
++make[3]: Leaving directory '/tmp/eudev-3.2.9/src/libudev'
++make[2]: Leaving directory '/tmp/eudev-3.2.9/src/libudev'
++Making install in udev
++make[2]: Entering directory '/tmp/eudev-3.2.9/src/udev'
++make  install-am
++make[3]: Entering directory '/tmp/eudev-3.2.9/src/udev'
++make[4]: Entering directory '/tmp/eudev-3.2.9/src/udev'
++ /usr/bin/mkdir -p '/tmp/package-eudev/sbin'
++  /bin/sh ../../libtool   --mode=install /usr/bin/ginstall -c udevadm '/tmp/package-eudev/sbin'
++libtool: install: /usr/bin/ginstall -c udevadm /tmp/package-eudev/sbin/udevadm
++ /usr/bin/mkdir -p '/tmp/package-eudev/sbin'
++  /bin/sh ../../libtool   --mode=install /usr/bin/ginstall -c udevd '/tmp/package-eudev/sbin'
++libtool: install: /usr/bin/ginstall -c udevd /tmp/package-eudev/sbin/udevd
++make  install-exec-hook
++make[5]: Entering directory '/tmp/eudev-3.2.9/src/udev'
++if test "/sbin" != "/sbin"; then \
++	ln -s -n -f /sbin/udevadm /tmp/package-eudev/sbin/udevadm; \
++fi
++make[5]: Leaving directory '/tmp/eudev-3.2.9/src/udev'
++ /usr/bin/mkdir -p '/tmp/package-eudev/etc/udev'
++ /usr/bin/ginstall -c -m 644 udev.conf '/tmp/package-eudev/etc/udev'
++ /usr/bin/mkdir -p '/tmp/package-eudev/usr/include'
++ /usr/bin/ginstall -c -m 644 udev.h '/tmp/package-eudev/usr/include'
++ /usr/bin/mkdir -p '/tmp/package-eudev/usr/share/pkgconfig'
++ /usr/bin/ginstall -c -m 644 udev.pc '/tmp/package-eudev/usr/share/pkgconfig'
++make[4]: Leaving directory '/tmp/eudev-3.2.9/src/udev'
++make[3]: Leaving directory '/tmp/eudev-3.2.9/src/udev'
++make[2]: Leaving directory '/tmp/eudev-3.2.9/src/udev'
++Making install in ata_id
++make[2]: Entering directory '/tmp/eudev-3.2.9/src/ata_id'
++make[3]: Entering directory '/tmp/eudev-3.2.9/src/ata_id'
++ /usr/bin/mkdir -p '/tmp/package-eudev/lib/udev'
++  /bin/sh ../../libtool   --mode=install /usr/bin/ginstall -c ata_id '/tmp/package-eudev/lib/udev'
++libtool: install: /usr/bin/ginstall -c ata_id /tmp/package-eudev/lib/udev/ata_id
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/eudev-3.2.9/src/ata_id'
++make[2]: Leaving directory '/tmp/eudev-3.2.9/src/ata_id'
++Making install in cdrom_id
++make[2]: Entering directory '/tmp/eudev-3.2.9/src/cdrom_id'
++make[3]: Entering directory '/tmp/eudev-3.2.9/src/cdrom_id'
++ /usr/bin/mkdir -p '/tmp/package-eudev/lib/udev'
++  /bin/sh ../../libtool   --mode=install /usr/bin/ginstall -c cdrom_id '/tmp/package-eudev/lib/udev'
++libtool: install: /usr/bin/ginstall -c cdrom_id /tmp/package-eudev/lib/udev/cdrom_id
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/eudev-3.2.9/src/cdrom_id'
++make[2]: Leaving directory '/tmp/eudev-3.2.9/src/cdrom_id'
++Making install in collect
++make[2]: Entering directory '/tmp/eudev-3.2.9/src/collect'
++make[3]: Entering directory '/tmp/eudev-3.2.9/src/collect'
++ /usr/bin/mkdir -p '/tmp/package-eudev/lib/udev'
++  /bin/sh ../../libtool   --mode=install /usr/bin/ginstall -c collect '/tmp/package-eudev/lib/udev'
++libtool: install: /usr/bin/ginstall -c collect /tmp/package-eudev/lib/udev/collect
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/eudev-3.2.9/src/collect'
++make[2]: Leaving directory '/tmp/eudev-3.2.9/src/collect'
++Making install in scsi_id
++make[2]: Entering directory '/tmp/eudev-3.2.9/src/scsi_id'
++make[3]: Entering directory '/tmp/eudev-3.2.9/src/scsi_id'
++ /usr/bin/mkdir -p '/tmp/package-eudev/lib/udev'
++  /bin/sh ../../libtool   --mode=install /usr/bin/ginstall -c scsi_id '/tmp/package-eudev/lib/udev'
++libtool: install: /usr/bin/ginstall -c scsi_id /tmp/package-eudev/lib/udev/scsi_id
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/eudev-3.2.9/src/scsi_id'
++make[2]: Leaving directory '/tmp/eudev-3.2.9/src/scsi_id'
++Making install in v4l_id
++make[2]: Entering directory '/tmp/eudev-3.2.9/src/v4l_id'
++make[3]: Entering directory '/tmp/eudev-3.2.9/src/v4l_id'
++ /usr/bin/mkdir -p '/tmp/package-eudev/lib/udev'
++  /bin/sh ../../libtool   --mode=install /usr/bin/ginstall -c v4l_id '/tmp/package-eudev/lib/udev'
++libtool: install: /usr/bin/ginstall -c v4l_id /tmp/package-eudev/lib/udev/v4l_id
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/eudev-3.2.9/src/v4l_id'
++make[2]: Leaving directory '/tmp/eudev-3.2.9/src/v4l_id'
++Making install in mtd_probe
++make[2]: Entering directory '/tmp/eudev-3.2.9/src/mtd_probe'
++make[3]: Entering directory '/tmp/eudev-3.2.9/src/mtd_probe'
++ /usr/bin/mkdir -p '/tmp/package-eudev/lib/udev'
++  /bin/sh ../../libtool   --mode=install /usr/bin/ginstall -c mtd_probe '/tmp/package-eudev/lib/udev'
++libtool: install: /usr/bin/ginstall -c mtd_probe /tmp/package-eudev/lib/udev/mtd_probe
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/eudev-3.2.9/src/mtd_probe'
++make[2]: Leaving directory '/tmp/eudev-3.2.9/src/mtd_probe'
++make[2]: Entering directory '/tmp/eudev-3.2.9/src'
++make[3]: Entering directory '/tmp/eudev-3.2.9/src'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/eudev-3.2.9/src'
++make[2]: Leaving directory '/tmp/eudev-3.2.9/src'
++make[1]: Leaving directory '/tmp/eudev-3.2.9/src'
++Making install in rules
++make[1]: Entering directory '/tmp/eudev-3.2.9/rules'
++make[2]: Entering directory '/tmp/eudev-3.2.9/rules'
++make[2]: Nothing to be done for 'install-exec-am'.
++/usr/bin/mkdir -p /tmp/package-eudev/etc/udev/rules.d
++ /usr/bin/mkdir -p '/tmp/package-eudev/lib/udev/rules.d'
++ /usr/bin/ginstall -c -m 644 50-udev-default.rules 60-block.rules 60-cdrom_id.rules 60-drm.rules 60-evdev.rules 60-input-id.rules 60-persistent-alsa.rules 60-persistent-input.rules 60-persistent-storage-tape.rules 60-persistent-v4l.rules 60-sensor.rules 60-serial.rules 64-btrfs.rules 70-joystick.rules 70-mouse.rules 70-touchpad.rules 75-net-description.rules 78-sound-card.rules 60-persistent-storage.rules 80-drivers.rules 75-probe_mtd.rules '/tmp/package-eudev/lib/udev/rules.d'
++make[2]: Leaving directory '/tmp/eudev-3.2.9/rules'
++make[1]: Leaving directory '/tmp/eudev-3.2.9/rules'
++Making install in test
++make[1]: Entering directory '/tmp/eudev-3.2.9/test'
++make[2]: Entering directory '/tmp/eudev-3.2.9/test'
++make[2]: Nothing to be done for 'install-exec-am'.
++make[2]: Nothing to be done for 'install-data-am'.
++make[2]: Leaving directory '/tmp/eudev-3.2.9/test'
++make[1]: Leaving directory '/tmp/eudev-3.2.9/test'
++Making install in man
++make[1]: Entering directory '/tmp/eudev-3.2.9/man'
++make[2]: Entering directory '/tmp/eudev-3.2.9/man'
++make[2]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-eudev/usr/man/man5'
++ /usr/bin/ginstall -c -m 644 udev.conf.5 '/tmp/package-eudev/usr/man/man5'
++ /usr/bin/mkdir -p '/tmp/package-eudev/usr/man/man7'
++ /usr/bin/ginstall -c -m 644 udev.7 '/tmp/package-eudev/usr/man/man7'
++ /usr/bin/mkdir -p '/tmp/package-eudev/usr/man/man8'
++ /usr/bin/ginstall -c -m 644 udevd.8 udevadm.8 '/tmp/package-eudev/usr/man/man8'
++make[2]: Leaving directory '/tmp/eudev-3.2.9/man'
++make[1]: Leaving directory '/tmp/eudev-3.2.9/man'
++Making install in hwdb
++make[1]: Entering directory '/tmp/eudev-3.2.9/hwdb'
++make[2]: Entering directory '/tmp/eudev-3.2.9/hwdb'
++make[2]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-eudev/etc/udev/hwdb.d'
++ /usr/bin/ginstall -c -m 644 20-OUI.hwdb 20-acpi-vendor.hwdb 20-bluetooth-vendor-product.hwdb 20-net-ifname.hwdb 20-pci-classes.hwdb 20-pci-vendor-model.hwdb 20-sdio-classes.hwdb 20-sdio-vendor-model.hwdb 20-usb-classes.hwdb 20-usb-vendor-model.hwdb 20-vmbus-class.hwdb 60-evdev.hwdb 60-keyboard.hwdb 60-sensor.hwdb 70-mouse.hwdb 70-pointingstick.hwdb 70-touchpad.hwdb '/tmp/package-eudev/etc/udev/hwdb.d'
++make[2]: Leaving directory '/tmp/eudev-3.2.9/hwdb'
++make[1]: Leaving directory '/tmp/eudev-3.2.9/hwdb'
++Making install in rule_generator
++make[1]: Entering directory '/tmp/eudev-3.2.9/rule_generator'
++make[2]: Entering directory '/tmp/eudev-3.2.9/rule_generator'
++ /usr/bin/mkdir -p '/tmp/package-eudev/lib/udev'
++ /usr/bin/ginstall -c write_net_rules '/tmp/package-eudev/lib/udev'
++ /usr/bin/mkdir -p '/tmp/package-eudev/lib/udev'
++ /usr/bin/ginstall -c -m 644 rule_generator.functions '/tmp/package-eudev/lib/udev'
++ /usr/bin/mkdir -p '/tmp/package-eudev/lib/udev/rules.d'
++ /usr/bin/ginstall -c -m 644 75-persistent-net-generator.rules '/tmp/package-eudev/lib/udev/rules.d'
++make[2]: Leaving directory '/tmp/eudev-3.2.9/rule_generator'
++make[1]: Leaving directory '/tmp/eudev-3.2.9/rule_generator'
++make[1]: Entering directory '/tmp/eudev-3.2.9'
++make[2]: Entering directory '/tmp/eudev-3.2.9'
++make[2]: Nothing to be done for 'install-exec-am'.
++make[2]: Nothing to be done for 'install-data-am'.
++make[2]: Leaving directory '/tmp/eudev-3.2.9'
++make[1]: Leaving directory '/tmp/eudev-3.2.9'
++cp: cannot stat 'README*': No such file or directory
++cp: cannot stat 'TODO': No such file or directory
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++lib/libudev.so.1	libudev.so.1.6.3
++sbin/scsi_id	../lib/udev/scsi_id
++usr/lib/libudev.so	../../lib/libudev.so.1.6.3
++
++Making symbolic link creation script:
++( cd lib ; rm -rf libudev.so.1 )
++( cd lib ; ln -sf libudev.so.1.6.3 libudev.so.1 )
++( cd sbin ; rm -rf scsi_id )
++( cd sbin ; ln -sf ../lib/udev/scsi_id scsi_id )
++( cd usr/lib ; rm -rf libudev.so )
++( cd usr/lib ; ln -sf ../../lib/libudev.so.1.6.3 libudev.so )
++
++Unless your existing installation script already contains the code
++to create these links, you should append these lines to your existing
++install script. Now's your chance. :^)
++
++Would you like to add this stuff to the existing install script and
++remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './lib/libudev.so.1'
++removed './usr/lib/libudev.so'
++removed './sbin/scsi_id'
++
++Updating your ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? y
++
++mode of '.' retained as 0755 (rwxr-xr-x)
++mode of './run' retained as 0755 (rwxr-xr-x)
++mode of './lib' retained as 0755 (rwxr-xr-x)
++mode of './lib/udev' retained as 0755 (rwxr-xr-x)
++mode of './lib/udev/devices' retained as 0755 (rwxr-xr-x)
++mode of './lib/udev/hwdb.d' retained as 0755 (rwxr-xr-x)
++mode of './lib/udev/rules.d' retained as 0755 (rwxr-xr-x)
++mode of './lib/modprobe.d' retained as 0755 (rwxr-xr-x)
++mode of './lib/firmware' retained as 0755 (rwxr-xr-x)
++mode of './etc' retained as 0755 (rwxr-xr-x)
++mode of './etc/udev' retained as 0755 (rwxr-xr-x)
++mode of './etc/udev/devices' retained as 0755 (rwxr-xr-x)
++mode of './etc/udev/hwdb.d' retained as 0755 (rwxr-xr-x)
++mode of './etc/udev/rules.d' retained as 0755 (rwxr-xr-x)
++mode of './etc/rc.d' retained as 0755 (rwxr-xr-x)
++mode of './etc/modprobe.d' retained as 0755 (rwxr-xr-x)
++mode of './install' retained as 0755 (rwxr-xr-x)
++mode of './usr' retained as 0755 (rwxr-xr-x)
++mode of './usr/doc' retained as 0755 (rwxr-xr-x)
++mode of './usr/doc/eudev-3.2.9' retained as 0755 (rwxr-xr-x)
++mode of './usr/man' retained as 0755 (rwxr-xr-x)
++mode of './usr/man/man7' retained as 0755 (rwxr-xr-x)
++mode of './usr/man/man8' retained as 0755 (rwxr-xr-x)
++mode of './usr/man/man5' retained as 0755 (rwxr-xr-x)
++mode of './usr/lib' retained as 0755 (rwxr-xr-x)
++mode of './usr/lib/pkgconfig' retained as 0755 (rwxr-xr-x)
++mode of './usr/share' retained as 0755 (rwxr-xr-x)
++mode of './usr/share/pkgconfig' retained as 0755 (rwxr-xr-x)
++mode of './usr/include' retained as 0755 (rwxr-xr-x)
++mode of './sbin' retained as 0755 (rwxr-xr-x)
++ownership of '.' retained as root:root
++ownership of './run' retained as root:root
++ownership of './lib' retained as root:root
++ownership of './lib/udev' retained as root:root
++ownership of './lib/udev/devices' retained as root:root
++ownership of './lib/udev/hwdb.d' retained as root:root
++ownership of './lib/udev/rules.d' retained as root:root
++ownership of './lib/modprobe.d' retained as root:root
++ownership of './lib/firmware' retained as root:root
++ownership of './etc' retained as root:root
++ownership of './etc/udev' retained as root:root
++ownership of './etc/udev/devices' retained as root:root
++ownership of './etc/udev/hwdb.d' retained as root:root
++ownership of './etc/udev/rules.d' retained as root:root
++ownership of './etc/rc.d' retained as root:root
++ownership of './etc/modprobe.d' retained as root:root
++ownership of './install' retained as root:root
++ownership of './usr' retained as root:root
++ownership of './usr/doc' retained as root:root
++ownership of './usr/doc/eudev-3.2.9' retained as root:root
++ownership of './usr/man' retained as root:root
++ownership of './usr/man/man7' retained as root:root
++ownership of './usr/man/man8' retained as root:root
++ownership of './usr/man/man5' retained as root:root
++ownership of './usr/lib' retained as root:root
++ownership of './usr/lib/pkgconfig' retained as root:root
++ownership of './usr/share' retained as root:root
++ownership of './usr/share/pkgconfig' retained as root:root
++ownership of './usr/include' retained as root:root
++ownership of './sbin' retained as root:root
++Creating Slackware package:  /tmp/eudev-3.2.9-x86_64-3.txz
++
++./
++etc/
++etc/modprobe.d/
++etc/modprobe.d/README
++etc/rc.d/
++etc/rc.d/rc.udev.new
++etc/udev/
++etc/udev/devices/
++etc/udev/hwdb.d/
++etc/udev/rules.d/
++etc/udev/udev.conf
++install/
++install/doinst.sh
++install/slack-desc
++lib/
++lib/firmware/
++lib/libudev.so.1.6.3
++lib/modprobe.d/
++lib/modprobe.d/8139cp.conf
++lib/modprobe.d/bcm43xx.conf
++lib/modprobe.d/edac.conf
++lib/modprobe.d/eepro100.conf
++lib/modprobe.d/eth1394.conf
++lib/modprobe.d/evbug.conf
++lib/modprobe.d/framebuffers.conf
++lib/modprobe.d/hostap.conf
++lib/modprobe.d/isapnp.conf
++lib/modprobe.d/isdn.conf
++lib/modprobe.d/oss.conf
++lib/modprobe.d/pcspkr.conf
++lib/modprobe.d/psmouse.conf
++lib/modprobe.d/scsi-sata-controllers.conf
++lib/modprobe.d/snd-pcsp.conf
++lib/modprobe.d/sound-modems.conf
++lib/modprobe.d/tulip.conf
++lib/modprobe.d/usb-controller.conf
++lib/modprobe.d/via-ircc.conf
++lib/modprobe.d/watchdog.conf
++lib/udev/
++lib/udev/ata_id
++lib/udev/cdrom_id
++lib/udev/collect
++lib/udev/devices/
++lib/udev/hwdb.d/
++lib/udev/hwdb.d/20-OUI.hwdb
++lib/udev/hwdb.d/20-acpi-vendor.hwdb
++lib/udev/hwdb.d/20-bluetooth-vendor-product.hwdb
++lib/udev/hwdb.d/20-net-ifname.hwdb
++lib/udev/hwdb.d/20-pci-classes.hwdb
++lib/udev/hwdb.d/20-pci-vendor-model.hwdb
++lib/udev/hwdb.d/20-sdio-classes.hwdb
++lib/udev/hwdb.d/20-sdio-vendor-model.hwdb
++lib/udev/hwdb.d/20-usb-classes.hwdb
++lib/udev/hwdb.d/20-usb-vendor-model.hwdb
++lib/udev/hwdb.d/20-vmbus-class.hwdb
++lib/udev/hwdb.d/60-evdev.hwdb
++lib/udev/hwdb.d/60-keyboard.hwdb
++lib/udev/hwdb.d/60-sensor.hwdb
++lib/udev/hwdb.d/70-mouse.hwdb
++lib/udev/hwdb.d/70-pointingstick.hwdb
++lib/udev/hwdb.d/70-touchpad.hwdb
++lib/udev/mtd_probe
++lib/udev/rule_generator.functions
++lib/udev/rules.d/
++lib/udev/rules.d/40-slackware.rules
++lib/udev/rules.d/50-udev-default.rules
++lib/udev/rules.d/60-block.rules
++lib/udev/rules.d/60-cdrom_id.rules
++lib/udev/rules.d/60-drm.rules
++lib/udev/rules.d/60-evdev.rules
++lib/udev/rules.d/60-input-id.rules
++lib/udev/rules.d/60-persistent-alsa.rules
++lib/udev/rules.d/60-persistent-input.rules
++lib/udev/rules.d/60-persistent-storage-tape.rules
++lib/udev/rules.d/60-persistent-storage.rules
++lib/udev/rules.d/60-persistent-v4l.rules
++lib/udev/rules.d/60-sensor.rules
++lib/udev/rules.d/60-serial.rules
++lib/udev/rules.d/64-btrfs.rules
++lib/udev/rules.d/65-permissions.rules
++lib/udev/rules.d/70-joystick.rules
++lib/udev/rules.d/70-mouse.rules
++lib/udev/rules.d/70-touchpad.rules
++lib/udev/rules.d/75-net-description.rules
++lib/udev/rules.d/75-persistent-net-generator.rules
++lib/udev/rules.d/75-probe_mtd.rules
++lib/udev/rules.d/78-sound-card.rules
++lib/udev/rules.d/80-drivers.rules
++lib/udev/scsi_id
++lib/udev/v4l_id
++lib/udev/write_net_rules
++run/
++sbin/
++sbin/udevadm
++sbin/udevd
++usr/
++usr/doc/
++usr/doc/eudev-3.2.9/
++usr/doc/eudev-3.2.9/COPYING
++usr/include/
++usr/include/libudev.h
++usr/include/udev.h
++usr/lib/
++usr/lib/pkgconfig/
++usr/lib/pkgconfig/libudev.pc
++usr/man/
++usr/man/man5/
++usr/man/man5/udev.conf.5.gz
++usr/man/man7/
++usr/man/man7/udev.7.gz
++usr/man/man8/
++usr/man/man8/udevadm.8.gz
++usr/man/man8/udevd.8.gz
++usr/share/
++usr/share/pkgconfig/
++usr/share/pkgconfig/udev.pc
++
++Slackware package /tmp/eudev-3.2.9-x86_64-3.txz created.
++

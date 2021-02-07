@@ -1,0 +1,791 @@
+diff -ruBN /tmp/quota/quota.SlackBuild /source/a/quota/quota.SlackBuild
+--- /tmp/quota/quota.SlackBuild	2020-11-10 18:59:35.000000000 +0000
++++ /source/a/quota/quota.SlackBuild	2021-01-20 21:52:02.000000000 +0000
+@@ -64,7 +64,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "armv7hl" ]; then
+   SLKCFLAGS="-O3 -march=armv7-a -mfpu=vfpv3-d16"
+   LIBDIRSUFFIX=""
+@@ -104,7 +104,7 @@
+   --mandir=/usr/man \
+   --infodir=/usr/info \
+   --disable-static \
+-  --build=$ARCH-slackware-linux || exit 1
++  --build=$ARCH-slackware-linux-musl || exit 1
+ 
+ # Build and install:
+ make $NUMJOBS || make || exit 1
+diff -ruBN /tmp/quota/quota.SlackBuild.log /source/a/quota/quota.SlackBuild.log
+--- /tmp/quota/quota.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/a/quota/quota.SlackBuild.log	2021-01-20 21:54:13.000000000 +0000
+@@ -0,0 +1,766 @@
++quota-4.06/
++quota-4.06/rquota.c
++quota-4.06/warnquota.c
++quota-4.06/quotaon.c
++quota-4.06/rpc.rquotad.8
++quota-4.06/quota.c
++quota-4.06/install-sh
++quota-4.06/README.ldap-support
++quota-4.06/rquota_client.c
++quota-4.06/quotaon.8
++quota-4.06/common.c
++quota-4.06/mntopt.h
++quota-4.06/quotaops.h
++quota-4.06/quotastats.c
++quota-4.06/quotaio_v2.h
++quota-4.06/quotaio_xfs.c
++quota-4.06/configure.ac
++quota-4.06/warnquota.conf.5
++quota-4.06/svc_socket.c
++quota-4.06/quotaio_xfs.h
++quota-4.06/convertquota.8
++quota-4.06/quotaops.c
++quota-4.06/quotagrpadmins
++quota-4.06/dqblk_xfs.h
++quota-4.06/quotasys.c
++quota-4.06/edquota.c
++quota-4.06/quotatab
++quota-4.06/quota.1
++quota-4.06/config.guess
++quota-4.06/pot.h
++quota-4.06/quotaon.h
++quota-4.06/quota.h
++quota-4.06/quotaio.h
++quota-4.06/configure
++quota-4.06/aclocal.m4
++quota-4.06/rquota_svc.c
++quota-4.06/quotaio_v1.c
++quota-4.06/quotacheck_v1.c
++quota-4.06/quotasys.h
++quota-4.06/rquota.x
++quota-4.06/po/
++quota-4.06/po/en@quot.header
++quota-4.06/po/Rules-quot
++quota-4.06/po/pl.gmo
++quota-4.06/po/de.po
++quota-4.06/po/Makevars
++quota-4.06/po/remove-potcdate.sin
++quota-4.06/po/insert-header.sin
++quota-4.06/po/quot.sed
++quota-4.06/po/stamp-po
++quota-4.06/po/boldquot.sed
++quota-4.06/po/Makefile.in.in
++quota-4.06/po/fr.po
++quota-4.06/po/POTFILES.in
++quota-4.06/po/quota.pot
++quota-4.06/po/de.gmo
++quota-4.06/po/pl.po
++quota-4.06/po/cs.po
++quota-4.06/po/en@boldquot.header
++quota-4.06/po/LINGUAS
++quota-4.06/po/fr.gmo
++quota-4.06/po/cs.gmo
++quota-4.06/bylabel.h
++quota-4.06/COPYING
++quota-4.06/dqblk_v1.h
++quota-4.06/quotacheck_v2.c
++quota-4.06/bylabel.c
++quota-4.06/quotacheck.h
++quota-4.06/common.h
++quota-4.06/autogen.sh
++quota-4.06/setquota.c
++quota-4.06/dqblk_rpc.h
++quota-4.06/quotaio_generic.c
++quota-4.06/rquota_server.c
++quota-4.06/rquota_clnt.c
++quota-4.06/setquota.8
++quota-4.06/repquota.8
++quota-4.06/edquota.8
++quota-4.06/convertquota.c
++quota-4.06/quotaio_generic.h
++quota-4.06/Makefile.am
++quota-4.06/xqmstats.8
++quota-4.06/compile
++quota-4.06/config.rpath
++quota-4.06/ar-lib
++quota-4.06/quotasync.1
++quota-4.06/quotaio_v2.c
++quota-4.06/repquota.c
++quota-4.06/config.sub
++quota-4.06/quotaio.c
++quota-4.06/quotatab.5
++quota-4.06/missing
++quota-4.06/quota_nld.8
++quota-4.06/config.h
++quota-4.06/README.mailserver
++quota-4.06/mkinstalldirs
++quota-4.06/quotaio_meta.c
++quota-4.06/warnquota.conf
++quota-4.06/doc/
++quota-4.06/doc/quotadoc.sgml
++quota-4.06/rquota.h
++quota-4.06/rquota.3
++quota-4.06/m4/
++quota-4.06/m4/lib-prefix.m4
++quota-4.06/m4/gettext.m4
++quota-4.06/m4/lib-ld.m4
++quota-4.06/m4/iconv.m4
++quota-4.06/m4/progtest.m4
++quota-4.06/m4/lib-link.m4
++quota-4.06/m4/nls.m4
++quota-4.06/m4/po.m4
++quota-4.06/ABOUT-NLS
++quota-4.06/quota_nld.c
++quota-4.06/Makefile.in
++quota-4.06/config.h.in
++quota-4.06/set_limits_example.c
++quota-4.06/dqblk_v2.h
++quota-4.06/quotacheck.c
++quota-4.06/pot.c
++quota-4.06/warnquota.8
++quota-4.06/xqmstats.c
++quota-4.06/quotastats.8
++quota-4.06/ldap-scripts/
++quota-4.06/ldap-scripts/setSystemQuotas.pl
++quota-4.06/ldap-scripts/setquota-ldap.pl
++quota-4.06/ldap-scripts/quota.schema
++quota-4.06/ldap-scripts/edquota_editor
++quota-4.06/ldap-scripts/applySystemQuotas.pl
++quota-4.06/quotacheck.8
++quota-4.06/Changelog
++quota-4.06/quota_tree.h
++quota-4.06/rquota_client.h
++quota-4.06/quotasync.c
++quota-4.06/quotaio_rpc.c
++quota-4.06/quotagrpadmins.5
++quota-4.06/quotaio_tree.c
++quota-4.06/depcomp
++quota-4.06/quotaon_xfs.c
++quota-4.06/quotaio_v1.h
++Hmm...  Looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|--- ./configure.ac.orig	2018-11-08 15:30:51.834366741 -0600
++|+++ ./configure.ac	2018-11-08 15:31:25.275363974 -0600
++--------------------------
++patching file configure.ac
++Using Plan A...
++Hunk #1 succeeded at 183 (offset 13 lines).
++done
++autoreconf: Entering directory `.'
++autoreconf: running: autopoint --force
++autoreconf: running: aclocal --force -I m4
++autoreconf: configure.ac: tracing
++autoreconf: configure.ac: not using Libtool
++autoreconf: running: /usr/bin/autoconf --force
++autoreconf: running: /usr/bin/autoheader --force
++autoreconf: running: automake --add-missing --copy --force-missing
++autoreconf: Leaving directory `.'
++configure: WARNING: unrecognized options: --disable-static
++checking for a BSD-compatible install... /usr/bin/ginstall -c
++checking whether build environment is sane... yes
++checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
++checking for gawk... gawk
++checking whether make sets $(MAKE)... yes
++checking whether make supports nested variables... yes
++checking whether make supports nested variables... (cached) yes
++checking whether make supports the include directive... yes (GNU style)
++checking for gcc... gcc
++checking whether the C compiler works... yes
++checking for C compiler default output file name... a.out
++checking for suffix of executables... 
++checking whether we are cross compiling... no
++checking for suffix of object files... o
++checking whether we are using the GNU C compiler... yes
++checking whether gcc accepts -g... yes
++checking for gcc option to accept ISO C89... none needed
++checking whether gcc understands -c and -o together... yes
++checking dependency style of gcc... gcc3
++checking how to run the C preprocessor... gcc -E
++checking for grep that handles long lines and -e... /usr/bin/grep
++checking for egrep... /usr/bin/grep -E
++checking for ANSI C header files... yes
++checking for sys/types.h... yes
++checking for sys/stat.h... yes
++checking for stdlib.h... yes
++checking for string.h... yes
++checking for memory.h... yes
++checking for strings.h... yes
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking for unistd.h... yes
++checking minix/config.h usability... no
++checking minix/config.h presence... no
++checking for minix/config.h... no
++checking whether it is safe to define __EXTENSIONS__... yes
++checking for special C compiler options needed for large files... no
++checking for _FILE_OFFSET_BITS value needed for large files... no
++checking for ar... ar
++checking the archiver (ar) interface... ar
++checking whether we are using the GNU C compiler... (cached) yes
++checking whether gcc accepts -g... (cached) yes
++checking for gcc option to accept ISO C89... (cached) none needed
++checking whether gcc understands -c and -o together... (cached) yes
++checking dependency style of gcc... (cached) gcc3
++checking for ranlib... ranlib
++checking whether ln -s works... yes
++checking whether make sets $(MAKE)... (cached) yes
++checking pkg-config is at least version 0.20... yes
++checking for an ANSI C-conforming const... yes
++checking for inline... inline
++checking for nl_langinfo... yes
++checking for a sed that does not truncate output... /usr/bin/sed
++checking whether NLS is requested... yes
++checking for msgfmt... /usr/bin/msgfmt
++checking for gmsgfmt... /usr/bin/msgfmt
++checking for xgettext... /usr/bin/xgettext
++checking for msgmerge... /usr/bin/msgmerge
++checking build system type... x86_64-slackware-linux-musl
++checking host system type... x86_64-slackware-linux-musl
++checking for ld used by gcc... /usr/bin/ld
++checking if the linker (/usr/bin/ld) is GNU ld... yes
++checking for shared library run path origin... done
++checking for the common suffixes of directories in the library search path... lib,lib
++checking for CFPreferencesCopyAppValue... no
++checking for CFLocaleCopyCurrent... no
++checking for GNU gettext in libc... yes
++checking whether to use NLS... yes
++checking where the gettext function comes from... libc
++checking for ldap_initialize in -lldap... yes
++checking for com_err... yes
++checking for ext2fs... yes
++checking for dbus-1... yes
++checking for libnl-3.0 >= 3.1 libnl-genl-3.0... yes
++checking tcpd.h usability... no
++checking tcpd.h presence... no
++checking for tcpd.h... no
++configure: WARNING: tcpd.h not found
++checking for rpcgen... /usr/bin/rpcgen
++checking for libtirpc... yes
++checking that generated files are newer than configure... done
++configure: creating ./config.status
++config.status: creating Makefile
++config.status: creating po/Makefile.in
++config.status: creating config.h
++config.status: executing depfiles commands
++config.status: executing po-directories commands
++config.status: creating po/POTFILES
++config.status: creating po/Makefile
++configure: WARNING: unrecognized options: --disable-static
++configure:
++==============================================================================
++Build configuration:
++	bsd-behaviour:   yes
++	ext2-direct:     yes
++	ldap-mail:       yes
++	libwrap:         no
++	netlink:         yes
++	nls:             yes
++	pid-dir:         /var/run
++	proc-mounts:     /proc/mounts
++	rpc:             yes
++	rpcsetquota:     no
++	xfs-roothack:    no
++	werror:          no
++==============================================================================
++
++make  all-recursive
++make[1]: Entering directory '/tmp/quota-4.06'
++Making all in po
++make[2]: Entering directory '/tmp/quota-4.06/po'
++test -z "cs.po de.po fr.po pl.po" || make cs.po de.po fr.po pl.po
++if test -n "cs.gmo de.gmo fr.gmo pl.gmo"; then \
++	make cs.gmo de.gmo fr.gmo pl.gmo; \
++else \
++	test "@MOFILES@" = "@MOFILES@" || make @MOFILES@; \
++fi
++make[3]: Entering directory '/tmp/quota-4.06/po'
++make[3]: Nothing to be done for 'cs.po'.
++make[3]: Nothing to be done for 'de.po'.
++make[3]: Nothing to be done for 'fr.po'.
++make[3]: Nothing to be done for 'pl.po'.
++make[3]: Leaving directory '/tmp/quota-4.06/po'
++make[3]: Entering directory '/tmp/quota-4.06/po'
++make[3]: 'cs.gmo' is up to date.
++make[3]: 'de.gmo' is up to date.
++make[3]: 'fr.gmo' is up to date.
++make[3]: 'pl.gmo' is up to date.
++make[3]: Leaving directory '/tmp/quota-4.06/po'
++make[2]: Leaving directory '/tmp/quota-4.06/po'
++make[2]: Entering directory '/tmp/quota-4.06'
++  CC       quota.o
++  CC       quotaops.o
++  CC       quotaio.o
++In file included from quota.h:4,
++                 from quotasys.h:13,
++                 from quotaio.c:23:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from quota.h:4,
++                 from quota.c:28:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from quota.h:4,
++                 from quotaio.h:15,
++                 from quotaops.h:4,
++                 from quotaops.c:32:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       quotaio_v1.o
++In file included from quota.h:4,
++                 from quotaio.h:15,
++                 from quotaio_v1.c:16:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       quotaio_v2.o
++In file included from quota.h:4,
++                 from quotaio_v2.h:11,
++                 from quotaio_v2.c:19:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       quotaio_tree.o
++  CC       quotaio_rpc.o
++In file included from quota.h:4,
++                 from quota_tree.h:5,
++                 from quotaio_tree.c:19:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from quota.h:4,
++                 from quotaio.h:15,
++                 from quotaio_rpc.c:13:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       quotaio_xfs.o
++In file included from quota.h:4,
++                 from quotaio.h:15,
++                 from quotaio_xfs.c:17:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       quotaio_meta.o
++In file included from quota.h:4,
++                 from quotasys.h:13,
++                 from quotaio_meta.c:17:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       quotaio_generic.o
++In file included from quota.h:4,
++                 from quotaio.h:15,
++                 from quotaio_generic.c:18:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       bylabel.o
++  CC       common.o
++  CC       quotasys.o
++In file included from quota.h:4,
++                 from quotasys.h:13,
++                 from quotasys.c:32:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       pot.o
++  CC       librpcclient_a-rquota.o
++  CC       librpcclient_a-rquota_client.o
++In file included from quota.h:4,
++                 from quotaio.h:15,
++                 from rquota_client.c:40:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       librpcclient_a-rquota_clnt.o
++  CC       quotasync.o
++In file included from quota.h:4,
++                 from quotasys.h:13,
++                 from quotasync.c:13:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       quotacheck-quotacheck.o
++  CC       quotacheck-quotacheck_v1.o
++In file included from quota.h:4,
++                 from quotaio.h:15,
++                 from quotacheck_v1.c:16:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       quotacheck-quotacheck_v2.o
++In file included from quota.h:4,
++                 from quotaio.h:15,
++                 from quotacheck.c:38:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from quota.h:4,
++                 from quotacheck_v2.c:19:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       quotacheck-quotaops.o
++In file included from quota.h:4,
++                 from quotaio.h:15,
++                 from quotaops.h:4,
++                 from quotaops.c:32:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       quotaon.o
++In file included from quota.h:4,
++                 from quotaon.h:7,
++                 from quotaon.c:17:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       quotaon_xfs.o
++In file included from quota.h:4,
++                 from quotaon.h:7,
++                 from quotaon_xfs.c:14:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       repquota.o
++In file included from quota.h:4,
++                 from quotasys.h:13,
++                 from repquota.c:24:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       warnquota.o
++  CC       quotastats.o
++In file included from quota.h:4,
++                 from quotastats.c:30:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from quota.h:4,
++                 from quotasys.h:13,
++                 from warnquota.c:48:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       xqmstats.o
++  CC       edquota.o
++  CC       setquota.o
++In file included from quota.h:4,
++                 from quotaio.h:15,
++                 from quotaops.h:4,
++                 from edquota.c:25:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++In file included from quota.h:4,
++                 from quotaio.h:15,
++                 from rquota_client.h:10,
++                 from setquota.c:24:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       convertquota.o
++In file included from quota.h:4,
++                 from quotaio.h:15,
++                 from convertquota.c:22:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       rquota_server.o
++In file included from quota.h:4,
++                 from quotaio.h:15,
++                 from quotaops.h:4,
++                 from rquota_server.c:31:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       rquota_svc.o
++  CC       svc_socket.o
++In file included from quota.h:4,
++                 from quotasys.h:13,
++                 from rquota_svc.c:51:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       quota_nld-quota_nld.o
++  AR       librpcclient.a
++  CCLD     quotastats
++  CCLD     xqmstats
++  AR       libquota.a
++  CCLD     quota
++  CCLD     quotasync
++  CCLD     quotacheck
++  CCLD     quotaon
++  CCLD     repquota
++  CCLD     warnquota
++In file included from quota.h:4,
++                 from quotasys.h:13,
++                 from quota_nld.c:41:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CCLD     edquota
++  CCLD     setquota
++  CCLD     convertquota
++  CCLD     rpc.rquotad
++  CCLD     quota_nld
++make[2]: Leaving directory '/tmp/quota-4.06'
++make[1]: Leaving directory '/tmp/quota-4.06'
++make  install-recursive
++make[1]: Entering directory '/tmp/quota-4.06'
++Making install in po
++make[2]: Entering directory '/tmp/quota-4.06/po'
++test -z "cs.po de.po fr.po pl.po" || make cs.po de.po fr.po pl.po
++make[3]: Entering directory '/tmp/quota-4.06/po'
++make[3]: Nothing to be done for 'cs.po'.
++make[3]: Nothing to be done for 'de.po'.
++make[3]: Nothing to be done for 'fr.po'.
++make[3]: Nothing to be done for 'pl.po'.
++make[3]: Leaving directory '/tmp/quota-4.06/po'
++if test -n "cs.gmo de.gmo fr.gmo pl.gmo"; then \
++	make cs.gmo de.gmo fr.gmo pl.gmo; \
++else \
++	test "@MOFILES@" = "@MOFILES@" || make @MOFILES@; \
++fi
++make[3]: Entering directory '/tmp/quota-4.06/po'
++make[3]: 'cs.gmo' is up to date.
++make[3]: 'de.gmo' is up to date.
++make[3]: 'fr.gmo' is up to date.
++make[3]: 'pl.gmo' is up to date.
++make[3]: Leaving directory '/tmp/quota-4.06/po'
++installing cs.gmo as /tmp/package-quota/usr/share/locale/cs/LC_MESSAGES/quota.mo
++installing de.gmo as /tmp/package-quota/usr/share/locale/de/LC_MESSAGES/quota.mo
++installing fr.gmo as /tmp/package-quota/usr/share/locale/fr/LC_MESSAGES/quota.mo
++installing pl.gmo as /tmp/package-quota/usr/share/locale/pl/LC_MESSAGES/quota.mo
++make[2]: Leaving directory '/tmp/quota-4.06/po'
++make[2]: Entering directory '/tmp/quota-4.06'
++  CC       quota.o
++In file included from quota.h:4,
++                 from quota.c:28:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       quotaops.o
++In file included from quota.h:4,
++                 from quotaio.h:15,
++                 from quotaops.h:4,
++                 from quotaops.c:32:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       librpcclient_a-rquota.o
++  CC       librpcclient_a-rquota_client.o
++In file included from quota.h:4,
++                 from quotaio.h:15,
++                 from rquota_client.c:40:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       librpcclient_a-rquota_clnt.o
++  AR       librpcclient.a
++  AR       libquota.a
++  CCLD     quota
++  CCLD     quotasync
++  CC       quotacheck-quotaops.o
++In file included from quota.h:4,
++                 from quotaio.h:15,
++                 from quotaops.h:4,
++                 from quotaops.c:32:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CCLD     quotacheck
++  CCLD     quotaon
++  CCLD     repquota
++  CCLD     warnquota
++  CCLD     edquota
++  CC       setquota.o
++In file included from quota.h:4,
++                 from quotaio.h:15,
++                 from rquota_client.h:10,
++                 from setquota.c:24:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CCLD     setquota
++  CCLD     convertquota
++  CC       rquota_server.o
++In file included from quota.h:4,
++                 from quotaio.h:15,
++                 from quotaops.h:4,
++                 from rquota_server.c:31:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       rquota_svc.o
++In file included from quota.h:4,
++                 from quotasys.h:13,
++                 from rquota_svc.c:51:
++/usr/include/sys/cdefs.h:1:2: warning: #warning usage of non-standard #include <sys/cdefs.h> is deprecated [-Wcpp]
++    1 | #warning usage of non-standard #include <sys/cdefs.h> is deprecated
++      |  ^~~~~~~
++  CC       svc_socket.o
++  CCLD     rpc.rquotad
++  CCLD     quota_nld
++make[3]: Entering directory '/tmp/quota-4.06'
++ /usr/bin/mkdir -p '/tmp/package-quota/usr/bin'
++  /usr/bin/ginstall -c quota quotasync '/tmp/package-quota/usr/bin'
++ /usr/bin/mkdir -p '/tmp/package-quota/usr/sbin'
++  /usr/bin/ginstall -c quotacheck quotaon repquota warnquota quotastats xqmstats edquota setquota convertquota rpc.rquotad quota_nld '/tmp/package-quota/usr/sbin'
++ /usr/bin/mkdir -p '/tmp/package-quota/etc'
++ /usr/bin/ginstall -c -m 644 warnquota.conf quotatab quotagrpadmins '/tmp/package-quota/etc'
++make  install-exec-hook
++make[4]: Entering directory '/tmp/quota-4.06'
++rm -f /tmp/package-quota/usr/sbin/quotaoff
++make[4]: Leaving directory '/tmp/quota-4.06'
++ /usr/bin/mkdir -p '/tmp/package-quota/usr/share/doc/quota'
++ /usr/bin/ginstall -c -m 644 README.mailserver README.ldap-support set_limits_example.c doc/quotadoc.sgml '/tmp/package-quota/usr/share/doc/quota'
++ /usr/bin/mkdir -p '/tmp/package-quota/usr/man/man1'
++ /usr/bin/ginstall -c -m 644 quotasync.1 quota.1 '/tmp/package-quota/usr/man/man1'
++ /usr/bin/mkdir -p '/tmp/package-quota/usr/man/man3'
++ /usr/bin/ginstall -c -m 644 rquota.3 '/tmp/package-quota/usr/man/man3'
++ /usr/bin/mkdir -p '/tmp/package-quota/usr/man/man5'
++ /usr/bin/ginstall -c -m 644 quotagrpadmins.5 quotatab.5 warnquota.conf.5 '/tmp/package-quota/usr/man/man5'
++ /usr/bin/mkdir -p '/tmp/package-quota/usr/man/man8'
++ /usr/bin/ginstall -c -m 644 convertquota.8 edquota.8 quotacheck.8 quotaon.8 quotastats.8 repquota.8 setquota.8 warnquota.8 xqmstats.8 quota_nld.8 rpc.rquotad.8 '/tmp/package-quota/usr/man/man8'
++ /usr/bin/mkdir -p '/tmp/package-quota/usr/include/rpcsvc'
++ /usr/bin/ginstall -c -m 644 rquota.h rquota.x '/tmp/package-quota/usr/include/rpcsvc'
++make  install-data-hook
++make[4]: Entering directory '/tmp/quota-4.06'
++rm -f /tmp/package-quota/usr/man/man8/quotaoff.8
++make[4]: Leaving directory '/tmp/quota-4.06'
++make[3]: Leaving directory '/tmp/quota-4.06'
++make[2]: Leaving directory '/tmp/quota-4.06'
++make[1]: Leaving directory '/tmp/quota-4.06'
++cp: cannot stat 'AUTHORS': No such file or directory
++cp: cannot stat 'NEWS': No such file or directory
++cp: cannot stat 'THANKS': No such file or directory
++cp: cannot stat 'TODO': No such file or directory
++cp: cannot stat 'doc/quotas.preformated': No such file or directory
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++sbin/quotaoff	quotaon
++usr/man/man8/quotaoff.8.gz	quotaon.8.gz
++usr/sbin/convertquota	../../sbin/convertquota
++usr/sbin/quotacheck	../../sbin/quotacheck
++usr/sbin/quotaoff	../../sbin/quotaoff
++usr/sbin/quotaon	../../sbin/quotaon
++
++Making symbolic link creation script:
++( cd sbin ; rm -rf quotaoff )
++( cd sbin ; ln -sf quotaon quotaoff )
++( cd usr/man/man8 ; rm -rf quotaoff.8.gz )
++( cd usr/man/man8 ; ln -sf quotaon.8.gz quotaoff.8.gz )
++( cd usr/sbin ; rm -rf convertquota )
++( cd usr/sbin ; ln -sf ../../sbin/convertquota convertquota )
++( cd usr/sbin ; rm -rf quotacheck )
++( cd usr/sbin ; ln -sf ../../sbin/quotacheck quotacheck )
++( cd usr/sbin ; rm -rf quotaoff )
++( cd usr/sbin ; ln -sf ../../sbin/quotaoff quotaoff )
++( cd usr/sbin ; rm -rf quotaon )
++( cd usr/sbin ; ln -sf ../../sbin/quotaon quotaon )
++
++It is recommended that you make these lines your new installation script.
++
++Would you like to make this stuff the install script for this package
++and remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './usr/man/man8/quotaoff.8.gz'
++removed './usr/sbin/convertquota'
++removed './usr/sbin/quotaoff'
++removed './usr/sbin/quotaon'
++removed './usr/sbin/quotacheck'
++removed './sbin/quotaoff'
++
++Creating your new ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/quota-4.06-x86_64-1.txz
++
++./
++etc/
++etc/quotagrpadmins-sample
++etc/quotatab-sample
++etc/warnquota.conf-sample
++install/
++install/doinst.sh
++install/slack-desc
++sbin/
++sbin/convertquota
++sbin/quotacheck
++sbin/quotaon
++usr/
++usr/bin/
++usr/bin/quota
++usr/bin/quotasync
++usr/doc/
++usr/doc/quota-4.06/
++usr/doc/quota-4.06/COPYING
++usr/doc/quota-4.06/README.ldap-support
++usr/doc/quota-4.06/README.mailserver
++usr/include/
++usr/include/rpcsvc/
++usr/include/rpcsvc/rquota.h
++usr/include/rpcsvc/rquota.x
++usr/man/
++usr/man/man1/
++usr/man/man1/quota.1.gz
++usr/man/man1/quotasync.1.gz
++usr/man/man3/
++usr/man/man3/rquota.3.gz
++usr/man/man5/
++usr/man/man5/quotagrpadmins.5.gz
++usr/man/man5/quotatab.5.gz
++usr/man/man5/warnquota.conf.5.gz
++usr/man/man8/
++usr/man/man8/convertquota.8.gz
++usr/man/man8/edquota.8.gz
++usr/man/man8/quota_nld.8.gz
++usr/man/man8/quotacheck.8.gz
++usr/man/man8/quotaon.8.gz
++usr/man/man8/quotastats.8.gz
++usr/man/man8/repquota.8.gz
++usr/man/man8/rpc.rquotad.8.gz
++usr/man/man8/setquota.8.gz
++usr/man/man8/warnquota.8.gz
++usr/man/man8/xqmstats.8.gz
++usr/sbin/
++usr/sbin/edquota
++usr/sbin/quota_nld
++usr/sbin/quotastats
++usr/sbin/repquota
++usr/sbin/rpc.rquotad
++usr/sbin/setquota
++usr/sbin/warnquota
++usr/sbin/xqmstats
++usr/share/
++usr/share/locale/
++usr/share/locale/cs/
++usr/share/locale/cs/LC_MESSAGES/
++usr/share/locale/cs/LC_MESSAGES/quota.mo
++usr/share/locale/de/
++usr/share/locale/de/LC_MESSAGES/
++usr/share/locale/de/LC_MESSAGES/quota.mo
++usr/share/locale/fr/
++usr/share/locale/fr/LC_MESSAGES/
++usr/share/locale/fr/LC_MESSAGES/quota.mo
++usr/share/locale/pl/
++usr/share/locale/pl/LC_MESSAGES/
++usr/share/locale/pl/LC_MESSAGES/quota.mo
++
++Slackware package /tmp/quota-4.06-x86_64-1.txz created.
++

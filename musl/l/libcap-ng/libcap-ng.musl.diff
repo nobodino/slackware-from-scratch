@@ -1,0 +1,702 @@
+diff -ruBN /tmp/libcap-ng/libcap-ng.SlackBuild /source/l/libcap-ng/libcap-ng.SlackBuild
+--- /tmp/libcap-ng/libcap-ng.SlackBuild	2020-11-19 18:42:34.000000000 +0000
++++ /source/l/libcap-ng/libcap-ng.SlackBuild	2021-01-03 12:03:37.000000000 +0000
+@@ -58,7 +58,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "armv7hl" ]; then
+   SLKCFLAGS="-O3 -march=armv7-a -mfpu=vfpv3-d16"
+   LIBDIRSUFFIX=""
+@@ -98,7 +98,7 @@
+   --disable-static \
+   --with-python \
+   --with-python3 \
+-  --build=$ARCH-slackware-linux || exit 1
++  --build=$ARCH-slackware-linux-musl || exit 1
+ 
+ # Build and install:
+ make $NUMJOBS || make || exit 1
+diff -ruBN /tmp/libcap-ng/libcap-ng.SlackBuild.log /source/l/libcap-ng/libcap-ng.SlackBuild.log
+--- /tmp/libcap-ng/libcap-ng.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/l/libcap-ng/libcap-ng.SlackBuild.log	2021-01-03 12:04:22.000000000 +0000
+@@ -0,0 +1,677 @@
++libcap-ng-0.8.2/
++libcap-ng-0.8.2/src/
++libcap-ng-0.8.2/src/libdrop_ambient.c
++libcap-ng-0.8.2/src/captab.h
++libcap-ng-0.8.2/src/libcap-ng.pc.in
++libcap-ng-0.8.2/src/cap-ng.h
++libcap-ng-0.8.2/src/Makefile.in
++libcap-ng-0.8.2/src/test/
++libcap-ng-0.8.2/src/test/lib_test.c
++libcap-ng-0.8.2/src/test/Makefile.in
++libcap-ng-0.8.2/src/test/Makefile.am
++libcap-ng-0.8.2/src/test/thread_test.c
++libcap-ng-0.8.2/src/Makefile.am
++libcap-ng-0.8.2/src/lookup_table.c
++libcap-ng-0.8.2/src/cap-ng.c
++libcap-ng-0.8.2/docs/
++libcap-ng-0.8.2/docs/capng_have_capabilities.3
++libcap-ng-0.8.2/docs/capng_lock.3
++libcap-ng-0.8.2/docs/capng_updatev.3
++libcap-ng-0.8.2/docs/capng_name_to_capability.3
++libcap-ng-0.8.2/docs/capng_get_caps_fd.3
++libcap-ng-0.8.2/docs/capng_apply.3
++libcap-ng-0.8.2/docs/capng_have_capability.3
++libcap-ng-0.8.2/docs/Makefile.in
++libcap-ng-0.8.2/docs/capng_get_caps_process.3
++libcap-ng-0.8.2/docs/Makefile.am
++libcap-ng-0.8.2/docs/capng_change_id.3
++libcap-ng-0.8.2/docs/capng_fill.3
++libcap-ng-0.8.2/docs/capng_restore_state.3
++libcap-ng-0.8.2/docs/capng_capability_to_name.3
++libcap-ng-0.8.2/docs/capng_update.3
++libcap-ng-0.8.2/docs/capng_set_rootid.3
++libcap-ng-0.8.2/docs/capng_print_caps_numeric.3
++libcap-ng-0.8.2/docs/capng_apply_caps_fd.3
++libcap-ng-0.8.2/docs/capng_print_caps_text.3
++libcap-ng-0.8.2/docs/capng_get_rootid.3
++libcap-ng-0.8.2/docs/libdrop_ambient.7
++libcap-ng-0.8.2/docs/capng_setpid.3
++libcap-ng-0.8.2/docs/capng_save_state.3
++libcap-ng-0.8.2/docs/capng_clear.3
++libcap-ng-0.8.2/compile
++libcap-ng-0.8.2/ltmain.sh
++libcap-ng-0.8.2/COPYING
++libcap-ng-0.8.2/missing
++libcap-ng-0.8.2/py-compile
++libcap-ng-0.8.2/config.h.in
++libcap-ng-0.8.2/ChangeLog
++libcap-ng-0.8.2/configure
++libcap-ng-0.8.2/libcap-ng.spec
++libcap-ng-0.8.2/Makefile.in
++libcap-ng-0.8.2/aclocal.m4
++libcap-ng-0.8.2/config.guess
++libcap-ng-0.8.2/INSTALL
++libcap-ng-0.8.2/bindings/
++libcap-ng-0.8.2/bindings/src/
++libcap-ng-0.8.2/bindings/src/Makefile.in
++libcap-ng-0.8.2/bindings/src/Makefile.am
++libcap-ng-0.8.2/bindings/src/capng_swig.i
++libcap-ng-0.8.2/bindings/python/
++libcap-ng-0.8.2/bindings/python/Makefile.in
++libcap-ng-0.8.2/bindings/python/capng.py
++libcap-ng-0.8.2/bindings/python/test/
++libcap-ng-0.8.2/bindings/python/test/capng-test.py
++libcap-ng-0.8.2/bindings/python/test/Makefile.in
++libcap-ng-0.8.2/bindings/python/test/Makefile.am
++libcap-ng-0.8.2/bindings/python/Makefile.am
++libcap-ng-0.8.2/bindings/Makefile.in
++libcap-ng-0.8.2/bindings/Makefile.am
++libcap-ng-0.8.2/bindings/python3/
++libcap-ng-0.8.2/bindings/python3/Makefile.in
++libcap-ng-0.8.2/bindings/python3/capng.py
++libcap-ng-0.8.2/bindings/python3/Makefile.am
++libcap-ng-0.8.2/COPYING.LIB
++libcap-ng-0.8.2/Makefile.am
++libcap-ng-0.8.2/AUTHORS
++libcap-ng-0.8.2/install-sh
++libcap-ng-0.8.2/NEWS
++libcap-ng-0.8.2/config.sub
++libcap-ng-0.8.2/README
++libcap-ng-0.8.2/configure.ac
++libcap-ng-0.8.2/test-driver
++libcap-ng-0.8.2/autogen.sh
++libcap-ng-0.8.2/depcomp
++libcap-ng-0.8.2/m4/
++libcap-ng-0.8.2/m4/ltversion.m4
++libcap-ng-0.8.2/m4/Makefile.in
++libcap-ng-0.8.2/m4/Makefile.am
++libcap-ng-0.8.2/m4/libtool.m4
++libcap-ng-0.8.2/m4/cap-ng.m4
++libcap-ng-0.8.2/m4/ltsugar.m4
++libcap-ng-0.8.2/m4/ltoptions.m4
++libcap-ng-0.8.2/m4/lt~obsolete.m4
++libcap-ng-0.8.2/utils/
++libcap-ng-0.8.2/utils/filecap.c
++libcap-ng-0.8.2/utils/captest.c
++libcap-ng-0.8.2/utils/Makefile.in
++libcap-ng-0.8.2/utils/captest.8
++libcap-ng-0.8.2/utils/netcap.8
++libcap-ng-0.8.2/utils/Makefile.am
++libcap-ng-0.8.2/utils/proc-llist.c
++libcap-ng-0.8.2/utils/pscap.c
++libcap-ng-0.8.2/utils/netcap.c
++libcap-ng-0.8.2/utils/filecap.8
++libcap-ng-0.8.2/utils/proc-llist.h
++libcap-ng-0.8.2/utils/pscap.8
++autoreconf: export WARNINGS=
++autoreconf: Entering directory '.'
++autoreconf: configure.ac: not using Gettext
++autoreconf: running: aclocal --force -I m4
++autoreconf: configure.ac: tracing
++autoreconf: running: libtoolize --copy --force
++libtoolize: putting auxiliary files in '.'.
++libtoolize: copying file './ltmain.sh'
++libtoolize: putting macros in AC_CONFIG_MACRO_DIRS, 'm4'.
++libtoolize: copying file 'm4/libtool.m4'
++libtoolize: copying file 'm4/ltoptions.m4'
++libtoolize: copying file 'm4/ltsugar.m4'
++libtoolize: copying file 'm4/ltversion.m4'
++libtoolize: copying file 'm4/lt~obsolete.m4'
++autoreconf: configure.ac: not using Intltool
++autoreconf: configure.ac: not using Gtkdoc
++autoreconf: running: aclocal --force -I m4
++autoreconf: running: /usr/bin/autoconf --force
++configure.ac:34: warning: 'AM_CONFIG_HEADER': this macro is obsolete.
++configure.ac:34: You should use the 'AC_CONFIG_HEADERS' macro instead.
++./lib/autoconf/general.m4:2433: AC_DIAGNOSE is expanded from...
++aclocal.m4:727: AM_CONFIG_HEADER is expanded from...
++configure.ac:34: the top level
++configure.ac:41: warning: The macro `AM_PROG_LIBTOOL' is obsolete.
++configure.ac:41: You should run autoupdate.
++m4/libtool.m4:100: AM_PROG_LIBTOOL is expanded from...
++configure.ac:41: the top level
++configure.ac:53: warning: The macro `AC_HEADER_STDC' is obsolete.
++configure.ac:53: You should run autoupdate.
++./lib/autoconf/headers.m4:704: AC_HEADER_STDC is expanded from...
++configure.ac:53: the top level
++configure.ac:229: warning: AC_OUTPUT should be used without arguments.
++configure.ac:229: You should run autoupdate.
++autoreconf: running: /usr/bin/autoheader --force
++autoreconf: running: automake --add-missing --copy --force-missing
++configure.ac:41: installing './compile'
++configure.ac:40: installing './missing'
++bindings/python/Makefile.am: installing './depcomp'
++bindings/src/Makefile.am:24: warning: variable 'SWIG_SOURCES' is defined but no program or
++bindings/src/Makefile.am:24: library has 'SWIG' as canonical name (possible typo)
++autoreconf: './config.sub' is updated
++autoreconf: './config.guess' is updated
++autoreconf: Leaving directory '.'
++Configuring libcap-ng
++checking build system type... x86_64-slackware-linux-musl
++checking host system type... x86_64-slackware-linux-musl
++checking target system type... x86_64-slackware-linux-musl
++checking for a BSD-compatible install... /usr/bin/ginstall -c
++checking whether build environment is sane... yes
++checking for a race-free mkdir -p... /usr/bin/mkdir -p
++checking for gawk... gawk
++checking whether make sets $(MAKE)... yes
++checking whether make supports nested variables... yes
++checking how to print strings... printf
++checking whether make supports the include directive... yes (GNU style)
++checking for gcc... gcc
++checking whether the C compiler works... yes
++checking for C compiler default output file name... a.out
++checking for suffix of executables... 
++checking whether we are cross compiling... no
++checking for suffix of object files... o
++checking whether the compiler supports GNU C... yes
++checking whether gcc accepts -g... yes
++checking for gcc option to enable C11 features... none needed
++checking whether gcc understands -c and -o together... yes
++checking dependency style of gcc... gcc3
++checking for a sed that does not truncate output... /usr/bin/sed
++checking for grep that handles long lines and -e... /usr/bin/grep
++checking for egrep... /usr/bin/grep -E
++checking for fgrep... /usr/bin/grep -F
++checking for ld used by gcc... /usr/bin/ld
++checking if the linker (/usr/bin/ld) is GNU ld... yes
++checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
++checking the name lister (/usr/bin/nm -B) interface... BSD nm
++checking whether ln -s works... yes
++checking the maximum length of command line arguments... 98304
++checking how to convert x86_64-slackware-linux-musl file names to x86_64-slackware-linux-musl format... func_convert_file_noop
++checking how to convert x86_64-slackware-linux-musl file names to toolchain format... func_convert_file_noop
++checking for /usr/bin/ld option to reload object files... -r
++checking for objdump... objdump
++checking how to recognize dependent libraries... pass_all
++checking for dlltool... dlltool
++checking how to associate runtime and link libraries... printf %s\n
++checking for ar... ar
++checking for archiver @FILE support... @
++checking for strip... strip
++checking for ranlib... ranlib
++checking command to parse /usr/bin/nm -B output from gcc object... ok
++checking for sysroot... no
++checking for a working dd... /usr/bin/dd
++checking how to truncate binary pipes... /usr/bin/dd bs=4096 count=1
++checking for mt... mt
++checking if mt is a manifest tool... no
++checking for stdio.h... yes
++checking for stdlib.h... yes
++checking for string.h... yes
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking for strings.h... yes
++checking for sys/stat.h... yes
++checking for sys/types.h... yes
++checking for unistd.h... yes
++checking for dlfcn.h... yes
++checking for objdir... .libs
++checking if gcc supports -fno-rtti -fno-exceptions... no
++checking for gcc option to produce PIC... -fPIC -DPIC
++checking if gcc PIC flag -fPIC -DPIC works... yes
++checking if gcc static flag -static works... yes
++checking if gcc supports -c -o file.o... yes
++checking if gcc supports -c -o file.o... (cached) yes
++checking whether the gcc linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
++checking whether -lc should be explicitly linked in... no
++checking dynamic linker characteristics... GNU/Linux ld.so
++checking how to hardcode library paths into programs... immediate
++checking whether stripping libraries is possible... yes
++checking if libtool supports shared libraries... yes
++checking whether to build shared libraries... yes
++checking whether to build static libraries... no
++.
++Checking for programs
++checking for gcc... (cached) gcc
++checking whether the compiler supports GNU C... (cached) yes
++checking whether gcc accepts -g... (cached) yes
++checking for gcc option to enable C11 features... (cached) none needed
++checking whether gcc understands -c and -o together... (cached) yes
++checking dependency style of gcc... (cached) gcc3
++checking for gawk... (cached) gawk
++.
++Checking for header files
++checking for egrep... (cached) /usr/bin/grep -E
++checking for linux/capability.h... yes
++checking for sys/xattr.h... yes
++checking for linux/securebits.h... yes
++checking for pthread.h... yes
++checking for library containing pthread_atfork... none required
++checking for sys/vfs.h... yes
++checking for linux/magic.h... yes
++configure: WARNING: linux/magic.h is required in order to verify procfs.
++checking for an ANSI C-conforming const... yes
++checking for inline... inline
++checking for sys/syscall.h... yes
++checking how gcc reports undeclared, standard C functions... error
++checking whether PR_CAP_AMBIENT is declared... yes
++checking whether VFS_CAP_REVISION_2 is declared... yes
++checking whether VFS_CAP_REVISION_3 is declared... yes
++checking whether CAP_EPOLLWAKEUP is declared... no
++checking whether CAP_WAKE_ALARM is declared... yes
++checking whether CAP_BLOCK_SUSPEND is declared... yes
++checking whether CAP_AUDIT_READ is declared... yes
++checking whether CAP_PERFMON is declared... yes
++checking whether CAP_BPF is declared... yes
++checking whether CAP_CHECKPOINT_RESTORE is declared... yes
++checking for swig... yes
++checking whether to create python bindings... testing
++checking for versioned Python2 interpreter... 
++checking for python2... /usr/bin/python2
++checking for python version... 2.7
++checking for python platform... linux2
++checking for python script directory... ${prefix}/lib/python2.7/site-packages
++checking for python extension module directory... ${exec_prefix}/lib/python2.7/site-packages
++configure: Python bindings will be built
++checking whether to create python3 bindings... investigating
++checking for python3-config... /usr/bin/python3-config
++Python3 bindings WILL be built
++checking for python3... /usr/bin/python3
++checking that generated files are newer than configure... done
++configure: creating ./config.status
++config.status: creating Makefile
++config.status: creating src/Makefile
++config.status: creating src/libcap-ng.pc
++config.status: creating src/test/Makefile
++config.status: creating bindings/Makefile
++config.status: creating bindings/python/Makefile
++config.status: creating bindings/python3/Makefile
++config.status: creating bindings/src/Makefile
++config.status: creating bindings/python/test/Makefile
++config.status: creating utils/Makefile
++config.status: creating m4/Makefile
++config.status: creating docs/Makefile
++config.status: creating config.h
++config.status: executing depfiles commands
++config.status: executing libtool commands
++.
++
++
++  libcap-ng Version:      0.8.2
++  Target:                 x86_64-slackware-linux-musl
++  Installation prefix:    /usr
++  Compiler:               gcc
++  Compiler flags:
++                          -O2 -fPIC
++
++make  all-recursive
++make[1]: Entering directory '/tmp/libcap-ng-0.8.2'
++Making all in src
++make[2]: Entering directory '/tmp/libcap-ng-0.8.2/src'
++Making all in test
++make[3]: Entering directory '/tmp/libcap-ng-0.8.2/src/test'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/libcap-ng-0.8.2/src/test'
++make[3]: Entering directory '/tmp/libcap-ng-0.8.2/src'
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I..  -I. -I..  -fPIC -DPIC -W -Wall -Wshadow -Wformat -Wundef -D_GNU_SOURCE -O2 -fPIC -MT cap-ng.lo -MD -MP -MF .deps/cap-ng.Tpo -c -o cap-ng.lo cap-ng.c
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I..  -I. -I..  -fPIC -DPIC -W -Wall -Wshadow -Wformat -Wundef -D_GNU_SOURCE -O2 -fPIC -MT lookup_table.lo -MD -MP -MF .deps/lookup_table.Tpo -c -o lookup_table.lo lookup_table.c
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I..  -I. -I..  -fPIC -DPIC -W -Wall -Wshadow -Wformat -Wundef -D_GNU_SOURCE -O2 -fPIC -MT libdrop_ambient.lo -MD -MP -MF .deps/libdrop_ambient.Tpo -c -o libdrop_ambient.lo libdrop_ambient.c
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I.. -I. -I.. -fPIC -DPIC -W -Wall -Wshadow -Wformat -Wundef -D_GNU_SOURCE -O2 -fPIC -MT lookup_table.lo -MD -MP -MF .deps/lookup_table.Tpo -c lookup_table.c  -fPIC -DPIC -o .libs/lookup_table.o
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I.. -I. -I.. -fPIC -DPIC -W -Wall -Wshadow -Wformat -Wundef -D_GNU_SOURCE -O2 -fPIC -MT cap-ng.lo -MD -MP -MF .deps/cap-ng.Tpo -c cap-ng.c  -fPIC -DPIC -o .libs/cap-ng.o
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I.. -I. -I.. -fPIC -DPIC -W -Wall -Wshadow -Wformat -Wundef -D_GNU_SOURCE -O2 -fPIC -MT libdrop_ambient.lo -MD -MP -MF .deps/libdrop_ambient.Tpo -c libdrop_ambient.c  -fPIC -DPIC -o .libs/libdrop_ambient.o
++mv -f .deps/lookup_table.Tpo .deps/lookup_table.Plo
++mv -f .deps/libdrop_ambient.Tpo .deps/libdrop_ambient.Plo
++/bin/sh ../libtool  --tag=CC   --mode=link gcc -fPIC -DPIC -W -Wall -Wshadow -Wformat -Wundef -D_GNU_SOURCE -O2 -fPIC   -o libdrop_ambient.la -rpath /usr/lib libdrop_ambient.lo  
++libtool: link: gcc -shared  -fPIC -DPIC  .libs/libdrop_ambient.o    -O2   -Wl,-soname -Wl,libdrop_ambient.so.0 -o .libs/libdrop_ambient.so.0.0.0
++libtool: link: (cd ".libs" && rm -f "libdrop_ambient.so.0" && ln -s "libdrop_ambient.so.0.0.0" "libdrop_ambient.so.0")
++libtool: link: (cd ".libs" && rm -f "libdrop_ambient.so" && ln -s "libdrop_ambient.so.0.0.0" "libdrop_ambient.so")
++libtool: link: ( cd ".libs" && rm -f "libdrop_ambient.la" && ln -s "../libdrop_ambient.la" "libdrop_ambient.la" )
++mv -f .deps/cap-ng.Tpo .deps/cap-ng.Plo
++/bin/sh ../libtool  --tag=CC   --mode=link gcc -fPIC -DPIC -W -Wall -Wshadow -Wformat -Wundef -D_GNU_SOURCE -O2 -fPIC -Wl,-z,relro  -o libcap-ng.la -rpath /usr/lib cap-ng.lo lookup_table.lo  
++libtool: link: gcc -shared  -fPIC -DPIC  .libs/cap-ng.o .libs/lookup_table.o    -O2 -Wl,-z -Wl,relro   -Wl,-soname -Wl,libcap-ng.so.0 -o .libs/libcap-ng.so.0.0.0
++libtool: link: (cd ".libs" && rm -f "libcap-ng.so.0" && ln -s "libcap-ng.so.0.0.0" "libcap-ng.so.0")
++libtool: link: (cd ".libs" && rm -f "libcap-ng.so" && ln -s "libcap-ng.so.0.0.0" "libcap-ng.so")
++libtool: link: ( cd ".libs" && rm -f "libcap-ng.la" && ln -s "../libcap-ng.la" "libcap-ng.la" )
++make[3]: Leaving directory '/tmp/libcap-ng-0.8.2/src'
++make[2]: Leaving directory '/tmp/libcap-ng-0.8.2/src'
++Making all in utils
++make[2]: Entering directory '/tmp/libcap-ng-0.8.2/utils'
++gcc -DHAVE_CONFIG_H -I. -I..  -I.. -I../src  -W -Wall -Wshadow -Wformat -Wundef -D_GNU_SOURCE -O2 -fPIC -c -o pscap.o pscap.c
++gcc -DHAVE_CONFIG_H -I. -I..  -I.. -I../src  -W -Wall -Wshadow -Wformat -Wundef -D_GNU_SOURCE -O2 -fPIC -c -o netcap.o netcap.c
++gcc -DHAVE_CONFIG_H -I. -I..  -I.. -I../src  -W -Wall -Wshadow -Wformat -Wundef -D_GNU_SOURCE -O2 -fPIC -c -o proc-llist.o proc-llist.c
++gcc -DHAVE_CONFIG_H -I. -I..  -I.. -I../src  -W -Wall -Wshadow -Wformat -Wundef -D_GNU_SOURCE -O2 -fPIC -c -o filecap.o filecap.c
++gcc -DHAVE_CONFIG_H -I. -I..  -I.. -I../src  -W -Wall -Wshadow -Wformat -Wundef -D_GNU_SOURCE -O2 -fPIC -c -o captest.o captest.c
++netcap.c: In function ‘collect_process_info.isra’:
++netcap.c:191:26: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size between 156 and 255 [-Wformat-truncation=]
++  191 |    snprintf(ln, 256, "%s/%s", buf, ent->d_name);
++      |                          ^~
++netcap.c:191:4: note: ‘snprintf’ output between 2 and 356 bytes into a destination of size 256
++  191 |    snprintf(ln, 256, "%s/%s", buf, ent->d_name);
++      |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++/bin/sh ../libtool  --tag=CC   --mode=link gcc -W -Wall -Wshadow -Wformat -Wundef -D_GNU_SOURCE -O2 -fPIC   -o pscap pscap.o  -L../src -lcap-ng
++/bin/sh ../libtool  --tag=CC   --mode=link gcc -W -Wall -Wshadow -Wformat -Wundef -D_GNU_SOURCE -O2 -fPIC   -o filecap filecap.o  -L../src -lcap-ng
++/bin/sh ../libtool  --tag=CC   --mode=link gcc -W -Wall -Wshadow -Wformat -Wundef -D_GNU_SOURCE -O2 -fPIC   -o netcap netcap.o proc-llist.o  -L../src -lcap-ng
++libtool: link: gcc -W -Wall -Wshadow -Wformat -Wundef -D_GNU_SOURCE -O2 -fPIC -o .libs/filecap filecap.o  -L../src /tmp/libcap-ng-0.8.2/src/.libs/libcap-ng.so
++libtool: link: gcc -W -Wall -Wshadow -Wformat -Wundef -D_GNU_SOURCE -O2 -fPIC -o .libs/pscap pscap.o  -L../src /tmp/libcap-ng-0.8.2/src/.libs/libcap-ng.so
++libtool: link: gcc -W -Wall -Wshadow -Wformat -Wundef -D_GNU_SOURCE -O2 -fPIC -o .libs/netcap netcap.o proc-llist.o  -L../src /tmp/libcap-ng-0.8.2/src/.libs/libcap-ng.so
++/bin/sh ../libtool  --tag=CC   --mode=link gcc -W -Wall -Wshadow -Wformat -Wundef -D_GNU_SOURCE -O2 -fPIC   -o captest captest.o  -L../src -lcap-ng
++libtool: link: gcc -W -Wall -Wshadow -Wformat -Wundef -D_GNU_SOURCE -O2 -fPIC -o .libs/captest captest.o  -L../src /tmp/libcap-ng-0.8.2/src/.libs/libcap-ng.so
++make[2]: Leaving directory '/tmp/libcap-ng-0.8.2/utils'
++Making all in m4
++make[2]: Entering directory '/tmp/libcap-ng-0.8.2/m4'
++make[2]: Nothing to be done for 'all'.
++make[2]: Leaving directory '/tmp/libcap-ng-0.8.2/m4'
++Making all in docs
++make[2]: Entering directory '/tmp/libcap-ng-0.8.2/docs'
++make[2]: Nothing to be done for 'all'.
++make[2]: Leaving directory '/tmp/libcap-ng-0.8.2/docs'
++Making all in bindings
++make[2]: Entering directory '/tmp/libcap-ng-0.8.2/bindings'
++Making all in src
++make[3]: Entering directory '/tmp/libcap-ng-0.8.2/bindings/src'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/libcap-ng-0.8.2/bindings/src'
++Making all in python
++make[3]: Entering directory '/tmp/libcap-ng-0.8.2/bindings/python'
++Making all in test
++make[4]: Entering directory '/tmp/libcap-ng-0.8.2/bindings/python/test'
++make[4]: Nothing to be done for 'all'.
++make[4]: Leaving directory '/tmp/libcap-ng-0.8.2/bindings/python/test'
++make[4]: Entering directory '/tmp/libcap-ng-0.8.2/bindings/python'
++cat /usr/include/linux/capability.h | grep '^#define CAP'  | grep -v '[()]' > caps.h
++cat ../../src/cap-ng.h | grep -v '_state' > capng.h
++swig -o capng_wrap.c -python -I. -I../.. -I/usr/include/python2.7 ./../src/capng_swig.i 
++./../src/capng_swig.i:38: Warning 116: %except is deprecated.  Use %exception instead.
++/bin/sh ../../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I../..  -I. -I../.. -I/usr/include/python2.7  -shared -O2 -fPIC -MT _capng_la-capng_wrap.lo -MD -MP -MF .deps/_capng_la-capng_wrap.Tpo -c -o _capng_la-capng_wrap.lo `test -f 'capng_wrap.c' || echo './'`capng_wrap.c
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I../.. -I. -I../.. -I/usr/include/python2.7 -O2 -fPIC -MT _capng_la-capng_wrap.lo -MD -MP -MF .deps/_capng_la-capng_wrap.Tpo -c capng_wrap.c  -fPIC -DPIC -o .libs/_capng_la-capng_wrap.o
++mv -f .deps/_capng_la-capng_wrap.Tpo .deps/_capng_la-capng_wrap.Plo
++/bin/sh ../../libtool  --tag=CC   --mode=link gcc -shared -O2 -fPIC -module -avoid-version -Wl,-z,relro  -o _capng.la -rpath /usr/lib/python2.7/site-packages _capng_la-capng_wrap.lo ../../src/libcap-ng.la 
++libtool: link: gcc -shared  -fPIC -DPIC  .libs/_capng_la-capng_wrap.o   -Wl,-rpath -Wl,/tmp/libcap-ng-0.8.2/src/.libs ../../src/.libs/libcap-ng.so  -O2 -Wl,-z -Wl,relro   -Wl,-soname -Wl,_capng.so -o .libs/_capng.so
++libtool: link: ( cd ".libs" && rm -f "_capng.la" && ln -s "../_capng.la" "_capng.la" )
++make[4]: Leaving directory '/tmp/libcap-ng-0.8.2/bindings/python'
++make[3]: Leaving directory '/tmp/libcap-ng-0.8.2/bindings/python'
++Making all in python3
++make[3]: Entering directory '/tmp/libcap-ng-0.8.2/bindings/python3'
++cat /usr/include/linux/capability.h | grep '^#define CAP'  | grep -v '[()]' > caps.h
++cat ../../src/cap-ng.h | grep -v '_state' > capng.h
++swig -o capng_wrap.c -python -py3 -modern -I. -I../.. -I/usr/include/python3.9 -I/usr/include/python3.9 ./../src/capng_swig.i
++Deprecated command line option: -modern. This option is now always on.
++./../src/capng_swig.i:38: Warning 116: %except is deprecated.  Use %exception instead.
++/bin/sh ../../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I../..  -I. -I../.. -I/usr/include/python3.9 -I/usr/include/python3.9  -shared -O2 -fPIC -MT _capng_la-capng_wrap.lo -MD -MP -MF .deps/_capng_la-capng_wrap.Tpo -c -o _capng_la-capng_wrap.lo `test -f 'capng_wrap.c' || echo './'`capng_wrap.c
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I../.. -I. -I../.. -I/usr/include/python3.9 -I/usr/include/python3.9 -O2 -fPIC -MT _capng_la-capng_wrap.lo -MD -MP -MF .deps/_capng_la-capng_wrap.Tpo -c capng_wrap.c  -fPIC -DPIC -o .libs/_capng_la-capng_wrap.o
++mv -f .deps/_capng_la-capng_wrap.Tpo .deps/_capng_la-capng_wrap.Plo
++/bin/sh ../../libtool  --tag=CC   --mode=link gcc -shared -O2 -fPIC -module -avoid-version -Wl,-z,relro  -o _capng.la -rpath /usr/lib/python3.9/site-packages _capng_la-capng_wrap.lo ../../src/libcap-ng.la ../../src/libcap-ng.la
++libtool: link: gcc -shared  -fPIC -DPIC  .libs/_capng_la-capng_wrap.o   -Wl,-rpath -Wl,/tmp/libcap-ng-0.8.2/src/.libs ../../src/.libs/libcap-ng.so  -O2 -Wl,-z -Wl,relro   -Wl,-soname -Wl,_capng.so -o .libs/_capng.so
++libtool: link: ( cd ".libs" && rm -f "_capng.la" && ln -s "../_capng.la" "_capng.la" )
++make[3]: Leaving directory '/tmp/libcap-ng-0.8.2/bindings/python3'
++make[3]: Entering directory '/tmp/libcap-ng-0.8.2/bindings'
++make[3]: Nothing to be done for 'all-am'.
++make[3]: Leaving directory '/tmp/libcap-ng-0.8.2/bindings'
++make[2]: Leaving directory '/tmp/libcap-ng-0.8.2/bindings'
++make[2]: Entering directory '/tmp/libcap-ng-0.8.2'
++make[2]: Leaving directory '/tmp/libcap-ng-0.8.2'
++make[1]: Leaving directory '/tmp/libcap-ng-0.8.2'
++Making install in src
++make[1]: Entering directory '/tmp/libcap-ng-0.8.2/src'
++Making install in test
++make[2]: Entering directory '/tmp/libcap-ng-0.8.2/src/test'
++make[3]: Entering directory '/tmp/libcap-ng-0.8.2/src/test'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/libcap-ng-0.8.2/src/test'
++make[2]: Leaving directory '/tmp/libcap-ng-0.8.2/src/test'
++make[2]: Entering directory '/tmp/libcap-ng-0.8.2/src'
++make[3]: Entering directory '/tmp/libcap-ng-0.8.2/src'
++ /usr/bin/mkdir -p '/tmp/package-libcap-ng/usr/lib'
++ /bin/sh ../libtool   --mode=install /usr/bin/ginstall -c   libcap-ng.la libdrop_ambient.la '/tmp/package-libcap-ng/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/libcap-ng.so.0.0.0 /tmp/package-libcap-ng/usr/lib/libcap-ng.so.0.0.0
++libtool: install: (cd /tmp/package-libcap-ng/usr/lib && { ln -s -f libcap-ng.so.0.0.0 libcap-ng.so.0 || { rm -f libcap-ng.so.0 && ln -s libcap-ng.so.0.0.0 libcap-ng.so.0; }; })
++libtool: install: (cd /tmp/package-libcap-ng/usr/lib && { ln -s -f libcap-ng.so.0.0.0 libcap-ng.so || { rm -f libcap-ng.so && ln -s libcap-ng.so.0.0.0 libcap-ng.so; }; })
++libtool: install: /usr/bin/ginstall -c .libs/libcap-ng.lai /tmp/package-libcap-ng/usr/lib/libcap-ng.la
++libtool: install: /usr/bin/ginstall -c .libs/libdrop_ambient.so.0.0.0 /tmp/package-libcap-ng/usr/lib/libdrop_ambient.so.0.0.0
++libtool: install: (cd /tmp/package-libcap-ng/usr/lib && { ln -s -f libdrop_ambient.so.0.0.0 libdrop_ambient.so.0 || { rm -f libdrop_ambient.so.0 && ln -s libdrop_ambient.so.0.0.0 libdrop_ambient.so.0; }; })
++libtool: install: (cd /tmp/package-libcap-ng/usr/lib && { ln -s -f libdrop_ambient.so.0.0.0 libdrop_ambient.so || { rm -f libdrop_ambient.so && ln -s libdrop_ambient.so.0.0.0 libdrop_ambient.so; }; })
++libtool: install: /usr/bin/ginstall -c .libs/libdrop_ambient.lai /tmp/package-libcap-ng/usr/lib/libdrop_ambient.la
++libtool: warning: remember to run 'libtool --finish /usr/lib'
++ /usr/bin/mkdir -p '/tmp/package-libcap-ng/usr/include'
++ /usr/bin/ginstall -c -m 644 cap-ng.h '/tmp/package-libcap-ng/usr/include'
++ /usr/bin/mkdir -p '/tmp/package-libcap-ng/usr/lib/pkgconfig'
++ /usr/bin/ginstall -c -m 644 libcap-ng.pc '/tmp/package-libcap-ng/usr/lib/pkgconfig'
++make[3]: Leaving directory '/tmp/libcap-ng-0.8.2/src'
++make[2]: Leaving directory '/tmp/libcap-ng-0.8.2/src'
++make[1]: Leaving directory '/tmp/libcap-ng-0.8.2/src'
++Making install in utils
++make[1]: Entering directory '/tmp/libcap-ng-0.8.2/utils'
++make[2]: Entering directory '/tmp/libcap-ng-0.8.2/utils'
++ /usr/bin/mkdir -p '/tmp/package-libcap-ng/usr/bin'
++  /bin/sh ../libtool   --mode=install /usr/bin/ginstall -c pscap netcap filecap captest '/tmp/package-libcap-ng/usr/bin'
++libtool: warning: '/tmp/libcap-ng-0.8.2/src/libcap-ng.la' has not been installed in '/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/pscap /tmp/package-libcap-ng/usr/bin/pscap
++libtool: warning: '/tmp/libcap-ng-0.8.2/src/libcap-ng.la' has not been installed in '/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/netcap /tmp/package-libcap-ng/usr/bin/netcap
++libtool: warning: '/tmp/libcap-ng-0.8.2/src/libcap-ng.la' has not been installed in '/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/filecap /tmp/package-libcap-ng/usr/bin/filecap
++libtool: warning: '/tmp/libcap-ng-0.8.2/src/libcap-ng.la' has not been installed in '/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/captest /tmp/package-libcap-ng/usr/bin/captest
++ /usr/bin/mkdir -p '/tmp/package-libcap-ng/usr/man/man8'
++ /usr/bin/ginstall -c -m 644 pscap.8 netcap.8 filecap.8 captest.8 '/tmp/package-libcap-ng/usr/man/man8'
++make[2]: Leaving directory '/tmp/libcap-ng-0.8.2/utils'
++make[1]: Leaving directory '/tmp/libcap-ng-0.8.2/utils'
++Making install in m4
++make[1]: Entering directory '/tmp/libcap-ng-0.8.2/m4'
++make[2]: Entering directory '/tmp/libcap-ng-0.8.2/m4'
++make[2]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-libcap-ng/usr/share/aclocal'
++ /usr/bin/ginstall -c -m 644 cap-ng.m4 '/tmp/package-libcap-ng/usr/share/aclocal'
++make[2]: Leaving directory '/tmp/libcap-ng-0.8.2/m4'
++make[1]: Leaving directory '/tmp/libcap-ng-0.8.2/m4'
++Making install in docs
++make[1]: Entering directory '/tmp/libcap-ng-0.8.2/docs'
++make[2]: Entering directory '/tmp/libcap-ng-0.8.2/docs'
++make[2]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-libcap-ng/usr/man/man3'
++ /usr/bin/ginstall -c -m 644 capng_clear.3 capng_fill.3 capng_setpid.3 capng_get_caps_process.3 capng_update.3 capng_updatev.3 capng_apply.3 capng_lock.3 capng_change_id.3 capng_get_caps_fd.3 capng_apply_caps_fd.3 capng_have_capabilities.3 capng_get_rootid.3 capng_set_rootid.3 capng_have_capability.3 capng_print_caps_numeric.3 capng_print_caps_text.3 capng_name_to_capability.3 capng_capability_to_name.3 capng_save_state.3 capng_restore_state.3 '/tmp/package-libcap-ng/usr/man/man3'
++ /usr/bin/mkdir -p '/tmp/package-libcap-ng/usr/man/man7'
++ /usr/bin/ginstall -c -m 644 libdrop_ambient.7 '/tmp/package-libcap-ng/usr/man/man7'
++make[2]: Leaving directory '/tmp/libcap-ng-0.8.2/docs'
++make[1]: Leaving directory '/tmp/libcap-ng-0.8.2/docs'
++Making install in bindings
++make[1]: Entering directory '/tmp/libcap-ng-0.8.2/bindings'
++Making install in src
++make[2]: Entering directory '/tmp/libcap-ng-0.8.2/bindings/src'
++make[3]: Entering directory '/tmp/libcap-ng-0.8.2/bindings/src'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/libcap-ng-0.8.2/bindings/src'
++make[2]: Leaving directory '/tmp/libcap-ng-0.8.2/bindings/src'
++Making install in python
++make[2]: Entering directory '/tmp/libcap-ng-0.8.2/bindings/python'
++Making install in test
++make[3]: Entering directory '/tmp/libcap-ng-0.8.2/bindings/python/test'
++make[4]: Entering directory '/tmp/libcap-ng-0.8.2/bindings/python/test'
++make[4]: Nothing to be done for 'install-exec-am'.
++make[4]: Nothing to be done for 'install-data-am'.
++make[4]: Leaving directory '/tmp/libcap-ng-0.8.2/bindings/python/test'
++make[3]: Leaving directory '/tmp/libcap-ng-0.8.2/bindings/python/test'
++make[3]: Entering directory '/tmp/libcap-ng-0.8.2/bindings/python'
++make[4]: Entering directory '/tmp/libcap-ng-0.8.2/bindings/python'
++ /usr/bin/mkdir -p '/tmp/package-libcap-ng/usr/lib/python2.7/site-packages'
++ /bin/sh ../../libtool   --mode=install /usr/bin/ginstall -c   _capng.la '/tmp/package-libcap-ng/usr/lib/python2.7/site-packages'
++libtool: warning: relinking '_capng.la'
++libtool: install: (cd /tmp/libcap-ng-0.8.2/bindings/python; /bin/sh "/tmp/libcap-ng-0.8.2/libtool"  --tag CC --mode=relink gcc -shared -O2 -fPIC -module -avoid-version -Wl,-z,relro -o _capng.la -rpath /usr/lib/python2.7/site-packages _capng_la-capng_wrap.lo ../../src/libcap-ng.la -inst-prefix-dir /tmp/package-libcap-ng)
++libtool: relink: gcc -shared  -fPIC -DPIC  .libs/_capng_la-capng_wrap.o   -L/tmp/package-libcap-ng/usr/lib -L/usr/lib -lcap-ng  -O2 -Wl,-z -Wl,relro   -Wl,-soname -Wl,_capng.so -o .libs/_capng.so
++libtool: install: /usr/bin/ginstall -c .libs/_capng.soT /tmp/package-libcap-ng/usr/lib/python2.7/site-packages/_capng.so
++libtool: install: /usr/bin/ginstall -c .libs/_capng.lai /tmp/package-libcap-ng/usr/lib/python2.7/site-packages/_capng.la
++libtool: warning: remember to run 'libtool --finish /usr/lib/python2.7/site-packages'
++ /usr/bin/mkdir -p '/tmp/package-libcap-ng/usr/lib/python2.7/site-packages'
++ /usr/bin/ginstall -c -m 644 capng.py '/tmp/package-libcap-ng/usr/lib/python2.7/site-packages'
++Byte-compiling python modules...
++capng.py
++Byte-compiling python modules (optimized versions) ...
++capng.py
++make[4]: Nothing to be done for 'install-data-am'.
++make[4]: Leaving directory '/tmp/libcap-ng-0.8.2/bindings/python'
++make[3]: Leaving directory '/tmp/libcap-ng-0.8.2/bindings/python'
++make[2]: Leaving directory '/tmp/libcap-ng-0.8.2/bindings/python'
++Making install in python3
++make[2]: Entering directory '/tmp/libcap-ng-0.8.2/bindings/python3'
++make[3]: Entering directory '/tmp/libcap-ng-0.8.2/bindings/python3'
++ /usr/bin/mkdir -p '/tmp/package-libcap-ng/usr/lib/python3.9/site-packages'
++ /bin/sh ../../libtool   --mode=install /usr/bin/ginstall -c   _capng.la '/tmp/package-libcap-ng/usr/lib/python3.9/site-packages'
++libtool: warning: relinking '_capng.la'
++libtool: install: (cd /tmp/libcap-ng-0.8.2/bindings/python3; /bin/sh "/tmp/libcap-ng-0.8.2/libtool"  --tag CC --mode=relink gcc -shared -O2 -fPIC -module -avoid-version -Wl,-z,relro -o _capng.la -rpath /usr/lib/python3.9/site-packages _capng_la-capng_wrap.lo ../../src/libcap-ng.la ../../src/libcap-ng.la -inst-prefix-dir /tmp/package-libcap-ng)
++libtool: relink: gcc -shared  -fPIC -DPIC  .libs/_capng_la-capng_wrap.o   -L/tmp/package-libcap-ng/usr/lib -L/usr/lib -lcap-ng  -O2 -Wl,-z -Wl,relro   -Wl,-soname -Wl,_capng.so -o .libs/_capng.so
++libtool: install: /usr/bin/ginstall -c .libs/_capng.soT /tmp/package-libcap-ng/usr/lib/python3.9/site-packages/_capng.so
++libtool: install: /usr/bin/ginstall -c .libs/_capng.lai /tmp/package-libcap-ng/usr/lib/python3.9/site-packages/_capng.la
++libtool: warning: remember to run 'libtool --finish /usr/lib/python3.9/site-packages'
++ /usr/bin/mkdir -p '/tmp/package-libcap-ng/usr/lib/python3.9/site-packages'
++ /usr/bin/ginstall -c -m 644 capng.py '/tmp/package-libcap-ng/usr/lib/python3.9/site-packages'
++Byte-compiling python modules...
++capng.py
++Byte-compiling python modules (optimized versions) ...
++capng.py
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/libcap-ng-0.8.2/bindings/python3'
++make[2]: Leaving directory '/tmp/libcap-ng-0.8.2/bindings/python3'
++make[2]: Entering directory '/tmp/libcap-ng-0.8.2/bindings'
++make[3]: Entering directory '/tmp/libcap-ng-0.8.2/bindings'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/libcap-ng-0.8.2/bindings'
++make[2]: Leaving directory '/tmp/libcap-ng-0.8.2/bindings'
++make[1]: Leaving directory '/tmp/libcap-ng-0.8.2/bindings'
++make[1]: Entering directory '/tmp/libcap-ng-0.8.2'
++make[2]: Entering directory '/tmp/libcap-ng-0.8.2'
++make[2]: Nothing to be done for 'install-exec-am'.
++make[2]: Nothing to be done for 'install-data-am'.
++make[2]: Leaving directory '/tmp/libcap-ng-0.8.2'
++make[1]: Leaving directory '/tmp/libcap-ng-0.8.2'
++cp: cannot stat 'THANKS': No such file or directory
++cp: cannot stat 'TODO': No such file or directory
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++lib/libcap-ng.so.0	libcap-ng.so.0.0.0
++lib/libdrop_ambient.so.0	libdrop_ambient.so.0.0.0
++usr/lib/libcap-ng.so	libcap-ng.so.0.0.0
++usr/lib/libcap-ng.so.0	libcap-ng.so.0.0.0
++usr/lib/libcap-ng.so.0.0.0	../../lib/libcap-ng.so.0.0.0
++usr/lib/libdrop_ambient.so	libdrop_ambient.so.0.0.0
++usr/lib/libdrop_ambient.so.0	libdrop_ambient.so.0.0.0
++usr/lib/libdrop_ambient.so.0.0.0	../../lib/libdrop_ambient.so.0.0.0
++
++Making symbolic link creation script:
++( cd lib ; rm -rf libcap-ng.so.0 )
++( cd lib ; ln -sf libcap-ng.so.0.0.0 libcap-ng.so.0 )
++( cd lib ; rm -rf libdrop_ambient.so.0 )
++( cd lib ; ln -sf libdrop_ambient.so.0.0.0 libdrop_ambient.so.0 )
++( cd usr/lib ; rm -rf libcap-ng.so )
++( cd usr/lib ; ln -sf libcap-ng.so.0.0.0 libcap-ng.so )
++( cd usr/lib ; rm -rf libcap-ng.so.0 )
++( cd usr/lib ; ln -sf libcap-ng.so.0.0.0 libcap-ng.so.0 )
++( cd usr/lib ; rm -rf libcap-ng.so.0.0.0 )
++( cd usr/lib ; ln -sf ../../lib/libcap-ng.so.0.0.0 libcap-ng.so.0.0.0 )
++( cd usr/lib ; rm -rf libdrop_ambient.so )
++( cd usr/lib ; ln -sf libdrop_ambient.so.0.0.0 libdrop_ambient.so )
++( cd usr/lib ; rm -rf libdrop_ambient.so.0 )
++( cd usr/lib ; ln -sf libdrop_ambient.so.0.0.0 libdrop_ambient.so.0 )
++( cd usr/lib ; rm -rf libdrop_ambient.so.0.0.0 )
++( cd usr/lib ; ln -sf ../../lib/libdrop_ambient.so.0.0.0 libdrop_ambient.so.0.0.0 )
++
++It is recommended that you make these lines your new installation script.
++
++Would you like to make this stuff the install script for this package
++and remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './lib/libdrop_ambient.so.0'
++removed './lib/libcap-ng.so.0'
++removed './usr/lib/libcap-ng.so.0.0.0'
++removed './usr/lib/libdrop_ambient.so.0.0.0'
++removed './usr/lib/libdrop_ambient.so.0'
++removed './usr/lib/libcap-ng.so'
++removed './usr/lib/libcap-ng.so.0'
++removed './usr/lib/libdrop_ambient.so'
++
++Creating your new ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/libcap-ng-0.8.2-x86_64-1.txz
++
++./
++install/
++install/doinst.sh
++install/slack-desc
++lib/
++lib/libcap-ng.so.0.0.0
++lib/libdrop_ambient.so.0.0.0
++usr/
++usr/bin/
++usr/bin/captest
++usr/bin/filecap
++usr/bin/netcap
++usr/bin/pscap
++usr/doc/
++usr/doc/libcap-ng-0.8.2/
++usr/doc/libcap-ng-0.8.2/AUTHORS
++usr/doc/libcap-ng-0.8.2/COPYING
++usr/doc/libcap-ng-0.8.2/COPYING.LIB
++usr/doc/libcap-ng-0.8.2/ChangeLog
++usr/doc/libcap-ng-0.8.2/NEWS
++usr/doc/libcap-ng-0.8.2/README
++usr/include/
++usr/include/cap-ng.h
++usr/lib/
++usr/lib/pkgconfig/
++usr/lib/pkgconfig/libcap-ng.pc
++usr/lib/python2.7/
++usr/lib/python2.7/site-packages/
++usr/lib/python2.7/site-packages/_capng.la
++usr/lib/python2.7/site-packages/_capng.so
++usr/lib/python2.7/site-packages/capng.py
++usr/lib/python2.7/site-packages/capng.pyc
++usr/lib/python2.7/site-packages/capng.pyo
++usr/lib/python3.9/
++usr/lib/python3.9/site-packages/
++usr/lib/python3.9/site-packages/__pycache__/
++usr/lib/python3.9/site-packages/__pycache__/capng.cpython-39.opt-1.pyc
++usr/lib/python3.9/site-packages/__pycache__/capng.cpython-39.pyc
++usr/lib/python3.9/site-packages/_capng.la
++usr/lib/python3.9/site-packages/_capng.so
++usr/lib/python3.9/site-packages/capng.py
++usr/man/
++usr/man/man3/
++usr/man/man3/capng_apply.3.gz
++usr/man/man3/capng_apply_caps_fd.3.gz
++usr/man/man3/capng_capability_to_name.3.gz
++usr/man/man3/capng_change_id.3.gz
++usr/man/man3/capng_clear.3.gz
++usr/man/man3/capng_fill.3.gz
++usr/man/man3/capng_get_caps_fd.3.gz
++usr/man/man3/capng_get_caps_process.3.gz
++usr/man/man3/capng_get_rootid.3.gz
++usr/man/man3/capng_have_capabilities.3.gz
++usr/man/man3/capng_have_capability.3.gz
++usr/man/man3/capng_lock.3.gz
++usr/man/man3/capng_name_to_capability.3.gz
++usr/man/man3/capng_print_caps_numeric.3.gz
++usr/man/man3/capng_print_caps_text.3.gz
++usr/man/man3/capng_restore_state.3.gz
++usr/man/man3/capng_save_state.3.gz
++usr/man/man3/capng_set_rootid.3.gz
++usr/man/man3/capng_setpid.3.gz
++usr/man/man3/capng_update.3.gz
++usr/man/man3/capng_updatev.3.gz
++usr/man/man7/
++usr/man/man7/libdrop_ambient.7.gz
++usr/man/man8/
++usr/man/man8/captest.8.gz
++usr/man/man8/filecap.8.gz
++usr/man/man8/netcap.8.gz
++usr/man/man8/pscap.8.gz
++usr/share/
++usr/share/aclocal/
++usr/share/aclocal/cap-ng.m4
++WARNING:  zero length file usr/doc/libcap-ng-0.8.2/NEWS
++
++Slackware package /tmp/libcap-ng-0.8.2-x86_64-1.txz created.
++

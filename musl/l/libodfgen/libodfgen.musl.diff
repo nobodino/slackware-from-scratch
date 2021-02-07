@@ -1,0 +1,687 @@
+diff -ruBN /tmp/libodfgen/libodfgen.SlackBuild /source/l/libodfgen/libodfgen.SlackBuild
+--- /tmp/libodfgen/libodfgen.SlackBuild	2019-09-29 23:48:31.000000000 +0000
++++ /source/l/libodfgen/libodfgen.SlackBuild	2021-01-19 05:56:45.000000000 +0000
+@@ -57,7 +57,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "armv7hl" ]; then
+   SLKCFLAGS="-O2 -march=armv7-a -mfpu=vfpv3-d16"
+   LIBDIRSUFFIX=""
+@@ -68,7 +68,7 @@
+ 
+ case "$ARCH" in
+     arm*) TARGET=$ARCH-slackware-linux-gnueabi ;;
+-    *)    TARGET=$ARCH-slackware-linux ;;
++    *)    TARGET=$ARCH-slackware-linux-musl ;;
+ esac
+ 
+ TMP=${TMP:-/tmp}
+diff -ruBN /tmp/libodfgen/libodfgen.SlackBuild.log /source/l/libodfgen/libodfgen.SlackBuild.log
+--- /tmp/libodfgen/libodfgen.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/l/libodfgen/libodfgen.SlackBuild.log	2021-01-19 05:58:00.000000000 +0000
+@@ -0,0 +1,662 @@
++libodfgen-0.1.8/
++libodfgen-0.1.8/COPYING.LGPL
++libodfgen-0.1.8/install-sh
++libodfgen-0.1.8/configure.ac
++libodfgen-0.1.8/inc/
++libodfgen-0.1.8/ltmain.sh
++libodfgen-0.1.8/test/
++libodfgen-0.1.8/configure
++libodfgen-0.1.8/ChangeLog
++libodfgen-0.1.8/AUTHORS
++libodfgen-0.1.8/libodfgen.pc.in
++libodfgen-0.1.8/config.h.in
++libodfgen-0.1.8/config.guess
++libodfgen-0.1.8/depcomp
++libodfgen-0.1.8/docs/
++libodfgen-0.1.8/missing
++libodfgen-0.1.8/README
++libodfgen-0.1.8/Makefile.am
++libodfgen-0.1.8/COPYING.MPL
++libodfgen-0.1.8/config.sub
++libodfgen-0.1.8/compile
++libodfgen-0.1.8/NEWS
++libodfgen-0.1.8/m4/
++libodfgen-0.1.8/build/
++libodfgen-0.1.8/Makefile.in
++libodfgen-0.1.8/aclocal.m4
++libodfgen-0.1.8/autogen.sh
++libodfgen-0.1.8/src/
++libodfgen-0.1.8/src/SectionStyle.cxx
++libodfgen-0.1.8/src/OdfGenerator.hxx
++libodfgen-0.1.8/src/Style.hxx
++libodfgen-0.1.8/src/SheetStyle.cxx
++libodfgen-0.1.8/src/PageSpan.cxx
++libodfgen-0.1.8/src/NumberingStyle.hxx
++libodfgen-0.1.8/src/FilterInternal.cxx
++libodfgen-0.1.8/src/FillManager.cxx
++libodfgen-0.1.8/src/DocumentElement.cxx
++libodfgen-0.1.8/src/OdcGenerator.cxx
++libodfgen-0.1.8/src/TableStyle.cxx
++libodfgen-0.1.8/src/FontStyle.cxx
++libodfgen-0.1.8/src/libodfgen.rc.in
++libodfgen-0.1.8/src/ListStyle.cxx
++libodfgen-0.1.8/src/GraphicStyle.hxx
++libodfgen-0.1.8/src/OdpGenerator.cxx
++libodfgen-0.1.8/src/TextRunStyle.cxx
++libodfgen-0.1.8/src/GraphicFunctions.hxx
++libodfgen-0.1.8/src/InternalHandler.cxx
++libodfgen-0.1.8/src/Makefile.am
++libodfgen-0.1.8/src/GraphicStyle.cxx
++libodfgen-0.1.8/src/ListStyle.hxx
++libodfgen-0.1.8/src/TextRunStyle.hxx
++libodfgen-0.1.8/src/OdsGenerator.cxx
++libodfgen-0.1.8/src/InternalHandler.hxx
++libodfgen-0.1.8/src/OdtGenerator.cxx
++libodfgen-0.1.8/src/GraphicFunctions.cxx
++libodfgen-0.1.8/src/OdfGenerator.cxx
++libodfgen-0.1.8/src/SectionStyle.hxx
++libodfgen-0.1.8/src/SheetStyle.hxx
++libodfgen-0.1.8/src/NumberingStyle.cxx
++libodfgen-0.1.8/src/PageSpan.hxx
++libodfgen-0.1.8/src/FillManager.hxx
++libodfgen-0.1.8/src/FilterInternal.hxx
++libodfgen-0.1.8/src/DocumentElement.hxx
++libodfgen-0.1.8/src/OdcGenerator.hxx
++libodfgen-0.1.8/src/Makefile.in
++libodfgen-0.1.8/src/FontStyle.hxx
++libodfgen-0.1.8/src/TableStyle.hxx
++libodfgen-0.1.8/src/OdgGenerator.cxx
++libodfgen-0.1.8/build/Makefile.am
++libodfgen-0.1.8/build/win32/
++libodfgen-0.1.8/build/Makefile.in
++libodfgen-0.1.8/build/win32/Makefile.am
++libodfgen-0.1.8/build/win32/lt-compile-resource
++libodfgen-0.1.8/build/win32/compile-resource
++libodfgen-0.1.8/build/win32/Makefile.in
++libodfgen-0.1.8/m4/ltversion.m4
++libodfgen-0.1.8/m4/libtool.m4
++libodfgen-0.1.8/m4/ltoptions.m4
++libodfgen-0.1.8/m4/ltsugar.m4
++libodfgen-0.1.8/m4/ax_cxx_compile_stdcxx_11.m4
++libodfgen-0.1.8/m4/ax_gcc_func_attribute.m4
++libodfgen-0.1.8/m4/ax_cxx_compile_stdcxx.m4
++libodfgen-0.1.8/m4/lt~obsolete.m4
++libodfgen-0.1.8/docs/Makefile.am
++libodfgen-0.1.8/docs/doxygen/
++libodfgen-0.1.8/docs/Makefile.in
++libodfgen-0.1.8/docs/doxygen/footer.html.in
++libodfgen-0.1.8/docs/doxygen/doxygen.cfg
++libodfgen-0.1.8/docs/doxygen/Makefile.am
++libodfgen-0.1.8/docs/doxygen/header.html.in
++libodfgen-0.1.8/docs/doxygen/Makefile.in
++libodfgen-0.1.8/test/testLink1.cxx
++libodfgen-0.1.8/test/testGraphic1.cxx
++libodfgen-0.1.8/test/testChart1.cxx
++libodfgen-0.1.8/test/StringDocumentHandler.hxx
++libodfgen-0.1.8/test/testMasterPage1.cxx
++libodfgen-0.1.8/test/testLayer1.cxx
++libodfgen-0.1.8/test/testList1.cxx
++libodfgen-0.1.8/test/Makefile.am
++libodfgen-0.1.8/test/testPageSpan1.cxx
++libodfgen-0.1.8/test/testParagraph1.cxx
++libodfgen-0.1.8/test/testTextbox1.cxx
++libodfgen-0.1.8/test/testSpan1.cxx
++libodfgen-0.1.8/test/Makefile.in
++libodfgen-0.1.8/test/testTable1.cxx
++libodfgen-0.1.8/test/StringDocumentHandler.cxx
++libodfgen-0.1.8/inc/libodfgen/
++libodfgen-0.1.8/inc/Makefile.am
++libodfgen-0.1.8/inc/Makefile.in
++libodfgen-0.1.8/inc/libodfgen/OdgGenerator.hxx
++libodfgen-0.1.8/inc/libodfgen/OdtGenerator.hxx
++libodfgen-0.1.8/inc/libodfgen/OdsGenerator.hxx
++libodfgen-0.1.8/inc/libodfgen/Makefile.am
++libodfgen-0.1.8/inc/libodfgen/OdpGenerator.hxx
++libodfgen-0.1.8/inc/libodfgen/OdfDocumentHandler.hxx
++libodfgen-0.1.8/inc/libodfgen/libodfgen-api.hxx
++libodfgen-0.1.8/inc/libodfgen/libodfgen.hxx
++libodfgen-0.1.8/inc/libodfgen/Makefile.in
++checking for a BSD-compatible install... /usr/bin/ginstall -c
++checking whether build environment is sane... yes
++checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
++checking for gawk... gawk
++checking whether make sets $(MAKE)... yes
++checking whether make supports nested variables... yes
++checking whether make supports nested variables... (cached) yes
++checking for gcc... gcc
++checking whether the C compiler works... yes
++checking for C compiler default output file name... a.out
++checking for suffix of executables... 
++checking whether we are cross compiling... no
++checking for suffix of object files... o
++checking whether we are using the GNU C compiler... yes
++checking whether gcc accepts -g... yes
++checking for gcc option to accept ISO C89... none needed
++checking whether gcc understands -c and -o together... yes
++checking whether make supports the include directive... yes (GNU style)
++checking dependency style of gcc... gcc3
++checking how to run the C preprocessor... gcc -E
++checking for g++... g++
++checking whether we are using the GNU C++ compiler... yes
++checking whether g++ accepts -g... yes
++checking dependency style of g++... gcc3
++checking whether ln -s works... yes
++checking whether make sets $(MAKE)... (cached) yes
++checking build system type... x86_64-slackware-linux-musl
++checking host system type... x86_64-slackware-linux-musl
++checking how to print strings... printf
++checking for a sed that does not truncate output... /usr/bin/sed
++checking for grep that handles long lines and -e... /usr/bin/grep
++checking for egrep... /usr/bin/grep -E
++checking for fgrep... /usr/bin/grep -F
++checking for ld used by gcc... /usr/bin/ld
++checking if the linker (/usr/bin/ld) is GNU ld... yes
++checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
++checking the name lister (/usr/bin/nm -B) interface... BSD nm
++checking the maximum length of command line arguments... 98304
++checking how to convert x86_64-slackware-linux-musl file names to x86_64-slackware-linux-musl format... func_convert_file_noop
++checking how to convert x86_64-slackware-linux-musl file names to toolchain format... func_convert_file_noop
++checking for /usr/bin/ld option to reload object files... -r
++checking for objdump... objdump
++checking how to recognize dependent libraries... pass_all
++checking for dlltool... dlltool
++checking how to associate runtime and link libraries... printf %s\n
++checking for ar... ar
++checking for archiver @FILE support... @
++checking for strip... strip
++checking for ranlib... ranlib
++checking command to parse /usr/bin/nm -B output from gcc object... ok
++checking for sysroot... no
++checking for a working dd... /usr/bin/dd
++checking how to truncate binary pipes... /usr/bin/dd bs=4096 count=1
++checking for mt... mt
++checking if mt is a manifest tool... no
++checking for ANSI C header files... no
++checking for sys/types.h... yes
++checking for sys/stat.h... yes
++checking for stdlib.h... yes
++checking for string.h... yes
++checking for memory.h... yes
++checking for strings.h... yes
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking for unistd.h... yes
++checking for dlfcn.h... yes
++checking for objdir... .libs
++checking if gcc supports -fno-rtti -fno-exceptions... no
++checking for gcc option to produce PIC... -fPIC -DPIC
++checking if gcc PIC flag -fPIC -DPIC works... yes
++checking if gcc static flag -static works... yes
++checking if gcc supports -c -o file.o... yes
++checking if gcc supports -c -o file.o... (cached) yes
++checking whether the gcc linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
++checking whether -lc should be explicitly linked in... no
++checking dynamic linker characteristics... GNU/Linux ld.so
++checking how to hardcode library paths into programs... immediate
++checking whether stripping libraries is possible... yes
++checking if libtool supports shared libraries... yes
++checking whether to build shared libraries... yes
++checking whether to build static libraries... no
++checking how to run the C++ preprocessor... g++ -E
++checking for ld used by g++... /usr/bin/ld -m elf_x86_64
++checking if the linker (/usr/bin/ld -m elf_x86_64) is GNU ld... yes
++checking whether the g++ linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
++checking for g++ option to produce PIC... -fPIC -DPIC
++checking if g++ PIC flag -fPIC -DPIC works... yes
++checking if g++ static flag -static works... yes
++checking if g++ supports -c -o file.o... yes
++checking if g++ supports -c -o file.o... (cached) yes
++checking whether the g++ linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
++checking dynamic linker characteristics... (cached) GNU/Linux ld.so
++checking how to hardcode library paths into programs... immediate
++checking pkg-config is at least version 0.20... yes
++checking whether g++ supports C++11 features by default... yes
++checking for __attribute__((format))... yes
++checking for
++    librevenge-0.0
++    librevenge-stream-0.0
++... yes
++checking for libxml-2.0... yes
++checking for native Win32... no
++checking for Win32 platform in general... no
++checking for -fvisibility=hidden compiler flag... yes
++checking for __attribute__((visibility))... yes
++checking for doxygen... /usr/bin/doxygen
++checking that generated files are newer than configure... done
++configure: creating ./config.status
++config.status: creating libodfgen-0.1.pc
++config.status: creating Makefile
++config.status: creating build/Makefile
++config.status: creating build/win32/Makefile
++config.status: creating docs/Makefile
++config.status: creating docs/doxygen/Makefile
++config.status: creating inc/Makefile
++config.status: creating inc/libodfgen/Makefile
++config.status: creating src/Makefile
++config.status: creating src/libodfgen.rc
++config.status: creating test/Makefile
++config.status: creating config.h
++config.status: executing depfiles commands
++config.status: executing libtool commands
++configure:
++==============================================================================
++Build configuration:
++    debug:           no
++    docs:            yes
++    werror:          no
++==============================================================================
++
++make  all-recursive
++make[1]: Entering directory '/tmp/libodfgen-0.1.8'
++Making all in build
++make[2]: Entering directory '/tmp/libodfgen-0.1.8/build'
++Making all in win32
++make[3]: Entering directory '/tmp/libodfgen-0.1.8/build/win32'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/libodfgen-0.1.8/build/win32'
++make[3]: Entering directory '/tmp/libodfgen-0.1.8/build'
++make[3]: Nothing to be done for 'all-am'.
++make[3]: Leaving directory '/tmp/libodfgen-0.1.8/build'
++make[2]: Leaving directory '/tmp/libodfgen-0.1.8/build'
++Making all in inc
++make[2]: Entering directory '/tmp/libodfgen-0.1.8/inc'
++Making all in libodfgen
++make[3]: Entering directory '/tmp/libodfgen-0.1.8/inc/libodfgen'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/libodfgen-0.1.8/inc/libodfgen'
++make[3]: Entering directory '/tmp/libodfgen-0.1.8/inc'
++make[3]: Nothing to be done for 'all-am'.
++make[3]: Leaving directory '/tmp/libodfgen-0.1.8/inc'
++make[2]: Leaving directory '/tmp/libodfgen-0.1.8/inc'
++Making all in src
++make[2]: Entering directory '/tmp/libodfgen-0.1.8/src'
++  CXX      DocumentElement.lo
++  CXX      FillManager.lo
++  CXX      FilterInternal.lo
++  CXX      FontStyle.lo
++  CXX      GraphicFunctions.lo
++  CXX      GraphicStyle.lo
++  CXX      InternalHandler.lo
++  CXX      ListStyle.lo
++  CXX      NumberingStyle.lo
++  CXX      PageSpan.lo
++  CXX      SectionStyle.lo
++  CXX      SheetStyle.lo
++  CXX      TableStyle.lo
++  CXX      TextRunStyle.lo
++  CXX      OdcGenerator.lo
++  CXX      OdfGenerator.lo
++  CXX      OdgGenerator.lo
++  CXX      OdpGenerator.lo
++  CXX      OdsGenerator.lo
++  CXX      OdtGenerator.lo
++  CXXLD    libodfgen-0.1.la
++make[2]: Leaving directory '/tmp/libodfgen-0.1.8/src'
++Making all in docs
++make[2]: Entering directory '/tmp/libodfgen-0.1.8/docs'
++Making all in doxygen
++make[3]: Entering directory '/tmp/libodfgen-0.1.8/docs/doxygen'
++test -f header.html.in || ln -s ./header.html.in ./
++test -f footer.html.in || ln -s ./footer.html.in ./
++doxygen ./doxygen.cfg
++warning: Tag 'TCL_SUBST' at line 237 of file './doxygen.cfg' has become obsolete.
++         To avoid this warning please remove this line from your configuration file or upgrade it using "doxygen -u"
++warning: Tag 'PERL_PATH' at line 2028 of file './doxygen.cfg' has become obsolete.
++         To avoid this warning please remove this line from your configuration file or upgrade it using "doxygen -u"
++warning: Tag 'MSCGEN_PATH' at line 2050 of file './doxygen.cfg' has become obsolete.
++         To avoid this warning please remove this line from your configuration file or upgrade it using "doxygen -u"
++warning: argument 'a4wide' for option PAPER_TYPE is not a valid enum value
++Using the default: a4!
++Doxygen version used: 1.8.20
++Searching for include files...
++Searching for example files...
++Searching for images...
++Searching for dot files...
++Searching for msc files...
++Searching for dia files...
++Searching for files to exclude
++Searching INPUT for files to process...
++Searching for files in directory /tmp/libodfgen-0.1.8/inc
++Searching for files in directory /tmp/libodfgen-0.1.8/inc/libodfgen
++Reading and parsing tag files
++Parsing files
++Preprocessing /tmp/libodfgen-0.1.8/inc/libodfgen/libodfgen-api.hxx...
++Parsing file /tmp/libodfgen-0.1.8/inc/libodfgen/libodfgen-api.hxx...
++Preprocessing /tmp/libodfgen-0.1.8/inc/libodfgen/libodfgen.hxx...
++Parsing file /tmp/libodfgen-0.1.8/inc/libodfgen/libodfgen.hxx...
++Preprocessing /tmp/libodfgen-0.1.8/inc/libodfgen/OdfDocumentHandler.hxx...
++Parsing file /tmp/libodfgen-0.1.8/inc/libodfgen/OdfDocumentHandler.hxx...
++Preprocessing /tmp/libodfgen-0.1.8/inc/libodfgen/OdgGenerator.hxx...
++Parsing file /tmp/libodfgen-0.1.8/inc/libodfgen/OdgGenerator.hxx...
++Preprocessing /tmp/libodfgen-0.1.8/inc/libodfgen/OdpGenerator.hxx...
++Parsing file /tmp/libodfgen-0.1.8/inc/libodfgen/OdpGenerator.hxx...
++Preprocessing /tmp/libodfgen-0.1.8/inc/libodfgen/OdsGenerator.hxx...
++Parsing file /tmp/libodfgen-0.1.8/inc/libodfgen/OdsGenerator.hxx...
++Preprocessing /tmp/libodfgen-0.1.8/inc/libodfgen/OdtGenerator.hxx...
++Parsing file /tmp/libodfgen-0.1.8/inc/libodfgen/OdtGenerator.hxx...
++Building macro definition list...
++Building group list...
++Building directory list...
++Building namespace list...
++Building file list...
++Building class list...
++Computing nesting relations for classes...
++Associating documentation with classes...
++Building example list...
++Searching for enumerations...
++Searching for documented typedefs...
++Searching for members imported via using declarations...
++Searching for included using directives...
++Searching for documented variables...
++Building interface member list...
++Building member list...
++Searching for friends...
++Searching for documented defines...
++Computing class inheritance relations...
++Computing class usage relations...
++Flushing cached template relations that have become invalid...
++Computing class relations...
++Add enum values to enums...
++Searching for member function documentation...
++Creating members for template instances...
++Building page list...
++Search for main page...
++Computing page relations...
++Determining the scope of groups...
++Sorting lists...
++Determining which enums are documented
++Computing member relations...
++Building full member lists recursively...
++Adding members to member groups.
++Computing member references...
++Inheriting documentation...
++Generating disk names...
++Adding source references...
++Adding xrefitems...
++Sorting member lists...
++Setting anonymous enum type...
++Computing dependencies between directories...
++Generating citations page...
++Counting members...
++Counting data structures...
++Resolving user defined references...
++Finding anchors and sections in the documentation...
++Transferring function references...
++Combining using relations...
++Adding members to index pages...
++Correcting members for VHDL...
++Generating style sheet...
++Generating search indices...
++Generating example documentation...
++Generating file sources...
++Generating code for file libodfgen-api.hxx...
++Generating code for file libodfgen.hxx...
++Generating code for file OdfDocumentHandler.hxx...
++Generating code for file OdgGenerator.hxx...
++Generating code for file OdpGenerator.hxx...
++Generating code for file OdsGenerator.hxx...
++Generating code for file OdtGenerator.hxx...
++Generating file documentation...
++Generating docs for file libodfgen-api.hxx...
++Generating docs for file libodfgen.hxx...
++Generating docs for file OdfDocumentHandler.hxx...
++Generating docs for file OdgGenerator.hxx...
++Generating docs for file OdpGenerator.hxx...
++Generating docs for file OdsGenerator.hxx...
++Generating docs for file OdtGenerator.hxx...
++Generating page documentation...
++Generating group documentation...
++Generating class documentation...
++Generating docs for compound OdfDocumentHandler...
++Generating docs for compound OdgGenerator...
++Generating docs for compound OdpGenerator...
++Generating docs for compound OdsGenerator...
++Generating docs for compound OdtGenerator/tmp/libodfgen-0.1.8/inc/libodfgen/OdtGenerator.hxx:39: warning: explicit link request to 'librevenge::RVNGTextInterface' could not be resolved
++...
++Generating namespace index...
++Generating graph info page...
++Generating directory documentation...
++Generating index page...
++Generating page index...
++Generating module index...
++Generating namespace index...
++Generating namespace member index...
++Generating annotated compound index...
++Generating alphabetical compound index...
++Generating hierarchical class index...
++Generating member index...
++Generating file index...
++Generating file member index...
++Generating example index...
++finalizing index lists...
++writing tag file...
++Running plantuml with JAVA...
++lookup cache used 349/65536 hits=786 misses=349
++finished...
++make[3]: Leaving directory '/tmp/libodfgen-0.1.8/docs/doxygen'
++make[3]: Entering directory '/tmp/libodfgen-0.1.8/docs'
++make[3]: Nothing to be done for 'all-am'.
++make[3]: Leaving directory '/tmp/libodfgen-0.1.8/docs'
++make[2]: Leaving directory '/tmp/libodfgen-0.1.8/docs'
++make[2]: Entering directory '/tmp/libodfgen-0.1.8'
++make[2]: Leaving directory '/tmp/libodfgen-0.1.8'
++make[1]: Leaving directory '/tmp/libodfgen-0.1.8'
++Making install in build
++make[1]: Entering directory '/tmp/libodfgen-0.1.8/build'
++Making install in win32
++make[2]: Entering directory '/tmp/libodfgen-0.1.8/build/win32'
++make[3]: Entering directory '/tmp/libodfgen-0.1.8/build/win32'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/libodfgen-0.1.8/build/win32'
++make[2]: Leaving directory '/tmp/libodfgen-0.1.8/build/win32'
++make[2]: Entering directory '/tmp/libodfgen-0.1.8/build'
++make[3]: Entering directory '/tmp/libodfgen-0.1.8/build'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/libodfgen-0.1.8/build'
++make[2]: Leaving directory '/tmp/libodfgen-0.1.8/build'
++make[1]: Leaving directory '/tmp/libodfgen-0.1.8/build'
++Making install in inc
++make[1]: Entering directory '/tmp/libodfgen-0.1.8/inc'
++Making install in libodfgen
++make[2]: Entering directory '/tmp/libodfgen-0.1.8/inc/libodfgen'
++make[3]: Entering directory '/tmp/libodfgen-0.1.8/inc/libodfgen'
++make[3]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-libodfgen/usr/include/libodfgen-0.1/libodfgen'
++ /usr/bin/ginstall -c -m 644 OdfDocumentHandler.hxx OdgGenerator.hxx OdpGenerator.hxx OdsGenerator.hxx OdtGenerator.hxx libodfgen-api.hxx libodfgen.hxx '/tmp/package-libodfgen/usr/include/libodfgen-0.1/libodfgen'
++make[3]: Leaving directory '/tmp/libodfgen-0.1.8/inc/libodfgen'
++make[2]: Leaving directory '/tmp/libodfgen-0.1.8/inc/libodfgen'
++make[2]: Entering directory '/tmp/libodfgen-0.1.8/inc'
++make[3]: Entering directory '/tmp/libodfgen-0.1.8/inc'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/libodfgen-0.1.8/inc'
++make[2]: Leaving directory '/tmp/libodfgen-0.1.8/inc'
++make[1]: Leaving directory '/tmp/libodfgen-0.1.8/inc'
++Making install in src
++make[1]: Entering directory '/tmp/libodfgen-0.1.8/src'
++make[2]: Entering directory '/tmp/libodfgen-0.1.8/src'
++ /usr/bin/mkdir -p '/tmp/package-libodfgen/usr/lib'
++ /bin/sh ../libtool   --mode=install /usr/bin/ginstall -c   libodfgen-0.1.la '/tmp/package-libodfgen/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/libodfgen-0.1.so.1.0.8 /tmp/package-libodfgen/usr/lib/libodfgen-0.1.so.1.0.8
++libtool: install: (cd /tmp/package-libodfgen/usr/lib && { ln -s -f libodfgen-0.1.so.1.0.8 libodfgen-0.1.so.1 || { rm -f libodfgen-0.1.so.1 && ln -s libodfgen-0.1.so.1.0.8 libodfgen-0.1.so.1; }; })
++libtool: install: (cd /tmp/package-libodfgen/usr/lib && { ln -s -f libodfgen-0.1.so.1.0.8 libodfgen-0.1.so || { rm -f libodfgen-0.1.so && ln -s libodfgen-0.1.so.1.0.8 libodfgen-0.1.so; }; })
++libtool: install: /usr/bin/ginstall -c .libs/libodfgen-0.1.lai /tmp/package-libodfgen/usr/lib/libodfgen-0.1.la
++libtool: warning: remember to run 'libtool --finish /usr/lib'
++make[2]: Nothing to be done for 'install-data-am'.
++make[2]: Leaving directory '/tmp/libodfgen-0.1.8/src'
++make[1]: Leaving directory '/tmp/libodfgen-0.1.8/src'
++Making install in docs
++make[1]: Entering directory '/tmp/libodfgen-0.1.8/docs'
++Making install in doxygen
++make[2]: Entering directory '/tmp/libodfgen-0.1.8/docs/doxygen'
++make[3]: Entering directory '/tmp/libodfgen-0.1.8/docs/doxygen'
++make[3]: Nothing to be done for 'install-exec-am'.
++mkdir -p /tmp/package-libodfgen/usr/doc/libodfgen-0.1.8/html
++/usr/bin/ginstall -c -m 644 html/*.html /tmp/package-libodfgen/usr/doc/libodfgen-0.1.8/html/
++/usr/bin/ginstall -c -m 644 html/*.png /tmp/package-libodfgen/usr/doc/libodfgen-0.1.8/html/
++/usr/bin/ginstall -c -m 644 html/*.css /tmp/package-libodfgen/usr/doc/libodfgen-0.1.8/html/
++make[3]: Leaving directory '/tmp/libodfgen-0.1.8/docs/doxygen'
++make[2]: Leaving directory '/tmp/libodfgen-0.1.8/docs/doxygen'
++make[2]: Entering directory '/tmp/libodfgen-0.1.8/docs'
++make[3]: Entering directory '/tmp/libodfgen-0.1.8/docs'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/libodfgen-0.1.8/docs'
++make[2]: Leaving directory '/tmp/libodfgen-0.1.8/docs'
++make[1]: Leaving directory '/tmp/libodfgen-0.1.8/docs'
++make[1]: Entering directory '/tmp/libodfgen-0.1.8'
++make[2]: Entering directory '/tmp/libodfgen-0.1.8'
++make[2]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-libodfgen/usr/lib/pkgconfig'
++ /usr/bin/ginstall -c -m 644 libodfgen-0.1.pc '/tmp/package-libodfgen/usr/lib/pkgconfig'
++make[2]: Leaving directory '/tmp/libodfgen-0.1.8'
++make[1]: Leaving directory '/tmp/libodfgen-0.1.8'
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++usr/lib/libodfgen-0.1.so	libodfgen-0.1.so.1.0.8
++usr/lib/libodfgen-0.1.so.1	libodfgen-0.1.so.1.0.8
++
++Making symbolic link creation script:
++( cd usr/lib ; rm -rf libodfgen-0.1.so )
++( cd usr/lib ; ln -sf libodfgen-0.1.so.1.0.8 libodfgen-0.1.so )
++( cd usr/lib ; rm -rf libodfgen-0.1.so.1 )
++( cd usr/lib ; ln -sf libodfgen-0.1.so.1.0.8 libodfgen-0.1.so.1 )
++
++It is recommended that you make these lines your new installation script.
++
++Would you like to make this stuff the install script for this package
++and remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './usr/lib/libodfgen-0.1.so'
++removed './usr/lib/libodfgen-0.1.so.1'
++
++Creating your new ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/libodfgen-0.1.8-x86_64-1.txz
++
++./
++install/
++install/doinst.sh
++install/slack-desc
++usr/
++usr/doc/
++usr/doc/libodfgen-0.1.8/
++usr/doc/libodfgen-0.1.8/AUTHORS
++usr/doc/libodfgen-0.1.8/COPYING.LGPL
++usr/doc/libodfgen-0.1.8/COPYING.MPL
++usr/doc/libodfgen-0.1.8/ChangeLog
++usr/doc/libodfgen-0.1.8/NEWS
++usr/doc/libodfgen-0.1.8/README
++usr/doc/libodfgen-0.1.8/html/
++usr/doc/libodfgen-0.1.8/html/OdfDocumentHandler_8hxx.html
++usr/doc/libodfgen-0.1.8/html/OdfDocumentHandler_8hxx_source.html
++usr/doc/libodfgen-0.1.8/html/OdgGenerator_8hxx.html
++usr/doc/libodfgen-0.1.8/html/OdgGenerator_8hxx_source.html
++usr/doc/libodfgen-0.1.8/html/OdpGenerator_8hxx.html
++usr/doc/libodfgen-0.1.8/html/OdpGenerator_8hxx_source.html
++usr/doc/libodfgen-0.1.8/html/OdsGenerator_8hxx.html
++usr/doc/libodfgen-0.1.8/html/OdsGenerator_8hxx_source.html
++usr/doc/libodfgen-0.1.8/html/OdtGenerator_8hxx.html
++usr/doc/libodfgen-0.1.8/html/OdtGenerator_8hxx_source.html
++usr/doc/libodfgen-0.1.8/html/annotated.html
++usr/doc/libodfgen-0.1.8/html/bc_s.png
++usr/doc/libodfgen-0.1.8/html/bdwn.png
++usr/doc/libodfgen-0.1.8/html/classOdfDocumentHandler-members.html
++usr/doc/libodfgen-0.1.8/html/classOdfDocumentHandler.html
++usr/doc/libodfgen-0.1.8/html/classOdgGenerator-members.html
++usr/doc/libodfgen-0.1.8/html/classOdgGenerator.html
++usr/doc/libodfgen-0.1.8/html/classOdgGenerator.png
++usr/doc/libodfgen-0.1.8/html/classOdpGenerator-members.html
++usr/doc/libodfgen-0.1.8/html/classOdpGenerator.html
++usr/doc/libodfgen-0.1.8/html/classOdpGenerator.png
++usr/doc/libodfgen-0.1.8/html/classOdsGenerator-members.html
++usr/doc/libodfgen-0.1.8/html/classOdsGenerator.html
++usr/doc/libodfgen-0.1.8/html/classOdsGenerator.png
++usr/doc/libodfgen-0.1.8/html/classOdtGenerator-members.html
++usr/doc/libodfgen-0.1.8/html/classOdtGenerator.html
++usr/doc/libodfgen-0.1.8/html/classOdtGenerator.png
++usr/doc/libodfgen-0.1.8/html/classes.html
++usr/doc/libodfgen-0.1.8/html/closed.png
++usr/doc/libodfgen-0.1.8/html/dir_0c4b4fb351457f55c047add07d9a0b0d.html
++usr/doc/libodfgen-0.1.8/html/dir_bfccd401955b95cf8c75461437045ac0.html
++usr/doc/libodfgen-0.1.8/html/doc.png
++usr/doc/libodfgen-0.1.8/html/doxygen.css
++usr/doc/libodfgen-0.1.8/html/files.html
++usr/doc/libodfgen-0.1.8/html/folderclosed.png
++usr/doc/libodfgen-0.1.8/html/folderopen.png
++usr/doc/libodfgen-0.1.8/html/functions.html
++usr/doc/libodfgen-0.1.8/html/functions_c.html
++usr/doc/libodfgen-0.1.8/html/functions_d.html
++usr/doc/libodfgen-0.1.8/html/functions_e.html
++usr/doc/libodfgen-0.1.8/html/functions_func.html
++usr/doc/libodfgen-0.1.8/html/functions_func_c.html
++usr/doc/libodfgen-0.1.8/html/functions_func_d.html
++usr/doc/libodfgen-0.1.8/html/functions_func_e.html
++usr/doc/libodfgen-0.1.8/html/functions_func_g.html
++usr/doc/libodfgen-0.1.8/html/functions_func_i.html
++usr/doc/libodfgen-0.1.8/html/functions_func_o.html
++usr/doc/libodfgen-0.1.8/html/functions_func_r.html
++usr/doc/libodfgen-0.1.8/html/functions_func_s.html
++usr/doc/libodfgen-0.1.8/html/functions_func_~.html
++usr/doc/libodfgen-0.1.8/html/functions_g.html
++usr/doc/libodfgen-0.1.8/html/functions_i.html
++usr/doc/libodfgen-0.1.8/html/functions_m.html
++usr/doc/libodfgen-0.1.8/html/functions_o.html
++usr/doc/libodfgen-0.1.8/html/functions_r.html
++usr/doc/libodfgen-0.1.8/html/functions_s.html
++usr/doc/libodfgen-0.1.8/html/functions_vars.html
++usr/doc/libodfgen-0.1.8/html/functions_~.html
++usr/doc/libodfgen-0.1.8/html/globals.html
++usr/doc/libodfgen-0.1.8/html/globals_defs.html
++usr/doc/libodfgen-0.1.8/html/globals_enum.html
++usr/doc/libodfgen-0.1.8/html/globals_eval.html
++usr/doc/libodfgen-0.1.8/html/globals_type.html
++usr/doc/libodfgen-0.1.8/html/hierarchy.html
++usr/doc/libodfgen-0.1.8/html/index.html
++usr/doc/libodfgen-0.1.8/html/libodfgen-api_8hxx.html
++usr/doc/libodfgen-0.1.8/html/libodfgen-api_8hxx_source.html
++usr/doc/libodfgen-0.1.8/html/libodfgen_8hxx.html
++usr/doc/libodfgen-0.1.8/html/libodfgen_8hxx_source.html
++usr/doc/libodfgen-0.1.8/html/nav_f.png
++usr/doc/libodfgen-0.1.8/html/nav_g.png
++usr/doc/libodfgen-0.1.8/html/nav_h.png
++usr/doc/libodfgen-0.1.8/html/navtree.css
++usr/doc/libodfgen-0.1.8/html/open.png
++usr/doc/libodfgen-0.1.8/html/splitbar.png
++usr/doc/libodfgen-0.1.8/html/sync_off.png
++usr/doc/libodfgen-0.1.8/html/sync_on.png
++usr/doc/libodfgen-0.1.8/html/tab_a.png
++usr/doc/libodfgen-0.1.8/html/tab_b.png
++usr/doc/libodfgen-0.1.8/html/tab_h.png
++usr/doc/libodfgen-0.1.8/html/tab_s.png
++usr/doc/libodfgen-0.1.8/html/tabs.css
++usr/include/
++usr/include/libodfgen-0.1/
++usr/include/libodfgen-0.1/libodfgen/
++usr/include/libodfgen-0.1/libodfgen/OdfDocumentHandler.hxx
++usr/include/libodfgen-0.1/libodfgen/OdgGenerator.hxx
++usr/include/libodfgen-0.1/libodfgen/OdpGenerator.hxx
++usr/include/libodfgen-0.1/libodfgen/OdsGenerator.hxx
++usr/include/libodfgen-0.1/libodfgen/OdtGenerator.hxx
++usr/include/libodfgen-0.1/libodfgen/libodfgen-api.hxx
++usr/include/libodfgen-0.1/libodfgen/libodfgen.hxx
++usr/lib/
++usr/lib/libodfgen-0.1.so.1.0.8
++usr/lib/pkgconfig/
++usr/lib/pkgconfig/libodfgen-0.1.pc
++
++Slackware package /tmp/libodfgen-0.1.8-x86_64-1.txz created.
++

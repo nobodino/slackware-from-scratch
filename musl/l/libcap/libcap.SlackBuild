@@ -1,0 +1,138 @@
+#!/bin/bash
+
+# Copyright 2009, 2010, 2011, 2018, 2019, 2020  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# Originally written by Menno Duursma
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=libcap
+VERSION=${VERSION:-$(echo $PKGNAM-*.tar.xz | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
+BUILD=${BUILD:-1}
+
+# Building Go support is currently disabled until something actually needs it:
+GOSUPPORT=${GOSUPPORT:-no}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+# Recent versions haven't worked well with -j:
+#NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i686" ]; then
+  SLKCFLAGS="-O2 -march=i686 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "arm" ]; then
+  SLKCFLAGS="-O2 -march=armv4 -mtune=xscale"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "armel" ]; then
+  SLKCFLAGS="-O2 -march=armv4t"
+  LIBDIRSUFFIX=""
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-$PKGNAM
+
+rm -rf $PKG
+mkdir -p $TMP $PKG/lib${LIBDIRSUFFIX}
+cd $TMP 
+rm -rf $PKGNAM-$VERSION
+tar xvf $CWD/$PKGNAM-$VERSION.tar.xz || exit 1
+cd $PKGNAM-$VERSION || exit 1
+
+chown -R root:root .
+find . \
+ \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+ -exec chmod 755 {} \+ -o \
+ \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+ -exec chmod 644 {} \+
+
+# Put the pkgconfig files in the proper location:
+zcat $CWD/libcap.pkgconfig.path.diff.gz | patch -p1 --verbose || exit 1
+
+# Set the CFLAGS
+sed -i "s/^\(DEBUG =\).*/\1$SLKCFLAGS/" Make.Rules
+
+# Disable broken gperf support:
+sed -i 's@^BUILD_GPERF@#\0@' Make.Rules
+
+make lib=lib$LIBDIRSUFFIX DYNAMIC=yes GOLANG=$GOSUPPORT || exit 1
+make lib=lib$LIBDIRSUFFIX install RAISE_SETFCAP=no GOLANG=$GOSUPPORT DESTDIR=$PKG man_prefix=/usr || exit 1
+chmod 755 $PKG/lib${LIBDIRSUFFIX}/libcap.so*
+
+# Don't ship the static libcap.a. Leave libpsx.a alone, though - there's no
+# dynamic equivalent for that one:
+rm -f $PKG/lib*/libcap.a
+
+find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
+  | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+
+# Add included scripts
+( cd contrib || exit 1
+  for file in pcaps4convenience pcaps4server pcaps4suid0 ; do
+    install -m 0755 -D $file $PKG/usr/sbin/$file
+  done
+)
+
+# glibc already has the capget/capset manpage
+rm -rf $PKG/usr/man/man2
+
+# Compress the man pages
+( cd $PKG/usr/man
+  find . -type f -exec gzip -9 {} \+
+  for i in $(find . -type l) ; do ln -s $(readlink $i).gz $i.gz ; rm $i ; done
+)
+
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION
+cp -a \
+  CHANGELOG License README pgp.keys.asc doc/capability.notes \
+  progs/quicktest.sh $CWD/capfaq-0.2.txt $CWD/README.SLACKWARE \
+  $PKG/usr/doc/$PKGNAM-$VERSION
+chown -R root:root $PKG/usr/doc
+find $PKG/usr/doc -type f -exec chmod 644 {} \+
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/$PKGNAM-$VERSION-$ARCH-$BUILD.txz
+

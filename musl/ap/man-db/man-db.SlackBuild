@@ -1,0 +1,263 @@
+#!/bin/bash
+
+# Slackware build script for man-db
+# Written by B. Watson (yalhcru@gmail.com)
+# Licensed under the WTFPL. See http://www.wtfpl.net/txt/copying/ for details.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=man-db
+VERSION=${VERSION:-$(echo $PKGNAM-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+BUILD=${BUILD:-2}
+
+MAN2HTML=${MAN2HTML:-20180101}
+
+# 20180115 rworkman:
+# Include Thomas Dickey's man2html script
+
+# 20171128 volkerdi:
+# Make some changes to the SlackBuild to bring it in line with the usual
+# Slackware style, and then pull it into Slackware. Thanks to B. Watson.
+# License remains WTFPL, because WTF not :-) I am adding the offical WTFPL
+# no warranty disclaimer, however:
+#
+# /* This program is free software. It comes without any warranty, to
+#  * the extent permitted by applicable law. You can redistribute it
+#  * and/or modify it under the terms of the Do What The Fuck You Want
+#  * To Public License, Version 2, as published by Sam Hocevar. See
+#  * http://www.wtfpl.net/ for more details. */
+#
+
+# 20170305 bkw:
+# - get rid of systemd-specific /usr/lib/tmpfiles.d from package.
+# - patch configure so it doesn't write to /usr/lib.
+
+# 20170215 bkw:
+# - update for 2.7.6.1 (whoops, last update wasn't for the latest version
+# - only update the cache in doinst.sh if it's over an hour old. this
+#   takes several minutes, and happens twice (uselessly) if the package
+#   is upgraded (since üpgradepkg runs doinst.sh twice). waiting an hour
+#   also makes my life easier when I'm testing this script.
+# - fix man-db.cron so it works even if USR=yes (whoops), and stop trying
+#   to chown the cache to the nonexistent 'man' user.
+
+# 20170125 bkw:
+# - update for 2.7.6.
+# - add --disable-cache-owner. TODO: revisit this at some
+#   point. Maybe create a dedicated 'man' user, or use one of the existing
+#   users like 'bin' or 'operator'.
+
+# 20160726 bkw:
+# - update for 2.7.5.
+
+# 20150507 bkw:
+# - update for 2.7.1.
+# - fix homepage in .info file.
+# - had to update libpipeline to 1.4.0.
+
+# 20140924 bkw:
+# - update for 2.7.0.1, which fixes the clash between man-db's zsoelim
+#   and groff's zsoelim.
+# - update README and README.Slackware slightly.
+
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) ARCH=i586 ;;
+    arm*) ARCH=arm ;;
+       *) ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-$PKGNAM
+OUTPUT=${OUTPUT:-/tmp}
+
+NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i686" ]; then
+  SLKCFLAGS="-O2 -march=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "armv7hl" ]; then
+  SLKCFLAGS="-O3 -march=armv7-a -mfpu=vfpv3-d16"
+  LIBDIRSUFFIX=""
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+# Don't use icecream:
+PATH=$(echo $PATH | sed "s|/usr/libexec/icecc/bin||g" | tr -s : | sed "s/^://g" | sed "s/:$//g")
+
+# By default, install binaries to /opt, so as not to stomp on Slackware's
+# man pkg. We will have to include a /etc/profile.d script to set PATH,
+# MANPATH, etc. Note that only binaries and the man pages for man-db itself
+# go to /opt. Everything else (libpipeline, man-db's shared libs, localized
+# messages, etc) goes to /usr as usual.
+
+# If you want a proper replacement for Slack's man pkg, build with
+# USR="yes", which puts the binaries in the usual places. If your name is
+# Patrick V. and you're finally replacing man with man-db in Slackware,
+# feel free to uncomment the next line:
+# (I actually felt free to strip out support for USR != yes :-)
+USR="yes"
+
+BINDIR=/opt/$PKGNAM/bin
+[ "${USR:-no}" = "yes" ] && BINDIR=/usr/bin
+MANDIR="${BINDIR/bin/man}"
+
+rm -rf $PKG
+mkdir -p $TMP $PKG $OUTPUT
+
+# libpipeline is a pretty niche-market library. It used to be bundled
+# in the man-db source, and as far as I can tell, nothing else uses it.
+# Instead of making it a separate build and external dep, we'll just
+# bundle it here.
+LIBNAM=libpipeline
+LIBVER=${LIBVER:-$(echo $LIBNAM-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+
+cd $TMP
+rm -rf $LIBNAM-$LIBVER
+tar xvf $CWD/$LIBNAM-$LIBVER.tar.?z || exit 1
+cd $LIBNAM-$LIBVER || exit 1
+chown -R root:root .
+find -L . \
+ \( -perm 777 -o -perm 775 -o -perm 750 -o -perm 711 -o -perm 555 \
+  -o -perm 511 \) -exec chmod 755 {} \+ -o \
+ \( -perm 666 -o -perm 664 -o -perm 640 -o -perm 600 -o -perm 444 \
+  -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \+
+
+CFLAGS="$SLKCFLAGS" \
+CXXFLAGS="$SLKCFLAGS" \
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
+  --mandir=/usr/man \
+  --docdir=/usr/doc/$PKGNAM-$VERSION/$LIBNAM-$LIBVER \
+  --build=$ARCH-slackware-linux-musl || exit 1
+ 
+make $NUMJOBS || make || exit 1
+make install-strip DESTDIR=$PKG || exit 1
+# Musl does not honorp LD_LIBRARY_PATH later on, so put libpipeline directly on the system
+make install-strip || exit 1
+
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/$LIBNAM-$LIBVER
+cp -a COPYING* ChangeLog NEWS* README* TODO* \
+  $PKG/usr/doc/$PKGNAM-$VERSION/$LIBNAM-$LIBVER
+
+# now build man-db itself, using the libpipeline installed in $PKG
+cd $TMP
+rm -rf $PKGNAM-$VERSION
+tar xvf $CWD/$PKGNAM-$VERSION.tar.?z || exit 1
+cd $PKGNAM-$VERSION || exit 1
+
+chown -R root:root .
+find -L . \
+ \( -perm 777 -o -perm 775 -o -perm 750 -o -perm 711 -o -perm 555 \
+  -o -perm 511 \) -exec chmod 755 {} \+ -o \
+ \( -perm 666 -o -perm 664 -o -perm 640 -o -perm 600 -o -perm 444 \
+  -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \+
+
+# The 'checking for long filenames' test in the configure script writes to
+# /usr/lib, which is bad behaviour for a configure script. Not to mention
+# wrong (it assumes configure is always being run as root). We already
+# know we have long filename support, because we live in the 21st century
+# now, so this patch gets rid of the test and force-enables it.
+zcat $CWD/dont_write_in_usr.diff.gz | patch -p1 --verbose || exit 1
+
+# The circumlocutions below are needed because doing it the sane way:
+# gets broken by libtool (it *insists* on replacing -lpipeline with
+# /usr/lib64/libpipeline.so, which will fail if it's an older version).
+CFLAGS="$SLKCFLAGS" \
+CXXFLAGS="$SLKCFLAGS" \
+./configure \
+  --disable-setuid \
+  --disable-cache-owner \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
+  --mandir=$MANDIR \
+  --bindir=$BINDIR \
+  --sbindir=${BINDIR/bin/sbin} \
+  --docdir=/usr/doc/$PKGNAM-$VERSION \
+  --build=$ARCH-slackware-linux-musl || exit 1
+
+make $NUMJOBS || make || exit 1
+make install-strip DESTDIR=$PKG || exit 1
+# Musl does not honorp LD_LIBRARY_PATH later on, so put libpipeline directly on the system
+make install-strip || exit 1
+
+# Add man2html
+( cd $PKG/usr/bin
+  tar --strip-components=1 -xvf $CWD/other-scripts-${MAN2HTML}.tar.?z \
+    other-scripts-${MAN2HTML}/man2html
+  chown root:root man2html
+  chmod 755 man2html
+)
+
+# Don't ship .la files:
+rm -f $PKG/usr/lib${LIBDIRSUFFIX}/*.la $PKG/usr/lib${LIBDIRSUFFIX}/man-db/*.la
+
+# This stuff is for systemd, we don't need it (and it might confuse
+# people coming from systemd distros):
+rm -rf $PKG/usr/lib/tmpfiles.d/
+
+find $PKG/usr/man -type f -exec gzip -9 {} \+
+for i in $( find $PKG/usr/man -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+
+# no special ownership or perms needed here since we --disable-setuid
+mkdir -p $PKG/var/cache/man
+
+# only ship a daily cronjob, don't need a weekly one like Debian has.
+mkdir -p $PKG/etc/cron.daily
+install -m0755 -oroot -groot $CWD/$PKGNAM.cron $PKG/etc/cron.daily/$PKGNAM
+
+# Choose a pager (defaults to 'most'):
+mkdir -p $PKG/etc/profile.d
+cp -a $CWD/man-db.sh $CWD/man-db.csh $PKG/etc/profile.d
+chown root:root $PKG/etc/profile.d/*
+chmod 755 $PKG/etc/profile.d/*
+mv $PKG/etc/profile.d/man-db.csh $PKG/etc/profile.d/man-db.csh.new
+mv $PKG/etc/profile.d/man-db.sh $PKG/etc/profile.d/man-db.sh.new
+
+# modified default config, customized for Slackware. See the conf file for
+# list of changes.
+cat $CWD/man_db.conf.new \
+  | sed "s,@LIBDIRSUFFIX@,$LIBDIRSUFFIX,g" \
+  > $PKG/etc/man_db.conf.new
+# Get rid of any existing file put there by "make install":
+rm -rf $PKG/etc/man_db.conf
+
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION
+cp -a \
+  ChangeLog FAQ* NEWS* README* docs/COPYING* docs/HACKING docs/INSTALL.quick \
+  docs/TODO docs/*lsm docs/*example* \
+  $PKG/usr/doc/$PKGNAM-$VERSION
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
+
+# N.B. the -p option is actually needed here (for libpipeline.so).
+cd $PKG
+/sbin/makepkg -p -l y -c n $OUTPUT/$PKGNAM-$VERSION-$ARCH-$BUILD.txz
+

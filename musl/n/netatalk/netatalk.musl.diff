@@ -1,0 +1,2635 @@
+diff -ruBN /tmp/netatalk/netatalk.SlackBuild /source/n/netatalk/netatalk.SlackBuild
+--- /tmp/netatalk/netatalk.SlackBuild	2020-12-16 04:24:29.000000000 +0000
++++ /source/n/netatalk/netatalk.SlackBuild	2021-01-06 04:47:25.000000000 +0000
+@@ -49,16 +49,16 @@
+ NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+ 
+ if [ "$ARCH" = "i586" ]; then
+-  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
++  SLKCFLAGS="-fcommon -O2 -march=i586 -mtune=i686"
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "s390" ]; then
+-  SLKCFLAGS="-O2"
++  SLKCFLAGS="-fcommon -O2"
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+-  SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  SLKCFLAGS="-fcommon -O2 -fPIC"
++  LIBDIRSUFFIX=""
+ else
+-  SLKCFLAGS="-O2"
++  SLKCFLAGS="-fcommon -O2"
+   LIBDIRSUFFIX=""
+ fi
+ 
+@@ -106,7 +106,7 @@
+   --with-libevent=system \
+   --with-dbus-sysconf-dir=/usr/share/dbus-1/system.d/ \
+   --with-dbus-daemon=/usr/bin/dbus-daemon \
+-  --build=$ARCH-slackware-linux || exit 1
++  --build=$ARCH-slackware-linux-musl || exit 1
+ 
+ make $NUMJOBS || make || exit 1
+ make install DESTDIR=$PKG || exit 1
+diff -ruBN /tmp/netatalk/netatalk.SlackBuild.log /source/n/netatalk/netatalk.SlackBuild.log
+--- /tmp/netatalk/netatalk.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/n/netatalk/netatalk.SlackBuild.log	2021-01-06 04:48:57.000000000 +0000
+@@ -0,0 +1,2597 @@
++netatalk-3.1.12/
++netatalk-3.1.12/macros/
++netatalk-3.1.12/macros/afs-check.m4
++netatalk-3.1.12/macros/ax_pthread.m4
++netatalk-3.1.12/macros/cnid-backend.m4
++netatalk-3.1.12/macros/config-checks.m4
++netatalk-3.1.12/macros/db3-check.m4
++netatalk-3.1.12/macros/grep-check.m4
++netatalk-3.1.12/macros/gssapi-check.m4
++netatalk-3.1.12/macros/iconv.m4
++netatalk-3.1.12/macros/largefile-check.m4
++netatalk-3.1.12/macros/libgcrypt.m4
++netatalk-3.1.12/macros/libtool.m4
++netatalk-3.1.12/macros/ltoptions.m4
++netatalk-3.1.12/macros/ltsugar.m4
++netatalk-3.1.12/macros/ltversion.m4
++netatalk-3.1.12/macros/lt~obsolete.m4
++netatalk-3.1.12/macros/netatalk.m4
++netatalk-3.1.12/macros/pam-check.m4
++netatalk-3.1.12/macros/perl-check.m4
++netatalk-3.1.12/macros/ps-check.m4
++netatalk-3.1.12/macros/quota-check.m4
++netatalk-3.1.12/macros/ssl-check.m4
++netatalk-3.1.12/macros/summary.m4
++netatalk-3.1.12/macros/tcp-wrappers.m4
++netatalk-3.1.12/macros/util.m4
++netatalk-3.1.12/macros/zeroconf.m4
++netatalk-3.1.12/macros/Makefile.am
++netatalk-3.1.12/macros/Makefile.in
++netatalk-3.1.12/Makefile.am
++netatalk-3.1.12/configure
++netatalk-3.1.12/configure.ac
++netatalk-3.1.12/aclocal.m4
++netatalk-3.1.12/Makefile.in
++netatalk-3.1.12/config.h.in
++netatalk-3.1.12/AUTHORS
++netatalk-3.1.12/COPYING
++netatalk-3.1.12/NEWS
++netatalk-3.1.12/compile
++netatalk-3.1.12/config.guess
++netatalk-3.1.12/config.sub
++netatalk-3.1.12/depcomp
++netatalk-3.1.12/install-sh
++netatalk-3.1.12/ltmain.sh
++netatalk-3.1.12/missing
++netatalk-3.1.12/ylwrap
++netatalk-3.1.12/CONTRIBUTORS
++netatalk-3.1.12/COPYRIGHT
++netatalk-3.1.12/VERSION
++netatalk-3.1.12/abigen.sh
++netatalk-3.1.12/include/
++netatalk-3.1.12/include/Makefile.am
++netatalk-3.1.12/include/Makefile.in
++netatalk-3.1.12/include/atalk/
++netatalk-3.1.12/include/atalk/Makefile.am
++netatalk-3.1.12/include/atalk/adouble.h
++netatalk-3.1.12/include/atalk/afp.h
++netatalk-3.1.12/include/atalk/vfs.h
++netatalk-3.1.12/include/atalk/cnid.h
++netatalk-3.1.12/include/atalk/logger.h
++netatalk-3.1.12/include/atalk/netatalk_conf.h
++netatalk-3.1.12/include/atalk/paths.h
++netatalk-3.1.12/include/atalk/unicode.h
++netatalk-3.1.12/include/atalk/util.h
++netatalk-3.1.12/include/atalk/ea.h
++netatalk-3.1.12/include/atalk/acl.h
++netatalk-3.1.12/include/atalk/unix.h
++netatalk-3.1.12/include/atalk/volume.h
++netatalk-3.1.12/include/atalk/standards.h
++netatalk-3.1.12/include/atalk/bstrlib.h
++netatalk-3.1.12/include/atalk/list.h
++netatalk-3.1.12/include/atalk/globals.h
++netatalk-3.1.12/include/atalk/compat.h
++netatalk-3.1.12/include/atalk/uam.h
++netatalk-3.1.12/include/atalk/iniparser.h
++netatalk-3.1.12/include/atalk/dictionary.h
++netatalk-3.1.12/include/atalk/hash.h
++netatalk-3.1.12/include/atalk/directory.h
++netatalk-3.1.12/include/atalk/uuid.h
++netatalk-3.1.12/include/atalk/queue.h
++netatalk-3.1.12/include/atalk/server_child.h
++netatalk-3.1.12/include/atalk/server_ipc.h
++netatalk-3.1.12/include/atalk/tdb.h
++netatalk-3.1.12/include/atalk/cnid_bdb_private.h
++netatalk-3.1.12/include/atalk/cnid_mysql_private.h
++netatalk-3.1.12/include/atalk/cnid_private.h
++netatalk-3.1.12/include/atalk/bstradd.h
++netatalk-3.1.12/include/atalk/errchk.h
++netatalk-3.1.12/include/atalk/ftw.h
++netatalk-3.1.12/include/atalk/dsi.h
++netatalk-3.1.12/include/atalk/ldapconfig.h
++netatalk-3.1.12/include/atalk/talloc.h
++netatalk-3.1.12/include/atalk/dalloc.h
++netatalk-3.1.12/include/atalk/byteorder.h
++netatalk-3.1.12/include/atalk/fce_api.h
++netatalk-3.1.12/include/atalk/spotlight.h
++netatalk-3.1.12/include/atalk/Makefile.in
++netatalk-3.1.12/include/atalk/afp_dtrace.d
++netatalk-3.1.12/libatalk/
++netatalk-3.1.12/libatalk/Makefile.am
++netatalk-3.1.12/libatalk/Makefile.in
++netatalk-3.1.12/libatalk/dummy.c
++netatalk-3.1.12/libatalk/libatalk-3.0beta1.abi
++netatalk-3.1.12/libatalk/libatalk-3.0beta2.abi
++netatalk-3.1.12/libatalk/libatalk-3.0.abi
++netatalk-3.1.12/libatalk/libatalk-3.0.1.abi
++netatalk-3.1.12/libatalk/libatalk-3.0.2.abi
++netatalk-3.1.12/libatalk/libatalk-3.0.3.abi
++netatalk-3.1.12/libatalk/libatalk-3.0.4.abi
++netatalk-3.1.12/libatalk/libatalk-3.0.5.abi
++netatalk-3.1.12/libatalk/libatalk-3.0.6.abi
++netatalk-3.1.12/libatalk/libatalk-3.1.0.abi
++netatalk-3.1.12/libatalk/libatalk-3.1.1.abi
++netatalk-3.1.12/libatalk/libatalk-3.1.2.abi
++netatalk-3.1.12/libatalk/libatalk-3.1.3.abi
++netatalk-3.1.12/libatalk/libatalk-3.1.4.abi
++netatalk-3.1.12/libatalk/libatalk-3.1.5.abi
++netatalk-3.1.12/libatalk/libatalk-3.1.6.abi
++netatalk-3.1.12/libatalk/libatalk-3.1.8.abi
++netatalk-3.1.12/libatalk/libatalk-3.1.10.abi
++netatalk-3.1.12/libatalk/acl/
++netatalk-3.1.12/libatalk/acl/Makefile.am
++netatalk-3.1.12/libatalk/acl/aclldap.h
++netatalk-3.1.12/libatalk/acl/cache.h
++netatalk-3.1.12/libatalk/acl/Makefile.in
++netatalk-3.1.12/libatalk/acl/cache.c
++netatalk-3.1.12/libatalk/acl/unix.c
++netatalk-3.1.12/libatalk/acl/uuid.c
++netatalk-3.1.12/libatalk/acl/ldap.c
++netatalk-3.1.12/libatalk/acl/ldap_config.c
++netatalk-3.1.12/libatalk/adouble/
++netatalk-3.1.12/libatalk/adouble/Makefile.am
++netatalk-3.1.12/libatalk/adouble/ad_lock.h
++netatalk-3.1.12/libatalk/adouble/Makefile.in
++netatalk-3.1.12/libatalk/adouble/ad_attr.c
++netatalk-3.1.12/libatalk/adouble/ad_conv.c
++netatalk-3.1.12/libatalk/adouble/ad_date.c
++netatalk-3.1.12/libatalk/adouble/ad_flush.c
++netatalk-3.1.12/libatalk/adouble/ad_lock.c
++netatalk-3.1.12/libatalk/adouble/ad_mmap.c
++netatalk-3.1.12/libatalk/adouble/ad_open.c
++netatalk-3.1.12/libatalk/adouble/ad_read.c
++netatalk-3.1.12/libatalk/adouble/ad_recvfile.c
++netatalk-3.1.12/libatalk/adouble/ad_sendfile.c
++netatalk-3.1.12/libatalk/adouble/ad_size.c
++netatalk-3.1.12/libatalk/adouble/ad_write.c
++netatalk-3.1.12/libatalk/bstring/
++netatalk-3.1.12/libatalk/bstring/Makefile.am
++netatalk-3.1.12/libatalk/bstring/Makefile.in
++netatalk-3.1.12/libatalk/bstring/bstrlib.c
++netatalk-3.1.12/libatalk/bstring/bstradd.c
++netatalk-3.1.12/libatalk/compat/
++netatalk-3.1.12/libatalk/compat/Makefile.am
++netatalk-3.1.12/libatalk/compat/Makefile.in
++netatalk-3.1.12/libatalk/compat/misc.c
++netatalk-3.1.12/libatalk/compat/mktemp.c
++netatalk-3.1.12/libatalk/compat/getusershell.c
++netatalk-3.1.12/libatalk/compat/rquota_xdr.c
++netatalk-3.1.12/libatalk/compat/pselect.c
++netatalk-3.1.12/libatalk/compat/strlcpy.c
++netatalk-3.1.12/libatalk/cnid/
++netatalk-3.1.12/libatalk/cnid/Makefile.am
++netatalk-3.1.12/libatalk/cnid/Makefile.in
++netatalk-3.1.12/libatalk/cnid/README
++netatalk-3.1.12/libatalk/cnid/cnid.c
++netatalk-3.1.12/libatalk/cnid/cnid_init.c
++netatalk-3.1.12/libatalk/cnid/last/
++netatalk-3.1.12/libatalk/cnid/last/Makefile.am
++netatalk-3.1.12/libatalk/cnid/last/Makefile.in
++netatalk-3.1.12/libatalk/cnid/last/README
++netatalk-3.1.12/libatalk/cnid/last/cnid_last.c
++netatalk-3.1.12/libatalk/cnid/last/cnid_last.h
++netatalk-3.1.12/libatalk/cnid/cdb/
++netatalk-3.1.12/libatalk/cnid/cdb/Makefile.am
++netatalk-3.1.12/libatalk/cnid/cdb/cnid_cdb_meta.h
++netatalk-3.1.12/libatalk/cnid/cdb/cnid_cdb_private.h
++netatalk-3.1.12/libatalk/cnid/cdb/Makefile.in
++netatalk-3.1.12/libatalk/cnid/cdb/README
++netatalk-3.1.12/libatalk/cnid/cdb/cnid_cdb_add.c
++netatalk-3.1.12/libatalk/cnid/cdb/cnid_cdb_close.c
++netatalk-3.1.12/libatalk/cnid/cdb/cnid_cdb_delete.c
++netatalk-3.1.12/libatalk/cnid/cdb/cnid_cdb_get.c
++netatalk-3.1.12/libatalk/cnid/cdb/cnid_cdb_lookup.c
++netatalk-3.1.12/libatalk/cnid/cdb/cnid_cdb_open.c
++netatalk-3.1.12/libatalk/cnid/cdb/cnid_cdb_resolve.c
++netatalk-3.1.12/libatalk/cnid/cdb/cnid_cdb_update.c
++netatalk-3.1.12/libatalk/cnid/cdb/cnid_cdb_rebuild_add.c
++netatalk-3.1.12/libatalk/cnid/cdb/cnid_cdb.h
++netatalk-3.1.12/libatalk/cnid/cdb/cnid_cdb_meta.c
++netatalk-3.1.12/libatalk/cnid/cdb/cnid_cdb_nextid.c
++netatalk-3.1.12/libatalk/cnid/dbd/
++netatalk-3.1.12/libatalk/cnid/dbd/Makefile.am
++netatalk-3.1.12/libatalk/cnid/dbd/Makefile.in
++netatalk-3.1.12/libatalk/cnid/dbd/cnid_dbd.c
++netatalk-3.1.12/libatalk/cnid/dbd/cnid_dbd.h
++netatalk-3.1.12/libatalk/cnid/tdb/
++netatalk-3.1.12/libatalk/cnid/tdb/Makefile.am
++netatalk-3.1.12/libatalk/cnid/tdb/Makefile.in
++netatalk-3.1.12/libatalk/cnid/tdb/README
++netatalk-3.1.12/libatalk/cnid/tdb/cnid_tdb_add.c
++netatalk-3.1.12/libatalk/cnid/tdb/cnid_tdb_close.c
++netatalk-3.1.12/libatalk/cnid/tdb/cnid_tdb_delete.c
++netatalk-3.1.12/libatalk/cnid/tdb/cnid_tdb_get.c
++netatalk-3.1.12/libatalk/cnid/tdb/cnid_tdb_lookup.c
++netatalk-3.1.12/libatalk/cnid/tdb/cnid_tdb_open.c
++netatalk-3.1.12/libatalk/cnid/tdb/cnid_tdb_resolve.c
++netatalk-3.1.12/libatalk/cnid/tdb/cnid_tdb_update.c
++netatalk-3.1.12/libatalk/cnid/tdb/cnid_tdb.h
++netatalk-3.1.12/libatalk/cnid/tdb/cnid_tdb_nextid.c
++netatalk-3.1.12/libatalk/cnid/mysql/
++netatalk-3.1.12/libatalk/cnid/mysql/Makefile.am
++netatalk-3.1.12/libatalk/cnid/mysql/Makefile.in
++netatalk-3.1.12/libatalk/cnid/mysql/cnid_mysql.c
++netatalk-3.1.12/libatalk/dsi/
++netatalk-3.1.12/libatalk/dsi/Makefile.am
++netatalk-3.1.12/libatalk/dsi/Makefile.in
++netatalk-3.1.12/libatalk/dsi/README
++netatalk-3.1.12/libatalk/dsi/dsi_attn.c
++netatalk-3.1.12/libatalk/dsi/dsi_close.c
++netatalk-3.1.12/libatalk/dsi/dsi_cmdreply.c
++netatalk-3.1.12/libatalk/dsi/dsi_getsess.c
++netatalk-3.1.12/libatalk/dsi/dsi_getstat.c
++netatalk-3.1.12/libatalk/dsi/dsi_init.c
++netatalk-3.1.12/libatalk/dsi/dsi_opensess.c
++netatalk-3.1.12/libatalk/dsi/dsi_read.c
++netatalk-3.1.12/libatalk/dsi/dsi_tcp.c
++netatalk-3.1.12/libatalk/dsi/dsi_tickle.c
++netatalk-3.1.12/libatalk/dsi/dsi_write.c
++netatalk-3.1.12/libatalk/dsi/dsi_stream.c
++netatalk-3.1.12/libatalk/iniparser/
++netatalk-3.1.12/libatalk/iniparser/Makefile.am
++netatalk-3.1.12/libatalk/iniparser/Makefile.in
++netatalk-3.1.12/libatalk/iniparser/dictionary.c
++netatalk-3.1.12/libatalk/iniparser/iniparser.c
++netatalk-3.1.12/libatalk/talloc/
++netatalk-3.1.12/libatalk/talloc/Makefile.am
++netatalk-3.1.12/libatalk/talloc/Makefile.in
++netatalk-3.1.12/libatalk/talloc/talloc.c
++netatalk-3.1.12/libatalk/talloc/dalloc.c
++netatalk-3.1.12/libatalk/util/
++netatalk-3.1.12/libatalk/util/Makefile.am
++netatalk-3.1.12/libatalk/util/Makefile.in
++netatalk-3.1.12/libatalk/util/bprint.c
++netatalk-3.1.12/libatalk/util/cnid.c
++netatalk-3.1.12/libatalk/util/fault.c
++netatalk-3.1.12/libatalk/util/getiface.c
++netatalk-3.1.12/libatalk/util/gettok.c
++netatalk-3.1.12/libatalk/util/locking.c
++netatalk-3.1.12/libatalk/util/logger.c
++netatalk-3.1.12/libatalk/util/module.c
++netatalk-3.1.12/libatalk/util/netatalk_conf.c
++netatalk-3.1.12/libatalk/util/queue.c
++netatalk-3.1.12/libatalk/util/server_child.c
++netatalk-3.1.12/libatalk/util/server_ipc.c
++netatalk-3.1.12/libatalk/util/server_lock.c
++netatalk-3.1.12/libatalk/util/socket.c
++netatalk-3.1.12/libatalk/util/strdicasecmp.c
++netatalk-3.1.12/libatalk/util/unix.c
++netatalk-3.1.12/libatalk/util/ftw.c
++netatalk-3.1.12/libatalk/unicode/
++netatalk-3.1.12/libatalk/unicode/Makefile.am
++netatalk-3.1.12/libatalk/unicode/utf16_casetable.h
++netatalk-3.1.12/libatalk/unicode/precompose.h
++netatalk-3.1.12/libatalk/unicode/Makefile.in
++netatalk-3.1.12/libatalk/unicode/util_unistr.c
++netatalk-3.1.12/libatalk/unicode/iconv.c
++netatalk-3.1.12/libatalk/unicode/charcnv.c
++netatalk-3.1.12/libatalk/unicode/utf8.c
++netatalk-3.1.12/libatalk/unicode/utf16_case.c
++netatalk-3.1.12/libatalk/unicode/charsets/
++netatalk-3.1.12/libatalk/unicode/charsets/Makefile.am
++netatalk-3.1.12/libatalk/unicode/charsets/mac_roman.h
++netatalk-3.1.12/libatalk/unicode/charsets/mac_greek.h
++netatalk-3.1.12/libatalk/unicode/charsets/mac_centraleurope.h
++netatalk-3.1.12/libatalk/unicode/charsets/mac_hebrew.h
++netatalk-3.1.12/libatalk/unicode/charsets/mac_turkish.h
++netatalk-3.1.12/libatalk/unicode/charsets/mac_cyrillic.h
++netatalk-3.1.12/libatalk/unicode/charsets/mac_japanese.h
++netatalk-3.1.12/libatalk/unicode/charsets/mac_chinese_trad.h
++netatalk-3.1.12/libatalk/unicode/charsets/mac_chinese_simp.h
++netatalk-3.1.12/libatalk/unicode/charsets/mac_korean.h
++netatalk-3.1.12/libatalk/unicode/charsets/generic_cjk.h
++netatalk-3.1.12/libatalk/unicode/charsets/generic_mb.h
++netatalk-3.1.12/libatalk/unicode/charsets/Makefile.in
++netatalk-3.1.12/libatalk/unicode/charsets/mac_roman.c
++netatalk-3.1.12/libatalk/unicode/charsets/mac_greek.c
++netatalk-3.1.12/libatalk/unicode/charsets/mac_hebrew.c
++netatalk-3.1.12/libatalk/unicode/charsets/mac_centraleurope.c
++netatalk-3.1.12/libatalk/unicode/charsets/mac_turkish.c
++netatalk-3.1.12/libatalk/unicode/charsets/mac_cyrillic.c
++netatalk-3.1.12/libatalk/unicode/charsets/mac_japanese.c
++netatalk-3.1.12/libatalk/unicode/charsets/mac_chinese_trad.c
++netatalk-3.1.12/libatalk/unicode/charsets/mac_chinese_simp.c
++netatalk-3.1.12/libatalk/unicode/charsets/mac_korean.c
++netatalk-3.1.12/libatalk/unicode/charsets/generic_cjk.c
++netatalk-3.1.12/libatalk/unicode/charsets/generic_mb.c
++netatalk-3.1.12/libatalk/vfs/
++netatalk-3.1.12/libatalk/vfs/Makefile.am
++netatalk-3.1.12/libatalk/vfs/Makefile.in
++netatalk-3.1.12/libatalk/vfs/vfs.c
++netatalk-3.1.12/libatalk/vfs/unix.c
++netatalk-3.1.12/libatalk/vfs/ea_ad.c
++netatalk-3.1.12/libatalk/vfs/ea_sys.c
++netatalk-3.1.12/libatalk/vfs/extattr.c
++netatalk-3.1.12/libatalk/vfs/acl.c
++netatalk-3.1.12/libatalk/tdb/
++netatalk-3.1.12/libatalk/tdb/Makefile.am
++netatalk-3.1.12/libatalk/tdb/tdb_private.h
++netatalk-3.1.12/libatalk/tdb/Makefile.in
++netatalk-3.1.12/libatalk/tdb/check.c
++netatalk-3.1.12/libatalk/tdb/dump.c
++netatalk-3.1.12/libatalk/tdb/error.c
++netatalk-3.1.12/libatalk/tdb/freelist.c
++netatalk-3.1.12/libatalk/tdb/freelistcheck.c
++netatalk-3.1.12/libatalk/tdb/io.c
++netatalk-3.1.12/libatalk/tdb/lock.c
++netatalk-3.1.12/libatalk/tdb/open.c
++netatalk-3.1.12/libatalk/tdb/tdb.c
++netatalk-3.1.12/libatalk/tdb/transaction.c
++netatalk-3.1.12/libatalk/tdb/traverse.c
++netatalk-3.1.12/bin/
++netatalk-3.1.12/bin/Makefile.am
++netatalk-3.1.12/bin/Makefile.in
++netatalk-3.1.12/bin/afppasswd/
++netatalk-3.1.12/bin/afppasswd/Makefile.am
++netatalk-3.1.12/bin/afppasswd/Makefile.in
++netatalk-3.1.12/bin/afppasswd/afppasswd.c
++netatalk-3.1.12/bin/cnid/
++netatalk-3.1.12/bin/cnid/Makefile.am
++netatalk-3.1.12/bin/cnid/Makefile.in
++netatalk-3.1.12/bin/cnid/cnid2_create.in
++netatalk-3.1.12/bin/megatron/
++netatalk-3.1.12/bin/megatron/Makefile.am
++netatalk-3.1.12/bin/megatron/Makefile.in
++netatalk-3.1.12/bin/misc/
++netatalk-3.1.12/bin/misc/Makefile.am
++netatalk-3.1.12/bin/misc/Makefile.in
++netatalk-3.1.12/bin/misc/uuidtest.c
++netatalk-3.1.12/bin/misc/fce.c
++netatalk-3.1.12/bin/misc/logger_test.c
++netatalk-3.1.12/bin/misc/netacnv.c
++netatalk-3.1.12/bin/ad/
++netatalk-3.1.12/bin/ad/Makefile.am
++netatalk-3.1.12/bin/ad/ad.h
++netatalk-3.1.12/bin/ad/Makefile.in
++netatalk-3.1.12/bin/ad/ad.c
++netatalk-3.1.12/bin/ad/ad_find.c
++netatalk-3.1.12/bin/ad/ad_util.c
++netatalk-3.1.12/bin/ad/ad_ls.c
++netatalk-3.1.12/bin/ad/ad_cp.c
++netatalk-3.1.12/bin/ad/ad_mv.c
++netatalk-3.1.12/bin/ad/ad_rm.c
++netatalk-3.1.12/bin/ad/ad_set.c
++netatalk-3.1.12/config/
++netatalk-3.1.12/config/Makefile.am
++netatalk-3.1.12/config/Makefile.in
++netatalk-3.1.12/config/README
++netatalk-3.1.12/config/afp.conf.tmpl
++netatalk-3.1.12/config/dbus-session.conf.tmpl
++netatalk-3.1.12/config/extmap.conf
++netatalk-3.1.12/config/netatalk-dbus.conf
++netatalk-3.1.12/config/pam/
++netatalk-3.1.12/config/pam/Makefile.am
++netatalk-3.1.12/config/pam/Makefile.in
++netatalk-3.1.12/config/pam/netatalk.tmpl
++netatalk-3.1.12/etc/
++netatalk-3.1.12/etc/Makefile.am
++netatalk-3.1.12/etc/Makefile.in
++netatalk-3.1.12/etc/spotlight/
++netatalk-3.1.12/etc/spotlight/Makefile.am
++netatalk-3.1.12/etc/spotlight/sparql_map.h
++netatalk-3.1.12/etc/spotlight/Makefile.in
++netatalk-3.1.12/etc/spotlight/sparql_parser.c
++netatalk-3.1.12/etc/spotlight/sparql_parser.h
++netatalk-3.1.12/etc/spotlight/spotlight_rawquery_lexer.c
++netatalk-3.1.12/etc/spotlight/sparql_map.c
++netatalk-3.1.12/etc/spotlight/sparql_parser.y
++netatalk-3.1.12/etc/spotlight/spotlight_rawquery_lexer.l
++netatalk-3.1.12/etc/afpd/
++netatalk-3.1.12/etc/afpd/Makefile.am
++netatalk-3.1.12/etc/afpd/auth.h
++netatalk-3.1.12/etc/afpd/afp_config.h
++netatalk-3.1.12/etc/afpd/desktop.h
++netatalk-3.1.12/etc/afpd/directory.h
++netatalk-3.1.12/etc/afpd/fce_api_internal.h
++netatalk-3.1.12/etc/afpd/file.h
++netatalk-3.1.12/etc/afpd/filedir.h
++netatalk-3.1.12/etc/afpd/fork.h
++netatalk-3.1.12/etc/afpd/icon.h
++netatalk-3.1.12/etc/afpd/mangle.h
++netatalk-3.1.12/etc/afpd/misc.h
++netatalk-3.1.12/etc/afpd/status.h
++netatalk-3.1.12/etc/afpd/switch.h
++netatalk-3.1.12/etc/afpd/uam_auth.h
++netatalk-3.1.12/etc/afpd/uid.h
++netatalk-3.1.12/etc/afpd/unix.h
++netatalk-3.1.12/etc/afpd/volume.h
++netatalk-3.1.12/etc/afpd/hash.h
++netatalk-3.1.12/etc/afpd/acls.h
++netatalk-3.1.12/etc/afpd/acl_mappings.h
++netatalk-3.1.12/etc/afpd/extattrs.h
++netatalk-3.1.12/etc/afpd/dircache.h
++netatalk-3.1.12/etc/afpd/afpstats_obj.h
++netatalk-3.1.12/etc/afpd/afpstats.h
++netatalk-3.1.12/etc/afpd/Makefile.in
++netatalk-3.1.12/etc/afpd/afp_config.c
++netatalk-3.1.12/etc/afpd/afp_dsi.c
++netatalk-3.1.12/etc/afpd/afp_options.c
++netatalk-3.1.12/etc/afpd/afp_util.c
++netatalk-3.1.12/etc/afpd/afprun.c
++netatalk-3.1.12/etc/afpd/afs.c
++netatalk-3.1.12/etc/afpd/appl.c
++netatalk-3.1.12/etc/afpd/auth.c
++netatalk-3.1.12/etc/afpd/catsearch.c
++netatalk-3.1.12/etc/afpd/desktop.c
++netatalk-3.1.12/etc/afpd/dircache.c
++netatalk-3.1.12/etc/afpd/directory.c
++netatalk-3.1.12/etc/afpd/enumerate.c
++netatalk-3.1.12/etc/afpd/extattrs.c
++netatalk-3.1.12/etc/afpd/fce_api.c
++netatalk-3.1.12/etc/afpd/fce_util.c
++netatalk-3.1.12/etc/afpd/file.c
++netatalk-3.1.12/etc/afpd/filedir.c
++netatalk-3.1.12/etc/afpd/fork.c
++netatalk-3.1.12/etc/afpd/hash.c
++netatalk-3.1.12/etc/afpd/main.c
++netatalk-3.1.12/etc/afpd/mangle.c
++netatalk-3.1.12/etc/afpd/messages.c
++netatalk-3.1.12/etc/afpd/nfsquota.c
++netatalk-3.1.12/etc/afpd/ofork.c
++netatalk-3.1.12/etc/afpd/quota.c
++netatalk-3.1.12/etc/afpd/spotlight_marshalling.c
++netatalk-3.1.12/etc/afpd/status.c
++netatalk-3.1.12/etc/afpd/switch.c
++netatalk-3.1.12/etc/afpd/uam.c
++netatalk-3.1.12/etc/afpd/uid.c
++netatalk-3.1.12/etc/afpd/unix.c
++netatalk-3.1.12/etc/afpd/volume.c
++netatalk-3.1.12/etc/afpd/spotlight.c
++netatalk-3.1.12/etc/afpd/acls.c
++netatalk-3.1.12/etc/afpd/afpstats.c
++netatalk-3.1.12/etc/afpd/afpstats_obj.c
++netatalk-3.1.12/etc/afpd/afpstats-service.xml
++netatalk-3.1.12/etc/afpd/afpstats_service_glue.h
++netatalk-3.1.12/etc/cnid_dbd/
++netatalk-3.1.12/etc/cnid_dbd/Makefile.am
++netatalk-3.1.12/etc/cnid_dbd/dbif.h
++netatalk-3.1.12/etc/cnid_dbd/pack.h
++netatalk-3.1.12/etc/cnid_dbd/db_param.h
++netatalk-3.1.12/etc/cnid_dbd/dbd.h
++netatalk-3.1.12/etc/cnid_dbd/usockfd.h
++netatalk-3.1.12/etc/cnid_dbd/comm.h
++netatalk-3.1.12/etc/cnid_dbd/cmd_dbd.h
++netatalk-3.1.12/etc/cnid_dbd/Makefile.in
++netatalk-3.1.12/etc/cnid_dbd/dbif.c
++netatalk-3.1.12/etc/cnid_dbd/pack.c
++netatalk-3.1.12/etc/cnid_dbd/comm.c
++netatalk-3.1.12/etc/cnid_dbd/db_param.c
++netatalk-3.1.12/etc/cnid_dbd/main.c
++netatalk-3.1.12/etc/cnid_dbd/dbd_add.c
++netatalk-3.1.12/etc/cnid_dbd/dbd_get.c
++netatalk-3.1.12/etc/cnid_dbd/dbd_resolve.c
++netatalk-3.1.12/etc/cnid_dbd/dbd_lookup.c
++netatalk-3.1.12/etc/cnid_dbd/dbd_update.c
++netatalk-3.1.12/etc/cnid_dbd/dbd_delete.c
++netatalk-3.1.12/etc/cnid_dbd/dbd_getstamp.c
++netatalk-3.1.12/etc/cnid_dbd/dbd_rebuild_add.c
++netatalk-3.1.12/etc/cnid_dbd/dbd_dbcheck.c
++netatalk-3.1.12/etc/cnid_dbd/dbd_search.c
++netatalk-3.1.12/etc/cnid_dbd/cnid_metad.c
++netatalk-3.1.12/etc/cnid_dbd/usockfd.c
++netatalk-3.1.12/etc/cnid_dbd/cmd_dbd.c
++netatalk-3.1.12/etc/cnid_dbd/cmd_dbd_scanvol.c
++netatalk-3.1.12/etc/netatalk/
++netatalk-3.1.12/etc/netatalk/Makefile.am
++netatalk-3.1.12/etc/netatalk/afp_zeroconf.h
++netatalk-3.1.12/etc/netatalk/afp_avahi.h
++netatalk-3.1.12/etc/netatalk/afp_mdns.h
++netatalk-3.1.12/etc/netatalk/Makefile.in
++netatalk-3.1.12/etc/netatalk/netatalk.c
++netatalk-3.1.12/etc/netatalk/afp_avahi.c
++netatalk-3.1.12/etc/netatalk/afp_mdns.c
++netatalk-3.1.12/etc/netatalk/afp_zeroconf.c
++netatalk-3.1.12/etc/uams/
++netatalk-3.1.12/etc/uams/Makefile.am
++netatalk-3.1.12/etc/uams/openssl_compat.h
++netatalk-3.1.12/etc/uams/Makefile.in
++netatalk-3.1.12/etc/uams/uams_dhx2_pam.c
++netatalk-3.1.12/etc/uams/uams_dhx2_passwd.c
++netatalk-3.1.12/etc/uams/uams_dhx_pam.c
++netatalk-3.1.12/etc/uams/uams_dhx_passwd.c
++netatalk-3.1.12/etc/uams/uams_gss.c
++netatalk-3.1.12/etc/uams/uams_guest.c
++netatalk-3.1.12/etc/uams/uams_pam.c
++netatalk-3.1.12/etc/uams/uams_passwd.c
++netatalk-3.1.12/etc/uams/uams_pgp.c
++netatalk-3.1.12/etc/uams/uams_randnum.c
++netatalk-3.1.12/contrib/
++netatalk-3.1.12/contrib/Makefile.am
++netatalk-3.1.12/contrib/Makefile.in
++netatalk-3.1.12/contrib/macusers/
++netatalk-3.1.12/contrib/macusers/Makefile.am
++netatalk-3.1.12/contrib/macusers/Makefile.in
++netatalk-3.1.12/contrib/macusers/macusers.in
++netatalk-3.1.12/contrib/macusers/README.macusers
++netatalk-3.1.12/contrib/shell_utils/
++netatalk-3.1.12/contrib/shell_utils/Makefile.am
++netatalk-3.1.12/contrib/shell_utils/Makefile.in
++netatalk-3.1.12/contrib/shell_utils/apple_dump.in
++netatalk-3.1.12/contrib/shell_utils/asip-status.pl.in
++netatalk-3.1.12/contrib/shell_utils/make-casetable.pl
++netatalk-3.1.12/contrib/shell_utils/make-precompose.h.pl
++netatalk-3.1.12/contrib/shell_utils/afpstats
++netatalk-3.1.12/contrib/shell_utils/fce_ev_script.sh
++netatalk-3.1.12/distrib/
++netatalk-3.1.12/distrib/Makefile.am
++netatalk-3.1.12/distrib/Makefile.in
++netatalk-3.1.12/distrib/config/
++netatalk-3.1.12/distrib/config/Makefile.am
++netatalk-3.1.12/distrib/config/Makefile.in
++netatalk-3.1.12/distrib/config/netatalk-config.in
++netatalk-3.1.12/distrib/initscripts/
++netatalk-3.1.12/distrib/initscripts/Makefile.am
++netatalk-3.1.12/distrib/initscripts/Makefile.in
++netatalk-3.1.12/distrib/initscripts/rc.bsd.tmpl
++netatalk-3.1.12/distrib/initscripts/rc.debian.tmpl
++netatalk-3.1.12/distrib/initscripts/rc.gentoo.tmpl
++netatalk-3.1.12/distrib/initscripts/rc.netbsd.tmpl
++netatalk-3.1.12/distrib/initscripts/rc.redhat.tmpl
++netatalk-3.1.12/distrib/initscripts/rc.solaris.tmpl
++netatalk-3.1.12/distrib/initscripts/rc.suse.tmpl
++netatalk-3.1.12/distrib/initscripts/service.systemd.tmpl
++netatalk-3.1.12/distrib/initscripts/netatalk.xml.tmpl
++netatalk-3.1.12/distrib/m4/
++netatalk-3.1.12/distrib/m4/Makefile.am
++netatalk-3.1.12/distrib/m4/Makefile.in
++netatalk-3.1.12/distrib/m4/netatalk.m4
++netatalk-3.1.12/doc/
++netatalk-3.1.12/doc/Makefile.am
++netatalk-3.1.12/doc/Makefile.in
++netatalk-3.1.12/doc/html.xsl.in
++netatalk-3.1.12/doc/man.xsl.in
++netatalk-3.1.12/doc/manpages/
++netatalk-3.1.12/doc/manpages/Makefile.am
++netatalk-3.1.12/doc/manpages/Makefile.in
++netatalk-3.1.12/doc/manpages/man1/
++netatalk-3.1.12/doc/manpages/man1/Makefile.am
++netatalk-3.1.12/doc/manpages/man1/Makefile.in
++netatalk-3.1.12/doc/manpages/man1/ad.1.xml
++netatalk-3.1.12/doc/manpages/man1/afpldaptest.1.xml
++netatalk-3.1.12/doc/manpages/man1/afppasswd.1.xml
++netatalk-3.1.12/doc/manpages/man1/afpstats.1.xml
++netatalk-3.1.12/doc/manpages/man1/apple_dump.1.xml
++netatalk-3.1.12/doc/manpages/man1/asip-status.pl.1.xml
++netatalk-3.1.12/doc/manpages/man1/dbd.1.xml
++netatalk-3.1.12/doc/manpages/man1/macusers.1.xml
++netatalk-3.1.12/doc/manpages/man1/megatron.1.xml
++netatalk-3.1.12/doc/manpages/man1/netatalk-config.1.xml
++netatalk-3.1.12/doc/manpages/man1/uniconv.1.xml
++netatalk-3.1.12/doc/manpages/man5/
++netatalk-3.1.12/doc/manpages/man5/Makefile.am
++netatalk-3.1.12/doc/manpages/man5/Makefile.in
++netatalk-3.1.12/doc/manpages/man5/afp_signature.conf.5.xml
++netatalk-3.1.12/doc/manpages/man5/afp_voluuid.conf.5.xml
++netatalk-3.1.12/doc/manpages/man5/afp.conf.5.xml
++netatalk-3.1.12/doc/manpages/man5/extmap.conf.5.xml
++netatalk-3.1.12/doc/manpages/man8/
++netatalk-3.1.12/doc/manpages/man8/Makefile.am
++netatalk-3.1.12/doc/manpages/man8/Makefile.in
++netatalk-3.1.12/doc/manpages/man8/afpd.8.xml
++netatalk-3.1.12/doc/manpages/man8/cnid_dbd.8.xml
++netatalk-3.1.12/doc/manpages/man8/cnid_metad.8.xml
++netatalk-3.1.12/doc/manpages/man8/netatalk.8.xml
++netatalk-3.1.12/doc/manual/
++netatalk-3.1.12/doc/manual/Makefile.am
++netatalk-3.1.12/doc/manual/Makefile.in
++netatalk-3.1.12/doc/manual/manual.xml.in
++netatalk-3.1.12/doc/manual/configuration.xml
++netatalk-3.1.12/doc/manual/install.xml
++netatalk-3.1.12/doc/manual/intro.xml
++netatalk-3.1.12/doc/manual/upgrade.xml
++netatalk-3.1.12/doc/manual/netatalk.html
++netatalk-3.1.12/man/
++netatalk-3.1.12/man/Makefile.am
++netatalk-3.1.12/man/Makefile.in
++netatalk-3.1.12/man/man1/
++netatalk-3.1.12/man/man1/Makefile.am
++netatalk-3.1.12/man/man1/Makefile.in
++netatalk-3.1.12/man/man1/ad.1.in
++netatalk-3.1.12/man/man1/afpldaptest.1.in
++netatalk-3.1.12/man/man1/afppasswd.1.in
++netatalk-3.1.12/man/man1/afpstats.1.in
++netatalk-3.1.12/man/man1/apple_dump.1.in
++netatalk-3.1.12/man/man1/asip-status.pl.1.in
++netatalk-3.1.12/man/man1/dbd.1.in
++netatalk-3.1.12/man/man1/macusers.1.in
++netatalk-3.1.12/man/man1/netatalk-config.1.in
++netatalk-3.1.12/man/man1/uniconv.1.in
++netatalk-3.1.12/man/man5/
++netatalk-3.1.12/man/man5/Makefile.am
++netatalk-3.1.12/man/man5/Makefile.in
++netatalk-3.1.12/man/man5/afp.conf.5.in
++netatalk-3.1.12/man/man5/afp_signature.conf.5.in
++netatalk-3.1.12/man/man5/afp_voluuid.conf.5.in
++netatalk-3.1.12/man/man5/extmap.conf.5.in
++netatalk-3.1.12/man/man8/
++netatalk-3.1.12/man/man8/Makefile.am
++netatalk-3.1.12/man/man8/Makefile.in
++netatalk-3.1.12/man/man8/afpd.8.in
++netatalk-3.1.12/man/man8/cnid_dbd.8.in
++netatalk-3.1.12/man/man8/cnid_metad.8.in
++netatalk-3.1.12/man/man8/netatalk.8.in
++netatalk-3.1.12/test/
++netatalk-3.1.12/test/Makefile.am
++netatalk-3.1.12/test/Makefile.in
++netatalk-3.1.12/test/afpd/
++netatalk-3.1.12/test/afpd/Makefile.am
++netatalk-3.1.12/test/afpd/test.h
++netatalk-3.1.12/test/afpd/subtests.h
++netatalk-3.1.12/test/afpd/afpfunc_helpers.h
++netatalk-3.1.12/test/afpd/Makefile.in
++netatalk-3.1.12/test/afpd/test.c
++netatalk-3.1.12/test/afpd/subtests.c
++netatalk-3.1.12/test/afpd/afpfunc_helpers.c
++netatalk-3.1.12/test/afpd/test.sh
++netatalk-3.1.12/test-driver
++netatalk-3.1.12/libevent/
++netatalk-3.1.12/libevent/compat/
++netatalk-3.1.12/libevent/compat/sys/
++netatalk-3.1.12/libevent/compat/sys/queue.h
++netatalk-3.1.12/libevent/m4/
++netatalk-3.1.12/libevent/m4/acx_pthread.m4
++netatalk-3.1.12/libevent/m4/libtool.m4
++netatalk-3.1.12/libevent/m4/ltoptions.m4
++netatalk-3.1.12/libevent/m4/ltsugar.m4
++netatalk-3.1.12/libevent/m4/ltversion.m4
++netatalk-3.1.12/libevent/m4/lt~obsolete.m4
++netatalk-3.1.12/libevent/test/
++netatalk-3.1.12/libevent/test/Makefile.nmake
++netatalk-3.1.12/libevent/test/Makefile.am
++netatalk-3.1.12/libevent/test/tinytest.h
++netatalk-3.1.12/libevent/test/tinytest_macros.h
++netatalk-3.1.12/libevent/test/regress.h
++netatalk-3.1.12/libevent/test/tinytest_local.h
++netatalk-3.1.12/libevent/test/Makefile.in
++netatalk-3.1.12/libevent/test/bench.c
++netatalk-3.1.12/libevent/test/bench_cascade.c
++netatalk-3.1.12/libevent/test/bench_http.c
++netatalk-3.1.12/libevent/test/bench_httpclient.c
++netatalk-3.1.12/libevent/test/regress.c
++netatalk-3.1.12/libevent/test/regress_buffer.c
++netatalk-3.1.12/libevent/test/regress_http.c
++netatalk-3.1.12/libevent/test/regress_dns.c
++netatalk-3.1.12/libevent/test/regress_testutils.c
++netatalk-3.1.12/libevent/test/regress_testutils.h
++netatalk-3.1.12/libevent/test/regress_rpc.c
++netatalk-3.1.12/libevent/test/regress.gen.c
++netatalk-3.1.12/libevent/test/regress.gen.h
++netatalk-3.1.12/libevent/test/regress_et.c
++netatalk-3.1.12/libevent/test/regress_bufferevent.c
++netatalk-3.1.12/libevent/test/regress_listener.c
++netatalk-3.1.12/libevent/test/regress_util.c
++netatalk-3.1.12/libevent/test/tinytest.c
++netatalk-3.1.12/libevent/test/regress_main.c
++netatalk-3.1.12/libevent/test/regress_minheap.c
++netatalk-3.1.12/libevent/test/regress_thread.c
++netatalk-3.1.12/libevent/test/regress_zlib.c
++netatalk-3.1.12/libevent/test/regress_iocp.c
++netatalk-3.1.12/libevent/test/regress_ssl.c
++netatalk-3.1.12/libevent/test/test-changelist.c
++netatalk-3.1.12/libevent/test/test-eof.c
++netatalk-3.1.12/libevent/test/test-init.c
++netatalk-3.1.12/libevent/test/test-ratelim.c
++netatalk-3.1.12/libevent/test/test-time.c
++netatalk-3.1.12/libevent/test/test-weof.c
++netatalk-3.1.12/libevent/test/regress.rpc
++netatalk-3.1.12/libevent/test/rpcgen_wrapper.sh
++netatalk-3.1.12/libevent/test/test.sh
++netatalk-3.1.12/libevent/WIN32-Code/
++netatalk-3.1.12/libevent/WIN32-Code/event2/
++netatalk-3.1.12/libevent/WIN32-Code/event2/event-config.h
++netatalk-3.1.12/libevent/WIN32-Code/tree.h
++netatalk-3.1.12/libevent/Makefile.am
++netatalk-3.1.12/libevent/configure
++netatalk-3.1.12/libevent/configure.in
++netatalk-3.1.12/libevent/aclocal.m4
++netatalk-3.1.12/libevent/event_rpcgen.py
++netatalk-3.1.12/libevent/event.h
++netatalk-3.1.12/libevent/evhttp.h
++netatalk-3.1.12/libevent/evdns.h
++netatalk-3.1.12/libevent/evrpc.h
++netatalk-3.1.12/libevent/evutil.h
++netatalk-3.1.12/libevent/util-internal.h
++netatalk-3.1.12/libevent/mm-internal.h
++netatalk-3.1.12/libevent/ipv6-internal.h
++netatalk-3.1.12/libevent/evrpc-internal.h
++netatalk-3.1.12/libevent/strlcpy-internal.h
++netatalk-3.1.12/libevent/evbuffer-internal.h
++netatalk-3.1.12/libevent/bufferevent-internal.h
++netatalk-3.1.12/libevent/http-internal.h
++netatalk-3.1.12/libevent/event-internal.h
++netatalk-3.1.12/libevent/evthread-internal.h
++netatalk-3.1.12/libevent/ht-internal.h
++netatalk-3.1.12/libevent/defer-internal.h
++netatalk-3.1.12/libevent/minheap-internal.h
++netatalk-3.1.12/libevent/log-internal.h
++netatalk-3.1.12/libevent/evsignal-internal.h
++netatalk-3.1.12/libevent/evmap-internal.h
++netatalk-3.1.12/libevent/changelist-internal.h
++netatalk-3.1.12/libevent/iocp-internal.h
++netatalk-3.1.12/libevent/ratelim-internal.h
++netatalk-3.1.12/libevent/Makefile.in
++netatalk-3.1.12/libevent/config.h.in
++netatalk-3.1.12/libevent/libevent.pc.in
++netatalk-3.1.12/libevent/libevent_openssl.pc.in
++netatalk-3.1.12/libevent/libevent_pthreads.pc.in
++netatalk-3.1.12/libevent/ChangeLog
++netatalk-3.1.12/libevent/README
++netatalk-3.1.12/libevent/compile
++netatalk-3.1.12/libevent/config.guess
++netatalk-3.1.12/libevent/config.sub
++netatalk-3.1.12/libevent/depcomp
++netatalk-3.1.12/libevent/epoll_sub.c
++netatalk-3.1.12/libevent/install-sh
++netatalk-3.1.12/libevent/ltmain.sh
++netatalk-3.1.12/libevent/missing
++netatalk-3.1.12/libevent/event.c
++netatalk-3.1.12/libevent/evthread.c
++netatalk-3.1.12/libevent/buffer.c
++netatalk-3.1.12/libevent/bufferevent.c
++netatalk-3.1.12/libevent/bufferevent_sock.c
++netatalk-3.1.12/libevent/bufferevent_filter.c
++netatalk-3.1.12/libevent/bufferevent_pair.c
++netatalk-3.1.12/libevent/listener.c
++netatalk-3.1.12/libevent/bufferevent_ratelim.c
++netatalk-3.1.12/libevent/evmap.c
++netatalk-3.1.12/libevent/log.c
++netatalk-3.1.12/libevent/evutil.c
++netatalk-3.1.12/libevent/evutil_rand.c
++netatalk-3.1.12/libevent/strlcpy.c
++netatalk-3.1.12/libevent/select.c
++netatalk-3.1.12/libevent/poll.c
++netatalk-3.1.12/libevent/devpoll.c
++netatalk-3.1.12/libevent/kqueue.c
++netatalk-3.1.12/libevent/epoll.c
++netatalk-3.1.12/libevent/evport.c
++netatalk-3.1.12/libevent/signal.c
++netatalk-3.1.12/libevent/win32select.c
++netatalk-3.1.12/libevent/evthread_win32.c
++netatalk-3.1.12/libevent/buffer_iocp.c
++netatalk-3.1.12/libevent/event_iocp.c
++netatalk-3.1.12/libevent/bufferevent_async.c
++netatalk-3.1.12/libevent/event_tagging.c
++netatalk-3.1.12/libevent/http.c
++netatalk-3.1.12/libevent/evdns.c
++netatalk-3.1.12/libevent/evrpc.c
++netatalk-3.1.12/libevent/bufferevent_openssl.c
++netatalk-3.1.12/libevent/evthread_pthread.c
++netatalk-3.1.12/libevent/LICENSE
++netatalk-3.1.12/libevent/autogen.sh
++netatalk-3.1.12/libevent/Doxyfile
++netatalk-3.1.12/libevent/whatsnew-2.0.txt
++netatalk-3.1.12/libevent/Makefile.nmake
++netatalk-3.1.12/libevent/arc4random.c
++netatalk-3.1.12/libevent/include/
++netatalk-3.1.12/libevent/include/event2/
++netatalk-3.1.12/libevent/include/event2/buffer.h
++netatalk-3.1.12/libevent/include/event2/buffer_compat.h
++netatalk-3.1.12/libevent/include/event2/bufferevent.h
++netatalk-3.1.12/libevent/include/event2/bufferevent_compat.h
++netatalk-3.1.12/libevent/include/event2/bufferevent_ssl.h
++netatalk-3.1.12/libevent/include/event2/bufferevent_struct.h
++netatalk-3.1.12/libevent/include/event2/dns.h
++netatalk-3.1.12/libevent/include/event2/dns_compat.h
++netatalk-3.1.12/libevent/include/event2/dns_struct.h
++netatalk-3.1.12/libevent/include/event2/event.h
++netatalk-3.1.12/libevent/include/event2/event_compat.h
++netatalk-3.1.12/libevent/include/event2/event_struct.h
++netatalk-3.1.12/libevent/include/event2/http.h
++netatalk-3.1.12/libevent/include/event2/http_compat.h
++netatalk-3.1.12/libevent/include/event2/http_struct.h
++netatalk-3.1.12/libevent/include/event2/keyvalq_struct.h
++netatalk-3.1.12/libevent/include/event2/listener.h
++netatalk-3.1.12/libevent/include/event2/rpc.h
++netatalk-3.1.12/libevent/include/event2/rpc_compat.h
++netatalk-3.1.12/libevent/include/event2/rpc_struct.h
++netatalk-3.1.12/libevent/include/event2/tag.h
++netatalk-3.1.12/libevent/include/event2/tag_compat.h
++netatalk-3.1.12/libevent/include/event2/thread.h
++netatalk-3.1.12/libevent/include/event2/util.h
++netatalk-3.1.12/libevent/include/Makefile.am
++netatalk-3.1.12/libevent/include/Makefile.in
++netatalk-3.1.12/libevent/sample/
++netatalk-3.1.12/libevent/sample/Makefile.am
++netatalk-3.1.12/libevent/sample/Makefile.in
++netatalk-3.1.12/libevent/sample/dns-example.c
++netatalk-3.1.12/libevent/sample/event-test.c
++netatalk-3.1.12/libevent/sample/hello-world.c
++netatalk-3.1.12/libevent/sample/http-server.c
++netatalk-3.1.12/libevent/sample/le-proxy.c
++netatalk-3.1.12/libevent/sample/signal-test.c
++netatalk-3.1.12/libevent/sample/time-test.c
++Hmm...  Looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|From 32df6e155ccfc83216321925273c3e75e631ebe6 Mon Sep 17 00:00:00 2001
++|From: Andrew Bauer <zonexpertconsulting@outlook.com>
++|Date: Wed, 22 Jan 2020 09:59:47 -0600
++|Subject: [PATCH] fix ftbs multiple def of invalid_dircache_entries
++|
++|---
++| etc/afpd/directory.h | 2 +-
++| 1 file changed, 1 insertion(+), 1 deletion(-)
++|
++|diff --git a/etc/afpd/directory.h b/etc/afpd/directory.h
++|index eb89c606..81bfa9cb 100644
++|--- a/etc/afpd/directory.h
++|+++ b/etc/afpd/directory.h
++--------------------------
++patching file etc/afpd/directory.h
++Using Plan A...
++Hunk #1 succeeded at 91.
++done
++checking build system type... x86_64-slackware-linux-musl
++checking host system type... x86_64-slackware-linux-musl
++checking target system type... x86_64-slackware-linux-musl
++checking for a BSD-compatible install... /usr/bin/ginstall -c
++checking whether build environment is sane... yes
++checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
++checking for gawk... gawk
++checking whether make sets $(MAKE)... yes
++checking whether make supports nested variables... yes
++checking whether to enable maintainer-specific portions of Makefiles... yes
++checking for gawk... (cached) gawk
++checking for gcc... gcc
++checking whether the C compiler works... yes
++checking for C compiler default output file name... a.out
++checking for suffix of executables... 
++checking whether we are cross compiling... no
++checking for suffix of object files... o
++checking whether we are using the GNU C compiler... yes
++checking whether gcc accepts -g... yes
++checking for gcc option to accept ISO C89... none needed
++checking whether gcc understands -c and -o together... yes
++checking for style of include used by make... GNU
++checking dependency style of gcc... gcc3
++checking for gcc option to accept ISO C99... none needed
++checking whether ln -s works... yes
++checking whether make sets $(MAKE)... (cached) yes
++checking how to print strings... printf
++checking for a sed that does not truncate output... /usr/bin/sed
++checking for grep... /usr/bin/grep
++checking for egrep... /usr/bin/grep -E
++checking for fgrep... /usr/bin/grep -F
++checking for ld used by gcc... /usr/bin/ld
++checking if the linker (/usr/bin/ld) is GNU ld... yes
++checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
++checking the name lister (/usr/bin/nm -B) interface... BSD nm
++checking the maximum length of command line arguments... 98304
++checking how to convert x86_64-slackware-linux-musl file names to x86_64-slackware-linux-musl format... func_convert_file_noop
++checking how to convert x86_64-slackware-linux-musl file names to toolchain format... func_convert_file_noop
++checking for /usr/bin/ld option to reload object files... -r
++checking for objdump... objdump
++checking how to recognize dependent libraries... pass_all
++checking for dlltool... dlltool
++checking how to associate runtime and link libraries... printf %s\n
++checking for ar... ar
++checking for archiver @FILE support... @
++checking for strip... strip
++checking for ranlib... ranlib
++checking command to parse /usr/bin/nm -B output from gcc object... ok
++checking for sysroot... no
++checking for a working dd... /usr/bin/dd
++checking how to truncate binary pipes... /usr/bin/dd bs=4096 count=1
++checking for mt... mt
++checking if mt is a manifest tool... no
++checking how to run the C preprocessor... gcc -E
++checking for ANSI C header files... yes
++checking for sys/types.h... yes
++checking for sys/stat.h... yes
++checking for stdlib.h... yes
++checking for string.h... yes
++checking for memory.h... yes
++checking for strings.h... yes
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking for unistd.h... yes
++checking for dlfcn.h... yes
++checking for objdir... .libs
++checking if gcc supports -fno-rtti -fno-exceptions... no
++checking for gcc option to produce PIC... -fPIC -DPIC
++checking if gcc PIC flag -fPIC -DPIC works... yes
++checking if gcc static flag -static works... yes
++checking if gcc supports -c -o file.o... yes
++checking if gcc supports -c -o file.o... (cached) yes
++checking whether the gcc linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
++checking whether -lc should be explicitly linked in... no
++checking dynamic linker characteristics... GNU/Linux ld.so
++checking how to hardcode library paths into programs... immediate
++checking for shl_load... no
++checking for shl_load in -ldld... no
++checking for dlopen... yes
++checking whether a program can dlopen itself... yes
++checking whether a statically linked program can dlopen itself... no
++checking whether stripping libraries is possible... yes
++checking if libtool supports shared libraries... yes
++checking whether to build shared libraries... yes
++checking whether to build static libraries... no
++checking for perl... /usr/bin/perl
++checking for perl... (cached) /usr/bin/grep
++checking for ps... /usr/bin/ps
++checking whether byte ordering is bigendian... no
++checking for inline... inline
++checking for flex... flex
++checking lex output file root... lex.yy
++checking lex library... -lfl
++checking whether yytext is a pointer... yes
++checking for bison... bison -y
++checking to see if we can add '__attribute__((unused))' to CFLAGS... yes
++checking mntent.h usability... yes
++checking mntent.h presence... yes
++checking for mntent.h... yes
++checking for unistd.h... (cached) yes
++checking termios.h usability... yes
++checking termios.h presence... yes
++checking for termios.h... yes
++checking ufs/quota.h usability... no
++checking ufs/quota.h presence... no
++checking for ufs/quota.h... no
++checking netdb.h usability... yes
++checking netdb.h presence... yes
++checking for netdb.h... yes
++checking sgtty.h usability... no
++checking sgtty.h presence... no
++checking for sgtty.h... no
++checking statfs.h usability... no
++checking statfs.h presence... no
++checking for statfs.h... no
++checking for dlfcn.h... (cached) yes
++checking langinfo.h usability... yes
++checking langinfo.h presence... yes
++checking for langinfo.h... yes
++checking locale.h usability... yes
++checking locale.h presence... yes
++checking for locale.h... yes
++checking sys/param.h usability... yes
++checking sys/param.h presence... yes
++checking for sys/param.h... yes
++checking sys/fcntl.h usability... yes
++checking sys/fcntl.h presence... yes
++checking for sys/fcntl.h... yes
++checking sys/termios.h usability... yes
++checking sys/termios.h presence... yes
++checking for sys/termios.h... yes
++checking sys/mnttab.h usability... no
++checking sys/mnttab.h presence... no
++checking for sys/mnttab.h... no
++checking sys/statvfs.h usability... yes
++checking sys/statvfs.h presence... yes
++checking for sys/statvfs.h... yes
++checking for sys/stat.h... (cached) yes
++checking sys/vfs.h usability... yes
++checking sys/vfs.h presence... yes
++checking for sys/vfs.h... yes
++checking for sys/mount.h... yes
++checking for fshare_t... no
++checking for _FILE_OFFSET_BITS value needed for large files... 64
++checking for 64 bit off_t... yes
++checking if large file support is available... yes
++checking for library containing dlopen... none required
++checking for dlerror... yes
++checking for shl_load... (cached) no
++checking for shl_load in -ldld... (cached) no
++checking for dld_link in -ldld... no
++checking for dlopen... (cached) yes
++checking for dlsym... yes
++checking for dlclose... yes
++checking for _ prefix in compiled symbols... no
++checking what extension is used for runtime loadable modules... .so
++checking for openat... yes
++checking for renameat... yes
++checking for fstatat... yes
++checking for unlinkat... yes
++checking for struct tm.tm_gmtoff... yes
++checking for backtrace_symbols... no
++checking for dirfd... yes
++checking for getusershell... yes
++checking for pread... yes
++checking for pwrite... yes
++checking for pselect... yes
++checking for setlinebuf... yes
++checking for strlcat... yes
++checking for strlcpy... yes
++checking for strnlen... yes
++checking for mempcpy... yes
++checking for vasprintf... yes
++checking for asprintf... yes
++checking for mmap... yes
++checking for utime... yes
++checking for getpagesize... yes
++checking for library containing gethostbyname... none required
++checking for library containing connect... none required
++checking for getifaddrs... yes
++checking for the pthreads library -lpthreads... no
++checking whether pthreads work without any flags... yes
++checking for joinable pthread attribute... PTHREAD_CREATE_JOINABLE
++checking if more special flags are required for pthreads... no
++checking for PTHREAD_PRIO_INHERIT... yes
++checking whether to check for 64bit libraries... yes
++ * Linux specific configuration
++checking linux/dqblk_xfs.h usability... yes
++checking linux/dqblk_xfs.h presence... yes
++checking for linux/dqblk_xfs.h... yes
++checking for ldconfig... /sbin/ldconfig
++NETA_LDCONFIG = /sbin/ldconfig
++no
++checking whether to enable AFS support... no
++checking for cracklib support... no
++checking whether to enable verbose debug code... no
++checking whether to enable debugging with debuggers... no
++checking for libiconv... no
++checking for working iconv... yes
++checking whether iconv supports UCS-2-INTERNAL... no
++checking whether or not to use Database Daemon CNID backend... yes
++checking whether or not to use BDB Concurrent Data Store... no
++checking whether or not to use LAST DID scheme... yes
++checking whether or not to use TDB DID scheme... yes
++checking MySQL library and headers... checking for mysql_config... /usr/bin/mysql_config
++/usr/bin/mysql_config
++checking default DID scheme... dbd
++checking whether default CNID scheme has been activated... yes
++checking for main in -lrpcsvc... no
++checking rpc/rpc.h usability... no
++checking rpc/rpc.h presence... no
++checking for rpc/rpc.h... no
++checking rpc/pmap_prot.h usability... no
++checking rpc/pmap_prot.h presence... no
++checking for rpc/pmap_prot.h... no
++checking rpcsvc/rquota.h usability... no
++checking rpcsvc/rquota.h presence... no
++checking for rpcsvc/rquota.h... no
++checking for getfsquota in -lquota... no
++checking pkg-config is at least version 0.9.0... yes
++checking avahi-client/client.h usability... no
++checking avahi-client/client.h presence... no
++checking for avahi-client/client.h... no
++checking dns_sd.h usability... no
++checking dns_sd.h presence... no
++checking for dns_sd.h... no
++checking whether to enable Zerconf support... no
++checking whether to enable the TCP wrappers... no
++checking for PAM installation directory... yes (path: /etc/pam.d)
++checking security/pam_appl.h usability... yes
++checking security/pam_appl.h presence... yes
++checking for security/pam_appl.h... yes
++checking pam/pam_appl.h usability... no
++checking pam/pam_appl.h presence... no
++checking for pam/pam_appl.h... no
++checking for pam_set_item in -lpam... yes
++checking for includable common PAM config... yes (include system-auth)
++checking whether to enable PAM support... yes
++checking shadow.h usability... yes
++checking shadow.h presence... yes
++checking for shadow.h... yes
++checking whether shadow support should be enabled... yes
++checking whether checking for a valid shell should be enabled... yes
++disabling init-style support
++checking for libgcrypt-config... /usr/bin/libgcrypt-config
++checking for LIBGCRYPT - version >= 1.2.3... yes (1.8.7)
++checking libgcrypt API version... okay
++checking libgcrypt hast CAST5 API... yes
++configure: Enabling DHX2 UAM
++checking for SSL... /usr (enabling RANDNUM and DHX support)
++checking for main in -lcrypto... yes
++checking for main in -ldes... no
++checking for Berkeley DB headers in /usr/local/include/... no
++checking for Berkeley DB headers in /usr/local/include/db6.1... no
++checking for Berkeley DB headers in /usr/local/include/db6... no
++checking for Berkeley DB headers in /usr/local/include/db5... no
++checking for Berkeley DB headers in /usr/local/include/db5.3... no
++checking for Berkeley DB headers in /usr/local/include/db5.2... no
++checking for Berkeley DB headers in /usr/local/include/db5.1... no
++checking for Berkeley DB headers in /usr/local/include/db51... no
++checking for Berkeley DB headers in /usr/local/include/db5.0... no
++checking for Berkeley DB headers in /usr/local/include/db50... no
++checking for Berkeley DB headers in /usr/local/include/db4.8... no
++checking for Berkeley DB headers in /usr/local/include/db48... no
++checking for Berkeley DB headers in /usr/local/include/db4.7... no
++checking for Berkeley DB headers in /usr/local/include/db47... no
++checking for Berkeley DB headers in /usr/local/include/db4.6... no
++checking for Berkeley DB headers in /usr/local/include/db46... no
++checking for Berkeley DB headers in /usr/local/include/db4... no
++checking for Berkeley DB headers in /usr/include/... yes
++checking /usr/include//db.h version >= 4.6.0... yes
++checking Berkeley DB library (-ldb48)... no
++checking Berkeley DB library (-ldb4.8)... no
++checking Berkeley DB library (-ldb-48)... no
++checking Berkeley DB library (-ldb-4.8)... 4.8.30 ... yes
++checking crypt.h usability... yes
++checking crypt.h presence... yes
++checking for crypt.h... yes
++checking for main in -lcrypt... yes
++checking whether the PGP UAM should be build... no
++checking whether Kerberos V UAM should be build... no
++checking for Kerberos 5 (necessary for GetSrvrInfo:DirectoryNames support)... auto
++checking krb5/krb5.h usability... yes
++checking krb5/krb5.h presence... yes
++checking for krb5/krb5.h... yes
++checking for krb5-config... /usr/bin/krb5-config
++checking for krb5-config... /usr/bin/krb5-config
++checking for krb5_free_unparsed_name... yes
++checking for krb5_free_error_message... yes
++checking for krb5_free_keytab_entry_contents... yes
++checking for krb5_kt_free_entry... yes
++checking whether configuration files should be overwritten... no
++checking for LDAP (necessary for client-side ACL visibility)... auto
++checking ldap.h usability... yes
++checking ldap.h presence... yes
++checking for ldap.h... yes
++checking for ldap_init in -lldap... yes
++checking whether to support ACLs... auto
++checking for acl_get_file in -lacl... yes
++checking for getxattr in -lattr... yes
++checking for POSIX ACL support... yes
++configure: Using POSIX ACLs
++checking for acl_get_perm_np... no
++checking for acl_from_mode... checking for acl_from_mode... yes
++yes
++checking acl/libacl.h usability... yes
++checking acl/libacl.h presence... yes
++checking for acl/libacl.h... yes
++checking sys/attributes.h usability... no
++checking sys/attributes.h presence... no
++checking for sys/attributes.h... no
++checking attr/xattr.h usability... no
++checking attr/xattr.h presence... no
++checking for attr/xattr.h... no
++checking sys/xattr.h usability... yes
++checking sys/xattr.h presence... yes
++checking for sys/xattr.h... yes
++checking sys/extattr.h usability... no
++checking sys/extattr.h presence... no
++checking for sys/extattr.h... no
++checking sys/uio.h usability... yes
++checking sys/uio.h presence... yes
++checking for sys/uio.h... yes
++checking sys/ea.h usability... no
++checking sys/ea.h presence... no
++checking for sys/ea.h... no
++checking for library containing getxattr... none required
++checking for getxattr... yes
++checking for lgetxattr... yes
++checking for fgetxattr... yes
++checking for listxattr... yes
++checking for llistxattr... yes
++checking for flistxattr... yes
++checking for removexattr... yes
++checking for lremovexattr... yes
++checking for fremovexattr... yes
++checking for setxattr... yes
++checking for lsetxattr... yes
++checking for fsetxattr... yes
++checking whether xattr interface takes additional options... no
++checking if the realpath function allows a NULL argument... yes
++checking for sendfile... yes
++checking for splice... yes
++checking whether to use bundled libevent... system
++checking whether to use bundled tdb... yes
++Package tracker-sparql-0.12 was not found in the pkg-config search path.
++Perhaps you should add the directory containing `tracker-sparql-0.12.pc'
++to the PKG_CONFIG_PATH environment variable
++No package 'tracker-sparql-0.12' found
++checking for TRACKER... no
++checking whether to enable developer build... no
++checking for dtrace... no
++checking for DBUS... yes
++checking for DBUS_GLIB... yes
++checking for DBUS_GTHREAD... yes
++checking for dbus_g_bus_get_private... yes
++checking whether to use Filesystem Hierarchy Standard (FHS) compatibility... no
++checking netatalk lockfile path... /var/lock/netatalk
++checking whether to build Docbook documentation... no
++checking whether make supports nested variables... (cached) yes
++checking that generated files are newer than configure... done
++configure: creating ./config.status
++config.status: creating Makefile
++config.status: creating bin/Makefile
++config.status: creating bin/ad/Makefile
++config.status: creating bin/afppasswd/Makefile
++config.status: creating bin/cnid/Makefile
++config.status: creating bin/cnid/cnid2_create
++config.status: creating bin/megatron/Makefile
++config.status: creating bin/misc/Makefile
++config.status: creating config/Makefile
++config.status: creating config/pam/Makefile
++config.status: creating contrib/Makefile
++config.status: creating contrib/macusers/Makefile
++config.status: creating contrib/macusers/macusers
++config.status: creating contrib/shell_utils/Makefile
++config.status: creating contrib/shell_utils/apple_dump
++config.status: creating contrib/shell_utils/asip-status.pl
++config.status: creating distrib/Makefile
++config.status: creating distrib/config/Makefile
++config.status: creating distrib/config/netatalk-config
++config.status: creating distrib/initscripts/Makefile
++config.status: creating distrib/m4/Makefile
++config.status: creating doc/Makefile
++config.status: creating doc/html.xsl
++config.status: creating doc/man.xsl
++config.status: creating doc/manual/Makefile
++config.status: creating doc/manual/manual.xml
++config.status: creating doc/manpages/Makefile
++config.status: creating doc/manpages/man1/Makefile
++config.status: creating doc/manpages/man5/Makefile
++config.status: creating doc/manpages/man8/Makefile
++config.status: creating etc/Makefile
++config.status: creating etc/afpd/Makefile
++config.status: creating etc/cnid_dbd/Makefile
++config.status: creating etc/netatalk/Makefile
++config.status: creating etc/spotlight/Makefile
++config.status: creating etc/uams/Makefile
++config.status: creating include/Makefile
++config.status: creating include/atalk/Makefile
++config.status: creating libatalk/Makefile
++config.status: creating libatalk/acl/Makefile
++config.status: creating libatalk/adouble/Makefile
++config.status: creating libatalk/bstring/Makefile
++config.status: creating libatalk/cnid/Makefile
++config.status: creating libatalk/cnid/cdb/Makefile
++config.status: creating libatalk/cnid/last/Makefile
++config.status: creating libatalk/cnid/dbd/Makefile
++config.status: creating libatalk/cnid/tdb/Makefile
++config.status: creating libatalk/cnid/mysql/Makefile
++config.status: creating libatalk/compat/Makefile
++config.status: creating libatalk/dsi/Makefile
++config.status: creating libatalk/iniparser/Makefile
++config.status: creating libatalk/talloc/Makefile
++config.status: creating libatalk/tdb/Makefile
++config.status: creating libatalk/unicode/Makefile
++config.status: creating libatalk/unicode/charsets/Makefile
++config.status: creating libatalk/util/Makefile
++config.status: creating libatalk/vfs/Makefile
++config.status: creating macros/Makefile
++config.status: creating man/Makefile
++config.status: creating man/man1/Makefile
++config.status: creating man/man1/ad.1
++config.status: creating man/man1/afpldaptest.1
++config.status: creating man/man1/afppasswd.1
++config.status: creating man/man1/afpstats.1
++config.status: creating man/man1/apple_dump.1
++config.status: creating man/man1/asip-status.pl.1
++config.status: creating man/man1/dbd.1
++config.status: creating man/man1/macusers.1
++config.status: creating man/man1/netatalk-config.1
++config.status: creating man/man1/uniconv.1
++config.status: creating man/man5/Makefile
++config.status: creating man/man5/afp.conf.5
++config.status: creating man/man5/afp_signature.conf.5
++config.status: creating man/man5/afp_voluuid.conf.5
++config.status: creating man/man5/extmap.conf.5
++config.status: creating man/man8/Makefile
++config.status: creating man/man8/afpd.8
++config.status: creating man/man8/cnid_dbd.8
++config.status: creating man/man8/cnid_metad.8
++config.status: creating man/man8/netatalk.8
++config.status: creating test/Makefile
++config.status: creating test/afpd/Makefile
++config.status: creating config.h
++config.status: executing depfiles commands
++config.status: executing libtool commands
++config.status: executing default commands
++Compilation summary:
++    CPPFLAGS       = -I$(top_srcdir)/include -I$(top_builddir)/include -I$(top_srcdir) 
++    CFLAGS         = -D_U_="__attribute__((unused))" -fcommon -O2 -fPIC
++    LIBS           = 
++    PTHREADS:
++        LIBS   = 
++        CFLAGS = 
++    SSL:
++        LIBS   =  -L/usr/lib64 -lcrypto
++        CFLAGS =  -I/usr/include/openssl
++    LIBGCRYPT:
++        LIBS   = -lgcrypt -lgpg-error
++        CFLAGS = 
++    PAM:
++        LIBS   =  -lpam
++        CFLAGS = 
++    WRAP:
++        LIBS   = 
++        CFLAGS = 
++    BDB:
++        LIBS   =  -L/usr/lib64 -ldb-4.8
++        CFLAGS = 
++    LDAP:
++        LIBS   =  -lldap
++        CFLAGS = 
++    LIBEVENT:
++        LIBS   = 
++        CFLAGS = 
++    TDB:
++        bundled
++    MySQL:
++        LIBS   = -L/usr/lib/ -lmariadb
++        CFLAGS = -I/usr/include/mysql -I/usr/include/mysql/mysql
++Configure summary:
++    INIT STYLE:
++         none
++    AFP:
++         Extended Attributes: ad | sys
++         ACL support: yes
++         Spotlight: no
++    CNID:
++         backends:  dbd last tdb mysql
++    UAMS:
++         DHX     (PAM SHADOW)
++         DHX2    (PAM SHADOW)
++         RANDNUM (afppasswd)
++         clrtxt  (PAM SHADOW)
++         guest
++    Options:
++         Zeroconf support:        no
++         tcp wrapper support:     no
++         quota support:           no
++         valid shell check:       yes
++         cracklib support:        no
++         ACL support:             auto
++         Kerberos support:        yes
++         LDAP support:            yes
++         AFP stats via dbus:      yes
++         dtrace probes:           no
++    Paths:
++         Netatalk lockfile:       /var/lock/netatalk
++         dbus system directory:   /usr/share/dbus-1/system.d/
++         pam config directory:    /etc/pam.d
++    Documentation:
++         Docbook:                 no
++make  all-recursive
++make[1]: Entering directory '/tmp/netatalk-3.1.12'
++Making all in include
++make[2]: Entering directory '/tmp/netatalk-3.1.12/include'
++Making all in atalk
++make[3]: Entering directory '/tmp/netatalk-3.1.12/include/atalk'
++make  all-am
++make[4]: Entering directory '/tmp/netatalk-3.1.12/include/atalk'
++make[4]: Nothing to be done for 'all-am'.
++make[4]: Leaving directory '/tmp/netatalk-3.1.12/include/atalk'
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/include/atalk'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/include'
++make[3]: Nothing to be done for 'all-am'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/include'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/include'
++Making all in libatalk
++make[2]: Entering directory '/tmp/netatalk-3.1.12/libatalk'
++Making all in acl
++make[3]: Entering directory '/tmp/netatalk-3.1.12/libatalk/acl'
++  CC       libacl_la-cache.lo
++  CC       libacl_la-unix.lo
++  CC       libacl_la-uuid.lo
++  CC       libacl_la-ldap.lo
++  CC       libacl_la-ldap_config.lo
++  CCLD     libacl.la
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/acl'
++Making all in adouble
++make[3]: Entering directory '/tmp/netatalk-3.1.12/libatalk/adouble'
++  CC       ad_attr.lo
++  CC       ad_conv.lo
++  CC       ad_date.lo
++  CC       ad_flush.lo
++  CC       ad_lock.lo
++ad_flush.c: In function ‘ad_flush_hf’:
++  CC       ad_mmap.lo
++ad_flush.c:306:25: warning: implicit declaration of function ‘become_root’ [-Wimplicit-function-declaration]
++  306 |                         become_root();
++      |                         ^~~~~~~~~~~
++ad_flush.c:308:25: warning: implicit declaration of function ‘unbecome_root’ [-Wimplicit-function-declaration]
++  308 |                         unbecome_root();
++      |                         ^~~~~~~~~~~~~
++  CC       ad_open.lo
++  CC       ad_read.lo
++  CC       ad_recvfile.lo
++  CC       ad_sendfile.lo
++  CC       ad_size.lo
++  CC       ad_write.lo
++  CCLD     libadouble.la
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/adouble'
++Making all in bstring
++make[3]: Entering directory '/tmp/netatalk-3.1.12/libatalk/bstring'
++  CC       bstrlib.lo
++  CC       bstradd.lo
++  CCLD     libbstring.la
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/bstring'
++Making all in compat
++make[3]: Entering directory '/tmp/netatalk-3.1.12/libatalk/compat'
++  CC       misc.lo
++  CC       mktemp.lo
++  CC       getusershell.lo
++  CC       rquota_xdr.lo
++  CC       pselect.lo
++  CC       strlcpy.lo
++  CCLD     libcompat.la
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/compat'
++Making all in cnid
++make[3]: Entering directory '/tmp/netatalk-3.1.12/libatalk/cnid'
++Making all in last
++make[4]: Entering directory '/tmp/netatalk-3.1.12/libatalk/cnid/last'
++  CC       cnid_last.lo
++  CCLD     libcnid_last.la
++make[4]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/cnid/last'
++Making all in cdb
++make[4]: Entering directory '/tmp/netatalk-3.1.12/libatalk/cnid/cdb'
++make[4]: Nothing to be done for 'all'.
++make[4]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/cnid/cdb'
++Making all in dbd
++make[4]: Entering directory '/tmp/netatalk-3.1.12/libatalk/cnid/dbd'
++  CC       cnid_dbd.lo
++  CCLD     libcnid_dbd.la
++make[4]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/cnid/dbd'
++Making all in tdb
++make[4]: Entering directory '/tmp/netatalk-3.1.12/libatalk/cnid/tdb'
++  CC       libcnid_tdb_la-cnid_tdb_add.lo
++  CC       libcnid_tdb_la-cnid_tdb_close.lo
++  CC       libcnid_tdb_la-cnid_tdb_delete.lo
++  CC       libcnid_tdb_la-cnid_tdb_get.lo
++  CC       libcnid_tdb_la-cnid_tdb_lookup.lo
++  CC       libcnid_tdb_la-cnid_tdb_open.lo
++  CC       libcnid_tdb_la-cnid_tdb_resolve.lo
++  CC       libcnid_tdb_la-cnid_tdb_update.lo
++  CCLD     libcnid_tdb.la
++make[4]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/cnid/tdb'
++Making all in mysql
++make[4]: Entering directory '/tmp/netatalk-3.1.12/libatalk/cnid/mysql'
++  CC       libcnid_mysql_la-cnid_mysql.lo
++  CCLD     libcnid_mysql.la
++make[4]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/cnid/mysql'
++make[4]: Entering directory '/tmp/netatalk-3.1.12/libatalk/cnid'
++  CC       cnid.lo
++  CC       cnid_init.lo
++  CCLD     libcnid.la
++make[4]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/cnid'
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/cnid'
++Making all in dsi
++make[3]: Entering directory '/tmp/netatalk-3.1.12/libatalk/dsi'
++  CC       dsi_attn.lo
++  CC       dsi_close.lo
++  CC       dsi_cmdreply.lo
++  CC       dsi_getsess.lo
++  CC       dsi_getstat.lo
++  CC       dsi_init.lo
++  CC       dsi_opensess.lo
++  CC       dsi_read.lo
++  CC       dsi_tcp.lo
++  CC       dsi_tickle.lo
++  CC       dsi_write.lo
++  CC       dsi_stream.lo
++  CCLD     libdsi.la
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/dsi'
++Making all in iniparser
++make[3]: Entering directory '/tmp/netatalk-3.1.12/libatalk/iniparser'
++  CC       dictionary.lo
++  CC       iniparser.lo
++  CCLD     libiniparser.la
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/iniparser'
++Making all in talloc
++make[3]: Entering directory '/tmp/netatalk-3.1.12/libatalk/talloc'
++  CC       talloc.lo
++  CC       dalloc.lo
++  CCLD     libtalloc.la
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/talloc'
++Making all in util
++make[3]: Entering directory '/tmp/netatalk-3.1.12/libatalk/util'
++  CC       libutil_la-bprint.lo
++  CC       libutil_la-cnid.lo
++  CC       libutil_la-fault.lo
++  CC       libutil_la-getiface.lo
++  CC       libutil_la-gettok.lo
++  CC       libutil_la-locking.lo
++  CC       libutil_la-logger.lo
++  CC       libutil_la-module.lo
++  CC       libutil_la-netatalk_conf.lo
++  CC       libutil_la-queue.lo
++  CC       libutil_la-server_child.lo
++netatalk_conf.c: In function ‘creatvol’:
++netatalk_conf.c:710:25: warning: assignment discards ‘const’ qualifier from pointer target type [-Wdiscarded-qualifiers]
++  710 |             global_path = atalk_iniparser_getstring(obj->iniconfig,
++      |                         ^
++netatalk_conf.c: In function ‘load_volumes’:
++netatalk_conf.c:1529:21: warning: assignment discards ‘const’ qualifier from pointer target type [-Wdiscarded-qualifiers]
++ 1529 |         includefile = atalk_iniparser_getstring(obj->iniconfig, INISEC_GLOBAL,
++      |                     ^
++  CC       libutil_la-server_ipc.lo
++  CC       libutil_la-server_lock.lo
++  CC       libutil_la-socket.lo
++  CC       libutil_la-strdicasecmp.lo
++  CC       libutil_la-unix.lo
++  CC       libutil_la-ftw.lo
++  CCLD     libutil.la
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/util'
++Making all in unicode
++make[3]: Entering directory '/tmp/netatalk-3.1.12/libatalk/unicode'
++Making all in charsets
++make[4]: Entering directory '/tmp/netatalk-3.1.12/libatalk/unicode/charsets'
++  CC       mac_roman.lo
++  CC       mac_greek.lo
++  CC       mac_hebrew.lo
++  CC       mac_centraleurope.lo
++  CC       mac_turkish.lo
++  CC       mac_cyrillic.lo
++  CC       mac_japanese.lo
++  CC       mac_chinese_trad.lo
++  CC       mac_chinese_simp.lo
++  CC       mac_korean.lo
++  CC       generic_cjk.lo
++  CC       generic_mb.lo
++  CCLD     libcharsets.la
++make[4]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/unicode/charsets'
++make[4]: Entering directory '/tmp/netatalk-3.1.12/libatalk/unicode'
++  CC       util_unistr.lo
++  CC       iconv.lo
++  CC       charcnv.lo
++  CC       utf8.lo
++  CC       utf16_case.lo
++  CCLD     libunicode.la
++make[4]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/unicode'
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/unicode'
++Making all in vfs
++make[3]: Entering directory '/tmp/netatalk-3.1.12/libatalk/vfs'
++  CC       vfs.lo
++  CC       unix.lo
++  CC       ea_ad.lo
++  CC       ea_sys.lo
++  CC       extattr.lo
++  CC       acl.lo
++  CCLD     libvfs.la
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/vfs'
++Making all in tdb
++make[3]: Entering directory '/tmp/netatalk-3.1.12/libatalk/tdb'
++  CC       check.lo
++  CC       dump.lo
++  CC       error.lo
++  CC       freelist.lo
++  CC       io.lo
++  CC       freelistcheck.lo
++  CC       lock.lo
++  CC       open.lo
++  CC       tdb.lo
++  CC       transaction.lo
++  CC       traverse.lo
++  CCLD     libtdb.la
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/tdb'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/libatalk'
++  CC       libatalk_la-dummy.lo
++  CCLD     libatalk.la
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/libatalk'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/libatalk'
++Making all in bin
++make[2]: Entering directory '/tmp/netatalk-3.1.12/bin'
++Making all in afppasswd
++make[3]: Entering directory '/tmp/netatalk-3.1.12/bin/afppasswd'
++  CC       afppasswd.o
++  CCLD     afppasswd
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/bin/afppasswd'
++Making all in cnid
++make[3]: Entering directory '/tmp/netatalk-3.1.12/bin/cnid'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/bin/cnid'
++Making all in megatron
++make[3]: Entering directory '/tmp/netatalk-3.1.12/bin/megatron'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/bin/megatron'
++Making all in misc
++make[3]: Entering directory '/tmp/netatalk-3.1.12/bin/misc'
++  CC       afpldaptest-uuidtest.o
++  CC       netacnv.o
++  CC       logger_test.o
++  CC       fce-fce.o
++  CCLD     netacnv
++  CCLD     logger_test
++  CCLD     afpldaptest
++  CCLD     fce
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/bin/misc'
++Making all in ad
++make[3]: Entering directory '/tmp/netatalk-3.1.12/bin/ad'
++  CC       ad-ad.o
++  CC       ad-ad_find.o
++  CC       ad-ad_util.o
++  CC       ad-ad_ls.o
++  CC       ad-ad_cp.o
++  CC       ad-ad_mv.o
++  CC       ad-ad_rm.o
++  CC       ad-ad_set.o
++  CCLD     ad
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/bin/ad'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/bin'
++make[3]: Nothing to be done for 'all-am'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/bin'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/bin'
++Making all in config
++make[2]: Entering directory '/tmp/netatalk-3.1.12/config'
++Making all in pam
++make[3]: Entering directory '/tmp/netatalk-3.1.12/config/pam'
++sed -e "s,[@]PAM_DIRECTIVE[@],include,g" \
++	-e "s,[@]PAM_AUTH[@],system-auth," \
++	-e "s,[@]PAM_ACCOUNT[@],system-auth," \
++	-e "s,[@]PAM_PASSWORD[@],system-auth," \
++	-e "s,[@]PAM_SESSION[@],system-auth," \
++    <netatalk.tmpl >netatalk
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/config/pam'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/config'
++make[3]: Nothing to be done for 'all-am'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/config'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/config'
++Making all in etc
++make[2]: Entering directory '/tmp/netatalk-3.1.12/etc'
++Making all in spotlight
++make[3]: Entering directory '/tmp/netatalk-3.1.12/etc/spotlight'
++make  all-am
++make[4]: Entering directory '/tmp/netatalk-3.1.12/etc/spotlight'
++make[4]: Nothing to be done for 'all-am'.
++make[4]: Leaving directory '/tmp/netatalk-3.1.12/etc/spotlight'
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/etc/spotlight'
++Making all in afpd
++make[3]: Entering directory '/tmp/netatalk-3.1.12/etc/afpd'
++make  all-am
++make[4]: Entering directory '/tmp/netatalk-3.1.12/etc/afpd'
++  CC       afpd-afp_config.o
++  CC       afpd-afp_dsi.o
++  CC       afpd-afp_options.o
++  CC       afpd-afp_util.o
++  CC       afpd-afprun.o
++  CC       afpd-afs.o
++  CC       afpd-appl.o
++  CC       afpd-auth.o
++  CC       afpd-catsearch.o
++  CC       afpd-desktop.o
++  CC       afpd-dircache.o
++  CC       afpd-directory.o
++  CC       afpd-enumerate.o
++  CC       afpd-extattrs.o
++  CC       afpd-fce_api.o
++  CC       afpd-fce_util.o
++  CC       afpd-file.o
++  CC       afpd-filedir.o
++  CC       afpd-fork.o
++  CC       afpd-hash.o
++  CC       afpd-main.o
++In file included from main.c:18:
++/usr/include/sys/poll.h:1:2: warning: #warning redirecting incorrect #include <sys/poll.h> to <poll.h> [-Wcpp]
++    1 | #warning redirecting incorrect #include <sys/poll.h> to <poll.h>
++      |  ^~~~~~~
++  CC       afpd-mangle.o
++  CC       afpd-messages.o
++  CC       afpd-nfsquota.o
++  CC       afpd-ofork.o
++  CC       afpd-quota.o
++  CC       afpd-spotlight_marshalling.o
++  CC       afpd-status.o
++  CC       afpd-switch.o
++  CC       afpd-uam.o
++  CC       afpd-uid.o
++  CC       afpd-unix.o
++  CC       afpd-volume.o
++  CC       afpd-acls.o
++  CC       afpd-afpstats.o
++afpstats.c: In function ‘afpstats_init’:
++afpstats.c:114:5: warning: ‘g_type_init’ is deprecated [-Wdeprecated-declarations]
++  114 |     g_type_init();
++      |     ^~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gobject/gobject.h:24,
++                 from /usr/include/glib-2.0/gobject/gbinding.h:29,
++                 from /usr/include/glib-2.0/glib-object.h:22,
++                 from /usr/include/dbus-1.0/dbus/dbus-glib.h:27,
++                 from afpstats.c:26:
++/usr/include/glib-2.0/gobject/gtype.h:691:23: note: declared here
++  691 | void                  g_type_init                    (void);
++      |                       ^~~~~~~~~~~
++afpstats.c:115:5: warning: ‘g_thread_init’ is deprecated [-Wdeprecated-declarations]
++  115 |     g_thread_init(NULL);
++      |     ^~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/glib.h:111,
++                 from afpstats.c:25:
++/usr/include/glib-2.0/glib/deprecated/gthread.h:261:10: note: declared here
++  261 | void     g_thread_init                   (gpointer vtable);
++      |          ^~~~~~~~~~~~~
++afpstats.c:119:5: warning: ‘g_thread_create’ is deprecated: Use 'g_thread_new' instead [-Wdeprecated-declarations]
++  119 |     thread = g_thread_create(afpstats_thread, NULL, TRUE, NULL);
++      |     ^~~~~~
++In file included from /usr/include/glib-2.0/glib.h:111,
++                 from afpstats.c:25:
++/usr/include/glib-2.0/glib/deprecated/gthread.h:100:10: note: declared here
++  100 | GThread *g_thread_create       (GThreadFunc       func,
++      |          ^~~~~~~~~~~~~~~
++  CC       afpd-afpstats_obj.o
++  CCLD     afpd
++make[4]: Leaving directory '/tmp/netatalk-3.1.12/etc/afpd'
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/etc/afpd'
++Making all in cnid_dbd
++make[3]: Entering directory '/tmp/netatalk-3.1.12/etc/cnid_dbd'
++  CC       cmd_dbd.o
++  CC       cmd_dbd_scanvol.o
++  CC       dbif.o
++  CC       pack.o
++  CC       dbd_add.o
++  CC       dbd_delete.o
++  CC       dbd_getstamp.o
++  CC       dbd_lookup.o
++  CC       dbd_rebuild_add.o
++  CC       dbd_resolve.o
++  CC       dbd_update.o
++  CC       comm.o
++  CC       db_param.o
++  CC       main.o
++  CC       dbd_get.o
++  CC       dbd_dbcheck.o
++  CC       dbd_search.o
++  CC       cnid_metad.o
++  CC       usockfd.o
++  CCLD     dbd
++  CCLD     cnid_dbd
++  CCLD     cnid_metad
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/etc/cnid_dbd'
++Making all in netatalk
++make[3]: Entering directory '/tmp/netatalk-3.1.12/etc/netatalk'
++  CC       netatalk-netatalk.o
++  CC       netatalk-afp_avahi.o
++  CC       netatalk-afp_mdns.o
++In file included from netatalk.c:26:
++/usr/include/sys/poll.h:1:2: warning: #warning redirecting incorrect #include <sys/poll.h> to <poll.h> [-Wcpp]
++    1 | #warning redirecting incorrect #include <sys/poll.h> to <poll.h>
++      |  ^~~~~~~
++  CC       netatalk-afp_zeroconf.o
++  CCLD     netatalk
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/etc/netatalk'
++Making all in uams
++make[3]: Entering directory '/tmp/netatalk-3.1.12/etc/uams'
++  CC       uams_guest.lo
++  CC       uams_passwd.lo
++  CC       uams_pam_la-uams_pam.lo
++  CC       uams_randnum.lo
++  CC       uams_dhx_passwd.lo
++  CC       uams_dhx_pam_la-uams_dhx_pam.lo
++  CC       uams_dhx2_passwd.lo
++  CC       uams_dhx2_pam_la-uams_dhx2_pam.lo
++  CCLD     uams_guest.la
++  CCLD     uams_passwd.la
++  CCLD     uams_pam.la
++  CCLD     uams_randnum.la
++  CCLD     uams_dhx_passwd.la
++  CCLD     uams_dhx_pam.la
++  CCLD     uams_dhx2_passwd.la
++  CCLD     uams_dhx2_pam.la
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/etc/uams'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/etc'
++make[3]: Nothing to be done for 'all-am'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/etc'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/etc'
++Making all in contrib
++make[2]: Entering directory '/tmp/netatalk-3.1.12/contrib'
++Making all in macusers
++make[3]: Entering directory '/tmp/netatalk-3.1.12/contrib/macusers'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/contrib/macusers'
++Making all in shell_utils
++make[3]: Entering directory '/tmp/netatalk-3.1.12/contrib/shell_utils'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/contrib/shell_utils'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/contrib'
++make[3]: Nothing to be done for 'all-am'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/contrib'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/contrib'
++Making all in distrib
++make[2]: Entering directory '/tmp/netatalk-3.1.12/distrib'
++Making all in config
++make[3]: Entering directory '/tmp/netatalk-3.1.12/distrib/config'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/distrib/config'
++Making all in initscripts
++make[3]: Entering directory '/tmp/netatalk-3.1.12/distrib/initscripts'
++sed -e s@:BINDIR:@/usr/bin@ \
++    -e s@:SBINDIR:@/usr/sbin@ \
++    -e s@:ETCDIR:@/etc/netatalk@ \
++    -e s@:NETATALK_VERSION:@3.1.12@ \
++    -e s@:PATH_NETATALK_LOCK:@/var/lock/netatalk@ \
++    <rc.bsd.tmpl >rc.bsd
++sed -e s@:BINDIR:@/usr/bin@ \
++    -e s@:SBINDIR:@/usr/sbin@ \
++    -e s@:ETCDIR:@/etc/netatalk@ \
++    -e s@:NETATALK_VERSION:@3.1.12@ \
++    -e s@:PATH_NETATALK_LOCK:@/var/lock/netatalk@ \
++    <rc.debian.tmpl >rc.debian
++sed -e s@:BINDIR:@/usr/bin@ \
++    -e s@:SBINDIR:@/usr/sbin@ \
++    -e s@:ETCDIR:@/etc/netatalk@ \
++    -e s@:NETATALK_VERSION:@3.1.12@ \
++    -e s@:PATH_NETATALK_LOCK:@/var/lock/netatalk@ \
++    <rc.gentoo.tmpl >rc.gentoo
++sed -e s@:BINDIR:@/usr/bin@ \
++    -e s@:SBINDIR:@/usr/sbin@ \
++    -e s@:ETCDIR:@/etc/netatalk@ \
++    -e s@:NETATALK_VERSION:@3.1.12@ \
++    -e s@:PATH_NETATALK_LOCK:@/var/lock/netatalk@ \
++    <rc.netbsd.tmpl >rc.netbsd
++sed -e s@:BINDIR:@/usr/bin@ \
++    -e s@:SBINDIR:@/usr/sbin@ \
++    -e s@:ETCDIR:@/etc/netatalk@ \
++    -e s@:NETATALK_VERSION:@3.1.12@ \
++    -e s@:PATH_NETATALK_LOCK:@/var/lock/netatalk@ \
++    <rc.redhat.tmpl >rc.redhat
++sed -e s@:BINDIR:@/usr/bin@ \
++    -e s@:SBINDIR:@/usr/sbin@ \
++    -e s@:ETCDIR:@/etc/netatalk@ \
++    -e s@:NETATALK_VERSION:@3.1.12@ \
++    -e s@:PATH_NETATALK_LOCK:@/var/lock/netatalk@ \
++    <rc.solaris.tmpl >rc.solaris
++sed -e s@:BINDIR:@/usr/bin@ \
++    -e s@:SBINDIR:@/usr/sbin@ \
++    -e s@:ETCDIR:@/etc/netatalk@ \
++    -e s@:NETATALK_VERSION:@3.1.12@ \
++    -e s@:PATH_NETATALK_LOCK:@/var/lock/netatalk@ \
++    <rc.suse.tmpl >rc.suse
++sed -e s@:BINDIR:@/usr/bin@ \
++    -e s@:SBINDIR:@/usr/sbin@ \
++    -e s@:ETCDIR:@/etc/netatalk@ \
++    -e s@:NETATALK_VERSION:@3.1.12@ \
++    -e s@:PATH_NETATALK_LOCK:@/var/lock/netatalk@ \
++    <service.systemd.tmpl >service.systemd
++sed -e s@:BINDIR:@/usr/bin@ \
++    -e s@:SBINDIR:@/usr/sbin@ \
++    -e s@:ETCDIR:@/etc/netatalk@ \
++    -e s@:NETATALK_VERSION:@3.1.12@ \
++    -e s@:PATH_NETATALK_LOCK:@/var/lock/netatalk@ \
++    <netatalk.xml.tmpl >netatalk.xml
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/distrib/initscripts'
++Making all in m4
++make[3]: Entering directory '/tmp/netatalk-3.1.12/distrib/m4'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/distrib/m4'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/distrib'
++make[3]: Nothing to be done for 'all-am'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/distrib'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/distrib'
++Making all in doc
++make[2]: Entering directory '/tmp/netatalk-3.1.12/doc'
++Making all in manpages
++make[3]: Entering directory '/tmp/netatalk-3.1.12/doc/manpages'
++Making all in man1
++make[4]: Entering directory '/tmp/netatalk-3.1.12/doc/manpages/man1'
++make[4]: Nothing to be done for 'all'.
++make[4]: Leaving directory '/tmp/netatalk-3.1.12/doc/manpages/man1'
++Making all in man5
++make[4]: Entering directory '/tmp/netatalk-3.1.12/doc/manpages/man5'
++make[4]: Nothing to be done for 'all'.
++make[4]: Leaving directory '/tmp/netatalk-3.1.12/doc/manpages/man5'
++Making all in man8
++make[4]: Entering directory '/tmp/netatalk-3.1.12/doc/manpages/man8'
++make[4]: Nothing to be done for 'all'.
++make[4]: Leaving directory '/tmp/netatalk-3.1.12/doc/manpages/man8'
++make[4]: Entering directory '/tmp/netatalk-3.1.12/doc/manpages'
++make[4]: Nothing to be done for 'all-am'.
++make[4]: Leaving directory '/tmp/netatalk-3.1.12/doc/manpages'
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/doc/manpages'
++Making all in manual
++make[3]: Entering directory '/tmp/netatalk-3.1.12/doc/manual'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/doc/manual'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/doc'
++make[3]: Nothing to be done for 'all-am'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/doc'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/doc'
++Making all in man
++make[2]: Entering directory '/tmp/netatalk-3.1.12/man'
++Making all in man1
++make[3]: Entering directory '/tmp/netatalk-3.1.12/man/man1'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/man/man1'
++Making all in man5
++make[3]: Entering directory '/tmp/netatalk-3.1.12/man/man5'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/man/man5'
++Making all in man8
++make[3]: Entering directory '/tmp/netatalk-3.1.12/man/man8'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/man/man8'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/man'
++make[3]: Nothing to be done for 'all-am'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/man'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/man'
++Making all in macros
++make[2]: Entering directory '/tmp/netatalk-3.1.12/macros'
++make[2]: Nothing to be done for 'all'.
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/macros'
++Making all in test
++make[2]: Entering directory '/tmp/netatalk-3.1.12/test'
++Making all in afpd
++make[3]: Entering directory '/tmp/netatalk-3.1.12/test/afpd'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/test/afpd'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/test'
++make[3]: Nothing to be done for 'all-am'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/test'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/test'
++make[2]: Entering directory '/tmp/netatalk-3.1.12'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12'
++make[1]: Leaving directory '/tmp/netatalk-3.1.12'
++Making install in include
++make[1]: Entering directory '/tmp/netatalk-3.1.12/include'
++Making install in atalk
++make[2]: Entering directory '/tmp/netatalk-3.1.12/include/atalk'
++make  install-am
++make[3]: Entering directory '/tmp/netatalk-3.1.12/include/atalk'
++make[4]: Entering directory '/tmp/netatalk-3.1.12/include/atalk'
++make[4]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-netatalk/usr/include/atalk'
++ /usr/bin/ginstall -c -m 644 adouble.h afp.h vfs.h cnid.h logger.h netatalk_conf.h paths.h unicode.h util.h ea.h acl.h unix.h volume.h standards.h bstrlib.h list.h globals.h compat.h uam.h iniparser.h dictionary.h hash.h '/tmp/package-netatalk/usr/include/atalk'
++make[4]: Leaving directory '/tmp/netatalk-3.1.12/include/atalk'
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/include/atalk'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/include/atalk'
++make[2]: Entering directory '/tmp/netatalk-3.1.12/include'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/include'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/include'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/include'
++make[1]: Leaving directory '/tmp/netatalk-3.1.12/include'
++Making install in libatalk
++make[1]: Entering directory '/tmp/netatalk-3.1.12/libatalk'
++Making install in acl
++make[2]: Entering directory '/tmp/netatalk-3.1.12/libatalk/acl'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/libatalk/acl'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/acl'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/acl'
++Making install in adouble
++make[2]: Entering directory '/tmp/netatalk-3.1.12/libatalk/adouble'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/libatalk/adouble'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/adouble'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/adouble'
++Making install in bstring
++make[2]: Entering directory '/tmp/netatalk-3.1.12/libatalk/bstring'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/libatalk/bstring'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/bstring'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/bstring'
++Making install in compat
++make[2]: Entering directory '/tmp/netatalk-3.1.12/libatalk/compat'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/libatalk/compat'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/compat'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/compat'
++Making install in cnid
++make[2]: Entering directory '/tmp/netatalk-3.1.12/libatalk/cnid'
++Making install in last
++make[3]: Entering directory '/tmp/netatalk-3.1.12/libatalk/cnid/last'
++make[4]: Entering directory '/tmp/netatalk-3.1.12/libatalk/cnid/last'
++make[4]: Nothing to be done for 'install-exec-am'.
++make[4]: Nothing to be done for 'install-data-am'.
++make[4]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/cnid/last'
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/cnid/last'
++Making install in cdb
++make[3]: Entering directory '/tmp/netatalk-3.1.12/libatalk/cnid/cdb'
++make[4]: Entering directory '/tmp/netatalk-3.1.12/libatalk/cnid/cdb'
++make[4]: Nothing to be done for 'install-exec-am'.
++make[4]: Nothing to be done for 'install-data-am'.
++make[4]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/cnid/cdb'
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/cnid/cdb'
++Making install in dbd
++make[3]: Entering directory '/tmp/netatalk-3.1.12/libatalk/cnid/dbd'
++make[4]: Entering directory '/tmp/netatalk-3.1.12/libatalk/cnid/dbd'
++make[4]: Nothing to be done for 'install-exec-am'.
++make[4]: Nothing to be done for 'install-data-am'.
++make[4]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/cnid/dbd'
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/cnid/dbd'
++Making install in tdb
++make[3]: Entering directory '/tmp/netatalk-3.1.12/libatalk/cnid/tdb'
++make[4]: Entering directory '/tmp/netatalk-3.1.12/libatalk/cnid/tdb'
++make[4]: Nothing to be done for 'install-exec-am'.
++make[4]: Nothing to be done for 'install-data-am'.
++make[4]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/cnid/tdb'
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/cnid/tdb'
++Making install in mysql
++make[3]: Entering directory '/tmp/netatalk-3.1.12/libatalk/cnid/mysql'
++make[4]: Entering directory '/tmp/netatalk-3.1.12/libatalk/cnid/mysql'
++make[4]: Nothing to be done for 'install-exec-am'.
++make[4]: Nothing to be done for 'install-data-am'.
++make[4]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/cnid/mysql'
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/cnid/mysql'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/libatalk/cnid'
++make[4]: Entering directory '/tmp/netatalk-3.1.12/libatalk/cnid'
++make[4]: Nothing to be done for 'install-exec-am'.
++make[4]: Nothing to be done for 'install-data-am'.
++make[4]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/cnid'
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/cnid'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/cnid'
++Making install in dsi
++make[2]: Entering directory '/tmp/netatalk-3.1.12/libatalk/dsi'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/libatalk/dsi'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/dsi'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/dsi'
++Making install in iniparser
++make[2]: Entering directory '/tmp/netatalk-3.1.12/libatalk/iniparser'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/libatalk/iniparser'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/iniparser'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/iniparser'
++Making install in talloc
++make[2]: Entering directory '/tmp/netatalk-3.1.12/libatalk/talloc'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/libatalk/talloc'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/talloc'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/talloc'
++Making install in util
++make[2]: Entering directory '/tmp/netatalk-3.1.12/libatalk/util'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/libatalk/util'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/util'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/util'
++Making install in unicode
++make[2]: Entering directory '/tmp/netatalk-3.1.12/libatalk/unicode'
++Making install in charsets
++make[3]: Entering directory '/tmp/netatalk-3.1.12/libatalk/unicode/charsets'
++make[4]: Entering directory '/tmp/netatalk-3.1.12/libatalk/unicode/charsets'
++make[4]: Nothing to be done for 'install-exec-am'.
++make[4]: Nothing to be done for 'install-data-am'.
++make[4]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/unicode/charsets'
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/unicode/charsets'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/libatalk/unicode'
++make[4]: Entering directory '/tmp/netatalk-3.1.12/libatalk/unicode'
++make[4]: Nothing to be done for 'install-exec-am'.
++make[4]: Nothing to be done for 'install-data-am'.
++make[4]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/unicode'
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/unicode'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/unicode'
++Making install in vfs
++make[2]: Entering directory '/tmp/netatalk-3.1.12/libatalk/vfs'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/libatalk/vfs'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/vfs'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/vfs'
++Making install in tdb
++make[2]: Entering directory '/tmp/netatalk-3.1.12/libatalk/tdb'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/libatalk/tdb'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/tdb'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/libatalk/tdb'
++make[2]: Entering directory '/tmp/netatalk-3.1.12/libatalk'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/libatalk'
++ /usr/bin/mkdir -p '/tmp/package-netatalk/usr/lib'
++ /bin/sh ../libtool   --mode=install /usr/bin/ginstall -c   libatalk.la '/tmp/package-netatalk/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/libatalk.so.18.0.0 /tmp/package-netatalk/usr/lib/libatalk.so.18.0.0
++libtool: install: (cd /tmp/package-netatalk/usr/lib && { ln -s -f libatalk.so.18.0.0 libatalk.so.18 || { rm -f libatalk.so.18 && ln -s libatalk.so.18.0.0 libatalk.so.18; }; })
++libtool: install: (cd /tmp/package-netatalk/usr/lib && { ln -s -f libatalk.so.18.0.0 libatalk.so || { rm -f libatalk.so && ln -s libatalk.so.18.0.0 libatalk.so; }; })
++libtool: install: /usr/bin/ginstall -c .libs/libatalk.lai /tmp/package-netatalk/usr/lib/libatalk.la
++libtool: warning: remember to run 'libtool --finish /usr/lib'
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/libatalk'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/libatalk'
++make[1]: Leaving directory '/tmp/netatalk-3.1.12/libatalk'
++Making install in bin
++make[1]: Entering directory '/tmp/netatalk-3.1.12/bin'
++Making install in afppasswd
++make[2]: Entering directory '/tmp/netatalk-3.1.12/bin/afppasswd'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/bin/afppasswd'
++ /usr/bin/mkdir -p '/tmp/package-netatalk/usr/bin'
++  /bin/sh ../../libtool   --mode=install /usr/bin/ginstall -c afppasswd '/tmp/package-netatalk/usr/bin'
++libtool: warning: '../../libatalk/libatalk.la' has not been installed in '/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/afppasswd /tmp/package-netatalk/usr/bin/afppasswd
++make  install-exec-hook
++make[4]: Entering directory '/tmp/netatalk-3.1.12/bin/afppasswd'
++chmod u+s /tmp/package-netatalk/usr/bin/afppasswd
++make[4]: Leaving directory '/tmp/netatalk-3.1.12/bin/afppasswd'
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/bin/afppasswd'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/bin/afppasswd'
++Making install in cnid
++make[2]: Entering directory '/tmp/netatalk-3.1.12/bin/cnid'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/bin/cnid'
++ /usr/bin/mkdir -p '/tmp/package-netatalk/usr/bin'
++ /usr/bin/ginstall -c cnid2_create '/tmp/package-netatalk/usr/bin'
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/bin/cnid'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/bin/cnid'
++Making install in megatron
++make[2]: Entering directory '/tmp/netatalk-3.1.12/bin/megatron'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/bin/megatron'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/bin/megatron'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/bin/megatron'
++Making install in misc
++make[2]: Entering directory '/tmp/netatalk-3.1.12/bin/misc'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/bin/misc'
++ /usr/bin/mkdir -p '/tmp/package-netatalk/usr/bin'
++  /bin/sh ../../libtool   --mode=install /usr/bin/ginstall -c afpldaptest '/tmp/package-netatalk/usr/bin'
++libtool: warning: '../../libatalk/libatalk.la' has not been installed in '/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/afpldaptest /tmp/package-netatalk/usr/bin/afpldaptest
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/bin/misc'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/bin/misc'
++Making install in ad
++make[2]: Entering directory '/tmp/netatalk-3.1.12/bin/ad'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/bin/ad'
++ /usr/bin/mkdir -p '/tmp/package-netatalk/usr/bin'
++  /bin/sh ../../libtool   --mode=install /usr/bin/ginstall -c ad '/tmp/package-netatalk/usr/bin'
++libtool: warning: '../../libatalk/libatalk.la' has not been installed in '/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/ad /tmp/package-netatalk/usr/bin/ad
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/bin/ad'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/bin/ad'
++make[2]: Entering directory '/tmp/netatalk-3.1.12/bin'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/bin'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/bin'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/bin'
++make[1]: Leaving directory '/tmp/netatalk-3.1.12/bin'
++Making install in config
++make[1]: Entering directory '/tmp/netatalk-3.1.12/config'
++Making install in pam
++make[2]: Entering directory '/tmp/netatalk-3.1.12/config/pam'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/config/pam'
++make[3]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-netatalk/etc/pam.d'
++ /usr/bin/ginstall -c -m 644 netatalk '/tmp/package-netatalk/etc/pam.d'
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/config/pam'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/config/pam'
++make[2]: Entering directory '/tmp/netatalk-3.1.12/config'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/config'
++make[3]: Nothing to be done for 'install-exec-am'.
++sed -e s@:UAMS_PATH:@/usr/lib/netatalk/@ \
++    -e s@:ETCDIR:@/etc/netatalk@ \
++    -e s@:COMPILED_BACKENDS:@"dbd last tdb mysql"@ \
++    -e s@:DEFAULT_CNID_SCHEME:@dbd@ \
++	-e s@:LOCALSTATEDIR:@"/var"@ \
++    <afp.conf.tmpl >afp.conf
++sed -e s@:UAMS_PATH:@/usr/lib/netatalk/@ \
++    -e s@:ETCDIR:@/etc/netatalk@ \
++    -e s@:COMPILED_BACKENDS:@"dbd last tdb mysql"@ \
++    -e s@:DEFAULT_CNID_SCHEME:@dbd@ \
++	-e s@:LOCALSTATEDIR:@"/var"@ \
++    <dbus-session.conf.tmpl >dbus-session.conf
++/bin/sh /tmp/netatalk-3.1.12/install-sh -d /tmp/package-netatalk/etc/netatalk
++/usr/bin/ginstall -c -m 644 extmap.conf /tmp/package-netatalk/etc/netatalk
++/usr/bin/ginstall -c -m 644 afp.conf /tmp/package-netatalk/etc/netatalk
++/usr/bin/ginstall -c -m 644 dbus-session.conf /tmp/package-netatalk/etc/netatalk
++mkdir -pm 0755 /tmp/package-netatalk/var/netatalk/
++mkdir -pm 0755 /tmp/package-netatalk/var/netatalk/CNID/
++/usr/bin/ginstall -c -m 644 ./README /tmp/package-netatalk/var/netatalk/
++/usr/bin/ginstall -c -m 644 ./README /tmp/package-netatalk/var/netatalk/CNID/
++ /usr/bin/mkdir -p '/tmp/package-netatalk/usr/share/dbus-1/system.d/'
++ /usr/bin/ginstall -c -m 644 netatalk-dbus.conf '/tmp/package-netatalk/usr/share/dbus-1/system.d/'
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/config'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/config'
++make[1]: Leaving directory '/tmp/netatalk-3.1.12/config'
++Making install in etc
++make[1]: Entering directory '/tmp/netatalk-3.1.12/etc'
++Making install in spotlight
++make[2]: Entering directory '/tmp/netatalk-3.1.12/etc/spotlight'
++make  install-am
++make[3]: Entering directory '/tmp/netatalk-3.1.12/etc/spotlight'
++make[4]: Entering directory '/tmp/netatalk-3.1.12/etc/spotlight'
++make[4]: Nothing to be done for 'install-exec-am'.
++make[4]: Nothing to be done for 'install-data-am'.
++make[4]: Leaving directory '/tmp/netatalk-3.1.12/etc/spotlight'
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/etc/spotlight'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/etc/spotlight'
++Making install in afpd
++make[2]: Entering directory '/tmp/netatalk-3.1.12/etc/afpd'
++make  install-am
++make[3]: Entering directory '/tmp/netatalk-3.1.12/etc/afpd'
++make[4]: Entering directory '/tmp/netatalk-3.1.12/etc/afpd'
++ /usr/bin/mkdir -p '/tmp/package-netatalk/usr/sbin'
++  /bin/sh ../../libtool   --mode=install /usr/bin/ginstall -c afpd '/tmp/package-netatalk/usr/sbin'
++libtool: warning: '../../libatalk/libatalk.la' has not been installed in '/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/afpd /tmp/package-netatalk/usr/sbin/afpd
++make[4]: Nothing to be done for 'install-data-am'.
++make[4]: Leaving directory '/tmp/netatalk-3.1.12/etc/afpd'
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/etc/afpd'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/etc/afpd'
++Making install in cnid_dbd
++make[2]: Entering directory '/tmp/netatalk-3.1.12/etc/cnid_dbd'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/etc/cnid_dbd'
++ /usr/bin/mkdir -p '/tmp/package-netatalk/usr/bin'
++  /bin/sh ../../libtool   --mode=install /usr/bin/ginstall -c dbd '/tmp/package-netatalk/usr/bin'
++libtool: warning: '../../libatalk/libatalk.la' has not been installed in '/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/dbd /tmp/package-netatalk/usr/bin/dbd
++ /usr/bin/mkdir -p '/tmp/package-netatalk/usr/sbin'
++  /bin/sh ../../libtool   --mode=install /usr/bin/ginstall -c cnid_dbd cnid_metad '/tmp/package-netatalk/usr/sbin'
++libtool: warning: '../../libatalk/libatalk.la' has not been installed in '/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/cnid_dbd /tmp/package-netatalk/usr/sbin/cnid_dbd
++libtool: warning: '../../libatalk/libatalk.la' has not been installed in '/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/cnid_metad /tmp/package-netatalk/usr/sbin/cnid_metad
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/etc/cnid_dbd'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/etc/cnid_dbd'
++Making install in netatalk
++make[2]: Entering directory '/tmp/netatalk-3.1.12/etc/netatalk'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/etc/netatalk'
++ /usr/bin/mkdir -p '/tmp/package-netatalk/usr/sbin'
++  /bin/sh ../../libtool   --mode=install /usr/bin/ginstall -c netatalk '/tmp/package-netatalk/usr/sbin'
++libtool: warning: '../../libatalk/libatalk.la' has not been installed in '/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/netatalk /tmp/package-netatalk/usr/sbin/netatalk
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/etc/netatalk'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/etc/netatalk'
++Making install in uams
++make[2]: Entering directory '/tmp/netatalk-3.1.12/etc/uams'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/etc/uams'
++make[3]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-netatalk/usr/lib/netatalk/'
++ /bin/sh ../../libtool   --mode=install /usr/bin/ginstall -c   uams_guest.la uams_passwd.la uams_pam.la uams_randnum.la uams_dhx_passwd.la uams_dhx_pam.la uams_dhx2_passwd.la uams_dhx2_pam.la '/tmp/package-netatalk/usr/lib/netatalk/'
++libtool: install: /usr/bin/ginstall -c .libs/uams_guest.so /tmp/package-netatalk/usr/lib/netatalk/uams_guest.so
++libtool: install: /usr/bin/ginstall -c .libs/uams_guest.lai /tmp/package-netatalk/usr/lib/netatalk/uams_guest.la
++libtool: install: /usr/bin/ginstall -c .libs/uams_passwd.so /tmp/package-netatalk/usr/lib/netatalk/uams_passwd.so
++libtool: install: /usr/bin/ginstall -c .libs/uams_passwd.lai /tmp/package-netatalk/usr/lib/netatalk/uams_passwd.la
++libtool: install: /usr/bin/ginstall -c .libs/uams_pam.so /tmp/package-netatalk/usr/lib/netatalk/uams_pam.so
++libtool: install: /usr/bin/ginstall -c .libs/uams_pam.lai /tmp/package-netatalk/usr/lib/netatalk/uams_pam.la
++libtool: install: /usr/bin/ginstall -c .libs/uams_randnum.so /tmp/package-netatalk/usr/lib/netatalk/uams_randnum.so
++libtool: install: /usr/bin/ginstall -c .libs/uams_randnum.lai /tmp/package-netatalk/usr/lib/netatalk/uams_randnum.la
++libtool: install: /usr/bin/ginstall -c .libs/uams_dhx_passwd.so /tmp/package-netatalk/usr/lib/netatalk/uams_dhx_passwd.so
++libtool: install: /usr/bin/ginstall -c .libs/uams_dhx_passwd.lai /tmp/package-netatalk/usr/lib/netatalk/uams_dhx_passwd.la
++libtool: install: /usr/bin/ginstall -c .libs/uams_dhx_pam.so /tmp/package-netatalk/usr/lib/netatalk/uams_dhx_pam.so
++libtool: install: /usr/bin/ginstall -c .libs/uams_dhx_pam.lai /tmp/package-netatalk/usr/lib/netatalk/uams_dhx_pam.la
++libtool: install: /usr/bin/ginstall -c .libs/uams_dhx2_passwd.so /tmp/package-netatalk/usr/lib/netatalk/uams_dhx2_passwd.so
++libtool: install: /usr/bin/ginstall -c .libs/uams_dhx2_passwd.lai /tmp/package-netatalk/usr/lib/netatalk/uams_dhx2_passwd.la
++libtool: install: /usr/bin/ginstall -c .libs/uams_dhx2_pam.so /tmp/package-netatalk/usr/lib/netatalk/uams_dhx2_pam.so
++libtool: install: /usr/bin/ginstall -c .libs/uams_dhx2_pam.lai /tmp/package-netatalk/usr/lib/netatalk/uams_dhx2_pam.la
++libtool: warning: remember to run 'libtool --finish /usr/lib/netatalk/'
++make  install-data-hook
++make[4]: Entering directory '/tmp/netatalk-3.1.12/etc/uams'
++(if [ -d /tmp/package-netatalk/usr/lib/netatalk/ ] ; then \
++	cd /tmp/package-netatalk/usr/lib/netatalk/					&& \
++	rm -f uams_clrtxt.so uams_dhx.so uams_dhx2.so  					&& \
++	ln -s uams_pam.so uams_clrtxt.so		&& \
++	echo && ln -s uams_dhx_pam.so uams_dhx.so 						&& \
++	echo && ln -s uams_dhx2_pam.so uams_dhx2.so  ; 					\
++fi)
++
++
++make[4]: Leaving directory '/tmp/netatalk-3.1.12/etc/uams'
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/etc/uams'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/etc/uams'
++make[2]: Entering directory '/tmp/netatalk-3.1.12/etc'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/etc'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/etc'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/etc'
++make[1]: Leaving directory '/tmp/netatalk-3.1.12/etc'
++Making install in contrib
++make[1]: Entering directory '/tmp/netatalk-3.1.12/contrib'
++Making install in macusers
++make[2]: Entering directory '/tmp/netatalk-3.1.12/contrib/macusers'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/contrib/macusers'
++ /usr/bin/mkdir -p '/tmp/package-netatalk/usr/bin'
++ /usr/bin/ginstall -c macusers '/tmp/package-netatalk/usr/bin'
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/contrib/macusers'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/contrib/macusers'
++Making install in shell_utils
++make[2]: Entering directory '/tmp/netatalk-3.1.12/contrib/shell_utils'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/contrib/shell_utils'
++ /usr/bin/mkdir -p '/tmp/package-netatalk/usr/bin'
++ /usr/bin/ginstall -c asip-status.pl apple_dump afpstats '/tmp/package-netatalk/usr/bin'
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/contrib/shell_utils'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/contrib/shell_utils'
++make[2]: Entering directory '/tmp/netatalk-3.1.12/contrib'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/contrib'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/contrib'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/contrib'
++make[1]: Leaving directory '/tmp/netatalk-3.1.12/contrib'
++Making install in distrib
++make[1]: Entering directory '/tmp/netatalk-3.1.12/distrib'
++Making install in config
++make[2]: Entering directory '/tmp/netatalk-3.1.12/distrib/config'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/distrib/config'
++ /usr/bin/mkdir -p '/tmp/package-netatalk/usr/bin'
++ /usr/bin/ginstall -c netatalk-config '/tmp/package-netatalk/usr/bin'
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/distrib/config'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/distrib/config'
++Making install in initscripts
++make[2]: Entering directory '/tmp/netatalk-3.1.12/distrib/initscripts'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/distrib/initscripts'
++make[3]: Nothing to be done for 'install-exec-am'.
++make  install-data-hook
++make[4]: Entering directory '/tmp/netatalk-3.1.12/distrib/initscripts'
++make[4]: Nothing to be done for 'install-data-hook'.
++make[4]: Leaving directory '/tmp/netatalk-3.1.12/distrib/initscripts'
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/distrib/initscripts'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/distrib/initscripts'
++Making install in m4
++make[2]: Entering directory '/tmp/netatalk-3.1.12/distrib/m4'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/distrib/m4'
++make[3]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-netatalk/usr/share/aclocal'
++ /usr/bin/ginstall -c -m 644 netatalk.m4 '/tmp/package-netatalk/usr/share/aclocal'
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/distrib/m4'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/distrib/m4'
++make[2]: Entering directory '/tmp/netatalk-3.1.12/distrib'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/distrib'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/distrib'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/distrib'
++make[1]: Leaving directory '/tmp/netatalk-3.1.12/distrib'
++Making install in doc
++make[1]: Entering directory '/tmp/netatalk-3.1.12/doc'
++Making install in manpages
++make[2]: Entering directory '/tmp/netatalk-3.1.12/doc/manpages'
++Making install in man1
++make[3]: Entering directory '/tmp/netatalk-3.1.12/doc/manpages/man1'
++make[4]: Entering directory '/tmp/netatalk-3.1.12/doc/manpages/man1'
++make[4]: Nothing to be done for 'install-exec-am'.
++make[4]: Nothing to be done for 'install-data-am'.
++make[4]: Leaving directory '/tmp/netatalk-3.1.12/doc/manpages/man1'
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/doc/manpages/man1'
++Making install in man5
++make[3]: Entering directory '/tmp/netatalk-3.1.12/doc/manpages/man5'
++make[4]: Entering directory '/tmp/netatalk-3.1.12/doc/manpages/man5'
++make[4]: Nothing to be done for 'install-exec-am'.
++make[4]: Nothing to be done for 'install-data-am'.
++make[4]: Leaving directory '/tmp/netatalk-3.1.12/doc/manpages/man5'
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/doc/manpages/man5'
++Making install in man8
++make[3]: Entering directory '/tmp/netatalk-3.1.12/doc/manpages/man8'
++make[4]: Entering directory '/tmp/netatalk-3.1.12/doc/manpages/man8'
++make[4]: Nothing to be done for 'install-exec-am'.
++make[4]: Nothing to be done for 'install-data-am'.
++make[4]: Leaving directory '/tmp/netatalk-3.1.12/doc/manpages/man8'
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/doc/manpages/man8'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/doc/manpages'
++make[4]: Entering directory '/tmp/netatalk-3.1.12/doc/manpages'
++make[4]: Nothing to be done for 'install-exec-am'.
++make[4]: Nothing to be done for 'install-data-am'.
++make[4]: Leaving directory '/tmp/netatalk-3.1.12/doc/manpages'
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/doc/manpages'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/doc/manpages'
++Making install in manual
++make[2]: Entering directory '/tmp/netatalk-3.1.12/doc/manual'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/doc/manual'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/doc/manual'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/doc/manual'
++make[2]: Entering directory '/tmp/netatalk-3.1.12/doc'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/doc'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/doc'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/doc'
++make[1]: Leaving directory '/tmp/netatalk-3.1.12/doc'
++Making install in man
++make[1]: Entering directory '/tmp/netatalk-3.1.12/man'
++Making install in man1
++make[2]: Entering directory '/tmp/netatalk-3.1.12/man/man1'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/man/man1'
++make[3]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-netatalk/usr/man/man1'
++ /usr/bin/ginstall -c -m 644 ad.1 afpldaptest.1 afppasswd.1 afpstats.1 apple_dump.1 asip-status.pl.1 dbd.1 macusers.1 netatalk-config.1 uniconv.1 '/tmp/package-netatalk/usr/man/man1'
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/man/man1'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/man/man1'
++Making install in man5
++make[2]: Entering directory '/tmp/netatalk-3.1.12/man/man5'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/man/man5'
++make[3]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-netatalk/usr/man/man5'
++ /usr/bin/ginstall -c -m 644 afp.conf.5 afp_signature.conf.5 afp_voluuid.conf.5 extmap.conf.5 '/tmp/package-netatalk/usr/man/man5'
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/man/man5'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/man/man5'
++Making install in man8
++make[2]: Entering directory '/tmp/netatalk-3.1.12/man/man8'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/man/man8'
++make[3]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-netatalk/usr/man/man8'
++ /usr/bin/ginstall -c -m 644 afpd.8 cnid_dbd.8 cnid_metad.8 netatalk.8 '/tmp/package-netatalk/usr/man/man8'
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/man/man8'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/man/man8'
++make[2]: Entering directory '/tmp/netatalk-3.1.12/man'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/man'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/man'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/man'
++make[1]: Leaving directory '/tmp/netatalk-3.1.12/man'
++Making install in macros
++make[1]: Entering directory '/tmp/netatalk-3.1.12/macros'
++make[2]: Entering directory '/tmp/netatalk-3.1.12/macros'
++make[2]: Nothing to be done for 'install-exec-am'.
++make[2]: Nothing to be done for 'install-data-am'.
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/macros'
++make[1]: Leaving directory '/tmp/netatalk-3.1.12/macros'
++Making install in test
++make[1]: Entering directory '/tmp/netatalk-3.1.12/test'
++Making install in afpd
++make[2]: Entering directory '/tmp/netatalk-3.1.12/test/afpd'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/test/afpd'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/test/afpd'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/test/afpd'
++make[2]: Entering directory '/tmp/netatalk-3.1.12/test'
++make[3]: Entering directory '/tmp/netatalk-3.1.12/test'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/netatalk-3.1.12/test'
++make[2]: Leaving directory '/tmp/netatalk-3.1.12/test'
++make[1]: Leaving directory '/tmp/netatalk-3.1.12/test'
++make[1]: Entering directory '/tmp/netatalk-3.1.12'
++make[2]: Entering directory '/tmp/netatalk-3.1.12'
++make  install-exec-hook
++make[3]: Entering directory '/tmp/netatalk-3.1.12'
++Running ldconfig to ensure libraries installed in system library directories are added to the dynamic linker cache ... done
++make[3]: Leaving directory '/tmp/netatalk-3.1.12'
++make[2]: Nothing to be done for 'install-data-am'.
++make[2]: Leaving directory '/tmp/netatalk-3.1.12'
++make[1]: Leaving directory '/tmp/netatalk-3.1.12'
++cp: cannot stat '/source/n/netatalk/examples': No such file or directory
++chown: cannot access '/tmp/package-netatalk/usr/doc/netatalk-3.1.12/examples': No such file or directory
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++usr/lib/libatalk.so	libatalk.so.18.0.0
++usr/lib/libatalk.so.18	libatalk.so.18.0.0
++usr/lib/netatalk/uams_clrtxt.so	uams_pam.so
++usr/lib/netatalk/uams_dhx.so	uams_dhx_pam.so
++usr/lib/netatalk/uams_dhx2.so	uams_dhx2_pam.so
++
++Making symbolic link creation script:
++( cd usr/lib ; rm -rf libatalk.so )
++( cd usr/lib ; ln -sf libatalk.so.18.0.0 libatalk.so )
++( cd usr/lib ; rm -rf libatalk.so.18 )
++( cd usr/lib ; ln -sf libatalk.so.18.0.0 libatalk.so.18 )
++( cd usr/lib/netatalk ; rm -rf uams_clrtxt.so )
++( cd usr/lib/netatalk ; ln -sf uams_pam.so uams_clrtxt.so )
++( cd usr/lib/netatalk ; rm -rf uams_dhx.so )
++( cd usr/lib/netatalk ; ln -sf uams_dhx_pam.so uams_dhx.so )
++( cd usr/lib/netatalk ; rm -rf uams_dhx2.so )
++( cd usr/lib/netatalk ; ln -sf uams_dhx2_pam.so uams_dhx2.so )
++
++Unless your existing installation script already contains the code
++to create these links, you should append these lines to your existing
++install script. Now's your chance. :^)
++
++Would you like to add this stuff to the existing install script and
++remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './usr/lib/libatalk.so.18'
++removed './usr/lib/netatalk/uams_dhx2.so'
++removed './usr/lib/netatalk/uams_clrtxt.so'
++removed './usr/lib/netatalk/uams_dhx.so'
++removed './usr/lib/libatalk.so'
++
++Updating your ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/netatalk-3.1.12-x86_64-5.txz
++
++./
++etc/
++etc/netatalk/
++etc/netatalk/afp.conf.new
++etc/netatalk/dbus-session.conf.new
++etc/netatalk/extmap.conf.new
++etc/pam.d/
++etc/pam.d/netatalk.new
++etc/rc.d/
++etc/rc.d/rc.atalk.new
++install/
++install/doinst.sh
++install/slack-desc
++usr/
++usr/bin/
++usr/bin/ad
++usr/bin/afpldaptest
++usr/bin/afppasswd
++usr/bin/afpstats
++usr/bin/apple_dump
++usr/bin/asip-status.pl
++usr/bin/cnid2_create
++usr/bin/dbd
++usr/bin/macusers
++usr/bin/netatalk-config
++usr/doc/
++usr/doc/netatalk-3.1.12/
++usr/doc/netatalk-3.1.12/AUTHORS
++usr/doc/netatalk-3.1.12/CONTRIBUTORS
++usr/doc/netatalk-3.1.12/COPYING
++usr/doc/netatalk-3.1.12/COPYRIGHT
++usr/doc/netatalk-3.1.12/NEWS
++usr/doc/netatalk-3.1.12/VERSION
++usr/include/
++usr/include/atalk/
++usr/include/atalk/acl.h
++usr/include/atalk/adouble.h
++usr/include/atalk/afp.h
++usr/include/atalk/bstrlib.h
++usr/include/atalk/cnid.h
++usr/include/atalk/compat.h
++usr/include/atalk/dictionary.h
++usr/include/atalk/ea.h
++usr/include/atalk/globals.h
++usr/include/atalk/hash.h
++usr/include/atalk/iniparser.h
++usr/include/atalk/list.h
++usr/include/atalk/logger.h
++usr/include/atalk/netatalk_conf.h
++usr/include/atalk/paths.h
++usr/include/atalk/standards.h
++usr/include/atalk/uam.h
++usr/include/atalk/unicode.h
++usr/include/atalk/unix.h
++usr/include/atalk/util.h
++usr/include/atalk/vfs.h
++usr/include/atalk/volume.h
++usr/lib/
++usr/lib/libatalk.so.18.0.0
++usr/lib/netatalk/
++usr/lib/netatalk/uams_dhx2_pam.la
++usr/lib/netatalk/uams_dhx2_pam.so
++usr/lib/netatalk/uams_dhx2_passwd.la
++usr/lib/netatalk/uams_dhx2_passwd.so
++usr/lib/netatalk/uams_dhx_pam.la
++usr/lib/netatalk/uams_dhx_pam.so
++usr/lib/netatalk/uams_dhx_passwd.la
++usr/lib/netatalk/uams_dhx_passwd.so
++usr/lib/netatalk/uams_guest.la
++usr/lib/netatalk/uams_guest.so
++usr/lib/netatalk/uams_pam.la
++usr/lib/netatalk/uams_pam.so
++usr/lib/netatalk/uams_passwd.la
++usr/lib/netatalk/uams_passwd.so
++usr/lib/netatalk/uams_randnum.la
++usr/lib/netatalk/uams_randnum.so
++usr/man/
++usr/man/man1/
++usr/man/man1/ad.1.gz
++usr/man/man1/afpldaptest.1.gz
++usr/man/man1/afppasswd.1.gz
++usr/man/man1/afpstats.1.gz
++usr/man/man1/apple_dump.1.gz
++usr/man/man1/asip-status.pl.1.gz
++usr/man/man1/dbd.1.gz
++usr/man/man1/macusers.1.gz
++usr/man/man1/netatalk-config.1.gz
++usr/man/man1/uniconv.1.gz
++usr/man/man5/
++usr/man/man5/afp.conf.5.gz
++usr/man/man5/afp_signature.conf.5.gz
++usr/man/man5/afp_voluuid.conf.5.gz
++usr/man/man5/extmap.conf.5.gz
++usr/man/man8/
++usr/man/man8/afpd.8.gz
++usr/man/man8/cnid_dbd.8.gz
++usr/man/man8/cnid_metad.8.gz
++usr/man/man8/netatalk.8.gz
++usr/sbin/
++usr/sbin/afpd
++usr/sbin/cnid_dbd
++usr/sbin/cnid_metad
++usr/sbin/netatalk
++usr/share/
++usr/share/aclocal/
++usr/share/aclocal/netatalk.m4
++usr/share/dbus-1/
++usr/share/dbus-1/system.d/
++usr/share/dbus-1/system.d/netatalk-dbus.conf
++var/
++var/netatalk/
++var/netatalk/CNID/
++var/netatalk/CNID/README
++var/netatalk/README
++
++Slackware package /tmp/netatalk-3.1.12-x86_64-5.txz created.
++

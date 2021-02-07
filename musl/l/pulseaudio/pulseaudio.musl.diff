@@ -1,0 +1,3062 @@
+diff -ruBN /tmp/pulseaudio/execinfo.patch /source/l/pulseaudio/execinfo.patch
+--- /tmp/pulseaudio/execinfo.patch	1970-01-01 00:00:00.000000000 +0000
++++ /source/l/pulseaudio/execinfo.patch	2021-01-18 19:16:51.000000000 +0000
+@@ -0,0 +1,29 @@
++--- pulseaudio-14.0.orig/src/pulsecore/log.c	2019-07-05 00:06:47.000000000 +0000
+++++ pulseaudio-14.0/src/pulsecore/log.c	2021-01-04 22:36:27.831799173 +0000
++@@ -30,7 +30,7 @@
++ #include <fcntl.h>
++ #include <sys/stat.h>
++ 
++-#ifdef HAVE_EXECINFO_H
+++#ifdef HAVE_EXECINFO_HH
++ #include <execinfo.h>
++ #endif
++ 
++@@ -229,7 +229,7 @@
++     skip_backtrace = nlevels;
++ }
++ 
++-#ifdef HAVE_EXECINFO_H
+++#ifdef HAVE_EXECINFO_HH
++ 
++ static char* get_backtrace(unsigned show_nframes) {
++     void* trace[32];
++@@ -441,7 +441,7 @@
++     } else
++         timestamp[0] = 0;
++ 
++-#ifdef HAVE_EXECINFO_H
+++#ifdef HAVE_EXECINFO_HH
++     if (_show_backtrace > 0)
++         bt = get_backtrace(_show_backtrace);
++ #endif
+diff -ruBN /tmp/pulseaudio/pulseaudio.SlackBuild /source/l/pulseaudio/pulseaudio.SlackBuild
+--- /tmp/pulseaudio/pulseaudio.SlackBuild	2021-01-13 19:09:22.000000000 +0000
++++ /source/l/pulseaudio/pulseaudio.SlackBuild	2021-01-18 19:16:51.000000000 +0000
+@@ -56,7 +56,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ else
+   SLKCFLAGS="-O2"
+   LIBDIRSUFFIX=""
+@@ -70,6 +70,7 @@
+ rm -rf $PKGNAM-$VERSION
+ tar xvf $CWD/$PKGNAM-$VERSION.tar.xz || exit 1
+ cd $PKGNAM-$VERSION || exit 1
++patch -p1 < $CWD/execinfo.patch || exit 1
+ chown -R root:root .
+ find -L . \
+  \( -perm 777 -o -perm 775 -o -perm 750 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+diff -ruBN /tmp/pulseaudio/pulseaudio.SlackBuild.log /source/l/pulseaudio/pulseaudio.SlackBuild.log
+--- /tmp/pulseaudio/pulseaudio.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/l/pulseaudio/pulseaudio.SlackBuild.log	2021-01-18 19:23:07.000000000 +0000
+@@ -0,0 +1,3005 @@
++pulseaudio-14.2/
++pulseaudio-14.2/git-version-gen
++pulseaudio-14.2/po/
++pulseaudio-14.2/po/sr.po
++pulseaudio-14.2/po/boldquot.sed
++pulseaudio-14.2/po/ru.gmo
++pulseaudio-14.2/po/ml.po
++pulseaudio-14.2/po/ca.po
++pulseaudio-14.2/po/zh_CN.gmo
++pulseaudio-14.2/po/en@boldquot.header
++pulseaudio-14.2/po/lt.gmo
++pulseaudio-14.2/po/hr.gmo
++pulseaudio-14.2/po/sr.gmo
++pulseaudio-14.2/po/LINGUAS
++pulseaudio-14.2/po/ml.gmo
++pulseaudio-14.2/po/en@quot.header
++pulseaudio-14.2/po/as.po
++pulseaudio-14.2/po/te.gmo
++pulseaudio-14.2/po/nl.po
++pulseaudio-14.2/po/tr.po
++pulseaudio-14.2/po/he.po
++pulseaudio-14.2/po/.gitignore
++pulseaudio-14.2/po/hi.gmo
++pulseaudio-14.2/po/bg.po
++pulseaudio-14.2/po/as.gmo
++pulseaudio-14.2/po/da.po
++pulseaudio-14.2/po/it.po
++pulseaudio-14.2/po/af.gmo
++pulseaudio-14.2/po/hr.po
++pulseaudio-14.2/po/pulseaudio.pot
++pulseaudio-14.2/po/pt_BR.po
++pulseaudio-14.2/po/it.gmo
++pulseaudio-14.2/po/tr.gmo
++pulseaudio-14.2/po/ko.po
++pulseaudio-14.2/po/de_CH.gmo
++pulseaudio-14.2/po/kn.po
++pulseaudio-14.2/po/kn.gmo
++pulseaudio-14.2/po/insert-header.sin
++pulseaudio-14.2/po/remove-potcdate.sin
++pulseaudio-14.2/po/or.po
++pulseaudio-14.2/po/sr@latin.po
++pulseaudio-14.2/po/stamp-po
++pulseaudio-14.2/po/pa.po
++pulseaudio-14.2/po/ru.po
++pulseaudio-14.2/po/gl.po
++pulseaudio-14.2/po/pl.gmo
++pulseaudio-14.2/po/he.gmo
++pulseaudio-14.2/po/oc.po
++pulseaudio-14.2/po/pt.gmo
++pulseaudio-14.2/po/gu.po
++pulseaudio-14.2/po/sv.gmo
++pulseaudio-14.2/po/be.po
++pulseaudio-14.2/po/hu.po
++pulseaudio-14.2/po/POTFILES.in
++pulseaudio-14.2/po/de.gmo
++pulseaudio-14.2/po/pt.po
++pulseaudio-14.2/po/sk.po
++pulseaudio-14.2/po/es.gmo
++pulseaudio-14.2/po/pa.gmo
++pulseaudio-14.2/po/de.po
++pulseaudio-14.2/po/Rules-quot
++pulseaudio-14.2/po/ko.gmo
++pulseaudio-14.2/po/Makevars
++pulseaudio-14.2/po/te.po
++pulseaudio-14.2/po/fr.po
++pulseaudio-14.2/po/sr@latin.gmo
++pulseaudio-14.2/po/da.gmo
++pulseaudio-14.2/po/fr.gmo
++pulseaudio-14.2/po/pt_BR.gmo
++pulseaudio-14.2/po/zh_TW.gmo
++pulseaudio-14.2/po/bn_IN.po
++pulseaudio-14.2/po/fi.gmo
++pulseaudio-14.2/po/pl.po
++pulseaudio-14.2/po/el.gmo
++pulseaudio-14.2/po/cs.gmo
++pulseaudio-14.2/po/or.gmo
++pulseaudio-14.2/po/bn_IN.gmo
++pulseaudio-14.2/po/zh_TW.po
++pulseaudio-14.2/po/sv.po
++pulseaudio-14.2/po/gu.gmo
++pulseaudio-14.2/po/nn.po
++pulseaudio-14.2/po/quot.sed
++pulseaudio-14.2/po/bg.gmo
++pulseaudio-14.2/po/ta.gmo
++pulseaudio-14.2/po/mr.gmo
++pulseaudio-14.2/po/ja.po
++pulseaudio-14.2/po/id.gmo
++pulseaudio-14.2/po/nl.gmo
++pulseaudio-14.2/po/gl.gmo
++pulseaudio-14.2/po/uk.gmo
++pulseaudio-14.2/po/Makefile.in.in
++pulseaudio-14.2/po/mr.po
++pulseaudio-14.2/po/meson.build
++pulseaudio-14.2/po/ta.po
++pulseaudio-14.2/po/de_CH.po
++pulseaudio-14.2/po/sk.gmo
++pulseaudio-14.2/po/uk.po
++pulseaudio-14.2/po/ja.gmo
++pulseaudio-14.2/po/kk.po
++pulseaudio-14.2/po/hu.gmo
++pulseaudio-14.2/po/oc.gmo
++pulseaudio-14.2/po/nn.gmo
++pulseaudio-14.2/po/af.po
++pulseaudio-14.2/po/lt.po
++pulseaudio-14.2/po/hi.po
++pulseaudio-14.2/po/cs.po
++pulseaudio-14.2/po/zh_CN.po
++pulseaudio-14.2/po/el.po
++pulseaudio-14.2/po/kk.gmo
++pulseaudio-14.2/po/be.gmo
++pulseaudio-14.2/po/id.po
++pulseaudio-14.2/po/es.po
++pulseaudio-14.2/po/ca.gmo
++pulseaudio-14.2/po/fi.po
++pulseaudio-14.2/libpulse-mainloop-glib.pc.in
++pulseaudio-14.2/libpulse.pc.in
++pulseaudio-14.2/PulseAudioConfigVersion.cmake.in
++pulseaudio-14.2/pulseaudio.supp
++pulseaudio-14.2/CODE_OF_CONDUCT.md
++pulseaudio-14.2/shell-completion/
++pulseaudio-14.2/shell-completion/zsh/
++pulseaudio-14.2/shell-completion/zsh/_pulseaudio
++pulseaudio-14.2/shell-completion/zsh/meson.build
++pulseaudio-14.2/shell-completion/bash/
++pulseaudio-14.2/shell-completion/bash/meson.build
++pulseaudio-14.2/shell-completion/bash/pulseaudio
++pulseaudio-14.2/Makefile.in
++pulseaudio-14.2/.gitignore
++pulseaudio-14.2/ABOUT-NLS
++pulseaudio-14.2/aclocal.m4
++pulseaudio-14.2/NEWS
++pulseaudio-14.2/.gitlab-ci.yml
++pulseaudio-14.2/orc.mak
++pulseaudio-14.2/libpulse-simple.pc.in
++pulseaudio-14.2/config.h.in
++pulseaudio-14.2/configure.ac
++pulseaudio-14.2/.version
++pulseaudio-14.2/README
++pulseaudio-14.2/PulseAudioConfig.cmake.in
++pulseaudio-14.2/GPL
++pulseaudio-14.2/scripts/
++pulseaudio-14.2/scripts/plot_memory_usage.gp
++pulseaudio-14.2/scripts/benchmark_memory_usage.sh
++pulseaudio-14.2/scripts/benchmarks/
++pulseaudio-14.2/scripts/benchmarks/.gitignore
++pulseaudio-14.2/scripts/benchmarks/README
++pulseaudio-14.2/.tarball-version
++pulseaudio-14.2/LICENSE
++pulseaudio-14.2/src/
++pulseaudio-14.2/src/depmod.py
++pulseaudio-14.2/src/Makefile.in
++pulseaudio-14.2/src/.gitignore
++pulseaudio-14.2/src/utils/
++pulseaudio-14.2/src/utils/pa-info
++pulseaudio-14.2/src/utils/pacat.c
++pulseaudio-14.2/src/utils/pactl.c
++pulseaudio-14.2/src/utils/pacmd.c
++pulseaudio-14.2/src/utils/pasuspender.c
++pulseaudio-14.2/src/utils/pax11publish.c
++pulseaudio-14.2/src/utils/meson.build
++pulseaudio-14.2/src/utils/padsp.in
++pulseaudio-14.2/src/utils/qpaeq
++pulseaudio-14.2/src/utils/padsp.c
++pulseaudio-14.2/src/map-file
++pulseaudio-14.2/src/daemon/
++pulseaudio-14.2/src/daemon/daemon-conf.h
++pulseaudio-14.2/src/daemon/cmdline.h
++pulseaudio-14.2/src/daemon/cpulimit.h
++pulseaudio-14.2/src/daemon/daemon.conf.in
++pulseaudio-14.2/src/daemon/.gitignore
++pulseaudio-14.2/src/daemon/main.c
++pulseaudio-14.2/src/daemon/server-lookup.c
++pulseaudio-14.2/src/daemon/daemon-conf.c
++pulseaudio-14.2/src/daemon/systemd/
++pulseaudio-14.2/src/daemon/systemd/user/
++pulseaudio-14.2/src/daemon/systemd/user/pulseaudio.service.in
++pulseaudio-14.2/src/daemon/systemd/user/pulseaudio.socket
++pulseaudio-14.2/src/daemon/default.pa.in
++pulseaudio-14.2/src/daemon/pulseaudio.desktop.in
++pulseaudio-14.2/src/daemon/ltdl-bind-now.h
++pulseaudio-14.2/src/daemon/caps.c
++pulseaudio-14.2/src/daemon/cmdline.c
++pulseaudio-14.2/src/daemon/pulseaudio-system.conf
++pulseaudio-14.2/src/daemon/server-lookup.h
++pulseaudio-14.2/src/daemon/esdcompat.in
++pulseaudio-14.2/src/daemon/ltdl-bind-now.c
++pulseaudio-14.2/src/daemon/dumpmodules.c
++pulseaudio-14.2/src/daemon/caps.h
++pulseaudio-14.2/src/daemon/cpulimit.c
++pulseaudio-14.2/src/daemon/system.pa.in
++pulseaudio-14.2/src/daemon/meson.build
++pulseaudio-14.2/src/daemon/start-pulseaudio-x11.in
++pulseaudio-14.2/src/daemon/dumpmodules.h
++pulseaudio-14.2/src/pulse/
++pulseaudio-14.2/src/pulse/subscribe.c
++pulseaudio-14.2/src/pulse/volume.c
++pulseaudio-14.2/src/pulse/operation.c
++pulseaudio-14.2/src/pulse/client-conf-x11.h
++pulseaudio-14.2/src/pulse/internal.h
++pulseaudio-14.2/src/pulse/stream.h
++pulseaudio-14.2/src/pulse/ext-device-manager.h
++pulseaudio-14.2/src/pulse/scache.h
++pulseaudio-14.2/src/pulse/subscribe.h
++pulseaudio-14.2/src/pulse/util.c
++pulseaudio-14.2/src/pulse/operation.h
++pulseaudio-14.2/src/pulse/.gitignore
++pulseaudio-14.2/src/pulse/ext-stream-restore.c
++pulseaudio-14.2/src/pulse/mainloop-signal.h
++pulseaudio-14.2/src/pulse/mainloop.h
++pulseaudio-14.2/src/pulse/timeval.c
++pulseaudio-14.2/src/pulse/error.c
++pulseaudio-14.2/src/pulse/ext-device-restore.c
++pulseaudio-14.2/src/pulse/introspect.c
++pulseaudio-14.2/src/pulse/util.h
++pulseaudio-14.2/src/pulse/direction.h
++pulseaudio-14.2/src/pulse/fork-detect.h
++pulseaudio-14.2/src/pulse/ext-device-manager.c
++pulseaudio-14.2/src/pulse/mainloop-api.c
++pulseaudio-14.2/src/pulse/introspect.h
++pulseaudio-14.2/src/pulse/proplist.h
++pulseaudio-14.2/src/pulse/sample.h
++pulseaudio-14.2/src/pulse/mainloop-signal.c
++pulseaudio-14.2/src/pulse/channelmap.h
++pulseaudio-14.2/src/pulse/thread-mainloop.h
++pulseaudio-14.2/src/pulse/utf8.c
++pulseaudio-14.2/src/pulse/simple.c
++pulseaudio-14.2/src/pulse/cdecl.h
++pulseaudio-14.2/src/pulse/mainloop-api.h
++pulseaudio-14.2/src/pulse/error.h
++pulseaudio-14.2/src/pulse/client-conf.c
++pulseaudio-14.2/src/pulse/json.c
++pulseaudio-14.2/src/pulse/version.h.in
++pulseaudio-14.2/src/pulse/mainloop.c
++pulseaudio-14.2/src/pulse/ext-device-restore.h
++pulseaudio-14.2/src/pulse/rtclock.h
++pulseaudio-14.2/src/pulse/stream.c
++pulseaudio-14.2/src/pulse/context.c
++pulseaudio-14.2/src/pulse/ext-stream-restore.h
++pulseaudio-14.2/src/pulse/version.h
++pulseaudio-14.2/src/pulse/format.c
++pulseaudio-14.2/src/pulse/client.conf.in
++pulseaudio-14.2/src/pulse/fork-detect.c
++pulseaudio-14.2/src/pulse/client-conf.h
++pulseaudio-14.2/src/pulse/volume.h
++pulseaudio-14.2/src/pulse/scache.c
++pulseaudio-14.2/src/pulse/format.h
++pulseaudio-14.2/src/pulse/gccmacro.h
++pulseaudio-14.2/src/pulse/xmalloc.h
++pulseaudio-14.2/src/pulse/sample.c
++pulseaudio-14.2/src/pulse/meson.build
++pulseaudio-14.2/src/pulse/client-conf-x11.c
++pulseaudio-14.2/src/pulse/proplist.c
++pulseaudio-14.2/src/pulse/timeval.h
++pulseaudio-14.2/src/pulse/direction.c
++pulseaudio-14.2/src/pulse/context.h
++pulseaudio-14.2/src/pulse/pulseaudio.h
++pulseaudio-14.2/src/pulse/channelmap.c
++pulseaudio-14.2/src/pulse/json.h
++pulseaudio-14.2/src/pulse/glib-mainloop.c
++pulseaudio-14.2/src/pulse/glib-mainloop.h
++pulseaudio-14.2/src/pulse/simple.h
++pulseaudio-14.2/src/pulse/def.h
++pulseaudio-14.2/src/pulse/utf8.h
++pulseaudio-14.2/src/pulse/xmalloc.c
++pulseaudio-14.2/src/pulse/rtclock.c
++pulseaudio-14.2/src/pulse/thread-mainloop.c
++pulseaudio-14.2/src/pulsecore/
++pulseaudio-14.2/src/pulsecore/core-format.h
++pulseaudio-14.2/src/pulsecore/dbus-util.c
++pulseaudio-14.2/src/pulsecore/database-tdb.c
++pulseaudio-14.2/src/pulsecore/core-subscribe.h
++pulseaudio-14.2/src/pulsecore/semaphore-osx.c
++pulseaudio-14.2/src/pulsecore/hashmap.c
++pulseaudio-14.2/src/pulsecore/cpu-arm.h
++pulseaudio-14.2/src/pulsecore/cpu.c
++pulseaudio-14.2/src/pulsecore/sconv-s16le.h
++pulseaudio-14.2/src/pulsecore/rtkit.c
++pulseaudio-14.2/src/pulsecore/dbus-shared.c
++pulseaudio-14.2/src/pulsecore/message-handler.h
++pulseaudio-14.2/src/pulsecore/database-simple.c
++pulseaudio-14.2/src/pulsecore/llist.h
++pulseaudio-14.2/src/pulsecore/cpu-x86.c
++pulseaudio-14.2/src/pulsecore/semaphore.h
++pulseaudio-14.2/src/pulsecore/proplist-util.c
++pulseaudio-14.2/src/pulsecore/namereg.c
++pulseaudio-14.2/src/pulsecore/idxset.c
++pulseaudio-14.2/src/pulsecore/protocol-cli.c
++pulseaudio-14.2/src/pulsecore/creds.h
++pulseaudio-14.2/src/pulsecore/tokenizer.h
++pulseaudio-14.2/src/pulsecore/thread-mq.c
++pulseaudio-14.2/src/pulsecore/sink.c
++pulseaudio-14.2/src/pulsecore/random.c
++pulseaudio-14.2/src/pulsecore/sndfile-util.h
++pulseaudio-14.2/src/pulsecore/tokenizer.c
++pulseaudio-14.2/src/pulsecore/fdsem.c
++pulseaudio-14.2/src/pulsecore/thread-mq.h
++pulseaudio-14.2/src/pulsecore/ffmpeg/
++pulseaudio-14.2/src/pulsecore/ffmpeg/resample2.c
++pulseaudio-14.2/src/pulsecore/ffmpeg/avcodec.h
++pulseaudio-14.2/src/pulsecore/ffmpeg/dsputil.h
++pulseaudio-14.2/src/pulsecore/source.h
++pulseaudio-14.2/src/pulsecore/proplist-util.h
++pulseaudio-14.2/src/pulsecore/protocol-http.c
++pulseaudio-14.2/src/pulsecore/once.h
++pulseaudio-14.2/src/pulsecore/socket-server.c
++pulseaudio-14.2/src/pulsecore/protocol-simple.h
++pulseaudio-14.2/src/pulsecore/protocol-esound.h
++pulseaudio-14.2/src/pulsecore/pdispatch.c
++pulseaudio-14.2/src/pulsecore/remap_neon.c
++pulseaudio-14.2/src/pulsecore/memchunk.h
++pulseaudio-14.2/src/pulsecore/shm.c
++pulseaudio-14.2/src/pulsecore/remap_mmx.c
++pulseaudio-14.2/src/pulsecore/core-util.c
++pulseaudio-14.2/src/pulsecore/queue.h
++pulseaudio-14.2/src/pulsecore/x11wrap.c
++pulseaudio-14.2/src/pulsecore/time-smoother.c
++pulseaudio-14.2/src/pulsecore/protocol-dbus.h
++pulseaudio-14.2/src/pulsecore/tagstruct.c
++pulseaudio-14.2/src/pulsecore/memblockq.h
++pulseaudio-14.2/src/pulsecore/pstream-util.c
++pulseaudio-14.2/src/pulsecore/rtpoll.h
++pulseaudio-14.2/src/pulsecore/once.c
++pulseaudio-14.2/src/pulsecore/mutex-win32.c
++pulseaudio-14.2/src/pulsecore/aupdate.h
++pulseaudio-14.2/src/pulsecore/svolume_c.c
++pulseaudio-14.2/src/pulsecore/ipacl.c
++pulseaudio-14.2/src/pulsecore/thread.h
++pulseaudio-14.2/src/pulsecore/semaphore-posix.c
++pulseaudio-14.2/src/pulsecore/usergroup.h
++pulseaudio-14.2/src/pulsecore/cli.c
++pulseaudio-14.2/src/pulsecore/core-format.c
++pulseaudio-14.2/src/pulsecore/sound-file.c
++pulseaudio-14.2/src/pulsecore/sconv-s16be.c
++pulseaudio-14.2/src/pulsecore/device-port.h
++pulseaudio-14.2/src/pulsecore/strlist.h
++pulseaudio-14.2/src/pulsecore/database.c
++pulseaudio-14.2/src/pulsecore/cli-command.c
++pulseaudio-14.2/src/pulsecore/strbuf.c
++pulseaudio-14.2/src/pulsecore/cli-text.h
++pulseaudio-14.2/src/pulsecore/client.c
++pulseaudio-14.2/src/pulsecore/socket-util.h
++pulseaudio-14.2/src/pulsecore/memtrap.h
++pulseaudio-14.2/src/pulsecore/tagstruct.h
++pulseaudio-14.2/src/pulsecore/srbchannel.h
++pulseaudio-14.2/src/pulsecore/authkey.c
++pulseaudio-14.2/src/pulsecore/svolume_orc.c
++pulseaudio-14.2/src/pulsecore/sink.h
++pulseaudio-14.2/src/pulsecore/resampler.h
++pulseaudio-14.2/src/pulsecore/stream-util.h
++pulseaudio-14.2/src/pulsecore/g711.c
++pulseaudio-14.2/src/pulsecore/mix.c
++pulseaudio-14.2/src/pulsecore/pid.c
++pulseaudio-14.2/src/pulsecore/asyncq.h
++pulseaudio-14.2/src/pulsecore/authkey.h
++pulseaudio-14.2/src/pulsecore/core-rtclock.c
++pulseaudio-14.2/src/pulsecore/start-child.c
++pulseaudio-14.2/src/pulsecore/sample-util.h
++pulseaudio-14.2/src/pulsecore/filter/
++pulseaudio-14.2/src/pulsecore/filter/LICENSE.WEBKIT
++pulseaudio-14.2/src/pulsecore/filter/lfe-filter.h
++pulseaudio-14.2/src/pulsecore/filter/crossover.c
++pulseaudio-14.2/src/pulsecore/filter/biquad.c
++pulseaudio-14.2/src/pulsecore/filter/lfe-filter.c
++pulseaudio-14.2/src/pulsecore/filter/biquad.h
++pulseaudio-14.2/src/pulsecore/filter/crossover.h
++pulseaudio-14.2/src/pulsecore/socket-util.c
++pulseaudio-14.2/src/pulsecore/rtpoll.c
++pulseaudio-14.2/src/pulsecore/sconv_sse.c
++pulseaudio-14.2/src/pulsecore/sconv_neon.c
++pulseaudio-14.2/src/pulsecore/poll.h
++pulseaudio-14.2/src/pulsecore/sink-input.h
++pulseaudio-14.2/src/pulsecore/msgobject.c
++pulseaudio-14.2/src/pulsecore/native-common.h
++pulseaudio-14.2/src/pulsecore/dbus-shared.h
++pulseaudio-14.2/src/pulsecore/packet.h
++pulseaudio-14.2/src/pulsecore/dbus-util.h
++pulseaudio-14.2/src/pulsecore/modinfo.c
++pulseaudio-14.2/src/pulsecore/sound-file-stream.h
++pulseaudio-14.2/src/pulsecore/ioline.c
++pulseaudio-14.2/src/pulsecore/stream-util.c
++pulseaudio-14.2/src/pulsecore/x11prop.c
++pulseaudio-14.2/src/pulsecore/thread-win32.c
++pulseaudio-14.2/src/pulsecore/sound-file-stream.c
++pulseaudio-14.2/src/pulsecore/pstream.c
++pulseaudio-14.2/src/pulsecore/play-memchunk.c
++pulseaudio-14.2/src/pulsecore/conf-parser.h
++pulseaudio-14.2/src/pulsecore/device-port.c
++pulseaudio-14.2/src/pulsecore/core-util.h
++pulseaudio-14.2/src/pulsecore/socket-server.h
++pulseaudio-14.2/src/pulsecore/memfd-wrappers.h
++pulseaudio-14.2/src/pulsecore/bitset.c
++pulseaudio-14.2/src/pulsecore/ratelimit.c
++pulseaudio-14.2/src/pulsecore/refcnt.h
++pulseaudio-14.2/src/pulsecore/packet.c
++pulseaudio-14.2/src/pulsecore/queue.c
++pulseaudio-14.2/src/pulsecore/cpu-orc.h
++pulseaudio-14.2/src/pulsecore/mix_neon.c
++pulseaudio-14.2/src/pulsecore/core-error.c
++pulseaudio-14.2/src/pulsecore/protocol-dbus.c
++pulseaudio-14.2/src/pulsecore/database-gdbm.c
++pulseaudio-14.2/src/pulsecore/resampler/
++pulseaudio-14.2/src/pulsecore/resampler/trivial.c
++pulseaudio-14.2/src/pulsecore/resampler/soxr.c
++pulseaudio-14.2/src/pulsecore/resampler/speex.c
++pulseaudio-14.2/src/pulsecore/resampler/ffmpeg.c
++pulseaudio-14.2/src/pulsecore/resampler/libsamplerate.c
++pulseaudio-14.2/src/pulsecore/resampler/peaks.c
++pulseaudio-14.2/src/pulsecore/rtkit.h
++pulseaudio-14.2/src/pulsecore/core-scache.h
++pulseaudio-14.2/src/pulsecore/fdsem.h
++pulseaudio-14.2/src/pulsecore/poll-posix.c
++pulseaudio-14.2/src/pulsecore/mcalign.c
++pulseaudio-14.2/src/pulsecore/mime-type.c
++pulseaudio-14.2/src/pulsecore/mutex.h
++pulseaudio-14.2/src/pulsecore/pdispatch.h
++pulseaudio-14.2/src/pulsecore/mem.h
++pulseaudio-14.2/src/pulsecore/aupdate.c
++pulseaudio-14.2/src/pulsecore/remap.h
++pulseaudio-14.2/src/pulsecore/sndfile-util.c
++pulseaudio-14.2/src/pulsecore/msgobject.h
++pulseaudio-14.2/src/pulsecore/cpu-arm.c
++pulseaudio-14.2/src/pulsecore/client.h
++pulseaudio-14.2/src/pulsecore/lock-autospawn.h
++pulseaudio-14.2/src/pulsecore/dllmain.c
++pulseaudio-14.2/src/pulsecore/play-memchunk.h
++pulseaudio-14.2/src/pulsecore/hashmap.h
++pulseaudio-14.2/src/pulsecore/remap.c
++pulseaudio-14.2/src/pulsecore/iochannel.c
++pulseaudio-14.2/src/pulsecore/macro.h
++pulseaudio-14.2/src/pulsecore/pipe.c
++pulseaudio-14.2/src/pulsecore/memblock.h
++pulseaudio-14.2/src/pulsecore/arpa-inet.c
++pulseaudio-14.2/src/pulsecore/native-common.c
++pulseaudio-14.2/src/pulsecore/card.h
++pulseaudio-14.2/src/pulsecore/play-memblockq.h
++pulseaudio-14.2/src/pulsecore/lock-autospawn.c
++pulseaudio-14.2/src/pulsecore/protocol-native.c
++pulseaudio-14.2/src/pulsecore/memtrap.c
++pulseaudio-14.2/src/pulsecore/sconv.c
++pulseaudio-14.2/src/pulsecore/arpa-inet.h
++pulseaudio-14.2/src/pulsecore/sink-input.c
++pulseaudio-14.2/src/pulsecore/sioman.c
++pulseaudio-14.2/src/pulsecore/protocol-simple.c
++pulseaudio-14.2/src/pulsecore/module.h
++pulseaudio-14.2/src/pulsecore/endianmacros.h
++pulseaudio-14.2/src/pulsecore/pstream-util.h
++pulseaudio-14.2/src/pulsecore/avahi-wrap.h
++pulseaudio-14.2/src/pulsecore/resampler.c
++pulseaudio-14.2/src/pulsecore/i18n.c
++pulseaudio-14.2/src/pulsecore/usergroup.c
++pulseaudio-14.2/src/pulsecore/socket-client.h
++pulseaudio-14.2/src/pulsecore/mcalign.h
++pulseaudio-14.2/src/pulsecore/modinfo.h
++pulseaudio-14.2/src/pulsecore/memblockq.c
++pulseaudio-14.2/src/pulsecore/semaphore-win32.c
++pulseaudio-14.2/src/pulsecore/random.h
++pulseaudio-14.2/src/pulsecore/play-memblockq.c
++pulseaudio-14.2/src/pulsecore/core.h
++pulseaudio-14.2/src/pulsecore/ioline.h
++pulseaudio-14.2/src/pulsecore/shared.c
++pulseaudio-14.2/src/pulsecore/thread-posix.c
++pulseaudio-14.2/src/pulsecore/winerrno.h
++pulseaudio-14.2/src/pulsecore/log.c
++pulseaudio-14.2/src/pulsecore/protocol-cli.h
++pulseaudio-14.2/src/pulsecore/esound.h
++pulseaudio-14.2/src/pulsecore/cpu-orc.c
++pulseaudio-14.2/src/pulsecore/time-smoother.h
++pulseaudio-14.2/src/pulsecore/iochannel.h
++pulseaudio-14.2/src/pulsecore/source-output.c
++pulseaudio-14.2/src/pulsecore/mime-type.h
++pulseaudio-14.2/src/pulsecore/sioman.h
++pulseaudio-14.2/src/pulsecore/sound-file.h
++pulseaudio-14.2/src/pulsecore/conf-parser.c
++pulseaudio-14.2/src/pulsecore/message-handler.c
++pulseaudio-14.2/src/pulsecore/x11prop.h
++pulseaudio-14.2/src/pulsecore/object.h
++pulseaudio-14.2/src/pulsecore/pid.h
++pulseaudio-14.2/src/pulsecore/core.c
++pulseaudio-14.2/src/pulsecore/socket-client.c
++pulseaudio-14.2/src/pulsecore/sconv-s16be.h
++pulseaudio-14.2/src/pulsecore/idxset.h
++pulseaudio-14.2/src/pulsecore/cli.h
++pulseaudio-14.2/src/pulsecore/svolume_arm.c
++pulseaudio-14.2/src/pulsecore/strbuf.h
++pulseaudio-14.2/src/pulsecore/ratelimit.h
++pulseaudio-14.2/src/pulsecore/asyncmsgq.c
++pulseaudio-14.2/src/pulsecore/database.h
++pulseaudio-14.2/src/pulsecore/modargs.h
++pulseaudio-14.2/src/pulsecore/strlist.c
++pulseaudio-14.2/src/pulsecore/memchunk.c
++pulseaudio-14.2/src/pulsecore/atomic.h
++pulseaudio-14.2/src/pulsecore/core-error.h
++pulseaudio-14.2/src/pulsecore/g711.h
++pulseaudio-14.2/src/pulsecore/cli-text.c
++pulseaudio-14.2/src/pulsecore/mutex-posix.c
++pulseaudio-14.2/src/pulsecore/parseaddr.h
++pulseaudio-14.2/src/pulsecore/meson.build
++pulseaudio-14.2/src/pulsecore/modargs.c
++pulseaudio-14.2/src/pulsecore/cpu-x86.h
++pulseaudio-14.2/src/pulsecore/flist.h
++pulseaudio-14.2/src/pulsecore/protocol-http.h
++pulseaudio-14.2/src/pulsecore/core-rtclock.h
++pulseaudio-14.2/src/pulsecore/auth-cookie.c
++pulseaudio-14.2/src/pulsecore/object.c
++pulseaudio-14.2/src/pulsecore/source-output.h
++pulseaudio-14.2/src/pulsecore/log.h
++pulseaudio-14.2/src/pulsecore/svolume.orc
++pulseaudio-14.2/src/pulsecore/svolume_sse.c
++pulseaudio-14.2/src/pulsecore/dynarray.c
++pulseaudio-14.2/src/pulsecore/flist.c
++pulseaudio-14.2/src/pulsecore/socket.h
++pulseaudio-14.2/src/pulsecore/ltdl-helper.c
++pulseaudio-14.2/src/pulsecore/pstream.h
++pulseaudio-14.2/src/pulsecore/svolume_mmx.c
++pulseaudio-14.2/src/pulsecore/mix.h
++pulseaudio-14.2/src/pulsecore/ipacl.h
++pulseaudio-14.2/src/pulsecore/memblock.c
++pulseaudio-14.2/src/pulsecore/module.c
++pulseaudio-14.2/src/pulsecore/namereg.h
++pulseaudio-14.2/src/pulsecore/source.c
++pulseaudio-14.2/src/pulsecore/shm.h
++pulseaudio-14.2/src/pulsecore/sconv-s16le.c
++pulseaudio-14.2/src/pulsecore/ltdl-helper.h
++pulseaudio-14.2/src/pulsecore/shared.h
++pulseaudio-14.2/src/pulsecore/poll-win32.c
++pulseaudio-14.2/src/pulsecore/start-child.h
++pulseaudio-14.2/src/pulsecore/auth-cookie.h
++pulseaudio-14.2/src/pulsecore/sample-util.c
++pulseaudio-14.2/src/pulsecore/protocol-esound.c
++pulseaudio-14.2/src/pulsecore/bitset.h
++pulseaudio-14.2/src/pulsecore/typedefs.h
++pulseaudio-14.2/src/pulsecore/cli-command.h
++pulseaudio-14.2/src/pulsecore/dynarray.h
++pulseaudio-14.2/src/pulsecore/srbchannel.c
++pulseaudio-14.2/src/pulsecore/pipe.h
++pulseaudio-14.2/src/pulsecore/core-subscribe.c
++pulseaudio-14.2/src/pulsecore/protocol-native.h
++pulseaudio-14.2/src/pulsecore/asyncq.c
++pulseaudio-14.2/src/pulsecore/core-scache.c
++pulseaudio-14.2/src/pulsecore/asyncmsgq.h
++pulseaudio-14.2/src/pulsecore/sconv.h
++pulseaudio-14.2/src/pulsecore/x11wrap.h
++pulseaudio-14.2/src/pulsecore/card.c
++pulseaudio-14.2/src/pulsecore/i18n.h
++pulseaudio-14.2/src/pulsecore/hook-list.c
++pulseaudio-14.2/src/pulsecore/avahi-wrap.c
++pulseaudio-14.2/src/pulsecore/parseaddr.c
++pulseaudio-14.2/src/pulsecore/hook-list.h
++pulseaudio-14.2/src/pulsecore/cpu.h
++pulseaudio-14.2/src/pulsecore/remap_sse.c
++pulseaudio-14.2/src/meson.build
++pulseaudio-14.2/src/tests/
++pulseaudio-14.2/src/tests/format-test.c
++pulseaudio-14.2/src/tests/mainloop-test.c
++pulseaudio-14.2/src/tests/alsa-mixer-path-test.c
++pulseaudio-14.2/src/tests/channelmap-test.c
++pulseaudio-14.2/src/tests/atomic-test.c
++pulseaudio-14.2/src/tests/remix-test.c
++pulseaudio-14.2/src/tests/mcalign-test.c
++pulseaudio-14.2/src/tests/stripnul.c
++pulseaudio-14.2/src/tests/cpu-sconv-test.c
++pulseaudio-14.2/src/tests/passthrough-test.c
++pulseaudio-14.2/src/tests/cpu-volume-test.c
++pulseaudio-14.2/src/tests/memblock-test.c
++pulseaudio-14.2/src/tests/core-util-test.c
++pulseaudio-14.2/src/tests/lo-latency-test.c
++pulseaudio-14.2/src/tests/mix-test.c
++pulseaudio-14.2/src/tests/mult-s16-test.c
++pulseaudio-14.2/src/tests/sync-playback.c
++pulseaudio-14.2/src/tests/interpol-test.c
++pulseaudio-14.2/src/tests/asyncq-test.c
++pulseaudio-14.2/src/tests/lfe-filter-test.c
++pulseaudio-14.2/src/tests/cpu-mix-test.c
++pulseaudio-14.2/src/tests/extended-test.c
++pulseaudio-14.2/src/tests/usergroup-test.c
++pulseaudio-14.2/src/tests/resampler-test.c
++pulseaudio-14.2/src/tests/once-test.c
++pulseaudio-14.2/src/tests/utf8-test.c
++pulseaudio-14.2/src/tests/lock-autospawn-test.c
++pulseaudio-14.2/src/tests/json-test.c
++pulseaudio-14.2/src/tests/gtk-test.c
++pulseaudio-14.2/src/tests/pacat-simple.c
++pulseaudio-14.2/src/tests/queue-test.c
++pulseaudio-14.2/src/tests/get-binary-name-test.c
++pulseaudio-14.2/src/tests/thread-mainloop-test.c
++pulseaudio-14.2/src/tests/parec-simple.c
++pulseaudio-14.2/src/tests/memblockq-test.c
++pulseaudio-14.2/src/tests/rtstutter.c
++pulseaudio-14.2/src/tests/flist-test.c
++pulseaudio-14.2/src/tests/strlist-test.c
++pulseaudio-14.2/src/tests/runtime-test-util.h
++pulseaudio-14.2/src/tests/sig2str-test.c
++pulseaudio-14.2/src/tests/srbchannel-test.c
++pulseaudio-14.2/src/tests/hook-list-test.c
++pulseaudio-14.2/src/tests/proplist-test.c
++pulseaudio-14.2/src/tests/lo-test-util.c
++pulseaudio-14.2/src/tests/rtpoll-test.c
++pulseaudio-14.2/src/tests/volume-test.c
++pulseaudio-14.2/src/tests/meson.build
++pulseaudio-14.2/src/tests/test-daemon.meson.sh
++pulseaudio-14.2/src/tests/sigbus-test.c
++pulseaudio-14.2/src/tests/hashmap-test.c
++pulseaudio-14.2/src/tests/connect-stress.c
++pulseaudio-14.2/src/tests/cpu-remap-test.c
++pulseaudio-14.2/src/tests/alsa-time-test.c
++pulseaudio-14.2/src/tests/smoother-test.c
++pulseaudio-14.2/src/tests/close-test.c
++pulseaudio-14.2/src/tests/lo-test-util.h
++pulseaudio-14.2/src/tests/thread-test.c
++pulseaudio-14.2/src/tests/asyncmsgq-test.c
++pulseaudio-14.2/src/tests/ipacl-test.c
++pulseaudio-14.2/src/tests/cpulimit-test.c
++pulseaudio-14.2/src/modules/
++pulseaudio-14.2/src/modules/module-sine-source.c
++pulseaudio-14.2/src/modules/bluetooth/
++pulseaudio-14.2/src/modules/bluetooth/rtp.h
++pulseaudio-14.2/src/modules/bluetooth/backend-native.c
++pulseaudio-14.2/src/modules/bluetooth/module-bluetooth-policy.c
++pulseaudio-14.2/src/modules/bluetooth/bluez5-util.c
++pulseaudio-14.2/src/modules/bluetooth/a2dp-codec-api.h
++pulseaudio-14.2/src/modules/bluetooth/module-bluez5-discover.c
++pulseaudio-14.2/src/modules/bluetooth/a2dp-codecs.h
++pulseaudio-14.2/src/modules/bluetooth/module-bluez5-device.c
++pulseaudio-14.2/src/modules/bluetooth/backend-ofono.c
++pulseaudio-14.2/src/modules/bluetooth/meson.build
++pulseaudio-14.2/src/modules/bluetooth/a2dp-codec-util.h
++pulseaudio-14.2/src/modules/bluetooth/module-bluetooth-discover.c
++pulseaudio-14.2/src/modules/bluetooth/a2dp-codec-util.c
++pulseaudio-14.2/src/modules/bluetooth/bluez5-util.h
++pulseaudio-14.2/src/modules/bluetooth/a2dp-codec-sbc.c
++pulseaudio-14.2/src/modules/module-ladspa-sink.c
++pulseaudio-14.2/src/modules/module-intended-roles.c
++pulseaudio-14.2/src/modules/stdin-util.c
++pulseaudio-14.2/src/modules/module-card-restore.c
++pulseaudio-14.2/src/modules/module-sine.c
++pulseaudio-14.2/src/modules/module-pipe-sink.c
++pulseaudio-14.2/src/modules/module-filter-apply.c
++pulseaudio-14.2/src/modules/module-mmkbd-evdev.c
++pulseaudio-14.2/src/modules/rtp/
++pulseaudio-14.2/src/modules/rtp/module-rtp-send.c
++pulseaudio-14.2/src/modules/rtp/rtp.h
++pulseaudio-14.2/src/modules/rtp/headerlist.c
++pulseaudio-14.2/src/modules/rtp/rtp-common.c
++pulseaudio-14.2/src/modules/rtp/sap.h
++pulseaudio-14.2/src/modules/rtp/module-rtp-recv.c
++pulseaudio-14.2/src/modules/rtp/sdp.h
++pulseaudio-14.2/src/modules/rtp/rtp-native.c
++pulseaudio-14.2/src/modules/rtp/headerlist.h
++pulseaudio-14.2/src/modules/rtp/rtp-gstreamer.c
++pulseaudio-14.2/src/modules/rtp/sdp.c
++pulseaudio-14.2/src/modules/rtp/meson.build
++pulseaudio-14.2/src/modules/rtp/rtsp_client.c
++pulseaudio-14.2/src/modules/rtp/rtsp_client.h
++pulseaudio-14.2/src/modules/rtp/sap.c
++pulseaudio-14.2/src/modules/module-detect.c
++pulseaudio-14.2/src/modules/module-position-event-sounds.c
++pulseaudio-14.2/src/modules/udev-util.c
++pulseaudio-14.2/src/modules/x11/
++pulseaudio-14.2/src/modules/x11/module-x11-cork-request.c
++pulseaudio-14.2/src/modules/x11/module-x11-xsmp.c
++pulseaudio-14.2/src/modules/x11/module-x11-publish.c
++pulseaudio-14.2/src/modules/x11/module-x11-bell.c
++pulseaudio-14.2/src/modules/module-null-sink.c
++pulseaudio-14.2/src/modules/module-native-protocol-fd.c
++pulseaudio-14.2/src/modules/module-role-cork.c
++pulseaudio-14.2/src/modules/module-remap-source.c
++pulseaudio-14.2/src/modules/module-remap-sink.c
++pulseaudio-14.2/src/modules/module-tunnel-sink-new.c
++pulseaudio-14.2/src/modules/module-esound-sink.c
++pulseaudio-14.2/src/modules/module-console-kit.c
++pulseaudio-14.2/src/modules/stdin-util.h
++pulseaudio-14.2/src/modules/udev-util.h
++pulseaudio-14.2/src/modules/raop/
++pulseaudio-14.2/src/modules/raop/module-raop-discover.c
++pulseaudio-14.2/src/modules/raop/raop-packet-buffer.h
++pulseaudio-14.2/src/modules/raop/raop-packet-buffer.c
++pulseaudio-14.2/src/modules/raop/raop-client.h
++pulseaudio-14.2/src/modules/raop/raop-client.c
++pulseaudio-14.2/src/modules/raop/raop-sink.c
++pulseaudio-14.2/src/modules/raop/raop-crypto.h
++pulseaudio-14.2/src/modules/raop/raop-util.c
++pulseaudio-14.2/src/modules/raop/raop-util.h
++pulseaudio-14.2/src/modules/raop/raop-sink.h
++pulseaudio-14.2/src/modules/raop/meson.build
++pulseaudio-14.2/src/modules/raop/raop-crypto.c
++pulseaudio-14.2/src/modules/raop/module-raop-sink.c
++pulseaudio-14.2/src/modules/module-rescue-streams.c
++pulseaudio-14.2/src/modules/module-suspend-on-idle.c
++pulseaudio-14.2/src/modules/module-zeroconf-discover.c
++pulseaudio-14.2/src/modules/module-switch-on-port-available.c
++pulseaudio-14.2/src/modules/ladspa.h
++pulseaudio-14.2/src/modules/module-equalizer-sink.c
++pulseaudio-14.2/src/modules/module-esound-compat-spawnpid.c
++pulseaudio-14.2/src/modules/reserve.c
++pulseaudio-14.2/src/modules/module-combine-sink.c
++pulseaudio-14.2/src/modules/module-loopback.c
++pulseaudio-14.2/src/modules/module-role-ducking.c
++pulseaudio-14.2/src/modules/module-waveout.c
++pulseaudio-14.2/src/modules/gsettings/
++pulseaudio-14.2/src/modules/gsettings/meson_post_install.py
++pulseaudio-14.2/src/modules/gsettings/module-gsettings.c
++pulseaudio-14.2/src/modules/gsettings/org.freedesktop.pulseaudio.gschema.xml
++pulseaudio-14.2/src/modules/gsettings/meson.build
++pulseaudio-14.2/src/modules/gsettings/pulseaudio.convert
++pulseaudio-14.2/src/modules/gsettings/gsettings-helper.c
++pulseaudio-14.2/src/modules/module-protocol-stub.c
++pulseaudio-14.2/src/modules/module-pipe-source.c
++pulseaudio-14.2/src/modules/module-volume-restore.c
++pulseaudio-14.2/src/modules/module-virtual-sink.c
++pulseaudio-14.2/src/modules/reserve.h
++pulseaudio-14.2/src/modules/module-always-sink.c
++pulseaudio-14.2/src/modules/module-tunnel.c
++pulseaudio-14.2/src/modules/module-lirc.c
++pulseaudio-14.2/src/modules/module-udev-detect.c
++pulseaudio-14.2/src/modules/module-rygel-media-server.c
++pulseaudio-14.2/src/modules/stream-interaction.h
++pulseaudio-14.2/src/modules/module-combine.c
++pulseaudio-14.2/src/modules/module-device-manager.c
++pulseaudio-14.2/src/modules/module-tunnel-source-new.c
++pulseaudio-14.2/src/modules/oss/
++pulseaudio-14.2/src/modules/oss/oss-util.c
++pulseaudio-14.2/src/modules/oss/module-oss.c
++pulseaudio-14.2/src/modules/oss/oss-util.h
++pulseaudio-14.2/src/modules/oss/meson.build
++pulseaudio-14.2/src/modules/dbus/
++pulseaudio-14.2/src/modules/dbus/iface-module.c
++pulseaudio-14.2/src/modules/dbus/iface-card-profile.c
++pulseaudio-14.2/src/modules/dbus/module-dbus-protocol.c
++pulseaudio-14.2/src/modules/dbus/iface-device-port.c
++pulseaudio-14.2/src/modules/dbus/iface-device.c
++pulseaudio-14.2/src/modules/dbus/iface-card.c
++pulseaudio-14.2/src/modules/dbus/iface-memstats.c
++pulseaudio-14.2/src/modules/dbus/iface-card-profile.h
++pulseaudio-14.2/src/modules/dbus/iface-module.h
++pulseaudio-14.2/src/modules/dbus/iface-stream.h
++pulseaudio-14.2/src/modules/dbus/iface-device.h
++pulseaudio-14.2/src/modules/dbus/iface-client.c
++pulseaudio-14.2/src/modules/dbus/iface-card.h
++pulseaudio-14.2/src/modules/dbus/iface-client.h
++pulseaudio-14.2/src/modules/dbus/iface-device-port.h
++pulseaudio-14.2/src/modules/dbus/iface-sample.c
++pulseaudio-14.2/src/modules/dbus/iface-core.c
++pulseaudio-14.2/src/modules/dbus/iface-stream.c
++pulseaudio-14.2/src/modules/dbus/iface-sample.h
++pulseaudio-14.2/src/modules/dbus/iface-memstats.h
++pulseaudio-14.2/src/modules/dbus/iface-core.h
++pulseaudio-14.2/src/modules/reserve-monitor.c
++pulseaudio-14.2/src/modules/stream-interaction.c
++pulseaudio-14.2/src/modules/module-filter-heuristics.c
++pulseaudio-14.2/src/modules/gconf/
++pulseaudio-14.2/src/modules/gconf/gconf-helper.c
++pulseaudio-14.2/src/modules/gconf/module-gconf.c
++pulseaudio-14.2/src/modules/echo-cancel/
++pulseaudio-14.2/src/modules/echo-cancel/adrian.h
++pulseaudio-14.2/src/modules/echo-cancel/null.c
++pulseaudio-14.2/src/modules/echo-cancel/adrian-license.txt
++pulseaudio-14.2/src/modules/echo-cancel/adrian-aec.orc
++pulseaudio-14.2/src/modules/echo-cancel/speex.c
++pulseaudio-14.2/src/modules/echo-cancel/module-echo-cancel.c
++pulseaudio-14.2/src/modules/echo-cancel/adrian-aec.h
++pulseaudio-14.2/src/modules/echo-cancel/echo-cancel.h
++pulseaudio-14.2/src/modules/echo-cancel/adrian-aec.c
++pulseaudio-14.2/src/modules/echo-cancel/meson.build
++pulseaudio-14.2/src/modules/echo-cancel/adrian.c
++pulseaudio-14.2/src/modules/echo-cancel/webrtc.cc
++pulseaudio-14.2/src/modules/reserve-wrap.h
++pulseaudio-14.2/src/modules/module-hal-detect-compat.c
++pulseaudio-14.2/src/modules/module-stream-restore.c
++pulseaudio-14.2/src/modules/module-always-source.c
++pulseaudio-14.2/src/modules/module-switch-on-connect.c
++pulseaudio-14.2/src/modules/module-zeroconf-publish.c
++pulseaudio-14.2/src/modules/module-default-device-restore.c
++pulseaudio-14.2/src/modules/module-null-source.c
++pulseaudio-14.2/src/modules/module-augment-properties.c
++pulseaudio-14.2/src/modules/module-match.c
++pulseaudio-14.2/src/modules/module-solaris.c
++pulseaudio-14.2/src/modules/meson.build
++pulseaudio-14.2/src/modules/module-cli.c
++pulseaudio-14.2/src/modules/reserve-monitor.h
++pulseaudio-14.2/src/modules/reserve-wrap.c
++pulseaudio-14.2/src/modules/jack/
++pulseaudio-14.2/src/modules/jack/module-jack-source.c
++pulseaudio-14.2/src/modules/jack/module-jackdbus-detect.c
++pulseaudio-14.2/src/modules/jack/module-jack-sink.c
++pulseaudio-14.2/src/modules/module-systemd-login.c
++pulseaudio-14.2/src/modules/module-esound-compat-spawnfd.c
++pulseaudio-14.2/src/modules/macosx/
++pulseaudio-14.2/src/modules/macosx/module-coreaudio-detect.c
++pulseaudio-14.2/src/modules/macosx/module-bonjour-publish.c
++pulseaudio-14.2/src/modules/macosx/module-coreaudio-device.c
++pulseaudio-14.2/src/modules/module-virtual-surround-sink.c
++pulseaudio-14.2/src/modules/module-device-restore.c
++pulseaudio-14.2/src/modules/module-allow-passthrough.c
++pulseaudio-14.2/src/modules/alsa/
++pulseaudio-14.2/src/modules/alsa/alsa-mixer.c
++pulseaudio-14.2/src/modules/alsa/module-alsa-sink.c
++pulseaudio-14.2/src/modules/alsa/module-alsa-source.c
++pulseaudio-14.2/src/modules/alsa/alsa-util.h
++pulseaudio-14.2/src/modules/alsa/alsa-sink.c
++pulseaudio-14.2/src/modules/alsa/alsa-util.c
++pulseaudio-14.2/src/modules/alsa/alsa-ucm.c
++pulseaudio-14.2/src/modules/alsa/alsa-ucm.h
++pulseaudio-14.2/src/modules/alsa/mixer/
++pulseaudio-14.2/src/modules/alsa/mixer/profile-sets/
++pulseaudio-14.2/src/modules/alsa/mixer/profile-sets/native-instruments-korecontroller.conf
++pulseaudio-14.2/src/modules/alsa/mixer/profile-sets/native-instruments-audio8dj.conf
++pulseaudio-14.2/src/modules/alsa/mixer/profile-sets/force-speaker-and-int-mic.conf
++pulseaudio-14.2/src/modules/alsa/mixer/profile-sets/audigy.conf
++pulseaudio-14.2/src/modules/alsa/mixer/profile-sets/native-instruments-traktor-audio6.conf
++pulseaudio-14.2/src/modules/alsa/mixer/profile-sets/kinect-audio.conf
++pulseaudio-14.2/src/modules/alsa/mixer/profile-sets/default.conf
++pulseaudio-14.2/src/modules/alsa/mixer/profile-sets/native-instruments-traktor-audio2.conf
++pulseaudio-14.2/src/modules/alsa/mixer/profile-sets/native-instruments-traktorkontrol-s4.conf
++pulseaudio-14.2/src/modules/alsa/mixer/profile-sets/sb-omni-surround-5.1.conf
++pulseaudio-14.2/src/modules/alsa/mixer/profile-sets/usb-gaming-headset.conf
++pulseaudio-14.2/src/modules/alsa/mixer/profile-sets/maudio-fasttrack-pro.conf
++pulseaudio-14.2/src/modules/alsa/mixer/profile-sets/dell-dock-tb16-usb-audio.conf
++pulseaudio-14.2/src/modules/alsa/mixer/profile-sets/native-instruments-audio4dj.conf
++pulseaudio-14.2/src/modules/alsa/mixer/profile-sets/steelseries-arctis-common-usb-audio.conf
++pulseaudio-14.2/src/modules/alsa/mixer/profile-sets/native-instruments-traktor-audio10.conf
++pulseaudio-14.2/src/modules/alsa/mixer/profile-sets/cmedia-high-speed-true-hdaudio.conf
++pulseaudio-14.2/src/modules/alsa/mixer/profile-sets/force-speaker.conf
++pulseaudio-14.2/src/modules/alsa/mixer/paths/
++pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-input-video.conf
++pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-output-headphones-2.conf
++pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-input-rear-mic.conf
++pulseaudio-14.2/src/modules/alsa/mixer/paths/usb-gaming-headset-output-stereo.conf
++pulseaudio-14.2/src/modules/alsa/mixer/paths/iec958-stereo-input.conf
++pulseaudio-14.2/src/modules/alsa/mixer/paths/hdmi-output-6.conf
++pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-output-lineout.conf
++pulseaudio-14.2/src/modules/alsa/mixer/paths/usb-gaming-headset-output-mono.conf
++pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-input-dock-mic.conf
++pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-output.conf.common
++pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-output-speaker-always.conf
++pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-input-mic.conf
++pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-input-mic-line.conf
++pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-input-internal-mic.conf
++pulseaudio-14.2/src/modules/alsa/mixer/paths/hdmi-output-5.conf
++pulseaudio-14.2/src/modules/alsa/mixer/paths/steelseries-arctis-output-chat-common.conf
++pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-input-headphone-mic.conf
++pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-input-linein.conf
++pulseaudio-14.2/src/modules/alsa/mixer/paths/usb-gaming-headset-input.conf
++pulseaudio-14.2/src/modules/alsa/mixer/paths/hdmi-output-2.conf
++pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-output-speaker.conf
++pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-input-aux.conf
++pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-output.conf
++pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-output-mono.conf
++pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-input-front-mic.conf
++pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-input-tvtuner.conf
++pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-input-fm.conf
++pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-input.conf.common
++pulseaudio-14.2/src/modules/alsa/mixer/paths/iec958-stereo-output.conf
++pulseaudio-14.2/src/modules/alsa/mixer/paths/hdmi-output-7.conf
++pulseaudio-14.2/src/modules/alsa/mixer/paths/steelseries-arctis-output-game-common.conf
++pulseaudio-14.2/src/modules/alsa/mixer/paths/hdmi-output-0.conf
++pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-input.conf
++pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-input-mic.conf.common
++pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-input-internal-mic-always.conf
++pulseaudio-14.2/src/modules/alsa/mixer/paths/hdmi-output-1.conf
++pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-output-headphones.conf
++pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-input-headset-mic.conf
++pulseaudio-14.2/src/modules/alsa/mixer/paths/hdmi-output-3.conf
++pulseaudio-14.2/src/modules/alsa/mixer/paths/hdmi-output-4.conf
++pulseaudio-14.2/src/modules/alsa/mixer/meson.build
++pulseaudio-14.2/src/modules/alsa/meson.build
++pulseaudio-14.2/src/modules/alsa/module-alsa-card.c
++pulseaudio-14.2/src/modules/alsa/90-pulseaudio.rules
++pulseaudio-14.2/src/modules/alsa/alsa-source.c
++pulseaudio-14.2/src/modules/alsa/alsa-source.h
++pulseaudio-14.2/src/modules/alsa/alsa-mixer.h
++pulseaudio-14.2/src/modules/alsa/alsa-sink.h
++pulseaudio-14.2/src/modules/module-virtual-source.c
++pulseaudio-14.2/src/Makefile.am
++pulseaudio-14.2/doxygen/
++pulseaudio-14.2/doxygen/Makefile.in
++pulseaudio-14.2/doxygen/.gitignore
++pulseaudio-14.2/doxygen/meson.build
++pulseaudio-14.2/doxygen/doxygen.conf.in
++pulseaudio-14.2/doxygen/Makefile.am
++pulseaudio-14.2/vala/
++pulseaudio-14.2/vala/libpulse-simple.vapi
++pulseaudio-14.2/vala/libpulse.deps
++pulseaudio-14.2/vala/libpulse-mainloop-glib.deps
++pulseaudio-14.2/vala/libpulse-mainloop-glib.vapi
++pulseaudio-14.2/vala/meson.build
++pulseaudio-14.2/vala/libpulse-simple.deps
++pulseaudio-14.2/vala/libpulse.vapi
++pulseaudio-14.2/todo
++pulseaudio-14.2/meson_options.txt
++pulseaudio-14.2/build-aux/
++pulseaudio-14.2/build-aux/depcomp
++pulseaudio-14.2/build-aux/config.rpath
++pulseaudio-14.2/build-aux/config.sub
++pulseaudio-14.2/build-aux/test-driver
++pulseaudio-14.2/build-aux/compile
++pulseaudio-14.2/build-aux/ltmain.sh
++pulseaudio-14.2/build-aux/install-sh
++pulseaudio-14.2/build-aux/config.guess
++pulseaudio-14.2/build-aux/missing
++pulseaudio-14.2/configure
++pulseaudio-14.2/LGPL
++pulseaudio-14.2/meson.build
++pulseaudio-14.2/bootstrap.sh
++pulseaudio-14.2/coverity/
++pulseaudio-14.2/coverity/model.c
++pulseaudio-14.2/man/
++pulseaudio-14.2/man/default.pa.5
++pulseaudio-14.2/man/pulse-cli-syntax.5
++pulseaudio-14.2/man/Makefile.in
++pulseaudio-14.2/man/.gitignore
++pulseaudio-14.2/man/pacat.1.xml.in
++pulseaudio-14.2/man/xmltoman.dtd
++pulseaudio-14.2/man/pactl.1
++pulseaudio-14.2/man/pulse-daemon.conf.5.xml.in
++pulseaudio-14.2/man/esdcompat.1
++pulseaudio-14.2/man/padsp.1
++pulseaudio-14.2/man/pasuspender.1.xml.in
++pulseaudio-14.2/man/padsp.1.xml.in
++pulseaudio-14.2/man/default.pa.5.xml.in
++pulseaudio-14.2/man/pulse-client.conf.5
++pulseaudio-14.2/man/esdcompat.1.xml.in
++pulseaudio-14.2/man/pulse-cli-syntax.5.xml.in
++pulseaudio-14.2/man/xmltoman.css
++pulseaudio-14.2/man/pactl.1.xml.in
++pulseaudio-14.2/man/pasuspender.1
++pulseaudio-14.2/man/pulseaudio.1
++pulseaudio-14.2/man/pulseaudio.1.xml.in
++pulseaudio-14.2/man/pulse-daemon.conf.5
++pulseaudio-14.2/man/xmltoman
++pulseaudio-14.2/man/start-pulseaudio-x11.1
++pulseaudio-14.2/man/pacmd.1
++pulseaudio-14.2/man/meson.build
++pulseaudio-14.2/man/pax11publish.1
++pulseaudio-14.2/man/start-pulseaudio-x11.1.xml.in
++pulseaudio-14.2/man/pax11publish.1.xml.in
++pulseaudio-14.2/man/pacat.1
++pulseaudio-14.2/man/pulse-client.conf.5.xml.in
++pulseaudio-14.2/man/xmltoman.xsl
++pulseaudio-14.2/man/pacmd.1.xml.in
++pulseaudio-14.2/man/Makefile.am
++pulseaudio-14.2/PROTOCOL
++pulseaudio-14.2/m4/
++pulseaudio-14.2/m4/ax_pthread.m4
++pulseaudio-14.2/m4/ax_define_dir.m4
++pulseaudio-14.2/m4/ax_check_define.m4
++pulseaudio-14.2/m4/libtool.m4
++pulseaudio-14.2/m4/ax_tls.m4
++pulseaudio-14.2/m4/ltversion.m4
++pulseaudio-14.2/m4/.gitignore
++pulseaudio-14.2/m4/ltoptions.m4
++pulseaudio-14.2/m4/lib-link.m4
++pulseaudio-14.2/m4/lib-prefix.m4
++pulseaudio-14.2/m4/acx_libwrap.m4
++pulseaudio-14.2/m4/lib-ld.m4
++pulseaudio-14.2/m4/progtest.m4
++pulseaudio-14.2/m4/ltsugar.m4
++pulseaudio-14.2/m4/gettext.m4
++pulseaudio-14.2/m4/po.m4
++pulseaudio-14.2/m4/iconv.m4
++pulseaudio-14.2/m4/nls.m4
++pulseaudio-14.2/m4/ax_check_flag.m4
++pulseaudio-14.2/m4/lt~obsolete.m4
++pulseaudio-14.2/m4/orc.m4
++pulseaudio-14.2/m4/intlmacosx.m4
++pulseaudio-14.2/m4/ax_cxx_compile_stdcxx_11.m4
++pulseaudio-14.2/m4/ax_cxx_compile_stdcxx.m4
++pulseaudio-14.2/Makefile.am
++pulseaudio-14.2/.gitlab/
++pulseaudio-14.2/.gitlab/issue_templates/
++pulseaudio-14.2/.gitlab/issue_templates/Bug.md
++patching file src/pulsecore/log.c
++Hmm...  Looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|--- src/Makefile.am.orig	2014-02-14 23:45:45.000000000 +1000
++|+++ src/Makefile.am	2014-10-26 21:59:33.220234317 +1000
++--------------------------
++patching file src/Makefile.am
++Using Plan A...
++Hunk #1 succeeded at 17 with fuzz 2 (offset -2 lines).
++Hmm...  The next patch looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|--- Makefile.am.orig	2014-01-24 04:57:55.000000000 +1000
++|+++ Makefile.am	2014-10-26 21:58:47.090622189 +1000
++--------------------------
++patching file Makefile.am
++Using Plan A...
++Hunk #1 succeeded at 13 with fuzz 2 (offset -2 lines).
++done
++Hmm...  Looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|--- shell-completion/bash/pulseaudio.orig	2015-02-13 00:10:35.000000000 +1000
++|+++ shell-completion/bash/pulseaudio	2015-09-12 11:09:36.948222926 +1000
++--------------------------
++patching file shell-completion/bash/pulseaudio
++Using Plan A...
++Hunk #1 succeeded at 1.
++Hunk #2 succeeded at 83.
++done
++Hmm...  Looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|From 1cb5647f76dc8cd7bacbce2a64fac9e6c2dc3b16 Mon Sep 17 00:00:00 2001
++|From: Tanu Kaskinen <tanu.kaskinen at linux.intel.com>
++|Date: Tue, 28 Apr 2015 14:32:43 +0300
++|Subject: [PATCH] client-conf: Add allow-autospawn-for-root
++|
++|Usually autospawning for root is a bad idea, since it can easily
++|interfere with other users' PulseAudio instances, but in embedded
++|environments where only root exists, autospawning is fine.
++|
++|Upstream-Status: Submitted [http://thread.gmane.org/gmane.comp.audio.pulseaudio.general/23549]
++|
++|Signed-off-by: Tanu Kaskinen <tanu.kaskinen at linux.intel.com>
++|---
++| man/pulse-client.conf.5.xml.in | 9 +++++++++
++| src/pulse/client-conf.c        | 1 +
++| src/pulse/client-conf.h        | 1 +
++| src/pulse/client.conf.in       | 1 +
++| src/pulse/context.c            | 2 +-
++| 5 files changed, 13 insertions(+), 1 deletion(-)
++|
++|--- ./man/pulse-client.conf.5.xml.in.orig	2016-05-10 07:28:04.000000000 -0500
++|+++ ./man/pulse-client.conf.5.xml.in	2016-06-22 13:39:30.494696654 -0500
++--------------------------
++patching file man/pulse-client.conf.5.xml.in
++Using Plan A...
++Hunk #1 succeeded at 91 (offset 9 lines).
++Hmm...  The next patch looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|--- ./src/pulse/client.conf.in.orig	2016-05-03 01:17:39.000000000 -0500
++|+++ ./src/pulse/client.conf.in	2016-06-22 13:39:30.527696657 -0500
++--------------------------
++patching file src/pulse/client.conf.in
++Using Plan A...
++Hunk #1 succeeded at 23.
++Hmm...  The next patch looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|--- ./src/pulse/client-conf.c.orig	2016-05-10 07:28:04.000000000 -0500
++|+++ ./src/pulse/client-conf.c	2016-06-22 13:39:30.505696655 -0500
++--------------------------
++patching file src/pulse/client-conf.c
++Using Plan A...
++Hunk #1 succeeded at 139 (offset 1 line).
++Hmm...  The next patch looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|--- ./src/pulse/context.c.orig	2016-06-01 05:50:54.000000000 -0500
++|+++ ./src/pulse/context.c	2016-06-22 13:39:30.536696657 -0500
++--------------------------
++patching file src/pulse/context.c
++Using Plan A...
++Hunk #1 succeeded at 1031 (offset 4 lines).
++Hmm...  The next patch looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|--- ./src/pulse/client-conf.h.orig	2016-06-22 13:39:30.517696656 -0500
++|+++ ./src/pulse/client-conf.h	2016-06-22 13:40:11.754699631 -0500
++--------------------------
++patching file src/pulse/client-conf.h
++Using Plan A...
++Hunk #1 succeeded at 38.
++done
++Hmm...  Looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|--- ./man/pulse-client.conf.5.xml.in.orig	2016-01-06 15:33:09.797022947 -0600
++|+++ ./man/pulse-client.conf.5.xml.in	2016-01-06 15:35:34.902019857 -0600
++--------------------------
++patching file man/pulse-client.conf.5.xml.in
++Using Plan A...
++Hunk #1 succeeded at 93 (offset 20 lines).
++Hmm...  The next patch looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|--- ./src/pulse/client.conf.in.orig	2016-01-06 15:33:09.800022947 -0600
++|+++ ./src/pulse/client.conf.in	2016-01-06 15:39:33.502014775 -0600
++--------------------------
++patching file src/pulse/client.conf.in
++Using Plan A...
++Hunk #1 succeeded at 22.
++done
++Hmm...  Looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|--- ./src/daemon/main.c.orig	2015-10-30 07:16:48.000000000 -0500
++|+++ ./src/daemon/main.c	2016-01-07 15:05:42.131126245 -0600
++--------------------------
++patching file src/daemon/main.c
++Using Plan A...
++Hunk #1 succeeded at 658 (offset 11 lines).
++done
++Hmm...  Looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|diff -up pulseaudio-6.0/src/daemon/start-pulseaudio-x11.in.autostart pulseaudio-6.0/src/daemon/start-pulseaudio-x11.in
++|--- pulseaudio-6.0/src/daemon/start-pulseaudio-x11.in.autostart	2015-02-12 08:10:35.000000000 -0600
++|+++ pulseaudio-6.0/src/daemon/start-pulseaudio-x11.in	2015-06-22 11:24:13.561614127 -0500
++--------------------------
++patching file src/daemon/start-pulseaudio-x11.in
++Using Plan A...
++Hunk #1 succeeded at 17 with fuzz 1.
++done
++Hmm...  Looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|diff -urN pulseaudio-14.0.orig/meson.build pulseaudio-14.0/meson.build
++|--- pulseaudio-14.0.orig/meson.build	2020-11-23 20:31:13.000000000 +0200
++|+++ pulseaudio-14.0/meson.build	2020-12-24 22:24:03.166596631 +0200
++--------------------------
++patching file meson.build
++Using Plan A...
++Hunk #1 succeeded at 601 (offset -1 lines).
++Hunk #2 succeeded at 833 (offset -1 lines).
++Hmm...  The next patch looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|diff -urN pulseaudio-14.0.orig/meson_options.txt pulseaudio-14.0/meson_options.txt
++|--- pulseaudio-14.0.orig/meson_options.txt	2020-11-11 04:07:46.000000000 +0200
++|+++ pulseaudio-14.0/meson_options.txt	2020-12-24 22:18:27.921584579 +0200
++--------------------------
++patching file meson_options.txt
++Using Plan A...
++Hunk #1 succeeded at 135.
++Hmm...  The next patch looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|diff -urN pulseaudio-14.0.orig/src/modules/meson.build pulseaudio-14.0/src/modules/meson.build
++|--- pulseaudio-14.0.orig/src/modules/meson.build	2020-11-11 04:07:46.000000000 +0200
++|+++ pulseaudio-14.0/src/modules/meson.build	2020-12-24 22:20:06.143588110 +0200
++--------------------------
++patching file src/modules/meson.build
++Using Plan A...
++Hunk #1 succeeded at 188.
++done
++Using 'PKG_CONFIG_PATH' from environment with value: '/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig'
++Using 'PKG_CONFIG_PATH' from environment with value: '/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig'
++The Meson build system
++Version: 0.56.2
++Source dir: /tmp/pulseaudio-14.2
++Build dir: /tmp/pulseaudio-14.2/meson-build
++Build type: native build
++Program git-version-gen found: YES (/tmp/pulseaudio-14.2/git-version-gen)
++Project name: pulseaudio
++Project version: 14.2
++Using 'CFLAGS' from environment with value: '-O2 -fPIC'
++C compiler for the host machine: ccache cc (gcc 10.2.0 "cc (GCC) 10.2.0")
++C linker for the host machine: cc ld.bfd 2.33.1-slack15
++Using 'CXXFLAGS' from environment with value: '-O2 -fPIC'
++C++ compiler for the host machine: ccache c++ (gcc 10.2.0 "c++ (GCC) 10.2.0")
++C++ linker for the host machine: c++ ld.bfd 2.33.1-slack15
++Using 'CFLAGS' from environment with value: '-O2 -fPIC'
++Using 'CXXFLAGS' from environment with value: '-O2 -fPIC'
++Host machine cpu family: x86_64
++Host machine cpu: x86_64
++Checking for type "_Bool" : YES 
++Has header "arpa/inet.h" : YES 
++Has header "byteswap.h" : YES 
++Has header "cpuid.h" : YES 
++Has header "dlfcn.h" : YES 
++Has header "execinfo.h" : YES 
++Has header "grp.h" : YES 
++Has header "langinfo.h" : YES 
++Has header "linux/sockios.h" : YES 
++Has header "locale.h" : YES 
++Has header "netdb.h" : YES 
++Has header "netinet/in.h" : YES 
++Has header "netinet/in_systm.h" : YES 
++Has header "netinet/ip.h" : YES 
++Has header "netinet/tcp.h" : YES 
++Has header "pcreposix.h" : YES 
++Has header "poll.h" : YES 
++Has header "pwd.h" : YES 
++Has header "regex.h" : YES 
++Has header "sched.h" : YES 
++Has header "stdint.h" : YES 
++Has header "sys/atomic.h" : NO 
++Has header "sys/capability.h" : YES 
++Has header "sys/conf.h" : NO 
++Has header "sys/dl.h" : NO 
++Has header "sys/eventfd.h" : YES 
++Has header "sys/filio.h" : NO 
++Has header "sys/ioctl.h" : YES 
++Has header "sys/mman.h" : YES 
++Has header "sys/prctl.h" : YES 
++Has header "sys/resource.h" : YES 
++Has header "sys/select.h" : YES 
++Has header "sys/socket.h" : YES 
++Has header "sys/syscall.h" : YES 
++Has header "sys/uio.h" : YES 
++Has header "sys/un.h" : YES 
++Has header "sys/wait.h" : YES 
++Has header "syslog.h" : YES 
++Has header "valgrind/memcheck.h" : NO 
++Has header "xlocale.h" : NO 
++Has header "pthread.h" : YES 
++Header <pthread.h> has symbol "PTHREAD_PRIO_INHERIT" : YES 
++Checking for function "accept4" : YES 
++Checking for function "clock_gettime" : YES 
++Checking for function "ctime_r" : YES 
++Checking for function "fchmod" : YES 
++Checking for function "fchown" : YES 
++Checking for function "fork" : YES 
++Checking for function "fstat" : YES 
++Checking for function "getaddrinfo" : YES 
++Checking for function "getgrgid_r" : YES 
++Checking for function "getgrnam_r" : YES 
++Checking for function "getpwnam_r" : YES 
++Checking for function "getpwuid_r" : YES 
++Checking for function "gettimeofday" : YES 
++Checking for function "getuid" : YES 
++Checking for function "lrintf" : YES 
++Checking for function "lstat" : YES 
++Checking for function "memfd_create" : YES 
++Checking for function "mkfifo" : YES 
++Checking for function "mlock" : YES 
++Checking for function "nanosleep" : YES 
++Checking for function "open64" : YES 
++Checking for function "paccept" : NO 
++Checking for function "pipe" : YES 
++Checking for function "pipe2" : YES 
++Checking for function "posix_fadvise" : YES 
++Checking for function "posix_madvise" : YES 
++Checking for function "posix_memalign" : YES 
++Checking for function "ppoll" : YES 
++Checking for function "readlink" : YES 
++Checking for function "setegid" : YES 
++Checking for function "seteuid" : YES 
++Checking for function "setpgid" : YES 
++Checking for function "setregid" : YES 
++Checking for function "setresgid" : YES 
++Checking for function "setresuid" : YES 
++Checking for function "setreuid" : YES 
++Checking for function "setsid" : YES 
++Checking for function "sig2str" : NO 
++Checking for function "sigaction" : YES 
++Checking for function "strerror_r" : YES 
++Checking for function "strtod_l" : YES 
++Checking for function "strtof" : YES 
++Checking for function "symlink" : YES 
++Checking for function "sysconf" : YES 
++Checking for function "uname" : YES 
++Header <sys/syscall.h> has symbol "SYS_memfd_create" : YES 
++Checking for function "dgettext" : YES 
++Header <signal.h> has symbol "SIGXCPU" : YES 
++Header <netinet/in.h> has symbol "INADDR_NONE" : YES 
++Header <unistd.h> has symbol "environ" : YES 
++Header <sys/soundcard.h> has symbol "SOUND_PCM_READ_RATE" : YES 
++Header <sys/soundcard.h> has symbol "SOUND_PCM_READ_CHANNELS" : YES 
++Header <sys/soundcard.h> has symbol "SOUND_PCM_READ_BITS" : YES 
++Library m found: YES
++Run-time dependency threads found: YES
++Checking for function "pthread_getname_np" with dependency threads: NO 
++Checking for function "pthread_setaffinity_np" with dependency threads: YES 
++Checking for function "pthread_setname_np" with dependency threads: YES 
++Library cap found: YES
++Library rt found: YES
++Library dl found: YES
++Checking for function "iconv_open" : YES 
++Library ltdl found: YES
++Using 'PKG_CONFIG' from environment with value: '/usr/bin/pkg-config'
++Found pkg-config: /usr/bin/pkg-config (0.29.2)
++Using 'PKG_CONFIG_PATH' from environment with value: '/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig'
++Run-time dependency tdb found: YES 1.4.3
++Using 'PKG_CONFIG_PATH' from environment with value: '/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig'
++Run-time dependency alsa found: YES 1.2.4
++Using 'PKG_CONFIG_PATH' from environment with value: '/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig'
++Run-time dependency libasyncns found: YES 0.8
++Using 'PKG_CONFIG_PATH' from environment with value: '/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig'
++Run-time dependency dbus-1 found: YES 1.12.20
++Using 'PKG_CONFIG_PATH' from environment with value: '/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig'
++Run-time dependency gio-2.0 found: YES 2.66.4
++Using 'PKG_CONFIG_PATH' from environment with value: '/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig'
++Run-time dependency glib-2.0 found: YES 2.66.4
++Using 'PKG_CONFIG_PATH' from environment with value: '/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig'
++Run-time dependency gtk+-3.0 found: YES 3.24.24
++Using 'PKG_CONFIG_PATH' from environment with value: '/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig'
++Run-time dependency orc-0.4 found: YES 0.4.32
++Program orcc found: YES (/usr/bin/orcc)
++Dependency samplerate skipped: feature samplerate disabled
++Using 'PKG_CONFIG_PATH' from environment with value: '/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig'
++Run-time dependency sndfile found: YES 1.0.30
++Found CMake: /usr/bin/cmake (3.19.2)
++Run-time dependency soxr found: NO (tried pkgconfig and cmake)
++Run-time dependency libsystemd found: NO (tried pkgconfig and cmake)
++Run-time dependency systemd found: NO (tried pkgconfig and cmake)
++Using 'PKG_CONFIG_PATH' from environment with value: '/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig'
++Run-time dependency libelogind found: YES 246.9.1
++Using 'PKG_CONFIG_PATH' from environment with value: '/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig'
++Run-time dependency x11-xcb found: YES 1.7.0
++Using 'PKG_CONFIG_PATH' from environment with value: '/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig'
++Run-time dependency xcb found: YES 1.14
++Using 'PKG_CONFIG_PATH' from environment with value: '/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig'
++Run-time dependency ice found: YES 1.0.10
++Using 'PKG_CONFIG_PATH' from environment with value: '/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig'
++Run-time dependency sm found: YES 1.2.3
++Using 'PKG_CONFIG_PATH' from environment with value: '/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig'
++Run-time dependency xtst found: YES 1.2.3
++Has header "sys/soundcard.h" : YES 
++Run-time dependency avahi-client found: NO (tried pkgconfig and cmake)
++Using 'PKG_CONFIG_PATH' from environment with value: '/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig'
++Run-time dependency sbc found: YES 1.5
++Using 'PKG_CONFIG_PATH' from environment with value: '/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig'
++Run-time dependency fftw3f found: YES 3.3.9
++Run-time dependency jack found: NO (tried pkgconfig and cmake)
++Run-time dependency lirc found: NO (tried pkgconfig and cmake)
++Using 'PKG_CONFIG_PATH' from environment with value: '/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig'
++Run-time dependency openssl found: YES 1.1.1i
++Using 'PKG_CONFIG_PATH' from environment with value: '/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig'
++Run-time dependency speexdsp found: YES 1.2.0
++Using 'PKG_CONFIG_PATH' from environment with value: '/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig'
++Run-time dependency libudev found: YES 243
++Run-time dependency webrtc-audio-processing found: NO (tried pkgconfig and cmake)
++Dependency gstreamer-1.0 skipped: feature gstreamer disabled
++Dependency gstreamer-app-1.0 skipped: feature gstreamer disabled
++Dependency gstreamer-rtp-1.0 skipped: feature gstreamer disabled
++Using 'PKG_CONFIG_PATH' from environment with value: '/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig'
++Run-time dependency check found: YES 0.15.2
++Configuring doxygen.conf using configuration
++../doxygen/meson.build:3: WARNING: The variable(s) 'srcdir' in the input file 'doxygen/doxygen.conf.in' are not present in the given configuration data.
++Program perl found: YES (/usr/bin/perl)
++Program xmllint found: YES (/usr/bin/xmllint)
++Configuring default.pa.5.xml using configuration
++Configuring pacat.1.xml using configuration
++Program sh found: YES (/bin/sh)
++Configuring pacmd.1.xml using configuration
++Configuring pactl.1.xml using configuration
++Configuring padsp.1.xml using configuration
++Configuring pasuspender.1.xml using configuration
++Configuring pax11publish.1.xml using configuration
++Configuring pulse-cli-syntax.5.xml using configuration
++Configuring pulse-client.conf.5.xml using configuration
++Configuring pulse-daemon.conf.5.xml using configuration
++Configuring pulseaudio.1.xml using configuration
++Configuring start-pulseaudio-x11.1.xml using configuration
++Program sh found: YES (/bin/sh)
++Configuring version.h using configuration
++Configuring client.conf using configuration
++../src/pulsecore/meson.build:174: WARNING: Module unstable-simd has no backwards or forwards compatibility and might not exist in future releases.
++Compiler supports mmx: YES
++Compiler supports sse: YES
++Compiler supports neon: NO
++Configuring start-pulseaudio-x11 using configuration
++../src/daemon/meson.build:42: WARNING: The variable(s) 'PA_BINARY' in the input file 'src/daemon/start-pulseaudio-x11.in' are not present in the given configuration data.
++Program desktop-file-validate found: YES (/usr/bin/desktop-file-validate)
++Program m4 found: YES (/usr/bin/m4)
++Configuring daemon.conf.tmp using configuration
++Has header "sys/un.h" : YES (cached)
++Checking for function "mkfifo" : YES (cached)
++Configuring default.pa.tmp using configuration
++../src/daemon/meson.build:101: WARNING: The variable(s) 'HAVE_AVAHI' in the input file 'src/daemon/default.pa.in' are not present in the given configuration data.
++Configuring system.pa.tmp using configuration
++Has header "linux/input.h" : YES 
++Has header "sys/soundcard.h" : YES (cached)
++Checking for function "mkfifo" : YES (cached)
++Program glib-compile-schemas found: YES (/usr/bin/glib-compile-schemas)
++Program meson_post_install.py found: YES (/usr/bin/python3 /tmp/pulseaudio-14.2/src/modules/gsettings/meson_post_install.py)
++Has header "sys/eventfd.h" : YES (cached)
++Header <signal.h> has symbol "SIGXCPU" : YES (cached)
++Checking for function "pthread_setaffinity_np" with dependency threads: YES (cached)
++Program test-daemon.meson.sh found: YES (/bin/sh /tmp/pulseaudio-14.2/src/tests/test-daemon.meson.sh)
++Program sh found: YES (/bin/sh)
++Has header "sys/soundcard.h" : YES (cached)
++Configuring padsp using configuration
++Configuring config.h using configuration
++Configuring libpulse.pc using configuration
++Configuring libpulse-simple.pc using configuration
++Configuring libpulse-mainloop-glib.pc using configuration
++Program m4 found: YES (/usr/bin/m4)
++Configuring PulseAudioConfig.cmake.tmp using configuration
++Configuring PulseAudioConfigVersion.cmake using configuration
++Message: 
++    ---{ pulseaudio 14.2 }---
++    
++    prefix:                        /usr
++    bindir:                        /usr/bin
++    libdir:                        /usr/lib
++    libexecdir:                    /usr/libexec
++    mandir:                        /usr/man
++    datadir:                       /usr/share
++    sysconfdir:                    /etc
++    localstatedir:                 /var
++    modlibexecdir:                 /usr/lib/pulse-14.2/modules
++    alsadatadir:                   /usr/share/pulseaudio/alsa-mixer
++    System Runtime Path:           /var/run/pulse
++    System State Path:             /var/lib/pulse
++    System Config Path:            /var/lib/pulse
++    Bash completions directory:    /usr/share/bash-completion/completions
++    Zsh completions directory:     /usr/share/zsh/site-functions
++    Compiler:                      gcc 10.2.0
++    
++    Enable memfd shared memory:    true
++    Enable X11:                    true
++    Enable Alsa:                   true
++    Enable GLib 2:                 true
++    Enable GSettings:              true
++    Enable Gtk+ 3:                 true
++    Enable Avahi:                  false
++    Enable Jack:                   false
++    Enable Async DNS:              true
++    Enable LIRC:                   false
++    Enable D-Bus:                  true
++      Enable BlueZ 5:              true
++        Enable native headsets:    true
++        Enable  ofono headsets:    true
++    Enable udev:                   true
++      Enable HAL->udev compat:     false
++    Enable systemd:                false
++    Enable elogind:                true
++    Enable libsamplerate:          false
++    Enable IPv6:                   true
++    Enable OpenSSL (for Airtunes): true
++    Enable FFTW:                   true
++    Enable ORC:                    true
++    Enable GStreamer:              false
++    Enable Adrian echo canceller:  true
++    Enable Speex (resampler, AEC): true
++    Enable SoXR (resampler):       false
++    Enable WebRTC echo canceller:  false
++    Enable Gcov coverage:          false
++    Enable man pages:              true
++    Enable unit tests:             true
++    
++    Database:                      tdb
++    Legacy Database Entry Support: true
++    module-stream-restore:
++      Clear old devices:           false
++    Running from build tree:       true
++    System User:                   pulse
++    System Group:                  pulse
++    Access Group:                  audio
++Build targets in project: 184
++
++Found ninja-1.10.2 at /usr/bin/ninja
++[1/567] Compiling C object src/tests/pacat-simple.p/pacat-simple.c.o
++[2/567] Compiling C object src/tests/remix-test.p/remix-test.c.o
++[3/567] Compiling C object src/tests/parec-simple.p/parec-simple.c.o
++[4/567] Compiling C object src/tests/rtstutter.p/rtstutter.c.o
++[5/567] Compiling C object src/tests/stripnul.p/stripnul.c.o
++[6/567] Compiling C object src/tests/sig2str-test.p/sig2str-test.c.o
++[7/567] Compiling C object src/tests/cpulimit-test.p/cpulimit-test.c.o
++[8/567] Compiling C object src/tests/cpulimit-test2.p/cpulimit-test.c.o
++[9/567] Compiling C object src/tests/cpulimit-test.p/.._daemon_cpulimit.c.o
++[10/567] Compiling C object src/tests/atomic-test.p/atomic-test.c.o
++[11/567] Compiling C object src/tests/cpulimit-test2.p/.._daemon_cpulimit.c.o
++[12/567] Compiling C object src/tests/alsa-time-test.p/alsa-time-test.c.o
++../src/tests/alsa-time-test.c: In function ‘main’:
++../src/tests/alsa-time-test.c:41:24: warning: unused variable ‘sp’ [-Wunused-variable]
++   41 |     struct sched_param sp;
++      |                        ^~
++[13/567] Compiling C object src/tests/extended-test.p/extended-test.c.o
++[14/567] Linking target src/tests/alsa-time-test
++[15/567] Compiling C object src/tests/sync-playback.p/sync-playback.c.o
++[16/567] Compiling C object src/tests/connect-stress.p/connect-stress.c.o
++[17/567] Compiling C object src/tests/interpol-test.p/interpol-test.c.o
++[18/567] Compiling C object src/utils/pacat.p/pacat.c.o
++[19/567] Compiling C object src/utils/pasuspender.p/pasuspender.c.o
++[20/567] Compiling C object src/utils/pacmd.p/pacmd.c.o
++[21/567] Compiling C object src/utils/pax11publish.p/pax11publish.c.o
++[22/567] Compiling C object src/tests/gtk-test.p/gtk-test.c.o
++[23/567] Compiling C object src/utils/pactl.p/pactl.c.o
++[24/567] Compiling C object src/modules/module-x11-bell.so.p/x11_module-x11-bell.c.o
++[25/567] Generating PulseAudioConfig.cmake with a custom command (wrapped by meson to capture output)
++[26/567] Compiling C object src/modules/module-x11-cork-request.so.p/x11_module-x11-cork-request.c.o
++[27/567] Compiling C object src/modules/module-x11-publish.so.p/x11_module-x11-publish.c.o
++[28/567] Compiling C object src/tests/asyncmsgq-test.p/asyncmsgq-test.c.o
++[29/567] Compiling C object src/utils/libpulsedsp.so.p/padsp.c.o
++../src/utils/padsp.c: In function ‘stat64’:
++../src/utils/padsp.c:214:49: warning: ‘struct stat64’ declared inside parameter list will not be visible outside of this definition or declaration
++  214 |         _stat64 = (int (*)(const char *, struct stat64 *)) dlsym_fn(RTLD_NEXT, "stat64"); \
++      |                                                 ^~~~~~
++../src/utils/padsp.c:2552:9: note: in expansion of macro ‘LOAD_STAT64_FUNC’
++ 2552 |         LOAD_STAT64_FUNC();
++      |         ^~~~~~~~~~~~~~~~
++../src/utils/padsp.c:214:17: warning: assignment to ‘int (*)(const char *, struct stat *)’ from incompatible pointer type ‘int (*)(const char *, struct stat64 *)’ [-Wincompatible-pointer-types]
++  214 |         _stat64 = (int (*)(const char *, struct stat64 *)) dlsym_fn(RTLD_NEXT, "stat64"); \
++      |                 ^
++../src/utils/padsp.c:2552:9: note: in expansion of macro ‘LOAD_STAT64_FUNC’
++ 2552 |         LOAD_STAT64_FUNC();
++      |         ^~~~~~~~~~~~~~~~
++[30/567] Compiling C object src/modules/module-x11-xsmp.so.p/x11_module-x11-xsmp.c.o
++[31/567] Compiling C object src/tests/asyncq-test.p/asyncq-test.c.o
++[32/567] Compiling C object src/tests/channelmap-test.p/channelmap-test.c.o
++[33/567] Compiling C object src/tests/close-test.p/close-test.c.o
++[34/567] Compiling C object src/tests/cpu-mix-test.p/cpu-mix-test.c.o
++../src/tests/cpu-mix-test.c: In function ‘run_mix_test’:
++../src/tests/cpu-mix-test.c:79:5: warning: too many arguments for format [-Wformat-extra-args]
++   79 |     fail_unless((pool = pa_mempool_new(PA_MEM_TYPE_PRIVATE, 0, true)) != NULL, NULL);
++      |     ^~~~~~~~~~~
++[35/567] Compiling C object src/tests/cpu-remap-test.p/cpu-remap-test.c.o
++[36/567] Compiling C object src/tests/cpu-sconv-test.p/cpu-sconv-test.c.o
++[37/567] Compiling C object src/tests/core-util-test.p/core-util-test.c.o
++[38/567] Compiling C object src/tests/get-binary-name-test.p/get-binary-name-test.c.o
++[39/567] Compiling C object src/tests/format-test.p/format-test.c.o
++[40/567] Compiling C object src/tests/cpu-volume-test.p/cpu-volume-test.c.o
++[41/567] Compiling C object src/tests/hashmap-test.p/hashmap-test.c.o
++[42/567] Compiling C object src/tests/hook-list-test.p/hook-list-test.c.o
++[43/567] Compiling C object src/tests/lock-autospawn-test.p/lock-autospawn-test.c.o
++[44/567] Compiling C object src/tests/lfe-filter-test.p/lfe-filter-test.c.o
++[45/567] Compiling C object src/tests/json-test.p/json-test.c.o
++[46/567] Compiling C object src/tests/mainloop-test.p/mainloop-test.c.o
++[47/567] Compiling C object src/tests/memblock-test.p/memblock-test.c.o
++[48/567] Compiling C object src/tests/mult-s16-test.p/mult-s16-test.c.o
++[49/567] Compiling C object src/tests/mix-test.p/mix-test.c.o
++../src/tests/mix-test.c: In function ‘compare_block’:
++../src/tests/mix-test.c:100:17: warning: too many arguments for format [-Wformat-extra-args]
++  100 |                 fail_unless(*u == *v, NULL);
++      |                 ^~~~~~~~~~~
++../src/tests/mix-test.c:112:17: warning: too many arguments for format [-Wformat-extra-args]
++  112 |                 fail_unless(*u == *v, NULL);
++      |                 ^~~~~~~~~~~
++../src/tests/mix-test.c:124:17: warning: too many arguments for format [-Wformat-extra-args]
++  124 |                 fail_unless(*u == *v, NULL);
++      |                 ^~~~~~~~~~~
++../src/tests/mix-test.c:138:17: warning: too many arguments for format [-Wformat-extra-args]
++  138 |                 fail_unless(uu == *v, NULL);
++      |                 ^~~~~~~~~~~
++../src/tests/mix-test.c:152:17: warning: too many arguments for format [-Wformat-extra-args]
++  152 |                 fail_unless(fabsf(uu - *v) <= 1e-6f, NULL);
++      |                 ^~~~~~~~~~~
++../src/tests/mix-test.c:166:17: warning: too many arguments for format [-Wformat-extra-args]
++  166 |                 fail_unless(uu == *v, NULL);
++      |                 ^~~~~~~~~~~
++../src/tests/mix-test.c:180:17: warning: too many arguments for format [-Wformat-extra-args]
++  180 |                 fail_unless(uu == *v, NULL);
++      |                 ^~~~~~~~~~~
++../src/tests/mix-test.c:194:17: warning: too many arguments for format [-Wformat-extra-args]
++  194 |                 fail_unless(uu == PA_READ24BE(v), NULL);
++      |                 ^~~~~~~~~~~
++../src/tests/mix-test.c: In function ‘mix_test_fn’:
++../src/tests/mix-test.c:289:5: warning: too many arguments for format [-Wformat-extra-args]
++  289 |     fail_unless((pool = pa_mempool_new(PA_MEM_TYPE_PRIVATE, 0, true)) != NULL, NULL);
++      |     ^~~~~~~~~~~
++[50/567] Compiling C object src/tests/memblockq-test.p/memblockq-test.c.o
++[51/567] Compiling C object src/tests/queue-test.p/queue-test.c.o
++[52/567] Compiling C object src/tests/proplist-test.p/proplist-test.c.o
++[53/567] Compiling C object src/tests/rtpoll-test.p/rtpoll-test.c.o
++[54/567] Compiling C object src/tests/smoother-test.p/smoother-test.c.o
++[55/567] Compiling C object src/tests/resampler-test.p/resampler-test.c.o
++[56/567] Compiling C object src/tests/thread-mainloop-test.p/thread-mainloop-test.c.o
++[57/567] Compiling C object src/tests/utf8-test.p/utf8-test.c.o
++[58/567] Compiling C object src/tests/strlist-test.p/strlist-test.c.o
++[59/567] Compiling C object src/tests/sigbus-test.p/sigbus-test.c.o
++[60/567] Compiling C object src/tests/thread-test.p/thread-test.c.o
++[61/567] Compiling C object src/tests/volume-test.p/volume-test.c.o
++[62/567] Compiling C object src/tests/usergroup-test.p/usergroup-test.c.o
++[63/567] Compiling C object src/tests/once-test.p/once-test.c.o
++[64/567] Compiling C object src/tests/srbchannel-test.p/srbchannel-test.c.o
++[65/567] Compiling C object src/tests/lo-latency-test.p/lo-latency-test.c.o
++[66/567] Compiling C object src/tests/alsa-mixer-path-test.p/alsa-mixer-path-test.c.o
++[67/567] Compiling C object src/tests/mainloop-test-glib.p/mainloop-test.c.o
++[68/567] Compiling C object src/tests/mcalign-test.p/mcalign-test.c.o
++[69/567] Compiling C object src/tests/lo-latency-test.p/lo-test-util.c.o
++[70/567] Compiling C object src/tests/flist-test.p/flist-test.c.o
++[71/567] Compiling C object src/tests/ipacl-test.p/ipacl-test.c.o
++[72/567] Compiling C object src/modules/module-switch-on-port-available.so.p/module-switch-on-port-available.c.o
++[73/567] Compiling C object src/modules/module-tunnel-sink-new.so.p/module-tunnel-sink-new.c.o
++[74/567] Compiling C object src/modules/module-tunnel-source-new.so.p/module-tunnel-source-new.c.o
++[75/567] Compiling C object src/modules/module-tunnel-sink.so.p/module-tunnel.c.o
++[76/567] Compiling C object src/modules/module-tunnel-source.so.p/module-tunnel.c.o
++[77/567] Compiling C object src/modules/module-virtual-sink.so.p/module-virtual-sink.c.o
++[78/567] Compiling C object src/modules/module-virtual-source.so.p/module-virtual-source.c.o
++[79/567] Compiling C object src/modules/module-volume-restore.so.p/module-volume-restore.c.o
++[80/567] Compiling C object src/modules/module-mmkbd-evdev.so.p/module-mmkbd-evdev.c.o
++[81/567] Compiling C object src/modules/module-virtual-surround-sink.so.p/module-virtual-surround-sink.c.o
++[82/567] Compiling C object src/modules/module-pipe-sink.so.p/module-pipe-sink.c.o
++[83/567] Compiling C object src/modules/module-oss.so.p/oss_module-oss.c.o
++[84/567] Compiling C object src/modules/module-alsa-card.so.p/alsa_module-alsa-card.c.o
++[85/567] Compiling C object src/modules/module-alsa-sink.so.p/alsa_module-alsa-sink.c.o
++[86/567] Compiling C object src/modules/module-alsa-source.so.p/alsa_module-alsa-source.c.o
++[87/567] Compiling C object src/modules/module-pipe-source.so.p/module-pipe-source.c.o
++[88/567] Compiling C object src/modules/module-bluetooth-discover.so.p/bluetooth_module-bluetooth-discover.c.o
++[89/567] Compiling C object src/modules/module-bluez5-discover.so.p/bluetooth_module-bluez5-discover.c.o
++[90/567] Compiling C object src/modules/module-bluetooth-policy.so.p/bluetooth_module-bluetooth-policy.c.o
++[91/567] Compiling C object src/modules/module-dbus-protocol.so.p/dbus_iface-card-profile.c.o
++[92/567] Compiling C object src/modules/module-dbus-protocol.so.p/dbus_iface-client.c.o
++[93/567] Compiling C object src/modules/module-console-kit.so.p/module-console-kit.c.o
++[94/567] Compiling C object src/modules/module-bluez5-device.so.p/bluetooth_module-bluez5-device.c.o
++[95/567] Compiling C object src/modules/module-dbus-protocol.so.p/dbus_iface-card.c.o
++[96/567] Compiling C object src/modules/module-dbus-protocol.so.p/dbus_iface-device-port.c.o
++[97/567] Compiling C object src/modules/module-dbus-protocol.so.p/dbus_iface-core.c.o
++[98/567] Compiling C object src/modules/module-dbus-protocol.so.p/dbus_iface-device.c.o
++[99/567] Compiling C object src/modules/module-dbus-protocol.so.p/dbus_iface-memstats.c.o
++[100/567] Compiling C object src/modules/module-dbus-protocol.so.p/dbus_iface-module.c.o
++[101/567] Compiling C object src/modules/module-dbus-protocol.so.p/dbus_iface-sample.c.o
++[102/567] Compiling C object src/modules/module-dbus-protocol.so.p/dbus_iface-stream.c.o
++[103/567] Compiling C object src/modules/module-dbus-protocol.so.p/dbus_module-dbus-protocol.c.o
++[104/567] Compiling C object src/modules/module-gsettings.so.p/gsettings_module-gsettings.c.o
++[105/567] Compiling C object src/modules/module-rygel-media-server.so.p/module-rygel-media-server.c.o
++[106/567] Compiling C object src/modules/module-gsettings.so.p/stdin-util.c.o
++[107/567] Compiling C object src/modules/module-raop-sink.so.p/raop_module-raop-sink.c.o
++[108/567] Compiling C object src/modules/module-systemd-login.so.p/module-systemd-login.c.o
++[109/567] Compiling C object src/modules/module-cli.so.p/module-cli.c.o
++[110/567] Compiling C object src/modules/module-cli-protocol-tcp.so.p/module-protocol-stub.c.o
++[111/567] Compiling C object src/modules/module-udev-detect.so.p/module-udev-detect.c.o
++[112/567] Compiling C object src/modules/module-equalizer-sink.so.p/module-equalizer-sink.c.o
++[113/567] Compiling C object src/modules/module-combine.so.p/module-combine.c.o
++[114/567] Compiling C object src/modules/module-cli-protocol-unix.so.p/module-protocol-stub.c.o
++[115/567] Compiling C object src/modules/module-default-device-restore.so.p/module-default-device-restore.c.o
++[116/567] Compiling C object src/modules/module-detect.so.p/module-detect.c.o
++[117/567] Compiling C object src/modules/module-combine-sink.so.p/module-combine-sink.c.o
++[118/567] Compiling C object src/modules/module-device-restore.so.p/module-device-restore.c.o
++../src/modules/module-device-restore.c: In function ‘legacy_entry_read’:
++../src/modules/module-device-restore.c:554:51: warning: taking address of packed member of ‘struct legacy_entry’ may result in an unaligned pointer value [-Waddress-of-packed-member]
++  554 |     if (le->volume_valid && !pa_channel_map_valid(&le->channel_map)) {
++      |                                                   ^~~~~~~~~~~~~~~~
++../src/modules/module-device-restore.c:559:48: warning: taking address of packed member of ‘struct legacy_entry’ may result in an unaligned pointer value [-Waddress-of-packed-member]
++  559 |     if (le->volume_valid && (!pa_cvolume_valid(&le->volume) || !pa_cvolume_compatible_with_channel_map(&le->volume, &le->channel_map))) {
++      |                                                ^~~~~~~~~~~
++../src/modules/module-device-restore.c:559:104: warning: taking address of packed member of ‘struct legacy_entry’ may result in an unaligned pointer value [-Waddress-of-packed-member]
++  559 |     if (le->volume_valid && (!pa_cvolume_valid(&le->volume) || !pa_cvolume_compatible_with_channel_map(&le->volume, &le->channel_map))) {
++      |                                                                                                        ^~~~~~~~~~~
++../src/modules/module-device-restore.c:559:117: warning: taking address of packed member of ‘struct legacy_entry’ may result in an unaligned pointer value [-Waddress-of-packed-member]
++  559 |     if (le->volume_valid && (!pa_cvolume_valid(&le->volume) || !pa_cvolume_compatible_with_channel_map(&le->volume, &le->channel_map))) {
++      |                                                                                                                     ^~~~~~~~~~~~~~~~
++[119/567] Compiling C object src/modules/module-device-manager.so.p/module-device-manager.c.o
++[120/567] Compiling C object src/modules/module-filter-heuristics.so.p/module-filter-heuristics.c.o
++[121/567] Compiling C object src/modules/module-filter-apply.so.p/module-filter-apply.c.o
++[122/567] Compiling C object src/modules/module-http-protocol-tcp.so.p/module-protocol-stub.c.o
++[123/567] Compiling C object src/modules/module-http-protocol-unix.so.p/module-protocol-stub.c.o
++[124/567] Compiling C object src/modules/module-intended-roles.so.p/module-intended-roles.c.o
++[125/567] Compiling C object src/modules/module-match.so.p/module-match.c.o
++[126/567] Compiling C object src/modules/module-native-protocol-fd.so.p/module-native-protocol-fd.c.o
++[127/567] Compiling C object src/modules/module-native-protocol-tcp.so.p/module-protocol-stub.c.o
++[128/567] Compiling C object src/modules/module-loopback.so.p/module-loopback.c.o
++[129/567] Compiling C object src/modules/module-ladspa-sink.so.p/module-ladspa-sink.c.o
++[130/567] Compiling C object src/modules/module-native-protocol-unix.so.p/module-protocol-stub.c.o
++[131/567] Compiling C object src/modules/module-null-source.so.p/module-null-source.c.o
++[132/567] Compiling C object src/modules/module-null-sink.so.p/module-null-sink.c.o
++[133/567] Compiling C object src/modules/module-position-event-sounds.so.p/module-position-event-sounds.c.o
++[134/567] Compiling C object src/modules/module-rescue-streams.so.p/module-rescue-streams.c.o
++[135/567] Compiling C object src/modules/module-role-cork.so.p/module-role-cork.c.o
++[136/567] Compiling C object src/modules/module-remap-source.so.p/module-remap-source.c.o
++[137/567] Compiling C object src/modules/module-remap-sink.so.p/module-remap-sink.c.o
++[138/567] Compiling C object src/modules/module-role-ducking.so.p/module-role-ducking.c.o
++[139/567] Compiling C object src/modules/module-role-cork.so.p/stream-interaction.c.o
++[140/567] Compiling C object src/modules/module-rtp-recv.so.p/rtp_module-rtp-recv.c.o
++[141/567] Compiling C object src/modules/module-role-ducking.so.p/stream-interaction.c.o
++[142/567] Compiling C object src/modules/module-simple-protocol-tcp.so.p/module-protocol-stub.c.o
++[143/567] Compiling C object src/modules/module-sine-source.so.p/module-sine-source.c.o
++[144/567] Compiling C object src/modules/module-rtp-send.so.p/rtp_module-rtp-send.c.o
++[145/567] Compiling C object src/modules/module-simple-protocol-unix.so.p/module-protocol-stub.c.o
++[146/567] Compiling C object src/modules/module-sine.so.p/module-sine.c.o
++[147/567] Compiling C object src/modules/module-switch-on-connect.so.p/module-switch-on-connect.c.o
++[148/567] Compiling C object src/modules/module-suspend-on-idle.so.p/module-suspend-on-idle.c.o
++[149/567] Compiling C object src/modules/module-stream-restore.so.p/module-stream-restore.c.o
++../src/modules/module-stream-restore.c: In function ‘legacy_entry_read’:
++../src/modules/module-stream-restore.c:1076:51: warning: taking address of packed member of ‘struct legacy_entry’ may result in an unaligned pointer value [-Waddress-of-packed-member]
++ 1076 |     if (le->volume_valid && !pa_channel_map_valid(&le->channel_map)) {
++      |                                                   ^~~~~~~~~~~~~~~~
++../src/modules/module-stream-restore.c:1081:48: warning: taking address of packed member of ‘struct legacy_entry’ may result in an unaligned pointer value [-Waddress-of-packed-member]
++ 1081 |     if (le->volume_valid && (!pa_cvolume_valid(&le->volume) || !pa_cvolume_compatible_with_channel_map(&le->volume, &le->channel_map))) {
++      |                                                ^~~~~~~~~~~
++../src/modules/module-stream-restore.c:1081:104: warning: taking address of packed member of ‘struct legacy_entry’ may result in an unaligned pointer value [-Waddress-of-packed-member]
++ 1081 |     if (le->volume_valid && (!pa_cvolume_valid(&le->volume) || !pa_cvolume_compatible_with_channel_map(&le->volume, &le->channel_map))) {
++      |                                                                                                        ^~~~~~~~~~~
++../src/modules/module-stream-restore.c:1081:117: warning: taking address of packed member of ‘struct legacy_entry’ may result in an unaligned pointer value [-Waddress-of-packed-member]
++ 1081 |     if (le->volume_valid && (!pa_cvolume_valid(&le->volume) || !pa_cvolume_compatible_with_channel_map(&le->volume, &le->channel_map))) {
++      |                                                                                                                     ^~~~~~~~~~~~~~~~
++[150/567] Compiling C object src/modules/alsa/libalsa-util.so.p/alsa-util.c.o
++[151/567] Compiling C object src/modules/alsa/libalsa-util.so.p/alsa-ucm.c.o
++[152/567] Compiling C object src/modules/alsa/libalsa-util.so.p/alsa-sink.c.o
++[153/567] Compiling C object src/modules/alsa/libalsa-util.so.p/alsa-source.c.o
++[154/567] Compiling C object src/modules/alsa/libalsa-util.so.p/.._reserve.c.o
++[155/567] Compiling C object src/modules/alsa/libalsa-util.so.p/.._reserve-wrap.c.o
++[156/567] Compiling C object src/modules/alsa/libalsa-util.so.p/.._reserve-monitor.c.o
++[157/567] Compiling C object src/modules/alsa/libalsa-util.so.p/.._udev-util.c.o
++[158/567] Compiling C object src/modules/bluetooth/libbluez5-util.so.p/a2dp-codec-util.c.o
++[159/567] Compiling C object src/modules/bluetooth/libbluez5-util.so.p/a2dp-codec-sbc.c.o
++[160/567] Compiling C object src/modules/bluetooth/libbluez5-util.so.p/backend-native.c.o
++[161/567] Compiling C object src/modules/alsa/libalsa-util.so.p/alsa-mixer.c.o
++[162/567] Compiling C object src/modules/bluetooth/libbluez5-util.so.p/bluez5-util.c.o
++[163/567] Compiling C object src/modules/bluetooth/libbluez5-util.so.p/backend-ofono.c.o
++[164/567] Compiling C object src/modules/gsettings/gsettings-helper.p/gsettings-helper.c.o
++[165/567] Compiling C object src/modules/raop/libraop.so.p/raop-packet-buffer.c.o
++[166/567] Compiling C object src/modules/raop/libraop.so.p/raop-crypto.c.o
++[167/567] Compiling C object src/modules/raop/libraop.so.p/raop-util.c.o
++[168/567] Compiling C object src/modules/raop/libraop.so.p/raop-client.c.o
++[169/567] Generating adrian-aec-orc-gen.h with a custom command
++[170/567] Compiling C object src/modules/module-always-sink.so.p/module-always-sink.c.o
++[171/567] Compiling C object src/modules/raop/libraop.so.p/raop-sink.c.o
++[172/567] Compiling C object src/tests/echo-cancel-test.p/.._modules_echo-cancel_null.c.o
++[173/567] Compiling C object src/tests/echo-cancel-test.p/.._modules_echo-cancel_adrian.c.o
++[174/567] Compiling C object src/tests/echo-cancel-test.p/.._modules_echo-cancel_adrian-aec.c.o
++[175/567] Compiling C object src/tests/echo-cancel-test.p/.._modules_echo-cancel_speex.c.o
++[176/567] Compiling C object src/modules/module-echo-cancel.so.p/echo-cancel_null.c.o
++[177/567] Compiling C object src/modules/module-echo-cancel.so.p/echo-cancel_adrian.c.o
++[178/567] Compiling C object src/modules/module-echo-cancel.so.p/echo-cancel_adrian-aec.c.o
++[179/567] Compiling C object src/modules/module-echo-cancel.so.p/echo-cancel_speex.c.o
++[180/567] Generating adrian-aec-orc-gen.c with a custom command
++[181/567] Compiling C object src/tests/echo-cancel-test.p/meson-generated_.._.._modules_adrian-aec-orc-gen.c.o
++[182/567] Compiling C object src/tests/echo-cancel-test.p/.._modules_echo-cancel_module-echo-cancel.c.o
++[183/567] Compiling C object src/modules/module-echo-cancel.so.p/meson-generated_.._adrian-aec-orc-gen.c.o
++[184/567] Compiling C object src/modules/module-echo-cancel.so.p/echo-cancel_module-echo-cancel.c.o
++[185/567] Compiling C object src/modules/module-allow-passthrough.so.p/module-allow-passthrough.c.o
++[186/567] Compiling C object src/modules/module-always-source.so.p/module-always-source.c.o
++[187/567] Compiling C object src/modules/module-card-restore.so.p/module-card-restore.c.o
++[188/567] Compiling C object src/modules/module-augment-properties.so.p/module-augment-properties.c.o
++[189/567] Compiling C object src/pulsecore/libcli.so.p/cli.c.o
++[190/567] Compiling C object src/pulsecore/libprotocol-cli.so.p/protocol-cli.c.o
++[191/567] Compiling C object src/pulsecore/libprotocol-http.so.p/mime-type.c.o
++[192/567] Compiling C object src/pulsecore/libprotocol-http.so.p/protocol-http.c.o
++[193/567] Compiling C object src/daemon/pulseaudio.p/caps.c.o
++[194/567] Compiling C object src/pulsecore/libprotocol-simple.so.p/protocol-simple.c.o
++[195/567] Compiling C object src/daemon/pulseaudio.p/cmdline.c.o
++[196/567] Compiling C object src/daemon/pulseaudio.p/cpulimit.c.o
++[197/567] Compiling C object src/daemon/pulseaudio.p/dumpmodules.c.o
++[198/567] Compiling C object src/daemon/pulseaudio.p/ltdl-bind-now.c.o
++[199/567] Compiling C object src/daemon/pulseaudio.p/daemon-conf.c.o
++[200/567] Compiling C object src/daemon/pulseaudio.p/server-lookup.c.o
++[201/567] Compiling C object src/daemon/pulseaudio.p/main.c.o
++[202/567] Generating pulseaudio.desktop_src@daemon_merge with a custom command
++[203/567] Generating daemon.conf with a custom command (wrapped by meson to capture output)
++[204/567] Generating system.pa with a custom command (wrapped by meson to capture output)
++[205/567] Generating default.pa with a custom command (wrapped by meson to capture output)
++[206/567] Compiling C object src/modules/rtp/librtp.so.p/rtp-common.c.o
++[207/567] Compiling C object src/modules/rtp/librtp.so.p/sdp.c.o
++[208/567] Compiling C object src/modules/rtp/librtp.so.p/sap.c.o
++[209/567] Compiling C object src/modules/rtp/librtp.so.p/headerlist.c.o
++[210/567] Compiling C object src/modules/rtp/librtp.so.p/rtsp_client.c.o
++[211/567] Compiling C object src/pulsecore/libprotocol-native.so.p/protocol-native.c.o
++[212/567] Compiling C object src/modules/rtp/librtp.so.p/rtp-native.c.o
++[213/567] Compiling C object src/pulse/libpulse.so.0.23.0.p/xmalloc.c.o
++[214/567] Compiling C object src/modules/oss/liboss-util.so.p/oss-util.c.o
++[215/567] Generating svolume-orc-gen.h with a custom command
++[216/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/svolume_orc.c.o
++[217/567] Compiling C object src/pulse/libpulse-simple.so.0.1.1.p/simple.c.o
++[218/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/modinfo.c.o
++[219/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/modargs.c.o
++[220/567] Compiling C object src/pulse/libpulse-mainloop-glib.so.0.0.6.p/glib-mainloop.c.o
++../src/pulse/glib-mainloop.c: In function ‘prepare_func’:
++../src/pulse/glib-mainloop.c:485:9: warning: ‘GTimeVal’ is deprecated: Use 'GDateTime' instead [-Wdeprecated-declarations]
++  485 |         GTimeVal now;
++      |         ^~~~~~~~
++In file included from /usr/include/glib-2.0/glib/galloca.h:32,
++                 from /usr/include/glib-2.0/glib.h:30,
++                 from ../src/pulse/glib-mainloop.c:31:
++/usr/include/glib-2.0/glib/gtypes.h:547:8: note: declared here
++  547 | struct _GTimeVal
++      |        ^~~~~~~~~
++../src/pulse/glib-mainloop.c:492:9: warning: ‘g_get_current_time’ is deprecated: Use 'g_get_real_time' instead [-Wdeprecated-declarations]
++  492 |         g_get_current_time(&now);
++      |         ^~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/glib/giochannel.h:33,
++                 from /usr/include/glib-2.0/glib.h:54,
++                 from ../src/pulse/glib-mainloop.c:31:
++/usr/include/glib-2.0/glib/gmain.h:681:8: note: declared here
++  681 | void   g_get_current_time                 (GTimeVal       *result);
++      |        ^~~~~~~~~~~~~~~~~~
++../src/pulse/glib-mainloop.c: In function ‘check_func’:
++../src/pulse/glib-mainloop.c:517:9: warning: ‘GTimeVal’ is deprecated: Use 'GDateTime' instead [-Wdeprecated-declarations]
++  517 |         GTimeVal now;
++      |         ^~~~~~~~
++In file included from /usr/include/glib-2.0/glib/galloca.h:32,
++                 from /usr/include/glib-2.0/glib.h:30,
++                 from ../src/pulse/glib-mainloop.c:31:
++/usr/include/glib-2.0/glib/gtypes.h:547:8: note: declared here
++  547 | struct _GTimeVal
++      |        ^~~~~~~~~
++../src/pulse/glib-mainloop.c:523:9: warning: ‘g_get_current_time’ is deprecated: Use 'g_get_real_time' instead [-Wdeprecated-declarations]
++  523 |         g_get_current_time(&now);
++      |         ^~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/glib/giochannel.h:33,
++                 from /usr/include/glib-2.0/glib.h:54,
++                 from ../src/pulse/glib-mainloop.c:31:
++/usr/include/glib-2.0/glib/gmain.h:681:8: note: declared here
++  681 | void   g_get_current_time                 (GTimeVal       *result);
++      |        ^~~~~~~~~~~~~~~~~~
++../src/pulse/glib-mainloop.c: In function ‘dispatch_func’:
++../src/pulse/glib-mainloop.c:561:9: warning: ‘GTimeVal’ is deprecated: Use 'GDateTime' instead [-Wdeprecated-declarations]
++  561 |         GTimeVal now;
++      |         ^~~~~~~~
++In file included from /usr/include/glib-2.0/glib/galloca.h:32,
++                 from /usr/include/glib-2.0/glib.h:30,
++                 from ../src/pulse/glib-mainloop.c:31:
++/usr/include/glib-2.0/glib/gtypes.h:547:8: note: declared here
++  547 | struct _GTimeVal
++      |        ^~~~~~~~~
++../src/pulse/glib-mainloop.c:568:9: warning: ‘g_get_current_time’ is deprecated: Use 'g_get_real_time' instead [-Wdeprecated-declarations]
++  568 |         g_get_current_time(&now);
++      |         ^~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/glib/giochannel.h:33,
++                 from /usr/include/glib-2.0/glib.h:54,
++                 from ../src/pulse/glib-mainloop.c:31:
++/usr/include/glib-2.0/glib/gmain.h:681:8: note: declared here
++  681 | void   g_get_current_time                 (GTimeVal       *result);
++      |        ^~~~~~~~~~~~~~~~~~
++[221/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/msgobject.c.o
++[222/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/module.c.o
++[223/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/object.c.o
++[224/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/namereg.c.o
++[225/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/play-memchunk.c.o
++[226/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/play-memblockq.c.o
++[227/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/resampler_ffmpeg.c.o
++[228/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/remap.c.o
++[229/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/resampler_peaks.c.o
++[230/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/resampler_trivial.c.o
++[231/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/resampler.c.o
++[232/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/rtpoll.c.o
++[233/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/sconv-s16be.c.o
++[234/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/sconv.c.o
++[235/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/shared.c.o
++[236/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/sconv-s16le.c.o
++[237/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/sioman.c.o
++[238/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/sound-file-stream.c.o
++[239/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/sound-file.c.o
++[240/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/sink-input.c.o
++[241/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/sink.c.o
++[242/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/source.c.o
++[243/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/start-child.c.o
++[244/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/stream-util.c.o
++[245/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/svolume_arm.c.o
++[246/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/svolume_mmx.c.o
++[247/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/svolume_sse.c.o
++[248/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/svolume_c.c.o
++[249/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/source-output.c.o
++[250/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/thread-mq.c.o
++[251/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/database-tdb.c.o
++[252/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/dbus-shared.c.o
++[253/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/resampler_speex.c.o
++[254/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/x11wrap.c.o
++[255/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/asyncmsgq.c.o
++[256/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/asyncq.c.o
++[257/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/auth-cookie.c.o
++[258/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/protocol-dbus.c.o
++[259/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/card.c.o
++[260/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/cli-text.c.o
++[261/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/client.c.o
++[262/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/core-subscribe.c.o
++[263/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/core-scache.c.o
++[264/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/cpu.c.o
++[265/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/cpu-arm.c.o
++[266/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/cpu-orc.c.o
++[267/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/core.c.o
++[268/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/cpu-x86.c.o
++[269/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/database.c.o
++[270/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/cli-command.c.o
++[271/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/device-port.c.o
++[272/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/ffmpeg_resample2.c.o
++[273/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/filter_biquad.c.o
++[274/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/filter_crossover.c.o
++[275/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/ltdl-helper.c.o
++[276/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/hook-list.c.o
++[277/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/filter_lfe-filter.c.o
++[278/567] Generating svolume-orc-gen.c with a custom command
++[279/567] Compiling C object src/pulsecore/liblibpulsecore_simd_mmx.a.p/remap_mmx.c.o
++[280/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/message-handler.c.o
++[281/567] Compiling C object src/pulsecore/liblibpulsecore_simd_mmx.a.p/svolume_mmx.c.o
++[282/567] Compiling C object src/pulsecore/liblibpulsecore_simd_sse.a.p/remap_sse.c.o
++[283/567] Linking static target src/pulsecore/liblibpulsecore_simd_mmx.a
++[284/567] Compiling C object src/pulsecore/liblibpulsecore_simd_sse.a.p/sconv_sse.c.o
++[285/567] Compiling C object src/pulsecore/liblibpulsecore_simd_sse.a.p/svolume_sse.c.o
++[286/567] Linking static target src/pulsecore/liblibpulsecore_simd_sse.a
++[287/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/meson-generated_.._svolume-orc-gen.c.o
++[288/567] Compiling C object src/pulsecore/libpulsecore-14.2.so.p/mix.c.o
++[289/567] Compiling C object src/pulse/libpulse.so.0.23.0.p/operation.c.o
++[290/567] Compiling C object src/pulse/libpulse.so.0.23.0.p/rtclock.c.o
++[291/567] Compiling C object src/pulse/libpulse.so.0.23.0.p/proplist.c.o
++[292/567] Compiling C object src/pulse/libpulse.so.0.23.0.p/mainloop.c.o
++[293/567] Compiling C object src/pulse/libpulse.so.0.23.0.p/sample.c.o
++[294/567] Compiling C object src/pulse/libpulse.so.0.23.0.p/subscribe.c.o
++[295/567] Compiling C object src/pulse/libpulse.so.0.23.0.p/scache.c.o
++[296/567] Compiling C object src/pulse/libpulse.so.0.23.0.p/timeval.c.o
++[297/567] Compiling C object src/pulse/libpulse.so.0.23.0.p/thread-mainloop.c.o
++[298/567] Compiling C object src/pulse/libpulse.so.0.23.0.p/utf8.c.o
++[299/567] Compiling C object src/pulse/libpulse.so.0.23.0.p/util.c.o
++[300/567] Compiling C object src/pulse/libpulse.so.0.23.0.p/volume.c.o
++[301/567] Compiling C object src/pulse/libpulse.so.0.23.0.p/direction.c.o
++[302/567] Compiling C object src/pulse/libpulse.so.0.23.0.p/error.c.o
++[303/567] Compiling C object src/pulse/libpulse.so.0.23.0.p/stream.c.o
++[304/567] Compiling C object src/pulse/libpulse.so.0.23.0.p/context.c.o
++[305/567] Compiling C object src/pulse/libpulse.so.0.23.0.p/ext-device-manager.c.o
++[306/567] Compiling C object src/pulse/libpulse.so.0.23.0.p/ext-device-restore.c.o
++[307/567] Compiling C object src/pulse/libpulse.so.0.23.0.p/ext-stream-restore.c.o
++[308/567] Compiling C object src/pulse/libpulse.so.0.23.0.p/channelmap.c.o
++[309/567] Compiling C object src/pulse/libpulse.so.0.23.0.p/mainloop-api.c.o
++[310/567] Compiling C object src/pulse/libpulse.so.0.23.0.p/format.c.o
++[311/567] Compiling C object src/pulse/libpulse.so.0.23.0.p/mainloop-signal.c.o
++[312/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_socket-client.c.o
++[313/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_socket-server.c.o
++[314/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_socket-util.c.o
++[315/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_strlist.c.o
++[316/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_strbuf.c.o
++[317/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_thread-posix.c.o
++[318/567] Compiling C object src/pulse/libpulse.so.0.23.0.p/introspect.c.o
++[319/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_time-smoother.c.o
++[320/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_tokenizer.c.o
++[321/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_usergroup.c.o
++[322/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_tagstruct.c.o
++[323/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_sndfile-util.c.o
++[324/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_rtkit.c.o
++[325/567] Compiling C object src/libpulsecommon-14.2.so.p/pulse_client-conf-x11.c.o
++[326/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_x11prop.c.o
++[327/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_aupdate.c.o
++[328/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_memtrap.c.o
++[329/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_dbus-util.c.o
++[330/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_pstream-util.c.o
++[331/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_queue.c.o
++[332/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_random.c.o
++[333/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_srbchannel.c.o
++[334/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_pstream.c.o
++[335/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_sample-util.c.o
++[336/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_semaphore-posix.c.o
++[337/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_bitset.c.o
++[338/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_shm.c.o
++../src/pulsecore/shm.c: In function ‘sharedmem_create’:
++../src/pulsecore/shm.c:198:25: warning: taking address of packed member of ‘struct shm_marker’ may result in an unaligned pointer value [-Waddress-of-packed-member]
++  198 |         pa_atomic_store(&marker->pid, (int) getpid());
++      |                         ^~~~~~~~~~~~
++../src/pulsecore/shm.c:199:25: warning: taking address of packed member of ‘struct shm_marker’ may result in an unaligned pointer value [-Waddress-of-packed-member]
++  199 |         pa_atomic_store(&marker->marker, SHM_MARKER);
++      |                         ^~~~~~~~~~~~~~~
++../src/pulsecore/shm.c: In function ‘pa_shm_cleanup’:
++../src/pulsecore/shm.c:466:28: warning: taking address of packed member of ‘struct shm_marker’ may result in an unaligned pointer value [-Waddress-of-packed-member]
++  466 |         if (pa_atomic_load(&m->marker) != SHM_MARKER) {
++      |                            ^~~~~~~~~~
++../src/pulsecore/shm.c:471:44: warning: taking address of packed member of ‘struct shm_marker’ may result in an unaligned pointer value [-Waddress-of-packed-member]
++  471 |         if (!(pid = (pid_t) pa_atomic_load(&m->pid))) {
++      |                                            ^~~~~~~
++[339/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_memchunk.c.o
++[340/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_native-common.c.o
++[341/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_proplist-util.c.o
++../src/pulsecore/proplist-util.c:48:13: warning: Deprecated pre-processor symbol, replace with 
++   48 | static G_CONST_RETURN gchar* _g_get_application_name(void) PA_GCC_WEAKREF(g_get_application_name);
++      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++../src/pulsecore/proplist-util.c:55:13: warning: Deprecated pre-processor symbol, replace with 
++   55 | static G_CONST_RETURN gchar* _gtk_window_get_default_icon_name(void) PA_GCC_WEAKREF(gtk_window_get_default_icon_name);
++      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++../src/pulsecore/proplist-util.c: In function ‘pa_proplist_get_stream_group’:
++../src/pulsecore/proplist-util.c:270:13: warning: ‘%s’ directive argument is null [-Wformat-overflow=]
++  270 |         t = pa_sprintf_malloc("%s-fallback:%s", prefix, r);
++      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++[342/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_mutex-posix.c.o
++[343/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_once.c.o
++[344/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_parseaddr.c.o
++[345/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_packet.c.o
++[346/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_pipe.c.o
++[347/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_i18n.c.o
++[348/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_pid.c.o
++[349/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_pdispatch.c.o
++[350/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_arpa-inet.c.o
++[351/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_idxset.c.o
++[352/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_ioline.c.o
++[353/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_iochannel.c.o
++[354/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_ipacl.c.o
++[355/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_ratelimit.c.o
++[356/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_lock-autospawn.c.o
++[357/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_log.c.o
++../src/pulsecore/log.c: In function ‘pa_log_levelv_meta’:
++../src/pulsecore/log.c:384:14: warning: variable ‘_show_backtrace’ set but not used [-Wunused-but-set-variable]
++  384 |     unsigned _show_backtrace;
++      |              ^~~~~~~~~~~~~~~
++[358/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_mcalign.c.o
++[359/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_memblockq.c.o
++[360/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_memblock.c.o
++[361/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_authkey.c.o
++[362/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_core-error.c.o
++[363/567] Compiling C object src/libpulsecommon-14.2.so.p/pulse_volume.c.o
++[364/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_conf-parser.c.o
++[365/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_core-format.c.o
++[366/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_core-rtclock.c.o
++[367/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_dynarray.c.o
++[368/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_fdsem.c.o
++[369/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_flist.c.o
++[370/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_g711.c.o
++[371/567] Compiling C object src/libpulsecommon-14.2.so.p/pulse_util.c.o
++[372/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_hashmap.c.o
++[373/567] Compiling C object src/libpulsecommon-14.2.so.p/pulse_rtclock.c.o
++[374/567] Compiling C object src/libpulsecommon-14.2.so.p/pulse_timeval.c.o
++[375/567] Compiling C object src/libpulsecommon-14.2.so.p/pulse_mainloop-api.c.o
++[376/567] Compiling C object src/libpulsecommon-14.2.so.p/pulse_xmalloc.c.o
++[377/567] Compiling C object src/libpulsecommon-14.2.so.p/pulse_utf8.c.o
++[378/567] Compiling C object src/libpulsecommon-14.2.so.p/pulse_proplist.c.o
++[379/567] Compiling C object src/libpulsecommon-14.2.so.p/pulsecore_core-util.c.o
++[380/567] Compiling C object src/libpulsecommon-14.2.so.p/pulse_channelmap.c.o
++[381/567] Compiling C object src/libpulsecommon-14.2.so.p/pulse_sample.c.o
++[382/567] Compiling C object src/libpulsecommon-14.2.so.p/pulse_error.c.o
++[383/567] Compiling C object src/libpulsecommon-14.2.so.p/pulse_client-conf.c.o
++[384/567] Compiling C object src/libpulsecommon-14.2.so.p/pulse_fork-detect.c.o
++[385/567] Compiling C object src/libpulsecommon-14.2.so.p/pulse_json.c.o
++[386/567] Generating start-pulseaudio-x11.1-target with a custom command (wrapped by meson to capture output)
++[387/567] Compiling C object src/libpulsecommon-14.2.so.p/pulse_format.c.o
++[388/567] Generating pax11publish.1-target with a custom command (wrapped by meson to capture output)
++[389/567] Linking target src/libpulsecommon-14.2.so
++[390/567] Generating pulse-cli-syntax.5-target with a custom command (wrapped by meson to capture output)
++[391/567] Generating pulseaudio.1-target with a custom command (wrapped by meson to capture output)
++[392/567] Generating symbol file src/libpulsecommon-14.2.so.p/libpulsecommon-14.2.so.symbols
++[393/567] Generating pulse-client.conf.5-target with a custom command (wrapped by meson to capture output)
++[394/567] Linking target src/tests/atomic-test
++[395/567] Linking target src/pulse/libpulse.so.0.23.0
++[396/567] Linking target src/pulsecore/libpulsecore-14.2.so
++[397/567] Generating pulse-daemon.conf.5-target with a custom command (wrapped by meson to capture output)
++[398/567] Generating symbol file src/pulse/libpulse.so.0.23.0.p/libpulse.so.0.23.0.symbols
++[399/567] Linking target src/tests/extended-test
++[400/567] Generating symbol file src/pulsecore/libpulsecore-14.2.so.p/libpulsecore-14.2.so.symbols
++[401/567] Linking target src/tests/sync-playback
++[402/567] Linking target src/tests/mcalign-test
++[403/567] Linking target src/tests/remix-test
++[404/567] Linking target src/tests/rtstutter
++[405/567] Linking target src/tests/sig2str-test
++[406/567] Linking target src/tests/stripnul
++[407/567] Linking target src/tests/cpulimit-test
++[408/567] Linking target src/tests/echo-cancel-test
++[409/567] Linking target src/tests/cpulimit-test2
++[410/567] Linking target src/tests/connect-stress
++[411/567] Linking target src/tests/interpol-test
++[412/567] Linking target src/utils/pacat
++[413/567] Linking target src/utils/pasuspender
++[414/567] Linking target src/utils/pactl
++[415/567] Generating pacat.1-target with a custom command (wrapped by meson to capture output)
++[416/567] Linking target src/utils/pacmd
++[417/567] Linking target src/utils/pax11publish
++[418/567] Linking target src/utils/libpulsedsp.so
++[419/567] Linking target src/modules/module-udev-detect.so
++[420/567] Linking target src/modules/module-x11-bell.so
++[421/567] Linking target src/modules/module-x11-cork-request.so
++[422/567] Linking target src/modules/module-x11-xsmp.so
++[423/567] Linking target src/modules/module-echo-cancel.so
++[424/567] Linking target src/tests/asyncmsgq-test
++[425/567] Linking target src/tests/channelmap-test
++[426/567] Linking target src/tests/asyncq-test
++[427/567] Linking target src/tests/core-util-test
++[428/567] Linking target src/tests/close-test
++[429/567] Linking target src/tests/cpu-remap-test
++[430/567] Linking target src/tests/cpu-mix-test
++[431/567] Linking target src/tests/cpu-sconv-test
++[432/567] Linking target src/tests/get-binary-name-test
++[433/567] Linking target src/tests/cpu-volume-test
++[434/567] Linking target src/tests/format-test
++[435/567] Linking target src/tests/hashmap-test
++[436/567] Linking target src/tests/hook-list-test
++[437/567] Linking target src/tests/lfe-filter-test
++[438/567] Linking target src/tests/json-test
++[439/567] Linking target src/tests/lock-autospawn-test
++[440/567] Linking target src/tests/mainloop-test
++[441/567] Linking target src/tests/memblock-test
++[442/567] Linking target src/tests/memblockq-test
++[443/567] Linking target src/tests/mult-s16-test
++[444/567] Linking target src/tests/queue-test
++[445/567] Linking target src/tests/mix-test
++[446/567] Linking target src/tests/proplist-test
++[447/567] Linking target src/tests/rtpoll-test
++[448/567] Linking target src/tests/resampler-test
++[449/567] Linking target src/tests/strlist-test
++[450/567] Linking target src/tests/smoother-test
++[451/567] Linking target src/tests/thread-test
++[452/567] Linking target src/tests/thread-mainloop-test
++[453/567] Linking target src/tests/volume-test
++[454/567] Linking target src/tests/utf8-test
++[455/567] Linking target src/tests/usergroup-test
++[456/567] Linking target src/tests/sigbus-test
++[457/567] Linking target src/tests/srbchannel-test
++[458/567] Linking target src/tests/once-test
++[459/567] Linking target src/tests/flist-test
++[460/567] Linking target src/tests/ipacl-test
++[461/567] Linking target src/tests/lo-latency-test
++[462/567] Linking target src/modules/module-switch-on-port-available.so
++[463/567] Linking target src/modules/module-tunnel-sink-new.so
++[464/567] Linking target src/modules/module-tunnel-sink.so
++[465/567] Linking target src/modules/module-tunnel-source-new.so
++[466/567] Linking target src/modules/module-tunnel-source.so
++[467/567] Linking target src/modules/module-virtual-sink.so
++[468/567] Linking target src/modules/module-virtual-source.so
++[469/567] Linking target src/modules/module-volume-restore.so
++[470/567] Linking target src/modules/module-virtual-surround-sink.so
++[471/567] Linking target src/modules/module-mmkbd-evdev.so
++[472/567] Linking target src/modules/module-pipe-source.so
++[473/567] Linking target src/modules/module-pipe-sink.so
++[474/567] Linking target src/modules/module-bluetooth-discover.so
++[475/567] Linking target src/modules/module-bluetooth-policy.so
++[476/567] Linking target src/modules/module-console-kit.so
++[477/567] Linking target src/modules/module-gsettings.so
++[478/567] Linking target src/modules/module-dbus-protocol.so
++[479/567] Linking target src/modules/module-equalizer-sink.so
++[480/567] Linking target src/modules/module-combine.so
++[481/567] Linking target src/modules/module-systemd-login.so
++[482/567] Linking target src/modules/module-combine-sink.so
++[483/567] Linking target src/modules/module-detect.so
++[484/567] Linking target src/modules/module-filter-apply.so
++[485/567] Linking target src/modules/module-intended-roles.so
++[486/567] Linking target src/modules/module-filter-heuristics.so
++[487/567] Linking target src/modules/module-ladspa-sink.so
++[488/567] Linking target src/modules/module-loopback.so
++[489/567] Linking target src/modules/module-match.so
++[490/567] Linking target src/modules/module-position-event-sounds.so
++[491/567] Linking target src/modules/module-null-sink.so
++[492/567] Linking target src/modules/module-null-source.so
++[493/567] Linking target src/modules/module-remap-sink.so
++[494/567] Linking target src/modules/module-rescue-streams.so
++[495/567] Linking target src/modules/module-remap-source.so
++[496/567] Linking target src/modules/module-role-cork.so
++[497/567] Linking target src/modules/module-role-ducking.so
++[498/567] Linking target src/modules/module-sine.so
++[499/567] Linking target src/modules/module-sine-source.so
++[500/567] Linking target src/modules/module-suspend-on-idle.so
++[501/567] Linking target src/modules/module-switch-on-connect.so
++[502/567] Linking target src/modules/bluetooth/libbluez5-util.so
++[503/567] Linking target src/modules/alsa/libalsa-util.so
++[504/567] Linking target src/modules/gsettings/gsettings-helper
++[505/567] Linking target src/modules/module-always-sink.so
++[506/567] Linking target src/modules/module-allow-passthrough.so
++[507/567] Linking target src/modules/module-card-restore.so
++[508/567] Linking target src/modules/module-augment-properties.so
++[509/567] Linking target src/modules/module-always-source.so
++[510/567] Linking target src/pulsecore/libcli.so
++[511/567] Generating symbol file src/modules/bluetooth/libbluez5-util.so.p/libbluez5-util.so.symbols
++[512/567] Linking target src/modules/module-bluez5-device.so
++[513/567] Generating symbol file src/modules/alsa/libalsa-util.so.p/libalsa-util.so.symbols
++[514/567] Linking target src/modules/module-bluez5-discover.so
++[515/567] Linking target src/tests/alsa-mixer-path-test
++[516/567] Linking target src/modules/module-alsa-card.so
++[517/567] Linking target src/modules/module-alsa-sink.so
++[518/567] Linking target src/modules/module-alsa-source.so
++[519/567] Linking target src/pulsecore/libprotocol-native.so
++[520/567] Linking target src/pulsecore/libprotocol-http.so
++[521/567] Generating symbol file src/pulsecore/libcli.so.p/libcli.so.symbols
++[522/567] Linking target src/modules/module-cli.so
++[523/567] Linking target src/pulsecore/libprotocol-cli.so
++[524/567] Generating symbol file src/pulsecore/libprotocol-http.so.p/libprotocol-http.so.symbols
++[525/567] Generating symbol file src/pulsecore/libprotocol-native.so.p/libprotocol-native.so.symbols
++[526/567] Linking target src/modules/module-rygel-media-server.so
++[527/567] Linking target src/modules/module-x11-publish.so
++[528/567] Linking target src/modules/module-default-device-restore.so
++[529/567] Linking target src/modules/module-device-manager.so
++[530/567] Generating symbol file src/pulsecore/libprotocol-cli.so.p/libprotocol-cli.so.symbols
++[531/567] Linking target src/modules/module-http-protocol-tcp.so
++[532/567] Linking target src/modules/module-device-restore.so
++[533/567] Linking target src/modules/module-cli-protocol-tcp.so
++[534/567] Linking target src/modules/module-cli-protocol-unix.so
++[535/567] Linking target src/modules/module-http-protocol-unix.so
++[536/567] Linking target src/modules/module-native-protocol-fd.so
++[537/567] Linking target src/modules/module-native-protocol-unix.so
++[538/567] Linking target src/modules/module-native-protocol-tcp.so
++[539/567] Linking target src/modules/module-stream-restore.so
++[540/567] Linking target src/pulsecore/libprotocol-simple.so
++[541/567] Linking target src/daemon/pulseaudio
++[542/567] Linking target src/modules/rtp/librtp.so
++[543/567] Linking target src/modules/oss/liboss-util.so
++[544/567] Generating symbol file src/pulsecore/libprotocol-simple.so.p/libprotocol-simple.so.symbols
++[545/567] Linking target src/modules/module-simple-protocol-tcp.so
++[546/567] Generating symbol file src/modules/rtp/librtp.so.p/librtp.so.symbols
++[547/567] Generating symbol file src/modules/oss/liboss-util.so.p/liboss-util.so.symbols
++[548/567] Linking target src/modules/module-simple-protocol-unix.so
++[549/567] Linking target src/modules/module-rtp-recv.so
++[550/567] Linking target src/modules/module-oss.so
++[551/567] Linking target src/modules/module-rtp-send.so
++[552/567] Linking target src/pulse/libpulse-mainloop-glib.so.0.0.6
++[553/567] Linking target src/pulse/libpulse-simple.so.0.1.1
++[554/567] Linking target src/modules/raop/libraop.so
++[555/567] Generating symbol file src/pulse/libpulse-mainloop-glib.so.0.0.6.p/libpulse-mainloop-glib.so.0.0.6.symbols
++[556/567] Generating symbol file src/pulse/libpulse-simple.so.0.1.1.p/libpulse-simple.so.0.1.1.symbols
++[557/567] Linking target src/tests/pacat-simple
++[558/567] Generating symbol file src/modules/raop/libraop.so.p/libraop.so.symbols
++[559/567] Linking target src/tests/parec-simple
++[560/567] Linking target src/tests/mainloop-test-glib
++[561/567] Linking target src/modules/module-raop-sink.so
++[562/567] Linking target src/tests/gtk-test
++[563/567] Generating pacmd.1-target with a custom command (wrapped by meson to capture output)
++[564/567] Generating default.pa.5-target with a custom command (wrapped by meson to capture output)
++[565/567] Generating pactl.1-target with a custom command (wrapped by meson to capture output)
++[566/567] Generating padsp.1-target with a custom command (wrapped by meson to capture output)
++[567/567] Generating pasuspender.1-target with a custom command (wrapped by meson to capture output)
++[0/1] Installing files.
++Installing subdir /tmp/pulseaudio-14.2/src/modules/alsa/mixer/paths to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/paths
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/paths/iec958-stereo-output.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/paths
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-input-front-mic.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/paths
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/paths/hdmi-output-5.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/paths
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-output-headphones.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/paths
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/paths/steelseries-arctis-output-game-common.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/paths
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/paths/hdmi-output-7.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/paths
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/paths/usb-gaming-headset-output-mono.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/paths
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/paths/usb-gaming-headset-output-stereo.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/paths
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-output-speaker-always.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/paths
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-input-video.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/paths
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-input-mic-line.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/paths
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-output.conf.common to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/paths
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-output-mono.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/paths
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-input-mic.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/paths
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/paths/usb-gaming-headset-input.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/paths
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-input-headset-mic.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/paths
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/paths/hdmi-output-6.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/paths
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/paths/hdmi-output-3.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/paths
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-output.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/paths
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/paths/iec958-stereo-input.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/paths
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-output-lineout.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/paths
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-input.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/paths
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-input-aux.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/paths
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-input-linein.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/paths
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-input-fm.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/paths
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-input.conf.common to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/paths
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-output-speaker.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/paths
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-output-headphones-2.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/paths
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/paths/hdmi-output-0.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/paths
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-input-rear-mic.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/paths
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-input-dock-mic.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/paths
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/paths/hdmi-output-2.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/paths
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-input-tvtuner.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/paths
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/paths/steelseries-arctis-output-chat-common.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/paths
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-input-internal-mic.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/paths
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/paths/hdmi-output-1.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/paths
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-input-internal-mic-always.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/paths
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-input-mic.conf.common to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/paths
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/paths/hdmi-output-4.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/paths
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/paths/analog-input-headphone-mic.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/paths
++Installing subdir /tmp/pulseaudio-14.2/src/modules/alsa/mixer/profile-sets to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/profile-sets
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/profile-sets/force-speaker.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/profile-sets
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/profile-sets/sb-omni-surround-5.1.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/profile-sets
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/profile-sets/native-instruments-audio4dj.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/profile-sets
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/profile-sets/maudio-fasttrack-pro.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/profile-sets
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/profile-sets/native-instruments-audio8dj.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/profile-sets
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/profile-sets/native-instruments-traktor-audio10.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/profile-sets
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/profile-sets/steelseries-arctis-common-usb-audio.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/profile-sets
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/profile-sets/force-speaker-and-int-mic.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/profile-sets
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/profile-sets/native-instruments-traktor-audio2.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/profile-sets
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/profile-sets/native-instruments-korecontroller.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/profile-sets
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/profile-sets/default.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/profile-sets
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/profile-sets/kinect-audio.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/profile-sets
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/profile-sets/usb-gaming-headset.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/profile-sets
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/profile-sets/native-instruments-traktor-audio6.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/profile-sets
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/profile-sets/audigy.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/profile-sets
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/profile-sets/dell-dock-tb16-usb-audio.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/profile-sets
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/profile-sets/cmedia-high-speed-true-hdaudio.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/profile-sets
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/mixer/profile-sets/native-instruments-traktorkontrol-s4.conf to /tmp/package-pulseaudio/usr/share/pulseaudio/alsa-mixer/profile-sets
++Installing man/default.pa.5 to /tmp/package-pulseaudio/usr/man/man5
++Installing man/pacat.1 to /tmp/package-pulseaudio/usr/man/man1
++Installing man/pacmd.1 to /tmp/package-pulseaudio/usr/man/man1
++Installing man/pactl.1 to /tmp/package-pulseaudio/usr/man/man1
++Installing man/padsp.1 to /tmp/package-pulseaudio/usr/man/man1
++Installing man/pasuspender.1 to /tmp/package-pulseaudio/usr/man/man1
++Installing man/pax11publish.1 to /tmp/package-pulseaudio/usr/man/man1
++Installing man/pulse-cli-syntax.5 to /tmp/package-pulseaudio/usr/man/man5
++Installing man/pulse-client.conf.5 to /tmp/package-pulseaudio/usr/man/man5
++Installing man/pulse-daemon.conf.5 to /tmp/package-pulseaudio/usr/man/man5
++Installing man/pulseaudio.1 to /tmp/package-pulseaudio/usr/man/man1
++Installing man/start-pulseaudio-x11.1 to /tmp/package-pulseaudio/usr/man/man1
++Installing src/libpulsecommon-14.2.so to /tmp/package-pulseaudio/usr/lib/pulseaudio
++Installing src/pulse/libpulse.so.0.23.0 to /tmp/package-pulseaudio/usr/lib
++Installing src/pulse/libpulse-simple.so.0.1.1 to /tmp/package-pulseaudio/usr/lib
++Installing src/pulse/libpulse-mainloop-glib.so.0.0.6 to /tmp/package-pulseaudio/usr/lib
++Installing src/pulsecore/libpulsecore-14.2.so to /tmp/package-pulseaudio/usr/lib/pulseaudio
++Installing src/pulsecore/libcli.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/pulsecore/libprotocol-cli.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/pulsecore/libprotocol-http.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/pulsecore/libprotocol-native.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/pulsecore/libprotocol-simple.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/daemon/pulseaudio to /tmp/package-pulseaudio/usr/bin
++Installing src/daemon/pulseaudio.desktop to /tmp/package-pulseaudio/etc/xdg/autostart
++Installing src/daemon/daemon.conf to /tmp/package-pulseaudio/etc/pulse
++Installing src/daemon/default.pa to /tmp/package-pulseaudio/etc/pulse
++Installing src/daemon/system.pa to /tmp/package-pulseaudio/etc/pulse
++Installing src/modules/rtp/librtp.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/oss/liboss-util.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/alsa/libalsa-util.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/bluetooth/libbluez5-util.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/gsettings/gsettings-helper to /tmp/package-pulseaudio/usr/libexec/pulse
++Installing src/modules/raop/libraop.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-allow-passthrough.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-always-sink.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-always-source.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-augment-properties.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-card-restore.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-cli.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-cli-protocol-tcp.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-cli-protocol-unix.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-combine.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-combine-sink.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-default-device-restore.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-detect.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-device-manager.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-device-restore.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-filter-apply.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-filter-heuristics.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-http-protocol-tcp.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-http-protocol-unix.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-intended-roles.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-ladspa-sink.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-loopback.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-match.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-native-protocol-fd.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-native-protocol-tcp.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-native-protocol-unix.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-null-sink.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-null-source.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-position-event-sounds.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-remap-sink.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-remap-source.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-rescue-streams.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-role-cork.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-role-ducking.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-rtp-recv.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-rtp-send.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-simple-protocol-tcp.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-simple-protocol-unix.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-sine.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-sine-source.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-stream-restore.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-suspend-on-idle.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-switch-on-connect.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-switch-on-port-available.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-tunnel-sink.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-tunnel-sink-new.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-tunnel-source.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-tunnel-source-new.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-virtual-sink.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-virtual-source.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-virtual-surround-sink.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-volume-restore.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-mmkbd-evdev.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-oss.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-pipe-sink.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-pipe-source.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-alsa-card.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-alsa-sink.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-alsa-source.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-bluetooth-discover.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-bluetooth-policy.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-bluez5-device.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-bluez5-discover.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-console-kit.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-dbus-protocol.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-rygel-media-server.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-equalizer-sink.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-gsettings.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-raop-sink.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-systemd-login.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-udev-detect.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-x11-bell.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-x11-cork-request.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-x11-publish.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-x11-xsmp.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/modules/module-echo-cancel.so to /tmp/package-pulseaudio/usr/lib/pulse-14.2/modules
++Installing src/utils/pacat to /tmp/package-pulseaudio/usr/bin
++Installing src/utils/pactl to /tmp/package-pulseaudio/usr/bin
++Installing src/utils/pasuspender to /tmp/package-pulseaudio/usr/bin
++Installing src/utils/pacmd to /tmp/package-pulseaudio/usr/bin
++Installing src/utils/pax11publish to /tmp/package-pulseaudio/usr/bin
++Installing src/utils/libpulsedsp.so to /tmp/package-pulseaudio/usr/lib/pulseaudio
++Installing PulseAudioConfig.cmake to /tmp/package-pulseaudio/usr/lib/cmake/PulseAudio
++Installing /tmp/pulseaudio-14.2/src/pulse/cdecl.h to /tmp/package-pulseaudio/usr/include/pulse
++Installing /tmp/pulseaudio-14.2/src/pulse/channelmap.h to /tmp/package-pulseaudio/usr/include/pulse
++Installing /tmp/pulseaudio-14.2/src/pulse/context.h to /tmp/package-pulseaudio/usr/include/pulse
++Installing /tmp/pulseaudio-14.2/src/pulse/def.h to /tmp/package-pulseaudio/usr/include/pulse
++Installing /tmp/pulseaudio-14.2/src/pulse/direction.h to /tmp/package-pulseaudio/usr/include/pulse
++Installing /tmp/pulseaudio-14.2/src/pulse/error.h to /tmp/package-pulseaudio/usr/include/pulse
++Installing /tmp/pulseaudio-14.2/src/pulse/ext-device-manager.h to /tmp/package-pulseaudio/usr/include/pulse
++Installing /tmp/pulseaudio-14.2/src/pulse/ext-device-restore.h to /tmp/package-pulseaudio/usr/include/pulse
++Installing /tmp/pulseaudio-14.2/src/pulse/ext-stream-restore.h to /tmp/package-pulseaudio/usr/include/pulse
++Installing /tmp/pulseaudio-14.2/src/pulse/format.h to /tmp/package-pulseaudio/usr/include/pulse
++Installing /tmp/pulseaudio-14.2/src/pulse/gccmacro.h to /tmp/package-pulseaudio/usr/include/pulse
++Installing /tmp/pulseaudio-14.2/src/pulse/introspect.h to /tmp/package-pulseaudio/usr/include/pulse
++Installing /tmp/pulseaudio-14.2/src/pulse/mainloop-api.h to /tmp/package-pulseaudio/usr/include/pulse
++Installing /tmp/pulseaudio-14.2/src/pulse/mainloop-signal.h to /tmp/package-pulseaudio/usr/include/pulse
++Installing /tmp/pulseaudio-14.2/src/pulse/mainloop.h to /tmp/package-pulseaudio/usr/include/pulse
++Installing /tmp/pulseaudio-14.2/src/pulse/operation.h to /tmp/package-pulseaudio/usr/include/pulse
++Installing /tmp/pulseaudio-14.2/src/pulse/proplist.h to /tmp/package-pulseaudio/usr/include/pulse
++Installing /tmp/pulseaudio-14.2/src/pulse/pulseaudio.h to /tmp/package-pulseaudio/usr/include/pulse
++Installing /tmp/pulseaudio-14.2/src/pulse/rtclock.h to /tmp/package-pulseaudio/usr/include/pulse
++Installing /tmp/pulseaudio-14.2/src/pulse/sample.h to /tmp/package-pulseaudio/usr/include/pulse
++Installing /tmp/pulseaudio-14.2/src/pulse/scache.h to /tmp/package-pulseaudio/usr/include/pulse
++Installing /tmp/pulseaudio-14.2/src/pulse/stream.h to /tmp/package-pulseaudio/usr/include/pulse
++Installing /tmp/pulseaudio-14.2/src/pulse/subscribe.h to /tmp/package-pulseaudio/usr/include/pulse
++Installing /tmp/pulseaudio-14.2/src/pulse/thread-mainloop.h to /tmp/package-pulseaudio/usr/include/pulse
++Installing /tmp/pulseaudio-14.2/src/pulse/timeval.h to /tmp/package-pulseaudio/usr/include/pulse
++Installing /tmp/pulseaudio-14.2/src/pulse/utf8.h to /tmp/package-pulseaudio/usr/include/pulse
++Installing /tmp/pulseaudio-14.2/src/pulse/util.h to /tmp/package-pulseaudio/usr/include/pulse
++Installing /tmp/pulseaudio-14.2/src/pulse/volume.h to /tmp/package-pulseaudio/usr/include/pulse
++Installing /tmp/pulseaudio-14.2/src/pulse/xmalloc.h to /tmp/package-pulseaudio/usr/include/pulse
++Installing /tmp/pulseaudio-14.2/src/pulse/glib-mainloop.h to /tmp/package-pulseaudio/usr/include/pulse
++Installing /tmp/pulseaudio-14.2/src/pulse/simple.h to /tmp/package-pulseaudio/usr/include/pulse
++Installing /tmp/pulseaudio-14.2/shell-completion/bash/pulseaudio to /tmp/package-pulseaudio/usr/share/bash-completion/completions
++Installing /tmp/pulseaudio-14.2/shell-completion/zsh/_pulseaudio to /tmp/package-pulseaudio/usr/share/zsh/site-functions
++Installing /tmp/pulseaudio-14.2/meson-build/src/pulse/version.h to /tmp/package-pulseaudio/usr/include/pulse
++Installing /tmp/pulseaudio-14.2/meson-build/src/pulse/client.conf to /tmp/package-pulseaudio/etc/pulse
++Installing /tmp/pulseaudio-14.2/meson-build/src/daemon/start-pulseaudio-x11 to /tmp/package-pulseaudio/usr/bin
++Installing /tmp/pulseaudio-14.2/src/daemon/pulseaudio-system.conf to /tmp/package-pulseaudio/etc/dbus-1/system.d
++Installing /tmp/pulseaudio-14.2/src/modules/alsa/90-pulseaudio.rules to /tmp/package-pulseaudio/lib/udev/rules.d
++Installing /tmp/pulseaudio-14.2/src/modules/gsettings/org.freedesktop.pulseaudio.gschema.xml to /tmp/package-pulseaudio/usr/share/glib-2.0/schemas
++Installing /tmp/pulseaudio-14.2/src/modules/gsettings/pulseaudio.convert to /tmp/package-pulseaudio/usr/share/GConf/gsettings
++Installing /tmp/pulseaudio-14.2/meson-build/src/utils/padsp to /tmp/package-pulseaudio/usr/bin
++Installing /tmp/pulseaudio-14.2/src/utils/qpaeq to /tmp/package-pulseaudio/usr/bin
++Installing /tmp/pulseaudio-14.2/src/utils/pa-info to /tmp/package-pulseaudio/usr/bin
++Installing /tmp/pulseaudio-14.2/vala/libpulse.deps to /tmp/package-pulseaudio/usr/share/vala/vapiInstalling /tmp/pulseaudio-14.2/meson-build/po/af.gmo to /tmp/package-pulseaudio/usr/share/locale/af/LC_MESSAGES/pulseaudio.mo
++Installing /tmp/pulseaudio-14.2/meson-build/po/as.gmo to /tmp/package-pulseaudio/usr/share/locale/as/LC_MESSAGES/pulseaudio.mo
++Installing /tmp/pulseaudio-14.2/meson-build/po/be.gmo to /tmp/package-pulseaudio/usr/share/locale/be/LC_MESSAGES/pulseaudio.mo
++Installing /tmp/pulseaudio-14.2/meson-build/po/bg.gmo to /tmp/package-pulseaudio/usr/share/locale/bg/LC_MESSAGES/pulseaudio.mo
++Installing /tmp/pulseaudio-14.2/meson-build/po/bn_IN.gmo to /tmp/package-pulseaudio/usr/share/locale/bn_IN/LC_MESSAGES/pulseaudio.mo
++Installing /tmp/pulseaudio-14.2/meson-build/po/ca.gmo to /tmp/package-pulseaudio/usr/share/locale/ca/LC_MESSAGES/pulseaudio.mo
++Installing /tmp/pulseaudio-14.2/meson-build/po/cs.gmo to /tmp/package-pulseaudio/usr/share/locale/cs/LC_MESSAGES/pulseaudio.mo
++Installing /tmp/pulseaudio-14.2/meson-build/po/da.gmo to /tmp/package-pulseaudio/usr/share/locale/da/LC_MESSAGES/pulseaudio.mo
++Installing /tmp/pulseaudio-14.2/meson-build/po/de_CH.gmo to /tmp/package-pulseaudio/usr/share/locale/de_CH/LC_MESSAGES/pulseaudio.mo
++Installing /tmp/pulseaudio-14.2/meson-build/po/de.gmo to /tmp/package-pulseaudio/usr/share/locale/de/LC_MESSAGES/pulseaudio.mo
++Installing /tmp/pulseaudio-14.2/meson-build/po/el.gmo to /tmp/package-pulseaudio/usr/share/locale/el/LC_MESSAGES/pulseaudio.mo
++Installing /tmp/pulseaudio-14.2/meson-build/po/es.gmo to /tmp/package-pulseaudio/usr/share/locale/es/LC_MESSAGES/pulseaudio.mo
++Installing /tmp/pulseaudio-14.2/meson-build/po/fi.gmo to /tmp/package-pulseaudio/usr/share/locale/fi/LC_MESSAGES/pulseaudio.mo
++Installing /tmp/pulseaudio-14.2/meson-build/po/fr.gmo to /tmp/package-pulseaudio/usr/share/locale/fr/LC_MESSAGES/pulseaudio.mo
++Installing /tmp/pulseaudio-14.2/meson-build/po/gl.gmo to /tmp/package-pulseaudio/usr/share/locale/gl/LC_MESSAGES/pulseaudio.mo
++Installing /tmp/pulseaudio-14.2/meson-build/po/gu.gmo to /tmp/package-pulseaudio/usr/share/locale/gu/LC_MESSAGES/pulseaudio.mo
++Installing /tmp/pulseaudio-14.2/meson-build/po/he.gmo to /tmp/package-pulseaudio/usr/share/locale/he/LC_MESSAGES/pulseaudio.mo
++Installing /tmp/pulseaudio-14.2/meson-build/po/hi.gmo to /tmp/package-pulseaudio/usr/share/locale/hi/LC_MESSAGES/pulseaudio.mo
++Installing /tmp/pulseaudio-14.2/meson-build/po/hr.gmo to /tmp/package-pulseaudio/usr/share/locale/hr/LC_MESSAGES/pulseaudio.mo
++Installing /tmp/pulseaudio-14.2/meson-build/po/hu.gmo to /tmp/package-pulseaudio/usr/share/locale/hu/LC_MESSAGES/pulseaudio.mo
++Installing /tmp/pulseaudio-14.2/meson-build/po/id.gmo to /tmp/package-pulseaudio/usr/share/locale/id/LC_MESSAGES/pulseaudio.mo
++Installing /tmp/pulseaudio-14.2/meson-build/po/it.gmo to /tmp/package-pulseaudio/usr/share/locale/it/LC_MESSAGES/pulseaudio.mo
++Installing /tmp/pulseaudio-14.2/meson-build/po/ja.gmo to /tmp/package-pulseaudio/usr/share/locale/ja/LC_MESSAGES/pulseaudio.mo
++Installing /tmp/pulseaudio-14.2/meson-build/po/kk.gmo to /tmp/package-pulseaudio/usr/share/locale/kk/LC_MESSAGES/pulseaudio.mo
++Installing /tmp/pulseaudio-14.2/meson-build/po/kn.gmo to /tmp/package-pulseaudio/usr/share/locale/kn/LC_MESSAGES/pulseaudio.mo
++Installing /tmp/pulseaudio-14.2/meson-build/po/ko.gmo to /tmp/package-pulseaudio/usr/share/locale/ko/LC_MESSAGES/pulseaudio.mo
++Installing /tmp/pulseaudio-14.2/meson-build/po/lt.gmo to /tmp/package-pulseaudio/usr/share/locale/lt/LC_MESSAGES/pulseaudio.mo
++Installing /tmp/pulseaudio-14.2/meson-build/po/ml.gmo to /tmp/package-pulseaudio/usr/share/locale/ml/LC_MESSAGES/pulseaudio.mo
++Installing /tmp/pulseaudio-14.2/meson-build/po/mr.gmo to /tmp/package-pulseaudio/usr/share/locale/mr/LC_MESSAGES/pulseaudio.mo
++Installing /tmp/pulseaudio-14.2/meson-build/po/nl.gmo to /tmp/package-pulseaudio/usr/share/locale/nl/LC_MESSAGES/pulseaudio.mo
++Installing /tmp/pulseaudio-14.2/meson-build/po/nn.gmo to /tmp/package-pulseaudio/usr/share/locale/nn/LC_MESSAGES/pulseaudio.mo
++Installing /tmp/pulseaudio-14.2/meson-build/po/oc.gmo to /tmp/package-pulseaudio/usr/share/locale/oc/LC_MESSAGES/pulseaudio.mo
++Installing /tmp/pulseaudio-14.2/meson-build/po/or.gmo to /tmp/package-pulseaudio/usr/share/locale/or/LC_MESSAGES/pulseaudio.mo
++Installing /tmp/pulseaudio-14.2/meson-build/po/pa.gmo to /tmp/package-pulseaudio/usr/share/locale/pa/LC_MESSAGES/pulseaudio.mo
++Installing /tmp/pulseaudio-14.2/meson-build/po/pl.gmo to /tmp/package-pulseaudio/usr/share/locale/pl/LC_MESSAGES/pulseaudio.mo
++Installing /tmp/pulseaudio-14.2/meson-build/po/pt_BR.gmo to /tmp/package-pulseaudio/usr/share/locale/pt_BR/LC_MESSAGES/pulseaudio.mo
++Installing /tmp/pulseaudio-14.2/meson-build/po/pt.gmo to /tmp/package-pulseaudio/usr/share/locale/pt/LC_MESSAGES/pulseaudio.mo
++Installing /tmp/pulseaudio-14.2/meson-build/po/ru.gmo to /tmp/package-pulseaudio/usr/share/locale/ru/LC_MESSAGES/pulseaudio.mo
++Installing /tmp/pulseaudio-14.2/meson-build/po/sk.gmo to /tmp/package-pulseaudio/usr/share/locale/sk/LC_MESSAGES/pulseaudio.mo
++Installing /tmp/pulseaudio-14.2/meson-build/po/sr@latin.gmo to /tmp/package-pulseaudio/usr/share/locale/sr@latin/LC_MESSAGES/pulseaudio.mo
++Installing /tmp/pulseaudio-14.2/meson-build/po/sr.gmo to /tmp/package-pulseaudio/usr/share/locale/sr/LC_MESSAGES/pulseaudio.mo
++Installing /tmp/pulseaudio-14.2/meson-build/po/sv.gmo to /tmp/package-pulseaudio/usr/share/locale/sv/LC_MESSAGES/pulseaudio.mo
++Installing /tmp/pulseaudio-14.2/meson-build/po/ta.gmo to /tmp/package-pulseaudio/usr/share/locale/ta/LC_MESSAGES/pulseaudio.mo
++Installing /tmp/pulseaudio-14.2/meson-build/po/te.gmo to /tmp/package-pulseaudio/usr/share/locale/te/LC_MESSAGES/pulseaudio.mo
++Installing /tmp/pulseaudio-14.2/meson-build/po/tr.gmo to /tmp/package-pulseaudio/usr/share/locale/tr/LC_MESSAGES/pulseaudio.mo
++Installing /tmp/pulseaudio-14.2/meson-build/po/uk.gmo to /tmp/package-pulseaudio/usr/share/locale/uk/LC_MESSAGES/pulseaudio.mo
++Installing /tmp/pulseaudio-14.2/meson-build/po/zh_CN.gmo to /tmp/package-pulseaudio/usr/share/locale/zh_CN/LC_MESSAGES/pulseaudio.mo
++Installing /tmp/pulseaudio-14.2/meson-build/po/zh_TW.gmo to /tmp/package-pulseaudio/usr/share/locale/zh_TW/LC_MESSAGES/pulseaudio.mo
++
++Installing /tmp/pulseaudio-14.2/vala/libpulse.vapi to /tmp/package-pulseaudio/usr/share/vala/vapi
++Installing /tmp/pulseaudio-14.2/vala/libpulse-mainloop-glib.deps to /tmp/package-pulseaudio/usr/share/vala/vapi
++Installing /tmp/pulseaudio-14.2/vala/libpulse-mainloop-glib.vapi to /tmp/package-pulseaudio/usr/share/vala/vapi
++Installing /tmp/pulseaudio-14.2/vala/libpulse-simple.deps to /tmp/package-pulseaudio/usr/share/vala/vapi
++Installing /tmp/pulseaudio-14.2/vala/libpulse-simple.vapi to /tmp/package-pulseaudio/usr/share/vala/vapi
++Installing /tmp/pulseaudio-14.2/meson-build/libpulse.pc to /tmp/package-pulseaudio/usr/lib/pkgconfig
++Installing /tmp/pulseaudio-14.2/meson-build/libpulse-simple.pc to /tmp/package-pulseaudio/usr/lib/pkgconfig
++Installing /tmp/pulseaudio-14.2/meson-build/libpulse-mainloop-glib.pc to /tmp/package-pulseaudio/usr/lib/pkgconfig
++Installing /tmp/pulseaudio-14.2/meson-build/PulseAudioConfigVersion.cmake to /tmp/package-pulseaudio/usr/lib/cmake/PulseAudio
++Running custom install script '/usr/bin/meson --internal gettext install --subdir=po --localedir=share/locale --pkgname=pulseaudio'
++Running custom install script '/bin/sh -c ln -fs pacat.1 $DESTDIR/usr/man/man1/paplay.1'
++Running custom install script '/bin/sh -c ln -fs pacat.1 $DESTDIR/usr/man/man1/parec.1'
++Running custom install script '/bin/sh -c ln -fs pacat.1 $DESTDIR/usr/man/man1/parecord.1'
++Running custom install script '/bin/sh -c ln -fs pacat.1 $DESTDIR/usr/man/man1/pamon.1'
++Running custom install script '/bin/sh -c ln -fs pulseaudio $DESTDIR/usr/share/bash-completion/completions/pacat'
++Running custom install script '/bin/sh -c ln -fs pulseaudio $DESTDIR/usr/share/bash-completion/completions/pacmd'
++Running custom install script '/bin/sh -c ln -fs pulseaudio $DESTDIR/usr/share/bash-completion/completions/pactl'
++Running custom install script '/bin/sh -c ln -fs pulseaudio $DESTDIR/usr/share/bash-completion/completions/padsp'
++Running custom install script '/bin/sh -c ln -fs pulseaudio $DESTDIR/usr/share/bash-completion/completions/paplay'
++Running custom install script '/bin/sh -c ln -fs pulseaudio $DESTDIR/usr/share/bash-completion/completions/parec'
++Running custom install script '/bin/sh -c ln -fs pulseaudio $DESTDIR/usr/share/bash-completion/completions/parecord'
++Running custom install script '/bin/sh -c ln -fs pulseaudio $DESTDIR/usr/share/bash-completion/completions/pasuspender'
++Running custom install script '/usr/bin/python3 /tmp/pulseaudio-14.2/src/modules/gsettings/meson_post_install.py /usr/share'
++Running custom install script '/bin/sh -c ln -fs pacat $DESTDIR/usr/bin/pamon'
++Running custom install script '/bin/sh -c ln -fs pacat $DESTDIR/usr/bin/paplay'
++Running custom install script '/bin/sh -c ln -fs pacat $DESTDIR/usr/bin/parec'
++Running custom install script '/bin/sh -c ln -fs pacat $DESTDIR/usr/bin/parecord'
++rmdir: failed to remove directory '/tmp/package-pulseaudio/etc': Directory not empty
++cp: cannot stat 'COPYING*': No such file or directory
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++usr/bin/pamon	pacat
++usr/bin/paplay	pacat
++usr/bin/parec	pacat
++usr/bin/parecord	pacat
++usr/lib/libpulse-mainloop-glib.so	libpulse-mainloop-glib.so.0
++usr/lib/libpulse-mainloop-glib.so.0	libpulse-mainloop-glib.so.0.0.6
++usr/lib/libpulse-simple.so	libpulse-simple.so.0
++usr/lib/libpulse-simple.so.0	libpulse-simple.so.0.1.1
++usr/lib/libpulse.so	libpulse.so.0
++usr/lib/libpulse.so.0	libpulse.so.0.23.0
++usr/man/man1/pamon.1.gz	pacat.1.gz
++usr/man/man1/paplay.1.gz	pacat.1.gz
++usr/man/man1/parec.1.gz	pacat.1.gz
++usr/man/man1/parecord.1.gz	pacat.1.gz
++usr/share/bash-completion/completions/pacat	pulseaudio
++usr/share/bash-completion/completions/pacmd	pulseaudio
++usr/share/bash-completion/completions/pactl	pulseaudio
++usr/share/bash-completion/completions/padsp	pulseaudio
++usr/share/bash-completion/completions/paplay	pulseaudio
++usr/share/bash-completion/completions/parec	pulseaudio
++usr/share/bash-completion/completions/parecord	pulseaudio
++usr/share/bash-completion/completions/pasuspender	pulseaudio
++
++Making symbolic link creation script:
++( cd usr/bin ; rm -rf pamon )
++( cd usr/bin ; ln -sf pacat pamon )
++( cd usr/bin ; rm -rf paplay )
++( cd usr/bin ; ln -sf pacat paplay )
++( cd usr/bin ; rm -rf parec )
++( cd usr/bin ; ln -sf pacat parec )
++( cd usr/bin ; rm -rf parecord )
++( cd usr/bin ; ln -sf pacat parecord )
++( cd usr/lib ; rm -rf libpulse-mainloop-glib.so )
++( cd usr/lib ; ln -sf libpulse-mainloop-glib.so.0 libpulse-mainloop-glib.so )
++( cd usr/lib ; rm -rf libpulse-mainloop-glib.so.0 )
++( cd usr/lib ; ln -sf libpulse-mainloop-glib.so.0.0.6 libpulse-mainloop-glib.so.0 )
++( cd usr/lib ; rm -rf libpulse-simple.so )
++( cd usr/lib ; ln -sf libpulse-simple.so.0 libpulse-simple.so )
++( cd usr/lib ; rm -rf libpulse-simple.so.0 )
++( cd usr/lib ; ln -sf libpulse-simple.so.0.1.1 libpulse-simple.so.0 )
++( cd usr/lib ; rm -rf libpulse.so )
++( cd usr/lib ; ln -sf libpulse.so.0 libpulse.so )
++( cd usr/lib ; rm -rf libpulse.so.0 )
++( cd usr/lib ; ln -sf libpulse.so.0.23.0 libpulse.so.0 )
++( cd usr/man/man1 ; rm -rf pamon.1.gz )
++( cd usr/man/man1 ; ln -sf pacat.1.gz pamon.1.gz )
++( cd usr/man/man1 ; rm -rf paplay.1.gz )
++( cd usr/man/man1 ; ln -sf pacat.1.gz paplay.1.gz )
++( cd usr/man/man1 ; rm -rf parec.1.gz )
++( cd usr/man/man1 ; ln -sf pacat.1.gz parec.1.gz )
++( cd usr/man/man1 ; rm -rf parecord.1.gz )
++( cd usr/man/man1 ; ln -sf pacat.1.gz parecord.1.gz )
++( cd usr/share/bash-completion/completions ; rm -rf pacat )
++( cd usr/share/bash-completion/completions ; ln -sf pulseaudio pacat )
++( cd usr/share/bash-completion/completions ; rm -rf pacmd )
++( cd usr/share/bash-completion/completions ; ln -sf pulseaudio pacmd )
++( cd usr/share/bash-completion/completions ; rm -rf pactl )
++( cd usr/share/bash-completion/completions ; ln -sf pulseaudio pactl )
++( cd usr/share/bash-completion/completions ; rm -rf padsp )
++( cd usr/share/bash-completion/completions ; ln -sf pulseaudio padsp )
++( cd usr/share/bash-completion/completions ; rm -rf paplay )
++( cd usr/share/bash-completion/completions ; ln -sf pulseaudio paplay )
++( cd usr/share/bash-completion/completions ; rm -rf parec )
++( cd usr/share/bash-completion/completions ; ln -sf pulseaudio parec )
++( cd usr/share/bash-completion/completions ; rm -rf parecord )
++( cd usr/share/bash-completion/completions ; ln -sf pulseaudio parecord )
++( cd usr/share/bash-completion/completions ; rm -rf pasuspender )
++( cd usr/share/bash-completion/completions ; ln -sf pulseaudio pasuspender )
++
++Unless your existing installation script already contains the code
++to create these links, you should append these lines to your existing
++install script. Now's your chance. :^)
++
++Would you like to add this stuff to the existing install script and
++remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './usr/man/man1/parecord.1.gz'
++removed './usr/man/man1/paplay.1.gz'
++removed './usr/man/man1/pamon.1.gz'
++removed './usr/man/man1/parec.1.gz'
++removed './usr/lib/libpulse-simple.so'
++removed './usr/lib/libpulse.so.0'
++removed './usr/lib/libpulse.so'
++removed './usr/lib/libpulse-simple.so.0'
++removed './usr/lib/libpulse-mainloop-glib.so.0'
++removed './usr/lib/libpulse-mainloop-glib.so'
++removed './usr/bin/parecord'
++removed './usr/bin/parec'
++removed './usr/bin/paplay'
++removed './usr/bin/pamon'
++removed './usr/share/bash-completion/completions/parecord'
++removed './usr/share/bash-completion/completions/pacmd'
++removed './usr/share/bash-completion/completions/pasuspender'
++removed './usr/share/bash-completion/completions/padsp'
++removed './usr/share/bash-completion/completions/parec'
++removed './usr/share/bash-completion/completions/paplay'
++removed './usr/share/bash-completion/completions/pactl'
++removed './usr/share/bash-completion/completions/pacat'
++
++Updating your ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/pulseaudio-14.2-x86_64-1.txz
++
++./
++etc/
++etc/pulse/
++etc/pulse/client.conf.new
++etc/pulse/daemon.conf.new
++etc/pulse/default.pa.new
++etc/pulse/system.pa.new
++etc/rc.d/
++etc/rc.d/rc.pulseaudio.new
++etc/xdg/
++etc/xdg/autostart/
++etc/xdg/autostart/pulseaudio.desktop
++install/
++install/doinst.sh
++install/slack-desc
++lib/
++lib/udev/
++lib/udev/rules.d/
++lib/udev/rules.d/90-pulseaudio.rules
++usr/
++usr/bin/
++usr/bin/pa-info
++usr/bin/pacat
++usr/bin/pacmd
++usr/bin/pactl
++usr/bin/padsp
++usr/bin/pasuspender
++usr/bin/pax11publish
++usr/bin/pulseaudio
++usr/bin/qpaeq
++usr/bin/start-pulseaudio-x11
++usr/doc/
++usr/doc/pulseaudio-14.2/
++usr/doc/pulseaudio-14.2/GPL
++usr/doc/pulseaudio-14.2/LGPL
++usr/doc/pulseaudio-14.2/LICENSE
++usr/doc/pulseaudio-14.2/README
++usr/include/
++usr/include/pulse/
++usr/include/pulse/cdecl.h
++usr/include/pulse/channelmap.h
++usr/include/pulse/context.h
++usr/include/pulse/def.h
++usr/include/pulse/direction.h
++usr/include/pulse/error.h
++usr/include/pulse/ext-device-manager.h
++usr/include/pulse/ext-device-restore.h
++usr/include/pulse/ext-stream-restore.h
++usr/include/pulse/format.h
++usr/include/pulse/gccmacro.h
++usr/include/pulse/glib-mainloop.h
++usr/include/pulse/introspect.h
++usr/include/pulse/mainloop-api.h
++usr/include/pulse/mainloop-signal.h
++usr/include/pulse/mainloop.h
++usr/include/pulse/operation.h
++usr/include/pulse/proplist.h
++usr/include/pulse/pulseaudio.h
++usr/include/pulse/rtclock.h
++usr/include/pulse/sample.h
++usr/include/pulse/scache.h
++usr/include/pulse/simple.h
++usr/include/pulse/stream.h
++usr/include/pulse/subscribe.h
++usr/include/pulse/thread-mainloop.h
++usr/include/pulse/timeval.h
++usr/include/pulse/utf8.h
++usr/include/pulse/util.h
++usr/include/pulse/version.h
++usr/include/pulse/volume.h
++usr/include/pulse/xmalloc.h
++usr/lib/
++usr/lib/cmake/
++usr/lib/cmake/PulseAudio/
++usr/lib/cmake/PulseAudio/PulseAudioConfig.cmake
++usr/lib/cmake/PulseAudio/PulseAudioConfigVersion.cmake
++usr/lib/libpulse-mainloop-glib.so.0.0.6
++usr/lib/libpulse-simple.so.0.1.1
++usr/lib/libpulse.so.0.23.0
++usr/lib/pkgconfig/
++usr/lib/pkgconfig/libpulse-mainloop-glib.pc
++usr/lib/pkgconfig/libpulse-simple.pc
++usr/lib/pkgconfig/libpulse.pc
++usr/lib/pulse-14.2/
++usr/lib/pulse-14.2/modules/
++usr/lib/pulse-14.2/modules/libalsa-util.so
++usr/lib/pulse-14.2/modules/libbluez5-util.so
++usr/lib/pulse-14.2/modules/libcli.so
++usr/lib/pulse-14.2/modules/liboss-util.so
++usr/lib/pulse-14.2/modules/libprotocol-cli.so
++usr/lib/pulse-14.2/modules/libprotocol-http.so
++usr/lib/pulse-14.2/modules/libprotocol-native.so
++usr/lib/pulse-14.2/modules/libprotocol-simple.so
++usr/lib/pulse-14.2/modules/libraop.so
++usr/lib/pulse-14.2/modules/librtp.so
++usr/lib/pulse-14.2/modules/module-allow-passthrough.so
++usr/lib/pulse-14.2/modules/module-alsa-card.so
++usr/lib/pulse-14.2/modules/module-alsa-sink.so
++usr/lib/pulse-14.2/modules/module-alsa-source.so
++usr/lib/pulse-14.2/modules/module-always-sink.so
++usr/lib/pulse-14.2/modules/module-always-source.so
++usr/lib/pulse-14.2/modules/module-augment-properties.so
++usr/lib/pulse-14.2/modules/module-bluetooth-discover.so
++usr/lib/pulse-14.2/modules/module-bluetooth-policy.so
++usr/lib/pulse-14.2/modules/module-bluez5-device.so
++usr/lib/pulse-14.2/modules/module-bluez5-discover.so
++usr/lib/pulse-14.2/modules/module-card-restore.so
++usr/lib/pulse-14.2/modules/module-cli-protocol-tcp.so
++usr/lib/pulse-14.2/modules/module-cli-protocol-unix.so
++usr/lib/pulse-14.2/modules/module-cli.so
++usr/lib/pulse-14.2/modules/module-combine-sink.so
++usr/lib/pulse-14.2/modules/module-combine.so
++usr/lib/pulse-14.2/modules/module-console-kit.so
++usr/lib/pulse-14.2/modules/module-dbus-protocol.so
++usr/lib/pulse-14.2/modules/module-default-device-restore.so
++usr/lib/pulse-14.2/modules/module-detect.so
++usr/lib/pulse-14.2/modules/module-device-manager.so
++usr/lib/pulse-14.2/modules/module-device-restore.so
++usr/lib/pulse-14.2/modules/module-echo-cancel.so
++usr/lib/pulse-14.2/modules/module-equalizer-sink.so
++usr/lib/pulse-14.2/modules/module-filter-apply.so
++usr/lib/pulse-14.2/modules/module-filter-heuristics.so
++usr/lib/pulse-14.2/modules/module-gsettings.so
++usr/lib/pulse-14.2/modules/module-http-protocol-tcp.so
++usr/lib/pulse-14.2/modules/module-http-protocol-unix.so
++usr/lib/pulse-14.2/modules/module-intended-roles.so
++usr/lib/pulse-14.2/modules/module-ladspa-sink.so
++usr/lib/pulse-14.2/modules/module-loopback.so
++usr/lib/pulse-14.2/modules/module-match.so
++usr/lib/pulse-14.2/modules/module-mmkbd-evdev.so
++usr/lib/pulse-14.2/modules/module-native-protocol-fd.so
++usr/lib/pulse-14.2/modules/module-native-protocol-tcp.so
++usr/lib/pulse-14.2/modules/module-native-protocol-unix.so
++usr/lib/pulse-14.2/modules/module-null-sink.so
++usr/lib/pulse-14.2/modules/module-null-source.so
++usr/lib/pulse-14.2/modules/module-oss.so
++usr/lib/pulse-14.2/modules/module-pipe-sink.so
++usr/lib/pulse-14.2/modules/module-pipe-source.so
++usr/lib/pulse-14.2/modules/module-position-event-sounds.so
++usr/lib/pulse-14.2/modules/module-raop-sink.so
++usr/lib/pulse-14.2/modules/module-remap-sink.so
++usr/lib/pulse-14.2/modules/module-remap-source.so
++usr/lib/pulse-14.2/modules/module-rescue-streams.so
++usr/lib/pulse-14.2/modules/module-role-cork.so
++usr/lib/pulse-14.2/modules/module-role-ducking.so
++usr/lib/pulse-14.2/modules/module-rtp-recv.so
++usr/lib/pulse-14.2/modules/module-rtp-send.so
++usr/lib/pulse-14.2/modules/module-rygel-media-server.so
++usr/lib/pulse-14.2/modules/module-simple-protocol-tcp.so
++usr/lib/pulse-14.2/modules/module-simple-protocol-unix.so
++usr/lib/pulse-14.2/modules/module-sine-source.so
++usr/lib/pulse-14.2/modules/module-sine.so
++usr/lib/pulse-14.2/modules/module-stream-restore.so
++usr/lib/pulse-14.2/modules/module-suspend-on-idle.so
++usr/lib/pulse-14.2/modules/module-switch-on-connect.so
++usr/lib/pulse-14.2/modules/module-switch-on-port-available.so
++usr/lib/pulse-14.2/modules/module-systemd-login.so
++usr/lib/pulse-14.2/modules/module-tunnel-sink-new.so
++usr/lib/pulse-14.2/modules/module-tunnel-sink.so
++usr/lib/pulse-14.2/modules/module-tunnel-source-new.so
++usr/lib/pulse-14.2/modules/module-tunnel-source.so
++usr/lib/pulse-14.2/modules/module-udev-detect.so
++usr/lib/pulse-14.2/modules/module-virtual-sink.so
++usr/lib/pulse-14.2/modules/module-virtual-source.so
++usr/lib/pulse-14.2/modules/module-virtual-surround-sink.so
++usr/lib/pulse-14.2/modules/module-volume-restore.so
++usr/lib/pulse-14.2/modules/module-x11-bell.so
++usr/lib/pulse-14.2/modules/module-x11-cork-request.so
++usr/lib/pulse-14.2/modules/module-x11-publish.so
++usr/lib/pulse-14.2/modules/module-x11-xsmp.so
++usr/lib/pulseaudio/
++usr/lib/pulseaudio/libpulsecommon-14.2.so
++usr/lib/pulseaudio/libpulsecore-14.2.so
++usr/lib/pulseaudio/libpulsedsp.so
++usr/libexec/
++usr/libexec/pulse/
++usr/libexec/pulse/gsettings-helper
++usr/man/
++usr/man/man1/
++usr/man/man1/pacat.1.gz
++usr/man/man1/pacmd.1.gz
++usr/man/man1/pactl.1.gz
++usr/man/man1/padsp.1.gz
++usr/man/man1/pasuspender.1.gz
++usr/man/man1/pax11publish.1.gz
++usr/man/man1/pulseaudio.1.gz
++usr/man/man1/start-pulseaudio-x11.1.gz
++usr/man/man5/
++usr/man/man5/default.pa.5.gz
++usr/man/man5/pulse-cli-syntax.5.gz
++usr/man/man5/pulse-client.conf.5.gz
++usr/man/man5/pulse-daemon.conf.5.gz
++usr/share/
++usr/share/GConf/
++usr/share/GConf/gsettings/
++usr/share/GConf/gsettings/pulseaudio.convert
++usr/share/bash-completion/
++usr/share/bash-completion/completions/
++usr/share/bash-completion/completions/pulseaudio
++usr/share/dbus-1/
++usr/share/dbus-1/system.d/
++usr/share/dbus-1/system.d/pulseaudio-system.conf
++usr/share/glib-2.0/
++usr/share/glib-2.0/schemas/
++usr/share/glib-2.0/schemas/org.freedesktop.pulseaudio.gschema.xml
++usr/share/locale/
++usr/share/locale/af/
++usr/share/locale/af/LC_MESSAGES/
++usr/share/locale/af/LC_MESSAGES/pulseaudio.mo
++usr/share/locale/as/
++usr/share/locale/as/LC_MESSAGES/
++usr/share/locale/as/LC_MESSAGES/pulseaudio.mo
++usr/share/locale/be/
++usr/share/locale/be/LC_MESSAGES/
++usr/share/locale/be/LC_MESSAGES/pulseaudio.mo
++usr/share/locale/bg/
++usr/share/locale/bg/LC_MESSAGES/
++usr/share/locale/bg/LC_MESSAGES/pulseaudio.mo
++usr/share/locale/bn_IN/
++usr/share/locale/bn_IN/LC_MESSAGES/
++usr/share/locale/bn_IN/LC_MESSAGES/pulseaudio.mo
++usr/share/locale/ca/
++usr/share/locale/ca/LC_MESSAGES/
++usr/share/locale/ca/LC_MESSAGES/pulseaudio.mo
++usr/share/locale/cs/
++usr/share/locale/cs/LC_MESSAGES/
++usr/share/locale/cs/LC_MESSAGES/pulseaudio.mo
++usr/share/locale/da/
++usr/share/locale/da/LC_MESSAGES/
++usr/share/locale/da/LC_MESSAGES/pulseaudio.mo
++usr/share/locale/de/
++usr/share/locale/de/LC_MESSAGES/
++usr/share/locale/de/LC_MESSAGES/pulseaudio.mo
++usr/share/locale/de_CH/
++usr/share/locale/de_CH/LC_MESSAGES/
++usr/share/locale/de_CH/LC_MESSAGES/pulseaudio.mo
++usr/share/locale/el/
++usr/share/locale/el/LC_MESSAGES/
++usr/share/locale/el/LC_MESSAGES/pulseaudio.mo
++usr/share/locale/es/
++usr/share/locale/es/LC_MESSAGES/
++usr/share/locale/es/LC_MESSAGES/pulseaudio.mo
++usr/share/locale/fi/
++usr/share/locale/fi/LC_MESSAGES/
++usr/share/locale/fi/LC_MESSAGES/pulseaudio.mo
++usr/share/locale/fr/
++usr/share/locale/fr/LC_MESSAGES/
++usr/share/locale/fr/LC_MESSAGES/pulseaudio.mo
++usr/share/locale/gl/
++usr/share/locale/gl/LC_MESSAGES/
++usr/share/locale/gl/LC_MESSAGES/pulseaudio.mo
++usr/share/locale/gu/
++usr/share/locale/gu/LC_MESSAGES/
++usr/share/locale/gu/LC_MESSAGES/pulseaudio.mo
++usr/share/locale/he/
++usr/share/locale/he/LC_MESSAGES/
++usr/share/locale/he/LC_MESSAGES/pulseaudio.mo
++usr/share/locale/hi/
++usr/share/locale/hi/LC_MESSAGES/
++usr/share/locale/hi/LC_MESSAGES/pulseaudio.mo
++usr/share/locale/hr/
++usr/share/locale/hr/LC_MESSAGES/
++usr/share/locale/hr/LC_MESSAGES/pulseaudio.mo
++usr/share/locale/hu/
++usr/share/locale/hu/LC_MESSAGES/
++usr/share/locale/hu/LC_MESSAGES/pulseaudio.mo
++usr/share/locale/id/
++usr/share/locale/id/LC_MESSAGES/
++usr/share/locale/id/LC_MESSAGES/pulseaudio.mo
++usr/share/locale/it/
++usr/share/locale/it/LC_MESSAGES/
++usr/share/locale/it/LC_MESSAGES/pulseaudio.mo
++usr/share/locale/ja/
++usr/share/locale/ja/LC_MESSAGES/
++usr/share/locale/ja/LC_MESSAGES/pulseaudio.mo
++usr/share/locale/kk/
++usr/share/locale/kk/LC_MESSAGES/
++usr/share/locale/kk/LC_MESSAGES/pulseaudio.mo
++usr/share/locale/kn/
++usr/share/locale/kn/LC_MESSAGES/
++usr/share/locale/kn/LC_MESSAGES/pulseaudio.mo
++usr/share/locale/ko/
++usr/share/locale/ko/LC_MESSAGES/
++usr/share/locale/ko/LC_MESSAGES/pulseaudio.mo
++usr/share/locale/lt/
++usr/share/locale/lt/LC_MESSAGES/
++usr/share/locale/lt/LC_MESSAGES/pulseaudio.mo
++usr/share/locale/ml/
++usr/share/locale/ml/LC_MESSAGES/
++usr/share/locale/ml/LC_MESSAGES/pulseaudio.mo
++usr/share/locale/mr/
++usr/share/locale/mr/LC_MESSAGES/
++usr/share/locale/mr/LC_MESSAGES/pulseaudio.mo
++usr/share/locale/nl/
++usr/share/locale/nl/LC_MESSAGES/
++usr/share/locale/nl/LC_MESSAGES/pulseaudio.mo
++usr/share/locale/nn/
++usr/share/locale/nn/LC_MESSAGES/
++usr/share/locale/nn/LC_MESSAGES/pulseaudio.mo
++usr/share/locale/oc/
++usr/share/locale/oc/LC_MESSAGES/
++usr/share/locale/oc/LC_MESSAGES/pulseaudio.mo
++usr/share/locale/or/
++usr/share/locale/or/LC_MESSAGES/
++usr/share/locale/or/LC_MESSAGES/pulseaudio.mo
++usr/share/locale/pa/
++usr/share/locale/pa/LC_MESSAGES/
++usr/share/locale/pa/LC_MESSAGES/pulseaudio.mo
++usr/share/locale/pl/
++usr/share/locale/pl/LC_MESSAGES/
++usr/share/locale/pl/LC_MESSAGES/pulseaudio.mo
++usr/share/locale/pt/
++usr/share/locale/pt/LC_MESSAGES/
++usr/share/locale/pt/LC_MESSAGES/pulseaudio.mo
++usr/share/locale/pt_BR/
++usr/share/locale/pt_BR/LC_MESSAGES/
++usr/share/locale/pt_BR/LC_MESSAGES/pulseaudio.mo
++usr/share/locale/ru/
++usr/share/locale/ru/LC_MESSAGES/
++usr/share/locale/ru/LC_MESSAGES/pulseaudio.mo
++usr/share/locale/sk/
++usr/share/locale/sk/LC_MESSAGES/
++usr/share/locale/sk/LC_MESSAGES/pulseaudio.mo
++usr/share/locale/sr/
++usr/share/locale/sr/LC_MESSAGES/
++usr/share/locale/sr/LC_MESSAGES/pulseaudio.mo
++usr/share/locale/sr@latin/
++usr/share/locale/sr@latin/LC_MESSAGES/
++usr/share/locale/sr@latin/LC_MESSAGES/pulseaudio.mo
++usr/share/locale/sv/
++usr/share/locale/sv/LC_MESSAGES/
++usr/share/locale/sv/LC_MESSAGES/pulseaudio.mo
++usr/share/locale/ta/
++usr/share/locale/ta/LC_MESSAGES/
++usr/share/locale/ta/LC_MESSAGES/pulseaudio.mo
++usr/share/locale/te/
++usr/share/locale/te/LC_MESSAGES/
++usr/share/locale/te/LC_MESSAGES/pulseaudio.mo
++usr/share/locale/tr/
++usr/share/locale/tr/LC_MESSAGES/
++usr/share/locale/tr/LC_MESSAGES/pulseaudio.mo
++usr/share/locale/uk/
++usr/share/locale/uk/LC_MESSAGES/
++usr/share/locale/uk/LC_MESSAGES/pulseaudio.mo
++usr/share/locale/zh_CN/
++usr/share/locale/zh_CN/LC_MESSAGES/
++usr/share/locale/zh_CN/LC_MESSAGES/pulseaudio.mo
++usr/share/locale/zh_TW/
++usr/share/locale/zh_TW/LC_MESSAGES/
++usr/share/locale/zh_TW/LC_MESSAGES/pulseaudio.mo
++usr/share/pulseaudio/
++usr/share/pulseaudio/alsa-mixer/
++usr/share/pulseaudio/alsa-mixer/paths/
++usr/share/pulseaudio/alsa-mixer/paths/analog-input-aux.conf
++usr/share/pulseaudio/alsa-mixer/paths/analog-input-dock-mic.conf
++usr/share/pulseaudio/alsa-mixer/paths/analog-input-fm.conf
++usr/share/pulseaudio/alsa-mixer/paths/analog-input-front-mic.conf
++usr/share/pulseaudio/alsa-mixer/paths/analog-input-headphone-mic.conf
++usr/share/pulseaudio/alsa-mixer/paths/analog-input-headset-mic.conf
++usr/share/pulseaudio/alsa-mixer/paths/analog-input-internal-mic-always.conf
++usr/share/pulseaudio/alsa-mixer/paths/analog-input-internal-mic.conf
++usr/share/pulseaudio/alsa-mixer/paths/analog-input-linein.conf
++usr/share/pulseaudio/alsa-mixer/paths/analog-input-mic-line.conf
++usr/share/pulseaudio/alsa-mixer/paths/analog-input-mic.conf
++usr/share/pulseaudio/alsa-mixer/paths/analog-input-mic.conf.common
++usr/share/pulseaudio/alsa-mixer/paths/analog-input-rear-mic.conf
++usr/share/pulseaudio/alsa-mixer/paths/analog-input-tvtuner.conf
++usr/share/pulseaudio/alsa-mixer/paths/analog-input-video.conf
++usr/share/pulseaudio/alsa-mixer/paths/analog-input.conf
++usr/share/pulseaudio/alsa-mixer/paths/analog-input.conf.common
++usr/share/pulseaudio/alsa-mixer/paths/analog-output-headphones-2.conf
++usr/share/pulseaudio/alsa-mixer/paths/analog-output-headphones.conf
++usr/share/pulseaudio/alsa-mixer/paths/analog-output-lineout.conf
++usr/share/pulseaudio/alsa-mixer/paths/analog-output-mono.conf
++usr/share/pulseaudio/alsa-mixer/paths/analog-output-speaker-always.conf
++usr/share/pulseaudio/alsa-mixer/paths/analog-output-speaker.conf
++usr/share/pulseaudio/alsa-mixer/paths/analog-output.conf
++usr/share/pulseaudio/alsa-mixer/paths/analog-output.conf.common
++usr/share/pulseaudio/alsa-mixer/paths/hdmi-output-0.conf
++usr/share/pulseaudio/alsa-mixer/paths/hdmi-output-1.conf
++usr/share/pulseaudio/alsa-mixer/paths/hdmi-output-2.conf
++usr/share/pulseaudio/alsa-mixer/paths/hdmi-output-3.conf
++usr/share/pulseaudio/alsa-mixer/paths/hdmi-output-4.conf
++usr/share/pulseaudio/alsa-mixer/paths/hdmi-output-5.conf
++usr/share/pulseaudio/alsa-mixer/paths/hdmi-output-6.conf
++usr/share/pulseaudio/alsa-mixer/paths/hdmi-output-7.conf
++usr/share/pulseaudio/alsa-mixer/paths/iec958-stereo-input.conf
++usr/share/pulseaudio/alsa-mixer/paths/iec958-stereo-output.conf
++usr/share/pulseaudio/alsa-mixer/paths/steelseries-arctis-output-chat-common.conf
++usr/share/pulseaudio/alsa-mixer/paths/steelseries-arctis-output-game-common.conf
++usr/share/pulseaudio/alsa-mixer/paths/usb-gaming-headset-input.conf
++usr/share/pulseaudio/alsa-mixer/paths/usb-gaming-headset-output-mono.conf
++usr/share/pulseaudio/alsa-mixer/paths/usb-gaming-headset-output-stereo.conf
++usr/share/pulseaudio/alsa-mixer/profile-sets/
++usr/share/pulseaudio/alsa-mixer/profile-sets/audigy.conf
++usr/share/pulseaudio/alsa-mixer/profile-sets/cmedia-high-speed-true-hdaudio.conf
++usr/share/pulseaudio/alsa-mixer/profile-sets/default.conf
++usr/share/pulseaudio/alsa-mixer/profile-sets/dell-dock-tb16-usb-audio.conf
++usr/share/pulseaudio/alsa-mixer/profile-sets/force-speaker-and-int-mic.conf
++usr/share/pulseaudio/alsa-mixer/profile-sets/force-speaker.conf
++usr/share/pulseaudio/alsa-mixer/profile-sets/kinect-audio.conf
++usr/share/pulseaudio/alsa-mixer/profile-sets/maudio-fasttrack-pro.conf
++usr/share/pulseaudio/alsa-mixer/profile-sets/native-instruments-audio4dj.conf
++usr/share/pulseaudio/alsa-mixer/profile-sets/native-instruments-audio8dj.conf
++usr/share/pulseaudio/alsa-mixer/profile-sets/native-instruments-korecontroller.conf
++usr/share/pulseaudio/alsa-mixer/profile-sets/native-instruments-traktor-audio10.conf
++usr/share/pulseaudio/alsa-mixer/profile-sets/native-instruments-traktor-audio2.conf
++usr/share/pulseaudio/alsa-mixer/profile-sets/native-instruments-traktor-audio6.conf
++usr/share/pulseaudio/alsa-mixer/profile-sets/native-instruments-traktorkontrol-s4.conf
++usr/share/pulseaudio/alsa-mixer/profile-sets/sb-omni-surround-5.1.conf
++usr/share/pulseaudio/alsa-mixer/profile-sets/steelseries-arctis-common-usb-audio.conf
++usr/share/pulseaudio/alsa-mixer/profile-sets/usb-gaming-headset.conf
++usr/share/vala/
++usr/share/vala/vapi/
++usr/share/vala/vapi/libpulse-mainloop-glib.deps
++usr/share/vala/vapi/libpulse-mainloop-glib.vapi
++usr/share/vala/vapi/libpulse-simple.deps
++usr/share/vala/vapi/libpulse-simple.vapi
++usr/share/vala/vapi/libpulse.deps
++usr/share/vala/vapi/libpulse.vapi
++usr/share/zsh/
++usr/share/zsh/site-functions/
++usr/share/zsh/site-functions/_pulseaudio
++
++Slackware package /tmp/pulseaudio-14.2-x86_64-1.txz created.
++

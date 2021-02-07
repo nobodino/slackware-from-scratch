@@ -1,0 +1,188 @@
+diff -ruBN /tmp/rinutils/rinutils.SlackBuild /source/d/rinutils/rinutils.SlackBuild
+--- /tmp/rinutils/rinutils.SlackBuild	2020-11-12 19:47:05.000000000 +0000
++++ /source/d/rinutils/rinutils.SlackBuild	2021-01-20 22:34:49.000000000 +0000
+@@ -58,7 +58,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "armv7hl" ]; then
+   SLKCFLAGS="-O3 -march=armv7-a -mfpu=vfpv3-d16"
+   LIBDIRSUFFIX=""
+@@ -93,6 +93,7 @@
+     -DCMAKE_CXX_FLAGS="$SLKCFLAGS" \
+     -DCMAKE_INSTALL_PREFIX=/usr \
+     -DLIB_SUFFIX="$LIBDIRSUFFIX" \
++-DCMAKE_INSTALL_LIBDIR=lib$LIBDIRSUFFIX \
+     -DDOC_INSTALL_DIR="doc" \
+     -DMAN_INSTALL_DIR=/usr/man \
+     .. || exit 1
+diff -ruBN /tmp/rinutils/rinutils.SlackBuild.log /source/d/rinutils/rinutils.SlackBuild.log
+--- /tmp/rinutils/rinutils.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/d/rinutils/rinutils.SlackBuild.log	2021-01-20 22:34:56.000000000 +0000
+@@ -0,0 +1,164 @@
++rinutils-0.8.0/
++rinutils-0.8.0/NEWS.asciidoc
++rinutils-0.8.0/run-tests.pl
++rinutils-0.8.0/RinutilsConfig.cmake.in
++rinutils-0.8.0/CI-testing/
++rinutils-0.8.0/CI-testing/continuous-integration-testing.pl
++rinutils-0.8.0/cmake/
++rinutils-0.8.0/cmake/shlomif_common_bootstrap.cmake
++rinutils-0.8.0/README.asciidoc
++rinutils-0.8.0/CMakeLists.txt
++rinutils-0.8.0/LICENSE
++rinutils-0.8.0/rinutils.spec.in
++rinutils-0.8.0/librinutils.pc.in
++rinutils-0.8.0/.tidyallrc
++rinutils-0.8.0/ver.txt
++rinutils-0.8.0/rinutils/
++rinutils-0.8.0/rinutils/include/
++rinutils-0.8.0/rinutils/include/rinutils/
++rinutils-0.8.0/rinutils/include/rinutils/count.h
++rinutils-0.8.0/rinutils/include/rinutils/likely.h
++rinutils-0.8.0/rinutils/include/rinutils/dllexport.h
++rinutils-0.8.0/rinutils/include/rinutils/alloc_wrap.h
++rinutils-0.8.0/rinutils/include/rinutils/exit_error.h
++rinutils-0.8.0/rinutils/include/rinutils/unused.h
++rinutils-0.8.0/rinutils/include/rinutils/typeof_wrap.h
++rinutils-0.8.0/rinutils/include/rinutils/rin_cmocka.h
++rinutils-0.8.0/rinutils/include/rinutils/min_and_max.h
++rinutils-0.8.0/rinutils/include/rinutils/bit_rw.h
++rinutils-0.8.0/rinutils/include/rinutils/longlong.h
++rinutils-0.8.0/rinutils/include/rinutils/rinutils.h
++rinutils-0.8.0/rinutils/include/rinutils/str_utils.h
++rinutils-0.8.0/rinutils/include/rinutils/portable_time.h
++rinutils-0.8.0/t/
++rinutils-0.8.0/t/scripts/
++rinutils-0.8.0/t/scripts/unity
++rinutils-0.8.0/t/tidyall.t
++rinutils-0.8.0/t/unit-count.t
++rinutils-0.8.0/t/unit-ll-formats.t
++rinutils-0.8.0/t/style-trailing-space.t
++rinutils-0.8.0/t/config/
++rinutils-0.8.0/t/config/alternate-interpreters--mswin.yml
++rinutils-0.8.0/t/config/alternate-interpreters.yml
++rinutils-0.8.0/t/bit-reader-and-writer-test.c
++rinutils-0.8.0/t/build-process.t
++rinutils-0.8.0/t/unit-str-utils.t
++rinutils-0.8.0/t/lib/
++rinutils-0.8.0/t/lib/Rinutils/
++rinutils-0.8.0/t/lib/Rinutils/InlineWrap.pm
++rinutils-0.8.0/t/lib/Rinutils/Paths.pm
++rinutils-0.8.0/t/lib/Rinutils/Paths/
++rinutils-0.8.0/t/lib/Rinutils/Paths/Base.pm
++rinutils-0.8.0/t/unit-min-and-max.t
++rinutils-0.8.0/.gitignore
++rinutils-0.8.0/.travis.yml
++-- The C compiler identification is GNU 10.2.0
++-- The CXX compiler identification is GNU 10.2.0
++-- Detecting C compiler ABI info
++-- Detecting C compiler ABI info - done
++-- Check for working C compiler: /usr/bin/cc - skipped
++-- Detecting C compile features
++-- Detecting C compile features - done
++-- Detecting CXX compiler ABI info
++-- Detecting CXX compiler ABI info - done
++-- Check for working CXX compiler: /usr/bin/c++ - skipped
++-- Detecting CXX compile features
++-- Detecting CXX compile features - done
++CMake Warning at cmake/shlomif_common_bootstrap.cmake:7 (MESSAGE):
++  Could not find Shlomif_Common.cmake - you can find it here:
++  https://github.com/shlomif/shlomif-cmake-modules ; trying to download it
++  for you.
++Call Stack (most recent call first):
++  CMakeLists.txt:4 (INCLUDE)
++
++
++-- Found Perl: /usr/bin/perl (found version "5.32.0") 
++-- Found PkgConfig: /usr/bin/pkg-config (found version "0.29.2") 
++-- Performing Test FLAG_EXISTS_1
++-- Performing Test FLAG_EXISTS_1 - Success
++-- Performing Test FLAG_EXISTS_2
++-- Performing Test FLAG_EXISTS_2 - Success
++-- Configuring done
++-- Generating done
++CMake Warning:
++  Manually-specified variables were not used by the project:
++
++    DOC_INSTALL_DIR
++    LIB_SUFFIX
++    MAN_INSTALL_DIR
++
++
++-- Build files have been written to: /tmp/rinutils-0.8.0/cmake-build
++Install the project...
++-- Install configuration: ""
++-- Installing: /tmp/package-rinutils/usr/include/rinutils/alloc_wrap.h
++-- Installing: /tmp/package-rinutils/usr/include/rinutils/bit_rw.h
++-- Installing: /tmp/package-rinutils/usr/include/rinutils/count.h
++-- Installing: /tmp/package-rinutils/usr/include/rinutils/dllexport.h
++-- Installing: /tmp/package-rinutils/usr/include/rinutils/exit_error.h
++-- Installing: /tmp/package-rinutils/usr/include/rinutils/likely.h
++-- Installing: /tmp/package-rinutils/usr/include/rinutils/longlong.h
++-- Installing: /tmp/package-rinutils/usr/include/rinutils/min_and_max.h
++-- Installing: /tmp/package-rinutils/usr/include/rinutils/portable_time.h
++-- Installing: /tmp/package-rinutils/usr/include/rinutils/rin_cmocka.h
++-- Installing: /tmp/package-rinutils/usr/include/rinutils/rinutils.h
++-- Installing: /tmp/package-rinutils/usr/include/rinutils/str_utils.h
++-- Installing: /tmp/package-rinutils/usr/include/rinutils/typeof_wrap.h
++-- Installing: /tmp/package-rinutils/usr/include/rinutils/unused.h
++-- Installing: /tmp/package-rinutils/usr/lib/pkgconfig/librinutils.pc
++-- Installing: /tmp/package-rinutils/usr/lib/cmake/Rinutils/RinutilsConfig.cmake
++-- Installing: /tmp/package-rinutils/usr/lib/cmake/Rinutils/RinutilsConfigVersion.cmake
++find: ‘/tmp/package-rinutils/usr/man’: No such file or directory
++find: ‘/tmp/package-rinutils/usr/man’: No such file or directory
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++
++No symbolic links were found, so we won't make an installation script.
++You can make your own later in ./install/doinst.sh and rebuild the
++package if you like.
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/rinutils-0.8.0-x86_64-1.txz
++
++./
++install/
++install/slack-desc
++usr/
++usr/doc/
++usr/doc/rinutils-0.8.0/
++usr/doc/rinutils-0.8.0/NEWS.asciidoc
++usr/doc/rinutils-0.8.0/README.asciidoc
++usr/include/
++usr/include/rinutils/
++usr/include/rinutils/alloc_wrap.h
++usr/include/rinutils/bit_rw.h
++usr/include/rinutils/count.h
++usr/include/rinutils/dllexport.h
++usr/include/rinutils/exit_error.h
++usr/include/rinutils/likely.h
++usr/include/rinutils/longlong.h
++usr/include/rinutils/min_and_max.h
++usr/include/rinutils/portable_time.h
++usr/include/rinutils/rin_cmocka.h
++usr/include/rinutils/rinutils.h
++usr/include/rinutils/str_utils.h
++usr/include/rinutils/typeof_wrap.h
++usr/include/rinutils/unused.h
++usr/lib/
++usr/lib/cmake/
++usr/lib/cmake/Rinutils/
++usr/lib/cmake/Rinutils/RinutilsConfig.cmake
++usr/lib/cmake/Rinutils/RinutilsConfigVersion.cmake
++usr/lib/pkgconfig/
++usr/lib/pkgconfig/librinutils.pc
++
++Slackware package /tmp/rinutils-0.8.0-x86_64-1.txz created.
++

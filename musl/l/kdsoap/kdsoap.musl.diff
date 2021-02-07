@@ -1,0 +1,1792 @@
+diff -ruBN /tmp/kdsoap/kdsoap.SlackBuild /source/l/kdsoap/kdsoap.SlackBuild
+--- /tmp/kdsoap/kdsoap.SlackBuild	2020-11-30 20:49:40.000000000 +0000
++++ /source/l/kdsoap/kdsoap.SlackBuild	2021-01-11 11:23:38.000000000 +0000
+@@ -59,7 +59,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "armv7hl" ]; then
+   SLKCFLAGS="-O3 -march=armv7-a -mfpu=vfpv3-d16"
+   LIBDIRSUFFIX=""
+@@ -99,6 +99,7 @@
+     -DCMAKE_INSTALL_MANDIR=/usr/man \
+     -DCMAKE_INSTALL_DOCDIR=/usr/doc/$PKGNAM-$VERSION \
+     -DLIB_SUFFIX=${LIBDIRSUFFIX} \
++-DCMAKE_INSTALL_LIBDIR=lib$LIBDIRSUFFIX \
+     -DBUILD_TESTS=OFF \
+     .. || exit 1
+   make $NUMJOBS || make || exit 1
+diff -ruBN /tmp/kdsoap/kdsoap.SlackBuild.log /source/l/kdsoap/kdsoap.SlackBuild.log
+--- /tmp/kdsoap/kdsoap.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/l/kdsoap/kdsoap.SlackBuild.log	2021-01-11 11:27:12.000000000 +0000
+@@ -0,0 +1,1768 @@
++kdsoap-1.10.0/
++kdsoap-1.10.0/.clazy
++kdsoap-1.10.0/.codedocs
++kdsoap-1.10.0/.gitignore
++kdsoap-1.10.0/.gitmodules
++kdsoap-1.10.0/.krazy
++kdsoap-1.10.0/CMakeLists.txt
++kdsoap-1.10.0/CPackIgnores.txt
++kdsoap-1.10.0/Doxyfile
++kdsoap-1.10.0/FindKDSoap.cmake
++kdsoap-1.10.0/INSTALL-cmake.txt
++kdsoap-1.10.0/INSTALL.txt
++kdsoap-1.10.0/KDSoapConfig-buildtree.cmake.in
++kdsoap-1.10.0/KDSoapConfig.cmake.in
++kdsoap-1.10.0/KDSoapMacros.cmake
++kdsoap-1.10.0/LICENSE.txt
++kdsoap-1.10.0/LICENSES/
++kdsoap-1.10.0/LICENSES/BSD-3-Clause.txt
++kdsoap-1.10.0/LICENSES/GPL-2.0-only.txt
++kdsoap-1.10.0/LICENSES/GPL-3.0-only.txt
++kdsoap-1.10.0/LICENSES/LGPL-2.0-or-later.txt
++kdsoap-1.10.0/LICENSES/LGPL-2.1-only.txt
++kdsoap-1.10.0/LICENSES/LGPL-3.0-only.txt
++kdsoap-1.10.0/LICENSES/LicenseRef-KDAB-KDSoap-AGPL3-Modified.txt
++kdsoap-1.10.0/LICENSES/LicenseRef-KDAB-KDSoap-US.txt
++kdsoap-1.10.0/LICENSES/LicenseRef-KDAB-KDSoap.txt
++kdsoap-1.10.0/README-commercial.txt
++kdsoap-1.10.0/README.txt
++kdsoap-1.10.0/ReadMe.md
++kdsoap-1.10.0/autogen.py
++kdsoap-1.10.0/autogen/
++kdsoap-1.10.0/autogen/.gitignore
++kdsoap-1.10.0/autogen/__init__.py
++kdsoap-1.10.0/autogen/autogen.py
++kdsoap-1.10.0/autogen/configure.bat.in
++kdsoap-1.10.0/autogen/configure.py
++kdsoap-1.10.0/autogen/configure.sh.in
++kdsoap-1.10.0/autogen/cpack.cmake.in
++kdsoap-1.10.0/autogen/cpack.py
++kdsoap-1.10.0/autogen/header.py
++kdsoap-1.10.0/cmake/
++kdsoap-1.10.0/cmake/COPYING-CMAKE-SCRIPTS
++kdsoap-1.10.0/cmake/ECMGenerateHeaders.cmake
++kdsoap-1.10.0/cmake/ECMGeneratePriFile.cmake
++kdsoap-1.10.0/cmake/ECMQueryQmake.cmake
++kdsoap-1.10.0/cmake/InstallLocation.cmake
++kdsoap-1.10.0/conan/
++kdsoap-1.10.0/conan/README.txt
++kdsoap-1.10.0/conan/conanfile.py
++kdsoap-1.10.0/debian.changelog
++kdsoap-1.10.0/debian.compat
++kdsoap-1.10.0/debian.control
++kdsoap-1.10.0/debian.rules
++kdsoap-1.10.0/doc/
++kdsoap-1.10.0/doc/CHANGES_1_1.txt
++kdsoap-1.10.0/doc/CHANGES_1_10.txt
++kdsoap-1.10.0/doc/CHANGES_1_2.txt
++kdsoap-1.10.0/doc/CHANGES_1_3.txt
++kdsoap-1.10.0/doc/CHANGES_1_4.txt
++kdsoap-1.10.0/doc/CHANGES_1_5.txt
++kdsoap-1.10.0/doc/CHANGES_1_5_1.txt
++kdsoap-1.10.0/doc/CHANGES_1_6.txt
++kdsoap-1.10.0/doc/CHANGES_1_7.txt
++kdsoap-1.10.0/doc/CHANGES_1_8.txt
++kdsoap-1.10.0/doc/CHANGES_1_9.txt
++kdsoap-1.10.0/doc/KDSoap-CopyrightAssignmentForm.docx
++kdsoap-1.10.0/doc/config/
++kdsoap-1.10.0/doc/config/doxygen.css
++kdsoap-1.10.0/doc/config/footer.html
++kdsoap-1.10.0/doc/config/header.html
++kdsoap-1.10.0/doc/kdsoap-server-design.odg
++kdsoap-1.10.0/doc/kdsoap-server-design.png
++kdsoap-1.10.0/doc/manual/
++kdsoap-1.10.0/doc/manual/kdsoap.pdf
++kdsoap-1.10.0/examples/
++kdsoap-1.10.0/examples/CMakeLists.txt
++kdsoap-1.10.0/examples/bank_gui/
++kdsoap-1.10.0/examples/bank_gui/BLZService.wsdl
++kdsoap-1.10.0/examples/bank_gui/CMakeLists.txt
++kdsoap-1.10.0/examples/bank_gui/anim.mng
++kdsoap-1.10.0/examples/bank_gui/bank_gui.cpp
++kdsoap-1.10.0/examples/bank_gui/bank_gui.pro
++kdsoap-1.10.0/examples/bank_gui/mainwindow.cpp
++kdsoap-1.10.0/examples/bank_gui/mainwindow.h
++kdsoap-1.10.0/examples/bank_gui/resources.qrc
++kdsoap-1.10.0/examples/bank_wsdl/
++kdsoap-1.10.0/examples/bank_wsdl/BLZService.wsdl
++kdsoap-1.10.0/examples/bank_wsdl/CMakeLists.txt
++kdsoap-1.10.0/examples/bank_wsdl/bank_wsdl.cpp
++kdsoap-1.10.0/examples/bank_wsdl/bank_wsdl.pro
++kdsoap-1.10.0/examples/examples.pri
++kdsoap-1.10.0/examples/examples.pro
++kdsoap-1.10.0/examples/helloworld_client/
++kdsoap-1.10.0/examples/helloworld_client/CMakeLists.txt
++kdsoap-1.10.0/examples/helloworld_client/helloworld.wsdl
++kdsoap-1.10.0/examples/helloworld_client/helloworld_client.h
++kdsoap-1.10.0/examples/helloworld_client/helloworld_client.pro
++kdsoap-1.10.0/examples/helloworld_client/main.cpp
++kdsoap-1.10.0/examples/helloworld_server/
++kdsoap-1.10.0/examples/helloworld_server/CMakeLists.txt
++kdsoap-1.10.0/examples/helloworld_server/helloworld.wsdl
++kdsoap-1.10.0/examples/helloworld_server/helloworld_server.h
++kdsoap-1.10.0/examples/helloworld_server/helloworld_server.pro
++kdsoap-1.10.0/examples/helloworld_server/main.cpp
++kdsoap-1.10.0/features/
++kdsoap-1.10.0/features/CMakeLists.txt
++kdsoap-1.10.0/features/features.pro
++kdsoap-1.10.0/features/kdsoap.prf
++kdsoap-1.10.0/g++.pri
++kdsoap-1.10.0/genignore.py
++kdsoap-1.10.0/images/
++kdsoap-1.10.0/images/footer.html
++kdsoap-1.10.0/images/kdab-small.png
++kdsoap-1.10.0/images/kdsoap-medium.png
++kdsoap-1.10.0/images/kdsoap-small.png
++kdsoap-1.10.0/images/xmldiagram2.png
++kdsoap-1.10.0/kdsoap.bat
++kdsoap-1.10.0/kdsoap.pri
++kdsoap-1.10.0/kdsoap.pro
++kdsoap-1.10.0/kdwsdl2cpp.pri
++kdsoap-1.10.0/kdwsdl2cpp/
++kdsoap-1.10.0/kdwsdl2cpp/CMakeLists.txt
++kdsoap-1.10.0/kdwsdl2cpp/kdwsdl2cpp.pro
++kdsoap-1.10.0/kdwsdl2cpp/kode_export.h
++kdsoap-1.10.0/kdwsdl2cpp/libkode/
++kdsoap-1.10.0/kdwsdl2cpp/schemas/
++kdsoap-1.10.0/kdwsdl2cpp/schemas/schemas.qrc
++kdsoap-1.10.0/kdwsdl2cpp/schemas/soapenc-1.1.xsd
++kdsoap-1.10.0/kdwsdl2cpp/schemas/soapenc-1.2.xsd
++kdsoap-1.10.0/kdwsdl2cpp/src/
++kdsoap-1.10.0/kdwsdl2cpp/src/compiler.cpp
++kdsoap-1.10.0/kdwsdl2cpp/src/compiler.h
++kdsoap-1.10.0/kdwsdl2cpp/src/converter.cpp
++kdsoap-1.10.0/kdwsdl2cpp/src/converter.h
++kdsoap-1.10.0/kdwsdl2cpp/src/converter_clientstub.cpp
++kdsoap-1.10.0/kdwsdl2cpp/src/converter_complextype.cpp
++kdsoap-1.10.0/kdwsdl2cpp/src/converter_serverstub.cpp
++kdsoap-1.10.0/kdwsdl2cpp/src/converter_simpletype.cpp
++kdsoap-1.10.0/kdwsdl2cpp/src/creator.cpp
++kdsoap-1.10.0/kdwsdl2cpp/src/creator.h
++kdsoap-1.10.0/kdwsdl2cpp/src/elementargumentserializer.cpp
++kdsoap-1.10.0/kdwsdl2cpp/src/elementargumentserializer.h
++kdsoap-1.10.0/kdwsdl2cpp/src/kdwsdl2cpp.pro
++kdsoap-1.10.0/kdwsdl2cpp/src/kdwsdl2cpp_lib.pro
++kdsoap-1.10.0/kdwsdl2cpp/src/kwsdlcfg.xsd
++kdsoap-1.10.0/kdwsdl2cpp/src/main.cpp
++kdsoap-1.10.0/kdwsdl2cpp/src/namemapper.cpp
++kdsoap-1.10.0/kdwsdl2cpp/src/namemapper.h
++kdsoap-1.10.0/kdwsdl2cpp/src/settings.cpp
++kdsoap-1.10.0/kdwsdl2cpp/src/settings.h
++kdsoap-1.10.0/kdwsdl2cpp/src/src.pro
++kdsoap-1.10.0/kdwsdl2cpp/src/typemap.cpp
++kdsoap-1.10.0/kdwsdl2cpp/src/typemap.h
++kdsoap-1.10.0/kdwsdl2cpp/wsdl/
++kdsoap-1.10.0/kdwsdl2cpp/wsdl/abstractbinding.h
++kdsoap-1.10.0/kdwsdl2cpp/wsdl/binding.cpp
++kdsoap-1.10.0/kdwsdl2cpp/wsdl/binding.h
++kdsoap-1.10.0/kdwsdl2cpp/wsdl/bindingoperation.cpp
++kdsoap-1.10.0/kdwsdl2cpp/wsdl/bindingoperation.h
++kdsoap-1.10.0/kdwsdl2cpp/wsdl/definitions.cpp
++kdsoap-1.10.0/kdwsdl2cpp/wsdl/definitions.h
++kdsoap-1.10.0/kdwsdl2cpp/wsdl/element.cpp
++kdsoap-1.10.0/kdwsdl2cpp/wsdl/element.h
++kdsoap-1.10.0/kdwsdl2cpp/wsdl/fault.cpp
++kdsoap-1.10.0/kdwsdl2cpp/wsdl/fault.h
++kdsoap-1.10.0/kdwsdl2cpp/wsdl/import.cpp
++kdsoap-1.10.0/kdwsdl2cpp/wsdl/import.h
++kdsoap-1.10.0/kdwsdl2cpp/wsdl/message.cpp
++kdsoap-1.10.0/kdwsdl2cpp/wsdl/message.h
++kdsoap-1.10.0/kdwsdl2cpp/wsdl/operation.cpp
++kdsoap-1.10.0/kdwsdl2cpp/wsdl/operation.h
++kdsoap-1.10.0/kdwsdl2cpp/wsdl/param.cpp
++kdsoap-1.10.0/kdwsdl2cpp/wsdl/param.h
++kdsoap-1.10.0/kdwsdl2cpp/wsdl/part.cpp
++kdsoap-1.10.0/kdwsdl2cpp/wsdl/part.h
++kdsoap-1.10.0/kdwsdl2cpp/wsdl/port.cpp
++kdsoap-1.10.0/kdwsdl2cpp/wsdl/port.h
++kdsoap-1.10.0/kdwsdl2cpp/wsdl/porttype.cpp
++kdsoap-1.10.0/kdwsdl2cpp/wsdl/porttype.h
++kdsoap-1.10.0/kdwsdl2cpp/wsdl/service.cpp
++kdsoap-1.10.0/kdwsdl2cpp/wsdl/service.h
++kdsoap-1.10.0/kdwsdl2cpp/wsdl/soapbinding.cpp
++kdsoap-1.10.0/kdwsdl2cpp/wsdl/soapbinding.h
++kdsoap-1.10.0/kdwsdl2cpp/wsdl/type.cpp
++kdsoap-1.10.0/kdwsdl2cpp/wsdl/type.h
++kdsoap-1.10.0/kdwsdl2cpp/wsdl/wsdl.cpp
++kdsoap-1.10.0/kdwsdl2cpp/wsdl/wsdl.h
++kdsoap-1.10.0/kdwsdl2cpp/wsdl/wsdl.pro
++kdsoap-1.10.0/qt5-kdsoap.dsc
++kdsoap-1.10.0/qt5-kdsoap.spec
++kdsoap-1.10.0/src/
++kdsoap-1.10.0/src/CMakeLists.txt
++kdsoap-1.10.0/src/KDSoapClient/
++kdsoap-1.10.0/src/KDSoapClient/CMakeLists.txt
++kdsoap-1.10.0/src/KDSoapClient/KDDateTime.cpp
++kdsoap-1.10.0/src/KDSoapClient/KDDateTime.h
++kdsoap-1.10.0/src/KDSoapClient/KDQName.cpp
++kdsoap-1.10.0/src/KDSoapClient/KDQName.h
++kdsoap-1.10.0/src/KDSoapClient/KDSoap.h
++kdsoap-1.10.0/src/KDSoapClient/KDSoapAuthentication.cpp
++kdsoap-1.10.0/src/KDSoapClient/KDSoapAuthentication.h
++kdsoap-1.10.0/src/KDSoapClient/KDSoapClient.pro
++kdsoap-1.10.0/src/KDSoapClient/KDSoapClientInterface.cpp
++kdsoap-1.10.0/src/KDSoapClient/KDSoapClientInterface.h
++kdsoap-1.10.0/src/KDSoapClient/KDSoapClientInterface_p.h
++kdsoap-1.10.0/src/KDSoapClient/KDSoapClientThread.cpp
++kdsoap-1.10.0/src/KDSoapClient/KDSoapClientThread_p.h
++kdsoap-1.10.0/src/KDSoapClient/KDSoapEndpointReference.cpp
++kdsoap-1.10.0/src/KDSoapClient/KDSoapEndpointReference.h
++kdsoap-1.10.0/src/KDSoapClient/KDSoapFaultException.cpp
++kdsoap-1.10.0/src/KDSoapClient/KDSoapFaultException.h
++kdsoap-1.10.0/src/KDSoapClient/KDSoapGlobal.h
++kdsoap-1.10.0/src/KDSoapClient/KDSoapJob.cpp
++kdsoap-1.10.0/src/KDSoapClient/KDSoapJob.h
++kdsoap-1.10.0/src/KDSoapClient/KDSoapMessage.cpp
++kdsoap-1.10.0/src/KDSoapClient/KDSoapMessage.h
++kdsoap-1.10.0/src/KDSoapClient/KDSoapMessageAddressingProperties.cpp
++kdsoap-1.10.0/src/KDSoapClient/KDSoapMessageAddressingProperties.h
++kdsoap-1.10.0/src/KDSoapClient/KDSoapMessageReader.cpp
++kdsoap-1.10.0/src/KDSoapClient/KDSoapMessageReader_p.h
++kdsoap-1.10.0/src/KDSoapClient/KDSoapMessageWriter.cpp
++kdsoap-1.10.0/src/KDSoapClient/KDSoapMessageWriter_p.h
++kdsoap-1.10.0/src/KDSoapClient/KDSoapNamespaceManager.cpp
++kdsoap-1.10.0/src/KDSoapClient/KDSoapNamespaceManager.h
++kdsoap-1.10.0/src/KDSoapClient/KDSoapNamespacePrefixes.cpp
++kdsoap-1.10.0/src/KDSoapClient/KDSoapNamespacePrefixes_p.h
++kdsoap-1.10.0/src/KDSoapClient/KDSoapPendingCall.cpp
++kdsoap-1.10.0/src/KDSoapClient/KDSoapPendingCall.h
++kdsoap-1.10.0/src/KDSoapClient/KDSoapPendingCallWatcher.cpp
++kdsoap-1.10.0/src/KDSoapClient/KDSoapPendingCallWatcher.h
++kdsoap-1.10.0/src/KDSoapClient/KDSoapPendingCallWatcher_p.h
++kdsoap-1.10.0/src/KDSoapClient/KDSoapPendingCall_p.h
++kdsoap-1.10.0/src/KDSoapClient/KDSoapReplySslHandler.cpp
++kdsoap-1.10.0/src/KDSoapClient/KDSoapReplySslHandler_p.h
++kdsoap-1.10.0/src/KDSoapClient/KDSoapSslHandler.cpp
++kdsoap-1.10.0/src/KDSoapClient/KDSoapSslHandler.h
++kdsoap-1.10.0/src/KDSoapClient/KDSoapUdpClient.cpp
++kdsoap-1.10.0/src/KDSoapClient/KDSoapUdpClient.h
++kdsoap-1.10.0/src/KDSoapClient/KDSoapUdpClient_p.h
++kdsoap-1.10.0/src/KDSoapClient/KDSoapValue.cpp
++kdsoap-1.10.0/src/KDSoapClient/KDSoapValue.h
++kdsoap-1.10.0/src/KDSoapClient/doxygen.cpp
++kdsoap-1.10.0/src/KDSoapServer/
++kdsoap-1.10.0/src/KDSoapServer/CMakeLists.txt
++kdsoap-1.10.0/src/KDSoapServer/KDSoapDelayedResponseHandle.cpp
++kdsoap-1.10.0/src/KDSoapServer/KDSoapDelayedResponseHandle.h
++kdsoap-1.10.0/src/KDSoapServer/KDSoapServer.cpp
++kdsoap-1.10.0/src/KDSoapServer/KDSoapServer.h
++kdsoap-1.10.0/src/KDSoapServer/KDSoapServer.pro
++kdsoap-1.10.0/src/KDSoapServer/KDSoapServerAuthInterface.cpp
++kdsoap-1.10.0/src/KDSoapServer/KDSoapServerAuthInterface.h
++kdsoap-1.10.0/src/KDSoapServer/KDSoapServerCustomVerbRequestInterface.cpp
++kdsoap-1.10.0/src/KDSoapServer/KDSoapServerCustomVerbRequestInterface.h
++kdsoap-1.10.0/src/KDSoapServer/KDSoapServerGlobal.h
++kdsoap-1.10.0/src/KDSoapServer/KDSoapServerObjectInterface.cpp
++kdsoap-1.10.0/src/KDSoapServer/KDSoapServerObjectInterface.h
++kdsoap-1.10.0/src/KDSoapServer/KDSoapServerRawXMLInterface.cpp
++kdsoap-1.10.0/src/KDSoapServer/KDSoapServerRawXMLInterface.h
++kdsoap-1.10.0/src/KDSoapServer/KDSoapServerSocket.cpp
++kdsoap-1.10.0/src/KDSoapServer/KDSoapServerSocket_p.h
++kdsoap-1.10.0/src/KDSoapServer/KDSoapServerThread.cpp
++kdsoap-1.10.0/src/KDSoapServer/KDSoapServerThread_p.h
++kdsoap-1.10.0/src/KDSoapServer/KDSoapSocketList.cpp
++kdsoap-1.10.0/src/KDSoapServer/KDSoapSocketList_p.h
++kdsoap-1.10.0/src/KDSoapServer/KDSoapThreadPool.cpp
++kdsoap-1.10.0/src/KDSoapServer/KDSoapThreadPool.h
++kdsoap-1.10.0/src/src.pro
++kdsoap-1.10.0/testtools/
++kdsoap-1.10.0/testtools/CMakeLists.txt
++kdsoap-1.10.0/testtools/certs/
++kdsoap-1.10.0/testtools/certs/cacert.pem
++kdsoap-1.10.0/testtools/certs/cakey.pem
++kdsoap-1.10.0/testtools/certs/test-127.0.0.1-cert.pem
++kdsoap-1.10.0/testtools/certs/test-127.0.0.1-key.pem
++kdsoap-1.10.0/testtools/httpserver_p.cpp
++kdsoap-1.10.0/testtools/httpserver_p.h
++kdsoap-1.10.0/testtools/testtools.pro
++kdsoap-1.10.0/testtools/testtools.qrc
++kdsoap-1.10.0/unittests/
++kdsoap-1.10.0/unittests/CMakeLists.txt
++kdsoap-1.10.0/unittests/QSharedPointer_include/
++kdsoap-1.10.0/unittests/QSharedPointer_include/CMakeLists.txt
++kdsoap-1.10.0/unittests/QSharedPointer_include/QSharedPointer_include.pro
++kdsoap-1.10.0/unittests/QSharedPointer_include/test_qsharedpointer_include.cpp
++kdsoap-1.10.0/unittests/QSharedPointer_include/test_qsharedpointer_include_wsdl.wsdl
++kdsoap-1.10.0/unittests/add_test_subdir.sh
++kdsoap-1.10.0/unittests/basic/
++kdsoap-1.10.0/unittests/basic/CMakeLists.txt
++kdsoap-1.10.0/unittests/basic/basic.cpp
++kdsoap-1.10.0/unittests/basic/basic.pro
++kdsoap-1.10.0/unittests/builtinhttp/
++kdsoap-1.10.0/unittests/builtinhttp/CMakeLists.txt
++kdsoap-1.10.0/unittests/builtinhttp/builtinhttp.cpp
++kdsoap-1.10.0/unittests/builtinhttp/builtinhttp.pro
++kdsoap-1.10.0/unittests/clearbooks/
++kdsoap-1.10.0/unittests/clearbooks/CMakeLists.txt
++kdsoap-1.10.0/unittests/clearbooks/clearbooks.pro
++kdsoap-1.10.0/unittests/clearbooks/clearbooks.wsdl
++kdsoap-1.10.0/unittests/clearbooks/test_clearbooks.cpp
++kdsoap-1.10.0/unittests/cribis/
++kdsoap-1.10.0/unittests/cribis/CMakeLists.txt
++kdsoap-1.10.0/unittests/cribis/CribisSKWS.wsdl
++kdsoap-1.10.0/unittests/cribis/cribis.pro
++kdsoap-1.10.0/unittests/cribis/test_cribis.cpp
++kdsoap-1.10.0/unittests/date_example/
++kdsoap-1.10.0/unittests/date_example/CMakeLists.txt
++kdsoap-1.10.0/unittests/date_example/date_example.cpp
++kdsoap-1.10.0/unittests/date_example/date_example.pro
++kdsoap-1.10.0/unittests/date_example/date_example.wsdl
++kdsoap-1.10.0/unittests/default_attribute_value_wsdl/
++kdsoap-1.10.0/unittests/default_attribute_value_wsdl/CMakeLists.txt
++kdsoap-1.10.0/unittests/default_attribute_value_wsdl/default_attribute_value.wsdl
++kdsoap-1.10.0/unittests/default_attribute_value_wsdl/default_attribute_value_wsdl.cpp
++kdsoap-1.10.0/unittests/default_attribute_value_wsdl/default_attribute_value_wsdl.pro
++kdsoap-1.10.0/unittests/dv_terminalauth/
++kdsoap-1.10.0/unittests/dv_terminalauth/BasicTypes_DV_TerminalAuth.xsd
++kdsoap-1.10.0/unittests/dv_terminalauth/CMakeLists.txt
++kdsoap-1.10.0/unittests/dv_terminalauth/WS_DV_TerminalAuth.wsdl
++kdsoap-1.10.0/unittests/dv_terminalauth/dv_terminalauth.cpp
++kdsoap-1.10.0/unittests/dv_terminalauth/dv_terminalauth.pro
++kdsoap-1.10.0/unittests/dwservice_12_wsdl/
++kdsoap-1.10.0/unittests/dwservice_12_wsdl/CMakeLists.txt
++kdsoap-1.10.0/unittests/dwservice_12_wsdl/DWService_12.wsdl
++kdsoap-1.10.0/unittests/dwservice_12_wsdl/dwservice_12_wsdl.pro
++kdsoap-1.10.0/unittests/dwservice_12_wsdl/test_dwservice_12_wsdl.cpp
++kdsoap-1.10.0/unittests/dwservice_combined_wsdl/
++kdsoap-1.10.0/unittests/dwservice_combined_wsdl/CMakeLists.txt
++kdsoap-1.10.0/unittests/dwservice_combined_wsdl/DWServiceCombined.wsdl
++kdsoap-1.10.0/unittests/dwservice_combined_wsdl/dwservice_combined_wsdl.pro
++kdsoap-1.10.0/unittests/dwservice_combined_wsdl/test_dwservice_combined_wsdl.cpp
++kdsoap-1.10.0/unittests/dwservice_wsdl/
++kdsoap-1.10.0/unittests/dwservice_wsdl/CMakeLists.txt
++kdsoap-1.10.0/unittests/dwservice_wsdl/DWService.wsdl
++kdsoap-1.10.0/unittests/dwservice_wsdl/dwservice_wsdl.pro
++kdsoap-1.10.0/unittests/dwservice_wsdl/test_dwservice_wsdl.cpp
++kdsoap-1.10.0/unittests/element_ns_wsdl/
++kdsoap-1.10.0/unittests/element_ns_wsdl/CMakeLists.txt
++kdsoap-1.10.0/unittests/element_ns_wsdl/element_ns_wsdl.pro
++kdsoap-1.10.0/unittests/element_ns_wsdl/test.wsdl
++kdsoap-1.10.0/unittests/element_ns_wsdl/testcall.cpp
++kdsoap-1.10.0/unittests/element_ns_wsdl/testcall.h
++kdsoap-1.10.0/unittests/empty_element_wsdl/
++kdsoap-1.10.0/unittests/empty_element_wsdl/CMakeLists.txt
++kdsoap-1.10.0/unittests/empty_element_wsdl/empty_element.wsdl
++kdsoap-1.10.0/unittests/empty_element_wsdl/empty_element_wsdl.cpp
++kdsoap-1.10.0/unittests/empty_element_wsdl/empty_element_wsdl.pro
++kdsoap-1.10.0/unittests/empty_list_wsdl/
++kdsoap-1.10.0/unittests/empty_list_wsdl/1.xsd
++kdsoap-1.10.0/unittests/empty_list_wsdl/2.xsd
++kdsoap-1.10.0/unittests/empty_list_wsdl/3.xsd
++kdsoap-1.10.0/unittests/empty_list_wsdl/CMakeLists.txt
++kdsoap-1.10.0/unittests/empty_list_wsdl/empty_list.wsdl
++kdsoap-1.10.0/unittests/empty_list_wsdl/empty_list_wsdl.cpp
++kdsoap-1.10.0/unittests/empty_list_wsdl/empty_list_wsdl.pro
++kdsoap-1.10.0/unittests/empty_response_wsdl/
++kdsoap-1.10.0/unittests/empty_response_wsdl/CMakeLists.txt
++kdsoap-1.10.0/unittests/empty_response_wsdl/empty_response_wsdl.pro
++kdsoap-1.10.0/unittests/empty_response_wsdl/test.wsdl
++kdsoap-1.10.0/unittests/empty_response_wsdl/test_issue1.cpp
++kdsoap-1.10.0/unittests/encapsecurity/
++kdsoap-1.10.0/unittests/encapsecurity/CMakeLists.txt
++kdsoap-1.10.0/unittests/encapsecurity/authstateless.wsdl
++kdsoap-1.10.0/unittests/encapsecurity/encapsecurity.pro
++kdsoap-1.10.0/unittests/encapsecurity/test_encapsecurity.cpp
++kdsoap-1.10.0/unittests/encapsecurity/xsdfiles/
++kdsoap-1.10.0/unittests/encapsecurity/xsdfiles/file0.xsd
++kdsoap-1.10.0/unittests/encapsecurity/xsdfiles/file1.xsd
++kdsoap-1.10.0/unittests/encapsecurity/xsdfiles/file2.xsd
++kdsoap-1.10.0/unittests/encapsecurity/xsdfiles/file3.xsd
++kdsoap-1.10.0/unittests/encapsecurity/xsdfiles/file4.xsd
++kdsoap-1.10.0/unittests/encapsecurity/xsdfiles/schema.xsd
++kdsoap-1.10.0/unittests/enum_escape/
++kdsoap-1.10.0/unittests/enum_escape/CMakeLists.txt
++kdsoap-1.10.0/unittests/enum_escape/enum_escape.pro
++kdsoap-1.10.0/unittests/enum_escape/test_enum.cpp
++kdsoap-1.10.0/unittests/enum_escape/test_enum.wsdl
++kdsoap-1.10.0/unittests/enzo/
++kdsoap-1.10.0/unittests/enzo/CMakeLists.txt
++kdsoap-1.10.0/unittests/enzo/EnzoService.wsdl
++kdsoap-1.10.0/unittests/enzo/EnzoServiceWsdl0.xml
++kdsoap-1.10.0/unittests/enzo/enzo.pro
++kdsoap-1.10.0/unittests/enzo/test_enzo.cpp
++kdsoap-1.10.0/unittests/enzo/xsd0.xsd
++kdsoap-1.10.0/unittests/enzo/xsd1.xsd
++kdsoap-1.10.0/unittests/enzo/xsd2.xsd
++kdsoap-1.10.0/unittests/enzo/xsd3.xsd
++kdsoap-1.10.0/unittests/enzo/xsd4.xsd
++kdsoap-1.10.0/unittests/fault_namespace/
++kdsoap-1.10.0/unittests/fault_namespace/CMakeLists.txt
++kdsoap-1.10.0/unittests/fault_namespace/fault_namespace.cpp
++kdsoap-1.10.0/unittests/fault_namespace/fault_namespace.pro
++kdsoap-1.10.0/unittests/groupwise_wsdl/
++kdsoap-1.10.0/unittests/groupwise_wsdl/CMakeLists.txt
++kdsoap-1.10.0/unittests/groupwise_wsdl/events.xsd
++kdsoap-1.10.0/unittests/groupwise_wsdl/groupwise.wsdl
++kdsoap-1.10.0/unittests/groupwise_wsdl/groupwise_wsdl.pro
++kdsoap-1.10.0/unittests/groupwise_wsdl/methods.xsd
++kdsoap-1.10.0/unittests/groupwise_wsdl/test_groupwise_wsdl.cpp
++kdsoap-1.10.0/unittests/groupwise_wsdl/types.xsd
++kdsoap-1.10.0/unittests/ihc_wsdl/
++kdsoap-1.10.0/unittests/ihc_wsdl/CMakeLists.txt
++kdsoap-1.10.0/unittests/ihc_wsdl/ihc_wsdl.pro
++kdsoap-1.10.0/unittests/ihc_wsdl/resourceinteraction.wsdl
++kdsoap-1.10.0/unittests/ihc_wsdl/test_ihc.cpp
++kdsoap-1.10.0/unittests/import_definition/
++kdsoap-1.10.0/unittests/import_definition/CMakeLists.txt
++kdsoap-1.10.0/unittests/import_definition/import_definition.pro
++kdsoap-1.10.0/unittests/import_definition/import_definition.wsdl
++kdsoap-1.10.0/unittests/import_definition/import_definition_schema.xsd
++kdsoap-1.10.0/unittests/import_definition/import_definition_wsdl.wsdl
++kdsoap-1.10.0/unittests/import_definition/test_import_definition.cpp
++kdsoap-1.10.0/unittests/kddatetime/
++kdsoap-1.10.0/unittests/kddatetime/CMakeLists.txt
++kdsoap-1.10.0/unittests/kddatetime/kddatetime.cpp
++kdsoap-1.10.0/unittests/kddatetime/kddatetime.pro
++kdsoap-1.10.0/unittests/keep_unused_types/
++kdsoap-1.10.0/unittests/keep_unused_types/CMakeLists.txt
++kdsoap-1.10.0/unittests/keep_unused_types/keep_unused_types.cpp
++kdsoap-1.10.0/unittests/keep_unused_types/keep_unused_types.pro
++kdsoap-1.10.0/unittests/keep_unused_types/keep_unused_types.wsdl
++kdsoap-1.10.0/unittests/list_restriction/
++kdsoap-1.10.0/unittests/list_restriction/CMakeLists.txt
++kdsoap-1.10.0/unittests/list_restriction/list_restriction.pro
++kdsoap-1.10.0/unittests/list_restriction/test_list_restriction.cpp
++kdsoap-1.10.0/unittests/literal_true_false/
++kdsoap-1.10.0/unittests/literal_true_false/CMakeLists.txt
++kdsoap-1.10.0/unittests/literal_true_false/literal.wsdl
++kdsoap-1.10.0/unittests/literal_true_false/literal_true_false.pro
++kdsoap-1.10.0/unittests/literal_true_false/test_literal.cpp
++kdsoap-1.10.0/unittests/logbook_wsdl/
++kdsoap-1.10.0/unittests/logbook_wsdl/CMakeLists.txt
++kdsoap-1.10.0/unittests/logbook_wsdl/logbook_wsdl.pro
++kdsoap-1.10.0/unittests/logbook_wsdl/logbookifv3.wsdl
++kdsoap-1.10.0/unittests/logbook_wsdl/test_logbook_wsdl.cpp
++kdsoap-1.10.0/unittests/messagereader/
++kdsoap-1.10.0/unittests/messagereader/CMakeLists.txt
++kdsoap-1.10.0/unittests/messagereader/messagereader.cpp
++kdsoap-1.10.0/unittests/messagereader/messagereader.pro
++kdsoap-1.10.0/unittests/messagereader/request.xml
++kdsoap-1.10.0/unittests/msexchange_noservice_wsdl/
++kdsoap-1.10.0/unittests/msexchange_noservice_wsdl/CMakeLists.txt
++kdsoap-1.10.0/unittests/msexchange_noservice_wsdl/Services_noservice.wsdl
++kdsoap-1.10.0/unittests/msexchange_noservice_wsdl/messages.xsd
++kdsoap-1.10.0/unittests/msexchange_noservice_wsdl/msexchange_noservice_wsdl.cpp
++kdsoap-1.10.0/unittests/msexchange_noservice_wsdl/msexchange_noservice_wsdl.pro
++kdsoap-1.10.0/unittests/msexchange_noservice_wsdl/types.xsd
++kdsoap-1.10.0/unittests/msexchange_wsdl/
++kdsoap-1.10.0/unittests/msexchange_wsdl/CMakeLists.txt
++kdsoap-1.10.0/unittests/msexchange_wsdl/Services.wsdl
++kdsoap-1.10.0/unittests/msexchange_wsdl/messages.xsd
++kdsoap-1.10.0/unittests/msexchange_wsdl/msexchange_wsdl.cpp
++kdsoap-1.10.0/unittests/msexchange_wsdl/msexchange_wsdl.pro
++kdsoap-1.10.0/unittests/msexchange_wsdl/types.xsd
++kdsoap-1.10.0/unittests/multiple_input_param/
++kdsoap-1.10.0/unittests/multiple_input_param/CMakeLists.txt
++kdsoap-1.10.0/unittests/multiple_input_param/helloworldextended.wsdl
++kdsoap-1.10.0/unittests/multiple_input_param/multiple_input_param.pro
++kdsoap-1.10.0/unittests/multiple_input_param/test_multiple_input_param.cpp
++kdsoap-1.10.0/unittests/optionaltype_boost_optional/
++kdsoap-1.10.0/unittests/optionaltype_boost_optional/CMakeLists.txt
++kdsoap-1.10.0/unittests/optionaltype_boost_optional/optionaltype_boost_optional.pro
++kdsoap-1.10.0/unittests/optionaltype_boost_optional/test.wsdl
++kdsoap-1.10.0/unittests/optionaltype_boost_optional/testboostapi.cpp
++kdsoap-1.10.0/unittests/optionaltype_boost_optional/testboostapi.h
++kdsoap-1.10.0/unittests/optionaltype_pointer/
++kdsoap-1.10.0/unittests/optionaltype_pointer/CMakeLists.txt
++kdsoap-1.10.0/unittests/optionaltype_pointer/optionaltype_pointer.pro
++kdsoap-1.10.0/unittests/optionaltype_pointer/test.wsdl
++kdsoap-1.10.0/unittests/optionaltype_pointer/testpointerapi.cpp
++kdsoap-1.10.0/unittests/optionaltype_pointer/testpointerapi.h
++kdsoap-1.10.0/unittests/optionaltype_regular/
++kdsoap-1.10.0/unittests/optionaltype_regular/CMakeLists.txt
++kdsoap-1.10.0/unittests/optionaltype_regular/optionaltype_regular.pro
++kdsoap-1.10.0/unittests/optionaltype_regular/test.wsdl
++kdsoap-1.10.0/unittests/optionaltype_regular/testregularapi.cpp
++kdsoap-1.10.0/unittests/optionaltype_regular/testregularapi.h
++kdsoap-1.10.0/unittests/pki.pca.dfn.de/
++kdsoap-1.10.0/unittests/pki.pca.dfn.de/CMakeLists.txt
++kdsoap-1.10.0/unittests/pki.pca.dfn.de/pki.pca.dfn.de.pro
++kdsoap-1.10.0/unittests/pki.pca.dfn.de/pki.pca.dfn.de.wsdl
++kdsoap-1.10.0/unittests/pki.pca.dfn.de/test_pki.cpp
++kdsoap-1.10.0/unittests/prefix_wsdl/
++kdsoap-1.10.0/unittests/prefix_wsdl/CMakeLists.txt
++kdsoap-1.10.0/unittests/prefix_wsdl/kdtest.wsdl
++kdsoap-1.10.0/unittests/prefix_wsdl/prefix_wsdl.pro
++kdsoap-1.10.0/unittests/prefix_wsdl/test_prefix.cpp
++kdsoap-1.10.0/unittests/runTest.bat
++kdsoap-1.10.0/unittests/salesforce_wsdl/
++kdsoap-1.10.0/unittests/salesforce_wsdl/CMakeLists.txt
++kdsoap-1.10.0/unittests/salesforce_wsdl/salesforce-partner.wsdl
++kdsoap-1.10.0/unittests/salesforce_wsdl/salesforce_wsdl.cpp
++kdsoap-1.10.0/unittests/salesforce_wsdl/salesforce_wsdl.pro
++kdsoap-1.10.0/unittests/servertest/
++kdsoap-1.10.0/unittests/servertest/CMakeLists.txt
++kdsoap-1.10.0/unittests/servertest/servertest.cpp
++kdsoap-1.10.0/unittests/servertest/servertest.pro
++kdsoap-1.10.0/unittests/soap12/
++kdsoap-1.10.0/unittests/soap12/CMakeLists.txt
++kdsoap-1.10.0/unittests/soap12/soap12.pro
++kdsoap-1.10.0/unittests/soap12/soap12.wsdl
++kdsoap-1.10.0/unittests/soap12/test_soap12.cpp
++kdsoap-1.10.0/unittests/soap_over_udp/
++kdsoap-1.10.0/unittests/soap_over_udp/CMakeLists.txt
++kdsoap-1.10.0/unittests/soap_over_udp/docs.oasis-open.org/
++kdsoap-1.10.0/unittests/soap_over_udp/docs.oasis-open.org/ws-dd/
++kdsoap-1.10.0/unittests/soap_over_udp/docs.oasis-open.org/ws-dd/discovery/
++kdsoap-1.10.0/unittests/soap_over_udp/docs.oasis-open.org/ws-dd/discovery/1.1/
++kdsoap-1.10.0/unittests/soap_over_udp/docs.oasis-open.org/ws-dd/discovery/1.1/os/
++kdsoap-1.10.0/unittests/soap_over_udp/docs.oasis-open.org/ws-dd/discovery/1.1/os/wsdd-discovery-1.1-schema-os.xsd
++kdsoap-1.10.0/unittests/soap_over_udp/soap_over_udp.pro
++kdsoap-1.10.0/unittests/soap_over_udp/test_soap_over_udp.cpp
++kdsoap-1.10.0/unittests/soap_over_udp/wsdd-discovery-200901.wsdl
++kdsoap-1.10.0/unittests/soap_over_udp/www.w3.org/
++kdsoap-1.10.0/unittests/soap_over_udp/www.w3.org/2006/
++kdsoap-1.10.0/unittests/soap_over_udp/www.w3.org/2006/03/
++kdsoap-1.10.0/unittests/soap_over_udp/www.w3.org/2006/03/addressing/
++kdsoap-1.10.0/unittests/soap_over_udp/www.w3.org/2006/03/addressing/ws-addr.xsd
++kdsoap-1.10.0/unittests/specialchars_wsdl/
++kdsoap-1.10.0/unittests/specialchars_wsdl/CMakeLists.txt
++kdsoap-1.10.0/unittests/specialchars_wsdl/specialchars_wsdl.pro
++kdsoap-1.10.0/unittests/specialchars_wsdl/test.wsdl
++kdsoap-1.10.0/unittests/specialchars_wsdl/testconversion.cpp
++kdsoap-1.10.0/unittests/sugar_wsdl/
++kdsoap-1.10.0/unittests/sugar_wsdl/CMakeLists.txt
++kdsoap-1.10.0/unittests/sugar_wsdl/sugar_wsdl.pro
++kdsoap-1.10.0/unittests/sugar_wsdl/sugarcrm.wsdl
++kdsoap-1.10.0/unittests/sugar_wsdl/test_sugar_wsdl.cpp
++kdsoap-1.10.0/unittests/tech3356_wsdl/
++kdsoap-1.10.0/unittests/tech3356_wsdl/CMakeLists.txt
++kdsoap-1.10.0/unittests/tech3356_wsdl/baseMediaService-V1_0_7.xsd
++kdsoap-1.10.0/unittests/tech3356_wsdl/description-V1_0_7.xsd
++kdsoap-1.10.0/unittests/tech3356_wsdl/tech3356_wsdl.pro
++kdsoap-1.10.0/unittests/tech3356_wsdl/test_tech3356.cpp
++kdsoap-1.10.0/unittests/tech3356_wsdl/transformMedia-V1_0_7.wsdl
++kdsoap-1.10.0/unittests/tech3356_wsdl/transformMedia-V1_0_7.xsd
++kdsoap-1.10.0/unittests/tech3356_wsdl/xml.xsd
++kdsoap-1.10.0/unittests/test_calc/
++kdsoap-1.10.0/unittests/test_calc/CMakeLists.txt
++kdsoap-1.10.0/unittests/test_calc/calc.wsdl
++kdsoap-1.10.0/unittests/test_calc/test_calc.cpp
++kdsoap-1.10.0/unittests/test_calc/test_calc.pro
++kdsoap-1.10.0/unittests/uitapi/
++kdsoap-1.10.0/unittests/uitapi/CMakeLists.txt
++kdsoap-1.10.0/unittests/uitapi/test_uitapi.cpp
++kdsoap-1.10.0/unittests/uitapi/uitapi.pro
++kdsoap-1.10.0/unittests/uitapi/uitapi.wsdl
++kdsoap-1.10.0/unittests/unittests.pri
++kdsoap-1.10.0/unittests/unittests.pro
++kdsoap-1.10.0/unittests/unqualified_formdefault/
++kdsoap-1.10.0/unittests/unqualified_formdefault/CMakeLists.txt
++kdsoap-1.10.0/unittests/unqualified_formdefault/test_unqualified.cpp
++kdsoap-1.10.0/unittests/unqualified_formdefault/unqualified.wsdl
++kdsoap-1.10.0/unittests/unqualified_formdefault/unqualified_formdefault.pro
++kdsoap-1.10.0/unittests/vidyo/
++kdsoap-1.10.0/unittests/vidyo/CMakeLists.txt
++kdsoap-1.10.0/unittests/vidyo/VidyoPortalGuestService.wsdl
++kdsoap-1.10.0/unittests/vidyo/test_vidyo.cpp
++kdsoap-1.10.0/unittests/vidyo/vidyo.pro
++kdsoap-1.10.0/unittests/webcalls/
++kdsoap-1.10.0/unittests/webcalls/CMakeLists.txt
++kdsoap-1.10.0/unittests/webcalls/webcalls.cpp
++kdsoap-1.10.0/unittests/webcalls/webcalls.pro
++kdsoap-1.10.0/unittests/webcalls_wsdl/
++kdsoap-1.10.0/unittests/webcalls_wsdl/BFGlobalService.wsdl
++kdsoap-1.10.0/unittests/webcalls_wsdl/BLZService.wsdl
++kdsoap-1.10.0/unittests/webcalls_wsdl/CMakeLists.txt
++kdsoap-1.10.0/unittests/webcalls_wsdl/OrteLookup.wsdl
++kdsoap-1.10.0/unittests/webcalls_wsdl/webcalls_wsdl.cpp
++kdsoap-1.10.0/unittests/webcalls_wsdl/webcalls_wsdl.pro
++kdsoap-1.10.0/unittests/ws_addressing_support/
++kdsoap-1.10.0/unittests/ws_addressing_support/CMakeLists.txt
++kdsoap-1.10.0/unittests/ws_addressing_support/ws_addressing_support.pro
++kdsoap-1.10.0/unittests/ws_addressing_support/wsaddressing.wsdl
++kdsoap-1.10.0/unittests/ws_addressing_support/wsaddressingtest.cpp
++kdsoap-1.10.0/unittests/ws_discovery_wsdl/
++kdsoap-1.10.0/unittests/ws_discovery_wsdl/CMakeLists.txt
++kdsoap-1.10.0/unittests/ws_discovery_wsdl/schemas.xmlsoap.org/
++kdsoap-1.10.0/unittests/ws_discovery_wsdl/schemas.xmlsoap.org/ws/
++kdsoap-1.10.0/unittests/ws_discovery_wsdl/schemas.xmlsoap.org/ws/2004/
++kdsoap-1.10.0/unittests/ws_discovery_wsdl/schemas.xmlsoap.org/ws/2004/08/
++kdsoap-1.10.0/unittests/ws_discovery_wsdl/schemas.xmlsoap.org/ws/2004/08/addressing
++kdsoap-1.10.0/unittests/ws_discovery_wsdl/schemas.xmlsoap.org/ws/2005/
++kdsoap-1.10.0/unittests/ws_discovery_wsdl/schemas.xmlsoap.org/ws/2005/04/
++kdsoap-1.10.0/unittests/ws_discovery_wsdl/schemas.xmlsoap.org/ws/2005/04/discovery/
++kdsoap-1.10.0/unittests/ws_discovery_wsdl/schemas.xmlsoap.org/ws/2005/04/discovery/ws-discovery.xsd
++kdsoap-1.10.0/unittests/ws_discovery_wsdl/test_ws_discovery_wsdl.cpp
++kdsoap-1.10.0/unittests/ws_discovery_wsdl/ws_discovery200504.wsdl
++kdsoap-1.10.0/unittests/ws_discovery_wsdl/ws_discovery_wsdl.pro
++kdsoap-1.10.0/unittests/ws_usernametoken_support/
++kdsoap-1.10.0/unittests/ws_usernametoken_support/CMakeLists.txt
++kdsoap-1.10.0/unittests/ws_usernametoken_support/ws_usernametoken_support.pro
++kdsoap-1.10.0/unittests/ws_usernametoken_support/wsusernametoken.wsdl
++kdsoap-1.10.0/unittests/ws_usernametoken_support/wsusernametokentest.cpp
++kdsoap-1.10.0/unittests/wsdl_document/
++kdsoap-1.10.0/unittests/wsdl_document/CMakeLists.txt
++kdsoap-1.10.0/unittests/wsdl_document/mywsdl_document.wsdl
++kdsoap-1.10.0/unittests/wsdl_document/test_wsdl_document.cpp
++kdsoap-1.10.0/unittests/wsdl_document/thomas-bayer.wsdl
++kdsoap-1.10.0/unittests/wsdl_document/thomas-bayer.xsd
++kdsoap-1.10.0/unittests/wsdl_document/wsdl_document.pro
++kdsoap-1.10.0/unittests/wsdl_rpc-server/
++kdsoap-1.10.0/unittests/wsdl_rpc-server/CMakeLists.txt
++kdsoap-1.10.0/unittests/wsdl_rpc-server/rpcexample.wsdl
++kdsoap-1.10.0/unittests/wsdl_rpc-server/sayhello.wsdl
++kdsoap-1.10.0/unittests/wsdl_rpc-server/test_wsdl_rpc_server.cpp
++kdsoap-1.10.0/unittests/wsdl_rpc-server/wsdl_rpc-server.pro
++kdsoap-1.10.0/unittests/wsdl_rpc/
++kdsoap-1.10.0/unittests/wsdl_rpc/CMakeLists.txt
++kdsoap-1.10.0/unittests/wsdl_rpc/mywsdl_rpc.wsdl
++kdsoap-1.10.0/unittests/wsdl_rpc/test_wsdl_rpc.cpp
++kdsoap-1.10.0/unittests/wsdl_rpc/wsdl_rpc.pro
++kdsoap-1.10.0/variables.pri
++kdsoap-1.10.0/
++kdsoap-1.10.0/include/
++kdsoap-1.10.0/include/KDSoapClient/
++kdsoap-1.10.0/include/KDSoapClient/KDSoapJob
++kdsoap-1.10.0/include/KDSoapClient/KDSoapJob.h
++kdsoap-1.10.0/include/KDSoapClient/KDSoapValueList
++kdsoap-1.10.0/include/KDSoapClient/KDSoapPendingCallWatcher
++kdsoap-1.10.0/include/KDSoapClient/KDSoapValue
++kdsoap-1.10.0/include/KDSoapClient/KDSoapValue.h
++kdsoap-1.10.0/include/KDSoapClient/KDSoapNamespaceManager.h
++kdsoap-1.10.0/include/KDSoapClient/KDSoapEndpointReference
++kdsoap-1.10.0/include/KDSoapClient/KDSoapClient.pro
++kdsoap-1.10.0/include/KDSoapClient/KDSoapClient
++kdsoap-1.10.0/include/KDSoapClient/KDDateTime.h
++kdsoap-1.10.0/include/KDSoapClient/KDSoapSslHandler
++kdsoap-1.10.0/include/KDSoapClient/KDSoapPendingCallWatcher.h
++kdsoap-1.10.0/include/KDSoapClient/KDSoapAuthentication.h
++kdsoap-1.10.0/include/KDSoapClient/KDSoapHeaders
++kdsoap-1.10.0/include/KDSoapClient/KDSoapClientInterface
++kdsoap-1.10.0/include/KDSoapClient/KDSoapUdpClient
++kdsoap-1.10.0/include/KDSoapClient/KDSoapGlobal.h
++kdsoap-1.10.0/include/KDSoapClient/KDSoapMessageAddressingProperties
++kdsoap-1.10.0/include/KDSoapClient/KDQName.h
++kdsoap-1.10.0/include/KDSoapClient/KDSoap
++kdsoap-1.10.0/include/KDSoapClient/KDSoapUdpClient.h
++kdsoap-1.10.0/include/KDSoapClient/KDSoapEndpointReference.h
++kdsoap-1.10.0/include/KDSoapClient/KDSoapMessage.h
++kdsoap-1.10.0/include/KDSoapClient/KDSoapAuthentication
++kdsoap-1.10.0/include/KDSoapClient/KDSoapMessageAddressingProperties.h
++kdsoap-1.10.0/include/KDSoapClient/KDSoapPendingCall
++kdsoap-1.10.0/include/KDSoapClient/KDSoapFaultException.h
++kdsoap-1.10.0/include/KDSoapClient/KDSoapSslHandler.h
++kdsoap-1.10.0/include/KDSoapClient/KDSoapGlobal
++kdsoap-1.10.0/include/KDSoapClient/KDSoapPendingCall.h
++kdsoap-1.10.0/include/KDSoapClient/KDDateTime
++kdsoap-1.10.0/include/KDSoapClient/KDQName
++kdsoap-1.10.0/include/KDSoapClient/KDSoapNamespaceManager
++kdsoap-1.10.0/include/KDSoapClient/KDSoap.h
++kdsoap-1.10.0/include/KDSoapClient/KDSoapMessage
++kdsoap-1.10.0/include/KDSoapClient/KDSoapFaultException
++kdsoap-1.10.0/include/KDSoapClient/KDSoapClientInterface.h
++kdsoap-1.10.0/include/include.pro
++kdsoap-1.10.0/include/KDSoapServer/
++kdsoap-1.10.0/include/KDSoapServer/KDSoapServerAuthInterface.h
++kdsoap-1.10.0/include/KDSoapServer/KDSoapServerGlobal.h
++kdsoap-1.10.0/include/KDSoapServer/KDSoapDelayedResponseHandle.h
++kdsoap-1.10.0/include/KDSoapServer/KDSoapServerRawXMLInterface.h
++kdsoap-1.10.0/include/KDSoapServer/KDSoapServerGlobal
++kdsoap-1.10.0/include/KDSoapServer/KDSoapServerObjectInterface
++kdsoap-1.10.0/include/KDSoapServer/KDSoapServerCustomVerbRequestInterface
++kdsoap-1.10.0/include/KDSoapServer/KDSoapServer
++kdsoap-1.10.0/include/KDSoapServer/KDSoapServerAuthInterface
++kdsoap-1.10.0/include/KDSoapServer/KDSoapDelayedResponseHandle
++kdsoap-1.10.0/include/KDSoapServer/KDSoapServer.h
++kdsoap-1.10.0/include/KDSoapServer/KDSoapServerObjectInterface.h
++kdsoap-1.10.0/include/KDSoapServer/KDSoapThreadPool
++kdsoap-1.10.0/include/KDSoapServer/KDSoapServerRawXMLInterface
++kdsoap-1.10.0/include/KDSoapServer/KDSoapServerCustomVerbRequestInterface.h
++kdsoap-1.10.0/include/KDSoapServer/KDSoapThreadPool.h
++kdsoap-1.10.0/include/KDSoapServer/KDSoapServer.pro
++kdsoap-1.10.0/doc/
++kdsoap-1.10.0/doc/refman/
++kdsoap-1.10.0/doc/refman/dynsections.js
++kdsoap-1.10.0/doc/refman/functions_i.html
++kdsoap-1.10.0/doc/refman/functions_m.html
++kdsoap-1.10.0/doc/refman/functions_func_t.html
++kdsoap-1.10.0/doc/refman/_k_d_soap_message_writer__p_8h_source.html
++kdsoap-1.10.0/doc/refman/class_k_d_soap_message.png
++kdsoap-1.10.0/doc/refman/_k_d_soap_message_addressing_properties_8h_source.html
++kdsoap-1.10.0/doc/refman/functions_f.html
++kdsoap-1.10.0/doc/refman/kdsoap-medium.png
++kdsoap-1.10.0/doc/refman/_k_d_soap_value_8h_source.html
++kdsoap-1.10.0/doc/refman/_k_d_soap_reply_ssl_handler__p_8h_source.html
++kdsoap-1.10.0/doc/refman/functions_v.html
++kdsoap-1.10.0/doc/refman/doxygen.css
++kdsoap-1.10.0/doc/refman/kdab-small.png
++kdsoap-1.10.0/doc/refman/class_k_d_soap_value_list.html
++kdsoap-1.10.0/doc/refman/functions_func_f.html
++kdsoap-1.10.0/doc/refman/class_k_d_soap_namespace_manager-members.html
++kdsoap-1.10.0/doc/refman/class_k_d_soap_headers.html
++kdsoap-1.10.0/doc/refman/sync_on.png
++kdsoap-1.10.0/doc/refman/class_k_d_soap_server_raw_x_m_l_interface.html
++kdsoap-1.10.0/doc/refman/functions_b.html
++kdsoap-1.10.0/doc/refman/class_k_d_soap_fault_exception-members.html
++kdsoap-1.10.0/doc/refman/_k_d_soap_client_interface_8h_source.html
++kdsoap-1.10.0/doc/refman/functions_enum.html
++kdsoap-1.10.0/doc/refman/functions_func_o.html
++kdsoap-1.10.0/doc/refman/_k_d_soap_ssl_handler_8h_source.html
++kdsoap-1.10.0/doc/refman/functions_func_r.html
++kdsoap-1.10.0/doc/refman/files.html
++kdsoap-1.10.0/doc/refman/dir_736fea9923ddc7f772d600a42b106230.html
++kdsoap-1.10.0/doc/refman/functions_func_l.html
++kdsoap-1.10.0/doc/refman/classes.html
++kdsoap-1.10.0/doc/refman/nav_h.png
++kdsoap-1.10.0/doc/refman/_k_d_soap_server_custom_verb_request_interface_8h_source.html
++kdsoap-1.10.0/doc/refman/class_k_d_soap_pending_call.html
++kdsoap-1.10.0/doc/refman/class_k_d_soap_value.html
++kdsoap-1.10.0/doc/refman/_k_d_soap_server_thread__p_8h_source.html
++kdsoap-1.10.0/doc/refman/functions_p.html
++kdsoap-1.10.0/doc/refman/functions_s.html
++kdsoap-1.10.0/doc/refman/functions_func_c.html
++kdsoap-1.10.0/doc/refman/functions_d.html
++kdsoap-1.10.0/doc/refman/_k_d_soap_message_8h_source.html
++kdsoap-1.10.0/doc/refman/class_k_d_soap_endpoint_reference-members.html
++kdsoap-1.10.0/doc/refman/class_k_d_soap_namespace_manager.html
++kdsoap-1.10.0/doc/refman/_k_d_soap_server_socket__p_8h_source.html
++kdsoap-1.10.0/doc/refman/class_k_d_soap_delayed_response_handle.html
++kdsoap-1.10.0/doc/refman/class_k_d_soap_message_addressing_properties-members.html
++kdsoap-1.10.0/doc/refman/class_k_d_soap_message_addressing_properties.html
++kdsoap-1.10.0/doc/refman/class_k_d_date_time-members.html
++kdsoap-1.10.0/doc/refman/_k_d_soap_message_reader__p_8h_source.html
++kdsoap-1.10.0/doc/refman/annotated.html
++kdsoap-1.10.0/doc/refman/class_k_d_soap_message-members.html
++kdsoap-1.10.0/doc/refman/namespaces.html
++kdsoap-1.10.0/doc/refman/functions_func.html
++kdsoap-1.10.0/doc/refman/class_k_d_soap_ssl_handler.html
++kdsoap-1.10.0/doc/refman/functions_func_e.html
++kdsoap-1.10.0/doc/refman/class_k_d_soap_server.html
++kdsoap-1.10.0/doc/refman/class_k_d_soap_pending_call-members.html
++kdsoap-1.10.0/doc/refman/functions.html
++kdsoap-1.10.0/doc/refman/menu.js
++kdsoap-1.10.0/doc/refman/dir_13271ef1fb5eec2552822c417caa98a5.html
++kdsoap-1.10.0/doc/refman/tab_s.png
++kdsoap-1.10.0/doc/refman/jquery.js
++kdsoap-1.10.0/doc/refman/namespace_k_d_soap_message_relationship.html
++kdsoap-1.10.0/doc/refman/class_k_d_soap_pending_call_watcher-members.html
++kdsoap-1.10.0/doc/refman/functions_u.html
++kdsoap-1.10.0/doc/refman/xmldiagram2.png
++kdsoap-1.10.0/doc/refman/functions_h.html
++kdsoap-1.10.0/doc/refman/_k_d_soap_pending_call_watcher_8h_source.html
++kdsoap-1.10.0/doc/refman/class_k_d_soap_delayed_response_handle-members.html
++kdsoap-1.10.0/doc/refman/index.html
++kdsoap-1.10.0/doc/refman/_k_d_q_name_8h_source.html
++kdsoap-1.10.0/doc/refman/_k_d_soap_udp_client_8h_source.html
++kdsoap-1.10.0/doc/refman/class_k_d_soap_headers-members.html
++kdsoap-1.10.0/doc/refman/_k_d_soap_namespace_manager_8h_source.html
++kdsoap-1.10.0/doc/refman/class_k_d_soap_server_object_interface.html
++kdsoap-1.10.0/doc/refman/functions_func_u.html
++kdsoap-1.10.0/doc/refman/_k_d_soap_server_object_interface_8h_source.html
++kdsoap-1.10.0/doc/refman/class_k_d_soap_server_auth_interface.html
++kdsoap-1.10.0/doc/refman/doxygen.svg
++kdsoap-1.10.0/doc/refman/bc_s.png
++kdsoap-1.10.0/doc/refman/tab_h.png
++kdsoap-1.10.0/doc/refman/class_k_d_soap_pending_call_watcher.html
++kdsoap-1.10.0/doc/refman/_k_d_soap_8h_source.html
++kdsoap-1.10.0/doc/refman/functions_c.html
++kdsoap-1.10.0/doc/refman/functions_eval.html
++kdsoap-1.10.0/doc/refman/functions_func_v.html
++kdsoap-1.10.0/doc/refman/_k_d_soap_udp_client__p_8h_source.html
++kdsoap-1.10.0/doc/refman/functions_func_w.html
++kdsoap-1.10.0/doc/refman/dir_68267d1309a1af8e8297ef4c3efbcdba.html
++kdsoap-1.10.0/doc/refman/tab_b.png
++kdsoap-1.10.0/doc/refman/functions_r.html
++kdsoap-1.10.0/doc/refman/folderclosed.png
++kdsoap-1.10.0/doc/refman/class_k_d_soap_udp_client-members.html
++kdsoap-1.10.0/doc/refman/functions_func_i.html
++kdsoap-1.10.0/doc/refman/functions_func_d.html
++kdsoap-1.10.0/doc/refman/class_k_d_soap_client_interface-members.html
++kdsoap-1.10.0/doc/refman/class_k_d_soap_server_object_interface-members.html
++kdsoap-1.10.0/doc/refman/_k_d_soap_endpoint_reference_8h_source.html
++kdsoap-1.10.0/doc/refman/closed.png
++kdsoap-1.10.0/doc/refman/_k_d_soap_client_thread__p_8h_source.html
++kdsoap-1.10.0/doc/refman/class_k_d_soap_server_auth_interface-members.html
++kdsoap-1.10.0/doc/refman/class_k_d_soap_thread_pool.html
++kdsoap-1.10.0/doc/refman/_k_d_soap_server_global_8h_source.html
++kdsoap-1.10.0/doc/refman/class_k_d_soap_job-members.html
++kdsoap-1.10.0/doc/refman/splitbar.png
++kdsoap-1.10.0/doc/refman/sync_off.png
++kdsoap-1.10.0/doc/refman/doc.png
++kdsoap-1.10.0/doc/refman/class_k_d_soap_value_list-members.html
++kdsoap-1.10.0/doc/refman/class_k_d_soap_fault_exception.html
++kdsoap-1.10.0/doc/refman/kdsoap-small.png
++kdsoap-1.10.0/doc/refman/functions_n.html
++kdsoap-1.10.0/doc/refman/functions_func_n.html
++kdsoap-1.10.0/doc/refman/class_k_d_soap_server-members.html
++kdsoap-1.10.0/doc/refman/class_k_d_soap_pending_call.png
++kdsoap-1.10.0/doc/refman/open.png
++kdsoap-1.10.0/doc/refman/class_k_d_soap_udp_client.html
++kdsoap-1.10.0/doc/refman/class_k_d_soap_job.html
++kdsoap-1.10.0/doc/refman/class_k_d_soap_thread_pool-members.html
++kdsoap-1.10.0/doc/refman/functions_~.html
++kdsoap-1.10.0/doc/refman/class_k_d_soap_value-members.html
++kdsoap-1.10.0/doc/refman/functions_e.html
++kdsoap-1.10.0/doc/refman/_k_d_soap_global_8h_source.html
++kdsoap-1.10.0/doc/refman/functions_func_b.html
++kdsoap-1.10.0/doc/refman/functions_func_s.html
++kdsoap-1.10.0/doc/refman/_k_d_soap_thread_pool_8h_source.html
++kdsoap-1.10.0/doc/refman/_k_d_soap_pending_call_watcher__p_8h_source.html
++kdsoap-1.10.0/doc/refman/class_k_d_soap_pending_call_watcher.png
++kdsoap-1.10.0/doc/refman/hierarchy.html
++kdsoap-1.10.0/doc/refman/class_k_d_soap_server_raw_x_m_l_interface-members.html
++kdsoap-1.10.0/doc/refman/class_k_d_soap_client_interface.html
++kdsoap-1.10.0/doc/refman/functions_l.html
++kdsoap-1.10.0/doc/refman/menudata.js
++kdsoap-1.10.0/doc/refman/_k_d_soap_server_8h_source.html
++kdsoap-1.10.0/doc/refman/functions_w.html
++kdsoap-1.10.0/doc/refman/functions_k.html
++kdsoap-1.10.0/doc/refman/_k_d_soap_pending_call__p_8h_source.html
++kdsoap-1.10.0/doc/refman/functions_t.html
++kdsoap-1.10.0/doc/refman/_k_d_soap_server_auth_interface_8h_source.html
++kdsoap-1.10.0/doc/refman/class_k_d_date_time.html
++kdsoap-1.10.0/doc/refman/functions_func_~.html
++kdsoap-1.10.0/doc/refman/class_k_d_soap_server_custom_verb_request_interface-members.html
++kdsoap-1.10.0/doc/refman/tabs.css
++kdsoap-1.10.0/doc/refman/functions_func_p.html
++kdsoap-1.10.0/doc/refman/functions_func_m.html
++kdsoap-1.10.0/doc/refman/_k_d_soap_fault_exception_8h_source.html
++kdsoap-1.10.0/doc/refman/class_k_d_soap_message.html
++kdsoap-1.10.0/doc/refman/nav_g.png
++kdsoap-1.10.0/doc/refman/functions_func_k.html
++kdsoap-1.10.0/doc/refman/class_k_d_soap_value.png
++kdsoap-1.10.0/doc/refman/_k_d_soap_job_8h_source.html
++kdsoap-1.10.0/doc/refman/_k_d_soap_namespace_prefixes__p_8h_source.html
++kdsoap-1.10.0/doc/refman/_k_d_soap_socket_list__p_8h_source.html
++kdsoap-1.10.0/doc/refman/bdwn.png
++kdsoap-1.10.0/doc/refman/class_k_d_soap_endpoint_reference.html
++kdsoap-1.10.0/doc/refman/_k_d_soap_pending_call_8h_source.html
++kdsoap-1.10.0/doc/refman/class_k_d_soap_authentication-members.html
++kdsoap-1.10.0/doc/refman/nav_f.png
++kdsoap-1.10.0/doc/refman/_k_d_date_time_8h_source.html
++kdsoap-1.10.0/doc/refman/class_k_d_soap_server_custom_verb_request_interface.html
++kdsoap-1.10.0/doc/refman/_k_d_soap_delayed_response_handle_8h_source.html
++kdsoap-1.10.0/doc/refman/class_k_d_soap_ssl_handler-members.html
++kdsoap-1.10.0/doc/refman/_k_d_soap_server_raw_x_m_l_interface_8h_source.html
++kdsoap-1.10.0/doc/refman/_k_d_soap_authentication_8h_source.html
++kdsoap-1.10.0/doc/refman/functions_o.html
++kdsoap-1.10.0/doc/refman/search/
++kdsoap-1.10.0/doc/refman/search/enumvalues_4.js
++kdsoap-1.10.0/doc/refman/search/functions_3.html
++kdsoap-1.10.0/doc/refman/search/search.js
++kdsoap-1.10.0/doc/refman/search/searchdata.js
++kdsoap-1.10.0/doc/refman/search/all_13.html
++kdsoap-1.10.0/doc/refman/search/functions_10.js
++kdsoap-1.10.0/doc/refman/search/functions_d.js
++kdsoap-1.10.0/doc/refman/search/functions_12.js
++kdsoap-1.10.0/doc/refman/search/all_0.html
++kdsoap-1.10.0/doc/refman/search/classes_0.html
++kdsoap-1.10.0/doc/refman/search/functions_f.html
++kdsoap-1.10.0/doc/refman/search/all_11.html
++kdsoap-1.10.0/doc/refman/search/functions_f.js
++kdsoap-1.10.0/doc/refman/search/enumvalues_0.js
++kdsoap-1.10.0/doc/refman/search/all_b.html
++kdsoap-1.10.0/doc/refman/search/functions_b.html
++kdsoap-1.10.0/doc/refman/search/functions_4.js
++kdsoap-1.10.0/doc/refman/search/enumvalues_2.html
++kdsoap-1.10.0/doc/refman/search/all_1.js
++kdsoap-1.10.0/doc/refman/search/all_a.html
++kdsoap-1.10.0/doc/refman/search/all_9.js
++kdsoap-1.10.0/doc/refman/search/all_0.js
++kdsoap-1.10.0/doc/refman/search/functions_0.html
++kdsoap-1.10.0/doc/refman/search/all_f.js
++kdsoap-1.10.0/doc/refman/search/functions_9.js
++kdsoap-1.10.0/doc/refman/search/all_e.html
++kdsoap-1.10.0/doc/refman/search/all_b.js
++kdsoap-1.10.0/doc/refman/search/all_c.html
++kdsoap-1.10.0/doc/refman/search/functions_d.html
++kdsoap-1.10.0/doc/refman/search/all_2.html
++kdsoap-1.10.0/doc/refman/search/all_12.html
++kdsoap-1.10.0/doc/refman/search/namespaces_0.js
++kdsoap-1.10.0/doc/refman/search/functions_4.html
++kdsoap-1.10.0/doc/refman/search/all_3.js
++kdsoap-1.10.0/doc/refman/search/search_l.png
++kdsoap-1.10.0/doc/refman/search/enumvalues_6.js
++kdsoap-1.10.0/doc/refman/search/enums_1.html
++kdsoap-1.10.0/doc/refman/search/search_r.png
++kdsoap-1.10.0/doc/refman/search/all_5.js
++kdsoap-1.10.0/doc/refman/search/all_5.html
++kdsoap-1.10.0/doc/refman/search/functions_5.js
++kdsoap-1.10.0/doc/refman/search/all_11.js
++kdsoap-1.10.0/doc/refman/search/pages_0.html
++kdsoap-1.10.0/doc/refman/search/functions_5.html
++kdsoap-1.10.0/doc/refman/search/functions_13.js
++kdsoap-1.10.0/doc/refman/search/all_2.js
++kdsoap-1.10.0/doc/refman/search/enumvalues_6.html
++kdsoap-1.10.0/doc/refman/search/functions_a.html
++kdsoap-1.10.0/doc/refman/search/all_13.js
++kdsoap-1.10.0/doc/refman/search/functions_1.html
++kdsoap-1.10.0/doc/refman/search/all_9.html
++kdsoap-1.10.0/doc/refman/search/all_7.html
++kdsoap-1.10.0/doc/refman/search/functions_12.html
++kdsoap-1.10.0/doc/refman/search/all_e.js
++kdsoap-1.10.0/doc/refman/search/functions_c.html
++kdsoap-1.10.0/doc/refman/search/functions_2.js
++kdsoap-1.10.0/doc/refman/search/enumvalues_1.html
++kdsoap-1.10.0/doc/refman/search/close.svg
++kdsoap-1.10.0/doc/refman/search/enums_1.js
++kdsoap-1.10.0/doc/refman/search/functions_6.html
++kdsoap-1.10.0/doc/refman/search/enumvalues_0.html
++kdsoap-1.10.0/doc/refman/search/namespaces_0.html
++kdsoap-1.10.0/doc/refman/search/pages_0.js
++kdsoap-1.10.0/doc/refman/search/all_10.html
++kdsoap-1.10.0/doc/refman/search/enumvalues_3.html
++kdsoap-1.10.0/doc/refman/search/functions_13.html
++kdsoap-1.10.0/doc/refman/search/functions_c.js
++kdsoap-1.10.0/doc/refman/search/enums_2.js
++kdsoap-1.10.0/doc/refman/search/functions_10.html
++kdsoap-1.10.0/doc/refman/search/enums_0.html
++kdsoap-1.10.0/doc/refman/search/functions_11.html
++kdsoap-1.10.0/doc/refman/search/functions_7.html
++kdsoap-1.10.0/doc/refman/search/all_8.html
++kdsoap-1.10.0/doc/refman/search/functions_14.html
++kdsoap-1.10.0/doc/refman/search/all_6.html
++kdsoap-1.10.0/doc/refman/search/functions_8.html
++kdsoap-1.10.0/doc/refman/search/all_7.js
++kdsoap-1.10.0/doc/refman/search/all_8.js
++kdsoap-1.10.0/doc/refman/search/functions_e.html
++kdsoap-1.10.0/doc/refman/search/functions_3.js
++kdsoap-1.10.0/doc/refman/search/classes_0.js
++kdsoap-1.10.0/doc/refman/search/all_c.js
++kdsoap-1.10.0/doc/refman/search/all_f.html
++kdsoap-1.10.0/doc/refman/search/functions_a.js
++kdsoap-1.10.0/doc/refman/search/enumvalues_4.html
++kdsoap-1.10.0/doc/refman/search/functions_14.js
++kdsoap-1.10.0/doc/refman/search/enumvalues_2.js
++kdsoap-1.10.0/doc/refman/search/all_3.html
++kdsoap-1.10.0/doc/refman/search/functions_e.js
++kdsoap-1.10.0/doc/refman/search/functions_11.js
++kdsoap-1.10.0/doc/refman/search/all_d.js
++kdsoap-1.10.0/doc/refman/search/mag_sel.svg
++kdsoap-1.10.0/doc/refman/search/all_12.js
++kdsoap-1.10.0/doc/refman/search/search_m.png
++kdsoap-1.10.0/doc/refman/search/functions_7.js
++kdsoap-1.10.0/doc/refman/search/enumvalues_5.html
++kdsoap-1.10.0/doc/refman/search/all_4.js
++kdsoap-1.10.0/doc/refman/search/all_14.html
++kdsoap-1.10.0/doc/refman/search/functions_8.js
++kdsoap-1.10.0/doc/refman/search/all_6.js
++kdsoap-1.10.0/doc/refman/search/functions_9.html
++kdsoap-1.10.0/doc/refman/search/enumvalues_5.js
++kdsoap-1.10.0/doc/refman/search/all_14.js
++kdsoap-1.10.0/doc/refman/search/functions_b.js
++kdsoap-1.10.0/doc/refman/search/enums_2.html
++kdsoap-1.10.0/doc/refman/search/nomatches.html
++kdsoap-1.10.0/doc/refman/search/enums_3.js
++kdsoap-1.10.0/doc/refman/search/functions_0.js
++kdsoap-1.10.0/doc/refman/search/functions_6.js
++kdsoap-1.10.0/doc/refman/search/enumvalues_1.js
++kdsoap-1.10.0/doc/refman/search/enums_3.html
++kdsoap-1.10.0/doc/refman/search/enumvalues_3.js
++kdsoap-1.10.0/doc/refman/search/all_1.html
++kdsoap-1.10.0/doc/refman/search/all_10.js
++kdsoap-1.10.0/doc/refman/search/enums_0.js
++kdsoap-1.10.0/doc/refman/search/functions_2.html
++kdsoap-1.10.0/doc/refman/search/all_4.html
++kdsoap-1.10.0/doc/refman/search/all_a.js
++kdsoap-1.10.0/doc/refman/search/functions_1.js
++kdsoap-1.10.0/doc/refman/search/search.css
++kdsoap-1.10.0/doc/refman/search/all_d.html
++kdsoap-1.10.0/doc/refman/functions_func_h.html
++kdsoap-1.10.0/doc/refman/tab_a.png
++kdsoap-1.10.0/doc/refman/folderopen.png
++kdsoap-1.10.0/doc/refman/class_k_d_soap_authentication.html
++kdsoap-1.10.0/doc/refman/_k_d_soap_client_interface__p_8h_source.html
++kdsoap-1.10.0/kdwsdl2cpp/
++kdsoap-1.10.0/kdwsdl2cpp/libkode/
++kdsoap-1.10.0/kdwsdl2cpp/libkode/.git
++kdsoap-1.10.0/kdwsdl2cpp/libkode/.github/
++kdsoap-1.10.0/kdwsdl2cpp/libkode/.github/workflows/
++kdsoap-1.10.0/kdwsdl2cpp/libkode/.github/workflows/build.yml
++kdsoap-1.10.0/kdwsdl2cpp/libkode/.github/workflows/clang_formatter.yml
++kdsoap-1.10.0/kdwsdl2cpp/libkode/.gitignore
++kdsoap-1.10.0/kdwsdl2cpp/libkode/CMakeLists.txt
++kdsoap-1.10.0/kdwsdl2cpp/libkode/common/
++kdsoap-1.10.0/kdwsdl2cpp/libkode/common/messagehandler.h
++kdsoap-1.10.0/kdwsdl2cpp/libkode/common/common.pro
++kdsoap-1.10.0/kdwsdl2cpp/libkode/common/qname.cpp
++kdsoap-1.10.0/kdwsdl2cpp/libkode/common/nsmanager.cpp
++kdsoap-1.10.0/kdwsdl2cpp/libkode/common/fileprovider.h
++kdsoap-1.10.0/kdwsdl2cpp/libkode/common/CMakeLists.txt
++kdsoap-1.10.0/kdwsdl2cpp/libkode/common/parsercontext.cpp
++kdsoap-1.10.0/kdwsdl2cpp/libkode/common/messagehandler.cpp
++kdsoap-1.10.0/kdwsdl2cpp/libkode/common/fileprovider.cpp
++kdsoap-1.10.0/kdwsdl2cpp/libkode/common/qname.h
++kdsoap-1.10.0/kdwsdl2cpp/libkode/common/common.pri
++kdsoap-1.10.0/kdwsdl2cpp/libkode/common/nsmanager.h
++kdsoap-1.10.0/kdwsdl2cpp/libkode/common/parsercontext.h
++kdsoap-1.10.0/kdwsdl2cpp/libkode/libkode.pro
++kdsoap-1.10.0/kdwsdl2cpp/libkode/.clang-format
++kdsoap-1.10.0/kdwsdl2cpp/libkode/variables.pri
++kdsoap-1.10.0/kdwsdl2cpp/libkode/libkode.pri
++kdsoap-1.10.0/kdwsdl2cpp/libkode/code_generation/
++kdsoap-1.10.0/kdwsdl2cpp/libkode/code_generation/kode_export.h
++kdsoap-1.10.0/kdwsdl2cpp/libkode/code_generation/typedef.cpp
++kdsoap-1.10.0/kdwsdl2cpp/libkode/code_generation/code_generation.pro
++kdsoap-1.10.0/kdwsdl2cpp/libkode/code_generation/function.cpp
++kdsoap-1.10.0/kdwsdl2cpp/libkode/code_generation/statemachine.cpp
++kdsoap-1.10.0/kdwsdl2cpp/libkode/code_generation/code.h
++kdsoap-1.10.0/kdwsdl2cpp/libkode/code_generation/membervariable.h
++kdsoap-1.10.0/kdwsdl2cpp/libkode/code_generation/enum.h
++kdsoap-1.10.0/kdwsdl2cpp/libkode/code_generation/namer.h
++kdsoap-1.10.0/kdwsdl2cpp/libkode/code_generation/style.h
++kdsoap-1.10.0/kdwsdl2cpp/libkode/code_generation/CMakeLists.txt
++kdsoap-1.10.0/kdwsdl2cpp/libkode/code_generation/typedef.h
++kdsoap-1.10.0/kdwsdl2cpp/libkode/code_generation/enum.cpp
++kdsoap-1.10.0/kdwsdl2cpp/libkode/code_generation/membervariable.cpp
++kdsoap-1.10.0/kdwsdl2cpp/libkode/code_generation/printer.cpp
++kdsoap-1.10.0/kdwsdl2cpp/libkode/code_generation/file.cpp
++kdsoap-1.10.0/kdwsdl2cpp/libkode/code_generation/code.cpp
++kdsoap-1.10.0/kdwsdl2cpp/libkode/code_generation/file.h
++kdsoap-1.10.0/kdwsdl2cpp/libkode/code_generation/class.cpp
++kdsoap-1.10.0/kdwsdl2cpp/libkode/code_generation/function.h
++kdsoap-1.10.0/kdwsdl2cpp/libkode/code_generation/code_generation.pri
++kdsoap-1.10.0/kdwsdl2cpp/libkode/code_generation/include.h
++kdsoap-1.10.0/kdwsdl2cpp/libkode/code_generation/printer.h
++kdsoap-1.10.0/kdwsdl2cpp/libkode/code_generation/statemachine.h
++kdsoap-1.10.0/kdwsdl2cpp/libkode/code_generation/class.h
++kdsoap-1.10.0/kdwsdl2cpp/libkode/code_generation/variable.h
++kdsoap-1.10.0/kdwsdl2cpp/libkode/code_generation/include.cpp
++kdsoap-1.10.0/kdwsdl2cpp/libkode/code_generation/namer.cpp
++kdsoap-1.10.0/kdwsdl2cpp/libkode/code_generation/license.cpp
++kdsoap-1.10.0/kdwsdl2cpp/libkode/code_generation/license.h
++kdsoap-1.10.0/kdwsdl2cpp/libkode/code_generation/variable.cpp
++kdsoap-1.10.0/kdwsdl2cpp/libkode/code_generation/style.cpp
++kdsoap-1.10.0/kdwsdl2cpp/libkode/README.md
++kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/
++kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/schematest.cpp
++kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/xsdtype.cpp
++kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/types.h
++kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/simpletype.cpp
++kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/parser.cpp
++kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/complextype.h
++kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/attribute.h
++kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/group.h
++kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/CMakeLists.txt
++kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/types.cpp
++kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/compositor.h
++kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/annotation.h
++kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/element.h
++kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/schema.pro
++kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/complextype.cpp
++kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/attribute.cpp
++kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/element.cpp
++kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/xmlelement.cpp
++kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/annotation.cpp
++kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/group.cpp
++kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/simpletype.h
++kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/xmlelement.h
++kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/schema.pri
++kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/parser.h
++kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/attributegroup.h
++kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/compositor.cpp
++kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/xsdtype.h
++kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/attributegroup.cpp
++kdsoap-1.10.0/kdsoap.tag
++kdsoap-1.10.0/configure.bat
++kdsoap-1.10.0/configure.sh
++-- The CXX compiler identification is GNU 10.2.0
++-- Detecting CXX compiler ABI info
++-- Detecting CXX compiler ABI info - done
++-- Check for working CXX compiler: /usr/bin/c++ - skipped
++-- Detecting CXX compile features
++-- Detecting CXX compile features - done
++-- Found boost/optional.hpp in /usr/include
++-- Performing Test HAVE_GXX_SUGGEST_OVERRIDE
++-- Performing Test HAVE_GXX_SUGGEST_OVERRIDE - Success
++-- Building KDSoap 1.10.0 in Release mode. Installing to /usr
++-- The C compiler identification is GNU 10.2.0
++-- Detecting C compiler ABI info
++-- Detecting C compiler ABI info - done
++-- Check for working C compiler: /usr/bin/cc - skipped
++-- Detecting C compile features
++-- Detecting C compile features - done
++-- Configuring done
++-- Generating done
++CMake Warning:
++  Manually-specified variables were not used by the project:
++
++    BUILD_TESTS
++    CMAKE_C_FLAGS_RELEASE
++    LIB_SUFFIX
++
++
++-- Build files have been written to: /tmp/kdsoap-1.10.0/cmake-build
++Scanning dependencies of target kdwsdl2cpp_lib_autogen
++Scanning dependencies of target kdsoap_autogen
++[  1%] Automatic MOC for target kdsoap
++[  2%] Automatic MOC for target kdwsdl2cpp_lib
++[  2%] Built target kdwsdl2cpp_lib_autogen
++[  2%] Automatic RCC for schemas/schemas.qrc
++Scanning dependencies of target kdwsdl2cpp_lib
++[  3%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/kdwsdl2cpp_lib_autogen/mocs_compilation.cpp.o
++[  4%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/libkode/common/fileprovider.cpp.o
++[  4%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/libkode/common/messagehandler.cpp.o
++[  5%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/libkode/common/nsmanager.cpp.o
++[  5%] Built target kdsoap_autogen
++Scanning dependencies of target kdsoap
++[  6%] Building CXX object src/KDSoapClient/CMakeFiles/kdsoap.dir/kdsoap_autogen/mocs_compilation.cpp.o
++[  7%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/libkode/common/parsercontext.cpp.o
++[  8%] Building CXX object src/KDSoapClient/CMakeFiles/kdsoap.dir/KDSoapMessage.cpp.o
++[  8%] Building CXX object src/KDSoapClient/CMakeFiles/kdsoap.dir/KDSoapClientInterface.cpp.o
++[  8%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/libkode/common/qname.cpp.o
++[  9%] Building CXX object src/KDSoapClient/CMakeFiles/kdsoap.dir/KDSoapPendingCall.cpp.o
++[ 10%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/libkode/code_generation/class.cpp.o
++[ 11%] Building CXX object src/KDSoapClient/CMakeFiles/kdsoap.dir/KDSoapPendingCallWatcher.cpp.o
++[ 11%] Building CXX object src/KDSoapClient/CMakeFiles/kdsoap.dir/KDSoapClientThread.cpp.o
++[ 12%] Building CXX object src/KDSoapClient/CMakeFiles/kdsoap.dir/KDSoapValue.cpp.o
++[ 13%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/libkode/code_generation/code.cpp.o
++/tmp/kdsoap-1.10.0/kdwsdl2cpp/libkode/code_generation/code.cpp: In member function ‘void KODE::Code::addFormattedText(const QString&)’:
++/tmp/kdsoap-1.10.0/kdwsdl2cpp/libkode/code_generation/code.cpp:173:83: warning: ‘QStringList QString::split(QChar, QString::SplitBehavior, Qt::CaseSensitivity) const’ is deprecated: Use Qt::SplitBehavior variant instead [-Wdeprecated-declarations]
++  173 |     const QStringList words = text.split(QLatin1Char(' '), QString::SkipEmptyParts);
++      |                                                                                   ^
++In file included from /usr/include/qt5/QtCore/qhashfunctions.h:44,
++                 from /usr/include/qt5/QtCore/qlist.h:47,
++                 from /usr/include/qt5/QtCore/qstringlist.h:41,
++                 from /usr/include/qt5/QtCore/QStringList:1,
++                 from /tmp/kdsoap-1.10.0/kdwsdl2cpp/libkode/code_generation/code.cpp:22:
++/usr/include/qt5/QtCore/qstring.h:615:17: note: declared here
++  615 |     QStringList split(QChar sep, SplitBehavior behavior,
++      |                 ^~~~~
++/tmp/kdsoap-1.10.0/src/KDSoapClient/KDSoapValue.cpp: In member function ‘KDSoapValueList KDSoapValue::split() const’:
++/tmp/kdsoap-1.10.0/src/KDSoapClient/KDSoapValue.cpp:397:96: warning: ‘QStringList QString::split(QChar, QString::SplitBehavior, Qt::CaseSensitivity) const’ is deprecated: Use Qt::SplitBehavior variant instead [-Wdeprecated-declarations]
++  397 |     const QStringList list = value().toString().split(QLatin1Char(' '), QString::SkipEmptyParts);
++      |                                                                                                ^
++In file included from /usr/include/qt5/QtCore/QString:1,
++                 from /tmp/kdsoap-1.10.0/src/KDSoapClient/KDSoapValue.h:19,
++                 from /tmp/kdsoap-1.10.0/src/KDSoapClient/KDSoapValue.cpp:16:
++/usr/include/qt5/QtCore/qstring.h:615:17: note: declared here
++  615 |     QStringList split(QChar sep, SplitBehavior behavior,
++      |                 ^~~~~
++[ 14%] Building CXX object src/KDSoapClient/CMakeFiles/kdsoap.dir/KDSoapAuthentication.cpp.o
++[ 15%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/libkode/code_generation/enum.cpp.o
++[ 16%] Building CXX object src/KDSoapClient/CMakeFiles/kdsoap.dir/KDSoapNamespaceManager.cpp.o
++/tmp/kdsoap-1.10.0/src/KDSoapClient/KDSoapAuthentication.cpp: In member function ‘void KDSoapAuthentication::writeWSUsernameTokenHeader(QXmlStreamWriter&) const’:
++/tmp/kdsoap-1.10.0/src/KDSoapClient/KDSoapAuthentication.cpp:155:60: warning: ‘int qrand()’ is deprecated: use QRandomGenerator instead [-Wdeprecated-declarations]
++  155 |     QByteArray nonce = "kdsoap" + QByteArray::number(qrand());
++      |                                                            ^
++In file included from /usr/include/qt5/QtCore/QtGlobal:1,
++                 from /tmp/kdsoap-1.10.0/src/KDSoapClient/KDSoapGlobal.h:19,
++                 from /tmp/kdsoap-1.10.0/src/KDSoapClient/KDSoapAuthentication.h:19,
++                 from /tmp/kdsoap-1.10.0/src/KDSoapClient/KDSoapAuthentication.cpp:16:
++/usr/include/qt5/QtCore/qglobal.h:1279:80: note: declared here
++ 1279 | Q_CORE_EXPORT QT_DEPRECATED_VERSION_X_5_15("use QRandomGenerator instead") int qrand();
++      |                                                                                ^~~~~
++[ 16%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/libkode/code_generation/license.cpp.o
++[ 16%] Building CXX object src/KDSoapClient/CMakeFiles/kdsoap.dir/KDSoapMessageWriter.cpp.o
++[ 17%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/libkode/code_generation/file.cpp.o
++[ 18%] Building CXX object src/KDSoapClient/CMakeFiles/kdsoap.dir/KDSoapMessageReader.cpp.o
++[ 19%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/libkode/code_generation/function.cpp.o
++[ 20%] Building CXX object src/KDSoapClient/CMakeFiles/kdsoap.dir/KDDateTime.cpp.o
++[ 20%] Building CXX object src/KDSoapClient/CMakeFiles/kdsoap.dir/KDSoapNamespacePrefixes.cpp.o
++/tmp/kdsoap-1.10.0/src/KDSoapClient/KDDateTime.cpp: In member function ‘void KDDateTime::setTimeZone(const QString&)’:
++/tmp/kdsoap-1.10.0/src/KDSoapClient/KDDateTime.cpp:80:32: warning: ‘void QDateTime::setUtcOffset(int)’ is deprecated: Use setOffsetFromUtc() instead [-Wdeprecated-declarations]
++   80 |             setUtcOffset(offset);
++      |                                ^
++In file included from /usr/include/qt5/QtCore/QDateTime:1,
++                 from /tmp/kdsoap-1.10.0/src/KDSoapClient/KDDateTime.h:21,
++                 from /tmp/kdsoap-1.10.0/src/KDSoapClient/KDDateTime.cpp:16:
++/usr/include/qt5/QtCore/qdatetime.h:376:60: note: declared here
++  376 |     QT_DEPRECATED_X("Use setOffsetFromUtc() instead") void setUtcOffset(int seconds);
++      |                                                            ^~~~~~~~~~~~
++[ 20%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/libkode/code_generation/include.cpp.o
++[ 21%] Building CXX object src/KDSoapClient/CMakeFiles/kdsoap.dir/KDSoapJob.cpp.o
++[ 22%] Building CXX object src/KDSoapClient/CMakeFiles/kdsoap.dir/KDSoapSslHandler.cpp.o
++[ 23%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/libkode/code_generation/membervariable.cpp.o
++[ 24%] Building CXX object src/KDSoapClient/CMakeFiles/kdsoap.dir/KDSoapReplySslHandler.cpp.o
++[ 25%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/libkode/code_generation/printer.cpp.o
++[ 25%] Building CXX object src/KDSoapClient/CMakeFiles/kdsoap.dir/KDSoapFaultException.cpp.o
++[ 26%] Building CXX object src/KDSoapClient/CMakeFiles/kdsoap.dir/KDSoapMessageAddressingProperties.cpp.o
++/tmp/kdsoap-1.10.0/kdwsdl2cpp/libkode/code_generation/printer.cpp: In member function ‘void KODE::Printer::printHeader(const KODE::File&)’:
++/tmp/kdsoap-1.10.0/kdwsdl2cpp/libkode/code_generation/printer.cpp:743:34: warning: ‘QSet<T> QList<T>::toSet() const [with T = QString]’ is deprecated: Use QSet<T>(list.begin(), list.end()) instead. [-Wdeprecated-declarations]
++  743 |         processed += decls.toSet();
++      |                                  ^
++In file included from /usr/include/qt5/QtCore/qobject.h:49,
++                 from /usr/include/qt5/QtCore/qiodevice.h:45,
++                 from /usr/include/qt5/QtCore/qfiledevice.h:43,
++                 from /usr/include/qt5/QtCore/qfile.h:44,
++                 from /usr/include/qt5/QtCore/QFile:1,
++                 from /tmp/kdsoap-1.10.0/kdwsdl2cpp/libkode/code_generation/printer.cpp:23:
++/usr/include/qt5/QtCore/qlist.h:413:13: note: declared here
++  413 |     QSet<T> toSet() const;
++      |             ^~~~~
++/tmp/kdsoap-1.10.0/kdwsdl2cpp/libkode/code_generation/printer.cpp:745:47: warning: ‘QList<T> QSet<T>::toList() const [with T = QString]’ is deprecated: Use values() instead. [-Wdeprecated-declarations]
++  745 |     QStringList fwdClasses = processed.toList();
++      |                                               ^
++In file included from /usr/include/qt5/QtCore/qdebug.h:52,
++                 from /usr/include/qt5/QtCore/QDebug:1,
++                 from /tmp/kdsoap-1.10.0/kdwsdl2cpp/libkode/code_generation/printer.cpp:28:
++/usr/include/qt5/QtCore/qset.h:265:14: note: declared here
++  265 |     QList<T> toList() const { return values(); }
++      |              ^~~~~~
++[ 27%] Building CXX object src/KDSoapClient/CMakeFiles/kdsoap.dir/KDSoapEndpointReference.cpp.o
++[ 27%] Building CXX object src/KDSoapClient/CMakeFiles/kdsoap.dir/KDQName.cpp.o
++[ 28%] Building CXX object src/KDSoapClient/CMakeFiles/kdsoap.dir/KDSoapUdpClient.cpp.o
++[ 29%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/libkode/code_generation/statemachine.cpp.o
++[ 29%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/libkode/code_generation/style.cpp.o
++[ 30%] Linking CXX shared library ../../lib/libkdsoap.so
++[ 31%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/libkode/code_generation/typedef.cpp.o
++[ 31%] Built target kdsoap
++[ 32%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/libkode/code_generation/variable.cpp.o
++Scanning dependencies of target kdsoap-server_autogen
++[ 33%] Automatic MOC for target kdsoap-server
++[ 33%] Built target kdsoap-server_autogen
++Scanning dependencies of target helloworld_client_autogen
++[ 34%] Automatic MOC for target helloworld_client
++[ 34%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/libkode/schema/annotation.cpp.o
++[ 35%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/libkode/schema/attribute.cpp.o
++[ 35%] Built target helloworld_client_autogen
++Scanning dependencies of target bank_gui_autogen
++[ 36%] Automatic MOC for target bank_gui
++[ 36%] Built target bank_gui_autogen
++Scanning dependencies of target bank_wsdl_autogen
++[ 36%] Automatic MOC for target bank_wsdl
++[ 36%] Built target bank_wsdl_autogen
++Scanning dependencies of target kdsoap-server
++[ 36%] Building CXX object src/KDSoapServer/CMakeFiles/kdsoap-server.dir/kdsoap-server_autogen/mocs_compilation.cpp.o
++[ 37%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/libkode/schema/complextype.cpp.o
++[ 38%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/libkode/schema/element.cpp.o
++[ 39%] Building CXX object src/KDSoapServer/CMakeFiles/kdsoap-server.dir/KDSoapDelayedResponseHandle.cpp.o
++[ 39%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/libkode/schema/parser.cpp.o
++[ 40%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/libkode/schema/simpletype.cpp.o
++[ 41%] Building CXX object src/KDSoapServer/CMakeFiles/kdsoap-server.dir/KDSoapServer.cpp.o
++In file included from /tmp/kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/parser.cpp:35:
++/tmp/kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/parser.h:83:63: warning: ‘QXmlInputSource’ is deprecated [-Wdeprecated-declarations]
++   83 |     bool parse(ParserContext *context, QXmlInputSource *source);
++      |                                                               ^
++In file included from /usr/include/qt5/QtXml/QXmlSimpleReader:1,
++                 from /tmp/kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/parser.cpp:27:
++/usr/include/qt5/QtXml/qxml.h:197:49: note: declared here
++  197 | class QT_DEPRECATED_VERSION(5, 15) Q_XML_EXPORT QXmlInputSource
++      |                                                 ^~~~~~~~~~~~~~~
++/tmp/kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/parser.cpp: In member function ‘void XSD::Parser::importSchema(ParserContext*, const QString&)’:
++/tmp/kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/parser.cpp:1114:31: warning: ‘QXmlInputSource’ is deprecated [-Wdeprecated-declarations]
++ 1114 |         QXmlInputSource source(&file);
++      |                               ^
++In file included from /usr/include/qt5/QtXml/QXmlSimpleReader:1,
++                 from /tmp/kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/parser.cpp:27:
++/usr/include/qt5/QtXml/qxml.h:197:49: note: declared here
++  197 | class QT_DEPRECATED_VERSION(5, 15) Q_XML_EXPORT QXmlInputSource
++      |                                                 ^~~~~~~~~~~~~~~
++/tmp/kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/parser.cpp:1115:26: warning: ‘QXmlSimpleReader’ is deprecated: Use QXmlStreamReader [-Wdeprecated-declarations]
++ 1115 |         QXmlSimpleReader reader;
++      |                          ^~~~~~
++In file included from /usr/include/qt5/QtXml/QXmlSimpleReader:1,
++                 from /tmp/kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/parser.cpp:27:
++/usr/include/qt5/QtXml/qxml.h:275:75: note: declared here
++  275 | class QT_DEPRECATED_VERSION_X(5, 15, "Use QXmlStreamReader") Q_XML_EXPORT QXmlSimpleReader
++      |                                                                           ^~~~~~~~~~~~~~~~
++/tmp/kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/parser.cpp:1121:87: warning: ‘bool QDomDocument::setContent(QXmlInputSource*, QXmlReader*, QString*, int*, int*)’ is deprecated: Use other overloads instead [-Wdeprecated-declarations]
++ 1121 |         bool ok = doc.setContent(&source, &reader, &errorMsg, &errorLine, &errorColumn);
++      |                                                                                       ^
++In file included from /usr/include/qt5/QtXml/QDomElement:1,
++                 from /tmp/kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/parser.h:27,
++                 from /tmp/kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/parser.cpp:35:
++/usr/include/qt5/QtXml/qdom.h:356:10: note: declared here
++  356 |     bool setContent(QXmlInputSource *source, QXmlReader *reader, QString *errorMsg=nullptr, int *errorLine=nullptr, int *errorColumn=nullptr );
++      |          ^~~~~~~~~~
++/tmp/kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/parser.cpp: In member function ‘void XSD::Parser::includeSchema(ParserContext*, const QString&)’:
++/tmp/kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/parser.cpp:1159:31: warning: ‘QXmlInputSource’ is deprecated [-Wdeprecated-declarations]
++ 1159 |         QXmlInputSource source(&file);
++      |                               ^
++In file included from /usr/include/qt5/QtXml/QXmlSimpleReader:1,
++                 from /tmp/kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/parser.cpp:27:
++/usr/include/qt5/QtXml/qxml.h:197:49: note: declared here
++  197 | class QT_DEPRECATED_VERSION(5, 15) Q_XML_EXPORT QXmlInputSource
++      |                                                 ^~~~~~~~~~~~~~~
++/tmp/kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/parser.cpp:1160:26: warning: ‘QXmlSimpleReader’ is deprecated: Use QXmlStreamReader [-Wdeprecated-declarations]
++ 1160 |         QXmlSimpleReader reader;
++      |                          ^~~~~~
++In file included from /usr/include/qt5/QtXml/QXmlSimpleReader:1,
++                 from /tmp/kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/parser.cpp:27:
++/usr/include/qt5/QtXml/qxml.h:275:75: note: declared here
++  275 | class QT_DEPRECATED_VERSION_X(5, 15, "Use QXmlStreamReader") Q_XML_EXPORT QXmlSimpleReader
++      |                                                                           ^~~~~~~~~~~~~~~~
++/tmp/kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/parser.cpp:1166:87: warning: ‘bool QDomDocument::setContent(QXmlInputSource*, QXmlReader*, QString*, int*, int*)’ is deprecated: Use other overloads instead [-Wdeprecated-declarations]
++ 1166 |         bool ok = doc.setContent(&source, &reader, &errorMsg, &errorLine, &errorColumn);
++      |                                                                                       ^
++In file included from /usr/include/qt5/QtXml/QDomElement:1,
++                 from /tmp/kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/parser.h:27,
++                 from /tmp/kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/parser.cpp:35:
++/usr/include/qt5/QtXml/qdom.h:356:10: note: declared here
++  356 |     bool setContent(QXmlInputSource *source, QXmlReader *reader, QString *errorMsg=nullptr, int *errorLine=nullptr, int *errorColumn=nullptr );
++      |          ^~~~~~~~~~
++/tmp/kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/parser.cpp: At global scope:
++/tmp/kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/parser.cpp:1380:67: warning: ‘QXmlInputSource’ is deprecated [-Wdeprecated-declarations]
++ 1380 | bool Parser::parse(ParserContext *context, QXmlInputSource *source)
++      |                                                                   ^
++In file included from /usr/include/qt5/QtXml/QXmlSimpleReader:1,
++                 from /tmp/kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/parser.cpp:27:
++/usr/include/qt5/QtXml/qxml.h:197:49: note: declared here
++  197 | class QT_DEPRECATED_VERSION(5, 15) Q_XML_EXPORT QXmlInputSource
++      |                                                 ^~~~~~~~~~~~~~~
++/tmp/kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/parser.cpp: In member function ‘bool XSD::Parser::parse(ParserContext*, QXmlInputSource*)’:
++/tmp/kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/parser.cpp:1382:22: warning: ‘QXmlSimpleReader’ is deprecated: Use QXmlStreamReader [-Wdeprecated-declarations]
++ 1382 |     QXmlSimpleReader reader;
++      |                      ^~~~~~
++In file included from /usr/include/qt5/QtXml/QXmlSimpleReader:1,
++                 from /tmp/kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/parser.cpp:27:
++/usr/include/qt5/QtXml/qxml.h:275:75: note: declared here
++  275 | class QT_DEPRECATED_VERSION_X(5, 15, "Use QXmlStreamReader") Q_XML_EXPORT QXmlSimpleReader
++      |                                                                           ^~~~~~~~~~~~~~~~
++/tmp/kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/parser.cpp:1390:74: warning: ‘bool QDomDocument::setContent(QXmlInputSource*, QXmlReader*, QString*, int*, int*)’ is deprecated: Use other overloads instead [-Wdeprecated-declarations]
++ 1390 |     if (!doc.setContent(source, &reader, &errorMsg, &errorLine, &errorCol)) {
++      |                                                                          ^
++In file included from /usr/include/qt5/QtXml/QDomElement:1,
++                 from /tmp/kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/parser.h:27,
++                 from /tmp/kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/parser.cpp:35:
++/usr/include/qt5/QtXml/qdom.h:356:10: note: declared here
++  356 |     bool setContent(QXmlInputSource *source, QXmlReader *reader, QString *errorMsg=nullptr, int *errorLine=nullptr, int *errorColumn=nullptr );
++      |          ^~~~~~~~~~
++/tmp/kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/parser.cpp: In member function ‘bool XSD::Parser::parseFile(ParserContext*, QFile&)’:
++/tmp/kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/parser.cpp:1407:27: warning: ‘QXmlInputSource’ is deprecated [-Wdeprecated-declarations]
++ 1407 |     QXmlInputSource source(&file);
++      |                           ^
++In file included from /usr/include/qt5/QtXml/QXmlSimpleReader:1,
++                 from /tmp/kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/parser.cpp:27:
++/usr/include/qt5/QtXml/qxml.h:197:49: note: declared here
++  197 | class QT_DEPRECATED_VERSION(5, 15) Q_XML_EXPORT QXmlInputSource
++      |                                                 ^~~~~~~~~~~~~~~
++/tmp/kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/parser.cpp: In member function ‘bool XSD::Parser::parseString(ParserContext*, const QString&)’:
++/tmp/kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/parser.cpp:1413:21: warning: ‘QXmlInputSource’ is deprecated [-Wdeprecated-declarations]
++ 1413 |     QXmlInputSource source;
++      |                     ^~~~~~
++In file included from /usr/include/qt5/QtXml/QXmlSimpleReader:1,
++                 from /tmp/kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/parser.cpp:27:
++/usr/include/qt5/QtXml/qxml.h:197:49: note: declared here
++  197 | class QT_DEPRECATED_VERSION(5, 15) Q_XML_EXPORT QXmlInputSource
++      |                                                 ^~~~~~~~~~~~~~~
++[ 42%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/libkode/schema/types.cpp.o
++[ 43%] Building CXX object src/KDSoapServer/CMakeFiles/kdsoap-server.dir/KDSoapServerObjectInterface.cpp.o
++[ 43%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/libkode/schema/xmlelement.cpp.o
++[ 44%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/libkode/schema/xsdtype.cpp.o
++[ 44%] Building CXX object src/KDSoapServer/CMakeFiles/kdsoap-server.dir/KDSoapServerSocket.cpp.o
++[ 45%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/libkode/schema/attributegroup.cpp.o
++[ 46%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/libkode/schema/compositor.cpp.o
++[ 46%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/libkode/schema/group.cpp.o
++[ 47%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/wsdl/binding.cpp.o
++[ 48%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/wsdl/bindingoperation.cpp.o
++[ 49%] Building CXX object src/KDSoapServer/CMakeFiles/kdsoap-server.dir/KDSoapServerThread.cpp.o
++[ 49%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/wsdl/definitions.cpp.o
++[ 50%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/wsdl/element.cpp.o
++[ 51%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/wsdl/fault.cpp.o
++/tmp/kdsoap-1.10.0/kdwsdl2cpp/wsdl/definitions.cpp: In member function ‘void KWSDL::Definitions::importDefinition(ParserContext*, const QString&)’:
++/tmp/kdsoap-1.10.0/kdwsdl2cpp/wsdl/definitions.cpp:263:31: warning: ‘QXmlInputSource’ is deprecated [-Wdeprecated-declarations]
++  263 |         QXmlInputSource source(&file);
++      |                               ^
++In file included from /tmp/kdsoap-1.10.0/kdwsdl2cpp/wsdl/definitions.h:27,
++                 from /tmp/kdsoap-1.10.0/kdwsdl2cpp/wsdl/definitions.cpp:22:
++/usr/include/qt5/QtXml/qxml.h:197:49: note: declared here
++  197 | class QT_DEPRECATED_VERSION(5, 15) Q_XML_EXPORT QXmlInputSource
++      |                                                 ^~~~~~~~~~~~~~~
++/tmp/kdsoap-1.10.0/kdwsdl2cpp/wsdl/definitions.cpp:264:26: warning: ‘QXmlSimpleReader’ is deprecated: Use QXmlStreamReader [-Wdeprecated-declarations]
++  264 |         QXmlSimpleReader reader;
++      |                          ^~~~~~
++In file included from /tmp/kdsoap-1.10.0/kdwsdl2cpp/wsdl/definitions.h:27,
++                 from /tmp/kdsoap-1.10.0/kdwsdl2cpp/wsdl/definitions.cpp:22:
++/usr/include/qt5/QtXml/qxml.h:275:75: note: declared here
++  275 | class QT_DEPRECATED_VERSION_X(5, 15, "Use QXmlStreamReader") Q_XML_EXPORT QXmlSimpleReader
++      |                                                                           ^~~~~~~~~~~~~~~~
++/tmp/kdsoap-1.10.0/kdwsdl2cpp/wsdl/definitions.cpp:270:87: warning: ‘bool QDomDocument::setContent(QXmlInputSource*, QXmlReader*, QString*, int*, int*)’ is deprecated: Use other overloads instead [-Wdeprecated-declarations]
++  270 |         bool ok = doc.setContent(&source, &reader, &errorMsg, &errorLine, &errorColumn);
++      |                                                                                       ^
++In file included from /tmp/kdsoap-1.10.0/kdwsdl2cpp/wsdl/definitions.h:25,
++                 from /tmp/kdsoap-1.10.0/kdwsdl2cpp/wsdl/definitions.cpp:22:
++/usr/include/qt5/QtXml/qdom.h:356:10: note: declared here
++  356 |     bool setContent(QXmlInputSource *source, QXmlReader *reader, QString *errorMsg=nullptr, int *errorLine=nullptr, int *errorColumn=nullptr );
++      |          ^~~~~~~~~~
++[ 52%] Building CXX object src/KDSoapServer/CMakeFiles/kdsoap-server.dir/KDSoapServerAuthInterface.cpp.o
++[ 52%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/wsdl/import.cpp.o
++[ 52%] Building CXX object src/KDSoapServer/CMakeFiles/kdsoap-server.dir/KDSoapServerRawXMLInterface.cpp.o
++[ 53%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/wsdl/message.cpp.o
++[ 54%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/wsdl/operation.cpp.o
++[ 55%] Building CXX object src/KDSoapServer/CMakeFiles/kdsoap-server.dir/KDSoapServerCustomVerbRequestInterface.cpp.o
++[ 56%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/wsdl/param.cpp.o
++[ 57%] Building CXX object src/KDSoapServer/CMakeFiles/kdsoap-server.dir/KDSoapSocketList.cpp.o
++[ 57%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/wsdl/part.cpp.o
++[ 58%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/wsdl/port.cpp.o
++[ 59%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/wsdl/porttype.cpp.o
++[ 60%] Building CXX object src/KDSoapServer/CMakeFiles/kdsoap-server.dir/KDSoapThreadPool.cpp.o
++[ 60%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/wsdl/service.cpp.o
++[ 61%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/wsdl/soapbinding.cpp.o
++[ 61%] Linking CXX shared library ../../lib/libkdsoap-server.so
++[ 61%] Built target kdsoap-server
++[ 62%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/wsdl/type.cpp.o
++[ 63%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/wsdl/wsdl.cpp.o
++[ 63%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/src/compiler.cpp.o
++[ 64%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/src/converter.cpp.o
++[ 65%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/src/converter_clientstub.cpp.o
++In file included from /tmp/kdsoap-1.10.0/kdwsdl2cpp/src/converter.h:25,
++                 from /tmp/kdsoap-1.10.0/kdwsdl2cpp/src/compiler.cpp:30:
++/tmp/kdsoap-1.10.0/kdwsdl2cpp/libkode/schema/parser.h:83:63: warning: ‘QXmlInputSource’ is deprecated [-Wdeprecated-declarations]
++   83 |     bool parse(ParserContext *context, QXmlInputSource *source);
++      |                                                               ^
++In file included from /tmp/kdsoap-1.10.0/kdwsdl2cpp/wsdl/definitions.h:27,
++                 from /tmp/kdsoap-1.10.0/kdwsdl2cpp/wsdl/wsdl.h:26,
++                 from /tmp/kdsoap-1.10.0/kdwsdl2cpp/src/compiler.cpp:24:
++/usr/include/qt5/QtXml/qxml.h:197:49: note: declared here
++  197 | class QT_DEPRECATED_VERSION(5, 15) Q_XML_EXPORT QXmlInputSource
++      |                                                 ^~~~~~~~~~~~~~~
++/tmp/kdsoap-1.10.0/kdwsdl2cpp/src/compiler.cpp: In member function ‘void KWSDL::Compiler::download()’:
++/tmp/kdsoap-1.10.0/kdwsdl2cpp/src/compiler.cpp:63:31: warning: ‘QXmlInputSource’ is deprecated [-Wdeprecated-declarations]
++   63 |         QXmlInputSource source(&file);
++      |                               ^
++In file included from /tmp/kdsoap-1.10.0/kdwsdl2cpp/wsdl/definitions.h:27,
++                 from /tmp/kdsoap-1.10.0/kdwsdl2cpp/wsdl/wsdl.h:26,
++                 from /tmp/kdsoap-1.10.0/kdwsdl2cpp/src/compiler.cpp:24:
++/usr/include/qt5/QtXml/qxml.h:197:49: note: declared here
++  197 | class QT_DEPRECATED_VERSION(5, 15) Q_XML_EXPORT QXmlInputSource
++      |                                                 ^~~~~~~~~~~~~~~
++/tmp/kdsoap-1.10.0/kdwsdl2cpp/src/compiler.cpp:64:26: warning: ‘QXmlSimpleReader’ is deprecated: Use QXmlStreamReader [-Wdeprecated-declarations]
++   64 |         QXmlSimpleReader reader;
++      |                          ^~~~~~
++In file included from /tmp/kdsoap-1.10.0/kdwsdl2cpp/wsdl/definitions.h:27,
++                 from /tmp/kdsoap-1.10.0/kdwsdl2cpp/wsdl/wsdl.h:26,
++                 from /tmp/kdsoap-1.10.0/kdwsdl2cpp/src/compiler.cpp:24:
++/usr/include/qt5/QtXml/qxml.h:275:75: note: declared here
++  275 | class QT_DEPRECATED_VERSION_X(5, 15, "Use QXmlStreamReader") Q_XML_EXPORT QXmlSimpleReader
++      |                                                                           ^~~~~~~~~~~~~~~~
++/tmp/kdsoap-1.10.0/kdwsdl2cpp/src/compiler.cpp:70:79: warning: ‘bool QDomDocument::setContent(QXmlInputSource*, QXmlReader*, QString*, int*, int*)’ is deprecated: Use other overloads instead [-Wdeprecated-declarations]
++   70 |         if (!doc.setContent(&source, &reader, &errorMsg, &errorLine, &errorCol)) {
++      |                                                                               ^
++In file included from /tmp/kdsoap-1.10.0/kdwsdl2cpp/wsdl/definitions.h:25,
++                 from /tmp/kdsoap-1.10.0/kdwsdl2cpp/wsdl/wsdl.h:26,
++                 from /tmp/kdsoap-1.10.0/kdwsdl2cpp/src/compiler.cpp:24:
++/usr/include/qt5/QtXml/qdom.h:356:10: note: declared here
++  356 |     bool setContent(QXmlInputSource *source, QXmlReader *reader, QString *errorMsg=nullptr, int *errorLine=nullptr, int *errorColumn=nullptr );
++      |          ^~~~~~~~~~
++[ 65%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/src/converter_complextype.cpp.o
++[ 66%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/src/converter_serverstub.cpp.o
++[ 67%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/src/converter_simpletype.cpp.o
++[ 68%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/src/creator.cpp.o
++[ 68%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/src/elementargumentserializer.cpp.o
++[ 69%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/src/namemapper.cpp.o
++[ 70%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/src/settings.cpp.o
++[ 70%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/src/typemap.cpp.o
++[ 71%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp_lib.dir/kdwsdl2cpp_lib_autogen/O5NINWQTET/qrc_schemas.cpp.o
++Scanning dependencies of target helloworld_server_autogen
++[ 72%] Automatic MOC for target helloworld_server
++[ 72%] Built target helloworld_server_autogen
++[ 73%] Linking CXX static library ../lib/libkdwsdl2cpp_lib.a
++[ 73%] Built target kdwsdl2cpp_lib
++Scanning dependencies of target kdwsdl2cpp_autogen
++[ 74%] Automatic MOC for target kdwsdl2cpp
++[ 74%] Built target kdwsdl2cpp_autogen
++Scanning dependencies of target kdwsdl2cpp
++[ 75%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp.dir/kdwsdl2cpp_autogen/mocs_compilation.cpp.o
++[ 75%] Building CXX object kdwsdl2cpp/CMakeFiles/kdwsdl2cpp.dir/src/main.cpp.o
++[ 76%] Linking CXX executable ../bin/kdwsdl2cpp
++[ 76%] Built target kdwsdl2cpp
++[ 77%] Generating wsdl_helloworld.h
++[ 78%] Generating wsdl_helloworld.h
++[ 79%] Generating wsdl_BLZService.h
++Converting 0 simple types
++Converting 0 simple types
++Converting 0 complex types
++Converting 0 complex types
++Not implemented: HTTPBinding
++Converting 0 simple types
++Converting 3 complex types
++[ 80%] Generating moc_wsdl_helloworld.cpp
++[ 80%] Automatic RCC for resources.qrc
++[ 81%] Generating moc_wsdl_helloworld.cpp
++[ 82%] Generating moc_wsdl_BLZService.cpp
++[ 83%] Generating wsdl_helloworld.cpp
++[ 83%] Generating wsdl_helloworld.cpp
++Converting 0 simple types
++Converting 0 complex types
++[ 83%] Generating wsdl_BLZService.cpp
++Converting 0 simple types
++Converting 0 complex types
++Not implemented: HTTPBinding
++Scanning dependencies of target helloworld_client
++Scanning dependencies of target helloworld_server
++Converting 0 simple types
++Converting 3 complex types
++Scanning dependencies of target bank_gui
++[ 84%] Building CXX object examples/helloworld_server/CMakeFiles/helloworld_server.dir/helloworld_server_autogen/mocs_compilation.cpp.o
++[ 84%] Building CXX object examples/helloworld_client/CMakeFiles/helloworld_client.dir/helloworld_client_autogen/mocs_compilation.cpp.o
++[ 85%] Building CXX object examples/bank_gui/CMakeFiles/bank_gui.dir/bank_gui_autogen/mocs_compilation.cpp.o
++[ 85%] Building CXX object examples/helloworld_server/CMakeFiles/helloworld_server.dir/main.cpp.o
++[ 86%] Building CXX object examples/bank_gui/CMakeFiles/bank_gui.dir/bank_gui.cpp.o
++[ 87%] Building CXX object examples/helloworld_client/CMakeFiles/helloworld_client.dir/main.cpp.o
++[ 88%] Building CXX object examples/helloworld_server/CMakeFiles/helloworld_server.dir/wsdl_helloworld.cpp.o
++[ 88%] Building CXX object examples/bank_gui/CMakeFiles/bank_gui.dir/mainwindow.cpp.o
++[ 89%] Building CXX object examples/helloworld_client/CMakeFiles/helloworld_client.dir/wsdl_helloworld.cpp.o
++[ 90%] Building CXX object examples/helloworld_server/CMakeFiles/helloworld_server.dir/moc_wsdl_helloworld.cpp.o
++[ 90%] Building CXX object examples/helloworld_client/CMakeFiles/helloworld_client.dir/moc_wsdl_helloworld.cpp.o
++[ 91%] Building CXX object examples/bank_gui/CMakeFiles/bank_gui.dir/wsdl_BLZService.cpp.o
++[ 91%] Linking CXX executable ../../bin/helloworld_server
++[ 91%] Built target helloworld_server
++[ 91%] Generating wsdl_BLZService.h
++Not implemented: HTTPBinding
++Converting 0 simple types
++Converting 3 complex types
++[ 92%] Generating moc_wsdl_BLZService.cpp
++[ 93%] Generating wsdl_BLZService.cpp
++Not implemented: HTTPBinding
++Converting 0 simple types
++Converting 3 complex types
++Scanning dependencies of target bank_wsdl
++[ 94%] Building CXX object examples/bank_wsdl/CMakeFiles/bank_wsdl.dir/bank_wsdl_autogen/mocs_compilation.cpp.o
++[ 95%] Building CXX object examples/bank_wsdl/CMakeFiles/bank_wsdl.dir/bank_wsdl.cpp.o
++[ 96%] Linking CXX executable ../../bin/helloworld_client
++[ 96%] Built target helloworld_client
++[ 96%] Building CXX object examples/bank_wsdl/CMakeFiles/bank_wsdl.dir/wsdl_BLZService.cpp.o
++[ 97%] Building CXX object examples/bank_wsdl/CMakeFiles/bank_wsdl.dir/moc_wsdl_BLZService.cpp.o
++[ 98%] Building CXX object examples/bank_gui/CMakeFiles/bank_gui.dir/moc_wsdl_BLZService.cpp.o
++[ 99%] Building CXX object examples/bank_gui/CMakeFiles/bank_gui.dir/bank_gui_autogen/EWIEGA46WW/qrc_resources.cpp.o
++[100%] Linking CXX executable ../../bin/bank_wsdl
++[100%] Linking CXX executable ../../bin/bank_gui
++[100%] Built target bank_wsdl
++[100%] Built target bank_gui
++[  1%] Automatic MOC for target kdsoap
++[  1%] Built target kdsoap_autogen
++[ 17%] Built target kdsoap
++[ 18%] Automatic MOC for target kdsoap-server
++[ 18%] Built target kdsoap-server_autogen
++[ 26%] Built target kdsoap-server
++[ 27%] Automatic MOC for target kdwsdl2cpp_lib
++[ 27%] Built target kdwsdl2cpp_lib_autogen
++[ 70%] Built target kdwsdl2cpp_lib
++[ 71%] Automatic MOC for target kdwsdl2cpp
++[ 71%] Built target kdwsdl2cpp_autogen
++[ 73%] Built target kdwsdl2cpp
++[ 74%] Automatic MOC for target helloworld_client
++[ 74%] Built target helloworld_client_autogen
++[ 80%] Built target helloworld_client
++[ 81%] Automatic MOC for target helloworld_server
++[ 81%] Built target helloworld_server_autogen
++[ 86%] Built target helloworld_server
++[ 87%] Automatic MOC for target bank_gui
++[ 87%] Built target bank_gui_autogen
++[ 94%] Built target bank_gui
++[ 94%] Automatic MOC for target bank_wsdl
++[ 94%] Built target bank_wsdl_autogen
++[100%] Built target bank_wsdl
++Install the project...
++-- Install configuration: "Release"
++-- Installing: /tmp/package-kdsoap/usr/doc/kdsoap-1.10.0/README.txt
++-- Installing: /tmp/package-kdsoap/usr/doc/kdsoap-1.10.0/README-commercial.txt
++-- Installing: /tmp/package-kdsoap/usr/doc/kdsoap-1.10.0/kdsoap.pri
++-- Installing: /tmp/package-kdsoap/usr/doc/kdsoap-1.10.0/kdwsdl2cpp.pri
++-- Installing: /tmp/package-kdsoap/usr/doc/kdsoap-1.10.0/LICENSES
++-- Installing: /tmp/package-kdsoap/usr/doc/kdsoap-1.10.0/LICENSES/LicenseRef-KDAB-KDSoap.txt
++-- Installing: /tmp/package-kdsoap/usr/doc/kdsoap-1.10.0/LICENSES/LicenseRef-KDAB-KDSoap-AGPL3-Modified.txt
++-- Installing: /tmp/package-kdsoap/usr/doc/kdsoap-1.10.0/LICENSES/GPL-3.0-only.txt
++-- Installing: /tmp/package-kdsoap/usr/doc/kdsoap-1.10.0/LICENSES/LicenseRef-KDAB-KDSoap-US.txt
++-- Installing: /tmp/package-kdsoap/usr/doc/kdsoap-1.10.0/LICENSES/LGPL-2.1-only.txt
++-- Installing: /tmp/package-kdsoap/usr/doc/kdsoap-1.10.0/LICENSES/LGPL-2.0-or-later.txt
++-- Installing: /tmp/package-kdsoap/usr/doc/kdsoap-1.10.0/LICENSES/BSD-3-Clause.txt
++-- Installing: /tmp/package-kdsoap/usr/doc/kdsoap-1.10.0/LICENSES/LGPL-3.0-only.txt
++-- Installing: /tmp/package-kdsoap/usr/doc/kdsoap-1.10.0/LICENSES/GPL-2.0-only.txt
++-- Installing: /tmp/package-kdsoap/usr/lib/cmake/KDSoap/KDSoapConfig.cmake
++-- Installing: /tmp/package-kdsoap/usr/lib/cmake/KDSoap/KDSoapConfigVersion.cmake
++-- Installing: /tmp/package-kdsoap/usr/lib/cmake/KDSoap/KDSoapMacros.cmake
++-- Installing: /tmp/package-kdsoap/usr/lib/cmake/KDSoap/KDSoapTargets.cmake
++-- Installing: /tmp/package-kdsoap/usr/lib/cmake/KDSoap/KDSoapTargets-release.cmake
++-- Installing: /tmp/package-kdsoap/usr/lib/qt5/mkspecs/modules/qt_KDSoapClient.pri
++-- Installing: /tmp/package-kdsoap/usr/lib/qt5/mkspecs/modules/qt_KDSoapServer.pri
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapClient/KDSoapGlobal
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapClient/KDSoapMessage
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapClient/KDSoapHeaders
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapClient/KDSoap
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapClient/KDDateTime
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapClient/KDSoapJob
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapClient/KDSoapClientInterface
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapClient/KDSoapNamespaceManager
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapClient/KDSoapSslHandler
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapClient/KDSoapValue
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapClient/KDSoapValueList
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapClient/KDSoapPendingCallWatcher
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapClient/KDSoapFaultException
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapClient/KDSoapMessageAddressingProperties
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapClient/KDSoapEndpointReference
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapClient/KDSoapPendingCall
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapClient/KDSoapAuthentication
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapClient/KDQName
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapClient/KDSoapUdpClient
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapClient/KDSoapClient
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapClient/KDSoapMessage.h
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapClient/KDSoapClientInterface.h
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapClient/KDSoapPendingCall.h
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapClient/KDSoapPendingCallWatcher.h
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapClient/KDSoapValue.h
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapClient/KDSoapGlobal.h
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapClient/KDSoapJob.h
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapClient/KDSoapAuthentication.h
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapClient/KDSoapNamespaceManager.h
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapClient/KDDateTime.h
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapClient/KDSoap.h
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapClient/KDSoapSslHandler.h
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapClient/KDSoapFaultException.h
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapClient/KDSoapMessageAddressingProperties.h
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapClient/KDSoapEndpointReference.h
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapClient/KDQName.h
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapClient/KDSoapUdpClient.h
++-- Installing: /tmp/package-kdsoap/usr/lib/libkdsoap.so.1.10.0
++-- Installing: /tmp/package-kdsoap/usr/lib/libkdsoap.so.1
++-- Set runtime path of "/tmp/package-kdsoap/usr/lib/libkdsoap.so.1.10.0" to "$ORIGIN/../lib"
++-- Installing: /tmp/package-kdsoap/usr/lib/libkdsoap.so
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapServer/KDSoapDelayedResponseHandle
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapServer/KDSoapServerGlobal
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapServer/KDSoapThreadPool
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapServer/KDSoapServerObjectInterface
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapServer/KDSoapServerAuthInterface
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapServer/KDSoapServerRawXMLInterface
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapServer/KDSoapServerCustomVerbRequestInterface
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapServer/KDSoapServer
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapServer/KDSoapServer.h
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapServer/KDSoapServerAuthInterface.h
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapServer/KDSoapServerRawXMLInterface.h
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapServer/KDSoapServerCustomVerbRequestInterface.h
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapServer/KDSoapDelayedResponseHandle.h
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapServer/KDSoapServerObjectInterface.h
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapServer/KDSoapServerGlobal.h
++-- Installing: /tmp/package-kdsoap/usr/include/KDSoapServer/KDSoapThreadPool.h
++-- Installing: /tmp/package-kdsoap/usr/lib/libkdsoap-server.so.1.10.0
++-- Installing: /tmp/package-kdsoap/usr/lib/libkdsoap-server.so.1
++-- Set runtime path of "/tmp/package-kdsoap/usr/lib/libkdsoap-server.so.1.10.0" to "$ORIGIN/../lib"
++-- Installing: /tmp/package-kdsoap/usr/lib/libkdsoap-server.so
++-- Installing: /tmp/package-kdsoap/usr/bin/kdwsdl2cpp
++-- Set runtime path of "/tmp/package-kdsoap/usr/bin/kdwsdl2cpp" to "$ORIGIN/../lib"
++-- Installing: /tmp/package-kdsoap/usr/share/mkspecs/features/kdsoap.prf
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++usr/lib/libkdsoap-server.so	libkdsoap-server.so.1
++usr/lib/libkdsoap-server.so.1	libkdsoap-server.so.1.10.0
++usr/lib/libkdsoap.so	libkdsoap.so.1
++usr/lib/libkdsoap.so.1	libkdsoap.so.1.10.0
++
++Making symbolic link creation script:
++( cd usr/lib ; rm -rf libkdsoap-server.so )
++( cd usr/lib ; ln -sf libkdsoap-server.so.1 libkdsoap-server.so )
++( cd usr/lib ; rm -rf libkdsoap-server.so.1 )
++( cd usr/lib ; ln -sf libkdsoap-server.so.1.10.0 libkdsoap-server.so.1 )
++( cd usr/lib ; rm -rf libkdsoap.so )
++( cd usr/lib ; ln -sf libkdsoap.so.1 libkdsoap.so )
++( cd usr/lib ; rm -rf libkdsoap.so.1 )
++( cd usr/lib ; ln -sf libkdsoap.so.1.10.0 libkdsoap.so.1 )
++
++It is recommended that you make these lines your new installation script.
++
++Would you like to make this stuff the install script for this package
++and remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './usr/lib/libkdsoap-server.so.1'
++removed './usr/lib/libkdsoap.so'
++removed './usr/lib/libkdsoap-server.so'
++removed './usr/lib/libkdsoap.so.1'
++
++Creating your new ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/kdsoap-1.10.0-x86_64-1.txz
++
++./
++install/
++install/doinst.sh
++install/slack-desc
++usr/
++usr/bin/
++usr/bin/kdwsdl2cpp
++usr/doc/
++usr/doc/kdsoap-1.10.0/
++usr/doc/kdsoap-1.10.0/LICENSE.txt
++usr/doc/kdsoap-1.10.0/LICENSES/
++usr/doc/kdsoap-1.10.0/LICENSES/BSD-3-Clause.txt
++usr/doc/kdsoap-1.10.0/LICENSES/GPL-2.0-only.txt
++usr/doc/kdsoap-1.10.0/LICENSES/GPL-3.0-only.txt
++usr/doc/kdsoap-1.10.0/LICENSES/LGPL-2.0-or-later.txt
++usr/doc/kdsoap-1.10.0/LICENSES/LGPL-2.1-only.txt
++usr/doc/kdsoap-1.10.0/LICENSES/LGPL-3.0-only.txt
++usr/doc/kdsoap-1.10.0/LICENSES/LicenseRef-KDAB-KDSoap-AGPL3-Modified.txt
++usr/doc/kdsoap-1.10.0/LICENSES/LicenseRef-KDAB-KDSoap-US.txt
++usr/doc/kdsoap-1.10.0/LICENSES/LicenseRef-KDAB-KDSoap.txt
++usr/doc/kdsoap-1.10.0/README-commercial.txt
++usr/doc/kdsoap-1.10.0/README.txt
++usr/doc/kdsoap-1.10.0/kdsoap.pri
++usr/doc/kdsoap-1.10.0/kdwsdl2cpp.pri
++usr/include/
++usr/include/KDSoapClient/
++usr/include/KDSoapClient/KDDateTime
++usr/include/KDSoapClient/KDDateTime.h
++usr/include/KDSoapClient/KDQName
++usr/include/KDSoapClient/KDQName.h
++usr/include/KDSoapClient/KDSoap
++usr/include/KDSoapClient/KDSoap.h
++usr/include/KDSoapClient/KDSoapAuthentication
++usr/include/KDSoapClient/KDSoapAuthentication.h
++usr/include/KDSoapClient/KDSoapClient
++usr/include/KDSoapClient/KDSoapClientInterface
++usr/include/KDSoapClient/KDSoapClientInterface.h
++usr/include/KDSoapClient/KDSoapEndpointReference
++usr/include/KDSoapClient/KDSoapEndpointReference.h
++usr/include/KDSoapClient/KDSoapFaultException
++usr/include/KDSoapClient/KDSoapFaultException.h
++usr/include/KDSoapClient/KDSoapGlobal
++usr/include/KDSoapClient/KDSoapGlobal.h
++usr/include/KDSoapClient/KDSoapHeaders
++usr/include/KDSoapClient/KDSoapJob
++usr/include/KDSoapClient/KDSoapJob.h
++usr/include/KDSoapClient/KDSoapMessage
++usr/include/KDSoapClient/KDSoapMessage.h
++usr/include/KDSoapClient/KDSoapMessageAddressingProperties
++usr/include/KDSoapClient/KDSoapMessageAddressingProperties.h
++usr/include/KDSoapClient/KDSoapNamespaceManager
++usr/include/KDSoapClient/KDSoapNamespaceManager.h
++usr/include/KDSoapClient/KDSoapPendingCall
++usr/include/KDSoapClient/KDSoapPendingCall.h
++usr/include/KDSoapClient/KDSoapPendingCallWatcher
++usr/include/KDSoapClient/KDSoapPendingCallWatcher.h
++usr/include/KDSoapClient/KDSoapSslHandler
++usr/include/KDSoapClient/KDSoapSslHandler.h
++usr/include/KDSoapClient/KDSoapUdpClient
++usr/include/KDSoapClient/KDSoapUdpClient.h
++usr/include/KDSoapClient/KDSoapValue
++usr/include/KDSoapClient/KDSoapValue.h
++usr/include/KDSoapClient/KDSoapValueList
++usr/include/KDSoapServer/
++usr/include/KDSoapServer/KDSoapDelayedResponseHandle
++usr/include/KDSoapServer/KDSoapDelayedResponseHandle.h
++usr/include/KDSoapServer/KDSoapServer
++usr/include/KDSoapServer/KDSoapServer.h
++usr/include/KDSoapServer/KDSoapServerAuthInterface
++usr/include/KDSoapServer/KDSoapServerAuthInterface.h
++usr/include/KDSoapServer/KDSoapServerCustomVerbRequestInterface
++usr/include/KDSoapServer/KDSoapServerCustomVerbRequestInterface.h
++usr/include/KDSoapServer/KDSoapServerGlobal
++usr/include/KDSoapServer/KDSoapServerGlobal.h
++usr/include/KDSoapServer/KDSoapServerObjectInterface
++usr/include/KDSoapServer/KDSoapServerObjectInterface.h
++usr/include/KDSoapServer/KDSoapServerRawXMLInterface
++usr/include/KDSoapServer/KDSoapServerRawXMLInterface.h
++usr/include/KDSoapServer/KDSoapThreadPool
++usr/include/KDSoapServer/KDSoapThreadPool.h
++usr/lib/
++usr/lib/cmake/
++usr/lib/cmake/KDSoap/
++usr/lib/cmake/KDSoap/KDSoapConfig.cmake
++usr/lib/cmake/KDSoap/KDSoapConfigVersion.cmake
++usr/lib/cmake/KDSoap/KDSoapMacros.cmake
++usr/lib/cmake/KDSoap/KDSoapTargets-release.cmake
++usr/lib/cmake/KDSoap/KDSoapTargets.cmake
++usr/lib/libkdsoap-server.so.1.10.0
++usr/lib/libkdsoap.so.1.10.0
++usr/lib/qt5/
++usr/lib/qt5/mkspecs/
++usr/lib/qt5/mkspecs/modules/
++usr/lib/qt5/mkspecs/modules/qt_KDSoapClient.pri
++usr/lib/qt5/mkspecs/modules/qt_KDSoapServer.pri
++usr/share/
++usr/share/mkspecs/
++usr/share/mkspecs/features/
++usr/share/mkspecs/features/kdsoap.prf
++
++Slackware package /tmp/kdsoap-1.10.0-x86_64-1.txz created.
++

@@ -1,0 +1,731 @@
+diff -ruBN /tmp/libao/libao.SlackBuild /source/l/libao/libao.SlackBuild
+--- /tmp/libao/libao.SlackBuild	2019-09-29 23:48:31.000000000 +0000
++++ /source/l/libao/libao.SlackBuild	2021-01-04 06:23:16.000000000 +0000
+@@ -39,7 +39,7 @@
+ NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+ 
+ if [ "$ARCH" = "x86_64" ]; then
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ else
+   LIBDIRSUFFIX=""
+ fi
+@@ -78,7 +78,7 @@
+ ./configure \
+   --prefix=/usr \
+   --libdir=/usr/lib${LIBDIRSUFFIX} \
+-  --build=$ARCH-slackware-linux || exit 1
++  --build=$ARCH-slackware-linux-musl || exit 1
+ 
+ make $NUMJOBS || make || exit 1
+ make install DESTDIR=$PKG || exit 1
+diff -ruBN /tmp/libao/libao.SlackBuild.log /source/l/libao/libao.SlackBuild.log
+--- /tmp/libao/libao.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/l/libao/libao.SlackBuild.log	2021-01-04 06:23:56.000000000 +0000
+@@ -0,0 +1,706 @@
++libao-1.2.2/
++libao-1.2.2/.gitignore
++libao-1.2.2/.travis.yml
++libao-1.2.2/AUTHORS
++libao-1.2.2/CHANGES
++libao-1.2.2/COPYING
++libao-1.2.2/HACKING
++libao-1.2.2/Makefile.am
++libao-1.2.2/README
++libao-1.2.2/TODO
++libao-1.2.2/acinclude.m4
++libao-1.2.2/ao.m4
++libao-1.2.2/ao.pc.in
++libao-1.2.2/as-ac-expand.m4
++libao-1.2.2/autogen.sh
++libao-1.2.2/configure.ac
++libao-1.2.2/doc/
++libao-1.2.2/doc/Makefile.am
++libao-1.2.2/doc/ao_append_global_option.html
++libao-1.2.2/doc/ao_append_option.html
++libao-1.2.2/doc/ao_close.html
++libao-1.2.2/doc/ao_default_driver_id.html
++libao-1.2.2/doc/ao_device.html
++libao-1.2.2/doc/ao_driver_id.html
++libao-1.2.2/doc/ao_driver_info.html
++libao-1.2.2/doc/ao_driver_info_list.html
++libao-1.2.2/doc/ao_example.c
++libao-1.2.2/doc/ao_file_extension.html
++libao-1.2.2/doc/ao_free_options.html
++libao-1.2.2/doc/ao_info.html
++libao-1.2.2/doc/ao_initialize.html
++libao-1.2.2/doc/ao_is_big_endian.html
++libao-1.2.2/doc/ao_open_file.html
++libao-1.2.2/doc/ao_open_live.html
++libao-1.2.2/doc/ao_option.html
++libao-1.2.2/doc/ao_play.html
++libao-1.2.2/doc/ao_plugin_close.html
++libao-1.2.2/doc/ao_plugin_device_clear.html
++libao-1.2.2/doc/ao_plugin_device_init.html
++libao-1.2.2/doc/ao_plugin_driver_info.html
++libao-1.2.2/doc/ao_plugin_file_extension.html
++libao-1.2.2/doc/ao_plugin_open.html
++libao-1.2.2/doc/ao_plugin_play.html
++libao-1.2.2/doc/ao_plugin_set_option.html
++libao-1.2.2/doc/ao_plugin_test.html
++libao-1.2.2/doc/ao_sample_format.html
++libao-1.2.2/doc/ao_shutdown.html
++libao-1.2.2/doc/config.html
++libao-1.2.2/doc/drivers.html
++libao-1.2.2/doc/index.html
++libao-1.2.2/doc/libao-api.html
++libao-1.2.2/doc/overview.html
++libao-1.2.2/doc/plugin-api.html
++libao-1.2.2/doc/plugin-overview.html
++libao-1.2.2/doc/style.css
++libao-1.2.2/include/
++libao-1.2.2/include/Makefile.am
++libao-1.2.2/include/ao/
++libao-1.2.2/include/ao/Makefile.am
++libao-1.2.2/include/ao/ao.h
++libao-1.2.2/include/ao/ao_private.h
++libao-1.2.2/include/ao/os_types.h.in
++libao-1.2.2/include/ao/plugin.h
++libao-1.2.2/libao.ckport
++libao-1.2.2/libao.conf.5
++libao-1.2.2/libao.spec
++libao-1.2.2/src/
++libao-1.2.2/src/Makefile.am
++libao-1.2.2/src/ao.vers
++libao-1.2.2/src/ao_aixs.c
++libao-1.2.2/src/ao_au.c
++libao-1.2.2/src/ao_null.c
++libao-1.2.2/src/ao_raw.c
++libao-1.2.2/src/ao_wav.c
++libao-1.2.2/src/ao_wmm.c
++libao-1.2.2/src/audio_out.c
++libao-1.2.2/src/config.c
++libao-1.2.2/src/plugins/
++libao-1.2.2/src/plugins/Makefile.am
++libao-1.2.2/src/plugins/alsa/
++libao-1.2.2/src/plugins/alsa/Makefile.am
++libao-1.2.2/src/plugins/alsa/ao_alsa.c
++libao-1.2.2/src/plugins/arts/
++libao-1.2.2/src/plugins/arts/Makefile.am
++libao-1.2.2/src/plugins/arts/ao_arts.c
++libao-1.2.2/src/plugins/esd/
++libao-1.2.2/src/plugins/esd/Makefile.am
++libao-1.2.2/src/plugins/esd/ao_esd.c
++libao-1.2.2/src/plugins/irix/
++libao-1.2.2/src/plugins/irix/Makefile.am
++libao-1.2.2/src/plugins/irix/ao_irix.c
++libao-1.2.2/src/plugins/macosx/
++libao-1.2.2/src/plugins/macosx/Makefile.am
++libao-1.2.2/src/plugins/macosx/ao_macosx.c
++libao-1.2.2/src/plugins/nas/
++libao-1.2.2/src/plugins/nas/Makefile.am
++libao-1.2.2/src/plugins/nas/ao_nas.c
++libao-1.2.2/src/plugins/oss/
++libao-1.2.2/src/plugins/oss/Makefile.am
++libao-1.2.2/src/plugins/oss/ao_oss.c
++libao-1.2.2/src/plugins/pulse/
++libao-1.2.2/src/plugins/pulse/Makefile.am
++libao-1.2.2/src/plugins/pulse/ao_pulse.c
++libao-1.2.2/src/plugins/roar/
++libao-1.2.2/src/plugins/roar/Makefile.am
++libao-1.2.2/src/plugins/roar/README
++libao-1.2.2/src/plugins/roar/ao_roar.c
++libao-1.2.2/src/plugins/sndio/
++libao-1.2.2/src/plugins/sndio/Makefile.am
++libao-1.2.2/src/plugins/sndio/ao_sndio.c
++libao-1.2.2/src/plugins/sun/
++libao-1.2.2/src/plugins/sun/Makefile.am
++libao-1.2.2/src/plugins/sun/ao_sun.c
++Updating build configuration files for libao, please wait....
++libtoolize: putting auxiliary files in '.'.
++libtoolize: linking file './ltmain.sh'
++libtoolize: Consider adding 'AC_CONFIG_MACRO_DIRS([m4])' to configure.ac,
++libtoolize: and rerunning libtoolize and aclocal.
++libtoolize: Consider adding '-I m4' to ACLOCAL_AMFLAGS in Makefile.am.
++configure.ac:9: warning: The macro `AM_DISABLE_STATIC' is obsolete.
++configure.ac:9: You should run autoupdate.
++aclocal.m4:8627: AM_DISABLE_STATIC is expanded from...
++configure.ac:9: the top level
++configure.ac:36: warning: The macro `AC_LIBTOOL_WIN32_DLL' is obsolete.
++configure.ac:36: You should run autoupdate.
++aclocal.m4:8515: AC_LIBTOOL_WIN32_DLL is expanded from...
++configure.ac:36: the top level
++configure.ac:36: warning: AC_LIBTOOL_WIN32_DLL: Remove this warning and the call to _LT_SET_OPTION when you
++configure.ac:36: put the 'win32-dll' option into LT_INIT's first parameter.
++./lib/autoconf/general.m4:2433: AC_DIAGNOSE is expanded from...
++aclocal.m4:8515: AC_LIBTOOL_WIN32_DLL is expanded from...
++configure.ac:36: the top level
++configure.ac:37: warning: The macro `AC_LIBTOOL_DLOPEN' is obsolete.
++configure.ac:37: You should run autoupdate.
++aclocal.m4:8480: AC_LIBTOOL_DLOPEN is expanded from...
++configure.ac:37: the top level
++configure.ac:37: warning: AC_LIBTOOL_DLOPEN: Remove this warning and the call to _LT_SET_OPTION when you
++configure.ac:37: put the 'dlopen' option into LT_INIT's first parameter.
++./lib/autoconf/general.m4:2433: AC_DIAGNOSE is expanded from...
++aclocal.m4:8480: AC_LIBTOOL_DLOPEN is expanded from...
++configure.ac:37: the top level
++configure.ac:38: warning: The macro `AM_PROG_LIBTOOL' is obsolete.
++configure.ac:38: You should run autoupdate.
++aclocal.m4:122: AM_PROG_LIBTOOL is expanded from...
++configure.ac:38: the top level
++configure.ac:261: warning: The macro `AC_TRY_RUN' is obsolete.
++configure.ac:261: You should run autoupdate.
++./lib/autoconf/general.m4:2996: AC_TRY_RUN is expanded from...
++acinclude.m4:11: AM_PATH_ESD is expanded from...
++configure.ac:261: the top level
++configure.ac:261: warning: The macro `AC_TRY_LINK' is obsolete.
++configure.ac:261: You should run autoupdate.
++./lib/autoconf/general.m4:2919: AC_TRY_LINK is expanded from...
++acinclude.m4:11: AM_PATH_ESD is expanded from...
++configure.ac:261: the top level
++configure.ac:469: warning: AC_OUTPUT should be used without arguments.
++configure.ac:469: You should run autoupdate.
++configure.ac:35: installing './compile'
++configure.ac:24: installing './config.guess'
++configure.ac:24: installing './config.sub'
++configure.ac:4: installing './install-sh'
++configure.ac:4: installing './missing'
++src/Makefile.am: installing './depcomp'
++checking for a BSD-compatible install... /usr/bin/ginstall -c
++checking whether build environment is sane... yes
++checking for a race-free mkdir -p... /usr/bin/mkdir -p
++checking for gawk... gawk
++checking whether make sets $(MAKE)... yes
++checking whether make supports nested variables... yes
++checking whether to enable maintainer-specific portions of Makefiles... no
++checking whether make supports nested variables... (cached) yes
++checking build system type... x86_64-slackware-linux-musl
++checking host system type... x86_64-slackware-linux-musl
++checking for gcc... gcc
++checking whether the C compiler works... yes
++checking for C compiler default output file name... a.out
++checking for suffix of executables... 
++checking whether we are cross compiling... no
++checking for suffix of object files... o
++checking whether the compiler supports GNU C... yes
++checking whether gcc accepts -g... yes
++checking for gcc option to enable C11 features... none needed
++checking whether gcc understands -c and -o together... yes
++checking whether make supports the include directive... yes (GNU style)
++checking dependency style of gcc... gcc3
++checking how to print strings... printf
++checking for a sed that does not truncate output... /usr/bin/sed
++checking for grep that handles long lines and -e... /usr/bin/grep
++checking for egrep... /usr/bin/grep -E
++checking for fgrep... /usr/bin/grep -F
++checking for ld used by gcc... /usr/bin/ld
++checking if the linker (/usr/bin/ld) is GNU ld... yes
++checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
++checking the name lister (/usr/bin/nm -B) interface... BSD nm
++checking whether ln -s works... yes
++checking the maximum length of command line arguments... 98304
++checking how to convert x86_64-slackware-linux-musl file names to x86_64-slackware-linux-musl format... func_convert_file_noop
++checking how to convert x86_64-slackware-linux-musl file names to toolchain format... func_convert_file_noop
++checking for /usr/bin/ld option to reload object files... -r
++checking for objdump... objdump
++checking how to recognize dependent libraries... pass_all
++checking for dlltool... dlltool
++checking how to associate runtime and link libraries... printf %s\n
++checking for ar... ar
++checking for archiver @FILE support... @
++checking for strip... strip
++checking for ranlib... ranlib
++checking command to parse /usr/bin/nm -B output from gcc object... ok
++checking for sysroot... no
++checking for a working dd... /usr/bin/dd
++checking how to truncate binary pipes... /usr/bin/dd bs=4096 count=1
++checking for mt... mt
++checking if mt is a manifest tool... no
++checking for stdio.h... yes
++checking for stdlib.h... yes
++checking for string.h... yes
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking for strings.h... yes
++checking for sys/stat.h... yes
++checking for sys/types.h... yes
++checking for unistd.h... yes
++checking for dlfcn.h... yes
++checking for objdir... .libs
++checking if gcc supports -fno-rtti -fno-exceptions... no
++checking for gcc option to produce PIC... -fPIC -DPIC
++checking if gcc PIC flag -fPIC -DPIC works... yes
++checking if gcc static flag -static works... yes
++checking if gcc supports -c -o file.o... yes
++checking if gcc supports -c -o file.o... (cached) yes
++checking whether the gcc linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
++checking whether -lc should be explicitly linked in... no
++checking dynamic linker characteristics... GNU/Linux ld.so
++checking how to hardcode library paths into programs... immediate
++checking for shl_load... no
++checking for shl_load in -ldld... no
++checking for dlopen... yes
++checking whether a program can dlopen itself... yes
++checking whether a statically linked program can dlopen itself... no
++checking whether stripping libraries is possible... yes
++checking if libtool supports shared libraries... yes
++checking whether to build shared libraries... yes
++checking whether to build static libraries... no
++checking for dlfcn.h... (cached) yes
++checking for library containing dlopen... none required
++checking if libraries can be versioned... yes
++checking for pthread_kill in -lpthread... yes
++checking size of short... 2
++checking size of int... 4
++checking size of long... 8
++checking for mmsystem.h... no
++checking for esd-config... no
++checking for ESD - version >= 0.2.8... no
++*** The esd-config script installed by ESD could not be found
++*** If ESD was installed in PREFIX, make sure PREFIX/bin is in
++*** your path, or set the ESD_CONFIG environment variable to the
++*** full path to esd-config.
++checking for sys/soundcard.h... yes
++checking for machine/soundcard.h... no
++checking for snd_pcm_open in -lasound... yes
++checking for alsa/asoundlib.h... yes
++configure: WARNING: Broken OSS API workaround enabled.  See README for details.
++checking for sys/audioio.h... no
++checking for sndio.h... no
++checking for libroar/config.h... no
++checking for artsc-config... no
++checking how to run the C preprocessor... gcc -E
++checking for X... libraries , headers 
++checking for gethostbyname... yes
++checking for connect... yes
++checking for remove... yes
++checking for shmat... yes
++checking for IceConnectionNumber in -lICE... yes
++checking for XauFileName in -lXau... yes
++checking for AuOpenServer in -laudio... no
++checking for audio/audiolib.h... no
++checking for  libpulse-simple >= 0.9 ... yes
++checking PULSE_CFLAGS... -D_REENTRANT
++checking PULSE_LIBS... -lpulse-simple -pthread -lpulse -pthread
++checking that generated files are newer than configure... done
++configure: creating ./config.status
++config.status: creating Makefile
++config.status: creating src/Makefile
++config.status: creating doc/Makefile
++config.status: creating include/Makefile
++config.status: creating include/ao/Makefile
++config.status: creating include/ao/os_types.h
++config.status: creating src/plugins/Makefile
++config.status: creating src/plugins/esd/Makefile
++config.status: creating src/plugins/oss/Makefile
++config.status: creating src/plugins/alsa/Makefile
++config.status: creating src/plugins/sun/Makefile
++config.status: creating src/plugins/irix/Makefile
++config.status: creating src/plugins/arts/Makefile
++config.status: creating src/plugins/macosx/Makefile
++config.status: creating src/plugins/nas/Makefile
++config.status: creating src/plugins/pulse/Makefile
++config.status: creating src/plugins/sndio/Makefile
++config.status: creating src/plugins/roar/Makefile
++config.status: creating ao.pc
++config.status: executing depfiles commands
++config.status: executing libtool commands
++
++------------------------------------------------------------------------
++  libao 1.2.2:  Automatic configuration OK.
++
++  Backends to be built:
++
++    AU file output: .............. yes
++    RAW file output: ............. yes
++    WAV file output: ............. yes
++
++    AIX live output: ............. no
++    ALSA live output: ............ yes
++    ARTS live output: ............ no
++    ESD live output: ............. no
++    IRIX live output: ............ no
++    MACOSX live output: .......... no
++    NAS live output: ............. no
++    NULL live output: ............ yes
++    OSS live output: ............. yes
++    PULSE live output: ........... yes
++    ROAR live output: ............ no
++    SNDIO live output: ........... no
++    SUN live output: ............. no
++    Windows WMM live output: ..... no
++
++  Installation paths:
++
++    libao: ....................... /usr/lib
++    C header files: .............. /usr/include/ao
++    Documentation: ............... /usr/share/doc/libao
++
++  Building:
++
++    Type 'make' to compile libao.
++
++    Type 'make install' to install libao.
++
++------------------------------------------------------------------------
++
++Making all in src
++make[1]: Entering directory '/tmp/libao-1.2.2/src'
++Making all in plugins
++make[2]: Entering directory '/tmp/libao-1.2.2/src/plugins'
++Making all in oss
++make[3]: Entering directory '/tmp/libao-1.2.2/src/plugins/oss'
++  CC       ao_oss.lo
++  CCLD     liboss.la
++make[3]: Leaving directory '/tmp/libao-1.2.2/src/plugins/oss'
++Making all in esd
++make[3]: Entering directory '/tmp/libao-1.2.2/src/plugins/esd'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/libao-1.2.2/src/plugins/esd'
++Making all in arts
++make[3]: Entering directory '/tmp/libao-1.2.2/src/plugins/arts'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/libao-1.2.2/src/plugins/arts'
++Making all in alsa
++make[3]: Entering directory '/tmp/libao-1.2.2/src/plugins/alsa'
++  CC       ao_alsa.lo
++ao_alsa.c: In function ‘alsa_set_swparams’:
++ao_alsa.c:485:2: warning: ‘snd_pcm_sw_params_set_xfer_align’ is deprecated [-Wdeprecated-declarations]
++  485 |  err = snd_pcm_sw_params_set_xfer_align(internal->pcm_handle, params, 1);
++      |  ^~~
++In file included from /usr/include/alsa/asoundlib.h:54,
++                 from ao_alsa.c:39:
++/usr/include/alsa/pcm.h:1331:5: note: declared here
++ 1331 | int snd_pcm_sw_params_set_xfer_align(snd_pcm_t *pcm, snd_pcm_sw_params_t *params, snd_pcm_uframes_t val) __attribute__((deprecated));
++      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++  CCLD     libalsa.la
++make[3]: Leaving directory '/tmp/libao-1.2.2/src/plugins/alsa'
++Making all in sun
++make[3]: Entering directory '/tmp/libao-1.2.2/src/plugins/sun'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/libao-1.2.2/src/plugins/sun'
++Making all in irix
++make[3]: Entering directory '/tmp/libao-1.2.2/src/plugins/irix'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/libao-1.2.2/src/plugins/irix'
++Making all in macosx
++make[3]: Entering directory '/tmp/libao-1.2.2/src/plugins/macosx'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/libao-1.2.2/src/plugins/macosx'
++Making all in nas
++make[3]: Entering directory '/tmp/libao-1.2.2/src/plugins/nas'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/libao-1.2.2/src/plugins/nas'
++Making all in pulse
++make[3]: Entering directory '/tmp/libao-1.2.2/src/plugins/pulse'
++  CC       ao_pulse.lo
++ao_pulse.c: In function ‘ao_plugin_close’:
++ao_pulse.c:309:17: warning: implicit declaration of function ‘nanosleep’; did you mean ‘pa_msleep’? [-Wimplicit-function-declaration]
++  309 |           while(nanosleep(&sleep,&wake)<0){
++      |                 ^~~~~~~~~
++      |                 pa_msleep
++  CCLD     libpulse.la
++make[3]: Leaving directory '/tmp/libao-1.2.2/src/plugins/pulse'
++Making all in sndio
++make[3]: Entering directory '/tmp/libao-1.2.2/src/plugins/sndio'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/libao-1.2.2/src/plugins/sndio'
++Making all in roar
++make[3]: Entering directory '/tmp/libao-1.2.2/src/plugins/roar'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/libao-1.2.2/src/plugins/roar'
++make[3]: Entering directory '/tmp/libao-1.2.2/src/plugins'
++make[3]: Nothing to be done for 'all-am'.
++make[3]: Leaving directory '/tmp/libao-1.2.2/src/plugins'
++make[2]: Leaving directory '/tmp/libao-1.2.2/src/plugins'
++make[2]: Entering directory '/tmp/libao-1.2.2/src'
++  CC       audio_out.lo
++  CC       config.lo
++  CC       ao_null.lo
++In file included from ../include/ao/ao.h:94,
++                 from audio_out.c:54:
++audio_out.c: In function ‘_sanitize_matrix’:
++../include/ao/ao_private.h:201:26: warning: field precision specifier ‘.*’ expects argument of type ‘int’, but argument 4 has type ‘long int’ [-Wformat=]
++  201 |           fprintf(stderr,"ao_%s ERROR: " format,device->funcs->driver_info()->short_name,## args); \
++      |                          ^~~~~~~~~~~~~~~
++audio_out.c:665:11: note: in expansion of macro ‘aerror’
++  665 |           aerror("Unrecognized channel name \"%.*s\" in channel matrix \"%s\"\n",
++      |           ^~~~~~
++../include/ao/ao_private.h:203:26: warning: field precision specifier ‘.*’ expects argument of type ‘int’, but argument 3 has type ‘long int’ [-Wformat=]
++  203 |           fprintf(stderr,"ERROR: " format,## args);                     \
++      |                          ^~~~~~~~~
++audio_out.c:665:11: note: in expansion of macro ‘aerror’
++  665 |           aerror("Unrecognized channel name \"%.*s\" in channel matrix \"%s\"\n",
++      |           ^~~~~~
++  CC       ao_wav.lo
++  CC       ao_au.lo
++  CC       ao_raw.lo
++  CC       ao_aixs.lo
++  CCLD     libao.la
++make[2]: Leaving directory '/tmp/libao-1.2.2/src'
++make[1]: Leaving directory '/tmp/libao-1.2.2/src'
++Making all in include
++make[1]: Entering directory '/tmp/libao-1.2.2/include'
++Making all in ao
++make[2]: Entering directory '/tmp/libao-1.2.2/include/ao'
++make[2]: Nothing to be done for 'all'.
++make[2]: Leaving directory '/tmp/libao-1.2.2/include/ao'
++make[2]: Entering directory '/tmp/libao-1.2.2/include'
++make[2]: Nothing to be done for 'all-am'.
++make[2]: Leaving directory '/tmp/libao-1.2.2/include'
++make[1]: Leaving directory '/tmp/libao-1.2.2/include'
++Making all in doc
++make[1]: Entering directory '/tmp/libao-1.2.2/doc'
++make[1]: Nothing to be done for 'all'.
++make[1]: Leaving directory '/tmp/libao-1.2.2/doc'
++make[1]: Entering directory '/tmp/libao-1.2.2'
++make[1]: Nothing to be done for 'all-am'.
++make[1]: Leaving directory '/tmp/libao-1.2.2'
++Making install in src
++make[1]: Entering directory '/tmp/libao-1.2.2/src'
++Making install in plugins
++make[2]: Entering directory '/tmp/libao-1.2.2/src/plugins'
++Making install in oss
++make[3]: Entering directory '/tmp/libao-1.2.2/src/plugins/oss'
++make[4]: Entering directory '/tmp/libao-1.2.2/src/plugins/oss'
++ /usr/bin/mkdir -p '/tmp/package-libao/usr/lib/ao/plugins-4'
++ /bin/sh ../../../libtool   --mode=install /usr/bin/ginstall -c   liboss.la '/tmp/package-libao/usr/lib/ao/plugins-4'
++libtool: install: /usr/bin/ginstall -c .libs/liboss.so /tmp/package-libao/usr/lib/ao/plugins-4/liboss.so
++libtool: install: /usr/bin/ginstall -c .libs/liboss.lai /tmp/package-libao/usr/lib/ao/plugins-4/liboss.la
++libtool: warning: remember to run 'libtool --finish /usr/lib/ao/plugins-4'
++make[4]: Nothing to be done for 'install-data-am'.
++make[4]: Leaving directory '/tmp/libao-1.2.2/src/plugins/oss'
++make[3]: Leaving directory '/tmp/libao-1.2.2/src/plugins/oss'
++Making install in esd
++make[3]: Entering directory '/tmp/libao-1.2.2/src/plugins/esd'
++make[4]: Entering directory '/tmp/libao-1.2.2/src/plugins/esd'
++make[4]: Nothing to be done for 'install-data-am'.
++make[4]: Leaving directory '/tmp/libao-1.2.2/src/plugins/esd'
++make[3]: Leaving directory '/tmp/libao-1.2.2/src/plugins/esd'
++Making install in arts
++make[3]: Entering directory '/tmp/libao-1.2.2/src/plugins/arts'
++make[4]: Entering directory '/tmp/libao-1.2.2/src/plugins/arts'
++make[4]: Nothing to be done for 'install-data-am'.
++make[4]: Leaving directory '/tmp/libao-1.2.2/src/plugins/arts'
++make[3]: Leaving directory '/tmp/libao-1.2.2/src/plugins/arts'
++Making install in alsa
++make[3]: Entering directory '/tmp/libao-1.2.2/src/plugins/alsa'
++make[4]: Entering directory '/tmp/libao-1.2.2/src/plugins/alsa'
++ /usr/bin/mkdir -p '/tmp/package-libao/usr/lib/ao/plugins-4'
++ /bin/sh ../../../libtool   --mode=install /usr/bin/ginstall -c   libalsa.la '/tmp/package-libao/usr/lib/ao/plugins-4'
++libtool: install: /usr/bin/ginstall -c .libs/libalsa.so /tmp/package-libao/usr/lib/ao/plugins-4/libalsa.so
++libtool: install: /usr/bin/ginstall -c .libs/libalsa.lai /tmp/package-libao/usr/lib/ao/plugins-4/libalsa.la
++libtool: warning: remember to run 'libtool --finish /usr/lib/ao/plugins-4'
++make[4]: Nothing to be done for 'install-data-am'.
++make[4]: Leaving directory '/tmp/libao-1.2.2/src/plugins/alsa'
++make[3]: Leaving directory '/tmp/libao-1.2.2/src/plugins/alsa'
++Making install in sun
++make[3]: Entering directory '/tmp/libao-1.2.2/src/plugins/sun'
++make[4]: Entering directory '/tmp/libao-1.2.2/src/plugins/sun'
++make[4]: Nothing to be done for 'install-data-am'.
++make[4]: Leaving directory '/tmp/libao-1.2.2/src/plugins/sun'
++make[3]: Leaving directory '/tmp/libao-1.2.2/src/plugins/sun'
++Making install in irix
++make[3]: Entering directory '/tmp/libao-1.2.2/src/plugins/irix'
++make[4]: Entering directory '/tmp/libao-1.2.2/src/plugins/irix'
++make[4]: Nothing to be done for 'install-data-am'.
++make[4]: Leaving directory '/tmp/libao-1.2.2/src/plugins/irix'
++make[3]: Leaving directory '/tmp/libao-1.2.2/src/plugins/irix'
++Making install in macosx
++make[3]: Entering directory '/tmp/libao-1.2.2/src/plugins/macosx'
++make[4]: Entering directory '/tmp/libao-1.2.2/src/plugins/macosx'
++make[4]: Nothing to be done for 'install-data-am'.
++make[4]: Leaving directory '/tmp/libao-1.2.2/src/plugins/macosx'
++make[3]: Leaving directory '/tmp/libao-1.2.2/src/plugins/macosx'
++Making install in nas
++make[3]: Entering directory '/tmp/libao-1.2.2/src/plugins/nas'
++make[4]: Entering directory '/tmp/libao-1.2.2/src/plugins/nas'
++make[4]: Nothing to be done for 'install-data-am'.
++make[4]: Leaving directory '/tmp/libao-1.2.2/src/plugins/nas'
++make[3]: Leaving directory '/tmp/libao-1.2.2/src/plugins/nas'
++Making install in pulse
++make[3]: Entering directory '/tmp/libao-1.2.2/src/plugins/pulse'
++make[4]: Entering directory '/tmp/libao-1.2.2/src/plugins/pulse'
++ /usr/bin/mkdir -p '/tmp/package-libao/usr/lib/ao/plugins-4'
++ /bin/sh ../../../libtool   --mode=install /usr/bin/ginstall -c   libpulse.la '/tmp/package-libao/usr/lib/ao/plugins-4'
++libtool: install: /usr/bin/ginstall -c .libs/libpulse.so /tmp/package-libao/usr/lib/ao/plugins-4/libpulse.so
++libtool: install: /usr/bin/ginstall -c .libs/libpulse.lai /tmp/package-libao/usr/lib/ao/plugins-4/libpulse.la
++libtool: warning: remember to run 'libtool --finish /usr/lib/ao/plugins-4'
++make[4]: Nothing to be done for 'install-data-am'.
++make[4]: Leaving directory '/tmp/libao-1.2.2/src/plugins/pulse'
++make[3]: Leaving directory '/tmp/libao-1.2.2/src/plugins/pulse'
++Making install in sndio
++make[3]: Entering directory '/tmp/libao-1.2.2/src/plugins/sndio'
++make[4]: Entering directory '/tmp/libao-1.2.2/src/plugins/sndio'
++make[4]: Nothing to be done for 'install-data-am'.
++make[4]: Leaving directory '/tmp/libao-1.2.2/src/plugins/sndio'
++make[3]: Leaving directory '/tmp/libao-1.2.2/src/plugins/sndio'
++Making install in roar
++make[3]: Entering directory '/tmp/libao-1.2.2/src/plugins/roar'
++make[4]: Entering directory '/tmp/libao-1.2.2/src/plugins/roar'
++make[4]: Nothing to be done for 'install-data-am'.
++make[4]: Leaving directory '/tmp/libao-1.2.2/src/plugins/roar'
++make[3]: Leaving directory '/tmp/libao-1.2.2/src/plugins/roar'
++make[3]: Entering directory '/tmp/libao-1.2.2/src/plugins'
++make[4]: Entering directory '/tmp/libao-1.2.2/src/plugins'
++make[4]: Nothing to be done for 'install-exec-am'.
++make[4]: Nothing to be done for 'install-data-am'.
++make[4]: Leaving directory '/tmp/libao-1.2.2/src/plugins'
++make[3]: Leaving directory '/tmp/libao-1.2.2/src/plugins'
++make[2]: Leaving directory '/tmp/libao-1.2.2/src/plugins'
++make[2]: Entering directory '/tmp/libao-1.2.2/src'
++make[3]: Entering directory '/tmp/libao-1.2.2/src'
++ /usr/bin/mkdir -p '/tmp/package-libao/usr/lib'
++ /bin/sh ../libtool   --mode=install /usr/bin/ginstall -c   libao.la '/tmp/package-libao/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/libao.so.4.1.1 /tmp/package-libao/usr/lib/libao.so.4.1.1
++libtool: install: (cd /tmp/package-libao/usr/lib && { ln -s -f libao.so.4.1.1 libao.so.4 || { rm -f libao.so.4 && ln -s libao.so.4.1.1 libao.so.4; }; })
++libtool: install: (cd /tmp/package-libao/usr/lib && { ln -s -f libao.so.4.1.1 libao.so || { rm -f libao.so && ln -s libao.so.4.1.1 libao.so; }; })
++libtool: install: /usr/bin/ginstall -c .libs/libao.lai /tmp/package-libao/usr/lib/libao.la
++libtool: warning: remember to run 'libtool --finish /usr/lib'
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/libao-1.2.2/src'
++make[2]: Leaving directory '/tmp/libao-1.2.2/src'
++make[1]: Leaving directory '/tmp/libao-1.2.2/src'
++Making install in include
++make[1]: Entering directory '/tmp/libao-1.2.2/include'
++Making install in ao
++make[2]: Entering directory '/tmp/libao-1.2.2/include/ao'
++make[3]: Entering directory '/tmp/libao-1.2.2/include/ao'
++make[3]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-libao/usr/include/ao'
++ /usr/bin/ginstall -c -m 644 ao.h plugin.h os_types.h '/tmp/package-libao/usr/include/ao'
++make[3]: Leaving directory '/tmp/libao-1.2.2/include/ao'
++make[2]: Leaving directory '/tmp/libao-1.2.2/include/ao'
++make[2]: Entering directory '/tmp/libao-1.2.2/include'
++make[3]: Entering directory '/tmp/libao-1.2.2/include'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/libao-1.2.2/include'
++make[2]: Leaving directory '/tmp/libao-1.2.2/include'
++make[1]: Leaving directory '/tmp/libao-1.2.2/include'
++Making install in doc
++make[1]: Entering directory '/tmp/libao-1.2.2/doc'
++make[2]: Entering directory '/tmp/libao-1.2.2/doc'
++make[2]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-libao/usr/share/doc/libao-1.2.2'
++ /usr/bin/ginstall -c -m 644 ao_append_option.html ao_close.html ao_default_driver_id.html ao_device.html ao_driver_id.html ao_driver_info.html ao_driver_info_list.html ao_file_extension.html ao_free_options.html ao_info.html ao_initialize.html ao_is_big_endian.html ao_open_file.html ao_open_live.html ao_option.html ao_play.html ao_plugin_close.html ao_plugin_device_clear.html ao_plugin_device_init.html ao_plugin_driver_info.html ao_plugin_file_extension.html ao_plugin_open.html ao_plugin_play.html ao_plugin_set_option.html ao_plugin_test.html ao_sample_format.html ao_shutdown.html config.html drivers.html index.html libao-api.html overview.html plugin-api.html plugin-overview.html ao_example.c style.css '/tmp/package-libao/usr/share/doc/libao-1.2.2'
++make[2]: Leaving directory '/tmp/libao-1.2.2/doc'
++make[1]: Leaving directory '/tmp/libao-1.2.2/doc'
++make[1]: Entering directory '/tmp/libao-1.2.2'
++make[2]: Entering directory '/tmp/libao-1.2.2'
++make[2]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-libao/usr/lib/ckport/db'
++ /usr/bin/ginstall -c -m 644 libao.ckport '/tmp/package-libao/usr/lib/ckport/db'
++ /usr/bin/mkdir -p '/tmp/package-libao/usr/share/aclocal'
++ /usr/bin/ginstall -c -m 644 ao.m4 '/tmp/package-libao/usr/share/aclocal'
++ /usr/bin/mkdir -p '/tmp/package-libao/usr/share/man/man5'
++ /usr/bin/ginstall -c -m 644 libao.conf.5 '/tmp/package-libao/usr/share/man/man5'
++ /usr/bin/mkdir -p '/tmp/package-libao/usr/lib/pkgconfig'
++ /usr/bin/ginstall -c -m 644 ao.pc '/tmp/package-libao/usr/lib/pkgconfig'
++make[2]: Leaving directory '/tmp/libao-1.2.2'
++make[1]: Leaving directory '/tmp/libao-1.2.2'
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++usr/lib/libao.so	libao.so.4.1.1
++usr/lib/libao.so.4	libao.so.4.1.1
++
++Making symbolic link creation script:
++( cd usr/lib ; rm -rf libao.so )
++( cd usr/lib ; ln -sf libao.so.4.1.1 libao.so )
++( cd usr/lib ; rm -rf libao.so.4 )
++( cd usr/lib ; ln -sf libao.so.4.1.1 libao.so.4 )
++
++It is recommended that you make these lines your new installation script.
++
++Would you like to make this stuff the install script for this package
++and remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './usr/lib/libao.so.4'
++removed './usr/lib/libao.so'
++
++Creating your new ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/libao-1.2.2-x86_64-2.txz
++
++./
++install/
++install/doinst.sh
++install/slack-desc
++usr/
++usr/doc/
++usr/doc/libao-1.2.2/
++usr/doc/libao-1.2.2/AUTHORS
++usr/doc/libao-1.2.2/COPYING
++usr/doc/libao-1.2.2/README
++usr/doc/libao-1.2.2/TODO
++usr/doc/libao-1.2.2/ao_append_option.html
++usr/doc/libao-1.2.2/ao_close.html
++usr/doc/libao-1.2.2/ao_default_driver_id.html
++usr/doc/libao-1.2.2/ao_device.html
++usr/doc/libao-1.2.2/ao_driver_id.html
++usr/doc/libao-1.2.2/ao_driver_info.html
++usr/doc/libao-1.2.2/ao_driver_info_list.html
++usr/doc/libao-1.2.2/ao_example.c
++usr/doc/libao-1.2.2/ao_file_extension.html
++usr/doc/libao-1.2.2/ao_free_options.html
++usr/doc/libao-1.2.2/ao_info.html
++usr/doc/libao-1.2.2/ao_initialize.html
++usr/doc/libao-1.2.2/ao_is_big_endian.html
++usr/doc/libao-1.2.2/ao_open_file.html
++usr/doc/libao-1.2.2/ao_open_live.html
++usr/doc/libao-1.2.2/ao_option.html
++usr/doc/libao-1.2.2/ao_play.html
++usr/doc/libao-1.2.2/ao_plugin_close.html
++usr/doc/libao-1.2.2/ao_plugin_device_clear.html
++usr/doc/libao-1.2.2/ao_plugin_device_init.html
++usr/doc/libao-1.2.2/ao_plugin_driver_info.html
++usr/doc/libao-1.2.2/ao_plugin_file_extension.html
++usr/doc/libao-1.2.2/ao_plugin_open.html
++usr/doc/libao-1.2.2/ao_plugin_play.html
++usr/doc/libao-1.2.2/ao_plugin_set_option.html
++usr/doc/libao-1.2.2/ao_plugin_test.html
++usr/doc/libao-1.2.2/ao_sample_format.html
++usr/doc/libao-1.2.2/ao_shutdown.html
++usr/doc/libao-1.2.2/config.html
++usr/doc/libao-1.2.2/drivers.html
++usr/doc/libao-1.2.2/index.html
++usr/doc/libao-1.2.2/libao-api.html
++usr/doc/libao-1.2.2/overview.html
++usr/doc/libao-1.2.2/plugin-api.html
++usr/doc/libao-1.2.2/plugin-overview.html
++usr/doc/libao-1.2.2/style.css
++usr/include/
++usr/include/ao/
++usr/include/ao/ao.h
++usr/include/ao/os_types.h
++usr/include/ao/plugin.h
++usr/lib/
++usr/lib/ao/
++usr/lib/ao/plugins-4/
++usr/lib/ao/plugins-4/libalsa.la
++usr/lib/ao/plugins-4/libalsa.so
++usr/lib/ao/plugins-4/liboss.la
++usr/lib/ao/plugins-4/liboss.so
++usr/lib/ao/plugins-4/libpulse.la
++usr/lib/ao/plugins-4/libpulse.so
++usr/lib/ckport/
++usr/lib/ckport/db/
++usr/lib/ckport/db/libao.ckport
++usr/lib/libao.so.4.1.1
++usr/lib/pkgconfig/
++usr/lib/pkgconfig/ao.pc
++usr/man/
++usr/man/man5/
++usr/man/man5/libao.conf.5.gz
++usr/share/
++usr/share/aclocal/
++usr/share/aclocal/ao.m4
++
++Slackware package /tmp/libao-1.2.2-x86_64-2.txz created.
++

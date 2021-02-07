@@ -1,0 +1,1094 @@
+diff -ruBN /tmp/python-pillow/python-pillow.SlackBuild /source/l/python-pillow/python-pillow.SlackBuild
+--- /tmp/python-pillow/python-pillow.SlackBuild	2020-10-25 17:44:33.000000000 +0000
++++ /source/l/python-pillow/python-pillow.SlackBuild	2021-01-05 07:54:56.000000000 +0000
+@@ -56,7 +56,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ fi
+ 
+ PYTHON3INC=$( python3 -c 'from distutils.sysconfig import get_python_inc; print(get_python_inc())' )
+diff -ruBN /tmp/python-pillow/python-pillow.SlackBuild.log /source/l/python-pillow/python-pillow.SlackBuild.log
+--- /tmp/python-pillow/python-pillow.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/l/python-pillow/python-pillow.SlackBuild.log	2021-01-05 07:57:00.000000000 +0000
+@@ -0,0 +1,1078 @@
++Pillow-8.1.0/
++Pillow-8.1.0/.gitignore
++Pillow-8.1.0/Makefile
++Pillow-8.1.0/depends/
++Pillow-8.1.0/depends/install_webp.sh
++Pillow-8.1.0/depends/termux.sh
++Pillow-8.1.0/depends/install_extra_test_images.sh
++Pillow-8.1.0/depends/install_openjpeg.sh
++Pillow-8.1.0/depends/install_raqm.sh
++Pillow-8.1.0/depends/install_raqm_cmake.sh
++Pillow-8.1.0/depends/README.rst
++Pillow-8.1.0/depends/download-and-extract.sh
++Pillow-8.1.0/depends/install_imagequant.sh
++Pillow-8.1.0/.readthedocs.yml
++Pillow-8.1.0/setup.py
++Pillow-8.1.0/.appveyor.yml
++Pillow-8.1.0/.gitattributes
++Pillow-8.1.0/setup.cfg
++Pillow-8.1.0/docs/
++Pillow-8.1.0/docs/Makefile
++Pillow-8.1.0/docs/make.bat
++Pillow-8.1.0/docs/example/
++Pillow-8.1.0/docs/example/anchors.png
++Pillow-8.1.0/docs/example/DdsImagePlugin.py
++Pillow-8.1.0/docs/example/anchors.py
++Pillow-8.1.0/docs/PIL.rst
++Pillow-8.1.0/docs/resources/
++Pillow-8.1.0/docs/resources/anchor_vertical.svg
++Pillow-8.1.0/docs/resources/pillow-logo.png
++Pillow-8.1.0/docs/resources/anchor_horizontal.svg
++Pillow-8.1.0/docs/resources/js/
++Pillow-8.1.0/docs/resources/js/script.js
++Pillow-8.1.0/docs/resources/favicon.ico
++Pillow-8.1.0/docs/resources/css/
++Pillow-8.1.0/docs/resources/css/light.css
++Pillow-8.1.0/docs/resources/css/dark.css
++Pillow-8.1.0/docs/installation.rst
++Pillow-8.1.0/docs/releasenotes/
++Pillow-8.1.0/docs/releasenotes/6.0.0.rst
++Pillow-8.1.0/docs/releasenotes/5.1.0.rst
++Pillow-8.1.0/docs/releasenotes/4.0.0.rst
++Pillow-8.1.0/docs/releasenotes/4.2.0.rst
++Pillow-8.1.0/docs/releasenotes/7.0.0.rst
++Pillow-8.1.0/docs/releasenotes/2.8.0.rst
++Pillow-8.1.0/docs/releasenotes/5.4.1.rst
++Pillow-8.1.0/docs/releasenotes/8.0.0.rst
++Pillow-8.1.0/docs/releasenotes/3.1.1.rst
++Pillow-8.1.0/docs/releasenotes/5.0.0.rst
++Pillow-8.1.0/docs/releasenotes/template.rst
++Pillow-8.1.0/docs/releasenotes/8.0.1.rst
++Pillow-8.1.0/docs/releasenotes/3.4.0.rst
++Pillow-8.1.0/docs/releasenotes/5.2.0.rst
++Pillow-8.1.0/docs/releasenotes/4.1.1.rst
++Pillow-8.1.0/docs/releasenotes/5.4.0.rst
++Pillow-8.1.0/docs/releasenotes/3.1.0.rst
++Pillow-8.1.0/docs/releasenotes/8.1.0.rst
++Pillow-8.1.0/docs/releasenotes/6.2.1.rst
++Pillow-8.1.0/docs/releasenotes/4.3.0.rst
++Pillow-8.1.0/docs/releasenotes/6.2.2.rst
++Pillow-8.1.0/docs/releasenotes/7.1.1.rst
++Pillow-8.1.0/docs/releasenotes/4.2.1.rst
++Pillow-8.1.0/docs/releasenotes/3.1.2.rst
++Pillow-8.1.0/docs/releasenotes/7.1.0.rst
++Pillow-8.1.0/docs/releasenotes/3.2.0.rst
++Pillow-8.1.0/docs/releasenotes/3.0.0.rst
++Pillow-8.1.0/docs/releasenotes/versioning.rst
++Pillow-8.1.0/docs/releasenotes/3.3.0.rst
++Pillow-8.1.0/docs/releasenotes/2.7.0.rst
++Pillow-8.1.0/docs/releasenotes/6.1.0.rst
++Pillow-8.1.0/docs/releasenotes/index.rst
++Pillow-8.1.0/docs/releasenotes/3.3.2.rst
++Pillow-8.1.0/docs/releasenotes/7.2.0.rst
++Pillow-8.1.0/docs/releasenotes/7.1.2.rst
++Pillow-8.1.0/docs/releasenotes/5.3.0.rst
++Pillow-8.1.0/docs/releasenotes/4.1.0.rst
++Pillow-8.1.0/docs/releasenotes/6.2.0.rst
++Pillow-8.1.0/docs/porting.rst
++Pillow-8.1.0/docs/reference/
++Pillow-8.1.0/docs/reference/ImageOps.rst
++Pillow-8.1.0/docs/reference/JpegPresets.rst
++Pillow-8.1.0/docs/reference/ImagePath.rst
++Pillow-8.1.0/docs/reference/internal_modules.rst
++Pillow-8.1.0/docs/reference/ExifTags.rst
++Pillow-8.1.0/docs/reference/open_files.rst
++Pillow-8.1.0/docs/reference/ImageStat.rst
++Pillow-8.1.0/docs/reference/Image.rst
++Pillow-8.1.0/docs/reference/PyAccess.rst
++Pillow-8.1.0/docs/reference/plugins.rst
++Pillow-8.1.0/docs/reference/ImageQt.rst
++Pillow-8.1.0/docs/reference/block_allocator.rst
++Pillow-8.1.0/docs/reference/features.rst
++Pillow-8.1.0/docs/reference/ImagePalette.rst
++Pillow-8.1.0/docs/reference/ImageTk.rst
++Pillow-8.1.0/docs/reference/ImageWin.rst
++Pillow-8.1.0/docs/reference/ImageCms.rst
++Pillow-8.1.0/docs/reference/ImageColor.rst
++Pillow-8.1.0/docs/reference/ImageMorph.rst
++Pillow-8.1.0/docs/reference/ImageFilter.rst
++Pillow-8.1.0/docs/reference/PixelAccess.rst
++Pillow-8.1.0/docs/reference/ImageShow.rst
++Pillow-8.1.0/docs/reference/ImageSequence.rst
++Pillow-8.1.0/docs/reference/ImageChops.rst
++Pillow-8.1.0/docs/reference/limits.rst
++Pillow-8.1.0/docs/reference/ImageFile.rst
++Pillow-8.1.0/docs/reference/ImageMath.rst
++Pillow-8.1.0/docs/reference/index.rst
++Pillow-8.1.0/docs/reference/ImageGrab.rst
++Pillow-8.1.0/docs/reference/ImageEnhance.rst
++Pillow-8.1.0/docs/reference/PSDraw.rst
++Pillow-8.1.0/docs/reference/ImageFont.rst
++Pillow-8.1.0/docs/reference/TiffTags.rst
++Pillow-8.1.0/docs/reference/internal_design.rst
++Pillow-8.1.0/docs/reference/ImageDraw.rst
++Pillow-8.1.0/docs/handbook/
++Pillow-8.1.0/docs/handbook/overview.rst
++Pillow-8.1.0/docs/handbook/concepts.rst
++Pillow-8.1.0/docs/handbook/tutorial.rst
++Pillow-8.1.0/docs/handbook/image-file-formats.rst
++Pillow-8.1.0/docs/handbook/writing-your-own-file-decoder.rst
++Pillow-8.1.0/docs/handbook/appendices.rst
++Pillow-8.1.0/docs/handbook/index.rst
++Pillow-8.1.0/docs/handbook/text-anchors.rst
++Pillow-8.1.0/docs/Guardfile
++Pillow-8.1.0/docs/index.rst
++Pillow-8.1.0/docs/conf.py
++Pillow-8.1.0/docs/about.rst
++Pillow-8.1.0/docs/COPYING
++Pillow-8.1.0/docs/deprecations.rst
++Pillow-8.1.0/.editorconfig
++Pillow-8.1.0/.coveragerc
++Pillow-8.1.0/winbuild/
++Pillow-8.1.0/winbuild/tiff.opt
++Pillow-8.1.0/winbuild/raqm.cmake
++Pillow-8.1.0/winbuild/fribidi.cmake
++Pillow-8.1.0/winbuild/README.md
++Pillow-8.1.0/winbuild/build_prepare.py
++Pillow-8.1.0/winbuild/build.rst
++Pillow-8.1.0/Tests/
++Pillow-8.1.0/README.md
++Pillow-8.1.0/MANIFEST.in
++Pillow-8.1.0/RELEASING.md
++Pillow-8.1.0/.pre-commit-config.yaml
++Pillow-8.1.0/tox.ini
++Pillow-8.1.0/.ci/
++Pillow-8.1.0/.ci/after_success.sh
++Pillow-8.1.0/.ci/install.sh
++Pillow-8.1.0/.ci/build.sh
++Pillow-8.1.0/.ci/test.sh
++Pillow-8.1.0/codecov.yml
++Pillow-8.1.0/requirements.txt
++Pillow-8.1.0/conftest.py
++Pillow-8.1.0/LICENSE
++Pillow-8.1.0/CHANGES.rst
++Pillow-8.1.0/src/
++Pillow-8.1.0/src/outline.c
++Pillow-8.1.0/src/encode.c
++Pillow-8.1.0/src/map.c
++Pillow-8.1.0/src/decode.c
++Pillow-8.1.0/src/PIL/
++Pillow-8.1.0/src/PIL/ImageFile.py
++Pillow-8.1.0/src/PIL/JpegPresets.py
++Pillow-8.1.0/src/PIL/Jpeg2KImagePlugin.py
++Pillow-8.1.0/src/PIL/ImagePath.py
++Pillow-8.1.0/src/PIL/WmfImagePlugin.py
++Pillow-8.1.0/src/PIL/MicImagePlugin.py
++Pillow-8.1.0/src/PIL/BdfFontFile.py
++Pillow-8.1.0/src/PIL/CurImagePlugin.py
++Pillow-8.1.0/src/PIL/__main__.py
++Pillow-8.1.0/src/PIL/MspImagePlugin.py
++Pillow-8.1.0/src/PIL/GifImagePlugin.py
++Pillow-8.1.0/src/PIL/ImageMode.py
++Pillow-8.1.0/src/PIL/IcoImagePlugin.py
++Pillow-8.1.0/src/PIL/ImageMath.py
++Pillow-8.1.0/src/PIL/ContainerIO.py
++Pillow-8.1.0/src/PIL/PyAccess.py
++Pillow-8.1.0/src/PIL/WebPImagePlugin.py
++Pillow-8.1.0/src/PIL/PSDraw.py
++Pillow-8.1.0/src/PIL/WalImageFile.py
++Pillow-8.1.0/src/PIL/BufrStubImagePlugin.py
++Pillow-8.1.0/src/PIL/ImageOps.py
++Pillow-8.1.0/src/PIL/ImageChops.py
++Pillow-8.1.0/src/PIL/GbrImagePlugin.py
++Pillow-8.1.0/src/PIL/PsdImagePlugin.py
++Pillow-8.1.0/src/PIL/PcxImagePlugin.py
++Pillow-8.1.0/src/PIL/BmpImagePlugin.py
++Pillow-8.1.0/src/PIL/PpmImagePlugin.py
++Pillow-8.1.0/src/PIL/DdsImagePlugin.py
++Pillow-8.1.0/src/PIL/FpxImagePlugin.py
++Pillow-8.1.0/src/PIL/TiffTags.py
++Pillow-8.1.0/src/PIL/ImImagePlugin.py
++Pillow-8.1.0/src/PIL/ImtImagePlugin.py
++Pillow-8.1.0/src/PIL/Image.py
++Pillow-8.1.0/src/PIL/XpmImagePlugin.py
++Pillow-8.1.0/src/PIL/EpsImagePlugin.py
++Pillow-8.1.0/src/PIL/ImageSequence.py
++Pillow-8.1.0/src/PIL/FontFile.py
++Pillow-8.1.0/src/PIL/GimpGradientFile.py
++Pillow-8.1.0/src/PIL/PcfFontFile.py
++Pillow-8.1.0/src/PIL/ImageDraw2.py
++Pillow-8.1.0/src/PIL/ImageQt.py
++Pillow-8.1.0/src/PIL/MpegImagePlugin.py
++Pillow-8.1.0/src/PIL/McIdasImagePlugin.py
++Pillow-8.1.0/src/PIL/ImageDraw.py
++Pillow-8.1.0/src/PIL/SunImagePlugin.py
++Pillow-8.1.0/src/PIL/_version.py
++Pillow-8.1.0/src/PIL/ImagePalette.py
++Pillow-8.1.0/src/PIL/IptcImagePlugin.py
++Pillow-8.1.0/src/PIL/ImageMorph.py
++Pillow-8.1.0/src/PIL/IcnsImagePlugin.py
++Pillow-8.1.0/src/PIL/Hdf5StubImagePlugin.py
++Pillow-8.1.0/src/PIL/ImageShow.py
++Pillow-8.1.0/src/PIL/ImageWin.py
++Pillow-8.1.0/src/PIL/PaletteFile.py
++Pillow-8.1.0/src/PIL/SpiderImagePlugin.py
++Pillow-8.1.0/src/PIL/PcdImagePlugin.py
++Pillow-8.1.0/src/PIL/ImageEnhance.py
++Pillow-8.1.0/src/PIL/ExifTags.py
++Pillow-8.1.0/src/PIL/FliImagePlugin.py
++Pillow-8.1.0/src/PIL/ImageColor.py
++Pillow-8.1.0/src/PIL/FtexImagePlugin.py
++Pillow-8.1.0/src/PIL/XbmImagePlugin.py
++Pillow-8.1.0/src/PIL/JpegImagePlugin.py
++Pillow-8.1.0/src/PIL/_binary.py
++Pillow-8.1.0/src/PIL/BlpImagePlugin.py
++Pillow-8.1.0/src/PIL/PdfImagePlugin.py
++Pillow-8.1.0/src/PIL/_tkinter_finder.py
++Pillow-8.1.0/src/PIL/PalmImagePlugin.py
++Pillow-8.1.0/src/PIL/ImageGrab.py
++Pillow-8.1.0/src/PIL/PngImagePlugin.py
++Pillow-8.1.0/src/PIL/ImageFilter.py
++Pillow-8.1.0/src/PIL/SgiImagePlugin.py
++Pillow-8.1.0/src/PIL/XVThumbImagePlugin.py
++Pillow-8.1.0/src/PIL/ImageTk.py
++Pillow-8.1.0/src/PIL/ImageTransform.py
++Pillow-8.1.0/src/PIL/TiffImagePlugin.py
++Pillow-8.1.0/src/PIL/ImageFont.py
++Pillow-8.1.0/src/PIL/MpoImagePlugin.py
++Pillow-8.1.0/src/PIL/ImageStat.py
++Pillow-8.1.0/src/PIL/FitsStubImagePlugin.py
++Pillow-8.1.0/src/PIL/__init__.py
++Pillow-8.1.0/src/PIL/TarIO.py
++Pillow-8.1.0/src/PIL/PixarImagePlugin.py
++Pillow-8.1.0/src/PIL/ImageCms.py
++Pillow-8.1.0/src/PIL/GdImageFile.py
++Pillow-8.1.0/src/PIL/TgaImagePlugin.py
++Pillow-8.1.0/src/PIL/features.py
++Pillow-8.1.0/src/PIL/_util.py
++Pillow-8.1.0/src/PIL/DcxImagePlugin.py
++Pillow-8.1.0/src/PIL/GribStubImagePlugin.py
++Pillow-8.1.0/src/PIL/GimpPaletteFile.py
++Pillow-8.1.0/src/PIL/PdfParser.py
++Pillow-8.1.0/src/path.c
++Pillow-8.1.0/src/_imagingmath.c
++Pillow-8.1.0/src/_imagingcms.c
++Pillow-8.1.0/src/Tk/
++Pillow-8.1.0/src/Tk/_tkmini.h
++Pillow-8.1.0/src/Tk/tkImaging.c
++Pillow-8.1.0/src/display.c
++Pillow-8.1.0/src/_webp.c
++Pillow-8.1.0/src/libImaging/
++Pillow-8.1.0/src/libImaging/Jpeg2K.h
++Pillow-8.1.0/src/libImaging/Imaging.h
++Pillow-8.1.0/src/libImaging/Dib.c
++Pillow-8.1.0/src/libImaging/PcxDecode.c
++Pillow-8.1.0/src/libImaging/ColorLUT.c
++Pillow-8.1.0/src/libImaging/Convert.c
++Pillow-8.1.0/src/libImaging/ZipDecode.c
++Pillow-8.1.0/src/libImaging/RankFilter.c
++Pillow-8.1.0/src/libImaging/Effects.c
++Pillow-8.1.0/src/libImaging/SgiRleDecode.c
++Pillow-8.1.0/src/libImaging/Gif.h
++Pillow-8.1.0/src/libImaging/Negative.c
++Pillow-8.1.0/src/libImaging/TgaRleEncode.c
++Pillow-8.1.0/src/libImaging/RawDecode.c
++Pillow-8.1.0/src/libImaging/GetBBox.c
++Pillow-8.1.0/src/libImaging/Point.c
++Pillow-8.1.0/src/libImaging/ZipEncode.c
++Pillow-8.1.0/src/libImaging/BoxBlur.c
++Pillow-8.1.0/src/libImaging/GifDecode.c
++Pillow-8.1.0/src/libImaging/Sgi.h
++Pillow-8.1.0/src/libImaging/HexDecode.c
++Pillow-8.1.0/src/libImaging/TgaRleDecode.c
++Pillow-8.1.0/src/libImaging/Geometry.c
++Pillow-8.1.0/src/libImaging/File.c
++Pillow-8.1.0/src/libImaging/QuantPngQuant.c
++Pillow-8.1.0/src/libImaging/QuantTypes.h
++Pillow-8.1.0/src/libImaging/ConvertYCbCr.c
++Pillow-8.1.0/src/libImaging/Unpack.c
++Pillow-8.1.0/src/libImaging/Storage.c
++Pillow-8.1.0/src/libImaging/Paste.c
++Pillow-8.1.0/src/libImaging/Jpeg2KEncode.c
++Pillow-8.1.0/src/libImaging/GifEncode.c
++Pillow-8.1.0/src/libImaging/EpsEncode.c
++Pillow-8.1.0/src/libImaging/PcxEncode.c
++Pillow-8.1.0/src/libImaging/ImPlatform.h
++Pillow-8.1.0/src/libImaging/QuantHeap.h
++Pillow-8.1.0/src/libImaging/Draw.c
++Pillow-8.1.0/src/libImaging/FliDecode.c
++Pillow-8.1.0/src/libImaging/Reduce.c
++Pillow-8.1.0/src/libImaging/Crop.c
++Pillow-8.1.0/src/libImaging/JpegDecode.c
++Pillow-8.1.0/src/libImaging/Bit.h
++Pillow-8.1.0/src/libImaging/QuantHeap.c
++Pillow-8.1.0/src/libImaging/UnsharpMask.c
++Pillow-8.1.0/src/libImaging/Jpeg.h
++Pillow-8.1.0/src/libImaging/SunRleDecode.c
++Pillow-8.1.0/src/libImaging/Access.c
++Pillow-8.1.0/src/libImaging/Resample.c
++Pillow-8.1.0/src/libImaging/BcnDecode.c
++Pillow-8.1.0/src/libImaging/QuantPngQuant.h
++Pillow-8.1.0/src/libImaging/PcdDecode.c
++Pillow-8.1.0/src/libImaging/codec_fd.c
++Pillow-8.1.0/src/libImaging/TiffDecode.h
++Pillow-8.1.0/src/libImaging/Blend.c
++Pillow-8.1.0/src/libImaging/Copy.c
++Pillow-8.1.0/src/libImaging/Except.c
++Pillow-8.1.0/src/libImaging/Histo.c
++Pillow-8.1.0/src/libImaging/raqm.h
++Pillow-8.1.0/src/libImaging/Jpeg2KDecode.c
++Pillow-8.1.0/src/libImaging/Bands.c
++Pillow-8.1.0/src/libImaging/RawEncode.c
++Pillow-8.1.0/src/libImaging/Raw.h
++Pillow-8.1.0/src/libImaging/Filter.c
++Pillow-8.1.0/src/libImaging/Chops.c
++Pillow-8.1.0/src/libImaging/ImDib.h
++Pillow-8.1.0/src/libImaging/QuantOctree.h
++Pillow-8.1.0/src/libImaging/Quant.c
++Pillow-8.1.0/src/libImaging/QuantHash.h
++Pillow-8.1.0/src/libImaging/XbmDecode.c
++Pillow-8.1.0/src/libImaging/QuantOctree.c
++Pillow-8.1.0/src/libImaging/JpegEncode.c
++Pillow-8.1.0/src/libImaging/ModeFilter.c
++Pillow-8.1.0/src/libImaging/QuantHash.c
++Pillow-8.1.0/src/libImaging/Matrix.c
++Pillow-8.1.0/src/libImaging/Pack.c
++Pillow-8.1.0/src/libImaging/TiffDecode.c
++Pillow-8.1.0/src/libImaging/XbmEncode.c
++Pillow-8.1.0/src/libImaging/ImagingUtils.h
++Pillow-8.1.0/src/libImaging/Fill.c
++Pillow-8.1.0/src/libImaging/UnpackYCC.c
++Pillow-8.1.0/src/libImaging/BitDecode.c
++Pillow-8.1.0/src/libImaging/AlphaComposite.c
++Pillow-8.1.0/src/libImaging/PackDecode.c
++Pillow-8.1.0/src/libImaging/ZipCodecs.h
++Pillow-8.1.0/src/libImaging/Offset.c
++Pillow-8.1.0/src/libImaging/Palette.c
++Pillow-8.1.0/src/_imagingft.c
++Pillow-8.1.0/src/_imagingmorph.c
++Pillow-8.1.0/src/_imaging.c
++Pillow-8.1.0/src/_imagingtk.c
++Pillow-8.1.0/selftest.py
++Pillow-8.1.0/.github/
++Pillow-8.1.0/.github/CONTRIBUTING.md
++Pillow-8.1.0/.github/mergify.yml
++Pillow-8.1.0/.github/PULL_REQUEST_TEMPLATE.md
++Pillow-8.1.0/.github/SECURITY.md
++Pillow-8.1.0/.github/release-drafter.yml
++Pillow-8.1.0/.github/workflows/
++Pillow-8.1.0/.github/workflows/test-windows.yml
++Pillow-8.1.0/.github/workflows/lint.yml
++Pillow-8.1.0/.github/workflows/test.yml
++Pillow-8.1.0/.github/workflows/test-docker.yml
++Pillow-8.1.0/.github/workflows/system-info.py
++Pillow-8.1.0/.github/workflows/release-drafter.yml
++Pillow-8.1.0/.github/workflows/macos-install.sh
++Pillow-8.1.0/.github/ISSUE_TEMPLATE/
++Pillow-8.1.0/.github/ISSUE_TEMPLATE/ISSUE_REPORT.md
++Pillow-8.1.0/.github/FUNDING.yml
++running install
++running build
++running build_py
++creating build
++creating build/lib.linux-x86_64-3.9
++creating build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/CurImagePlugin.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/XpmImagePlugin.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/JpegPresets.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/PpmImagePlugin.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/FontFile.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/ImageDraw.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/WebPImagePlugin.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/PyAccess.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/FtexImagePlugin.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/PSDraw.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/ImageEnhance.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/DcxImagePlugin.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/WalImageFile.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/FliImagePlugin.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/ImageGrab.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/Image.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/_binary.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/Hdf5StubImagePlugin.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/MicImagePlugin.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/SgiImagePlugin.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/ImageTk.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/FitsStubImagePlugin.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/ImageMath.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/McIdasImagePlugin.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/GdImageFile.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/ImageWin.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/MpoImagePlugin.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/TiffImagePlugin.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/PcdImagePlugin.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/XVThumbImagePlugin.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/JpegImagePlugin.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/PdfParser.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/ImageChops.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/ImagePath.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/BmpImagePlugin.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/BdfFontFile.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/ImageFile.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/BufrStubImagePlugin.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/ImageShow.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/PcxImagePlugin.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/ExifTags.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/DdsImagePlugin.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/_util.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/ImageMode.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/ImageFilter.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/ImageColor.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/PdfImagePlugin.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/FpxImagePlugin.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/BlpImagePlugin.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/PngImagePlugin.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/__init__.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/ImageOps.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/PcfFontFile.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/ImageMorph.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/ImageStat.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/EpsImagePlugin.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/WmfImagePlugin.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/_version.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/SpiderImagePlugin.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/IcnsImagePlugin.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/GimpGradientFile.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/TiffTags.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/GribStubImagePlugin.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/features.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/PsdImagePlugin.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/PaletteFile.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/MspImagePlugin.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/ImageQt.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/GifImagePlugin.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/Jpeg2KImagePlugin.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/SunImagePlugin.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/ImageTransform.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/TgaImagePlugin.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/ImagePalette.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/PalmImagePlugin.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/PixarImagePlugin.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/GbrImagePlugin.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/XbmImagePlugin.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/__main__.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/ImImagePlugin.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/ImtImagePlugin.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/ImageSequence.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/TarIO.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/IptcImagePlugin.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/ImageFont.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/ImageDraw2.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/MpegImagePlugin.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/ImageCms.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/GimpPaletteFile.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/IcoImagePlugin.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/ContainerIO.py -> build/lib.linux-x86_64-3.9/PIL
++copying src/PIL/_tkinter_finder.py -> build/lib.linux-x86_64-3.9/PIL
++running egg_info
++creating src/Pillow.egg-info
++writing src/Pillow.egg-info/PKG-INFO
++writing dependency_links to src/Pillow.egg-info/dependency_links.txt
++writing top-level names to src/Pillow.egg-info/top_level.txt
++writing manifest file 'src/Pillow.egg-info/SOURCES.txt'
++reading manifest file 'src/Pillow.egg-info/SOURCES.txt'
++reading manifest template 'MANIFEST.in'
++warning: no files found matching '*.c'
++warning: no files found matching '*.h'
++warning: no files found matching '*.sh'
++warning: no directories found matching 'Tests'
++warning: no previously-included files found matching '.appveyor.yml'
++warning: no previously-included files found matching '.coveragerc'
++warning: no previously-included files found matching '.editorconfig'
++warning: no previously-included files found matching '.readthedocs.yml'
++warning: no previously-included files found matching 'codecov.yml'
++warning: no previously-included files matching '.git*' found anywhere in distribution
++warning: no previously-included files matching '*.pyc' found anywhere in distribution
++warning: no previously-included files matching '*.so' found anywhere in distribution
++no previously-included directories found matching '.ci'
++writing manifest file 'src/Pillow.egg-info/SOURCES.txt'
++running build_ext
++building 'PIL._imagingft' extension
++creating build/temp.linux-x86_64-3.9
++creating build/temp.linux-x86_64-3.9/src
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/_imagingft.c -o build/temp.linux-x86_64-3.9/src/_imagingft.o
++building 'PIL._imaging' extension
++creating build/temp.linux-x86_64-3.9/src/libImaging
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/_imaging.c -o build/temp.linux-x86_64-3.9/src/_imaging.o
++gcc -shared build/temp.linux-x86_64-3.9/src/_imagingft.o -L/tmp/Pillow-8.1.0 -L/usr/lib -L/usr/local/lib -L/lib -L/usr/lib -lfreetype -o build/lib.linux-x86_64-3.9/PIL/_imagingft.cpython-39-x86_64-linux-gnu.so
++building 'PIL._imagingcms' extension
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/_imagingcms.c -o build/temp.linux-x86_64-3.9/src/_imagingcms.o
++gcc -shared build/temp.linux-x86_64-3.9/src/_imagingcms.o -L/tmp/Pillow-8.1.0 -L/usr/lib -L/usr/local/lib -L/lib -L/usr/lib -llcms2 -o build/lib.linux-x86_64-3.9/PIL/_imagingcms.cpython-39-x86_64-linux-gnu.so
++building 'PIL._webp' extension
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_WEBPMUX -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/_webp.c -o build/temp.linux-x86_64-3.9/src/_webp.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/decode.c -o build/temp.linux-x86_64-3.9/src/decode.o
++gcc -shared build/temp.linux-x86_64-3.9/src/_webp.o -L/tmp/Pillow-8.1.0 -L/usr/lib -L/usr/local/lib -L/lib -L/usr/lib -lwebp -lwebpmux -lwebpdemux -o build/lib.linux-x86_64-3.9/PIL/_webp.cpython-39-x86_64-linux-gnu.so
++building 'PIL._imagingtk' extension
++creating build/temp.linux-x86_64-3.9/src/Tk
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/Tk/tkImaging.c -o build/temp.linux-x86_64-3.9/src/Tk/tkImaging.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/_imagingtk.c -o build/temp.linux-x86_64-3.9/src/_imagingtk.o
++gcc -shared build/temp.linux-x86_64-3.9/src/Tk/tkImaging.o build/temp.linux-x86_64-3.9/src/_imagingtk.o -L/tmp/Pillow-8.1.0 -L/usr/lib -L/usr/local/lib -L/lib -L/usr/lib -o build/lib.linux-x86_64-3.9/PIL/_imagingtk.cpython-39-x86_64-linux-gnu.so
++building 'PIL._imagingmath' extension
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/_imagingmath.c -o build/temp.linux-x86_64-3.9/src/_imagingmath.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/display.c -o build/temp.linux-x86_64-3.9/src/display.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/encode.c -o build/temp.linux-x86_64-3.9/src/encode.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/Access.c -o build/temp.linux-x86_64-3.9/src/libImaging/Access.o
++gcc -shared build/temp.linux-x86_64-3.9/src/_imagingmath.o -L/tmp/Pillow-8.1.0 -L/usr/lib -L/usr/local/lib -L/lib -L/usr/lib -o build/lib.linux-x86_64-3.9/PIL/_imagingmath.cpython-39-x86_64-linux-gnu.so
++building 'PIL._imagingmorph' extension
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/_imagingmorph.c -o build/temp.linux-x86_64-3.9/src/_imagingmorph.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/AlphaComposite.c -o build/temp.linux-x86_64-3.9/src/libImaging/AlphaComposite.o
++gcc -shared build/temp.linux-x86_64-3.9/src/_imagingmorph.o -L/tmp/Pillow-8.1.0 -L/usr/lib -L/usr/local/lib -L/lib -L/usr/lib -o build/lib.linux-x86_64-3.9/PIL/_imagingmorph.cpython-39-x86_64-linux-gnu.so
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/Bands.c -o build/temp.linux-x86_64-3.9/src/libImaging/Bands.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/BcnDecode.c -o build/temp.linux-x86_64-3.9/src/libImaging/BcnDecode.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/BitDecode.c -o build/temp.linux-x86_64-3.9/src/libImaging/BitDecode.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/Blend.c -o build/temp.linux-x86_64-3.9/src/libImaging/Blend.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/BoxBlur.c -o build/temp.linux-x86_64-3.9/src/libImaging/BoxBlur.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/Chops.c -o build/temp.linux-x86_64-3.9/src/libImaging/Chops.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/ColorLUT.c -o build/temp.linux-x86_64-3.9/src/libImaging/ColorLUT.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/Convert.c -o build/temp.linux-x86_64-3.9/src/libImaging/Convert.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/ConvertYCbCr.c -o build/temp.linux-x86_64-3.9/src/libImaging/ConvertYCbCr.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/Copy.c -o build/temp.linux-x86_64-3.9/src/libImaging/Copy.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/Crop.c -o build/temp.linux-x86_64-3.9/src/libImaging/Crop.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/Dib.c -o build/temp.linux-x86_64-3.9/src/libImaging/Dib.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/Draw.c -o build/temp.linux-x86_64-3.9/src/libImaging/Draw.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/Effects.c -o build/temp.linux-x86_64-3.9/src/libImaging/Effects.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/EpsEncode.c -o build/temp.linux-x86_64-3.9/src/libImaging/EpsEncode.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/File.c -o build/temp.linux-x86_64-3.9/src/libImaging/File.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/Fill.c -o build/temp.linux-x86_64-3.9/src/libImaging/Fill.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/Filter.c -o build/temp.linux-x86_64-3.9/src/libImaging/Filter.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/FliDecode.c -o build/temp.linux-x86_64-3.9/src/libImaging/FliDecode.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/Geometry.c -o build/temp.linux-x86_64-3.9/src/libImaging/Geometry.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/GetBBox.c -o build/temp.linux-x86_64-3.9/src/libImaging/GetBBox.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/GifDecode.c -o build/temp.linux-x86_64-3.9/src/libImaging/GifDecode.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/GifEncode.c -o build/temp.linux-x86_64-3.9/src/libImaging/GifEncode.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/HexDecode.c -o build/temp.linux-x86_64-3.9/src/libImaging/HexDecode.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/Histo.c -o build/temp.linux-x86_64-3.9/src/libImaging/Histo.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/Jpeg2KDecode.c -o build/temp.linux-x86_64-3.9/src/libImaging/Jpeg2KDecode.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/Jpeg2KEncode.c -o build/temp.linux-x86_64-3.9/src/libImaging/Jpeg2KEncode.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/JpegDecode.c -o build/temp.linux-x86_64-3.9/src/libImaging/JpegDecode.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/JpegEncode.c -o build/temp.linux-x86_64-3.9/src/libImaging/JpegEncode.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/Matrix.c -o build/temp.linux-x86_64-3.9/src/libImaging/Matrix.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/ModeFilter.c -o build/temp.linux-x86_64-3.9/src/libImaging/ModeFilter.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/Negative.c -o build/temp.linux-x86_64-3.9/src/libImaging/Negative.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/Offset.c -o build/temp.linux-x86_64-3.9/src/libImaging/Offset.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/Pack.c -o build/temp.linux-x86_64-3.9/src/libImaging/Pack.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/PackDecode.c -o build/temp.linux-x86_64-3.9/src/libImaging/PackDecode.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/Palette.c -o build/temp.linux-x86_64-3.9/src/libImaging/Palette.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/Paste.c -o build/temp.linux-x86_64-3.9/src/libImaging/Paste.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/PcdDecode.c -o build/temp.linux-x86_64-3.9/src/libImaging/PcdDecode.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/PcxDecode.c -o build/temp.linux-x86_64-3.9/src/libImaging/PcxDecode.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/PcxEncode.c -o build/temp.linux-x86_64-3.9/src/libImaging/PcxEncode.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/Point.c -o build/temp.linux-x86_64-3.9/src/libImaging/Point.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/Quant.c -o build/temp.linux-x86_64-3.9/src/libImaging/Quant.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/QuantHash.c -o build/temp.linux-x86_64-3.9/src/libImaging/QuantHash.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/QuantHeap.c -o build/temp.linux-x86_64-3.9/src/libImaging/QuantHeap.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/QuantOctree.c -o build/temp.linux-x86_64-3.9/src/libImaging/QuantOctree.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/QuantPngQuant.c -o build/temp.linux-x86_64-3.9/src/libImaging/QuantPngQuant.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/RankFilter.c -o build/temp.linux-x86_64-3.9/src/libImaging/RankFilter.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/RawDecode.c -o build/temp.linux-x86_64-3.9/src/libImaging/RawDecode.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/RawEncode.c -o build/temp.linux-x86_64-3.9/src/libImaging/RawEncode.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/Reduce.c -o build/temp.linux-x86_64-3.9/src/libImaging/Reduce.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/Resample.c -o build/temp.linux-x86_64-3.9/src/libImaging/Resample.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/SgiRleDecode.c -o build/temp.linux-x86_64-3.9/src/libImaging/SgiRleDecode.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/Storage.c -o build/temp.linux-x86_64-3.9/src/libImaging/Storage.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/SunRleDecode.c -o build/temp.linux-x86_64-3.9/src/libImaging/SunRleDecode.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/TgaRleDecode.c -o build/temp.linux-x86_64-3.9/src/libImaging/TgaRleDecode.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/TgaRleEncode.c -o build/temp.linux-x86_64-3.9/src/libImaging/TgaRleEncode.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/TiffDecode.c -o build/temp.linux-x86_64-3.9/src/libImaging/TiffDecode.o
++src/libImaging/TiffDecode.c: In function ‘_decodeStripYCbCr’:
++src/libImaging/TiffDecode.c:213:22: warning: comparison of integer expressions of different signedness: ‘int’ and ‘uint32’ {aka ‘unsigned int’} [-Wsign-compare]
++  213 |     if (state->xsize != img.width || state->ysize != img.height) {
++      |                      ^~
++src/libImaging/TiffDecode.c:213:51: warning: comparison of integer expressions of different signedness: ‘int’ and ‘uint32’ {aka ‘unsigned int’} [-Wsign-compare]
++  213 |     if (state->xsize != img.width || state->ysize != img.height) {
++      |                                                   ^~
++src/libImaging/TiffDecode.c: In function ‘ImagingLibTiffDecode’:
++src/libImaging/TiffDecode.c:498:41: warning: comparison of integer expressions of different signedness: ‘int’ and ‘unsigned int’ [-Wsign-compare]
++  498 |                 for (tile_y = 0; tile_y < current_tile_length; tile_y++) {
++      |                                         ^
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/Unpack.c -o build/temp.linux-x86_64-3.9/src/libImaging/Unpack.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/UnpackYCC.c -o build/temp.linux-x86_64-3.9/src/libImaging/UnpackYCC.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/UnsharpMask.c -o build/temp.linux-x86_64-3.9/src/libImaging/UnsharpMask.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/XbmDecode.c -o build/temp.linux-x86_64-3.9/src/libImaging/XbmDecode.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/XbmEncode.c -o build/temp.linux-x86_64-3.9/src/libImaging/XbmEncode.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/ZipDecode.c -o build/temp.linux-x86_64-3.9/src/libImaging/ZipDecode.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/ZipEncode.c -o build/temp.linux-x86_64-3.9/src/libImaging/ZipEncode.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/libImaging/codec_fd.c -o build/temp.linux-x86_64-3.9/src/libImaging/codec_fd.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/map.c -o build/temp.linux-x86_64-3.9/src/map.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/outline.c -o build/temp.linux-x86_64-3.9/src/outline.o
++gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -fPIC -DHAVE_LIBJPEG -DHAVE_OPENJPEG -DHAVE_LIBZ -DHAVE_LIBTIFF -DHAVE_XCB -DPILLOW_VERSION="8.1.0" -I/usr/include/freetype2 -I/usr/include/openjpeg-2.3 -I/tmp/Pillow-8.1.0 -I/usr/include -I/usr/local/include -I/usr/include/python3.9 -c src/path.c -o build/temp.linux-x86_64-3.9/src/path.o
++gcc -shared build/temp.linux-x86_64-3.9/src/_imaging.o build/temp.linux-x86_64-3.9/src/decode.o build/temp.linux-x86_64-3.9/src/display.o build/temp.linux-x86_64-3.9/src/encode.o build/temp.linux-x86_64-3.9/src/libImaging/Access.o build/temp.linux-x86_64-3.9/src/libImaging/AlphaComposite.o build/temp.linux-x86_64-3.9/src/libImaging/Bands.o build/temp.linux-x86_64-3.9/src/libImaging/BcnDecode.o build/temp.linux-x86_64-3.9/src/libImaging/BitDecode.o build/temp.linux-x86_64-3.9/src/libImaging/Blend.o build/temp.linux-x86_64-3.9/src/libImaging/BoxBlur.o build/temp.linux-x86_64-3.9/src/libImaging/Chops.o build/temp.linux-x86_64-3.9/src/libImaging/ColorLUT.o build/temp.linux-x86_64-3.9/src/libImaging/Convert.o build/temp.linux-x86_64-3.9/src/libImaging/ConvertYCbCr.o build/temp.linux-x86_64-3.9/src/libImaging/Copy.o build/temp.linux-x86_64-3.9/src/libImaging/Crop.o build/temp.linux-x86_64-3.9/src/libImaging/Dib.o build/temp.linux-x86_64-3.9/src/libImaging/Draw.o build/temp.linux-x86_64-3.9/src/libImaging/Effects.o build/temp.linux-x86_64-3.9/src/libImaging/EpsEncode.o build/temp.linux-x86_64-3.9/src/libImaging/File.o build/temp.linux-x86_64-3.9/src/libImaging/Fill.o build/temp.linux-x86_64-3.9/src/libImaging/Filter.o build/temp.linux-x86_64-3.9/src/libImaging/FliDecode.o build/temp.linux-x86_64-3.9/src/libImaging/Geometry.o build/temp.linux-x86_64-3.9/src/libImaging/GetBBox.o build/temp.linux-x86_64-3.9/src/libImaging/GifDecode.o build/temp.linux-x86_64-3.9/src/libImaging/GifEncode.o build/temp.linux-x86_64-3.9/src/libImaging/HexDecode.o build/temp.linux-x86_64-3.9/src/libImaging/Histo.o build/temp.linux-x86_64-3.9/src/libImaging/Jpeg2KDecode.o build/temp.linux-x86_64-3.9/src/libImaging/Jpeg2KEncode.o build/temp.linux-x86_64-3.9/src/libImaging/JpegDecode.o build/temp.linux-x86_64-3.9/src/libImaging/JpegEncode.o build/temp.linux-x86_64-3.9/src/libImaging/Matrix.o build/temp.linux-x86_64-3.9/src/libImaging/ModeFilter.o build/temp.linux-x86_64-3.9/src/libImaging/Negative.o build/temp.linux-x86_64-3.9/src/libImaging/Offset.o build/temp.linux-x86_64-3.9/src/libImaging/Pack.o build/temp.linux-x86_64-3.9/src/libImaging/PackDecode.o build/temp.linux-x86_64-3.9/src/libImaging/Palette.o build/temp.linux-x86_64-3.9/src/libImaging/Paste.o build/temp.linux-x86_64-3.9/src/libImaging/PcdDecode.o build/temp.linux-x86_64-3.9/src/libImaging/PcxDecode.o build/temp.linux-x86_64-3.9/src/libImaging/PcxEncode.o build/temp.linux-x86_64-3.9/src/libImaging/Point.o build/temp.linux-x86_64-3.9/src/libImaging/Quant.o build/temp.linux-x86_64-3.9/src/libImaging/QuantHash.o build/temp.linux-x86_64-3.9/src/libImaging/QuantHeap.o build/temp.linux-x86_64-3.9/src/libImaging/QuantOctree.o build/temp.linux-x86_64-3.9/src/libImaging/QuantPngQuant.o build/temp.linux-x86_64-3.9/src/libImaging/RankFilter.o build/temp.linux-x86_64-3.9/src/libImaging/RawDecode.o build/temp.linux-x86_64-3.9/src/libImaging/RawEncode.o build/temp.linux-x86_64-3.9/src/libImaging/Reduce.o build/temp.linux-x86_64-3.9/src/libImaging/Resample.o build/temp.linux-x86_64-3.9/src/libImaging/SgiRleDecode.o build/temp.linux-x86_64-3.9/src/libImaging/Storage.o build/temp.linux-x86_64-3.9/src/libImaging/SunRleDecode.o build/temp.linux-x86_64-3.9/src/libImaging/TgaRleDecode.o build/temp.linux-x86_64-3.9/src/libImaging/TgaRleEncode.o build/temp.linux-x86_64-3.9/src/libImaging/TiffDecode.o build/temp.linux-x86_64-3.9/src/libImaging/Unpack.o build/temp.linux-x86_64-3.9/src/libImaging/UnpackYCC.o build/temp.linux-x86_64-3.9/src/libImaging/UnsharpMask.o build/temp.linux-x86_64-3.9/src/libImaging/XbmDecode.o build/temp.linux-x86_64-3.9/src/libImaging/XbmEncode.o build/temp.linux-x86_64-3.9/src/libImaging/ZipDecode.o build/temp.linux-x86_64-3.9/src/libImaging/ZipEncode.o build/temp.linux-x86_64-3.9/src/libImaging/codec_fd.o build/temp.linux-x86_64-3.9/src/map.o build/temp.linux-x86_64-3.9/src/outline.o build/temp.linux-x86_64-3.9/src/path.o -L/tmp/Pillow-8.1.0 -L/usr/lib -L/usr/local/lib -L/lib -L/usr/lib -ljpeg -lopenjp2 -lz -ltiff -lxcb -o build/lib.linux-x86_64-3.9/PIL/_imaging.cpython-39-x86_64-linux-gnu.so
++--------------------------------------------------------------------
++PIL SETUP SUMMARY
++--------------------------------------------------------------------
++version      Pillow 8.1.0
++platform     linux 3.9.1 (default, Dec 21 2020, 21:43:19)
++             [GCC 10.2.0]
++--------------------------------------------------------------------
++--- JPEG support available
++--- OPENJPEG (JPEG2000) support available (2.3)
++--- ZLIB (PNG/ZIP) support available
++*** LIBIMAGEQUANT support not available
++--- LIBTIFF support available
++--- FREETYPE2 support available
++--- LITTLECMS2 support available
++--- WEBP support available
++--- WEBPMUX support available
++--- XCB (X protocol) support available
++--------------------------------------------------------------------
++To add a missing option, make sure you have the required
++library and headers.
++See https://pillow.readthedocs.io/en/latest/installation.html#building-from-source
++
++To check the build, run the selftest.py script.
++
++running install_lib
++creating /tmp/package-python-pillow/usr
++creating /tmp/package-python-pillow/usr/lib
++creating /tmp/package-python-pillow/usr/lib/python3.9
++creating /tmp/package-python-pillow/usr/lib/python3.9/site-packages
++creating /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/CurImagePlugin.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/XpmImagePlugin.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/JpegPresets.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/PpmImagePlugin.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/FontFile.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/ImageDraw.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/WebPImagePlugin.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/PyAccess.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/FtexImagePlugin.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/PSDraw.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/ImageEnhance.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/DcxImagePlugin.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/WalImageFile.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/FliImagePlugin.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/ImageGrab.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/Image.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/_binary.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/Hdf5StubImagePlugin.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/MicImagePlugin.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/SgiImagePlugin.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/ImageTk.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/FitsStubImagePlugin.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/_imagingcms.cpython-39-x86_64-linux-gnu.so -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/ImageMath.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/McIdasImagePlugin.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/GdImageFile.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/_imaging.cpython-39-x86_64-linux-gnu.so -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/ImageWin.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/MpoImagePlugin.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/TiffImagePlugin.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/PcdImagePlugin.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/_imagingmorph.cpython-39-x86_64-linux-gnu.so -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/XVThumbImagePlugin.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/JpegImagePlugin.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/PdfParser.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/ImageChops.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/ImagePath.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/BmpImagePlugin.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/BdfFontFile.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/ImageFile.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/_imagingft.cpython-39-x86_64-linux-gnu.so -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/BufrStubImagePlugin.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/ImageShow.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/PcxImagePlugin.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/ExifTags.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/DdsImagePlugin.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/_util.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/ImageMode.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/ImageFilter.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/ImageColor.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/PdfImagePlugin.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/FpxImagePlugin.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/_webp.cpython-39-x86_64-linux-gnu.so -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/BlpImagePlugin.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/PngImagePlugin.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/__init__.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/ImageOps.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/PcfFontFile.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/ImageMorph.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/ImageStat.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/_imagingtk.cpython-39-x86_64-linux-gnu.so -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/EpsImagePlugin.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/WmfImagePlugin.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/_version.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/SpiderImagePlugin.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/IcnsImagePlugin.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/GimpGradientFile.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/TiffTags.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/GribStubImagePlugin.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/features.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/PsdImagePlugin.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/PaletteFile.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/MspImagePlugin.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/_imagingmath.cpython-39-x86_64-linux-gnu.so -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/ImageQt.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/GifImagePlugin.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/Jpeg2KImagePlugin.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/SunImagePlugin.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/ImageTransform.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/TgaImagePlugin.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/ImagePalette.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/PalmImagePlugin.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/PixarImagePlugin.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/GbrImagePlugin.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/XbmImagePlugin.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/__main__.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/ImImagePlugin.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/ImtImagePlugin.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/ImageSequence.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/TarIO.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/IptcImagePlugin.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/ImageFont.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/ImageDraw2.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/MpegImagePlugin.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/ImageCms.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/GimpPaletteFile.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/IcoImagePlugin.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/ContainerIO.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++copying build/lib.linux-x86_64-3.9/PIL/_tkinter_finder.py -> /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/CurImagePlugin.py to CurImagePlugin.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/XpmImagePlugin.py to XpmImagePlugin.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/JpegPresets.py to JpegPresets.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/PpmImagePlugin.py to PpmImagePlugin.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/FontFile.py to FontFile.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/ImageDraw.py to ImageDraw.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/WebPImagePlugin.py to WebPImagePlugin.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/PyAccess.py to PyAccess.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/FtexImagePlugin.py to FtexImagePlugin.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/PSDraw.py to PSDraw.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/ImageEnhance.py to ImageEnhance.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/DcxImagePlugin.py to DcxImagePlugin.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/WalImageFile.py to WalImageFile.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/FliImagePlugin.py to FliImagePlugin.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/ImageGrab.py to ImageGrab.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/Image.py to Image.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/_binary.py to _binary.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/Hdf5StubImagePlugin.py to Hdf5StubImagePlugin.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/MicImagePlugin.py to MicImagePlugin.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/SgiImagePlugin.py to SgiImagePlugin.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/ImageTk.py to ImageTk.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/FitsStubImagePlugin.py to FitsStubImagePlugin.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/ImageMath.py to ImageMath.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/McIdasImagePlugin.py to McIdasImagePlugin.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/GdImageFile.py to GdImageFile.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/ImageWin.py to ImageWin.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/MpoImagePlugin.py to MpoImagePlugin.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/TiffImagePlugin.py to TiffImagePlugin.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/PcdImagePlugin.py to PcdImagePlugin.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/XVThumbImagePlugin.py to XVThumbImagePlugin.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/JpegImagePlugin.py to JpegImagePlugin.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/PdfParser.py to PdfParser.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/ImageChops.py to ImageChops.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/ImagePath.py to ImagePath.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/BmpImagePlugin.py to BmpImagePlugin.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/BdfFontFile.py to BdfFontFile.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/ImageFile.py to ImageFile.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/BufrStubImagePlugin.py to BufrStubImagePlugin.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/ImageShow.py to ImageShow.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/PcxImagePlugin.py to PcxImagePlugin.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/ExifTags.py to ExifTags.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/DdsImagePlugin.py to DdsImagePlugin.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/_util.py to _util.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/ImageMode.py to ImageMode.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/ImageFilter.py to ImageFilter.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/ImageColor.py to ImageColor.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/PdfImagePlugin.py to PdfImagePlugin.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/FpxImagePlugin.py to FpxImagePlugin.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/BlpImagePlugin.py to BlpImagePlugin.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/PngImagePlugin.py to PngImagePlugin.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/__init__.py to __init__.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/ImageOps.py to ImageOps.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/PcfFontFile.py to PcfFontFile.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/ImageMorph.py to ImageMorph.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/ImageStat.py to ImageStat.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/EpsImagePlugin.py to EpsImagePlugin.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/WmfImagePlugin.py to WmfImagePlugin.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/_version.py to _version.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/SpiderImagePlugin.py to SpiderImagePlugin.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/IcnsImagePlugin.py to IcnsImagePlugin.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/GimpGradientFile.py to GimpGradientFile.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/TiffTags.py to TiffTags.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/GribStubImagePlugin.py to GribStubImagePlugin.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/features.py to features.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/PsdImagePlugin.py to PsdImagePlugin.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/PaletteFile.py to PaletteFile.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/MspImagePlugin.py to MspImagePlugin.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/ImageQt.py to ImageQt.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/GifImagePlugin.py to GifImagePlugin.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/Jpeg2KImagePlugin.py to Jpeg2KImagePlugin.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/SunImagePlugin.py to SunImagePlugin.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/ImageTransform.py to ImageTransform.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/TgaImagePlugin.py to TgaImagePlugin.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/ImagePalette.py to ImagePalette.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/PalmImagePlugin.py to PalmImagePlugin.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/PixarImagePlugin.py to PixarImagePlugin.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/GbrImagePlugin.py to GbrImagePlugin.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/XbmImagePlugin.py to XbmImagePlugin.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/__main__.py to __main__.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/ImImagePlugin.py to ImImagePlugin.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/ImtImagePlugin.py to ImtImagePlugin.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/ImageSequence.py to ImageSequence.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/TarIO.py to TarIO.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/IptcImagePlugin.py to IptcImagePlugin.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/ImageFont.py to ImageFont.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/ImageDraw2.py to ImageDraw2.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/MpegImagePlugin.py to MpegImagePlugin.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/ImageCms.py to ImageCms.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/GimpPaletteFile.py to GimpPaletteFile.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/IcoImagePlugin.py to IcoImagePlugin.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/ContainerIO.py to ContainerIO.cpython-39.pyc
++byte-compiling /tmp/package-python-pillow/usr/lib/python3.9/site-packages/PIL/_tkinter_finder.py to _tkinter_finder.cpython-39.pyc
++running install_egg_info
++Copying src/Pillow.egg-info to /tmp/package-python-pillow/usr/lib/python3.9/site-packages/Pillow-8.1.0-py3.9.egg-info
++running install_scripts
++cp: cannot stat 'docs/BUILDME': No such file or directory
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++
++No symbolic links were found, so we won't make an installation script.
++You can make your own later in ./install/doinst.sh and rebuild the
++package if you like.
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/python-pillow-8.1.0-x86_64-1.txz
++
++./
++install/
++install/slack-desc
++usr/
++usr/doc/
++usr/doc/python-pillow-8.1.0/
++usr/doc/python-pillow-8.1.0/CHANGES.rst
++usr/doc/python-pillow-8.1.0/COPYING
++usr/doc/python-pillow-8.1.0/README.md
++usr/doc/python-pillow-8.1.0/RELEASING.md
++usr/include/
++usr/include/python3.9/
++usr/include/python3.9/Imaging/
++usr/include/python3.9/Imaging/Bit.h
++usr/include/python3.9/Imaging/Gif.h
++usr/include/python3.9/Imaging/ImDib.h
++usr/include/python3.9/Imaging/ImPlatform.h
++usr/include/python3.9/Imaging/Imaging.h
++usr/include/python3.9/Imaging/ImagingUtils.h
++usr/include/python3.9/Imaging/Jpeg.h
++usr/include/python3.9/Imaging/Jpeg2K.h
++usr/include/python3.9/Imaging/QuantHash.h
++usr/include/python3.9/Imaging/QuantHeap.h
++usr/include/python3.9/Imaging/QuantOctree.h
++usr/include/python3.9/Imaging/QuantPngQuant.h
++usr/include/python3.9/Imaging/QuantTypes.h
++usr/include/python3.9/Imaging/Raw.h
++usr/include/python3.9/Imaging/Sgi.h
++usr/include/python3.9/Imaging/TiffDecode.h
++usr/include/python3.9/Imaging/ZipCodecs.h
++usr/include/python3.9/Imaging/raqm.h
++usr/lib/
++usr/lib/python3.9/
++usr/lib/python3.9/site-packages/
++usr/lib/python3.9/site-packages/PIL/
++usr/lib/python3.9/site-packages/PIL/BdfFontFile.py
++usr/lib/python3.9/site-packages/PIL/BlpImagePlugin.py
++usr/lib/python3.9/site-packages/PIL/BmpImagePlugin.py
++usr/lib/python3.9/site-packages/PIL/BufrStubImagePlugin.py
++usr/lib/python3.9/site-packages/PIL/ContainerIO.py
++usr/lib/python3.9/site-packages/PIL/CurImagePlugin.py
++usr/lib/python3.9/site-packages/PIL/DcxImagePlugin.py
++usr/lib/python3.9/site-packages/PIL/DdsImagePlugin.py
++usr/lib/python3.9/site-packages/PIL/EpsImagePlugin.py
++usr/lib/python3.9/site-packages/PIL/ExifTags.py
++usr/lib/python3.9/site-packages/PIL/FitsStubImagePlugin.py
++usr/lib/python3.9/site-packages/PIL/FliImagePlugin.py
++usr/lib/python3.9/site-packages/PIL/FontFile.py
++usr/lib/python3.9/site-packages/PIL/FpxImagePlugin.py
++usr/lib/python3.9/site-packages/PIL/FtexImagePlugin.py
++usr/lib/python3.9/site-packages/PIL/GbrImagePlugin.py
++usr/lib/python3.9/site-packages/PIL/GdImageFile.py
++usr/lib/python3.9/site-packages/PIL/GifImagePlugin.py
++usr/lib/python3.9/site-packages/PIL/GimpGradientFile.py
++usr/lib/python3.9/site-packages/PIL/GimpPaletteFile.py
++usr/lib/python3.9/site-packages/PIL/GribStubImagePlugin.py
++usr/lib/python3.9/site-packages/PIL/Hdf5StubImagePlugin.py
++usr/lib/python3.9/site-packages/PIL/IcnsImagePlugin.py
++usr/lib/python3.9/site-packages/PIL/IcoImagePlugin.py
++usr/lib/python3.9/site-packages/PIL/ImImagePlugin.py
++usr/lib/python3.9/site-packages/PIL/Image.py
++usr/lib/python3.9/site-packages/PIL/ImageChops.py
++usr/lib/python3.9/site-packages/PIL/ImageCms.py
++usr/lib/python3.9/site-packages/PIL/ImageColor.py
++usr/lib/python3.9/site-packages/PIL/ImageDraw.py
++usr/lib/python3.9/site-packages/PIL/ImageDraw2.py
++usr/lib/python3.9/site-packages/PIL/ImageEnhance.py
++usr/lib/python3.9/site-packages/PIL/ImageFile.py
++usr/lib/python3.9/site-packages/PIL/ImageFilter.py
++usr/lib/python3.9/site-packages/PIL/ImageFont.py
++usr/lib/python3.9/site-packages/PIL/ImageGrab.py
++usr/lib/python3.9/site-packages/PIL/ImageMath.py
++usr/lib/python3.9/site-packages/PIL/ImageMode.py
++usr/lib/python3.9/site-packages/PIL/ImageMorph.py
++usr/lib/python3.9/site-packages/PIL/ImageOps.py
++usr/lib/python3.9/site-packages/PIL/ImagePalette.py
++usr/lib/python3.9/site-packages/PIL/ImagePath.py
++usr/lib/python3.9/site-packages/PIL/ImageQt.py
++usr/lib/python3.9/site-packages/PIL/ImageSequence.py
++usr/lib/python3.9/site-packages/PIL/ImageShow.py
++usr/lib/python3.9/site-packages/PIL/ImageStat.py
++usr/lib/python3.9/site-packages/PIL/ImageTk.py
++usr/lib/python3.9/site-packages/PIL/ImageTransform.py
++usr/lib/python3.9/site-packages/PIL/ImageWin.py
++usr/lib/python3.9/site-packages/PIL/ImtImagePlugin.py
++usr/lib/python3.9/site-packages/PIL/IptcImagePlugin.py
++usr/lib/python3.9/site-packages/PIL/Jpeg2KImagePlugin.py
++usr/lib/python3.9/site-packages/PIL/JpegImagePlugin.py
++usr/lib/python3.9/site-packages/PIL/JpegPresets.py
++usr/lib/python3.9/site-packages/PIL/McIdasImagePlugin.py
++usr/lib/python3.9/site-packages/PIL/MicImagePlugin.py
++usr/lib/python3.9/site-packages/PIL/MpegImagePlugin.py
++usr/lib/python3.9/site-packages/PIL/MpoImagePlugin.py
++usr/lib/python3.9/site-packages/PIL/MspImagePlugin.py
++usr/lib/python3.9/site-packages/PIL/PSDraw.py
++usr/lib/python3.9/site-packages/PIL/PaletteFile.py
++usr/lib/python3.9/site-packages/PIL/PalmImagePlugin.py
++usr/lib/python3.9/site-packages/PIL/PcdImagePlugin.py
++usr/lib/python3.9/site-packages/PIL/PcfFontFile.py
++usr/lib/python3.9/site-packages/PIL/PcxImagePlugin.py
++usr/lib/python3.9/site-packages/PIL/PdfImagePlugin.py
++usr/lib/python3.9/site-packages/PIL/PdfParser.py
++usr/lib/python3.9/site-packages/PIL/PixarImagePlugin.py
++usr/lib/python3.9/site-packages/PIL/PngImagePlugin.py
++usr/lib/python3.9/site-packages/PIL/PpmImagePlugin.py
++usr/lib/python3.9/site-packages/PIL/PsdImagePlugin.py
++usr/lib/python3.9/site-packages/PIL/PyAccess.py
++usr/lib/python3.9/site-packages/PIL/SgiImagePlugin.py
++usr/lib/python3.9/site-packages/PIL/SpiderImagePlugin.py
++usr/lib/python3.9/site-packages/PIL/SunImagePlugin.py
++usr/lib/python3.9/site-packages/PIL/TarIO.py
++usr/lib/python3.9/site-packages/PIL/TgaImagePlugin.py
++usr/lib/python3.9/site-packages/PIL/TiffImagePlugin.py
++usr/lib/python3.9/site-packages/PIL/TiffTags.py
++usr/lib/python3.9/site-packages/PIL/WalImageFile.py
++usr/lib/python3.9/site-packages/PIL/WebPImagePlugin.py
++usr/lib/python3.9/site-packages/PIL/WmfImagePlugin.py
++usr/lib/python3.9/site-packages/PIL/XVThumbImagePlugin.py
++usr/lib/python3.9/site-packages/PIL/XbmImagePlugin.py
++usr/lib/python3.9/site-packages/PIL/XpmImagePlugin.py
++usr/lib/python3.9/site-packages/PIL/__init__.py
++usr/lib/python3.9/site-packages/PIL/__main__.py
++usr/lib/python3.9/site-packages/PIL/__pycache__/
++usr/lib/python3.9/site-packages/PIL/__pycache__/BdfFontFile.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/BlpImagePlugin.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/BmpImagePlugin.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/BufrStubImagePlugin.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/ContainerIO.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/CurImagePlugin.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/DcxImagePlugin.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/DdsImagePlugin.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/EpsImagePlugin.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/ExifTags.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/FitsStubImagePlugin.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/FliImagePlugin.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/FontFile.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/FpxImagePlugin.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/FtexImagePlugin.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/GbrImagePlugin.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/GdImageFile.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/GifImagePlugin.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/GimpGradientFile.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/GimpPaletteFile.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/GribStubImagePlugin.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/Hdf5StubImagePlugin.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/IcnsImagePlugin.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/IcoImagePlugin.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/ImImagePlugin.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/Image.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/ImageChops.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/ImageCms.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/ImageColor.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/ImageDraw.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/ImageDraw2.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/ImageEnhance.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/ImageFile.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/ImageFilter.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/ImageFont.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/ImageGrab.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/ImageMath.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/ImageMode.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/ImageMorph.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/ImageOps.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/ImagePalette.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/ImagePath.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/ImageQt.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/ImageSequence.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/ImageShow.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/ImageStat.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/ImageTk.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/ImageTransform.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/ImageWin.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/ImtImagePlugin.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/IptcImagePlugin.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/Jpeg2KImagePlugin.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/JpegImagePlugin.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/JpegPresets.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/McIdasImagePlugin.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/MicImagePlugin.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/MpegImagePlugin.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/MpoImagePlugin.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/MspImagePlugin.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/PSDraw.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/PaletteFile.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/PalmImagePlugin.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/PcdImagePlugin.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/PcfFontFile.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/PcxImagePlugin.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/PdfImagePlugin.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/PdfParser.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/PixarImagePlugin.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/PngImagePlugin.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/PpmImagePlugin.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/PsdImagePlugin.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/PyAccess.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/SgiImagePlugin.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/SpiderImagePlugin.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/SunImagePlugin.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/TarIO.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/TgaImagePlugin.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/TiffImagePlugin.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/TiffTags.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/WalImageFile.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/WebPImagePlugin.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/WmfImagePlugin.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/XVThumbImagePlugin.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/XbmImagePlugin.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/XpmImagePlugin.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/__init__.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/__main__.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/_binary.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/_tkinter_finder.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/_util.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/_version.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/__pycache__/features.cpython-39.pyc
++usr/lib/python3.9/site-packages/PIL/_binary.py
++usr/lib/python3.9/site-packages/PIL/_imaging.cpython-39-x86_64-linux-gnu.so
++usr/lib/python3.9/site-packages/PIL/_imagingcms.cpython-39-x86_64-linux-gnu.so
++usr/lib/python3.9/site-packages/PIL/_imagingft.cpython-39-x86_64-linux-gnu.so
++usr/lib/python3.9/site-packages/PIL/_imagingmath.cpython-39-x86_64-linux-gnu.so
++usr/lib/python3.9/site-packages/PIL/_imagingmorph.cpython-39-x86_64-linux-gnu.so
++usr/lib/python3.9/site-packages/PIL/_imagingtk.cpython-39-x86_64-linux-gnu.so
++usr/lib/python3.9/site-packages/PIL/_tkinter_finder.py
++usr/lib/python3.9/site-packages/PIL/_util.py
++usr/lib/python3.9/site-packages/PIL/_version.py
++usr/lib/python3.9/site-packages/PIL/_webp.cpython-39-x86_64-linux-gnu.so
++usr/lib/python3.9/site-packages/PIL/features.py
++usr/lib/python3.9/site-packages/Pillow-8.1.0-py3.9.egg-info/
++usr/lib/python3.9/site-packages/Pillow-8.1.0-py3.9.egg-info/PKG-INFO
++usr/lib/python3.9/site-packages/Pillow-8.1.0-py3.9.egg-info/SOURCES.txt
++usr/lib/python3.9/site-packages/Pillow-8.1.0-py3.9.egg-info/dependency_links.txt
++usr/lib/python3.9/site-packages/Pillow-8.1.0-py3.9.egg-info/top_level.txt
++usr/lib/python3.9/site-packages/Pillow-8.1.0-py3.9.egg-info/zip-safe
++
++Slackware package /tmp/python-pillow-8.1.0-x86_64-1.txz created.
++

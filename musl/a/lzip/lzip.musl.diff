@@ -1,0 +1,144 @@
+diff -ruBN /tmp/lzip/lzip.SlackBuild /source/a/lzip/lzip.SlackBuild
+--- /tmp/lzip/lzip.SlackBuild	2019-09-29 23:48:34.000000000 +0000
++++ /source/a/lzip/lzip.SlackBuild	2021-01-15 18:04:40.000000000 +0000
+@@ -64,7 +64,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "armv7hl" ]; then
+   SLKCFLAGS="-O3 -march=armv7-a -mfpu=vfpv3-d16"
+   LIBDIRSUFFIX=""
+@@ -100,7 +100,7 @@
+   --mandir=/usr/man \
+   --infodir=/usr/info \
+   --disable-static \
+-  --build=$ARCH-slackware-linux || exit 1
++  --build=$ARCH-slackware-linux-musl || exit 1
+ 
+ # Build and install:
+ make $NUMJOBS || make || exit 1
+diff -ruBN /tmp/lzip/lzip.SlackBuild.log /source/a/lzip/lzip.SlackBuild.log
+--- /tmp/lzip/lzip.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/a/lzip/lzip.SlackBuild.log	2021-01-15 18:05:16.000000000 +0000
+@@ -0,0 +1,119 @@
++lzip-1.22/AUTHORS
++lzip-1.22/COPYING
++lzip-1.22/ChangeLog
++lzip-1.22/INSTALL
++lzip-1.22/Makefile.in
++lzip-1.22/NEWS
++lzip-1.22/README
++lzip-1.22/configure
++lzip-1.22/doc/lzip.1
++lzip-1.22/doc/lzip.info
++lzip-1.22/doc/lzip.texi
++lzip-1.22/arg_parser.h
++lzip-1.22/decoder.h
++lzip-1.22/encoder.h
++lzip-1.22/encoder_base.h
++lzip-1.22/fast_encoder.h
++lzip-1.22/lzip.h
++lzip-1.22/lzip_index.h
++lzip-1.22/arg_parser.cc
++lzip-1.22/decoder.cc
++lzip-1.22/encoder.cc
++lzip-1.22/encoder_base.cc
++lzip-1.22/fast_encoder.cc
++lzip-1.22/list.cc
++lzip-1.22/lzip_index.cc
++lzip-1.22/main.cc
++lzip-1.22/testsuite/check.sh
++lzip-1.22/testsuite/test.txt
++lzip-1.22/testsuite/fox.lz
++lzip-1.22/testsuite/fox_bcrc.lz
++lzip-1.22/testsuite/fox_crc0.lz
++lzip-1.22/testsuite/fox_das46.lz
++lzip-1.22/testsuite/fox_de20.lz
++lzip-1.22/testsuite/fox_mes81.lz
++lzip-1.22/testsuite/fox_s11.lz
++lzip-1.22/testsuite/fox_v2.lz
++lzip-1.22/testsuite/test.txt.lz
++lzip-1.22/testsuite/test_em.txt.lz
++configure: WARNING: unrecognized option: '--sysconfdir=/etc'
++configure: WARNING: unrecognized option: '--libdir=/usr/lib'
++configure: WARNING: unrecognized option: '--disable-static'
++configure: WARNING: unrecognized option: '--build=x86_64-slackware-linux-musl'
++
++creating config.status
++creating Makefile
++VPATH = .
++prefix = /usr
++exec_prefix = $(prefix)
++bindir = $(exec_prefix)/bin
++datarootdir = $(prefix)/share
++infodir = /usr/info
++mandir = /usr/man
++CXX = g++
++CPPFLAGS = 
++CXXFLAGS = -O2 -fPIC
++LDFLAGS = 
++OK. Now you can run make.
++g++  -O2 -fPIC -c -o arg_parser.o arg_parser.cc
++g++  -O2 -fPIC -c -o lzip_index.o lzip_index.cc
++g++  -O2 -fPIC -c -o list.o list.cc
++g++  -O2 -fPIC -c -o encoder_base.o encoder_base.cc
++g++  -O2 -fPIC -c -o encoder.o encoder.cc
++g++  -O2 -fPIC -c -o fast_encoder.o fast_encoder.cc
++g++  -O2 -fPIC -c -o decoder.o decoder.cc
++g++  -O2 -fPIC -DPROGVERSION=\"1.22\" -c -o main.o main.cc
++g++  -O2 -fPIC -o lzip arg_parser.o lzip_index.o list.o encoder_base.o encoder.o fast_encoder.o decoder.o main.o
++if [ ! -d "/tmp/package-lzip/usr/bin" ] ; then install -d -m 755 "/tmp/package-lzip/usr/bin" ; fi
++install -m 755 ./lzip "/tmp/package-lzip/usr/bin/lzip"
++if [ ! -d "/tmp/package-lzip/usr/info" ] ; then install -d -m 755 "/tmp/package-lzip/usr/info" ; fi
++rm -f "/tmp/package-lzip/usr/info/lzip.info"*
++install -m 644 ./doc/lzip.info "/tmp/package-lzip/usr/info/lzip.info"
++if /bin/sh -c "install-info --version" > /dev/null 2>&1 ; then \
++  install-info --info-dir="/tmp/package-lzip/usr/info" "/tmp/package-lzip/usr/info/lzip.info" ; \
++fi
++if [ ! -d "/tmp/package-lzip/usr/man/man1" ] ; then install -d -m 755 "/tmp/package-lzip/usr/man/man1" ; fi
++rm -f "/tmp/package-lzip/usr/man/man1/lzip.1"*
++install -m 644 ./doc/lzip.1 "/tmp/package-lzip/usr/man/man1/lzip.1"
++cp: cannot stat 'THANKS': No such file or directory
++cp: cannot stat 'TODO': No such file or directory
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++
++No symbolic links were found, so we won't make an installation script.
++You can make your own later in ./install/doinst.sh and rebuild the
++package if you like.
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/lzip-1.22-x86_64-1.txz
++
++./
++install/
++install/slack-desc
++usr/
++usr/bin/
++usr/bin/lzip
++usr/doc/
++usr/doc/lzip-1.22/
++usr/doc/lzip-1.22/AUTHORS
++usr/doc/lzip-1.22/COPYING
++usr/doc/lzip-1.22/ChangeLog
++usr/doc/lzip-1.22/INSTALL
++usr/doc/lzip-1.22/NEWS
++usr/doc/lzip-1.22/README
++usr/info/
++usr/info/lzip.info.gz
++usr/man/
++usr/man/man1/
++usr/man/man1/lzip.1.gz
++
++Slackware package /tmp/lzip-1.22-x86_64-1.txz created.
++

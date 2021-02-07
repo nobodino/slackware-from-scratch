@@ -1,0 +1,2964 @@
+diff -ruBN /tmp/epic5/epic5.SlackBuild /source/n/epic5/epic5.SlackBuild
+--- /tmp/epic5/epic5.SlackBuild	2021-01-01 21:47:30.000000000 +0000
++++ /source/n/epic5/epic5.SlackBuild	2021-01-04 15:29:37.000000000 +0000
+@@ -61,7 +61,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ else
+   SLKCFLAGS="-O2"
+   LIBDIRSUFFIX=""
+@@ -88,7 +88,7 @@
+   --prefix=/usr \
+   --with-tcl=/usr/lib${LIBDIRSUFFIX}/tclConfig.sh \
+   $RUBY_OPTION \
+-  --build=$ARCH-slackware-linux || exit 1
++  --build=$ARCH-slackware-linux-musl || exit 1
+ 
+ make $NUMJOBS || make || exit 1
+ make install IP=$PKG || exit 1
+diff -ruBN /tmp/epic5/epic5.SlackBuild.log /source/n/epic5/epic5.SlackBuild.log
+--- /tmp/epic5/epic5.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/n/epic5/epic5.SlackBuild.log	2021-01-04 15:30:26.000000000 +0000
+@@ -0,0 +1,2939 @@
++epic5-2.1.2/
++epic5-2.1.2/EPIC4-USERS-README
++epic5-2.1.2/configure.in
++epic5-2.1.2/script/
++epic5-2.1.2/source/
++epic5-2.1.2/INSTALL
++epic5-2.1.2/BUG_FORM
++epic5-2.1.2/test.c
++epic5-2.1.2/configure
++epic5-2.1.2/Makefile.in
++epic5-2.1.2/bsdinstall
++epic5-2.1.2/.gitignore
++epic5-2.1.2/WISHLIST
++epic5-2.1.2/regress/
++epic5-2.1.2/UPDATES
++epic5-2.1.2/COPYRIGHT
++epic5-2.1.2/doc/
++epic5-2.1.2/contrib/
++epic5-2.1.2/include/
++epic5-2.1.2/FILES
++epic5-2.1.2/README-CRYPTO
++epic5-2.1.2/acconfig.h
++epic5-2.1.2/mkinstalldirs
++epic5-2.1.2/README
++epic5-2.1.2/VOTES
++epic5-2.1.2/KNOWNBUGS
++epic5-2.1.2/include/newio.h
++epic5-2.1.2/include/config.h
++epic5-2.1.2/include/glob.h
++epic5-2.1.2/include/tio.h
++epic5-2.1.2/include/network.h
++epic5-2.1.2/include/window.h
++epic5-2.1.2/include/levels.h
++epic5-2.1.2/include/commands.h
++epic5-2.1.2/include/functions.h
++epic5-2.1.2/include/alias.h
++epic5-2.1.2/include/server.h
++epic5-2.1.2/include/hook.h
++epic5-2.1.2/include/compat.h
++epic5-2.1.2/include/irc.h
++epic5-2.1.2/include/input.h
++epic5-2.1.2/include/sdbm.h
++epic5-2.1.2/include/defs.h.in
++epic5-2.1.2/include/flood.h
++epic5-2.1.2/include/ifcmd.h
++epic5-2.1.2/include/stack.h
++epic5-2.1.2/include/lastlog.h
++epic5-2.1.2/include/debug.h
++epic5-2.1.2/include/sedcrypt.h
++epic5-2.1.2/include/notify.h
++epic5-2.1.2/include/queue.h
++epic5-2.1.2/include/exec.h
++epic5-2.1.2/include/files.h
++epic5-2.1.2/include/names.h
++epic5-2.1.2/include/array.h
++epic5-2.1.2/include/gailib.h
++epic5-2.1.2/include/options.h
++epic5-2.1.2/include/extlang.h
++epic5-2.1.2/include/ircaux.h
++epic5-2.1.2/include/output.h
++epic5-2.1.2/include/list.h
++epic5-2.1.2/include/words.h
++epic5-2.1.2/include/clock.h
++epic5-2.1.2/include/status.h
++epic5-2.1.2/include/mail.h
++epic5-2.1.2/include/reg.h
++epic5-2.1.2/include/timer.h
++epic5-2.1.2/include/ssl.h
++epic5-2.1.2/include/log.h
++epic5-2.1.2/include/socks5p.h
++epic5-2.1.2/include/keys.h
++epic5-2.1.2/include/ctcp.h
++epic5-2.1.2/include/elf.h
++epic5-2.1.2/include/irc_std.h
++epic5-2.1.2/include/ignore.h
++epic5-2.1.2/include/alist.h
++epic5-2.1.2/include/cJSON.h
++epic5-2.1.2/include/vars.h
++epic5-2.1.2/include/who.h
++epic5-2.1.2/include/parse.h
++epic5-2.1.2/include/numbers.h
++epic5-2.1.2/include/screen.h
++epic5-2.1.2/include/dcc.h
++epic5-2.1.2/include/termx.h
++epic5-2.1.2/contrib/loaddll
++epic5-2.1.2/contrib/cdrom.c
++epic5-2.1.2/contrib/ircman.c
++epic5-2.1.2/contrib/utf8.c
++epic5-2.1.2/doc/colors
++epic5-2.1.2/doc/scrollind
++epic5-2.1.2/doc/nicknames
++epic5-2.1.2/doc/EPIC_THANKS
++epic5-2.1.2/doc/EPIC_VERSIONS
++epic5-2.1.2/doc/word-lists
++epic5-2.1.2/doc/epic.1
++epic5-2.1.2/doc/SILLINESS
++epic5-2.1.2/doc/entry_points
++epic5-2.1.2/doc/word-support
++epic5-2.1.2/doc/epic5.1
++epic5-2.1.2/doc/utf8
++epic5-2.1.2/doc/pf-loader
++epic5-2.1.2/doc/DCC_REVERSE
++epic5-2.1.2/doc/what-needs-rewriting
++epic5-2.1.2/doc/dccresum.txt
++epic5-2.1.2/doc/outputhelp
++epic5-2.1.2/doc/keys
++epic5-2.1.2/doc/expansions
++epic5-2.1.2/doc/README.SSL
++epic5-2.1.2/doc/EPIC_ABOUT
++epic5-2.1.2/doc/IPV6
++epic5-2.1.2/doc/antiflooding
++epic5-2.1.2/doc/TS4
++epic5-2.1.2/doc/missing
++epic5-2.1.2/doc/fish
++epic5-2.1.2/doc/IRCII_VERSIONS
++epic5-2.1.2/doc/python
++epic5-2.1.2/regress/eval-test
++epic5-2.1.2/regress/random
++epic5-2.1.2/regress/rainbug
++epic5-2.1.2/regress/scroll
++epic5-2.1.2/regress/color256
++epic5-2.1.2/regress/README
++epic5-2.1.2/regress/funcs
++epic5-2.1.2/regress/color
++epic5-2.1.2/regress/localvars
++epic5-2.1.2/regress/crash-irc
++epic5-2.1.2/regress/arglist
++epic5-2.1.2/regress/window
++epic5-2.1.2/regress/json
++epic5-2.1.2/regress/stat
++epic5-2.1.2/regress/utf8test
++epic5-2.1.2/regress/test_xform3
++epic5-2.1.2/regress/test_xform4
++epic5-2.1.2/regress/karll-arrays
++epic5-2.1.2/regress/kill
++epic5-2.1.2/regress/math
++epic5-2.1.2/regress/hangtest
++epic5-2.1.2/regress/xform
++epic5-2.1.2/regress/fib
++epic5-2.1.2/source/dcc.c
++epic5-2.1.2/source/window.c
++epic5-2.1.2/source/crypto.c
++epic5-2.1.2/source/flood.c
++epic5-2.1.2/source/input.c
++epic5-2.1.2/source/who.c
++epic5-2.1.2/source/recode.c
++epic5-2.1.2/source/commands.c
++epic5-2.1.2/source/info.c.sh.in
++epic5-2.1.2/source/compat.c
++epic5-2.1.2/source/files.c
++epic5-2.1.2/source/elf.c
++epic5-2.1.2/source/list.c
++epic5-2.1.2/source/queue.c
++epic5-2.1.2/source/server.c
++epic5-2.1.2/source/debug.c
++epic5-2.1.2/source/ssl.c
++epic5-2.1.2/source/sha2.c
++epic5-2.1.2/source/log.c
++epic5-2.1.2/source/functions.c
++epic5-2.1.2/source/mail.c
++epic5-2.1.2/source/expr.c
++epic5-2.1.2/source/levels.c
++epic5-2.1.2/source/Makefile.in
++epic5-2.1.2/source/expr2.c
++epic5-2.1.2/source/reg.c
++epic5-2.1.2/source/debuglog.c
++epic5-2.1.2/source/ircsig.c
++epic5-2.1.2/source/ctcp.c
++epic5-2.1.2/source/keys.c
++epic5-2.1.2/source/numbers.c
++epic5-2.1.2/source/newio.c
++epic5-2.1.2/source/perl.c
++epic5-2.1.2/source/ruby.c
++epic5-2.1.2/source/vars.c
++epic5-2.1.2/source/notify.c
++epic5-2.1.2/source/alias.c
++epic5-2.1.2/source/term.c
++epic5-2.1.2/source/tcl.c
++epic5-2.1.2/source/if.c
++epic5-2.1.2/source/output.c
++epic5-2.1.2/source/ircaux.c
++epic5-2.1.2/source/gailib.c
++epic5-2.1.2/source/glob.c
++epic5-2.1.2/source/timer.c
++epic5-2.1.2/source/python.c
++epic5-2.1.2/source/parse.c
++epic5-2.1.2/source/network.c
++epic5-2.1.2/source/status.c
++epic5-2.1.2/source/cJSON.c
++epic5-2.1.2/source/irc.c
++epic5-2.1.2/source/alist.c
++epic5-2.1.2/source/hook.c
++epic5-2.1.2/source/ignore.c
++epic5-2.1.2/source/logfiles.c
++epic5-2.1.2/source/alloca.c
++epic5-2.1.2/source/sdbm.c
++epic5-2.1.2/source/names.c
++epic5-2.1.2/source/array.c
++epic5-2.1.2/source/crypt.c
++epic5-2.1.2/source/wcwidth.c
++epic5-2.1.2/source/lastlog.c
++epic5-2.1.2/source/screen.c
++epic5-2.1.2/source/clock.c
++epic5-2.1.2/source/words.c
++epic5-2.1.2/source/exec.c
++epic5-2.1.2/source/wserv.c
++epic5-2.1.2/script/alloc_dump_summary.sh
++epic5-2.1.2/script/find_ssl_root_certs
++epic5-2.1.2/script/help
++epic5-2.1.2/script/ctcp
++epic5-2.1.2/script/set_color
++epic5-2.1.2/script/notify
++epic5-2.1.2/script/country
++epic5-2.1.2/script/reconnect
++epic5-2.1.2/script/history
++epic5-2.1.2/script/local.examp
++epic5-2.1.2/script/nopaste
++epic5-2.1.2/script/autoget
++epic5-2.1.2/script/dump
++epic5-2.1.2/script/xmsglog
++epic5-2.1.2/script/functions
++epic5-2.1.2/script/layout
++epic5-2.1.2/script/logman
++epic5-2.1.2/script/shorturl.irc
++epic5-2.1.2/script/data_struct
++epic5-2.1.2/script/commandqueues
++epic5-2.1.2/script/userlist
++epic5-2.1.2/script/tabkey.jm
++epic5-2.1.2/script/screen.e
++epic5-2.1.2/script/less
++epic5-2.1.2/script/ambig
++epic5-2.1.2/script/snip
++epic5-2.1.2/script/ban
++epic5-2.1.2/script/highlight
++epic5-2.1.2/script/debug.irc
++epic5-2.1.2/script/newaway
++epic5-2.1.2/script/motd
++epic5-2.1.2/script/url.irc
++epic5-2.1.2/script/tmux_away
++epic5-2.1.2/script/save
++epic5-2.1.2/script/massmode
++epic5-2.1.2/script/netsplit
++epic5-2.1.2/script/autojoin
++epic5-2.1.2/script/autoquery
++epic5-2.1.2/script/slowcat
++epic5-2.1.2/script/builtins
++epic5-2.1.2/script/tabkey.sjh
++epic5-2.1.2/script/addset
++epic5-2.1.2/script/python
++epic5-2.1.2/script/new_lastlog
++epic5-2.1.2/script/hold_mode
++epic5-2.1.2/script/pipe
++epic5-2.1.2/script/files
++epic5-2.1.2/script/setmail
++epic5-2.1.2/script/suppressmotd
++epic5-2.1.2/script/global
++epic5-2.1.2/script/scan
++epic5-2.1.2/script/epic-crypt-gpg
++epic5-2.1.2/script/rejoin
++epic5-2.1.2/script/chanmonitor
++epic5-2.1.2/script/map
++epic5-2.1.2/script/loadformats
++epic5-2.1.2/script/man
++epic5-2.1.2/script/grep
++epic5-2.1.2/script/epic.py
++epic5-2.1.2/script/tabkey.ce
++epic5-2.1.2/script/history.rb
++epic5-2.1.2/script/help.irc
++epic5-2.1.2/script/less-pipe
++epic5-2.1.2/script/renumber
++epic5-2.1.2/script/shortener.py
++epic5-2.1.2/script/ison
++epic5-2.1.2/script/topicbar.bj
++epic5-2.1.2/script/data_array
++epic5-2.1.2/script/sasl_auth
++epic5-2.1.2/script/dcc_ports
++epic5-2.1.2/script/speak.irc
++epic5-2.1.2/script/meta-compat
++epic5-2.1.2/script/topicbar
++epic5-2.1.2/script/nickcomp
++epic5-2.1.2/script/utime
++epic5-2.1.2/script/screen
++epic5-2.1.2/script/edit_topic
++epic5-2.1.2/script/cycle
++epic5-2.1.2/script/activity
++epic5-2.1.2/script/paste
++epic5-2.1.2/script/epic-crypt-gpg-aa
++epic5-2.1.2/script/guh
++epic5-2.1.2/script/floodprot
++epic5-2.1.2/script/newnick
++epic5-2.1.2/script/idlealert
++epic5-2.1.2/script/sping
++epic5-2.1.2/script/altchan
++epic5-2.1.2/script/revdcc
++epic5-2.1.2/script/mail
++epic5-2.1.2/script/locale
++epic5-2.1.2/script/2.8script
++creating cache ./config.cache
++this is EPIC5 version 2.1.2
++
++checking for gcc... gcc
++checking whether the C compiler (gcc -O2 -fPIC ) works... yes
++checking whether the C compiler (gcc -O2 -fPIC ) is a cross-compiler... no
++checking whether we are using GNU C... yes
++checking whether gcc accepts -g... yes
++checking how to run the C preprocessor... gcc -E
++checking for POSIXized ISC... no
++checking for AIX... no
++checking for an extra library directory... yes, /usr/local
++checking for solaris cc... ok
++checking for setenv in -lcext... no
++checking for Macintosh OS X... ok
++checking if you want threaded stdout... no
++checking which multiplexer function to use... select
++checking for select... yes
++checking for socket in -lsocket... no
++checking for archive_read_new in -larchive... yes
++checking whether libarchive works the way I expect... yes
++checking whether to include SSL support... yes
++checking for socket in -linet... no
++checking for gethostname in -lnsl... yes
++checking for getpwnam in -lsun... no
++checking for inet_addr in -ldgc... no
++checking for gethostbyname in -lresolv... yes
++checking for crypt in -lcrypt... yes
++checking for pow in -lm... yes
++checking for clock_gettime in -lrt... yes
++checking whether you want to use termcap instead of terminfo/ncurses... no
++checking for setupterm in -lncurses... yes
++checking for fcntl.h... yes
++checking for ieeefp.h... no
++checking for inttypes.h... yes
++checking for math.h... yes
++checking for ndbm.h... no
++checking for netdb.h... yes
++checking for regex.h... yes
++checking for stddef.h... yes
++checking for stdint.h... yes
++checking for sys/fcntl.h... no
++checking for sys/file.h... yes
++checking for sys/filio.h... no
++checking for sys/select.h... yes
++checking for sys/sysctl.h... no
++checking for sys/syslimits.h... no
++checking for sys/time.h... yes
++checking for sys/un.h... yes
++checking for sys/param.h... yes
++checking for termios.h... yes
++checking for sys/termios.h... no
++checking for xlocale.h... no
++checking for term.h... yes
++checking for arc4random... no
++checking for clock_gettime... yes
++checking for fchdir... yes
++checking for fpathconf... yes
++checking for getlogin... yes
++checking for getaddrinfo... yes
++checking for getnameinfo... yes
++checking for getpass... yes
++checking for getpgid... yes
++checking for getpgrp... yes
++checking whether getpgrp takes no argument... yes
++checking for getservbyport... yes
++checking for gettimeofday... yes
++checking for killpg... yes
++checking for memmove... yes
++checking for nanosleep... yes
++checking for uname... yes
++checking for realpath... yes
++checking for setenv... yes
++checking for setsid... yes
++checking for tcsetpgrp... yes
++checking for setupterm... yes
++checking for snprintf... yes
++checking for strerror... yes
++checking for strlcat... yes
++checking for strlcpy... yes
++checking for strptime... yes
++checking for strtoul... yes
++checking for sysconf... yes
++checking for sysctlbyname... no
++checking for unsetenv... yes
++checking for vsnprintf... yes
++checking for finite... yes
++checking for isfinite macro in math.h... no
++checking for tparm... yes
++checking for newlocale... yes
++checking whether you are using a gnu libc that is so old it needs a hack to use newlocale... no
++checking whether term.h works by itself... yes
++checking for ANSI C header files... yes
++checking whether time.h and sys/time.h may both be included... yes
++checking for dirent.h that defines DIR... yes
++checking for opendir in -ldir... no
++checking return type of signal handlers... void
++checking for mode_t... yes
++checking for pid_t... yes
++checking for size_t... yes
++checking for uid_t in sys/types.h... yes
++checking for working alloca.h... yes
++checking for alloca... yes
++checking for intptr_t in inttypes.h or stdint.h... yes
++checking for socklen_t... yes
++checking whether sys/types.h defines fd_set... yes
++checking for struct linger... yes
++checking for useful SO_SNDLOWAT... no
++checking for useful realpath... no
++checking for sys_siglist declaration... no
++checking for intmax_t in inttypes.h or stdint.h... yes
++checking for strtoimax in inttypes.h or stdint.h... yes
++checking whether I can use intmax_t for intmax_t... yes
++checking size of long long... 8
++checking for strtoll... yes
++checking size of quad_t... 0
++checking size of unsigned int... 4
++checking to see if your struct sockaddr includes a length field... no
++checking whether to support ipv6... yes
++checking for struct sockaddr_storage... yes
++checking for struct sockaddr_in6... yes
++checking for struct addrinfo... yes
++checking to see if your getaddrinfo supports AF_UNIX... no. ugh
++checking whether to support SOCKS... no
++checking whether to support SOCKS5... no
++checking whether to include iconv support... yes
++checking whether you have posix-like job control... yes
++checking whether to include wserv support... yes
++checking whether to include Valgrind Memcheck support... no
++checking for perl... yes
++checking whether to support Perl... yes
++checking whether embedded perl works the way I expect... yes
++checking whether to support TCL... yes
++checking whether embedded tcl works the way I expect... yes
++checking whether to support Ruby... yes
++checking for ruby... yes
++checking whether embedded ruby works the way I expect... yes
++checking whether to support Python... yes
++checking for python3-config... yes
++checking whether embedded Python works the way I expect... no
++checking whether to support bounds checking gcc... no
++checking whether to turn on FreeBSD WARNS-like compiler warnings... no
++checking whether your compiler supports -Wno-pointer-sign... yes
++checking whether your compiler supports -fno-strict-aliasing... yes
++updating cache ./config.cache
++creating ./config.status
++creating Makefile
++creating source/Makefile
++creating source/info.c.sh
++creating include/defs.h
++
++There you go.  Look at include/config.h for any options that 
++you might want to change before you 'make'.  Don't forget to 
++do a 'make install' before you're done.
++
++make[1]: Entering directory '/tmp/epic5-2.1.2/source'
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c alias.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c alist.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c array.c
++In file included from alias.c:2627:
++expr2.c:152: warning: "__inline" redefined
++  152 | #define __inline
++      | 
++In file included from /usr/include/stdio.h:8,
++                 from ./../include/irc_std.h:26,
++                 from ./../include/irc.h:28,
++                 from alias.c:37:
++/usr/include/features.h:26: note: this is the location of the previous definition
++   26 | #define __inline inline
++      | 
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c cJSON.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c clock.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c commands.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c compat.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c crypt.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c crypto.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c ctcp.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c dcc.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c debug.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c elf.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c exec.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c files.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c flood.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c functions.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c gailib.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c glob.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c hook.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c if.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c ignore.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c input.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c ./irc.c      \
++-DIRCLIB=\"/usr/share/epic5/\"
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c ircaux.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c ircsig.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c keys.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c lastlog.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c levels.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c list.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c log.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c logfiles.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c mail.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c names.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c network.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c newio.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c notify.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c numbers.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c output.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c parse.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c ./perl.c  -D_REENTRANT -D_GNU_SOURCE -D_GNU_SOURCE -fwrapv -fno-strict-aliasing -pipe -fstack-protector-strong -I/usr/local/include -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64  -I/usr/lib/perl5/CORE 
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c queue.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c recode.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c reg.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c ./ruby.c -I/usr/include/ruby-3.0.0 -I/usr/include/ruby-3.0.0/x86_64-linux-musl/ -I/usr/include/ruby-3.0.0/x86_64-linux-musl
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c screen.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c sdbm.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c server.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c sha2.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c ssl.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c status.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c ./tcl.c -I/usr/include
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c term.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c timer.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c ./vars.c   \
++-DWSERV_PATH=\"/usr/libexec/epic5-wserv4\"
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c wcwidth.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c who.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c window.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c words.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -I./../include -I../include -c wserv.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -o wserv4 wserv.o ircsig.o gailib.o compat.o -lncurses -L/usr/local/lib  -larchive -lssl -lcrypto -lnsl -lresolv -lcrypt -lm -lrt
++sh info.c.sh
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing -I./../include -I../include -c info.c
++gcc -I/usr/local/include/ -O2 -fPIC -Wno-pointer-sign -fno-strict-aliasing  -o epic5 alias.o alist.o array.o cJSON.o clock.o commands.o compat.o crypt.o crypto.o ctcp.o dcc.o debug.o elf.o exec.o files.o flood.o functions.o gailib.o glob.o hook.o if.o ignore.o input.o irc.o ircaux.o ircsig.o keys.o lastlog.o levels.o list.o log.o logfiles.o mail.o names.o network.o newio.o notify.o numbers.o output.o parse.o perl.o  queue.o recode.o reg.o ruby.o screen.o sdbm.o server.o sha2.o ssl.o status.o tcl.o term.o timer.o vars.o wcwidth.o who.o window.o words.o  info.o -Wl,-E -Wl,-rpath,/usr/lib/perl5/CORE  -fstack-protector-strong -L/usr/local/lib  -L/usr/lib/perl5/CORE -lperl -lpthread -ldl -lm -lcrypt -lutil -lc -L/usr/lib -ltcl8.6 -ldl -lz -lpthread -Wl,-rpath,/usr/lib -L/usr/lib -lruby -lm   -lncurses -L/usr/local/lib  -larchive -lssl -lcrypto -lnsl -lresolv -lcrypt -lm -lrt
++rm -f info.c info.o
++make[1]: Leaving directory '/tmp/epic5-2.1.2/source'
++make[1]: Entering directory '/tmp/epic5-2.1.2/source'
++make[1]: 'epic5' is up to date.
++make[1]: 'wserv4' is up to date.
++make[1]: Leaving directory '/tmp/epic5-2.1.2/source'
++make[1]: Entering directory '/tmp/epic5-2.1.2/source'
++make[1]: Nothing to be done for 'all'.
++make[1]: Leaving directory '/tmp/epic5-2.1.2/source'
++umask 022; \
++./mkinstalldirs /tmp/package-epic5/usr/share/epic5 /tmp/package-epic5/usr/share/epic5/script \
++	/tmp/package-epic5/usr/share/epic5/help /tmp/package-epic5/usr/bin /tmp/package-epic5/usr/libexec \
++	/tmp/package-epic5/usr/man/man1
++mkdir /tmp/package-epic5/usr
++mkdir /tmp/package-epic5/usr/share
++mkdir /tmp/package-epic5/usr/share/epic5
++mkdir /tmp/package-epic5/usr/share/epic5/script
++mkdir /tmp/package-epic5/usr/share/epic5/help
++mkdir /tmp/package-epic5/usr/bin
++mkdir /tmp/package-epic5/usr/libexec
++mkdir /tmp/package-epic5/usr/man
++mkdir /tmp/package-epic5/usr/man/man1
++gcc -c ./test.c
++gcc test.o -o my_test
++if ./my_test \( ! -f /tmp/package-epic5/usr/bin/epic5-2.1.2 \) \
++		-o source/epic5 -nt /tmp/package-epic5/usr/bin/epic5-2.1.2; then \
++	./bsdinstall -c -m 755 source/epic5 /tmp/package-epic5/usr/bin/epic5-2.1.2;	\
++	if ./my_test -f /tmp/package-epic5/usr/bin/epic5.old; then \
++		rm -f /tmp/package-epic5/usr/bin/epic5.old; \
++	fi; \
++	if ./my_test -f /tmp/package-epic5/usr/bin/epic5; then \
++		mv /tmp/package-epic5/usr/bin/epic5 /tmp/package-epic5/usr/bin/epic5.old; \
++	fi; \
++	rm -f /tmp/package-epic5/usr/bin/epic5; \
++	ln -s epic5-2.1.2 /tmp/package-epic5/usr/bin/epic5; \
++fi
++make[1]: Entering directory '/tmp/epic5-2.1.2/source'
++make[1]: 'wserv4' is up to date.
++make[1]: Leaving directory '/tmp/epic5-2.1.2/source'
++if ./my_test \( \! -f /tmp/package-epic5/usr/libexec/epic5-wserv4 \) -o \
++		source/wserv4 -nt /tmp/package-epic5/usr/libexec/epic5-wserv4; then	\
++	./bsdinstall -c -m 755 source/wserv4 /tmp/package-epic5/usr/libexec/epic5-wserv4;	\
++fi
++for i in ./script/*; \
++do \
++	if ./my_test -f $i; then \
++		target=/tmp/package-epic5/usr/share/epic5/script/`basename $i`; \
++		if ./my_test -f $target; then \
++			if ./my_test $i -nt $target; then \
++				./bsdinstall -c -m 644 $i $target; \
++			fi; \
++		elif ./my_test -f $target.gz; then \
++			if ./my_test $i -nt $target.gz; then \
++				./bsdinstall -c -m 644 $i $target; \
++				gzip -f $target; \
++			fi; \
++		else \
++			./bsdinstall -c -m 644 $i $target; \
++			if ./my_test -f /tmp/package-epic5/usr/share/epic5/script/gzip-scripts; then \
++				gzip -f $target; \
++			fi; \
++		fi; \
++	fi; \
++done
++./bsdinstall -c -m 644 ./doc/epic5.1 /tmp/package-epic5/usr/man/man1/epic5.1
++help/
++help/CVS/
++help/CVS/Root
++help/CVS/Repository
++help/CVS/Entries
++help/README_FIRST
++help/1_General/
++help/1_General/CVS/
++help/1_General/CVS/Root
++help/1_General/CVS/Repository
++help/1_General/CVS/Entries
++help/1_General/1_General
++help/1_General/away
++help/1_General/bye
++help/1_General/channel
++help/1_General/describe
++help/1_General/disconnect
++help/1_General/help
++help/1_General/ignore
++help/1_General/invite
++help/1_General/join
++help/1_General/kick
++help/1_General/lastlog
++help/1_General/me
++help/1_General/mode
++help/1_General/msg
++help/1_General/nick
++help/1_General/notice
++help/1_General/notify
++help/1_General/part
++help/1_General/ping
++help/1_General/query
++help/1_General/quit
++help/1_General/reconnect
++help/1_General/say
++help/1_General/server
++help/1_General/silence
++help/1_General/topic
++help/1_General/ctcp/
++help/1_General/ctcp/CVS/
++help/1_General/ctcp/CVS/Root
++help/1_General/ctcp/CVS/Repository
++help/1_General/ctcp/CVS/Entries
++help/1_General/ctcp/action
++help/1_General/ctcp/clientinfo
++help/1_General/ctcp/ctcp
++help/1_General/ctcp/echo
++help/1_General/ctcp/finger
++help/1_General/ctcp/ping
++help/1_General/ctcp/time
++help/1_General/ctcp/userinfo
++help/1_General/ctcp/utc
++help/1_General/ctcp/version
++help/1_General/dcc/
++help/1_General/dcc/CVS/
++help/1_General/dcc/CVS/Root
++help/1_General/dcc/CVS/Repository
++help/1_General/dcc/CVS/Entries
++help/1_General/dcc/chat
++help/1_General/dcc/close
++help/1_General/dcc/closeall
++help/1_General/dcc/dcc
++help/1_General/dcc/get
++help/1_General/dcc/list
++help/1_General/dcc/raw
++help/1_General/dcc/rename
++help/1_General/dcc/resume
++help/1_General/dcc/send
++help/1_General/license
++help/2_Queries/
++help/2_Queries/CVS/
++help/2_Queries/CVS/Root
++help/2_Queries/CVS/Repository
++help/2_Queries/CVS/Entries
++help/2_Queries/2_Queries
++help/2_Queries/admin
++help/2_Queries/flush
++help/2_Queries/info
++help/2_Queries/ison
++help/2_Queries/links
++help/2_Queries/list
++help/2_Queries/lusers
++help/2_Queries/map
++help/2_Queries/motd
++help/2_Queries/names
++help/2_Queries/stats
++help/2_Queries/time
++help/2_Queries/trace
++help/2_Queries/userhost
++help/2_Queries/userip
++help/2_Queries/usrip
++help/2_Queries/version
++help/2_Queries/who
++help/2_Queries/whois
++help/2_Queries/whowas
++help/2_Queries/knock
++help/2_Queries/servlist
++help/2_Queries/squery
++help/2_Queries/wallchops
++help/3_Operators/
++help/3_Operators/CVS/
++help/3_Operators/CVS/Root
++help/3_Operators/CVS/Repository
++help/3_Operators/CVS/Entries
++help/3_Operators/3_Operators
++help/3_Operators/connect
++help/3_Operators/deop
++help/3_Operators/die
++help/3_Operators/hash
++help/3_Operators/kill
++help/3_Operators/oper
++help/3_Operators/rehash
++help/3_Operators/restart
++help/3_Operators/rping
++help/3_Operators/squit
++help/3_Operators/uping
++help/3_Operators/wallops
++help/4_Misc/
++help/4_Misc/CVS/
++help/4_Misc/CVS/Root
++help/4_Misc/CVS/Repository
++help/4_Misc/CVS/Entries
++help/4_Misc/4_Misc
++help/4_Misc/abort
++help/4_Misc/beep
++help/4_Misc/cd
++help/4_Misc/clear
++help/4_Misc/encrypt
++help/4_Misc/history
++help/4_Misc/hostname
++help/4_Misc/ircuser
++help/4_Misc/mesg
++help/4_Misc/note
++help/4_Misc/rbind
++help/4_Misc/realname
++help/4_Misc/unclear
++help/4_Misc/which
++help/4_Misc/xdebug
++help/4_Misc/bind/
++help/4_Misc/bind/CVS/
++help/4_Misc/bind/CVS/Root
++help/4_Misc/bind/CVS/Repository
++help/4_Misc/bind/CVS/Entries
++help/4_Misc/bind/altcharset
++help/4_Misc/bind/backspace
++help/4_Misc/bind/backward_character
++help/4_Misc/bind/backward_history
++help/4_Misc/bind/backward_word
++help/4_Misc/bind/beginning_of_line
++help/4_Misc/bind/bind
++help/4_Misc/bind/blink
++help/4_Misc/bind/bold
++help/4_Misc/bind/clear_screen
++help/4_Misc/bind/command_completion
++help/4_Misc/bind/cpu_saver
++help/4_Misc/bind/delete_character
++help/4_Misc/bind/delete_next_word
++help/4_Misc/bind/delete_previous_word
++help/4_Misc/bind/delete_to_previous_space
++help/4_Misc/bind/end_of_line
++help/4_Misc/bind/erase_line
++help/4_Misc/bind/erase_to_beg_of_line
++help/4_Misc/bind/erase_to_end_of_line
++help/4_Misc/bind/forward_character
++help/4_Misc/bind/forward_history
++help/4_Misc/bind/forward_word
++help/4_Misc/bind/highlight_off
++help/4_Misc/bind/scroll_backward
++help/4_Misc/bind/type_text
++help/4_Misc/bind/next_window
++help/4_Misc/bind/nothing
++help/4_Misc/bind/parse_command
++help/4_Misc/bind/previous_window
++help/4_Misc/bind/quit_irc
++help/4_Misc/bind/quote_character
++help/4_Misc/bind/refresh_inputline
++help/4_Misc/bind/refresh_screen
++help/4_Misc/bind/refresh_status
++help/4_Misc/bind/reverse
++help/4_Misc/bind/switch_query
++help/4_Misc/bind/scroll_end
++help/4_Misc/bind/scroll_forward
++help/4_Misc/bind/scroll_start
++help/4_Misc/bind/self_insert
++help/4_Misc/bind/send_line
++help/4_Misc/bind/shove_to_history
++help/4_Misc/bind/stop_irc
++help/4_Misc/bind/swap_last_window
++help/4_Misc/bind/swap_next_window
++help/4_Misc/bind/swap_previous_window
++help/4_Misc/bind/switch_channels
++help/4_Misc/bind/toggle_insert_mode
++help/4_Misc/bind/toggle_stop_screen
++help/4_Misc/bind/transpose_characters
++help/4_Misc/bind/unclear_screen
++help/4_Misc/bind/underline
++help/4_Misc/bind/unstop_all_windows
++help/4_Misc/bind/yank_from_cutbuffer
++help/4_Misc/set/
++help/4_Misc/set/CVS/
++help/4_Misc/set/CVS/Root
++help/4_Misc/set/CVS/Repository
++help/4_Misc/set/CVS/Entries
++help/4_Misc/set/alt_charset
++help/4_Misc/set/always_split_biggest
++help/4_Misc/set/auto_new_nick
++help/4_Misc/set/auto_reconnect
++help/4_Misc/set/auto_reconnect_delay
++help/4_Misc/set/auto_rejoin
++help/4_Misc/set/auto_rejoin_delay
++help/4_Misc/set/auto_unmark_away
++help/4_Misc/set/auto_whowas
++help/4_Misc/set/bad_style
++help/4_Misc/set/banner
++help/4_Misc/set/banner_expand
++help/4_Misc/set/beep
++help/4_Misc/set/beep_max
++help/4_Misc/set/beep_on_msg
++help/4_Misc/set/beep_when_away
++help/4_Misc/set/blink_video
++help/4_Misc/set/bold_video
++help/4_Misc/set/channel_name_width
++help/4_Misc/set/client_information
++help/4_Misc/set/log
++help/4_Misc/set/clock
++help/4_Misc/set/clock_24hour
++help/4_Misc/set/clock_format
++help/4_Misc/set/cmdchars
++help/4_Misc/set/color
++help/4_Misc/set/command_mode
++help/4_Misc/set/comment_hack
++help/4_Misc/set/connect_timeout
++help/4_Misc/set/continued_line
++help/4_Misc/set/cpu_saver_after
++help/4_Misc/set/cpu_saver_every
++help/4_Misc/set/current_window_level
++help/4_Misc/set/dcc_auto_send_rejects
++help/4_Misc/set/dcc_long_pathnames
++help/4_Misc/set/dcc_sliding_window
++help/4_Misc/set/dcc_store_path
++help/4_Misc/set/dcc_timeout
++help/4_Misc/set/dcc_use_gateway_addr
++help/4_Misc/set/debug
++help/4_Misc/set/dispatch_unknown_commands
++help/4_Misc/set/display
++help/4_Misc/set/display_ansi
++help/4_Misc/set/display_pc_characters
++help/4_Misc/set/do_notify_immediately
++help/4_Misc/set/eight_bit_characters
++help/4_Misc/set/floating_point_math
++help/4_Misc/set/flood_after
++help/4_Misc/set/flood_rate
++help/4_Misc/set/flood_users
++help/4_Misc/set/flood_warning
++help/4_Misc/set/full_status_line
++help/4_Misc/set/help_pager
++help/4_Misc/set/help_path
++help/4_Misc/set/help_prompt
++help/4_Misc/set/help_window
++help/4_Misc/set/hide_private_channels
++help/4_Misc/set/high_bit_escape
++help/4_Misc/set/highlight_char
++help/4_Misc/set/history
++help/4_Misc/set/hold_interval
++help/4_Misc/set/hold_mode
++help/4_Misc/set/indent
++help/4_Misc/set/lastlog
++help/4_Misc/set/input_aliases
++help/4_Misc/set/input_prompt
++help/4_Misc/set/insert_mode
++help/4_Misc/set/inverse_video
++help/4_Misc/set/lastlog_level
++help/4_Misc/set/load_path
++help/4_Misc/set/log_rewrite
++help/4_Misc/set/logfile
++help/4_Misc/set/mail
++help/4_Misc/set/mangle_inbound
++help/4_Misc/set/mangle_logfiles
++help/4_Misc/set/mangle_outbound
++help/4_Misc/set/max_reconnects
++help/4_Misc/set/meta_states
++help/4_Misc/set/mirc_broken_dcc_resume
++help/4_Misc/set/mode_stripper
++help/4_Misc/set/nd_space_max
++help/4_Misc/set/new_server_lastlog_level
++help/4_Misc/set/no_control_log
++help/4_Misc/set/no_ctcp_flood
++help/4_Misc/set/no_fail_disconnect
++help/4_Misc/set/scroll
++help/4_Misc/set/notify_handler
++help/4_Misc/set/notify_interval
++help/4_Misc/set/notify_level
++help/4_Misc/set/notify_on_termination
++help/4_Misc/set/notify_userhost_automatic
++help/4_Misc/set/num_of_whowas
++help/4_Misc/set/output_rewrite
++help/4_Misc/set/pad_char
++help/4_Misc/set/quit_message
++help/4_Misc/set/random_local_ports
++help/4_Misc/set/random_source
++help/4_Misc/set/realname
++help/4_Misc/set/reverse_status_line
++help/4_Misc/set/screen_options
++help/4_Misc/set/scroll_lines
++help/4_Misc/set/scrollback
++help/4_Misc/set/scrollback_ratio
++help/4_Misc/set/security
++help/4_Misc/set/set
++help/4_Misc/set/shell
++help/4_Misc/set/shell_flags
++help/4_Misc/set/tab
++help/4_Misc/set/shell_limit
++help/4_Misc/set/show_channel_names
++help/4_Misc/set/show_end_of_msgs
++help/4_Misc/set/show_numerics
++help/4_Misc/set/show_status_all
++help/4_Misc/set/show_who_hopcount
++help/4_Misc/set/status_away
++help/4_Misc/set/status_channel
++help/4_Misc/set/status_chanop
++help/4_Misc/set/status_clock
++help/4_Misc/set/status_cpu_saver
++help/4_Misc/set/status_does_expandos
++help/4_Misc/set/status_format
++help/4_Misc/set/status_format1
++help/4_Misc/set/status_format2
++help/4_Misc/set/status_hold
++help/4_Misc/set/status_hold_lines
++help/4_Misc/set/status_insert
++help/4_Misc/set/status_mail
++help/4_Misc/set/status_mode
++help/4_Misc/set/status_nickname
++help/4_Misc/set/status_no_repeat
++help/4_Misc/set/status_notify
++help/4_Misc/set/status_oper
++help/4_Misc/set/status_overwrite
++help/4_Misc/set/status_query
++help/4_Misc/set/status_scrollback
++help/4_Misc/set/status_server
++help/4_Misc/set/status_truncate_rhs
++help/4_Misc/set/status_umode
++help/4_Misc/set/status_user
++help/4_Misc/set/status_voice
++help/4_Misc/set/status_window
++help/4_Misc/set/suppress_from_remote_server
++help/4_Misc/set/suppress_server_motd
++help/4_Misc/set/switch_channel_on_part
++help/4_Misc/set/tab_max
++help/4_Misc/set/term_does_bright_blink
++help/4_Misc/set/underline_video
++help/4_Misc/set/user_information
++help/4_Misc/set/xterm
++help/4_Misc/set/verbose_ctcp
++help/4_Misc/set/word_break
++help/4_Misc/set/xterm_options
++help/4_Misc/set/history_circleq
++help/4_Misc/set/clock_interval
++help/4_Misc/set/mail_interval
++help/4_Misc/set/allow_c1_chars
++help/4_Misc/set/auto_rejoin_connect
++help/4_Misc/set/dcc_dequote_filenames
++help/4_Misc/set/floating_point_precision
++help/4_Misc/set/flood_ignore
++help/4_Misc/set/flood_maskuser
++help/4_Misc/set/flood_rate_per
++help/4_Misc/set/hold_slider
++help/4_Misc/set/key_interval
++help/4_Misc/set/metric_time
++help/4_Misc/set/old_server_lastlog_level
++help/4_Misc/set/ssl_certfile
++help/4_Misc/set/ssl_keyfile
++help/4_Misc/set/ssl_path
++help/4_Misc/set/status_noswap
++help/4_Misc/set/status_ssl_off
++help/4_Misc/set/status_ssl_on
++help/4_Misc/set/switch_channels_between_windows
++help/4_Misc/set/translation
++help/4_Misc/set/translation_path
++help/4_Misc/set/wserv_path
++help/4_Misc/set/wserv_type
++help/4_Misc/window/
++help/4_Misc/window/CVS/
++help/4_Misc/window/CVS/Root
++help/4_Misc/window/CVS/Repository
++help/4_Misc/window/CVS/Entries
++help/4_Misc/window/add
++help/4_Misc/window/back
++help/4_Misc/window/balance
++help/4_Misc/window/beep_always
++help/4_Misc/window/bind
++help/4_Misc/window/channel
++help/4_Misc/window/clear
++help/4_Misc/window/create
++help/4_Misc/window/delete
++help/4_Misc/window/describe
++help/4_Misc/window/discon
++help/4_Misc/window/double
++help/4_Misc/window/echo
++help/4_Misc/window/fixed
++help/4_Misc/window/flush
++help/4_Misc/window/goto
++help/4_Misc/window/grow
++help/4_Misc/window/hide
++help/4_Misc/window/hide_others
++help/4_Misc/window/hold_interval
++help/4_Misc/window/hold_mode
++help/4_Misc/window/kill
++help/4_Misc/window/kill_others
++help/4_Misc/window/killswap
++help/4_Misc/window/last
++help/4_Misc/window/lastlog
++help/4_Misc/window/lastlog_level
++help/4_Misc/window/level
++help/4_Misc/window/list
++help/4_Misc/window/log
++help/4_Misc/window/logfile
++help/4_Misc/window/move
++help/4_Misc/window/name
++help/4_Misc/window/new
++help/4_Misc/window/new_hide
++help/4_Misc/window/next
++help/4_Misc/window/noserv
++help/4_Misc/window/notify
++help/4_Misc/window/notify_level
++help/4_Misc/window/number
++help/4_Misc/window/pop
++help/4_Misc/window/previous
++help/4_Misc/window/prompt
++help/4_Misc/window/push
++help/4_Misc/window/query
++help/4_Misc/window/refnum
++help/4_Misc/window/refnum_or_swap
++help/4_Misc/window/refresh
++help/4_Misc/window/remove
++help/4_Misc/window/scratch
++help/4_Misc/window/scroll
++help/4_Misc/window/scrollback
++help/4_Misc/window/server
++help/4_Misc/window/show
++help/4_Misc/window/show_all
++help/4_Misc/window/shrink
++help/4_Misc/window/size
++help/4_Misc/window/skip
++help/4_Misc/window/stack
++help/4_Misc/window/status_format
++help/4_Misc/window/status_format1
++help/4_Misc/window/status_format2
++help/4_Misc/window/status_special
++help/4_Misc/window/swap
++help/4_Misc/window/unbind
++help/4_Misc/window/window
++help/4_Misc/window/notified
++help/4_Misc/window/hold_slider
++help/4_Misc/window/kill_all_hidden
++help/4_Misc/window/move_to
++help/4_Misc/window/notify_name
++help/4_Misc/window/rejoin
++help/4_Misc/window/scroll_backward
++help/4_Misc/window/scroll_end
++help/4_Misc/window/scroll_forward
++help/4_Misc/window/scroll_start
++help/4_Misc/window/scrolladj
++help/4_Misc/window/search_back
++help/4_Misc/window/search_forward
++help/4_Misc/window/swappable
++help/4_Misc/window/topline
++help/4_Misc/window/toplines
++help/5_Programming/
++help/5_Programming/CVS/
++help/5_Programming/CVS/Root
++help/5_Programming/CVS/Repository
++help/5_Programming/CVS/Entries
++help/5_Programming/CVS/input_char,t
++help/5_Programming/5_Programming
++help/5_Programming/alias
++help/5_Programming/assign
++help/5_Programming/xecho
++help/5_Programming/bless
++help/5_Programming/break
++help/5_Programming/call
++help/5_Programming/comment
++help/5_Programming/continue
++help/5_Programming/do
++help/5_Programming/dump
++help/5_Programming/echo
++help/5_Programming/eval
++help/5_Programming/exec
++help/5_Programming/fe
++help/5_Programming/for
++help/5_Programming/foreach
++help/5_Programming/hook
++help/5_Programming/if
++help/5_Programming/input
++help/5_Programming/load
++help/5_Programming/local
++help/5_Programming/package
++help/5_Programming/parsekey
++help/5_Programming/pop
++help/5_Programming/pretend
++help/5_Programming/push
++help/5_Programming/queue
++help/5_Programming/quote
++help/5_Programming/repeat
++help/5_Programming/redirect
++help/5_Programming/return
++help/5_Programming/save
++help/5_Programming/send
++help/5_Programming/sendline
++help/5_Programming/setenv
++help/5_Programming/shook
++help/5_Programming/sleep
++help/5_Programming/stack
++help/5_Programming/stub
++help/5_Programming/switch
++help/5_Programming/timer
++help/5_Programming/type
++help/5_Programming/unload
++help/5_Programming/unshift
++help/5_Programming/usleep
++help/5_Programming/wait
++help/5_Programming/while
++help/5_Programming/xeval
++help/5_Programming/fec
++help/5_Programming/xtype
++help/5_Programming/on/
++help/5_Programming/on/CVS/
++help/5_Programming/on/CVS/Root
++help/5_Programming/on/CVS/Repository
++help/5_Programming/on/CVS/Entries
++help/5_Programming/on/action
++help/5_Programming/on/channel_nick
++help/5_Programming/on/channel_signoff
++help/5_Programming/on/connect
++help/5_Programming/on/ctcp
++help/5_Programming/on/ctcp_reply
++help/5_Programming/on/ctcp_request
++help/5_Programming/on/dcc_chat
++help/5_Programming/on/dcc_connect
++help/5_Programming/on/dcc_list
++help/5_Programming/on/dcc_lost
++help/5_Programming/on/dcc_offer
++help/5_Programming/on/dcc_raw
++help/5_Programming/on/dcc_request
++help/5_Programming/on/disconnect
++help/5_Programming/on/encrypted_notice
++help/5_Programming/on/encrypted_privmsg
++help/5_Programming/on/exec
++help/5_Programming/on/exec_errors
++help/5_Programming/on/exec_exit
++help/5_Programming/on/exec_prompt
++help/5_Programming/on/exit
++help/5_Programming/on/flood
++help/5_Programming/on/help
++help/5_Programming/on/hook
++help/5_Programming/on/idle
++help/5_Programming/on/input
++help/5_Programming/on/invite
++help/5_Programming/on/join
++help/5_Programming/on/kick
++help/5_Programming/on/kill
++help/5_Programming/on/leave
++help/5_Programming/on/list
++help/5_Programming/on/mail
++help/5_Programming/on/mode
++help/5_Programming/on/mode_stripped
++help/5_Programming/on/msg
++help/5_Programming/on/msg_group
++help/5_Programming/on/names
++help/5_Programming/on/nickname
++help/5_Programming/on/note
++help/5_Programming/on/notice
++help/5_Programming/on/notify_signoff
++help/5_Programming/on/notify_signon
++help/5_Programming/on/odd_server_stuff
++help/5_Programming/on/on
++help/5_Programming/on/oper_notice
++help/5_Programming/on/pong
++help/5_Programming/on/public
++help/5_Programming/on/public_msg
++help/5_Programming/on/public_notice
++help/5_Programming/on/public_other
++help/5_Programming/on/raw_irc
++help/5_Programming/on/redirect
++help/5_Programming/on/send_action
++help/5_Programming/on/send_ctcp
++help/5_Programming/on/send_dcc_chat
++help/5_Programming/on/send_msg
++help/5_Programming/on/send_notice
++help/5_Programming/on/send_public
++help/5_Programming/on/send_to_server
++help/5_Programming/on/server_lost
++help/5_Programming/on/server_notice
++help/5_Programming/on/set
++help/5_Programming/on/signoff
++help/5_Programming/on/silence
++help/5_Programming/on/status_update
++help/5_Programming/on/timer
++help/5_Programming/on/topic
++help/5_Programming/on/unload
++help/5_Programming/on/wall
++help/5_Programming/on/wallop
++help/5_Programming/on/who
++help/5_Programming/on/window_kill
++help/5_Programming/on/window
++help/5_Programming/on/window_create
++help/5_Programming/on/yell
++help/5_Programming/on/channel_sync
++help/5_Programming/on/switch_channels
++help/5_Programming/on/error
++help/5_Programming/on/switch_windows
++help/5_Programming/on/general_notice
++help/5_Programming/on/general_privmsg
++help/5_Programming/on/server_established
++help/5_Programming/on/dcc_activity
++help/5_Programming/on/new_nickname
++help/5_Programming/on/server_status
++help/5_Programming/on/ssl_server_cert
++help/5_Programming/on/window_beforekill
++help/5_Programming/on/window_command
++help/5_Programming/allocdump
++help/5_Programming/xquote
++help/5_Programming/botmode
++help/5_Programming/defer
++help/5_Programming/input_char
++help/5_Programming/pause
++help/5_Programming/subpackage
++help/5_Programming/unless
++help/5_Programming/until
++help/6_Functions/
++help/6_Functions/CVS/
++help/6_Functions/CVS/Root
++help/6_Functions/CVS/Repository
++help/6_Functions/CVS/Entries
++help/6_Functions/6_Functions
++help/6_Functions/after
++help/6_Functions/afterw
++help/6_Functions/aliasctl
++help/6_Functions/ascii
++help/6_Functions/center
++help/6_Functions/cexist
++help/6_Functions/chanmode
++help/6_Functions/channel
++help/6_Functions/chmod
++help/6_Functions/chngw
++help/6_Functions/chop
++help/6_Functions/chops
++help/6_Functions/close
++help/6_Functions/common
++help/6_Functions/connect
++help/6_Functions/convert
++help/6_Functions/copattern
++help/6_Functions/count
++help/6_Functions/cparse
++help/6_Functions/crypt
++help/6_Functions/curpos
++help/6_Functions/currchans
++help/6_Functions/decode
++help/6_Functions/delarray
++help/6_Functions/delitem
++help/6_Functions/deuhc
++help/6_Functions/encode
++help/6_Functions/eof
++help/6_Functions/epic
++help/6_Functions/fexist
++help/6_Functions/filter
++help/6_Functions/finditem
++help/6_Functions/findw
++help/6_Functions/fnexist
++help/6_Functions/fromw
++help/6_Functions/fsize
++help/6_Functions/ftime
++help/6_Functions/geom
++help/6_Functions/getarrays
++help/6_Functions/getenv
++help/6_Functions/getgid
++help/6_Functions/getitem
++help/6_Functions/getlogin
++help/6_Functions/getmatches
++help/6_Functions/getpgrp
++help/6_Functions/getsets
++help/6_Functions/gettmatch
++help/6_Functions/getuid
++help/6_Functions/glob
++help/6_Functions/idle
++help/6_Functions/ifinditem
++help/6_Functions/igetmatches
++help/6_Functions/igmask
++help/6_Functions/igtype
++help/6_Functions/index
++help/6_Functions/indextoitem
++help/6_Functions/info
++help/6_Functions/insertw
++help/6_Functions/iptoname
++help/6_Functions/irclib
++help/6_Functions/isalpha
++help/6_Functions/ischannel
++help/6_Functions/ischanop
++help/6_Functions/ischanvoice
++help/6_Functions/isconnected
++help/6_Functions/iscurchan
++help/6_Functions/isdigit
++help/6_Functions/isnumber
++help/6_Functions/itemtoindex
++help/6_Functions/jot
++help/6_Functions/key
++help/6_Functions/lastserver
++help/6_Functions/left
++help/6_Functions/leftpc
++help/6_Functions/leftw
++help/6_Functions/listen
++help/6_Functions/mask
++help/6_Functions/match
++help/6_Functions/matchitem
++help/6_Functions/mid
++help/6_Functions/midw
++help/6_Functions/mkdir
++help/6_Functions/msar
++help/6_Functions/mychannels
++help/6_Functions/myservers
++help/6_Functions/nametoip
++help/6_Functions/nohighlight
++help/6_Functions/notify
++help/6_Functions/numarrays
++help/6_Functions/numitems
++help/6_Functions/numonchannel
++help/6_Functions/numwords
++help/6_Functions/onchannel
++help/6_Functions/open
++help/6_Functions/pad
++help/6_Functions/pattern
++help/6_Functions/pid
++help/6_Functions/pipe
++help/6_Functions/pop
++help/6_Functions/ppid
++help/6_Functions/printlen
++help/6_Functions/querywin
++help/6_Functions/rand
++help/6_Functions/randread
++help/6_Functions/read
++help/6_Functions/regex
++help/6_Functions/remw
++help/6_Functions/remws
++help/6_Functions/rename
++help/6_Functions/repeat
++help/6_Functions/rest
++help/6_Functions/restw
++help/6_Functions/reverse
++help/6_Functions/revw
++help/6_Functions/rigmask
++help/6_Functions/rigtype
++help/6_Functions/rmdir
++help/6_Functions/sar
++help/6_Functions/servername
++help/6_Functions/servernick
++help/6_Functions/servernum
++help/6_Functions/servports
++help/6_Functions/setitem
++help/6_Functions/shift
++help/6_Functions/sort
++help/6_Functions/splice
++help/6_Functions/split
++help/6_Functions/srand
++help/6_Functions/status
++help/6_Functions/stime
++help/6_Functions/strftime
++help/6_Functions/strip
++help/6_Functions/stripansi
++help/6_Functions/stripansicodes
++help/6_Functions/stripc
++help/6_Functions/strlen
++help/6_Functions/substr
++help/6_Functions/tdiff
++help/6_Functions/time
++help/6_Functions/tolower
++help/6_Functions/toupper
++help/6_Functions/tow
++help/6_Functions/tr
++help/6_Functions/trunc
++help/6_Functions/twiddle
++help/6_Functions/uhc
++help/6_Functions/umask
++help/6_Functions/uname
++help/6_Functions/uniq
++help/6_Functions/unlink
++help/6_Functions/unshift
++help/6_Functions/userhost
++help/6_Functions/usermode
++help/6_Functions/utime
++help/6_Functions/version
++help/6_Functions/which
++help/6_Functions/winbound
++help/6_Functions/winchan
++help/6_Functions/winlevel
++help/6_Functions/winnam
++help/6_Functions/winnicklist
++help/6_Functions/winnum
++help/6_Functions/winrefs
++help/6_Functions/winserv
++help/6_Functions/winsize
++help/6_Functions/winvisible
++help/6_Functions/word
++help/6_Functions/write
++help/6_Functions/writeb
++help/6_Functions/chr
++help/6_Functions/before
++help/6_Functions/beforew
++help/6_Functions/builtin_expando
++help/6_Functions/chanusers
++help/6_Functions/chanwin
++help/6_Functions/cos
++help/6_Functions/diff
++help/6_Functions/functioncall
++help/6_Functions/getcap
++help/6_Functions/getopt
++help/6_Functions/getrmatches
++help/6_Functions/getset
++help/6_Functions/globi
++help/6_Functions/hash_32bit
++help/6_Functions/ifindfirst
++help/6_Functions/igetitem
++help/6_Functions/indextoword
++help/6_Functions/insert
++help/6_Functions/iptolong
++help/6_Functions/isaway
++help/6_Functions/isdisplaying
++help/6_Functions/isencrypted
++help/6_Functions/lastlog
++help/6_Functions/line
++help/6_Functions/listarray
++help/6_Functions/loadinfo
++help/6_Functions/longtoip
++help/6_Functions/maxlen
++help/6_Functions/nochops
++help/6_Functions/notifywindows
++help/6_Functions/notw
++help/6_Functions/numsort
++help/6_Functions/pass
++help/6_Functions/perl
++help/6_Functions/prefix
++help/6_Functions/perlxcall
++help/6_Functions/push
++help/6_Functions/realpath
++help/6_Functions/regcomp
++help/6_Functions/regerror
++help/6_Functions/regexec
++help/6_Functions/regfree
++help/6_Functions/rfilter
++help/6_Functions/right
++help/6_Functions/rightw
++help/6_Functions/rindex
++help/6_Functions/rmatch
++help/6_Functions/rmatchitem
++help/6_Functions/rpattern
++help/6_Functions/rsubstr
++help/6_Functions/sin
++help/6_Functions/ssl
++help/6_Functions/stat
++help/6_Functions/stripcrap
++help/6_Functions/tan
++help/6_Functions/tdiff2
++help/6_Functions/ttyname
++help/6_Functions/urldecode
++help/6_Functions/urlencode
++help/6_Functions/wincursorline
++help/6_Functions/xdebug
++help/6_Functions/winscreen
++help/6_Functions/winscrollbacksize
++help/6_Functions/acos
++help/6_Functions/winstatussize
++help/6_Functions/wordtoindex
++help/6_Functions/acosh
++help/6_Functions/asin
++help/6_Functions/asinh
++help/6_Functions/atan
++help/6_Functions/atanh
++help/6_Functions/cosh
++help/6_Functions/exp
++help/6_Functions/jn
++help/6_Functions/log
++help/6_Functions/log10
++help/6_Functions/sinh
++help/6_Functions/tanh
++help/6_Functions/yn
++help/6_Functions/abs
++help/6_Functions/ceil
++help/6_Functions/floor
++help/6_Functions/ishalfop
++help/6_Functions/servergroup
++help/6_Functions/serverourname
++help/6_Functions/getcommands
++help/6_Functions/servertype
++help/6_Functions/serverctl
++help/6_Functions/bindctl
++help/6_Functions/exec
++help/6_Functions/killpid
++help/6_Functions/levelwindow
++help/6_Functions/outputinfo
++help/6_Functions/serverwin
++help/6_Functions/unsplit
++help/6_Functions/numlines
++help/6_Functions/asciiq
++help/6_Functions/cipher
++help/6_Functions/corpattern
++help/6_Functions/dccctl
++help/6_Functions/delitems
++help/6_Functions/encryptparm
++help/6_Functions/fabs
++help/6_Functions/ferror
++help/6_Functions/finditems
++help/6_Functions/fix_arglist
++help/6_Functions/floodinfo
++help/6_Functions/frewind
++help/6_Functions/fseek
++help/6_Functions/fskip
++help/6_Functions/ftell
++help/6_Functions/getfunctions
++help/6_Functions/getserial
++help/6_Functions/hookctl
++help/6_Functions/ifinditems
++help/6_Functions/ignorectl
++help/6_Functions/isfilevalid
++help/6_Functions/joinstr
++help/6_Functions/logctl
++help/6_Functions/metric_time
++help/6_Functions/mktime
++help/6_Functions/perlcall
++help/6_Functions/regcomp_cs
++help/6_Functions/regmatches
++help/6_Functions/sedcrypt
++help/6_Functions/startupfile
++help/6_Functions/strtol
++help/6_Functions/symbolctl
++help/6_Functions/tcl
++help/6_Functions/timerctl
++help/6_Functions/tobase
++help/6_Functions/usetitem
++help/6_Functions/windowctl
++help/6_Functions/winline
++help/6_Functions/winquery
++help/7_Docs/
++help/7_Docs/CVS/
++help/7_Docs/CVS/Root
++help/7_Docs/CVS/Repository
++help/7_Docs/CVS/Entries
++help/7_Docs/7_Docs
++help/7_Docs/About_EPIC
++help/7_Docs/Arrays
++help/7_Docs/Command_Line
++help/7_Docs/Compile_Opts
++help/7_Docs/Copyright
++help/7_Docs/Environment
++help/7_Docs/Etiquette
++help/7_Docs/Expressions
++help/7_Docs/Introduction
++help/7_Docs/Key_Bindings
++help/7_Docs/New_User
++help/7_Docs/Patterns
++help/7_Docs/Programming
++help/7_Docs/Security
++help/7_Docs/Serial_Numbers
++help/7_Docs/Server_List
++help/7_Docs/Server_Numerics
++help/7_Docs/Signals
++help/7_Docs/Special_Vars
++help/7_Docs/Status_Line
++help/7_Docs/Text_Highlight
++help/7_Docs/Updates
++help/7_Docs/Perl
++help/7_Docs/IPv6
++help/7_Docs/Debugging
++help/8_Scripts/
++help/8_Scripts/CVS/
++help/8_Scripts/CVS/Root
++help/8_Scripts/CVS/Repository
++help/8_Scripts/CVS/Entries
++help/8_Scripts/2.8script
++help/8_Scripts/8_Scripts
++help/8_Scripts/alias
++help/8_Scripts/autokick
++help/8_Scripts/autoop
++help/8_Scripts/away
++help/8_Scripts/basical
++help/8_Scripts/columns
++help/8_Scripts/country
++help/8_Scripts/deban
++help/8_Scripts/debug.irc
++help/8_Scripts/edit
++help/8_Scripts/environment
++help/8_Scripts/events
++help/8_Scripts/events.hop
++help/8_Scripts/fake-dcc
++help/8_Scripts/fe
++help/8_Scripts/files
++help/8_Scripts/functions
++help/8_Scripts/genalias
++help/8_Scripts/global
++help/8_Scripts/guh
++help/8_Scripts/imap
++help/8_Scripts/ircprimer
++help/8_Scripts/keybinds
++help/8_Scripts/killpath
++help/8_Scripts/kpstat
++help/8_Scripts/less
++help/8_Scripts/list
++help/8_Scripts/local
++help/8_Scripts/ls
++help/8_Scripts/man
++help/8_Scripts/meta
++help/8_Scripts/more
++help/8_Scripts/mudirc
++help/8_Scripts/netsplit
++help/8_Scripts/netsplit.env
++help/8_Scripts/newaway
++help/8_Scripts/newformat
++help/8_Scripts/nicks
++help/8_Scripts/old-dcc
++help/8_Scripts/pipe
++help/8_Scripts/prefix
++help/8_Scripts/recursion
++help/8_Scripts/repeat
++help/8_Scripts/screen
++help/8_Scripts/silent
++help/8_Scripts/sound
++help/8_Scripts/starutils
++help/8_Scripts/stat
++help/8_Scripts/tabkey
++help/8_Scripts/tc
++help/8_Scripts/time
++help/8_Scripts/tls
++help/8_Scripts/webster
++help/8_Scripts/window
++help/8_Scripts/hybrid6
++help/8_Scripts/notify
++help/8_Scripts/altchan
++help/8_Scripts/altchan.bj
++help/8_Scripts/autoget
++help/8_Scripts/builtins
++help/8_Scripts/commandqueues
++help/8_Scripts/data_array
++help/8_Scripts/data_struct
++help/8_Scripts/dcc_spacefix
++help/8_Scripts/dcc_timeout
++help/8_Scripts/dig
++help/8_Scripts/dns
++help/8_Scripts/edit_topic
++help/8_Scripts/efnext
++help/8_Scripts/grep
++help/8_Scripts/help
++help/8_Scripts/hold_mode
++help/8_Scripts/ip-to-int
++help/8_Scripts/langtrans
++help/8_Scripts/less-pipe
++help/8_Scripts/loadformats
++help/8_Scripts/map
++help/8_Scripts/meta-compat
++help/8_Scripts/mkpdir
++help/8_Scripts/motd
++help/8_Scripts/nopaste
++help/8_Scripts/paste
++help/8_Scripts/revdcc
++help/8_Scripts/scan
++help/8_Scripts/scandir
++help/8_Scripts/sdiff
++help/8_Scripts/setmail
++help/8_Scripts/slowcat
++help/8_Scripts/sping
++help/8_Scripts/status_lag
++help/8_Scripts/suppressmotd
++help/8_Scripts/tabkey.ce
++help/8_Scripts/tabkey.jm
++help/8_Scripts/tabkey.th
++help/8_Scripts/utime
++help/8_Scripts/vi-binds
++help/Makefile
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++usr/bin/epic5	epic5-2.1.2
++
++Making symbolic link creation script:
++( cd usr/bin ; rm -rf epic5 )
++( cd usr/bin ; ln -sf epic5-2.1.2 epic5 )
++
++It is recommended that you make these lines your new installation script.
++
++Would you like to make this stuff the install script for this package
++and remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './usr/bin/epic5'
++
++Creating your new ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/epic5-2.1.2-x86_64-5.txz
++
++./
++install/
++install/doinst.sh
++install/slack-desc
++usr/
++usr/bin/
++usr/bin/epic5-2.1.2
++usr/doc/
++usr/doc/epic5-2.1.2/
++usr/doc/epic5-2.1.2/BUG_FORM
++usr/doc/epic5-2.1.2/COPYRIGHT
++usr/doc/epic5-2.1.2/INSTALL
++usr/doc/epic5-2.1.2/KNOWNBUGS
++usr/doc/epic5-2.1.2/README
++usr/doc/epic5-2.1.2/README-CRYPTO
++usr/doc/epic5-2.1.2/UPDATES
++usr/doc/epic5-2.1.2/VOTES
++usr/doc/epic5-2.1.2/doc/
++usr/doc/epic5-2.1.2/doc/DCC_REVERSE
++usr/doc/epic5-2.1.2/doc/EPIC_ABOUT
++usr/doc/epic5-2.1.2/doc/EPIC_THANKS
++usr/doc/epic5-2.1.2/doc/EPIC_VERSIONS
++usr/doc/epic5-2.1.2/doc/IPV6
++usr/doc/epic5-2.1.2/doc/IRCII_VERSIONS
++usr/doc/epic5-2.1.2/doc/README.SSL
++usr/doc/epic5-2.1.2/doc/SILLINESS
++usr/doc/epic5-2.1.2/doc/TS4
++usr/doc/epic5-2.1.2/doc/antiflooding
++usr/doc/epic5-2.1.2/doc/colors
++usr/doc/epic5-2.1.2/doc/dccresum.txt
++usr/doc/epic5-2.1.2/doc/entry_points
++usr/doc/epic5-2.1.2/doc/expansions
++usr/doc/epic5-2.1.2/doc/fish
++usr/doc/epic5-2.1.2/doc/keys
++usr/doc/epic5-2.1.2/doc/missing
++usr/doc/epic5-2.1.2/doc/nicknames
++usr/doc/epic5-2.1.2/doc/outputhelp
++usr/doc/epic5-2.1.2/doc/pf-loader
++usr/doc/epic5-2.1.2/doc/python
++usr/doc/epic5-2.1.2/doc/scrollind
++usr/doc/epic5-2.1.2/doc/utf8
++usr/doc/epic5-2.1.2/doc/what-needs-rewriting
++usr/doc/epic5-2.1.2/doc/word-lists
++usr/doc/epic5-2.1.2/doc/word-support
++usr/libexec/
++usr/libexec/epic5-wserv4
++usr/man/
++usr/man/man1/
++usr/man/man1/epic5.1.gz
++usr/share/
++usr/share/epic5/
++usr/share/epic5/help/
++usr/share/epic5/help/1_General/
++usr/share/epic5/help/1_General/1_General
++usr/share/epic5/help/1_General/away
++usr/share/epic5/help/1_General/bye
++usr/share/epic5/help/1_General/channel
++usr/share/epic5/help/1_General/ctcp/
++usr/share/epic5/help/1_General/ctcp/action
++usr/share/epic5/help/1_General/ctcp/clientinfo
++usr/share/epic5/help/1_General/ctcp/ctcp
++usr/share/epic5/help/1_General/ctcp/echo
++usr/share/epic5/help/1_General/ctcp/finger
++usr/share/epic5/help/1_General/ctcp/ping
++usr/share/epic5/help/1_General/ctcp/time
++usr/share/epic5/help/1_General/ctcp/userinfo
++usr/share/epic5/help/1_General/ctcp/utc
++usr/share/epic5/help/1_General/ctcp/version
++usr/share/epic5/help/1_General/dcc/
++usr/share/epic5/help/1_General/dcc/chat
++usr/share/epic5/help/1_General/dcc/close
++usr/share/epic5/help/1_General/dcc/closeall
++usr/share/epic5/help/1_General/dcc/dcc
++usr/share/epic5/help/1_General/dcc/get
++usr/share/epic5/help/1_General/dcc/list
++usr/share/epic5/help/1_General/dcc/raw
++usr/share/epic5/help/1_General/dcc/rename
++usr/share/epic5/help/1_General/dcc/resume
++usr/share/epic5/help/1_General/dcc/send
++usr/share/epic5/help/1_General/describe
++usr/share/epic5/help/1_General/disconnect
++usr/share/epic5/help/1_General/help
++usr/share/epic5/help/1_General/ignore
++usr/share/epic5/help/1_General/invite
++usr/share/epic5/help/1_General/join
++usr/share/epic5/help/1_General/kick
++usr/share/epic5/help/1_General/lastlog
++usr/share/epic5/help/1_General/license
++usr/share/epic5/help/1_General/me
++usr/share/epic5/help/1_General/mode
++usr/share/epic5/help/1_General/msg
++usr/share/epic5/help/1_General/nick
++usr/share/epic5/help/1_General/notice
++usr/share/epic5/help/1_General/notify
++usr/share/epic5/help/1_General/part
++usr/share/epic5/help/1_General/ping
++usr/share/epic5/help/1_General/query
++usr/share/epic5/help/1_General/quit
++usr/share/epic5/help/1_General/reconnect
++usr/share/epic5/help/1_General/say
++usr/share/epic5/help/1_General/server
++usr/share/epic5/help/1_General/silence
++usr/share/epic5/help/1_General/topic
++usr/share/epic5/help/2_Queries/
++usr/share/epic5/help/2_Queries/2_Queries
++usr/share/epic5/help/2_Queries/admin
++usr/share/epic5/help/2_Queries/flush
++usr/share/epic5/help/2_Queries/info
++usr/share/epic5/help/2_Queries/ison
++usr/share/epic5/help/2_Queries/knock
++usr/share/epic5/help/2_Queries/links
++usr/share/epic5/help/2_Queries/list
++usr/share/epic5/help/2_Queries/lusers
++usr/share/epic5/help/2_Queries/map
++usr/share/epic5/help/2_Queries/motd
++usr/share/epic5/help/2_Queries/names
++usr/share/epic5/help/2_Queries/servlist
++usr/share/epic5/help/2_Queries/squery
++usr/share/epic5/help/2_Queries/stats
++usr/share/epic5/help/2_Queries/time
++usr/share/epic5/help/2_Queries/trace
++usr/share/epic5/help/2_Queries/userhost
++usr/share/epic5/help/2_Queries/userip
++usr/share/epic5/help/2_Queries/usrip
++usr/share/epic5/help/2_Queries/version
++usr/share/epic5/help/2_Queries/wallchops
++usr/share/epic5/help/2_Queries/who
++usr/share/epic5/help/2_Queries/whois
++usr/share/epic5/help/2_Queries/whowas
++usr/share/epic5/help/3_Operators/
++usr/share/epic5/help/3_Operators/3_Operators
++usr/share/epic5/help/3_Operators/connect
++usr/share/epic5/help/3_Operators/deop
++usr/share/epic5/help/3_Operators/die
++usr/share/epic5/help/3_Operators/hash
++usr/share/epic5/help/3_Operators/kill
++usr/share/epic5/help/3_Operators/oper
++usr/share/epic5/help/3_Operators/rehash
++usr/share/epic5/help/3_Operators/restart
++usr/share/epic5/help/3_Operators/rping
++usr/share/epic5/help/3_Operators/squit
++usr/share/epic5/help/3_Operators/uping
++usr/share/epic5/help/3_Operators/wallops
++usr/share/epic5/help/4_Misc/
++usr/share/epic5/help/4_Misc/4_Misc
++usr/share/epic5/help/4_Misc/abort
++usr/share/epic5/help/4_Misc/beep
++usr/share/epic5/help/4_Misc/bind/
++usr/share/epic5/help/4_Misc/bind/altcharset
++usr/share/epic5/help/4_Misc/bind/backspace
++usr/share/epic5/help/4_Misc/bind/backward_character
++usr/share/epic5/help/4_Misc/bind/backward_history
++usr/share/epic5/help/4_Misc/bind/backward_word
++usr/share/epic5/help/4_Misc/bind/beginning_of_line
++usr/share/epic5/help/4_Misc/bind/bind
++usr/share/epic5/help/4_Misc/bind/blink
++usr/share/epic5/help/4_Misc/bind/bold
++usr/share/epic5/help/4_Misc/bind/clear_screen
++usr/share/epic5/help/4_Misc/bind/command_completion
++usr/share/epic5/help/4_Misc/bind/cpu_saver
++usr/share/epic5/help/4_Misc/bind/delete_character
++usr/share/epic5/help/4_Misc/bind/delete_next_word
++usr/share/epic5/help/4_Misc/bind/delete_previous_word
++usr/share/epic5/help/4_Misc/bind/delete_to_previous_space
++usr/share/epic5/help/4_Misc/bind/end_of_line
++usr/share/epic5/help/4_Misc/bind/erase_line
++usr/share/epic5/help/4_Misc/bind/erase_to_beg_of_line
++usr/share/epic5/help/4_Misc/bind/erase_to_end_of_line
++usr/share/epic5/help/4_Misc/bind/forward_character
++usr/share/epic5/help/4_Misc/bind/forward_history
++usr/share/epic5/help/4_Misc/bind/forward_word
++usr/share/epic5/help/4_Misc/bind/highlight_off
++usr/share/epic5/help/4_Misc/bind/next_window
++usr/share/epic5/help/4_Misc/bind/nothing
++usr/share/epic5/help/4_Misc/bind/parse_command
++usr/share/epic5/help/4_Misc/bind/previous_window
++usr/share/epic5/help/4_Misc/bind/quit_irc
++usr/share/epic5/help/4_Misc/bind/quote_character
++usr/share/epic5/help/4_Misc/bind/refresh_inputline
++usr/share/epic5/help/4_Misc/bind/refresh_screen
++usr/share/epic5/help/4_Misc/bind/refresh_status
++usr/share/epic5/help/4_Misc/bind/reverse
++usr/share/epic5/help/4_Misc/bind/scroll_backward
++usr/share/epic5/help/4_Misc/bind/scroll_end
++usr/share/epic5/help/4_Misc/bind/scroll_forward
++usr/share/epic5/help/4_Misc/bind/scroll_start
++usr/share/epic5/help/4_Misc/bind/self_insert
++usr/share/epic5/help/4_Misc/bind/send_line
++usr/share/epic5/help/4_Misc/bind/shove_to_history
++usr/share/epic5/help/4_Misc/bind/stop_irc
++usr/share/epic5/help/4_Misc/bind/swap_last_window
++usr/share/epic5/help/4_Misc/bind/swap_next_window
++usr/share/epic5/help/4_Misc/bind/swap_previous_window
++usr/share/epic5/help/4_Misc/bind/switch_channels
++usr/share/epic5/help/4_Misc/bind/switch_query
++usr/share/epic5/help/4_Misc/bind/toggle_insert_mode
++usr/share/epic5/help/4_Misc/bind/toggle_stop_screen
++usr/share/epic5/help/4_Misc/bind/transpose_characters
++usr/share/epic5/help/4_Misc/bind/type_text
++usr/share/epic5/help/4_Misc/bind/unclear_screen
++usr/share/epic5/help/4_Misc/bind/underline
++usr/share/epic5/help/4_Misc/bind/unstop_all_windows
++usr/share/epic5/help/4_Misc/bind/yank_from_cutbuffer
++usr/share/epic5/help/4_Misc/cd
++usr/share/epic5/help/4_Misc/clear
++usr/share/epic5/help/4_Misc/encrypt
++usr/share/epic5/help/4_Misc/history
++usr/share/epic5/help/4_Misc/hostname
++usr/share/epic5/help/4_Misc/ircuser
++usr/share/epic5/help/4_Misc/mesg
++usr/share/epic5/help/4_Misc/note
++usr/share/epic5/help/4_Misc/rbind
++usr/share/epic5/help/4_Misc/realname
++usr/share/epic5/help/4_Misc/set/
++usr/share/epic5/help/4_Misc/set/allow_c1_chars
++usr/share/epic5/help/4_Misc/set/alt_charset
++usr/share/epic5/help/4_Misc/set/always_split_biggest
++usr/share/epic5/help/4_Misc/set/auto_new_nick
++usr/share/epic5/help/4_Misc/set/auto_reconnect
++usr/share/epic5/help/4_Misc/set/auto_reconnect_delay
++usr/share/epic5/help/4_Misc/set/auto_rejoin
++usr/share/epic5/help/4_Misc/set/auto_rejoin_connect
++usr/share/epic5/help/4_Misc/set/auto_rejoin_delay
++usr/share/epic5/help/4_Misc/set/auto_unmark_away
++usr/share/epic5/help/4_Misc/set/auto_whowas
++usr/share/epic5/help/4_Misc/set/bad_style
++usr/share/epic5/help/4_Misc/set/banner
++usr/share/epic5/help/4_Misc/set/banner_expand
++usr/share/epic5/help/4_Misc/set/beep
++usr/share/epic5/help/4_Misc/set/beep_max
++usr/share/epic5/help/4_Misc/set/beep_on_msg
++usr/share/epic5/help/4_Misc/set/beep_when_away
++usr/share/epic5/help/4_Misc/set/blink_video
++usr/share/epic5/help/4_Misc/set/bold_video
++usr/share/epic5/help/4_Misc/set/channel_name_width
++usr/share/epic5/help/4_Misc/set/client_information
++usr/share/epic5/help/4_Misc/set/clock
++usr/share/epic5/help/4_Misc/set/clock_24hour
++usr/share/epic5/help/4_Misc/set/clock_format
++usr/share/epic5/help/4_Misc/set/clock_interval
++usr/share/epic5/help/4_Misc/set/cmdchars
++usr/share/epic5/help/4_Misc/set/color
++usr/share/epic5/help/4_Misc/set/command_mode
++usr/share/epic5/help/4_Misc/set/comment_hack
++usr/share/epic5/help/4_Misc/set/connect_timeout
++usr/share/epic5/help/4_Misc/set/continued_line
++usr/share/epic5/help/4_Misc/set/cpu_saver_after
++usr/share/epic5/help/4_Misc/set/cpu_saver_every
++usr/share/epic5/help/4_Misc/set/current_window_level
++usr/share/epic5/help/4_Misc/set/dcc_auto_send_rejects
++usr/share/epic5/help/4_Misc/set/dcc_dequote_filenames
++usr/share/epic5/help/4_Misc/set/dcc_long_pathnames
++usr/share/epic5/help/4_Misc/set/dcc_sliding_window
++usr/share/epic5/help/4_Misc/set/dcc_store_path
++usr/share/epic5/help/4_Misc/set/dcc_timeout
++usr/share/epic5/help/4_Misc/set/dcc_use_gateway_addr
++usr/share/epic5/help/4_Misc/set/debug
++usr/share/epic5/help/4_Misc/set/dispatch_unknown_commands
++usr/share/epic5/help/4_Misc/set/display
++usr/share/epic5/help/4_Misc/set/display_ansi
++usr/share/epic5/help/4_Misc/set/display_pc_characters
++usr/share/epic5/help/4_Misc/set/do_notify_immediately
++usr/share/epic5/help/4_Misc/set/eight_bit_characters
++usr/share/epic5/help/4_Misc/set/floating_point_math
++usr/share/epic5/help/4_Misc/set/floating_point_precision
++usr/share/epic5/help/4_Misc/set/flood_after
++usr/share/epic5/help/4_Misc/set/flood_ignore
++usr/share/epic5/help/4_Misc/set/flood_maskuser
++usr/share/epic5/help/4_Misc/set/flood_rate
++usr/share/epic5/help/4_Misc/set/flood_rate_per
++usr/share/epic5/help/4_Misc/set/flood_users
++usr/share/epic5/help/4_Misc/set/flood_warning
++usr/share/epic5/help/4_Misc/set/full_status_line
++usr/share/epic5/help/4_Misc/set/help_pager
++usr/share/epic5/help/4_Misc/set/help_path
++usr/share/epic5/help/4_Misc/set/help_prompt
++usr/share/epic5/help/4_Misc/set/help_window
++usr/share/epic5/help/4_Misc/set/hide_private_channels
++usr/share/epic5/help/4_Misc/set/high_bit_escape
++usr/share/epic5/help/4_Misc/set/highlight_char
++usr/share/epic5/help/4_Misc/set/history
++usr/share/epic5/help/4_Misc/set/history_circleq
++usr/share/epic5/help/4_Misc/set/hold_interval
++usr/share/epic5/help/4_Misc/set/hold_mode
++usr/share/epic5/help/4_Misc/set/hold_slider
++usr/share/epic5/help/4_Misc/set/indent
++usr/share/epic5/help/4_Misc/set/input_aliases
++usr/share/epic5/help/4_Misc/set/input_prompt
++usr/share/epic5/help/4_Misc/set/insert_mode
++usr/share/epic5/help/4_Misc/set/inverse_video
++usr/share/epic5/help/4_Misc/set/key_interval
++usr/share/epic5/help/4_Misc/set/lastlog
++usr/share/epic5/help/4_Misc/set/lastlog_level
++usr/share/epic5/help/4_Misc/set/load_path
++usr/share/epic5/help/4_Misc/set/log
++usr/share/epic5/help/4_Misc/set/log_rewrite
++usr/share/epic5/help/4_Misc/set/logfile
++usr/share/epic5/help/4_Misc/set/mail
++usr/share/epic5/help/4_Misc/set/mail_interval
++usr/share/epic5/help/4_Misc/set/mangle_inbound
++usr/share/epic5/help/4_Misc/set/mangle_logfiles
++usr/share/epic5/help/4_Misc/set/mangle_outbound
++usr/share/epic5/help/4_Misc/set/max_reconnects
++usr/share/epic5/help/4_Misc/set/meta_states
++usr/share/epic5/help/4_Misc/set/metric_time
++usr/share/epic5/help/4_Misc/set/mirc_broken_dcc_resume
++usr/share/epic5/help/4_Misc/set/mode_stripper
++usr/share/epic5/help/4_Misc/set/nd_space_max
++usr/share/epic5/help/4_Misc/set/new_server_lastlog_level
++usr/share/epic5/help/4_Misc/set/no_control_log
++usr/share/epic5/help/4_Misc/set/no_ctcp_flood
++usr/share/epic5/help/4_Misc/set/no_fail_disconnect
++usr/share/epic5/help/4_Misc/set/notify_handler
++usr/share/epic5/help/4_Misc/set/notify_interval
++usr/share/epic5/help/4_Misc/set/notify_level
++usr/share/epic5/help/4_Misc/set/notify_on_termination
++usr/share/epic5/help/4_Misc/set/notify_userhost_automatic
++usr/share/epic5/help/4_Misc/set/num_of_whowas
++usr/share/epic5/help/4_Misc/set/old_server_lastlog_level
++usr/share/epic5/help/4_Misc/set/output_rewrite
++usr/share/epic5/help/4_Misc/set/pad_char
++usr/share/epic5/help/4_Misc/set/quit_message
++usr/share/epic5/help/4_Misc/set/random_local_ports
++usr/share/epic5/help/4_Misc/set/random_source
++usr/share/epic5/help/4_Misc/set/realname
++usr/share/epic5/help/4_Misc/set/reverse_status_line
++usr/share/epic5/help/4_Misc/set/screen_options
++usr/share/epic5/help/4_Misc/set/scroll
++usr/share/epic5/help/4_Misc/set/scroll_lines
++usr/share/epic5/help/4_Misc/set/scrollback
++usr/share/epic5/help/4_Misc/set/scrollback_ratio
++usr/share/epic5/help/4_Misc/set/security
++usr/share/epic5/help/4_Misc/set/set
++usr/share/epic5/help/4_Misc/set/shell
++usr/share/epic5/help/4_Misc/set/shell_flags
++usr/share/epic5/help/4_Misc/set/shell_limit
++usr/share/epic5/help/4_Misc/set/show_channel_names
++usr/share/epic5/help/4_Misc/set/show_end_of_msgs
++usr/share/epic5/help/4_Misc/set/show_numerics
++usr/share/epic5/help/4_Misc/set/show_status_all
++usr/share/epic5/help/4_Misc/set/show_who_hopcount
++usr/share/epic5/help/4_Misc/set/ssl_certfile
++usr/share/epic5/help/4_Misc/set/ssl_keyfile
++usr/share/epic5/help/4_Misc/set/ssl_path
++usr/share/epic5/help/4_Misc/set/status_away
++usr/share/epic5/help/4_Misc/set/status_channel
++usr/share/epic5/help/4_Misc/set/status_chanop
++usr/share/epic5/help/4_Misc/set/status_clock
++usr/share/epic5/help/4_Misc/set/status_cpu_saver
++usr/share/epic5/help/4_Misc/set/status_does_expandos
++usr/share/epic5/help/4_Misc/set/status_format
++usr/share/epic5/help/4_Misc/set/status_format1
++usr/share/epic5/help/4_Misc/set/status_format2
++usr/share/epic5/help/4_Misc/set/status_hold
++usr/share/epic5/help/4_Misc/set/status_hold_lines
++usr/share/epic5/help/4_Misc/set/status_insert
++usr/share/epic5/help/4_Misc/set/status_mail
++usr/share/epic5/help/4_Misc/set/status_mode
++usr/share/epic5/help/4_Misc/set/status_nickname
++usr/share/epic5/help/4_Misc/set/status_no_repeat
++usr/share/epic5/help/4_Misc/set/status_noswap
++usr/share/epic5/help/4_Misc/set/status_notify
++usr/share/epic5/help/4_Misc/set/status_oper
++usr/share/epic5/help/4_Misc/set/status_overwrite
++usr/share/epic5/help/4_Misc/set/status_query
++usr/share/epic5/help/4_Misc/set/status_scrollback
++usr/share/epic5/help/4_Misc/set/status_server
++usr/share/epic5/help/4_Misc/set/status_ssl_off
++usr/share/epic5/help/4_Misc/set/status_ssl_on
++usr/share/epic5/help/4_Misc/set/status_truncate_rhs
++usr/share/epic5/help/4_Misc/set/status_umode
++usr/share/epic5/help/4_Misc/set/status_user
++usr/share/epic5/help/4_Misc/set/status_voice
++usr/share/epic5/help/4_Misc/set/status_window
++usr/share/epic5/help/4_Misc/set/suppress_from_remote_server
++usr/share/epic5/help/4_Misc/set/suppress_server_motd
++usr/share/epic5/help/4_Misc/set/switch_channel_on_part
++usr/share/epic5/help/4_Misc/set/switch_channels_between_windows
++usr/share/epic5/help/4_Misc/set/tab
++usr/share/epic5/help/4_Misc/set/tab_max
++usr/share/epic5/help/4_Misc/set/term_does_bright_blink
++usr/share/epic5/help/4_Misc/set/translation
++usr/share/epic5/help/4_Misc/set/translation_path
++usr/share/epic5/help/4_Misc/set/underline_video
++usr/share/epic5/help/4_Misc/set/user_information
++usr/share/epic5/help/4_Misc/set/verbose_ctcp
++usr/share/epic5/help/4_Misc/set/word_break
++usr/share/epic5/help/4_Misc/set/wserv_path
++usr/share/epic5/help/4_Misc/set/wserv_type
++usr/share/epic5/help/4_Misc/set/xterm
++usr/share/epic5/help/4_Misc/set/xterm_options
++usr/share/epic5/help/4_Misc/unclear
++usr/share/epic5/help/4_Misc/which
++usr/share/epic5/help/4_Misc/window/
++usr/share/epic5/help/4_Misc/window/add
++usr/share/epic5/help/4_Misc/window/back
++usr/share/epic5/help/4_Misc/window/balance
++usr/share/epic5/help/4_Misc/window/beep_always
++usr/share/epic5/help/4_Misc/window/bind
++usr/share/epic5/help/4_Misc/window/channel
++usr/share/epic5/help/4_Misc/window/clear
++usr/share/epic5/help/4_Misc/window/create
++usr/share/epic5/help/4_Misc/window/delete
++usr/share/epic5/help/4_Misc/window/describe
++usr/share/epic5/help/4_Misc/window/discon
++usr/share/epic5/help/4_Misc/window/double
++usr/share/epic5/help/4_Misc/window/echo
++usr/share/epic5/help/4_Misc/window/fixed
++usr/share/epic5/help/4_Misc/window/flush
++usr/share/epic5/help/4_Misc/window/goto
++usr/share/epic5/help/4_Misc/window/grow
++usr/share/epic5/help/4_Misc/window/hide
++usr/share/epic5/help/4_Misc/window/hide_others
++usr/share/epic5/help/4_Misc/window/hold_interval
++usr/share/epic5/help/4_Misc/window/hold_mode
++usr/share/epic5/help/4_Misc/window/hold_slider
++usr/share/epic5/help/4_Misc/window/kill
++usr/share/epic5/help/4_Misc/window/kill_all_hidden
++usr/share/epic5/help/4_Misc/window/kill_others
++usr/share/epic5/help/4_Misc/window/killswap
++usr/share/epic5/help/4_Misc/window/last
++usr/share/epic5/help/4_Misc/window/lastlog
++usr/share/epic5/help/4_Misc/window/lastlog_level
++usr/share/epic5/help/4_Misc/window/level
++usr/share/epic5/help/4_Misc/window/list
++usr/share/epic5/help/4_Misc/window/log
++usr/share/epic5/help/4_Misc/window/logfile
++usr/share/epic5/help/4_Misc/window/move
++usr/share/epic5/help/4_Misc/window/move_to
++usr/share/epic5/help/4_Misc/window/name
++usr/share/epic5/help/4_Misc/window/new
++usr/share/epic5/help/4_Misc/window/new_hide
++usr/share/epic5/help/4_Misc/window/next
++usr/share/epic5/help/4_Misc/window/noserv
++usr/share/epic5/help/4_Misc/window/notified
++usr/share/epic5/help/4_Misc/window/notify
++usr/share/epic5/help/4_Misc/window/notify_level
++usr/share/epic5/help/4_Misc/window/notify_name
++usr/share/epic5/help/4_Misc/window/number
++usr/share/epic5/help/4_Misc/window/pop
++usr/share/epic5/help/4_Misc/window/previous
++usr/share/epic5/help/4_Misc/window/prompt
++usr/share/epic5/help/4_Misc/window/push
++usr/share/epic5/help/4_Misc/window/query
++usr/share/epic5/help/4_Misc/window/refnum
++usr/share/epic5/help/4_Misc/window/refnum_or_swap
++usr/share/epic5/help/4_Misc/window/refresh
++usr/share/epic5/help/4_Misc/window/rejoin
++usr/share/epic5/help/4_Misc/window/remove
++usr/share/epic5/help/4_Misc/window/scratch
++usr/share/epic5/help/4_Misc/window/scroll
++usr/share/epic5/help/4_Misc/window/scroll_backward
++usr/share/epic5/help/4_Misc/window/scroll_end
++usr/share/epic5/help/4_Misc/window/scroll_forward
++usr/share/epic5/help/4_Misc/window/scroll_start
++usr/share/epic5/help/4_Misc/window/scrolladj
++usr/share/epic5/help/4_Misc/window/scrollback
++usr/share/epic5/help/4_Misc/window/search_back
++usr/share/epic5/help/4_Misc/window/search_forward
++usr/share/epic5/help/4_Misc/window/server
++usr/share/epic5/help/4_Misc/window/show
++usr/share/epic5/help/4_Misc/window/show_all
++usr/share/epic5/help/4_Misc/window/shrink
++usr/share/epic5/help/4_Misc/window/size
++usr/share/epic5/help/4_Misc/window/skip
++usr/share/epic5/help/4_Misc/window/stack
++usr/share/epic5/help/4_Misc/window/status_format
++usr/share/epic5/help/4_Misc/window/status_format1
++usr/share/epic5/help/4_Misc/window/status_format2
++usr/share/epic5/help/4_Misc/window/status_special
++usr/share/epic5/help/4_Misc/window/swap
++usr/share/epic5/help/4_Misc/window/swappable
++usr/share/epic5/help/4_Misc/window/topline
++usr/share/epic5/help/4_Misc/window/toplines
++usr/share/epic5/help/4_Misc/window/unbind
++usr/share/epic5/help/4_Misc/window/window
++usr/share/epic5/help/4_Misc/xdebug
++usr/share/epic5/help/5_Programming/
++usr/share/epic5/help/5_Programming/5_Programming
++usr/share/epic5/help/5_Programming/alias
++usr/share/epic5/help/5_Programming/allocdump
++usr/share/epic5/help/5_Programming/assign
++usr/share/epic5/help/5_Programming/bless
++usr/share/epic5/help/5_Programming/botmode
++usr/share/epic5/help/5_Programming/break
++usr/share/epic5/help/5_Programming/call
++usr/share/epic5/help/5_Programming/comment
++usr/share/epic5/help/5_Programming/continue
++usr/share/epic5/help/5_Programming/defer
++usr/share/epic5/help/5_Programming/do
++usr/share/epic5/help/5_Programming/dump
++usr/share/epic5/help/5_Programming/echo
++usr/share/epic5/help/5_Programming/eval
++usr/share/epic5/help/5_Programming/exec
++usr/share/epic5/help/5_Programming/fe
++usr/share/epic5/help/5_Programming/fec
++usr/share/epic5/help/5_Programming/for
++usr/share/epic5/help/5_Programming/foreach
++usr/share/epic5/help/5_Programming/hook
++usr/share/epic5/help/5_Programming/if
++usr/share/epic5/help/5_Programming/input
++usr/share/epic5/help/5_Programming/input_char
++usr/share/epic5/help/5_Programming/load
++usr/share/epic5/help/5_Programming/local
++usr/share/epic5/help/5_Programming/on/
++usr/share/epic5/help/5_Programming/on/action
++usr/share/epic5/help/5_Programming/on/channel_nick
++usr/share/epic5/help/5_Programming/on/channel_signoff
++usr/share/epic5/help/5_Programming/on/channel_sync
++usr/share/epic5/help/5_Programming/on/connect
++usr/share/epic5/help/5_Programming/on/ctcp
++usr/share/epic5/help/5_Programming/on/ctcp_reply
++usr/share/epic5/help/5_Programming/on/ctcp_request
++usr/share/epic5/help/5_Programming/on/dcc_activity
++usr/share/epic5/help/5_Programming/on/dcc_chat
++usr/share/epic5/help/5_Programming/on/dcc_connect
++usr/share/epic5/help/5_Programming/on/dcc_list
++usr/share/epic5/help/5_Programming/on/dcc_lost
++usr/share/epic5/help/5_Programming/on/dcc_offer
++usr/share/epic5/help/5_Programming/on/dcc_raw
++usr/share/epic5/help/5_Programming/on/dcc_request
++usr/share/epic5/help/5_Programming/on/disconnect
++usr/share/epic5/help/5_Programming/on/encrypted_notice
++usr/share/epic5/help/5_Programming/on/encrypted_privmsg
++usr/share/epic5/help/5_Programming/on/error
++usr/share/epic5/help/5_Programming/on/exec
++usr/share/epic5/help/5_Programming/on/exec_errors
++usr/share/epic5/help/5_Programming/on/exec_exit
++usr/share/epic5/help/5_Programming/on/exec_prompt
++usr/share/epic5/help/5_Programming/on/exit
++usr/share/epic5/help/5_Programming/on/flood
++usr/share/epic5/help/5_Programming/on/general_notice
++usr/share/epic5/help/5_Programming/on/general_privmsg
++usr/share/epic5/help/5_Programming/on/help
++usr/share/epic5/help/5_Programming/on/hook
++usr/share/epic5/help/5_Programming/on/idle
++usr/share/epic5/help/5_Programming/on/input
++usr/share/epic5/help/5_Programming/on/invite
++usr/share/epic5/help/5_Programming/on/join
++usr/share/epic5/help/5_Programming/on/kick
++usr/share/epic5/help/5_Programming/on/kill
++usr/share/epic5/help/5_Programming/on/leave
++usr/share/epic5/help/5_Programming/on/list
++usr/share/epic5/help/5_Programming/on/mail
++usr/share/epic5/help/5_Programming/on/mode
++usr/share/epic5/help/5_Programming/on/mode_stripped
++usr/share/epic5/help/5_Programming/on/msg
++usr/share/epic5/help/5_Programming/on/msg_group
++usr/share/epic5/help/5_Programming/on/names
++usr/share/epic5/help/5_Programming/on/new_nickname
++usr/share/epic5/help/5_Programming/on/nickname
++usr/share/epic5/help/5_Programming/on/note
++usr/share/epic5/help/5_Programming/on/notice
++usr/share/epic5/help/5_Programming/on/notify_signoff
++usr/share/epic5/help/5_Programming/on/notify_signon
++usr/share/epic5/help/5_Programming/on/odd_server_stuff
++usr/share/epic5/help/5_Programming/on/on
++usr/share/epic5/help/5_Programming/on/oper_notice
++usr/share/epic5/help/5_Programming/on/pong
++usr/share/epic5/help/5_Programming/on/public
++usr/share/epic5/help/5_Programming/on/public_msg
++usr/share/epic5/help/5_Programming/on/public_notice
++usr/share/epic5/help/5_Programming/on/public_other
++usr/share/epic5/help/5_Programming/on/raw_irc
++usr/share/epic5/help/5_Programming/on/redirect
++usr/share/epic5/help/5_Programming/on/send_action
++usr/share/epic5/help/5_Programming/on/send_ctcp
++usr/share/epic5/help/5_Programming/on/send_dcc_chat
++usr/share/epic5/help/5_Programming/on/send_msg
++usr/share/epic5/help/5_Programming/on/send_notice
++usr/share/epic5/help/5_Programming/on/send_public
++usr/share/epic5/help/5_Programming/on/send_to_server
++usr/share/epic5/help/5_Programming/on/server_established
++usr/share/epic5/help/5_Programming/on/server_lost
++usr/share/epic5/help/5_Programming/on/server_notice
++usr/share/epic5/help/5_Programming/on/server_status
++usr/share/epic5/help/5_Programming/on/set
++usr/share/epic5/help/5_Programming/on/signoff
++usr/share/epic5/help/5_Programming/on/silence
++usr/share/epic5/help/5_Programming/on/ssl_server_cert
++usr/share/epic5/help/5_Programming/on/status_update
++usr/share/epic5/help/5_Programming/on/switch_channels
++usr/share/epic5/help/5_Programming/on/switch_windows
++usr/share/epic5/help/5_Programming/on/timer
++usr/share/epic5/help/5_Programming/on/topic
++usr/share/epic5/help/5_Programming/on/unload
++usr/share/epic5/help/5_Programming/on/wall
++usr/share/epic5/help/5_Programming/on/wallop
++usr/share/epic5/help/5_Programming/on/who
++usr/share/epic5/help/5_Programming/on/window
++usr/share/epic5/help/5_Programming/on/window_beforekill
++usr/share/epic5/help/5_Programming/on/window_command
++usr/share/epic5/help/5_Programming/on/window_create
++usr/share/epic5/help/5_Programming/on/window_kill
++usr/share/epic5/help/5_Programming/on/yell
++usr/share/epic5/help/5_Programming/package
++usr/share/epic5/help/5_Programming/parsekey
++usr/share/epic5/help/5_Programming/pause
++usr/share/epic5/help/5_Programming/pop
++usr/share/epic5/help/5_Programming/pretend
++usr/share/epic5/help/5_Programming/push
++usr/share/epic5/help/5_Programming/queue
++usr/share/epic5/help/5_Programming/quote
++usr/share/epic5/help/5_Programming/redirect
++usr/share/epic5/help/5_Programming/repeat
++usr/share/epic5/help/5_Programming/return
++usr/share/epic5/help/5_Programming/save
++usr/share/epic5/help/5_Programming/send
++usr/share/epic5/help/5_Programming/sendline
++usr/share/epic5/help/5_Programming/setenv
++usr/share/epic5/help/5_Programming/shook
++usr/share/epic5/help/5_Programming/sleep
++usr/share/epic5/help/5_Programming/stack
++usr/share/epic5/help/5_Programming/stub
++usr/share/epic5/help/5_Programming/subpackage
++usr/share/epic5/help/5_Programming/switch
++usr/share/epic5/help/5_Programming/timer
++usr/share/epic5/help/5_Programming/type
++usr/share/epic5/help/5_Programming/unless
++usr/share/epic5/help/5_Programming/unload
++usr/share/epic5/help/5_Programming/unshift
++usr/share/epic5/help/5_Programming/until
++usr/share/epic5/help/5_Programming/usleep
++usr/share/epic5/help/5_Programming/wait
++usr/share/epic5/help/5_Programming/while
++usr/share/epic5/help/5_Programming/xecho
++usr/share/epic5/help/5_Programming/xeval
++usr/share/epic5/help/5_Programming/xquote
++usr/share/epic5/help/5_Programming/xtype
++usr/share/epic5/help/6_Functions/
++usr/share/epic5/help/6_Functions/6_Functions
++usr/share/epic5/help/6_Functions/abs
++usr/share/epic5/help/6_Functions/acos
++usr/share/epic5/help/6_Functions/acosh
++usr/share/epic5/help/6_Functions/after
++usr/share/epic5/help/6_Functions/afterw
++usr/share/epic5/help/6_Functions/aliasctl
++usr/share/epic5/help/6_Functions/ascii
++usr/share/epic5/help/6_Functions/asciiq
++usr/share/epic5/help/6_Functions/asin
++usr/share/epic5/help/6_Functions/asinh
++usr/share/epic5/help/6_Functions/atan
++usr/share/epic5/help/6_Functions/atanh
++usr/share/epic5/help/6_Functions/before
++usr/share/epic5/help/6_Functions/beforew
++usr/share/epic5/help/6_Functions/bindctl
++usr/share/epic5/help/6_Functions/builtin_expando
++usr/share/epic5/help/6_Functions/ceil
++usr/share/epic5/help/6_Functions/center
++usr/share/epic5/help/6_Functions/cexist
++usr/share/epic5/help/6_Functions/chanmode
++usr/share/epic5/help/6_Functions/channel
++usr/share/epic5/help/6_Functions/chanusers
++usr/share/epic5/help/6_Functions/chanwin
++usr/share/epic5/help/6_Functions/chmod
++usr/share/epic5/help/6_Functions/chngw
++usr/share/epic5/help/6_Functions/chop
++usr/share/epic5/help/6_Functions/chops
++usr/share/epic5/help/6_Functions/chr
++usr/share/epic5/help/6_Functions/cipher
++usr/share/epic5/help/6_Functions/close
++usr/share/epic5/help/6_Functions/common
++usr/share/epic5/help/6_Functions/connect
++usr/share/epic5/help/6_Functions/convert
++usr/share/epic5/help/6_Functions/copattern
++usr/share/epic5/help/6_Functions/corpattern
++usr/share/epic5/help/6_Functions/cos
++usr/share/epic5/help/6_Functions/cosh
++usr/share/epic5/help/6_Functions/count
++usr/share/epic5/help/6_Functions/cparse
++usr/share/epic5/help/6_Functions/crypt
++usr/share/epic5/help/6_Functions/curpos
++usr/share/epic5/help/6_Functions/currchans
++usr/share/epic5/help/6_Functions/dccctl
++usr/share/epic5/help/6_Functions/decode
++usr/share/epic5/help/6_Functions/delarray
++usr/share/epic5/help/6_Functions/delitem
++usr/share/epic5/help/6_Functions/delitems
++usr/share/epic5/help/6_Functions/deuhc
++usr/share/epic5/help/6_Functions/diff
++usr/share/epic5/help/6_Functions/encode
++usr/share/epic5/help/6_Functions/encryptparm
++usr/share/epic5/help/6_Functions/eof
++usr/share/epic5/help/6_Functions/epic
++usr/share/epic5/help/6_Functions/exec
++usr/share/epic5/help/6_Functions/exp
++usr/share/epic5/help/6_Functions/fabs
++usr/share/epic5/help/6_Functions/ferror
++usr/share/epic5/help/6_Functions/fexist
++usr/share/epic5/help/6_Functions/filter
++usr/share/epic5/help/6_Functions/finditem
++usr/share/epic5/help/6_Functions/finditems
++usr/share/epic5/help/6_Functions/findw
++usr/share/epic5/help/6_Functions/fix_arglist
++usr/share/epic5/help/6_Functions/floodinfo
++usr/share/epic5/help/6_Functions/floor
++usr/share/epic5/help/6_Functions/fnexist
++usr/share/epic5/help/6_Functions/frewind
++usr/share/epic5/help/6_Functions/fromw
++usr/share/epic5/help/6_Functions/fseek
++usr/share/epic5/help/6_Functions/fsize
++usr/share/epic5/help/6_Functions/fskip
++usr/share/epic5/help/6_Functions/ftell
++usr/share/epic5/help/6_Functions/ftime
++usr/share/epic5/help/6_Functions/functioncall
++usr/share/epic5/help/6_Functions/geom
++usr/share/epic5/help/6_Functions/getarrays
++usr/share/epic5/help/6_Functions/getcap
++usr/share/epic5/help/6_Functions/getcommands
++usr/share/epic5/help/6_Functions/getenv
++usr/share/epic5/help/6_Functions/getfunctions
++usr/share/epic5/help/6_Functions/getgid
++usr/share/epic5/help/6_Functions/getitem
++usr/share/epic5/help/6_Functions/getlogin
++usr/share/epic5/help/6_Functions/getmatches
++usr/share/epic5/help/6_Functions/getopt
++usr/share/epic5/help/6_Functions/getpgrp
++usr/share/epic5/help/6_Functions/getrmatches
++usr/share/epic5/help/6_Functions/getserial
++usr/share/epic5/help/6_Functions/getset
++usr/share/epic5/help/6_Functions/getsets
++usr/share/epic5/help/6_Functions/gettmatch
++usr/share/epic5/help/6_Functions/getuid
++usr/share/epic5/help/6_Functions/glob
++usr/share/epic5/help/6_Functions/globi
++usr/share/epic5/help/6_Functions/hash_32bit
++usr/share/epic5/help/6_Functions/hookctl
++usr/share/epic5/help/6_Functions/idle
++usr/share/epic5/help/6_Functions/ifindfirst
++usr/share/epic5/help/6_Functions/ifinditem
++usr/share/epic5/help/6_Functions/ifinditems
++usr/share/epic5/help/6_Functions/igetitem
++usr/share/epic5/help/6_Functions/igetmatches
++usr/share/epic5/help/6_Functions/igmask
++usr/share/epic5/help/6_Functions/ignorectl
++usr/share/epic5/help/6_Functions/igtype
++usr/share/epic5/help/6_Functions/index
++usr/share/epic5/help/6_Functions/indextoitem
++usr/share/epic5/help/6_Functions/indextoword
++usr/share/epic5/help/6_Functions/info
++usr/share/epic5/help/6_Functions/insert
++usr/share/epic5/help/6_Functions/insertw
++usr/share/epic5/help/6_Functions/iptolong
++usr/share/epic5/help/6_Functions/iptoname
++usr/share/epic5/help/6_Functions/irclib
++usr/share/epic5/help/6_Functions/isalpha
++usr/share/epic5/help/6_Functions/isaway
++usr/share/epic5/help/6_Functions/ischannel
++usr/share/epic5/help/6_Functions/ischanop
++usr/share/epic5/help/6_Functions/ischanvoice
++usr/share/epic5/help/6_Functions/isconnected
++usr/share/epic5/help/6_Functions/iscurchan
++usr/share/epic5/help/6_Functions/isdigit
++usr/share/epic5/help/6_Functions/isdisplaying
++usr/share/epic5/help/6_Functions/isencrypted
++usr/share/epic5/help/6_Functions/isfilevalid
++usr/share/epic5/help/6_Functions/ishalfop
++usr/share/epic5/help/6_Functions/isnumber
++usr/share/epic5/help/6_Functions/itemtoindex
++usr/share/epic5/help/6_Functions/jn
++usr/share/epic5/help/6_Functions/joinstr
++usr/share/epic5/help/6_Functions/jot
++usr/share/epic5/help/6_Functions/key
++usr/share/epic5/help/6_Functions/killpid
++usr/share/epic5/help/6_Functions/lastlog
++usr/share/epic5/help/6_Functions/lastserver
++usr/share/epic5/help/6_Functions/left
++usr/share/epic5/help/6_Functions/leftpc
++usr/share/epic5/help/6_Functions/leftw
++usr/share/epic5/help/6_Functions/levelwindow
++usr/share/epic5/help/6_Functions/line
++usr/share/epic5/help/6_Functions/listarray
++usr/share/epic5/help/6_Functions/listen
++usr/share/epic5/help/6_Functions/loadinfo
++usr/share/epic5/help/6_Functions/log
++usr/share/epic5/help/6_Functions/log10
++usr/share/epic5/help/6_Functions/logctl
++usr/share/epic5/help/6_Functions/longtoip
++usr/share/epic5/help/6_Functions/mask
++usr/share/epic5/help/6_Functions/match
++usr/share/epic5/help/6_Functions/matchitem
++usr/share/epic5/help/6_Functions/maxlen
++usr/share/epic5/help/6_Functions/metric_time
++usr/share/epic5/help/6_Functions/mid
++usr/share/epic5/help/6_Functions/midw
++usr/share/epic5/help/6_Functions/mkdir
++usr/share/epic5/help/6_Functions/mktime
++usr/share/epic5/help/6_Functions/msar
++usr/share/epic5/help/6_Functions/mychannels
++usr/share/epic5/help/6_Functions/myservers
++usr/share/epic5/help/6_Functions/nametoip
++usr/share/epic5/help/6_Functions/nochops
++usr/share/epic5/help/6_Functions/nohighlight
++usr/share/epic5/help/6_Functions/notify
++usr/share/epic5/help/6_Functions/notifywindows
++usr/share/epic5/help/6_Functions/notw
++usr/share/epic5/help/6_Functions/numarrays
++usr/share/epic5/help/6_Functions/numitems
++usr/share/epic5/help/6_Functions/numlines
++usr/share/epic5/help/6_Functions/numonchannel
++usr/share/epic5/help/6_Functions/numsort
++usr/share/epic5/help/6_Functions/numwords
++usr/share/epic5/help/6_Functions/onchannel
++usr/share/epic5/help/6_Functions/open
++usr/share/epic5/help/6_Functions/outputinfo
++usr/share/epic5/help/6_Functions/pad
++usr/share/epic5/help/6_Functions/pass
++usr/share/epic5/help/6_Functions/pattern
++usr/share/epic5/help/6_Functions/perl
++usr/share/epic5/help/6_Functions/perlcall
++usr/share/epic5/help/6_Functions/perlxcall
++usr/share/epic5/help/6_Functions/pid
++usr/share/epic5/help/6_Functions/pipe
++usr/share/epic5/help/6_Functions/pop
++usr/share/epic5/help/6_Functions/ppid
++usr/share/epic5/help/6_Functions/prefix
++usr/share/epic5/help/6_Functions/printlen
++usr/share/epic5/help/6_Functions/push
++usr/share/epic5/help/6_Functions/querywin
++usr/share/epic5/help/6_Functions/rand
++usr/share/epic5/help/6_Functions/randread
++usr/share/epic5/help/6_Functions/read
++usr/share/epic5/help/6_Functions/realpath
++usr/share/epic5/help/6_Functions/regcomp
++usr/share/epic5/help/6_Functions/regcomp_cs
++usr/share/epic5/help/6_Functions/regerror
++usr/share/epic5/help/6_Functions/regex
++usr/share/epic5/help/6_Functions/regexec
++usr/share/epic5/help/6_Functions/regfree
++usr/share/epic5/help/6_Functions/regmatches
++usr/share/epic5/help/6_Functions/remw
++usr/share/epic5/help/6_Functions/remws
++usr/share/epic5/help/6_Functions/rename
++usr/share/epic5/help/6_Functions/repeat
++usr/share/epic5/help/6_Functions/rest
++usr/share/epic5/help/6_Functions/restw
++usr/share/epic5/help/6_Functions/reverse
++usr/share/epic5/help/6_Functions/revw
++usr/share/epic5/help/6_Functions/rfilter
++usr/share/epic5/help/6_Functions/right
++usr/share/epic5/help/6_Functions/rightw
++usr/share/epic5/help/6_Functions/rigmask
++usr/share/epic5/help/6_Functions/rigtype
++usr/share/epic5/help/6_Functions/rindex
++usr/share/epic5/help/6_Functions/rmatch
++usr/share/epic5/help/6_Functions/rmatchitem
++usr/share/epic5/help/6_Functions/rmdir
++usr/share/epic5/help/6_Functions/rpattern
++usr/share/epic5/help/6_Functions/rsubstr
++usr/share/epic5/help/6_Functions/sar
++usr/share/epic5/help/6_Functions/sedcrypt
++usr/share/epic5/help/6_Functions/serverctl
++usr/share/epic5/help/6_Functions/servergroup
++usr/share/epic5/help/6_Functions/servername
++usr/share/epic5/help/6_Functions/servernick
++usr/share/epic5/help/6_Functions/servernum
++usr/share/epic5/help/6_Functions/serverourname
++usr/share/epic5/help/6_Functions/servertype
++usr/share/epic5/help/6_Functions/serverwin
++usr/share/epic5/help/6_Functions/servports
++usr/share/epic5/help/6_Functions/setitem
++usr/share/epic5/help/6_Functions/shift
++usr/share/epic5/help/6_Functions/sin
++usr/share/epic5/help/6_Functions/sinh
++usr/share/epic5/help/6_Functions/sort
++usr/share/epic5/help/6_Functions/splice
++usr/share/epic5/help/6_Functions/split
++usr/share/epic5/help/6_Functions/srand
++usr/share/epic5/help/6_Functions/ssl
++usr/share/epic5/help/6_Functions/startupfile
++usr/share/epic5/help/6_Functions/stat
++usr/share/epic5/help/6_Functions/status
++usr/share/epic5/help/6_Functions/stime
++usr/share/epic5/help/6_Functions/strftime
++usr/share/epic5/help/6_Functions/strip
++usr/share/epic5/help/6_Functions/stripansi
++usr/share/epic5/help/6_Functions/stripansicodes
++usr/share/epic5/help/6_Functions/stripc
++usr/share/epic5/help/6_Functions/stripcrap
++usr/share/epic5/help/6_Functions/strlen
++usr/share/epic5/help/6_Functions/strtol
++usr/share/epic5/help/6_Functions/substr
++usr/share/epic5/help/6_Functions/symbolctl
++usr/share/epic5/help/6_Functions/tan
++usr/share/epic5/help/6_Functions/tanh
++usr/share/epic5/help/6_Functions/tcl
++usr/share/epic5/help/6_Functions/tdiff
++usr/share/epic5/help/6_Functions/tdiff2
++usr/share/epic5/help/6_Functions/time
++usr/share/epic5/help/6_Functions/timerctl
++usr/share/epic5/help/6_Functions/tobase
++usr/share/epic5/help/6_Functions/tolower
++usr/share/epic5/help/6_Functions/toupper
++usr/share/epic5/help/6_Functions/tow
++usr/share/epic5/help/6_Functions/tr
++usr/share/epic5/help/6_Functions/trunc
++usr/share/epic5/help/6_Functions/ttyname
++usr/share/epic5/help/6_Functions/twiddle
++usr/share/epic5/help/6_Functions/uhc
++usr/share/epic5/help/6_Functions/umask
++usr/share/epic5/help/6_Functions/uname
++usr/share/epic5/help/6_Functions/uniq
++usr/share/epic5/help/6_Functions/unlink
++usr/share/epic5/help/6_Functions/unshift
++usr/share/epic5/help/6_Functions/unsplit
++usr/share/epic5/help/6_Functions/urldecode
++usr/share/epic5/help/6_Functions/urlencode
++usr/share/epic5/help/6_Functions/userhost
++usr/share/epic5/help/6_Functions/usermode
++usr/share/epic5/help/6_Functions/usetitem
++usr/share/epic5/help/6_Functions/utime
++usr/share/epic5/help/6_Functions/version
++usr/share/epic5/help/6_Functions/which
++usr/share/epic5/help/6_Functions/winbound
++usr/share/epic5/help/6_Functions/winchan
++usr/share/epic5/help/6_Functions/wincursorline
++usr/share/epic5/help/6_Functions/windowctl
++usr/share/epic5/help/6_Functions/winlevel
++usr/share/epic5/help/6_Functions/winline
++usr/share/epic5/help/6_Functions/winnam
++usr/share/epic5/help/6_Functions/winnicklist
++usr/share/epic5/help/6_Functions/winnum
++usr/share/epic5/help/6_Functions/winquery
++usr/share/epic5/help/6_Functions/winrefs
++usr/share/epic5/help/6_Functions/winscreen
++usr/share/epic5/help/6_Functions/winscrollbacksize
++usr/share/epic5/help/6_Functions/winserv
++usr/share/epic5/help/6_Functions/winsize
++usr/share/epic5/help/6_Functions/winstatussize
++usr/share/epic5/help/6_Functions/winvisible
++usr/share/epic5/help/6_Functions/word
++usr/share/epic5/help/6_Functions/wordtoindex
++usr/share/epic5/help/6_Functions/write
++usr/share/epic5/help/6_Functions/writeb
++usr/share/epic5/help/6_Functions/xdebug
++usr/share/epic5/help/6_Functions/yn
++usr/share/epic5/help/7_Docs/
++usr/share/epic5/help/7_Docs/7_Docs
++usr/share/epic5/help/7_Docs/About_EPIC
++usr/share/epic5/help/7_Docs/Arrays
++usr/share/epic5/help/7_Docs/Command_Line
++usr/share/epic5/help/7_Docs/Compile_Opts
++usr/share/epic5/help/7_Docs/Copyright
++usr/share/epic5/help/7_Docs/Debugging
++usr/share/epic5/help/7_Docs/Environment
++usr/share/epic5/help/7_Docs/Etiquette
++usr/share/epic5/help/7_Docs/Expressions
++usr/share/epic5/help/7_Docs/IPv6
++usr/share/epic5/help/7_Docs/Introduction
++usr/share/epic5/help/7_Docs/Key_Bindings
++usr/share/epic5/help/7_Docs/New_User
++usr/share/epic5/help/7_Docs/Patterns
++usr/share/epic5/help/7_Docs/Perl
++usr/share/epic5/help/7_Docs/Programming
++usr/share/epic5/help/7_Docs/Security
++usr/share/epic5/help/7_Docs/Serial_Numbers
++usr/share/epic5/help/7_Docs/Server_List
++usr/share/epic5/help/7_Docs/Server_Numerics
++usr/share/epic5/help/7_Docs/Signals
++usr/share/epic5/help/7_Docs/Special_Vars
++usr/share/epic5/help/7_Docs/Status_Line
++usr/share/epic5/help/7_Docs/Text_Highlight
++usr/share/epic5/help/7_Docs/Updates
++usr/share/epic5/help/8_Scripts/
++usr/share/epic5/help/8_Scripts/2.8script
++usr/share/epic5/help/8_Scripts/8_Scripts
++usr/share/epic5/help/8_Scripts/alias
++usr/share/epic5/help/8_Scripts/altchan
++usr/share/epic5/help/8_Scripts/altchan.bj
++usr/share/epic5/help/8_Scripts/autoget
++usr/share/epic5/help/8_Scripts/autokick
++usr/share/epic5/help/8_Scripts/autoop
++usr/share/epic5/help/8_Scripts/away
++usr/share/epic5/help/8_Scripts/basical
++usr/share/epic5/help/8_Scripts/builtins
++usr/share/epic5/help/8_Scripts/columns
++usr/share/epic5/help/8_Scripts/commandqueues
++usr/share/epic5/help/8_Scripts/country
++usr/share/epic5/help/8_Scripts/data_array
++usr/share/epic5/help/8_Scripts/data_struct
++usr/share/epic5/help/8_Scripts/dcc_spacefix
++usr/share/epic5/help/8_Scripts/dcc_timeout
++usr/share/epic5/help/8_Scripts/deban
++usr/share/epic5/help/8_Scripts/debug.irc
++usr/share/epic5/help/8_Scripts/dig
++usr/share/epic5/help/8_Scripts/dns
++usr/share/epic5/help/8_Scripts/edit
++usr/share/epic5/help/8_Scripts/edit_topic
++usr/share/epic5/help/8_Scripts/efnext
++usr/share/epic5/help/8_Scripts/environment
++usr/share/epic5/help/8_Scripts/events
++usr/share/epic5/help/8_Scripts/events.hop
++usr/share/epic5/help/8_Scripts/fake-dcc
++usr/share/epic5/help/8_Scripts/fe
++usr/share/epic5/help/8_Scripts/files
++usr/share/epic5/help/8_Scripts/functions
++usr/share/epic5/help/8_Scripts/genalias
++usr/share/epic5/help/8_Scripts/global
++usr/share/epic5/help/8_Scripts/grep
++usr/share/epic5/help/8_Scripts/guh
++usr/share/epic5/help/8_Scripts/help
++usr/share/epic5/help/8_Scripts/hold_mode
++usr/share/epic5/help/8_Scripts/hybrid6
++usr/share/epic5/help/8_Scripts/imap
++usr/share/epic5/help/8_Scripts/ip-to-int
++usr/share/epic5/help/8_Scripts/ircprimer
++usr/share/epic5/help/8_Scripts/keybinds
++usr/share/epic5/help/8_Scripts/killpath
++usr/share/epic5/help/8_Scripts/kpstat
++usr/share/epic5/help/8_Scripts/langtrans
++usr/share/epic5/help/8_Scripts/less
++usr/share/epic5/help/8_Scripts/less-pipe
++usr/share/epic5/help/8_Scripts/list
++usr/share/epic5/help/8_Scripts/loadformats
++usr/share/epic5/help/8_Scripts/local
++usr/share/epic5/help/8_Scripts/ls
++usr/share/epic5/help/8_Scripts/man
++usr/share/epic5/help/8_Scripts/map
++usr/share/epic5/help/8_Scripts/meta
++usr/share/epic5/help/8_Scripts/meta-compat
++usr/share/epic5/help/8_Scripts/mkpdir
++usr/share/epic5/help/8_Scripts/more
++usr/share/epic5/help/8_Scripts/motd
++usr/share/epic5/help/8_Scripts/mudirc
++usr/share/epic5/help/8_Scripts/netsplit
++usr/share/epic5/help/8_Scripts/netsplit.env
++usr/share/epic5/help/8_Scripts/newaway
++usr/share/epic5/help/8_Scripts/newformat
++usr/share/epic5/help/8_Scripts/nicks
++usr/share/epic5/help/8_Scripts/nopaste
++usr/share/epic5/help/8_Scripts/notify
++usr/share/epic5/help/8_Scripts/old-dcc
++usr/share/epic5/help/8_Scripts/paste
++usr/share/epic5/help/8_Scripts/pipe
++usr/share/epic5/help/8_Scripts/prefix
++usr/share/epic5/help/8_Scripts/recursion
++usr/share/epic5/help/8_Scripts/repeat
++usr/share/epic5/help/8_Scripts/revdcc
++usr/share/epic5/help/8_Scripts/scan
++usr/share/epic5/help/8_Scripts/scandir
++usr/share/epic5/help/8_Scripts/screen
++usr/share/epic5/help/8_Scripts/sdiff
++usr/share/epic5/help/8_Scripts/setmail
++usr/share/epic5/help/8_Scripts/silent
++usr/share/epic5/help/8_Scripts/slowcat
++usr/share/epic5/help/8_Scripts/sound
++usr/share/epic5/help/8_Scripts/sping
++usr/share/epic5/help/8_Scripts/starutils
++usr/share/epic5/help/8_Scripts/stat
++usr/share/epic5/help/8_Scripts/status_lag
++usr/share/epic5/help/8_Scripts/suppressmotd
++usr/share/epic5/help/8_Scripts/tabkey
++usr/share/epic5/help/8_Scripts/tabkey.ce
++usr/share/epic5/help/8_Scripts/tabkey.jm
++usr/share/epic5/help/8_Scripts/tabkey.th
++usr/share/epic5/help/8_Scripts/tc
++usr/share/epic5/help/8_Scripts/time
++usr/share/epic5/help/8_Scripts/tls
++usr/share/epic5/help/8_Scripts/utime
++usr/share/epic5/help/8_Scripts/vi-binds
++usr/share/epic5/help/8_Scripts/webster
++usr/share/epic5/help/8_Scripts/window
++usr/share/epic5/help/Makefile
++usr/share/epic5/help/README_FIRST
++usr/share/epic5/script/
++usr/share/epic5/script/2.8script
++usr/share/epic5/script/activity
++usr/share/epic5/script/addset
++usr/share/epic5/script/alloc_dump_summary.sh
++usr/share/epic5/script/altchan
++usr/share/epic5/script/ambig
++usr/share/epic5/script/autoget
++usr/share/epic5/script/autojoin
++usr/share/epic5/script/autoquery
++usr/share/epic5/script/ban
++usr/share/epic5/script/builtins
++usr/share/epic5/script/chanmonitor
++usr/share/epic5/script/commandqueues
++usr/share/epic5/script/country
++usr/share/epic5/script/ctcp
++usr/share/epic5/script/cycle
++usr/share/epic5/script/data_array
++usr/share/epic5/script/data_struct
++usr/share/epic5/script/dcc_ports
++usr/share/epic5/script/debug.irc
++usr/share/epic5/script/dump
++usr/share/epic5/script/edit_topic
++usr/share/epic5/script/epic-crypt-gpg
++usr/share/epic5/script/epic-crypt-gpg-aa
++usr/share/epic5/script/epic.py
++usr/share/epic5/script/files
++usr/share/epic5/script/find_ssl_root_certs
++usr/share/epic5/script/floodprot
++usr/share/epic5/script/functions
++usr/share/epic5/script/global
++usr/share/epic5/script/grep
++usr/share/epic5/script/guh
++usr/share/epic5/script/help
++usr/share/epic5/script/help.irc
++usr/share/epic5/script/highlight
++usr/share/epic5/script/history
++usr/share/epic5/script/history.rb
++usr/share/epic5/script/hold_mode
++usr/share/epic5/script/idlealert
++usr/share/epic5/script/ison
++usr/share/epic5/script/layout
++usr/share/epic5/script/less
++usr/share/epic5/script/less-pipe
++usr/share/epic5/script/loadformats
++usr/share/epic5/script/local.examp
++usr/share/epic5/script/locale
++usr/share/epic5/script/logman
++usr/share/epic5/script/mail
++usr/share/epic5/script/man
++usr/share/epic5/script/map
++usr/share/epic5/script/massmode
++usr/share/epic5/script/meta-compat
++usr/share/epic5/script/motd
++usr/share/epic5/script/netsplit
++usr/share/epic5/script/new_lastlog
++usr/share/epic5/script/newaway
++usr/share/epic5/script/newnick
++usr/share/epic5/script/nickcomp
++usr/share/epic5/script/nopaste
++usr/share/epic5/script/notify
++usr/share/epic5/script/paste
++usr/share/epic5/script/pipe
++usr/share/epic5/script/python
++usr/share/epic5/script/reconnect
++usr/share/epic5/script/rejoin
++usr/share/epic5/script/renumber
++usr/share/epic5/script/revdcc
++usr/share/epic5/script/sasl_auth
++usr/share/epic5/script/save
++usr/share/epic5/script/scan
++usr/share/epic5/script/screen
++usr/share/epic5/script/screen.e
++usr/share/epic5/script/set_color
++usr/share/epic5/script/setmail
++usr/share/epic5/script/shortener.py
++usr/share/epic5/script/shorturl.irc
++usr/share/epic5/script/slowcat
++usr/share/epic5/script/snip
++usr/share/epic5/script/speak.irc
++usr/share/epic5/script/sping
++usr/share/epic5/script/suppressmotd
++usr/share/epic5/script/tabkey.ce
++usr/share/epic5/script/tabkey.jm
++usr/share/epic5/script/tabkey.sjh
++usr/share/epic5/script/tmux_away
++usr/share/epic5/script/topicbar
++usr/share/epic5/script/topicbar.bj
++usr/share/epic5/script/url.irc
++usr/share/epic5/script/userlist
++usr/share/epic5/script/utime
++usr/share/epic5/script/xmsglog
++WARNING:  zero length file usr/share/epic5/help/6_Functions/listarray
++WARNING:  zero length file usr/share/epic5/help/6_Functions/perlcall
++WARNING:  zero length file usr/share/epic5/help/6_Functions/winline
++WARNING:  zero length file usr/share/epic5/help/6_Functions/hookctl
++WARNING:  zero length file usr/share/epic5/help/6_Functions/ftell
++WARNING:  zero length file usr/share/epic5/help/6_Functions/ifindfirst
++WARNING:  zero length file usr/share/epic5/help/6_Functions/encryptparm
++WARNING:  zero length file usr/share/epic5/help/6_Functions/igetitem
++WARNING:  zero length file usr/share/epic5/help/6_Functions/getserial
++WARNING:  zero length file usr/share/epic5/help/6_Functions/fskip
++WARNING:  zero length file usr/share/epic5/help/6_Functions/regcomp
++WARNING:  zero length file usr/share/epic5/help/6_Functions/fix_arglist
++WARNING:  zero length file usr/share/epic5/help/6_Functions/regmatches
++WARNING:  zero length file usr/share/epic5/help/6_Functions/joinstr
++WARNING:  zero length file usr/share/epic5/help/6_Functions/regerror
++WARNING:  zero length file usr/share/epic5/help/6_Functions/isfilevalid
++WARNING:  zero length file usr/share/epic5/help/6_Functions/tcl
++WARNING:  zero length file usr/share/epic5/help/6_Functions/winquery
++WARNING:  zero length file usr/share/epic5/help/6_Functions/ifinditems
++WARNING:  zero length file usr/share/epic5/help/6_Functions/floodinfo
++WARNING:  zero length file usr/share/epic5/help/6_Functions/frewind
++WARNING:  zero length file usr/share/epic5/help/6_Functions/regexec
++WARNING:  zero length file usr/share/epic5/help/6_Functions/getrmatches
++WARNING:  zero length file usr/share/epic5/help/6_Functions/corpattern
++WARNING:  zero length file usr/share/epic5/help/6_Functions/mktime
++WARNING:  zero length file usr/share/epic5/help/6_Functions/getfunctions
++WARNING:  zero length file usr/share/epic5/help/6_Functions/rmatchitem
++WARNING:  zero length file usr/share/epic5/help/6_Functions/asciiq
++WARNING:  zero length file usr/share/epic5/help/6_Functions/regcomp_cs
++WARNING:  zero length file usr/share/epic5/help/6_Functions/xdebug
++WARNING:  zero length file usr/share/epic5/help/6_Functions/fseek
++WARNING:  zero length file usr/share/epic5/help/6_Functions/delitems
++WARNING:  zero length file usr/share/epic5/help/6_Functions/symbolctl
++WARNING:  zero length file usr/share/epic5/help/6_Functions/usetitem
++WARNING:  zero length file usr/share/epic5/help/6_Functions/ferror
++WARNING:  zero length file usr/share/epic5/help/6_Functions/finditems
++WARNING:  zero length file usr/share/epic5/help/6_Functions/regfree
++WARNING:  zero length file usr/share/epic5/help/8_Scripts/status_lag
++WARNING:  zero length file usr/share/epic5/help/8_Scripts/edit_topic
++WARNING:  zero length file usr/share/epic5/help/8_Scripts/loadformats
++WARNING:  zero length file usr/share/epic5/help/8_Scripts/vi-binds
++WARNING:  zero length file usr/share/epic5/help/8_Scripts/setmail
++WARNING:  zero length file usr/share/epic5/help/8_Scripts/grep
++WARNING:  zero length file usr/share/epic5/help/8_Scripts/efnext
++WARNING:  zero length file usr/share/epic5/help/8_Scripts/utime
++WARNING:  zero length file usr/share/epic5/help/8_Scripts/slowcat
++WARNING:  zero length file usr/share/epic5/help/8_Scripts/altchan
++WARNING:  zero length file usr/share/epic5/help/8_Scripts/langtrans
++WARNING:  zero length file usr/share/epic5/help/8_Scripts/dcc_spacefix
++WARNING:  zero length file usr/share/epic5/help/8_Scripts/data_array
++WARNING:  zero length file usr/share/epic5/help/8_Scripts/ip-to-int
++WARNING:  zero length file usr/share/epic5/help/8_Scripts/help
++WARNING:  zero length file usr/share/epic5/help/8_Scripts/sping
++WARNING:  zero length file usr/share/epic5/help/8_Scripts/less-pipe
++WARNING:  zero length file usr/share/epic5/help/8_Scripts/meta-compat
++WARNING:  zero length file usr/share/epic5/help/8_Scripts/tabkey.jm
++WARNING:  zero length file usr/share/epic5/help/8_Scripts/nopaste
++WARNING:  zero length file usr/share/epic5/help/8_Scripts/sdiff
++WARNING:  zero length file usr/share/epic5/help/8_Scripts/mkpdir
++WARNING:  zero length file usr/share/epic5/help/8_Scripts/motd
++WARNING:  zero length file usr/share/epic5/help/8_Scripts/scandir
++WARNING:  zero length file usr/share/epic5/help/8_Scripts/hold_mode
++WARNING:  zero length file usr/share/epic5/help/8_Scripts/autoget
++WARNING:  zero length file usr/share/epic5/help/8_Scripts/tabkey.th
++WARNING:  zero length file usr/share/epic5/help/8_Scripts/data_struct
++WARNING:  zero length file usr/share/epic5/help/8_Scripts/builtins
++WARNING:  zero length file usr/share/epic5/help/8_Scripts/revdcc
++WARNING:  zero length file usr/share/epic5/help/8_Scripts/suppressmotd
++WARNING:  zero length file usr/share/epic5/help/8_Scripts/dcc_timeout
++WARNING:  zero length file usr/share/epic5/help/8_Scripts/scan
++WARNING:  zero length file usr/share/epic5/help/8_Scripts/altchan.bj
++WARNING:  zero length file usr/share/epic5/help/8_Scripts/dns
++WARNING:  zero length file usr/share/epic5/help/8_Scripts/paste
++WARNING:  zero length file usr/share/epic5/help/8_Scripts/dig
++WARNING:  zero length file usr/share/epic5/help/8_Scripts/map
++WARNING:  zero length file usr/share/epic5/help/8_Scripts/tabkey.ce
++WARNING:  zero length file usr/share/epic5/help/8_Scripts/commandqueues
++WARNING:  zero length file usr/share/epic5/help/4_Misc/set/flood_maskuser
++WARNING:  zero length file usr/share/epic5/help/4_Misc/set/flood_ignore
++WARNING:  zero length file usr/share/epic5/help/4_Misc/set/flood_rate_per
++WARNING:  zero length file usr/share/epic5/help/5_Programming/on/server_status
++
++Slackware package /tmp/epic5-2.1.2-x86_64-5.txz created.
++

@@ -1,0 +1,1278 @@
+diff -ruBN /tmp/xpdf/xpdf.SlackBuild /source/xap/xpdf/xpdf.SlackBuild
+--- /tmp/xpdf/xpdf.SlackBuild	2021-01-29 18:32:45.000000000 +0000
++++ /source/xap/xpdf/xpdf.SlackBuild	2021-01-30 00:27:04.000000000 +0000
+@@ -55,7 +55,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ else
+   SLKCFLAGS="-O2"
+   LIBDIRSUFFIX=""
+@@ -88,6 +88,7 @@
+     -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
+     -DCMAKE_INSTALL_PREFIX=/usr \
+     -DLIB_SUFFIX=${LIBDIRSUFFIX} \
++-DCMAKE_INSTALL_LIBDIR=lib$LIBDIRSUFFIX \
+     -DCMAKE_INSTALL_MANDIR=/usr/man \
+     -DCMAKE_BUILD_TYPE=Release \
+     -DXPDFWIDGET_PRINTING=1 \
+diff -ruBN /tmp/xpdf/xpdf.SlackBuild.log /source/xap/xpdf/xpdf.SlackBuild.log
+--- /tmp/xpdf/xpdf.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/xap/xpdf/xpdf.SlackBuild.log	2021-01-30 00:32:31.000000000 +0000
+@@ -0,0 +1,1254 @@
++xpdf-4.03/
++xpdf-4.03/aconf.h.in
++xpdf-4.03/ANNOUNCE
++xpdf-4.03/goo/
++xpdf-4.03/goo/gmem.cc
++xpdf-4.03/goo/parseargs.c
++xpdf-4.03/goo/gmempp.cc
++xpdf-4.03/goo/FixedPoint.h
++xpdf-4.03/goo/parseargs.h
++xpdf-4.03/goo/Trace.cc
++xpdf-4.03/goo/gmempp.h
++xpdf-4.03/goo/CMakeLists.txt
++xpdf-4.03/goo/gfile.h
++xpdf-4.03/goo/GString.h
++xpdf-4.03/goo/GList.h
++xpdf-4.03/goo/GHash.cc
++xpdf-4.03/goo/GHash.h
++xpdf-4.03/goo/GList.cc
++xpdf-4.03/goo/gfile.cc
++xpdf-4.03/goo/GString.cc
++xpdf-4.03/goo/gtypes.h
++xpdf-4.03/goo/gmem.h
++xpdf-4.03/goo/Trace.h
++xpdf-4.03/goo/FixedPoint.cc
++xpdf-4.03/goo/GMutex.h
++xpdf-4.03/CHANGES
++xpdf-4.03/CMakeLists.txt
++xpdf-4.03/INSTALL
++xpdf-4.03/xpdf/
++xpdf-4.03/xpdf/OptionalContent.cc
++xpdf-4.03/xpdf/SecurityHandler.h
++xpdf-4.03/xpdf/PDFDoc.cc
++xpdf-4.03/xpdf/Parser.cc
++xpdf-4.03/xpdf/Dict.cc
++xpdf-4.03/xpdf/pdfimages.cc
++xpdf-4.03/xpdf/Lexer.cc
++xpdf-4.03/xpdf/pdftopng.cc
++xpdf-4.03/xpdf/Array.h
++xpdf-4.03/xpdf/Error.h
++xpdf-4.03/xpdf/PDFCore.cc
++xpdf-4.03/xpdf/TextOutputDev.h
++xpdf-4.03/xpdf/PSOutputDev.h
++xpdf-4.03/xpdf/Gfx.cc
++xpdf-4.03/xpdf/pdftoppm.cc
++xpdf-4.03/xpdf/AcroForm.cc
++xpdf-4.03/xpdf/BuiltinFont.cc
++xpdf-4.03/xpdf/pdftohtml.cc
++xpdf-4.03/xpdf/CharCodeToUnicode.h
++xpdf-4.03/xpdf/TextString.h
++xpdf-4.03/xpdf/SecurityHandler.cc
++xpdf-4.03/xpdf/ErrorCodes.h
++xpdf-4.03/xpdf/GfxState.cc
++xpdf-4.03/xpdf/CharCodeToUnicode.cc
++xpdf-4.03/xpdf/OptionalContent.h
++xpdf-4.03/xpdf/OutputDev.h
++xpdf-4.03/xpdf/UTF8.cc
++xpdf-4.03/xpdf/JPXStream.cc
++xpdf-4.03/xpdf/XFAScanner.h
++xpdf-4.03/xpdf/TileCompositor.cc
++xpdf-4.03/xpdf/Stream-CCITT.h
++xpdf-4.03/xpdf/PDF417Barcode.cc
++xpdf-4.03/xpdf/GfxFont.h
++xpdf-4.03/xpdf/HTMLGen.h
++xpdf-4.03/xpdf/PDFDocEncoding.h
++xpdf-4.03/xpdf/Parser.h
++xpdf-4.03/xpdf/ShadingImage.cc
++xpdf-4.03/xpdf/Gfx.h
++xpdf-4.03/xpdf/Decrypt.cc
++xpdf-4.03/xpdf/XRef.h
++xpdf-4.03/xpdf/pdftops.cc
++xpdf-4.03/xpdf/PDFDoc.h
++xpdf-4.03/xpdf/Outline.h
++xpdf-4.03/xpdf/TileMap.h
++xpdf-4.03/xpdf/pdffonts.cc
++xpdf-4.03/xpdf/JArithmeticDecoder.h
++xpdf-4.03/xpdf/Annot.h
++xpdf-4.03/xpdf/pdftotext.cc
++xpdf-4.03/xpdf/XFAScanner.cc
++xpdf-4.03/xpdf/Function.h
++xpdf-4.03/xpdf/Decrypt.h
++xpdf-4.03/xpdf/Object.cc
++xpdf-4.03/xpdf/PDF417Barcode.h
++xpdf-4.03/xpdf/UnicodeRemapping.cc
++xpdf-4.03/xpdf/ShadingImage.h
++xpdf-4.03/xpdf/PDFDocEncoding.cc
++xpdf-4.03/xpdf/JBIG2Stream.cc
++xpdf-4.03/xpdf/CMakeLists.txt
++xpdf-4.03/xpdf/GfxFont.cc
++xpdf-4.03/xpdf/TileMap.cc
++xpdf-4.03/xpdf/XRef.cc
++xpdf-4.03/xpdf/UnicodeMapTables.h
++xpdf-4.03/xpdf/GlobalParams.h
++xpdf-4.03/xpdf/Stream.h
++xpdf-4.03/xpdf/Annot.cc
++xpdf-4.03/xpdf/GlobalParams.cc
++xpdf-4.03/xpdf/pdfinfo.cc
++xpdf-4.03/xpdf/GfxState.h
++xpdf-4.03/xpdf/Page.cc
++xpdf-4.03/xpdf/BuiltinFontTables.cc
++xpdf-4.03/xpdf/UnicodeMap.h
++xpdf-4.03/xpdf/Stream.cc
++xpdf-4.03/xpdf/PDFCore.h
++xpdf-4.03/xpdf/CMap.cc
++xpdf-4.03/xpdf/PSTokenizer.h
++xpdf-4.03/xpdf/WebFont.h
++xpdf-4.03/xpdf/Page.h
++xpdf-4.03/xpdf/Catalog.h
++xpdf-4.03/xpdf/CharTypes.h
++xpdf-4.03/xpdf/CMap.h
++xpdf-4.03/xpdf/Object.h
++xpdf-4.03/xpdf/Link.h
++xpdf-4.03/xpdf/Catalog.cc
++xpdf-4.03/xpdf/DisplayState.cc
++xpdf-4.03/xpdf/CompactFontTables.h
++xpdf-4.03/xpdf/AcroForm.h
++xpdf-4.03/xpdf/UTF8.h
++xpdf-4.03/xpdf/BuiltinFont.h
++xpdf-4.03/xpdf/SplashOutputDev.cc
++xpdf-4.03/xpdf/UnicodeTypeTable.h
++xpdf-4.03/xpdf/PreScanOutputDev.h
++xpdf-4.03/xpdf/pdfdetach.cc
++xpdf-4.03/xpdf/Zoox.h
++xpdf-4.03/xpdf/PreScanOutputDev.cc
++xpdf-4.03/xpdf/PSOutputDev.cc
++xpdf-4.03/xpdf/UnicodeRemapping.h
++xpdf-4.03/xpdf/NameToCharCode.cc
++xpdf-4.03/xpdf/JBIG2Stream.h
++xpdf-4.03/xpdf/config.h
++xpdf-4.03/xpdf/OutputDev.cc
++xpdf-4.03/xpdf/TileCache.h
++xpdf-4.03/xpdf/Outline.cc
++xpdf-4.03/xpdf/SplashOutputDev.h
++xpdf-4.03/xpdf/UnicodeTypeTable.cc
++xpdf-4.03/xpdf/ImageOutputDev.h
++xpdf-4.03/xpdf/Lexer.h
++xpdf-4.03/xpdf/TileCache.cc
++xpdf-4.03/xpdf/Function.cc
++xpdf-4.03/xpdf/HTMLGen.cc
++xpdf-4.03/xpdf/JArithmeticDecoder.cc
++xpdf-4.03/xpdf/FontEncodingTables.h
++xpdf-4.03/xpdf/UnicodeMap.cc
++xpdf-4.03/xpdf/Array.cc
++xpdf-4.03/xpdf/ImageOutputDev.cc
++xpdf-4.03/xpdf/JPXStream.h
++xpdf-4.03/xpdf/PSTokenizer.cc
++xpdf-4.03/xpdf/TileCompositor.h
++xpdf-4.03/xpdf/NameToCharCode.h
++xpdf-4.03/xpdf/Zoox.cc
++xpdf-4.03/xpdf/FontEncodingTables.cc
++xpdf-4.03/xpdf/WebFont.cc
++xpdf-4.03/xpdf/Link.cc
++xpdf-4.03/xpdf/NameToUnicodeTable.h
++xpdf-4.03/xpdf/Error.cc
++xpdf-4.03/xpdf/DisplayState.h
++xpdf-4.03/xpdf/Dict.h
++xpdf-4.03/xpdf/TextString.cc
++xpdf-4.03/xpdf/BuiltinFontTables.h
++xpdf-4.03/xpdf/TextOutputDev.cc
++xpdf-4.03/splash/
++xpdf-4.03/splash/SplashScreen.cc
++xpdf-4.03/splash/SplashFontFile.h
++xpdf-4.03/splash/SplashClip.cc
++xpdf-4.03/splash/SplashXPath.cc
++xpdf-4.03/splash/Splash.h
++xpdf-4.03/splash/SplashBitmap.h
++xpdf-4.03/splash/SplashClip.h
++xpdf-4.03/splash/SplashXPath.h
++xpdf-4.03/splash/SplashFTFont.h
++xpdf-4.03/splash/SplashFTFontEngine.cc
++xpdf-4.03/splash/SplashXPathScanner.cc
++xpdf-4.03/splash/SplashFont.h
++xpdf-4.03/splash/SplashFTFontFile.cc
++xpdf-4.03/splash/CMakeLists.txt
++xpdf-4.03/splash/SplashBitmap.cc
++xpdf-4.03/splash/SplashFTFontEngine.h
++xpdf-4.03/splash/SplashFTFont.cc
++xpdf-4.03/splash/SplashGlyphBitmap.h
++xpdf-4.03/splash/SplashMath.h
++xpdf-4.03/splash/SplashState.h
++xpdf-4.03/splash/SplashErrorCodes.h
++xpdf-4.03/splash/SplashFontFile.cc
++xpdf-4.03/splash/SplashFontFileID.h
++xpdf-4.03/splash/SplashPath.cc
++xpdf-4.03/splash/SplashState.cc
++xpdf-4.03/splash/SplashFont.cc
++xpdf-4.03/splash/SplashPattern.cc
++xpdf-4.03/splash/SplashXPathScanner.h
++xpdf-4.03/splash/SplashFontFileID.cc
++xpdf-4.03/splash/SplashTypes.h
++xpdf-4.03/splash/SplashFontEngine.cc
++xpdf-4.03/splash/SplashPattern.h
++xpdf-4.03/splash/SplashFontEngine.h
++xpdf-4.03/splash/SplashFTFontFile.h
++xpdf-4.03/splash/SplashScreen.h
++xpdf-4.03/splash/SplashPath.h
++xpdf-4.03/splash/Splash.cc
++xpdf-4.03/COPYING3
++xpdf-4.03/doc/
++xpdf-4.03/doc/pdftotext.1
++xpdf-4.03/doc/pdfdetach.1
++xpdf-4.03/doc/pdftohtml.cat
++xpdf-4.03/doc/pdftopng.1
++xpdf-4.03/doc/sample-xpdfrc
++xpdf-4.03/doc/xpdfrc.5
++xpdf-4.03/doc/pdffonts.cat
++xpdf-4.03/doc/pdftotext.cat
++xpdf-4.03/doc/pdftopng.cat
++xpdf-4.03/doc/pdftoppm.cat
++xpdf-4.03/doc/pdftops.1
++xpdf-4.03/doc/pdfimages.cat
++xpdf-4.03/doc/pdffonts.1
++xpdf-4.03/doc/xpdf.1
++xpdf-4.03/doc/pdftoppm.1
++xpdf-4.03/doc/xpdf.cat
++xpdf-4.03/doc/pdfimages.1
++xpdf-4.03/doc/xpdfrc.cat
++xpdf-4.03/doc/pdftops.cat
++xpdf-4.03/doc/pdftohtml.1
++xpdf-4.03/doc/pdfinfo.cat
++xpdf-4.03/doc/pdfdetach.cat
++xpdf-4.03/doc/pdfinfo.1
++xpdf-4.03/aconf2.h
++xpdf-4.03/cmake-config.txt
++xpdf-4.03/COPYING
++xpdf-4.03/README
++xpdf-4.03/fofi/
++xpdf-4.03/fofi/FoFiType1C.cc
++xpdf-4.03/fofi/FoFiEncodings.h
++xpdf-4.03/fofi/FoFiBase.h
++xpdf-4.03/fofi/FoFiIdentifier.h
++xpdf-4.03/fofi/FoFiEncodings.cc
++xpdf-4.03/fofi/FoFiTrueType.h
++xpdf-4.03/fofi/FoFiBase.cc
++xpdf-4.03/fofi/FoFiType1.cc
++xpdf-4.03/fofi/CMakeLists.txt
++xpdf-4.03/fofi/FoFiTrueType.cc
++xpdf-4.03/fofi/FoFiType1.h
++xpdf-4.03/fofi/FoFiIdentifier.cc
++xpdf-4.03/fofi/FoFiType1C.h
++xpdf-4.03/xpdf-qt/
++xpdf-4.03/xpdf-qt/XpdfViewer.h
++xpdf-4.03/xpdf-qt/zoomIn.svg
++xpdf-4.03/xpdf-qt/forward.svg
++xpdf-4.03/xpdf-qt/fitPage.svg
++xpdf-4.03/xpdf-qt/XpdfViewer.cc
++xpdf-4.03/xpdf-qt/selectModeBlock.svg
++xpdf-4.03/xpdf-qt/XpdfWidget.h
++xpdf-4.03/xpdf-qt/indicator-icon-err0.svg
++xpdf-4.03/xpdf-qt/findPrevious.svg
++xpdf-4.03/xpdf-qt/back.svg
++xpdf-4.03/xpdf-qt/findSettings.svg
++xpdf-4.03/xpdf-qt/icons.qrc
++xpdf-4.03/xpdf-qt/XpdfWidgetPrint.h
++xpdf-4.03/xpdf-qt/XpdfApp.h
++xpdf-4.03/xpdf-qt/XpdfApp.cc
++xpdf-4.03/xpdf-qt/indicator-icon1.svg
++xpdf-4.03/xpdf-qt/indicator-icon0.svg
++xpdf-4.03/xpdf-qt/fitPageOn.svg
++xpdf-4.03/xpdf-qt/xpdf-icon.ico
++xpdf-4.03/xpdf-qt/indicator-icon3.svg
++xpdf-4.03/xpdf-qt/XpdfWidgetPrint.cc
++xpdf-4.03/xpdf-qt/indicator-icon-err3.svg
++xpdf-4.03/xpdf-qt/QtPDFCore.h
++xpdf-4.03/xpdf-qt/indicator-icon7.svg
++xpdf-4.03/xpdf-qt/CMakeLists.txt
++xpdf-4.03/xpdf-qt/indicator-icon-err7.svg
++xpdf-4.03/xpdf-qt/indicator-icon-err5.svg
++xpdf-4.03/xpdf-qt/indicator-icon-err2.svg
++xpdf-4.03/xpdf-qt/xpdf-icon.svg
++xpdf-4.03/xpdf-qt/fitWidthOn.svg
++xpdf-4.03/xpdf-qt/xpdf.cc
++xpdf-4.03/xpdf-qt/XpdfWidget.cc
++xpdf-4.03/xpdf-qt/xpdf.rc
++xpdf-4.03/xpdf-qt/zoomOut.svg
++xpdf-4.03/xpdf-qt/selectModeLinear.svg
++xpdf-4.03/xpdf-qt/fitWidth.svg
++xpdf-4.03/xpdf-qt/indicator-icon-err1.svg
++xpdf-4.03/xpdf-qt/QtPDFCore.cc
++xpdf-4.03/xpdf-qt/indicator-icon-err6.svg
++xpdf-4.03/xpdf-qt/indicator-icon4.svg
++xpdf-4.03/xpdf-qt/findNext.svg
++xpdf-4.03/xpdf-qt/indicator-icon5.svg
++xpdf-4.03/xpdf-qt/indicator-icon2.svg
++xpdf-4.03/xpdf-qt/toggleSidebar.svg
++xpdf-4.03/xpdf-qt/indicator-icon-err4.svg
++xpdf-4.03/xpdf-qt/indicator-icon6.svg
++Hmm...  Looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|diff -Nur xpdf-4.00.orig/doc/sample-xpdfrc xpdf-4.00/doc/sample-xpdfrc
++|--- xpdf-4.00.orig/doc/sample-xpdfrc	2017-08-08 18:22:50.000000000 -0500
++|+++ xpdf-4.00/doc/sample-xpdfrc	2017-09-25 23:39:20.010485577 -0500
++--------------------------
++patching file doc/sample-xpdfrc
++Using Plan A...
++Hunk #1 succeeded at 29.
++done
++CMake Deprecation Warning at CMakeLists.txt:11 (cmake_minimum_required):
++  Compatibility with CMake < 2.8.12 will be removed from a future version of
++  CMake.
++
++  Update the VERSION argument <min> value or use a ...<max> suffix to tell
++  CMake that the project does not need compatibility with older versions.
++
++
++-- The C compiler identification is GNU 10.2.0
++-- The CXX compiler identification is GNU 10.2.0
++-- Detecting C compiler ABI info
++-- Detecting C compiler ABI info - done
++-- Check for working C compiler: /usr/bin/cc - skipped
++-- Detecting C compile features
++-- Detecting C compile features - done
++-- Detecting CXX compiler ABI info
++-- Detecting CXX compiler ABI info - done
++-- Check for working CXX compiler: /usr/bin/c++ - skipped
++-- Detecting CXX compile features
++-- Detecting CXX compile features - done
++-- Looking for mkstemp
++-- Looking for mkstemp - found
++-- Looking for mkstemps
++-- Looking for mkstemps - found
++-- Looking for popen
++-- Looking for popen - found
++-- Performing Test HAVE_STD_SORT
++-- Performing Test HAVE_STD_SORT - Success
++-- Looking for fseeko
++-- Looking for fseeko - found
++-- Looking for fseek64
++-- Looking for fseek64 - not found
++-- Looking for _fseeki64
++-- Looking for _fseeki64 - not found
++-- Found FreeType (old-style includes): /usr/lib/libfreetype.so
++-- Found ZLIB: /usr/lib/libz.so (found version "1.2.11") 
++-- Found PNG: /usr/lib/libpng.so (found version "1.6.37") 
++-- Qt5 found
++-- Found Cups: /usr/lib/libcups.so (found version "2.3.3") 
++-- Found fontconfig
++-- Looking for pthread.h
++-- Looking for pthread.h - found
++-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
++-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
++-- Found Threads: TRUE  
++-- Configuring done
++-- Generating done
++CMake Warning:
++  Manually-specified variables were not used by the project:
++
++    LIB_SUFFIX
++
++
++-- Build files have been written to: /tmp/xpdf-4.03/build
++Scanning dependencies of target goo_objs
++Scanning dependencies of target fofi_objs
++Scanning dependencies of target splash_objs
++[  1%] Building CXX object goo/CMakeFiles/goo_objs.dir/FixedPoint.cc.o
++[  2%] Building CXX object fofi/CMakeFiles/fofi_objs.dir/FoFiBase.cc.o
++[  3%] Building CXX object splash/CMakeFiles/splash_objs.dir/Splash.cc.o
++[  4%] Building CXX object goo/CMakeFiles/goo_objs.dir/GHash.cc.o
++[  5%] Building CXX object fofi/CMakeFiles/fofi_objs.dir/FoFiEncodings.cc.o
++[  5%] Building CXX object fofi/CMakeFiles/fofi_objs.dir/FoFiIdentifier.cc.o
++[  6%] Building CXX object goo/CMakeFiles/goo_objs.dir/GList.cc.o
++[  6%] Building CXX object goo/CMakeFiles/goo_objs.dir/GString.cc.o
++In member function ‘void GString::resize(int)’,
++    inlined from ‘void GString::resize(int)’ at /tmp/xpdf-4.03/goo/GString.cc:112:13,
++    inlined from ‘GString::GString(const char*)’ at /tmp/xpdf-4.03/goo/GString.cc:143:9:
++/tmp/xpdf-4.03/goo/GString.cc:123:13: warning: ‘void* memcpy(void*, const void*, size_t)’ writing between 18446744071562067968 and 18446744073709551615 bytes into a region of size between 0 and 18446744073709551615 [-Wstringop-overflow=]
++  123 |       memcpy(s1, s, length1);
++      |       ~~~~~~^~~~~~~~~~~~~~~~
++/tmp/xpdf-4.03/goo/GString.cc: In constructor ‘GString::GString(const char*)’:
++/tmp/xpdf-4.03/goo/GString.cc:121:32: note: at offset 0 to an object allocated by ‘operator new []’ here
++  121 |     s1 = new char[size(length1)];
++      |                                ^
++In member function ‘void GString::resize(int)’,
++    inlined from ‘void GString::resize(int)’ at /tmp/xpdf-4.03/goo/GString.cc:112:13,
++    inlined from ‘GString::GString(const char*)’ at /tmp/xpdf-4.03/goo/GString.cc:143:9:
++/tmp/xpdf-4.03/goo/GString.cc:121:32: warning: argument 1 range [18446744071562067976, 18446744073709551615] exceeds maximum object size 9223372036854775807 [-Walloc-size-larger-than=]
++/tmp/xpdf-4.03/goo/GString.cc: In constructor ‘GString::GString(const char*)’:
++/tmp/xpdf-4.03/goo/GString.cc:121:32: note: in a call to built-in allocation function ‘void* operator new [](long unsigned int)’
++In member function ‘void GString::resize(int)’,
++    inlined from ‘void GString::resize(int)’ at /tmp/xpdf-4.03/goo/GString.cc:112:13,
++    inlined from ‘GString::GString(const char*, int)’ at /tmp/xpdf-4.03/goo/GString.cc:149:9:
++/tmp/xpdf-4.03/goo/GString.cc:123:13: warning: ‘void* memcpy(void*, const void*, size_t)’ writing between 18446744071562067968 and 18446744073709551615 bytes into a region of size between 0 and 18446744073709551615 [-Wstringop-overflow=]
++  123 |       memcpy(s1, s, length1);
++      |       ~~~~~~^~~~~~~~~~~~~~~~
++/tmp/xpdf-4.03/goo/GString.cc: In constructor ‘GString::GString(const char*, int)’:
++/tmp/xpdf-4.03/goo/GString.cc:121:32: note: at offset 0 to an object allocated by ‘operator new []’ here
++  121 |     s1 = new char[size(length1)];
++      |                                ^
++In member function ‘void GString::resize(int)’,
++    inlined from ‘void GString::resize(int)’ at /tmp/xpdf-4.03/goo/GString.cc:112:13,
++    inlined from ‘GString::GString(const char*, int)’ at /tmp/xpdf-4.03/goo/GString.cc:149:9:
++/tmp/xpdf-4.03/goo/GString.cc:121:32: warning: argument 1 range [18446744071562067976, 18446744073709551615] exceeds maximum object size 9223372036854775807 [-Walloc-size-larger-than=]
++/tmp/xpdf-4.03/goo/GString.cc: In constructor ‘GString::GString(const char*, int)’:
++/tmp/xpdf-4.03/goo/GString.cc:121:32: note: in a call to built-in allocation function ‘void* operator new [](long unsigned int)’
++In member function ‘void GString::resize(int)’,
++    inlined from ‘void GString::resize(int)’ at /tmp/xpdf-4.03/goo/GString.cc:112:13,
++    inlined from ‘GString::GString(GString*, int, int)’ at /tmp/xpdf-4.03/goo/GString.cc:156:9:
++/tmp/xpdf-4.03/goo/GString.cc:123:13: warning: ‘void* memcpy(void*, const void*, size_t)’ writing between 18446744071562067968 and 18446744073709551615 bytes into a region of size between 0 and 18446744073709551615 [-Wstringop-overflow=]
++  123 |       memcpy(s1, s, length1);
++      |       ~~~~~~^~~~~~~~~~~~~~~~
++/tmp/xpdf-4.03/goo/GString.cc: In constructor ‘GString::GString(GString*, int, int)’:
++/tmp/xpdf-4.03/goo/GString.cc:121:32: note: at offset 0 to an object allocated by ‘operator new []’ here
++  121 |     s1 = new char[size(length1)];
++      |                                ^
++In member function ‘void GString::resize(int)’,
++    inlined from ‘void GString::resize(int)’ at /tmp/xpdf-4.03/goo/GString.cc:112:13,
++    inlined from ‘GString::GString(GString*, int, int)’ at /tmp/xpdf-4.03/goo/GString.cc:156:9:
++/tmp/xpdf-4.03/goo/GString.cc:121:32: warning: argument 1 range [18446744071562067976, 18446744073709551615] exceeds maximum object size 9223372036854775807 [-Walloc-size-larger-than=]
++/tmp/xpdf-4.03/goo/GString.cc: In constructor ‘GString::GString(GString*, int, int)’:
++/tmp/xpdf-4.03/goo/GString.cc:121:32: note: in a call to built-in allocation function ‘void* operator new [](long unsigned int)’
++In member function ‘void GString::resize(int)’,
++    inlined from ‘void GString::resize(int)’ at /tmp/xpdf-4.03/goo/GString.cc:112:13,
++    inlined from ‘GString::GString(GString*)’ at /tmp/xpdf-4.03/goo/GString.cc:163:9:
++/tmp/xpdf-4.03/goo/GString.cc:123:13: warning: ‘void* memcpy(void*, const void*, size_t)’ writing between 18446744071562067968 and 18446744073709551615 bytes into a region of size between 0 and 18446744073709551615 [-Wstringop-overflow=]
++  123 |       memcpy(s1, s, length1);
++      |       ~~~~~~^~~~~~~~~~~~~~~~
++/tmp/xpdf-4.03/goo/GString.cc: In constructor ‘GString::GString(GString*)’:
++/tmp/xpdf-4.03/goo/GString.cc:121:32: note: at offset 0 to an object allocated by ‘operator new []’ here
++  121 |     s1 = new char[size(length1)];
++      |                                ^
++In member function ‘void GString::resize(int)’,
++    inlined from ‘void GString::resize(int)’ at /tmp/xpdf-4.03/goo/GString.cc:112:13,
++    inlined from ‘GString::GString(GString*)’ at /tmp/xpdf-4.03/goo/GString.cc:163:9:
++/tmp/xpdf-4.03/goo/GString.cc:121:32: warning: argument 1 range [18446744071562067976, 18446744073709551615] exceeds maximum object size 9223372036854775807 [-Walloc-size-larger-than=]
++/tmp/xpdf-4.03/goo/GString.cc: In constructor ‘GString::GString(GString*)’:
++/tmp/xpdf-4.03/goo/GString.cc:121:32: note: in a call to built-in allocation function ‘void* operator new [](long unsigned int)’
++[  7%] Building CXX object fofi/CMakeFiles/fofi_objs.dir/FoFiTrueType.cc.o
++[  8%] Building CXX object goo/CMakeFiles/goo_objs.dir/gfile.cc.o
++[  9%] Building CXX object goo/CMakeFiles/goo_objs.dir/gmem.cc.o
++[ 10%] Building CXX object goo/CMakeFiles/goo_objs.dir/gmempp.cc.o
++[ 10%] Building C object goo/CMakeFiles/goo_objs.dir/parseargs.c.o
++[ 11%] Building CXX object goo/CMakeFiles/goo_objs.dir/Trace.cc.o
++[ 11%] Built target goo_objs
++Scanning dependencies of target xpdf_objs
++[ 12%] Building CXX object xpdf/CMakeFiles/xpdf_objs.dir/AcroForm.cc.o
++[ 13%] Building CXX object fofi/CMakeFiles/fofi_objs.dir/FoFiType1.cc.o
++[ 14%] Building CXX object fofi/CMakeFiles/fofi_objs.dir/FoFiType1C.cc.o
++[ 15%] Building CXX object xpdf/CMakeFiles/xpdf_objs.dir/Annot.cc.o
++[ 16%] Building CXX object splash/CMakeFiles/splash_objs.dir/SplashBitmap.cc.o
++[ 17%] Building CXX object splash/CMakeFiles/splash_objs.dir/SplashClip.cc.o
++[ 17%] Built target fofi_objs
++Scanning dependencies of target xpdf_widget_objs
++[ 18%] Building CXX object xpdf/CMakeFiles/xpdf_widget_objs.dir/DisplayState.cc.o
++[ 18%] Building CXX object xpdf/CMakeFiles/xpdf_objs.dir/Array.cc.o
++[ 18%] Building CXX object splash/CMakeFiles/splash_objs.dir/SplashFTFont.cc.o
++[ 19%] Building CXX object xpdf/CMakeFiles/xpdf_objs.dir/BuiltinFont.cc.o
++[ 20%] Building CXX object xpdf/CMakeFiles/xpdf_objs.dir/BuiltinFontTables.cc.o
++[ 21%] Building CXX object xpdf/CMakeFiles/xpdf_widget_objs.dir/PDFCore.cc.o
++[ 22%] Building CXX object splash/CMakeFiles/splash_objs.dir/SplashFTFontEngine.cc.o
++[ 23%] Building CXX object xpdf/CMakeFiles/xpdf_objs.dir/Catalog.cc.o
++[ 24%] Building CXX object splash/CMakeFiles/splash_objs.dir/SplashFTFontFile.cc.o
++[ 24%] Building CXX object splash/CMakeFiles/splash_objs.dir/SplashFont.cc.o
++[ 25%] Building CXX object splash/CMakeFiles/splash_objs.dir/SplashFontEngine.cc.o
++[ 25%] Building CXX object xpdf/CMakeFiles/xpdf_objs.dir/CharCodeToUnicode.cc.o
++[ 26%] Building CXX object splash/CMakeFiles/splash_objs.dir/SplashFontFile.cc.o
++[ 27%] Building CXX object splash/CMakeFiles/splash_objs.dir/SplashFontFileID.cc.o
++[ 27%] Building CXX object splash/CMakeFiles/splash_objs.dir/SplashPath.cc.o
++[ 28%] Building CXX object splash/CMakeFiles/splash_objs.dir/SplashPattern.cc.o
++[ 28%] Building CXX object xpdf/CMakeFiles/xpdf_widget_objs.dir/PreScanOutputDev.cc.o
++[ 29%] Building CXX object splash/CMakeFiles/splash_objs.dir/SplashScreen.cc.o
++[ 30%] Building CXX object xpdf/CMakeFiles/xpdf_objs.dir/CMap.cc.o
++[ 31%] Building CXX object xpdf/CMakeFiles/xpdf_widget_objs.dir/PSOutputDev.cc.o
++[ 32%] Building CXX object xpdf/CMakeFiles/xpdf_objs.dir/Decrypt.cc.o
++[ 33%] Building CXX object splash/CMakeFiles/splash_objs.dir/SplashState.cc.o
++[ 33%] Building CXX object splash/CMakeFiles/splash_objs.dir/SplashXPath.cc.o
++[ 34%] Building CXX object splash/CMakeFiles/splash_objs.dir/SplashXPathScanner.cc.o
++[ 35%] Building CXX object xpdf/CMakeFiles/xpdf_objs.dir/Dict.cc.o
++[ 35%] Building CXX object xpdf/CMakeFiles/xpdf_objs.dir/Error.cc.o
++[ 36%] Building CXX object xpdf/CMakeFiles/xpdf_objs.dir/FontEncodingTables.cc.o
++[ 36%] Built target splash_objs
++[ 37%] Building CXX object xpdf/CMakeFiles/xpdf_widget_objs.dir/ShadingImage.cc.o
++[ 38%] Building CXX object xpdf/CMakeFiles/xpdf_objs.dir/Function.cc.o
++/tmp/xpdf-4.03/xpdf/Function.cc: In member function ‘virtual void SampledFunction::transform(double*, double*)’:
++/tmp/xpdf-4.03/xpdf/Function.cc:478:21: warning: ‘e[0]’ may be used uninitialized in this function [-Wmaybe-uninitialized]
++  478 |   idx0 = (idx0 + e[0]) * n;
++      |                  ~~~^
++[ 39%] Building CXX object xpdf/CMakeFiles/xpdf_widget_objs.dir/SplashOutputDev.cc.o
++[ 40%] Building CXX object xpdf/CMakeFiles/xpdf_objs.dir/Gfx.cc.o
++Scanning dependencies of target goo
++[ 40%] Linking CXX static library libgoo.a
++[ 40%] Built target goo
++[ 40%] Building CXX object xpdf/CMakeFiles/xpdf_widget_objs.dir/TextOutputDev.cc.o
++[ 41%] Building CXX object xpdf/CMakeFiles/xpdf_widget_objs.dir/TileCache.cc.o
++[ 42%] Building CXX object xpdf/CMakeFiles/xpdf_widget_objs.dir/TileCompositor.cc.o
++[ 42%] Building CXX object xpdf/CMakeFiles/xpdf_objs.dir/GfxFont.cc.o
++[ 43%] Building CXX object xpdf/CMakeFiles/xpdf_widget_objs.dir/TileMap.cc.o
++[ 44%] Building CXX object xpdf/CMakeFiles/xpdf_objs.dir/GfxState.cc.o
++[ 45%] Building CXX object xpdf/CMakeFiles/xpdf_objs.dir/GlobalParams.cc.o
++[ 45%] Built target xpdf_widget_objs
++Scanning dependencies of target fofi
++[ 45%] Linking CXX static library libfofi.a
++[ 45%] Built target fofi
++Scanning dependencies of target splash
++/tmp/xpdf-4.03/xpdf/GlobalParams.cc: In member function ‘void SysFontList::scanFontconfigFonts()’:
++/tmp/xpdf-4.03/xpdf/GlobalParams.cc:504:11: warning: missing sentinel in function call [-Wformat=]
++  504 |       NULL);
++      |           ^
++/tmp/xpdf-4.03/xpdf/GlobalParams.cc:505:65: warning: missing sentinel in function call [-Wformat=]
++  505 |   objSet = FcObjectSetBuild(FC_FULLNAME, FC_FILE, FC_INDEX, NULL);
++      |                                                                 ^
++[ 45%] Linking CXX static library libsplash.a
++[ 45%] Built target splash
++[ 46%] Building CXX object xpdf/CMakeFiles/xpdf_objs.dir/JArithmeticDecoder.cc.o
++[ 46%] Building CXX object xpdf/CMakeFiles/xpdf_objs.dir/JBIG2Stream.cc.o
++[ 47%] Building CXX object xpdf/CMakeFiles/xpdf_objs.dir/JPXStream.cc.o
++[ 48%] Building CXX object xpdf/CMakeFiles/xpdf_objs.dir/Lexer.cc.o
++[ 49%] Building CXX object xpdf/CMakeFiles/xpdf_objs.dir/Link.cc.o
++[ 49%] Building CXX object xpdf/CMakeFiles/xpdf_objs.dir/NameToCharCode.cc.o
++[ 50%] Building CXX object xpdf/CMakeFiles/xpdf_objs.dir/Object.cc.o
++[ 51%] Building CXX object xpdf/CMakeFiles/xpdf_objs.dir/OptionalContent.cc.o
++[ 52%] Building CXX object xpdf/CMakeFiles/xpdf_objs.dir/Outline.cc.o
++[ 52%] Building CXX object xpdf/CMakeFiles/xpdf_objs.dir/OutputDev.cc.o
++[ 53%] Building CXX object xpdf/CMakeFiles/xpdf_objs.dir/Page.cc.o
++[ 54%] Building CXX object xpdf/CMakeFiles/xpdf_objs.dir/Parser.cc.o
++[ 54%] Building CXX object xpdf/CMakeFiles/xpdf_objs.dir/PDF417Barcode.cc.o
++[ 55%] Building CXX object xpdf/CMakeFiles/xpdf_objs.dir/PDFDoc.cc.o
++[ 56%] Building CXX object xpdf/CMakeFiles/xpdf_objs.dir/PDFDocEncoding.cc.o
++[ 57%] Building CXX object xpdf/CMakeFiles/xpdf_objs.dir/PSTokenizer.cc.o
++[ 57%] Building CXX object xpdf/CMakeFiles/xpdf_objs.dir/SecurityHandler.cc.o
++[ 58%] Building CXX object xpdf/CMakeFiles/xpdf_objs.dir/Stream.cc.o
++[ 59%] Building CXX object xpdf/CMakeFiles/xpdf_objs.dir/TextString.cc.o
++[ 60%] Building CXX object xpdf/CMakeFiles/xpdf_objs.dir/UnicodeMap.cc.o
++[ 60%] Building CXX object xpdf/CMakeFiles/xpdf_objs.dir/UnicodeRemapping.cc.o
++[ 61%] Building CXX object xpdf/CMakeFiles/xpdf_objs.dir/UnicodeTypeTable.cc.o
++[ 62%] Building CXX object xpdf/CMakeFiles/xpdf_objs.dir/UTF8.cc.o
++[ 63%] Building CXX object xpdf/CMakeFiles/xpdf_objs.dir/XFAScanner.cc.o
++[ 63%] Building CXX object xpdf/CMakeFiles/xpdf_objs.dir/XRef.cc.o
++[ 64%] Building CXX object xpdf/CMakeFiles/xpdf_objs.dir/Zoox.cc.o
++[ 64%] Built target xpdf_objs
++Scanning dependencies of target pdftoppm
++Scanning dependencies of target pdftohtml
++Scanning dependencies of target pdftopng
++[ 65%] Building CXX object xpdf/CMakeFiles/pdftoppm.dir/ShadingImage.cc.o
++[ 66%] Building CXX object xpdf/CMakeFiles/pdftopng.dir/ShadingImage.cc.o
++[ 67%] Building CXX object xpdf/CMakeFiles/pdftohtml.dir/HTMLGen.cc.o
++[ 67%] Building CXX object xpdf/CMakeFiles/pdftohtml.dir/ShadingImage.cc.o
++[ 67%] Building CXX object xpdf/CMakeFiles/pdftoppm.dir/SplashOutputDev.cc.o
++[ 67%] Building CXX object xpdf/CMakeFiles/pdftopng.dir/SplashOutputDev.cc.o
++[ 68%] Building CXX object xpdf/CMakeFiles/pdftohtml.dir/SplashOutputDev.cc.o
++[ 69%] Building CXX object xpdf/CMakeFiles/pdftoppm.dir/pdftoppm.cc.o
++[ 70%] Building CXX object xpdf/CMakeFiles/pdftopng.dir/pdftopng.cc.o
++[ 71%] Linking CXX executable pdftoppm
++[ 72%] Linking CXX executable pdftopng
++[ 72%] Built target pdftoppm
++Scanning dependencies of target pdftotext
++[ 73%] Building CXX object xpdf/CMakeFiles/pdftotext.dir/TextOutputDev.cc.o
++[ 74%] Building CXX object xpdf/CMakeFiles/pdftohtml.dir/TextOutputDev.cc.o
++[ 74%] Built target pdftopng
++Scanning dependencies of target pdfinfo
++[ 75%] Building CXX object xpdf/CMakeFiles/pdfinfo.dir/pdfinfo.cc.o
++[ 76%] Linking CXX executable pdfinfo
++[ 76%] Built target pdfinfo
++Scanning dependencies of target pdfdetach
++[ 77%] Building CXX object xpdf/CMakeFiles/pdfdetach.dir/pdfdetach.cc.o
++[ 78%] Linking CXX executable pdfdetach
++[ 78%] Built target pdfdetach
++Scanning dependencies of target pdftops
++[ 79%] Building CXX object xpdf/CMakeFiles/pdftops.dir/PreScanOutputDev.cc.o
++[ 79%] Building CXX object xpdf/CMakeFiles/pdftops.dir/PSOutputDev.cc.o
++[ 80%] Building CXX object xpdf/CMakeFiles/pdftotext.dir/pdftotext.cc.o
++[ 80%] Building CXX object xpdf/CMakeFiles/pdftohtml.dir/WebFont.cc.o
++[ 81%] Linking CXX executable pdftotext
++[ 82%] Building CXX object xpdf/CMakeFiles/pdftohtml.dir/pdftohtml.cc.o
++[ 82%] Built target pdftotext
++[ 83%] Building CXX object xpdf/CMakeFiles/pdftops.dir/ShadingImage.cc.o
++[ 84%] Linking CXX executable pdftohtml
++[ 84%] Built target pdftohtml
++Scanning dependencies of target pdffonts
++[ 84%] Building CXX object xpdf/CMakeFiles/pdffonts.dir/pdffonts.cc.o
++[ 85%] Linking CXX executable pdffonts
++[ 85%] Built target pdffonts
++Scanning dependencies of target pdfimages
++[ 86%] Building CXX object xpdf/CMakeFiles/pdfimages.dir/ImageOutputDev.cc.o
++[ 87%] Building CXX object xpdf/CMakeFiles/pdftops.dir/SplashOutputDev.cc.o
++[ 88%] Building CXX object xpdf/CMakeFiles/pdfimages.dir/pdfimages.cc.o
++[ 89%] Building CXX object xpdf/CMakeFiles/pdftops.dir/pdftops.cc.o
++[ 89%] Linking CXX executable pdfimages
++[ 90%] Generating qrc_icons.cpp
++[ 91%] Generating moc_XpdfApp.cpp
++[ 91%] Built target pdfimages
++[ 92%] Generating moc_XpdfViewer.cpp
++[ 92%] Generating moc_XpdfWidget.cpp
++Scanning dependencies of target xpdf
++[ 93%] Building CXX object xpdf-qt/CMakeFiles/xpdf.dir/XpdfWidgetPrint.cc.o
++[ 94%] Building CXX object xpdf-qt/CMakeFiles/xpdf.dir/QtPDFCore.cc.o
++[ 94%] Linking CXX executable pdftops
++[ 94%] Built target pdftops
++[ 94%] Building CXX object xpdf-qt/CMakeFiles/xpdf.dir/XpdfApp.cc.o
++/tmp/xpdf-4.03/xpdf-qt/XpdfWidgetPrint.cc: In function ‘XpdfWidget::ErrorCode printPDF(PDFDoc*, QPrinter*, int, int, XpdfWidget*)’:
++/tmp/xpdf-4.03/xpdf-qt/XpdfWidgetPrint.cc:359:30: warning: ‘QPrinter::PaperSize QPrinter::paperSize() const’ is deprecated: pageLayout().pageSize().id() [-Wdeprecated-declarations]
++  359 |   paperSize = prt->paperSize();
++      |                              ^
++In file included from /usr/include/qt5/QtPrintSupport/QPrinter:1,
++                 from /tmp/xpdf-4.03/xpdf-qt/XpdfWidgetPrint.cc:14:
++/usr/include/qt5/QtPrintSupport/qprinter.h:187:15: note: declared here
++  187 |     PaperSize paperSize() const;
++      |               ^~~~~~~~~
++/tmp/xpdf-4.03/xpdf-qt/XpdfWidgetPrint.cc:360:48: warning: ‘QSizeF QPrinter::paperSize(QPrinter::Unit) const’ is deprecated: Use pageLayout().pageSize().size() or pageLayout().fullPageSize() instead. [-Wdeprecated-declarations]
++  360 |   paperSizePts = prt->paperSize(QPrinter::Point);
++      |                                                ^
++In file included from /usr/include/qt5/QtPrintSupport/QPrinter:1,
++                 from /tmp/xpdf-4.03/xpdf-qt/XpdfWidgetPrint.cc:14:
++/usr/include/qt5/QtPrintSupport/qprinter.h:192:12: note: declared here
++  192 |     QSizeF paperSize(Unit unit) const;
++      |            ^~~~~~~~~
++[ 95%] Building CXX object xpdf-qt/CMakeFiles/xpdf.dir/XpdfViewer.cc.o
++/tmp/xpdf-4.03/xpdf-qt/QtPDFCore.cc: In member function ‘GBool QtPDFCore::doAction(LinkAction*)’:
++/tmp/xpdf-4.03/xpdf-qt/QtPDFCore.cc:626:43: warning: ‘static bool QProcess::startDetached(const QString&)’ is deprecated: Use QProcess::startDetached(const QString &program, const QStringList &arguments) instead [-Wdeprecated-declarations]
++  626 |  QProcess::startDetached(cmd->getCString());
++      |                                           ^
++In file included from /usr/include/qt5/QtCore/QProcess:1,
++                 from /tmp/xpdf-4.03/xpdf-qt/QtPDFCore.cc:25:
++/usr/include/qt5/QtCore/qprocess.h:280:17: note: declared here
++  280 |     static bool startDetached(const QString &command);
++      |                 ^~~~~~~~~~~~~
++/tmp/xpdf-4.03/xpdf-qt/QtPDFCore.cc:635:45: warning: ‘static bool QProcess::startDetached(const QString&)’ is deprecated: Use QProcess::startDetached(const QString &program, const QStringList &arguments) instead [-Wdeprecated-declarations]
++  635 |    QProcess::startDetached(cmd->getCString());
++      |                                             ^
++In file included from /usr/include/qt5/QtCore/QProcess:1,
++                 from /tmp/xpdf-4.03/xpdf-qt/QtPDFCore.cc:25:
++/usr/include/qt5/QtCore/qprocess.h:280:17: note: declared here
++  280 |     static bool startDetached(const QString &command);
++      |                 ^~~~~~~~~~~~~
++/tmp/xpdf-4.03/xpdf-qt/QtPDFCore.cc: In member function ‘void QtPDFCore::runCommand(GString*, GString*)’:
++/tmp/xpdf-4.03/xpdf-qt/QtPDFCore.cc:825:44: warning: ‘static bool QProcess::startDetached(const QString&)’ is deprecated: Use QProcess::startDetached(const QString &program, const QStringList &arguments) instead [-Wdeprecated-declarations]
++  825 |   QProcess::startDetached(cmd->getCString());
++      |                                            ^
++In file included from /usr/include/qt5/QtCore/QProcess:1,
++                 from /tmp/xpdf-4.03/xpdf-qt/QtPDFCore.cc:25:
++/usr/include/qt5/QtCore/qprocess.h:280:17: note: declared here
++  280 |     static bool startDetached(const QString &command);
++      |                 ^~~~~~~~~~~~~
++[ 96%] Building CXX object xpdf-qt/CMakeFiles/xpdf.dir/XpdfWidget.cc.o
++[ 97%] Building CXX object xpdf-qt/CMakeFiles/xpdf.dir/xpdf.cc.o
++/tmp/xpdf-4.03/xpdf-qt/XpdfViewer.cc: In constructor ‘XpdfErrorWindow::XpdfErrorWindow(XpdfViewer*, int)’:
++/tmp/xpdf-4.03/xpdf-qt/XpdfViewer.cc:289:49: warning: ‘int QFontMetrics::width(const QString&, int) const’ is deprecated: Use QFontMetrics::horizontalAdvance [-Wdeprecated-declarations]
++  289 |   lastSize = QSize(list->fontMetrics().width("m") * 50,
++      |                                                 ^
++In file included from /usr/include/qt5/QtWidgets/qwidget.h:50,
++                 from /usr/include/qt5/QtWidgets/qaction.h:46,
++                 from /usr/include/qt5/QtWidgets/QAction:1,
++                 from /tmp/xpdf-4.03/xpdf-qt/XpdfViewer.cc:13:
++/usr/include/qt5/QtGui/qfontmetrics.h:106:9: note: declared here
++  106 |     int width(const QString &, int len = -1) const;
++      |         ^~~~~
++/tmp/xpdf-4.03/xpdf-qt/XpdfViewer.cc: In member function ‘virtual Qt::ItemFlags LayerModel::flags(const QModelIndex&) const’:
++/tmp/xpdf-4.03/xpdf-qt/XpdfViewer.cc:746:12: warning: ‘constexpr QFlags<T>::QFlags(QFlags<T>::Zero) [with Enum = Qt::ItemFlag; QFlags<T>::Zero = int QFlags<Qt::ItemFlag>::Private::*]’ is deprecated: Use default constructor instead [-Wdeprecated-declarations]
++  746 |     return 0;
++      |            ^
++In file included from /usr/include/qt5/QtCore/qglobal.h:1304,
++                 from /usr/include/qt5/QtCore/qatomic.h:41,
++                 from /usr/include/qt5/QtCore/qvariant.h:43,
++                 from /usr/include/qt5/QtCore/qabstractitemmodel.h:43,
++                 from /usr/include/qt5/QtCore/QAbstractItemModel:1,
++                 from /tmp/xpdf-4.03/xpdf-qt/XpdfViewer.cc:12:
++/usr/include/qt5/QtCore/qflags.h:123:80: note: declared here
++  123 |     QT_DEPRECATED_X("Use default constructor instead") Q_DECL_CONSTEXPR inline QFlags(Zero) noexcept : i(0) {}
++      |                                                                                ^~~~~~
++/tmp/xpdf-4.03/xpdf-qt/XpdfViewer.cc: In member function ‘void XpdfViewer::tweakSize()’:
++/tmp/xpdf-4.03/xpdf-qt/XpdfViewer.cc:871:61: warning: ‘const QRect QDesktopWidget::availableGeometry(int) const’ is deprecated: Use QGuiApplication::screens() [-Wdeprecated-declarations]
++  871 |   QRect screen = QApplication::desktop()->availableGeometry();
++      |                                                             ^
++In file included from /usr/include/qt5/QtWidgets/QDesktopWidget:1,
++                 from /tmp/xpdf-4.03/xpdf-qt/XpdfViewer.cc:18:
++/usr/include/qt5/QtWidgets/qdesktopwidget.h:88:67: note: declared here
++   88 |     QT_DEPRECATED_X("Use QGuiApplication::screens()") const QRect availableGeometry(int screen = -1) const;
++      |                                                                   ^~~~~~~~~~~~~~~~~
++/tmp/xpdf-4.03/xpdf-qt/XpdfViewer.cc: In member function ‘int XpdfViewer::mouseX(QInputEvent*)’:
++/tmp/xpdf-4.03/xpdf-qt/XpdfViewer.cc:1110:44: warning: ‘int QWheelEvent::x() const’ is deprecated: Use position() [-Wdeprecated-declarations]
++ 1110 |     return (int)(((QWheelEvent *)event)->x() * scaleFactor);
++      |                                            ^
++In file included from /usr/include/qt5/QtGui/QKeyEvent:1,
++                 from /tmp/xpdf-4.03/xpdf-qt/XpdfViewer.cc:24:
++/usr/include/qt5/QtGui/qevent.h:229:16: note: declared here
++  229 |     inline int x() const { return int(p.x()); }
++      |                ^
++/tmp/xpdf-4.03/xpdf-qt/XpdfViewer.cc: In member function ‘int XpdfViewer::mouseY(QInputEvent*)’:
++/tmp/xpdf-4.03/xpdf-qt/XpdfViewer.cc:1129:44: warning: ‘int QWheelEvent::y() const’ is deprecated: Use position() [-Wdeprecated-declarations]
++ 1129 |     return (int)(((QWheelEvent *)event)->y() * scaleFactor);
++      |                                            ^
++In file included from /usr/include/qt5/QtGui/QKeyEvent:1,
++                 from /tmp/xpdf-4.03/xpdf-qt/XpdfViewer.cc:24:
++/usr/include/qt5/QtGui/qevent.h:231:16: note: declared here
++  231 |     inline int y() const { return int(p.y()); }
++      |                ^
++/tmp/xpdf-4.03/xpdf-qt/XpdfViewer.cc: In member function ‘void XpdfViewer::cmdRun(GString**, int, QInputEvent*)’:
++/tmp/xpdf-4.03/xpdf-qt/XpdfViewer.cc:1841:44: warning: ‘static bool QProcess::startDetached(const QString&)’ is deprecated: Use QProcess::startDetached(const QString &program, const QStringList &arguments) instead [-Wdeprecated-declarations]
++ 1841 |   QProcess::startDetached(cmd->getCString());
++      |                                            ^
++In file included from /usr/include/qt5/QtCore/QProcess:1,
++                 from /tmp/xpdf-4.03/xpdf-qt/XpdfViewer.cc:34:
++/usr/include/qt5/QtCore/qprocess.h:280:17: note: declared here
++  280 |     static bool startDetached(const QString &command);
++      |                 ^~~~~~~~~~~~~
++/tmp/xpdf-4.03/xpdf-qt/XpdfViewer.cc: In member function ‘void XpdfViewer::mouseWheel(QWheelEvent*)’:
++/tmp/xpdf-4.03/xpdf-qt/XpdfViewer.cc:2458:22: warning: ‘Qt::Orientation QWheelEvent::orientation() const’ is deprecated: Use angleDelta() [-Wdeprecated-declarations]
++ 2458 |   if (e->orientation() == Qt::Vertical) {
++      |                      ^
++In file included from /usr/include/qt5/QtGui/QKeyEvent:1,
++                 from /tmp/xpdf-4.03/xpdf-qt/XpdfViewer.cc:24:
++/usr/include/qt5/QtGui/qevent.h:222:28: note: declared here
++  222 |     inline Qt::Orientation orientation() const { return qt4O; }
++      |                            ^~~~~~~~~~~
++/tmp/xpdf-4.03/xpdf-qt/XpdfViewer.cc:2459:18: warning: ‘int QWheelEvent::delta() const’ is deprecated: Use angleDelta() [-Wdeprecated-declarations]
++ 2459 |     if (e->delta() > 0) {
++      |                  ^
++In file included from /usr/include/qt5/QtGui/QKeyEvent:1,
++                 from /tmp/xpdf-4.03/xpdf-qt/XpdfViewer.cc:24:
++/usr/include/qt5/QtGui/qevent.h:219:16: note: declared here
++  219 |     inline int delta() const  { return qt4D; }
++      |                ^~~~~
++/tmp/xpdf-4.03/xpdf-qt/XpdfViewer.cc:2465:18: warning: ‘int QWheelEvent::delta() const’ is deprecated: Use angleDelta() [-Wdeprecated-declarations]
++ 2465 |     if (e->delta() > 0) {
++      |                  ^
++In file included from /usr/include/qt5/QtGui/QKeyEvent:1,
++                 from /tmp/xpdf-4.03/xpdf-qt/XpdfViewer.cc:24:
++/usr/include/qt5/QtGui/qevent.h:219:16: note: declared here
++  219 |     inline int delta() const  { return qt4D; }
++      |                ^~~~~
++/tmp/xpdf-4.03/xpdf-qt/XpdfViewer.cc: In member function ‘void XpdfViewer::createToolBar()’:
++/tmp/xpdf-4.03/xpdf-qt/XpdfViewer.cc:3048:68: warning: ‘int QFontMetrics::width(const QString&, int) const’ is deprecated: Use QFontMetrics::horizontalAdvance [-Wdeprecated-declarations]
++ 3048 |   pageNumber->setFixedWidth(pageNumber->fontMetrics().width("00000") + 6);
++      |                                                                    ^
++In file included from /usr/include/qt5/QtWidgets/qwidget.h:50,
++                 from /usr/include/qt5/QtWidgets/qaction.h:46,
++                 from /usr/include/qt5/QtWidgets/QAction:1,
++                 from /tmp/xpdf-4.03/xpdf-qt/XpdfViewer.cc:13:
++/usr/include/qt5/QtGui/qfontmetrics.h:106:9: note: declared here
++  106 |     int width(const QString &, int len = -1) const;
++      |         ^~~~~
++/tmp/xpdf-4.03/xpdf-qt/XpdfViewer.cc:3106:65: warning: ‘int QFontMetrics::width(const QString&, int) const’ is deprecated: Use QFontMetrics::horizontalAdvance [-Wdeprecated-declarations]
++ 3106 |   findEdit->setFixedWidth(20 * findEdit->fontMetrics().width("0"));
++      |                                                                 ^
++In file included from /usr/include/qt5/QtWidgets/qwidget.h:50,
++                 from /usr/include/qt5/QtWidgets/qaction.h:46,
++                 from /usr/include/qt5/QtWidgets/QAction:1,
++                 from /tmp/xpdf-4.03/xpdf-qt/XpdfViewer.cc:13:
++/usr/include/qt5/QtGui/qfontmetrics.h:106:9: note: declared here
++  106 |     int width(const QString &, int len = -1) const;
++      |         ^~~~~
++/tmp/xpdf-4.03/xpdf-qt/XpdfViewer.cc: In member function ‘void XpdfViewer::execSaveImageDialog()’:
++/tmp/xpdf-4.03/xpdf-qt/XpdfViewer.cc:3984:64: warning: ‘int QFontMetrics::width(const QString&, int) const’ is deprecated: Use QFontMetrics::horizontalAdvance [-Wdeprecated-declarations]
++ 3984 |   pageEdit->setFixedWidth(8 * pageEdit->fontMetrics().width("0"));
++      |                                                                ^
++In file included from /usr/include/qt5/QtWidgets/qwidget.h:50,
++                 from /usr/include/qt5/QtWidgets/qaction.h:46,
++                 from /usr/include/qt5/QtWidgets/QAction:1,
++                 from /tmp/xpdf-4.03/xpdf-qt/XpdfViewer.cc:13:
++/usr/include/qt5/QtGui/qfontmetrics.h:106:9: note: declared here
++  106 |     int width(const QString &, int len = -1) const;
++      |         ^~~~~
++/tmp/xpdf-4.03/xpdf-qt/XpdfViewer.cc:4007:70: warning: ‘int QFontMetrics::width(const QString&, int) const’ is deprecated: Use QFontMetrics::horizontalAdvance [-Wdeprecated-declarations]
++ 4007 |   resolutionEdit->setFixedWidth(8 * pageEdit->fontMetrics().width("0"));
++      |                                                                      ^
++In file included from /usr/include/qt5/QtWidgets/qwidget.h:50,
++                 from /usr/include/qt5/QtWidgets/qaction.h:46,
++                 from /usr/include/qt5/QtWidgets/QAction:1,
++                 from /tmp/xpdf-4.03/xpdf-qt/XpdfViewer.cc:13:
++/usr/include/qt5/QtGui/qfontmetrics.h:106:9: note: declared here
++  106 |     int width(const QString &, int len = -1) const;
++      |         ^~~~~
++[ 97%] Building CXX object xpdf-qt/CMakeFiles/xpdf.dir/moc_XpdfApp.cpp.o
++[ 98%] Building CXX object xpdf-qt/CMakeFiles/xpdf.dir/moc_XpdfViewer.cpp.o
++[ 99%] Building CXX object xpdf-qt/CMakeFiles/xpdf.dir/moc_XpdfWidget.cpp.o
++[100%] Building CXX object xpdf-qt/CMakeFiles/xpdf.dir/qrc_icons.cpp.o
++[100%] Linking CXX executable xpdf
++[100%] Built target xpdf
++[  7%] Built target goo_objs
++[  7%] Built target goo
++[ 12%] Built target fofi_objs
++[ 12%] Built target fofi
++[ 24%] Built target splash_objs
++[ 24%] Built target splash
++[ 56%] Built target xpdf_objs
++[ 61%] Built target pdftohtml
++[ 64%] Built target pdftoppm
++[ 67%] Built target pdftopng
++[ 70%] Built target pdftotext
++[ 78%] Built target xpdf_widget_objs
++[ 80%] Built target pdfinfo
++[ 82%] Built target pdfdetach
++[ 86%] Built target pdftops
++[ 87%] Built target pdffonts
++[ 89%] Built target pdfimages
++[100%] Built target xpdf
++Install the project...
++-- Install configuration: "Release"
++-- Installing: /tmp/package-xpdf/usr/bin/pdftops
++-- Installing: /tmp/package-xpdf/usr/man/man1/pdftops.1
++-- Installing: /tmp/package-xpdf/usr/bin/pdftotext
++-- Installing: /tmp/package-xpdf/usr/man/man1/pdftotext.1
++-- Installing: /tmp/package-xpdf/usr/bin/pdftohtml
++-- Installing: /tmp/package-xpdf/usr/man/man1/pdftohtml.1
++-- Installing: /tmp/package-xpdf/usr/bin/pdfinfo
++-- Installing: /tmp/package-xpdf/usr/man/man1/pdfinfo.1
++-- Installing: /tmp/package-xpdf/usr/bin/pdffonts
++-- Installing: /tmp/package-xpdf/usr/man/man1/pdffonts.1
++-- Installing: /tmp/package-xpdf/usr/bin/pdfdetach
++-- Installing: /tmp/package-xpdf/usr/man/man1/pdfdetach.1
++-- Installing: /tmp/package-xpdf/usr/bin/pdftoppm
++-- Installing: /tmp/package-xpdf/usr/man/man1/pdftoppm.1
++-- Installing: /tmp/package-xpdf/usr/bin/pdftopng
++-- Installing: /tmp/package-xpdf/usr/man/man1/pdftopng.1
++-- Installing: /tmp/package-xpdf/usr/bin/pdfimages
++-- Installing: /tmp/package-xpdf/usr/man/man1/pdfimages.1
++-- Installing: /tmp/package-xpdf/usr/man/man5/xpdfrc.5
++-- Installing: /tmp/package-xpdf/usr/bin/xpdf
++-- Installing: /tmp/package-xpdf/usr/man/man1/xpdf.1
++Patching for xpdf-arabic:
++Hmm...  Looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|--- ./add-to-xpdfrc.orig	2011-08-15 16:24:29.000000000 -0500
++|+++ ./add-to-xpdfrc	2013-03-28 15:43:21.102417270 -0500
++--------------------------
++patching file add-to-xpdfrc
++Using Plan A...
++Hunk #1 succeeded at 1.
++done
++Patching for xpdf-chinese-simplified:
++Hmm...  Looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|--- ./add-to-xpdfrc.orig	2019-10-03 13:51:29.655084567 -0500
++|+++ ./add-to-xpdfrc	2019-10-03 13:53:02.916076850 -0500
++--------------------------
++patching file add-to-xpdfrc
++Using Plan A...
++Hunk #1 succeeded at 1.
++done
++Patching for xpdf-chinese-traditional:
++Hmm...  Looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|--- ./add-to-xpdfrc.orig	2019-10-03 13:51:29.775084557 -0500
++|+++ ./add-to-xpdfrc	2019-10-03 13:59:15.404046027 -0500
++--------------------------
++patching file add-to-xpdfrc
++Using Plan A...
++Hunk #1 succeeded at 1.
++done
++Patching for xpdf-cyrillic:
++Hmm...  Looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|--- ./add-to-xpdfrc.orig	2011-08-15 16:24:29.000000000 -0500
++|+++ ./add-to-xpdfrc	2013-03-28 15:43:21.115417270 -0500
++--------------------------
++patching file add-to-xpdfrc
++Using Plan A...
++Hunk #1 succeeded at 1.
++done
++Patching for xpdf-greek:
++Hmm...  Looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|--- ./add-to-xpdfrc.orig	2011-08-15 16:24:29.000000000 -0500
++|+++ ./add-to-xpdfrc	2013-03-28 15:43:21.116417270 -0500
++--------------------------
++patching file add-to-xpdfrc
++Using Plan A...
++Hunk #1 succeeded at 1.
++done
++Patching for xpdf-hebrew:
++Hmm...  Looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|--- ./add-to-xpdfrc.orig	2011-08-15 16:24:29.000000000 -0500
++|+++ ./add-to-xpdfrc	2013-03-28 15:43:21.117417269 -0500
++--------------------------
++patching file add-to-xpdfrc
++Using Plan A...
++Hunk #1 succeeded at 1.
++done
++Patching for xpdf-japanese:
++Hmm...  Looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|--- ./add-to-xpdfrc.orig	2019-10-03 13:51:30.098084530 -0500
++|+++ ./add-to-xpdfrc	2019-10-03 13:55:28.494064804 -0500
++--------------------------
++patching file add-to-xpdfrc
++Using Plan A...
++Hunk #1 succeeded at 1.
++done
++Patching for xpdf-korean:
++Hmm...  Looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|--- ./add-to-xpdfrc.orig	2021-01-29 12:36:23.966962831 -0600
++|+++ ./add-to-xpdfrc	2021-01-29 12:38:24.237956178 -0600
++--------------------------
++patching file add-to-xpdfrc
++Using Plan A...
++Hunk #1 succeeded at 1.
++done
++Patching for xpdf-latin2:
++Hmm...  Looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|--- ./add-to-xpdfrc.orig	2011-08-15 16:24:29.000000000 -0500
++|+++ ./add-to-xpdfrc	2013-03-28 15:43:21.120417269 -0500
++--------------------------
++patching file add-to-xpdfrc
++Using Plan A...
++Hunk #1 succeeded at 1.
++done
++Patching for xpdf-thai:
++Hmm...  Looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|--- ./add-to-xpdfrc.orig	2011-08-15 16:24:29.000000000 -0500
++|+++ ./add-to-xpdfrc	2013-03-28 15:43:21.121417269 -0500
++--------------------------
++patching file add-to-xpdfrc
++Using Plan A...
++Hunk #1 succeeded at 1.
++done
++Patching for xpdf-turkish:
++Hmm...  Looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|--- ./add-to-xpdfrc.orig	2011-08-15 16:24:29.000000000 -0500
++|+++ ./add-to-xpdfrc	2013-03-28 15:43:21.122417269 -0500
++--------------------------
++patching file add-to-xpdfrc
++Using Plan A...
++Hunk #1 succeeded at 1.
++done
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++
++No symbolic links were found, so we won't make an installation script.
++You can make your own later in ./install/doinst.sh and rebuild the
++package if you like.
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/xpdf-4.03-x86_64-1.txz
++
++./
++etc/
++etc/xpdfrc.new
++install/
++install/doinst.sh
++install/slack-desc
++usr/
++usr/bin/
++usr/bin/pdfdetach
++usr/bin/pdftopng
++usr/bin/xpdf
++usr/doc/
++usr/doc/xpdf-4.03/
++usr/doc/xpdf-4.03/ANNOUNCE
++usr/doc/xpdf-4.03/CHANGES
++usr/doc/xpdf-4.03/COPYING
++usr/doc/xpdf-4.03/COPYING3
++usr/doc/xpdf-4.03/INSTALL
++usr/doc/xpdf-4.03/README
++usr/man/
++usr/man/man1/
++usr/man/man1/pdfdetach.1.gz
++usr/man/man1/pdftopng.1.gz
++usr/man/man1/xpdf.1.gz
++usr/man/man5/
++usr/man/man5/xpdfrc.5.gz
++usr/share/
++usr/share/applications/
++usr/share/applications/xpdf.desktop
++usr/share/pixmaps/
++usr/share/pixmaps/xpdfIcon.xpm
++usr/share/xpdf/
++usr/share/xpdf/arabic/
++usr/share/xpdf/arabic/ISO-8859-6.unicodeMap
++usr/share/xpdf/arabic/README
++usr/share/xpdf/arabic/add-to-xpdfrc
++usr/share/xpdf/arabic/add-to-xpdfrc.orig
++usr/share/xpdf/chinese-simplified/
++usr/share/xpdf/chinese-simplified/Adobe-GB1.cidToUnicode
++usr/share/xpdf/chinese-simplified/CMap/
++usr/share/xpdf/chinese-simplified/CMap/Adobe-GB1-0
++usr/share/xpdf/chinese-simplified/CMap/Adobe-GB1-1
++usr/share/xpdf/chinese-simplified/CMap/Adobe-GB1-2
++usr/share/xpdf/chinese-simplified/CMap/Adobe-GB1-3
++usr/share/xpdf/chinese-simplified/CMap/Adobe-GB1-4
++usr/share/xpdf/chinese-simplified/CMap/Adobe-GB1-5
++usr/share/xpdf/chinese-simplified/CMap/Adobe-GB1-UCS2
++usr/share/xpdf/chinese-simplified/CMap/GB-EUC-H
++usr/share/xpdf/chinese-simplified/CMap/GB-EUC-V
++usr/share/xpdf/chinese-simplified/CMap/GB-H
++usr/share/xpdf/chinese-simplified/CMap/GB-V
++usr/share/xpdf/chinese-simplified/CMap/GBK-EUC-H
++usr/share/xpdf/chinese-simplified/CMap/GBK-EUC-UCS2
++usr/share/xpdf/chinese-simplified/CMap/GBK-EUC-V
++usr/share/xpdf/chinese-simplified/CMap/GBK2K-H
++usr/share/xpdf/chinese-simplified/CMap/GBK2K-V
++usr/share/xpdf/chinese-simplified/CMap/GBKp-EUC-H
++usr/share/xpdf/chinese-simplified/CMap/GBKp-EUC-V
++usr/share/xpdf/chinese-simplified/CMap/GBT-EUC-H
++usr/share/xpdf/chinese-simplified/CMap/GBT-EUC-V
++usr/share/xpdf/chinese-simplified/CMap/GBT-H
++usr/share/xpdf/chinese-simplified/CMap/GBT-V
++usr/share/xpdf/chinese-simplified/CMap/GBTpc-EUC-H
++usr/share/xpdf/chinese-simplified/CMap/GBTpc-EUC-V
++usr/share/xpdf/chinese-simplified/CMap/GBpc-EUC-H
++usr/share/xpdf/chinese-simplified/CMap/GBpc-EUC-UCS2
++usr/share/xpdf/chinese-simplified/CMap/GBpc-EUC-UCS2C
++usr/share/xpdf/chinese-simplified/CMap/GBpc-EUC-V
++usr/share/xpdf/chinese-simplified/CMap/LICENSE.md
++usr/share/xpdf/chinese-simplified/CMap/UniGB-UCS2-H
++usr/share/xpdf/chinese-simplified/CMap/UniGB-UCS2-V
++usr/share/xpdf/chinese-simplified/CMap/UniGB-UTF16-H
++usr/share/xpdf/chinese-simplified/CMap/UniGB-UTF16-V
++usr/share/xpdf/chinese-simplified/CMap/UniGB-UTF32-H
++usr/share/xpdf/chinese-simplified/CMap/UniGB-UTF32-V
++usr/share/xpdf/chinese-simplified/CMap/UniGB-UTF8-H
++usr/share/xpdf/chinese-simplified/CMap/UniGB-UTF8-V
++usr/share/xpdf/chinese-simplified/EUC-CN.unicodeMap
++usr/share/xpdf/chinese-simplified/GBK.unicodeMap
++usr/share/xpdf/chinese-simplified/ISO-2022-CN.unicodeMap
++usr/share/xpdf/chinese-simplified/README
++usr/share/xpdf/chinese-simplified/add-to-xpdfrc
++usr/share/xpdf/chinese-simplified/add-to-xpdfrc.orig
++usr/share/xpdf/chinese-traditional/
++usr/share/xpdf/chinese-traditional/Adobe-CNS1.cidToUnicode
++usr/share/xpdf/chinese-traditional/Big5.unicodeMap
++usr/share/xpdf/chinese-traditional/Big5ascii.unicodeMap
++usr/share/xpdf/chinese-traditional/CMap/
++usr/share/xpdf/chinese-traditional/CMap/Adobe-CNS1-0
++usr/share/xpdf/chinese-traditional/CMap/Adobe-CNS1-1
++usr/share/xpdf/chinese-traditional/CMap/Adobe-CNS1-2
++usr/share/xpdf/chinese-traditional/CMap/Adobe-CNS1-3
++usr/share/xpdf/chinese-traditional/CMap/Adobe-CNS1-4
++usr/share/xpdf/chinese-traditional/CMap/Adobe-CNS1-5
++usr/share/xpdf/chinese-traditional/CMap/Adobe-CNS1-6
++usr/share/xpdf/chinese-traditional/CMap/Adobe-CNS1-7
++usr/share/xpdf/chinese-traditional/CMap/Adobe-CNS1-UCS2
++usr/share/xpdf/chinese-traditional/CMap/B5-H
++usr/share/xpdf/chinese-traditional/CMap/B5-V
++usr/share/xpdf/chinese-traditional/CMap/B5pc-H
++usr/share/xpdf/chinese-traditional/CMap/B5pc-UCS2
++usr/share/xpdf/chinese-traditional/CMap/B5pc-UCS2C
++usr/share/xpdf/chinese-traditional/CMap/B5pc-V
++usr/share/xpdf/chinese-traditional/CMap/CNS-EUC-H
++usr/share/xpdf/chinese-traditional/CMap/CNS-EUC-V
++usr/share/xpdf/chinese-traditional/CMap/CNS1-H
++usr/share/xpdf/chinese-traditional/CMap/CNS1-V
++usr/share/xpdf/chinese-traditional/CMap/CNS2-H
++usr/share/xpdf/chinese-traditional/CMap/CNS2-V
++usr/share/xpdf/chinese-traditional/CMap/ETHK-B5-H
++usr/share/xpdf/chinese-traditional/CMap/ETHK-B5-V
++usr/share/xpdf/chinese-traditional/CMap/ETen-B5-H
++usr/share/xpdf/chinese-traditional/CMap/ETen-B5-UCS2
++usr/share/xpdf/chinese-traditional/CMap/ETen-B5-V
++usr/share/xpdf/chinese-traditional/CMap/ETenms-B5-H
++usr/share/xpdf/chinese-traditional/CMap/ETenms-B5-V
++usr/share/xpdf/chinese-traditional/CMap/HKdla-B5-H
++usr/share/xpdf/chinese-traditional/CMap/HKdla-B5-V
++usr/share/xpdf/chinese-traditional/CMap/HKdlb-B5-H
++usr/share/xpdf/chinese-traditional/CMap/HKdlb-B5-V
++usr/share/xpdf/chinese-traditional/CMap/HKgccs-B5-H
++usr/share/xpdf/chinese-traditional/CMap/HKgccs-B5-V
++usr/share/xpdf/chinese-traditional/CMap/HKm314-B5-H
++usr/share/xpdf/chinese-traditional/CMap/HKm314-B5-V
++usr/share/xpdf/chinese-traditional/CMap/HKm471-B5-H
++usr/share/xpdf/chinese-traditional/CMap/HKm471-B5-V
++usr/share/xpdf/chinese-traditional/CMap/HKscs-B5-H
++usr/share/xpdf/chinese-traditional/CMap/HKscs-B5-V
++usr/share/xpdf/chinese-traditional/CMap/LICENSE.md
++usr/share/xpdf/chinese-traditional/CMap/UniCNS-UCS2-H
++usr/share/xpdf/chinese-traditional/CMap/UniCNS-UCS2-V
++usr/share/xpdf/chinese-traditional/CMap/UniCNS-UTF16-H
++usr/share/xpdf/chinese-traditional/CMap/UniCNS-UTF16-V
++usr/share/xpdf/chinese-traditional/CMap/UniCNS-UTF32-H
++usr/share/xpdf/chinese-traditional/CMap/UniCNS-UTF32-V
++usr/share/xpdf/chinese-traditional/CMap/UniCNS-UTF8-H
++usr/share/xpdf/chinese-traditional/CMap/UniCNS-UTF8-V
++usr/share/xpdf/chinese-traditional/README
++usr/share/xpdf/chinese-traditional/add-to-xpdfrc
++usr/share/xpdf/chinese-traditional/add-to-xpdfrc.orig
++usr/share/xpdf/cyrillic/
++usr/share/xpdf/cyrillic/Bulgarian.nameToUnicode
++usr/share/xpdf/cyrillic/KOI8-R.unicodeMap
++usr/share/xpdf/cyrillic/README
++usr/share/xpdf/cyrillic/add-to-xpdfrc
++usr/share/xpdf/cyrillic/add-to-xpdfrc.orig
++usr/share/xpdf/greek/
++usr/share/xpdf/greek/Greek.nameToUnicode
++usr/share/xpdf/greek/ISO-8859-7.unicodeMap
++usr/share/xpdf/greek/README
++usr/share/xpdf/greek/add-to-xpdfrc
++usr/share/xpdf/greek/add-to-xpdfrc.orig
++usr/share/xpdf/hebrew/
++usr/share/xpdf/hebrew/ISO-8859-8.unicodeMap
++usr/share/xpdf/hebrew/README
++usr/share/xpdf/hebrew/Windows-1255.unicodeMap
++usr/share/xpdf/hebrew/add-to-xpdfrc
++usr/share/xpdf/hebrew/add-to-xpdfrc.orig
++usr/share/xpdf/japanese/
++usr/share/xpdf/japanese/Adobe-Japan1.cidToUnicode
++usr/share/xpdf/japanese/CMap/
++usr/share/xpdf/japanese/CMap/78-EUC-H
++usr/share/xpdf/japanese/CMap/78-EUC-V
++usr/share/xpdf/japanese/CMap/78-H
++usr/share/xpdf/japanese/CMap/78-RKSJ-H
++usr/share/xpdf/japanese/CMap/78-RKSJ-V
++usr/share/xpdf/japanese/CMap/78-V
++usr/share/xpdf/japanese/CMap/78ms-RKSJ-H
++usr/share/xpdf/japanese/CMap/78ms-RKSJ-V
++usr/share/xpdf/japanese/CMap/83pv-RKSJ-H
++usr/share/xpdf/japanese/CMap/90ms-RKSJ-H
++usr/share/xpdf/japanese/CMap/90ms-RKSJ-UCS2
++usr/share/xpdf/japanese/CMap/90ms-RKSJ-V
++usr/share/xpdf/japanese/CMap/90msp-RKSJ-H
++usr/share/xpdf/japanese/CMap/90msp-RKSJ-V
++usr/share/xpdf/japanese/CMap/90pv-RKSJ-H
++usr/share/xpdf/japanese/CMap/90pv-RKSJ-UCS2
++usr/share/xpdf/japanese/CMap/90pv-RKSJ-UCS2C
++usr/share/xpdf/japanese/CMap/90pv-RKSJ-V
++usr/share/xpdf/japanese/CMap/Add-H
++usr/share/xpdf/japanese/CMap/Add-RKSJ-H
++usr/share/xpdf/japanese/CMap/Add-RKSJ-V
++usr/share/xpdf/japanese/CMap/Add-V
++usr/share/xpdf/japanese/CMap/Adobe-Japan1-0
++usr/share/xpdf/japanese/CMap/Adobe-Japan1-1
++usr/share/xpdf/japanese/CMap/Adobe-Japan1-2
++usr/share/xpdf/japanese/CMap/Adobe-Japan1-3
++usr/share/xpdf/japanese/CMap/Adobe-Japan1-4
++usr/share/xpdf/japanese/CMap/Adobe-Japan1-5
++usr/share/xpdf/japanese/CMap/Adobe-Japan1-6
++usr/share/xpdf/japanese/CMap/Adobe-Japan1-7
++usr/share/xpdf/japanese/CMap/Adobe-Japan1-UCS2
++usr/share/xpdf/japanese/CMap/EUC-H
++usr/share/xpdf/japanese/CMap/EUC-V
++usr/share/xpdf/japanese/CMap/Ext-H
++usr/share/xpdf/japanese/CMap/Ext-RKSJ-H
++usr/share/xpdf/japanese/CMap/Ext-RKSJ-V
++usr/share/xpdf/japanese/CMap/Ext-V
++usr/share/xpdf/japanese/CMap/H
++usr/share/xpdf/japanese/CMap/Hankaku
++usr/share/xpdf/japanese/CMap/Hiragana
++usr/share/xpdf/japanese/CMap/Katakana
++usr/share/xpdf/japanese/CMap/LICENSE.md
++usr/share/xpdf/japanese/CMap/NWP-H
++usr/share/xpdf/japanese/CMap/NWP-V
++usr/share/xpdf/japanese/CMap/RKSJ-H
++usr/share/xpdf/japanese/CMap/RKSJ-V
++usr/share/xpdf/japanese/CMap/Roman
++usr/share/xpdf/japanese/CMap/UniJIS-UCS2-H
++usr/share/xpdf/japanese/CMap/UniJIS-UCS2-HW-H
++usr/share/xpdf/japanese/CMap/UniJIS-UCS2-HW-V
++usr/share/xpdf/japanese/CMap/UniJIS-UCS2-V
++usr/share/xpdf/japanese/CMap/UniJIS-UTF16-H
++usr/share/xpdf/japanese/CMap/UniJIS-UTF16-V
++usr/share/xpdf/japanese/CMap/UniJIS-UTF32-H
++usr/share/xpdf/japanese/CMap/UniJIS-UTF32-V
++usr/share/xpdf/japanese/CMap/UniJIS-UTF8-H
++usr/share/xpdf/japanese/CMap/UniJIS-UTF8-V
++usr/share/xpdf/japanese/CMap/UniJIS2004-UTF16-H
++usr/share/xpdf/japanese/CMap/UniJIS2004-UTF16-V
++usr/share/xpdf/japanese/CMap/UniJIS2004-UTF32-H
++usr/share/xpdf/japanese/CMap/UniJIS2004-UTF32-V
++usr/share/xpdf/japanese/CMap/UniJIS2004-UTF8-H
++usr/share/xpdf/japanese/CMap/UniJIS2004-UTF8-V
++usr/share/xpdf/japanese/CMap/UniJISPro-UCS2-HW-V
++usr/share/xpdf/japanese/CMap/UniJISPro-UCS2-V
++usr/share/xpdf/japanese/CMap/UniJISPro-UTF8-V
++usr/share/xpdf/japanese/CMap/UniJISX0213-UTF32-H
++usr/share/xpdf/japanese/CMap/UniJISX0213-UTF32-V
++usr/share/xpdf/japanese/CMap/UniJISX02132004-UTF32-H
++usr/share/xpdf/japanese/CMap/UniJISX02132004-UTF32-V
++usr/share/xpdf/japanese/CMap/V
++usr/share/xpdf/japanese/CMap/WP-Symbol
++usr/share/xpdf/japanese/EUC-JP.unicodeMap
++usr/share/xpdf/japanese/ISO-2022-JP.unicodeMap
++usr/share/xpdf/japanese/README
++usr/share/xpdf/japanese/Shift-JIS.unicodeMap
++usr/share/xpdf/japanese/add-to-xpdfrc
++usr/share/xpdf/japanese/add-to-xpdfrc.orig
++usr/share/xpdf/korean/
++usr/share/xpdf/korean/Adobe-KR.cidToUnicode
++usr/share/xpdf/korean/Adobe-Korea1.cidToUnicode
++usr/share/xpdf/korean/CMap/
++usr/share/xpdf/korean/CMap/Adobe-KR-0
++usr/share/xpdf/korean/CMap/Adobe-KR-1
++usr/share/xpdf/korean/CMap/Adobe-KR-2
++usr/share/xpdf/korean/CMap/Adobe-KR-3
++usr/share/xpdf/korean/CMap/Adobe-KR-4
++usr/share/xpdf/korean/CMap/Adobe-KR-5
++usr/share/xpdf/korean/CMap/Adobe-KR-6
++usr/share/xpdf/korean/CMap/Adobe-KR-7
++usr/share/xpdf/korean/CMap/Adobe-KR-8
++usr/share/xpdf/korean/CMap/Adobe-KR-9
++usr/share/xpdf/korean/CMap/Adobe-Korea1-0
++usr/share/xpdf/korean/CMap/Adobe-Korea1-1
++usr/share/xpdf/korean/CMap/Adobe-Korea1-2
++usr/share/xpdf/korean/CMap/Adobe-Korea1-UCS2
++usr/share/xpdf/korean/CMap/KSC-EUC-H
++usr/share/xpdf/korean/CMap/KSC-EUC-V
++usr/share/xpdf/korean/CMap/KSC-H
++usr/share/xpdf/korean/CMap/KSC-Johab-H
++usr/share/xpdf/korean/CMap/KSC-Johab-V
++usr/share/xpdf/korean/CMap/KSC-V
++usr/share/xpdf/korean/CMap/KSCms-UHC-H
++usr/share/xpdf/korean/CMap/KSCms-UHC-HW-H
++usr/share/xpdf/korean/CMap/KSCms-UHC-HW-V
++usr/share/xpdf/korean/CMap/KSCms-UHC-UCS2
++usr/share/xpdf/korean/CMap/KSCms-UHC-V
++usr/share/xpdf/korean/CMap/KSCpc-EUC-H
++usr/share/xpdf/korean/CMap/KSCpc-EUC-UCS2
++usr/share/xpdf/korean/CMap/KSCpc-EUC-UCS2C
++usr/share/xpdf/korean/CMap/KSCpc-EUC-V
++usr/share/xpdf/korean/CMap/LICENSE.md
++usr/share/xpdf/korean/CMap/UniAKR-UTF16-H
++usr/share/xpdf/korean/CMap/UniAKR-UTF32-H
++usr/share/xpdf/korean/CMap/UniAKR-UTF8-H
++usr/share/xpdf/korean/CMap/UniKS-UCS2-H
++usr/share/xpdf/korean/CMap/UniKS-UCS2-V
++usr/share/xpdf/korean/CMap/UniKS-UTF16-H
++usr/share/xpdf/korean/CMap/UniKS-UTF16-V
++usr/share/xpdf/korean/CMap/UniKS-UTF32-H
++usr/share/xpdf/korean/CMap/UniKS-UTF32-V
++usr/share/xpdf/korean/CMap/UniKS-UTF8-H
++usr/share/xpdf/korean/CMap/UniKS-UTF8-V
++usr/share/xpdf/korean/ISO-2022-KR.unicodeMap
++usr/share/xpdf/korean/README
++usr/share/xpdf/korean/add-to-xpdfrc
++usr/share/xpdf/korean/add-to-xpdfrc.orig
++usr/share/xpdf/latin2/
++usr/share/xpdf/latin2/Latin2.unicodeMap
++usr/share/xpdf/latin2/README
++usr/share/xpdf/latin2/add-to-xpdfrc
++usr/share/xpdf/latin2/add-to-xpdfrc.orig
++usr/share/xpdf/thai/
++usr/share/xpdf/thai/README
++usr/share/xpdf/thai/TIS-620.unicodeMap
++usr/share/xpdf/thai/Thai.nameToUnicode
++usr/share/xpdf/thai/add-to-xpdfrc
++usr/share/xpdf/thai/add-to-xpdfrc.orig
++usr/share/xpdf/turkish/
++usr/share/xpdf/turkish/ISO-8859-9.unicodeMap
++usr/share/xpdf/turkish/README
++usr/share/xpdf/turkish/add-to-xpdfrc
++usr/share/xpdf/turkish/add-to-xpdfrc.orig
++
++Slackware package /tmp/xpdf-4.03-x86_64-1.txz created.
++

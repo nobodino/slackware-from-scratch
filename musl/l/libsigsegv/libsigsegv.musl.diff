@@ -1,0 +1,499 @@
+diff -ruBN /tmp/libsigsegv/libsigsegv.SlackBuild /source/l/libsigsegv/libsigsegv.SlackBuild
+--- /tmp/libsigsegv/libsigsegv.SlackBuild	2021-01-18 12:42:38.000000000 +0000
++++ /source/l/libsigsegv/libsigsegv.SlackBuild	2021-01-19 05:56:15.000000000 +0000
+@@ -59,7 +59,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ else
+   SLKCFLAGS="-O2"
+   LIBDIRSUFFIX=""
+@@ -88,7 +88,7 @@
+   --program-prefix= \
+   --program-suffix= \
+   --enable-shared \
+-  --build=$ARCH-slackware-linux || exit 1
++  --build=$ARCH-slackware-linux-musl || exit 1
+ 
+ # Build and install:
+ make $NUMJOBS || exit 1
+diff -ruBN /tmp/libsigsegv/libsigsegv.SlackBuild.log /source/l/libsigsegv/libsigsegv.SlackBuild.log
+--- /tmp/libsigsegv/libsigsegv.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/l/libsigsegv/libsigsegv.SlackBuild.log	2021-01-19 05:56:24.000000000 +0000
+@@ -0,0 +1,474 @@
++libsigsegv-2.13/
++libsigsegv-2.13/build-aux/
++libsigsegv-2.13/build-aux/missing
++libsigsegv-2.13/build-aux/ltmain.sh
++libsigsegv-2.13/build-aux/config.guess
++libsigsegv-2.13/build-aux/compile
++libsigsegv-2.13/build-aux/test-driver
++libsigsegv-2.13/build-aux/config.sub
++libsigsegv-2.13/build-aux/install-sh
++libsigsegv-2.13/INSTALL
++libsigsegv-2.13/ChangeLog
++libsigsegv-2.13/config.h.msvc
++libsigsegv-2.13/Makefile.am
++libsigsegv-2.13/configure
++libsigsegv-2.13/Makefile.in
++libsigsegv-2.13/Makefile.msvc
++libsigsegv-2.13/src/
++libsigsegv-2.13/src/fault-linux-sh-old.h
++libsigsegv-2.13/src/fault.h
++libsigsegv-2.13/src/machfault-macos.h
++libsigsegv-2.13/src/fault-linux-arm-old.h
++libsigsegv-2.13/src/fault-haiku.h
++libsigsegv-2.13/src/fault-hurd-i386.h
++libsigsegv-2.13/src/fault-linux-ia64.h
++libsigsegv-2.13/src/fault-linux-sh.h
++libsigsegv-2.13/src/leave-none.c
++libsigsegv-2.13/src/fault-openbsd-vax.h
++libsigsegv-2.13/src/signals-macos.h
++libsigsegv-2.13/src/fault-linux-m68k-old.h
++libsigsegv-2.13/src/stackvma-vma-iter.c
++libsigsegv-2.13/src/fault-linux-riscv64.h
++libsigsegv-2.13/src/fault-macosdarwin7-powerpc.c
++libsigsegv-2.13/src/stackvma-netbsd.c
++libsigsegv-2.13/src/fault-linux-m68k-old.c
++libsigsegv-2.13/src/fault-macos-i386.h
++libsigsegv-2.13/src/fault-linux-nds32.h
++libsigsegv-2.13/src/fault-openbsd-mips.h
++libsigsegv-2.13/src/fault-macosdarwin5-powerpc.h
++libsigsegv-2.13/src/fault-linux-sparc-old.h
++libsigsegv-2.13/src/leave-sigaltstack.c
++libsigsegv-2.13/src/fault-linux-i386.h
++libsigsegv-2.13/src/fault-beos-i386.h
++libsigsegv-2.13/src/fault-linux-mips-old.h
++libsigsegv-2.13/src/signals-hpux.h
++libsigsegv-2.13/src/Makefile.am
++libsigsegv-2.13/src/fault-cygwin-old.h
++libsigsegv-2.13/src/fault-posix-ucontext.h
++libsigsegv-2.13/src/fault-bsd.h
++libsigsegv-2.13/src/stackvma-beos.c
++libsigsegv-2.13/src/sigsegv.h.msvc
++libsigsegv-2.13/src/fault-linux-hppa-old.h
++libsigsegv-2.13/src/handler-unix.c
++libsigsegv-2.13/src/fault-linux-mips.h
++libsigsegv-2.13/src/dispatcher.c
++libsigsegv-2.13/src/fault-hpux.h
++libsigsegv-2.13/src/fault-linux.h
++libsigsegv-2.13/src/fault-irix-mips.h
++libsigsegv-2.13/src/Makefile.in
++libsigsegv-2.13/src/fault-aix3-powerpc.h
++libsigsegv-2.13/src/fault-openbsd-arm.h
++libsigsegv-2.13/src/fault-none.h
++libsigsegv-2.13/src/handler-none.c
++libsigsegv-2.13/src/fault-linux-cris-old.h
++libsigsegv-2.13/src/stackvma-simple.c
++libsigsegv-2.13/src/stackvma.h
++libsigsegv-2.13/src/fault-aix3.h
++libsigsegv-2.13/src/stackvma-mincore.c
++libsigsegv-2.13/src/handler-win32.c
++libsigsegv-2.13/src/leave-nop.c
++libsigsegv-2.13/src/fault-linux-alpha-old.h
++libsigsegv-2.13/src/fault-openbsd-sh.h
++libsigsegv-2.13/src/fault-openbsd-i386.h
++libsigsegv-2.13/src/fault-linux-i386-oldold.h
++libsigsegv-2.13/src/fault-osf.h
++libsigsegv-2.13/src/handler-macos.c
++libsigsegv-2.13/src/fault-solaris11-sparc.h
++libsigsegv-2.13/src/fault-irix.h
++libsigsegv-2.13/src/fault-hurd.h
++libsigsegv-2.13/src/fault-osf-alpha.h
++libsigsegv-2.13/src/fault-linux-ia64-old.h
++libsigsegv-2.13/src/stackvma-none.c
++libsigsegv-2.13/src/fault-linux-x86_64-old.h
++libsigsegv-2.13/src/fault-freebsd-arm.h
++libsigsegv-2.13/src/stackvma-mach.c
++libsigsegv-2.13/src/fault-hpux-hppa.h
++libsigsegv-2.13/src/fault-linux-cris.h
++libsigsegv-2.13/src/stackvma-procfs.c
++libsigsegv-2.13/src/fault-linux-m68k.h
++libsigsegv-2.13/src/fault-linux-s390.h
++libsigsegv-2.13/src/version.c
++libsigsegv-2.13/src/leave.c
++libsigsegv-2.13/src/stackvma-freebsd.c
++libsigsegv-2.13/src/stackvma.c
++libsigsegv-2.13/src/fault-linux-sparc.h
++libsigsegv-2.13/src/signals-bsd.h
++libsigsegv-2.13/src/signals.h
++libsigsegv-2.13/src/fault-openbsd-m88k.h
++libsigsegv-2.13/src/fault-netbsd-alpha.c
++libsigsegv-2.13/src/fault-aix5-powerpc.h
++libsigsegv-2.13/src/fault-linux-arm.h
++libsigsegv-2.13/src/machfault.h
++libsigsegv-2.13/src/fault-solaris.h
++libsigsegv-2.13/src/leave-setcontext.c
++libsigsegv-2.13/src/fault-openbsd-hppa.h
++libsigsegv-2.13/src/stackvma-linux.c
++libsigsegv-2.13/src/handler.c
++libsigsegv-2.13/src/fault-openbsd-alpha.h
++libsigsegv-2.13/src/fault-netbsd.h
++libsigsegv-2.13/src/stackvma-mquery.c
++libsigsegv-2.13/src/fault-posix.h
++libsigsegv-2.13/src/fault-openbsd.h
++libsigsegv-2.13/src/fault-linux-powerpc-old.h
++libsigsegv-2.13/src/fault-macosdarwin7-powerpc.h
++libsigsegv-2.13/src/fault-macosdarwin5-powerpc.c
++libsigsegv-2.13/src/fault-beos.h
++libsigsegv-2.13/src/fault-freebsd-i386.h
++libsigsegv-2.13/src/fault-linux-s390-old.h
++libsigsegv-2.13/src/fault-openbsd-m68k.h
++libsigsegv-2.13/src/fault-solaris-i386.h
++libsigsegv-2.13/src/signals-hurd.h
++libsigsegv-2.13/src/fault-linux-i386-old.h
++libsigsegv-2.13/src/sigsegv.h.in
++libsigsegv-2.13/src/fault-solaris-sparc.h
++libsigsegv-2.13/src/fault-aix5.h
++libsigsegv-2.13/src/stackvma-rofile.c
++libsigsegv-2.13/src/fault-linux-alpha.h
++libsigsegv-2.13/src/fault-linux-powerpc.h
++libsigsegv-2.13/src/fault-openbsd-sparc.h
++libsigsegv-2.13/src/fault-linux-hppa.h
++libsigsegv-2.13/src/fault-netbsd-alpha.h
++libsigsegv-2.13/src/leave.h
++libsigsegv-2.13/src/fault-openbsd-powerpc.h
++libsigsegv-2.13/src/fault-haiku-i386.h
++libsigsegv-2.13/NEWS
++libsigsegv-2.13/README
++libsigsegv-2.13/ChangeLog.1
++libsigsegv-2.13/configure.ac
++libsigsegv-2.13/INSTALL.windows
++libsigsegv-2.13/AUTHORS
++libsigsegv-2.13/aclocal.m4
++libsigsegv-2.13/tests/
++libsigsegv-2.13/tests/efault3.c
++libsigsegv-2.13/tests/efault1.c
++libsigsegv-2.13/tests/efault2.c
++libsigsegv-2.13/tests/stackoverflow1.c
++libsigsegv-2.13/tests/cygwin1.c
++libsigsegv-2.13/tests/Makefile.am
++libsigsegv-2.13/tests/Makefile.in
++libsigsegv-2.13/tests/sigsegv2.c
++libsigsegv-2.13/tests/sigsegv1.c
++libsigsegv-2.13/tests/altstack.h
++libsigsegv-2.13/tests/stackoverflow2.c
++libsigsegv-2.13/tests/sigsegv3.c
++libsigsegv-2.13/tests/mmaputil.h
++libsigsegv-2.13/PORTING
++libsigsegv-2.13/config.h.in
++libsigsegv-2.13/m4/
++libsigsegv-2.13/m4/mmap-anon.m4
++libsigsegv-2.13/m4/fault.m4
++libsigsegv-2.13/m4/efault.m4
++libsigsegv-2.13/m4/libtool.m4
++libsigsegv-2.13/m4/getpagesize.m4
++libsigsegv-2.13/m4/lt~obsolete.m4
++libsigsegv-2.13/m4/ltversion.m4
++libsigsegv-2.13/m4/sigaltstack-siglongjmp.m4
++libsigsegv-2.13/m4/relocatable-lib.m4
++libsigsegv-2.13/m4/ltsugar.m4
++libsigsegv-2.13/m4/ltoptions.m4
++libsigsegv-2.13/m4/sigaltstack.m4
++libsigsegv-2.13/m4/sigaltstack-longjmp.m4
++libsigsegv-2.13/m4/bold.m4
++libsigsegv-2.13/m4/stack-direction.m4
++libsigsegv-2.13/COPYING
++
++[1mBuild Tools:[m
++checking for a BSD-compatible install... /usr/bin/ginstall -c
++checking whether build environment is sane... yes
++checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
++checking for gawk... gawk
++checking whether make sets $(MAKE)... yes
++checking whether make supports nested variables... yes
++checking for gcc... gcc
++checking whether the C compiler works... yes
++checking for C compiler default output file name... a.out
++checking for suffix of executables... 
++checking whether we are cross compiling... no
++checking for suffix of object files... o
++checking whether we are using the GNU C compiler... yes
++checking whether gcc accepts -g... yes
++checking for gcc option to accept ISO C89... none needed
++checking whether gcc understands -c and -o together... yes
++checking whether make supports the include directive... yes (GNU style)
++checking dependency style of gcc... none
++checking how to run the C preprocessor... gcc -E
++checking build system type... x86_64-slackware-linux-musl
++checking host system type... x86_64-slackware-linux-musl
++checking host platform... x86_64-slackware-linux5.4.73-musl
++checking how to print strings... printf
++checking for a sed that does not truncate output... /usr/bin/sed
++checking for grep that handles long lines and -e... /usr/bin/grep
++checking for egrep... /usr/bin/grep -E
++checking for fgrep... /usr/bin/grep -F
++checking for ld used by gcc... /usr/bin/ld
++checking if the linker (/usr/bin/ld) is GNU ld... yes
++checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
++checking the name lister (/usr/bin/nm -B) interface... BSD nm
++checking whether ln -s works... yes
++checking the maximum length of command line arguments... 98304
++checking how to convert x86_64-slackware-linux-musl file names to x86_64-slackware-linux-musl format... func_convert_file_noop
++checking how to convert x86_64-slackware-linux-musl file names to toolchain format... func_convert_file_noop
++checking for /usr/bin/ld option to reload object files... -r
++checking for objdump... objdump
++checking how to recognize dependent libraries... pass_all
++checking for dlltool... dlltool
++checking how to associate runtime and link libraries... printf %s\n
++checking for ar... ar
++checking for archiver @FILE support... @
++checking for strip... strip
++checking for ranlib... ranlib
++checking command to parse /usr/bin/nm -B output from gcc object... ok
++checking for sysroot... no
++checking for a working dd... /usr/bin/dd
++checking how to truncate binary pipes... /usr/bin/dd bs=4096 count=1
++checking for mt... mt
++checking if mt is a manifest tool... no
++checking for ANSI C header files... yes
++checking for sys/types.h... yes
++checking for sys/stat.h... yes
++checking for stdlib.h... yes
++checking for string.h... yes
++checking for memory.h... yes
++checking for strings.h... yes
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking for unistd.h... yes
++checking for dlfcn.h... yes
++checking for objdir... .libs
++checking if gcc supports -fno-rtti -fno-exceptions... no
++checking for gcc option to produce PIC... -fPIC -DPIC
++checking if gcc PIC flag -fPIC -DPIC works... yes
++checking if gcc static flag -static works... yes
++checking if gcc supports -c -o file.o... yes
++checking if gcc supports -c -o file.o... (cached) yes
++checking whether the gcc linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
++checking whether -lc should be explicitly linked in... no
++checking dynamic linker characteristics... GNU/Linux ld.so
++checking how to hardcode library paths into programs... immediate
++checking whether stripping libraries is possible... yes
++checking if libtool supports shared libraries... yes
++checking whether to build shared libraries... yes
++checking whether to build static libraries... yes
++
++[1mOptional Platform Environment:[m
++checking sys/signal.h usability... yes
++checking sys/signal.h presence... yes
++checking for sys/signal.h... yes
++checking for unistd.h... (cached) yes
++checking for getpagesize... yes
++checking for sysconf(_SC_PAGESIZE)... yes
++checking for PAGESIZE in limits.h... yes
++checking for mmap with MAP_ANON... yes
++checking for mmap with MAP_ANONYMOUS... yes
++checking for mmap of /dev/zero... yes
++checking whether a fault handler according to POSIX works... yes
++checking whether a fault handler according to Linux/i386 works... no
++checking whether a fault handler according to old Linux/i386 works... no
++checking whether a fault handler according to Linux/m68k works... no
++checking whether a fault handler according to Linux/PowerPC works... no
++checking whether a fault handler according to Linux/HPPA works... no
++checking whether a fault handler according to BSD works... no
++checking whether a fault handler according to IRIX works... no
++checking whether a fault handler according to HP-UX HPPA works... no
++checking whether a fault handler according to OSF/1 Alpha works... no
++checking whether a fault handler according to NetBSD Alpha works... no
++checking whether a fault handler according to AIX works... no
++checking whether a fault handler according to MacOSX/Darwin7 PowerPC works... no
++checking whether a fault handler according to MacOSX/Darwin5 PowerPC works... no
++checking whether a fault handler according to Hurd works... no
++checking ucontext.h usability... yes
++checking ucontext.h presence... yes
++checking for ucontext.h... yes
++checking for the fault handler specifics... fault-linux-i386.h
++checking if the system supports catching SIGSEGV... yes
++checking for stack direction... grows down
++checking for prmap_t in sys/procfs.h... no
++checking for mquery... no
++checking for mincore... yes
++checking for getrlimit... yes
++checking for setrlimit... yes
++checking for sigaltstack... yes
++checking for stack_t... yes
++checking for working sigaltstack... yes
++checking for correct stack_t interpretation... yes
++checking whether a signal handler can be left through longjmp... yes
++checking whether a signal handler can be left through longjmp and sigaltstack... yes
++checking whether a signal handler can be left through longjmp and setcontext... no
++checking whether a signal handler can be left through siglongjmp... yes
++checking whether a signal handler can be left through siglongjmp and sigaltstack... yes
++checking whether a signal handler can be left through siglongjmp and setcontext... no
++checking if the system supports catching stack overflow... yes
++checking for uintptr_t... yes
++
++[1mBuild Parameters:[m
++checking whether to activate relocatable installation... no
++
++[1mOutput Substitution:[m
++
++Now please type '[1mmake[m' to compile. Good luck.
++
++checking that generated files are newer than configure... done
++configure: creating ./config.status
++config.status: creating Makefile
++config.status: creating src/Makefile
++config.status: creating src/sigsegv.h
++config.status: creating tests/Makefile
++config.status: creating config.h
++config.status: executing depfiles commands
++config.status: executing libtool commands
++make TARGETSTACK=" all" all-recursive
++make[1]: Entering directory '/tmp/libsigsegv-2.13'
++Making all in src
++make[2]: Entering directory '/tmp/libsigsegv-2.13/src'
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I..  -I. -I.   -O2 -fPIC -c -o handler.lo handler.c
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I..  -I. -I.   -O2 -fPIC -c -o stackvma.lo stackvma.c
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I..  -I. -I.   -O2 -fPIC -c -o leave.lo leave.c
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I.. -I. -I. -O2 -fPIC -c stackvma.c  -fPIC -DPIC -o .libs/stackvma.o
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I.. -I. -I. -O2 -fPIC -c handler.c  -fPIC -DPIC -o .libs/handler.o
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I.. -I. -I. -O2 -fPIC -c leave.c  -fPIC -DPIC -o .libs/leave.o
++In file included from handler-unix.c:66,
++                 from handler.c:20:
++/usr/include/sys/signal.h:1:2: warning: #warning redirecting incorrect #include <sys/signal.h> to <signal.h> [-Wcpp]
++    1 | #warning redirecting incorrect #include <sys/signal.h> to <signal.h>
++      |  ^~~~~~~
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I.. -I. -I. -O2 -fPIC -c leave.c -o leave.o >/dev/null 2>&1
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I.. -I. -I. -O2 -fPIC -c handler.c -o handler.o >/dev/null 2>&1
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I..  -I. -I.   -O2 -fPIC -c -o dispatcher.lo dispatcher.c
++/bin/sh ../libtool  --tag=CC   --mode=compile gcc -DHAVE_CONFIG_H -I. -I..  -I. -I.   -O2 -fPIC -c -o version.lo version.c
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I.. -I. -I. -O2 -fPIC -c stackvma.c -o stackvma.o >/dev/null 2>&1
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I.. -I. -I. -O2 -fPIC -c dispatcher.c  -fPIC -DPIC -o .libs/dispatcher.o
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I.. -I. -I. -O2 -fPIC -c version.c  -fPIC -DPIC -o .libs/version.o
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I.. -I. -I. -O2 -fPIC -c version.c -o version.o >/dev/null 2>&1
++libtool: compile:  gcc -DHAVE_CONFIG_H -I. -I.. -I. -I. -O2 -fPIC -c dispatcher.c -o dispatcher.o >/dev/null 2>&1
++/bin/sh ../libtool  --tag=CC   --mode=link gcc  -O2 -fPIC -rpath /usr/lib -version-info 2:6:0 -lc -no-undefined  -o libsigsegv.la -rpath /usr/lib handler.lo stackvma.lo leave.lo dispatcher.lo version.lo  
++libtool: link: gcc -shared  -fPIC -DPIC  .libs/handler.o .libs/stackvma.o .libs/leave.o .libs/dispatcher.o .libs/version.o   -lc  -O2   -Wl,-soname -Wl,libsigsegv.so.2 -o .libs/libsigsegv.so.2.0.6
++libtool: link: (cd ".libs" && rm -f "libsigsegv.so.2" && ln -s "libsigsegv.so.2.0.6" "libsigsegv.so.2")
++libtool: link: (cd ".libs" && rm -f "libsigsegv.so" && ln -s "libsigsegv.so.2.0.6" "libsigsegv.so")
++libtool: link: ar cru .libs/libsigsegv.a  handler.o stackvma.o leave.o dispatcher.o version.o
++libtool: link: ranlib .libs/libsigsegv.a
++libtool: link: ( cd ".libs" && rm -f "libsigsegv.la" && ln -s "../libsigsegv.la" "libsigsegv.la" )
++make[2]: Leaving directory '/tmp/libsigsegv-2.13/src'
++Making all in tests
++make[2]: Entering directory '/tmp/libsigsegv-2.13/tests'
++gcc -DHAVE_CONFIG_H -I. -I..  -I../src   -O2 -fPIC -c -o sigsegv1.o sigsegv1.c
++gcc -DHAVE_CONFIG_H -I. -I..  -I../src   -O2 -fPIC -c -o sigsegv2.o sigsegv2.c
++gcc -DHAVE_CONFIG_H -I. -I..  -I../src   -O2 -fPIC -c -o sigsegv3.o sigsegv3.c
++gcc -DHAVE_CONFIG_H -I. -I..  -I../src   -O2 -fPIC -c -o stackoverflow1.o stackoverflow1.c
++gcc -DHAVE_CONFIG_H -I. -I..  -I../src   -O2 -fPIC -c -o stackoverflow2.o stackoverflow2.c
++/bin/sh ../libtool  --tag=CC   --mode=link gcc  -O2 -fPIC   -o sigsegv1 sigsegv1.o ../src/libsigsegv.la 
++/bin/sh ../libtool  --tag=CC   --mode=link gcc  -O2 -fPIC   -o sigsegv2 sigsegv2.o ../src/libsigsegv.la 
++/bin/sh ../libtool  --tag=CC   --mode=link gcc  -O2 -fPIC   -o sigsegv3 sigsegv3.o ../src/libsigsegv.la 
++libtool: link: gcc -O2 -fPIC -o .libs/sigsegv1 sigsegv1.o  ../src/.libs/libsigsegv.so -lc
++libtool: link: gcc -O2 -fPIC -o .libs/sigsegv2 sigsegv2.o  ../src/.libs/libsigsegv.so -lc
++/bin/sh ../libtool  --tag=CC   --mode=link gcc  -O2 -fPIC   -o stackoverflow1 stackoverflow1.o ../src/libsigsegv.la 
++/bin/sh ../libtool  --tag=CC   --mode=link gcc  -O2 -fPIC   -o stackoverflow2 stackoverflow2.o ../src/libsigsegv.la 
++libtool: link: gcc -O2 -fPIC -o .libs/sigsegv3 sigsegv3.o  ../src/.libs/libsigsegv.so -lc
++libtool: link: gcc -O2 -fPIC -o .libs/stackoverflow1 stackoverflow1.o  ../src/.libs/libsigsegv.so -lc
++libtool: link: gcc -O2 -fPIC -o .libs/stackoverflow2 stackoverflow2.o  ../src/.libs/libsigsegv.so -lc
++make[2]: Leaving directory '/tmp/libsigsegv-2.13/tests'
++make[2]: Entering directory '/tmp/libsigsegv-2.13'
++
++Now please type '[1mmake check[m' to run a quick test suite. Hope it works.
++
++make[2]: Leaving directory '/tmp/libsigsegv-2.13'
++make[1]: Leaving directory '/tmp/libsigsegv-2.13'
++Making install in src
++make[1]: Entering directory '/tmp/libsigsegv-2.13/src'
++make[2]: Entering directory '/tmp/libsigsegv-2.13/src'
++ /usr/bin/mkdir -p '/tmp/package-libsigsegv/usr/lib'
++ /bin/sh ../libtool   --mode=install /usr/bin/ginstall -c   libsigsegv.la '/tmp/package-libsigsegv/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/libsigsegv.so.2.0.6 /tmp/package-libsigsegv/usr/lib/libsigsegv.so.2.0.6
++libtool: install: (cd /tmp/package-libsigsegv/usr/lib && { ln -s -f libsigsegv.so.2.0.6 libsigsegv.so.2 || { rm -f libsigsegv.so.2 && ln -s libsigsegv.so.2.0.6 libsigsegv.so.2; }; })
++libtool: install: (cd /tmp/package-libsigsegv/usr/lib && { ln -s -f libsigsegv.so.2.0.6 libsigsegv.so || { rm -f libsigsegv.so && ln -s libsigsegv.so.2.0.6 libsigsegv.so; }; })
++libtool: install: /usr/bin/ginstall -c .libs/libsigsegv.lai /tmp/package-libsigsegv/usr/lib/libsigsegv.la
++libtool: install: /usr/bin/ginstall -c .libs/libsigsegv.a /tmp/package-libsigsegv/usr/lib/libsigsegv.a
++libtool: install: chmod 644 /tmp/package-libsigsegv/usr/lib/libsigsegv.a
++libtool: install: ranlib /tmp/package-libsigsegv/usr/lib/libsigsegv.a
++libtool: warning: remember to run 'libtool --finish /usr/lib'
++/bin/sh /tmp/libsigsegv-2.13/build-aux/install-sh -d /tmp/package-libsigsegv/usr/include
++/usr/bin/ginstall -c -m 644 sigsegv.h /tmp/package-libsigsegv/usr/include/sigsegv.h
++make[2]: Leaving directory '/tmp/libsigsegv-2.13/src'
++make[1]: Leaving directory '/tmp/libsigsegv-2.13/src'
++Making install in tests
++make[1]: Entering directory '/tmp/libsigsegv-2.13/tests'
++make[2]: Entering directory '/tmp/libsigsegv-2.13/tests'
++make[2]: Nothing to be done for 'install-exec-am'.
++make[2]: Nothing to be done for 'install-data-am'.
++make[2]: Leaving directory '/tmp/libsigsegv-2.13/tests'
++make[1]: Leaving directory '/tmp/libsigsegv-2.13/tests'
++make[1]: Entering directory '/tmp/libsigsegv-2.13'
++make[2]: Entering directory '/tmp/libsigsegv-2.13'
++make[2]: Nothing to be done for 'install-exec-am'.
++make TARGETSTACK="install-recursive install-am install-data-am" install-data-hook
++make[3]: Entering directory '/tmp/libsigsegv-2.13'
++
++Now use the package; you can remove it later via '[1mmake uninstall[m'.
++
++make[3]: Leaving directory '/tmp/libsigsegv-2.13'
++make[2]: Leaving directory '/tmp/libsigsegv-2.13'
++make[1]: Leaving directory '/tmp/libsigsegv-2.13'
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++lib/libsigsegv.so.2	libsigsegv.so.2.0.6
++usr/lib/libsigsegv.so	libsigsegv.so.2.0.6
++usr/lib/libsigsegv.so.2	libsigsegv.so.2.0.6
++usr/lib/libsigsegv.so.2.0.6	../../lib/libsigsegv.so.2.0.6
++
++Making symbolic link creation script:
++( cd lib ; rm -rf libsigsegv.so.2 )
++( cd lib ; ln -sf libsigsegv.so.2.0.6 libsigsegv.so.2 )
++( cd usr/lib ; rm -rf libsigsegv.so )
++( cd usr/lib ; ln -sf libsigsegv.so.2.0.6 libsigsegv.so )
++( cd usr/lib ; rm -rf libsigsegv.so.2 )
++( cd usr/lib ; ln -sf libsigsegv.so.2.0.6 libsigsegv.so.2 )
++( cd usr/lib ; rm -rf libsigsegv.so.2.0.6 )
++( cd usr/lib ; ln -sf ../../lib/libsigsegv.so.2.0.6 libsigsegv.so.2.0.6 )
++
++It is recommended that you make these lines your new installation script.
++
++Would you like to make this stuff the install script for this package
++and remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './lib/libsigsegv.so.2'
++removed './usr/lib/libsigsegv.so'
++removed './usr/lib/libsigsegv.so.2.0.6'
++removed './usr/lib/libsigsegv.so.2'
++
++Creating your new ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/libsigsegv-2.13-x86_64-1.txz
++
++./
++install/
++install/doinst.sh
++install/slack-desc
++lib/
++lib/libsigsegv.so.2.0.6
++usr/
++usr/doc/
++usr/doc/libsigsegv-2.13/
++usr/doc/libsigsegv-2.13/AUTHORS
++usr/doc/libsigsegv-2.13/COPYING
++usr/doc/libsigsegv-2.13/ChangeLog
++usr/doc/libsigsegv-2.13/INSTALL
++usr/doc/libsigsegv-2.13/NEWS
++usr/doc/libsigsegv-2.13/PORTING
++usr/doc/libsigsegv-2.13/README
++usr/include/
++usr/include/sigsegv.h
++usr/lib/
++usr/lib/libsigsegv.a
++
++Slackware package /tmp/libsigsegv-2.13-x86_64-1.txz created.
++

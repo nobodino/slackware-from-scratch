@@ -1,0 +1,285 @@
+diff -ruBN /tmp/mdadm/mdadm-include-sysmacros.patch /source/a/mdadm/mdadm-include-sysmacros.patch
+--- /tmp/mdadm/mdadm-include-sysmacros.patch	1970-01-01 00:00:00.000000000 +0000
++++ /source/a/mdadm/mdadm-include-sysmacros.patch	2021-01-06 15:52:41.000000000 +0000
+@@ -0,0 +1,10 @@
++--- a/mdadm.h
+++++ b/mdadm.h
++@@ -34,6 +34,7 @@
++ #endif
++ 
++ #include	<sys/types.h>
+++#include	<sys/sysmacros.h>
++ #include	<sys/stat.h>
++ #include	<stdint.h>
++ #include	<stdlib.h>
+diff -ruBN /tmp/mdadm/mdadm.SlackBuild /source/a/mdadm/mdadm.SlackBuild
+--- /tmp/mdadm/mdadm.SlackBuild	2021-01-06 15:48:11.000000000 +0000
++++ /source/a/mdadm/mdadm.SlackBuild	2021-01-06 15:52:41.000000000 +0000
+@@ -69,6 +69,7 @@
+ rm -rf mdadm-$VERSION
+ tar xvf $CWD/mdadm-$VERSION.tar.?z || exit 1
+ cd mdadm-$VERSION || exit 1
++patch -p1 < $CWD/mdadm-include-sysmacros.patch || exit 1
+ 
+ chown -R root:root .
+ find . \
+diff -ruBN /tmp/mdadm/mdadm.SlackBuild.log /source/a/mdadm/mdadm.SlackBuild.log
+--- /tmp/mdadm/mdadm.SlackBuild.log	2021-01-06 15:48:16.000000000 +0000
++++ /source/a/mdadm/mdadm.SlackBuild.log	2021-01-06 15:53:12.000000000 +0000
+@@ -273,60 +273,193 @@
+ mdadm-4.1/udev-md-raid-safe-timeouts.rules
+ mdadm-4.1/util.c
+ mdadm-4.1/xmalloc.c
++patching file mdadm.h
+ rm -f mdadm mdmon mdadm.o config.o policy.o mdstat.o  ReadMe.o util.o maps.o lib.o Manage.o Assemble.o Build.o Create.o Detail.o Examine.o Grow.o Monitor.o dlink.o Kill.o Query.o Incremental.o Dump.o mdopen.o super0.o super1.o super-ddf.o super-intel.o bitmap.o super-mbr.o super-gpt.o restripe.o sysfs.o sha1.o mapfile.o crc32.o sg_io.o msg.o xmalloc.o platform-intel.o probe_roms.o crc32c.o mdmon.o monitor.o managemon.o util.o maps.o mdstat.o sysfs.o policy.o lib.o Kill.o sg_io.o dlink.o ReadMe.o super-intel.o super-mbr.o super-gpt.o super-ddf.o sha1.o crc32.o msg.o bitmap.o xmalloc.o platform-intel.o probe_roms.o crc32c.o pwgr.o core *.man \
+ mdadm.tcc mdadm.uclibc mdadm.static *.orig *.porig *.rej *.alt \
+ .merge_file_* mdadm.Os mdadm.O2 mdmon.O2 swap_super init.cpio.gz \
+ mdadm.uclibc.static test_stripe raid6check raid6check.o mdmon mdadm.8
+ rm -rf cov-int
+ cc -Wall  -Wstrict-prototypes -Wextra -Wno-unused-parameter -Wimplicit-fallthrough=0 -O2 -fPIC -DSendmail=\""/usr/sbin/sendmail -t"\" -DCONFFILE=\"/etc/mdadm.conf\" -DCONFFILE2=\"/etc/mdadm/mdadm.conf\" -DMAP_DIR=\"/run/mdadm\" -DMAP_FILE=\"map\" -DMDMON_DIR=\"/run/mdadm\" -DFAILED_SLOTS_DIR=\"/run/mdadm/failed-slots\" -DNO_COROSYNC -DNO_DLM   -DUSE_PTHREADS -DBINDIR=\"/sbin\"  -o mdadm.o -c mdadm.c
+-mdadm.c: In function ‘main’:
+-mdadm.c:1372:24: warning: implicit declaration of function ‘minor’ [-Wimplicit-function-declaration]
+- 1372 |    ident.super_minor = minor(stb.st_rdev);
+-      |                        ^~~~~
+ cc -Wall  -Wstrict-prototypes -Wextra -Wno-unused-parameter -Wimplicit-fallthrough=0 -O2 -fPIC -DSendmail=\""/usr/sbin/sendmail -t"\" -DCONFFILE=\"/etc/mdadm.conf\" -DCONFFILE2=\"/etc/mdadm/mdadm.conf\" -DMAP_DIR=\"/run/mdadm\" -DMAP_FILE=\"map\" -DMDMON_DIR=\"/run/mdadm\" -DFAILED_SLOTS_DIR=\"/run/mdadm/failed-slots\" -DNO_COROSYNC -DNO_DLM   -DUSE_PTHREADS -DBINDIR=\"/sbin\"  -o config.o -c config.c
+ cc -Wall  -Wstrict-prototypes -Wextra -Wno-unused-parameter -Wimplicit-fallthrough=0 -O2 -fPIC -DSendmail=\""/usr/sbin/sendmail -t"\" -DCONFFILE=\"/etc/mdadm.conf\" -DCONFFILE2=\"/etc/mdadm/mdadm.conf\" -DMAP_DIR=\"/run/mdadm\" -DMAP_FILE=\"map\" -DMDMON_DIR=\"/run/mdadm\" -DFAILED_SLOTS_DIR=\"/run/mdadm/failed-slots\" -DNO_COROSYNC -DNO_DLM   -DUSE_PTHREADS -DBINDIR=\"/sbin\"  -o policy.o -c policy.c
+-policy.c: In function ‘disk_path’:
+-policy.c:215:23: warning: implicit declaration of function ‘makedev’; did you mean ‘map_dev’? [-Wimplicit-function-declaration]
+-  215 |    if (stb.st_rdev != makedev(disk->disk.major, disk->disk.minor))
+-      |                       ^~~~~~~
+-      |                       map_dev
+-policy.c:215:20: warning: comparison of integer expressions of different signedness: ‘dev_t’ {aka ‘long unsigned int’} and ‘int’ [-Wsign-compare]
+-  215 |    if (stb.st_rdev != makedev(disk->disk.major, disk->disk.minor))
+-      |                    ^~
+-policy.c: In function ‘devid_policy’:
+-policy.c:425:20: warning: implicit declaration of function ‘major’ [-Wimplicit-function-declaration]
+-  425 |  disk.disk.major = major(dev);
+-      |                    ^~~~~
+-policy.c:426:20: warning: implicit declaration of function ‘minor’ [-Wimplicit-function-declaration]
+-  426 |  disk.disk.minor = minor(dev);
+-      |                    ^~~~~
+ cc -Wall  -Wstrict-prototypes -Wextra -Wno-unused-parameter -Wimplicit-fallthrough=0 -O2 -fPIC -DSendmail=\""/usr/sbin/sendmail -t"\" -DCONFFILE=\"/etc/mdadm.conf\" -DCONFFILE2=\"/etc/mdadm/mdadm.conf\" -DMAP_DIR=\"/run/mdadm\" -DMAP_FILE=\"map\" -DMDMON_DIR=\"/run/mdadm\" -DFAILED_SLOTS_DIR=\"/run/mdadm/failed-slots\" -DNO_COROSYNC -DNO_DLM   -DUSE_PTHREADS -DBINDIR=\"/sbin\"  -o mdstat.o -c mdstat.c
+ cc -Wall  -Wstrict-prototypes -Wextra -Wno-unused-parameter -Wimplicit-fallthrough=0 -O2 -fPIC -DSendmail=\""/usr/sbin/sendmail -t"\" -DCONFFILE=\"/etc/mdadm.conf\" -DCONFFILE2=\"/etc/mdadm/mdadm.conf\" -DMAP_DIR=\"/run/mdadm\" -DMAP_FILE=\"map\" -DMDMON_DIR=\"/run/mdadm\" -DFAILED_SLOTS_DIR=\"/run/mdadm/failed-slots\" -DNO_COROSYNC -DNO_DLM   -DUSE_PTHREADS -DBINDIR=\"/sbin\"  -o ReadMe.o -c ReadMe.c
+ cc -Wall  -Wstrict-prototypes -Wextra -Wno-unused-parameter -Wimplicit-fallthrough=0 -O2 -fPIC -DSendmail=\""/usr/sbin/sendmail -t"\" -DCONFFILE=\"/etc/mdadm.conf\" -DCONFFILE2=\"/etc/mdadm/mdadm.conf\" -DMAP_DIR=\"/run/mdadm\" -DMAP_FILE=\"map\" -DMDMON_DIR=\"/run/mdadm\" -DFAILED_SLOTS_DIR=\"/run/mdadm/failed-slots\" -DNO_COROSYNC -DNO_DLM   -DUSE_PTHREADS -DBINDIR=\"/sbin\"  -o util.o -c util.c
+-util.c: In function ‘test_partition_from_id’:
+-util.c:539:24: warning: implicit declaration of function ‘major’ [-Wimplicit-function-declaration]
+-  539 |  sprintf(buf, "%d:%d", major(id), minor(id));
+-      |                        ^~~~~
+-util.c:539:35: warning: implicit declaration of function ‘minor’; did you mean ‘mincore’? [-Wimplicit-function-declaration]
+-  539 |  sprintf(buf, "%d:%d", major(id), minor(id));
+-      |                                   ^~~~~
+-      |                                   mincore
+-util.c: In function ‘devnm2devid’:
+-util.c:1028:11: warning: implicit declaration of function ‘makedev’; did you mean ‘map_dev’? [-Wimplicit-function-declaration]
+- 1028 |    return makedev(mjr, mnr);
+-      |           ^~~~~~~
+-      |           map_dev
+-util.c: In function ‘open_container’:
+-util.c:1622:8: error: called object ‘major’ is not a function or function pointer
+- 1622 |   (int)major(st.st_rdev), (int)minor(st.st_rdev));
+-      |        ^~~~~
+-util.c:1616:6: note: declared here
+- 1616 |  int major, minor;
+-      |      ^~~~~
+-util.c:1622:32: error: called object ‘minor’ is not a function or function pointer
+- 1622 |   (int)major(st.st_rdev), (int)minor(st.st_rdev));
+-      |                                ^~~~~
+-util.c:1616:13: note: declared here
+- 1616 |  int major, minor;
+-      |             ^~~~~
+-make: *** [Makefile:185: util.o] Error 1
++cc -Wall  -Wstrict-prototypes -Wextra -Wno-unused-parameter -Wimplicit-fallthrough=0 -O2 -fPIC -DSendmail=\""/usr/sbin/sendmail -t"\" -DCONFFILE=\"/etc/mdadm.conf\" -DCONFFILE2=\"/etc/mdadm/mdadm.conf\" -DMAP_DIR=\"/run/mdadm\" -DMAP_FILE=\"map\" -DMDMON_DIR=\"/run/mdadm\" -DFAILED_SLOTS_DIR=\"/run/mdadm/failed-slots\" -DNO_COROSYNC -DNO_DLM   -DUSE_PTHREADS -DBINDIR=\"/sbin\"  -o maps.o -c maps.c
++cc -Wall  -Wstrict-prototypes -Wextra -Wno-unused-parameter -Wimplicit-fallthrough=0 -O2 -fPIC -DSendmail=\""/usr/sbin/sendmail -t"\" -DCONFFILE=\"/etc/mdadm.conf\" -DCONFFILE2=\"/etc/mdadm/mdadm.conf\" -DMAP_DIR=\"/run/mdadm\" -DMAP_FILE=\"map\" -DMDMON_DIR=\"/run/mdadm\" -DFAILED_SLOTS_DIR=\"/run/mdadm/failed-slots\" -DNO_COROSYNC -DNO_DLM   -DUSE_PTHREADS -DBINDIR=\"/sbin\"  -o lib.o -c lib.c
++cc -Wall  -Wstrict-prototypes -Wextra -Wno-unused-parameter -Wimplicit-fallthrough=0 -O2 -fPIC -DSendmail=\""/usr/sbin/sendmail -t"\" -DCONFFILE=\"/etc/mdadm.conf\" -DCONFFILE2=\"/etc/mdadm/mdadm.conf\" -DMAP_DIR=\"/run/mdadm\" -DMAP_FILE=\"map\" -DMDMON_DIR=\"/run/mdadm\" -DFAILED_SLOTS_DIR=\"/run/mdadm/failed-slots\" -DNO_COROSYNC -DNO_DLM   -DUSE_PTHREADS -DBINDIR=\"/sbin\"  -o Manage.o -c Manage.c
++cc -Wall  -Wstrict-prototypes -Wextra -Wno-unused-parameter -Wimplicit-fallthrough=0 -O2 -fPIC -DSendmail=\""/usr/sbin/sendmail -t"\" -DCONFFILE=\"/etc/mdadm.conf\" -DCONFFILE2=\"/etc/mdadm/mdadm.conf\" -DMAP_DIR=\"/run/mdadm\" -DMAP_FILE=\"map\" -DMDMON_DIR=\"/run/mdadm\" -DFAILED_SLOTS_DIR=\"/run/mdadm/failed-slots\" -DNO_COROSYNC -DNO_DLM   -DUSE_PTHREADS -DBINDIR=\"/sbin\"  -o Assemble.o -c Assemble.c
++cc -Wall  -Wstrict-prototypes -Wextra -Wno-unused-parameter -Wimplicit-fallthrough=0 -O2 -fPIC -DSendmail=\""/usr/sbin/sendmail -t"\" -DCONFFILE=\"/etc/mdadm.conf\" -DCONFFILE2=\"/etc/mdadm/mdadm.conf\" -DMAP_DIR=\"/run/mdadm\" -DMAP_FILE=\"map\" -DMDMON_DIR=\"/run/mdadm\" -DFAILED_SLOTS_DIR=\"/run/mdadm/failed-slots\" -DNO_COROSYNC -DNO_DLM   -DUSE_PTHREADS -DBINDIR=\"/sbin\"  -o Build.o -c Build.c
++cc -Wall  -Wstrict-prototypes -Wextra -Wno-unused-parameter -Wimplicit-fallthrough=0 -O2 -fPIC -DSendmail=\""/usr/sbin/sendmail -t"\" -DCONFFILE=\"/etc/mdadm.conf\" -DCONFFILE2=\"/etc/mdadm/mdadm.conf\" -DMAP_DIR=\"/run/mdadm\" -DMAP_FILE=\"map\" -DMDMON_DIR=\"/run/mdadm\" -DFAILED_SLOTS_DIR=\"/run/mdadm/failed-slots\" -DNO_COROSYNC -DNO_DLM   -DUSE_PTHREADS -DBINDIR=\"/sbin\"  -o Create.o -c Create.c
++cc -Wall  -Wstrict-prototypes -Wextra -Wno-unused-parameter -Wimplicit-fallthrough=0 -O2 -fPIC -DSendmail=\""/usr/sbin/sendmail -t"\" -DCONFFILE=\"/etc/mdadm.conf\" -DCONFFILE2=\"/etc/mdadm/mdadm.conf\" -DMAP_DIR=\"/run/mdadm\" -DMAP_FILE=\"map\" -DMDMON_DIR=\"/run/mdadm\" -DFAILED_SLOTS_DIR=\"/run/mdadm/failed-slots\" -DNO_COROSYNC -DNO_DLM   -DUSE_PTHREADS -DBINDIR=\"/sbin\"  -o Detail.o -c Detail.c
++cc -Wall  -Wstrict-prototypes -Wextra -Wno-unused-parameter -Wimplicit-fallthrough=0 -O2 -fPIC -DSendmail=\""/usr/sbin/sendmail -t"\" -DCONFFILE=\"/etc/mdadm.conf\" -DCONFFILE2=\"/etc/mdadm/mdadm.conf\" -DMAP_DIR=\"/run/mdadm\" -DMAP_FILE=\"map\" -DMDMON_DIR=\"/run/mdadm\" -DFAILED_SLOTS_DIR=\"/run/mdadm/failed-slots\" -DNO_COROSYNC -DNO_DLM   -DUSE_PTHREADS -DBINDIR=\"/sbin\"  -o Examine.o -c Examine.c
++cc -Wall  -Wstrict-prototypes -Wextra -Wno-unused-parameter -Wimplicit-fallthrough=0 -O2 -fPIC -DSendmail=\""/usr/sbin/sendmail -t"\" -DCONFFILE=\"/etc/mdadm.conf\" -DCONFFILE2=\"/etc/mdadm/mdadm.conf\" -DMAP_DIR=\"/run/mdadm\" -DMAP_FILE=\"map\" -DMDMON_DIR=\"/run/mdadm\" -DFAILED_SLOTS_DIR=\"/run/mdadm/failed-slots\" -DNO_COROSYNC -DNO_DLM   -DUSE_PTHREADS -DBINDIR=\"/sbin\"  -o Grow.o -c Grow.c
++cc -Wall  -Wstrict-prototypes -Wextra -Wno-unused-parameter -Wimplicit-fallthrough=0 -O2 -fPIC -DSendmail=\""/usr/sbin/sendmail -t"\" -DCONFFILE=\"/etc/mdadm.conf\" -DCONFFILE2=\"/etc/mdadm/mdadm.conf\" -DMAP_DIR=\"/run/mdadm\" -DMAP_FILE=\"map\" -DMDMON_DIR=\"/run/mdadm\" -DFAILED_SLOTS_DIR=\"/run/mdadm/failed-slots\" -DNO_COROSYNC -DNO_DLM   -DUSE_PTHREADS -DBINDIR=\"/sbin\"  -o Monitor.o -c Monitor.c
++cc -Wall  -Wstrict-prototypes -Wextra -Wno-unused-parameter -Wimplicit-fallthrough=0 -O2 -fPIC -DSendmail=\""/usr/sbin/sendmail -t"\" -DCONFFILE=\"/etc/mdadm.conf\" -DCONFFILE2=\"/etc/mdadm/mdadm.conf\" -DMAP_DIR=\"/run/mdadm\" -DMAP_FILE=\"map\" -DMDMON_DIR=\"/run/mdadm\" -DFAILED_SLOTS_DIR=\"/run/mdadm/failed-slots\" -DNO_COROSYNC -DNO_DLM   -DUSE_PTHREADS -DBINDIR=\"/sbin\"  -o dlink.o -c dlink.c
++cc -Wall  -Wstrict-prototypes -Wextra -Wno-unused-parameter -Wimplicit-fallthrough=0 -O2 -fPIC -DSendmail=\""/usr/sbin/sendmail -t"\" -DCONFFILE=\"/etc/mdadm.conf\" -DCONFFILE2=\"/etc/mdadm/mdadm.conf\" -DMAP_DIR=\"/run/mdadm\" -DMAP_FILE=\"map\" -DMDMON_DIR=\"/run/mdadm\" -DFAILED_SLOTS_DIR=\"/run/mdadm/failed-slots\" -DNO_COROSYNC -DNO_DLM   -DUSE_PTHREADS -DBINDIR=\"/sbin\"  -o Kill.o -c Kill.c
++cc -Wall  -Wstrict-prototypes -Wextra -Wno-unused-parameter -Wimplicit-fallthrough=0 -O2 -fPIC -DSendmail=\""/usr/sbin/sendmail -t"\" -DCONFFILE=\"/etc/mdadm.conf\" -DCONFFILE2=\"/etc/mdadm/mdadm.conf\" -DMAP_DIR=\"/run/mdadm\" -DMAP_FILE=\"map\" -DMDMON_DIR=\"/run/mdadm\" -DFAILED_SLOTS_DIR=\"/run/mdadm/failed-slots\" -DNO_COROSYNC -DNO_DLM   -DUSE_PTHREADS -DBINDIR=\"/sbin\"  -o Query.o -c Query.c
++cc -Wall  -Wstrict-prototypes -Wextra -Wno-unused-parameter -Wimplicit-fallthrough=0 -O2 -fPIC -DSendmail=\""/usr/sbin/sendmail -t"\" -DCONFFILE=\"/etc/mdadm.conf\" -DCONFFILE2=\"/etc/mdadm/mdadm.conf\" -DMAP_DIR=\"/run/mdadm\" -DMAP_FILE=\"map\" -DMDMON_DIR=\"/run/mdadm\" -DFAILED_SLOTS_DIR=\"/run/mdadm/failed-slots\" -DNO_COROSYNC -DNO_DLM   -DUSE_PTHREADS -DBINDIR=\"/sbin\"  -o Incremental.o -c Incremental.c
++cc -Wall  -Wstrict-prototypes -Wextra -Wno-unused-parameter -Wimplicit-fallthrough=0 -O2 -fPIC -DSendmail=\""/usr/sbin/sendmail -t"\" -DCONFFILE=\"/etc/mdadm.conf\" -DCONFFILE2=\"/etc/mdadm/mdadm.conf\" -DMAP_DIR=\"/run/mdadm\" -DMAP_FILE=\"map\" -DMDMON_DIR=\"/run/mdadm\" -DFAILED_SLOTS_DIR=\"/run/mdadm/failed-slots\" -DNO_COROSYNC -DNO_DLM   -DUSE_PTHREADS -DBINDIR=\"/sbin\"  -o Dump.o -c Dump.c
++cc -Wall  -Wstrict-prototypes -Wextra -Wno-unused-parameter -Wimplicit-fallthrough=0 -O2 -fPIC -DSendmail=\""/usr/sbin/sendmail -t"\" -DCONFFILE=\"/etc/mdadm.conf\" -DCONFFILE2=\"/etc/mdadm/mdadm.conf\" -DMAP_DIR=\"/run/mdadm\" -DMAP_FILE=\"map\" -DMDMON_DIR=\"/run/mdadm\" -DFAILED_SLOTS_DIR=\"/run/mdadm/failed-slots\" -DNO_COROSYNC -DNO_DLM   -DUSE_PTHREADS -DBINDIR=\"/sbin\"  -o mdopen.o -c mdopen.c
++cc -Wall  -Wstrict-prototypes -Wextra -Wno-unused-parameter -Wimplicit-fallthrough=0 -O2 -fPIC -DSendmail=\""/usr/sbin/sendmail -t"\" -DCONFFILE=\"/etc/mdadm.conf\" -DCONFFILE2=\"/etc/mdadm/mdadm.conf\" -DMAP_DIR=\"/run/mdadm\" -DMAP_FILE=\"map\" -DMDMON_DIR=\"/run/mdadm\" -DFAILED_SLOTS_DIR=\"/run/mdadm/failed-slots\" -DNO_COROSYNC -DNO_DLM   -DUSE_PTHREADS -DBINDIR=\"/sbin\"  -o super0.o -c super0.c
++cc -Wall  -Wstrict-prototypes -Wextra -Wno-unused-parameter -Wimplicit-fallthrough=0 -O2 -fPIC -DSendmail=\""/usr/sbin/sendmail -t"\" -DCONFFILE=\"/etc/mdadm.conf\" -DCONFFILE2=\"/etc/mdadm/mdadm.conf\" -DMAP_DIR=\"/run/mdadm\" -DMAP_FILE=\"map\" -DMDMON_DIR=\"/run/mdadm\" -DFAILED_SLOTS_DIR=\"/run/mdadm/failed-slots\" -DNO_COROSYNC -DNO_DLM   -DUSE_PTHREADS -DBINDIR=\"/sbin\"  -o super1.o -c super1.c
++cc -Wall  -Wstrict-prototypes -Wextra -Wno-unused-parameter -Wimplicit-fallthrough=0 -O2 -fPIC -DSendmail=\""/usr/sbin/sendmail -t"\" -DCONFFILE=\"/etc/mdadm.conf\" -DCONFFILE2=\"/etc/mdadm/mdadm.conf\" -DMAP_DIR=\"/run/mdadm\" -DMAP_FILE=\"map\" -DMDMON_DIR=\"/run/mdadm\" -DFAILED_SLOTS_DIR=\"/run/mdadm/failed-slots\" -DNO_COROSYNC -DNO_DLM   -DUSE_PTHREADS -DBINDIR=\"/sbin\"  -o super-ddf.o -c super-ddf.c
++cc -Wall  -Wstrict-prototypes -Wextra -Wno-unused-parameter -Wimplicit-fallthrough=0 -O2 -fPIC -DSendmail=\""/usr/sbin/sendmail -t"\" -DCONFFILE=\"/etc/mdadm.conf\" -DCONFFILE2=\"/etc/mdadm/mdadm.conf\" -DMAP_DIR=\"/run/mdadm\" -DMAP_FILE=\"map\" -DMDMON_DIR=\"/run/mdadm\" -DFAILED_SLOTS_DIR=\"/run/mdadm/failed-slots\" -DNO_COROSYNC -DNO_DLM   -DUSE_PTHREADS -DBINDIR=\"/sbin\"  -o super-intel.o -c super-intel.c
++super-intel.c: In function ‘__get_imsm_disk’:
++super-intel.c:696:9: warning: taking address of packed member of ‘struct imsm_super’ may result in an unaligned pointer value [-Waddress-of-packed-member]
++  696 |  return &mpb->disk[index];
++      |         ^~~~~~~~~~~~~~~~~
++super-intel.c: In function ‘__gen_imsm_checksum’:
++super-intel.c:730:2: warning: converting a packed ‘struct imsm_super’ pointer (alignment 1) to a ‘__u32’ {aka ‘unsigned int’} pointer (alignment 4) may result in an unaligned pointer value [-Waddress-of-packed-member]
++  730 |  __u32 *p = (__u32 *) mpb;
++      |  ^~~~~
++super-intel.c:225:8: note: defined here
++  225 | struct imsm_super {
++      |        ^~~~~~~~~~
++super-intel.c: In function ‘set_pba_of_lba0’:
++super-intel.c:1218:15: warning: taking address of packed member of ‘struct imsm_map’ may result in an unaligned pointer value [-Waddress-of-packed-member]
++ 1218 |  split_ull(n, &map->pba_of_lba0_lo, &map->pba_of_lba0_hi);
++      |               ^~~~~~~~~~~~~~~~~~~~
++super-intel.c:1218:37: warning: taking address of packed member of ‘struct imsm_map’ may result in an unaligned pointer value [-Waddress-of-packed-member]
++ 1218 |  split_ull(n, &map->pba_of_lba0_lo, &map->pba_of_lba0_hi);
++      |                                     ^~~~~~~~~~~~~~~~~~~~
++super-intel.c: In function ‘set_blocks_per_member’:
++super-intel.c:1223:15: warning: taking address of packed member of ‘struct imsm_map’ may result in an unaligned pointer value [-Waddress-of-packed-member]
++ 1223 |  split_ull(n, &map->blocks_per_member_lo, &map->blocks_per_member_hi);
++      |               ^~~~~~~~~~~~~~~~~~~~~~~~~~
++super-intel.c:1223:43: warning: taking address of packed member of ‘struct imsm_map’ may result in an unaligned pointer value [-Waddress-of-packed-member]
++ 1223 |  split_ull(n, &map->blocks_per_member_lo, &map->blocks_per_member_hi);
++      |                                           ^~~~~~~~~~~~~~~~~~~~~~~~~~
++super-intel.c: In function ‘set_num_data_stripes’:
++super-intel.c:1228:15: warning: taking address of packed member of ‘struct imsm_map’ may result in an unaligned pointer value [-Waddress-of-packed-member]
++ 1228 |  split_ull(n, &map->num_data_stripes_lo, &map->num_data_stripes_hi);
++      |               ^~~~~~~~~~~~~~~~~~~~~~~~~
++super-intel.c:1228:42: warning: taking address of packed member of ‘struct imsm_map’ may result in an unaligned pointer value [-Waddress-of-packed-member]
++ 1228 |  split_ull(n, &map->num_data_stripes_lo, &map->num_data_stripes_hi);
++      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~
++super-intel.c: In function ‘set_imsm_dev_size’:
++super-intel.c:1233:15: warning: taking address of packed member of ‘struct imsm_dev’ may result in an unaligned pointer value [-Waddress-of-packed-member]
++ 1233 |  split_ull(n, &dev->size_low, &dev->size_high);
++      |               ^~~~~~~~~~~~~~
++super-intel.c:1233:31: warning: taking address of packed member of ‘struct imsm_dev’ may result in an unaligned pointer value [-Waddress-of-packed-member]
++ 1233 |  split_ull(n, &dev->size_low, &dev->size_high);
++      |                               ^~~~~~~~~~~~~~~
++super-intel.c: In function ‘convert_to_4k_imsm_migr_rec’:
++super-intel.c:1637:4: warning: taking address of packed member of ‘struct migr_record’ may result in an unaligned pointer value [-Waddress-of-packed-member]
++ 1637 |    &migr_rec->post_migr_vol_cap, &migr_rec->post_migr_vol_cap_hi);
++      |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
++super-intel.c:1637:34: warning: taking address of packed member of ‘struct migr_record’ may result in an unaligned pointer value [-Waddress-of-packed-member]
++ 1637 |    &migr_rec->post_migr_vol_cap, &migr_rec->post_migr_vol_cap_hi);
++      |                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++super-intel.c: In function ‘convert_from_4k_imsm_migr_rec’:
++super-intel.c:1767:4: warning: taking address of packed member of ‘struct migr_record’ may result in an unaligned pointer value [-Waddress-of-packed-member]
++ 1767 |    &migr_rec->post_migr_vol_cap,
++      |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
++super-intel.c:1768:4: warning: taking address of packed member of ‘struct migr_record’ may result in an unaligned pointer value [-Waddress-of-packed-member]
++ 1768 |    &migr_rec->post_migr_vol_cap_hi);
++      |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++super-intel.c: In function ‘calc_component_size’:
++super-intel.c:2822:20: warning: taking the absolute value of unsigned type ‘long long unsigned int’ has no effect [-Wabsolute-value]
++ 2822 |  if ((unsigned int)abs(calc_dev_size - dev_size) >
++      |                    ^~~
++super-intel.c:2822:20: warning: absolute value function ‘abs’ given an argument of type ‘long long unsigned int’ but has parameter of type ‘int’ which may cause truncation of value [-Wabsolute-value]
++super-intel.c: In function ‘clear_hi’:
++super-intel.c:4379:28: warning: taking address of packed member of ‘struct imsm_super’ may result in an unaligned pointer value [-Waddress-of-packed-member]
++ 4379 |   struct imsm_disk *disk = &mpb->disk[i];
++      |                            ^~~~~~~~~~~~~
++super-intel.c: In function ‘write_super_imsm_spares’:
++super-intel.c:5956:28: warning: taking address of packed member of ‘struct imsm_super’ may result in an unaligned pointer value [-Waddress-of-packed-member]
++ 5956 |    convert_to_4k_imsm_disk(&spare->disk[0]);
++      |                            ^~~~~~~~~~~~~~~
++super-intel.c: In function ‘apply_reshape_migration_update’:
++super-intel.c:9198:4: warning: converting a packed ‘struct imsm_dev’ pointer (alignment 1) to a ‘void *’ pointer (alignment 8) may result in an unaligned pointer value [-Waddress-of-packed-member]
++ 9198 |    tofree = (void **)dev;
++      |    ^~~~~~
++super-intel.c:174:8: note: defined here
++  174 | struct imsm_dev {
++      |        ^~~~~~~~
++cc -Wall  -Wstrict-prototypes -Wextra -Wno-unused-parameter -Wimplicit-fallthrough=0 -O2 -fPIC -DSendmail=\""/usr/sbin/sendmail -t"\" -DCONFFILE=\"/etc/mdadm.conf\" -DCONFFILE2=\"/etc/mdadm/mdadm.conf\" -DMAP_DIR=\"/run/mdadm\" -DMAP_FILE=\"map\" -DMDMON_DIR=\"/run/mdadm\" -DFAILED_SLOTS_DIR=\"/run/mdadm/failed-slots\" -DNO_COROSYNC -DNO_DLM   -DUSE_PTHREADS -DBINDIR=\"/sbin\"  -o bitmap.o -c bitmap.c
++cc -Wall  -Wstrict-prototypes -Wextra -Wno-unused-parameter -Wimplicit-fallthrough=0 -O2 -fPIC -DSendmail=\""/usr/sbin/sendmail -t"\" -DCONFFILE=\"/etc/mdadm.conf\" -DCONFFILE2=\"/etc/mdadm/mdadm.conf\" -DMAP_DIR=\"/run/mdadm\" -DMAP_FILE=\"map\" -DMDMON_DIR=\"/run/mdadm\" -DFAILED_SLOTS_DIR=\"/run/mdadm/failed-slots\" -DNO_COROSYNC -DNO_DLM   -DUSE_PTHREADS -DBINDIR=\"/sbin\"  -o super-mbr.o -c super-mbr.c
++cc -Wall  -Wstrict-prototypes -Wextra -Wno-unused-parameter -Wimplicit-fallthrough=0 -O2 -fPIC -DSendmail=\""/usr/sbin/sendmail -t"\" -DCONFFILE=\"/etc/mdadm.conf\" -DCONFFILE2=\"/etc/mdadm/mdadm.conf\" -DMAP_DIR=\"/run/mdadm\" -DMAP_FILE=\"map\" -DMDMON_DIR=\"/run/mdadm\" -DFAILED_SLOTS_DIR=\"/run/mdadm/failed-slots\" -DNO_COROSYNC -DNO_DLM   -DUSE_PTHREADS -DBINDIR=\"/sbin\"  -o super-gpt.o -c super-gpt.c
++cc -Wall  -Wstrict-prototypes -Wextra -Wno-unused-parameter -Wimplicit-fallthrough=0 -O2 -fPIC -DSendmail=\""/usr/sbin/sendmail -t"\" -DCONFFILE=\"/etc/mdadm.conf\" -DCONFFILE2=\"/etc/mdadm/mdadm.conf\" -DMAP_DIR=\"/run/mdadm\" -DMAP_FILE=\"map\" -DMDMON_DIR=\"/run/mdadm\" -DFAILED_SLOTS_DIR=\"/run/mdadm/failed-slots\" -DNO_COROSYNC -DNO_DLM   -DUSE_PTHREADS -DBINDIR=\"/sbin\"  -o restripe.o -c restripe.c
++cc -Wall  -Wstrict-prototypes -Wextra -Wno-unused-parameter -Wimplicit-fallthrough=0 -O2 -fPIC -DSendmail=\""/usr/sbin/sendmail -t"\" -DCONFFILE=\"/etc/mdadm.conf\" -DCONFFILE2=\"/etc/mdadm/mdadm.conf\" -DMAP_DIR=\"/run/mdadm\" -DMAP_FILE=\"map\" -DMDMON_DIR=\"/run/mdadm\" -DFAILED_SLOTS_DIR=\"/run/mdadm/failed-slots\" -DNO_COROSYNC -DNO_DLM   -DUSE_PTHREADS -DBINDIR=\"/sbin\"  -o sysfs.o -c sysfs.c
++cc -Wall  -Wstrict-prototypes -Wextra -Wno-unused-parameter -Wimplicit-fallthrough=0 -O2 -fPIC -DSendmail=\""/usr/sbin/sendmail -t"\" -DCONFFILE=\"/etc/mdadm.conf\" -DCONFFILE2=\"/etc/mdadm/mdadm.conf\" -DMAP_DIR=\"/run/mdadm\" -DMAP_FILE=\"map\" -DMDMON_DIR=\"/run/mdadm\" -DFAILED_SLOTS_DIR=\"/run/mdadm/failed-slots\" -DNO_COROSYNC -DNO_DLM   -DUSE_PTHREADS -DHAVE_STDINT_H -o sha1.o -c sha1.c
++cc -Wall  -Wstrict-prototypes -Wextra -Wno-unused-parameter -Wimplicit-fallthrough=0 -O2 -fPIC -DSendmail=\""/usr/sbin/sendmail -t"\" -DCONFFILE=\"/etc/mdadm.conf\" -DCONFFILE2=\"/etc/mdadm/mdadm.conf\" -DMAP_DIR=\"/run/mdadm\" -DMAP_FILE=\"map\" -DMDMON_DIR=\"/run/mdadm\" -DFAILED_SLOTS_DIR=\"/run/mdadm/failed-slots\" -DNO_COROSYNC -DNO_DLM   -DUSE_PTHREADS -DBINDIR=\"/sbin\"  -o mapfile.o -c mapfile.c
++cc -Wall  -Wstrict-prototypes -Wextra -Wno-unused-parameter -Wimplicit-fallthrough=0 -O2 -fPIC -DSendmail=\""/usr/sbin/sendmail -t"\" -DCONFFILE=\"/etc/mdadm.conf\" -DCONFFILE2=\"/etc/mdadm/mdadm.conf\" -DMAP_DIR=\"/run/mdadm\" -DMAP_FILE=\"map\" -DMDMON_DIR=\"/run/mdadm\" -DFAILED_SLOTS_DIR=\"/run/mdadm/failed-slots\" -DNO_COROSYNC -DNO_DLM   -DUSE_PTHREADS -DBINDIR=\"/sbin\"  -o crc32.o -c crc32.c
++cc -Wall  -Wstrict-prototypes -Wextra -Wno-unused-parameter -Wimplicit-fallthrough=0 -O2 -fPIC -DSendmail=\""/usr/sbin/sendmail -t"\" -DCONFFILE=\"/etc/mdadm.conf\" -DCONFFILE2=\"/etc/mdadm/mdadm.conf\" -DMAP_DIR=\"/run/mdadm\" -DMAP_FILE=\"map\" -DMDMON_DIR=\"/run/mdadm\" -DFAILED_SLOTS_DIR=\"/run/mdadm/failed-slots\" -DNO_COROSYNC -DNO_DLM   -DUSE_PTHREADS -DBINDIR=\"/sbin\"  -o sg_io.o -c sg_io.c
++cc -Wall  -Wstrict-prototypes -Wextra -Wno-unused-parameter -Wimplicit-fallthrough=0 -O2 -fPIC -DSendmail=\""/usr/sbin/sendmail -t"\" -DCONFFILE=\"/etc/mdadm.conf\" -DCONFFILE2=\"/etc/mdadm/mdadm.conf\" -DMAP_DIR=\"/run/mdadm\" -DMAP_FILE=\"map\" -DMDMON_DIR=\"/run/mdadm\" -DFAILED_SLOTS_DIR=\"/run/mdadm/failed-slots\" -DNO_COROSYNC -DNO_DLM   -DUSE_PTHREADS -DBINDIR=\"/sbin\"  -o msg.o -c msg.c
++cc -Wall  -Wstrict-prototypes -Wextra -Wno-unused-parameter -Wimplicit-fallthrough=0 -O2 -fPIC -DSendmail=\""/usr/sbin/sendmail -t"\" -DCONFFILE=\"/etc/mdadm.conf\" -DCONFFILE2=\"/etc/mdadm/mdadm.conf\" -DMAP_DIR=\"/run/mdadm\" -DMAP_FILE=\"map\" -DMDMON_DIR=\"/run/mdadm\" -DFAILED_SLOTS_DIR=\"/run/mdadm/failed-slots\" -DNO_COROSYNC -DNO_DLM   -DUSE_PTHREADS -DBINDIR=\"/sbin\"  -o xmalloc.o -c xmalloc.c
++cc -Wall  -Wstrict-prototypes -Wextra -Wno-unused-parameter -Wimplicit-fallthrough=0 -O2 -fPIC -DSendmail=\""/usr/sbin/sendmail -t"\" -DCONFFILE=\"/etc/mdadm.conf\" -DCONFFILE2=\"/etc/mdadm/mdadm.conf\" -DMAP_DIR=\"/run/mdadm\" -DMAP_FILE=\"map\" -DMDMON_DIR=\"/run/mdadm\" -DFAILED_SLOTS_DIR=\"/run/mdadm/failed-slots\" -DNO_COROSYNC -DNO_DLM   -DUSE_PTHREADS -DBINDIR=\"/sbin\"  -o platform-intel.o -c platform-intel.c
++cc -Wall  -Wstrict-prototypes -Wextra -Wno-unused-parameter -Wimplicit-fallthrough=0 -O2 -fPIC -DSendmail=\""/usr/sbin/sendmail -t"\" -DCONFFILE=\"/etc/mdadm.conf\" -DCONFFILE2=\"/etc/mdadm/mdadm.conf\" -DMAP_DIR=\"/run/mdadm\" -DMAP_FILE=\"map\" -DMDMON_DIR=\"/run/mdadm\" -DFAILED_SLOTS_DIR=\"/run/mdadm/failed-slots\" -DNO_COROSYNC -DNO_DLM   -DUSE_PTHREADS -DBINDIR=\"/sbin\"  -o probe_roms.o -c probe_roms.c
++cc -Wall  -Wstrict-prototypes -Wextra -Wno-unused-parameter -Wimplicit-fallthrough=0 -O2 -fPIC -DSendmail=\""/usr/sbin/sendmail -t"\" -DCONFFILE=\"/etc/mdadm.conf\" -DCONFFILE2=\"/etc/mdadm/mdadm.conf\" -DMAP_DIR=\"/run/mdadm\" -DMAP_FILE=\"map\" -DMDMON_DIR=\"/run/mdadm\" -DFAILED_SLOTS_DIR=\"/run/mdadm/failed-slots\" -DNO_COROSYNC -DNO_DLM   -DUSE_PTHREADS -DBINDIR=\"/sbin\"  -o crc32c.o -c crc32c.c
++cc -Wall  -Wstrict-prototypes -Wextra -Wno-unused-parameter -Wimplicit-fallthrough=0 -O2 -fPIC -DSendmail=\""/usr/sbin/sendmail -t"\" -DCONFFILE=\"/etc/mdadm.conf\" -DCONFFILE2=\"/etc/mdadm/mdadm.conf\" -DMAP_DIR=\"/run/mdadm\" -DMAP_FILE=\"map\" -DMDMON_DIR=\"/run/mdadm\" -DFAILED_SLOTS_DIR=\"/run/mdadm/failed-slots\" -DNO_COROSYNC -DNO_DLM   -DUSE_PTHREADS  -o mdadm mdadm.o config.o policy.o mdstat.o  ReadMe.o util.o maps.o lib.o Manage.o Assemble.o Build.o Create.o Detail.o Examine.o Grow.o Monitor.o dlink.o Kill.o Query.o Incremental.o Dump.o mdopen.o super0.o super1.o super-ddf.o super-intel.o bitmap.o super-mbr.o super-gpt.o restripe.o sysfs.o sha1.o mapfile.o crc32.o sg_io.o msg.o xmalloc.o platform-intel.o probe_roms.o crc32c.o -ldl
++cc -Wall  -Wstrict-prototypes -Wextra -Wno-unused-parameter -Wimplicit-fallthrough=0 -O2 -fPIC -DSendmail=\""/usr/sbin/sendmail -t"\" -DCONFFILE=\"/etc/mdadm.conf\" -DCONFFILE2=\"/etc/mdadm/mdadm.conf\" -DMAP_DIR=\"/run/mdadm\" -DMAP_FILE=\"map\" -DMDMON_DIR=\"/run/mdadm\" -DFAILED_SLOTS_DIR=\"/run/mdadm/failed-slots\" -DNO_COROSYNC -DNO_DLM   -DUSE_PTHREADS -DBINDIR=\"/sbin\"  -o mdmon.o -c mdmon.c
++cc -Wall  -Wstrict-prototypes -Wextra -Wno-unused-parameter -Wimplicit-fallthrough=0 -O2 -fPIC -DSendmail=\""/usr/sbin/sendmail -t"\" -DCONFFILE=\"/etc/mdadm.conf\" -DCONFFILE2=\"/etc/mdadm/mdadm.conf\" -DMAP_DIR=\"/run/mdadm\" -DMAP_FILE=\"map\" -DMDMON_DIR=\"/run/mdadm\" -DFAILED_SLOTS_DIR=\"/run/mdadm/failed-slots\" -DNO_COROSYNC -DNO_DLM   -DUSE_PTHREADS -DBINDIR=\"/sbin\"  -o monitor.o -c monitor.c
++cc -Wall  -Wstrict-prototypes -Wextra -Wno-unused-parameter -Wimplicit-fallthrough=0 -O2 -fPIC -DSendmail=\""/usr/sbin/sendmail -t"\" -DCONFFILE=\"/etc/mdadm.conf\" -DCONFFILE2=\"/etc/mdadm/mdadm.conf\" -DMAP_DIR=\"/run/mdadm\" -DMAP_FILE=\"map\" -DMDMON_DIR=\"/run/mdadm\" -DFAILED_SLOTS_DIR=\"/run/mdadm/failed-slots\" -DNO_COROSYNC -DNO_DLM   -DUSE_PTHREADS -DBINDIR=\"/sbin\"  -o managemon.o -c managemon.c
++cc -Wall  -Wstrict-prototypes -Wextra -Wno-unused-parameter -Wimplicit-fallthrough=0 -O2 -fPIC -DSendmail=\""/usr/sbin/sendmail -t"\" -DCONFFILE=\"/etc/mdadm.conf\" -DCONFFILE2=\"/etc/mdadm/mdadm.conf\" -DMAP_DIR=\"/run/mdadm\" -DMAP_FILE=\"map\" -DMDMON_DIR=\"/run/mdadm\" -DFAILED_SLOTS_DIR=\"/run/mdadm/failed-slots\" -DNO_COROSYNC -DNO_DLM   -DUSE_PTHREADS  -pthread -Wl,-z,now -o mdmon mdmon.o monitor.o managemon.o util.o maps.o mdstat.o sysfs.o policy.o lib.o Kill.o sg_io.o dlink.o ReadMe.o super-intel.o super-mbr.o super-gpt.o super-ddf.o sha1.o crc32.o msg.o bitmap.o xmalloc.o platform-intel.o probe_roms.o crc32c.o -ldl
++sed -e 's/{DEFAULT_METADATA}/1.2/g' \
++-e 's,{MAP_PATH},/run/mdadm/map,g'  mdadm.8.in > mdadm.8
++/usr/bin/install -D -m 644 mdadm.8 /tmp/package-mdadm/usr/man/man8/mdadm.8
++/usr/bin/install -D -m 644 mdmon.8 /tmp/package-mdadm/usr/man/man8/mdmon.8
++/usr/bin/install -D -m 644 md.4 /tmp/package-mdadm/usr/man/man4/md.4
++/usr/bin/install -D -m 644 mdadm.conf.5 /tmp/package-mdadm/usr/man/man5/mdadm.conf.5
++/usr/bin/install -D -m 644 udev-md-raid-creating.rules /tmp/package-mdadm/lib/udev/rules.d/01-md-raid-creating.rules
++/usr/bin/install -D -m 644 udev-md-raid-arrays.rules /tmp/package-mdadm/lib/udev/rules.d/63-md-raid-arrays.rules
++/usr/bin/install -D -m 644 udev-md-raid-assembly.rules /tmp/package-mdadm/lib/udev/rules.d/64-md-raid-assembly.rules
++/usr/bin/install -D -m 644 udev-md-clustered-confirm-device.rules /tmp/package-mdadm/lib/udev/rules.d/69-md-clustered-confirm-device.rules
++/usr/bin/install -D  -m 755 mdadm /tmp/package-mdadm/sbin/mdadm
++/usr/bin/install -D  -m 755 mdmon /tmp/package-mdadm/sbin/mdmon
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++
++No symbolic links were found, so we won't make an installation script.
++You can make your own later in ./install/doinst.sh and rebuild the
++package if you like.
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/mdadm-4.1-x86_64-1.txz
++
++./
++etc/
++etc/mdadm.conf.new
++install/
++install/doinst.sh
++install/slack-desc
++lib/
++lib/udev/
++lib/udev/rules.d/
++lib/udev/rules.d/01-md-raid-creating.rules
++lib/udev/rules.d/63-md-raid-arrays.rules
++lib/udev/rules.d/64-md-raid-assembly.rules
++lib/udev/rules.d/69-md-clustered-confirm-device.rules
++sbin/
++sbin/mdadm
++sbin/mdmon
++usr/
++usr/doc/
++usr/doc/mdadm-4.1/
++usr/doc/mdadm-4.1/ANNOUNCE-4.1
++usr/doc/mdadm-4.1/COPYING
++usr/doc/mdadm-4.1/ChangeLog
++usr/doc/mdadm-4.1/INSTALL
++usr/doc/mdadm-4.1/README.initramfs
++usr/doc/mdadm-4.1/TODO
++usr/man/
++usr/man/man4/
++usr/man/man4/md.4.gz
++usr/man/man5/
++usr/man/man5/mdadm.conf.5.gz
++usr/man/man8/
++usr/man/man8/mdadm.8.gz
++usr/man/man8/mdmon.8.gz
++
++Slackware package /tmp/mdadm-4.1-x86_64-1.txz created.
++
+diff -ruBN /tmp/mdadm/no-werror.patch /source/a/mdadm/no-werror.patch
+--- /tmp/mdadm/no-werror.patch	1970-01-01 00:00:00.000000000 +0000
++++ /source/a/mdadm/no-werror.patch	2021-01-06 15:52:41.000000000 +0000
+@@ -0,0 +1,13 @@
++diff --git a/Makefile b/Makefile
++index 5fd7f16..5095a42 100644
++--- a/Makefile
+++++ b/Makefile
++@@ -43,7 +43,7 @@ KLIBC_GCC = gcc -nostdinc -iwithprefix include -I$(KLIBC)/klibc/include -I$(KLIB
++ 
++ CC ?= $(CROSS_COMPILE)gcc
++ CXFLAGS ?= -ggdb
++-CWFLAGS = -Wall -Werror -Wstrict-prototypes -Wextra -Wno-unused-parameter
+++CWFLAGS = -Wall -Wstrict-prototypes -Wextra -Wno-unused-parameter
++ ifdef WARN_UNUSED
++ CWFLAGS += -Wp,-D_FORTIFY_SOURCE=2 -O3
++ endif

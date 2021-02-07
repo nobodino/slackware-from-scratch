@@ -1,0 +1,858 @@
+diff -ruBN /tmp/libdrm/libdrm.SlackBuild /source/x/libdrm/libdrm.SlackBuild
+--- /tmp/libdrm/libdrm.SlackBuild	2020-04-03 18:46:26.000000000 +0000
++++ /source/x/libdrm/libdrm.SlackBuild	2021-01-16 00:20:49.000000000 +0000
+@@ -59,7 +59,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ else
+   SLKCFLAGS="-O2"
+   LIBDIRSUFFIX=""
+diff -ruBN /tmp/libdrm/libdrm.SlackBuild.log /source/x/libdrm/libdrm.SlackBuild.log
+--- /tmp/libdrm/libdrm.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/x/libdrm/libdrm.SlackBuild.log	2021-01-16 00:22:52.000000000 +0000
+@@ -0,0 +1,842 @@
++libdrm-2.4.104/
++libdrm-2.4.104/.editorconfig
++libdrm-2.4.104/Android.common.mk
++libdrm-2.4.104/Android.mk
++libdrm-2.4.104/CONTRIBUTING.rst
++libdrm-2.4.104/CleanSpec.mk
++libdrm-2.4.104/Makefile.sources
++libdrm-2.4.104/README.rst
++libdrm-2.4.104/RELEASING
++libdrm-2.4.104/amdgpu/
++libdrm-2.4.104/amdgpu/.editorconfig
++libdrm-2.4.104/amdgpu/Android.mk
++libdrm-2.4.104/amdgpu/Makefile.sources
++libdrm-2.4.104/amdgpu/amdgpu-symbols.txt
++libdrm-2.4.104/amdgpu/amdgpu.h
++libdrm-2.4.104/amdgpu/amdgpu_asic_id.c
++libdrm-2.4.104/amdgpu/amdgpu_bo.c
++libdrm-2.4.104/amdgpu/amdgpu_cs.c
++libdrm-2.4.104/amdgpu/amdgpu_device.c
++libdrm-2.4.104/amdgpu/amdgpu_gpu_info.c
++libdrm-2.4.104/amdgpu/amdgpu_internal.h
++libdrm-2.4.104/amdgpu/amdgpu_vamgr.c
++libdrm-2.4.104/amdgpu/amdgpu_vm.c
++libdrm-2.4.104/amdgpu/handle_table.c
++libdrm-2.4.104/amdgpu/handle_table.h
++libdrm-2.4.104/amdgpu/libdrm_amdgpu.pc.in
++libdrm-2.4.104/amdgpu/meson.build
++libdrm-2.4.104/android/
++libdrm-2.4.104/android/gralloc_handle.h
++libdrm-2.4.104/core-symbols.txt
++libdrm-2.4.104/data/
++libdrm-2.4.104/data/Android.mk
++libdrm-2.4.104/data/amdgpu.ids
++libdrm-2.4.104/data/meson.build
++libdrm-2.4.104/etnaviv/
++libdrm-2.4.104/etnaviv/Android.mk
++libdrm-2.4.104/etnaviv/Makefile.sources
++libdrm-2.4.104/etnaviv/etnaviv-symbols.txt
++libdrm-2.4.104/etnaviv/etnaviv_bo.c
++libdrm-2.4.104/etnaviv/etnaviv_bo_cache.c
++libdrm-2.4.104/etnaviv/etnaviv_cmd_stream.c
++libdrm-2.4.104/etnaviv/etnaviv_device.c
++libdrm-2.4.104/etnaviv/etnaviv_drm.h
++libdrm-2.4.104/etnaviv/etnaviv_drmif.h
++libdrm-2.4.104/etnaviv/etnaviv_gpu.c
++libdrm-2.4.104/etnaviv/etnaviv_perfmon.c
++libdrm-2.4.104/etnaviv/etnaviv_pipe.c
++libdrm-2.4.104/etnaviv/etnaviv_priv.h
++libdrm-2.4.104/etnaviv/libdrm_etnaviv.pc.in
++libdrm-2.4.104/etnaviv/meson.build
++libdrm-2.4.104/exynos/
++libdrm-2.4.104/exynos/exynos-symbols.txt
++libdrm-2.4.104/exynos/exynos_drm.c
++libdrm-2.4.104/exynos/exynos_drm.h
++libdrm-2.4.104/exynos/exynos_drmif.h
++libdrm-2.4.104/exynos/exynos_fimg2d.c
++libdrm-2.4.104/exynos/exynos_fimg2d.h
++libdrm-2.4.104/exynos/fimg2d_reg.h
++libdrm-2.4.104/exynos/libdrm_exynos.pc.in
++libdrm-2.4.104/exynos/meson.build
++libdrm-2.4.104/freedreno/
++libdrm-2.4.104/freedreno/Android.mk
++libdrm-2.4.104/freedreno/Makefile.sources
++libdrm-2.4.104/freedreno/freedreno-symbols.txt
++libdrm-2.4.104/freedreno/freedreno_bo.c
++libdrm-2.4.104/freedreno/freedreno_bo_cache.c
++libdrm-2.4.104/freedreno/freedreno_device.c
++libdrm-2.4.104/freedreno/freedreno_drmif.h
++libdrm-2.4.104/freedreno/freedreno_pipe.c
++libdrm-2.4.104/freedreno/freedreno_priv.h
++libdrm-2.4.104/freedreno/freedreno_ringbuffer.c
++libdrm-2.4.104/freedreno/freedreno_ringbuffer.h
++libdrm-2.4.104/freedreno/kgsl/
++libdrm-2.4.104/freedreno/kgsl/README
++libdrm-2.4.104/freedreno/kgsl/kgsl_bo.c
++libdrm-2.4.104/freedreno/kgsl/kgsl_device.c
++libdrm-2.4.104/freedreno/kgsl/kgsl_drm.h
++libdrm-2.4.104/freedreno/kgsl/kgsl_pipe.c
++libdrm-2.4.104/freedreno/kgsl/kgsl_priv.h
++libdrm-2.4.104/freedreno/kgsl/kgsl_ringbuffer.c
++libdrm-2.4.104/freedreno/kgsl/msm_kgsl.h
++libdrm-2.4.104/freedreno/libdrm_freedreno.pc.in
++libdrm-2.4.104/freedreno/meson.build
++libdrm-2.4.104/freedreno/msm/
++libdrm-2.4.104/freedreno/msm/msm_bo.c
++libdrm-2.4.104/freedreno/msm/msm_device.c
++libdrm-2.4.104/freedreno/msm/msm_pipe.c
++libdrm-2.4.104/freedreno/msm/msm_priv.h
++libdrm-2.4.104/freedreno/msm/msm_ringbuffer.c
++libdrm-2.4.104/include/
++libdrm-2.4.104/include/drm/
++libdrm-2.4.104/include/drm/README
++libdrm-2.4.104/include/drm/amdgpu_drm.h
++libdrm-2.4.104/include/drm/drm.h
++libdrm-2.4.104/include/drm/drm_fourcc.h
++libdrm-2.4.104/include/drm/drm_mode.h
++libdrm-2.4.104/include/drm/drm_sarea.h
++libdrm-2.4.104/include/drm/i915_drm.h
++libdrm-2.4.104/include/drm/mach64_drm.h
++libdrm-2.4.104/include/drm/mga_drm.h
++libdrm-2.4.104/include/drm/msm_drm.h
++libdrm-2.4.104/include/drm/nouveau_drm.h
++libdrm-2.4.104/include/drm/qxl_drm.h
++libdrm-2.4.104/include/drm/r128_drm.h
++libdrm-2.4.104/include/drm/radeon_drm.h
++libdrm-2.4.104/include/drm/savage_drm.h
++libdrm-2.4.104/include/drm/sis_drm.h
++libdrm-2.4.104/include/drm/tegra_drm.h
++libdrm-2.4.104/include/drm/vc4_drm.h
++libdrm-2.4.104/include/drm/via_drm.h
++libdrm-2.4.104/include/drm/virtgpu_drm.h
++libdrm-2.4.104/include/drm/vmwgfx_drm.h
++libdrm-2.4.104/intel/
++libdrm-2.4.104/intel/.gitignore
++libdrm-2.4.104/intel/Android.mk
++libdrm-2.4.104/intel/Makefile.sources
++libdrm-2.4.104/intel/i915_pciids.h
++libdrm-2.4.104/intel/intel-symbols.txt
++libdrm-2.4.104/intel/intel_aub.h
++libdrm-2.4.104/intel/intel_bufmgr.c
++libdrm-2.4.104/intel/intel_bufmgr.h
++libdrm-2.4.104/intel/intel_bufmgr_fake.c
++libdrm-2.4.104/intel/intel_bufmgr_gem.c
++libdrm-2.4.104/intel/intel_bufmgr_priv.h
++libdrm-2.4.104/intel/intel_chipset.c
++libdrm-2.4.104/intel/intel_chipset.h
++libdrm-2.4.104/intel/intel_debug.h
++libdrm-2.4.104/intel/intel_decode.c
++libdrm-2.4.104/intel/libdrm_intel.pc.in
++libdrm-2.4.104/intel/meson.build
++libdrm-2.4.104/intel/mm.c
++libdrm-2.4.104/intel/mm.h
++libdrm-2.4.104/intel/test_decode.c
++libdrm-2.4.104/intel/tests/
++libdrm-2.4.104/intel/tests/.gitignore
++libdrm-2.4.104/intel/tests/gen4-3d.batch
++libdrm-2.4.104/intel/tests/gen4-3d.batch-ref.txt
++libdrm-2.4.104/intel/tests/gen4-3d.batch.sh
++libdrm-2.4.104/intel/tests/gen5-3d.batch
++libdrm-2.4.104/intel/tests/gen5-3d.batch-ref.txt
++libdrm-2.4.104/intel/tests/gen5-3d.batch.sh
++libdrm-2.4.104/intel/tests/gen6-3d.batch
++libdrm-2.4.104/intel/tests/gen6-3d.batch-ref.txt
++libdrm-2.4.104/intel/tests/gen6-3d.batch.sh
++libdrm-2.4.104/intel/tests/gen7-2d-copy.batch
++libdrm-2.4.104/intel/tests/gen7-2d-copy.batch-ref.txt
++libdrm-2.4.104/intel/tests/gen7-2d-copy.batch.sh
++libdrm-2.4.104/intel/tests/gen7-3d.batch
++libdrm-2.4.104/intel/tests/gen7-3d.batch-ref.txt
++libdrm-2.4.104/intel/tests/gen7-3d.batch.sh
++libdrm-2.4.104/intel/tests/gm45-3d.batch
++libdrm-2.4.104/intel/tests/gm45-3d.batch-ref.txt
++libdrm-2.4.104/intel/tests/gm45-3d.batch.sh
++libdrm-2.4.104/intel/tests/test-batch.sh
++libdrm-2.4.104/intel/uthash.h
++libdrm-2.4.104/libdrm.pc.in
++libdrm-2.4.104/libdrm_lists.h
++libdrm-2.4.104/libdrm_macros.h
++libdrm-2.4.104/libkms/
++libdrm-2.4.104/libkms/Android.mk
++libdrm-2.4.104/libkms/Makefile.sources
++libdrm-2.4.104/libkms/api.c
++libdrm-2.4.104/libkms/dumb.c
++libdrm-2.4.104/libkms/exynos.c
++libdrm-2.4.104/libkms/intel.c
++libdrm-2.4.104/libkms/internal.h
++libdrm-2.4.104/libkms/kms-symbols.txt
++libdrm-2.4.104/libkms/libkms.h
++libdrm-2.4.104/libkms/libkms.pc.in
++libdrm-2.4.104/libkms/linux.c
++libdrm-2.4.104/libkms/meson.build
++libdrm-2.4.104/libkms/nouveau.c
++libdrm-2.4.104/libkms/radeon.c
++libdrm-2.4.104/libkms/vmwgfx.c
++libdrm-2.4.104/libsync.h
++libdrm-2.4.104/man/
++libdrm-2.4.104/man/drm-kms.7.rst
++libdrm-2.4.104/man/drm-memory.7.rst
++libdrm-2.4.104/man/drm.7.rst
++libdrm-2.4.104/man/drmAvailable.3.rst
++libdrm-2.4.104/man/drmHandleEvent.3.rst
++libdrm-2.4.104/man/drmModeGetResources.3.rst
++libdrm-2.4.104/man/meson.build
++libdrm-2.4.104/meson.build
++libdrm-2.4.104/meson_options.txt
++libdrm-2.4.104/nouveau/
++libdrm-2.4.104/nouveau/Android.mk
++libdrm-2.4.104/nouveau/Makefile.sources
++libdrm-2.4.104/nouveau/abi16.c
++libdrm-2.4.104/nouveau/bufctx.c
++libdrm-2.4.104/nouveau/libdrm_nouveau.pc.in
++libdrm-2.4.104/nouveau/meson.build
++libdrm-2.4.104/nouveau/nouveau-symbols.txt
++libdrm-2.4.104/nouveau/nouveau.c
++libdrm-2.4.104/nouveau/nouveau.h
++libdrm-2.4.104/nouveau/nvif/
++libdrm-2.4.104/nouveau/nvif/cl0080.h
++libdrm-2.4.104/nouveau/nvif/cl9097.h
++libdrm-2.4.104/nouveau/nvif/class.h
++libdrm-2.4.104/nouveau/nvif/if0002.h
++libdrm-2.4.104/nouveau/nvif/if0003.h
++libdrm-2.4.104/nouveau/nvif/ioctl.h
++libdrm-2.4.104/nouveau/nvif/unpack.h
++libdrm-2.4.104/nouveau/private.h
++libdrm-2.4.104/nouveau/pushbuf.c
++libdrm-2.4.104/omap/
++libdrm-2.4.104/omap/Android.mk
++libdrm-2.4.104/omap/libdrm_omap.pc.in
++libdrm-2.4.104/omap/meson.build
++libdrm-2.4.104/omap/omap-symbols.txt
++libdrm-2.4.104/omap/omap_drm.c
++libdrm-2.4.104/omap/omap_drm.h
++libdrm-2.4.104/omap/omap_drmif.h
++libdrm-2.4.104/radeon/
++libdrm-2.4.104/radeon/Android.mk
++libdrm-2.4.104/radeon/Makefile.sources
++libdrm-2.4.104/radeon/bof.c
++libdrm-2.4.104/radeon/bof.h
++libdrm-2.4.104/radeon/libdrm_radeon.pc.in
++libdrm-2.4.104/radeon/meson.build
++libdrm-2.4.104/radeon/r600_pci_ids.h
++libdrm-2.4.104/radeon/radeon-symbols.txt
++libdrm-2.4.104/radeon/radeon_bo.c
++libdrm-2.4.104/radeon/radeon_bo.h
++libdrm-2.4.104/radeon/radeon_bo_gem.c
++libdrm-2.4.104/radeon/radeon_bo_gem.h
++libdrm-2.4.104/radeon/radeon_bo_int.h
++libdrm-2.4.104/radeon/radeon_cs.c
++libdrm-2.4.104/radeon/radeon_cs.h
++libdrm-2.4.104/radeon/radeon_cs_gem.c
++libdrm-2.4.104/radeon/radeon_cs_gem.h
++libdrm-2.4.104/radeon/radeon_cs_int.h
++libdrm-2.4.104/radeon/radeon_cs_space.c
++libdrm-2.4.104/radeon/radeon_surface.c
++libdrm-2.4.104/radeon/radeon_surface.h
++libdrm-2.4.104/symbols-check.py
++libdrm-2.4.104/tegra/
++libdrm-2.4.104/tegra/.gitignore
++libdrm-2.4.104/tegra/libdrm_tegra.pc.in
++libdrm-2.4.104/tegra/meson.build
++libdrm-2.4.104/tegra/private.h
++libdrm-2.4.104/tegra/tegra-symbols.txt
++libdrm-2.4.104/tegra/tegra.c
++libdrm-2.4.104/tegra/tegra.h
++libdrm-2.4.104/tests/
++libdrm-2.4.104/tests/Android.mk
++libdrm-2.4.104/tests/amdgpu/
++libdrm-2.4.104/tests/amdgpu/.editorconfig
++libdrm-2.4.104/tests/amdgpu/amdgpu_test.c
++libdrm-2.4.104/tests/amdgpu/amdgpu_test.h
++libdrm-2.4.104/tests/amdgpu/basic_tests.c
++libdrm-2.4.104/tests/amdgpu/bo_tests.c
++libdrm-2.4.104/tests/amdgpu/cs_tests.c
++libdrm-2.4.104/tests/amdgpu/deadlock_tests.c
++libdrm-2.4.104/tests/amdgpu/decode_messages.h
++libdrm-2.4.104/tests/amdgpu/frame.h
++libdrm-2.4.104/tests/amdgpu/meson.build
++libdrm-2.4.104/tests/amdgpu/ras_tests.c
++libdrm-2.4.104/tests/amdgpu/security_tests.c
++libdrm-2.4.104/tests/amdgpu/syncobj_tests.c
++libdrm-2.4.104/tests/amdgpu/uvd_enc_tests.c
++libdrm-2.4.104/tests/amdgpu/uve_ib.h
++libdrm-2.4.104/tests/amdgpu/vce_ib.h
++libdrm-2.4.104/tests/amdgpu/vce_tests.c
++libdrm-2.4.104/tests/amdgpu/vcn_tests.c
++libdrm-2.4.104/tests/amdgpu/vm_tests.c
++libdrm-2.4.104/tests/drmdevice.c
++libdrm-2.4.104/tests/drmsl.c
++libdrm-2.4.104/tests/etnaviv/
++libdrm-2.4.104/tests/etnaviv/cmdstream.xml.h
++libdrm-2.4.104/tests/etnaviv/etnaviv_2d_test.c
++libdrm-2.4.104/tests/etnaviv/etnaviv_bo_cache_test.c
++libdrm-2.4.104/tests/etnaviv/etnaviv_cmd_stream_test.c
++libdrm-2.4.104/tests/etnaviv/meson.build
++libdrm-2.4.104/tests/etnaviv/state.xml.h
++libdrm-2.4.104/tests/etnaviv/state_2d.xml.h
++libdrm-2.4.104/tests/etnaviv/write_bmp.c
++libdrm-2.4.104/tests/etnaviv/write_bmp.h
++libdrm-2.4.104/tests/exynos/
++libdrm-2.4.104/tests/exynos/exynos_fimg2d_event.c
++libdrm-2.4.104/tests/exynos/exynos_fimg2d_perf.c
++libdrm-2.4.104/tests/exynos/exynos_fimg2d_test.c
++libdrm-2.4.104/tests/exynos/meson.build
++libdrm-2.4.104/tests/hash.c
++libdrm-2.4.104/tests/kms/
++libdrm-2.4.104/tests/kms/kms-steal-crtc.c
++libdrm-2.4.104/tests/kms/kms-universal-planes.c
++libdrm-2.4.104/tests/kms/libkms-test-crtc.c
++libdrm-2.4.104/tests/kms/libkms-test-device.c
++libdrm-2.4.104/tests/kms/libkms-test-framebuffer.c
++libdrm-2.4.104/tests/kms/libkms-test-plane.c
++libdrm-2.4.104/tests/kms/libkms-test-screen.c
++libdrm-2.4.104/tests/kms/libkms-test.h
++libdrm-2.4.104/tests/kms/meson.build
++libdrm-2.4.104/tests/kmstest/
++libdrm-2.4.104/tests/kmstest/main.c
++libdrm-2.4.104/tests/kmstest/meson.build
++libdrm-2.4.104/tests/meson.build
++libdrm-2.4.104/tests/modeprint/
++libdrm-2.4.104/tests/modeprint/meson.build
++libdrm-2.4.104/tests/modeprint/modeprint.c
++libdrm-2.4.104/tests/modetest/
++libdrm-2.4.104/tests/modetest/Android.mk
++libdrm-2.4.104/tests/modetest/Makefile.sources
++libdrm-2.4.104/tests/modetest/buffers.c
++libdrm-2.4.104/tests/modetest/buffers.h
++libdrm-2.4.104/tests/modetest/cursor.c
++libdrm-2.4.104/tests/modetest/cursor.h
++libdrm-2.4.104/tests/modetest/meson.build
++libdrm-2.4.104/tests/modetest/modetest.c
++libdrm-2.4.104/tests/nouveau/
++libdrm-2.4.104/tests/nouveau/.gitignore
++libdrm-2.4.104/tests/nouveau/meson.build
++libdrm-2.4.104/tests/nouveau/threaded.c
++libdrm-2.4.104/tests/proptest/
++libdrm-2.4.104/tests/proptest/Android.mk
++libdrm-2.4.104/tests/proptest/Makefile.sources
++libdrm-2.4.104/tests/proptest/meson.build
++libdrm-2.4.104/tests/proptest/proptest.c
++libdrm-2.4.104/tests/radeon/
++libdrm-2.4.104/tests/radeon/meson.build
++libdrm-2.4.104/tests/radeon/radeon_ttm.c
++libdrm-2.4.104/tests/radeon/rbo.c
++libdrm-2.4.104/tests/radeon/rbo.h
++libdrm-2.4.104/tests/tegra/
++libdrm-2.4.104/tests/tegra/.gitignore
++libdrm-2.4.104/tests/tegra/meson.build
++libdrm-2.4.104/tests/tegra/openclose.c
++libdrm-2.4.104/tests/ttmtest/
++libdrm-2.4.104/tests/ttmtest/AUTHORS
++libdrm-2.4.104/tests/ttmtest/ChangeLog
++libdrm-2.4.104/tests/ttmtest/Makefile.am
++libdrm-2.4.104/tests/ttmtest/NEWS
++libdrm-2.4.104/tests/ttmtest/README
++libdrm-2.4.104/tests/ttmtest/configure.ac
++libdrm-2.4.104/tests/ttmtest/reconf
++libdrm-2.4.104/tests/ttmtest/src/
++libdrm-2.4.104/tests/ttmtest/src/Makefile.am
++libdrm-2.4.104/tests/ttmtest/src/ttmtest.c
++libdrm-2.4.104/tests/ttmtest/src/xf86dri.c
++libdrm-2.4.104/tests/ttmtest/src/xf86dri.h
++libdrm-2.4.104/tests/ttmtest/src/xf86dristr.h
++libdrm-2.4.104/tests/util/
++libdrm-2.4.104/tests/util/Android.mk
++libdrm-2.4.104/tests/util/Makefile.sources
++libdrm-2.4.104/tests/util/common.h
++libdrm-2.4.104/tests/util/format.c
++libdrm-2.4.104/tests/util/format.h
++libdrm-2.4.104/tests/util/kms.c
++libdrm-2.4.104/tests/util/kms.h
++libdrm-2.4.104/tests/util/meson.build
++libdrm-2.4.104/tests/util/pattern.c
++libdrm-2.4.104/tests/util/pattern.h
++libdrm-2.4.104/tests/vbltest/
++libdrm-2.4.104/tests/vbltest/meson.build
++libdrm-2.4.104/tests/vbltest/vbltest.c
++libdrm-2.4.104/util_double_list.h
++libdrm-2.4.104/util_math.h
++libdrm-2.4.104/vc4/
++libdrm-2.4.104/vc4/Makefile.sources
++libdrm-2.4.104/vc4/libdrm_vc4.pc.in
++libdrm-2.4.104/vc4/meson.build
++libdrm-2.4.104/vc4/vc4_packet.h
++libdrm-2.4.104/vc4/vc4_qpu_defines.h
++libdrm-2.4.104/xf86atomic.h
++libdrm-2.4.104/xf86drm.c
++libdrm-2.4.104/xf86drm.h
++libdrm-2.4.104/xf86drmHash.c
++libdrm-2.4.104/xf86drmHash.h
++libdrm-2.4.104/xf86drmMode.c
++libdrm-2.4.104/xf86drmMode.h
++libdrm-2.4.104/xf86drmRandom.c
++libdrm-2.4.104/xf86drmRandom.h
++libdrm-2.4.104/xf86drmSL.c
++Using 'PKG_CONFIG_PATH' from environment with value: '/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig'
++Using 'PKG_CONFIG_PATH' from environment with value: '/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig'
++The Meson build system
++Version: 0.56.2
++Source dir: /tmp/libdrm-2.4.104
++Build dir: /tmp/libdrm-2.4.104/meson-build
++Build type: native build
++Project name: libdrm
++Project version: 2.4.104
++Using 'CFLAGS' from environment with value: '-O2 -fPIC'
++C compiler for the host machine: ccache cc (gcc 10.2.0 "cc (GCC) 10.2.0")
++C linker for the host machine: cc ld.bfd 2.33.1-slack15
++Using 'CFLAGS' from environment with value: '-O2 -fPIC'
++Host machine cpu family: x86_64
++Host machine cpu: x86_64
++Run-time dependency threads found: YES
++Program symbols-check.py found: YES (/usr/bin/python3 /tmp/libdrm-2.4.104/symbols-check.py)
++Program nm found: YES (/usr/bin/nm)
++Using 'PKG_CONFIG' from environment with value: '/usr/bin/pkg-config'
++Found pkg-config: /usr/bin/pkg-config (0.29.2)
++Using 'PKG_CONFIG_PATH' from environment with value: '/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig'
++Run-time dependency atomic_ops found: YES 7.6.10
++Checking if "Intel Atomics" links: YES 
++Checking for function "dlsym" : YES 
++Checking for function "clock_gettime" : YES 
++Library m found: YES
++Checking if "sys/select.h works" compiles: YES 
++Checking if "alloca.h works" compiles: YES 
++Header <sys/sysmacros.h> has symbol "major" : YES 
++Header <sys/sysmacros.h> has symbol "minor" : YES 
++Header <sys/sysmacros.h> has symbol "makedev" : YES 
++Header <sys/mkdev.h> has symbol "major" : NO 
++Checking for function "open_memstream" : YES 
++Compiler for C supports arguments -Wall: YES 
++Compiler for C supports arguments -Wextra: YES 
++Compiler for C supports arguments -Wsign-compare: YES 
++Compiler for C supports arguments -Werror=undef: YES 
++Compiler for C supports arguments -Werror=implicit-function-declaration: YES 
++Compiler for C supports arguments -Wpointer-arith: YES 
++Compiler for C supports arguments -Wwrite-strings: YES 
++Compiler for C supports arguments -Wstrict-prototypes: YES 
++Compiler for C supports arguments -Wmissing-prototypes: YES 
++Compiler for C supports arguments -Wmissing-declarations: YES 
++Compiler for C supports arguments -Wnested-externs: YES 
++Compiler for C supports arguments -Wpacked: YES 
++Compiler for C supports arguments -Wswitch-enum: YES 
++Compiler for C supports arguments -Wmissing-format-attribute: YES 
++Compiler for C supports arguments -Wstrict-aliasing=2: YES 
++Compiler for C supports arguments -Winit-self: YES 
++Compiler for C supports arguments -Winline: YES 
++Compiler for C supports arguments -Wshadow: YES 
++Compiler for C supports arguments -Wdeclaration-after-statement: YES 
++Compiler for C supports arguments -Wold-style-definition: YES 
++Compiler for C supports arguments -Wunused-parameter: YES 
++Compiler for C supports arguments -Wattributes: YES 
++Compiler for C supports arguments -Wlong-long: YES 
++Compiler for C supports arguments -Wmissing-field-initializers: YES 
++Using 'PKG_CONFIG_PATH' from environment with value: '/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig'
++Run-time dependency pciaccess found: YES 0.16
++Found CMake: /usr/bin/cmake (3.19.2)
++Run-time dependency cunit found: NO (tried pkgconfig and cmake)
++Using 'PKG_CONFIG_PATH' from environment with value: '/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig'
++Run-time dependency cairo found: YES 1.16.0
++Run-time dependency valgrind found: NO (tried pkgconfig)
++Program rst2man found: YES (/usr/bin/rst2man)
++Checking if "compiler supports __attribute__(("hidden"))" compiles: YES 
++Configuring config.h using configuration
++Program tests/gen4-3d.batch.sh found: YES (/tmp/libdrm-2.4.104/intel/tests/gen4-3d.batch.sh)
++Program tests/gm45-3d.batch.sh found: YES (/tmp/libdrm-2.4.104/intel/tests/gm45-3d.batch.sh)
++Program tests/gen5-3d.batch.sh found: YES (/tmp/libdrm-2.4.104/intel/tests/gen5-3d.batch.sh)
++Program tests/gen6-3d.batch.sh found: YES (/tmp/libdrm-2.4.104/intel/tests/gen6-3d.batch.sh)
++Program tests/gen7-3d.batch.sh found: YES (/tmp/libdrm-2.4.104/intel/tests/gen7-3d.batch.sh)
++Program tests/gen7-2d-copy.batch.sh found: YES (/tmp/libdrm-2.4.104/intel/tests/gen7-2d-copy.batch.sh)
++Message: 
++Message: libdrm will be compiled with:
++Message: 
++Message:   libkms         true
++Message:   Intel API      true
++Message:   vmwgfx API     true
++Message:   Radeon API     true
++Message:   AMDGPU API     true
++Message:   Nouveau API    true
++Message:   OMAP API       false
++Message:   EXYNOS API     false
++Message:   Freedreno API  false (kgsl: false)
++Message:   Tegra API      false
++Message:   VC4 API        false
++Message:   Etnaviv API    false
++Message: 
++Build targets in project: 27
++
++Option buildtype is: release [default: debugoptimized]
++Found ninja-1.10.2 at /usr/bin/ninja
++[1/91] Compiling C object tests/radeon/radeon_ttm.p/radeon_ttm.c.o
++[2/91] Compiling C object tests/nouveau/threaded.p/threaded.c.o
++[3/91] Compiling C object tests/drmsl.p/drmsl.c.o
++[4/91] Compiling C object tests/hash.p/hash.c.o
++[5/91] Compiling C object tests/drmdevice.p/drmdevice.c.o
++[6/91] Compiling C object tests/kms/libkms-test.a.p/libkms-test-device.c.o
++[7/91] Compiling C object tests/kms/libkms-test.a.p/libkms-test-framebuffer.c.o
++[8/91] Compiling C object tests/kms/libkms-test.a.p/libkms-test-screen.c.o
++[9/91] Compiling C object tests/kms/libkms-test.a.p/libkms-test-plane.c.o
++[10/91] Compiling C object tests/kms/kms-steal-crtc.p/kms-steal-crtc.c.o
++[11/91] Compiling C object tests/kms/kms-universal-planes.p/kms-universal-planes.c.o
++[12/91] Compiling C object tests/modeprint/modeprint.p/modeprint.c.o
++[13/91] Compiling C object tests/proptest/proptest.p/proptest.c.o
++[14/91] Compiling C object tests/modetest/modetest.p/buffers.c.o
++[15/91] Compiling C object tests/modetest/modetest.p/cursor.c.o
++[16/91] Compiling C object tests/kmstest/kmstest.p/main.c.o
++[17/91] Compiling C object tests/vbltest/vbltest.p/vbltest.c.o
++[18/91] Compiling C object tests/radeon/radeon_ttm.p/rbo.c.o
++[19/91] Compiling C object tests/modetest/modetest.p/modetest.c.o
++[20/91] Generating drmAvailable.3 with a custom command
++[21/91] Generating drm-kms.7 with a custom command
++[22/91] Generating drm-memory.7 with a custom command
++[23/91] Compiling C object tests/util/libutil.a.p/format.c.o
++[24/91] Compiling C object tests/util/libutil.a.p/kms.c.o
++[25/91] Compiling C object tests/kms/libkms-test.a.p/libkms-test-crtc.c.o
++[26/91] Linking static target tests/kms/libkms-test.a
++[27/91] Generating drmHandleEvent.3 with a custom command
++[28/91] Generating drmModeGetResources.3 with a custom command
++[29/91] Compiling C object radeon/libdrm_radeon.so.1.0.1.p/radeon_cs.c.o
++[30/91] Compiling C object amdgpu/libdrm_amdgpu.so.1.0.0.p/amdgpu_asic_id.c.o
++[31/91] Compiling C object amdgpu/libdrm_amdgpu.so.1.0.0.p/amdgpu_bo.c.o
++[32/91] Compiling C object radeon/libdrm_radeon.so.1.0.1.p/radeon_surface.c.o
++[33/91] Compiling C object amdgpu/libdrm_amdgpu.so.1.0.0.p/amdgpu_cs.c.o
++[34/91] Compiling C object amdgpu/libdrm_amdgpu.so.1.0.0.p/amdgpu_device.c.o
++[35/91] Compiling C object amdgpu/libdrm_amdgpu.so.1.0.0.p/amdgpu_gpu_info.c.o
++[36/91] Compiling C object tests/util/libutil.a.p/pattern.c.o
++../tests/util/pattern.c: In function ‘fill_tiles_rgb16fp’:
++../tests/util/pattern.c:988:8: warning: unused variable ‘mem_base’ [-Wunused-variable]
++  988 |  void *mem_base = mem;
++      |        ^~~~~~~~
++[37/91] Linking static target tests/util/libutil.a
++[38/91] Compiling C object amdgpu/libdrm_amdgpu.so.1.0.0.p/amdgpu_vm.c.o
++[39/91] Compiling C object amdgpu/libdrm_amdgpu.so.1.0.0.p/handle_table.c.o
++[40/91] Compiling C object amdgpu/libdrm_amdgpu.so.1.0.0.p/amdgpu_vamgr.c.o
++[41/91] Generating drm.7 with a custom command
++[42/91] Compiling C object nouveau/libdrm_nouveau.so.2.0.0.p/nouveau.c.o
++[43/91] Compiling C object nouveau/libdrm_nouveau.so.2.0.0.p/bufctx.c.o
++[44/91] Compiling C object nouveau/libdrm_nouveau.so.2.0.0.p/pushbuf.c.o
++[45/91] Compiling C object nouveau/libdrm_nouveau.so.2.0.0.p/abi16.c.o
++[46/91] Compiling C object radeon/libdrm_radeon.so.1.0.1.p/radeon_bo_gem.c.o
++[47/91] Compiling C object radeon/libdrm_radeon.so.1.0.1.p/radeon_cs_gem.c.o
++[48/91] Compiling C object radeon/libdrm_radeon.so.1.0.1.p/radeon_bo.c.o
++[49/91] Compiling C object radeon/libdrm_radeon.so.1.0.1.p/radeon_cs_space.c.o
++[50/91] Compiling C object intel/libdrm_intel.so.1.0.0.p/intel_chipset.c.o
++[51/91] Compiling C object intel/libdrm_intel.so.1.0.0.p/mm.c.o
++[52/91] Compiling C object intel/test_decode.p/test_decode.c.o
++../intel/test_decode.c: In function ‘compare_batch’:
++../intel/test_decode.c:109:32: warning: dereferencing type-punned pointer might break strict-aliasing rules [-Wstrict-aliasing]
++  109 |  out = open_memstream((char **)&ptr, &size);
++      |                                ^~~~
++[53/91] Compiling C object intel/libdrm_intel.so.1.0.0.p/intel_bufmgr.c.o
++[54/91] Compiling C object intel/libdrm_intel.so.1.0.0.p/intel_bufmgr_fake.c.o
++[55/91] Compiling C object libkms/libkms.so.1.0.0.p/nouveau.c.o
++[56/91] Compiling C object libkms/libkms.so.1.0.0.p/radeon.c.o
++[57/91] Compiling C object libkms/libkms.so.1.0.0.p/intel.c.o
++[58/91] Compiling C object libkms/libkms.so.1.0.0.p/dumb.c.o
++[59/91] Compiling C object libkms/libkms.so.1.0.0.p/api.c.o
++[60/91] Compiling C object libkms/libkms.so.1.0.0.p/vmwgfx.c.o
++[61/91] Compiling C object libdrm.so.2.4.0.p/xf86drmSL.c.o
++[62/91] Compiling C object libkms/libkms.so.1.0.0.p/linux.c.o
++[63/91] Compiling C object intel/libdrm_intel.so.1.0.0.p/intel_bufmgr_gem.c.o
++[64/91] Compiling C object libdrm.so.2.4.0.p/xf86drmHash.c.o
++[65/91] Compiling C object libdrm.so.2.4.0.p/xf86drmRandom.c.o
++[66/91] Compiling C object intel/libdrm_intel.so.1.0.0.p/intel_decode.c.o
++[67/91] Compiling C object libdrm.so.2.4.0.p/xf86drmMode.c.o
++[68/91] Compiling C object libdrm.so.2.4.0.p/xf86drm.c.o
++../xf86drm.c: In function ‘drmAddMap’:
++../xf86drm.c:1140:17: warning: implicit conversion from ‘drmMapType’ to ‘enum drm_map_type’ [-Wenum-conversion]
++ 1140 |     map.type    = type;
++      |                 ^
++../xf86drm.c:1141:17: warning: implicit conversion from ‘drmMapFlags’ to ‘enum drm_map_flags’ [-Wenum-conversion]
++ 1141 |     map.flags   = flags;
++      |                 ^
++../xf86drm.c: In function ‘drmAddBufs’:
++../xf86drm.c:1185:23: warning: implicit conversion from ‘drmBufDescFlags’ to ‘enum <anonymous>’ [-Wenum-conversion]
++ 1185 |     request.flags     = flags;
++      |                       ^
++../xf86drm.c: In function ‘drmDMA’:
++../xf86drm.c:1464:25: warning: implicit conversion from ‘drmDMAFlags’ to ‘enum drm_dma_flags’ [-Wenum-conversion]
++ 1464 |     dma.flags           = request->flags;
++      |                         ^
++../xf86drm.c: In function ‘drmGetMap’:
++../xf86drm.c:2401:13: warning: implicit conversion from ‘enum drm_map_type’ to ‘drmMapType’ [-Wenum-conversion]
++ 2401 |     *type   = map.type;
++      |             ^
++../xf86drm.c:2402:13: warning: implicit conversion from ‘enum drm_map_flags’ to ‘drmMapFlags’ [-Wenum-conversion]
++ 2402 |     *flags  = map.flags;
++      |             ^
++../xf86drm.c: In function ‘parse_separate_sysfs_files’:
++../xf86drm.c:3356:37: warning: ‘/’ directive output may be truncated writing 1 byte into a region of size between 0 and 4096 [-Wformat-truncation=]
++ 3356 |         snprintf(path, PATH_MAX, "%s/%s", pci_path, attrs[i]);
++      |                                     ^
++../xf86drm.c:3356:9: note: ‘snprintf’ output 2 or more bytes (assuming 4098) into a destination of size 4096
++ 3356 |         snprintf(path, PATH_MAX, "%s/%s", pci_path, attrs[i]);
++      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++../xf86drm.c: In function ‘process_device’:
++../xf86drm.c:3386:33: warning: ‘/config’ directive output may be truncated writing 7 bytes into a region of size between 0 and 4096 [-Wformat-truncation=]
++ 3386 |     snprintf(path, PATH_MAX, "%s/config", pci_path);
++      |                                 ^~~~~~~
++../xf86drm.c:3386:5: note: ‘snprintf’ output between 8 and 4104 bytes into a destination of size 4096
++ 3386 |     snprintf(path, PATH_MAX, "%s/config", pci_path);
++      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++In file included from ../xf86drm.c:77:
++../xf86drm.c: In function ‘drmGetMinorNameForFD’:
++../xf86drm.h:85:23: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size 55 [-Wformat-truncation=]
++   85 | #define DRM_DIR_NAME  "/dev/dri"
++      |                       ^~~~~~~~~~
++../xf86drm.c:2944:50: note: in expansion of macro ‘DRM_DIR_NAME’
++ 2944 |             snprintf(dev_name, sizeof(dev_name), DRM_DIR_NAME "/%s",
++      |                                                  ^~~~~~~~~~~~
++../xf86drm.c:2944:65: note: format string is defined here
++ 2944 |             snprintf(dev_name, sizeof(dev_name), DRM_DIR_NAME "/%s",
++      |                                                                 ^~
++../xf86drm.c:2944:13: note: ‘snprintf’ output between 10 and 265 bytes into a destination of size 64
++ 2944 |             snprintf(dev_name, sizeof(dev_name), DRM_DIR_NAME "/%s",
++      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++ 2945 |                  ent->d_name);
++      |                  ~~~~~~~~~~~~
++[69/91] Linking target libdrm.so.2.4.0
++[70/91] Generating symbol file libdrm.so.2.4.0.p/libdrm.so.2.4.0.symbols
++[71/91] Linking target tests/radeon/radeon_ttm
++[72/91] Linking target tests/hash
++[73/91] Linking target tests/drmsl
++[74/91] Linking target tests/drmdevice
++[75/91] Linking target tests/kms/kms-universal-planes
++[76/91] Linking target tests/modeprint/modeprint
++[77/91] Linking target tests/proptest/proptest
++[78/91] Linking target tests/vbltest/vbltest
++[79/91] Linking target tests/modetest/modetest
++[80/91] Linking target radeon/libdrm_radeon.so.1.0.1
++[81/91] Linking target tests/kms/kms-steal-crtc
++[82/91] Linking target amdgpu/libdrm_amdgpu.so.1.0.0
++[83/91] Linking target nouveau/libdrm_nouveau.so.2.0.0
++[84/91] Linking target libkms/libkms.so.1.0.0
++[85/91] Linking target intel/libdrm_intel.so.1.0.0
++[86/91] Generating symbol file libkms/libkms.so.1.0.0.p/libkms.so.1.0.0.symbols
++[87/91] Linking target tests/kmstest/kmstest
++[88/91] Generating symbol file nouveau/libdrm_nouveau.so.2.0.0.p/libdrm_nouveau.so.2.0.0.symbols
++[89/91] Linking target tests/nouveau/threaded
++[90/91] Generating symbol file intel/libdrm_intel.so.1.0.0.p/libdrm_intel.so.1.0.0.symbols
++[91/91] Linking target intel/test_decode
++[0/1] Installing files.
++Installing libdrm.so.2.4.0 to /tmp/package-libdrm/usr/lib
++Installing libkms/libkms.so.1.0.0 to /tmp/package-libdrm/usr/lib
++Installing intel/libdrm_intel.so.1.0.0 to /tmp/package-libdrm/usr/lib
++Installing nouveau/libdrm_nouveau.so.2.0.0 to /tmp/package-libdrm/usr/lib
++Installing radeon/libdrm_radeon.so.1.0.1 to /tmp/package-libdrm/usr/lib
++Installing amdgpu/libdrm_amdgpu.so.1.0.0 to /tmp/package-libdrm/usr/lib
++Installing man/drm.7 to /tmp/package-libdrm/usr/man/man7
++Installing man/drm-kms.7 to /tmp/package-libdrm/usr/man/man7
++Installing man/drm-memory.7 to /tmp/package-libdrm/usr/man/man7
++Installing man/drmAvailable.3 to /tmp/package-libdrm/usr/man/man3
++Installing man/drmHandleEvent.3 to /tmp/package-libdrm/usr/man/man3
++Installing man/drmModeGetResources.3 to /tmp/package-libdrm/usr/man/man3
++Installing /tmp/libdrm-2.4.104/libsync.h to /tmp/package-libdrm/usr/include/
++Installing /tmp/libdrm-2.4.104/xf86drm.h to /tmp/package-libdrm/usr/include/
++Installing /tmp/libdrm-2.4.104/xf86drmMode.h to /tmp/package-libdrm/usr/include/
++Installing /tmp/libdrm-2.4.104/include/drm/drm.h to /tmp/package-libdrm/usr/include/libdrm
++Installing /tmp/libdrm-2.4.104/include/drm/drm_fourcc.h to /tmp/package-libdrm/usr/include/libdrm
++Installing /tmp/libdrm-2.4.104/include/drm/drm_mode.h to /tmp/package-libdrm/usr/include/libdrm
++Installing /tmp/libdrm-2.4.104/include/drm/drm_sarea.h to /tmp/package-libdrm/usr/include/libdrm
++Installing /tmp/libdrm-2.4.104/include/drm/i915_drm.h to /tmp/package-libdrm/usr/include/libdrm
++Installing /tmp/libdrm-2.4.104/include/drm/mach64_drm.h to /tmp/package-libdrm/usr/include/libdrm
++Installing /tmp/libdrm-2.4.104/include/drm/mga_drm.h to /tmp/package-libdrm/usr/include/libdrm
++Installing /tmp/libdrm-2.4.104/include/drm/msm_drm.h to /tmp/package-libdrm/usr/include/libdrm
++Installing /tmp/libdrm-2.4.104/include/drm/nouveau_drm.h to /tmp/package-libdrm/usr/include/libdrm
++Installing /tmp/libdrm-2.4.104/include/drm/qxl_drm.h to /tmp/package-libdrm/usr/include/libdrm
++Installing /tmp/libdrm-2.4.104/include/drm/r128_drm.h to /tmp/package-libdrm/usr/include/libdrm
++Installing /tmp/libdrm-2.4.104/include/drm/radeon_drm.h to /tmp/package-libdrm/usr/include/libdrm
++Installing /tmp/libdrm-2.4.104/include/drm/amdgpu_drm.h to /tmp/package-libdrm/usr/include/libdrm
++Installing /tmp/libdrm-2.4.104/include/drm/savage_drm.h to /tmp/package-libdrm/usr/include/libdrm
++Installing /tmp/libdrm-2.4.104/include/drm/sis_drm.h to /tmp/package-libdrm/usr/include/libdrm
++Installing /tmp/libdrm-2.4.104/include/drm/tegra_drm.h to /tmp/package-libdrm/usr/include/libdrm
++Installing /tmp/libdrm-2.4.104/include/drm/vc4_drm.h to /tmp/package-libdrm/usr/include/libdrm
++Installing /tmp/libdrm-2.4.104/include/drm/via_drm.h to /tmp/package-libdrm/usr/include/libdrm
++Installing /tmp/libdrm-2.4.104/include/drm/virtgpu_drm.h to /tmp/package-libdrm/usr/include/libdrm
++Installing /tmp/libdrm-2.4.104/include/drm/vmwgfx_drm.h to /tmp/package-libdrm/usr/include/libdrm
++Installing /tmp/libdrm-2.4.104/libkms/libkms.h to /tmp/package-libdrm/usr/include/libkms
++Installing /tmp/libdrm-2.4.104/intel/intel_bufmgr.h to /tmp/package-libdrm/usr/include/libdrm
++Installing /tmp/libdrm-2.4.104/intel/intel_aub.h to /tmp/package-libdrm/usr/include/libdrm
++Installing /tmp/libdrm-2.4.104/intel/intel_debug.h to /tmp/package-libdrm/usr/include/libdrm
++Installing /tmp/libdrm-2.4.104/nouveau/nouveau.h to /tmp/package-libdrm/usr/include/libdrm/nouveau
++Installing /tmp/libdrm-2.4.104/nouveau/nvif/class.h to /tmp/package-libdrm/usr/include/libdrm/nouveau/nvif
++Installing /tmp/libdrm-2.4.104/nouveau/nvif/cl0080.h to /tmp/package-libdrm/usr/include/libdrm/nouveau/nvif
++Installing /tmp/libdrm-2.4.104/nouveau/nvif/cl9097.h to /tmp/package-libdrm/usr/include/libdrm/nouveau/nvif
++Installing /tmp/libdrm-2.4.104/nouveau/nvif/if0002.h to /tmp/package-libdrm/usr/include/libdrm/nouveau/nvif
++Installing /tmp/libdrm-2.4.104/nouveau/nvif/if0003.h to /tmp/package-libdrm/usr/include/libdrm/nouveau/nvif
++Installing /tmp/libdrm-2.4.104/nouveau/nvif/ioctl.h to /tmp/package-libdrm/usr/include/libdrm/nouveau/nvif
++Installing /tmp/libdrm-2.4.104/nouveau/nvif/unpack.h to /tmp/package-libdrm/usr/include/libdrm/nouveau/nvif
++Installing /tmp/libdrm-2.4.104/radeon/radeon_bo.h to /tmp/package-libdrm/usr/include/libdrm
++Installing /tmp/libdrm-2.4.104/radeon/radeon_cs.h to /tmp/package-libdrm/usr/include/libdrm
++Installing /tmp/libdrm-2.4.104/radeon/radeon_surface.h to /tmp/package-libdrm/usr/include/libdrm
++Installing /tmp/libdrm-2.4.104/radeon/radeon_bo_gem.h to /tmp/package-libdrm/usr/include/libdrm
++Installing /tmp/libdrm-2.4.104/radeon/radeon_cs_gem.h to /tmp/package-libdrm/usr/include/libdrm
++Installing /tmp/libdrm-2.4.104/radeon/radeon_bo_int.h to /tmp/package-libdrm/usr/include/libdrm
++Installing /tmp/libdrm-2.4.104/radeon/radeon_cs_int.h to /tmp/package-libdrm/usr/include/libdrm
++Installing /tmp/libdrm-2.4.104/radeon/r600_pci_ids.h to /tmp/package-libdrm/usr/include/libdrm
++Installing /tmp/libdrm-2.4.104/amdgpu/amdgpu.h to /tmp/package-libdrm/usr/include/libdrm
++Installing /tmp/libdrm-2.4.104/meson-build/meson-private/libdrm.pc to /tmp/package-libdrm/usr/lib/pkgconfig
++Installing /tmp/libdrm-2.4.104/meson-build/meson-private/libkms.pc to /tmp/package-libdrm/usr/lib/pkgconfig
++Installing /tmp/libdrm-2.4.104/meson-build/meson-private/libdrm_intel.pc to /tmp/package-libdrm/usr/lib/pkgconfig
++Installing /tmp/libdrm-2.4.104/meson-build/meson-private/libdrm_nouveau.pc to /tmp/package-libdrm/usr/lib/pkgconfig
++Installing /tmp/libdrm-2.4.104/meson-build/meson-private/libdrm_radeon.pc to /tmp/package-libdrm/usr/lib/pkgconfig
++Installing /tmp/libdrm-2.4.104/meson-build/meson-private/libdrm_amdgpu.pc to /tmp/package-libdrm/usr/lib/pkgconfig
++Installing /tmp/libdrm-2.4.104/data/amdgpu.ids to /tmp/package-libdrm/usr/share/libdrm
++cp: cannot stat 'README': No such file or directory
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++usr/lib/libdrm.so	libdrm.so.2
++usr/lib/libdrm.so.2	libdrm.so.2.4.0
++usr/lib/libdrm_amdgpu.so	libdrm_amdgpu.so.1
++usr/lib/libdrm_amdgpu.so.1	libdrm_amdgpu.so.1.0.0
++usr/lib/libdrm_intel.so	libdrm_intel.so.1
++usr/lib/libdrm_intel.so.1	libdrm_intel.so.1.0.0
++usr/lib/libdrm_nouveau.so	libdrm_nouveau.so.2
++usr/lib/libdrm_nouveau.so.2	libdrm_nouveau.so.2.0.0
++usr/lib/libdrm_radeon.so	libdrm_radeon.so.1
++usr/lib/libdrm_radeon.so.1	libdrm_radeon.so.1.0.1
++usr/lib/libkms.so	libkms.so.1
++usr/lib/libkms.so.1	libkms.so.1.0.0
++
++Making symbolic link creation script:
++( cd usr/lib ; rm -rf libdrm.so )
++( cd usr/lib ; ln -sf libdrm.so.2 libdrm.so )
++( cd usr/lib ; rm -rf libdrm.so.2 )
++( cd usr/lib ; ln -sf libdrm.so.2.4.0 libdrm.so.2 )
++( cd usr/lib ; rm -rf libdrm_amdgpu.so )
++( cd usr/lib ; ln -sf libdrm_amdgpu.so.1 libdrm_amdgpu.so )
++( cd usr/lib ; rm -rf libdrm_amdgpu.so.1 )
++( cd usr/lib ; ln -sf libdrm_amdgpu.so.1.0.0 libdrm_amdgpu.so.1 )
++( cd usr/lib ; rm -rf libdrm_intel.so )
++( cd usr/lib ; ln -sf libdrm_intel.so.1 libdrm_intel.so )
++( cd usr/lib ; rm -rf libdrm_intel.so.1 )
++( cd usr/lib ; ln -sf libdrm_intel.so.1.0.0 libdrm_intel.so.1 )
++( cd usr/lib ; rm -rf libdrm_nouveau.so )
++( cd usr/lib ; ln -sf libdrm_nouveau.so.2 libdrm_nouveau.so )
++( cd usr/lib ; rm -rf libdrm_nouveau.so.2 )
++( cd usr/lib ; ln -sf libdrm_nouveau.so.2.0.0 libdrm_nouveau.so.2 )
++( cd usr/lib ; rm -rf libdrm_radeon.so )
++( cd usr/lib ; ln -sf libdrm_radeon.so.1 libdrm_radeon.so )
++( cd usr/lib ; rm -rf libdrm_radeon.so.1 )
++( cd usr/lib ; ln -sf libdrm_radeon.so.1.0.1 libdrm_radeon.so.1 )
++( cd usr/lib ; rm -rf libkms.so )
++( cd usr/lib ; ln -sf libkms.so.1 libkms.so )
++( cd usr/lib ; rm -rf libkms.so.1 )
++( cd usr/lib ; ln -sf libkms.so.1.0.0 libkms.so.1 )
++
++It is recommended that you make these lines your new installation script.
++
++Would you like to make this stuff the install script for this package
++and remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './usr/lib/libdrm.so.2'
++removed './usr/lib/libkms.so.1'
++removed './usr/lib/libkms.so'
++removed './usr/lib/libdrm_radeon.so'
++removed './usr/lib/libdrm_intel.so'
++removed './usr/lib/libdrm.so'
++removed './usr/lib/libdrm_radeon.so.1'
++removed './usr/lib/libdrm_amdgpu.so.1'
++removed './usr/lib/libdrm_intel.so.1'
++removed './usr/lib/libdrm_nouveau.so.2'
++removed './usr/lib/libdrm_nouveau.so'
++removed './usr/lib/libdrm_amdgpu.so'
++
++Creating your new ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/libdrm-2.4.104-x86_64-1.txz
++
++./
++install/
++install/doinst.sh
++install/slack-desc
++usr/
++usr/doc/
++usr/doc/libdrm-2.4.104/
++usr/include/
++usr/include/libdrm/
++usr/include/libdrm/amdgpu.h
++usr/include/libdrm/amdgpu_drm.h
++usr/include/libdrm/drm.h
++usr/include/libdrm/drm_fourcc.h
++usr/include/libdrm/drm_mode.h
++usr/include/libdrm/drm_sarea.h
++usr/include/libdrm/i915_drm.h
++usr/include/libdrm/intel_aub.h
++usr/include/libdrm/intel_bufmgr.h
++usr/include/libdrm/intel_debug.h
++usr/include/libdrm/mach64_drm.h
++usr/include/libdrm/mga_drm.h
++usr/include/libdrm/msm_drm.h
++usr/include/libdrm/nouveau/
++usr/include/libdrm/nouveau/nouveau.h
++usr/include/libdrm/nouveau/nvif/
++usr/include/libdrm/nouveau/nvif/cl0080.h
++usr/include/libdrm/nouveau/nvif/cl9097.h
++usr/include/libdrm/nouveau/nvif/class.h
++usr/include/libdrm/nouveau/nvif/if0002.h
++usr/include/libdrm/nouveau/nvif/if0003.h
++usr/include/libdrm/nouveau/nvif/ioctl.h
++usr/include/libdrm/nouveau/nvif/unpack.h
++usr/include/libdrm/nouveau_drm.h
++usr/include/libdrm/qxl_drm.h
++usr/include/libdrm/r128_drm.h
++usr/include/libdrm/r600_pci_ids.h
++usr/include/libdrm/radeon_bo.h
++usr/include/libdrm/radeon_bo_gem.h
++usr/include/libdrm/radeon_bo_int.h
++usr/include/libdrm/radeon_cs.h
++usr/include/libdrm/radeon_cs_gem.h
++usr/include/libdrm/radeon_cs_int.h
++usr/include/libdrm/radeon_drm.h
++usr/include/libdrm/radeon_surface.h
++usr/include/libdrm/savage_drm.h
++usr/include/libdrm/sis_drm.h
++usr/include/libdrm/tegra_drm.h
++usr/include/libdrm/vc4_drm.h
++usr/include/libdrm/via_drm.h
++usr/include/libdrm/virtgpu_drm.h
++usr/include/libdrm/vmwgfx_drm.h
++usr/include/libkms/
++usr/include/libkms/libkms.h
++usr/include/libsync.h
++usr/include/xf86drm.h
++usr/include/xf86drmMode.h
++usr/lib/
++usr/lib/libdrm.so.2.4.0
++usr/lib/libdrm_amdgpu.so.1.0.0
++usr/lib/libdrm_intel.so.1.0.0
++usr/lib/libdrm_nouveau.so.2.0.0
++usr/lib/libdrm_radeon.so.1.0.1
++usr/lib/libkms.so.1.0.0
++usr/lib/pkgconfig/
++usr/lib/pkgconfig/libdrm.pc
++usr/lib/pkgconfig/libdrm_amdgpu.pc
++usr/lib/pkgconfig/libdrm_intel.pc
++usr/lib/pkgconfig/libdrm_nouveau.pc
++usr/lib/pkgconfig/libdrm_radeon.pc
++usr/lib/pkgconfig/libkms.pc
++usr/man/
++usr/man/man3/
++usr/man/man3/drmAvailable.3.gz
++usr/man/man3/drmHandleEvent.3.gz
++usr/man/man3/drmModeGetResources.3.gz
++usr/man/man7/
++usr/man/man7/drm-kms.7.gz
++usr/man/man7/drm-memory.7.gz
++usr/man/man7/drm.7.gz
++usr/share/
++usr/share/libdrm/
++usr/share/libdrm/amdgpu.ids
++
++Slackware package /tmp/libdrm-2.4.104-x86_64-1.txz created.
++

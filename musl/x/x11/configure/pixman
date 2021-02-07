@@ -1,0 +1,22 @@
+# Don't use icecream:
+PATH=$(echo $PATH | sed "s|/usr/libexec/icecc/bin||g" | tr -s : | sed "s/^://g" | sed "s/:$//g")
+
+if [ "$ARCH" = "x86_64" ]; then
+  do_sse2="--enable-sse2"
+else
+  do_sse2="--disable-sse2"
+fi
+
+CFLAGS=$SLKCFLAGS \
+CXXFLAGS=$SLKCFLAGS \
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
+  --infodir=/usr/info \
+  --mandir=/usr/man \
+  --disable-static \
+  --disable-vmx \
+  --build=$ARCH-slackware-linux \
+  ${do_sse2}

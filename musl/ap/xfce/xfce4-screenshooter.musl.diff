@@ -1,0 +1,823 @@
+diff -ruBN /tmp/xfce4-screenshooter/xfce4-screenshooter.SlackBuild /source/xfce/xfce4-screenshooter/xfce4-screenshooter.SlackBuild
+--- /tmp/xfce4-screenshooter/xfce4-screenshooter.SlackBuild	2020-12-23 03:11:09.000000000 +0000
++++ /source/xfce/xfce4-screenshooter/xfce4-screenshooter.SlackBuild	2021-01-23 22:41:30.000000000 +0000
+@@ -60,7 +60,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ else
+   SLKCFLAGS="-O2"
+   LIBDIRSUFFIX=""
+@@ -90,7 +90,7 @@
+   --enable-shared=yes \
+   --enable-static=no \
+   --enable-debug=no \
+-  --build=$ARCH-slackware-linux || exit 1
++  --build=$ARCH-slackware-linux-musl || exit 1
+ 
+ make $NUMJOBS || make || exit 1
+ make install DESTDIR=$PKG || exit 1
+diff -ruBN /tmp/xfce4-screenshooter/xfce4-screenshooter.SlackBuild.log /source/xfce/xfce4-screenshooter/xfce4-screenshooter.SlackBuild.log
+--- /tmp/xfce4-screenshooter/xfce4-screenshooter.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/xfce/xfce4-screenshooter/xfce4-screenshooter.SlackBuild.log	2021-01-23 22:42:49.000000000 +0000
+@@ -0,0 +1,798 @@
++xfce4-screenshooter-1.9.8/
++xfce4-screenshooter-1.9.8/src/
++xfce4-screenshooter-1.9.8/src/xfce4-screenshooter.appdata.xml.in
++xfce4-screenshooter-1.9.8/src/xfce4-screenshooter.desktop.in.in
++xfce4-screenshooter-1.9.8/src/main.c
++xfce4-screenshooter-1.9.8/missing
++xfce4-screenshooter-1.9.8/config.sub
++xfce4-screenshooter-1.9.8/INSTALL
++xfce4-screenshooter-1.9.8/config.h.in
++xfce4-screenshooter-1.9.8/intltool-merge.in
++xfce4-screenshooter-1.9.8/ltmain.sh
++xfce4-screenshooter-1.9.8/compile
++xfce4-screenshooter-1.9.8/panel-plugin/
++xfce4-screenshooter-1.9.8/panel-plugin/screenshooter.desktop.in
++xfce4-screenshooter-1.9.8/panel-plugin/screenshooter-plugin.c
++xfce4-screenshooter-1.9.8/po/
++xfce4-screenshooter-1.9.8/po/ug.po
++xfce4-screenshooter-1.9.8/po/oc.po
++xfce4-screenshooter-1.9.8/po/POTFILES.in
++xfce4-screenshooter-1.9.8/po/eu.po
++xfce4-screenshooter-1.9.8/po/ru.po
++xfce4-screenshooter-1.9.8/po/zh_CN.po
++xfce4-screenshooter-1.9.8/po/ast.po
++xfce4-screenshooter-1.9.8/po/he.po
++xfce4-screenshooter-1.9.8/po/pt.po
++xfce4-screenshooter-1.9.8/po/vi.po
++xfce4-screenshooter-1.9.8/po/ur.po
++xfce4-screenshooter-1.9.8/po/pt_BR.po
++xfce4-screenshooter-1.9.8/po/pa.po
++xfce4-screenshooter-1.9.8/po/pl.po
++xfce4-screenshooter-1.9.8/po/de.po
++xfce4-screenshooter-1.9.8/po/sq.po
++xfce4-screenshooter-1.9.8/po/fr.po
++xfce4-screenshooter-1.9.8/po/hy_AM.po
++xfce4-screenshooter-1.9.8/po/ro.po
++xfce4-screenshooter-1.9.8/po/en_AU.po
++xfce4-screenshooter-1.9.8/po/sk.po
++xfce4-screenshooter-1.9.8/po/POTFILES.skip
++xfce4-screenshooter-1.9.8/po/be.po
++xfce4-screenshooter-1.9.8/po/Makefile.in.in
++xfce4-screenshooter-1.9.8/po/ar.po
++xfce4-screenshooter-1.9.8/po/cs.po
++xfce4-screenshooter-1.9.8/po/gl.po
++xfce4-screenshooter-1.9.8/po/nb.po
++xfce4-screenshooter-1.9.8/po/si.po
++xfce4-screenshooter-1.9.8/po/hr.po
++xfce4-screenshooter-1.9.8/po/is.po
++xfce4-screenshooter-1.9.8/po/bg.po
++xfce4-screenshooter-1.9.8/po/sl.po
++xfce4-screenshooter-1.9.8/po/th.po
++xfce4-screenshooter-1.9.8/po/ko.po
++xfce4-screenshooter-1.9.8/po/fi.po
++xfce4-screenshooter-1.9.8/po/it.po
++xfce4-screenshooter-1.9.8/po/uk.po
++xfce4-screenshooter-1.9.8/po/el.po
++xfce4-screenshooter-1.9.8/po/ie.po
++xfce4-screenshooter-1.9.8/po/sv.po
++xfce4-screenshooter-1.9.8/po/es.po
++xfce4-screenshooter-1.9.8/po/lv.po
++xfce4-screenshooter-1.9.8/po/hye.po
++xfce4-screenshooter-1.9.8/po/et.po
++xfce4-screenshooter-1.9.8/po/ca.po
++xfce4-screenshooter-1.9.8/po/lt.po
++xfce4-screenshooter-1.9.8/po/tr.po
++xfce4-screenshooter-1.9.8/po/en_GB.po
++xfce4-screenshooter-1.9.8/po/te.po
++xfce4-screenshooter-1.9.8/po/zh_TW.po
++xfce4-screenshooter-1.9.8/po/ja.po
++xfce4-screenshooter-1.9.8/po/nn.po
++xfce4-screenshooter-1.9.8/po/ms.po
++xfce4-screenshooter-1.9.8/po/kk.po
++xfce4-screenshooter-1.9.8/po/id.po
++xfce4-screenshooter-1.9.8/po/hu.po
++xfce4-screenshooter-1.9.8/po/ur_PK.po
++xfce4-screenshooter-1.9.8/po/nl.po
++xfce4-screenshooter-1.9.8/po/sr.po
++xfce4-screenshooter-1.9.8/po/ka.po
++xfce4-screenshooter-1.9.8/po/da.po
++xfce4-screenshooter-1.9.8/COPYING
++xfce4-screenshooter-1.9.8/intltool-update.in
++xfce4-screenshooter-1.9.8/ChangeLog
++xfce4-screenshooter-1.9.8/lib/
++xfce4-screenshooter-1.9.8/lib/screenshooter-actions.h
++xfce4-screenshooter-1.9.8/lib/screenshooter-simple-job.h
++xfce4-screenshooter-1.9.8/lib/screenshooter-imgur.c
++xfce4-screenshooter-1.9.8/lib/screenshooter-marshal.h
++xfce4-screenshooter-1.9.8/lib/screenshooter-marshal.list
++xfce4-screenshooter-1.9.8/lib/screenshooter-global.h
++xfce4-screenshooter-1.9.8/lib/screenshooter-dialogs.h
++xfce4-screenshooter-1.9.8/lib/screenshooter-imgur-dialog_ui.h
++xfce4-screenshooter-1.9.8/lib/screenshooter-actions.c
++xfce4-screenshooter-1.9.8/lib/screenshooter-utils.c
++xfce4-screenshooter-1.9.8/lib/screenshooter-imgur-dialog.c
++xfce4-screenshooter-1.9.8/lib/screenshooter-imgur-dialog.ui
++xfce4-screenshooter-1.9.8/lib/screenshooter-capture.c
++xfce4-screenshooter-1.9.8/lib/screenshooter-imgur.h
++xfce4-screenshooter-1.9.8/lib/screenshooter-job.c
++xfce4-screenshooter-1.9.8/lib/screenshooter-dialogs.c
++xfce4-screenshooter-1.9.8/lib/screenshooter-simple-job.c
++xfce4-screenshooter-1.9.8/lib/libscreenshooter.h
++xfce4-screenshooter-1.9.8/lib/screenshooter-utils.h
++xfce4-screenshooter-1.9.8/lib/screenshooter-job-callbacks.c
++xfce4-screenshooter-1.9.8/lib/screenshooter-imgur-dialog.h
++xfce4-screenshooter-1.9.8/lib/screenshooter-job.h
++xfce4-screenshooter-1.9.8/lib/screenshooter-marshal.c
++xfce4-screenshooter-1.9.8/lib/screenshooter-job-callbacks.h
++xfce4-screenshooter-1.9.8/lib/screenshooter-capture.h
++xfce4-screenshooter-1.9.8/NEWS
++xfce4-screenshooter-1.9.8/README.md
++xfce4-screenshooter-1.9.8/TODO
++xfce4-screenshooter-1.9.8/install-sh
++xfce4-screenshooter-1.9.8/depcomp
++xfce4-screenshooter-1.9.8/icons/
++xfce4-screenshooter-1.9.8/icons/128x128/
++xfce4-screenshooter-1.9.8/icons/128x128/org.xfce.screenshooter.png
++xfce4-screenshooter-1.9.8/icons/48x48/
++xfce4-screenshooter-1.9.8/icons/48x48/org.xfce.screenshooter.png
++xfce4-screenshooter-1.9.8/icons/24x24/
++xfce4-screenshooter-1.9.8/icons/24x24/org.xfce.screenshooter.png
++xfce4-screenshooter-1.9.8/icons/16x16/
++xfce4-screenshooter-1.9.8/icons/16x16/org.xfce.screenshooter.png
++xfce4-screenshooter-1.9.8/icons/scalable/
++xfce4-screenshooter-1.9.8/icons/scalable/org.xfce.screenshooter.svg
++xfce4-screenshooter-1.9.8/icons/32x32/
++xfce4-screenshooter-1.9.8/icons/32x32/org.xfce.screenshooter.png
++xfce4-screenshooter-1.9.8/Makefile.am
++xfce4-screenshooter-1.9.8/aclocal.m4
++xfce4-screenshooter-1.9.8/xfce4-screenshooter.1
++xfce4-screenshooter-1.9.8/configure.ac
++xfce4-screenshooter-1.9.8/Makefile.in
++xfce4-screenshooter-1.9.8/configure
++xfce4-screenshooter-1.9.8/config.guess
++xfce4-screenshooter-1.9.8/intltool-extract.in
++xfce4-screenshooter-1.9.8/AUTHORS
++checking for a BSD-compatible install... /usr/bin/ginstall -c
++checking whether build environment is sane... yes
++checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
++checking for gawk... gawk
++checking whether make sets $(MAKE)... yes
++checking whether make supports nested variables... yes
++checking whether UID '0' is supported by ustar format... yes
++checking whether GID '0' is supported by ustar format... yes
++checking how to create a ustar tar archive... gnutar
++checking whether to enable maintainer-specific portions of Makefiles... no
++checking whether make supports nested variables... (cached) yes
++checking for gcc... gcc
++checking whether the C compiler works... yes
++checking for C compiler default output file name... a.out
++checking for suffix of executables... 
++checking whether we are cross compiling... no
++checking for suffix of object files... o
++checking whether we are using the GNU C compiler... yes
++checking whether gcc accepts -g... yes
++checking for gcc option to accept ISO C89... none needed
++checking whether gcc understands -c and -o together... yes
++checking whether make supports the include directive... yes (GNU style)
++checking dependency style of gcc... gcc3
++checking whether gcc and cc understand -c and -o together... yes
++checking build system type... x86_64-slackware-linux-musl
++checking host system type... x86_64-slackware-linux-musl
++checking for a sed that does not truncate output... /usr/bin/sed
++checking for grep that handles long lines and -e... /usr/bin/grep
++checking for egrep... /usr/bin/grep -E
++checking for fgrep... /usr/bin/grep -F
++checking how to print strings... printf
++checking for ld used by gcc... /usr/bin/ld
++checking if the linker (/usr/bin/ld) is GNU ld... yes
++checking whether NLS is requested... yes
++checking for intltool >= 0.35.0... 0.51.0 found
++checking for intltool-update... /usr/bin/intltool-update
++checking for intltool-merge... /usr/bin/intltool-merge
++checking for intltool-extract... /usr/bin/intltool-extract
++checking for xgettext... /usr/bin/xgettext
++checking for msgmerge... /usr/bin/msgmerge
++checking for msgfmt... /usr/bin/msgfmt
++checking for gmsgfmt... /usr/bin/msgfmt
++checking for perl... /usr/bin/perl
++checking for perl >= 5.8.1... 5.32.0
++checking for XML::Parser... ok
++checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
++checking the name lister (/usr/bin/nm -B) interface... BSD nm
++checking whether ln -s works... yes
++checking the maximum length of command line arguments... 98304
++checking how to convert x86_64-slackware-linux-musl file names to x86_64-slackware-linux-musl format... func_convert_file_noop
++checking how to convert x86_64-slackware-linux-musl file names to toolchain format... func_convert_file_noop
++checking for /usr/bin/ld option to reload object files... -r
++checking for objdump... objdump
++checking how to recognize dependent libraries... pass_all
++checking for dlltool... dlltool
++checking how to associate runtime and link libraries... printf %s\n
++checking for ar... ar
++checking for archiver @FILE support... @
++checking for strip... strip
++checking for ranlib... ranlib
++checking command to parse /usr/bin/nm -B output from gcc object... ok
++checking for sysroot... no
++checking for a working dd... /usr/bin/dd
++checking how to truncate binary pipes... /usr/bin/dd bs=4096 count=1
++checking for mt... mt
++checking if mt is a manifest tool... no
++checking how to run the C preprocessor... gcc -E
++checking for ANSI C header files... yes
++checking for sys/types.h... yes
++checking for sys/stat.h... yes
++checking for stdlib.h... yes
++checking for string.h... yes
++checking for memory.h... yes
++checking for strings.h... yes
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking for unistd.h... yes
++checking for dlfcn.h... yes
++checking for objdir... .libs
++checking if gcc supports -fno-rtti -fno-exceptions... no
++checking for gcc option to produce PIC... -fPIC -DPIC
++checking if gcc PIC flag -fPIC -DPIC works... yes
++checking if gcc static flag -static works... yes
++checking if gcc supports -c -o file.o... yes
++checking if gcc supports -c -o file.o... (cached) yes
++checking whether the gcc linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
++checking whether -lc should be explicitly linked in... no
++checking dynamic linker characteristics... GNU/Linux ld.so
++checking how to hardcode library paths into programs... immediate
++checking whether stripping libraries is possible... yes
++checking if libtool supports shared libraries... yes
++checking whether to build shared libraries... yes
++checking whether to build static libraries... no
++checking for ANSI C header files... (cached) yes
++checking pkg-config is at least version 0.9.0... yes
++checking for libxfce4panel-2.0 >= 4.12.0... 4.16.0
++checking LIBXFCE4PANEL_CFLAGS... -pthread -I/usr/include/xfce4/libxfce4panel-2.0 -I/usr/include/gtk-3.0 -I/usr/include/at-spi2-atk/2.0 -I/usr/include/at-spi-2.0 -I/usr/include/dbus-1.0 -I/usr/lib/dbus-1.0/include -I/usr/include/gtk-3.0 -I/usr/include/gio-unix-2.0 -I/usr/include/cairo -I/usr/include/pango-1.0 -I/usr/include/fribidi -I/usr/include/harfbuzz -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pixman-1 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/xfce4 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include
++checking LIBXFCE4PANEL_LIBS... -lxfce4panel-2.0 -lgtk-3 -lgdk-3 -lz -lpangocairo-1.0 -lpango-1.0 -lharfbuzz -latk-1.0 -lcairo-gobject -lcairo -lgdk_pixbuf-2.0 -lgio-2.0 -lgobject-2.0 -Wl,--export-dynamic -lgmodule-2.0 -pthread -lxfce4util -lglib-2.0
++checking pkg-config is at least version 0.9.0... yes
++checking for libxfce4util-1.0 >= 4.12.0... 4.16.0
++checking LIBXFCE4UTIL_CFLAGS... -I/usr/include/xfce4 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include
++checking LIBXFCE4UTIL_LIBS... -lxfce4util -lglib-2.0
++checking pkg-config is at least version 0.9.0... yes
++checking for libxfce4ui-2 >= 4.12.0... 4.16.0
++checking LIBXFCE4UI_CFLAGS... -pthread -I/usr/include/xfce4/libxfce4ui-2 -I/usr/include/gtk-3.0 -I/usr/include/at-spi2-atk/2.0 -I/usr/include/at-spi-2.0 -I/usr/include/dbus-1.0 -I/usr/lib/dbus-1.0/include -I/usr/include/gtk-3.0 -I/usr/include/gio-unix-2.0 -I/usr/include/cairo -I/usr/include/pango-1.0 -I/usr/include/fribidi -I/usr/include/harfbuzz -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pixman-1 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/xfce4 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include
++checking LIBXFCE4UI_LIBS... -lxfce4ui-2 -lgtk-3 -lgdk-3 -lz -lpangocairo-1.0 -lpango-1.0 -lharfbuzz -latk-1.0 -lcairo-gobject -lcairo -lgdk_pixbuf-2.0 -lgio-2.0 -lgobject-2.0 -lxfce4util -lglib-2.0
++checking pkg-config is at least version 0.9.0... yes
++checking for gthread-2.0 >= 2.42.0... 2.66.4
++checking GTHREAD_CFLAGS... -pthread -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include
++checking GTHREAD_LIBS... -lgthread-2.0 -pthread -lglib-2.0
++checking pkg-config is at least version 0.9.0... yes
++checking for gtk+-3.0 >= 3.22.0... 3.24.24
++checking GTK_CFLAGS... -pthread -I/usr/include/gtk-3.0 -I/usr/include/at-spi2-atk/2.0 -I/usr/include/at-spi-2.0 -I/usr/include/dbus-1.0 -I/usr/lib/dbus-1.0/include -I/usr/include/gtk-3.0 -I/usr/include/gio-unix-2.0 -I/usr/include/cairo -I/usr/include/pango-1.0 -I/usr/include/fribidi -I/usr/include/harfbuzz -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pixman-1 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include
++checking GTK_LIBS... -lgtk-3 -lgdk-3 -lz -lpangocairo-1.0 -lpango-1.0 -lharfbuzz -latk-1.0 -lcairo-gobject -lcairo -lgdk_pixbuf-2.0 -lgio-2.0 -lgobject-2.0 -lglib-2.0
++checking pkg-config is at least version 0.9.0... yes
++checking for gdk-3.0 >= 3.22.0... 3.24.24
++checking GDK_CFLAGS... -pthread -I/usr/include/gtk-3.0 -I/usr/include/gio-unix-2.0 -I/usr/include/cairo -I/usr/include/pango-1.0 -I/usr/include/fribidi -I/usr/include/harfbuzz -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/cairo -I/usr/include/pixman-1 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include
++checking GDK_LIBS... -lgdk-3 -lz -lpangocairo-1.0 -lpango-1.0 -lharfbuzz -lgdk_pixbuf-2.0 -lcairo-gobject -lcairo -lgobject-2.0 -lglib-2.0
++checking pkg-config is at least version 0.9.0... yes
++checking for gdk-x11-3.0 >= 3.22.0... 3.24.24
++checking GDKX11_CFLAGS... -pthread -I/usr/include/gtk-3.0 -I/usr/include/gio-unix-2.0 -I/usr/include/cairo -I/usr/include/pango-1.0 -I/usr/include/fribidi -I/usr/include/harfbuzz -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/cairo -I/usr/include/pixman-1 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include
++checking GDKX11_LIBS... -lgdk-3 -lz -lpangocairo-1.0 -lpango-1.0 -lharfbuzz -lgdk_pixbuf-2.0 -lcairo-gobject -lcairo -lgobject-2.0 -lglib-2.0
++checking pkg-config is at least version 0.9.0... yes
++checking for glib-2.0 >= 2.42.0... 2.66.4
++checking GLIB_CFLAGS... -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include
++checking GLIB_LIBS... -lglib-2.0
++checking pkg-config is at least version 0.9.0... yes
++checking for libsoup-2.4 >= 2.26.0... 2.72.0
++checking SOUP_CFLAGS... -pthread -I/usr/include/libsoup-2.4 -I/usr/include/libxml2 -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include
++checking SOUP_LIBS... -lsoup-2.4 -lgio-2.0 -lgobject-2.0 -lglib-2.0
++checking pkg-config is at least version 0.9.0... yes
++checking for libxml-2.0 >= 2.4.0... 2.9.10
++checking LIBXML_CFLAGS... -I/usr/include/libxml2
++checking LIBXML_LIBS... -lxml2
++checking pkg-config is at least version 0.9.0... yes
++checking for exo-2 >= 0.12.0... 4.16.0
++checking EXO_CFLAGS... -pthread -I/usr/include/exo-2 -I/usr/include/gtk-3.0 -I/usr/include/at-spi2-atk/2.0 -I/usr/include/at-spi-2.0 -I/usr/include/dbus-1.0 -I/usr/lib/dbus-1.0/include -I/usr/include/gtk-3.0 -I/usr/include/gio-unix-2.0 -I/usr/include/cairo -I/usr/include/pango-1.0 -I/usr/include/fribidi -I/usr/include/harfbuzz -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pixman-1 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/xfce4 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include
++checking EXO_LIBS... -lexo-2 -lgtk-3 -lgdk-3 -lz -lpangocairo-1.0 -lpango-1.0 -lharfbuzz -latk-1.0 -lcairo-gobject -lcairo -lgdk_pixbuf-2.0 -lgio-2.0 -lgobject-2.0 -lxfce4util -lglib-2.0
++checking pkg-config is at least version 0.9.0... yes
++checking for xext >= 1.0.0... 1.3.4
++checking LIBXEXT_CFLAGS... 
++checking LIBXEXT_LIBS... -lXext
++checking pkg-config is at least version 0.9.0... yes
++checking for xfixes >= 4.0.0... 5.0.3
++checking XFIXES_CFLAGS... 
++checking XFIXES_LIBS... -lXfixes
++checking for X... libraries , headers 
++checking for gethostbyname... yes
++checking for connect... yes
++checking for remove... yes
++checking for shmat... yes
++checking for IceConnectionNumber in -lICE... yes
++checking for main in -lX11... yes
++checking locale.h usability... yes
++checking locale.h presence... yes
++checking for locale.h... yes
++checking for LC_MESSAGES... yes
++checking for CFPreferencesCopyAppValue... no
++checking for CFLocaleCopyCurrent... no
++checking libintl.h usability... yes
++checking libintl.h presence... yes
++checking for libintl.h... yes
++checking for ngettext in libc... yes
++checking for dgettext in libc... yes
++checking for bind_textdomain_codeset... yes
++checking for msgfmt... (cached) /usr/bin/msgfmt
++checking for dcgettext... yes
++checking if msgfmt accepts -c... yes
++checking for gmsgfmt... (cached) /usr/bin/msgfmt
++checking for xgettext... (cached) /usr/bin/xgettext
++checking for catalogs to be installed...  ar ast be bg ca cs da de el en_AU en_GB es et eu fi fr gl he hr hu hy_AM hye id ie is it ja ka kk ko lt lv ms nb nl nn oc pa pl pt_BR pt ro ru si sk sl sq sr sv te th tr ug uk ur_PK ur vi zh_CN zh_TW
++checking for bind_textdomain_codeset... (cached) yes
++checking for locales directory... /usr/lib/locale
++checking for additional xgettext flags... --keyword=Q_ --from-code=UTF-8
++checking for help2man... help2man
++checking whether to build with debugging support... no
++checking that generated files are newer than configure... done
++configure: creating ./config.status
++config.status: creating Makefile
++config.status: creating po/Makefile.in
++config.status: creating config.h
++config.status: executing depfiles commands
++config.status: executing libtool commands
++config.status: executing default-1 commands
++config.status: executing po/stamp-it commands
++
++Build Configuration:
++
++  * XFIXES support:                yes
++  * Debugging support:             no
++
++  GEN      lib/stamp-screenshooter-marshal.h
++  GEN      lib/screenshooter-marshal.c
++INFO: Reading ./lib/screenshooter-marshal.list...
++INFO: Reading ./lib/screenshooter-marshal.list...
++make  all-recursive
++make[1]: Entering directory '/tmp/xfce4-screenshooter-1.9.8'
++Making all in po
++make[2]: Entering directory '/tmp/xfce4-screenshooter-1.9.8/po'
++  MSGFMT ar.gmo
++  MSGFMT ast.gmo
++  MSGFMT be.gmo
++  MSGFMT bg.gmo
++  MSGFMT ca.gmo
++  MSGFMT cs.gmo
++  MSGFMT da.gmo
++  MSGFMT de.gmo
++  MSGFMT el.gmo
++  MSGFMT en_AU.gmo
++  MSGFMT en_GB.gmo
++  MSGFMT es.gmo
++  MSGFMT et.gmo
++  MSGFMT eu.gmo
++  MSGFMT fi.gmo
++  MSGFMT fr.gmo
++  MSGFMT gl.gmo
++  MSGFMT he.gmo
++  MSGFMT hr.gmo
++  MSGFMT hu.gmo
++  MSGFMT hy_AM.gmo
++  MSGFMT hye.gmo
++  MSGFMT id.gmo
++  MSGFMT ie.gmo
++  MSGFMT is.gmo
++  MSGFMT it.gmo
++  MSGFMT ja.gmo
++  MSGFMT ka.gmo
++  MSGFMT kk.gmo
++  MSGFMT ko.gmo
++  MSGFMT lt.gmo
++  MSGFMT lv.gmo
++  MSGFMT ms.gmo
++  MSGFMT nb.gmo
++  MSGFMT nl.gmo
++  MSGFMT nn.gmo
++  MSGFMT oc.gmo
++  MSGFMT pa.gmo
++  MSGFMT pl.gmo
++  MSGFMT pt_BR.gmo
++  MSGFMT pt.gmo
++  MSGFMT ro.gmo
++  MSGFMT ru.gmo
++  MSGFMT si.gmo
++  MSGFMT sk.gmo
++  MSGFMT sl.gmo
++  MSGFMT sq.gmo
++  MSGFMT sr.gmo
++  MSGFMT sv.gmo
++  MSGFMT te.gmo
++  MSGFMT th.gmo
++  MSGFMT tr.gmo
++  MSGFMT ug.gmo
++  MSGFMT uk.gmo
++  MSGFMT ur_PK.gmo
++  MSGFMT ur.gmo
++  MSGFMT vi.gmo
++  MSGFMT zh_CN.gmo
++  MSGFMT zh_TW.gmo
++make[2]: Leaving directory '/tmp/xfce4-screenshooter-1.9.8/po'
++make[2]: Entering directory '/tmp/xfce4-screenshooter-1.9.8'
++  GEN      src/xfce4-screenshooter.desktop.in
++  ITMRG  src/xfce4-screenshooter.appdata.xml
++  ITMRG  panel-plugin/screenshooter.desktop
++  CC       src/xfce4_screenshooter-main.o
++  CC       lib/libscreenshooter_la-screenshooter-marshal.lo
++  CC       lib/libscreenshooter_la-screenshooter-actions.lo
++  CC       lib/libscreenshooter_la-screenshooter-capture.lo
++  CC       lib/libscreenshooter_la-screenshooter-dialogs.lo
++  CC       lib/libscreenshooter_la-screenshooter-job.lo
++  CC       lib/libscreenshooter_la-screenshooter-job-callbacks.lo
++  CC       lib/libscreenshooter_la-screenshooter-simple-job.lo
++  CC       lib/libscreenshooter_la-screenshooter-utils.lo
++  CC       lib/libscreenshooter_la-screenshooter-imgur.lo
++  CC       lib/libscreenshooter_la-screenshooter-imgur-dialog.lo
++  CC       panel-plugin/libscreenshooterplugin_la-screenshooter-plugin.lo
++  ITMRG  src/xfce4-screenshooter.desktop
++  CCLD     lib/libscreenshooter.la
++  CCLD     panel-plugin/libscreenshooterplugin.la
++  CCLD     src/xfce4-screenshooter
++help2man -o xfce4-screenshooter.1 --no-info src/xfce4-screenshooter
++make[2]: Leaving directory '/tmp/xfce4-screenshooter-1.9.8'
++make[1]: Leaving directory '/tmp/xfce4-screenshooter-1.9.8'
++make  install-recursive
++make[1]: Entering directory '/tmp/xfce4-screenshooter-1.9.8'
++Making install in po
++make[2]: Entering directory '/tmp/xfce4-screenshooter-1.9.8/po'
++linguas="ar ast be bg ca cs da de el en_AU en_GB es et eu fi fr gl he hr hu hy_AM hye id ie is it ja ka kk ko lt lv ms nb nl nn oc pa pl pt_BR pt ro ru si sk sl sq sr sv te th tr ug uk ur_PK ur vi zh_CN zh_TW "; \
++for lang in $linguas; do \
++  dir=/tmp/package-xfce4-screenshooter/usr/lib/locale/$lang/LC_MESSAGES; \
++  /bin/sh /tmp/xfce4-screenshooter-1.9.8/install-sh -d $dir; \
++  if test -r $lang.gmo; then \
++    /usr/bin/ginstall -c -m 644 $lang.gmo $dir/xfce4-screenshooter.mo; \
++    echo "installing $lang.gmo as $dir/xfce4-screenshooter.mo"; \
++  else \
++    /usr/bin/ginstall -c -m 644 ./$lang.gmo $dir/xfce4-screenshooter.mo; \
++    echo "installing ./$lang.gmo as" \
++	 "$dir/xfce4-screenshooter.mo"; \
++  fi; \
++  if test -r $lang.gmo.m; then \
++    /usr/bin/ginstall -c -m 644 $lang.gmo.m $dir/xfce4-screenshooter.mo.m; \
++    echo "installing $lang.gmo.m as $dir/xfce4-screenshooter.mo.m"; \
++  else \
++    if test -r ./$lang.gmo.m ; then \
++      /usr/bin/ginstall -c -m 644 ./$lang.gmo.m \
++	$dir/xfce4-screenshooter.mo.m; \
++      echo "installing ./$lang.gmo.m as" \
++	   "$dir/xfce4-screenshooter.mo.m"; \
++    else \
++      true; \
++    fi; \
++  fi; \
++done
++installing ar.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/ar/LC_MESSAGES/xfce4-screenshooter.mo
++installing ast.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/ast/LC_MESSAGES/xfce4-screenshooter.mo
++installing be.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/be/LC_MESSAGES/xfce4-screenshooter.mo
++installing bg.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/bg/LC_MESSAGES/xfce4-screenshooter.mo
++installing ca.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/ca/LC_MESSAGES/xfce4-screenshooter.mo
++installing cs.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/cs/LC_MESSAGES/xfce4-screenshooter.mo
++installing da.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/da/LC_MESSAGES/xfce4-screenshooter.mo
++installing de.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/de/LC_MESSAGES/xfce4-screenshooter.mo
++installing el.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/el/LC_MESSAGES/xfce4-screenshooter.mo
++installing en_AU.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/en_AU/LC_MESSAGES/xfce4-screenshooter.mo
++installing en_GB.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/en_GB/LC_MESSAGES/xfce4-screenshooter.mo
++installing es.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/es/LC_MESSAGES/xfce4-screenshooter.mo
++installing et.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/et/LC_MESSAGES/xfce4-screenshooter.mo
++installing eu.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/eu/LC_MESSAGES/xfce4-screenshooter.mo
++installing fi.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/fi/LC_MESSAGES/xfce4-screenshooter.mo
++installing fr.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/fr/LC_MESSAGES/xfce4-screenshooter.mo
++installing gl.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/gl/LC_MESSAGES/xfce4-screenshooter.mo
++installing he.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/he/LC_MESSAGES/xfce4-screenshooter.mo
++installing hr.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/hr/LC_MESSAGES/xfce4-screenshooter.mo
++installing hu.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/hu/LC_MESSAGES/xfce4-screenshooter.mo
++installing hy_AM.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/hy_AM/LC_MESSAGES/xfce4-screenshooter.mo
++installing hye.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/hye/LC_MESSAGES/xfce4-screenshooter.mo
++installing id.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/id/LC_MESSAGES/xfce4-screenshooter.mo
++installing ie.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/ie/LC_MESSAGES/xfce4-screenshooter.mo
++installing is.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/is/LC_MESSAGES/xfce4-screenshooter.mo
++installing it.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/it/LC_MESSAGES/xfce4-screenshooter.mo
++installing ja.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/ja/LC_MESSAGES/xfce4-screenshooter.mo
++installing ka.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/ka/LC_MESSAGES/xfce4-screenshooter.mo
++installing kk.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/kk/LC_MESSAGES/xfce4-screenshooter.mo
++installing ko.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/ko/LC_MESSAGES/xfce4-screenshooter.mo
++installing lt.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/lt/LC_MESSAGES/xfce4-screenshooter.mo
++installing lv.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/lv/LC_MESSAGES/xfce4-screenshooter.mo
++installing ms.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/ms/LC_MESSAGES/xfce4-screenshooter.mo
++installing nb.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/nb/LC_MESSAGES/xfce4-screenshooter.mo
++installing nl.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/nl/LC_MESSAGES/xfce4-screenshooter.mo
++installing nn.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/nn/LC_MESSAGES/xfce4-screenshooter.mo
++installing oc.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/oc/LC_MESSAGES/xfce4-screenshooter.mo
++installing pa.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/pa/LC_MESSAGES/xfce4-screenshooter.mo
++installing pl.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/pl/LC_MESSAGES/xfce4-screenshooter.mo
++installing pt_BR.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/pt_BR/LC_MESSAGES/xfce4-screenshooter.mo
++installing pt.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/pt/LC_MESSAGES/xfce4-screenshooter.mo
++installing ro.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/ro/LC_MESSAGES/xfce4-screenshooter.mo
++installing ru.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/ru/LC_MESSAGES/xfce4-screenshooter.mo
++installing si.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/si/LC_MESSAGES/xfce4-screenshooter.mo
++installing sk.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/sk/LC_MESSAGES/xfce4-screenshooter.mo
++installing sl.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/sl/LC_MESSAGES/xfce4-screenshooter.mo
++installing sq.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/sq/LC_MESSAGES/xfce4-screenshooter.mo
++installing sr.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/sr/LC_MESSAGES/xfce4-screenshooter.mo
++installing sv.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/sv/LC_MESSAGES/xfce4-screenshooter.mo
++installing te.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/te/LC_MESSAGES/xfce4-screenshooter.mo
++installing th.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/th/LC_MESSAGES/xfce4-screenshooter.mo
++installing tr.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/tr/LC_MESSAGES/xfce4-screenshooter.mo
++installing ug.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/ug/LC_MESSAGES/xfce4-screenshooter.mo
++installing uk.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/uk/LC_MESSAGES/xfce4-screenshooter.mo
++installing ur_PK.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/ur_PK/LC_MESSAGES/xfce4-screenshooter.mo
++installing ur.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/ur/LC_MESSAGES/xfce4-screenshooter.mo
++installing vi.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/vi/LC_MESSAGES/xfce4-screenshooter.mo
++installing zh_CN.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/zh_CN/LC_MESSAGES/xfce4-screenshooter.mo
++installing zh_TW.gmo as /tmp/package-xfce4-screenshooter/usr/lib/locale/zh_TW/LC_MESSAGES/xfce4-screenshooter.mo
++make[2]: Leaving directory '/tmp/xfce4-screenshooter-1.9.8/po'
++make[2]: Entering directory '/tmp/xfce4-screenshooter-1.9.8'
++make[3]: Entering directory '/tmp/xfce4-screenshooter-1.9.8'
++ /usr/bin/mkdir -p '/tmp/package-xfce4-screenshooter/usr/bin'
++  /bin/sh ./libtool   --mode=install /usr/bin/ginstall -c src/xfce4-screenshooter '/tmp/package-xfce4-screenshooter/usr/bin'
++libtool: install: /usr/bin/ginstall -c src/xfce4-screenshooter /tmp/package-xfce4-screenshooter/usr/bin/xfce4-screenshooter
++ /usr/bin/mkdir -p '/tmp/package-xfce4-screenshooter/usr/share/icons/hicolor/128x128/apps'
++ /usr/bin/ginstall -c -m 644 icons/128x128/org.xfce.screenshooter.png '/tmp/package-xfce4-screenshooter/usr/share/icons/hicolor/128x128/apps'
++ /usr/bin/mkdir -p '/tmp/package-xfce4-screenshooter/usr/share/icons/hicolor/16x16/apps'
++ /usr/bin/ginstall -c -m 644 icons/16x16/org.xfce.screenshooter.png '/tmp/package-xfce4-screenshooter/usr/share/icons/hicolor/16x16/apps'
++ /usr/bin/mkdir -p '/tmp/package-xfce4-screenshooter/usr/share/icons/hicolor/24x24/apps'
++ /usr/bin/ginstall -c -m 644 icons/24x24/org.xfce.screenshooter.png '/tmp/package-xfce4-screenshooter/usr/share/icons/hicolor/24x24/apps'
++ /usr/bin/mkdir -p '/tmp/package-xfce4-screenshooter/usr/share/icons/hicolor/32x32/apps'
++ /usr/bin/ginstall -c -m 644 icons/32x32/org.xfce.screenshooter.png '/tmp/package-xfce4-screenshooter/usr/share/icons/hicolor/32x32/apps'
++ /usr/bin/mkdir -p '/tmp/package-xfce4-screenshooter/usr/share/icons/hicolor/48x48/apps'
++ /usr/bin/ginstall -c -m 644 icons/48x48/org.xfce.screenshooter.png '/tmp/package-xfce4-screenshooter/usr/share/icons/hicolor/48x48/apps'
++ /usr/bin/mkdir -p '/tmp/package-xfce4-screenshooter/usr/share/applications'
++ /usr/bin/ginstall -c -m 644 src/xfce4-screenshooter.desktop '/tmp/package-xfce4-screenshooter/usr/share/applications'
++ /usr/bin/mkdir -p '/tmp/package-xfce4-screenshooter/usr/share/metainfo'
++ /usr/bin/ginstall -c -m 644 src/xfce4-screenshooter.appdata.xml '/tmp/package-xfce4-screenshooter/usr/share/metainfo'
++ /usr/bin/mkdir -p '/tmp/package-xfce4-screenshooter/usr/man/man1'
++ /usr/bin/ginstall -c -m 644 xfce4-screenshooter.1 '/tmp/package-xfce4-screenshooter/usr/man/man1'
++ /usr/bin/mkdir -p '/tmp/package-xfce4-screenshooter/usr/share/xfce4/panel/plugins'
++ /usr/bin/ginstall -c -m 644 panel-plugin/screenshooter.desktop '/tmp/package-xfce4-screenshooter/usr/share/xfce4/panel/plugins'
++ /usr/bin/mkdir -p '/tmp/package-xfce4-screenshooter/usr/lib/xfce4/panel/plugins'
++ /bin/sh ./libtool   --mode=install /usr/bin/ginstall -c   panel-plugin/libscreenshooterplugin.la '/tmp/package-xfce4-screenshooter/usr/lib/xfce4/panel/plugins'
++libtool: install: /usr/bin/ginstall -c panel-plugin/.libs/libscreenshooterplugin.so /tmp/package-xfce4-screenshooter/usr/lib/xfce4/panel/plugins/libscreenshooterplugin.so
++libtool: install: /usr/bin/ginstall -c panel-plugin/.libs/libscreenshooterplugin.lai /tmp/package-xfce4-screenshooter/usr/lib/xfce4/panel/plugins/libscreenshooterplugin.la
++libtool: warning: remember to run 'libtool --finish /usr/lib/xfce4/panel/plugins'
++ /usr/bin/mkdir -p '/tmp/package-xfce4-screenshooter/usr/share/icons/hicolor/scalable/apps'
++ /usr/bin/ginstall -c -m 644 icons/scalable/org.xfce.screenshooter.svg '/tmp/package-xfce4-screenshooter/usr/share/icons/hicolor/scalable/apps'
++make  install-data-hook
++make[4]: Entering directory '/tmp/xfce4-screenshooter-1.9.8'
++*** Icon cache not updated. Remember to run:
++***
++***   gtk-update-icon-cache -f -t /usr/share/icons/hicolor
++***
++make[4]: Leaving directory '/tmp/xfce4-screenshooter-1.9.8'
++make[3]: Leaving directory '/tmp/xfce4-screenshooter-1.9.8'
++make[2]: Leaving directory '/tmp/xfce4-screenshooter-1.9.8'
++make[1]: Leaving directory '/tmp/xfce4-screenshooter-1.9.8'
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++
++No symbolic links were found, so we won't make an installation script.
++You can make your own later in ./install/doinst.sh and rebuild the
++package if you like.
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/xfce4-screenshooter-1.9.8-x86_64-1.txz
++
++./
++install/
++install/doinst.sh
++install/slack-desc
++usr/
++usr/bin/
++usr/bin/xfce4-screenshooter
++usr/doc/
++usr/doc/xfce4-screenshooter-1.9.8/
++usr/doc/xfce4-screenshooter-1.9.8/AUTHORS
++usr/doc/xfce4-screenshooter-1.9.8/COPYING
++usr/doc/xfce4-screenshooter-1.9.8/ChangeLog
++usr/doc/xfce4-screenshooter-1.9.8/INSTALL
++usr/doc/xfce4-screenshooter-1.9.8/NEWS
++usr/doc/xfce4-screenshooter-1.9.8/README.md
++usr/lib/
++usr/lib/locale/
++usr/lib/locale/ar/
++usr/lib/locale/ar/LC_MESSAGES/
++usr/lib/locale/ar/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/ast/
++usr/lib/locale/ast/LC_MESSAGES/
++usr/lib/locale/ast/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/be/
++usr/lib/locale/be/LC_MESSAGES/
++usr/lib/locale/be/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/bg/
++usr/lib/locale/bg/LC_MESSAGES/
++usr/lib/locale/bg/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/ca/
++usr/lib/locale/ca/LC_MESSAGES/
++usr/lib/locale/ca/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/cs/
++usr/lib/locale/cs/LC_MESSAGES/
++usr/lib/locale/cs/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/da/
++usr/lib/locale/da/LC_MESSAGES/
++usr/lib/locale/da/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/de/
++usr/lib/locale/de/LC_MESSAGES/
++usr/lib/locale/de/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/el/
++usr/lib/locale/el/LC_MESSAGES/
++usr/lib/locale/el/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/en_AU/
++usr/lib/locale/en_AU/LC_MESSAGES/
++usr/lib/locale/en_AU/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/en_GB/
++usr/lib/locale/en_GB/LC_MESSAGES/
++usr/lib/locale/en_GB/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/es/
++usr/lib/locale/es/LC_MESSAGES/
++usr/lib/locale/es/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/et/
++usr/lib/locale/et/LC_MESSAGES/
++usr/lib/locale/et/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/eu/
++usr/lib/locale/eu/LC_MESSAGES/
++usr/lib/locale/eu/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/fi/
++usr/lib/locale/fi/LC_MESSAGES/
++usr/lib/locale/fi/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/fr/
++usr/lib/locale/fr/LC_MESSAGES/
++usr/lib/locale/fr/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/gl/
++usr/lib/locale/gl/LC_MESSAGES/
++usr/lib/locale/gl/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/he/
++usr/lib/locale/he/LC_MESSAGES/
++usr/lib/locale/he/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/hr/
++usr/lib/locale/hr/LC_MESSAGES/
++usr/lib/locale/hr/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/hu/
++usr/lib/locale/hu/LC_MESSAGES/
++usr/lib/locale/hu/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/hy_AM/
++usr/lib/locale/hy_AM/LC_MESSAGES/
++usr/lib/locale/hy_AM/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/hye/
++usr/lib/locale/hye/LC_MESSAGES/
++usr/lib/locale/hye/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/id/
++usr/lib/locale/id/LC_MESSAGES/
++usr/lib/locale/id/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/ie/
++usr/lib/locale/ie/LC_MESSAGES/
++usr/lib/locale/ie/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/is/
++usr/lib/locale/is/LC_MESSAGES/
++usr/lib/locale/is/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/it/
++usr/lib/locale/it/LC_MESSAGES/
++usr/lib/locale/it/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/ja/
++usr/lib/locale/ja/LC_MESSAGES/
++usr/lib/locale/ja/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/ka/
++usr/lib/locale/ka/LC_MESSAGES/
++usr/lib/locale/ka/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/kk/
++usr/lib/locale/kk/LC_MESSAGES/
++usr/lib/locale/kk/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/ko/
++usr/lib/locale/ko/LC_MESSAGES/
++usr/lib/locale/ko/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/lt/
++usr/lib/locale/lt/LC_MESSAGES/
++usr/lib/locale/lt/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/lv/
++usr/lib/locale/lv/LC_MESSAGES/
++usr/lib/locale/lv/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/ms/
++usr/lib/locale/ms/LC_MESSAGES/
++usr/lib/locale/ms/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/nb/
++usr/lib/locale/nb/LC_MESSAGES/
++usr/lib/locale/nb/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/nl/
++usr/lib/locale/nl/LC_MESSAGES/
++usr/lib/locale/nl/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/nn/
++usr/lib/locale/nn/LC_MESSAGES/
++usr/lib/locale/nn/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/oc/
++usr/lib/locale/oc/LC_MESSAGES/
++usr/lib/locale/oc/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/pa/
++usr/lib/locale/pa/LC_MESSAGES/
++usr/lib/locale/pa/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/pl/
++usr/lib/locale/pl/LC_MESSAGES/
++usr/lib/locale/pl/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/pt/
++usr/lib/locale/pt/LC_MESSAGES/
++usr/lib/locale/pt/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/pt_BR/
++usr/lib/locale/pt_BR/LC_MESSAGES/
++usr/lib/locale/pt_BR/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/ro/
++usr/lib/locale/ro/LC_MESSAGES/
++usr/lib/locale/ro/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/ru/
++usr/lib/locale/ru/LC_MESSAGES/
++usr/lib/locale/ru/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/si/
++usr/lib/locale/si/LC_MESSAGES/
++usr/lib/locale/si/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/sk/
++usr/lib/locale/sk/LC_MESSAGES/
++usr/lib/locale/sk/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/sl/
++usr/lib/locale/sl/LC_MESSAGES/
++usr/lib/locale/sl/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/sq/
++usr/lib/locale/sq/LC_MESSAGES/
++usr/lib/locale/sq/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/sr/
++usr/lib/locale/sr/LC_MESSAGES/
++usr/lib/locale/sr/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/sv/
++usr/lib/locale/sv/LC_MESSAGES/
++usr/lib/locale/sv/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/te/
++usr/lib/locale/te/LC_MESSAGES/
++usr/lib/locale/te/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/th/
++usr/lib/locale/th/LC_MESSAGES/
++usr/lib/locale/th/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/tr/
++usr/lib/locale/tr/LC_MESSAGES/
++usr/lib/locale/tr/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/ug/
++usr/lib/locale/ug/LC_MESSAGES/
++usr/lib/locale/ug/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/uk/
++usr/lib/locale/uk/LC_MESSAGES/
++usr/lib/locale/uk/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/ur/
++usr/lib/locale/ur/LC_MESSAGES/
++usr/lib/locale/ur/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/ur_PK/
++usr/lib/locale/ur_PK/LC_MESSAGES/
++usr/lib/locale/ur_PK/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/vi/
++usr/lib/locale/vi/LC_MESSAGES/
++usr/lib/locale/vi/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/zh_CN/
++usr/lib/locale/zh_CN/LC_MESSAGES/
++usr/lib/locale/zh_CN/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/locale/zh_TW/
++usr/lib/locale/zh_TW/LC_MESSAGES/
++usr/lib/locale/zh_TW/LC_MESSAGES/xfce4-screenshooter.mo
++usr/lib/xfce4/
++usr/lib/xfce4/panel/
++usr/lib/xfce4/panel/plugins/
++usr/lib/xfce4/panel/plugins/libscreenshooterplugin.la
++usr/lib/xfce4/panel/plugins/libscreenshooterplugin.so
++usr/man/
++usr/man/man1/
++usr/man/man1/xfce4-screenshooter.1.gz
++usr/share/
++usr/share/applications/
++usr/share/applications/xfce4-screenshooter.desktop
++usr/share/icons/
++usr/share/icons/hicolor/
++usr/share/icons/hicolor/128x128/
++usr/share/icons/hicolor/128x128/apps/
++usr/share/icons/hicolor/128x128/apps/org.xfce.screenshooter.png
++usr/share/icons/hicolor/16x16/
++usr/share/icons/hicolor/16x16/apps/
++usr/share/icons/hicolor/16x16/apps/org.xfce.screenshooter.png
++usr/share/icons/hicolor/24x24/
++usr/share/icons/hicolor/24x24/apps/
++usr/share/icons/hicolor/24x24/apps/org.xfce.screenshooter.png
++usr/share/icons/hicolor/32x32/
++usr/share/icons/hicolor/32x32/apps/
++usr/share/icons/hicolor/32x32/apps/org.xfce.screenshooter.png
++usr/share/icons/hicolor/48x48/
++usr/share/icons/hicolor/48x48/apps/
++usr/share/icons/hicolor/48x48/apps/org.xfce.screenshooter.png
++usr/share/icons/hicolor/scalable/
++usr/share/icons/hicolor/scalable/apps/
++usr/share/icons/hicolor/scalable/apps/org.xfce.screenshooter.svg
++usr/share/metainfo/
++usr/share/metainfo/xfce4-screenshooter.appdata.xml
++usr/share/xfce4/
++usr/share/xfce4/panel/
++usr/share/xfce4/panel/plugins/
++usr/share/xfce4/panel/plugins/screenshooter.desktop
++
++Slackware package /tmp/xfce4-screenshooter-1.9.8-x86_64-1.txz created.
++

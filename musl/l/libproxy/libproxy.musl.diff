@@ -1,0 +1,489 @@
+diff -ruBN /tmp/libproxy/libproxy.SlackBuild /source/l/libproxy/libproxy.SlackBuild
+--- /tmp/libproxy/libproxy.SlackBuild	2020-12-05 19:27:04.000000000 +0000
++++ /source/l/libproxy/libproxy.SlackBuild	2021-01-04 17:40:51.000000000 +0000
+@@ -56,7 +56,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ else
+   SLKCFLAGS="-O2"
+   LIBDIRSUFFIX=""
+@@ -83,6 +83,7 @@
+   -DCMAKE_CXX_FLAGS="$SLKCFLAGS" \
+   -DCMAKE_INSTALL_PREFIX=/usr \
+   -DLIB_INSTALL_DIR=/usr/lib${LIBDIRSUFFIX} \
++-DWITH_PERL=OFF \
+   -DLIB_SUFFIX=${LIBDIRSUFFIX} \
+   -DMODULE_INSTALL_DIR=/usr/lib${LIBDIRSUFFIX}/libproxy/${VERSION}/modules \
+   -DPERL_VENDORINSTALL=yes || exit 1
+diff -ruBN /tmp/libproxy/libproxy.SlackBuild.log /source/l/libproxy/libproxy.SlackBuild.log
+--- /tmp/libproxy/libproxy.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/l/libproxy/libproxy.SlackBuild.log	2021-01-04 17:42:46.000000000 +0000
+@@ -0,0 +1,465 @@
++libproxy-0.4.17/
++libproxy-0.4.17/libproxy/
++libproxy-0.4.17/libproxy/extension_network.hpp
++libproxy-0.4.17/libproxy/extension_pacrunner.hpp
++libproxy-0.4.17/libproxy/Findlibproxy.cmake.in
++libproxy-0.4.17/libproxy/extension_ignore.hpp
++libproxy-0.4.17/libproxy/cmake/
++libproxy-0.4.17/libproxy/cmake/pxmodule.cmk
++libproxy-0.4.17/libproxy/cmake/pkgconfig.cmk
++libproxy-0.4.17/libproxy/cmake/devfiles.cmk
++libproxy-0.4.17/libproxy/cmake/modules.cmk
++libproxy-0.4.17/libproxy/cmake/libproxy.cmk
++libproxy-0.4.17/libproxy/cmake/modules/
++libproxy-0.4.17/libproxy/cmake/modules/config_pacrunner.cmk
++libproxy-0.4.17/libproxy/cmake/modules/pacrunner_webkit.cmk
++libproxy-0.4.17/libproxy/cmake/modules/pacrunner_mozjs.cmk
++libproxy-0.4.17/libproxy/cmake/modules/config_gnome.cmk
++libproxy-0.4.17/libproxy/cmake/modules/config_kde.cmk
++libproxy-0.4.17/libproxy/cmake/modules/pacrunner_natus.cmk
++libproxy-0.4.17/libproxy/cmake/modules/network_networkmanager.cmk
++libproxy-0.4.17/libproxy/cmake/modules/config_envvar.cmk
++libproxy-0.4.17/libproxy/cmake/modules/config_sysconfig.cmk
++libproxy-0.4.17/libproxy/cmake/modules/config_macosx.cmk
++libproxy-0.4.17/libproxy/CMakeLists.txt
++libproxy-0.4.17/libproxy/url.hpp
++libproxy-0.4.17/libproxy/extension_pacrunner.cpp
++libproxy-0.4.17/libproxy/extension_wpad.cpp
++libproxy-0.4.17/libproxy/url.cpp
++libproxy-0.4.17/libproxy/extension_wpad.hpp
++libproxy-0.4.17/libproxy/proxy.h
++libproxy-0.4.17/libproxy/extension_config.cpp
++libproxy-0.4.17/libproxy/modules/
++libproxy-0.4.17/libproxy/modules/ignore_ip.cpp
++libproxy-0.4.17/libproxy/modules/wpad_dns_alias.cpp
++libproxy-0.4.17/libproxy/modules/config_envvar.cpp
++libproxy-0.4.17/libproxy/modules/pacrunner_mozjs.cpp
++libproxy-0.4.17/libproxy/modules/config_kde.cpp
++libproxy-0.4.17/libproxy/modules/config_gnome.cpp
++libproxy-0.4.17/libproxy/modules/pacrunner_webkit.cpp
++libproxy-0.4.17/libproxy/modules/config_gnome3.cpp
++libproxy-0.4.17/libproxy/modules/config_sysconfig.cpp
++libproxy-0.4.17/libproxy/modules/ignore_domain.cpp
++libproxy-0.4.17/libproxy/modules/config_w32reg.cpp
++libproxy-0.4.17/libproxy/modules/pxgsettings.cpp
++libproxy-0.4.17/libproxy/modules/network_networkmanager.cpp
++libproxy-0.4.17/libproxy/modules/config_pacrunner.cpp
++libproxy-0.4.17/libproxy/modules/ignore_hostname.cpp
++libproxy-0.4.17/libproxy/modules/pacrunner_natus.cpp
++libproxy-0.4.17/libproxy/modules/config_macosx.cpp
++libproxy-0.4.17/libproxy/modules/pacutils.h
++libproxy-0.4.17/libproxy/modules/pxgconf.cpp
++libproxy-0.4.17/libproxy/test/
++libproxy-0.4.17/libproxy/test/url-encode.cpp
++libproxy-0.4.17/libproxy/test/CMakeLists.txt
++libproxy-0.4.17/libproxy/test/url-test.cpp
++libproxy-0.4.17/libproxy/test/get-pac-test.cpp
++libproxy-0.4.17/libproxy/libproxy.map
++libproxy-0.4.17/libproxy/libproxy-1.0.pc.in
++libproxy-0.4.17/libproxy/proxy.cpp
++libproxy-0.4.17/libproxy/config.hpp
++libproxy-0.4.17/libproxy/extension_config.hpp
++libproxy-0.4.17/autogen.sh
++libproxy-0.4.17/cmake/
++libproxy-0.4.17/cmake/mingw32.cmake
++libproxy-0.4.17/cmake/CMakeCSharpCompiler.cmake.in
++libproxy-0.4.17/cmake/FindPython2Interp.cmake
++libproxy-0.4.17/cmake/paths.cmk
++libproxy-0.4.17/cmake/FindPython3Interp.cmake
++libproxy-0.4.17/cmake/CMakeTestCSharpCompiler.cmake
++libproxy-0.4.17/cmake/cpack.cmk
++libproxy-0.4.17/cmake/CMakeCSharpInformation.cmake
++libproxy-0.4.17/cmake/CMakeDetermineCSharpCompiler.cmake
++libproxy-0.4.17/cmake/FindMono.cmake
++libproxy-0.4.17/cmake/ctest.cmk
++libproxy-0.4.17/CMakeLists.txt
++libproxy-0.4.17/README
++libproxy-0.4.17/doc/
++libproxy-0.4.17/doc/libproxy_files.dia
++libproxy-0.4.17/.cproject
++libproxy-0.4.17/ChangeLog
++libproxy-0.4.17/samples/
++libproxy-0.4.17/samples/vala/
++libproxy-0.4.17/samples/vala/sample.vala
++libproxy-0.4.17/samples/vala/Makefile
++libproxy-0.4.17/samples/dotnet/
++libproxy-0.4.17/samples/dotnet/proxy.cs
++libproxy-0.4.17/samples/dotnet/Makefile
++libproxy-0.4.17/samples/perl/
++libproxy-0.4.17/samples/perl/sample.pl
++libproxy-0.4.17/samples/libcurl/
++libproxy-0.4.17/samples/libcurl/curlget.c
++libproxy-0.4.17/samples/libcurl/Makefile
++libproxy-0.4.17/COPYING
++libproxy-0.4.17/libproxy.spec.in
++libproxy-0.4.17/.project
++libproxy-0.4.17/INSTALL
++libproxy-0.4.17/utils/
++libproxy-0.4.17/utils/CMakeLists.txt
++libproxy-0.4.17/utils/proxy.c
++libproxy-0.4.17/NEWS
++libproxy-0.4.17/libmodman/
++libproxy-0.4.17/libmodman/module.hpp
++libproxy-0.4.17/libmodman/CMakeLists.txt
++libproxy-0.4.17/libmodman/module_manager.hpp
++libproxy-0.4.17/libmodman/module_manager.cpp
++libproxy-0.4.17/libmodman/test/
++libproxy-0.4.17/libmodman/test/CMakeLists.txt
++libproxy-0.4.17/libmodman/test/main.hpp
++libproxy-0.4.17/libmodman/test/module.cpp.in
++libproxy-0.4.17/libmodman/test/main.cpp
++libproxy-0.4.17/libmodman/test/builtin.cpp
++libproxy-0.4.17/AUTHORS
++libproxy-0.4.17/bindings/
++libproxy-0.4.17/bindings/python/
++libproxy-0.4.17/bindings/python/python3/
++libproxy-0.4.17/bindings/python/python3/CMakeLists.txt
++libproxy-0.4.17/bindings/python/python2/
++libproxy-0.4.17/bindings/python/python2/CMakeLists.txt
++libproxy-0.4.17/bindings/python/libproxy.py
++libproxy-0.4.17/bindings/vala/
++libproxy-0.4.17/bindings/vala/libproxy-1.0.vapi
++libproxy-0.4.17/bindings/CMakeLists.txt
++libproxy-0.4.17/bindings/perl/
++libproxy-0.4.17/bindings/perl/src/
++libproxy-0.4.17/bindings/perl/src/CMakeLists.txt
++libproxy-0.4.17/bindings/perl/src/typemap
++libproxy-0.4.17/bindings/perl/src/Libproxy.xs
++libproxy-0.4.17/bindings/perl/src/doxsubpp.pl
++libproxy-0.4.17/bindings/perl/CMakeLists.txt
++libproxy-0.4.17/bindings/perl/t/
++libproxy-0.4.17/bindings/perl/t/CMakeLists.txt
++libproxy-0.4.17/bindings/perl/t/Libproxy.t
++libproxy-0.4.17/bindings/perl/lib/
++libproxy-0.4.17/bindings/perl/lib/CMakeLists.txt
++libproxy-0.4.17/bindings/perl/lib/Libproxy.pm
++libproxy-0.4.17/bindings/csharp/
++libproxy-0.4.17/bindings/csharp/libproxy.cs
++libproxy-0.4.17/bindings/csharp/CMakeLists.txt
++libproxy-0.4.17/bindings/csharp/AssemblyInfo.cs
++libproxy-0.4.17/bindings/csharp/libproxy-sharp-1.0.pc.cmake
++libproxy-0.4.17/bindings/csharp/libproxy.snk
++libproxy-0.4.17/bindings/ruby/
++libproxy-0.4.17/bindings/ruby/test.rb
++libproxy-0.4.17/bindings/ruby/extconf.rb
++libproxy-0.4.17/bindings/ruby/Libproxy.i
++libproxy-0.4.17/.gitignore
++libproxy-0.4.17/.travis.yml
++CMake Deprecation Warning at CMakeLists.txt:2 (cmake_minimum_required):
++  Compatibility with CMake < 2.8.12 will be removed from a future version of
++  CMake.
++
++  Update the VERSION argument <min> value or use a ...<max> suffix to tell
++  CMake that the project does not need compatibility with older versions.
++
++
++-- The C compiler identification is GNU 10.2.0
++-- The CXX compiler identification is GNU 10.2.0
++-- Detecting C compiler ABI info
++-- Detecting C compiler ABI info - done
++-- Check for working C compiler: /usr/bin/cc - skipped
++-- Detecting C compile features
++-- Detecting C compile features - done
++-- Detecting CXX compiler ABI info
++-- Detecting CXX compiler ABI info - done
++-- Check for working CXX compiler: /usr/bin/c++ - skipped
++-- Detecting CXX compile features
++-- Detecting CXX compile features - done
++-- Found Python2Interp: /usr/bin/python (found version "2.7.18") 
++-- Found python 2 version 2.7
++-- Using PYTHON2_SITEPKG_DIR=/usr/lib/python2.7/site-packages
++-- Found Python3Interp: /usr/bin/python3.9  
++-- Found python 3 version 3.9
++-- Using PYTHON3_SITEPKG_DIR=/usr/lib/python3.9/site-packages
++-- Found PkgConfig: /usr/bin/pkg-config (found version "0.29.2") 
++-- Checking for module 'dbus-1'
++--   Found dbus-1, version 1.12.20
++-- Checking for modules 'gio-2.0>=2.26;gobject-2.0'
++--   Found gio-2.0, version 2.66.4
++--   Found gobject-2.0, version 2.66.4
++-- Checking for modules 'libnm;dbus-1'
++--   No package 'libnm' found
++-- Checking for modules 'NetworkManager;dbus-1'
++--   No package 'NetworkManager' found
++-- Checking for one of the modules 'mozjs-68'
++-- Checking for module 'natus'
++--   No package 'natus' found
++-- Checking for module 'webkit-1.0'
++--   No package 'webkit-1.0' found
++MODULES TO BUILD:
++	m	config_pacrunner
++	*	config_envvar
++		config_sysconfig
++		config_gnome
++	m	config_gnome3
++	m	config_kde
++		config_macosx
++		config_w32reg
++	*	ignore_domain
++	*	ignore_hostname
++	*	ignore_ip
++		network_networkmanager
++		pacrunner_mozjs
++		pacrunner_natus
++		pacrunner_webkit
++	*	wpad_dns_alias
++
++-- Configuring done
++-- Generating done
++CMake Warning:
++  Manually-specified variables were not used by the project:
++
++    PERL_VENDORINSTALL
++
++
++-- Build files have been written to: /tmp/libproxy-0.4.17
++Scanning dependencies of target modman
++Scanning dependencies of target get-pac-test
++Scanning dependencies of target pxgsettings
++[  1%] Building CXX object libmodman/CMakeFiles/modman.dir/module_manager.cpp.o
++[  3%] Building CXX object libproxy/test/CMakeFiles/get-pac-test.dir/get-pac-test.cpp.o
++[  4%] Building CXX object libproxy/CMakeFiles/pxgsettings.dir/modules/pxgsettings.cpp.o
++[  6%] Building CXX object libproxy/test/CMakeFiles/get-pac-test.dir/__/url.cpp.o
++/tmp/libproxy-0.4.17/libproxy/modules/pxgsettings.cpp: In function ‘int main(int, char**)’:
++/tmp/libproxy-0.4.17/libproxy/modules/pxgsettings.cpp:155:59: warning: missing sentinel in function call [-Wformat=]
++  155 |   g_object_get (settings, "settings-schema", &schema, NULL);
++      |                                                           ^
++[  7%] Linking CXX executable pxgsettings
++[  7%] Built target pxgsettings
++Scanning dependencies of target url-encode
++[  9%] Building CXX object libproxy/test/CMakeFiles/url-encode.dir/url-encode.cpp.o
++[ 11%] Building CXX object libproxy/test/CMakeFiles/url-encode.dir/__/url.cpp.o
++[ 12%] Linking CXX static library libmodman.a
++[ 12%] Built target modman
++Scanning dependencies of target url-test
++[ 14%] Building CXX object libproxy/test/CMakeFiles/url-test.dir/url-test.cpp.o
++[ 15%] Linking CXX executable get-pac-test
++[ 15%] Built target get-pac-test
++Scanning dependencies of target builtin
++[ 17%] Building CXX object libmodman/test/CMakeFiles/builtin.dir/builtin.cpp.o
++[ 19%] Linking CXX executable url-encode
++[ 20%] Building CXX object libproxy/test/CMakeFiles/url-test.dir/__/url.cpp.o
++[ 20%] Built target url-encode
++Scanning dependencies of target condition_one
++[ 22%] Building CXX object libmodman/test/CMakeFiles/condition_one.dir/condition_one.cpp.o
++[ 23%] Building CXX object libmodman/test/CMakeFiles/builtin.dir/builtin_one.cpp.o
++[ 25%] Linking CXX shared module modules/condition/condition_one.so
++[ 25%] Built target condition_one
++Scanning dependencies of target condition_two
++[ 26%] Linking CXX executable builtin
++[ 28%] Building CXX object libmodman/test/CMakeFiles/condition_two.dir/condition_two.cpp.o
++[ 28%] Built target builtin
++Scanning dependencies of target symbol_one
++[ 30%] Building CXX object libmodman/test/CMakeFiles/symbol_one.dir/symbol_one.cpp.o
++[ 31%] Linking CXX shared module modules/condition/condition_two.so
++[ 33%] Linking CXX shared module modules/symbol/symbol_one.so
++[ 33%] Built target condition_two
++Scanning dependencies of target singleton_one
++[ 34%] Building CXX object libmodman/test/CMakeFiles/singleton_one.dir/singleton_one.cpp.o
++[ 34%] Built target symbol_one
++Scanning dependencies of target sorted_one
++[ 36%] Building CXX object libmodman/test/CMakeFiles/sorted_one.dir/sorted_one.cpp.o
++[ 38%] Linking CXX executable url-test
++[ 38%] Built target url-test
++Scanning dependencies of target condition
++[ 39%] Building CXX object libmodman/test/CMakeFiles/condition.dir/main.cpp.o
++[ 41%] Linking CXX shared module modules/singleton/singleton_one.so
++[ 41%] Built target singleton_one
++[ 42%] Linking CXX shared module modules/sorted/sorted_one.so
++Scanning dependencies of target symbol
++[ 44%] Building CXX object libmodman/test/CMakeFiles/symbol.dir/main.cpp.o
++[ 44%] Built target sorted_one
++Scanning dependencies of target sorted_two
++[ 46%] Building CXX object libmodman/test/CMakeFiles/sorted_two.dir/sorted_two.cpp.o
++[ 47%] Linking CXX shared module modules/sorted/sorted_two.so
++[ 47%] Built target sorted_two
++Scanning dependencies of target singleton_two
++[ 49%] Building CXX object libmodman/test/CMakeFiles/singleton_two.dir/singleton_two.cpp.o
++[ 50%] Linking CXX executable condition
++[ 52%] Linking CXX shared module modules/singleton/singleton_two.so
++[ 52%] Built target condition
++Scanning dependencies of target builtin_one
++[ 53%] Building CXX object libmodman/test/CMakeFiles/builtin_one.dir/builtin_one.cpp.o
++[ 53%] Built target singleton_two
++Scanning dependencies of target symbol_two
++[ 55%] Building CXX object libmodman/test/CMakeFiles/symbol_two.dir/symbol_two.cpp.o
++[ 57%] Linking CXX executable symbol
++[ 57%] Built target symbol
++Scanning dependencies of target singleton
++[ 58%] Building CXX object libmodman/test/CMakeFiles/singleton.dir/main.cpp.o
++[ 60%] Linking CXX shared module modules/builtin/builtin_one.so
++[ 61%] Linking CXX shared module modules/symbol/symbol_two.so
++[ 61%] Built target builtin_one
++Scanning dependencies of target symbollnk
++[ 63%] Building CXX object libmodman/test/CMakeFiles/symbollnk.dir/main.cpp.o
++[ 63%] Built target symbol_two
++Scanning dependencies of target sorted
++[ 65%] Building CXX object libmodman/test/CMakeFiles/sorted.dir/main.cpp.o
++[ 66%] Linking CXX executable singleton
++[ 66%] Built target singleton
++Scanning dependencies of target libproxy
++[ 68%] Building CXX object libproxy/CMakeFiles/libproxy.dir/extension_config.cpp.o
++[ 69%] Linking CXX executable symbollnk
++[ 71%] Linking CXX executable sorted
++[ 71%] Built target symbollnk
++[ 73%] Building CXX object libproxy/CMakeFiles/libproxy.dir/extension_pacrunner.cpp.o
++[ 73%] Built target sorted
++[ 74%] Building CXX object libproxy/CMakeFiles/libproxy.dir/extension_wpad.cpp.o
++[ 76%] Building CXX object libproxy/CMakeFiles/libproxy.dir/proxy.cpp.o
++[ 77%] Building CXX object libproxy/CMakeFiles/libproxy.dir/url.cpp.o
++[ 79%] Building CXX object libproxy/CMakeFiles/libproxy.dir/modules/config_envvar.cpp.o
++[ 80%] Building CXX object libproxy/CMakeFiles/libproxy.dir/modules/ignore_domain.cpp.o
++[ 82%] Building CXX object libproxy/CMakeFiles/libproxy.dir/modules/ignore_hostname.cpp.o
++[ 84%] Building CXX object libproxy/CMakeFiles/libproxy.dir/modules/ignore_ip.cpp.o
++[ 85%] Building CXX object libproxy/CMakeFiles/libproxy.dir/modules/wpad_dns_alias.cpp.o
++[ 87%] Linking CXX shared library libproxy.so
++[ 87%] Built target libproxy
++Scanning dependencies of target config_gnome3
++Scanning dependencies of target config_pacrunner
++Scanning dependencies of target config_kde
++[ 88%] Building CXX object libproxy/CMakeFiles/config_gnome3.dir/modules/config_gnome3.cpp.o
++[ 90%] Building CXX object libproxy/CMakeFiles/config_kde.dir/modules/config_kde.cpp.o
++[ 92%] Building CXX object libproxy/CMakeFiles/config_pacrunner.dir/modules/config_pacrunner.cpp.o
++[ 93%] Linking CXX shared module config_pacrunner.so
++[ 93%] Built target config_pacrunner
++Scanning dependencies of target proxy
++[ 95%] Building C object utils/CMakeFiles/proxy.dir/proxy.c.o
++[ 96%] Linking C executable proxy
++[ 96%] Built target proxy
++[ 98%] Linking CXX shared module config_kde.so
++[ 98%] Built target config_kde
++[100%] Linking CXX shared module config_gnome3.so
++[100%] Built target config_gnome3
++[  3%] Built target modman
++[  7%] Built target builtin
++[ 11%] Built target condition_one
++[ 14%] Built target condition_two
++[ 17%] Built target symbol_one
++[ 20%] Built target singleton_one
++[ 23%] Built target sorted_one
++[ 26%] Built target condition
++[ 30%] Built target symbol
++[ 33%] Built target sorted_two
++[ 36%] Built target singleton_two
++[ 39%] Built target builtin_one
++[ 42%] Built target symbol_two
++[ 46%] Built target singleton
++[ 49%] Built target symbollnk
++[ 52%] Built target sorted
++[ 69%] Built target libproxy
++[ 73%] Built target config_gnome3
++[ 76%] Built target config_kde
++[ 79%] Built target config_pacrunner
++[ 82%] Built target pxgsettings
++[ 87%] Built target get-pac-test
++[ 92%] Built target url-encode
++[ 96%] Built target url-test
++[100%] Built target proxy
++Install the project...
++-- Install configuration: "RelWithDebInfo"
++-- Installing: /tmp/package-libproxy/usr/lib/python2.7/site-packages/libproxy.py
++-- Installing: /tmp/package-libproxy/usr/lib/python3.9/site-packages/libproxy.py
++-- Installing: /tmp/package-libproxy/usr/libexec/pxgsettings
++-- Installing: /tmp/package-libproxy/usr/lib/libproxy/0.4.17/modules/config_pacrunner.so
++-- Set runtime path of "/tmp/package-libproxy/usr/lib/libproxy/0.4.17/modules/config_pacrunner.so" to ""
++-- Installing: /tmp/package-libproxy/usr/lib/libproxy/0.4.17/modules/config_gnome3.so
++-- Set runtime path of "/tmp/package-libproxy/usr/lib/libproxy/0.4.17/modules/config_gnome3.so" to ""
++-- Installing: /tmp/package-libproxy/usr/lib/libproxy/0.4.17/modules/config_kde.so
++-- Set runtime path of "/tmp/package-libproxy/usr/lib/libproxy/0.4.17/modules/config_kde.so" to ""
++-- Installing: /tmp/package-libproxy/usr/lib/pkgconfig/libproxy-1.0.pc
++-- Installing: /tmp/package-libproxy/usr/share/cmake/Modules/Findlibproxy.cmake
++-- Installing: /tmp/package-libproxy/usr/lib/libproxy.so.1.0.0
++-- Installing: /tmp/package-libproxy/usr/lib/libproxy.so.1
++-- Installing: /tmp/package-libproxy/usr/lib/libproxy.so
++-- Installing: /tmp/package-libproxy/usr/include/proxy.h
++-- Installing: /tmp/package-libproxy/usr/bin/proxy
++-- Set runtime path of "/tmp/package-libproxy/usr/bin/proxy" to ""
++Listing /tmp/package-libproxy/usr/lib/python2.7/site-packages ...
++Compiling /tmp/package-libproxy/usr/lib/python2.7/site-packages/libproxy.py ...
++Listing /tmp/package-libproxy/usr/lib/python2.7/site-packages ...
++Compiling /tmp/package-libproxy/usr/lib/python2.7/site-packages/libproxy.py ...
++Listing '/tmp/package-libproxy/usr/lib/python3.9/site-packages'...
++Compiling '/tmp/package-libproxy/usr/lib/python3.9/site-packages/libproxy.py'...
++Listing '/tmp/package-libproxy/usr/lib/python3.9/site-packages'...
++Compiling '/tmp/package-libproxy/usr/lib/python3.9/site-packages/libproxy.py'...
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++usr/lib/libproxy.so	libproxy.so.1
++usr/lib/libproxy.so.1	libproxy.so.1.0.0
++
++Making symbolic link creation script:
++( cd usr/lib ; rm -rf libproxy.so )
++( cd usr/lib ; ln -sf libproxy.so.1 libproxy.so )
++( cd usr/lib ; rm -rf libproxy.so.1 )
++( cd usr/lib ; ln -sf libproxy.so.1.0.0 libproxy.so.1 )
++
++It is recommended that you make these lines your new installation script.
++
++Would you like to make this stuff the install script for this package
++and remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './usr/lib/libproxy.so'
++removed './usr/lib/libproxy.so.1'
++
++Creating your new ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/libproxy-0.4.17-x86_64-1.txz
++
++./
++install/
++install/doinst.sh
++install/slack-desc
++usr/
++usr/bin/
++usr/bin/proxy
++usr/doc/
++usr/doc/libproxy-0.4.17/
++usr/doc/libproxy-0.4.17/AUTHORS
++usr/doc/libproxy-0.4.17/COPYING
++usr/doc/libproxy-0.4.17/ChangeLog
++usr/doc/libproxy-0.4.17/INSTALL
++usr/doc/libproxy-0.4.17/NEWS
++usr/doc/libproxy-0.4.17/README
++usr/include/
++usr/include/proxy.h
++usr/lib/
++usr/lib/libproxy/
++usr/lib/libproxy.so.1.0.0
++usr/lib/libproxy/0.4.17/
++usr/lib/libproxy/0.4.17/modules/
++usr/lib/libproxy/0.4.17/modules/config_gnome3.so
++usr/lib/libproxy/0.4.17/modules/config_kde.so
++usr/lib/libproxy/0.4.17/modules/config_pacrunner.so
++usr/lib/pkgconfig/
++usr/lib/pkgconfig/libproxy-1.0.pc
++usr/lib/python2.7/
++usr/lib/python2.7/site-packages/
++usr/lib/python2.7/site-packages/libproxy.py
++usr/lib/python2.7/site-packages/libproxy.pyc
++usr/lib/python2.7/site-packages/libproxy.pyo
++usr/lib/python3.9/
++usr/lib/python3.9/site-packages/
++usr/lib/python3.9/site-packages/__pycache__/
++usr/lib/python3.9/site-packages/__pycache__/libproxy.cpython-39.opt-1.pyc
++usr/lib/python3.9/site-packages/__pycache__/libproxy.cpython-39.pyc
++usr/lib/python3.9/site-packages/libproxy.py
++usr/libexec/
++usr/libexec/pxgsettings
++usr/share/
++usr/share/cmake/
++usr/share/cmake/Modules/
++usr/share/cmake/Modules/Findlibproxy.cmake
++
++Slackware package /tmp/libproxy-0.4.17-x86_64-1.txz created.
++

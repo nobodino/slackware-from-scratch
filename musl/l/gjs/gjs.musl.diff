@@ -1,0 +1,780 @@
+diff -ruBN /tmp/gjs/gjs.SlackBuild /source/l/gjs/gjs.SlackBuild
+--- /tmp/gjs/gjs.SlackBuild	2021-01-22 21:23:36.000000000 +0000
++++ /source/l/gjs/gjs.SlackBuild	2021-01-22 21:37:18.000000000 +0000
+@@ -97,6 +97,7 @@
+   --sysconfdir=/etc \
+   --localstatedir=/var \
+   --buildtype=release \
++-Dprofiler=disabled \
+   .. || exit 1
+   "${NINJA:=ninja}" $NUMJOBS || exit 1
+   DESTDIR=$PKG $NINJA install || exit 1
+diff -ruBN /tmp/gjs/gjs.SlackBuild.log /source/l/gjs/gjs.SlackBuild.log
+--- /tmp/gjs/gjs.SlackBuild.log	2021-01-22 21:26:12.000000000 +0000
++++ /source/l/gjs/gjs.SlackBuild.log	2021-01-22 21:41:49.000000000 +0000
+@@ -394,9 +394,6 @@
+ gjs-1.66.2/subprojects/glib.wrap
+ gjs-1.66.2/subprojects/.gitignore
+ gjs-1.66.2/.lint-condo.yaml
+-Cloning into 'sysprof'...
+-Already on 'master'
+-Your branch is up to date with 'origin/master'.
+ Using 'PKG_CONFIG_PATH' from environment with value: '/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig'
+ Using 'PKG_CONFIG_PATH' from environment with value: '/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig'
+ The Meson build system
+@@ -446,78 +443,8 @@
+ Run-time dependency cairo-gobject found: YES 1.16.0
+ Using 'PKG_CONFIG_PATH' from environment with value: '/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig'
+ Run-time dependency cairo-xlib found: YES 1.16.0
+-Found CMake: /usr/bin/cmake (3.19.2)
+-Run-time dependency sysprof-capture-4 found: NO (tried pkgconfig and cmake)
+-Looking for a fallback subproject for the dependency sysprof-capture-4
+-
+-|Executing subproject sysprof method meson 
+-|
+-|Project name: sysprof
+-|Project version: 3.39.90
+-|C compiler for the host machine: ccache cc (gcc 10.2.0 "cc (GCC) 10.2.0")
+-|C linker for the host machine: cc ld.bfd 2.33.1-slack15
+-|Compiler for C supports arguments -fvisibility=hidden: YES 
+-|Has header "execinfo.h" : YES 
+-|Checking for function "strlcpy" : YES 
+-|Checking for function "reallocarray" : YES 
+-|Using 'PKG_CONFIG_PATH' from environment with value: '/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig'
+-|Run-time dependency polkit-agent-1 found: YES 0.118
+-|Using 'PKG_CONFIG_PATH' from environment with value: '/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig'
+-|Run-time dependency polkit-gobject-1 found: YES 0.118
+-|Using 'PKG_CONFIG_PATH' from environment with value: '/usr/local/lib64/pkgconfig:/usr/local/share/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig'
+-|Run-time dependency libunwind-generic found: YES 1.5.0
+-|Header <libunwind.h> has symbol "unw_set_cache_size" with dependency libunwind-generic: NO 
+-|Checking whether type "struct perf_event_attr" has member "use_clockid" : YES 
+-|Checking whether type "struct perf_event_attr" has member "clockid" : YES 
+-|Compiler for C supports arguments -Wcast-align: YES 
+-|Compiler for C supports arguments -Wdeclaration-after-statement: YES 
+-|Compiler for C supports arguments -Wformat-nonliteral: YES 
+-|Compiler for C supports arguments -Wformat-security: YES 
+-|Compiler for C supports arguments -Wmissing-include-dirs: YES 
+-|Compiler for C supports arguments -Wnested-externs: YES 
+-|Compiler for C supports arguments -Wno-missing-field-initializers: YES 
+-|Compiler for C supports arguments -Wno-sign-compare: YES 
+-|Compiler for C supports arguments -Wno-unused-parameter: YES 
+-|Compiler for C supports arguments -Wno-cast-function-type: YES 
+-|Compiler for C supports arguments -Wpointer-arith: YES 
+-|Compiler for C supports arguments -Wredundant-decls: YES 
+-|Compiler for C supports arguments -Wswitch-default: YES 
+-|Compiler for C supports arguments -Wswitch-enum: YES 
+-|Compiler for C supports arguments -Wuninitialized: YES 
+-|Compiler for C supports arguments -Werror=format-security -Werror=format=2: YES 
+-|Compiler for C supports arguments -Werror=empty-body: YES 
+-|Compiler for C supports arguments -Werror=implicit-function-declaration: YES 
+-|Compiler for C supports arguments -Werror=pointer-arith: YES 
+-|Compiler for C supports arguments -Werror=init-self: YES 
+-|Compiler for C supports arguments -Werror=int-conversion: YES 
+-|Compiler for C supports arguments -Werror=misleading-indentation: YES 
+-|Compiler for C supports arguments -Werror=missing-include-dirs: YES 
+-|Compiler for C supports arguments -Werror=overflow: YES 
+-|Compiler for C supports arguments -Werror=parenthesis: NO 
+-|Compiler for C supports arguments -Werror=return-type: YES 
+-|Compiler for C supports arguments -Werror=shadow: YES 
+-|Compiler for C supports arguments -Werror=strict-prototypes: YES 
+-|Compiler for C supports arguments -Werror=undef: YES 
+-|Compiler for C supports arguments -Werror=incompatible-pointer-types: YES 
+-|Compiler for C supports link arguments -Wl,-z,relro: YES 
+-|Compiler for C supports link arguments -Wl,-z,now: YES 
+-|Compiler for C supports link arguments -fstack-protector-strong: YES 
+-|Compiler for C supports link arguments -Wl,-Bsymbolic: YES 
+-|Compiler for C supports link arguments -fno-plt: YES 
+-|Compiler for C supports link arguments -Wl,-z,relro: YES (cached)
+-|Compiler for C supports link arguments -Wl,-z,defs: YES 
+-|Compiler for C supports link arguments -Wl,-z,now: YES (cached)
+-|Configuring sysprof-version.h using configuration
+-|Run-time dependency threads found: YES
+-|Configuring config.h using configuration
+-|Build targets in project: 4
+-|Subproject sysprof finished.
+-
+-Dependency sysprof-capture-4 from subproject subprojects/sysprof found: YES 3.39.90
+-WARNING: Project targeting '>=0.51.0' but tried to use feature introduced in '0.52.0': dep.include_type.
+-WARNING: Project targeting '>=0.51.0' but tried to use feature introduced in '0.52.0': dep.as_system.
++Dependency sysprof-capture-4 skipped: feature profiler disabled
+ Library readline found: YES
+-Checking for function "timer_settime" : YES 
+ Checking if "SpiderMonkey is a non-debug build" with dependency mozjs-78 compiles: YES 
+ Checking if "SpiderMonkey sanity check" with dependency mozjs-78 runs: YES
+ Checking if "printf() supports %I alternative int syntax" compiles: YES 
+@@ -545,6 +472,7 @@
+ Program build/symlink-gjs.py found: YES (/usr/bin/python3 /tmp/gjs-1.66.2/build/symlink-gjs.py)
+ Program build/compile-gschemas.py found: YES (/usr/bin/python3 /tmp/gjs-1.66.2/build/compile-gschemas.py)
+ Program glib-compile-resources found: YES (/usr/bin/glib-compile-resources)
++Found CMake: /usr/bin/cmake (3.19.2)
+ Run-time dependency gtk4 found: NO (tried pkgconfig and cmake)
+ Program scripts/testCommandLine.sh found: YES (/tmp/gjs-1.66.2/installed-tests/scripts/testCommandLine.sh)
+ Configuring testCommandLine.sh.test using configuration
+@@ -613,117 +541,571 @@
+ ==========================
+ Build Cairo module: true
+ Use readline for input in interactive shell and debugger: true
+-Build profiler (Linux only): true
+-Build targets in project: 27
+-
+-gjs 1.66.2
+-
+-  Subprojects
+-    sysprof: YES
++Build profiler (Linux only): false
++Build targets in project: 23
+ 
+ Found ninja-1.10.2 at /usr/bin/ninja
+-[1/114] Generating gsettings-compile-installed-tests_js with a custom command
+-[2/114] Generating mock-js-resources_h with a custom command
+-[3/114] Generating jsunit-resources_c with a custom command
+-[4/114] Compiling C object installed-tests/js/libgimarshallingtests.so.p/_usr_share_gobject-introspection-1.0_tests_gimarshallingtests.c.o
+-[5/114] Linking target installed-tests/js/libgimarshallingtests.so
+-[6/114] Compiling C++ object test/gjs-tests.p/gjs-test-common.cpp.o
+-[7/114] Generating GIMarshallingTests-1.0.gir with a custom command
+-g-ir-scanner: link: gcc -o /tmp/gjs-1.66.2/meson-build/tmp-introspectmf05ce7g/GIMarshallingTests-1.0 -O2 -fPIC /tmp/gjs-1.66.2/meson-build/tmp-introspectmf05ce7g/GIMarshallingTests-1.0.o -L. -Wl,-rpath,. -Wl,--no-as-needed -L/tmp/gjs-1.66.2/meson-build/installed-tests/js -Wl,-rpath,/tmp/gjs-1.66.2/meson-build/installed-tests/js -lgimarshallingtests -lglib-2.0 -lgobject-2.0 -lgio-2.0 -lgirepository-1.0 -lgio-2.0 -lgobject-2.0 -Wl,--export-dynamic -lgmodule-2.0 -pthread -lglib-2.0
+-[8/114] Compiling C++ object test/gjs-tests.p/gjs-tests.cpp.o
+-../test/gjs-tests.cpp: In function ‘void gjstest_test_func_gjs_gobject_without_introspection()’:
+-../test/gjs-tests.cpp:175:42: warning: missing sentinel in function call [-Wformat=]
+-  175 |     g_object_get(obj, "a-int", &val, NULL);
+-      |                                          ^
+-../test/gjs-tests.cpp: In function ‘int main(int, char**)’:
+-../test/gjs-tests.cpp:436:35: warning: missing sentinel in function call [-Wformat=]
+-  436 |     g_test_init(&argc, &argv, NULL);
+-      |                                   ^
+-[9/114] Generating GIMarshallingTests-1.0.typelib with a custom command
+-[10/114] Compiling C++ object test/gjs-tests.p/gjs-test-utils.cpp.o
+-[11/114] Compiling C++ object test/gjs-tests.p/gjs-test-coverage.cpp.o
+-../test/gjs-test-coverage.cpp: In function ‘void gjs_coverage_multiple_source_files_to_single_output_fixture_set_up(gpointer, gconstpointer)’:
+-../test/gjs-test-coverage.cpp:1168:41: warning: missing sentinel in function call [-Wformat=]
+- 1168 |                                     NULL);
+-      |                                         ^
+-[12/114] Compiling C++ object test/gjs-tests.p/gjs-test-no-introspection-object.cpp.o
+-[13/114] Generating jsunit-resources_h with a custom command
+-[14/114] Compiling C++ object test/gjs-tests.p/gjs-test-call-args.cpp.o
+-[15/114] Compiling C object installed-tests/js/minijasmine.p/meson-generated_.._jsunit-resources.c.o
+-[16/114] Compiling C++ object installed-tests/js/minijasmine.p/.._minijasmine.cpp.o
+-[17/114] Compiling C++ object test/gjs-tests.p/gjs-test-rooting.cpp.o
+-[18/114] Compiling C object installed-tests/js/libwarnlib.so.p/_usr_share_gobject-introspection-1.0_tests_warnlib.c.o
+-[19/114] Linking target installed-tests/js/libwarnlib.so
+-[20/114] Compiling C++ object gjs-console.p/gjs_console.cpp.o
+-[21/114] Generating mock-js-resources_c with a custom command
+-[22/114] Compiling C object installed-tests/js/libregress.so.p/_usr_share_gobject-introspection-1.0_tests_regress.c.o
++[1/102] Compiling C object installed-tests/js/libregress.so.p/_usr_share_gobject-introspection-1.0_tests_regress.c.o
+ /usr/share/gobject-introspection-1.0/tests/regress.c: In function ‘regress_test_array_static_in_int’:
+ /usr/share/gobject-introspection-1.0/tests/regress.c:873:39: warning: unused parameter ‘x’ [-Wunused-parameter]
+   873 | regress_test_array_static_in_int (int x[static 10])
+       |                                   ~~~~^~~~~~~~~~~~
+-[23/114] Linking target installed-tests/js/libregress.so
+-[24/114] Generating WarnLib-1.0.gir with a custom command
++[2/102] Compiling C object installed-tests/js/libwarnlib.so.p/_usr_share_gobject-introspection-1.0_tests_warnlib.c.o
++[3/102] Compiling C object installed-tests/js/libgimarshallingtests.so.p/_usr_share_gobject-introspection-1.0_tests_gimarshallingtests.c.o
++[4/102] Linking target installed-tests/js/libregress.so
++[5/102] Linking target installed-tests/js/libwarnlib.so
++[6/102] Linking target installed-tests/js/libgimarshallingtests.so
++[7/102] Generating WarnLib-1.0.gir with a custom command
+ ../../../usr/share/gobject-introspection-1.0/tests/warnlib.h:33: Warning: WarnLib: symbol='do_moo': missing parameter name; undocumentable
+ ../../../usr/share/gobject-introspection-1.0/tests/warnlib.h:33: Warning: WarnLib: symbol='do_moo': missing parameter name; undocumentable
+ ../../../usr/share/gobject-introspection-1.0/tests/warnlib.h:39: Warning: WarnLib: symbol='warnlib_whatever_do_moo': missing parameter name; undocumentable
+ ../../../usr/share/gobject-introspection-1.0/tests/warnlib.h:39: Warning: WarnLib: symbol='warnlib_whatever_do_moo': missing parameter name; undocumentable
+ ../../../usr/share/gobject-introspection-1.0/tests/warnlib.h:41: Warning: WarnLib: symbol='warnlib_whatever_do_boo': missing parameter name; undocumentable
+ ../../../usr/share/gobject-introspection-1.0/tests/warnlib.h:41: Warning: WarnLib: symbol='warnlib_whatever_do_boo': missing parameter name; undocumentable
+-g-ir-scanner: link: gcc -o /tmp/gjs-1.66.2/meson-build/tmp-introspecthpjmip6s/WarnLib-1.0 -O2 -fPIC /tmp/gjs-1.66.2/meson-build/tmp-introspecthpjmip6s/WarnLib-1.0.o -L. -Wl,-rpath,. -Wl,--no-as-needed -L/tmp/gjs-1.66.2/meson-build/installed-tests/js -Wl,-rpath,/tmp/gjs-1.66.2/meson-build/installed-tests/js -lwarnlib -lglib-2.0 -lgobject-2.0 -lgio-2.0 -lgirepository-1.0 -lgio-2.0 -lgobject-2.0 -Wl,--export-dynamic -lgmodule-2.0 -pthread -lglib-2.0
+-../../../usr/share/gobject-introspection-1.0/tests/warnlib.c:41: Warning: WarnLib: warnlib_whatever_do_boo: unknown parameter 'x' in documentation comment, should be one of 'arg1', 'arg2'
++g-ir-scanner: link: gcc -o /tmp/gjs-1.66.2/meson-build/tmp-introspectaubbkftc/WarnLib-1.0 -O2 -fPIC /tmp/gjs-1.66.2/meson-build/tmp-introspectaubbkftc/WarnLib-1.0.o -L. -Wl,-rpath,. -Wl,--no-as-needed -L/tmp/gjs-1.66.2/meson-build/installed-tests/js -Wl,-rpath,/tmp/gjs-1.66.2/meson-build/installed-tests/js -lwarnlib -lglib-2.0 -lgobject-2.0 -lgio-2.0 -lgirepository-1.0 -lgio-2.0 -lgobject-2.0 -Wl,--export-dynamic -lgmodule-2.0 -pthread -lglib-2.0
+ ../../../usr/share/gobject-introspection-1.0/tests/warnlib.c:42: Warning: WarnLib: warnlib_whatever_do_boo: unknown parameter 'y' in documentation comment, should be one of 'arg1', 'arg2'
++../../../usr/share/gobject-introspection-1.0/tests/warnlib.c:41: Warning: WarnLib: warnlib_whatever_do_boo: unknown parameter 'x' in documentation comment, should be one of 'arg1', 'arg2'
+ <unknown>:: Warning: WarnLib: (ErrorQuarkFunction)unpaired_error_quark: warnlib_unpaired_error_quark: Couldn't find corresponding enumeration
+-[25/114] Compiling C object test/gjs-tests.p/meson-generated_.._mock-js-resources.c.o
+-[26/114] Generating WarnLib-1.0.typelib with a custom command
+-[27/114] Generating Regress-1.0.gir with a custom command
+-g-ir-scanner: link: gcc -o /tmp/gjs-1.66.2/meson-build/tmp-introspect3atpws5s/Regress-1.0 -O2 -fPIC /tmp/gjs-1.66.2/meson-build/tmp-introspect3atpws5s/Regress-1.0.o -L. -Wl,-rpath,. -Wl,--no-as-needed -L/tmp/gjs-1.66.2/meson-build/installed-tests/js -Wl,-rpath,/tmp/gjs-1.66.2/meson-build/installed-tests/js -lregress -lglib-2.0 -lgobject-2.0 -lgio-2.0 -lcairo -lcairo-gobject -lgirepository-1.0 -lgio-2.0 -lgobject-2.0 -Wl,--export-dynamic -lgmodule-2.0 -pthread -lglib-2.0
+-[28/114] Generating Regress-1.0.typelib with a custom command
+-[29/114] Compiling C++ object libgjs-jsapi.a.p/gjs_jsapi-util-error.cpp.o
+-[30/114] Compiling C++ object libgjs-jsapi.a.p/gjs_jsapi-dynamic-class.cpp.o
+-[31/114] Compiling C++ object libgjs-jsapi.a.p/util_log.cpp.o
+-[32/114] Compiling C++ object libgjs-jsapi.a.p/util_misc.cpp.o
+-[33/114] Generating js-resources_c with a custom command
+-[34/114] Generating js-resources_h with a custom command
+-[35/114] Compiling C++ object libgjs-jsapi.a.p/gjs_jsapi-util-string.cpp.o
+-[36/114] Compiling C++ object libgjs-jsapi.a.p/gjs_jsapi-util.cpp.o
+-[37/114] Compiling C++ object libgjs.so.0.0.0.p/modules_cairo-svg-surface.cpp.o
+-[38/114] Compiling C++ object libgjs.so.0.0.0.p/modules_cairo-pattern.cpp.o
+-[39/114] Compiling C++ object libgjs.so.0.0.0.p/modules_cairo-gradient.cpp.o
+-[40/114] Compiling C++ object libgjs.so.0.0.0.p/modules_cairo-linear-gradient.cpp.o
+-[41/114] Compiling C++ object libgjs.so.0.0.0.p/modules_cairo-radial-gradient.cpp.o
+-[42/114] Compiling C++ object libgjs.so.0.0.0.p/modules_cairo-solid-pattern.cpp.o
+-[43/114] Compiling C++ object libgjs.so.0.0.0.p/modules_cairo-surface-pattern.cpp.o
+-[44/114] Compiling C object libgjs.so.0.0.0.p/libgjs-private_gjs-util.c.o
+-[45/114] Compiling C object libgjs.so.0.0.0.p/libgjs-private_gjs-gdbus-wrapper.c.o
+-[46/114] Compiling C++ object libgjs.so.0.0.0.p/modules_cairo.cpp.o
+-[47/114] Compiling C++ object libgjs.so.0.0.0.p/modules_print.cpp.o
+-[48/114] Compiling C++ object libgjs.so.0.0.0.p/modules_system.cpp.o
+-[49/114] Compiling C++ object libgjs.so.0.0.0.p/modules_cairo-region.cpp.o
+-[50/114] Compiling C++ object libgjs.so.0.0.0.p/modules_cairo-path.cpp.o
+-[51/114] Compiling C++ object libgjs.so.0.0.0.p/modules_cairo-surface.cpp.o
+-[52/114] Compiling C++ object libgjs.so.0.0.0.p/modules_cairo-context.cpp.o
+-[53/114] Compiling C++ object libgjs.so.0.0.0.p/modules_cairo-image-surface.cpp.o
+-[54/114] Compiling C++ object libgjs.so.0.0.0.p/modules_cairo-ps-surface.cpp.o
+-[55/114] Compiling C++ object libgjs.so.0.0.0.p/modules_cairo-pdf-surface.cpp.o
+-[56/114] Compiling C++ object libgjs.so.0.0.0.p/gjs_error-types.cpp.o
+-[57/114] Compiling C++ object libgjs.so.0.0.0.p/gjs_deprecation.cpp.o
+-[58/114] Compiling C++ object libgjs.so.0.0.0.p/gjs_engine.cpp.o
+-[59/114] Compiling C++ object libgjs.so.0.0.0.p/gjs_mem.cpp.o
+-[60/114] Compiling C++ object libgjs.so.0.0.0.p/gjs_global.cpp.o
+-[61/114] Compiling C++ object libgjs.so.0.0.0.p/gjs_importer.cpp.o
++[8/102] Generating GIMarshallingTests-1.0.gir with a custom command
++g-ir-scanner: link: gcc -o /tmp/gjs-1.66.2/meson-build/tmp-introspectuds2zu8d/GIMarshallingTests-1.0 -O2 -fPIC /tmp/gjs-1.66.2/meson-build/tmp-introspectuds2zu8d/GIMarshallingTests-1.0.o -L. -Wl,-rpath,. -Wl,--no-as-needed -L/tmp/gjs-1.66.2/meson-build/installed-tests/js -Wl,-rpath,/tmp/gjs-1.66.2/meson-build/installed-tests/js -lgimarshallingtests -lglib-2.0 -lgobject-2.0 -lgio-2.0 -lgirepository-1.0 -lgio-2.0 -lgobject-2.0 -Wl,--export-dynamic -lgmodule-2.0 -pthread -lglib-2.0
++[9/102] Generating Regress-1.0.gir with a custom command
++g-ir-scanner: link: gcc -o /tmp/gjs-1.66.2/meson-build/tmp-introspectjcqyx3yg/Regress-1.0 -O2 -fPIC /tmp/gjs-1.66.2/meson-build/tmp-introspectjcqyx3yg/Regress-1.0.o -L. -Wl,-rpath,. -Wl,--no-as-needed -L/tmp/gjs-1.66.2/meson-build/installed-tests/js -Wl,-rpath,/tmp/gjs-1.66.2/meson-build/installed-tests/js -lregress -lglib-2.0 -lgobject-2.0 -lgio-2.0 -lcairo -lcairo-gobject -lgirepository-1.0 -lgio-2.0 -lgobject-2.0 -Wl,--export-dynamic -lgmodule-2.0 -pthread -lglib-2.0
++[10/102] Generating WarnLib-1.0.typelib with a custom command
++[11/102] Generating gsettings-compile-installed-tests_js with a custom command
++[12/102] Generating GIMarshallingTests-1.0.typelib with a custom command
++[13/102] Generating mock-js-resources_c with a custom command
++[14/102] Generating mock-js-resources_h with a custom command
++[15/102] Generating Regress-1.0.typelib with a custom command
++[16/102] Compiling C++ object gjs-console.p/gjs_console.cpp.o
++[17/102] Compiling C object test/gjs-tests.p/meson-generated_.._mock-js-resources.c.o
++[18/102] Compiling C++ object test/gjs-tests.p/gjs-test-common.cpp.o
++[19/102] Compiling C++ object test/gjs-tests.p/gjs-test-utils.cpp.o
++[20/102] Compiling C++ object test/gjs-tests.p/gjs-tests.cpp.o
++../test/gjs-tests.cpp: In function ‘void gjstest_test_func_gjs_gobject_without_introspection()’:
++../test/gjs-tests.cpp:175:42: warning: missing sentinel in function call [-Wformat=]
++  175 |     g_object_get(obj, "a-int", &val, NULL);
++      |                                          ^
++../test/gjs-tests.cpp: In function ‘int main(int, char**)’:
++../test/gjs-tests.cpp:436:35: warning: missing sentinel in function call [-Wformat=]
++  436 |     g_test_init(&argc, &argv, NULL);
++      |                                   ^
++[21/102] Compiling C++ object test/gjs-tests.p/gjs-test-coverage.cpp.o
++../test/gjs-test-coverage.cpp: In function ‘void gjs_coverage_multiple_source_files_to_single_output_fixture_set_up(gpointer, gconstpointer)’:
++../test/gjs-test-coverage.cpp:1168:41: warning: missing sentinel in function call [-Wformat=]
++ 1168 |                                     NULL);
++      |                                         ^
++[22/102] Compiling C++ object test/gjs-tests.p/gjs-test-call-args.cpp.o
++[23/102] Generating jsunit-resources_c with a custom command
++[24/102] Compiling C++ object test/gjs-tests.p/gjs-test-rooting.cpp.o
++[25/102] Generating jsunit-resources_h with a custom command
++[26/102] Compiling C++ object test/gjs-tests.p/gjs-test-no-introspection-object.cpp.o
++[27/102] Compiling C++ object libgjs-jsapi.a.p/util_log.cpp.o
++[28/102] Compiling C++ object libgjs-jsapi.a.p/util_misc.cpp.o
++[29/102] Compiling C object installed-tests/js/minijasmine.p/meson-generated_.._jsunit-resources.c.o
++[30/102] Compiling C++ object installed-tests/js/minijasmine.p/.._minijasmine.cpp.o
++[31/102] Generating js-resources_h with a custom command
++[32/102] Compiling C object libgjs.so.0.0.0.p/libgjs-private_gjs-util.c.o
++[33/102] Compiling C++ object libgjs-jsapi.a.p/gjs_jsapi-dynamic-class.cpp.o
++[34/102] Compiling C++ object libgjs-jsapi.a.p/gjs_jsapi-util-error.cpp.o
++[35/102] Compiling C++ object libgjs.so.0.0.0.p/modules_cairo-image-surface.cpp.o
++[36/102] Compiling C++ object libgjs.so.0.0.0.p/modules_cairo-ps-surface.cpp.o
++[37/102] Compiling C++ object libgjs.so.0.0.0.p/modules_cairo-pdf-surface.cpp.o
++[38/102] Compiling C++ object libgjs.so.0.0.0.p/modules_cairo-svg-surface.cpp.o
++[39/102] Compiling C++ object libgjs.so.0.0.0.p/modules_cairo-pattern.cpp.o
++[40/102] Compiling C++ object libgjs.so.0.0.0.p/modules_cairo-gradient.cpp.o
++[41/102] Compiling C object libgjs.so.0.0.0.p/libgjs-private_gjs-gdbus-wrapper.c.o
++[42/102] Compiling C++ object libgjs.so.0.0.0.p/modules_cairo-solid-pattern.cpp.o
++[43/102] Compiling C++ object libgjs.so.0.0.0.p/modules_cairo.cpp.o
++[44/102] Compiling C++ object libgjs.so.0.0.0.p/modules_cairo-radial-gradient.cpp.o
++[45/102] Compiling C++ object libgjs.so.0.0.0.p/modules_cairo-linear-gradient.cpp.o
++[46/102] Compiling C++ object libgjs.so.0.0.0.p/modules_cairo-surface-pattern.cpp.o
++[47/102] Compiling C++ object libgjs.so.0.0.0.p/gjs_native.cpp.o
++[48/102] Compiling C++ object libgjs.so.0.0.0.p/gjs_module.cpp.o
++[49/102] Compiling C++ object libgjs.so.0.0.0.p/gjs_profiler.cpp.o
++[50/102] Compiling C++ object libgjs.so.0.0.0.p/gjs_stack.cpp.o
++[51/102] Compiling C++ object libgjs.so.0.0.0.p/modules_modules.cpp.o
++[52/102] Compiling C++ object libgjs.so.0.0.0.p/modules_console.cpp.o
++[53/102] Compiling C++ object libgjs.so.0.0.0.p/modules_cairo-path.cpp.o
++[54/102] Compiling C++ object libgjs.so.0.0.0.p/modules_cairo-surface.cpp.o
++[55/102] Compiling C++ object libgjs.so.0.0.0.p/modules_cairo-context.cpp.o
++[56/102] Compiling C++ object libgjs.so.0.0.0.p/modules_print.cpp.o
++[57/102] Compiling C++ object libgjs.so.0.0.0.p/modules_system.cpp.o
++[58/102] Compiling C++ object libgjs.so.0.0.0.p/modules_cairo-region.cpp.o
++[59/102] Compiling C++ object libgjs.so.0.0.0.p/gi_wrapperutils.cpp.o
++[60/102] Compiling C++ object libgjs.so.0.0.0.p/gjs_atoms.cpp.o
++[61/102] Compiling C++ object libgjs.so.0.0.0.p/gjs_byteArray.cpp.o
++[62/102] Compiling C++ object libgjs.so.0.0.0.p/gjs_coverage.cpp.o
++[63/102] Compiling C++ object libgjs.so.0.0.0.p/gjs_context.cpp.o
++../gjs/context.cpp: In function ‘void gjs_context_class_init(GjsContextClass*)’:
++../gjs/context.cpp:304:87: warning: missing sentinel in function call [-Wformat=]
++  304 |         char *priv_typelib_dir = g_build_filename (PKGLIBDIR, "girepository-1.0", NULL);
++      |                                                                                       ^
++[64/102] Compiling C++ object libgjs.so.0.0.0.p/gjs_debugger.cpp.o
++[65/102] Compiling C++ object libgjs.so.0.0.0.p/gjs_error-types.cpp.o
++[66/102] Compiling C++ object libgjs.so.0.0.0.p/gjs_deprecation.cpp.o
++[67/102] Compiling C++ object libgjs.so.0.0.0.p/gjs_engine.cpp.o
++[68/102] Compiling C++ object libgjs.so.0.0.0.p/gjs_mem.cpp.o
++[69/102] Compiling C++ object libgjs.so.0.0.0.p/gjs_global.cpp.o
++[70/102] Compiling C++ object libgjs.so.0.0.0.p/gjs_importer.cpp.o
+ ../gjs/importer.cpp: In function ‘bool import_symbol_from_init_js(JSContext*, JS::HandleObject, const char*, const char*, bool*)’:
+ ../gjs/importer.cpp:414:50: warning: missing sentinel in function call [-Wformat=]
+   414 |                                              NULL);
+       |                                                  ^
+-[62/114] Compiling C++ object libgjs.so.0.0.0.p/gjs_native.cpp.o
+-[63/114] Compiling C++ object libgjs.so.0.0.0.p/gjs_module.cpp.o
+-[64/114] Compiling C++ object libgjs.so.0.0.0.p/gjs_profiler.cpp.o
+-FAILED: libgjs.so.0.0.0.p/gjs_profiler.cpp.o 
+-ccache c++ -Ilibgjs.so.0.0.0.p -I. -I.. -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/gobject-introspection-1.0 -I/usr/include/nspr -I/usr/include/cairo -I/usr/include/pixman-1 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -fvisibility=hidden -fdiagnostics-color=always -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wnon-virtual-dtor -Wextra -std=c++17 -O3 -fno-strict-aliasing -Wno-variadic-macros -Wno-missing-field-initializers -fno-semantic-interposition -fno-rtti -DG_DISABLE_CAST_CHECKS -O2 -fPIC -fPIC -pthread -include //usr/include/mozjs-78/js/RequiredDefines.h -isystem /usr/include/mozjs-78 -isystem../subprojects/sysprof/src/libsysprof-capture -isystemsubprojects/sysprof/src/libsysprof-capture -DGJS_COMPILATION '-DGJS_JS_DIR="/usr/share/gjs-1.0"' '-DPKGLIBDIR="/usr/lib/gjs"' '-DG_LOG_DOMAIN="Gjs"' -MD -MQ libgjs.so.0.0.0.p/gjs_profiler.cpp.o -MF libgjs.so.0.0.0.p/gjs_profiler.cpp.o.d -o libgjs.so.0.0.0.p/gjs_profiler.cpp.o -c ../gjs/profiler.cpp
+-../gjs/profiler.cpp: In function ‘void gjs_profiler_start(GjsProfiler*)’:
+-../gjs/profiler.cpp:493:9: error: ‘struct sigevent’ has no member named ‘_sigev_un’
+-  493 |     sev._sigev_un._tid = syscall(__NR_gettid);
+-      |         ^~~~~~~~~
+-[65/114] Compiling C++ object libgjs.so.0.0.0.p/gjs_stack.cpp.o
+-[66/114] Compiling C++ object libgjs.so.0.0.0.p/modules_console.cpp.o
+-ninja: build stopped: subcommand failed.
++[71/102] Compiling C++ object libgjs.so.0.0.0.p/gi_param.cpp.o
++[72/102] Compiling C++ object libgjs.so.0.0.0.p/gi_private.cpp.o
++[73/102] Compiling C++ object libgjs.so.0.0.0.p/gi_toggle.cpp.o
++[74/102] Compiling C++ object libgjs.so.0.0.0.p/gi_repo.cpp.o
++[75/102] Compiling C++ object libgjs.so.0.0.0.p/gi_union.cpp.o
++[76/102] Compiling C++ object libgjs.so.0.0.0.p/gi_value.cpp.o
++[77/102] Compiling C++ object libgjs.so.0.0.0.p/gi_gerror.cpp.o
++[78/102] Compiling C++ object libgjs.so.0.0.0.p/gi_gobject.cpp.o
++[79/102] Compiling C++ object libgjs.so.0.0.0.p/gi_gtype.cpp.o
++[80/102] Compiling C++ object libgjs.so.0.0.0.p/gi_interface.cpp.o
++[81/102] Compiling C++ object libgjs.so.0.0.0.p/gi_ns.cpp.o
++[82/102] Compiling C++ object libgjs.so.0.0.0.p/gi_closure.cpp.o
++[83/102] Compiling C++ object libgjs.so.0.0.0.p/gi_boxed.cpp.o
++[84/102] Compiling C++ object libgjs.so.0.0.0.p/gi_object.cpp.o
++[85/102] Compiling C++ object libgjs.so.0.0.0.p/gi_enumeration.cpp.o
++[86/102] Compiling C++ object libgjs.so.0.0.0.p/gi_foreign.cpp.o
++[87/102] Compiling C++ object libgjs.so.0.0.0.p/gi_fundamental.cpp.o
++[88/102] Compiling C++ object libgjs.so.0.0.0.p/gi_function.cpp.o
++[89/102] Generating js-resources_c with a custom command
++[90/102] Compiling C++ object libgjs.so.0.0.0.p/gi_arg-cache.cpp.o
++[91/102] Compiling C object libgjs.so.0.0.0.p/meson-generated_.._js-resources.c.o
++[92/102] Compiling C++ object libgjs-jsapi.a.p/gjs_jsapi-util-string.cpp.o
++[93/102] Compiling C++ object libgjs.so.0.0.0.p/gi_arg.cpp.o
++[94/102] Compiling C++ object libgjs-jsapi.a.p/gjs_jsapi-util.cpp.o
++[95/102] Linking static target libgjs-jsapi.a
++[96/102] Linking target libgjs.so.0.0.0
++[97/102] Generating symbol file libgjs.so.0.0.0.p/libgjs.so.0.0.0.symbols
++[98/102] Linking target installed-tests/js/minijasmine
++[99/102] Linking target gjs-console
++[100/102] Linking target test/gjs-tests
++[101/102] Generating GjsPrivate-1.0.gir with a custom command
++g-ir-scanner: link: gcc -o /tmp/gjs-1.66.2/meson-build/tmp-introspectryskthv5/GjsPrivate-1.0 -O2 -fPIC /tmp/gjs-1.66.2/meson-build/tmp-introspectryskthv5/GjsPrivate-1.0.o -L. -Wl,-rpath,. -Wl,--no-as-needed -L/tmp/gjs-1.66.2/meson-build/ -Wl,-rpath,/tmp/gjs-1.66.2/meson-build/ -L/usr/lib/../lib -Wl,-rpath,/usr/lib/../lib -lgjs -lglib-2.0 -lgobject-2.0 -lgthread-2.0 -lgio-2.0 -lgirepository-1.0 -lffi -lmozjs-78 -lreadline -lcairo -lcairo-gobject -lX11 -lXext -lgio-2.0 -lgobject-2.0 -Wl,--export-dynamic -lgmodule-2.0 -pthread -lglib-2.0
++[102/102] Generating GjsPrivate-1.0.typelib with a custom command
++[0/1] Installing files.
++Installing libgjs.so.0.0.0 to /tmp/package-gjs/usr/lib
++Installing GjsPrivate-1.0.typelib to /tmp/package-gjs/usr/lib/gjs/girepository-1.0
++Installing gjs-console to /tmp/package-gjs/usr/bin
++Installing installed-tests/js/minijasmine to /tmp/package-gjs/usr/libexec/installed-tests/gjs
++Installing installed-tests/js/libregress.so to /tmp/package-gjs/usr/libexec/installed-tests/gjs
++Installing installed-tests/js/Regress-1.0.typelib to /tmp/package-gjs/usr/libexec/installed-tests/gjs
++Installing installed-tests/js/libwarnlib.so to /tmp/package-gjs/usr/libexec/installed-tests/gjs
++Installing installed-tests/js/WarnLib-1.0.typelib to /tmp/package-gjs/usr/libexec/installed-tests/gjs
++Installing installed-tests/js/libgimarshallingtests.so to /tmp/package-gjs/usr/libexec/installed-tests/gjs
++Installing installed-tests/js/GIMarshallingTests-1.0.typelib to /tmp/package-gjs/usr/libexec/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/gjs/context.h to /tmp/package-gjs/usr/include/gjs-1.0/gjs
++Installing /tmp/gjs-1.66.2/gjs/coverage.h to /tmp/package-gjs/usr/include/gjs-1.0/gjs
++Installing /tmp/gjs-1.66.2/gjs/error-types.h to /tmp/package-gjs/usr/include/gjs-1.0/gjs
++Installing /tmp/gjs-1.66.2/gjs/gjs.h to /tmp/package-gjs/usr/include/gjs-1.0/gjs
++Installing /tmp/gjs-1.66.2/gjs/macros.h to /tmp/package-gjs/usr/include/gjs-1.0/gjs
++Installing /tmp/gjs-1.66.2/gjs/mem.h to /tmp/package-gjs/usr/include/gjs-1.0/gjs
++Installing /tmp/gjs-1.66.2/gjs/profiler.h to /tmp/package-gjs/usr/include/gjs-1.0/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/extra/gjs.supp to /tmp/package-gjs/usr/share/gjs-1.0/valgrind
++Installing /tmp/gjs-1.66.2/installed-tests/extra/lsan.supp to /tmp/package-gjs/usr/share/gjs-1.0/lsan
++Installing /tmp/gjs-1.66.2/installed-tests/js/org.gnome.GjsTest.gschema.xml to /tmp/package-gjs/usr/share/glib-2.0/schemas
++Installing /tmp/gjs-1.66.2/meson-build/meson-private/gjs-1.0.pc to /tmp/package-gjs/usr/lib/pkgconfig
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/testCommandLine.sh.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/scripts/testCommandLine.sh to /tmp/package-gjs/usr/libexec/installed-tests/gjs/scripts
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/testWarnings.sh.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/scripts/testWarnings.sh to /tmp/package-gjs/usr/libexec/installed-tests/gjs/scripts
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/js/testself.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/js/testself.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/js
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/js/testByteArray.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/js/testByteArray.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/js
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/js/testExceptions.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/js/testExceptions.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/js
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/js/testFormat.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/js/testFormat.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/js
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/js/testFundamental.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/js/testFundamental.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/js
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/js/testGettext.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/js/testGettext.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/js
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/js/testGIMarshalling.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/js/testGIMarshalling.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/js
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/js/testGio.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/js/testGio.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/js
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/js/testGLib.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/js/testGLib.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/js
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/js/testGObject.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/js/testGObject.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/js
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/js/testGObjectClass.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/js/testGObjectClass.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/js
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/js/testGObjectInterface.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/js/testGObjectInterface.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/js
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/js/testGTypeClass.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/js/testGTypeClass.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/js
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/js/testImporter.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/js/testImporter.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/js
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/js/testIntrospection.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/js/testIntrospection.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/js
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/js/testLang.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/js/testLang.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/js
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/js/testLegacyByteArray.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/js/testLegacyByteArray.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/js
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/js/testLegacyClass.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/js/testLegacyClass.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/js
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/js/testLegacyGObject.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/js/testLegacyGObject.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/js
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/js/testMainloop.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/js/testMainloop.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/js
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/js/testNamespace.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/js/testNamespace.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/js
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/js/testPackage.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/js/testPackage.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/js
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/js/testParamSpec.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/js/testParamSpec.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/js
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/js/testPrint.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/js/testPrint.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/js
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/js/testRegress.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/js/testRegress.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/js
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/js/testSignals.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/js/testSignals.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/js
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/js/testSystem.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/js/testSystem.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/js
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/js/testTweener.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/js/testTweener.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/js
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/js/testWarnLib.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/js/testWarnLib.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/js
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/js/testCairo.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/js/testCairo.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/js
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/js/testGtk3.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/js/testGtk3.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/js
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/js/testGObjectDestructionAccess.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/js/testGObjectDestructionAccess.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/js
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/js/testLegacyGtk.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/js/testLegacyGtk.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/js
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/js/testGDBus.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/js/testGDBus.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/js
++Installing /tmp/gjs-1.66.2/installed-tests/debugger-test.sh to /tmp/package-gjs/usr/libexec/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/backtrace.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/backtrace.debugger to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/backtrace.debugger.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/backtrace.debugger.output to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/breakpoint.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/breakpoint.debugger to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/breakpoint.debugger.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/breakpoint.debugger.output to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/continue.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/continue.debugger to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/continue.debugger.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/continue.debugger.output to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/delete.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/delete.debugger to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/delete.debugger.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/delete.debugger.output to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/detach.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/detach.debugger to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/detach.debugger.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/detach.debugger.output to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/down-up.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/down-up.debugger to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/down-up.debugger.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/down-up.debugger.output to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/finish.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/finish.debugger to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/finish.debugger.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/finish.debugger.output to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/frame.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/frame.debugger to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/frame.debugger.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/frame.debugger.output to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/keys.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/keys.debugger to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/keys.debugger.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/keys.debugger.output to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/next.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/next.debugger to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/next.debugger.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/next.debugger.output to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/print.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/print.debugger to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/print.debugger.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/print.debugger.output to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/quit.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/quit.debugger to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/quit.debugger.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/quit.debugger.output to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/return.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/return.debugger to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/return.debugger.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/return.debugger.output to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/set.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/set.debugger to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/set.debugger.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/set.debugger.output to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/step.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/step.debugger to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/step.debugger.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/step.debugger.output to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/throw.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/throw.debugger to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/throw.debugger.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/throw.debugger.output to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/meson-build/installed-tests/until.test to /tmp/package-gjs/usr/share/installed-tests/gjs
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/until.debugger to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/until.debugger.js to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Installing /tmp/gjs-1.66.2/installed-tests/debugger/until.debugger.output to /tmp/package-gjs/usr/libexec/installed-tests/gjs/debugger
++Running custom install script '/usr/bin/python3 /tmp/gjs-1.66.2/build/symlink-gjs.py bin'
++Running custom install script '/usr/bin/python3 /tmp/gjs-1.66.2/build/compile-gschemas.py /usr/share/glib-2.0/schemas'
++cp: cannot stat 'AUTHORS': No such file or directory
++cp: cannot stat 'HACKING': No such file or directory
++cp: cannot stat 'INSTALL': No such file or directory
++cp: cannot stat 'MAINTAINERS': No such file or directory
++gzip: /source/l/gjs/doinst.sh.gz: No such file or directory
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++usr/bin/gjs	gjs-console
++usr/lib/libgjs.so	libgjs.so.0
++usr/lib/libgjs.so.0	libgjs.so.0.0.0
++
++Making symbolic link creation script:
++( cd usr/bin ; rm -rf gjs )
++( cd usr/bin ; ln -sf gjs-console gjs )
++( cd usr/lib ; rm -rf libgjs.so )
++( cd usr/lib ; ln -sf libgjs.so.0 libgjs.so )
++( cd usr/lib ; rm -rf libgjs.so.0 )
++( cd usr/lib ; ln -sf libgjs.so.0.0.0 libgjs.so.0 )
++
++Unless your existing installation script already contains the code
++to create these links, you should append these lines to your existing
++install script. Now's your chance. :^)
++
++Would you like to add this stuff to the existing install script and
++remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './usr/lib/libgjs.so.0'
++removed './usr/lib/libgjs.so'
++removed './usr/bin/gjs'
++
++Updating your ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/gjs-1.66.2-x86_64-1.txz
++
++./
++install/
++install/doinst.sh
++install/slack-desc
++usr/
++usr/bin/
++usr/bin/gjs-console
++usr/doc/
++usr/doc/gjs-1.66.2/
++usr/doc/gjs-1.66.2/COPYING
++usr/doc/gjs-1.66.2/COPYING.LGPL
++usr/doc/gjs-1.66.2/NEWS
++usr/doc/gjs-1.66.2/README.MSVC.md
++usr/doc/gjs-1.66.2/README.md
++usr/doc/gjs-1.66.2/examples/
++usr/doc/gjs-1.66.2/examples/README
++usr/doc/gjs-1.66.2/examples/calc.js
++usr/doc/gjs-1.66.2/examples/clutter.js
++usr/doc/gjs-1.66.2/examples/dbus-client.js
++usr/doc/gjs-1.66.2/examples/dbus-service.js
++usr/doc/gjs-1.66.2/examples/gettext.js
++usr/doc/gjs-1.66.2/examples/gio-cat.js
++usr/doc/gjs-1.66.2/examples/glistmodel.js
++usr/doc/gjs-1.66.2/examples/gtk-application.js
++usr/doc/gjs-1.66.2/examples/gtk.js
++usr/doc/gjs-1.66.2/examples/http-client.js
++usr/doc/gjs-1.66.2/examples/http-server.js
++usr/doc/gjs-1.66.2/examples/test.jpg
++usr/doc/gjs-1.66.2/examples/webkit.js
++usr/doc/gjs-1.66.2/examples/websocket-client.js
++usr/include/
++usr/include/gjs-1.0/
++usr/include/gjs-1.0/gjs/
++usr/include/gjs-1.0/gjs/context.h
++usr/include/gjs-1.0/gjs/coverage.h
++usr/include/gjs-1.0/gjs/error-types.h
++usr/include/gjs-1.0/gjs/gjs.h
++usr/include/gjs-1.0/gjs/macros.h
++usr/include/gjs-1.0/gjs/mem.h
++usr/include/gjs-1.0/gjs/profiler.h
++usr/lib/
++usr/lib/gjs/
++usr/lib/gjs/girepository-1.0/
++usr/lib/gjs/girepository-1.0/GjsPrivate-1.0.typelib
++usr/lib/libgjs.so.0.0.0
++usr/lib/pkgconfig/
++usr/lib/pkgconfig/gjs-1.0.pc
++usr/libexec/
++usr/libexec/installed-tests/
++usr/libexec/installed-tests/gjs/
++usr/libexec/installed-tests/gjs/GIMarshallingTests-1.0.typelib
++usr/libexec/installed-tests/gjs/Regress-1.0.typelib
++usr/libexec/installed-tests/gjs/WarnLib-1.0.typelib
++usr/libexec/installed-tests/gjs/debugger/
++usr/libexec/installed-tests/gjs/debugger-test.sh
++usr/libexec/installed-tests/gjs/debugger/backtrace.debugger
++usr/libexec/installed-tests/gjs/debugger/backtrace.debugger.js
++usr/libexec/installed-tests/gjs/debugger/backtrace.debugger.output
++usr/libexec/installed-tests/gjs/debugger/breakpoint.debugger
++usr/libexec/installed-tests/gjs/debugger/breakpoint.debugger.js
++usr/libexec/installed-tests/gjs/debugger/breakpoint.debugger.output
++usr/libexec/installed-tests/gjs/debugger/continue.debugger
++usr/libexec/installed-tests/gjs/debugger/continue.debugger.js
++usr/libexec/installed-tests/gjs/debugger/continue.debugger.output
++usr/libexec/installed-tests/gjs/debugger/delete.debugger
++usr/libexec/installed-tests/gjs/debugger/delete.debugger.js
++usr/libexec/installed-tests/gjs/debugger/delete.debugger.output
++usr/libexec/installed-tests/gjs/debugger/detach.debugger
++usr/libexec/installed-tests/gjs/debugger/detach.debugger.js
++usr/libexec/installed-tests/gjs/debugger/detach.debugger.output
++usr/libexec/installed-tests/gjs/debugger/down-up.debugger
++usr/libexec/installed-tests/gjs/debugger/down-up.debugger.js
++usr/libexec/installed-tests/gjs/debugger/down-up.debugger.output
++usr/libexec/installed-tests/gjs/debugger/finish.debugger
++usr/libexec/installed-tests/gjs/debugger/finish.debugger.js
++usr/libexec/installed-tests/gjs/debugger/finish.debugger.output
++usr/libexec/installed-tests/gjs/debugger/frame.debugger
++usr/libexec/installed-tests/gjs/debugger/frame.debugger.js
++usr/libexec/installed-tests/gjs/debugger/frame.debugger.output
++usr/libexec/installed-tests/gjs/debugger/keys.debugger
++usr/libexec/installed-tests/gjs/debugger/keys.debugger.js
++usr/libexec/installed-tests/gjs/debugger/keys.debugger.output
++usr/libexec/installed-tests/gjs/debugger/next.debugger
++usr/libexec/installed-tests/gjs/debugger/next.debugger.js
++usr/libexec/installed-tests/gjs/debugger/next.debugger.output
++usr/libexec/installed-tests/gjs/debugger/print.debugger
++usr/libexec/installed-tests/gjs/debugger/print.debugger.js
++usr/libexec/installed-tests/gjs/debugger/print.debugger.output
++usr/libexec/installed-tests/gjs/debugger/quit.debugger
++usr/libexec/installed-tests/gjs/debugger/quit.debugger.js
++usr/libexec/installed-tests/gjs/debugger/quit.debugger.output
++usr/libexec/installed-tests/gjs/debugger/return.debugger
++usr/libexec/installed-tests/gjs/debugger/return.debugger.js
++usr/libexec/installed-tests/gjs/debugger/return.debugger.output
++usr/libexec/installed-tests/gjs/debugger/set.debugger
++usr/libexec/installed-tests/gjs/debugger/set.debugger.js
++usr/libexec/installed-tests/gjs/debugger/set.debugger.output
++usr/libexec/installed-tests/gjs/debugger/step.debugger
++usr/libexec/installed-tests/gjs/debugger/step.debugger.js
++usr/libexec/installed-tests/gjs/debugger/step.debugger.output
++usr/libexec/installed-tests/gjs/debugger/throw.debugger
++usr/libexec/installed-tests/gjs/debugger/throw.debugger.js
++usr/libexec/installed-tests/gjs/debugger/throw.debugger.output
++usr/libexec/installed-tests/gjs/debugger/until.debugger
++usr/libexec/installed-tests/gjs/debugger/until.debugger.js
++usr/libexec/installed-tests/gjs/debugger/until.debugger.output
++usr/libexec/installed-tests/gjs/js/
++usr/libexec/installed-tests/gjs/js/testByteArray.js
++usr/libexec/installed-tests/gjs/js/testCairo.js
++usr/libexec/installed-tests/gjs/js/testExceptions.js
++usr/libexec/installed-tests/gjs/js/testFormat.js
++usr/libexec/installed-tests/gjs/js/testFundamental.js
++usr/libexec/installed-tests/gjs/js/testGDBus.js
++usr/libexec/installed-tests/gjs/js/testGIMarshalling.js
++usr/libexec/installed-tests/gjs/js/testGLib.js
++usr/libexec/installed-tests/gjs/js/testGObject.js
++usr/libexec/installed-tests/gjs/js/testGObjectClass.js
++usr/libexec/installed-tests/gjs/js/testGObjectDestructionAccess.js
++usr/libexec/installed-tests/gjs/js/testGObjectInterface.js
++usr/libexec/installed-tests/gjs/js/testGTypeClass.js
++usr/libexec/installed-tests/gjs/js/testGettext.js
++usr/libexec/installed-tests/gjs/js/testGio.js
++usr/libexec/installed-tests/gjs/js/testGtk3.js
++usr/libexec/installed-tests/gjs/js/testImporter.js
++usr/libexec/installed-tests/gjs/js/testIntrospection.js
++usr/libexec/installed-tests/gjs/js/testLang.js
++usr/libexec/installed-tests/gjs/js/testLegacyByteArray.js
++usr/libexec/installed-tests/gjs/js/testLegacyClass.js
++usr/libexec/installed-tests/gjs/js/testLegacyGObject.js
++usr/libexec/installed-tests/gjs/js/testLegacyGtk.js
++usr/libexec/installed-tests/gjs/js/testMainloop.js
++usr/libexec/installed-tests/gjs/js/testNamespace.js
++usr/libexec/installed-tests/gjs/js/testPackage.js
++usr/libexec/installed-tests/gjs/js/testParamSpec.js
++usr/libexec/installed-tests/gjs/js/testPrint.js
++usr/libexec/installed-tests/gjs/js/testRegress.js
++usr/libexec/installed-tests/gjs/js/testSignals.js
++usr/libexec/installed-tests/gjs/js/testSystem.js
++usr/libexec/installed-tests/gjs/js/testTweener.js
++usr/libexec/installed-tests/gjs/js/testWarnLib.js
++usr/libexec/installed-tests/gjs/js/testself.js
++usr/libexec/installed-tests/gjs/libgimarshallingtests.so
++usr/libexec/installed-tests/gjs/libregress.so
++usr/libexec/installed-tests/gjs/libwarnlib.so
++usr/libexec/installed-tests/gjs/minijasmine
++usr/libexec/installed-tests/gjs/scripts/
++usr/libexec/installed-tests/gjs/scripts/testCommandLine.sh
++usr/libexec/installed-tests/gjs/scripts/testWarnings.sh
++usr/share/
++usr/share/gjs-1.0/
++usr/share/gjs-1.0/lsan/
++usr/share/gjs-1.0/lsan/lsan.supp
++usr/share/gjs-1.0/valgrind/
++usr/share/gjs-1.0/valgrind/gjs.supp
++usr/share/glib-2.0/
++usr/share/glib-2.0/schemas/
++usr/share/glib-2.0/schemas/org.gnome.GjsTest.gschema.xml
++usr/share/installed-tests/
++usr/share/installed-tests/gjs/
++usr/share/installed-tests/gjs/backtrace.test
++usr/share/installed-tests/gjs/breakpoint.test
++usr/share/installed-tests/gjs/continue.test
++usr/share/installed-tests/gjs/delete.test
++usr/share/installed-tests/gjs/detach.test
++usr/share/installed-tests/gjs/down-up.test
++usr/share/installed-tests/gjs/finish.test
++usr/share/installed-tests/gjs/frame.test
++usr/share/installed-tests/gjs/keys.test
++usr/share/installed-tests/gjs/next.test
++usr/share/installed-tests/gjs/print.test
++usr/share/installed-tests/gjs/quit.test
++usr/share/installed-tests/gjs/return.test
++usr/share/installed-tests/gjs/set.test
++usr/share/installed-tests/gjs/step.test
++usr/share/installed-tests/gjs/testByteArray.test
++usr/share/installed-tests/gjs/testCairo.test
++usr/share/installed-tests/gjs/testCommandLine.sh.test
++usr/share/installed-tests/gjs/testExceptions.test
++usr/share/installed-tests/gjs/testFormat.test
++usr/share/installed-tests/gjs/testFundamental.test
++usr/share/installed-tests/gjs/testGDBus.test
++usr/share/installed-tests/gjs/testGIMarshalling.test
++usr/share/installed-tests/gjs/testGLib.test
++usr/share/installed-tests/gjs/testGObject.test
++usr/share/installed-tests/gjs/testGObjectClass.test
++usr/share/installed-tests/gjs/testGObjectDestructionAccess.test
++usr/share/installed-tests/gjs/testGObjectInterface.test
++usr/share/installed-tests/gjs/testGTypeClass.test
++usr/share/installed-tests/gjs/testGettext.test
++usr/share/installed-tests/gjs/testGio.test
++usr/share/installed-tests/gjs/testGtk3.test
++usr/share/installed-tests/gjs/testImporter.test
++usr/share/installed-tests/gjs/testIntrospection.test
++usr/share/installed-tests/gjs/testLang.test
++usr/share/installed-tests/gjs/testLegacyByteArray.test
++usr/share/installed-tests/gjs/testLegacyClass.test
++usr/share/installed-tests/gjs/testLegacyGObject.test
++usr/share/installed-tests/gjs/testLegacyGtk.test
++usr/share/installed-tests/gjs/testMainloop.test
++usr/share/installed-tests/gjs/testNamespace.test
++usr/share/installed-tests/gjs/testPackage.test
++usr/share/installed-tests/gjs/testParamSpec.test
++usr/share/installed-tests/gjs/testPrint.test
++usr/share/installed-tests/gjs/testRegress.test
++usr/share/installed-tests/gjs/testSignals.test
++usr/share/installed-tests/gjs/testSystem.test
++usr/share/installed-tests/gjs/testTweener.test
++usr/share/installed-tests/gjs/testWarnLib.test
++usr/share/installed-tests/gjs/testWarnings.sh.test
++usr/share/installed-tests/gjs/testself.test
++usr/share/installed-tests/gjs/throw.test
++usr/share/installed-tests/gjs/until.test
++
++Slackware package /tmp/gjs-1.66.2-x86_64-1.txz created.
++

@@ -1,0 +1,3590 @@
+diff -ruBN /tmp/gnome-keyring/gnome-keyring.SlackBuild /source/l/gnome-keyring/gnome-keyring.SlackBuild
+--- /tmp/gnome-keyring/gnome-keyring.SlackBuild	2020-05-16 19:32:34.000000000 +0000
++++ /source/l/gnome-keyring/gnome-keyring.SlackBuild	2021-01-06 04:39:44.000000000 +0000
+@@ -54,7 +54,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ else
+   SLKCFLAGS="-O2"
+   LIBDIRSUFFIX=""
+@@ -88,7 +88,7 @@
+   --disable-debug \
+   --enable-ssh-agent \
+   --with-pam-dir=/lib${LIBDIRSUFFIX}/security \
+-  --build=$ARCH-slackware-linux || exit 1
++  --build=$ARCH-slackware-linux-musl || exit 1
+ 
+ make $NUMJOBS || make || exit 1
+ make install DESTDIR=$PKG || exit 1
+diff -ruBN /tmp/gnome-keyring/gnome-keyring.SlackBuild.log /source/l/gnome-keyring/gnome-keyring.SlackBuild.log
+--- /tmp/gnome-keyring/gnome-keyring.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/l/gnome-keyring/gnome-keyring.SlackBuild.log	2021-01-06 04:42:25.000000000 +0000
+@@ -0,0 +1,3565 @@
++gnome-keyring-3.36.0/
++gnome-keyring-3.36.0/HACKING
++gnome-keyring-3.36.0/pam/
++gnome-keyring-3.36.0/pam/fixtures/
++gnome-keyring-3.36.0/pam/fixtures/gnome-keyring-test-session-start
++gnome-keyring-3.36.0/pam/fixtures/login.keyring
++gnome-keyring-3.36.0/pam/fixtures/gnome-keyring-test-no-start
++gnome-keyring-3.36.0/pam/fixtures/gnome-keyring-test-auth-start
++gnome-keyring-3.36.0/pam/test-pam.c
++gnome-keyring-3.36.0/pam/gkr-pam-stubs.c
++gnome-keyring-3.36.0/pam/gkr-pam-client.c
++gnome-keyring-3.36.0/pam/Makefile.am
++gnome-keyring-3.36.0/pam/gkr-pam-module.c
++gnome-keyring-3.36.0/pam/gkr-pam.h
++gnome-keyring-3.36.0/pam/mock-pam.c
++gnome-keyring-3.36.0/pkcs11/
++gnome-keyring-3.36.0/pkcs11/rpc-layer/
++gnome-keyring-3.36.0/pkcs11/rpc-layer/gkm-rpc-dispatch.c
++gnome-keyring-3.36.0/pkcs11/rpc-layer/gkm-rpc-daemon-standalone.c
++gnome-keyring-3.36.0/pkcs11/rpc-layer/gkm-rpc-message.c
++gnome-keyring-3.36.0/pkcs11/rpc-layer/gnome-keyring.module.in
++gnome-keyring-3.36.0/pkcs11/rpc-layer/gkm-rpc-private.h
++gnome-keyring-3.36.0/pkcs11/rpc-layer/test-initialize.c
++gnome-keyring-3.36.0/pkcs11/rpc-layer/gkm-rpc-layer.h
++gnome-keyring-3.36.0/pkcs11/rpc-layer/Makefile.am
++gnome-keyring-3.36.0/pkcs11/rpc-layer/gkm-rpc-module.c
++gnome-keyring-3.36.0/pkcs11/rpc-layer/gkm-rpc-util.c
++gnome-keyring-3.36.0/pkcs11/gnome2-store/
++gnome-keyring-3.36.0/pkcs11/gnome2-store/gkm-gnome2-storage.h
++gnome-keyring-3.36.0/pkcs11/gnome2-store/gkm-gnome2-standalone.c
++gnome-keyring-3.36.0/pkcs11/gnome2-store/gkm-gnome2-file.h
++gnome-keyring-3.36.0/pkcs11/gnome2-store/gkm-gnome2-file.c
++gnome-keyring-3.36.0/pkcs11/gnome2-store/gkm-gnome2-public-key.c
++gnome-keyring-3.36.0/pkcs11/gnome2-store/test-gnome2-storage.c
++gnome-keyring-3.36.0/pkcs11/gnome2-store/fixtures/
++gnome-keyring-3.36.0/pkcs11/gnome2-store/fixtures/test-certificate.cer
++gnome-keyring-3.36.0/pkcs11/gnome2-store/fixtures/Thawte_Personal_Premium_CA.cer
++gnome-keyring-3.36.0/pkcs11/gnome2-store/fixtures/data-file-public.store
++gnome-keyring-3.36.0/pkcs11/gnome2-store/fixtures/der-key-v2-des3.p8
++gnome-keyring-3.36.0/pkcs11/gnome2-store/fixtures/user.keystore
++gnome-keyring-3.36.0/pkcs11/gnome2-store/fixtures/personal.p12
++gnome-keyring-3.36.0/pkcs11/gnome2-store/fixtures/data-file-private.store
++gnome-keyring-3.36.0/pkcs11/gnome2-store/fixtures/.gitempty
++gnome-keyring-3.36.0/pkcs11/gnome2-store/gkm-gnome2-module.h
++gnome-keyring-3.36.0/pkcs11/gnome2-store/gkm-gnome2-module.c
++gnome-keyring-3.36.0/pkcs11/gnome2-store/gkm-gnome2-store.h
++gnome-keyring-3.36.0/pkcs11/gnome2-store/gkm-gnome2-public-key.h
++gnome-keyring-3.36.0/pkcs11/gnome2-store/test-gnome2-file.c
++gnome-keyring-3.36.0/pkcs11/gnome2-store/gkm-gnome2-storage.c
++gnome-keyring-3.36.0/pkcs11/gnome2-store/frob-gnome2-file.c
++gnome-keyring-3.36.0/pkcs11/gnome2-store/test-gnome2-private-key.c
++gnome-keyring-3.36.0/pkcs11/gnome2-store/gkm-gnome2-private-key.h
++gnome-keyring-3.36.0/pkcs11/gnome2-store/mock-gnome2-module.h
++gnome-keyring-3.36.0/pkcs11/gnome2-store/gkm-gnome2-private-key.c
++gnome-keyring-3.36.0/pkcs11/gnome2-store/test-import.c
++gnome-keyring-3.36.0/pkcs11/gnome2-store/Makefile.am
++gnome-keyring-3.36.0/pkcs11/gnome2-store/mock-gnome2-module.c
++gnome-keyring-3.36.0/pkcs11/gnome2-store/p11-tests.conf.in
++gnome-keyring-3.36.0/pkcs11/pkcs11x.h
++gnome-keyring-3.36.0/pkcs11/wrap-layer/
++gnome-keyring-3.36.0/pkcs11/wrap-layer/gkm-wrap-layer.h
++gnome-keyring-3.36.0/pkcs11/wrap-layer/gkm-wrap-login.h
++gnome-keyring-3.36.0/pkcs11/wrap-layer/test-init-pin.c
++gnome-keyring-3.36.0/pkcs11/wrap-layer/test-login-user.c
++gnome-keyring-3.36.0/pkcs11/wrap-layer/test-set-pin.c
++gnome-keyring-3.36.0/pkcs11/wrap-layer/test-login-auto.c
++gnome-keyring-3.36.0/pkcs11/wrap-layer/test-login-specific.c
++gnome-keyring-3.36.0/pkcs11/wrap-layer/gkm-wrap-layer.c
++gnome-keyring-3.36.0/pkcs11/wrap-layer/gkm-wrap-prompt.h
++gnome-keyring-3.36.0/pkcs11/wrap-layer/gkm-wrap-prompt.c
++gnome-keyring-3.36.0/pkcs11/wrap-layer/mock-secret-store.c
++gnome-keyring-3.36.0/pkcs11/wrap-layer/gkm-wrap-login.c
++gnome-keyring-3.36.0/pkcs11/wrap-layer/test-login-hints.c
++gnome-keyring-3.36.0/pkcs11/wrap-layer/Makefile.am
++gnome-keyring-3.36.0/pkcs11/wrap-layer/test-login-keyring.c
++gnome-keyring-3.36.0/pkcs11/wrap-layer/test-create-credential.c
++gnome-keyring-3.36.0/pkcs11/pkcs11n.h
++gnome-keyring-3.36.0/pkcs11/pkcs11.h
++gnome-keyring-3.36.0/pkcs11/ssh-store/
++gnome-keyring-3.36.0/pkcs11/ssh-store/mock-ssh-module.h
++gnome-keyring-3.36.0/pkcs11/ssh-store/gkm-ssh-private-key.h
++gnome-keyring-3.36.0/pkcs11/ssh-store/test-private-key.c
++gnome-keyring-3.36.0/pkcs11/ssh-store/gkm-ssh-openssh.c
++gnome-keyring-3.36.0/pkcs11/ssh-store/fixtures/
++gnome-keyring-3.36.0/pkcs11/ssh-store/fixtures/id_ecdsa_384
++gnome-keyring-3.36.0/pkcs11/ssh-store/fixtures/id_ecdsa_521
++gnome-keyring-3.36.0/pkcs11/ssh-store/fixtures/id_rsa_plain.pub
++gnome-keyring-3.36.0/pkcs11/ssh-store/fixtures/id_rsa_encrypted.pub
++gnome-keyring-3.36.0/pkcs11/ssh-store/fixtures/id_rsa_plain
++gnome-keyring-3.36.0/pkcs11/ssh-store/fixtures/id_ecdsa_521.pub
++gnome-keyring-3.36.0/pkcs11/ssh-store/fixtures/id_rsa_test.pub
++gnome-keyring-3.36.0/pkcs11/ssh-store/fixtures/id_ecdsa_plain.pub
++gnome-keyring-3.36.0/pkcs11/ssh-store/fixtures/id_dsa_plain
++gnome-keyring-3.36.0/pkcs11/ssh-store/fixtures/id_ecdsa_384.pub
++gnome-keyring-3.36.0/pkcs11/ssh-store/fixtures/id_dsa_plain.pub
++gnome-keyring-3.36.0/pkcs11/ssh-store/fixtures/id_dsa_encrypted.pub
++gnome-keyring-3.36.0/pkcs11/ssh-store/fixtures/id_dsa_test.pub
++gnome-keyring-3.36.0/pkcs11/ssh-store/fixtures/id_dsa_encrypted
++gnome-keyring-3.36.0/pkcs11/ssh-store/fixtures/id_ecdsa_test.pub
++gnome-keyring-3.36.0/pkcs11/ssh-store/fixtures/id_rsa_encrypted
++gnome-keyring-3.36.0/pkcs11/ssh-store/fixtures/id_ecdsa_plain
++gnome-keyring-3.36.0/pkcs11/ssh-store/fixtures/id_ecdsa_encrypted.pub
++gnome-keyring-3.36.0/pkcs11/ssh-store/fixtures/id_ecdsa_encrypted
++gnome-keyring-3.36.0/pkcs11/ssh-store/fixtures/identity.pub
++gnome-keyring-3.36.0/pkcs11/ssh-store/gkm-ssh-module.h
++gnome-keyring-3.36.0/pkcs11/ssh-store/gkm-ssh-openssh.h
++gnome-keyring-3.36.0/pkcs11/ssh-store/gkm-ssh-public-key.c
++gnome-keyring-3.36.0/pkcs11/ssh-store/test-ssh-openssh.c
++gnome-keyring-3.36.0/pkcs11/ssh-store/gkm-ssh-standalone.c
++gnome-keyring-3.36.0/pkcs11/ssh-store/mock-ssh-module.c
++gnome-keyring-3.36.0/pkcs11/ssh-store/gkm-ssh-module.c
++gnome-keyring-3.36.0/pkcs11/ssh-store/gkm-ssh-public-key.h
++gnome-keyring-3.36.0/pkcs11/ssh-store/Makefile.am
++gnome-keyring-3.36.0/pkcs11/ssh-store/gkm-ssh-store.h
++gnome-keyring-3.36.0/pkcs11/ssh-store/gkm-ssh-private-key.c
++gnome-keyring-3.36.0/pkcs11/pkcs11i.h
++gnome-keyring-3.36.0/pkcs11/Makefile.am
++gnome-keyring-3.36.0/pkcs11/gkm/
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-manager.c
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-transaction.c
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-timer.h
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-assertion.h
++gnome-keyring-3.36.0/pkcs11/gkm/test-data-der.c
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-dh-key.c
++gnome-keyring-3.36.0/pkcs11/gkm/test-transaction.c
++gnome-keyring-3.36.0/pkcs11/gkm/test.asn.h
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-debug.h
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-module.c
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-secret-key.c
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-aes-key.c
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-attributes.c
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-data-asn1.c
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-aes-key.h
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-transaction.h
++gnome-keyring-3.36.0/pkcs11/gkm/test-certificate.c
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-log.c
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-sexp.c
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-log.h
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-null-key.h
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-dh-mechanism.c
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-dh-public-key.c
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-dh-private-key.h
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-object.c
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-secret.h
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-ecdsa-mechanism.h
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-debug.c
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-certificate-key.h
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-sexp.h
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-dh-mechanism.h
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-secret.c
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-test.c
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-crypto.c
++gnome-keyring-3.36.0/pkcs11/gkm/test-credential.c
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-aes-mechanism.c
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-aes-mechanism.h
++gnome-keyring-3.36.0/pkcs11/gkm/fixtures/
++gnome-keyring-3.36.0/pkcs11/gkm/fixtures/der-key-PBE-SHA1-3DES.p8
++gnome-keyring-3.36.0/pkcs11/gkm/fixtures/der-key-PBE-MD5-DES.p8
++gnome-keyring-3.36.0/pkcs11/gkm/fixtures/test-certificate-1.der
++gnome-keyring-3.36.0/pkcs11/gkm/fixtures/der-key-encrypted-pkcs5.p8
++gnome-keyring-3.36.0/pkcs11/gkm/fixtures/ca-certificates.crt
++gnome-keyring-3.36.0/pkcs11/gkm/fixtures/test-certificate-2.der
++gnome-keyring-3.36.0/pkcs11/gkm/fixtures/der-key-v2-des3.p8
++gnome-keyring-3.36.0/pkcs11/gkm/fixtures/der-key-PBE-SHA1-DES.p8
++gnome-keyring-3.36.0/pkcs11/gkm/fixtures/der-key-PBE-SHA1-RC2-40.p8
++gnome-keyring-3.36.0/pkcs11/gkm/fixtures/pem-rsa-enc.key
++gnome-keyring-3.36.0/pkcs11/gkm/fixtures/der-key-dsa.p8
++gnome-keyring-3.36.0/pkcs11/gkm/fixtures/der-key-PBE-SHA1-RC4-128.p8
++gnome-keyring-3.36.0/pkcs11/gkm/fixtures/der-key.p8
++gnome-keyring-3.36.0/pkcs11/gkm/fixtures/der-key-v2-des.p8
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-assertion.c
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-data-der.h
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-store.c
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-util.h
++gnome-keyring-3.36.0/pkcs11/gkm/test-data-asn1.c
++gnome-keyring-3.36.0/pkcs11/gkm/mock-module.h
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-module.h
++gnome-keyring-3.36.0/pkcs11/gkm/mock-locked-object.c
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-session.c
++gnome-keyring-3.36.0/pkcs11/gkm/mock-module.c
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-util.c
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-test.h
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-certificate-key.c
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-sexp-key.h
++gnome-keyring-3.36.0/pkcs11/gkm/mock-locked-object.h
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-credential.c
++gnome-keyring-3.36.0/pkcs11/gkm/test.asn
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-ecdsa-mechanism.c
++gnome-keyring-3.36.0/pkcs11/gkm/test-memory-store.c
++gnome-keyring-3.36.0/pkcs11/gkm/test-secret.c
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-dh-private-key.c
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-secret-key.h
++gnome-keyring-3.36.0/pkcs11/gkm/test-attributes.c
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-rsa-mechanism.c
++gnome-keyring-3.36.0/pkcs11/gkm/test-store.c
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-session.h
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-private-xsa-key.c
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-dsa-mechanism.h
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-serializable.h
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-public-xsa-key.c
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-module-ep.h
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-factory.h
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-data-types.h
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-sexp-key.c
++gnome-keyring-3.36.0/pkcs11/gkm/test-object.c
++gnome-keyring-3.36.0/pkcs11/gkm/test-timer.c
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-dh-public-key.h
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-types.h
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-null-mechanism.h
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-generic-key.h
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-certificate.c
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-null-key.c
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-private-xsa-key.h
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-marshal.list
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-data-der.c
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-dh-key.h
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-dsa-mechanism.c
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-trust.h
++gnome-keyring-3.36.0/pkcs11/gkm/Makefile.am
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-oids.h
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-memory-store.h
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-hkdf-mechanism.c
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-store.h
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-mock.c
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-certificate.h
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-public-xsa-key.h
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-trust.c
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-factory.c
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-rsa-mechanism.h
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-memory-store.c
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-attributes.h
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-null-mechanism.c
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-manager.h
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-crypto.h
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-mock.h
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-generic-key.c
++gnome-keyring-3.36.0/pkcs11/gkm/test-sexp.c
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-data-asn1.h
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-hkdf-mechanism.h
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-serializable.c
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-timer.c
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-object.h
++gnome-keyring-3.36.0/pkcs11/gkm/gkm-credential.h
++gnome-keyring-3.36.0/pkcs11/xdg-store/
++gnome-keyring-3.36.0/pkcs11/xdg-store/mock-xdg-module.c
++gnome-keyring-3.36.0/pkcs11/xdg-store/fixtures/
++gnome-keyring-3.36.0/pkcs11/xdg-store/fixtures/test-certificate-2.cer
++gnome-keyring-3.36.0/pkcs11/xdg-store/fixtures/test-refer-1.trust
++gnome-keyring-3.36.0/pkcs11/xdg-store/fixtures/test-certificate-1.cer
++gnome-keyring-3.36.0/pkcs11/xdg-store/gkm-xdg-assertion.c
++gnome-keyring-3.36.0/pkcs11/xdg-store/gkm-xdg-assertion.h
++gnome-keyring-3.36.0/pkcs11/xdg-store/gkm-xdg-module.h
++gnome-keyring-3.36.0/pkcs11/xdg-store/gkm-xdg-asn1-defs.h
++gnome-keyring-3.36.0/pkcs11/xdg-store/mock-xdg-module.h
++gnome-keyring-3.36.0/pkcs11/xdg-store/xdg.asn.h
++gnome-keyring-3.36.0/pkcs11/xdg-store/dump-trust-file.c
++gnome-keyring-3.36.0/pkcs11/xdg-store/gkm-xdg-standalone.c
++gnome-keyring-3.36.0/pkcs11/xdg-store/test-xdg-trust.c
++gnome-keyring-3.36.0/pkcs11/xdg-store/test-xdg-module.c
++gnome-keyring-3.36.0/pkcs11/xdg-store/frob-trust-file.c
++gnome-keyring-3.36.0/pkcs11/xdg-store/gkm-xdg-store.h
++gnome-keyring-3.36.0/pkcs11/xdg-store/xdg.asn
++gnome-keyring-3.36.0/pkcs11/xdg-store/Makefile.am
++gnome-keyring-3.36.0/pkcs11/xdg-store/gkm-xdg-module.c
++gnome-keyring-3.36.0/pkcs11/xdg-store/gkm-xdg-trust.c
++gnome-keyring-3.36.0/pkcs11/xdg-store/gkm-xdg-asn1-defs.c
++gnome-keyring-3.36.0/pkcs11/xdg-store/gkm-xdg-trust.h
++gnome-keyring-3.36.0/pkcs11/secret-store/
++gnome-keyring-3.36.0/pkcs11/secret-store/gkm-secret-binary.c
++gnome-keyring-3.36.0/pkcs11/secret-store/test-secret-fields.c
++gnome-keyring-3.36.0/pkcs11/secret-store/gkm-secret-compat.h
++gnome-keyring-3.36.0/pkcs11/secret-store/gkm-secret-data.h
++gnome-keyring-3.36.0/pkcs11/secret-store/gkm-secret-object.h
++gnome-keyring-3.36.0/pkcs11/secret-store/test-secret-data.c
++gnome-keyring-3.36.0/pkcs11/secret-store/gkm-secret-types.h
++gnome-keyring-3.36.0/pkcs11/secret-store/test-secret-textual.c
++gnome-keyring-3.36.0/pkcs11/secret-store/dump-keyring0-format.c
++gnome-keyring-3.36.0/pkcs11/secret-store/gkm-secret-textual.c
++gnome-keyring-3.36.0/pkcs11/secret-store/gkm-secret-compat.c
++gnome-keyring-3.36.0/pkcs11/secret-store/fixtures/
++gnome-keyring-3.36.0/pkcs11/secret-store/fixtures/plain-with-schema.keyring
++gnome-keyring-3.36.0/pkcs11/secret-store/fixtures/schema1.keyring
++gnome-keyring-3.36.0/pkcs11/secret-store/fixtures/created-on-rhel.keyring
++gnome-keyring-3.36.0/pkcs11/secret-store/fixtures/encrypted.keyring
++gnome-keyring-3.36.0/pkcs11/secret-store/fixtures/created-on-solaris-opencsw.keyring
++gnome-keyring-3.36.0/pkcs11/secret-store/fixtures/plain-bad-number.keyring
++gnome-keyring-3.36.0/pkcs11/secret-store/fixtures/plain.keyring
++gnome-keyring-3.36.0/pkcs11/secret-store/fixtures/encrypted-with-schema.keyring
++gnome-keyring-3.36.0/pkcs11/secret-store/fixtures/schema2.keyring
++gnome-keyring-3.36.0/pkcs11/secret-store/gkm-secret-module.c
++gnome-keyring-3.36.0/pkcs11/secret-store/gkm-secret-fields.c
++gnome-keyring-3.36.0/pkcs11/secret-store/gkm-secret-search.h
++gnome-keyring-3.36.0/pkcs11/secret-store/test-secret-object.c
++gnome-keyring-3.36.0/pkcs11/secret-store/gkm-secret-data.c
++gnome-keyring-3.36.0/pkcs11/secret-store/mock-secret-module.c
++gnome-keyring-3.36.0/pkcs11/secret-store/mock-secret-module.h
++gnome-keyring-3.36.0/pkcs11/secret-store/gkm-secret-collection.c
++gnome-keyring-3.36.0/pkcs11/secret-store/test-secret-search.c
++gnome-keyring-3.36.0/pkcs11/secret-store/gkm-secret-binary.h
++gnome-keyring-3.36.0/pkcs11/secret-store/gkm-secret-object.c
++gnome-keyring-3.36.0/pkcs11/secret-store/gkm-secret-store.h
++gnome-keyring-3.36.0/pkcs11/secret-store/gkm-secret-textual.h
++gnome-keyring-3.36.0/pkcs11/secret-store/gkm-secret-collection.h
++gnome-keyring-3.36.0/pkcs11/secret-store/test-secret-binary.c
++gnome-keyring-3.36.0/pkcs11/secret-store/gkm-secret-fields.h
++gnome-keyring-3.36.0/pkcs11/secret-store/Makefile.am
++gnome-keyring-3.36.0/pkcs11/secret-store/test-secret-compat.c
++gnome-keyring-3.36.0/pkcs11/secret-store/test-secret-collection.c
++gnome-keyring-3.36.0/pkcs11/secret-store/test-secret-item.c
++gnome-keyring-3.36.0/pkcs11/secret-store/gkm-secret-item.h
++gnome-keyring-3.36.0/pkcs11/secret-store/gkm-secret-item.c
++gnome-keyring-3.36.0/pkcs11/secret-store/gkm-secret-module.h
++gnome-keyring-3.36.0/pkcs11/secret-store/gkm-secret-standalone.c
++gnome-keyring-3.36.0/pkcs11/secret-store/test-secret-schema.c
++gnome-keyring-3.36.0/pkcs11/secret-store/gkm-secret-search.c
++gnome-keyring-3.36.0/ChangeLog
++gnome-keyring-3.36.0/aclocal.m4
++gnome-keyring-3.36.0/config.h.in
++gnome-keyring-3.36.0/gkm-marshal.c
++gnome-keyring-3.36.0/egg/
++gnome-keyring-3.36.0/egg/egg-unix-credentials.c
++gnome-keyring-3.36.0/egg/egg-cleanup.h
++gnome-keyring-3.36.0/egg/test-dh.c
++gnome-keyring-3.36.0/egg/egg-symkey.h
++gnome-keyring-3.36.0/egg/egg-padding.c
++gnome-keyring-3.36.0/egg/test.asn.h
++gnome-keyring-3.36.0/egg/test-hkdf.c
++gnome-keyring-3.36.0/egg/mock-interaction.c
++gnome-keyring-3.36.0/egg/egg-libgcrypt.c
++gnome-keyring-3.36.0/egg/egg-file-tracker.h
++gnome-keyring-3.36.0/egg/egg-secure-memory.c
++gnome-keyring-3.36.0/egg/egg-armor.h
++gnome-keyring-3.36.0/egg/test-dn.c
++gnome-keyring-3.36.0/egg/egg-armor.c
++gnome-keyring-3.36.0/egg/egg-openssl.c
++gnome-keyring-3.36.0/egg/egg-dh.h
++gnome-keyring-3.36.0/egg/egg-timegm.c
++gnome-keyring-3.36.0/egg/pk.asn.h
++gnome-keyring-3.36.0/egg/egg-openssl.h
++gnome-keyring-3.36.0/egg/pkix.asn.h
++gnome-keyring-3.36.0/egg/egg-asn1x.c
++gnome-keyring-3.36.0/egg/egg-oid.h
++gnome-keyring-3.36.0/egg/fixtures/
++gnome-keyring-3.36.0/egg/fixtures/echo-script.sh
++gnome-keyring-3.36.0/egg/fixtures/dh-params.pem
++gnome-keyring-3.36.0/egg/fixtures/test-pkcs7-1.der
++gnome-keyring-3.36.0/egg/fixtures/test-certificate-1.der
++gnome-keyring-3.36.0/egg/fixtures/test-rsakey-1.der
++gnome-keyring-3.36.0/egg/fixtures/pem-rsa-enc.key
++gnome-keyring-3.36.0/egg/fixtures/test-personalname-invalid.der
++gnome-keyring-3.36.0/egg/fixtures/test-pkcs12-1.der
++gnome-keyring-3.36.0/egg/fixtures/test-pkcs7-2.der
++gnome-keyring-3.36.0/egg/fixtures/test-pkcs8-1.der
++gnome-keyring-3.36.0/egg/egg-error.h
++gnome-keyring-3.36.0/egg/egg-secure-memory.h
++gnome-keyring-3.36.0/egg/test-asn1x.c
++gnome-keyring-3.36.0/egg/test.asn
++gnome-keyring-3.36.0/egg/egg-asn1x.h
++gnome-keyring-3.36.0/egg/egg-asn1-defs.c
++gnome-keyring-3.36.0/egg/egg-libgcrypt.h
++gnome-keyring-3.36.0/egg/egg-hkdf.c
++gnome-keyring-3.36.0/egg/test-asn1.c
++gnome-keyring-3.36.0/egg/test-hex.c
++gnome-keyring-3.36.0/egg/test-armor.c
++gnome-keyring-3.36.0/egg/mock-interaction.h
++gnome-keyring-3.36.0/egg/egg-asn1-defs.h
++gnome-keyring-3.36.0/egg/egg-symkey.c
++gnome-keyring-3.36.0/egg/egg-byte-array.h
++gnome-keyring-3.36.0/egg/egg-testing.c
++gnome-keyring-3.36.0/egg/egg-testing.h
++gnome-keyring-3.36.0/egg/egg-byte-array.c
++gnome-keyring-3.36.0/egg/egg-cleanup.c
++gnome-keyring-3.36.0/egg/egg-hex.c
++gnome-keyring-3.36.0/egg/egg-buffer.c
++gnome-keyring-3.36.0/egg/test-padding.c
++gnome-keyring-3.36.0/egg/egg-timegm.h
++gnome-keyring-3.36.0/egg/pkix.asn
++gnome-keyring-3.36.0/egg/test-oid.c
++gnome-keyring-3.36.0/egg/egg-dh.c
++gnome-keyring-3.36.0/egg/egg-dn.h
++gnome-keyring-3.36.0/egg/test-secmem.c
++gnome-keyring-3.36.0/egg/Makefile.am
++gnome-keyring-3.36.0/egg/dotlock.c
++gnome-keyring-3.36.0/egg/egg-padding.h
++gnome-keyring-3.36.0/egg/test-cleanup.c
++gnome-keyring-3.36.0/egg/egg-dn.c
++gnome-keyring-3.36.0/egg/test-openssl.c
++gnome-keyring-3.36.0/egg/pk.asn
++gnome-keyring-3.36.0/egg/egg-oid.c
++gnome-keyring-3.36.0/egg/egg-buffer.h
++gnome-keyring-3.36.0/egg/egg-hex.h
++gnome-keyring-3.36.0/egg/egg-hkdf.h
++gnome-keyring-3.36.0/egg/dotlock.h
++gnome-keyring-3.36.0/egg/egg-file-tracker.c
++gnome-keyring-3.36.0/egg/egg-unix-credentials.h
++gnome-keyring-3.36.0/egg/test-file-tracker.c
++gnome-keyring-3.36.0/egg/test-symkey.c
++gnome-keyring-3.36.0/tool/
++gnome-keyring-3.36.0/tool/gkr-tool.h
++gnome-keyring-3.36.0/tool/gkr-tool-import.c
++gnome-keyring-3.36.0/tool/gkr-tool-trust.c
++gnome-keyring-3.36.0/tool/Makefile.am
++gnome-keyring-3.36.0/tool/gkr-tool.c
++gnome-keyring-3.36.0/tool/gkr-tool-version.c
++gnome-keyring-3.36.0/COPYING
++gnome-keyring-3.36.0/build/
++gnome-keyring-3.36.0/build/missing
++gnome-keyring-3.36.0/build/tap-driver
++gnome-keyring-3.36.0/build/ltmain.sh
++gnome-keyring-3.36.0/build/glibc.supp
++gnome-keyring-3.36.0/build/config.rpath
++gnome-keyring-3.36.0/build/test-driver
++gnome-keyring-3.36.0/build/gcrypt.supp
++gnome-keyring-3.36.0/build/pthread.supp
++gnome-keyring-3.36.0/build/unknown.supp
++gnome-keyring-3.36.0/build/config.sub
++gnome-keyring-3.36.0/build/p11-kit.supp
++gnome-keyring-3.36.0/build/compile
++gnome-keyring-3.36.0/build/glib.supp
++gnome-keyring-3.36.0/build/gcr.supp
++gnome-keyring-3.36.0/build/m4/
++gnome-keyring-3.36.0/build/m4/ltoptions.m4
++gnome-keyring-3.36.0/build/m4/lib-prefix.m4
++gnome-keyring-3.36.0/build/m4/lib-ld.m4
++gnome-keyring-3.36.0/build/m4/libtool.m4
++gnome-keyring-3.36.0/build/m4/iconv.m4
++gnome-keyring-3.36.0/build/m4/ltversion.m4
++gnome-keyring-3.36.0/build/m4/ltsugar.m4
++gnome-keyring-3.36.0/build/m4/intlmacosx.m4
++gnome-keyring-3.36.0/build/m4/nls.m4
++gnome-keyring-3.36.0/build/m4/gettext.m4
++gnome-keyring-3.36.0/build/m4/lt~obsolete.m4
++gnome-keyring-3.36.0/build/m4/po.m4
++gnome-keyring-3.36.0/build/m4/lib-link.m4
++gnome-keyring-3.36.0/build/m4/progtest.m4
++gnome-keyring-3.36.0/build/depcomp
++gnome-keyring-3.36.0/build/config.guess
++gnome-keyring-3.36.0/build/install-sh
++gnome-keyring-3.36.0/ChangeLog.old
++gnome-keyring-3.36.0/schema/
++gnome-keyring-3.36.0/schema/org.gnome.crypto.cache.gschema.xml
++gnome-keyring-3.36.0/schema/org.gnome.crypto.cache.convert
++gnome-keyring-3.36.0/schema/Makefile.am
++gnome-keyring-3.36.0/gkm-marshal.h
++gnome-keyring-3.36.0/configure
++gnome-keyring-3.36.0/docs/
++gnome-keyring-3.36.0/docs/gnome-keyring-3.1
++gnome-keyring-3.36.0/docs/keyring-intro.txt
++gnome-keyring-3.36.0/docs/gnome-keyring-daemon.xml
++gnome-keyring-3.36.0/docs/gnome-keyring.xml
++gnome-keyring-3.36.0/docs/gnome-keyring.svg
++gnome-keyring-3.36.0/docs/Makefile.am
++gnome-keyring-3.36.0/docs/file-format.txt
++gnome-keyring-3.36.0/configure.ac
++gnome-keyring-3.36.0/NEWS
++gnome-keyring-3.36.0/po/
++gnome-keyring-3.36.0/po/mg.po
++gnome-keyring-3.36.0/po/mn.gmo
++gnome-keyring-3.36.0/po/cs.po
++gnome-keyring-3.36.0/po/en@shaw.po
++gnome-keyring-3.36.0/po/en_GB.po
++gnome-keyring-3.36.0/po/ru.gmo
++gnome-keyring-3.36.0/po/remove-potcdate.sin
++gnome-keyring-3.36.0/po/mjw.gmo
++gnome-keyring-3.36.0/po/hr.gmo
++gnome-keyring-3.36.0/po/bn_IN.po
++gnome-keyring-3.36.0/po/pt.gmo
++gnome-keyring-3.36.0/po/nn.gmo
++gnome-keyring-3.36.0/po/kk.gmo
++gnome-keyring-3.36.0/po/ChangeLog
++gnome-keyring-3.36.0/po/sv.gmo
++gnome-keyring-3.36.0/po/pa.gmo
++gnome-keyring-3.36.0/po/en_CA.gmo
++gnome-keyring-3.36.0/po/kk.po
++gnome-keyring-3.36.0/po/ca.po
++gnome-keyring-3.36.0/po/sq.gmo
++gnome-keyring-3.36.0/po/gnome-keyring.pot
++gnome-keyring-3.36.0/po/th.po
++gnome-keyring-3.36.0/po/en@boldquot.header
++gnome-keyring-3.36.0/po/ta.gmo
++gnome-keyring-3.36.0/po/te.po
++gnome-keyring-3.36.0/po/ja.gmo
++gnome-keyring-3.36.0/po/ug.gmo
++gnome-keyring-3.36.0/po/gl.gmo
++gnome-keyring-3.36.0/po/bs.po
++gnome-keyring-3.36.0/po/hi.po
++gnome-keyring-3.36.0/po/km.gmo
++gnome-keyring-3.36.0/po/zh_TW.po
++gnome-keyring-3.36.0/po/en_GB.gmo
++gnome-keyring-3.36.0/po/ka.gmo
++gnome-keyring-3.36.0/po/en_CA.po
++gnome-keyring-3.36.0/po/hi.gmo
++gnome-keyring-3.36.0/po/bn.gmo
++gnome-keyring-3.36.0/po/ast.gmo
++gnome-keyring-3.36.0/po/tg.po
++gnome-keyring-3.36.0/po/insert-header.sin
++gnome-keyring-3.36.0/po/uk.po
++gnome-keyring-3.36.0/po/eu.po
++gnome-keyring-3.36.0/po/he.gmo
++gnome-keyring-3.36.0/po/be.gmo
++gnome-keyring-3.36.0/po/ar.gmo
++gnome-keyring-3.36.0/po/cy.po
++gnome-keyring-3.36.0/po/zh_CN.gmo
++gnome-keyring-3.36.0/po/fr.po
++gnome-keyring-3.36.0/po/ca@valencia.po
++gnome-keyring-3.36.0/po/is.po
++gnome-keyring-3.36.0/po/as.gmo
++gnome-keyring-3.36.0/po/fi.po
++gnome-keyring-3.36.0/po/boldquot.sed
++gnome-keyring-3.36.0/po/el.gmo
++gnome-keyring-3.36.0/po/be@latin.po
++gnome-keyring-3.36.0/po/sr.po
++gnome-keyring-3.36.0/po/eo.gmo
++gnome-keyring-3.36.0/po/eo.po
++gnome-keyring-3.36.0/po/bg.po
++gnome-keyring-3.36.0/po/ca.gmo
++gnome-keyring-3.36.0/po/es.po
++gnome-keyring-3.36.0/po/te.gmo
++gnome-keyring-3.36.0/po/mk.gmo
++gnome-keyring-3.36.0/po/bg.gmo
++gnome-keyring-3.36.0/po/ckb.gmo
++gnome-keyring-3.36.0/po/gd.po
++gnome-keyring-3.36.0/po/pt_BR.gmo
++gnome-keyring-3.36.0/po/af.gmo
++gnome-keyring-3.36.0/po/hu.gmo
++gnome-keyring-3.36.0/po/sl.gmo
++gnome-keyring-3.36.0/po/lt.gmo
++gnome-keyring-3.36.0/po/si.gmo
++gnome-keyring-3.36.0/po/pt.po
++gnome-keyring-3.36.0/po/mn.po
++gnome-keyring-3.36.0/po/mr.gmo
++gnome-keyring-3.36.0/po/de.gmo
++gnome-keyring-3.36.0/po/az.po
++gnome-keyring-3.36.0/po/ko.gmo
++gnome-keyring-3.36.0/po/zh_HK.gmo
++gnome-keyring-3.36.0/po/ne.po
++gnome-keyring-3.36.0/po/fur.gmo
++gnome-keyring-3.36.0/po/mai.gmo
++gnome-keyring-3.36.0/po/ja.po
++gnome-keyring-3.36.0/po/pl.po
++gnome-keyring-3.36.0/po/en@shaw.gmo
++gnome-keyring-3.36.0/po/da.gmo
++gnome-keyring-3.36.0/po/rw.gmo
++gnome-keyring-3.36.0/po/nb.gmo
++gnome-keyring-3.36.0/po/ru.po
++gnome-keyring-3.36.0/po/nn.po
++gnome-keyring-3.36.0/po/sr@latin.po
++gnome-keyring-3.36.0/po/tr.gmo
++gnome-keyring-3.36.0/po/mr.po
++gnome-keyring-3.36.0/po/is.gmo
++gnome-keyring-3.36.0/po/be.po
++gnome-keyring-3.36.0/po/mg.gmo
++gnome-keyring-3.36.0/po/ml.po
++gnome-keyring-3.36.0/po/gu.gmo
++gnome-keyring-3.36.0/po/mk.po
++gnome-keyring-3.36.0/po/gu.po
++gnome-keyring-3.36.0/po/hr.po
++gnome-keyring-3.36.0/po/id.gmo
++gnome-keyring-3.36.0/po/it.gmo
++gnome-keyring-3.36.0/po/ne.gmo
++gnome-keyring-3.36.0/po/ro.gmo
++gnome-keyring-3.36.0/po/ml.gmo
++gnome-keyring-3.36.0/po/ka.po
++gnome-keyring-3.36.0/po/vi.po
++gnome-keyring-3.36.0/po/cy.gmo
++gnome-keyring-3.36.0/po/oc.gmo
++gnome-keyring-3.36.0/po/pl.gmo
++gnome-keyring-3.36.0/po/km.po
++gnome-keyring-3.36.0/po/cs.gmo
++gnome-keyring-3.36.0/po/en@quot.header
++gnome-keyring-3.36.0/po/bn.po
++gnome-keyring-3.36.0/po/id.po
++gnome-keyring-3.36.0/po/sv.po
++gnome-keyring-3.36.0/po/it.po
++gnome-keyring-3.36.0/po/eu.gmo
++gnome-keyring-3.36.0/po/tr.po
++gnome-keyring-3.36.0/po/da.po
++gnome-keyring-3.36.0/po/hu.po
++gnome-keyring-3.36.0/po/ro.po
++gnome-keyring-3.36.0/po/ckb.po
++gnome-keyring-3.36.0/po/sk.gmo
++gnome-keyring-3.36.0/po/ca@valencia.gmo
++gnome-keyring-3.36.0/po/fa.gmo
++gnome-keyring-3.36.0/po/ms.po
++gnome-keyring-3.36.0/po/lv.gmo
++gnome-keyring-3.36.0/po/dz.gmo
++gnome-keyring-3.36.0/po/stamp-po
++gnome-keyring-3.36.0/po/fur.po
++gnome-keyring-3.36.0/po/af.po
++gnome-keyring-3.36.0/po/sq.po
++gnome-keyring-3.36.0/po/gd.gmo
++gnome-keyring-3.36.0/po/fa.po
++gnome-keyring-3.36.0/po/vi.gmo
++gnome-keyring-3.36.0/po/fr.gmo
++gnome-keyring-3.36.0/po/ar.po
++gnome-keyring-3.36.0/po/mjw.po
++gnome-keyring-3.36.0/po/Makefile.in.in
++gnome-keyring-3.36.0/po/tg.gmo
++gnome-keyring-3.36.0/po/xh.gmo
++gnome-keyring-3.36.0/po/ug.po
++gnome-keyring-3.36.0/po/sk.po
++gnome-keyring-3.36.0/po/de.po
++gnome-keyring-3.36.0/po/as.po
++gnome-keyring-3.36.0/po/ta.po
++gnome-keyring-3.36.0/po/et.gmo
++gnome-keyring-3.36.0/po/sl.po
++gnome-keyring-3.36.0/po/si.po
++gnome-keyring-3.36.0/po/rw.po
++gnome-keyring-3.36.0/po/LINGUAS
++gnome-keyring-3.36.0/po/es.gmo
++gnome-keyring-3.36.0/po/el.po
++gnome-keyring-3.36.0/po/zh_CN.po
++gnome-keyring-3.36.0/po/nl.po
++gnome-keyring-3.36.0/po/nl.gmo
++gnome-keyring-3.36.0/po/sr@latin.gmo
++gnome-keyring-3.36.0/po/bs.gmo
++gnome-keyring-3.36.0/po/pt_BR.po
++gnome-keyring-3.36.0/po/oc.po
++gnome-keyring-3.36.0/po/or.gmo
++gnome-keyring-3.36.0/po/quot.sed
++gnome-keyring-3.36.0/po/mai.po
++gnome-keyring-3.36.0/po/et.po
++gnome-keyring-3.36.0/po/sr.gmo
++gnome-keyring-3.36.0/po/dz.po
++gnome-keyring-3.36.0/po/uk.gmo
++gnome-keyring-3.36.0/po/zh_TW.gmo
++gnome-keyring-3.36.0/po/bn_IN.gmo
++gnome-keyring-3.36.0/po/ms.gmo
++gnome-keyring-3.36.0/po/zh_HK.po
++gnome-keyring-3.36.0/po/fi.gmo
++gnome-keyring-3.36.0/po/be@latin.gmo
++gnome-keyring-3.36.0/po/lv.po
++gnome-keyring-3.36.0/po/he.po
++gnome-keyring-3.36.0/po/Rules-quot
++gnome-keyring-3.36.0/po/xh.po
++gnome-keyring-3.36.0/po/Makevars
++gnome-keyring-3.36.0/po/kn.po
++gnome-keyring-3.36.0/po/gl.po
++gnome-keyring-3.36.0/po/ga.po
++gnome-keyring-3.36.0/po/lt.po
++gnome-keyring-3.36.0/po/kn.gmo
++gnome-keyring-3.36.0/po/th.gmo
++gnome-keyring-3.36.0/po/ga.gmo
++gnome-keyring-3.36.0/po/nb.po
++gnome-keyring-3.36.0/po/ast.po
++gnome-keyring-3.36.0/po/or.po
++gnome-keyring-3.36.0/po/POTFILES.in
++gnome-keyring-3.36.0/po/az.gmo
++gnome-keyring-3.36.0/po/pa.po
++gnome-keyring-3.36.0/po/ko.po
++gnome-keyring-3.36.0/AUTHORS
++gnome-keyring-3.36.0/README
++gnome-keyring-3.36.0/INSTALL
++gnome-keyring-3.36.0/COPYING.LIB
++gnome-keyring-3.36.0/Makefile.am
++gnome-keyring-3.36.0/ABOUT-NLS
++gnome-keyring-3.36.0/Makefile.in
++gnome-keyring-3.36.0/daemon/
++gnome-keyring-3.36.0/daemon/dbus/
++gnome-keyring-3.36.0/daemon/dbus/gkd-secret-types.h
++gnome-keyring-3.36.0/daemon/dbus/gkd-secret-prompt.h
++gnome-keyring-3.36.0/daemon/dbus/gkd-secret-portal.h
++gnome-keyring-3.36.0/daemon/dbus/gkd-secret-error.c
++gnome-keyring-3.36.0/daemon/dbus/gkd-secret-unlock.c
++gnome-keyring-3.36.0/daemon/dbus/gkd-dbus-private.h
++gnome-keyring-3.36.0/daemon/dbus/org.freedesktop.impl.portal.Secret.xml
++gnome-keyring-3.36.0/daemon/dbus/org.freedesktop.Secrets.xml
++gnome-keyring-3.36.0/daemon/dbus/gkd-secret-util.h
++gnome-keyring-3.36.0/daemon/dbus/org.gnome.keyring.InternalUnsupportedGuiltRiddenInterface.xml
++gnome-keyring-3.36.0/daemon/dbus/gkd-dbus.h
++gnome-keyring-3.36.0/daemon/dbus/gkd-secret-change.c
++gnome-keyring-3.36.0/daemon/dbus/gkd-secret-exchange.h
++gnome-keyring-3.36.0/daemon/dbus/test-dbus-items.c
++gnome-keyring-3.36.0/daemon/dbus/org.freedesktop.impl.portal.Request.xml
++gnome-keyring-3.36.0/daemon/dbus/test-dbus-search.c
++gnome-keyring-3.36.0/daemon/dbus/test-dbus-portal.c
++gnome-keyring-3.36.0/daemon/dbus/gkd-secret-error.h
++gnome-keyring-3.36.0/daemon/dbus/gkd-secret-objects.c
++gnome-keyring-3.36.0/daemon/dbus/gkd-secret-property.h
++gnome-keyring-3.36.0/daemon/dbus/gkd-daemon-generated.c
++gnome-keyring-3.36.0/daemon/dbus/gkd-secret-dispatch.h
++gnome-keyring-3.36.0/daemon/dbus/gkd-dbus.c
++gnome-keyring-3.36.0/daemon/dbus/gkd-secret-secret.c
++gnome-keyring-3.36.0/daemon/dbus/gkd-dbus-secrets.c
++gnome-keyring-3.36.0/daemon/dbus/gkd-secret-portal.c
++gnome-keyring-3.36.0/daemon/dbus/gkd-secret-property.c
++gnome-keyring-3.36.0/daemon/dbus/gkd-secret-session.c
++gnome-keyring-3.36.0/daemon/dbus/fixtures/
++gnome-keyring-3.36.0/daemon/dbus/fixtures/test.keyring
++gnome-keyring-3.36.0/daemon/dbus/gkd-portal-generated.c
++gnome-keyring-3.36.0/daemon/dbus/gkd-secret-session.h
++gnome-keyring-3.36.0/daemon/dbus/gkd-secret-create.c
++gnome-keyring-3.36.0/daemon/dbus/gkd-portal-generated.h
++gnome-keyring-3.36.0/daemon/dbus/test-dbus-signals.c
++gnome-keyring-3.36.0/daemon/dbus/gkd-dbus-session.c
++gnome-keyring-3.36.0/daemon/dbus/org.gnome.keyring.Daemon.xml
++gnome-keyring-3.36.0/daemon/dbus/gkd-secret-secret.h
++gnome-keyring-3.36.0/daemon/dbus/gkd-secret-service.h
++gnome-keyring-3.36.0/daemon/dbus/gkd-secret-objects.h
++gnome-keyring-3.36.0/daemon/dbus/gkd-secret-util.c
++gnome-keyring-3.36.0/daemon/dbus/gkd-daemon-generated.h
++gnome-keyring-3.36.0/daemon/dbus/gkd-secret-service.c
++gnome-keyring-3.36.0/daemon/dbus/gkd-portal-request-generated.h
++gnome-keyring-3.36.0/daemon/dbus/gkd-dbus-environment.c
++gnome-keyring-3.36.0/daemon/dbus/gkd-internal-generated.h
++gnome-keyring-3.36.0/daemon/dbus/gkd-secret-dispatch.c
++gnome-keyring-3.36.0/daemon/dbus/gkd-secrets-generated.c
++gnome-keyring-3.36.0/daemon/dbus/gkd-secret-unlock.h
++gnome-keyring-3.36.0/daemon/dbus/test-dbus-lock.c
++gnome-keyring-3.36.0/daemon/dbus/gkd-secret-lock.c
++gnome-keyring-3.36.0/daemon/dbus/Makefile.am
++gnome-keyring-3.36.0/daemon/dbus/gkd-secret-exchange.c
++gnome-keyring-3.36.0/daemon/dbus/gkd-secret-create.h
++gnome-keyring-3.36.0/daemon/dbus/gkd-secret-change.h
++gnome-keyring-3.36.0/daemon/dbus/gkd-secret-lock.h
++gnome-keyring-3.36.0/daemon/dbus/test-dbus-util.c
++gnome-keyring-3.36.0/daemon/dbus/gkd-secrets-generated.h
++gnome-keyring-3.36.0/daemon/dbus/gkd-secret-prompt.c
++gnome-keyring-3.36.0/daemon/dbus/test-service.h
++gnome-keyring-3.36.0/daemon/dbus/test-service.c
++gnome-keyring-3.36.0/daemon/dbus/gkd-internal-generated.c
++gnome-keyring-3.36.0/daemon/dbus/gkd-portal-request-generated.c
++gnome-keyring-3.36.0/daemon/ssh-agent/
++gnome-keyring-3.36.0/daemon/ssh-agent/test-gkd-ssh-agent-util.c
++gnome-keyring-3.36.0/daemon/ssh-agent/test-gkd-ssh-agent-preload.c
++gnome-keyring-3.36.0/daemon/ssh-agent/gkd-ssh-agent-service.h
++gnome-keyring-3.36.0/daemon/ssh-agent/gkd-ssh-agent-process.h
++gnome-keyring-3.36.0/daemon/ssh-agent/gkd-ssh-agent-service.c
++gnome-keyring-3.36.0/daemon/ssh-agent/gkd-ssh-agent-util.h
++gnome-keyring-3.36.0/daemon/ssh-agent/gkd-ssh-agent-interaction.h
++gnome-keyring-3.36.0/daemon/ssh-agent/gkd-ssh-agent-process.c
++gnome-keyring-3.36.0/daemon/ssh-agent/gkd-ssh-agent-util.c
++gnome-keyring-3.36.0/daemon/ssh-agent/gkd-ssh-agent-interaction.c
++gnome-keyring-3.36.0/daemon/ssh-agent/gkd-ssh-agent-private.h
++gnome-keyring-3.36.0/daemon/ssh-agent/gkd-ssh-agent-preload.c
++gnome-keyring-3.36.0/daemon/ssh-agent/test-common.h
++gnome-keyring-3.36.0/daemon/ssh-agent/test-common.c
++gnome-keyring-3.36.0/daemon/ssh-agent/Makefile.am
++gnome-keyring-3.36.0/daemon/ssh-agent/gkd-ssh-agent-preload.h
++gnome-keyring-3.36.0/daemon/ssh-agent/test-gkd-ssh-agent-interaction.c
++gnome-keyring-3.36.0/daemon/ssh-agent/test-gkd-ssh-agent-process.c
++gnome-keyring-3.36.0/daemon/ssh-agent/test-gkd-ssh-agent-service.c
++gnome-keyring-3.36.0/daemon/org.gnome.keyring.service.in
++gnome-keyring-3.36.0/daemon/gnome-keyring-pkcs11.desktop.in
++gnome-keyring-3.36.0/daemon/login/
++gnome-keyring-3.36.0/daemon/login/gkd-login-password.c
++gnome-keyring-3.36.0/daemon/login/gkd-login.h
++gnome-keyring-3.36.0/daemon/login/gkd-login-interaction.c
++gnome-keyring-3.36.0/daemon/login/gkd-login-interaction.h
++gnome-keyring-3.36.0/daemon/login/gkd-login.c
++gnome-keyring-3.36.0/daemon/login/Makefile.am
++gnome-keyring-3.36.0/daemon/login/gkd-login-password.h
++gnome-keyring-3.36.0/daemon/org.freedesktop.impl.portal.Secret.service.in
++gnome-keyring-3.36.0/daemon/gkd-test.c
++gnome-keyring-3.36.0/daemon/gkd-glue.h
++gnome-keyring-3.36.0/daemon/gnome-keyring.portal
++gnome-keyring-3.36.0/daemon/gkd-test.h
++gnome-keyring-3.36.0/daemon/gnome-keyring-ssh.desktop.in
++gnome-keyring-3.36.0/daemon/test-shutdown.c
++gnome-keyring-3.36.0/daemon/gkd-capability.h
++gnome-keyring-3.36.0/daemon/gkd-glue.c
++gnome-keyring-3.36.0/daemon/gkd-util.c
++gnome-keyring-3.36.0/daemon/gkd-main.c
++gnome-keyring-3.36.0/daemon/gkd-capability.c
++gnome-keyring-3.36.0/daemon/test-startup.c
++gnome-keyring-3.36.0/daemon/gkd-pkcs11.h
++gnome-keyring-3.36.0/daemon/org.freedesktop.secrets.service.in
++gnome-keyring-3.36.0/daemon/control/
++gnome-keyring-3.36.0/daemon/control/frob-control-unlock.c
++gnome-keyring-3.36.0/daemon/control/gkd-control-server.c
++gnome-keyring-3.36.0/daemon/control/frob-control-init.c
++gnome-keyring-3.36.0/daemon/control/gkd-control-codes.h
++gnome-keyring-3.36.0/daemon/control/gkd-control.h
++gnome-keyring-3.36.0/daemon/control/Makefile.am
++gnome-keyring-3.36.0/daemon/control/frob-control-quit.c
++gnome-keyring-3.36.0/daemon/control/frob-control-change.c
++gnome-keyring-3.36.0/daemon/control/gkd-control-client.c
++gnome-keyring-3.36.0/daemon/gkd-pkcs11.c
++gnome-keyring-3.36.0/daemon/gnome-keyring-ssh.desktop.in.in
++gnome-keyring-3.36.0/daemon/gkd-main.h
++gnome-keyring-3.36.0/daemon/Makefile.am
++gnome-keyring-3.36.0/daemon/gnome-keyring-secrets.desktop.in
++gnome-keyring-3.36.0/daemon/gnome-keyring-pkcs11.desktop.in.in
++gnome-keyring-3.36.0/daemon/gkd-util.h
++gnome-keyring-3.36.0/daemon/gnome-keyring-secrets.desktop.in.in
++checking for a BSD-compatible install... /usr/bin/ginstall -c
++checking whether build environment is sane... yes
++checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
++checking for gawk... gawk
++checking whether make sets $(MAKE)... yes
++checking whether make supports nested variables... yes
++checking whether make supports nested variables... (cached) yes
++checking whether build environment is sane... yes
++checking whether to enable maintainer-specific portions of Makefiles... yes
++checking whether make supports the include directive... yes (GNU style)
++checking for gcc... gcc
++checking whether the C compiler works... yes
++checking for C compiler default output file name... a.out
++checking for suffix of executables... 
++checking whether we are cross compiling... no
++checking for suffix of object files... o
++checking whether we are using the GNU C compiler... yes
++checking whether gcc accepts -g... yes
++checking for gcc option to accept ISO C89... none needed
++checking whether gcc understands -c and -o together... yes
++checking dependency style of gcc... gcc3
++checking how to run the C preprocessor... gcc -E
++checking for grep that handles long lines and -e... /usr/bin/grep
++checking for egrep... /usr/bin/grep -E
++checking for ANSI C header files... yes
++checking for sys/types.h... yes
++checking for sys/stat.h... yes
++checking for stdlib.h... yes
++checking for string.h... yes
++checking for memory.h... yes
++checking for strings.h... yes
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking for unistd.h... yes
++checking minix/config.h usability... no
++checking minix/config.h presence... no
++checking for minix/config.h... no
++checking whether it is safe to define __EXTENSIONS__... yes
++checking for library containing strerror... none required
++checking for gcc... (cached) gcc
++checking whether we are using the GNU C compiler... (cached) yes
++checking whether gcc accepts -g... (cached) yes
++checking for gcc option to accept ISO C89... (cached) none needed
++checking whether gcc understands -c and -o together... (cached) yes
++checking dependency style of gcc... (cached) gcc3
++checking how to run the C preprocessor... gcc -E
++checking whether ln -s works... yes
++checking whether make sets $(MAKE)... (cached) yes
++checking build system type... x86_64-slackware-linux-musl
++checking host system type... x86_64-slackware-linux-musl
++checking how to print strings... printf
++checking for a sed that does not truncate output... /usr/bin/sed
++checking for fgrep... /usr/bin/grep -F
++checking for ld used by gcc... /usr/bin/ld
++checking if the linker (/usr/bin/ld) is GNU ld... yes
++checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
++checking the name lister (/usr/bin/nm -B) interface... BSD nm
++checking the maximum length of command line arguments... 98304
++checking how to convert x86_64-slackware-linux-musl file names to x86_64-slackware-linux-musl format... func_convert_file_noop
++checking how to convert x86_64-slackware-linux-musl file names to toolchain format... func_convert_file_noop
++checking for /usr/bin/ld option to reload object files... -r
++checking for objdump... objdump
++checking how to recognize dependent libraries... pass_all
++checking for dlltool... dlltool
++checking how to associate runtime and link libraries... printf %s\n
++checking for ar... ar
++checking for archiver @FILE support... @
++checking for strip... strip
++checking for ranlib... ranlib
++checking command to parse /usr/bin/nm -B output from gcc object... ok
++checking for sysroot... no
++checking for a working dd... /usr/bin/dd
++checking how to truncate binary pipes... /usr/bin/dd bs=4096 count=1
++checking for mt... mt
++checking if mt is a manifest tool... no
++checking for dlfcn.h... yes
++checking for objdir... .libs
++checking if gcc supports -fno-rtti -fno-exceptions... no
++checking for gcc option to produce PIC... -fPIC -DPIC
++checking if gcc PIC flag -fPIC -DPIC works... yes
++checking if gcc static flag -static works... yes
++checking if gcc supports -c -o file.o... yes
++checking if gcc supports -c -o file.o... (cached) yes
++checking whether the gcc linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
++checking whether -lc should be explicitly linked in... no
++checking dynamic linker characteristics... GNU/Linux ld.so
++checking how to hardcode library paths into programs... immediate
++checking whether stripping libraries is possible... yes
++checking if libtool supports shared libraries... yes
++checking whether to build shared libraries... yes
++checking whether to build static libraries... no
++checking pkg-config is at least version 0.9.0... yes
++checking for pid_t... yes
++checking return type of signal handlers... void
++checking for size_t... yes
++checking for uid_t in sys/types.h... yes
++checking for GLIB... yes
++checking for GMODULE... yes
++checking for GOBJECT... yes
++checking for GIO... yes
++checking whether NLS is requested... yes
++checking for msgfmt... /usr/bin/msgfmt
++checking for gmsgfmt... /usr/bin/msgfmt
++checking for xgettext... /usr/bin/xgettext
++checking for msgmerge... /usr/bin/msgmerge
++checking for ld used by gcc... /usr/bin/ld -m elf_x86_64
++checking if the linker (/usr/bin/ld -m elf_x86_64) is GNU ld... yes
++checking for shared library run path origin... done
++checking for CFPreferencesCopyAppValue... no
++checking for CFLocaleCopyCurrent... no
++checking for GNU gettext in libc... yes
++checking whether to use NLS... yes
++checking where the gettext function comes from... libc
++checking for glib-genmarshal... /usr/bin/glib-genmarshal
++checking pkg-config is at least version 0.16... yes
++checking whether socklen_t is defined... yes
++checking for struct cmsgcred... no
++checking for getpeerucred... no
++checking for getpeereid... no
++checking for flock... yes
++checking for timegm... yes
++checking whether stat file-mode macros are broken... no
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking fcntl.h usability... yes
++checking fcntl.h presence... yes
++checking for fcntl.h... yes
++checking sys/time.h usability... yes
++checking sys/time.h presence... yes
++checking for sys/time.h... yes
++checking time.h usability... yes
++checking time.h presence... yes
++checking for time.h... yes
++checking for unistd.h... (cached) yes
++checking for gettimeofday... yes
++checking for fsync... yes
++checking for mlock... yes
++checking for socket in -lsocket... no
++checking for socket... yes
++checking for GCK... yes
++checking for GCR... yes
++checking for GCR_BASE... yes
++checking security/pam_modules.h usability... yes
++checking security/pam_modules.h presence... yes
++checking for security/pam_modules.h... yes
++checking for pam_start in -lpam... yes
++checking for dlopen... yes
++checking for dlsym... yes
++checking where to put pkcs11 module configuration... /usr/share/p11-kit/modules
++checking module path to install pkcs11 modules... /usr/lib/pkcs11
++checking for ssh-agent... /usr/bin/ssh-agent
++checking for ssh-add... /usr/bin/ssh-add
++checking for libgcrypt-config... /usr/bin/libgcrypt-config
++checking for LIBGCRYPT - version >= 1.2.2... yes (1.8.7)
++checking LIBGCRYPT API version... okay
++checking for capng_clear in -lcap-ng... yes
++checking for getfilecon in -lselinux... no
++checking for P11_TESTS... no
++checking whether to build documentation... yes
++checking for xsltproc... /usr/bin/xsltproc
++checking for debug mode... no (no debug output, not testable, G_DISABLE_ASSERT)
++checking for more warnings... yes
++checking whether gcc understands -Wno-strict-aliasing... yes
++checking whether gcc understands -Wno-sign-compare... yes
++checking build strict... no (quick tests, non-fatal warnings)
++checking whether to build with gcov testing... no
++checking valgrind... no
++checking that generated files are newer than configure... done
++checking that generated files are newer than configure... done
++configure: creating ./config.status
++config.status: creating Makefile
++config.status: creating pkcs11/rpc-layer/gnome-keyring.module
++config.status: creating po/Makefile.in
++config.status: creating config.h
++config.status: executing depfiles commands
++config.status: executing libtool commands
++config.status: executing po-directories commands
++config.status: creating po/POTFILES
++config.status: creating po/Makefile
++
++OPTIONAL DEPENDENCIES
++  PAM:                  yes (/lib/security)
++  Linux capabilities:   yes
++  SELinux:              no
++
++CONFIGURATION
++  SSH Agent:            yes
++
++BUILD
++  Debug Build:          no (no debug output, not testable, G_DISABLE_ASSERT)
++  Strict Compilation:   no (quick tests, non-fatal warnings)
++  Valgrind:             no
++  PKCS#11 Tests         no
++  Test Coverage:        no
++  Documentation:        yes
++
++echo "#include \"gkm-marshal.h\"" > gkm-marshal.c && \
++/usr/bin/glib-genmarshal pkcs11/gkm/gkm-marshal.list --body --prefix=gkm_marshal >> gkm-marshal.c
++/usr/bin/glib-genmarshal pkcs11/gkm/gkm-marshal.list --header --prefix=gkm_marshal > gkm-marshal.h
++INFO: Reading pkcs11/gkm/gkm-marshal.list...
++INFO: Reading pkcs11/gkm/gkm-marshal.list...
++make  all-recursive
++make[1]: Entering directory '/tmp/gnome-keyring-3.36.0'
++Making all in .
++make[2]: Entering directory '/tmp/gnome-keyring-3.36.0'
++  CC       libgkd_dbus_la-gkm-marshal.lo
++  CC       libgkm_la-gkm-marshal.lo
++  CC       egg/egg-buffer.lo
++  CC       egg/egg-unix-credentials.lo
++  CC       egg/test-asn1.o
++  CC       egg/test-asn1x.o
++egg/test-asn1x.c: In function ‘test_personal_name_invalid’:
++egg/test-asn1x.c:148:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  148 |  gboolean ret;
++      |           ^~~
++egg/test-asn1.c: In function ‘test_boolean_decode_bad’:
++egg/test-asn1.c:114:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  114 |  gboolean ret;
++      |           ^~~
++egg/test-asn1.c: In function ‘test_integer_zero_length’:
++egg/test-asn1.c:218:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  218 |  gboolean ret;
++      |           ^~~
++egg/test-asn1.c: In function ‘test_unsigned_not_set’:
++egg/test-asn1.c:291:10: warning: variable ‘bytes’ set but not used [-Wunused-but-set-variable]
++  291 |  GBytes *bytes;
++      |          ^~~~~
++egg/test-asn1.c: In function ‘test_octet_string_structured_bad’:
++egg/test-asn1.c:552:10: warning: variable ‘string’ set but not used [-Wunused-but-set-variable]
++  552 |  guchar *string;
++      |          ^~~~~~
++egg/test-asn1.c: In function ‘test_generalized_time’:
++egg/test-asn1.c:574:8: warning: variable ‘value’ set but not used [-Wunused-but-set-variable]
++  574 |  glong value;
++      |        ^~~~~
++  CC       egg/libegg_asn1x_la-egg-asn1x.lo
++egg/test-asn1.c: In function ‘test_any_raw_not_set’:
++egg/test-asn1.c:1190:10: warning: variable ‘check’ set but not used [-Wunused-but-set-variable]
++ 1190 |  GBytes *check;
++      |          ^~~~~
++egg/test-asn1.c: In function ‘test_choice_not_chosen’:
++egg/test-asn1.c:1324:10: warning: variable ‘data’ set but not used [-Wunused-but-set-variable]
++ 1324 |  GBytes *data;
++      |          ^~~~
++egg/test-asn1.c: In function ‘test_enumerated_decode_bad’:
++egg/test-asn1.c:1678:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++ 1678 |  gboolean ret;
++      |           ^~~
++egg/test-asn1.c: In function ‘test_enumerated_not_in_list’:
++egg/test-asn1.c:1703:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++ 1703 |  gboolean ret;
++      |           ^~~
++egg/test-asn1.c: In function ‘test_enumerated_not_set’:
++egg/test-asn1.c:1727:9: warning: variable ‘value’ set but not used [-Wunused-but-set-variable]
++ 1727 |  GQuark value;
++      |         ^~~~~
++egg/test-asn1.c: In function ‘test_asn1_integers’:
++egg/test-asn1.c:1781:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++ 1781 |  gboolean ret;
++      |           ^~~
++egg/test-asn1.c: In function ‘test_boolean_seq’:
++egg/test-asn1.c:1823:18: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++ 1823 |  gboolean value, ret;
++      |                  ^~~
++egg/test-asn1.c: In function ‘test_oid’:
++egg/test-asn1.c:1974:14: warning: variable ‘check’ set but not used [-Wunused-but-set-variable]
++ 1974 |  GQuark oid, check;
++      |              ^~~~~
++egg/test-asn1.c: In function ‘test_oid_decode_bad’:
++egg/test-asn1.c:2030:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++ 2030 |  gboolean ret;
++      |           ^~~
++egg/test-asn1.c: In function ‘test_oid_get_no_value’:
++egg/test-asn1.c:2051:9: warning: variable ‘oid’ set but not used [-Wunused-but-set-variable]
++ 2051 |  gchar *oid;
++      |         ^~~
++egg/test-asn1.c: In function ‘test_create_by_oid_invalid’:
++egg/test-asn1.c:2174:9: warning: unused variable ‘node’ [-Wunused-variable]
++ 2174 |  GNode *node = egg_asn1x_create (pkix_asn1_tab, "23.23.23.23");
++      |         ^~~~
++egg/test-asn1.c: In function ‘test_create_and_decode_invalid’:
++egg/test-asn1.c:2252:9: warning: variable ‘asn’ set but not used [-Wunused-but-set-variable]
++ 2252 |  GNode *asn;
++      |         ^~~
++  CC       egg/libegg_asn1x_la-egg-asn1-defs.lo
++  CC       egg/test-dn.o
++  CC       egg/test-cleanup.o
++  CC       egg/test-hex.o
++egg/egg-asn1x.c: In function ‘atlv_unparse_der’:
++egg/egg-asn1x.c:1422:16: warning: variable ‘exp’ set but not used [-Wunused-but-set-variable]
++ 1422 |  const guchar *exp;
++      |                ^~~
++egg/test-hex.c: In function ‘test_decode_fail’:
++egg/test-hex.c:96:10: warning: variable ‘data’ set but not used [-Wunused-but-set-variable]
++   96 |  guchar *data;
++      |          ^~~~
++  CC       egg/test-hkdf.o
++  CC       egg/test-oid.o
++egg/test-hkdf.c: In function ‘test_hkdf_test_case_1’:
++egg/test-hkdf.c:55:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++   55 |  gboolean ret;
++      |           ^~~
++egg/test-hkdf.c: In function ‘test_hkdf_test_case_2’:
++egg/test-hkdf.c:118:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  118 |  gboolean ret;
++      |           ^~~
++egg/test-hkdf.c: In function ‘test_hkdf_test_case_3’:
++egg/test-hkdf.c:151:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  151 |  gboolean ret;
++      |           ^~~
++egg/test-hkdf.c: In function ‘test_hkdf_test_case_4’:
++egg/test-hkdf.c:185:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  185 |  gboolean ret;
++      |           ^~~
++egg/test-hkdf.c: In function ‘test_hkdf_test_case_5’:
++egg/test-hkdf.c:248:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  248 |  gboolean ret;
++      |           ^~~
++egg/test-hkdf.c: In function ‘test_hkdf_test_case_6’:
++egg/test-hkdf.c:281:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  281 |  gboolean ret;
++      |           ^~~
++egg/test-hkdf.c: In function ‘test_hkdf_test_case_7’:
++egg/test-hkdf.c:314:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  314 |  gboolean ret;
++      |           ^~~
++In file included from /usr/include/glib-2.0/glib.h:85,
++                 from ./egg/egg-oid.h:26,
++                 from egg/test-oid.c:24:
++egg/test-oid.c: In function ‘main’:
++/usr/include/glib-2.0/glib/gtestutils.h:250:5: warning: implicit declaration of function ‘exit’ [-Wimplicit-function-declaration]
++  250 |     exit (1); \
++      |     ^~~~
++egg/test-oid.c:48:2: note: in expansion of macro ‘g_test_init’
++   48 |  g_test_init (&argc, &argv, NULL);
++      |  ^~~~~~~~~~~
++/usr/include/glib-2.0/glib/gtestutils.h:250:5: warning: incompatible implicit declaration of built-in function ‘exit’
++  250 |     exit (1); \
++      |     ^~~~
++egg/test-oid.c:48:2: note: in expansion of macro ‘g_test_init’
++   48 |  g_test_init (&argc, &argv, NULL);
++      |  ^~~~~~~~~~~
++egg/test-oid.c:25:1: note: include ‘<stdlib.h>’ or provide a declaration of ‘exit’
++   24 | #include "egg/egg-oid.h"
++  +++ |+#include <stdlib.h>
++   25 | 
++  CC       egg/test-secmem.o
++  CC       egg/test-padding.o
++egg/test-secmem.c: In function ‘test_alloc_free’:
++egg/test-secmem.c:71:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++   71 |  gboolean ret;
++      |           ^~~
++egg/test-secmem.c: In function ‘test_alloc_two’:
++egg/test-secmem.c:107:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  107 |  gboolean ret;
++      |           ^~~
++  CC       egg/test-symkey.o
++egg/test-padding.c: In function ‘test_pkcs1_two_padding’:
++egg/test-padding.c:97:10: warning: variable ‘result’ set but not used [-Wunused-but-set-variable]
++   97 |  guchar *result;
++      |          ^~~~~~
++  CC       egg/test-armor.o
++egg/test-symkey.c: In function ‘test_generate_key_simple’:
++egg/test-symkey.c:127:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  127 |  gboolean ret;
++      |           ^~~
++egg/test-symkey.c: In function ‘test_generate_key_pkcs12’:
++egg/test-symkey.c:156:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  156 |  gboolean ret;
++      |           ^~~
++egg/test-symkey.c: In function ‘test_generate_key_pbkdf2’:
++egg/test-symkey.c:185:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  185 |  gboolean ret;
++      |           ^~~
++egg/test-symkey.c: In function ‘test_generate_key_pbe’:
++egg/test-symkey.c:214:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  214 |  gboolean ret;
++      |           ^~~
++egg/test-symkey.c: In function ‘test_read_cipher’:
++egg/test-symkey.c:367:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  367 |  gboolean ret;
++      |           ^~~
++egg/test-symkey.c: In function ‘test_read_cipher_invalid’:
++egg/test-symkey.c:485:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  485 |  gboolean ret;
++      |           ^~~
++egg/test-symkey.c: In function ‘test_read_cipher_unsupported_pbe’:
++egg/test-symkey.c:506:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  506 |  gboolean ret;
++      |           ^~~
++egg/test-symkey.c: In function ‘test_read_mac’:
++egg/test-symkey.c:572:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  572 |  gboolean ret;
++      |           ^~~
++egg/test-symkey.c: In function ‘test_read_mac_invalid’:
++egg/test-symkey.c:604:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  604 |  gboolean ret;
++      |           ^~~
++  CC       egg/test-openssl.o
++  CC       egg/test-dh.o
++egg/test-dh.c: In function ‘test_perform’:
++egg/test-dh.c:45:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++   45 |  gboolean ret;
++      |           ^~~
++egg/test-dh.c: In function ‘test_short_pair’:
++egg/test-dh.c:83:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++   83 |  gboolean ret;
++      |           ^~~
++egg/test-dh.c: In function ‘check_dh_default’:
++egg/test-dh.c:108:15: warning: variable ‘gcry’ set but not used [-Wunused-but-set-variable]
++  108 |  gcry_error_t gcry;
++      |               ^~~~
++egg/test-dh.c:104:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  104 |  gboolean ret;
++      |           ^~~
++egg/test-dh.c: In function ‘test_default_bad’:
++egg/test-dh.c:181:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  181 |  gboolean ret;
++      |           ^~~
++  CC       egg/test-file-tracker.o
++egg/test-openssl.c: In function ‘test_parse_reference’:
++egg/test-openssl.c:110:8: warning: variable ‘num’ set but not used [-Wunused-but-set-variable]
++  110 |  guint num;
++      |        ^~~
++egg/test-openssl.c: In function ‘test_write_reference’:
++egg/test-openssl.c:125:8: warning: variable ‘num’ set but not used [-Wunused-but-set-variable]
++  125 |  guint num;
++      |        ^~~
++egg/test-openssl.c: In function ‘test_write_exactly_same’:
++egg/test-openssl.c:151:8: warning: variable ‘num’ set but not used [-Wunused-but-set-variable]
++  151 |  guint num;
++      |        ^~~
++egg/test-openssl.c: In function ‘test_openssl_roundtrip’:
++egg/test-openssl.c:181:8: warning: variable ‘num’ set but not used [-Wunused-but-set-variable]
++  181 |  guint num;
++      |        ^~~
++  CC       daemon/test-startup.o
++egg/test-file-tracker.c: In function ‘test_watch_file’:
++egg/test-file-tracker.c:152:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  152 |  gboolean ret;
++      |           ^~~
++egg/test-file-tracker.c: In function ‘test_nomatch’:
++egg/test-file-tracker.c:217:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  217 |  gboolean ret;
++      |           ^~~
++  CC       daemon/gkd-test.lo
++In file included from /usr/include/glib-2.0/glib.h:85,
++                 from daemon/gkd-test.h:24,
++                 from daemon/test-startup.c:23:
++daemon/test-startup.c: In function ‘main’:
++/usr/include/glib-2.0/glib/gtestutils.h:250:5: warning: implicit declaration of function ‘exit’ [-Wimplicit-function-declaration]
++  250 |     exit (1); \
++      |     ^~~~
++daemon/test-startup.c:274:2: note: in expansion of macro ‘g_test_init’
++  274 |  g_test_init (&argc, &argv, NULL);
++      |  ^~~~~~~~~~~
++/usr/include/glib-2.0/glib/gtestutils.h:250:5: warning: incompatible implicit declaration of built-in function ‘exit’
++  250 |     exit (1); \
++      |     ^~~~
++daemon/test-startup.c:274:2: note: in expansion of macro ‘g_test_init’
++  274 |  g_test_init (&argc, &argv, NULL);
++      |  ^~~~~~~~~~~
++daemon/test-startup.c:36:1: note: include ‘<stdlib.h>’ or provide a declaration of ‘exit’
++   35 | #include <fcntl.h>
++  +++ |+#include <stdlib.h>
++   36 | 
++  CC       egg/libegg_test_la-egg-testing.lo
++  CC       egg/libegg_test_la-mock-interaction.lo
++  CC       daemon/test_shutdown-test-shutdown.o
++  CC       daemon/dbus/test_dbus_util-test-dbus-util.o
++In file included from /usr/include/glib-2.0/glib.h:85,
++                 from daemon/dbus/gkd-secret-util.h:26,
++                 from daemon/dbus/test-dbus-util.c:25:
++daemon/dbus/test-dbus-util.c: In function ‘main’:
++/usr/include/glib-2.0/glib/gtestutils.h:250:5: warning: implicit declaration of function ‘exit’ [-Wimplicit-function-declaration]
++  250 |     exit (1); \
++      |     ^~~~
++daemon/dbus/test-dbus-util.c:48:2: note: in expansion of macro ‘g_test_init’
++   48 |  g_test_init (&argc, &argv, NULL);
++      |  ^~~~~~~~~~~
++/usr/include/glib-2.0/glib/gtestutils.h:250:5: warning: incompatible implicit declaration of built-in function ‘exit’
++  250 |     exit (1); \
++      |     ^~~~
++daemon/dbus/test-dbus-util.c:48:2: note: in expansion of macro ‘g_test_init’
++   48 |  g_test_init (&argc, &argv, NULL);
++      |  ^~~~~~~~~~~
++daemon/dbus/test-dbus-util.c:26:1: note: include ‘<stdlib.h>’ or provide a declaration of ‘exit’
++   25 | #include "gkd-secret-util.h"
++  +++ |+#include <stdlib.h>
++   26 | 
++  CC       daemon/dbus/test-service.lo
++  CC       daemon/dbus/test-dbus-search.o
++In file included from /usr/include/glib-2.0/glib.h:85,
++                 from daemon/gkd-test.h:24,
++                 from daemon/test-shutdown.c:23:
++daemon/test-shutdown.c: In function ‘main’:
++/usr/include/glib-2.0/glib/gtestutils.h:250:5: warning: implicit declaration of function ‘exit’ [-Wimplicit-function-declaration]
++  250 |     exit (1); \
++      |     ^~~~
++daemon/test-shutdown.c:133:2: note: in expansion of macro ‘g_test_init’
++  133 |  g_test_init (&argc, &argv, NULL);
++      |  ^~~~~~~~~~~
++/usr/include/glib-2.0/glib/gtestutils.h:250:5: warning: incompatible implicit declaration of built-in function ‘exit’
++  250 |     exit (1); \
++      |     ^~~~
++daemon/test-shutdown.c:133:2: note: in expansion of macro ‘g_test_init’
++  133 |  g_test_init (&argc, &argv, NULL);
++      |  ^~~~~~~~~~~
++daemon/test-shutdown.c:36:1: note: include ‘<stdlib.h>’ or provide a declaration of ‘exit’
++   35 | #include <fcntl.h>
++  +++ |+#include <stdlib.h>
++   36 | 
++  CC       daemon/dbus/test-dbus-items.o
++In file included from /usr/include/glib-2.0/glib.h:85,
++                 from daemon/dbus/test-service.h:26,
++                 from daemon/dbus/test-dbus-search.c:25:
++daemon/dbus/test-dbus-search.c: In function ‘main’:
++/usr/include/glib-2.0/glib/gtestutils.h:250:5: warning: implicit declaration of function ‘exit’ [-Wimplicit-function-declaration]
++  250 |     exit (1); \
++      |     ^~~~
++daemon/dbus/test-dbus-search.c:127:2: note: in expansion of macro ‘g_test_init’
++  127 |  g_test_init (&argc, &argv, NULL);
++      |  ^~~~~~~~~~~
++/usr/include/glib-2.0/glib/gtestutils.h:250:5: warning: incompatible implicit declaration of built-in function ‘exit’
++  250 |     exit (1); \
++      |     ^~~~
++daemon/dbus/test-dbus-search.c:127:2: note: in expansion of macro ‘g_test_init’
++  127 |  g_test_init (&argc, &argv, NULL);
++      |  ^~~~~~~~~~~
++daemon/dbus/test-dbus-search.c:36:1: note: include ‘<stdlib.h>’ or provide a declaration of ‘exit’
++   35 | #include <fcntl.h>
++  +++ |+#include <stdlib.h>
++   36 | 
++  CC       daemon/dbus/test_dbus_signals-test-dbus-signals.o
++In file included from /usr/include/glib-2.0/glib.h:85,
++                 from daemon/dbus/test-service.h:26,
++                 from daemon/dbus/test-dbus-items.c:25:
++daemon/dbus/test-dbus-items.c: In function ‘main’:
++/usr/include/glib-2.0/glib/gtestutils.h:250:5: warning: implicit declaration of function ‘exit’ [-Wimplicit-function-declaration]
++  250 |     exit (1); \
++      |     ^~~~
++daemon/dbus/test-dbus-items.c:194:2: note: in expansion of macro ‘g_test_init’
++  194 |  g_test_init (&argc, &argv, NULL);
++      |  ^~~~~~~~~~~
++/usr/include/glib-2.0/glib/gtestutils.h:250:5: warning: incompatible implicit declaration of built-in function ‘exit’
++  250 |     exit (1); \
++      |     ^~~~
++daemon/dbus/test-dbus-items.c:194:2: note: in expansion of macro ‘g_test_init’
++  194 |  g_test_init (&argc, &argv, NULL);
++      |  ^~~~~~~~~~~
++daemon/dbus/test-dbus-items.c:36:1: note: include ‘<stdlib.h>’ or provide a declaration of ‘exit’
++   35 | #include <fcntl.h>
++  +++ |+#include <stdlib.h>
++   36 | 
++  CC       daemon/dbus/test-dbus-lock.o
++In file included from /usr/include/glib-2.0/glib.h:85,
++                 from daemon/dbus/test-service.h:26,
++                 from daemon/dbus/test-dbus-lock.c:27:
++daemon/dbus/test-dbus-lock.c: In function ‘main’:
++/usr/include/glib-2.0/glib/gtestutils.h:250:5: warning: implicit declaration of function ‘exit’ [-Wimplicit-function-declaration]
++  250 |     exit (1); \
++      |     ^~~~
++daemon/dbus/test-dbus-lock.c:127:2: note: in expansion of macro ‘g_test_init’
++  127 |  g_test_init (&argc, &argv, NULL);
++      |  ^~~~~~~~~~~
++/usr/include/glib-2.0/glib/gtestutils.h:250:5: warning: incompatible implicit declaration of built-in function ‘exit’
++  250 |     exit (1); \
++      |     ^~~~
++daemon/dbus/test-dbus-lock.c:127:2: note: in expansion of macro ‘g_test_init’
++  127 |  g_test_init (&argc, &argv, NULL);
++      |  ^~~~~~~~~~~
++daemon/dbus/test-dbus-lock.c:30:1: note: include ‘<stdlib.h>’ or provide a declaration of ‘exit’
++   29 | #include "egg/egg-testing.h"
++  +++ |+#include <stdlib.h>
++   30 | 
++At top level:
++daemon/dbus/test-dbus-lock.c:50:1: warning: ‘get_locked’ defined but not used [-Wunused-function]
++   50 | get_locked (Test *test,
++      | ^~~~~~~~~~
++  CC       daemon/dbus/test_dbus_portal-test-dbus-portal.o
++In file included from /usr/include/glib-2.0/glib.h:85,
++                 from daemon/dbus/test-service.h:26,
++                 from daemon/dbus/test-dbus-signals.c:25:
++daemon/dbus/test-dbus-signals.c: In function ‘main’:
++/usr/include/glib-2.0/glib/gtestutils.h:250:5: warning: implicit declaration of function ‘exit’ [-Wimplicit-function-declaration]
++  250 |     exit (1); \
++      |     ^~~~
++daemon/dbus/test-dbus-signals.c:790:2: note: in expansion of macro ‘g_test_init’
++  790 |  g_test_init (&argc, &argv, NULL);
++      |  ^~~~~~~~~~~
++/usr/include/glib-2.0/glib/gtestutils.h:250:5: warning: incompatible implicit declaration of built-in function ‘exit’
++  250 |     exit (1); \
++      |     ^~~~
++daemon/dbus/test-dbus-signals.c:790:2: note: in expansion of macro ‘g_test_init’
++  790 |  g_test_init (&argc, &argv, NULL);
++      |  ^~~~~~~~~~~
++daemon/dbus/test-dbus-signals.c:38:1: note: include ‘<stdlib.h>’ or provide a declaration of ‘exit’
++   37 | #include <fcntl.h>
++  +++ |+#include <stdlib.h>
++   38 | 
++  CC       daemon/ssh-agent/test_gkd_ssh_agent_interaction-test-gkd-ssh-agent-interaction.o
++  CC       daemon/ssh-agent/libgkd_ssh_agent_test_la-test-common.lo
++  CC       daemon/ssh-agent/test_gkd_ssh_agent_preload-test-gkd-ssh-agent-preload.o
++In file included from /usr/include/glib-2.0/glib.h:85,
++                 from /usr/include/glib-2.0/gobject/gbinding.h:28,
++                 from /usr/include/glib-2.0/glib-object.h:22,
++                 from /usr/include/glib-2.0/gio/gioenums.h:28,
++                 from /usr/include/glib-2.0/gio/giotypes.h:28,
++                 from /usr/include/glib-2.0/gio/gio.h:26,
++                 from daemon/ssh-agent/gkd-ssh-agent-interaction.h:26,
++                 from daemon/ssh-agent/test-gkd-ssh-agent-interaction.c:26:
++daemon/ssh-agent/test-gkd-ssh-agent-interaction.c: In function ‘main’:
++/usr/include/glib-2.0/glib/gtestutils.h:250:5: warning: implicit declaration of function ‘exit’ [-Wimplicit-function-declaration]
++  250 |     exit (1); \
++      |     ^~~~
++daemon/ssh-agent/test-gkd-ssh-agent-interaction.c:189:2: note: in expansion of macro ‘g_test_init’
++  189 |  g_test_init (&argc, &argv, NULL);
++      |  ^~~~~~~~~~~
++/usr/include/glib-2.0/glib/gtestutils.h:250:5: warning: incompatible implicit declaration of built-in function ‘exit’
++  250 |     exit (1); \
++      |     ^~~~
++daemon/ssh-agent/test-gkd-ssh-agent-interaction.c:189:2: note: in expansion of macro ‘g_test_init’
++  189 |  g_test_init (&argc, &argv, NULL);
++      |  ^~~~~~~~~~~
++daemon/ssh-agent/test-gkd-ssh-agent-interaction.c:33:1: note: include ‘<stdlib.h>’ or provide a declaration of ‘exit’
++   32 | #include <gcr/gcr-base.h>
++  +++ |+#include <stdlib.h>
++   33 | 
++  CC       daemon/ssh-agent/test_gkd_ssh_agent_process-test-gkd-ssh-agent-process.o
++In file included from /usr/include/glib-2.0/glib.h:85,
++                 from /usr/include/glib-2.0/gobject/gbinding.h:28,
++                 from /usr/include/glib-2.0/glib-object.h:22,
++                 from daemon/ssh-agent/gkd-ssh-agent-preload.h:27,
++                 from daemon/ssh-agent/test-gkd-ssh-agent-preload.c:25:
++daemon/ssh-agent/test-gkd-ssh-agent-preload.c: In function ‘main’:
++/usr/include/glib-2.0/glib/gtestutils.h:250:5: warning: implicit declaration of function ‘exit’ [-Wimplicit-function-declaration]
++  250 |     exit (1); \
++      |     ^~~~
++daemon/ssh-agent/test-gkd-ssh-agent-preload.c:158:2: note: in expansion of macro ‘g_test_init’
++  158 |  g_test_init (&argc, &argv, NULL);
++      |  ^~~~~~~~~~~
++/usr/include/glib-2.0/glib/gtestutils.h:250:5: warning: incompatible implicit declaration of built-in function ‘exit’
++  250 |     exit (1); \
++      |     ^~~~
++daemon/ssh-agent/test-gkd-ssh-agent-preload.c:158:2: note: in expansion of macro ‘g_test_init’
++  158 |  g_test_init (&argc, &argv, NULL);
++      |  ^~~~~~~~~~~
++daemon/ssh-agent/test-gkd-ssh-agent-preload.c:30:1: note: include ‘<stdlib.h>’ or provide a declaration of ‘exit’
++   29 | #include <unistd.h>
++  +++ |+#include <stdlib.h>
++   30 | 
++  CC       daemon/ssh-agent/test_gkd_ssh_agent_service-test-gkd-ssh-agent-service.o
++  CC       daemon/ssh-agent/test_gkd_ssh_agent_util-test-gkd-ssh-agent-util.o
++  CC       pkcs11/gkm/test-attributes.o
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_equal_zero_len_null_ptr’:
++pkcs11/gkm/test-attributes.c:44:15: warning: unused variable ‘attr2’ [-Wunused-variable]
++   44 |  CK_ATTRIBUTE attr2 = { CKA_LABEL, NULL, 0 };
++      |               ^~~~~
++pkcs11/gkm/test-attributes.c:43:15: warning: unused variable ‘attr1’ [-Wunused-variable]
++   43 |  CK_ATTRIBUTE attr1 = { CKA_LABEL, "", 0 };
++      |               ^~~~~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_consumed’:
++pkcs11/gkm/test-attributes.c:62:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++   62 |  gboolean ret;
++      |           ^~~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_set_data’:
++pkcs11/gkm/test-attributes.c:80:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++   80 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_set_data_short’:
++pkcs11/gkm/test-attributes.c:93:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++   93 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_set_data_length’:
++pkcs11/gkm/test-attributes.c:104:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  104 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_set_empty’:
++pkcs11/gkm/test-attributes.c:116:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  116 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_get_bool’:
++pkcs11/gkm/test-attributes.c:131:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  131 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_get_bool_invalid’:
++pkcs11/gkm/test-attributes.c:146:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  146 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_set_time’:
++pkcs11/gkm/test-attributes.c:159:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  159 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_set_time_empty’:
++pkcs11/gkm/test-attributes.c:174:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  174 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_set_time_length’:
++pkcs11/gkm/test-attributes.c:187:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  187 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_get_time’:
++pkcs11/gkm/test-attributes.c:202:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  202 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_get_time_empty’:
++pkcs11/gkm/test-attributes.c:216:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  216 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_get_time_invalid’:
++pkcs11/gkm/test-attributes.c:230:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  230 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_get_time_invalid_length’:
++pkcs11/gkm/test-attributes.c:243:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  243 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_get_string’:
++pkcs11/gkm/test-attributes.c:256:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  256 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_get_string_null’:
++pkcs11/gkm/test-attributes.c:273:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  273 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_get_string_not_utf8’:
++pkcs11/gkm/test-attributes.c:288:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  288 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_get_string_bad_pointer’:
++pkcs11/gkm/test-attributes.c:303:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  303 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_set_bool’:
++pkcs11/gkm/test-attributes.c:318:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  318 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_set_bool_short’:
++pkcs11/gkm/test-attributes.c:336:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  336 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_set_bool_length’:
++pkcs11/gkm/test-attributes.c:347:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  347 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_set_ulong’:
++pkcs11/gkm/test-attributes.c:360:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  360 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_set_ulong_short’:
++pkcs11/gkm/test-attributes.c:373:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  373 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_set_ulong_length’:
++pkcs11/gkm/test-attributes.c:384:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  384 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_set_string’:
++pkcs11/gkm/test-attributes.c:396:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  396 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_set_string_null’:
++pkcs11/gkm/test-attributes.c:409:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  409 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_set_string_short’:
++pkcs11/gkm/test-attributes.c:421:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  421 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_set_string_length’:
++pkcs11/gkm/test-attributes.c:432:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  432 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_set_date’:
++pkcs11/gkm/test-attributes.c:445:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  445 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-attributes.c:444:11: warning: variable ‘date’ set but not used [-Wunused-but-set-variable]
++  444 |  CK_DATE *date;
++      |           ^~~~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_set_date_none’:
++pkcs11/gkm/test-attributes.c:461:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  461 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_set_date_short’:
++pkcs11/gkm/test-attributes.c:473:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  473 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_set_date_length’:
++pkcs11/gkm/test-attributes.c:484:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  484 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_set_mpi’:
++pkcs11/gkm/test-attributes.c:497:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  497 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_set_mpi_short’:
++pkcs11/gkm/test-attributes.c:516:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  516 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_set_mpi_length’:
++pkcs11/gkm/test-attributes.c:533:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  533 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_equal’:
++pkcs11/gkm/test-attributes.c:553:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  553 |  gboolean ret;
++      |           ^~~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_equal_same’:
++pkcs11/gkm/test-attributes.c:566:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  566 |  gboolean ret;
++      |           ^~~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_equal_same_pointer’:
++pkcs11/gkm/test-attributes.c:578:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  578 |  gboolean ret;
++      |           ^~~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_equal_diff_types’:
++pkcs11/gkm/test-attributes.c:590:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  590 |  gboolean ret;
++      |           ^~~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_equal_diff_length’:
++pkcs11/gkm/test-attributes.c:601:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  601 |  gboolean ret;
++      |           ^~~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_equal_diff_value’:
++pkcs11/gkm/test-attributes.c:612:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  612 |  gboolean ret;
++      |           ^~~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_contains’:
++pkcs11/gkm/test-attributes.c:633:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  633 |  gboolean ret;
++      |           ^~~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_contains_no_value’:
++pkcs11/gkm/test-attributes.c:643:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  643 |  gboolean ret;
++      |           ^~~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_contains_no_type’:
++pkcs11/gkm/test-attributes.c:653:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  653 |  gboolean ret;
++      |           ^~~
++pkcs11/gkm/test-attributes.c: In function ‘test_attributes_find’:
++pkcs11/gkm/test-attributes.c:662:19: warning: variable ‘attr’ set but not used [-Wunused-but-set-variable]
++  662 |  CK_ATTRIBUTE_PTR attr;
++      |                   ^~~~
++pkcs11/gkm/test-attributes.c: In function ‘test_attributes_find_not_found’:
++pkcs11/gkm/test-attributes.c:672:19: warning: variable ‘attr’ set but not used [-Wunused-but-set-variable]
++  672 |  CK_ATTRIBUTE_PTR attr;
++      |                   ^~~~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_find_boolean’:
++pkcs11/gkm/test-attributes.c:682:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  682 |  gboolean ret;
++      |           ^~~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_find_boolean_no_type’:
++pkcs11/gkm/test-attributes.c:693:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  693 |  gboolean ret;
++      |           ^~~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_find_boolean_not_bbool’:
++pkcs11/gkm/test-attributes.c:703:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  703 |  gboolean ret;
++      |           ^~~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_find_ulong’:
++pkcs11/gkm/test-attributes.c:713:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  713 |  gboolean ret;
++      |           ^~~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_find_ulong_no_type’:
++pkcs11/gkm/test-attributes.c:724:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  724 |  gboolean ret;
++      |           ^~~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_find_ulong_not_ulong’:
++pkcs11/gkm/test-attributes.c:734:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  734 |  gboolean ret;
++      |           ^~~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_find_mpi’:
++pkcs11/gkm/test-attributes.c:744:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  744 |  gboolean ret;
++      |           ^~~
++pkcs11/gkm/test-attributes.c: In function ‘test_attribute_find_mpi_no_type’:
++pkcs11/gkm/test-attributes.c:758:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  758 |  gboolean ret;
++      |           ^~~
++pkcs11/gkm/test-attributes.c: In function ‘test_template_find’:
++pkcs11/gkm/test-attributes.c:804:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  804 |  gboolean ret, bvalue;
++      |           ^~~
++  CC       pkcs11/gkm/mock-module.o
++  CC       pkcs11/gkm/mock-locked-object.o
++pkcs11/gkm/mock-module.c: In function ‘mock_module_open_session’:
++pkcs11/gkm/mock-module.c:80:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++   80 |  CK_RV rv;
++      |        ^~
++  CC       pkcs11/gkm/test-credential.o
++  CC       pkcs11/gkm/test-data-asn1.o
++pkcs11/gkm/test-data-asn1.c: In function ‘test_asn1_integers’:
++pkcs11/gkm/test-data-asn1.c:82:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++   82 |  gboolean ret;
++      |           ^~~
++pkcs11/gkm/test-data-asn1.c: In function ‘test_asn1_string_mpi’:
++pkcs11/gkm/test-data-asn1.c:123:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  123 |  gboolean ret;
++      |           ^~~
++pkcs11/gkm/test-data-asn1.c: In function ‘test_asn1_bit_string’:
++pkcs11/gkm/test-data-asn1.c:163:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  163 |  gboolean ret;
++      |           ^~~
++pkcs11/gkm/test-data-asn1.c: In function ‘test_asn1_string’:
++pkcs11/gkm/test-data-asn1.c:209:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  209 |  gboolean ret;
++      |           ^~~
++pkcs11/gkm/test-data-asn1.c: In function ‘test_asn1_oid’:
++pkcs11/gkm/test-data-asn1.c:251:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  251 |  gboolean ret;
++      |           ^~~
++pkcs11/gkm/test-credential.c: In function ‘setup’:
++pkcs11/gkm/test-credential.c:49:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++   49 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-credential.c: In function ‘test_create’:
++pkcs11/gkm/test-credential.c:80:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++   80 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-credential.c: In function ‘test_create_missing_pin’:
++pkcs11/gkm/test-credential.c:102:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  102 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-credential.c: In function ‘test_create_no_object’:
++pkcs11/gkm/test-credential.c:122:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  122 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-credential.c: In function ‘test_create_invalid_object’:
++pkcs11/gkm/test-credential.c:150:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  150 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-credential.c: In function ‘test_get_attributes’:
++pkcs11/gkm/test-credential.c:171:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  171 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-credential.c: In function ‘test_object_property’:
++pkcs11/gkm/test-credential.c:192:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  192 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-credential.c: In function ‘test_login_property’:
++pkcs11/gkm/test-credential.c:215:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  215 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-credential.c:213:15: warning: variable ‘password’ set but not used [-Wunused-but-set-variable]
++  213 |  const gchar *password;
++      |               ^~~~~~~~
++pkcs11/gkm/test-credential.c: In function ‘test_data’:
++pkcs11/gkm/test-credential.c:258:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  258 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-credential.c: In function ‘test_connect_object’:
++pkcs11/gkm/test-credential.c:287:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  287 |  CK_RV rv;
++      |        ^~
++  CC       pkcs11/gkm/test-data-der.o
++  CC       pkcs11/gkm/test-memory-store.o
++  CC       pkcs11/gkm/test-object.o
++pkcs11/gkm/test-memory-store.c: In function ‘test_get_attribute_default’:
++pkcs11/gkm/test-memory-store.c:119:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  119 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-memory-store.c: In function ‘test_read_value_default’:
++pkcs11/gkm/test-memory-store.c:136:16: warning: variable ‘value’ set but not used [-Wunused-but-set-variable]
++  136 |  gconstpointer value;
++      |                ^~~~~
++pkcs11/gkm/test-memory-store.c: In function ‘test_get_invalid’:
++pkcs11/gkm/test-memory-store.c:164:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  164 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-memory-store.c: In function ‘test_get_sensitive’:
++pkcs11/gkm/test-memory-store.c:178:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  178 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-memory-store.c: In function ‘test_get_internal’:
++pkcs11/gkm/test-memory-store.c:192:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  192 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-memory-store.c: In function ‘test_set_get_attribute’:
++pkcs11/gkm/test-memory-store.c:233:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  233 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-memory-store.c: In function ‘test_write_read_value’:
++pkcs11/gkm/test-memory-store.c:257:16: warning: variable ‘value’ set but not used [-Wunused-but-set-variable]
++  257 |  gconstpointer value;
++      |                ^~~~~
++pkcs11/gkm/test-memory-store.c: In function ‘test_set_transaction_default’:
++pkcs11/gkm/test-memory-store.c:295:16: warning: variable ‘value’ set but not used [-Wunused-but-set-variable]
++  295 |  gconstpointer value;
++      |                ^~~~~
++pkcs11/gkm/test-memory-store.c: In function ‘test_set_transaction_revert_first’:
++pkcs11/gkm/test-memory-store.c:334:16: warning: variable ‘value’ set but not used [-Wunused-but-set-variable]
++  334 |  gconstpointer value;
++      |                ^~~~~
++pkcs11/gkm/test-data-der.c: In function ‘compare_keys’:
++pkcs11/gkm/test-data-der.c:102:10: warning: variable ‘p’ set but not used [-Wunused-but-set-variable]
++  102 |  guchar *p;
++      |          ^
++pkcs11/gkm/test-data-der.c: In function ‘test_der_public’:
++pkcs11/gkm/test-data-der.c:117:16: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  117 |  GkmDataResult ret;
++      |                ^~~
++pkcs11/gkm/test-data-der.c: In function ‘test_der_private’:
++pkcs11/gkm/test-data-der.c:213:16: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  213 |  GkmDataResult ret;
++      |                ^~~
++pkcs11/gkm/test-data-der.c: In function ‘test_der_dsa_private_parts’:
++pkcs11/gkm/test-data-der.c:267:16: warning: variable ‘result’ set but not used [-Wunused-but-set-variable]
++  267 |  GkmDataResult result;
++      |                ^~~~~~
++pkcs11/gkm/test-data-der.c: In function ‘test_read_public_key_info’:
++pkcs11/gkm/test-data-der.c:316:15: warning: variable ‘gcry’ set but not used [-Wunused-but-set-variable]
++  316 |  gcry_error_t gcry;
++      |               ^~~~
++pkcs11/gkm/test-data-der.c:314:16: warning: variable ‘res’ set but not used [-Wunused-but-set-variable]
++  314 |  GkmDataResult res;
++      |                ^~~
++pkcs11/gkm/test-data-der.c: In function ‘test_read_certificate’:
++pkcs11/gkm/test-data-der.c:342:16: warning: variable ‘res’ set but not used [-Wunused-but-set-variable]
++  342 |  GkmDataResult res;
++      |                ^~~
++pkcs11/gkm/test-data-der.c: In function ‘test_read_basic_constraints’:
++pkcs11/gkm/test-data-der.c:452:16: warning: variable ‘res’ set but not used [-Wunused-but-set-variable]
++  452 |  GkmDataResult res;
++      |                ^~~
++pkcs11/gkm/test-data-der.c: In function ‘test_read_key_usage’:
++pkcs11/gkm/test-data-der.c:470:16: warning: variable ‘res’ set but not used [-Wunused-but-set-variable]
++  470 |  GkmDataResult res;
++      |                ^~~
++pkcs11/gkm/test-data-der.c: In function ‘test_read_enhanced_usage’:
++pkcs11/gkm/test-data-der.c:487:16: warning: variable ‘res’ set but not used [-Wunused-but-set-variable]
++  487 |  GkmDataResult res;
++      |                ^~~
++pkcs11/gkm/test-data-der.c: In function ‘test_read_all_pkcs8’:
++pkcs11/gkm/test-data-der.c:504:16: warning: variable ‘res’ set but not used [-Wunused-but-set-variable]
++  504 |  GkmDataResult res;
++      |                ^~~
++pkcs11/gkm/test-data-der.c: In function ‘test_read_pkcs8_bad_password’:
++pkcs11/gkm/test-data-der.c:543:16: warning: variable ‘res’ set but not used [-Wunused-but-set-variable]
++  543 |  GkmDataResult res;
++      |                ^~~
++pkcs11/gkm/test-data-der.c: In function ‘test_write_pkcs8_plain’:
++pkcs11/gkm/test-data-der.c:563:16: warning: variable ‘res’ set but not used [-Wunused-but-set-variable]
++  563 |  GkmDataResult res;
++      |                ^~~
++pkcs11/gkm/test-data-der.c: In function ‘test_write_pkcs8_encrypted’:
++pkcs11/gkm/test-data-der.c:626:16: warning: variable ‘res’ set but not used [-Wunused-but-set-variable]
++  626 |  GkmDataResult res;
++      |                ^~~
++At top level:
++pkcs11/gkm/test-data-der.c:99:1: warning: ‘compare_keys’ defined but not used [-Wunused-function]
++   99 | compare_keys (gcry_sexp_t key, gcry_sexp_t sexp)
++      | ^~~~~~~~~~~~
++  CC       pkcs11/gkm/test-certificate.o
++  CC       pkcs11/gkm/test-secret.o
++pkcs11/gkm/test-object.c: In function ‘test_create_destroy_transient’:
++pkcs11/gkm/test-object.c:94:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++   94 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-object.c: In function ‘test_transient_transacted_fail’:
++pkcs11/gkm/test-object.c:134:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  134 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-object.c: In function ‘test_create_transient_bad_value’:
++pkcs11/gkm/test-object.c:154:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  154 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-object.c: In function ‘test_create_auto_destruct’:
++pkcs11/gkm/test-object.c:186:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  186 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-object.c: In function ‘test_create_auto_destruct_not_transient’:
++pkcs11/gkm/test-object.c:224:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  224 |  CK_RV rv;
++      |        ^~
++pkcs11/gkm/test-object.c: In function ‘test_expose’:
++pkcs11/gkm/test-object.c:236:13: warning: variable ‘check’ set but not used [-Wunused-but-set-variable]
++  236 |  GkmObject *check, *object;
++      |             ^~~~~
++pkcs11/gkm/test-object.c: In function ‘test_expose_transaction’:
++pkcs11/gkm/test-object.c:260:13: warning: variable ‘check’ set but not used [-Wunused-but-set-variable]
++  260 |  GkmObject *check, *object;
++      |             ^~~~~
++At top level:
++pkcs11/gkm/test-object.c:62:1: warning: ‘check_object_exists’ defined but not used [-Wunused-function]
++   62 | check_object_exists (CK_OBJECT_HANDLE handle, Test *test)
++      | ^~~~~~~~~~~~~~~~~~~
++  CC       pkcs11/gkm/test-sexp.o
++pkcs11/gkm/test-secret.c: In function ‘test_secret’:
++pkcs11/gkm/test-secret.c:39:15: warning: variable ‘password’ set but not used [-Wunused-but-set-variable]
++   39 |  const gchar *password;
++      |               ^~~~~~~~
++pkcs11/gkm/test-secret.c: In function ‘test_secret_from_login’:
++pkcs11/gkm/test-secret.c:63:15: warning: variable ‘password’ set but not used [-Wunused-but-set-variable]
++   63 |  const gchar *password;
++      |               ^~~~~~~~
++pkcs11/gkm/test-secret.c: In function ‘test_always_has_null’:
++pkcs11/gkm/test-secret.c:111:16: warning: variable ‘memory’ set but not used [-Wunused-but-set-variable]
++  111 |  const guchar *memory;
++      |                ^~~~~~
++  CC       pkcs11/gkm/test-store.o
++pkcs11/gkm/test-secret.c: In function ‘test_null’:
++pkcs11/gkm/test-secret.c:131:15: warning: variable ‘password’ set but not used [-Wunused-but-set-variable]
++  131 |  const gchar *password;
++      |               ^~~~~~~~
++  CC       pkcs11/gkm/test-timer.o
++pkcs11/gkm/test-sexp.c: In function ‘test_parse_key’:
++pkcs11/gkm/test-sexp.c:119:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  119 |  gboolean ret;
++      |           ^~~
++pkcs11/gkm/test-sexp.c: In function ‘test_key_to_public’:
++pkcs11/gkm/test-sexp.c:171:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  171 |  gboolean ret;
++      |           ^~~
++pkcs11/gkm/test-sexp.c: In function ‘test_sign_verify’:
++pkcs11/gkm/test-sexp.c:223:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  223 |  gboolean ret;
++      |           ^~~
++pkcs11/gkm/test-sexp.c: In function ‘assert_get_attribute_ulong’:
++pkcs11/gkm/test-sexp.c:293:8: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  293 |  CK_RV ret;
++      |        ^~~
++pkcs11/gkm/test-sexp.c: In function ‘assert_get_attribute_bool’:
++pkcs11/gkm/test-sexp.c:316:8: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  316 |  CK_RV ret;
++      |        ^~~
++pkcs11/gkm/test-sexp.c: In function ‘assert_get_attribute_buffer’:
++pkcs11/gkm/test-sexp.c:339:8: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  339 |  CK_RV ret;
++      |        ^~~
++pkcs11/gkm/test-sexp.c: In function ‘assert_get_attribute_error’:
++pkcs11/gkm/test-sexp.c:363:8: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  363 |  CK_RV ret;
++      |        ^~~
++pkcs11/gkm/test-sexp.c: In function ‘assert_sexp_compare_bytes’:
++pkcs11/gkm/test-sexp.c:395:13: warning: unused variable ‘bs2’ [-Wunused-variable]
++  395 |  gsize bs1, bs2;
++      |             ^~~
++pkcs11/gkm/test-sexp.c:395:8: warning: unused variable ‘bs1’ [-Wunused-variable]
++  395 |  gsize bs1, bs2;
++      |        ^~~
++  CC       pkcs11/gkm/test-transaction.o
++pkcs11/gkm/test-store.c: In function ‘test_schema_flags’:
++pkcs11/gkm/test-store.c:73:8: warning: unused variable ‘flags’ [-Wunused-variable]
++   73 |  guint flags;
++      |        ^~~~~
++pkcs11/gkm/test-timer.c: In function ‘multiple_callback’:
++pkcs11/gkm/test-timer.c:125:7: warning: unused variable ‘value’ [-Wunused-variable]
++  125 |  gint value = GPOINTER_TO_INT (user_data);
++      |       ^~~~~
++  CC       pkcs11/gnome2-store/test-gnome2-file.o
++In file included from /usr/include/glib-2.0/glib.h:85,
++                 from pkcs11/gkm/mock-module.h:26,
++                 from pkcs11/gkm/test-timer.c:25:
++pkcs11/gkm/test-timer.c: In function ‘main’:
++/usr/include/glib-2.0/glib/gtestutils.h:250:5: warning: implicit declaration of function ‘exit’ [-Wimplicit-function-declaration]
++  250 |     exit (1); \
++      |     ^~~~
++pkcs11/gkm/test-timer.c:166:2: note: in expansion of macro ‘g_test_init’
++  166 |  g_test_init (&argc, &argv, NULL);
++      |  ^~~~~~~~~~~
++/usr/include/glib-2.0/glib/gtestutils.h:250:5: warning: incompatible implicit declaration of built-in function ‘exit’
++  250 |     exit (1); \
++      |     ^~~~
++pkcs11/gkm/test-timer.c:166:2: note: in expansion of macro ‘g_test_init’
++  166 |  g_test_init (&argc, &argv, NULL);
++      |  ^~~~~~~~~~~
++pkcs11/gkm/test-timer.c:32:1: note: include ‘<stdlib.h>’ or provide a declaration of ‘exit’
++   31 | #include <glib-object.h>
++  +++ |+#include <stdlib.h>
++   32 | 
++  CC       pkcs11/gnome2-store/test-gnome2-storage.o
++In file included from /usr/include/glib-2.0/glib.h:85,
++                 from /usr/include/glib-2.0/gobject/gbinding.h:28,
++                 from /usr/include/glib-2.0/glib-object.h:22,
++                 from ./pkcs11/gkm/gkm-transaction.h:24,
++                 from pkcs11/gkm/test-transaction.c:25:
++pkcs11/gkm/test-transaction.c: In function ‘main’:
++/usr/include/glib-2.0/glib/gtestutils.h:250:5: warning: implicit declaration of function ‘exit’ [-Wimplicit-function-declaration]
++  250 |     exit (1); \
++      |     ^~~~
++pkcs11/gkm/test-transaction.c:522:2: note: in expansion of macro ‘g_test_init’
++  522 |  g_test_init (&argc, &argv, NULL);
++      |  ^~~~~~~~~~~
++/usr/include/glib-2.0/glib/gtestutils.h:250:5: warning: incompatible implicit declaration of built-in function ‘exit’
++  250 |     exit (1); \
++      |     ^~~~
++pkcs11/gkm/test-transaction.c:522:2: note: in expansion of macro ‘g_test_init’
++  522 |  g_test_init (&argc, &argv, NULL);
++      |  ^~~~~~~~~~~
++pkcs11/gkm/test-transaction.c:28:1: note: include ‘<stdlib.h>’ or provide a declaration of ‘exit’
++   27 | #include <glib/gstdio.h>
++  +++ |+#include <stdlib.h>
++   28 | 
++  CC       pkcs11/gnome2-store/mock-gnome2-module.o
++pkcs11/gnome2-store/test-gnome2-file.c: In function ‘test_file_create’:
++pkcs11/gnome2-store/test-gnome2-file.c:92:16: warning: variable ‘res’ set but not used [-Wunused-but-set-variable]
++   92 |  GkmDataResult res;
++      |                ^~~
++pkcs11/gnome2-store/test-gnome2-file.c: In function ‘test_file_write_value’:
++pkcs11/gnome2-store/test-gnome2-file.c:105:16: warning: variable ‘res’ set but not used [-Wunused-but-set-variable]
++  105 |  GkmDataResult res;
++      |                ^~~
++pkcs11/gnome2-store/test-gnome2-file.c: In function ‘test_file_read_value’:
++pkcs11/gnome2-store/test-gnome2-file.c:123:16: warning: variable ‘res’ set but not used [-Wunused-but-set-variable]
++  123 |  GkmDataResult res;
++      |                ^~~
++pkcs11/gnome2-store/test-gnome2-file.c: In function ‘test_file_read’:
++pkcs11/gnome2-store/test-gnome2-file.c:161:16: warning: variable ‘res’ set but not used [-Wunused-but-set-variable]
++  161 |  GkmDataResult res;
++      |                ^~~
++pkcs11/gnome2-store/test-gnome2-file.c: In function ‘test_file_lookup’:
++pkcs11/gnome2-store/test-gnome2-file.c:172:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  172 |  gboolean ret;
++      |           ^~~
++pkcs11/gnome2-store/test-gnome2-file.c:170:16: warning: variable ‘res’ set but not used [-Wunused-but-set-variable]
++  170 |  GkmDataResult res;
++      |                ^~~
++pkcs11/gnome2-store/test-gnome2-file.c: In function ‘file_read_private_without_login’:
++pkcs11/gnome2-store/test-gnome2-file.c:198:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  198 |  gboolean ret;
++      |           ^~~
++pkcs11/gnome2-store/test-gnome2-file.c:194:16: warning: variable ‘res’ set but not used [-Wunused-but-set-variable]
++  194 |  GkmDataResult res;
++      |                ^~~
++pkcs11/gnome2-store/test-gnome2-file.c: In function ‘test_file_write’:
++pkcs11/gnome2-store/test-gnome2-file.c:232:16: warning: variable ‘res’ set but not used [-Wunused-but-set-variable]
++  232 |  GkmDataResult res;
++      |                ^~~
++pkcs11/gnome2-store/test-gnome2-file.c: In function ‘test_cant_write_private_without_login’:
++pkcs11/gnome2-store/test-gnome2-file.c:250:16: warning: variable ‘res’ set but not used [-Wunused-but-set-variable]
++  250 |  GkmDataResult res;
++      |                ^~~
++pkcs11/gnome2-store/test-gnome2-file.c: In function ‘test_write_private_with_login’:
++pkcs11/gnome2-store/test-gnome2-file.c:262:16: warning: variable ‘res’ set but not used [-Wunused-but-set-variable]
++  262 |  GkmDataResult res;
++      |                ^~~
++pkcs11/gnome2-store/test-gnome2-file.c: In function ‘test_read_private_with_login’:
++pkcs11/gnome2-store/test-gnome2-file.c:290:16: warning: variable ‘res’ set but not used [-Wunused-but-set-variable]
++  290 |  GkmDataResult res;
++      |                ^~~
++pkcs11/gnome2-store/test-gnome2-file.c: In function ‘test_destroy_entry’:
++pkcs11/gnome2-store/test-gnome2-file.c:307:16: warning: variable ‘res’ set but not used [-Wunused-but-set-variable]
++  307 |  GkmDataResult res;
++      |                ^~~
++pkcs11/gnome2-store/test-gnome2-file.c: In function ‘test_destroy_entry_by_loading’:
++pkcs11/gnome2-store/test-gnome2-file.c:328:16: warning: variable ‘res’ set but not used [-Wunused-but-set-variable]
++  328 |  GkmDataResult res;
++      |                ^~~
++pkcs11/gnome2-store/test-gnome2-file.c: In function ‘test_destroy_private_without_login’:
++pkcs11/gnome2-store/test-gnome2-file.c:349:16: warning: variable ‘res’ set but not used [-Wunused-but-set-variable]
++  349 |  GkmDataResult res;
++      |                ^~~
++pkcs11/gnome2-store/test-gnome2-file.c: In function ‘test_entry_added_signal’:
++pkcs11/gnome2-store/test-gnome2-file.c:380:16: warning: variable ‘res’ set but not used [-Wunused-but-set-variable]
++  380 |  GkmDataResult res;
++      |                ^~~
++pkcs11/gnome2-store/test-gnome2-file.c: In function ‘test_entry_changed_signal’:
++pkcs11/gnome2-store/test-gnome2-file.c:414:16: warning: variable ‘res’ set but not used [-Wunused-but-set-variable]
++  414 |  GkmDataResult res;
++      |                ^~~
++pkcs11/gnome2-store/test-gnome2-file.c: In function ‘test_entry_removed_signal’:
++pkcs11/gnome2-store/test-gnome2-file.c:466:16: warning: variable ‘res’ set but not used [-Wunused-but-set-variable]
++  466 |  GkmDataResult res;
++      |                ^~~
++pkcs11/gnome2-store/test-gnome2-file.c: In function ‘test_data_file_foreach’:
++pkcs11/gnome2-store/test-gnome2-file.c:526:16: warning: variable ‘res’ set but not used [-Wunused-but-set-variable]
++  526 |  GkmDataResult res;
++      |                ^~~
++pkcs11/gnome2-store/test-gnome2-file.c: In function ‘test_unique_entry’:
++pkcs11/gnome2-store/test-gnome2-file.c:543:16: warning: variable ‘res’ set but not used [-Wunused-but-set-variable]
++  543 |  GkmDataResult res;
++      |                ^~~
++pkcs11/gnome2-store/test-gnome2-file.c: In function ‘test_have_sections’:
++pkcs11/gnome2-store/test-gnome2-file.c:575:16: warning: variable ‘res’ set but not used [-Wunused-but-set-variable]
++  575 |  GkmDataResult res;
++      |                ^~~
++  CC       pkcs11/gnome2-store/test-gnome2-private-key.o
++  CC       pkcs11/gnome2-store/test_import-test-import.o
++pkcs11/gnome2-store/mock-gnome2-module.c: In function ‘mock_gnome2_module_open_session’:
++pkcs11/gnome2-store/mock-gnome2-module.c:95:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++   95 |  CK_RV rv;
++      |        ^~
++  CC       pkcs11/rpc-layer/test_initialize-test-initialize.o
++  CC       pkcs11/secret-store/test-secret-compat.o
++  CC       pkcs11/secret-store/mock-secret-module.o
++In file included from /usr/include/glib-2.0/glib.h:85,
++                 from ./egg/egg-testing.h:26,
++                 from pkcs11/gnome2-store/test-import.c:25:
++pkcs11/gnome2-store/test-import.c: In function ‘main’:
++/usr/include/glib-2.0/glib/gtestutils.h:250:5: warning: implicit declaration of function ‘exit’ [-Wimplicit-function-declaration]
++  250 |     exit (1); \
++      |     ^~~~
++pkcs11/gnome2-store/test-import.c:173:2: note: in expansion of macro ‘g_test_init’
++  173 |  g_test_init (&argc, &argv, NULL);
++      |  ^~~~~~~~~~~
++/usr/include/glib-2.0/glib/gtestutils.h:250:5: warning: incompatible implicit declaration of built-in function ‘exit’
++  250 |     exit (1); \
++      |     ^~~~
++pkcs11/gnome2-store/test-import.c:173:2: note: in expansion of macro ‘g_test_init’
++  173 |  g_test_init (&argc, &argv, NULL);
++      |  ^~~~~~~~~~~
++pkcs11/gnome2-store/test-import.c:38:1: note: include ‘<stdlib.h>’ or provide a declaration of ‘exit’
++   37 | #include <glib/gstdio.h>
++  +++ |+#include <stdlib.h>
++   38 | 
++  CC       pkcs11/secret-store/test-secret-fields.o
++In file included from /usr/include/glib-2.0/glib.h:85,
++                 from ./daemon/gkd-test.h:24,
++                 from pkcs11/rpc-layer/test-initialize.c:23:
++pkcs11/rpc-layer/test-initialize.c: In function ‘main’:
++/usr/include/glib-2.0/glib/gtestutils.h:250:5: warning: implicit declaration of function ‘exit’ [-Wimplicit-function-declaration]
++  250 |     exit (1); \
++      |     ^~~~
++pkcs11/rpc-layer/test-initialize.c:170:2: note: in expansion of macro ‘g_test_init’
++  170 |  g_test_init (&argc, &argv, NULL);
++      |  ^~~~~~~~~~~
++/usr/include/glib-2.0/glib/gtestutils.h:250:5: warning: incompatible implicit declaration of built-in function ‘exit’
++  250 |     exit (1); \
++      |     ^~~~
++pkcs11/rpc-layer/test-initialize.c:170:2: note: in expansion of macro ‘g_test_init’
++  170 |  g_test_init (&argc, &argv, NULL);
++      |  ^~~~~~~~~~~
++pkcs11/rpc-layer/test-initialize.c:36:1: note: include ‘<stdlib.h>’ or provide a declaration of ‘exit’
++   35 | #include <fcntl.h>
++  +++ |+#include <stdlib.h>
++   36 | 
++  CC       pkcs11/secret-store/test-secret-data.o
++pkcs11/secret-store/mock-secret-module.c: In function ‘test_secret_module_open_session’:
++pkcs11/secret-store/mock-secret-module.c:125:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  125 |  CK_RV rv;
++      |        ^~
++pkcs11/secret-store/mock-secret-module.c: In function ‘test_secret_collection_validate’:
++pkcs11/secret-store/mock-secret-module.c:153:13: warning: variable ‘secret’ set but not used [-Wunused-but-set-variable]
++  153 |  GkmSecret *secret;
++      |             ^~~~~~
++In file included from /usr/include/glib-2.0/glib.h:85,
++                 from pkcs11/secret-store/mock-secret-module.h:26,
++                 from pkcs11/secret-store/mock-secret-module.c:25:
++/usr/include/glib-2.0/glib/gtestutils.h:56:54: warning: ‘num’ is used uninitialized in this function [-Wuninitialized]
++   56 |                                              guint64 __n1 = (n1), __n2 = (n2); \
++      |                                                      ^~~~
++pkcs11/secret-store/mock-secret-module.c:156:10: note: ‘num’ was declared here
++  156 |  guint32 num;
++      |          ^~~
++pkcs11/secret-store/test-secret-fields.c: In function ‘test_boxed’:
++pkcs11/secret-store/test-secret-fields.c:46:8: warning: unused variable ‘check’ [-Wunused-variable]
++   46 |  GType check = gkm_secret_fields_boxed_type ();
++      |        ^~~~~
++pkcs11/secret-store/test-secret-fields.c:45:8: warning: unused variable ‘boxed’ [-Wunused-variable]
++   45 |  GType boxed = gkm_secret_fields_boxed_type ();
++      |        ^~~~~
++pkcs11/secret-store/test-secret-fields.c: In function ‘test_parse’:
++pkcs11/secret-store/test-secret-fields.c:79:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++   79 |  CK_RV rv;
++      |        ^~
++pkcs11/secret-store/test-secret-fields.c: In function ‘test_parse_schema’:
++pkcs11/secret-store/test-secret-fields.c:104:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  104 |  CK_RV rv;
++      |        ^~
++pkcs11/secret-store/test-secret-fields.c: In function ‘test_parse_empty’:
++pkcs11/secret-store/test-secret-fields.c:128:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  128 |  CK_RV rv;
++      |        ^~
++pkcs11/secret-store/test-secret-fields.c: In function ‘test_parse_null_invalid’:
++pkcs11/secret-store/test-secret-fields.c:143:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  143 |  CK_RV rv;
++      |        ^~
++pkcs11/secret-store/test-secret-fields.c: In function ‘test_parse_missing_value’:
++pkcs11/secret-store/test-secret-fields.c:154:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  154 |  CK_RV rv;
++      |        ^~
++pkcs11/secret-store/test-secret-fields.c: In function ‘test_parse_missing_terminator’:
++pkcs11/secret-store/test-secret-fields.c:165:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  165 |  CK_RV rv;
++      |        ^~
++pkcs11/secret-store/test-secret-fields.c: In function ‘test_parse_not_utf8’:
++  CC       pkcs11/secret-store/test-secret-object.o
++pkcs11/secret-store/test-secret-fields.c:176:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  176 |  CK_RV rv;
++      |        ^~
++pkcs11/secret-store/test-secret-fields.c: In function ‘test_serialize’:
++pkcs11/secret-store/test-secret-fields.c:188:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  188 |  CK_RV rv;
++      |        ^~
++pkcs11/secret-store/test-secret-fields.c: In function ‘test_serialize_schema’:
++pkcs11/secret-store/test-secret-fields.c:207:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  207 |  CK_RV rv;
++      |        ^~
++pkcs11/secret-store/test-secret-fields.c: In function ‘test_serialize_schema_already’:
++pkcs11/secret-store/test-secret-fields.c:226:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  226 |  CK_RV rv;
++      |        ^~
++pkcs11/secret-store/test-secret-fields.c: In function ‘test_serialize_length’:
++pkcs11/secret-store/test-secret-fields.c:244:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  244 |  CK_RV rv;
++      |        ^~
++pkcs11/secret-store/test-secret-fields.c: In function ‘test_add_get_compat_uint32’:
++pkcs11/secret-store/test-secret-fields.c:260:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  260 |  gboolean ret;
++      |           ^~~
++pkcs11/secret-store/test-secret-fields.c: In function ‘test_get_compat_uint32_fail’:
++pkcs11/secret-store/test-secret-fields.c:277:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  277 |  gboolean ret;
++      |           ^~~
++pkcs11/secret-store/test-secret-fields.c: In function ‘test_get_compat_hashed_string’:
++pkcs11/secret-store/test-secret-fields.c:293:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  293 |  gboolean ret;
++      |           ^~~
++pkcs11/secret-store/test-secret-fields.c: In function ‘test_get_compat_hashed_already’:
++pkcs11/secret-store/test-secret-fields.c:311:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  311 |  gboolean ret;
++      |           ^~~
++pkcs11/secret-store/test-secret-fields.c: In function ‘test_get_compat_hashed_uint32’:
++pkcs11/secret-store/test-secret-fields.c:329:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  329 |  gboolean ret;
++      |           ^~~
++pkcs11/secret-store/test-secret-fields.c: In function ‘test_get_compat_hashed_uint32_already’:
++pkcs11/secret-store/test-secret-fields.c:347:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  347 |  gboolean ret;
++      |           ^~~
++pkcs11/secret-store/test-secret-fields.c: In function ‘test_match’:
++pkcs11/secret-store/test-secret-fields.c:393:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  393 |  gboolean ret;
++      |           ^~~
++pkcs11/secret-store/test-secret-fields.c: In function ‘test_match_mismatch_value’:
++pkcs11/secret-store/test-secret-fields.c:420:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  420 |  gboolean ret;
++      |           ^~~
++pkcs11/secret-store/test-secret-fields.c: In function ‘test_match_mismatch_field’:
++pkcs11/secret-store/test-secret-fields.c:440:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  440 |  gboolean ret;
++      |           ^~~
++pkcs11/secret-store/test-secret-fields.c: In function ‘test_match_wrong_hashed’:
++pkcs11/secret-store/test-secret-fields.c:460:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  460 |  gboolean ret;
++      |           ^~~
++pkcs11/secret-store/test-secret-data.c: In function ‘test_get_set’:
++pkcs11/secret-store/test-secret-data.c:53:13: warning: variable ‘check’ set but not used [-Wunused-but-set-variable]
++   53 |  GkmSecret *check;
++      |             ^~~~~
++pkcs11/secret-store/test-secret-data.c: In function ‘test_get_raw’:
++pkcs11/secret-store/test-secret-data.c:71:16: warning: variable ‘raw’ set but not used [-Wunused-but-set-variable]
++   71 |  const guchar *raw;
++      |                ^~~
++pkcs11/secret-store/test-secret-data.c: In function ‘test_get_set_master’:
++pkcs11/secret-store/test-secret-data.c:214:13: warning: variable ‘check’ set but not used [-Wunused-but-set-variable]
++  214 |  GkmSecret *check;
++      |             ^~~~~
++  CC       pkcs11/secret-store/test-secret-collection.o
++  CC       pkcs11/secret-store/test-secret-item.o
++pkcs11/secret-store/test-secret-object.c: In function ‘test_created_prop’:
++pkcs11/secret-store/test-secret-object.c:91:8: warning: variable ‘created’ set but not used [-Wunused-but-set-variable]
++   91 |  glong created;
++      |        ^~~~~~~
++pkcs11/secret-store/test-secret-object.c: In function ‘test_modified_prop’:
++pkcs11/secret-store/test-secret-object.c:111:8: warning: variable ‘modified’ set but not used [-Wunused-but-set-variable]
++  111 |  glong modified;
++      |        ^~~~~~~~
++pkcs11/secret-store/test-secret-object.c: In function ‘test_was_modified’:
++pkcs11/secret-store/test-secret-object.c:132:9: warning: variable ‘now’ set but not used [-Wunused-but-set-variable]
++  132 |  gint64 now;
++      |         ^~~
++pkcs11/secret-store/test-secret-object.c: In function ‘test_identifier_get_attr’:
++pkcs11/secret-store/test-secret-object.c:168:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  168 |  CK_RV rv;
++      |        ^~
++pkcs11/secret-store/test-secret-object.c: In function ‘test_label_get_attr’:
++pkcs11/secret-store/test-secret-object.c:181:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  181 |  CK_RV rv;
++      |        ^~
++pkcs11/secret-store/test-secret-object.c: In function ‘test_modified_get_attr’:
++pkcs11/secret-store/test-secret-object.c:250:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  250 |  CK_RV rv;
++      |        ^~
++pkcs11/secret-store/test-secret-object.c: In function ‘test_created_get_attr’:
++pkcs11/secret-store/test-secret-object.c:264:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  264 |  CK_RV rv;
++      |        ^~
++pkcs11/secret-store/test-secret-object.c: In function ‘test_locked_get_attr’:
++pkcs11/secret-store/test-secret-object.c:278:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  278 |  CK_RV rv;
++      |        ^~
++  CC       pkcs11/secret-store/test-secret-schema.o
++pkcs11/secret-store/test-secret-collection.c: In function ‘test_is_locked’:
++pkcs11/secret-store/test-secret-collection.c:101:11: warning: variable ‘locked’ set but not used [-Wunused-but-set-variable]
++  101 |  gboolean locked;
++      |           ^~~~~~
++pkcs11/secret-store/test-secret-collection.c: In function ‘test_unlocked_data’:
++pkcs11/secret-store/test-secret-collection.c:113:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  113 |  CK_RV rv;
++      |        ^~
++pkcs11/secret-store/test-secret-collection.c: In function ‘test_has_item’:
++pkcs11/secret-store/test-secret-collection.c:160:17: warning: variable ‘item’ set but not used [-Wunused-but-set-variable]
++  160 |  GkmSecretItem *item;
++      |                 ^~~~
++pkcs11/secret-store/test-secret-collection.c: In function ‘test_load_unlock_plain’:
++pkcs11/secret-store/test-secret-collection.c:172:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  172 |  CK_RV rv;
++      |        ^~
++pkcs11/secret-store/test-secret-collection.c:171:16: warning: variable ‘res’ set but not used [-Wunused-but-set-variable]
++  171 |  GkmDataResult res;
++      |                ^~~
++pkcs11/secret-store/test-secret-collection.c: In function ‘test_load_unlock_encrypted’:
++pkcs11/secret-store/test-secret-collection.c:198:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  198 |  CK_RV rv;
++      |        ^~
++pkcs11/secret-store/test-secret-collection.c:197:16: warning: variable ‘res’ set but not used [-Wunused-but-set-variable]
++  197 |  GkmDataResult res;
++      |                ^~~
++pkcs11/secret-store/test-secret-collection.c: In function ‘test_load_unlock_bad_password’:
++pkcs11/secret-store/test-secret-collection.c:224:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  224 |  CK_RV rv;
++      |        ^~
++pkcs11/secret-store/test-secret-collection.c:223:16: warning: variable ‘res’ set but not used [-Wunused-but-set-variable]
++  223 |  GkmDataResult res;
++      |                ^~~
++pkcs11/secret-store/test-secret-collection.c: In function ‘test_unlock_without_load’:
++pkcs11/secret-store/test-secret-collection.c:243:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  243 |  CK_RV rv;
++      |        ^~
++pkcs11/secret-store/test-secret-collection.c: In function ‘test_twice_unlock’:
++pkcs11/secret-store/test-secret-collection.c:265:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  265 |  CK_RV rv;
++      |        ^~
++pkcs11/secret-store/test-secret-collection.c: In function ‘test_twice_unlock_bad_password’:
++pkcs11/secret-store/test-secret-collection.c:294:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  294 |  CK_RV rv;
++      |        ^~
++pkcs11/secret-store/test-secret-collection.c: In function ‘test_memory_unlock’:
++pkcs11/secret-store/test-secret-collection.c:321:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  321 |  CK_RV rv;
++      |        ^~
++pkcs11/secret-store/test-secret-collection.c:320:16: warning: variable ‘res’ set but not used [-Wunused-but-set-variable]
++  320 |  GkmDataResult res;
++      |                ^~~
++pkcs11/secret-store/test-secret-collection.c: In function ‘test_memory_unlock_bad_password’:
++pkcs11/secret-store/test-secret-collection.c:340:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  340 |  CK_RV rv;
++      |        ^~
++pkcs11/secret-store/test-secret-collection.c:339:16: warning: variable ‘res’ set but not used [-Wunused-but-set-variable]
++  339 |  GkmDataResult res;
++      |                ^~~
++pkcs11/secret-store/test-secret-collection.c: In function ‘test_factory_token’:
++pkcs11/secret-store/test-secret-collection.c:399:15: warning: variable ‘identifier’ set but not used [-Wunused-but-set-variable]
++  399 |  const gchar *identifier;
++      |               ^~~~~~~~~~
++  CC       pkcs11/secret-store/test-secret-search.o
++pkcs11/secret-store/test-secret-item.c: In function ‘unlock_collection’:
++pkcs11/secret-store/test-secret-item.c:74:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++   74 |  CK_RV rv;
++      |        ^~
++pkcs11/secret-store/test-secret-item.c: In function ‘test_collection_get’:
++pkcs11/secret-store/test-secret-item.c:186:24: warning: variable ‘check’ set but not used [-Wunused-but-set-variable]
++  186 |  GkmSecretItem *item, *check;
++      |                        ^~~~~
++pkcs11/secret-store/test-secret-item.c:186:17: warning: variable ‘item’ set but not used [-Wunused-but-set-variable]
++  186 |  GkmSecretItem *item, *check;
++      |                 ^~~~
++pkcs11/secret-store/test-secret-item.c: In function ‘test_is_locked’:
++pkcs11/secret-store/test-secret-item.c:233:17: warning: variable ‘item’ set but not used [-Wunused-but-set-variable]
++  233 |  GkmSecretItem *item;
++      |                 ^~~~
++pkcs11/secret-store/test-secret-item.c: In function ‘test_get_collection’:
++pkcs11/secret-store/test-secret-item.c:247:17: warning: variable ‘item’ set but not used [-Wunused-but-set-variable]
++  247 |  GkmSecretItem *item;
++      |                 ^~~~
++pkcs11/secret-store/test-secret-item.c: In function ‘test_get_set_fields’:
++pkcs11/secret-store/test-secret-item.c:278:14: warning: variable ‘check’ set but not used [-Wunused-but-set-variable]
++  278 |  GHashTable *check;
++      |              ^~~~~
++pkcs11/secret-store/test-secret-item.c: In function ‘test_collection_attr’:
++pkcs11/secret-store/test-secret-item.c:297:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  297 |  CK_RV rv;
++      |        ^~
++pkcs11/secret-store/test-secret-item.c: In function ‘test_secret_attr’:
++pkcs11/secret-store/test-secret-item.c:314:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  314 |  CK_RV rv;
++      |        ^~
++pkcs11/secret-store/test-secret-item.c: In function ‘test_secret_attr_locked’:
++pkcs11/secret-store/test-secret-item.c:340:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  340 |  CK_RV rv;
++      |        ^~
++pkcs11/secret-store/test-secret-item.c: In function ‘test_fields_attr’:
++pkcs11/secret-store/test-secret-item.c:364:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  364 |  CK_RV rv;
++      |        ^~
++pkcs11/secret-store/test-secret-item.c: In function ‘test_fields_attr_reverts’:
++pkcs11/secret-store/test-secret-item.c:414:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  414 |  CK_RV rv;
++      |        ^~
++  CC       pkcs11/secret-store/test-secret-textual.o
++pkcs11/secret-store/test-secret-schema.c: In function ‘setup’:
++pkcs11/secret-store/test-secret-schema.c:57:16: warning: variable ‘res’ set but not used [-Wunused-but-set-variable]
++   57 |  GkmDataResult res;
++      |                ^~~
++  CC       pkcs11/secret-store/test-secret-binary.o
++pkcs11/secret-store/test-secret-search.c: In function ‘test_incomplete’:
++pkcs11/secret-store/test-secret-search.c:89:13: warning: variable ‘object’ set but not used [-Wunused-but-set-variable]
++   89 |  GkmObject *object = NULL;
++      |             ^~~~~~
++pkcs11/secret-store/test-secret-search.c: In function ‘test_bad_fields’:
++pkcs11/secret-store/test-secret-search.c:104:13: warning: variable ‘object’ set but not used [-Wunused-but-set-variable]
++  104 |  GkmObject *object = NULL;
++      |             ^~~~~~
++pkcs11/secret-store/test-secret-search.c: In function ‘test_new’:
++pkcs11/secret-store/test-secret-search.c:119:15: warning: variable ‘identifier’ set but not used [-Wunused-but-set-variable]
++  119 |  const gchar *identifier;
++      |               ^~~~~~~~~~
++pkcs11/secret-store/test-secret-search.c: In function ‘test_order’:
++pkcs11/secret-store/test-secret-search.c:380:8: warning: variable ‘last’ set but not used [-Wunused-but-set-variable]
++  380 |  glong last;
++      |        ^~~~
++pkcs11/secret-store/test-secret-textual.c: In function ‘test_read’:
++pkcs11/secret-store/test-secret-textual.c:80:16: warning: variable ‘res’ set but not used [-Wunused-but-set-variable]
++   80 |  GkmDataResult res;
++      |                ^~~
++pkcs11/secret-store/test-secret-textual.c: In function ‘test_read_wrong_format’:
++pkcs11/secret-store/test-secret-textual.c:97:16: warning: variable ‘res’ set but not used [-Wunused-but-set-variable]
++   97 |  GkmDataResult res;
++      |                ^~~
++pkcs11/secret-store/test-secret-textual.c: In function ‘test_read_bad_number’:
++pkcs11/secret-store/test-secret-textual.c:115:15: warning: variable ‘value’ set but not used [-Wunused-but-set-variable]
++  115 |  const gchar *value;
++      |               ^~~~~
++pkcs11/secret-store/test-secret-textual.c:114:16: warning: variable ‘res’ set but not used [-Wunused-but-set-variable]
++  114 |  GkmDataResult res;
++      |                ^~~
++pkcs11/secret-store/test-secret-textual.c: In function ‘test_write’:
++pkcs11/secret-store/test-secret-textual.c:137:16: warning: variable ‘res’ set but not used [-Wunused-but-set-variable]
++  137 |  GkmDataResult res;
++      |                ^~~
++pkcs11/secret-store/test-secret-textual.c: In function ‘test_remove_unavailable’:
++pkcs11/secret-store/test-secret-textual.c:157:16: warning: variable ‘res’ set but not used [-Wunused-but-set-variable]
++  157 |  GkmDataResult res;
++      |                ^~~
++pkcs11/secret-store/test-secret-textual.c: In function ‘test_read_with_schema’:
++pkcs11/secret-store/test-secret-textual.c:196:16: warning: variable ‘res’ set but not used [-Wunused-but-set-variable]
++  196 |  GkmDataResult res;
++      |                ^~~
++  CC       pkcs11/ssh-store/test-ssh-openssh.o
++  CC       pkcs11/ssh-store/mock-ssh-module.o
++pkcs11/secret-store/test-secret-binary.c: In function ‘test_read_encrypted’:
++pkcs11/secret-store/test-secret-binary.c:100:16: warning: variable ‘res’ set but not used [-Wunused-but-set-variable]
++  100 |  GkmDataResult res;
++      |                ^~~
++pkcs11/secret-store/test-secret-binary.c: In function ‘test_read_wrong_format’:
++pkcs11/secret-store/test-secret-binary.c:111:16: warning: variable ‘res’ set but not used [-Wunused-but-set-variable]
++  111 |  GkmDataResult res;
++      |                ^~~
++pkcs11/secret-store/test-secret-binary.c: In function ‘test_read_wrong_master’:
++pkcs11/secret-store/test-secret-binary.c:120:16: warning: variable ‘res’ set but not used [-Wunused-but-set-variable]
++  120 |  GkmDataResult res;
++      |                ^~~
++pkcs11/secret-store/test-secret-binary.c: In function ‘test_read_sdata_but_no_master’:
++pkcs11/secret-store/test-secret-binary.c:134:16: warning: variable ‘res’ set but not used [-Wunused-but-set-variable]
++  134 |  GkmDataResult res;
++      |                ^~~
++pkcs11/secret-store/test-secret-binary.c: In function ‘test_write’:
++pkcs11/secret-store/test-secret-binary.c:145:16: warning: variable ‘res’ set but not used [-Wunused-but-set-variable]
++  145 |  GkmDataResult res;
++      |                ^~~
++pkcs11/secret-store/test-secret-binary.c: In function ‘test_remove_unavailable’:
++pkcs11/secret-store/test-secret-binary.c:165:16: warning: variable ‘res’ set but not used [-Wunused-but-set-variable]
++  165 |  GkmDataResult res;
++      |                ^~~
++  CC       pkcs11/ssh-store/test-private-key.o
++  CC       pkcs11/wrap-layer/test_create_credential-test-create-credential.o
++pkcs11/ssh-store/mock-ssh-module.c: In function ‘test_ssh_module_open_session’:
++pkcs11/ssh-store/mock-ssh-module.c:94:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++   94 |  CK_RV rv;
++      |        ^~
++  CC       pkcs11/wrap-layer/mock-secret-store.o
++pkcs11/ssh-store/test-private-key.c: In function ‘setup’:
++pkcs11/ssh-store/test-private-key.c:64:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++   64 |  gboolean ret;
++      |           ^~~
++pkcs11/ssh-store/test-private-key.c: In function ‘test_parse_plain_rsa’:
++pkcs11/ssh-store/test-private-key.c:105:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  105 |  gboolean ret;
++      |           ^~~
++pkcs11/ssh-store/test-private-key.c: In function ‘test_parse_plain_dsa’:
++pkcs11/ssh-store/test-private-key.c:121:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  121 |  gboolean ret;
++      |           ^~~
++pkcs11/ssh-store/test-private-key.c: In function ‘test_parse_plain_ecdsa’:
++pkcs11/ssh-store/test-private-key.c:137:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  137 |  gboolean ret;
++      |           ^~~
++pkcs11/ssh-store/test-private-key.c: In function ‘test_unlock’:
++pkcs11/ssh-store/test-private-key.c:154:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  154 |  CK_RV rv;
++      |        ^~
++  CC       pkcs11/wrap-layer/test_init_pin-test-init-pin.o
++In file included from /usr/include/glib-2.0/glib.h:85,
++                 from ./pkcs11/wrap-layer/gkm-wrap-layer.h:26,
++                 from pkcs11/wrap-layer/test-create-credential.c:23:
++pkcs11/wrap-layer/test-create-credential.c: In function ‘main’:
++/usr/include/glib-2.0/glib/gtestutils.h:250:5: warning: implicit declaration of function ‘exit’ [-Wimplicit-function-declaration]
++  250 |     exit (1); \
++      |     ^~~~
++pkcs11/wrap-layer/test-create-credential.c:174:2: note: in expansion of macro ‘g_test_init’
++  174 |  g_test_init (&argc, &argv, NULL);
++      |  ^~~~~~~~~~~
++/usr/include/glib-2.0/glib/gtestutils.h:250:5: warning: incompatible implicit declaration of built-in function ‘exit’
++  250 |     exit (1); \
++      |     ^~~~
++pkcs11/wrap-layer/test-create-credential.c:174:2: note: in expansion of macro ‘g_test_init’
++  174 |  g_test_init (&argc, &argv, NULL);
++      |  ^~~~~~~~~~~
++pkcs11/wrap-layer/test-create-credential.c:32:1: note: include ‘<stdlib.h>’ or provide a declaration of ‘exit’
++   31 | #include <gcr/gcr-base.h>
++  +++ |+#include <stdlib.h>
++   32 | 
++  CC       pkcs11/wrap-layer/test_login_auto-test-login-auto.o
++  CC       pkcs11/wrap-layer/test-login-hints.o
++pkcs11/wrap-layer/test-login-hints.c: In function ‘test_did_unlock_fail’:
++pkcs11/wrap-layer/test-login-hints.c:35:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++   35 |  gboolean ret;
++      |           ^~~
++In file included from /usr/include/glib-2.0/glib.h:85,
++                 from ./pkcs11/wrap-layer/gkm-wrap-layer.h:26,
++                 from pkcs11/wrap-layer/test-init-pin.c:23:
++pkcs11/wrap-layer/test-init-pin.c: In function ‘main’:
++/usr/include/glib-2.0/glib/gtestutils.h:250:5: warning: implicit declaration of function ‘exit’ [-Wimplicit-function-declaration]
++  250 |     exit (1); \
++      |     ^~~~
++pkcs11/wrap-layer/test-init-pin.c:110:2: note: in expansion of macro ‘g_test_init’
++  110 |  g_test_init (&argc, &argv, NULL);
++      |  ^~~~~~~~~~~
++/usr/include/glib-2.0/glib/gtestutils.h:250:5: warning: incompatible implicit declaration of built-in function ‘exit’
++  250 |     exit (1); \
++      |     ^~~~
++pkcs11/wrap-layer/test-init-pin.c:110:2: note: in expansion of macro ‘g_test_init’
++  110 |  g_test_init (&argc, &argv, NULL);
++      |  ^~~~~~~~~~~
++pkcs11/wrap-layer/test-init-pin.c:32:1: note: include ‘<stdlib.h>’ or provide a declaration of ‘exit’
++   31 | #include <gcr/gcr-base.h>
++  +++ |+#include <stdlib.h>
++   32 | 
++  CC       pkcs11/wrap-layer/test-login-keyring.o
++  CC       pkcs11/wrap-layer/test_login_specific-test-login-specific.o
++In file included from /usr/include/glib-2.0/glib.h:85,
++                 from ./pkcs11/wrap-layer/gkm-wrap-layer.h:26,
++                 from pkcs11/wrap-layer/test-login-auto.c:23:
++pkcs11/wrap-layer/test-login-auto.c: In function ‘main’:
++/usr/include/glib-2.0/glib/gtestutils.h:250:5: warning: implicit declaration of function ‘exit’ [-Wimplicit-function-declaration]
++  250 |     exit (1); \
++      |     ^~~~
++pkcs11/wrap-layer/test-login-auto.c:253:2: note: in expansion of macro ‘g_test_init’
++  253 |  g_test_init (&argc, &argv, NULL);
++      |  ^~~~~~~~~~~
++/usr/include/glib-2.0/glib/gtestutils.h:250:5: warning: incompatible implicit declaration of built-in function ‘exit’
++  250 |     exit (1); \
++      |     ^~~~
++pkcs11/wrap-layer/test-login-auto.c:253:2: note: in expansion of macro ‘g_test_init’
++  253 |  g_test_init (&argc, &argv, NULL);
++      |  ^~~~~~~~~~~
++pkcs11/wrap-layer/test-login-auto.c:32:1: note: include ‘<stdlib.h>’ or provide a declaration of ‘exit’
++   31 | #include <gcr/gcr-base.h>
++  +++ |+#include <stdlib.h>
++   32 | 
++  CC       pkcs11/wrap-layer/test_login_user-test-login-user.o
++pkcs11/wrap-layer/test-login-keyring.c: In function ‘test_is_usable’:
++pkcs11/wrap-layer/test-login-keyring.c:71:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++   71 |  gboolean ret;
++      |           ^~~
++pkcs11/wrap-layer/test-login-keyring.c: In function ‘test_usable_fail_open_session’:
++pkcs11/wrap-layer/test-login-keyring.c:80:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++   80 |  gboolean ret;
++      |           ^~~
++pkcs11/wrap-layer/test-login-keyring.c: In function ‘test_usable_fail_not_trusted’:
++pkcs11/wrap-layer/test-login-keyring.c:93:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++   93 |  gboolean ret;
++      |           ^~~
++pkcs11/wrap-layer/test-login-keyring.c: In function ‘test_usable_fail_locked’:
++pkcs11/wrap-layer/test-login-keyring.c:124:11: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
++  124 |  gboolean ret;
++      |           ^~~
++  CC       pkcs11/wrap-layer/test_set_pin-test-set-pin.o
++In file included from /usr/include/glib-2.0/glib.h:85,
++                 from ./pkcs11/wrap-layer/gkm-wrap-layer.h:26,
++                 from pkcs11/wrap-layer/test-login-specific.c:23:
++pkcs11/wrap-layer/test-login-specific.c: In function ‘main’:
++/usr/include/glib-2.0/glib/gtestutils.h:250:5: warning: implicit declaration of function ‘exit’ [-Wimplicit-function-declaration]
++  250 |     exit (1); \
++      |     ^~~~
++pkcs11/wrap-layer/test-login-specific.c:155:2: note: in expansion of macro ‘g_test_init’
++  155 |  g_test_init (&argc, &argv, NULL);
++      |  ^~~~~~~~~~~
++/usr/include/glib-2.0/glib/gtestutils.h:250:5: warning: incompatible implicit declaration of built-in function ‘exit’
++  250 |     exit (1); \
++      |     ^~~~
++pkcs11/wrap-layer/test-login-specific.c:155:2: note: in expansion of macro ‘g_test_init’
++  155 |  g_test_init (&argc, &argv, NULL);
++      |  ^~~~~~~~~~~
++pkcs11/wrap-layer/test-login-specific.c:32:1: note: include ‘<stdlib.h>’ or provide a declaration of ‘exit’
++   31 | #include <gcr/gcr-base.h>
++  +++ |+#include <stdlib.h>
++   32 | 
++  CC       pkcs11/xdg-store/test-xdg-module.o
++In file included from /usr/include/glib-2.0/glib.h:85,
++                 from ./pkcs11/wrap-layer/gkm-wrap-layer.h:26,
++                 from pkcs11/wrap-layer/test-login-user.c:23:
++pkcs11/wrap-layer/test-login-user.c: In function ‘main’:
++/usr/include/glib-2.0/glib/gtestutils.h:250:5: warning: implicit declaration of function ‘exit’ [-Wimplicit-function-declaration]
++  250 |     exit (1); \
++      |     ^~~~
++pkcs11/wrap-layer/test-login-user.c:168:2: note: in expansion of macro ‘g_test_init’
++  168 |  g_test_init (&argc, &argv, NULL);
++      |  ^~~~~~~~~~~
++/usr/include/glib-2.0/glib/gtestutils.h:250:5: warning: incompatible implicit declaration of built-in function ‘exit’
++  250 |     exit (1); \
++      |     ^~~~
++pkcs11/wrap-layer/test-login-user.c:168:2: note: in expansion of macro ‘g_test_init’
++  168 |  g_test_init (&argc, &argv, NULL);
++      |  ^~~~~~~~~~~
++pkcs11/wrap-layer/test-login-user.c:32:1: note: include ‘<stdlib.h>’ or provide a declaration of ‘exit’
++   31 | #include <gcr/gcr-base.h>
++  +++ |+#include <stdlib.h>
++   32 | 
++  CC       pkcs11/xdg-store/mock-xdg-module.o
++In file included from /usr/include/glib-2.0/glib.h:85,
++                 from ./pkcs11/wrap-layer/gkm-wrap-layer.h:26,
++                 from pkcs11/wrap-layer/test-set-pin.c:23:
++pkcs11/wrap-layer/test-set-pin.c: In function ‘main’:
++/usr/include/glib-2.0/glib/gtestutils.h:250:5: warning: implicit declaration of function ‘exit’ [-Wimplicit-function-declaration]
++  250 |     exit (1); \
++      |     ^~~~
++pkcs11/wrap-layer/test-set-pin.c:111:2: note: in expansion of macro ‘g_test_init’
++  111 |  g_test_init (&argc, &argv, NULL);
++      |  ^~~~~~~~~~~
++/usr/include/glib-2.0/glib/gtestutils.h:250:5: warning: incompatible implicit declaration of built-in function ‘exit’
++  250 |     exit (1); \
++      |     ^~~~
++pkcs11/wrap-layer/test-set-pin.c:111:2: note: in expansion of macro ‘g_test_init’
++  111 |  g_test_init (&argc, &argv, NULL);
++      |  ^~~~~~~~~~~
++pkcs11/wrap-layer/test-set-pin.c:32:1: note: include ‘<stdlib.h>’ or provide a declaration of ‘exit’
++   31 | #include <gcr/gcr-base.h>
++  +++ |+#include <stdlib.h>
++   32 | 
++pkcs11/xdg-store/test-xdg-module.c: In function ‘test_get_slot_info’:
++pkcs11/xdg-store/test-xdg-module.c:231:15: warning: variable ‘str’ set but not used [-Wunused-but-set-variable]
++  231 |  const gchar *str;
++      |               ^~~
++pkcs11/xdg-store/test-xdg-module.c: In function ‘test_get_token_info’:
++pkcs11/xdg-store/test-xdg-module.c:246:15: warning: variable ‘str’ set but not used [-Wunused-but-set-variable]
++  246 |  const gchar *str;
++      |               ^~~
++  CC       pkcs11/xdg-store/test-xdg-trust.o
++  CC       daemon/control/frob-control-change.o
++pkcs11/xdg-store/mock-xdg-module.c: In function ‘mock_xdg_module_open_session’:
++pkcs11/xdg-store/mock-xdg-module.c:180:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  180 |  CK_RV rv;
++      |        ^~
++pkcs11/xdg-store/test-xdg-trust.c: In function ‘setup’:
++pkcs11/xdg-store/test-xdg-trust.c:123:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  123 |  CK_RV rv;
++      |        ^~
++pkcs11/xdg-store/test-xdg-trust.c: In function ‘test_load_objects’:
++pkcs11/xdg-store/test-xdg-trust.c:158:8: warning: variable ‘rv’ set but not used [-Wunused-but-set-variable]
++  158 |  CK_RV rv;
++      |        ^~
++  CC       egg/egg-secure-memory.lo
++  CC       daemon/control/frob-control-init.o
++  CC       daemon/control/frob-control-unlock.o
++  CC       daemon/control/frob-control-quit.o
++  CC       pkcs11/gnome2-store/frob-gnome2-file.o
++  CC       pkcs11/rpc-layer/gkm_rpc_daemon_standalone-gkm-rpc-daemon-standalone.o
++  CC       pkcs11/secret-store/dump-keyring0-format.o
++  CC       pkcs11/xdg-store/frob-trust-file.o
++  CC       pkcs11/xdg-store/dump-trust-file.o
++  CC       pkcs11/gnome2-store/gkm-gnome2-standalone.lo
++  CC       pkcs11/secret-store/gkm-secret-standalone.lo
++  CC       pkcs11/ssh-store/gkm-ssh-standalone.lo
++  CC       pkcs11/xdg-store/gkm-xdg-standalone.lo
++  CC       egg/libegg_prompt_la-egg-dh.lo
++  CC       egg/libegg_prompt_la-egg-hex.lo
++  CC       egg/libegg_prompt_la-egg-hkdf.lo
++  CC       egg/libegg_prompt_la-egg-libgcrypt.lo
++  CC       egg/libegg_prompt_la-egg-padding.lo
++  CC       egg/libegg_prompt_la-egg-secure-memory.lo
++  CC       egg/libegg_hex_la-egg-hex.lo
++  CC       pam/mock-pam.lo
++  CC       pam/gnome_keyring_la-gkr-pam-client.lo
++  CC       pam/gnome_keyring_la-gkr-pam-module.lo
++  CC       pam/gnome_keyring_la-gkr-pam-stubs.lo
++  CC       pkcs11/rpc-layer/gkm-rpc-module.lo
++  CC       pkcs11/rpc-layer/gkm-rpc-message.lo
++  CC       pkcs11/rpc-layer/gkm-rpc-util.lo
++  GEN      docs/gnome-keyring-daemon.1
++In function ‘call_connect’,
++    inlined from ‘call_lookup’ at pkcs11/rpc-layer/gkm-rpc-module.c:334:8:
++pkcs11/rpc-layer/gkm-rpc-module.c:236:2: warning: ‘strncpy’ specified bound 108 equals destination size [-Wstringop-truncation]
++  236 |  strncpy (addr.sun_path, pkcs11_socket_path, sizeof (addr.sun_path));
++      |  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++  GEN      docs/gnome-keyring.1
++  SED    daemon/gnome-keyring-pkcs11.desktop
++  SED    daemon/gnome-keyring-secrets.desktop
++  SED    daemon/gnome-keyring-ssh.desktop
++  GEN      gschemas.compiled
++  SED    daemon/org.gnome.keyring.service
++  SED    daemon/org.freedesktop.secrets.service
++  SED    daemon/org.freedesktop.impl.portal.Secret.service
++No schema files found: doing nothing.
++/usr/bin/mkdir -p ./daemon
++/usr/bin/mkdir -p ./schema
++  GEN      schema/org.gnome.crypto.cache.gschema.valid
++  CC       daemon/gnome_keyring_daemon-gkd-glue.o
++Warning: Schema “org.gnome.crypto.cache” has path “/desktop/gnome/crypto/cache/”.  Paths starting with “/apps/”, “/desktop/” or “/system/” are deprecated.
++  CC       daemon/gnome_keyring_daemon-gkd-main.o
++  CC       daemon/gnome_keyring_daemon-gkd-capability.o
++  CC       daemon/gnome_keyring_daemon-gkd-pkcs11.o
++  CC       daemon/gnome_keyring_daemon-gkd-util.o
++  CC       daemon/dbus/libgkd_dbus_la-gkd-daemon-generated.lo
++  CC       daemon/dbus/libgkd_dbus_la-gkd-internal-generated.lo
++  CC       daemon/dbus/libgkd_dbus_la-gkd-secrets-generated.lo
++  CC       daemon/dbus/libgkd_dbus_la-gkd-portal-generated.lo
++  CC       daemon/dbus/libgkd_dbus_la-gkd-portal-request-generated.lo
++  CC       daemon/dbus/libgkd_dbus_la-gkd-dbus.lo
++  CC       daemon/dbus/libgkd_dbus_la-gkd-dbus-environment.lo
++  CC       daemon/dbus/libgkd_dbus_la-gkd-dbus-secrets.lo
++  CC       daemon/dbus/libgkd_dbus_la-gkd-dbus-session.lo
++  CC       daemon/dbus/libgkd_dbus_la-gkd-secret-change.lo
++  CC       daemon/dbus/libgkd_dbus_la-gkd-secret-create.lo
++  CC       daemon/dbus/libgkd_dbus_la-gkd-secret-dispatch.lo
++  CC       daemon/dbus/libgkd_dbus_la-gkd-secret-error.lo
++  CC       daemon/dbus/libgkd_dbus_la-gkd-secret-exchange.lo
++  CC       daemon/dbus/libgkd_dbus_la-gkd-secret-lock.lo
++  CC       daemon/dbus/libgkd_dbus_la-gkd-secret-objects.lo
++  CC       daemon/dbus/libgkd_dbus_la-gkd-secret-portal.lo
++  CC       daemon/dbus/libgkd_dbus_la-gkd-secret-property.lo
++daemon/dbus/gkd-secret-property.c: In function ‘iter_get_variant’:
++daemon/dbus/gkd-secret-property.c:422:8: warning: ‘sig’ may be used uninitialized in this function [-Wmaybe-uninitialized]
++  422 |  ret = g_variant_type_equal (g_variant_get_type (variant), sig);
++      |        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++  CC       daemon/dbus/libgkd_dbus_la-gkd-secret-prompt.lo
++  CC       daemon/dbus/libgkd_dbus_la-gkd-secret-secret.lo
++  CC       daemon/dbus/libgkd_dbus_la-gkd-secret-service.lo
++  CC       daemon/dbus/libgkd_dbus_la-gkd-secret-session.lo
++  CC       daemon/dbus/libgkd_dbus_la-gkd-secret-unlock.lo
++  CC       daemon/dbus/libgkd_dbus_la-gkd-secret-util.lo
++  CC       daemon/control/gkd-control-server.lo
++  CC       daemon/control/gkd-control-client.lo
++  CC       daemon/ssh-agent/libgkd_ssh_agent_la-gkd-ssh-agent-interaction.lo
++  CC       daemon/ssh-agent/libgkd_ssh_agent_la-gkd-ssh-agent-process.lo
++  CC       daemon/ssh-agent/libgkd_ssh_agent_la-gkd-ssh-agent-preload.lo
++  CC       daemon/ssh-agent/libgkd_ssh_agent_la-gkd-ssh-agent-service.lo
++  CC       daemon/ssh-agent/libgkd_ssh_agent_la-gkd-ssh-agent-util.lo
++  CC       daemon/login/libgkd_login_la-gkd-login.lo
++  CC       daemon/login/libgkd_login_la-gkd-login-interaction.lo
++  CC       daemon/login/libgkd_login_la-gkd-login-password.lo
++  CC       pkcs11/wrap-layer/libgkm_wrap_layer_la-gkm-wrap-layer.lo
++  CC       pkcs11/wrap-layer/libgkm_wrap_layer_la-gkm-wrap-login.lo
++  CC       pkcs11/wrap-layer/libgkm_wrap_layer_la-gkm-wrap-prompt.lo
++  CC       pkcs11/gkm/libgkm_la-gkm-aes-key.lo
++  CC       pkcs11/gkm/libgkm_la-gkm-aes-mechanism.lo
++  CC       pkcs11/gkm/libgkm_la-gkm-assertion.lo
++  CC       pkcs11/gkm/libgkm_la-gkm-attributes.lo
++  CC       pkcs11/gkm/libgkm_la-gkm-certificate.lo
++pkcs11/gkm/gkm-attributes.c: In function ‘gkm_attribute_set_date’:
++pkcs11/gkm/gkm-attributes.c:219:28: warning: ‘%04d’ directive output may be truncated writing between 4 and 11 bytes into a region of size 5 [-Wformat-truncation=]
++  219 |  snprintf ((char*)buf, 5, "%04d", 1900 + tm.tm_year);
++      |                            ^~~~
++pkcs11/gkm/gkm-attributes.c:219:27: note: directive argument in the range [-2147481748, 2147483647]
++  219 |  snprintf ((char*)buf, 5, "%04d", 1900 + tm.tm_year);
++      |                           ^~~~~~
++pkcs11/gkm/gkm-attributes.c:219:2: note: ‘snprintf’ output between 5 and 12 bytes into a destination of size 5
++  219 |  snprintf ((char*)buf, 5, "%04d", 1900 + tm.tm_year);
++      |  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++pkcs11/gkm/gkm-attributes.c:223:28: warning: ‘%02d’ directive output may be truncated writing between 2 and 11 bytes into a region of size 3 [-Wformat-truncation=]
++  223 |  snprintf ((char*)buf, 3, "%02d", tm.tm_mon + 1);
++      |                            ^~~~
++pkcs11/gkm/gkm-attributes.c:223:27: note: directive argument in the range [-2147483647, 2147483647]
++  223 |  snprintf ((char*)buf, 3, "%02d", tm.tm_mon + 1);
++      |                           ^~~~~~
++pkcs11/gkm/gkm-attributes.c:223:2: note: ‘snprintf’ output between 3 and 12 bytes into a destination of size 3
++  223 |  snprintf ((char*)buf, 3, "%02d", tm.tm_mon + 1);
++      |  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++  CC       pkcs11/gkm/libgkm_la-gkm-certificate-key.lo
++  CC       pkcs11/gkm/libgkm_la-gkm-credential.lo
++  CC       pkcs11/gkm/libgkm_la-gkm-crypto.lo
++  CC       pkcs11/gkm/libgkm_la-gkm-data-asn1.lo
++pkcs11/gkm/gkm-credential.c: In function ‘gkm_credential_finalize’:
++pkcs11/gkm/gkm-credential.c:224:17: warning: unused variable ‘self’ [-Wunused-variable]
++  224 |  GkmCredential *self = GKM_CREDENTIAL (obj);
++      |                 ^~~~
++  CC       pkcs11/gkm/libgkm_la-gkm-data-der.lo
++  CC       pkcs11/gkm/libgkm_la-gkm-debug.lo
++  CC       pkcs11/gkm/libgkm_la-gkm-dh-key.lo
++  CC       pkcs11/gkm/libgkm_la-gkm-dh-mechanism.lo
++  CC       pkcs11/gkm/libgkm_la-gkm-dh-private-key.lo
++  CC       pkcs11/gkm/libgkm_la-gkm-dh-public-key.lo
++  CC       pkcs11/gkm/libgkm_la-gkm-dsa-mechanism.lo
++  CC       pkcs11/gkm/libgkm_la-gkm-ecdsa-mechanism.lo
++  CC       pkcs11/gkm/libgkm_la-gkm-factory.lo
++  CC       pkcs11/gkm/libgkm_la-gkm-generic-key.lo
++  CC       pkcs11/gkm/libgkm_la-gkm-hkdf-mechanism.lo
++  CC       pkcs11/gkm/libgkm_la-gkm-log.lo
++  CC       pkcs11/gkm/libgkm_la-gkm-manager.lo
++  CC       pkcs11/gkm/libgkm_la-gkm-memory-store.lo
++  CC       pkcs11/gkm/libgkm_la-gkm-mock.lo
++pkcs11/gkm/gkm-manager.c: In function ‘remove_object’:
++pkcs11/gkm/gkm-manager.c:450:19: warning: variable ‘handle’ set but not used [-Wunused-but-set-variable]
++  450 |  CK_OBJECT_HANDLE handle;
++      |                   ^~~~~~
++  CC       pkcs11/gkm/libgkm_la-gkm-module.lo
++  CC       pkcs11/gkm/libgkm_la-gkm-null-key.lo
++  CC       pkcs11/gkm/libgkm_la-gkm-null-mechanism.lo
++  CC       pkcs11/gkm/libgkm_la-gkm-object.lo
++  CC       pkcs11/gkm/libgkm_la-gkm-private-xsa-key.lo
++  CC       pkcs11/gkm/libgkm_la-gkm-public-xsa-key.lo
++pkcs11/gkm/gkm-private-xsa-key.c: In function ‘gkm_private_xsa_key_finalize’:
++pkcs11/gkm/gkm-private-xsa-key.c:416:20: warning: unused variable ‘self’ [-Wunused-variable]
++  416 |  GkmPrivateXsaKey *self = GKM_PRIVATE_XSA_KEY (obj);
++      |                    ^~~~
++  CC       pkcs11/gkm/libgkm_la-gkm-rsa-mechanism.lo
++  CC       pkcs11/gkm/libgkm_la-gkm-secret.lo
++  CC       pkcs11/gkm/libgkm_la-gkm-secret-key.lo
++  CC       pkcs11/gkm/libgkm_la-gkm-serializable.lo
++  CC       pkcs11/gkm/libgkm_la-gkm-session.lo
++  CC       pkcs11/gkm/libgkm_la-gkm-sexp.lo
++  CC       pkcs11/gkm/libgkm_la-gkm-sexp-key.lo
++  CC       pkcs11/gkm/libgkm_la-gkm-store.lo
++  CC       pkcs11/gkm/libgkm_la-gkm-test.lo
++  CC       pkcs11/gkm/libgkm_la-gkm-timer.lo
++  CC       pkcs11/gkm/libgkm_la-gkm-transaction.lo
++  CC       pkcs11/gkm/libgkm_la-gkm-trust.lo
++  CC       pkcs11/gkm/libgkm_la-gkm-util.lo
++pkcs11/gkm/gkm-transaction.c: In function ‘gkm_transaction_finalize’:
++pkcs11/gkm/gkm-transaction.c:439:18: warning: unused variable ‘self’ [-Wunused-variable]
++  439 |  GkmTransaction *self = GKM_TRANSACTION (obj);
++      |                  ^~~~
++  CC       egg/libegg_la-dotlock.lo
++  CC       egg/libegg_la-egg-armor.lo
++  CC       egg/libegg_la-egg-asn1x.lo
++  CC       egg/libegg_la-egg-asn1-defs.lo
++  CC       egg/libegg_la-egg-buffer.lo
++egg/egg-asn1x.c: In function ‘atlv_unparse_der’:
++egg/egg-asn1x.c:1422:16: warning: variable ‘exp’ set but not used [-Wunused-but-set-variable]
++ 1422 |  const guchar *exp;
++      |                ^~~
++  CC       egg/libegg_la-egg-byte-array.lo
++  CC       egg/libegg_la-egg-cleanup.lo
++  CC       egg/libegg_la-egg-dh.lo
++  CC       egg/libegg_la-egg-dn.lo
++  CC       egg/libegg_la-egg-file-tracker.lo
++  CC       egg/libegg_la-egg-hex.lo
++  CC       egg/libegg_la-egg-hkdf.lo
++  CC       egg/libegg_la-egg-libgcrypt.lo
++  CC       egg/libegg_la-egg-oid.lo
++  CC       egg/libegg_la-egg-padding.lo
++  CC       egg/libegg_la-egg-openssl.lo
++  CC       egg/libegg_la-egg-unix-credentials.lo
++  CC       egg/libegg_la-egg-secure-memory.lo
++  CC       egg/libegg_la-egg-symkey.lo
++  CC       egg/libegg_la-egg-testing.lo
++  CC       egg/libegg_la-egg-timegm.lo
++  CC       pkcs11/rpc-layer/libgkm_rpc_layer_la-gkm-rpc-dispatch.lo
++  CC       pkcs11/rpc-layer/libgkm_rpc_layer_la-gkm-rpc-message.lo
++  CC       pkcs11/rpc-layer/libgkm_rpc_layer_la-gkm-rpc-util.lo
++  CCLD     libegg-buffer.la
++  CCLD     libegg-creds.la
++  CC       pkcs11/secret-store/libgkm_secret_store_la-gkm-secret-binary.lo
++  CC       pkcs11/secret-store/libgkm_secret_store_la-gkm-secret-collection.lo
++pkcs11/rpc-layer/gkm-rpc-dispatch.c: In function ‘gkm_rpc_layer_startup’:
++pkcs11/rpc-layer/gkm-rpc-dispatch.c:2382:2: warning: ‘strncpy’ specified bound 108 equals destination size [-Wstringop-truncation]
++ 2382 |  strncpy (addr.sun_path, pkcs11_socket_path, sizeof (addr.sun_path));
++      |  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++  CC       pkcs11/secret-store/libgkm_secret_store_la-gkm-secret-compat.lo
++  CC       pkcs11/secret-store/libgkm_secret_store_la-gkm-secret-data.lo
++  CC       pkcs11/secret-store/libgkm_secret_store_la-gkm-secret-fields.lo
++  CC       pkcs11/secret-store/libgkm_secret_store_la-gkm-secret-item.lo
++  CC       pkcs11/secret-store/libgkm_secret_store_la-gkm-secret-module.lo
++  CC       pkcs11/secret-store/libgkm_secret_store_la-gkm-secret-object.lo
++  CC       pkcs11/secret-store/libgkm_secret_store_la-gkm-secret-search.lo
++  CC       pkcs11/secret-store/libgkm_secret_store_la-gkm-secret-textual.lo
++  CC       pkcs11/ssh-store/gkm-ssh-module.lo
++  CC       pkcs11/ssh-store/gkm-ssh-openssh.lo
++  CC       pkcs11/ssh-store/gkm-ssh-private-key.lo
++  CC       pkcs11/ssh-store/gkm-ssh-public-key.lo
++  CC       pkcs11/gnome2-store/gkm-gnome2-file.lo
++  CC       pkcs11/gnome2-store/gkm-gnome2-module.lo
++  CC       pkcs11/gnome2-store/gkm-gnome2-private-key.lo
++  CC       pkcs11/gnome2-store/gkm-gnome2-public-key.lo
++  CC       pkcs11/gnome2-store/gkm-gnome2-storage.lo
++  CC       pkcs11/xdg-store/gkm-xdg-asn1-defs.lo
++  CC       pkcs11/xdg-store/gkm-xdg-assertion.lo
++pkcs11/gnome2-store/gkm-gnome2-storage.c: In function ‘complete_lock_file’:
++pkcs11/gnome2-store/gkm-gnome2-storage.c:232:20: warning: unused variable ‘self’ [-Wunused-variable]
++  232 |  GkmGnome2Storage *self = GKM_GNOME2_STORAGE (object);
++      |                    ^~~~
++  CC       pkcs11/xdg-store/gkm-xdg-module.lo
++  CC       pkcs11/xdg-store/gkm-xdg-trust.lo
++  CC       tool/gnome_keyring_3-gkr-tool.o
++  CC       tool/gnome_keyring_3-gkr-tool-import.o
++  CC       tool/gnome_keyring_3-gkr-tool-trust.o
++  CC       tool/gnome_keyring_3-gkr-tool-version.o
++  CCLD     libegg-asn1x.la
++  CCLD     libgkd-control-client.la
++  CCLD     libgkd-test.la
++  CCLD     libegg-test.la
++  CCLD     libtestservice.la
++  AR       libgkm-mock.a
++  AR       libgkm-mock-secret-module.a
++  AR       libgkm-mock-ssh-module.a
++  AR       libgkm-mock-secret-store.a
++  AR       libgkm-mock-xdg-module.a
++  CC       pam/test_pam-test-pam.o
++pam/test-pam.c: In function ‘test_starts_creates’:
++pam/test-pam.c:276:15: warning: variable ‘control’ set but not used [-Wunused-but-set-variable]
++  276 |  const gchar *control;
++      |               ^~~~~~~
++pam/test-pam.c: In function ‘test_starts_only_session’:
++pam/test-pam.c:321:9: warning: variable ‘login_keyring’ set but not used [-Wunused-but-set-variable]
++  321 |  gchar *login_keyring;
++      |         ^~~~~~~~~~~~~
++pam/test-pam.c:320:15: warning: variable ‘control’ set but not used [-Wunused-but-set-variable]
++  320 |  const gchar *control;
++      |               ^~~~~~~
++pam/test-pam.c:319:14: warning: unused variable ‘pam_conf’ [-Wunused-variable]
++  319 |  const char *pam_conf = user_data;
++      |              ^~~~~~~~
++pam/test-pam.c: In function ‘test_starts_exists’:
++pam/test-pam.c:349:15: warning: variable ‘control’ set but not used [-Wunused-but-set-variable]
++  349 |  const gchar *control;
++      |               ^~~~~~~
++pam/test-pam.c: In function ‘test_auth_running_unlocks’:
++pam/test-pam.c:407:9: warning: variable ‘control’ set but not used [-Wunused-but-set-variable]
++  407 |  gchar *control;
++      |         ^~~~~~~
++pam/test-pam.c: In function ‘test_password_change_start_in_session’:
++pam/test-pam.c:517:14: warning: unused variable ‘pam_conf’ [-Wunused-variable]
++  517 |  const char *pam_conf = user_data;
++      |              ^~~~~~~~
++At top level:
++pam/test-pam.c:241:1: warning: ‘check_if_login_item_1_exists’ defined but not used [-Wunused-function]
++  241 | check_if_login_item_1_exists (Test *test)
++      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
++pam/test-pam.c:215:1: warning: ‘check_if_login_keyring_locked’ defined but not used [-Wunused-function]
++  215 | check_if_login_keyring_locked (Test *test)
++      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++  CCLD     libegg-secure.la
++  CCLD     libegg-prompt.la
++  CCLD     libegg-hex.la
++  CCLD     pam_mock.la
++  CCLD     pam_gnome_keyring.la
++  CCLD     gnome-keyring-pkcs11.la
++  CCLD     libgkd-dbus.la
++  CCLD     libgkd-control.la
++  CCLD     libgkd-ssh-agent.la
++  CCLD     libgkd-login.la
++  CCLD     libegg.la
++  CCLD     libgkm-rpc-layer.la
++  CCLD     libgkm-secret-store.la
++  CCLD     libgkm-ssh-store.la
++  CCLD     libgkm-gnome2-store.la
++  CCLD     libgkm-xdg-store.la
++  CCLD     gnome-keyring-3
++  CCLD     test-asn1
++  CCLD     test-asn1x
++  CCLD     test-dn
++  CCLD     test-cleanup
++  CCLD     test-hex
++  CCLD     test-hkdf
++  CCLD     test-oid
++  CCLD     test-secmem
++  CCLD     test-padding
++  CCLD     test-symkey
++  CCLD     test-armor
++  CCLD     test-openssl
++  CCLD     test-dh
++  CCLD     test-file-tracker
++  CCLD     test-startup
++  CCLD     test-shutdown
++  CCLD     test-dbus-util
++  CCLD     test-dbus-search
++  CCLD     test-dbus-items
++  CCLD     test-dbus-signals
++  CCLD     test-dbus-lock
++  CCLD     test-dbus-portal
++  CCLD     test-initialize
++  CCLD     test-pam
++  CCLD     frob-control-change
++  CCLD     frob-control-init
++  CCLD     frob-control-unlock
++  CCLD     frob-control-quit
++  CCLD     gkm-rpc-daemon-standalone
++  CCLD     libgkm.la
++  CCLD     libgkm-wrap-layer.la
++  CCLD     test-attributes
++  CCLD     test-credential
++  CCLD     test-data-asn1
++  CCLD     test-data-der
++  CCLD     test-memory-store
++  CCLD     test-object
++  CCLD     test-certificate
++  CCLD     test-secret
++  CCLD     test-sexp
++  CCLD     test-store
++  CCLD     test-timer
++  CCLD     test-transaction
++  CCLD     test-gnome2-file
++  CCLD     test-gnome2-storage
++  CCLD     test-gnome2-private-key
++  CCLD     test-import
++  CCLD     test-secret-compat
++  CCLD     test-secret-fields
++  CCLD     test-secret-data
++  CCLD     test-secret-object
++  CCLD     test-secret-collection
++  CCLD     test-secret-item
++  CCLD     test-secret-schema
++  CCLD     test-secret-search
++  CCLD     test-secret-textual
++  CCLD     test-secret-binary
++  CCLD     test-ssh-openssh
++  CCLD     test-private-key
++  CCLD     test-create-credential
++  CCLD     test-init-pin
++  CCLD     test-login-auto
++  CCLD     test-login-hints
++  CCLD     test-login-keyring
++  CCLD     test-login-specific
++  CCLD     test-login-user
++  CCLD     test-set-pin
++  CCLD     test-xdg-module
++  CCLD     test-xdg-trust
++  CCLD     frob-gnome2-file
++  CCLD     dump-keyring0-format
++  CCLD     frob-trust-file
++  CCLD     dump-trust-file
++  CCLD     gkm-gnome2-store-standalone.la
++  CCLD     gkm-secret-store-standalone.la
++  CCLD     gkm-ssh-store-standalone.la
++  CCLD     gkm-xdg-store-standalone.la
++  CCLD     gnome-keyring-daemon
++  CCLD     libgkd-ssh-agent-test.la
++  CCLD     test-gkd-ssh-agent-interaction
++  CCLD     test-gkd-ssh-agent-preload
++  CCLD     test-gkd-ssh-agent-process
++  CCLD     test-gkd-ssh-agent-service
++  CCLD     test-gkd-ssh-agent-util
++make[2]: Leaving directory '/tmp/gnome-keyring-3.36.0'
++Making all in po
++make[2]: Entering directory '/tmp/gnome-keyring-3.36.0/po'
++make[2]: Nothing to be done for 'all'.
++make[2]: Leaving directory '/tmp/gnome-keyring-3.36.0/po'
++make[1]: Leaving directory '/tmp/gnome-keyring-3.36.0'
++make  install-recursive
++make[1]: Entering directory '/tmp/gnome-keyring-3.36.0'
++Making install in .
++make[2]: Entering directory '/tmp/gnome-keyring-3.36.0'
++  GEN      gschemas.compiled
++No schema files found: doing nothing.
++/usr/bin/mkdir -p ./daemon
++/usr/bin/mkdir -p ./schema
++make[3]: Entering directory '/tmp/gnome-keyring-3.36.0'
++ /usr/bin/mkdir -p '/tmp/package-gnome-keyring/usr/bin'
++  /bin/sh ./libtool   --mode=install /usr/bin/ginstall -c gnome-keyring-daemon gnome-keyring-3 '/tmp/package-gnome-keyring/usr/bin'
++libtool: install: /usr/bin/ginstall -c gnome-keyring-daemon /tmp/package-gnome-keyring/usr/bin/gnome-keyring-daemon
++libtool: install: /usr/bin/ginstall -c gnome-keyring-3 /tmp/package-gnome-keyring/usr/bin/gnome-keyring-3
++make  install-exec-hook
++make[4]: Entering directory '/tmp/gnome-keyring-3.36.0'
++setcap cap_ipc_lock=ep /tmp/package-gnome-keyring/usr/bin/gnome-keyring-daemon || true
++make[4]: Leaving directory '/tmp/gnome-keyring-3.36.0'
++ /usr/bin/mkdir -p '/tmp/package-gnome-keyring/usr/share/GConf/gsettings'
++ /usr/bin/ginstall -c -m 644 schema/org.gnome.crypto.cache.convert '/tmp/package-gnome-keyring/usr/share/GConf/gsettings'
++ /usr/bin/mkdir -p '/tmp/package-gnome-keyring/etc/xdg/autostart'
++ /usr/bin/ginstall -c -m 644 daemon/gnome-keyring-pkcs11.desktop daemon/gnome-keyring-secrets.desktop daemon/gnome-keyring-ssh.desktop '/tmp/package-gnome-keyring/etc/xdg/autostart'
++ /usr/bin/mkdir -p '/tmp/package-gnome-keyring/usr/share/xdg-desktop-portal/portals'
++ /usr/bin/ginstall -c -m 644 daemon/gnome-keyring.portal '/tmp/package-gnome-keyring/usr/share/xdg-desktop-portal/portals'
++ /usr/bin/mkdir -p '/tmp/package-gnome-keyring/usr/man/man1'
++ /usr/bin/ginstall -c -m 644 docs/gnome-keyring-daemon.1 docs/gnome-keyring.1 docs/gnome-keyring-3.1 '/tmp/package-gnome-keyring/usr/man/man1'
++ /usr/bin/mkdir -p '/tmp/package-gnome-keyring/usr/lib/gnome-keyring/devel'
++ /bin/sh ./libtool   --mode=install /usr/bin/ginstall -c   gkm-gnome2-store-standalone.la gkm-secret-store-standalone.la gkm-ssh-store-standalone.la gkm-xdg-store-standalone.la '/tmp/package-gnome-keyring/usr/lib/gnome-keyring/devel'
++libtool: install: /usr/bin/ginstall -c .libs/gkm-gnome2-store-standalone.so /tmp/package-gnome-keyring/usr/lib/gnome-keyring/devel/gkm-gnome2-store-standalone.so
++libtool: install: /usr/bin/ginstall -c .libs/gkm-gnome2-store-standalone.lai /tmp/package-gnome-keyring/usr/lib/gnome-keyring/devel/gkm-gnome2-store-standalone.la
++libtool: install: /usr/bin/ginstall -c .libs/gkm-secret-store-standalone.so /tmp/package-gnome-keyring/usr/lib/gnome-keyring/devel/gkm-secret-store-standalone.so
++libtool: install: /usr/bin/ginstall -c .libs/gkm-secret-store-standalone.lai /tmp/package-gnome-keyring/usr/lib/gnome-keyring/devel/gkm-secret-store-standalone.la
++libtool: install: /usr/bin/ginstall -c .libs/gkm-ssh-store-standalone.so /tmp/package-gnome-keyring/usr/lib/gnome-keyring/devel/gkm-ssh-store-standalone.so
++libtool: install: /usr/bin/ginstall -c .libs/gkm-ssh-store-standalone.lai /tmp/package-gnome-keyring/usr/lib/gnome-keyring/devel/gkm-ssh-store-standalone.la
++libtool: install: /usr/bin/ginstall -c .libs/gkm-xdg-store-standalone.so /tmp/package-gnome-keyring/usr/lib/gnome-keyring/devel/gkm-xdg-store-standalone.so
++libtool: install: /usr/bin/ginstall -c .libs/gkm-xdg-store-standalone.lai /tmp/package-gnome-keyring/usr/lib/gnome-keyring/devel/gkm-xdg-store-standalone.la
++libtool: warning: remember to run 'libtool --finish /usr/lib/gnome-keyring/devel'
++ /usr/bin/mkdir -p '/tmp/package-gnome-keyring/lib/security'
++ /bin/sh ./libtool   --mode=install /usr/bin/ginstall -c   pam_gnome_keyring.la '/tmp/package-gnome-keyring/lib/security'
++libtool: install: /usr/bin/ginstall -c .libs/pam_gnome_keyring.so /tmp/package-gnome-keyring/lib/security/pam_gnome_keyring.so
++libtool: install: /usr/bin/ginstall -c .libs/pam_gnome_keyring.lai /tmp/package-gnome-keyring/lib/security/pam_gnome_keyring.la
++libtool: warning: remember to run 'libtool --finish /lib/security'
++ /usr/bin/mkdir -p '/tmp/package-gnome-keyring/usr/share/p11-kit/modules'
++ /usr/bin/ginstall -c -m 644 pkcs11/rpc-layer/gnome-keyring.module '/tmp/package-gnome-keyring/usr/share/p11-kit/modules'
++ /usr/bin/mkdir -p '/tmp/package-gnome-keyring/usr/lib/pkcs11'
++ /bin/sh ./libtool   --mode=install /usr/bin/ginstall -c   gnome-keyring-pkcs11.la '/tmp/package-gnome-keyring/usr/lib/pkcs11'
++libtool: install: /usr/bin/ginstall -c .libs/gnome-keyring-pkcs11.so /tmp/package-gnome-keyring/usr/lib/pkcs11/gnome-keyring-pkcs11.so
++libtool: install: /usr/bin/ginstall -c .libs/gnome-keyring-pkcs11.lai /tmp/package-gnome-keyring/usr/lib/pkcs11/gnome-keyring-pkcs11.la
++libtool: warning: remember to run 'libtool --finish /usr/lib/pkcs11'
++ /usr/bin/mkdir -p '/tmp/package-gnome-keyring/usr/share/dbus-1/services'
++ /usr/bin/ginstall -c -m 644 daemon/org.gnome.keyring.service daemon/org.freedesktop.secrets.service daemon/org.freedesktop.impl.portal.Secret.service '/tmp/package-gnome-keyring/usr/share/dbus-1/services'
++if test -n "schema/org.gnome.crypto.cache.gschema.xml"; then \
++	test -z "/usr/share/glib-2.0/schemas" || /usr/bin/mkdir -p "/tmp/package-gnome-keyring/usr/share/glib-2.0/schemas"; \
++	/usr/bin/ginstall -c -m 644 schema/org.gnome.crypto.cache.gschema.xml "/tmp/package-gnome-keyring/usr/share/glib-2.0/schemas"; \
++	test -n "/tmp/package-gnome-keyring" || /usr/bin/glib-compile-schemas /usr/share/glib-2.0/schemas; \
++fi
++make[3]: Leaving directory '/tmp/gnome-keyring-3.36.0'
++make[2]: Leaving directory '/tmp/gnome-keyring-3.36.0'
++Making install in po
++make[2]: Entering directory '/tmp/gnome-keyring-3.36.0/po'
++installing af.gmo as /tmp/package-gnome-keyring/usr/share/locale/af/LC_MESSAGES/gnome-keyring.mo
++installing ar.gmo as /tmp/package-gnome-keyring/usr/share/locale/ar/LC_MESSAGES/gnome-keyring.mo
++installing as.gmo as /tmp/package-gnome-keyring/usr/share/locale/as/LC_MESSAGES/gnome-keyring.mo
++installing ast.gmo as /tmp/package-gnome-keyring/usr/share/locale/ast/LC_MESSAGES/gnome-keyring.mo
++installing az.gmo as /tmp/package-gnome-keyring/usr/share/locale/az/LC_MESSAGES/gnome-keyring.mo
++installing be.gmo as /tmp/package-gnome-keyring/usr/share/locale/be/LC_MESSAGES/gnome-keyring.mo
++installing be@latin.gmo as /tmp/package-gnome-keyring/usr/share/locale/be@latin/LC_MESSAGES/gnome-keyring.mo
++installing bg.gmo as /tmp/package-gnome-keyring/usr/share/locale/bg/LC_MESSAGES/gnome-keyring.mo
++installing bn.gmo as /tmp/package-gnome-keyring/usr/share/locale/bn/LC_MESSAGES/gnome-keyring.mo
++installing bn_IN.gmo as /tmp/package-gnome-keyring/usr/share/locale/bn_IN/LC_MESSAGES/gnome-keyring.mo
++installing bs.gmo as /tmp/package-gnome-keyring/usr/share/locale/bs/LC_MESSAGES/gnome-keyring.mo
++installing ca.gmo as /tmp/package-gnome-keyring/usr/share/locale/ca/LC_MESSAGES/gnome-keyring.mo
++installing ca@valencia.gmo as /tmp/package-gnome-keyring/usr/share/locale/ca@valencia/LC_MESSAGES/gnome-keyring.mo
++installing ckb.gmo as /tmp/package-gnome-keyring/usr/share/locale/ckb/LC_MESSAGES/gnome-keyring.mo
++installing cs.gmo as /tmp/package-gnome-keyring/usr/share/locale/cs/LC_MESSAGES/gnome-keyring.mo
++installing cy.gmo as /tmp/package-gnome-keyring/usr/share/locale/cy/LC_MESSAGES/gnome-keyring.mo
++installing da.gmo as /tmp/package-gnome-keyring/usr/share/locale/da/LC_MESSAGES/gnome-keyring.mo
++installing de.gmo as /tmp/package-gnome-keyring/usr/share/locale/de/LC_MESSAGES/gnome-keyring.mo
++installing dz.gmo as /tmp/package-gnome-keyring/usr/share/locale/dz/LC_MESSAGES/gnome-keyring.mo
++installing el.gmo as /tmp/package-gnome-keyring/usr/share/locale/el/LC_MESSAGES/gnome-keyring.mo
++installing en_CA.gmo as /tmp/package-gnome-keyring/usr/share/locale/en_CA/LC_MESSAGES/gnome-keyring.mo
++installing en_GB.gmo as /tmp/package-gnome-keyring/usr/share/locale/en_GB/LC_MESSAGES/gnome-keyring.mo
++installing en@shaw.gmo as /tmp/package-gnome-keyring/usr/share/locale/en@shaw/LC_MESSAGES/gnome-keyring.mo
++installing eo.gmo as /tmp/package-gnome-keyring/usr/share/locale/eo/LC_MESSAGES/gnome-keyring.mo
++installing es.gmo as /tmp/package-gnome-keyring/usr/share/locale/es/LC_MESSAGES/gnome-keyring.mo
++installing et.gmo as /tmp/package-gnome-keyring/usr/share/locale/et/LC_MESSAGES/gnome-keyring.mo
++installing eu.gmo as /tmp/package-gnome-keyring/usr/share/locale/eu/LC_MESSAGES/gnome-keyring.mo
++installing fa.gmo as /tmp/package-gnome-keyring/usr/share/locale/fa/LC_MESSAGES/gnome-keyring.mo
++installing fi.gmo as /tmp/package-gnome-keyring/usr/share/locale/fi/LC_MESSAGES/gnome-keyring.mo
++installing fr.gmo as /tmp/package-gnome-keyring/usr/share/locale/fr/LC_MESSAGES/gnome-keyring.mo
++installing fur.gmo as /tmp/package-gnome-keyring/usr/share/locale/fur/LC_MESSAGES/gnome-keyring.mo
++installing ga.gmo as /tmp/package-gnome-keyring/usr/share/locale/ga/LC_MESSAGES/gnome-keyring.mo
++installing gd.gmo as /tmp/package-gnome-keyring/usr/share/locale/gd/LC_MESSAGES/gnome-keyring.mo
++installing gl.gmo as /tmp/package-gnome-keyring/usr/share/locale/gl/LC_MESSAGES/gnome-keyring.mo
++installing gu.gmo as /tmp/package-gnome-keyring/usr/share/locale/gu/LC_MESSAGES/gnome-keyring.mo
++installing he.gmo as /tmp/package-gnome-keyring/usr/share/locale/he/LC_MESSAGES/gnome-keyring.mo
++installing hi.gmo as /tmp/package-gnome-keyring/usr/share/locale/hi/LC_MESSAGES/gnome-keyring.mo
++installing hr.gmo as /tmp/package-gnome-keyring/usr/share/locale/hr/LC_MESSAGES/gnome-keyring.mo
++installing hu.gmo as /tmp/package-gnome-keyring/usr/share/locale/hu/LC_MESSAGES/gnome-keyring.mo
++installing id.gmo as /tmp/package-gnome-keyring/usr/share/locale/id/LC_MESSAGES/gnome-keyring.mo
++installing is.gmo as /tmp/package-gnome-keyring/usr/share/locale/is/LC_MESSAGES/gnome-keyring.mo
++installing it.gmo as /tmp/package-gnome-keyring/usr/share/locale/it/LC_MESSAGES/gnome-keyring.mo
++installing ja.gmo as /tmp/package-gnome-keyring/usr/share/locale/ja/LC_MESSAGES/gnome-keyring.mo
++installing ka.gmo as /tmp/package-gnome-keyring/usr/share/locale/ka/LC_MESSAGES/gnome-keyring.mo
++installing kk.gmo as /tmp/package-gnome-keyring/usr/share/locale/kk/LC_MESSAGES/gnome-keyring.mo
++installing km.gmo as /tmp/package-gnome-keyring/usr/share/locale/km/LC_MESSAGES/gnome-keyring.mo
++installing kn.gmo as /tmp/package-gnome-keyring/usr/share/locale/kn/LC_MESSAGES/gnome-keyring.mo
++installing ko.gmo as /tmp/package-gnome-keyring/usr/share/locale/ko/LC_MESSAGES/gnome-keyring.mo
++installing lt.gmo as /tmp/package-gnome-keyring/usr/share/locale/lt/LC_MESSAGES/gnome-keyring.mo
++installing lv.gmo as /tmp/package-gnome-keyring/usr/share/locale/lv/LC_MESSAGES/gnome-keyring.mo
++installing mai.gmo as /tmp/package-gnome-keyring/usr/share/locale/mai/LC_MESSAGES/gnome-keyring.mo
++installing mg.gmo as /tmp/package-gnome-keyring/usr/share/locale/mg/LC_MESSAGES/gnome-keyring.mo
++installing mjw.gmo as /tmp/package-gnome-keyring/usr/share/locale/mjw/LC_MESSAGES/gnome-keyring.mo
++installing mk.gmo as /tmp/package-gnome-keyring/usr/share/locale/mk/LC_MESSAGES/gnome-keyring.mo
++installing ml.gmo as /tmp/package-gnome-keyring/usr/share/locale/ml/LC_MESSAGES/gnome-keyring.mo
++installing mn.gmo as /tmp/package-gnome-keyring/usr/share/locale/mn/LC_MESSAGES/gnome-keyring.mo
++installing mr.gmo as /tmp/package-gnome-keyring/usr/share/locale/mr/LC_MESSAGES/gnome-keyring.mo
++installing ms.gmo as /tmp/package-gnome-keyring/usr/share/locale/ms/LC_MESSAGES/gnome-keyring.mo
++installing nb.gmo as /tmp/package-gnome-keyring/usr/share/locale/nb/LC_MESSAGES/gnome-keyring.mo
++installing ne.gmo as /tmp/package-gnome-keyring/usr/share/locale/ne/LC_MESSAGES/gnome-keyring.mo
++installing nl.gmo as /tmp/package-gnome-keyring/usr/share/locale/nl/LC_MESSAGES/gnome-keyring.mo
++installing nn.gmo as /tmp/package-gnome-keyring/usr/share/locale/nn/LC_MESSAGES/gnome-keyring.mo
++installing oc.gmo as /tmp/package-gnome-keyring/usr/share/locale/oc/LC_MESSAGES/gnome-keyring.mo
++installing or.gmo as /tmp/package-gnome-keyring/usr/share/locale/or/LC_MESSAGES/gnome-keyring.mo
++installing pa.gmo as /tmp/package-gnome-keyring/usr/share/locale/pa/LC_MESSAGES/gnome-keyring.mo
++installing pl.gmo as /tmp/package-gnome-keyring/usr/share/locale/pl/LC_MESSAGES/gnome-keyring.mo
++installing pt.gmo as /tmp/package-gnome-keyring/usr/share/locale/pt/LC_MESSAGES/gnome-keyring.mo
++installing pt_BR.gmo as /tmp/package-gnome-keyring/usr/share/locale/pt_BR/LC_MESSAGES/gnome-keyring.mo
++installing ro.gmo as /tmp/package-gnome-keyring/usr/share/locale/ro/LC_MESSAGES/gnome-keyring.mo
++installing ru.gmo as /tmp/package-gnome-keyring/usr/share/locale/ru/LC_MESSAGES/gnome-keyring.mo
++installing rw.gmo as /tmp/package-gnome-keyring/usr/share/locale/rw/LC_MESSAGES/gnome-keyring.mo
++installing si.gmo as /tmp/package-gnome-keyring/usr/share/locale/si/LC_MESSAGES/gnome-keyring.mo
++installing sk.gmo as /tmp/package-gnome-keyring/usr/share/locale/sk/LC_MESSAGES/gnome-keyring.mo
++installing sl.gmo as /tmp/package-gnome-keyring/usr/share/locale/sl/LC_MESSAGES/gnome-keyring.mo
++installing sq.gmo as /tmp/package-gnome-keyring/usr/share/locale/sq/LC_MESSAGES/gnome-keyring.mo
++installing sr.gmo as /tmp/package-gnome-keyring/usr/share/locale/sr/LC_MESSAGES/gnome-keyring.mo
++installing sr@latin.gmo as /tmp/package-gnome-keyring/usr/share/locale/sr@latin/LC_MESSAGES/gnome-keyring.mo
++installing sv.gmo as /tmp/package-gnome-keyring/usr/share/locale/sv/LC_MESSAGES/gnome-keyring.mo
++installing ta.gmo as /tmp/package-gnome-keyring/usr/share/locale/ta/LC_MESSAGES/gnome-keyring.mo
++installing te.gmo as /tmp/package-gnome-keyring/usr/share/locale/te/LC_MESSAGES/gnome-keyring.mo
++installing tg.gmo as /tmp/package-gnome-keyring/usr/share/locale/tg/LC_MESSAGES/gnome-keyring.mo
++installing th.gmo as /tmp/package-gnome-keyring/usr/share/locale/th/LC_MESSAGES/gnome-keyring.mo
++installing tr.gmo as /tmp/package-gnome-keyring/usr/share/locale/tr/LC_MESSAGES/gnome-keyring.mo
++installing ug.gmo as /tmp/package-gnome-keyring/usr/share/locale/ug/LC_MESSAGES/gnome-keyring.mo
++installing uk.gmo as /tmp/package-gnome-keyring/usr/share/locale/uk/LC_MESSAGES/gnome-keyring.mo
++installing vi.gmo as /tmp/package-gnome-keyring/usr/share/locale/vi/LC_MESSAGES/gnome-keyring.mo
++installing xh.gmo as /tmp/package-gnome-keyring/usr/share/locale/xh/LC_MESSAGES/gnome-keyring.mo
++installing zh_CN.gmo as /tmp/package-gnome-keyring/usr/share/locale/zh_CN/LC_MESSAGES/gnome-keyring.mo
++installing zh_HK.gmo as /tmp/package-gnome-keyring/usr/share/locale/zh_HK/LC_MESSAGES/gnome-keyring.mo
++installing zh_TW.gmo as /tmp/package-gnome-keyring/usr/share/locale/zh_TW/LC_MESSAGES/gnome-keyring.mo
++if test "gnome-keyring" = "gettext-tools"; then \
++  /usr/bin/mkdir -p /tmp/package-gnome-keyring/usr/share/gettext/po; \
++  for file in Makefile.in.in remove-potcdate.sin quot.sed boldquot.sed en@quot.header en@boldquot.header insert-header.sin Rules-quot   Makevars.template; do \
++    /usr/bin/ginstall -c -m 644 ./$file \
++		    /tmp/package-gnome-keyring/usr/share/gettext/po/$file; \
++  done; \
++  for file in Makevars; do \
++    rm -f /tmp/package-gnome-keyring/usr/share/gettext/po/$file; \
++  done; \
++else \
++  : ; \
++fi
++make[2]: Leaving directory '/tmp/gnome-keyring-3.36.0/po'
++make[1]: Leaving directory '/tmp/gnome-keyring-3.36.0'
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++usr/bin/gnome-keyring	gnome-keyring-3
++
++Making symbolic link creation script:
++( cd usr/bin ; rm -rf gnome-keyring )
++( cd usr/bin ; ln -sf gnome-keyring-3 gnome-keyring )
++
++Unless your existing installation script already contains the code
++to create these links, you should append these lines to your existing
++install script. Now's your chance. :^)
++
++Would you like to add this stuff to the existing install script and
++remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './usr/bin/gnome-keyring'
++
++Updating your ./install/doinst.sh (prepending symlinks)...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/gnome-keyring-3.36.0-x86_64-2.txz
++
++./
++etc/
++etc/xdg/
++etc/xdg/autostart/
++install/
++install/doinst.sh
++install/slack-desc
++lib/
++lib/security/
++lib/security/pam_gnome_keyring.so
++usr/
++usr/bin/
++usr/bin/gnome-keyring-3
++usr/bin/gnome-keyring-daemon
++usr/doc/
++usr/doc/gnome-keyring-3.36.0/
++usr/doc/gnome-keyring-3.36.0/AUTHORS
++usr/doc/gnome-keyring-3.36.0/COPYING
++usr/doc/gnome-keyring-3.36.0/COPYING.LIB
++usr/doc/gnome-keyring-3.36.0/ChangeLog
++usr/doc/gnome-keyring-3.36.0/HACKING
++usr/doc/gnome-keyring-3.36.0/INSTALL
++usr/doc/gnome-keyring-3.36.0/NEWS
++usr/doc/gnome-keyring-3.36.0/README
++usr/lib/
++usr/lib/gnome-keyring/
++usr/lib/gnome-keyring/devel/
++usr/lib/gnome-keyring/devel/gkm-gnome2-store-standalone.la
++usr/lib/gnome-keyring/devel/gkm-gnome2-store-standalone.so
++usr/lib/gnome-keyring/devel/gkm-secret-store-standalone.la
++usr/lib/gnome-keyring/devel/gkm-secret-store-standalone.so
++usr/lib/gnome-keyring/devel/gkm-ssh-store-standalone.la
++usr/lib/gnome-keyring/devel/gkm-ssh-store-standalone.so
++usr/lib/gnome-keyring/devel/gkm-xdg-store-standalone.la
++usr/lib/gnome-keyring/devel/gkm-xdg-store-standalone.so
++usr/lib/pkcs11/
++usr/lib/pkcs11/gnome-keyring-pkcs11.la
++usr/lib/pkcs11/gnome-keyring-pkcs11.so
++usr/man/
++usr/man/man1/
++usr/man/man1/gnome-keyring-3.1.gz
++usr/man/man1/gnome-keyring-daemon.1.gz
++usr/man/man1/gnome-keyring.1.gz
++usr/share/
++usr/share/GConf/
++usr/share/GConf/gsettings/
++usr/share/GConf/gsettings/org.gnome.crypto.cache.convert
++usr/share/dbus-1/
++usr/share/dbus-1/services/
++usr/share/dbus-1/services/org.freedesktop.impl.portal.Secret.service
++usr/share/dbus-1/services/org.freedesktop.secrets.service
++usr/share/dbus-1/services/org.gnome.keyring.service
++usr/share/glib-2.0/
++usr/share/glib-2.0/schemas/
++usr/share/glib-2.0/schemas/org.gnome.crypto.cache.gschema.xml
++usr/share/locale/
++usr/share/locale/af/
++usr/share/locale/af/LC_MESSAGES/
++usr/share/locale/af/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/ar/
++usr/share/locale/ar/LC_MESSAGES/
++usr/share/locale/ar/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/as/
++usr/share/locale/as/LC_MESSAGES/
++usr/share/locale/as/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/ast/
++usr/share/locale/ast/LC_MESSAGES/
++usr/share/locale/ast/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/az/
++usr/share/locale/az/LC_MESSAGES/
++usr/share/locale/az/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/be/
++usr/share/locale/be/LC_MESSAGES/
++usr/share/locale/be/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/be@latin/
++usr/share/locale/be@latin/LC_MESSAGES/
++usr/share/locale/be@latin/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/bg/
++usr/share/locale/bg/LC_MESSAGES/
++usr/share/locale/bg/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/bn/
++usr/share/locale/bn/LC_MESSAGES/
++usr/share/locale/bn/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/bn_IN/
++usr/share/locale/bn_IN/LC_MESSAGES/
++usr/share/locale/bn_IN/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/bs/
++usr/share/locale/bs/LC_MESSAGES/
++usr/share/locale/bs/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/ca/
++usr/share/locale/ca/LC_MESSAGES/
++usr/share/locale/ca/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/ca@valencia/
++usr/share/locale/ca@valencia/LC_MESSAGES/
++usr/share/locale/ca@valencia/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/ckb/
++usr/share/locale/ckb/LC_MESSAGES/
++usr/share/locale/ckb/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/cs/
++usr/share/locale/cs/LC_MESSAGES/
++usr/share/locale/cs/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/cy/
++usr/share/locale/cy/LC_MESSAGES/
++usr/share/locale/cy/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/da/
++usr/share/locale/da/LC_MESSAGES/
++usr/share/locale/da/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/de/
++usr/share/locale/de/LC_MESSAGES/
++usr/share/locale/de/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/dz/
++usr/share/locale/dz/LC_MESSAGES/
++usr/share/locale/dz/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/el/
++usr/share/locale/el/LC_MESSAGES/
++usr/share/locale/el/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/en@shaw/
++usr/share/locale/en@shaw/LC_MESSAGES/
++usr/share/locale/en@shaw/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/en_CA/
++usr/share/locale/en_CA/LC_MESSAGES/
++usr/share/locale/en_CA/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/en_GB/
++usr/share/locale/en_GB/LC_MESSAGES/
++usr/share/locale/en_GB/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/eo/
++usr/share/locale/eo/LC_MESSAGES/
++usr/share/locale/eo/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/es/
++usr/share/locale/es/LC_MESSAGES/
++usr/share/locale/es/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/et/
++usr/share/locale/et/LC_MESSAGES/
++usr/share/locale/et/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/eu/
++usr/share/locale/eu/LC_MESSAGES/
++usr/share/locale/eu/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/fa/
++usr/share/locale/fa/LC_MESSAGES/
++usr/share/locale/fa/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/fi/
++usr/share/locale/fi/LC_MESSAGES/
++usr/share/locale/fi/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/fr/
++usr/share/locale/fr/LC_MESSAGES/
++usr/share/locale/fr/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/fur/
++usr/share/locale/fur/LC_MESSAGES/
++usr/share/locale/fur/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/ga/
++usr/share/locale/ga/LC_MESSAGES/
++usr/share/locale/ga/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/gd/
++usr/share/locale/gd/LC_MESSAGES/
++usr/share/locale/gd/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/gl/
++usr/share/locale/gl/LC_MESSAGES/
++usr/share/locale/gl/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/gu/
++usr/share/locale/gu/LC_MESSAGES/
++usr/share/locale/gu/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/he/
++usr/share/locale/he/LC_MESSAGES/
++usr/share/locale/he/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/hi/
++usr/share/locale/hi/LC_MESSAGES/
++usr/share/locale/hi/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/hr/
++usr/share/locale/hr/LC_MESSAGES/
++usr/share/locale/hr/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/hu/
++usr/share/locale/hu/LC_MESSAGES/
++usr/share/locale/hu/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/id/
++usr/share/locale/id/LC_MESSAGES/
++usr/share/locale/id/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/is/
++usr/share/locale/is/LC_MESSAGES/
++usr/share/locale/is/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/it/
++usr/share/locale/it/LC_MESSAGES/
++usr/share/locale/it/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/ja/
++usr/share/locale/ja/LC_MESSAGES/
++usr/share/locale/ja/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/ka/
++usr/share/locale/ka/LC_MESSAGES/
++usr/share/locale/ka/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/kk/
++usr/share/locale/kk/LC_MESSAGES/
++usr/share/locale/kk/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/km/
++usr/share/locale/km/LC_MESSAGES/
++usr/share/locale/km/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/kn/
++usr/share/locale/kn/LC_MESSAGES/
++usr/share/locale/kn/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/ko/
++usr/share/locale/ko/LC_MESSAGES/
++usr/share/locale/ko/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/lt/
++usr/share/locale/lt/LC_MESSAGES/
++usr/share/locale/lt/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/lv/
++usr/share/locale/lv/LC_MESSAGES/
++usr/share/locale/lv/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/mai/
++usr/share/locale/mai/LC_MESSAGES/
++usr/share/locale/mai/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/mg/
++usr/share/locale/mg/LC_MESSAGES/
++usr/share/locale/mg/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/mjw/
++usr/share/locale/mjw/LC_MESSAGES/
++usr/share/locale/mjw/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/mk/
++usr/share/locale/mk/LC_MESSAGES/
++usr/share/locale/mk/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/ml/
++usr/share/locale/ml/LC_MESSAGES/
++usr/share/locale/ml/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/mn/
++usr/share/locale/mn/LC_MESSAGES/
++usr/share/locale/mn/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/mr/
++usr/share/locale/mr/LC_MESSAGES/
++usr/share/locale/mr/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/ms/
++usr/share/locale/ms/LC_MESSAGES/
++usr/share/locale/ms/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/nb/
++usr/share/locale/nb/LC_MESSAGES/
++usr/share/locale/nb/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/ne/
++usr/share/locale/ne/LC_MESSAGES/
++usr/share/locale/ne/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/nl/
++usr/share/locale/nl/LC_MESSAGES/
++usr/share/locale/nl/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/nn/
++usr/share/locale/nn/LC_MESSAGES/
++usr/share/locale/nn/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/oc/
++usr/share/locale/oc/LC_MESSAGES/
++usr/share/locale/oc/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/or/
++usr/share/locale/or/LC_MESSAGES/
++usr/share/locale/or/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/pa/
++usr/share/locale/pa/LC_MESSAGES/
++usr/share/locale/pa/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/pl/
++usr/share/locale/pl/LC_MESSAGES/
++usr/share/locale/pl/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/pt/
++usr/share/locale/pt/LC_MESSAGES/
++usr/share/locale/pt/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/pt_BR/
++usr/share/locale/pt_BR/LC_MESSAGES/
++usr/share/locale/pt_BR/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/ro/
++usr/share/locale/ro/LC_MESSAGES/
++usr/share/locale/ro/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/ru/
++usr/share/locale/ru/LC_MESSAGES/
++usr/share/locale/ru/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/rw/
++usr/share/locale/rw/LC_MESSAGES/
++usr/share/locale/rw/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/si/
++usr/share/locale/si/LC_MESSAGES/
++usr/share/locale/si/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/sk/
++usr/share/locale/sk/LC_MESSAGES/
++usr/share/locale/sk/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/sl/
++usr/share/locale/sl/LC_MESSAGES/
++usr/share/locale/sl/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/sq/
++usr/share/locale/sq/LC_MESSAGES/
++usr/share/locale/sq/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/sr/
++usr/share/locale/sr/LC_MESSAGES/
++usr/share/locale/sr/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/sr@latin/
++usr/share/locale/sr@latin/LC_MESSAGES/
++usr/share/locale/sr@latin/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/sv/
++usr/share/locale/sv/LC_MESSAGES/
++usr/share/locale/sv/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/ta/
++usr/share/locale/ta/LC_MESSAGES/
++usr/share/locale/ta/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/te/
++usr/share/locale/te/LC_MESSAGES/
++usr/share/locale/te/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/tg/
++usr/share/locale/tg/LC_MESSAGES/
++usr/share/locale/tg/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/th/
++usr/share/locale/th/LC_MESSAGES/
++usr/share/locale/th/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/tr/
++usr/share/locale/tr/LC_MESSAGES/
++usr/share/locale/tr/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/ug/
++usr/share/locale/ug/LC_MESSAGES/
++usr/share/locale/ug/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/uk/
++usr/share/locale/uk/LC_MESSAGES/
++usr/share/locale/uk/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/vi/
++usr/share/locale/vi/LC_MESSAGES/
++usr/share/locale/vi/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/xh/
++usr/share/locale/xh/LC_MESSAGES/
++usr/share/locale/xh/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/zh_CN/
++usr/share/locale/zh_CN/LC_MESSAGES/
++usr/share/locale/zh_CN/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/zh_HK/
++usr/share/locale/zh_HK/LC_MESSAGES/
++usr/share/locale/zh_HK/LC_MESSAGES/gnome-keyring.mo
++usr/share/locale/zh_TW/
++usr/share/locale/zh_TW/LC_MESSAGES/
++usr/share/locale/zh_TW/LC_MESSAGES/gnome-keyring.mo
++usr/share/p11-kit/
++usr/share/p11-kit/modules/
++usr/share/p11-kit/modules/gnome-keyring.module
++usr/share/xdg-desktop-portal/
++usr/share/xdg-desktop-portal/portals/
++usr/share/xdg-desktop-portal/portals/gnome-keyring.portal
++
++Slackware package /tmp/gnome-keyring-3.36.0-x86_64-2.txz created.
++

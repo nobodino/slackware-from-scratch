@@ -1,0 +1,202 @@
+#!/bin/bash
+
+# Copyright 2009, 2010, 2011, 2012, 2013, 2016, 2018  Patrick J. Volkerding, Sebeka, Minnesota, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=bluez
+VERSION=${VERSION:-$(echo $PKGNAM-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+BUILD=${BUILD:-2}
+
+NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX=""
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-$PKGNAM
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+cd $TMP
+rm -rf $PKGNAM-$VERSION
+tar xvf $CWD/${PKGNAM}-${VERSION}.tar.?z || exit 1
+cd $PKGNAM-$VERSION || exit 1
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \+ -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \+
+
+zcat $CWD/bluez-5.51-obexd_without_systemd-1.patch.gz | patch -p1 --verbose || exit 1
+
+# Fix bluetoothd crashes:
+zcat $CWD/refresh_adv_manager_for_non-LE_devices.diff.gz | patch -p1 --verbose || exit 1
+
+sed -i -e 's|-lreadline|\0 -lncursesw|g' Makefile.{in,tools}
+
+autoreconf -vif
+
+# We're adding --enable-deprecated due to this commit: 
+#
+# commit b1eb2c4cd057624312e0412f6c4be000f7fc3617
+#Author: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+#Date:   Wed Jan 4 14:23:58 2017 +0200
+#
+#    build: Hide deprecated tools under --enable-deprecated
+#    
+#    This marks the following tools as deprecated as they are not longer
+#    maintained or have been replaced by other tools:
+#    
+#      hciattach hciconfig hcitool hcidump rfcomm sdptool ciptool gatttool
+
+CFLAGS="$SLKCFLAGS" \
+CXXFLAGS="$SLKCFLAGS" \
+LDFLAGS="-L/usr/lib$LIBDIRSUFFIX" \
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --sysconfdir=/etc \
+  --mandir=/usr/man \
+  --localstatedir=/var \
+  --docdir=/usr/doc/${PKGNAM}-${VERSION} \
+  --enable-library \
+  --disable-systemd \
+  --enable-deprecated \
+  --build=$ARCH-slackware-linux-musl || exit 1
+
+make $NUMJOBS || make || exit 1
+make install DESTDIR=$PKG || exit 1
+
+# Don't ship .la files:
+rm -f $PKG/{,usr/}lib${LIBDIRSUFFIX}/*.la
+
+# Use reset=1 for the btusb module, which supposedly fixes reconnect problems:
+mkdir -p $PKG/lib/modprobe.d
+cp -a $CWD/btusb.conf $PKG/lib/modprobe.d
+chown root:root $PKG/lib/modprobe.d/btusb.conf
+chmod 644 $PKG/lib/modprobe.d/btusb.conf
+
+# Add bluetoothd to /usr/sbin
+mkdir -p $PKG/usr/sbin
+ln -s ../libexec/bluetooth/bluetoothd $PKG/usr/sbin
+
+# Move the dbus config file to the system directory
+mkdir -p $PKG/usr/share/dbus-1/system.d/
+mv $PKG/etc/dbus-1/system.d/* $PKG/usr/share/dbus-1/system.d/
+rmdir --parents $PKG/etc/dbus-1/system.d/
+
+# Fix substitution in /usr/share/dbus-1/services/org.bluez.obex.service:
+if [ -x $PKG/usr/libexec/bluetooth/obexd ]; then
+  sed -i "s|@libexecdir@|/usr/libexec|g" $PKG/usr/share/dbus-1/services/org.bluez.obex.service
+fi
+
+# Install the configuration files
+mkdir -p $PKG/etc/bluetooth $PKG/etc/default
+cat src/main.conf > $PKG/etc/bluetooth/main.conf.new
+cat profiles/input/input.conf > $PKG/etc/bluetooth/input.conf.new
+cat profiles/network/network.conf > $PKG/etc/bluetooth/network.conf.new
+cat $CWD/config/uart.conf > $PKG/etc/bluetooth/uart.conf.new
+cat $CWD/config/defaultconfig > $PKG/etc/default/bluetooth.new
+
+# Add an init script
+mkdir -p $PKG/etc/rc.d
+cat $CWD/config/rc.bluetooth > $PKG/etc/rc.d/rc.bluetooth.new
+
+# Let's go ahead and let that start by default, unless an existing init
+# script is not executable:
+chmod 755 $PKG/etc/rc.d/rc.bluetooth.new
+
+# If the deprecated utility gatttool was built, go ahead and install it:
+if [ -x attrib/gatttool ]; then
+  cp attrib/gatttool $PKG/usr/bin
+  chown root:root $PKG/usr/bin/gatttool
+  chmod 755 $PKG/usr/bin/gatttool
+fi
+
+# Compress and if needed symlink the man pages:
+if [ -d $PKG/usr/man ]; then
+  ( cd $PKG/usr/man
+    for manpagedir in $(find . -type d -name "man*") ; do
+      ( cd $manpagedir
+        for eachpage in $( find . -type l -maxdepth 1) ; do
+          ln -s $( readlink $eachpage ).gz $eachpage.gz
+          rm $eachpage
+        done
+        gzip -9 *.?
+      )
+    done
+  )
+fi
+
+find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
+  | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION
+cp -a \
+  AUTHORS COPYING* INSTALL README* TODO \
+  $PKG/usr/doc/$PKGNAM-$VERSION
+
+# If there's a ChangeLog, installing at least part of the recent history
+# is useful, but don't let it get totally out of control:
+if [ -r ChangeLog ]; then
+  DOCSDIR=$(echo $PKG/usr/doc/${PKGNAM}-$VERSION)
+  cat ChangeLog | head -n 1000 > $DOCSDIR/ChangeLog
+  touch -r ChangeLog $DOCSDIR/ChangeLog
+fi
+
+mkdir -p $PKG/install
+
+zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/$PKGNAM-$VERSION-$ARCH-$BUILD.txz

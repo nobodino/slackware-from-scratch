@@ -1,0 +1,2131 @@
+diff -ruBN /tmp/libical/libical.SlackBuild /source/l/libical/libical.SlackBuild
+--- /tmp/libical/libical.SlackBuild	2021-01-17 04:07:28.000000000 +0000
++++ /source/l/libical/libical.SlackBuild	2021-01-18 18:06:50.000000000 +0000
+@@ -66,7 +66,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ else
+   SLKCFLAGS="-O2"
+   LIBDIRSUFFIX=""
+@@ -97,6 +97,7 @@
+   -DMAN_INSTALL_DIR=/usr/man \
+   -DSYSCONF_INSTALL_DIR=/etc \
+   -DLIB_SUFFIX=${LIBDIRSUFFIX} \
++-DCMAKE_INSTALL_LIBDIR=lib$LIBDIRSUFFIX \
+   -DGOBJECT_INTROSPECTION=true \
+   -DICAL_GLIB_VAPI=true \
+   -DSHARED_ONLY:BOOL=true \
+diff -ruBN /tmp/libical/libical.SlackBuild.log /source/l/libical/libical.SlackBuild.log
+--- /tmp/libical/libical.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/l/libical/libical.SlackBuild.log	2021-01-18 18:11:49.000000000 +0000
+@@ -0,0 +1,2107 @@
++libical-3.0.9/
++libical-3.0.9/.clang-tidy
++libical-3.0.9/.dir-locals.el
++libical-3.0.9/.gitignore
++libical-3.0.9/.krazy
++libical-3.0.9/.travis.yml
++libical-3.0.9/AUTHORS
++libical-3.0.9/CMakeLists.txt
++libical-3.0.9/COPYING
++libical-3.0.9/ConfigureChecks.cmake
++libical-3.0.9/Install.txt
++libical-3.0.9/LICENSE
++libical-3.0.9/LICENSE.LGPL21.txt
++libical-3.0.9/LICENSE.MPL2.txt
++libical-3.0.9/LibIcalConfig.cmake.in
++libical-3.0.9/ReadMe.md
++libical-3.0.9/ReadMe.txt
++libical-3.0.9/ReleaseNotes.txt
++libical-3.0.9/TEST
++libical-3.0.9/THANKS
++libical-3.0.9/TODO
++libical-3.0.9/appveyor.yml
++libical-3.0.9/cmake/
++libical-3.0.9/cmake/Toolchain-Linux-GCC-i686.cmake
++libical-3.0.9/cmake/Toolchain-OSX-GCC-i686.cmake
++libical-3.0.9/cmake/Toolchain-QNX65.cmake
++libical-3.0.9/cmake/Toolchain-QNX66.cmake
++libical-3.0.9/cmake/Toolchain-RPI.cmake
++libical-3.0.9/cmake/Toolchain-android.cmake
++libical-3.0.9/cmake/Toolchain-blackberry-armv7le.cmake
++libical-3.0.9/cmake/Toolchain-iMX6.cmake
++libical-3.0.9/cmake/Toolchain-iOS.cmake
++libical-3.0.9/cmake/Toolchain-jetson-tk1.cmake
++libical-3.0.9/cmake/modules/
++libical-3.0.9/cmake/modules/FindBDB.cmake
++libical-3.0.9/cmake/modules/FindGLib.cmake
++libical-3.0.9/cmake/modules/FindGObjectIntrospection.cmake
++libical-3.0.9/cmake/modules/FindICU.cmake
++libical-3.0.9/cmake/modules/FindLibXML.cmake
++libical-3.0.9/cmake/modules/FindWcecompat.cmake
++libical-3.0.9/cmake/modules/GObjectIntrospectionMacros.cmake
++libical-3.0.9/cmake/modules/GtkDoc.cmake
++libical-3.0.9/cmake/run_test.cmake
++libical-3.0.9/config.h.cmake
++libical-3.0.9/debian/
++libical-3.0.9/debian/changelog
++libical-3.0.9/debian/compat
++libical-3.0.9/debian/control
++libical-3.0.9/debian/copyright
++libical-3.0.9/debian/docs
++libical-3.0.9/debian/libical-dev.install
++libical-3.0.9/debian/libical0.install
++libical-3.0.9/debian/python-libical.install
++libical-3.0.9/debian/rules
++libical-3.0.9/design-data/
++libical-3.0.9/design-data/CMakeLists.txt
++libical-3.0.9/design-data/components.txt
++libical-3.0.9/design-data/parameters.csv
++libical-3.0.9/design-data/params-in-prop.txt
++libical-3.0.9/design-data/properties.csv
++libical-3.0.9/design-data/restrictions.csv
++libical-3.0.9/design-data/status.txt
++libical-3.0.9/design-data/value-types.csv
++libical-3.0.9/doc/
++libical-3.0.9/doc/AddingOrModifyingComponents.txt
++libical-3.0.9/doc/CMakeLists.txt
++libical-3.0.9/doc/Doxyfile.cmake
++libical-3.0.9/doc/Mainpage.dox
++libical-3.0.9/doc/UsingLibical.md
++libical-3.0.9/doc/UsingLibical.txt
++libical-3.0.9/doc/reference/
++libical-3.0.9/doc/reference/CMakeLists.txt
++libical-3.0.9/doc/reference/libical-glib/
++libical-3.0.9/doc/reference/libical-glib/CMakeLists.txt
++libical-3.0.9/doc/reference/libical-glib/libical-glib-docs.sgml.in
++libical-3.0.9/examples/
++libical-3.0.9/examples/CMakeLists.txt
++libical-3.0.9/examples/access-usecases.txt
++libical-3.0.9/examples/access_components.c
++libical-3.0.9/examples/access_properties_and_parameters.c
++libical-3.0.9/examples/changenames.pl
++libical-3.0.9/examples/errors.c
++libical-3.0.9/examples/main.c
++libical-3.0.9/examples/parse_text.c
++libical-3.0.9/libical.pc.in
++libical-3.0.9/scripts/
++libical-3.0.9/scripts/CMakeLists.txt
++libical-3.0.9/scripts/buildtests.sh
++libical-3.0.9/scripts/mkderivedcomponents.pl
++libical-3.0.9/scripts/mkderivedparameters.pl
++libical-3.0.9/scripts/mkderivedproperties.pl
++libical-3.0.9/scripts/mkderivedvalues.pl
++libical-3.0.9/scripts/mkrestrictiontable.pl
++libical-3.0.9/scripts/readvaluesfile.pl
++libical-3.0.9/scripts/set_compiler_env.bat
++libical-3.0.9/scripts/setup-travis.sh
++libical-3.0.9/src/
++libical-3.0.9/src/CMakeLists.txt
++libical-3.0.9/src/Net-ICal-Libical/
++libical-3.0.9/src/Net-ICal-Libical/MANIFEST
++libical-3.0.9/src/Net-ICal-Libical/Makefile.PL
++libical-3.0.9/src/Net-ICal-Libical/README
++libical-3.0.9/src/Net-ICal-Libical/lib/
++libical-3.0.9/src/Net-ICal-Libical/lib/Net/
++libical-3.0.9/src/Net-ICal-Libical/lib/Net/ICal/
++libical-3.0.9/src/Net-ICal-Libical/lib/Net/ICal/Libical.pm
++libical-3.0.9/src/Net-ICal-Libical/lib/Net/ICal/Libical/
++libical-3.0.9/src/Net-ICal-Libical/lib/Net/ICal/Libical/Component.pm
++libical-3.0.9/src/Net-ICal-Libical/lib/Net/ICal/Libical/Duration.pm
++libical-3.0.9/src/Net-ICal-Libical/lib/Net/ICal/Libical/Period.pm
++libical-3.0.9/src/Net-ICal-Libical/lib/Net/ICal/Libical/Property.pm
++libical-3.0.9/src/Net-ICal-Libical/lib/Net/ICal/Libical/Time.pm
++libical-3.0.9/src/Net-ICal-Libical/netical.i
++libical-3.0.9/src/Net-ICal-Libical/netical_wrap.c
++libical-3.0.9/src/Net-ICal-Libical/netical_wrap.doc
++libical-3.0.9/src/Net-ICal-Libical/test-data/
++libical-3.0.9/src/Net-ICal-Libical/test-data/2446.mime
++libical-3.0.9/src/Net-ICal-Libical/test-data/error
++libical-3.0.9/src/Net-ICal-Libical/test-data/mail-examples
++libical-3.0.9/src/Net-ICal-Libical/test-data/no-error
++libical-3.0.9/src/Net-ICal-Libical/test-data/rfc2445.ics
++libical-3.0.9/src/Net-ICal-Libical/test-data/rfc2446.ics
++libical-3.0.9/src/Net-ICal-Libical/test-data/single-with-error
++libical-3.0.9/src/Net-ICal-Libical/test/
++libical-3.0.9/src/Net-ICal-Libical/test/component.pl
++libical-3.0.9/src/Net-ICal-Libical/test/libical.pl
++libical-3.0.9/src/Net-ICal-Libical/test/swig.pl
++libical-3.0.9/src/java/
++libical-3.0.9/src/java/CMakeLists.txt
++libical-3.0.9/src/java/ICalDurationType.java
++libical-3.0.9/src/java/ICalParameter.java
++libical-3.0.9/src/java/ICalPeriodType.java
++libical-3.0.9/src/java/ICalProperty.java
++libical-3.0.9/src/java/ICalRecurrenceType.java
++libical-3.0.9/src/java/ICalTimeType.java
++libical-3.0.9/src/java/ICalTriggerType.java
++libical-3.0.9/src/java/ICalValue.java
++libical-3.0.9/src/java/VAgenda.java
++libical-3.0.9/src/java/VAlarm.java
++libical-3.0.9/src/java/VCalendar.java
++libical-3.0.9/src/java/VComponent.java
++libical-3.0.9/src/java/VEvent.java
++libical-3.0.9/src/java/VFreeBusy.java
++libical-3.0.9/src/java/VQuery.java
++libical-3.0.9/src/java/VToDo.java
++libical-3.0.9/src/java/jlibical_consts_cxx.h
++libical-3.0.9/src/java/jlibical_utils_cxx.cpp
++libical-3.0.9/src/java/jlibical_utils_cxx.h
++libical-3.0.9/src/java/jniICalDurationType_cxx.cpp
++libical-3.0.9/src/java/jniICalDurationType_cxx.h
++libical-3.0.9/src/java/jniICalPeriodType_cxx.cpp
++libical-3.0.9/src/java/jniICalPeriodType_cxx.h
++libical-3.0.9/src/java/jniICalRecurrenceType_cxx.cpp
++libical-3.0.9/src/java/jniICalRecurrenceType_cxx.h
++libical-3.0.9/src/java/jniICalTimeType_cxx.cpp
++libical-3.0.9/src/java/jniICalTimeType_cxx.h
++libical-3.0.9/src/java/jniICalTriggerType_cxx.cpp
++libical-3.0.9/src/java/jniICalTriggerType_cxx.h
++libical-3.0.9/src/java/net_cp_jlibical_ICalParameter_cxx.cpp
++libical-3.0.9/src/java/net_cp_jlibical_ICalParameter_cxx.h
++libical-3.0.9/src/java/net_cp_jlibical_ICalProperty_cxx.cpp
++libical-3.0.9/src/java/net_cp_jlibical_ICalProperty_cxx.h
++libical-3.0.9/src/java/net_cp_jlibical_ICalValue_cxx.cpp
++libical-3.0.9/src/java/net_cp_jlibical_ICalValue_cxx.h
++libical-3.0.9/src/java/net_cp_jlibical_VComponent_cxx.cpp
++libical-3.0.9/src/java/net_cp_jlibical_VComponent_cxx.h
++libical-3.0.9/src/java/testjni.java
++libical-3.0.9/src/libical-glib/
++libical-3.0.9/src/libical-glib/CMakeLists.txt
++libical-3.0.9/src/libical-glib/ICalGLib.metadata.in
++libical-3.0.9/src/libical-glib/api/
++libical-3.0.9/src/libical-glib/api/i-cal-array.xml
++libical-3.0.9/src/libical-glib/api/i-cal-attach.xml
++libical-3.0.9/src/libical-glib/api/i-cal-comp-iter.xml
++libical-3.0.9/src/libical-glib/api/i-cal-component.xml
++libical-3.0.9/src/libical-glib/api/i-cal-datetimeperiod.xml
++libical-3.0.9/src/libical-glib/api/i-cal-derived-parameter.xml
++libical-3.0.9/src/libical-glib/api/i-cal-derived-property.xml
++libical-3.0.9/src/libical-glib/api/i-cal-derived-value.xml
++libical-3.0.9/src/libical-glib/api/i-cal-duration.xml
++libical-3.0.9/src/libical-glib/api/i-cal-enums.xml
++libical-3.0.9/src/libical-glib/api/i-cal-error.xml
++libical-3.0.9/src/libical-glib/api/i-cal-geo.xml
++libical-3.0.9/src/libical-glib/api/i-cal-memory.xml
++libical-3.0.9/src/libical-glib/api/i-cal-mime.xml
++libical-3.0.9/src/libical-glib/api/i-cal-parameter.xml
++libical-3.0.9/src/libical-glib/api/i-cal-parser.xml
++libical-3.0.9/src/libical-glib/api/i-cal-period.xml
++libical-3.0.9/src/libical-glib/api/i-cal-property.xml
++libical-3.0.9/src/libical-glib/api/i-cal-recur-iterator.xml
++libical-3.0.9/src/libical-glib/api/i-cal-recur.xml
++libical-3.0.9/src/libical-glib/api/i-cal-recurrence.xml
++libical-3.0.9/src/libical-glib/api/i-cal-reqstat.xml
++libical-3.0.9/src/libical-glib/api/i-cal-restriction.xml
++libical-3.0.9/src/libical-glib/api/i-cal-time-span.xml
++libical-3.0.9/src/libical-glib/api/i-cal-time.xml
++libical-3.0.9/src/libical-glib/api/i-cal-timezone.xml
++libical-3.0.9/src/libical-glib/api/i-cal-trigger.xml
++libical-3.0.9/src/libical-glib/api/i-cal-unknowntokenhandling.xml
++libical-3.0.9/src/libical-glib/api/i-cal-value.xml
++libical-3.0.9/src/libical-glib/i-cal-object.c.in
++libical-3.0.9/src/libical-glib/i-cal-object.h.in
++libical-3.0.9/src/libical-glib/libical-glib.pc.in
++libical-3.0.9/src/libical-glib/tools/
++libical-3.0.9/src/libical-glib/tools/generator.c
++libical-3.0.9/src/libical-glib/tools/generator.h
++libical-3.0.9/src/libical-glib/tools/header-forward-declarations-template
++libical-3.0.9/src/libical-glib/tools/header-header-template
++libical-3.0.9/src/libical-glib/tools/header-structure-boilerplate-template
++libical-3.0.9/src/libical-glib/tools/header-template
++libical-3.0.9/src/libical-glib/tools/source-structure-boilerplate-template
++libical-3.0.9/src/libical-glib/tools/source-template
++libical-3.0.9/src/libical-glib/tools/xml-parser.c
++libical-3.0.9/src/libical-glib/tools/xml-parser.h
++libical-3.0.9/src/libical/
++libical-3.0.9/src/libical/CMakeLists.txt
++libical-3.0.9/src/libical/astime.h
++libical-3.0.9/src/libical/caldate.c
++libical-3.0.9/src/libical/ical_file.cmake
++libical-3.0.9/src/libical/icalarray.c
++libical-3.0.9/src/libical/icalarray.h
++libical-3.0.9/src/libical/icalattach.c
++libical-3.0.9/src/libical/icalattach.h
++libical-3.0.9/src/libical/icalattachimpl.h
++libical-3.0.9/src/libical/icalcomponent.c
++libical-3.0.9/src/libical/icalcomponent.h
++libical-3.0.9/src/libical/icalderivedparameter.c.in
++libical-3.0.9/src/libical/icalderivedparameter.h.in
++libical-3.0.9/src/libical/icalderivedproperty.c.in
++libical-3.0.9/src/libical/icalderivedproperty.h.in
++libical-3.0.9/src/libical/icalderivedvalue.c.in
++libical-3.0.9/src/libical/icalderivedvalue.h.in
++libical-3.0.9/src/libical/icalduration.c
++libical-3.0.9/src/libical/icalduration.h
++libical-3.0.9/src/libical/icalenums.c
++libical-3.0.9/src/libical/icalenums.h
++libical-3.0.9/src/libical/icalerror.c
++libical-3.0.9/src/libical/icalerror.h
++libical-3.0.9/src/libical/icallangbind.c
++libical-3.0.9/src/libical/icallangbind.h
++libical-3.0.9/src/libical/icalmemory.c
++libical-3.0.9/src/libical/icalmemory.h
++libical-3.0.9/src/libical/icalmime.c
++libical-3.0.9/src/libical/icalmime.h
++libical-3.0.9/src/libical/icalparameter.c
++libical-3.0.9/src/libical/icalparameter.h
++libical-3.0.9/src/libical/icalparameter_cxx.cpp
++libical-3.0.9/src/libical/icalparameter_cxx.h
++libical-3.0.9/src/libical/icalparameterimpl.h
++libical-3.0.9/src/libical/icalparser.c
++libical-3.0.9/src/libical/icalparser.h
++libical-3.0.9/src/libical/icalperiod.c
++libical-3.0.9/src/libical/icalperiod.h
++libical-3.0.9/src/libical/icalproperty.c
++libical-3.0.9/src/libical/icalproperty.h
++libical-3.0.9/src/libical/icalproperty_cxx.cpp
++libical-3.0.9/src/libical/icalproperty_cxx.h
++libical-3.0.9/src/libical/icalproperty_p.h
++libical-3.0.9/src/libical/icalrecur.c
++libical-3.0.9/src/libical/icalrecur.h
++libical-3.0.9/src/libical/icalrestriction.c.in
++libical-3.0.9/src/libical/icalrestriction.h
++libical-3.0.9/src/libical/icaltime.c
++libical-3.0.9/src/libical/icaltime.h
++libical-3.0.9/src/libical/icaltimezone.c
++libical-3.0.9/src/libical/icaltimezone.h
++libical-3.0.9/src/libical/icaltimezoneimpl.h
++libical-3.0.9/src/libical/icaltypes.c
++libical-3.0.9/src/libical/icaltypes.h
++libical-3.0.9/src/libical/icaltz-util.c
++libical-3.0.9/src/libical/icaltz-util.h
++libical-3.0.9/src/libical/icalvalue.c
++libical-3.0.9/src/libical/icalvalue.h
++libical-3.0.9/src/libical/icalvalue_cxx.cpp
++libical-3.0.9/src/libical/icalvalue_cxx.h
++libical-3.0.9/src/libical/icalvalueimpl.h
++libical-3.0.9/src/libical/icalversion.h.cmake
++libical-3.0.9/src/libical/icptrholder_cxx.h
++libical-3.0.9/src/libical/libical_ical_export.h
++libical-3.0.9/src/libical/pvl.c
++libical-3.0.9/src/libical/pvl.h
++libical-3.0.9/src/libical/sspm.c
++libical-3.0.9/src/libical/sspm.h
++libical-3.0.9/src/libical/vcomponent_cxx.cpp
++libical-3.0.9/src/libical/vcomponent_cxx.h
++libical-3.0.9/src/libicalss/
++libical-3.0.9/src/libicalss/CMakeLists.txt
++libical-3.0.9/src/libicalss/icalbdbset.c
++libical-3.0.9/src/libicalss/icalbdbset.h
++libical-3.0.9/src/libicalss/icalbdbset_cxx.h
++libical-3.0.9/src/libicalss/icalbdbsetimpl.h
++libical-3.0.9/src/libicalss/icalcalendar.c
++libical-3.0.9/src/libicalss/icalcalendar.h
++libical-3.0.9/src/libicalss/icalclassify.c
++libical-3.0.9/src/libicalss/icalclassify.h
++libical-3.0.9/src/libicalss/icalcluster.c
++libical-3.0.9/src/libicalss/icalcluster.h
++libical-3.0.9/src/libicalss/icalclusterimpl.h
++libical-3.0.9/src/libicalss/icaldirset.c
++libical-3.0.9/src/libicalss/icaldirset.h
++libical-3.0.9/src/libicalss/icaldirsetimpl.h
++libical-3.0.9/src/libicalss/icalfileset.c
++libical-3.0.9/src/libicalss/icalfileset.h
++libical-3.0.9/src/libicalss/icalfilesetimpl.h
++libical-3.0.9/src/libicalss/icalgauge.c
++libical-3.0.9/src/libicalss/icalgauge.h
++libical-3.0.9/src/libicalss/icalgaugeimpl.h
++libical-3.0.9/src/libicalss/icalmessage.c
++libical-3.0.9/src/libicalss/icalmessage.h
++libical-3.0.9/src/libicalss/icalset.c
++libical-3.0.9/src/libicalss/icalset.h
++libical-3.0.9/src/libicalss/icalspanlist.c
++libical-3.0.9/src/libicalss/icalspanlist.h
++libical-3.0.9/src/libicalss/icalspanlist_cxx.cpp
++libical-3.0.9/src/libicalss/icalspanlist_cxx.h
++libical-3.0.9/src/libicalss/icalss_file.cmake
++libical-3.0.9/src/libicalss/icalsslexer.c
++libical-3.0.9/src/libicalss/icalsslexer.l
++libical-3.0.9/src/libicalss/icalssyacc.c
++libical-3.0.9/src/libicalss/icalssyacc.h
++libical-3.0.9/src/libicalss/icalssyacc.y
++libical-3.0.9/src/libicalss/libical_icalss_export.h
++libical-3.0.9/src/libicalvcal/
++libical-3.0.9/src/libicalvcal/CMakeLists.txt
++libical-3.0.9/src/libicalvcal/README.TXT
++libical-3.0.9/src/libicalvcal/icalvcal.c
++libical-3.0.9/src/libicalvcal/icalvcal.h
++libical-3.0.9/src/libicalvcal/libical_vcal_export.h
++libical-3.0.9/src/libicalvcal/vcaltmp.c
++libical-3.0.9/src/libicalvcal/vcaltmp.h
++libical-3.0.9/src/libicalvcal/vcc.c
++libical-3.0.9/src/libicalvcal/vcc.h
++libical-3.0.9/src/libicalvcal/vcc.y
++libical-3.0.9/src/libicalvcal/vobject.c
++libical-3.0.9/src/libicalvcal/vobject.h
++libical-3.0.9/src/php/
++libical-3.0.9/src/php/Makefile
++libical-3.0.9/src/php/README
++libical-3.0.9/src/php/test.php
++libical-3.0.9/src/python/
++libical-3.0.9/src/python/Attendee.py
++libical-3.0.9/src/python/CMakeLists.txt
++libical-3.0.9/src/python/ChangeLog
++libical-3.0.9/src/python/Collection.py
++libical-3.0.9/src/python/Component.py
++libical-3.0.9/src/python/DerivedProperties.py
++libical-3.0.9/src/python/Duration.py
++libical-3.0.9/src/python/Error.py
++libical-3.0.9/src/python/Gauge.py
++libical-3.0.9/src/python/Libical.py
++libical-3.0.9/src/python/LibicalWrap.i
++libical-3.0.9/src/python/LibicalWrap_icaltime.i
++libical-3.0.9/src/python/LibicalWrap_icaltimezone.i
++libical-3.0.9/src/python/Period.py
++libical-3.0.9/src/python/Property.py
++libical-3.0.9/src/python/Store.py
++libical-3.0.9/src/python/Time.py
++libical-3.0.9/src/python/__init__.py
++libical-3.0.9/src/python/littlefile.txt
++libical-3.0.9/src/python/python-binding.txt
++libical-3.0.9/src/python/test.py
++libical-3.0.9/src/test/
++libical-3.0.9/src/test/2445.ics
++libical-3.0.9/src/test/2446.ics
++libical-3.0.9/src/test/CMakeLists.txt
++libical-3.0.9/src/test/builtin_timezones.c
++libical-3.0.9/src/test/copycluster.c
++libical-3.0.9/src/test/icalattach-leak.c
++libical-3.0.9/src/test/icalrecur_test.c
++libical-3.0.9/src/test/icalrecur_test.out
++libical-3.0.9/src/test/icalrecur_withicu_dangi_test.out
++libical-3.0.9/src/test/icalrecur_withicu_test.out
++libical-3.0.9/src/test/icalrecur_withouticu_test.out
++libical-3.0.9/src/test/icaltestparser.c
++libical-3.0.9/src/test/icaltm_test.c
++libical-3.0.9/src/test/itip.ics
++libical-3.0.9/src/test/libical-glib/
++libical-3.0.9/src/test/libical-glib/CMakeLists.txt
++libical-3.0.9/src/test/libical-glib/array.py
++libical-3.0.9/src/test/libical-glib/attach.py
++libical-3.0.9/src/test/libical-glib/component.py
++libical-3.0.9/src/test/libical-glib/comprehensive.py
++libical-3.0.9/src/test/libical-glib/duration.py
++libical-3.0.9/src/test/libical-glib/error.py
++libical-3.0.9/src/test/libical-glib/misc.py
++libical-3.0.9/src/test/libical-glib/parameter.py
++libical-3.0.9/src/test/libical-glib/period.py
++libical-3.0.9/src/test/libical-glib/property.py
++libical-3.0.9/src/test/libical-glib/recurrence.py
++libical-3.0.9/src/test/libical-glib/timezone.py
++libical-3.0.9/src/test/libical-glib/value.py
++libical-3.0.9/src/test/outgoing.ics
++libical-3.0.9/src/test/process.c
++libical-3.0.9/src/test/recur.c
++libical-3.0.9/src/test/regression-classify.c
++libical-3.0.9/src/test/regression-component.c
++libical-3.0.9/src/test/regression-cxx.cpp
++libical-3.0.9/src/test/regression-recur.c
++libical-3.0.9/src/test/regression-storage.c
++libical-3.0.9/src/test/regression-utils.c
++libical-3.0.9/src/test/regression.c
++libical-3.0.9/src/test/regression.h
++libical-3.0.9/src/test/stow.c
++libical-3.0.9/src/test/testmime.c
++libical-3.0.9/src/test/testvcal.c
++libical-3.0.9/src/test/timezones.c
++libical-3.0.9/test-data/
++libical-3.0.9/test-data/0.ics
++libical-3.0.9/test-data/1-1.ics
++libical-3.0.9/test-data/1.ics
++libical-3.0.9/test-data/2.ics
++libical-3.0.9/test-data/2445.ics
++libical-3.0.9/test-data/2446.ics
++libical-3.0.9/test-data/3.ics
++libical-3.0.9/test-data/4.ics
++libical-3.0.9/test-data/5.ics
++libical-3.0.9/test-data/6.ics
++libical-3.0.9/test-data/7.ics
++libical-3.0.9/test-data/8.ics
++libical-3.0.9/test-data/CMakeLists.txt
++libical-3.0.9/test-data/calendar.ics
++libical-3.0.9/test-data/caltime.ics
++libical-3.0.9/test-data/classify.ics
++libical-3.0.9/test-data/complex-mime-error.txt
++libical-3.0.9/test-data/complex-mime.txt
++libical-3.0.9/test-data/crash.ics
++libical-3.0.9/test-data/get_char_test.ics
++libical-3.0.9/test-data/hist.data
++libical-3.0.9/test-data/incoming.ics
++libical-3.0.9/test-data/issue250.ics
++libical-3.0.9/test-data/issue251.ics
++libical-3.0.9/test-data/issue252.ics
++libical-3.0.9/test-data/issue253.ics
++libical-3.0.9/test-data/issue339.ics
++libical-3.0.9/test-data/large.ics
++libical-3.0.9/test-data/malloc.ics
++libical-3.0.9/test-data/overlaps.ics
++libical-3.0.9/test-data/process-calendar.ics
++libical-3.0.9/test-data/process-incoming.ics
++libical-3.0.9/test-data/recur-errors.ics
++libical-3.0.9/test-data/recur.txt
++libical-3.0.9/test-data/restriction.ics
++libical-3.0.9/test-data/simple-mime.txt
++libical-3.0.9/test-data/smallcluster.ics
++libical-3.0.9/test-data/spanlist.ics
++libical-3.0.9/test-data/stresstest.ics
++libical-3.0.9/test-data/user-cal.vcf
++libical-3.0.9/test-data/zday.ics
++libical-3.0.9/uninstall.cmake.in
++libical-3.0.9/zoneinfo/
++libical-3.0.9/zoneinfo/Africa/
++libical-3.0.9/zoneinfo/Africa/Abidjan.ics
++libical-3.0.9/zoneinfo/Africa/Accra.ics
++libical-3.0.9/zoneinfo/Africa/Addis_Ababa.ics
++libical-3.0.9/zoneinfo/Africa/Algiers.ics
++libical-3.0.9/zoneinfo/Africa/Asmara.ics
++libical-3.0.9/zoneinfo/Africa/Asmera.ics
++libical-3.0.9/zoneinfo/Africa/Bamako.ics
++libical-3.0.9/zoneinfo/Africa/Bangui.ics
++libical-3.0.9/zoneinfo/Africa/Banjul.ics
++libical-3.0.9/zoneinfo/Africa/Bissau.ics
++libical-3.0.9/zoneinfo/Africa/Blantyre.ics
++libical-3.0.9/zoneinfo/Africa/Brazzaville.ics
++libical-3.0.9/zoneinfo/Africa/Bujumbura.ics
++libical-3.0.9/zoneinfo/Africa/Cairo.ics
++libical-3.0.9/zoneinfo/Africa/Casablanca.ics
++libical-3.0.9/zoneinfo/Africa/Ceuta.ics
++libical-3.0.9/zoneinfo/Africa/Conakry.ics
++libical-3.0.9/zoneinfo/Africa/Dakar.ics
++libical-3.0.9/zoneinfo/Africa/Dar_es_Salaam.ics
++libical-3.0.9/zoneinfo/Africa/Djibouti.ics
++libical-3.0.9/zoneinfo/Africa/Douala.ics
++libical-3.0.9/zoneinfo/Africa/El_Aaiun.ics
++libical-3.0.9/zoneinfo/Africa/Freetown.ics
++libical-3.0.9/zoneinfo/Africa/Gaborone.ics
++libical-3.0.9/zoneinfo/Africa/Harare.ics
++libical-3.0.9/zoneinfo/Africa/Johannesburg.ics
++libical-3.0.9/zoneinfo/Africa/Juba.ics
++libical-3.0.9/zoneinfo/Africa/Kampala.ics
++libical-3.0.9/zoneinfo/Africa/Khartoum.ics
++libical-3.0.9/zoneinfo/Africa/Kigali.ics
++libical-3.0.9/zoneinfo/Africa/Kinshasa.ics
++libical-3.0.9/zoneinfo/Africa/Lagos.ics
++libical-3.0.9/zoneinfo/Africa/Libreville.ics
++libical-3.0.9/zoneinfo/Africa/Lome.ics
++libical-3.0.9/zoneinfo/Africa/Luanda.ics
++libical-3.0.9/zoneinfo/Africa/Lubumbashi.ics
++libical-3.0.9/zoneinfo/Africa/Lusaka.ics
++libical-3.0.9/zoneinfo/Africa/Malabo.ics
++libical-3.0.9/zoneinfo/Africa/Maputo.ics
++libical-3.0.9/zoneinfo/Africa/Maseru.ics
++libical-3.0.9/zoneinfo/Africa/Mbabane.ics
++libical-3.0.9/zoneinfo/Africa/Mogadishu.ics
++libical-3.0.9/zoneinfo/Africa/Monrovia.ics
++libical-3.0.9/zoneinfo/Africa/Nairobi.ics
++libical-3.0.9/zoneinfo/Africa/Ndjamena.ics
++libical-3.0.9/zoneinfo/Africa/Niamey.ics
++libical-3.0.9/zoneinfo/Africa/Nouakchott.ics
++libical-3.0.9/zoneinfo/Africa/Ouagadougou.ics
++libical-3.0.9/zoneinfo/Africa/Porto-Novo.ics
++libical-3.0.9/zoneinfo/Africa/Sao_Tome.ics
++libical-3.0.9/zoneinfo/Africa/Timbuktu.ics
++libical-3.0.9/zoneinfo/Africa/Tripoli.ics
++libical-3.0.9/zoneinfo/Africa/Tunis.ics
++libical-3.0.9/zoneinfo/Africa/Windhoek.ics
++libical-3.0.9/zoneinfo/America/
++libical-3.0.9/zoneinfo/America/Adak.ics
++libical-3.0.9/zoneinfo/America/Anchorage.ics
++libical-3.0.9/zoneinfo/America/Anguilla.ics
++libical-3.0.9/zoneinfo/America/Antigua.ics
++libical-3.0.9/zoneinfo/America/Araguaina.ics
++libical-3.0.9/zoneinfo/America/Argentina/
++libical-3.0.9/zoneinfo/America/Argentina/Buenos_Aires.ics
++libical-3.0.9/zoneinfo/America/Argentina/Catamarca.ics
++libical-3.0.9/zoneinfo/America/Argentina/ComodRivadavia.ics
++libical-3.0.9/zoneinfo/America/Argentina/Cordoba.ics
++libical-3.0.9/zoneinfo/America/Argentina/Jujuy.ics
++libical-3.0.9/zoneinfo/America/Argentina/La_Rioja.ics
++libical-3.0.9/zoneinfo/America/Argentina/Mendoza.ics
++libical-3.0.9/zoneinfo/America/Argentina/Rio_Gallegos.ics
++libical-3.0.9/zoneinfo/America/Argentina/Salta.ics
++libical-3.0.9/zoneinfo/America/Argentina/San_Juan.ics
++libical-3.0.9/zoneinfo/America/Argentina/San_Luis.ics
++libical-3.0.9/zoneinfo/America/Argentina/Tucuman.ics
++libical-3.0.9/zoneinfo/America/Argentina/Ushuaia.ics
++libical-3.0.9/zoneinfo/America/Aruba.ics
++libical-3.0.9/zoneinfo/America/Asuncion.ics
++libical-3.0.9/zoneinfo/America/Atikokan.ics
++libical-3.0.9/zoneinfo/America/Atka.ics
++libical-3.0.9/zoneinfo/America/Bahia.ics
++libical-3.0.9/zoneinfo/America/Bahia_Banderas.ics
++libical-3.0.9/zoneinfo/America/Barbados.ics
++libical-3.0.9/zoneinfo/America/Belem.ics
++libical-3.0.9/zoneinfo/America/Belize.ics
++libical-3.0.9/zoneinfo/America/Blanc-Sablon.ics
++libical-3.0.9/zoneinfo/America/Boa_Vista.ics
++libical-3.0.9/zoneinfo/America/Bogota.ics
++libical-3.0.9/zoneinfo/America/Boise.ics
++libical-3.0.9/zoneinfo/America/Buenos_Aires.ics
++libical-3.0.9/zoneinfo/America/Cambridge_Bay.ics
++libical-3.0.9/zoneinfo/America/Campo_Grande.ics
++libical-3.0.9/zoneinfo/America/Cancun.ics
++libical-3.0.9/zoneinfo/America/Caracas.ics
++libical-3.0.9/zoneinfo/America/Catamarca.ics
++libical-3.0.9/zoneinfo/America/Cayenne.ics
++libical-3.0.9/zoneinfo/America/Cayman.ics
++libical-3.0.9/zoneinfo/America/Chicago.ics
++libical-3.0.9/zoneinfo/America/Chihuahua.ics
++libical-3.0.9/zoneinfo/America/Coral_Harbour.ics
++libical-3.0.9/zoneinfo/America/Cordoba.ics
++libical-3.0.9/zoneinfo/America/Costa_Rica.ics
++libical-3.0.9/zoneinfo/America/Creston.ics
++libical-3.0.9/zoneinfo/America/Cuiaba.ics
++libical-3.0.9/zoneinfo/America/Curacao.ics
++libical-3.0.9/zoneinfo/America/Danmarkshavn.ics
++libical-3.0.9/zoneinfo/America/Dawson.ics
++libical-3.0.9/zoneinfo/America/Dawson_Creek.ics
++libical-3.0.9/zoneinfo/America/Denver.ics
++libical-3.0.9/zoneinfo/America/Detroit.ics
++libical-3.0.9/zoneinfo/America/Dominica.ics
++libical-3.0.9/zoneinfo/America/Edmonton.ics
++libical-3.0.9/zoneinfo/America/Eirunepe.ics
++libical-3.0.9/zoneinfo/America/El_Salvador.ics
++libical-3.0.9/zoneinfo/America/Ensenada.ics
++libical-3.0.9/zoneinfo/America/Fort_Nelson.ics
++libical-3.0.9/zoneinfo/America/Fort_Wayne.ics
++libical-3.0.9/zoneinfo/America/Fortaleza.ics
++libical-3.0.9/zoneinfo/America/Glace_Bay.ics
++libical-3.0.9/zoneinfo/America/Godthab.ics
++libical-3.0.9/zoneinfo/America/Goose_Bay.ics
++libical-3.0.9/zoneinfo/America/Grand_Turk.ics
++libical-3.0.9/zoneinfo/America/Grenada.ics
++libical-3.0.9/zoneinfo/America/Guadeloupe.ics
++libical-3.0.9/zoneinfo/America/Guatemala.ics
++libical-3.0.9/zoneinfo/America/Guayaquil.ics
++libical-3.0.9/zoneinfo/America/Guyana.ics
++libical-3.0.9/zoneinfo/America/Halifax.ics
++libical-3.0.9/zoneinfo/America/Havana.ics
++libical-3.0.9/zoneinfo/America/Hermosillo.ics
++libical-3.0.9/zoneinfo/America/Indiana/
++libical-3.0.9/zoneinfo/America/Indiana/Indianapolis.ics
++libical-3.0.9/zoneinfo/America/Indiana/Knox.ics
++libical-3.0.9/zoneinfo/America/Indiana/Marengo.ics
++libical-3.0.9/zoneinfo/America/Indiana/Petersburg.ics
++libical-3.0.9/zoneinfo/America/Indiana/Tell_City.ics
++libical-3.0.9/zoneinfo/America/Indiana/Vevay.ics
++libical-3.0.9/zoneinfo/America/Indiana/Vincennes.ics
++libical-3.0.9/zoneinfo/America/Indiana/Winamac.ics
++libical-3.0.9/zoneinfo/America/Indianapolis.ics
++libical-3.0.9/zoneinfo/America/Inuvik.ics
++libical-3.0.9/zoneinfo/America/Iqaluit.ics
++libical-3.0.9/zoneinfo/America/Jamaica.ics
++libical-3.0.9/zoneinfo/America/Jujuy.ics
++libical-3.0.9/zoneinfo/America/Juneau.ics
++libical-3.0.9/zoneinfo/America/Kentucky/
++libical-3.0.9/zoneinfo/America/Kentucky/Louisville.ics
++libical-3.0.9/zoneinfo/America/Kentucky/Monticello.ics
++libical-3.0.9/zoneinfo/America/Knox_IN.ics
++libical-3.0.9/zoneinfo/America/Kralendijk.ics
++libical-3.0.9/zoneinfo/America/La_Paz.ics
++libical-3.0.9/zoneinfo/America/Lima.ics
++libical-3.0.9/zoneinfo/America/Los_Angeles.ics
++libical-3.0.9/zoneinfo/America/Louisville.ics
++libical-3.0.9/zoneinfo/America/Lower_Princes.ics
++libical-3.0.9/zoneinfo/America/Maceio.ics
++libical-3.0.9/zoneinfo/America/Managua.ics
++libical-3.0.9/zoneinfo/America/Manaus.ics
++libical-3.0.9/zoneinfo/America/Marigot.ics
++libical-3.0.9/zoneinfo/America/Martinique.ics
++libical-3.0.9/zoneinfo/America/Matamoros.ics
++libical-3.0.9/zoneinfo/America/Mazatlan.ics
++libical-3.0.9/zoneinfo/America/Mendoza.ics
++libical-3.0.9/zoneinfo/America/Menominee.ics
++libical-3.0.9/zoneinfo/America/Merida.ics
++libical-3.0.9/zoneinfo/America/Metlakatla.ics
++libical-3.0.9/zoneinfo/America/Mexico_City.ics
++libical-3.0.9/zoneinfo/America/Miquelon.ics
++libical-3.0.9/zoneinfo/America/Moncton.ics
++libical-3.0.9/zoneinfo/America/Monterrey.ics
++libical-3.0.9/zoneinfo/America/Montevideo.ics
++libical-3.0.9/zoneinfo/America/Montreal.ics
++libical-3.0.9/zoneinfo/America/Montserrat.ics
++libical-3.0.9/zoneinfo/America/Nassau.ics
++libical-3.0.9/zoneinfo/America/New_York.ics
++libical-3.0.9/zoneinfo/America/Nipigon.ics
++libical-3.0.9/zoneinfo/America/Nome.ics
++libical-3.0.9/zoneinfo/America/Noronha.ics
++libical-3.0.9/zoneinfo/America/North_Dakota/
++libical-3.0.9/zoneinfo/America/North_Dakota/Beulah.ics
++libical-3.0.9/zoneinfo/America/North_Dakota/Center.ics
++libical-3.0.9/zoneinfo/America/North_Dakota/New_Salem.ics
++libical-3.0.9/zoneinfo/America/Nuuk.ics
++libical-3.0.9/zoneinfo/America/Ojinaga.ics
++libical-3.0.9/zoneinfo/America/Panama.ics
++libical-3.0.9/zoneinfo/America/Pangnirtung.ics
++libical-3.0.9/zoneinfo/America/Paramaribo.ics
++libical-3.0.9/zoneinfo/America/Phoenix.ics
++libical-3.0.9/zoneinfo/America/Port-au-Prince.ics
++libical-3.0.9/zoneinfo/America/Port_of_Spain.ics
++libical-3.0.9/zoneinfo/America/Porto_Acre.ics
++libical-3.0.9/zoneinfo/America/Porto_Velho.ics
++libical-3.0.9/zoneinfo/America/Puerto_Rico.ics
++libical-3.0.9/zoneinfo/America/Punta_Arenas.ics
++libical-3.0.9/zoneinfo/America/Rainy_River.ics
++libical-3.0.9/zoneinfo/America/Rankin_Inlet.ics
++libical-3.0.9/zoneinfo/America/Recife.ics
++libical-3.0.9/zoneinfo/America/Regina.ics
++libical-3.0.9/zoneinfo/America/Resolute.ics
++libical-3.0.9/zoneinfo/America/Rio_Branco.ics
++libical-3.0.9/zoneinfo/America/Rosario.ics
++libical-3.0.9/zoneinfo/America/Santa_Isabel.ics
++libical-3.0.9/zoneinfo/America/Santarem.ics
++libical-3.0.9/zoneinfo/America/Santiago.ics
++libical-3.0.9/zoneinfo/America/Santo_Domingo.ics
++libical-3.0.9/zoneinfo/America/Sao_Paulo.ics
++libical-3.0.9/zoneinfo/America/Scoresbysund.ics
++libical-3.0.9/zoneinfo/America/Shiprock.ics
++libical-3.0.9/zoneinfo/America/Sitka.ics
++libical-3.0.9/zoneinfo/America/St_Barthelemy.ics
++libical-3.0.9/zoneinfo/America/St_Johns.ics
++libical-3.0.9/zoneinfo/America/St_Kitts.ics
++libical-3.0.9/zoneinfo/America/St_Lucia.ics
++libical-3.0.9/zoneinfo/America/St_Thomas.ics
++libical-3.0.9/zoneinfo/America/St_Vincent.ics
++libical-3.0.9/zoneinfo/America/Swift_Current.ics
++libical-3.0.9/zoneinfo/America/Tegucigalpa.ics
++libical-3.0.9/zoneinfo/America/Thule.ics
++libical-3.0.9/zoneinfo/America/Thunder_Bay.ics
++libical-3.0.9/zoneinfo/America/Tijuana.ics
++libical-3.0.9/zoneinfo/America/Toronto.ics
++libical-3.0.9/zoneinfo/America/Tortola.ics
++libical-3.0.9/zoneinfo/America/Vancouver.ics
++libical-3.0.9/zoneinfo/America/Virgin.ics
++libical-3.0.9/zoneinfo/America/Whitehorse.ics
++libical-3.0.9/zoneinfo/America/Winnipeg.ics
++libical-3.0.9/zoneinfo/America/Yakutat.ics
++libical-3.0.9/zoneinfo/America/Yellowknife.ics
++libical-3.0.9/zoneinfo/Antarctica/
++libical-3.0.9/zoneinfo/Antarctica/Casey.ics
++libical-3.0.9/zoneinfo/Antarctica/Davis.ics
++libical-3.0.9/zoneinfo/Antarctica/DumontDUrville.ics
++libical-3.0.9/zoneinfo/Antarctica/Macquarie.ics
++libical-3.0.9/zoneinfo/Antarctica/Mawson.ics
++libical-3.0.9/zoneinfo/Antarctica/McMurdo.ics
++libical-3.0.9/zoneinfo/Antarctica/Palmer.ics
++libical-3.0.9/zoneinfo/Antarctica/Rothera.ics
++libical-3.0.9/zoneinfo/Antarctica/South_Pole.ics
++libical-3.0.9/zoneinfo/Antarctica/Syowa.ics
++libical-3.0.9/zoneinfo/Antarctica/Troll.ics
++libical-3.0.9/zoneinfo/Antarctica/Vostok.ics
++libical-3.0.9/zoneinfo/Arctic/
++libical-3.0.9/zoneinfo/Arctic/Longyearbyen.ics
++libical-3.0.9/zoneinfo/Asia/
++libical-3.0.9/zoneinfo/Asia/Aden.ics
++libical-3.0.9/zoneinfo/Asia/Almaty.ics
++libical-3.0.9/zoneinfo/Asia/Amman.ics
++libical-3.0.9/zoneinfo/Asia/Anadyr.ics
++libical-3.0.9/zoneinfo/Asia/Aqtau.ics
++libical-3.0.9/zoneinfo/Asia/Aqtobe.ics
++libical-3.0.9/zoneinfo/Asia/Ashgabat.ics
++libical-3.0.9/zoneinfo/Asia/Ashkhabad.ics
++libical-3.0.9/zoneinfo/Asia/Atyrau.ics
++libical-3.0.9/zoneinfo/Asia/Baghdad.ics
++libical-3.0.9/zoneinfo/Asia/Bahrain.ics
++libical-3.0.9/zoneinfo/Asia/Baku.ics
++libical-3.0.9/zoneinfo/Asia/Bangkok.ics
++libical-3.0.9/zoneinfo/Asia/Barnaul.ics
++libical-3.0.9/zoneinfo/Asia/Beirut.ics
++libical-3.0.9/zoneinfo/Asia/Bishkek.ics
++libical-3.0.9/zoneinfo/Asia/Brunei.ics
++libical-3.0.9/zoneinfo/Asia/Calcutta.ics
++libical-3.0.9/zoneinfo/Asia/Chita.ics
++libical-3.0.9/zoneinfo/Asia/Choibalsan.ics
++libical-3.0.9/zoneinfo/Asia/Chongqing.ics
++libical-3.0.9/zoneinfo/Asia/Chungking.ics
++libical-3.0.9/zoneinfo/Asia/Colombo.ics
++libical-3.0.9/zoneinfo/Asia/Dacca.ics
++libical-3.0.9/zoneinfo/Asia/Damascus.ics
++libical-3.0.9/zoneinfo/Asia/Dhaka.ics
++libical-3.0.9/zoneinfo/Asia/Dili.ics
++libical-3.0.9/zoneinfo/Asia/Dubai.ics
++libical-3.0.9/zoneinfo/Asia/Dushanbe.ics
++libical-3.0.9/zoneinfo/Asia/Famagusta.ics
++libical-3.0.9/zoneinfo/Asia/Gaza.ics
++libical-3.0.9/zoneinfo/Asia/Harbin.ics
++libical-3.0.9/zoneinfo/Asia/Hebron.ics
++libical-3.0.9/zoneinfo/Asia/Ho_Chi_Minh.ics
++libical-3.0.9/zoneinfo/Asia/Hong_Kong.ics
++libical-3.0.9/zoneinfo/Asia/Hovd.ics
++libical-3.0.9/zoneinfo/Asia/Irkutsk.ics
++libical-3.0.9/zoneinfo/Asia/Istanbul.ics
++libical-3.0.9/zoneinfo/Asia/Jakarta.ics
++libical-3.0.9/zoneinfo/Asia/Jayapura.ics
++libical-3.0.9/zoneinfo/Asia/Jerusalem.ics
++libical-3.0.9/zoneinfo/Asia/Kabul.ics
++libical-3.0.9/zoneinfo/Asia/Kamchatka.ics
++libical-3.0.9/zoneinfo/Asia/Karachi.ics
++libical-3.0.9/zoneinfo/Asia/Kashgar.ics
++libical-3.0.9/zoneinfo/Asia/Kathmandu.ics
++libical-3.0.9/zoneinfo/Asia/Katmandu.ics
++libical-3.0.9/zoneinfo/Asia/Khandyga.ics
++libical-3.0.9/zoneinfo/Asia/Kolkata.ics
++libical-3.0.9/zoneinfo/Asia/Krasnoyarsk.ics
++libical-3.0.9/zoneinfo/Asia/Kuala_Lumpur.ics
++libical-3.0.9/zoneinfo/Asia/Kuching.ics
++libical-3.0.9/zoneinfo/Asia/Kuwait.ics
++libical-3.0.9/zoneinfo/Asia/Macao.ics
++libical-3.0.9/zoneinfo/Asia/Macau.ics
++libical-3.0.9/zoneinfo/Asia/Magadan.ics
++libical-3.0.9/zoneinfo/Asia/Makassar.ics
++libical-3.0.9/zoneinfo/Asia/Manila.ics
++libical-3.0.9/zoneinfo/Asia/Muscat.ics
++libical-3.0.9/zoneinfo/Asia/Nicosia.ics
++libical-3.0.9/zoneinfo/Asia/Novokuznetsk.ics
++libical-3.0.9/zoneinfo/Asia/Novosibirsk.ics
++libical-3.0.9/zoneinfo/Asia/Omsk.ics
++libical-3.0.9/zoneinfo/Asia/Oral.ics
++libical-3.0.9/zoneinfo/Asia/Phnom_Penh.ics
++libical-3.0.9/zoneinfo/Asia/Pontianak.ics
++libical-3.0.9/zoneinfo/Asia/Pyongyang.ics
++libical-3.0.9/zoneinfo/Asia/Qatar.ics
++libical-3.0.9/zoneinfo/Asia/Qostanay.ics
++libical-3.0.9/zoneinfo/Asia/Qyzylorda.ics
++libical-3.0.9/zoneinfo/Asia/Rangoon.ics
++libical-3.0.9/zoneinfo/Asia/Riyadh.ics
++libical-3.0.9/zoneinfo/Asia/Saigon.ics
++libical-3.0.9/zoneinfo/Asia/Sakhalin.ics
++libical-3.0.9/zoneinfo/Asia/Samarkand.ics
++libical-3.0.9/zoneinfo/Asia/Seoul.ics
++libical-3.0.9/zoneinfo/Asia/Shanghai.ics
++libical-3.0.9/zoneinfo/Asia/Singapore.ics
++libical-3.0.9/zoneinfo/Asia/Srednekolymsk.ics
++libical-3.0.9/zoneinfo/Asia/Taipei.ics
++libical-3.0.9/zoneinfo/Asia/Tashkent.ics
++libical-3.0.9/zoneinfo/Asia/Tbilisi.ics
++libical-3.0.9/zoneinfo/Asia/Tehran.ics
++libical-3.0.9/zoneinfo/Asia/Tel_Aviv.ics
++libical-3.0.9/zoneinfo/Asia/Thimbu.ics
++libical-3.0.9/zoneinfo/Asia/Thimphu.ics
++libical-3.0.9/zoneinfo/Asia/Tokyo.ics
++libical-3.0.9/zoneinfo/Asia/Tomsk.ics
++libical-3.0.9/zoneinfo/Asia/Ujung_Pandang.ics
++libical-3.0.9/zoneinfo/Asia/Ulaanbaatar.ics
++libical-3.0.9/zoneinfo/Asia/Ulan_Bator.ics
++libical-3.0.9/zoneinfo/Asia/Urumqi.ics
++libical-3.0.9/zoneinfo/Asia/Ust-Nera.ics
++libical-3.0.9/zoneinfo/Asia/Vientiane.ics
++libical-3.0.9/zoneinfo/Asia/Vladivostok.ics
++libical-3.0.9/zoneinfo/Asia/Yakutsk.ics
++libical-3.0.9/zoneinfo/Asia/Yangon.ics
++libical-3.0.9/zoneinfo/Asia/Yekaterinburg.ics
++libical-3.0.9/zoneinfo/Asia/Yerevan.ics
++libical-3.0.9/zoneinfo/Atlantic/
++libical-3.0.9/zoneinfo/Atlantic/Azores.ics
++libical-3.0.9/zoneinfo/Atlantic/Bermuda.ics
++libical-3.0.9/zoneinfo/Atlantic/Canary.ics
++libical-3.0.9/zoneinfo/Atlantic/Cape_Verde.ics
++libical-3.0.9/zoneinfo/Atlantic/Faeroe.ics
++libical-3.0.9/zoneinfo/Atlantic/Faroe.ics
++libical-3.0.9/zoneinfo/Atlantic/Jan_Mayen.ics
++libical-3.0.9/zoneinfo/Atlantic/Madeira.ics
++libical-3.0.9/zoneinfo/Atlantic/Reykjavik.ics
++libical-3.0.9/zoneinfo/Atlantic/South_Georgia.ics
++libical-3.0.9/zoneinfo/Atlantic/St_Helena.ics
++libical-3.0.9/zoneinfo/Atlantic/Stanley.ics
++libical-3.0.9/zoneinfo/Australia/
++libical-3.0.9/zoneinfo/Australia/ACT.ics
++libical-3.0.9/zoneinfo/Australia/Adelaide.ics
++libical-3.0.9/zoneinfo/Australia/Brisbane.ics
++libical-3.0.9/zoneinfo/Australia/Broken_Hill.ics
++libical-3.0.9/zoneinfo/Australia/Canberra.ics
++libical-3.0.9/zoneinfo/Australia/Currie.ics
++libical-3.0.9/zoneinfo/Australia/Darwin.ics
++libical-3.0.9/zoneinfo/Australia/Eucla.ics
++libical-3.0.9/zoneinfo/Australia/Hobart.ics
++libical-3.0.9/zoneinfo/Australia/LHI.ics
++libical-3.0.9/zoneinfo/Australia/Lindeman.ics
++libical-3.0.9/zoneinfo/Australia/Lord_Howe.ics
++libical-3.0.9/zoneinfo/Australia/Melbourne.ics
++libical-3.0.9/zoneinfo/Australia/NSW.ics
++libical-3.0.9/zoneinfo/Australia/North.ics
++libical-3.0.9/zoneinfo/Australia/Perth.ics
++libical-3.0.9/zoneinfo/Australia/Queensland.ics
++libical-3.0.9/zoneinfo/Australia/South.ics
++libical-3.0.9/zoneinfo/Australia/Sydney.ics
++libical-3.0.9/zoneinfo/Australia/Tasmania.ics
++libical-3.0.9/zoneinfo/Australia/Victoria.ics
++libical-3.0.9/zoneinfo/Australia/West.ics
++libical-3.0.9/zoneinfo/Australia/Yancowinna.ics
++libical-3.0.9/zoneinfo/Brazil/
++libical-3.0.9/zoneinfo/Brazil/Acre.ics
++libical-3.0.9/zoneinfo/Brazil/DeNoronha.ics
++libical-3.0.9/zoneinfo/Brazil/East.ics
++libical-3.0.9/zoneinfo/Brazil/West.ics
++libical-3.0.9/zoneinfo/CET.ics
++libical-3.0.9/zoneinfo/CMakeLists.txt
++libical-3.0.9/zoneinfo/CST6CDT.ics
++libical-3.0.9/zoneinfo/Canada/
++libical-3.0.9/zoneinfo/Canada/Atlantic.ics
++libical-3.0.9/zoneinfo/Canada/Central.ics
++libical-3.0.9/zoneinfo/Canada/Eastern.ics
++libical-3.0.9/zoneinfo/Canada/Mountain.ics
++libical-3.0.9/zoneinfo/Canada/Newfoundland.ics
++libical-3.0.9/zoneinfo/Canada/Pacific.ics
++libical-3.0.9/zoneinfo/Canada/Saskatchewan.ics
++libical-3.0.9/zoneinfo/Canada/Yukon.ics
++libical-3.0.9/zoneinfo/Chile/
++libical-3.0.9/zoneinfo/Chile/Continental.ics
++libical-3.0.9/zoneinfo/Chile/EasterIsland.ics
++libical-3.0.9/zoneinfo/Cuba.ics
++libical-3.0.9/zoneinfo/EET.ics
++libical-3.0.9/zoneinfo/EST.ics
++libical-3.0.9/zoneinfo/EST5EDT.ics
++libical-3.0.9/zoneinfo/Egypt.ics
++libical-3.0.9/zoneinfo/Eire.ics
++libical-3.0.9/zoneinfo/Etc/
++libical-3.0.9/zoneinfo/Etc/GMT+0.ics
++libical-3.0.9/zoneinfo/Etc/GMT+1.ics
++libical-3.0.9/zoneinfo/Etc/GMT+10.ics
++libical-3.0.9/zoneinfo/Etc/GMT+11.ics
++libical-3.0.9/zoneinfo/Etc/GMT+12.ics
++libical-3.0.9/zoneinfo/Etc/GMT+2.ics
++libical-3.0.9/zoneinfo/Etc/GMT+3.ics
++libical-3.0.9/zoneinfo/Etc/GMT+4.ics
++libical-3.0.9/zoneinfo/Etc/GMT+5.ics
++libical-3.0.9/zoneinfo/Etc/GMT+6.ics
++libical-3.0.9/zoneinfo/Etc/GMT+7.ics
++libical-3.0.9/zoneinfo/Etc/GMT+8.ics
++libical-3.0.9/zoneinfo/Etc/GMT+9.ics
++libical-3.0.9/zoneinfo/Etc/GMT-0.ics
++libical-3.0.9/zoneinfo/Etc/GMT-1.ics
++libical-3.0.9/zoneinfo/Etc/GMT-10.ics
++libical-3.0.9/zoneinfo/Etc/GMT-11.ics
++libical-3.0.9/zoneinfo/Etc/GMT-12.ics
++libical-3.0.9/zoneinfo/Etc/GMT-13.ics
++libical-3.0.9/zoneinfo/Etc/GMT-14.ics
++libical-3.0.9/zoneinfo/Etc/GMT-2.ics
++libical-3.0.9/zoneinfo/Etc/GMT-3.ics
++libical-3.0.9/zoneinfo/Etc/GMT-4.ics
++libical-3.0.9/zoneinfo/Etc/GMT-5.ics
++libical-3.0.9/zoneinfo/Etc/GMT-6.ics
++libical-3.0.9/zoneinfo/Etc/GMT-7.ics
++libical-3.0.9/zoneinfo/Etc/GMT-8.ics
++libical-3.0.9/zoneinfo/Etc/GMT-9.ics
++libical-3.0.9/zoneinfo/Etc/GMT.ics
++libical-3.0.9/zoneinfo/Etc/GMT0.ics
++libical-3.0.9/zoneinfo/Etc/Greenwich.ics
++libical-3.0.9/zoneinfo/Etc/UCT.ics
++libical-3.0.9/zoneinfo/Etc/UTC.ics
++libical-3.0.9/zoneinfo/Etc/Universal.ics
++libical-3.0.9/zoneinfo/Etc/Zulu.ics
++libical-3.0.9/zoneinfo/Europe/
++libical-3.0.9/zoneinfo/Europe/Amsterdam.ics
++libical-3.0.9/zoneinfo/Europe/Andorra.ics
++libical-3.0.9/zoneinfo/Europe/Astrakhan.ics
++libical-3.0.9/zoneinfo/Europe/Athens.ics
++libical-3.0.9/zoneinfo/Europe/Belfast.ics
++libical-3.0.9/zoneinfo/Europe/Belgrade.ics
++libical-3.0.9/zoneinfo/Europe/Berlin.ics
++libical-3.0.9/zoneinfo/Europe/Bratislava.ics
++libical-3.0.9/zoneinfo/Europe/Brussels.ics
++libical-3.0.9/zoneinfo/Europe/Bucharest.ics
++libical-3.0.9/zoneinfo/Europe/Budapest.ics
++libical-3.0.9/zoneinfo/Europe/Busingen.ics
++libical-3.0.9/zoneinfo/Europe/Chisinau.ics
++libical-3.0.9/zoneinfo/Europe/Copenhagen.ics
++libical-3.0.9/zoneinfo/Europe/Dublin.ics
++libical-3.0.9/zoneinfo/Europe/Gibraltar.ics
++libical-3.0.9/zoneinfo/Europe/Guernsey.ics
++libical-3.0.9/zoneinfo/Europe/Helsinki.ics
++libical-3.0.9/zoneinfo/Europe/Isle_of_Man.ics
++libical-3.0.9/zoneinfo/Europe/Istanbul.ics
++libical-3.0.9/zoneinfo/Europe/Jersey.ics
++libical-3.0.9/zoneinfo/Europe/Kaliningrad.ics
++libical-3.0.9/zoneinfo/Europe/Kiev.ics
++libical-3.0.9/zoneinfo/Europe/Kirov.ics
++libical-3.0.9/zoneinfo/Europe/Lisbon.ics
++libical-3.0.9/zoneinfo/Europe/Ljubljana.ics
++libical-3.0.9/zoneinfo/Europe/London.ics
++libical-3.0.9/zoneinfo/Europe/Luxembourg.ics
++libical-3.0.9/zoneinfo/Europe/Madrid.ics
++libical-3.0.9/zoneinfo/Europe/Malta.ics
++libical-3.0.9/zoneinfo/Europe/Mariehamn.ics
++libical-3.0.9/zoneinfo/Europe/Minsk.ics
++libical-3.0.9/zoneinfo/Europe/Monaco.ics
++libical-3.0.9/zoneinfo/Europe/Moscow.ics
++libical-3.0.9/zoneinfo/Europe/Nicosia.ics
++libical-3.0.9/zoneinfo/Europe/Oslo.ics
++libical-3.0.9/zoneinfo/Europe/Paris.ics
++libical-3.0.9/zoneinfo/Europe/Podgorica.ics
++libical-3.0.9/zoneinfo/Europe/Prague.ics
++libical-3.0.9/zoneinfo/Europe/Riga.ics
++libical-3.0.9/zoneinfo/Europe/Rome.ics
++libical-3.0.9/zoneinfo/Europe/Samara.ics
++libical-3.0.9/zoneinfo/Europe/San_Marino.ics
++libical-3.0.9/zoneinfo/Europe/Sarajevo.ics
++libical-3.0.9/zoneinfo/Europe/Saratov.ics
++libical-3.0.9/zoneinfo/Europe/Simferopol.ics
++libical-3.0.9/zoneinfo/Europe/Skopje.ics
++libical-3.0.9/zoneinfo/Europe/Sofia.ics
++libical-3.0.9/zoneinfo/Europe/Stockholm.ics
++libical-3.0.9/zoneinfo/Europe/Tallinn.ics
++libical-3.0.9/zoneinfo/Europe/Tirane.ics
++libical-3.0.9/zoneinfo/Europe/Tiraspol.ics
++libical-3.0.9/zoneinfo/Europe/Ulyanovsk.ics
++libical-3.0.9/zoneinfo/Europe/Uzhgorod.ics
++libical-3.0.9/zoneinfo/Europe/Vaduz.ics
++libical-3.0.9/zoneinfo/Europe/Vatican.ics
++libical-3.0.9/zoneinfo/Europe/Vienna.ics
++libical-3.0.9/zoneinfo/Europe/Vilnius.ics
++libical-3.0.9/zoneinfo/Europe/Volgograd.ics
++libical-3.0.9/zoneinfo/Europe/Warsaw.ics
++libical-3.0.9/zoneinfo/Europe/Zagreb.ics
++libical-3.0.9/zoneinfo/Europe/Zaporozhye.ics
++libical-3.0.9/zoneinfo/Europe/Zurich.ics
++libical-3.0.9/zoneinfo/GB-Eire.ics
++libical-3.0.9/zoneinfo/GB.ics
++libical-3.0.9/zoneinfo/GMT+0.ics
++libical-3.0.9/zoneinfo/GMT-0.ics
++libical-3.0.9/zoneinfo/GMT.ics
++libical-3.0.9/zoneinfo/GMT0.ics
++libical-3.0.9/zoneinfo/Greenwich.ics
++libical-3.0.9/zoneinfo/HST.ics
++libical-3.0.9/zoneinfo/Hongkong.ics
++libical-3.0.9/zoneinfo/Iceland.ics
++libical-3.0.9/zoneinfo/Indian/
++libical-3.0.9/zoneinfo/Indian/Antananarivo.ics
++libical-3.0.9/zoneinfo/Indian/Chagos.ics
++libical-3.0.9/zoneinfo/Indian/Christmas.ics
++libical-3.0.9/zoneinfo/Indian/Cocos.ics
++libical-3.0.9/zoneinfo/Indian/Comoro.ics
++libical-3.0.9/zoneinfo/Indian/Kerguelen.ics
++libical-3.0.9/zoneinfo/Indian/Mahe.ics
++libical-3.0.9/zoneinfo/Indian/Maldives.ics
++libical-3.0.9/zoneinfo/Indian/Mauritius.ics
++libical-3.0.9/zoneinfo/Indian/Mayotte.ics
++libical-3.0.9/zoneinfo/Indian/Reunion.ics
++libical-3.0.9/zoneinfo/Iran.ics
++libical-3.0.9/zoneinfo/Israel.ics
++libical-3.0.9/zoneinfo/Jamaica.ics
++libical-3.0.9/zoneinfo/Japan.ics
++libical-3.0.9/zoneinfo/Kwajalein.ics
++libical-3.0.9/zoneinfo/Libya.ics
++libical-3.0.9/zoneinfo/MET.ics
++libical-3.0.9/zoneinfo/MST.ics
++libical-3.0.9/zoneinfo/MST7MDT.ics
++libical-3.0.9/zoneinfo/Mexico/
++libical-3.0.9/zoneinfo/Mexico/BajaNorte.ics
++libical-3.0.9/zoneinfo/Mexico/BajaSur.ics
++libical-3.0.9/zoneinfo/Mexico/General.ics
++libical-3.0.9/zoneinfo/NZ-CHAT.ics
++libical-3.0.9/zoneinfo/NZ.ics
++libical-3.0.9/zoneinfo/Navajo.ics
++libical-3.0.9/zoneinfo/PRC.ics
++libical-3.0.9/zoneinfo/PST8PDT.ics
++libical-3.0.9/zoneinfo/Pacific/
++libical-3.0.9/zoneinfo/Pacific/Apia.ics
++libical-3.0.9/zoneinfo/Pacific/Auckland.ics
++libical-3.0.9/zoneinfo/Pacific/Bougainville.ics
++libical-3.0.9/zoneinfo/Pacific/Chatham.ics
++libical-3.0.9/zoneinfo/Pacific/Chuuk.ics
++libical-3.0.9/zoneinfo/Pacific/Easter.ics
++libical-3.0.9/zoneinfo/Pacific/Efate.ics
++libical-3.0.9/zoneinfo/Pacific/Enderbury.ics
++libical-3.0.9/zoneinfo/Pacific/Fakaofo.ics
++libical-3.0.9/zoneinfo/Pacific/Fiji.ics
++libical-3.0.9/zoneinfo/Pacific/Funafuti.ics
++libical-3.0.9/zoneinfo/Pacific/Galapagos.ics
++libical-3.0.9/zoneinfo/Pacific/Gambier.ics
++libical-3.0.9/zoneinfo/Pacific/Guadalcanal.ics
++libical-3.0.9/zoneinfo/Pacific/Guam.ics
++libical-3.0.9/zoneinfo/Pacific/Honolulu.ics
++libical-3.0.9/zoneinfo/Pacific/Johnston.ics
++libical-3.0.9/zoneinfo/Pacific/Kiritimati.ics
++libical-3.0.9/zoneinfo/Pacific/Kosrae.ics
++libical-3.0.9/zoneinfo/Pacific/Kwajalein.ics
++libical-3.0.9/zoneinfo/Pacific/Majuro.ics
++libical-3.0.9/zoneinfo/Pacific/Marquesas.ics
++libical-3.0.9/zoneinfo/Pacific/Midway.ics
++libical-3.0.9/zoneinfo/Pacific/Nauru.ics
++libical-3.0.9/zoneinfo/Pacific/Niue.ics
++libical-3.0.9/zoneinfo/Pacific/Norfolk.ics
++libical-3.0.9/zoneinfo/Pacific/Noumea.ics
++libical-3.0.9/zoneinfo/Pacific/Pago_Pago.ics
++libical-3.0.9/zoneinfo/Pacific/Palau.ics
++libical-3.0.9/zoneinfo/Pacific/Pitcairn.ics
++libical-3.0.9/zoneinfo/Pacific/Pohnpei.ics
++libical-3.0.9/zoneinfo/Pacific/Ponape.ics
++libical-3.0.9/zoneinfo/Pacific/Port_Moresby.ics
++libical-3.0.9/zoneinfo/Pacific/Rarotonga.ics
++libical-3.0.9/zoneinfo/Pacific/Saipan.ics
++libical-3.0.9/zoneinfo/Pacific/Samoa.ics
++libical-3.0.9/zoneinfo/Pacific/Tahiti.ics
++libical-3.0.9/zoneinfo/Pacific/Tarawa.ics
++libical-3.0.9/zoneinfo/Pacific/Tongatapu.ics
++libical-3.0.9/zoneinfo/Pacific/Truk.ics
++libical-3.0.9/zoneinfo/Pacific/Wake.ics
++libical-3.0.9/zoneinfo/Pacific/Wallis.ics
++libical-3.0.9/zoneinfo/Pacific/Yap.ics
++libical-3.0.9/zoneinfo/Poland.ics
++libical-3.0.9/zoneinfo/Portugal.ics
++libical-3.0.9/zoneinfo/ROC.ics
++libical-3.0.9/zoneinfo/ROK.ics
++libical-3.0.9/zoneinfo/Singapore.ics
++libical-3.0.9/zoneinfo/Turkey.ics
++libical-3.0.9/zoneinfo/UCT.ics
++libical-3.0.9/zoneinfo/US/
++libical-3.0.9/zoneinfo/US/Alaska.ics
++libical-3.0.9/zoneinfo/US/Aleutian.ics
++libical-3.0.9/zoneinfo/US/Arizona.ics
++libical-3.0.9/zoneinfo/US/Central.ics
++libical-3.0.9/zoneinfo/US/East-Indiana.ics
++libical-3.0.9/zoneinfo/US/Eastern.ics
++libical-3.0.9/zoneinfo/US/Hawaii.ics
++libical-3.0.9/zoneinfo/US/Indiana-Starke.ics
++libical-3.0.9/zoneinfo/US/Michigan.ics
++libical-3.0.9/zoneinfo/US/Mountain.ics
++libical-3.0.9/zoneinfo/US/Pacific.ics
++libical-3.0.9/zoneinfo/US/Samoa.ics
++libical-3.0.9/zoneinfo/UTC.ics
++libical-3.0.9/zoneinfo/Universal.ics
++libical-3.0.9/zoneinfo/W-SU.ics
++libical-3.0.9/zoneinfo/WET.ics
++libical-3.0.9/zoneinfo/Zulu.ics
++libical-3.0.9/zoneinfo/zones.h
++libical-3.0.9/zoneinfo/zones.tab
++-- The C compiler identification is GNU 10.2.0
++-- Detecting C compiler ABI info
++-- Detecting C compiler ABI info - done
++-- Check for working C compiler: /usr/bin/cc - skipped
++-- Detecting C compile features
++-- Detecting C compile features - done
++-- The CXX compiler identification is GNU 10.2.0
++-- Detecting CXX compiler ABI info
++-- Detecting CXX compiler ABI info - done
++-- Check for working CXX compiler: /usr/bin/c++ - skipped
++-- Detecting CXX compile features
++-- Detecting CXX compile features - done
++-- Found Perl: /usr/bin/perl (found version "5.32.0") 
++-- Found ICU version 68.2
++-- Found ICU header files in /usr/include
++-- Found ICU libraries: /usr/lib/libicuuc.so /usr/lib/libicui18n.so
++-- Found Berkeley DB header files in /usr/include
++-- Found Berkeley libraries: /usr/lib/libdb.so
++-- Looking for include file byteswap.h
++-- Looking for include file byteswap.h - found
++-- Looking for include file dirent.h
++-- Looking for include file dirent.h - found
++-- Looking for include file endian.h
++-- Looking for include file endian.h - found
++-- Looking for include file inttypes.h
++-- Looking for include file inttypes.h - found
++-- Looking for include file pthread.h
++-- Looking for include file pthread.h - found
++-- Looking for include file sys/endian.h
++-- Looking for include file sys/endian.h - not found
++-- Looking for include file sys/param.h
++-- Looking for include file sys/param.h - found
++-- Looking for include file sys/utsname.h
++-- Looking for include file sys/utsname.h - found
++-- Looking for include file fcntl.h
++-- Looking for include file fcntl.h - found
++-- Looking for include file unistd.h
++-- Looking for include file unistd.h - found
++-- Looking for include file wctype.h
++-- Looking for include file wctype.h - found
++-- Looking for include file stdbool.h
++-- Looking for include file stdbool.h - found
++-- Looking for access
++-- Looking for access - found
++-- Looking for fork
++-- Looking for fork - found
++-- Looking for getopt
++-- Looking for getopt - found
++-- Looking for getpid
++-- Looking for getpid - found
++-- Looking for getpwent
++-- Looking for getpwent - found
++-- Looking for gmtime_r
++-- Looking for gmtime_r - found
++-- Looking for localtime_r
++-- Looking for localtime_r - found
++-- Looking for mkdir
++-- Looking for mkdir - found
++-- Looking for open
++-- Looking for open - found
++-- Looking for nanosleep
++-- Looking for nanosleep - found
++-- Looking for signal
++-- Looking for signal - found
++-- Looking for stat
++-- Looking for stat - found
++-- Looking for strdup
++-- Looking for strdup - found
++-- Looking for strcasecmp
++-- Looking for strcasecmp - found
++-- Looking for strncasecmp
++-- Looking for strncasecmp - found
++-- Looking for read
++-- Looking for read - found
++-- Looking for unlink
++-- Looking for unlink - found
++-- Looking for usleep
++-- Looking for usleep - found
++-- Looking for waitpid
++-- Looking for waitpid - found
++-- Looking for write
++-- Looking for write - found
++-- Looking for alarm
++-- Looking for alarm - found
++-- Looking for backtrace
++-- Looking for backtrace - not found
++-- Looking for iswspace
++-- Looking for iswspace - found
++-- Looking for setenv
++-- Looking for setenv - found
++-- Looking for unsetenv
++-- Looking for unsetenv - found
++-- Looking for snprintf
++-- Looking for snprintf - found
++-- Looking for GetNumberFormat
++-- Looking for GetNumberFormat - not found
++-- Looking for sys/types.h
++-- Looking for sys/types.h - found
++-- Looking for stdint.h
++-- Looking for stdint.h - found
++-- Looking for stddef.h
++-- Looking for stddef.h - found
++-- Check size of intptr_t
++-- Check size of intptr_t - done
++-- Check size of pid_t
++-- Check size of pid_t - done
++-- Check size of size_t
++-- Check size of size_t - done
++-- Check size of ssize_t
++-- Check size of ssize_t - done
++-- Check size of time_t
++-- Check size of time_t - done
++-- Check size of wint_t
++-- Check size of wint_t - failed
++-- Looking for pthread.h
++-- Looking for pthread.h - found
++-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
++-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
++-- Found Threads: TRUE  
++-- Looking for pthread_attr_get_np in pthread
++-- Looking for pthread_attr_get_np in pthread - not found
++-- Looking for pthread_getattr_np in pthread
++-- Looking for pthread_getattr_np in pthread - found
++-- Looking for pthread_create in pthread
++-- Looking for pthread_create in pthread - found
++-- Looking for include files pthread.h, pthread_np.h
++-- Looking for include files pthread.h, pthread_np.h - not found
++-- Found PkgConfig: /usr/bin/pkg-config (found version "0.29.2") 
++-- Checking for module 'gobject-introspection-1.0>=0.6.7'
++--   Found gobject-introspection-1.0, version 1.66.1
++-- Checking for modules 'glib-2.0>=2.32;gobject-2.0>=2.32'
++--   Found glib-2.0, version 2.66.4
++--   Found gobject-2.0, version 2.66.4
++-- Checking for module 'libxml-2.0>=2.7.3'
++--   Found libxml-2.0, version 2.9.10
++-- Performing Test HAVE_GCC_UNUSED_BUT_SET
++-- Performing Test HAVE_GCC_UNUSED_BUT_SET - Success
++-- Performing Test HAVE_GCC_LOGICAL_OP
++-- Performing Test HAVE_GCC_LOGICAL_OP - Success
++-- Performing Test HAVE_GCC_POINTER_MEMACCESS
++-- Performing Test HAVE_GCC_POINTER_MEMACCESS - Success
++-- Performing Test HAVE_GCC_FORMAT_SECURITY
++-- Performing Test HAVE_GCC_FORMAT_SECURITY - Success
++-- Performing Test HAVE_GCC_REDUNDANT_DECLS
++-- Performing Test HAVE_GCC_REDUNDANT_DECLS - Success
++-- Performing Test HAVE_GXX_UNUSED_BUT_SET
++-- Performing Test HAVE_GXX_UNUSED_BUT_SET - Success
++-- Performing Test HAVE_GXX_LOGICAL_OP
++-- Performing Test HAVE_GXX_LOGICAL_OP - Success
++-- Performing Test HAVE_GXX_POINTER_MEMACCESS
++-- Performing Test HAVE_GXX_POINTER_MEMACCESS - Success
++-- Performing Test HAVE_GXX_REORDER
++-- Performing Test HAVE_GXX_REORDER - Success
++-- Performing Test HAVE_GXX_FORMAT_SECURITY
++-- Performing Test HAVE_GXX_FORMAT_SECURITY - Success
++-- Performing Test HAVE_GXX_REDUNDANT_DECLS
++-- Performing Test HAVE_GXX_REDUNDANT_DECLS - Success
++-- Found Doxygen: /usr/bin/doxygen (found version "1.8.20") found components: doxygen missing components: dot
++-- The following features have been enabled:
++
++ * Option WITH_CXX_BINDINGS, build the C++ bindings. Requires a C++ compiler
++ * Option SHARED_ONLY, build shared libraries only
++ * RSCALE support (RFC7529), build in RSCALE support
++ * Berkeley DB storage support, build in support for Berkeley DB storage
++ * Option GOBJECT_INTROSPECTION, build GObject introspection "typelib" files
++ * Option ICAL_BUILD_DOCS, build API documentation and reference manual
++ * Option ICAL_GLIB_VAPI, build Vala "vapi" files
++ * Option ICAL_GLIB, build libical-glib interface
++ * Option LIBICAL_BUILD_TESTING, build tests
++ * libical-glib testing, python3 is required to run the regression tests
++
++-- The following OPTIONAL packages have been found:
++
++ * BDB, Berkeley DB storage, <https://www.oracle.com/database/berkeley-db>
++   For Berkeley DB storage support
++ * GObjectIntrospection (required version >= 0.6.7), <https://wiki.gnome.org/Projects/GObjectIntrospection>
++   Needed in order to build the GObject introspection "typelib" files.
++ * GLib (required version >= 2.32), A library of handy utility functions, <https://www.gtk.org>
++   For the optional libical-glib interface
++ * PkgConfig
++ * LibXML (required version >= 2.7.3), a library providing XML and HTML support, <http://xmlsoft.org>
++   For the optional libical-glib interface
++ * Doxygen, API Documentation system, <http://www.doxygen.org>
++   Needed to build the API documention.
++
++-- The following RECOMMENDED packages have been found:
++
++ * ICU, libicu (International Components for Unicode) libraries, <http://www.icu-project.org>
++   For RSCALE (RFC7529) support
++
++-- The following REQUIRED packages have been found:
++
++ * Perl
++   Required by the libical build system.
++
++-- The following features have been disabled:
++
++ * Option STATIC_ONLY, build static libraries only
++ * Option ICAL_ERRORS_ARE_FATAL, icalerror_* calls will abort instead of internally signaling an error
++ * Option ICAL_ALLOW_EMPTY_PROPERTIES, prevents empty properties from being replaced with X-LIC-ERROR properties
++ * Option USE_BUILTIN_TZDATA, use our own timezone data rather then the system timezone data
++
++-- Configuring done
++-- Generating done
++CMake Warning:
++  Manually-specified variables were not used by the project:
++
++    LIB_SUFFIX
++    MAN_INSTALL_DIR
++    SYSCONF_INSTALL_DIR
++
++
++-- Build files have been written to: /tmp/libical-3.0.9/build
++Scanning dependencies of target ical-header
++Scanning dependencies of target icalss-header
++Scanning dependencies of target ical-glib-src-generator
++[  0%] Generating icalss.h
++[  1%] Generating icalderivedproperty.c
++[  2%] Building C object src/libical-glib/CMakeFiles/ical-glib-src-generator.dir/tools/generator.c.o
++[  2%] Generating icalderivedparameter.c
++[  3%] Generating icalrestriction.c
++[  4%] Generating icalderivedvalue.c
++[  4%] Built target icalss-header
++[  4%] Generating icalderivedproperty.h
++[  5%] Generating icalderivedparameter.h
++[  5%] Generating icalderivedvalue.h
++[  6%] Building C object src/libical-glib/CMakeFiles/ical-glib-src-generator.dir/tools/xml-parser.c.o
++[  7%] Generating ical.h
++[  7%] Built target ical-header
++Scanning dependencies of target ical
++[  8%] Building C object src/libical/CMakeFiles/ical.dir/icalderivedproperty.c.o
++[  8%] Building C object src/libical/CMakeFiles/ical.dir/icalderivedparameter.c.o
++[  8%] Linking C executable ../../bin/ical-glib-src-generator
++[  8%] Built target ical-glib-src-generator
++[  9%] Building C object src/libical/CMakeFiles/ical.dir/icalrestriction.c.o
++[ 10%] Building C object src/libical/CMakeFiles/ical.dir/icalderivedvalue.c.o
++[ 10%] Building C object src/libical/CMakeFiles/ical.dir/icalarray.c.o
++[ 11%] Building C object src/libical/CMakeFiles/ical.dir/icalattach.c.o
++[ 12%] Building C object src/libical/CMakeFiles/ical.dir/icalcomponent.c.o
++[ 12%] Building C object src/libical/CMakeFiles/ical.dir/icalenums.c.o
++[ 13%] Building C object src/libical/CMakeFiles/ical.dir/icalerror.c.o
++[ 14%] Building C object src/libical/CMakeFiles/ical.dir/icalmemory.c.o
++[ 14%] Building C object src/libical/CMakeFiles/ical.dir/icalmime.c.o
++[ 15%] Building C object src/libical/CMakeFiles/ical.dir/icalparameter.c.o
++[ 15%] Building C object src/libical/CMakeFiles/ical.dir/icalparser.c.o
++[ 16%] Building C object src/libical/CMakeFiles/ical.dir/icalproperty.c.o
++[ 17%] Building C object src/libical/CMakeFiles/ical.dir/icalrecur.c.o
++/tmp/libical-3.0.9/src/libical/icalparser.c: In function ‘icalparser_string_line_generator’:
++/tmp/libical-3.0.9/src/libical/icalparser.c:1323:5: warning: ‘strncpy’ specified bound depends on the length of the source argument [-Wstringop-overflow=]
++ 1323 |     strncpy(out, data->pos, size);
++      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++/tmp/libical-3.0.9/src/libical/icalparser.c:1308:20: note: length computed here
++ 1308 |             size = strlen(data->pos);
++      |                    ^~~~~~~~~~~~~~~~~
++[ 17%] Building C object src/libical/CMakeFiles/ical.dir/icaltime.c.o
++[ 18%] Building C object src/libical/CMakeFiles/ical.dir/icaltz-util.c.o
++[ 19%] Building C object src/libical/CMakeFiles/ical.dir/icaltimezone.c.o
++[ 19%] Building C object src/libical/CMakeFiles/ical.dir/icalduration.c.o
++[ 20%] Building C object src/libical/CMakeFiles/ical.dir/icalperiod.c.o
++[ 21%] Building C object src/libical/CMakeFiles/ical.dir/icaltypes.c.o
++[ 21%] Building C object src/libical/CMakeFiles/ical.dir/icalvalue.c.o
++[ 22%] Building C object src/libical/CMakeFiles/ical.dir/pvl.c.o
++[ 23%] Building C object src/libical/CMakeFiles/ical.dir/sspm.c.o
++/tmp/libical-3.0.9/src/libical/icalvalue.c: In function ‘print_date_to_string’:
++/tmp/libical-3.0.9/src/libical/icalvalue.c:1001:9: warning: ‘strncat’ output may be truncated copying 8 bytes from a string of length 19 [-Wstringop-truncation]
++ 1001 |         strncat(str, temp, 8);
++      |         ^~~~~~~~~~~~~~~~~~~~~
++In function ‘print_date_to_string’,
++    inlined from ‘print_datetime_to_string’ at /tmp/libical-3.0.9/src/libical/icalvalue.c:1028:9:
++/tmp/libical-3.0.9/src/libical/icalvalue.c:1001:9: warning: ‘strncat’ output may be truncated copying 8 bytes from a string of length 19 [-Wstringop-truncation]
++ 1001 |         strncat(str, temp, 8);
++      |         ^~~~~~~~~~~~~~~~~~~~~
++In function ‘print_time_to_string’,
++    inlined from ‘print_datetime_to_string’ at /tmp/libical-3.0.9/src/libical/icalvalue.c:1032:13:
++/tmp/libical-3.0.9/src/libical/icalvalue.c:988:13: warning: ‘strncat’ output may be truncated copying 6 bytes from a string of length 19 [-Wstringop-truncation]
++  988 |             strncat(str, temp, 6);
++      |             ^~~~~~~~~~~~~~~~~~~~~
++/tmp/libical-3.0.9/src/libical/icalvalue.c:985:13: warning: ‘strncat’ output may be truncated copying 7 bytes from a string of length 19 [-Wstringop-truncation]
++  985 |             strncat(str, temp, 7);
++      |             ^~~~~~~~~~~~~~~~~~~~~
++/tmp/libical-3.0.9/src/libical/icalvalue.c: In function ‘print_datetime_to_string’:
++/tmp/libical-3.0.9/src/libical/icalvalue.c:1033:13: warning: ‘strncat’ output may be truncated copying 19 bytes from a string of length 19 [-Wstringop-truncation]
++ 1033 |             strncat(str, temp, 19);
++      |             ^~~~~~~~~~~~~~~~~~~~~~
++/tmp/libical-3.0.9/src/libical/icalvalue.c: In function ‘icalvalue_as_ical_string_r’:
++/tmp/libical-3.0.9/src/libical/icalvalue.c:905:33: warning: ‘%02d’ directive output may be truncated writing between 2 and 8 bytes into a region of size between 2 and 6 [-Wformat-truncation=]
++  905 |         snprintf(str, 9, "%c%02d%02d", sign, abs(h), abs(m));
++      |                                 ^~~~
++/tmp/libical-3.0.9/src/libical/icalvalue.c:905:26: note: directive argument in the range [0, 35791394]
++  905 |         snprintf(str, 9, "%c%02d%02d", sign, abs(h), abs(m));
++      |                          ^~~~~~~~~~~~
++/tmp/libical-3.0.9/src/libical/icalvalue.c:905:9: note: ‘snprintf’ output between 6 and 16 bytes into a destination of size 9
++  905 |         snprintf(str, 9, "%c%02d%02d", sign, abs(h), abs(m));
++      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++/tmp/libical-3.0.9/src/libical/icalvalue.c:903:33: warning: ‘%02d’ directive output may be truncated writing between 2 and 8 bytes into a region of size between 2 and 6 [-Wformat-truncation=]
++  903 |         snprintf(str, 9, "%c%02d%02d%02d", sign, abs(h), abs(m), abs(s));
++      |                                 ^~~~
++/tmp/libical-3.0.9/src/libical/icalvalue.c:903:26: note: directive argument in the range [0, 35791394]
++  903 |         snprintf(str, 9, "%c%02d%02d%02d", sign, abs(h), abs(m), abs(s));
++      |                          ^~~~~~~~~~~~~~~~
++/tmp/libical-3.0.9/src/libical/icaltimezone.c: In function ‘icaltimezone_dump_changes’:
++/tmp/libical-3.0.9/src/libical/icalvalue.c:903:26: note: directive argument in the range [1, 2147483647]
++/tmp/libical-3.0.9/src/libical/icalvalue.c:903:9: note: ‘snprintf’ output between 8 and 26 bytes into a destination of size 9
++  903 |         snprintf(str, 9, "%c%02d%02d%02d", sign, abs(h), abs(m), abs(s));
++      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++/tmp/libical-3.0.9/src/libical/icaltimezone.c:2012:46: warning: ‘%02i’ directive output may be truncated writing 2 bytes into a region of size between 1 and 5 [-Wformat-truncation=]
++ 2012 |         snprintf(buffer, buffer_size, "%s%02i%02i%02i", sign, hours, minutes, seconds);
++      |                                              ^~~~
++/tmp/libical-3.0.9/src/libical/icaltimezone.c:2012:39: note: directive argument in the range [0, 59]
++ 2012 |         snprintf(buffer, buffer_size, "%s%02i%02i%02i", sign, hours, minutes, seconds);
++      |                                       ^~~~~~~~~~~~~~~~
++/tmp/libical-3.0.9/src/libical/icaltimezone.c:2012:39: note: directive argument in the range [1, 59]
++In function ‘print_date_to_string’,
++    inlined from ‘icalvalue_date_as_ical_string_r’ at /tmp/libical-3.0.9/src/libical/icalvalue.c:1016:5,
++    inlined from ‘icalvalue_as_ical_string_r’ at /tmp/libical-3.0.9/src/libical/icalvalue.c:1195:16:
++/tmp/libical-3.0.9/src/libical/icaltimezone.c:2012:9: note: ‘snprintf’ output between 8 and 12 bytes into a destination of size 8
++ 2012 |         snprintf(buffer, buffer_size, "%s%02i%02i%02i", sign, hours, minutes, seconds);
++      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++/tmp/libical-3.0.9/src/libical/icalvalue.c:1001:9: warning: ‘strncat’ output may be truncated copying 8 bytes from a string of length 19 [-Wstringop-truncation]
++ 1001 |         strncat(str, temp, 8);
++      |         ^~~~~~~~~~~~~~~~~~~~~
++/tmp/libical-3.0.9/src/libical/icaltimezone.c:2010:46: warning: ‘%02i’ directive output may be truncated writing 2 bytes into a region of size between 1 and 5 [-Wformat-truncation=]
++ 2010 |         snprintf(buffer, buffer_size, "%s%02i%02i", sign, hours, minutes);
++      |                                              ^~~~
++/tmp/libical-3.0.9/src/libical/icaltimezone.c:2010:39: note: directive argument in the range [0, 59]
++ 2010 |         snprintf(buffer, buffer_size, "%s%02i%02i", sign, hours, minutes);
++      |                                       ^~~~~~~~~~~~
++/tmp/libical-3.0.9/src/libical/icaltimezone.c:2010:9: note: ‘snprintf’ output between 6 and 10 bytes into a destination of size 8
++ 2010 |         snprintf(buffer, buffer_size, "%s%02i%02i", sign, hours, minutes);
++      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++[ 23%] Building C object src/libical/CMakeFiles/ical.dir/icallangbind.c.o
++[ 24%] Building C object src/libical/CMakeFiles/ical.dir/caldate.c.o
++/tmp/libical-3.0.9/src/libical/sspm.c: In function ‘sspm_write_part.constprop’:
++/tmp/libical-3.0.9/src/libical/sspm.c:1209:34: warning: ‘%02X’ directive output may be truncated writing between 2 and 8 bytes into a region of size 3 [-Wformat-truncation=]
++ 1209 |     snprintf(tmp, sizeof(tmp), "=%02X", (unsigned int)ch);
++      |                                  ^~~~
++/tmp/libical-3.0.9/src/libical/sspm.c:1209:32: note: directive argument in the range [1, 4294967295]
++ 1209 |     snprintf(tmp, sizeof(tmp), "=%02X", (unsigned int)ch);
++      |                                ^~~~~~~
++/tmp/libical-3.0.9/src/libical/sspm.c:1209:5: note: ‘snprintf’ output between 4 and 10 bytes into a destination of size 4
++ 1209 |     snprintf(tmp, sizeof(tmp), "=%02X", (unsigned int)ch);
++      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++[ 25%] Linking C shared library ../../lib/libical.so
++[ 30%] Built target ical
++Scanning dependencies of target gir-typelibs-ICal_3_0_gir
++Scanning dependencies of target gir-girs-ICal_3_0_gir
++Scanning dependencies of target ical_cxx
++[ 31%] Generating ICal-3.0.gir
++[ 32%] Generating ICal-3.0.gir
++[ 33%] Building CXX object src/libical/CMakeFiles/ical_cxx.dir/icalparameter_cxx.cpp.o
++[ 34%] Building CXX object src/libical/CMakeFiles/ical_cxx.dir/icalproperty_cxx.cpp.o
++g-ir-scanner: link: /usr/bin/cc -o /tmp/libical-3.0.9/build/src/libical/tmp-introspectuqgmz6pn/ICal-3.0 /tmp/libical-3.0.9/build/src/libical/tmp-introspectuqgmz6pn/ICal-3.0.o -L. -Wl,-rpath,. -Wl,--no-as-needed -L/tmp/libical-3.0.9/build/lib -Wl,-rpath,/tmp/libical-3.0.9/build/lib -lical -lgio-2.0 -lgobject-2.0 -Wl,--export-dynamic -lgmodule-2.0 -pthread -lglib-2.0
++g-ir-scanner: link: /usr/bin/cc -o /tmp/libical-3.0.9/build/src/libical/tmp-introspect21i4b5p6/ICal-3.0 /tmp/libical-3.0.9/build/src/libical/tmp-introspect21i4b5p6/ICal-3.0.o -L. -Wl,-rpath,. -Wl,--no-as-needed -L/tmp/libical-3.0.9/build/lib -Wl,-rpath,/tmp/libical-3.0.9/build/lib -lical -lgio-2.0 -lgobject-2.0 -Wl,--export-dynamic -lgmodule-2.0 -pthread -lglib-2.0
++[ 34%] Building CXX object src/libical/CMakeFiles/ical_cxx.dir/icalvalue_cxx.cpp.o
++g-ir-scanner: ICal: warning: 835 warnings suppressed (use --warn-all to see them)
++g-ir-scanner: ICal: warning: 835 warnings suppressed (use --warn-all to see them)
++[ 34%] Generating ICal-3.0.typelib
++[ 34%] Built target gir-girs-ICal_3_0_gir
++Scanning dependencies of target icalss
++[ 35%] Building C object src/libicalss/CMakeFiles/icalss.dir/icalcalendar.c.o
++[ 36%] Building C object src/libicalss/CMakeFiles/icalss.dir/icalclassify.c.o
++[ 36%] Built target gir-typelibs-ICal_3_0_gir
++Scanning dependencies of target icalvcal
++[ 37%] Building C object src/libicalvcal/CMakeFiles/icalvcal.dir/icalvcal.c.o
++[ 37%] Building C object src/libicalss/CMakeFiles/icalss.dir/icalcluster.c.o
++[ 38%] Building CXX object src/libical/CMakeFiles/ical_cxx.dir/vcomponent_cxx.cpp.o
++[ 39%] Building C object src/libicalss/CMakeFiles/icalss.dir/icalgauge.c.o
++[ 40%] Building C object src/libicalss/CMakeFiles/icalss.dir/icaldirset.c.o
++[ 40%] Building C object src/libicalvcal/CMakeFiles/icalvcal.dir/vobject.c.o
++[ 40%] Building C object src/libicalss/CMakeFiles/icalss.dir/icalfileset.c.o
++[ 41%] Building C object src/libicalvcal/CMakeFiles/icalvcal.dir/vcaltmp.c.o
++[ 42%] Building C object src/libicalss/CMakeFiles/icalss.dir/icalset.c.o
++[ 43%] Building C object src/libicalvcal/CMakeFiles/icalvcal.dir/vcc.c.o
++[ 44%] Building C object src/libicalss/CMakeFiles/icalss.dir/icalspanlist.c.o
++[ 45%] Linking CXX shared library ../../lib/libical_cxx.so
++[ 45%] Building C object src/libicalss/CMakeFiles/icalss.dir/icalmessage.c.o
++[ 45%] Built target ical_cxx
++[ 45%] Generating i-cal-array.h, i-cal-array.c, i-cal-attach.h, i-cal-attach.c, i-cal-comp-iter.h, i-cal-comp-iter.c, i-cal-component.h, i-cal-component.c, i-cal-datetimeperiod.h, i-cal-datetimeperiod.c, i-cal-derived-parameter.h, i-cal-derived-parameter.c, i-cal-derived-property.h, i-cal-derived-property.c, i-cal-derived-value.h, i-cal-derived-value.c, i-cal-duration.h, i-cal-duration.c, i-cal-enums.h, i-cal-enums.c, i-cal-error.h, i-cal-error.c, i-cal-geo.h, i-cal-geo.c, i-cal-memory.h, i-cal-memory.c, i-cal-mime.h, i-cal-mime.c, i-cal-parameter.h, i-cal-parameter.c, i-cal-parser.h, i-cal-parser.c, i-cal-period.h, i-cal-period.c, i-cal-property.h, i-cal-property.c, i-cal-recur-iterator.h, i-cal-recur-iterator.c, i-cal-recurrence.h, i-cal-recurrence.c, i-cal-recur.h, i-cal-recur.c, i-cal-reqstat.h, i-cal-reqstat.c, i-cal-restriction.h, i-cal-restriction.c, i-cal-time-span.h, i-cal-time-span.c, i-cal-time.h, i-cal-time.c, i-cal-timezone.h, i-cal-timezone.c, i-cal-trigger.h, i-cal-trigger.c, i-cal-unknowntokenhandling.h, i-cal-unknowntokenhandling.c, i-cal-value.h, i-cal-value.c, libical-glib-private.h, i-cal-forward-declarations.h
++[ 45%] Linking C shared library ../../lib/libicalvcal.so
++[ 46%] Building C object src/libicalss/CMakeFiles/icalss.dir/icalsslexer.c.o
++[ 46%] Built target icalvcal
++[ 46%] Building C object src/libicalss/CMakeFiles/icalss.dir/icalssyacc.c.o
++[ 47%] Building C object src/libicalss/CMakeFiles/icalss.dir/icalbdbset.c.o
++Scanning dependencies of target ical-glib
++[ 48%] Building C object src/libical-glib/CMakeFiles/ical-glib.dir/i-cal-array.c.o
++[ 49%] Building C object src/libical-glib/CMakeFiles/ical-glib.dir/i-cal-attach.c.o
++[ 49%] Building C object src/libical-glib/CMakeFiles/ical-glib.dir/i-cal-comp-iter.c.o
++[ 50%] Building C object src/libical-glib/CMakeFiles/ical-glib.dir/i-cal-component.c.o
++[ 51%] Linking C shared library ../../lib/libicalss.so
++[ 51%] Building C object src/libical-glib/CMakeFiles/ical-glib.dir/i-cal-datetimeperiod.c.o
++[ 51%] Built target icalss
++Scanning dependencies of target icalss_cxx
++[ 52%] Building CXX object src/libicalss/CMakeFiles/icalss_cxx.dir/icalspanlist_cxx.cpp.o
++[ 53%] Building C object src/libical-glib/CMakeFiles/ical-glib.dir/i-cal-derived-parameter.c.o
++[ 54%] Linking CXX shared library ../../lib/libicalss_cxx.so
++[ 54%] Built target icalss_cxx
++Scanning dependencies of target icalrecurtest
++[ 55%] Building C object src/test/CMakeFiles/icalrecurtest.dir/icalrecur_test.c.o
++[ 56%] Building C object src/libical-glib/CMakeFiles/ical-glib.dir/i-cal-derived-property.c.o
++[ 56%] Linking C executable icalrecurtest
++[ 56%] Built target icalrecurtest
++Scanning dependencies of target doesnothing
++[ 56%] Building C object examples/CMakeFiles/doesnothing.dir/access_components.c.o
++[ 57%] Building C object examples/CMakeFiles/doesnothing.dir/access_properties_and_parameters.c.o
++[ 58%] Building C object examples/CMakeFiles/doesnothing.dir/errors.c.o
++[ 58%] Building C object examples/CMakeFiles/doesnothing.dir/main.c.o
++[ 58%] Building C object src/libical-glib/CMakeFiles/ical-glib.dir/i-cal-derived-value.c.o
++[ 59%] Building C object examples/CMakeFiles/doesnothing.dir/parse_text.c.o
++[ 60%] Linking C executable ../bin/doesnothing
++[ 60%] Built target doesnothing
++Scanning dependencies of target copycluster
++[ 60%] Building C object src/test/CMakeFiles/copycluster.dir/copycluster.c.o
++[ 61%] Linking C executable copycluster
++[ 61%] Built target copycluster
++Scanning dependencies of target regression
++[ 62%] Building C object src/test/CMakeFiles/regression.dir/regression.c.o
++[ 63%] Building C object src/libical-glib/CMakeFiles/ical-glib.dir/i-cal-duration.c.o
++[ 64%] Building C object src/libical-glib/CMakeFiles/ical-glib.dir/i-cal-enums.c.o
++[ 64%] Building C object src/libical-glib/CMakeFiles/ical-glib.dir/i-cal-error.c.o
++[ 65%] Building C object src/libical-glib/CMakeFiles/ical-glib.dir/i-cal-geo.c.o
++[ 66%] Building C object src/libical-glib/CMakeFiles/ical-glib.dir/i-cal-memory.c.o
++[ 66%] Building C object src/libical-glib/CMakeFiles/ical-glib.dir/i-cal-mime.c.o
++[ 66%] Building C object src/test/CMakeFiles/regression.dir/regression-component.c.o
++[ 67%] Building C object src/libical-glib/CMakeFiles/ical-glib.dir/i-cal-parameter.c.o
++[ 68%] Building C object src/libical-glib/CMakeFiles/ical-glib.dir/i-cal-parser.c.o
++[ 69%] Building C object src/test/CMakeFiles/regression.dir/regression-classify.c.o
++[ 70%] Building C object src/test/CMakeFiles/regression.dir/regression-utils.c.o
++[ 70%] Building C object src/libical-glib/CMakeFiles/ical-glib.dir/i-cal-period.c.o
++[ 71%] Building C object src/libical-glib/CMakeFiles/ical-glib.dir/i-cal-property.c.o
++[ 71%] Building C object src/test/CMakeFiles/regression.dir/regression-recur.c.o
++[ 72%] Building C object src/test/CMakeFiles/regression.dir/regression-storage.c.o
++[ 73%] Building C object src/libical-glib/CMakeFiles/ical-glib.dir/i-cal-recur-iterator.c.o
++[ 74%] Building CXX object src/test/CMakeFiles/regression.dir/regression-cxx.cpp.o
++[ 74%] Building C object src/libical-glib/CMakeFiles/ical-glib.dir/i-cal-recurrence.c.o
++[ 75%] Building C object src/libical-glib/CMakeFiles/ical-glib.dir/i-cal-recur.c.o
++[ 76%] Building C object src/libical-glib/CMakeFiles/ical-glib.dir/i-cal-reqstat.c.o
++[ 76%] Linking CXX executable regression
++[ 76%] Built target regression
++Scanning dependencies of target parser
++[ 77%] Building C object src/test/CMakeFiles/parser.dir/icaltestparser.c.o
++[ 77%] Building C object src/libical-glib/CMakeFiles/ical-glib.dir/i-cal-restriction.c.o
++[ 78%] Linking C executable parser
++[ 79%] Building C object src/libical-glib/CMakeFiles/ical-glib.dir/i-cal-time-span.c.o
++[ 79%] Built target parser
++Scanning dependencies of target icaltm_test
++[ 79%] Building C object src/test/CMakeFiles/icaltm_test.dir/icaltm_test.c.o
++[ 79%] Building C object src/libical-glib/CMakeFiles/ical-glib.dir/i-cal-time.c.o
++[ 80%] Linking C executable icaltm_test
++[ 81%] Building C object src/libical-glib/CMakeFiles/ical-glib.dir/i-cal-timezone.c.o
++[ 81%] Built target icaltm_test
++Scanning dependencies of target stow
++[ 82%] Building C object src/test/CMakeFiles/stow.dir/stow.c.o
++[ 83%] Linking C executable stow
++[ 84%] Building C object src/libical-glib/CMakeFiles/ical-glib.dir/i-cal-trigger.c.o
++[ 84%] Building C object src/libical-glib/CMakeFiles/ical-glib.dir/i-cal-unknowntokenhandling.c.o
++[ 84%] Built target stow
++Scanning dependencies of target recur
++[ 85%] Building C object src/test/CMakeFiles/recur.dir/recur.c.o
++[ 85%] Linking C executable recur
++[ 86%] Building C object src/libical-glib/CMakeFiles/ical-glib.dir/i-cal-value.c.o
++[ 87%] Building C object src/libical-glib/CMakeFiles/ical-glib.dir/i-cal-object.c.o
++[ 87%] Built target recur
++Scanning dependencies of target testmime
++[ 87%] Building C object src/test/CMakeFiles/testmime.dir/testmime.c.o
++/tmp/libical-3.0.9/build/src/libical-glib/i-cal-object.c: In function ‘i_cal_object_class_init’:
++/tmp/libical-3.0.9/build/src/libical-glib/i-cal-object.c:216:5: warning: ‘g_type_class_add_private’ is deprecated [-Wdeprecated-declarations]
++  216 |     g_type_class_add_private(class, sizeof(ICalObjectPrivate));
++      |     ^~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /usr/include/glib-2.0/gobject/gobject.h:24,
++                 from /usr/include/glib-2.0/gobject/gbinding.h:29,
++                 from /usr/include/glib-2.0/glib-object.h:22,
++                 from /tmp/libical-3.0.9/build/src/libical-glib/i-cal-object.h:26,
++                 from /tmp/libical-3.0.9/build/src/libical-glib/i-cal-object.c:21:
++/usr/include/glib-2.0/gobject/gtype.h:1304:10: note: declared here
++ 1304 | void     g_type_class_add_private       (gpointer                    g_class,
++      |          ^~~~~~~~~~~~~~~~~~~~~~~~
++/tmp/libical-3.0.9/build/src/libical-glib/i-cal-object.c: In function ‘i_cal_object_init’:
++/tmp/libical-3.0.9/build/src/libical-glib/i-cal-object.c:292:13: warning: Deprecated pre-processor symbol, replace with 
++  292 |     iobject->priv = G_TYPE_INSTANCE_GET_PRIVATE(iobject, I_CAL_TYPE_OBJECT, ICalObjectPrivate);
++      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++[ 88%] Linking C executable testmime
++Scanning dependencies of target icalrecur_test
++[ 88%] Building C object src/test/CMakeFiles/icalrecur_test.dir/icalrecur_test.c.o
++[ 88%] Built target testmime
++Scanning dependencies of target testvcal
++[ 89%] Building C object src/test/CMakeFiles/testvcal.dir/testvcal.c.o
++[ 89%] Linking C shared library ../../lib/libical-glib.so
++[ 89%] Linking C executable testvcal
++[ 90%] Linking C executable icalrecur_test
++[ 90%] Built target ical-glib
++Scanning dependencies of target process
++[ 90%] Building C object src/test/CMakeFiles/process.dir/process.c.o
++[ 90%] Built target testvcal
++Scanning dependencies of target timezones
++[ 91%] Building C object src/test/CMakeFiles/timezones.dir/timezones.c.o
++[ 91%] Built target icalrecur_test
++Scanning dependencies of target builtin_timezones
++[ 91%] Building C object src/test/CMakeFiles/builtin_timezones.dir/builtin_timezones.c.o
++[ 92%] Linking C executable process
++[ 93%] Linking C executable timezones
++[ 94%] Linking C executable builtin_timezones
++[ 94%] Built target process
++Scanning dependencies of target gtkdoc-libical-glib
++[ 94%] Generating libical-glib documentation
++[ 94%] Built target timezones
++Scanning dependencies of target gir-typelibs-ICalGLib_3_0_gir
++[ 95%] Generating ICalGLib-3.0.gir
++[ 95%] Built target builtin_timezones
++Scanning dependencies of target gir-girs-ICalGLib_3_0_gir
++[ 95%] Generating ICalGLib-3.0.gir
++/usr/bin/cc -E -DLIBICAL_GLIB_COMPILATION -I. -I/tmp/libical-3.0.9/build/src -I/tmp/libical-3.0.9/build/src/libical -I/tmp/libical-3.0.9/build/src/libical-glib -I/tmp/libical-3.0.9/build/lib -I/tmp/libical-3.0.9/src -I/tmp/libical-3.0.9/src/libical -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/tmp/libical-3.0.9/src/libical-glib -o g-ir-cpp-ayxj7fle.i -C /tmp/libical-3.0.9/build/src/libical-glib/g-ir-cpp-ayxj7fle.c
++/usr/bin/cc -E -DLIBICAL_GLIB_COMPILATION -I. -I/tmp/libical-3.0.9/build/src -I/tmp/libical-3.0.9/build/src/libical -I/tmp/libical-3.0.9/build/src/libical-glib -I/tmp/libical-3.0.9/build/lib -I/tmp/libical-3.0.9/src -I/tmp/libical-3.0.9/src/libical -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/tmp/libical-3.0.9/src/libical-glib -o g-ir-cpp-6tk7evt9.i -C /tmp/libical-3.0.9/build/src/libical-glib/g-ir-cpp-6tk7evt9.c
++/usr/bin/cc -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/tmp/libical-3.0.9/build/src/libical-glib -I/tmp/libical-3.0.9/src/libical-glib -I/tmp/libical-3.0.9/build/src/libical -I/tmp/libical-3.0.9/src/libical -I/tmp/libical-3.0.9/build/src/libical-glib -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/tmp/libical-3.0.9/build/src -I/tmp/libical-3.0.9/build/src/libical -I/tmp/libical-3.0.9/build/src/libical-glib -I/tmp/libical-3.0.9/build/lib -I/tmp/libical-3.0.9/src -I/tmp/libical-3.0.9/src/libical -c /tmp/libical-3.0.9/build/src/libical-glib/tmp-introspectk9rsv_u7/ICalGLib-3.0.c -o /tmp/libical-3.0.9/build/src/libical-glib/tmp-introspectk9rsv_u7/ICalGLib-3.0.o -Wno-deprecated-declarations -pthread
++/usr/bin/cc -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/tmp/libical-3.0.9/build/src/libical-glib -I/tmp/libical-3.0.9/src/libical-glib -I/tmp/libical-3.0.9/build/src/libical -I/tmp/libical-3.0.9/src/libical -I/tmp/libical-3.0.9/build/src/libical-glib -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/tmp/libical-3.0.9/build/src -I/tmp/libical-3.0.9/build/src/libical -I/tmp/libical-3.0.9/build/src/libical-glib -I/tmp/libical-3.0.9/build/lib -I/tmp/libical-3.0.9/src -I/tmp/libical-3.0.9/src/libical -c /tmp/libical-3.0.9/build/src/libical-glib/tmp-introspect3k7ueew6/ICalGLib-3.0.c -o /tmp/libical-3.0.9/build/src/libical-glib/tmp-introspect3k7ueew6/ICalGLib-3.0.o -Wno-deprecated-declarations -pthread
++g-ir-scanner: link: /usr/bin/cc -o /tmp/libical-3.0.9/build/src/libical-glib/tmp-introspectk9rsv_u7/ICalGLib-3.0 /tmp/libical-3.0.9/build/src/libical-glib/tmp-introspectk9rsv_u7/ICalGLib-3.0.o -L. -Wl,-rpath,. -Wl,--no-as-needed -L/tmp/libical-3.0.9/build/lib -Wl,-rpath,/tmp/libical-3.0.9/build/lib -lical-glib -lgio-2.0 -lgobject-2.0 -Wl,--export-dynamic -lgmodule-2.0 -pthread -lglib-2.0
++g-ir-scanner: link: /usr/bin/cc -o /tmp/libical-3.0.9/build/src/libical-glib/tmp-introspect3k7ueew6/ICalGLib-3.0 /tmp/libical-3.0.9/build/src/libical-glib/tmp-introspect3k7ueew6/ICalGLib-3.0.o -L. -Wl,-rpath,. -Wl,--no-as-needed -L/tmp/libical-3.0.9/build/lib -Wl,-rpath,/tmp/libical-3.0.9/build/lib -lical-glib -lgio-2.0 -lgobject-2.0 -Wl,--export-dynamic -lgmodule-2.0 -pthread -lglib-2.0
++[ 95%] Generating ICalGLib-3.0.typelib
++unknown:0: warning: Value descriptions for ICalParameterKind are missing in source code comment block.
++unknown:0: warning: Value descriptions for ICalParameterAction are missing in source code comment block.
++unknown:0: warning: Value descriptions for ICalParameterCutype are missing in source code comment block.
++unknown:0: warning: Value descriptions for ICalParameterEnable are missing in source code comment block.
++unknown:0: warning: Value descriptions for ICalParameterEncoding are missing in source code comment block.
++unknown:0: warning: Value descriptions for ICalParameterFbtype are missing in source code comment block.
++unknown:0: warning: Value descriptions for ICalParameterLocal are missing in source code comment block.
++unknown:0: warning: Value descriptions for ICalParameterPartstat are missing in source code comment block.
++unknown:0: warning: Value descriptions for ICalParameterRange are missing in source code comment block.
++unknown:0: warning: Value descriptions for ICalParameterRelated are missing in source code comment block.
++unknown:0: warning: Value descriptions for ICalParameterReltype are missing in source code comment block.
++unknown:0: warning: Value descriptions for ICalParameterRequired are missing in source code comment block.
++unknown:0: warning: Value descriptions for ICalParameterRole are missing in source code comment block.
++unknown:0: warning: Value descriptions for ICalParameterRsvp are missing in source code comment block.
++unknown:0: warning: Value descriptions for ICalParameterScheduleagent are missing in source code comment block.
++unknown:0: warning: Value descriptions for ICalParameterScheduleforcesend are missing in source code comment block.
++unknown:0: warning: Value descriptions for ICalParameterStayinformed are missing in source code comment block.
++unknown:0: warning: Value descriptions for ICalParameterSubstate are missing in source code comment block.
++unknown:0: warning: Value descriptions for ICalParameterValue are missing in source code comment block.
++unknown:0: warning: Value descriptions for ICalParameterXliccomparetype are missing in source code comment block.
++unknown:0: warning: Value descriptions for ICalParameterXlicerrortype are missing in source code comment block.
++[ 96%] Built target gir-girs-ICalGLib_3_0_gir
++Scanning dependencies of target valafile
++[ 96%] Generating libical-glib.vapi
++unknown:0: warning: Value descriptions for ICalPropertyKind are missing in source code comment block.
++unknown:0: warning: Value descriptions for ICalValueKind are missing in source code comment block.
++unknown:0: warning: Value descriptions for ICalPropertyAction are missing in source code comment block.
++unknown:0: warning: Value descriptions for ICalPropertyBusytype are missing in source code comment block.
++unknown:0: warning: Value descriptions for ICalPropertyCarlevel are missing in source code comment block.
++unknown:0: warning: Value descriptions for ICalProperty_Class are missing in source code comment block.
++unknown:0: warning: Value descriptions for ICalPropertyCmd are missing in source code comment block.
++unknown:0: warning: Value descriptions for ICalPropertyMethod are missing in source code comment block.
++unknown:0: warning: Value descriptions for ICalPropertyPollcompletion are missing in source code comment block.
++unknown:0: warning: Value descriptions for ICalPropertyPollmode are missing in source code comment block.
++unknown:0: warning: Value descriptions for ICalPropertyQuerylevel are missing in source code comment block.
++unknown:0: warning: Value descriptions for ICalPropertyStatus are missing in source code comment block.
++unknown:0: warning: Value descriptions for ICalPropertyTaskmode are missing in source code comment block.
++unknown:0: warning: Value descriptions for ICalPropertyTransp are missing in source code comment block.
++unknown:0: warning: Value descriptions for ICalPropertyXlicclass are missing in source code comment block.
++[ 97%] Built target gir-typelibs-ICalGLib_3_0_gir
++unknown:0: warning: Value descriptions for ICalComponentKind are missing in source code comment block.
++unknown:0: warning: Value descriptions for ICalRequestStatus are missing in source code comment block.
++unknown:0: warning: Value descriptions for ICalErrorEnum are missing in source code comment block.
++unknown:0: warning: Value descriptions for ICalErrorState are missing in source code comment block.
++unknown:0: warning: Value descriptions for ICalParserState are missing in source code comment block.
++Generation succeeded - 0 warning(s)
++unknown:0: warning: Value descriptions for ICalRecurrenceFrequency are missing in source code comment block.
++unknown:0: warning: Value descriptions for ICalRecurrenceWeekday are missing in source code comment block.
++unknown:0: warning: Value descriptions for ICalRecurrenceSkip are missing in source code comment block.
++unknown:0: warning: Value descriptions for ICalRecurrenceArrayMaxValues are missing in source code comment block.
++unknown:0: warning: Value descriptions for ICalRecurrenceArraySizes are missing in source code comment block.
++[100%] Built target valafile
++Scanning dependencies of target vala
++[100%] Built target vala
++unknown:0: warning: Value descriptions for ICalRestrictionKind are missing in source code comment block.
++unknown:0: warning: Value descriptions for ICalUnknowntokenhandling are missing in source code comment block.
++html/ICalTime.html:1236: warning: no link for: "i-cal-time-compare-tz" -> (<code class="function">i_cal_time_compare_tz()</code>).
++html/ICalTimezone.html:1183: warning: no link for: "FILE:CAPS" -> (<span class="type">FILE</span>).
++html/api-index-full.html:27: warning: no link for: "libical-glib-i-cal-forward-declarations" -> (i-cal-forward-declarations).
++[100%] Built target gtkdoc-libical-glib
++Scanning dependencies of target gtkdocs
++[100%] Built target gtkdocs
++[  5%] Built target ical-header
++[ 28%] Built target ical
++[ 32%] Built target ical_cxx
++[ 33%] Built target gir-typelibs-ICal_3_0_gir
++[ 34%] Built target gir-girs-ICal_3_0_gir
++[ 34%] Built target icalss-header
++[ 43%] Built target icalss
++[ 45%] Built target icalss_cxx
++[ 48%] Built target icalvcal
++[ 50%] Built target ical-glib-src-generator
++[ 70%] Built target ical-glib
++[ 72%] Built target gir-typelibs-ICalGLib_3_0_gir
++[ 73%] Built target gir-girs-ICalGLib_3_0_gir
++[ 75%] Built target valafile
++[ 75%] Built target vala
++[ 76%] Built target copycluster
++[ 81%] Built target regression
++[ 83%] Built target parser
++[ 84%] Built target icaltm_test
++[ 86%] Built target stow
++[ 87%] Built target recur
++[ 88%] Built target testmime
++[ 89%] Built target icalrecur_test
++[ 90%] Built target testvcal
++[ 91%] Built target process
++[ 93%] Built target timezones
++[ 94%] Built target builtin_timezones
++[ 95%] Built target icalrecurtest
++[100%] Built target doesnothing
++[100%] Built target gtkdoc-libical-glib
++[100%] Built target gtkdocs
++Install the project...
++-- Install configuration: ""
++-- Installing: /tmp/package-libical/usr/lib/pkgconfig/libical.pc
++-- Installing: /tmp/package-libical/usr/lib/cmake/LibIcal/LibIcalConfigVersion.cmake
++-- Installing: /tmp/package-libical/usr/lib/cmake/LibIcal/LibIcalConfig.cmake
++-- Installing: /tmp/package-libical/usr/lib/cmake/LibIcal/LibIcalTargets.cmake
++-- Installing: /tmp/package-libical/usr/lib/cmake/LibIcal/LibIcalTargets-noconfig.cmake
++-- Installing: /tmp/package-libical/usr/share/gir-1.0/ICal-3.0.gir
++-- Installing: /tmp/package-libical/usr/lib/girepository-1.0/ICal-3.0.typelib
++-- Installing: /tmp/package-libical/usr/lib/libical.so.3.0.9
++-- Installing: /tmp/package-libical/usr/lib/libical.so.3
++-- Installing: /tmp/package-libical/usr/lib/libical.so
++-- Installing: /tmp/package-libical/usr/lib/libical_cxx.so.3.0.9
++-- Installing: /tmp/package-libical/usr/lib/libical_cxx.so.3
++-- Set runtime path of "/tmp/package-libical/usr/lib/libical_cxx.so.3.0.9" to ""
++-- Installing: /tmp/package-libical/usr/lib/libical_cxx.so
++-- Installing: /tmp/package-libical/usr/include/libical/ical.h
++-- Installing: /tmp/package-libical/usr/include/libical/icalarray.h
++-- Installing: /tmp/package-libical/usr/include/libical/icalattach.h
++-- Installing: /tmp/package-libical/usr/include/libical/icalcomponent.h
++-- Installing: /tmp/package-libical/usr/include/libical/icalderivedproperty.h
++-- Installing: /tmp/package-libical/usr/include/libical/icalderivedparameter.h
++-- Installing: /tmp/package-libical/usr/include/libical/icalderivedvalue.h
++-- Installing: /tmp/package-libical/usr/include/libical/icalduration.h
++-- Installing: /tmp/package-libical/usr/include/libical/icalenums.h
++-- Installing: /tmp/package-libical/usr/include/libical/icalerror.h
++-- Installing: /tmp/package-libical/usr/include/libical/icallangbind.h
++-- Installing: /tmp/package-libical/usr/include/libical/icalmemory.h
++-- Installing: /tmp/package-libical/usr/include/libical/icalmime.h
++-- Installing: /tmp/package-libical/usr/include/libical/icalparameter.h
++-- Installing: /tmp/package-libical/usr/include/libical/icalparser.h
++-- Installing: /tmp/package-libical/usr/include/libical/icalperiod.h
++-- Installing: /tmp/package-libical/usr/include/libical/icalproperty.h
++-- Installing: /tmp/package-libical/usr/include/libical/icalrecur.h
++-- Installing: /tmp/package-libical/usr/include/libical/icalrestriction.h
++-- Installing: /tmp/package-libical/usr/include/libical/icaltime.h
++-- Installing: /tmp/package-libical/usr/include/libical/icaltz-util.h
++-- Installing: /tmp/package-libical/usr/include/libical/icaltimezone.h
++-- Installing: /tmp/package-libical/usr/include/libical/icaltypes.h
++-- Installing: /tmp/package-libical/usr/include/libical/icalvalue.h
++-- Installing: /tmp/package-libical/usr/include/libical/libical_ical_export.h
++-- Installing: /tmp/package-libical/usr/include/libical/pvl.h
++-- Installing: /tmp/package-libical/usr/include/libical/sspm.h
++-- Installing: /tmp/package-libical/usr/include/libical/icalparameter_cxx.h
++-- Installing: /tmp/package-libical/usr/include/libical/icalproperty_cxx.h
++-- Installing: /tmp/package-libical/usr/include/libical/icalvalue_cxx.h
++-- Installing: /tmp/package-libical/usr/include/libical/icptrholder_cxx.h
++-- Installing: /tmp/package-libical/usr/include/libical/vcomponent_cxx.h
++-- Installing: /tmp/package-libical/usr/lib/libicalss.so.3.0.9
++-- Installing: /tmp/package-libical/usr/lib/libicalss.so.3
++-- Set runtime path of "/tmp/package-libical/usr/lib/libicalss.so.3.0.9" to ""
++-- Installing: /tmp/package-libical/usr/lib/libicalss.so
++-- Installing: /tmp/package-libical/usr/lib/libicalss_cxx.so.3.0.9
++-- Installing: /tmp/package-libical/usr/lib/libicalss_cxx.so.3
++-- Set runtime path of "/tmp/package-libical/usr/lib/libicalss_cxx.so.3.0.9" to ""
++-- Installing: /tmp/package-libical/usr/lib/libicalss_cxx.so
++-- Installing: /tmp/package-libical/usr/include/libical/icalss.h
++-- Installing: /tmp/package-libical/usr/include/libical/icalcalendar.h
++-- Installing: /tmp/package-libical/usr/include/libical/icalclassify.h
++-- Installing: /tmp/package-libical/usr/include/libical/icalcluster.h
++-- Installing: /tmp/package-libical/usr/include/libical/icaldirset.h
++-- Installing: /tmp/package-libical/usr/include/libical/icaldirsetimpl.h
++-- Installing: /tmp/package-libical/usr/include/libical/icalfileset.h
++-- Installing: /tmp/package-libical/usr/include/libical/icalfilesetimpl.h
++-- Installing: /tmp/package-libical/usr/include/libical/icalgauge.h
++-- Installing: /tmp/package-libical/usr/include/libical/icalgaugeimpl.h
++-- Installing: /tmp/package-libical/usr/include/libical/icalmessage.h
++-- Installing: /tmp/package-libical/usr/include/libical/icalset.h
++-- Installing: /tmp/package-libical/usr/include/libical/icalspanlist.h
++-- Installing: /tmp/package-libical/usr/include/libical/icalssyacc.h
++-- Installing: /tmp/package-libical/usr/include/libical/libical_icalss_export.h
++-- Installing: /tmp/package-libical/usr/include/libical/icalspanlist_cxx.h
++-- Installing: /tmp/package-libical/usr/include/libical/icalbdbset_cxx.h
++-- Installing: /tmp/package-libical/usr/lib/libicalvcal.so.3.0.9
++-- Installing: /tmp/package-libical/usr/lib/libicalvcal.so.3
++-- Set runtime path of "/tmp/package-libical/usr/lib/libicalvcal.so.3.0.9" to ""
++-- Installing: /tmp/package-libical/usr/lib/libicalvcal.so
++-- Installing: /tmp/package-libical/usr/include/libical/icalvcal.h
++-- Installing: /tmp/package-libical/usr/include/libical/vcaltmp.h
++-- Installing: /tmp/package-libical/usr/include/libical/vcc.h
++-- Installing: /tmp/package-libical/usr/include/libical/vobject.h
++-- Installing: /tmp/package-libical/usr/include/libical/libical_vcal_export.h
++-- Installing: /tmp/package-libical/usr/libexec/libical/ical-glib-src-generator
++-- Installing: /tmp/package-libical/usr/lib/cmake/LibIcal/IcalGlibSrcGenerator.cmake
++-- Installing: /tmp/package-libical/usr/lib/cmake/LibIcal/IcalGlibSrcGenerator-noconfig.cmake
++-- Installing: /tmp/package-libical/usr/share/gir-1.0/ICalGLib-3.0.gir
++-- Installing: /tmp/package-libical/usr/lib/girepository-1.0/ICalGLib-3.0.typelib
++-- Installing: /tmp/package-libical/usr/share/vala/vapi/libical-glib.vapi
++-- Installing: /tmp/package-libical/usr/lib/libical-glib.so.3.0.9
++-- Installing: /tmp/package-libical/usr/lib/libical-glib.so.3
++-- Set runtime path of "/tmp/package-libical/usr/lib/libical-glib.so.3.0.9" to ""
++-- Installing: /tmp/package-libical/usr/lib/libical-glib.so
++-- Installing: /tmp/package-libical/usr/include/libical-glib/libical-glib.h
++-- Installing: /tmp/package-libical/usr/include/libical-glib/i-cal-object.h
++-- Installing: /tmp/package-libical/usr/include/libical-glib/i-cal-forward-declarations.h
++-- Installing: /tmp/package-libical/usr/include/libical-glib/i-cal-array.h
++-- Installing: /tmp/package-libical/usr/include/libical-glib/i-cal-attach.h
++-- Installing: /tmp/package-libical/usr/include/libical-glib/i-cal-comp-iter.h
++-- Installing: /tmp/package-libical/usr/include/libical-glib/i-cal-component.h
++-- Installing: /tmp/package-libical/usr/include/libical-glib/i-cal-datetimeperiod.h
++-- Installing: /tmp/package-libical/usr/include/libical-glib/i-cal-derived-parameter.h
++-- Installing: /tmp/package-libical/usr/include/libical-glib/i-cal-derived-property.h
++-- Installing: /tmp/package-libical/usr/include/libical-glib/i-cal-derived-value.h
++-- Installing: /tmp/package-libical/usr/include/libical-glib/i-cal-duration.h
++-- Installing: /tmp/package-libical/usr/include/libical-glib/i-cal-enums.h
++-- Installing: /tmp/package-libical/usr/include/libical-glib/i-cal-error.h
++-- Installing: /tmp/package-libical/usr/include/libical-glib/i-cal-geo.h
++-- Installing: /tmp/package-libical/usr/include/libical-glib/i-cal-memory.h
++-- Installing: /tmp/package-libical/usr/include/libical-glib/i-cal-mime.h
++-- Installing: /tmp/package-libical/usr/include/libical-glib/i-cal-parameter.h
++-- Installing: /tmp/package-libical/usr/include/libical-glib/i-cal-parser.h
++-- Installing: /tmp/package-libical/usr/include/libical-glib/i-cal-period.h
++-- Installing: /tmp/package-libical/usr/include/libical-glib/i-cal-property.h
++-- Installing: /tmp/package-libical/usr/include/libical-glib/i-cal-recur-iterator.h
++-- Installing: /tmp/package-libical/usr/include/libical-glib/i-cal-recurrence.h
++-- Installing: /tmp/package-libical/usr/include/libical-glib/i-cal-recur.h
++-- Installing: /tmp/package-libical/usr/include/libical-glib/i-cal-reqstat.h
++-- Installing: /tmp/package-libical/usr/include/libical-glib/i-cal-restriction.h
++-- Installing: /tmp/package-libical/usr/include/libical-glib/i-cal-time-span.h
++-- Installing: /tmp/package-libical/usr/include/libical-glib/i-cal-time.h
++-- Installing: /tmp/package-libical/usr/include/libical-glib/i-cal-timezone.h
++-- Installing: /tmp/package-libical/usr/include/libical-glib/i-cal-trigger.h
++-- Installing: /tmp/package-libical/usr/include/libical-glib/i-cal-unknowntokenhandling.h
++-- Installing: /tmp/package-libical/usr/include/libical-glib/i-cal-value.h
++-- Installing: /tmp/package-libical/usr/lib/pkgconfig/libical-glib.pc
++-- Installing: /tmp/package-libical/usr/share/gtk-doc/html/libical-glib
++-- Installing: /tmp/package-libical/usr/share/gtk-doc/html/libical-glib/ICalTimeSpan.html
++-- Installing: /tmp/package-libical/usr/share/gtk-doc/html/libical-glib/ICalValue.html
++-- Installing: /tmp/package-libical/usr/share/gtk-doc/html/libical-glib/libical-glib-i-cal-derived-property.html
++-- Installing: /tmp/package-libical/usr/share/gtk-doc/html/libical-glib/ICalArray.html
++-- Installing: /tmp/package-libical/usr/share/gtk-doc/html/libical-glib/ICalRecurrence.html
++-- Installing: /tmp/package-libical/usr/share/gtk-doc/html/libical-glib/home.png
++-- Installing: /tmp/package-libical/usr/share/gtk-doc/html/libical-glib/libical-glib-i-cal-enums.html
++-- Installing: /tmp/package-libical/usr/share/gtk-doc/html/libical-glib/ICalObject.html
++-- Installing: /tmp/package-libical/usr/share/gtk-doc/html/libical-glib/right.png
++-- Installing: /tmp/package-libical/usr/share/gtk-doc/html/libical-glib/ICalTimezone.html
++-- Installing: /tmp/package-libical/usr/share/gtk-doc/html/libical-glib/libical-glib-i-cal-memory.html
++-- Installing: /tmp/package-libical/usr/share/gtk-doc/html/libical-glib/ch01.html
++-- Installing: /tmp/package-libical/usr/share/gtk-doc/html/libical-glib/ICalTrigger.html
++-- Installing: /tmp/package-libical/usr/share/gtk-doc/html/libical-glib/ICalParser.html
++-- Installing: /tmp/package-libical/usr/share/gtk-doc/html/libical-glib/right-insensitive.png
++-- Installing: /tmp/package-libical/usr/share/gtk-doc/html/libical-glib/ICalComponent.html
++-- Installing: /tmp/package-libical/usr/share/gtk-doc/html/libical-glib/up.png
++-- Installing: /tmp/package-libical/usr/share/gtk-doc/html/libical-glib/ICalAttach.html
++-- Installing: /tmp/package-libical/usr/share/gtk-doc/html/libical-glib/ICalParameter.html
++-- Installing: /tmp/package-libical/usr/share/gtk-doc/html/libical-glib/libical-glib-i-cal-restriction.html
++-- Installing: /tmp/package-libical/usr/share/gtk-doc/html/libical-glib/up-insensitive.png
++-- Installing: /tmp/package-libical/usr/share/gtk-doc/html/libical-glib/style.css
++-- Installing: /tmp/package-libical/usr/share/gtk-doc/html/libical-glib/annotation-glossary.html
++-- Installing: /tmp/package-libical/usr/share/gtk-doc/html/libical-glib/ICalPeriod.html
++-- Installing: /tmp/package-libical/usr/share/gtk-doc/html/libical-glib/ICalRecurIterator.html
++-- Installing: /tmp/package-libical/usr/share/gtk-doc/html/libical-glib/ICalReqstat.html
++-- Installing: /tmp/package-libical/usr/share/gtk-doc/html/libical-glib/api-index-full.html
++-- Installing: /tmp/package-libical/usr/share/gtk-doc/html/libical-glib/left.png
++-- Installing: /tmp/package-libical/usr/share/gtk-doc/html/libical-glib/ICalDatetimeperiod.html
++-- Installing: /tmp/package-libical/usr/share/gtk-doc/html/libical-glib/ICalGeo.html
++-- Installing: /tmp/package-libical/usr/share/gtk-doc/html/libical-glib/libical-glib-i-cal-unknowntokenhandling.html
++-- Installing: /tmp/package-libical/usr/share/gtk-doc/html/libical-glib/ICalTime.html
++-- Installing: /tmp/package-libical/usr/share/gtk-doc/html/libical-glib/ICalDuration.html
++-- Installing: /tmp/package-libical/usr/share/gtk-doc/html/libical-glib/ICalCompIter.html
++-- Installing: /tmp/package-libical/usr/share/gtk-doc/html/libical-glib/libical-glib-i-cal-derived-value.html
++-- Installing: /tmp/package-libical/usr/share/gtk-doc/html/libical-glib/left-insensitive.png
++-- Installing: /tmp/package-libical/usr/share/gtk-doc/html/libical-glib/libical-glib-i-cal-mime.html
++-- Installing: /tmp/package-libical/usr/share/gtk-doc/html/libical-glib/libical-glib.devhelp2
++-- Installing: /tmp/package-libical/usr/share/gtk-doc/html/libical-glib/libical-glib-i-cal-recur.html
++-- Installing: /tmp/package-libical/usr/share/gtk-doc/html/libical-glib/ICalProperty.html
++-- Installing: /tmp/package-libical/usr/share/gtk-doc/html/libical-glib/index.html
++-- Installing: /tmp/package-libical/usr/share/gtk-doc/html/libical-glib/libical-glib-i-cal-error.html
++-- Installing: /tmp/package-libical/usr/share/gtk-doc/html/libical-glib/libical-glib-i-cal-derived-parameter.html
++cp: cannot stat 'INSTALL': No such file or directory
++cp: cannot stat 'NEWS': No such file or directory
++cp: cannot stat 'README*': No such file or directory
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++usr/lib/libical-glib.so	libical-glib.so.3
++usr/lib/libical-glib.so.3	libical-glib.so.3.0.9
++usr/lib/libical.so	libical.so.3
++usr/lib/libical.so.3	libical.so.3.0.9
++usr/lib/libical_cxx.so	libical_cxx.so.3
++usr/lib/libical_cxx.so.3	libical_cxx.so.3.0.9
++usr/lib/libicalss.so	libicalss.so.3
++usr/lib/libicalss.so.3	libicalss.so.3.0.9
++usr/lib/libicalss_cxx.so	libicalss_cxx.so.3
++usr/lib/libicalss_cxx.so.3	libicalss_cxx.so.3.0.9
++usr/lib/libicalvcal.so	libicalvcal.so.3
++usr/lib/libicalvcal.so.3	libicalvcal.so.3.0.9
++
++Making symbolic link creation script:
++( cd usr/lib ; rm -rf libical-glib.so )
++( cd usr/lib ; ln -sf libical-glib.so.3 libical-glib.so )
++( cd usr/lib ; rm -rf libical-glib.so.3 )
++( cd usr/lib ; ln -sf libical-glib.so.3.0.9 libical-glib.so.3 )
++( cd usr/lib ; rm -rf libical.so )
++( cd usr/lib ; ln -sf libical.so.3 libical.so )
++( cd usr/lib ; rm -rf libical.so.3 )
++( cd usr/lib ; ln -sf libical.so.3.0.9 libical.so.3 )
++( cd usr/lib ; rm -rf libical_cxx.so )
++( cd usr/lib ; ln -sf libical_cxx.so.3 libical_cxx.so )
++( cd usr/lib ; rm -rf libical_cxx.so.3 )
++( cd usr/lib ; ln -sf libical_cxx.so.3.0.9 libical_cxx.so.3 )
++( cd usr/lib ; rm -rf libicalss.so )
++( cd usr/lib ; ln -sf libicalss.so.3 libicalss.so )
++( cd usr/lib ; rm -rf libicalss.so.3 )
++( cd usr/lib ; ln -sf libicalss.so.3.0.9 libicalss.so.3 )
++( cd usr/lib ; rm -rf libicalss_cxx.so )
++( cd usr/lib ; ln -sf libicalss_cxx.so.3 libicalss_cxx.so )
++( cd usr/lib ; rm -rf libicalss_cxx.so.3 )
++( cd usr/lib ; ln -sf libicalss_cxx.so.3.0.9 libicalss_cxx.so.3 )
++( cd usr/lib ; rm -rf libicalvcal.so )
++( cd usr/lib ; ln -sf libicalvcal.so.3 libicalvcal.so )
++( cd usr/lib ; rm -rf libicalvcal.so.3 )
++( cd usr/lib ; ln -sf libicalvcal.so.3.0.9 libicalvcal.so.3 )
++
++It is recommended that you make these lines your new installation script.
++
++Would you like to make this stuff the install script for this package
++and remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './usr/lib/libical_cxx.so'
++removed './usr/lib/libicalss.so.3'
++removed './usr/lib/libicalss.so'
++removed './usr/lib/libical.so.3'
++removed './usr/lib/libicalvcal.so.3'
++removed './usr/lib/libical-glib.so.3'
++removed './usr/lib/libical.so'
++removed './usr/lib/libical_cxx.so.3'
++removed './usr/lib/libicalvcal.so'
++removed './usr/lib/libical-glib.so'
++removed './usr/lib/libicalss_cxx.so.3'
++removed './usr/lib/libicalss_cxx.so'
++
++Creating your new ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/libical-3.0.9-x86_64-1.txz
++
++./
++install/
++install/doinst.sh
++install/slack-desc
++usr/
++usr/doc/
++usr/doc/libical-3.0.9/
++usr/doc/libical-3.0.9/AUTHORS
++usr/doc/libical-3.0.9/AddingOrModifyingComponents.txt
++usr/doc/libical-3.0.9/COPYING
++usr/doc/libical-3.0.9/LICENSE
++usr/doc/libical-3.0.9/TEST
++usr/doc/libical-3.0.9/THANKS
++usr/doc/libical-3.0.9/TODO
++usr/doc/libical-3.0.9/UsingLibical.md
++usr/doc/libical-3.0.9/UsingLibical.txt
++usr/include/
++usr/include/libical/
++usr/include/libical-glib/
++usr/include/libical-glib/i-cal-array.h
++usr/include/libical-glib/i-cal-attach.h
++usr/include/libical-glib/i-cal-comp-iter.h
++usr/include/libical-glib/i-cal-component.h
++usr/include/libical-glib/i-cal-datetimeperiod.h
++usr/include/libical-glib/i-cal-derived-parameter.h
++usr/include/libical-glib/i-cal-derived-property.h
++usr/include/libical-glib/i-cal-derived-value.h
++usr/include/libical-glib/i-cal-duration.h
++usr/include/libical-glib/i-cal-enums.h
++usr/include/libical-glib/i-cal-error.h
++usr/include/libical-glib/i-cal-forward-declarations.h
++usr/include/libical-glib/i-cal-geo.h
++usr/include/libical-glib/i-cal-memory.h
++usr/include/libical-glib/i-cal-mime.h
++usr/include/libical-glib/i-cal-object.h
++usr/include/libical-glib/i-cal-parameter.h
++usr/include/libical-glib/i-cal-parser.h
++usr/include/libical-glib/i-cal-period.h
++usr/include/libical-glib/i-cal-property.h
++usr/include/libical-glib/i-cal-recur-iterator.h
++usr/include/libical-glib/i-cal-recur.h
++usr/include/libical-glib/i-cal-recurrence.h
++usr/include/libical-glib/i-cal-reqstat.h
++usr/include/libical-glib/i-cal-restriction.h
++usr/include/libical-glib/i-cal-time-span.h
++usr/include/libical-glib/i-cal-time.h
++usr/include/libical-glib/i-cal-timezone.h
++usr/include/libical-glib/i-cal-trigger.h
++usr/include/libical-glib/i-cal-unknowntokenhandling.h
++usr/include/libical-glib/i-cal-value.h
++usr/include/libical-glib/libical-glib.h
++usr/include/libical/ical.h
++usr/include/libical/icalarray.h
++usr/include/libical/icalattach.h
++usr/include/libical/icalbdbset_cxx.h
++usr/include/libical/icalcalendar.h
++usr/include/libical/icalclassify.h
++usr/include/libical/icalcluster.h
++usr/include/libical/icalcomponent.h
++usr/include/libical/icalderivedparameter.h
++usr/include/libical/icalderivedproperty.h
++usr/include/libical/icalderivedvalue.h
++usr/include/libical/icaldirset.h
++usr/include/libical/icaldirsetimpl.h
++usr/include/libical/icalduration.h
++usr/include/libical/icalenums.h
++usr/include/libical/icalerror.h
++usr/include/libical/icalfileset.h
++usr/include/libical/icalfilesetimpl.h
++usr/include/libical/icalgauge.h
++usr/include/libical/icalgaugeimpl.h
++usr/include/libical/icallangbind.h
++usr/include/libical/icalmemory.h
++usr/include/libical/icalmessage.h
++usr/include/libical/icalmime.h
++usr/include/libical/icalparameter.h
++usr/include/libical/icalparameter_cxx.h
++usr/include/libical/icalparser.h
++usr/include/libical/icalperiod.h
++usr/include/libical/icalproperty.h
++usr/include/libical/icalproperty_cxx.h
++usr/include/libical/icalrecur.h
++usr/include/libical/icalrestriction.h
++usr/include/libical/icalset.h
++usr/include/libical/icalspanlist.h
++usr/include/libical/icalspanlist_cxx.h
++usr/include/libical/icalss.h
++usr/include/libical/icalssyacc.h
++usr/include/libical/icaltime.h
++usr/include/libical/icaltimezone.h
++usr/include/libical/icaltypes.h
++usr/include/libical/icaltz-util.h
++usr/include/libical/icalvalue.h
++usr/include/libical/icalvalue_cxx.h
++usr/include/libical/icalvcal.h
++usr/include/libical/icptrholder_cxx.h
++usr/include/libical/libical_ical_export.h
++usr/include/libical/libical_icalss_export.h
++usr/include/libical/libical_vcal_export.h
++usr/include/libical/pvl.h
++usr/include/libical/sspm.h
++usr/include/libical/vcaltmp.h
++usr/include/libical/vcc.h
++usr/include/libical/vcomponent_cxx.h
++usr/include/libical/vobject.h
++usr/lib/
++usr/lib/cmake/
++usr/lib/cmake/LibIcal/
++usr/lib/cmake/LibIcal/IcalGlibSrcGenerator-noconfig.cmake
++usr/lib/cmake/LibIcal/IcalGlibSrcGenerator.cmake
++usr/lib/cmake/LibIcal/LibIcalConfig.cmake
++usr/lib/cmake/LibIcal/LibIcalConfigVersion.cmake
++usr/lib/cmake/LibIcal/LibIcalTargets-noconfig.cmake
++usr/lib/cmake/LibIcal/LibIcalTargets.cmake
++usr/lib/girepository-1.0/
++usr/lib/girepository-1.0/ICal-3.0.typelib
++usr/lib/girepository-1.0/ICalGLib-3.0.typelib
++usr/lib/libical-glib.so.3.0.9
++usr/lib/libical.so.3.0.9
++usr/lib/libical_cxx.so.3.0.9
++usr/lib/libicalss.so.3.0.9
++usr/lib/libicalss_cxx.so.3.0.9
++usr/lib/libicalvcal.so.3.0.9
++usr/lib/pkgconfig/
++usr/lib/pkgconfig/libical-glib.pc
++usr/lib/pkgconfig/libical.pc
++usr/libexec/
++usr/libexec/libical/
++usr/libexec/libical/ical-glib-src-generator
++usr/share/
++usr/share/gir-1.0/
++usr/share/gir-1.0/ICal-3.0.gir
++usr/share/gir-1.0/ICalGLib-3.0.gir
++usr/share/gtk-doc/
++usr/share/gtk-doc/html/
++usr/share/gtk-doc/html/libical-glib/
++usr/share/gtk-doc/html/libical-glib/ICalArray.html
++usr/share/gtk-doc/html/libical-glib/ICalAttach.html
++usr/share/gtk-doc/html/libical-glib/ICalCompIter.html
++usr/share/gtk-doc/html/libical-glib/ICalComponent.html
++usr/share/gtk-doc/html/libical-glib/ICalDatetimeperiod.html
++usr/share/gtk-doc/html/libical-glib/ICalDuration.html
++usr/share/gtk-doc/html/libical-glib/ICalGeo.html
++usr/share/gtk-doc/html/libical-glib/ICalObject.html
++usr/share/gtk-doc/html/libical-glib/ICalParameter.html
++usr/share/gtk-doc/html/libical-glib/ICalParser.html
++usr/share/gtk-doc/html/libical-glib/ICalPeriod.html
++usr/share/gtk-doc/html/libical-glib/ICalProperty.html
++usr/share/gtk-doc/html/libical-glib/ICalRecurIterator.html
++usr/share/gtk-doc/html/libical-glib/ICalRecurrence.html
++usr/share/gtk-doc/html/libical-glib/ICalReqstat.html
++usr/share/gtk-doc/html/libical-glib/ICalTime.html
++usr/share/gtk-doc/html/libical-glib/ICalTimeSpan.html
++usr/share/gtk-doc/html/libical-glib/ICalTimezone.html
++usr/share/gtk-doc/html/libical-glib/ICalTrigger.html
++usr/share/gtk-doc/html/libical-glib/ICalValue.html
++usr/share/gtk-doc/html/libical-glib/annotation-glossary.html
++usr/share/gtk-doc/html/libical-glib/api-index-full.html
++usr/share/gtk-doc/html/libical-glib/ch01.html
++usr/share/gtk-doc/html/libical-glib/home.png
++usr/share/gtk-doc/html/libical-glib/index.html
++usr/share/gtk-doc/html/libical-glib/left-insensitive.png
++usr/share/gtk-doc/html/libical-glib/left.png
++usr/share/gtk-doc/html/libical-glib/libical-glib-i-cal-derived-parameter.html
++usr/share/gtk-doc/html/libical-glib/libical-glib-i-cal-derived-property.html
++usr/share/gtk-doc/html/libical-glib/libical-glib-i-cal-derived-value.html
++usr/share/gtk-doc/html/libical-glib/libical-glib-i-cal-enums.html
++usr/share/gtk-doc/html/libical-glib/libical-glib-i-cal-error.html
++usr/share/gtk-doc/html/libical-glib/libical-glib-i-cal-memory.html
++usr/share/gtk-doc/html/libical-glib/libical-glib-i-cal-mime.html
++usr/share/gtk-doc/html/libical-glib/libical-glib-i-cal-recur.html
++usr/share/gtk-doc/html/libical-glib/libical-glib-i-cal-restriction.html
++usr/share/gtk-doc/html/libical-glib/libical-glib-i-cal-unknowntokenhandling.html
++usr/share/gtk-doc/html/libical-glib/libical-glib.devhelp2
++usr/share/gtk-doc/html/libical-glib/right-insensitive.png
++usr/share/gtk-doc/html/libical-glib/right.png
++usr/share/gtk-doc/html/libical-glib/style.css
++usr/share/gtk-doc/html/libical-glib/up-insensitive.png
++usr/share/gtk-doc/html/libical-glib/up.png
++usr/share/vala/
++usr/share/vala/vapi/
++usr/share/vala/vapi/libical-glib.vapi
++
++Slackware package /tmp/libical-3.0.9-x86_64-1.txz created.
++

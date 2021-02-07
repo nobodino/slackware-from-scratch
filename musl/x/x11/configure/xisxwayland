@@ -1,0 +1,17 @@
+export CFLAGS="$SLKCFLAGS"
+export CXXFLAGS="$SLKCFLAGS"
+mkdir build
+cd build
+meson setup \
+  --prefix=/usr \
+  --libdir=lib${LIBDIRSUFFIX} \
+  --libexecdir /usr/libexec \
+  --bindir /usr/bin \
+  --sbindir /usr/sbin \
+  --includedir /usr/include \
+  --datadir /usr/share \
+  --mandir /usr/man \
+  --sysconfdir /etc \
+  --localstatedir /var \
+  --buildtype=release \
+  .. || exit 1

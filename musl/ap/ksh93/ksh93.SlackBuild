@@ -1,0 +1,166 @@
+#!/bin/bash
+# Copyright 2001 BSDi, Inc. Concord, CA, USA
+# Copyright 2004 Slackware Linux, Inc.  Concord, CA, USA
+# Copyright 2007, 2008, 2009, 2010, 2013, 2016, 2018, 2019  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=ksh93
+SRCNAM=att-ast
+VERSION=${VERSION:-$(echo $SRCNAM-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+BUILD=${BUILD:-1}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i686" ]; then
+  SLKCFLAGS="-O2 -march=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "armv7hl" ]; then
+  SLKCFLAGS="-O3 -march=armv7-a -mfpu=vfpv3-d16"
+  LIBDIRSUFFIX=""
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-$PKGNAM
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+
+cd $TMP
+rm -rf $SRCNAM-$VERSION
+tar xvf $CWD/$SRCNAM-$VERSION.tar.?z || exit 1
+cd $SRCNAM-$VERSION || exit 1
+
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \+ -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \+
+
+# Configure, build, and install:
+export CC=clang
+export CFLAGS="$SLKCFLAGS"
+mkdir build
+cd build
+meson setup \
+  --prefix=/usr \
+  --libdir=lib${LIBDIRSUFFIX} \
+  --libexecdir=/usr/libexec \
+  --bindir=/usr/bin \
+  --sbindir=/usr/sbin \
+  --includedir=/usr/include \
+  --datadir=/usr/share \
+  --mandir=/usr/man \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
+  --buildtype=release \
+  .. || exit 1
+  "${NINJA:=ninja}" $NUMJOBS || exit 1
+  DESTDIR=$PKG $NINJA install || exit 1
+cd ..
+
+# Stuff we don't ship:
+rm -f $PKG/usr/bin/pty
+rm -f $PKG/usr/bin/shcomp
+
+# Move the shell into /bin:
+mkdir -p $PKG/bin
+mv --verbose $PKG/usr/bin/ksh $PKG/bin/ksh.new || exit 1
+rmdir $PKG/usr/bin || exit 1
+strip --strip-unneeded $PKG/bin/ksh.new
+( cd $PKG/bin ; ln -sf ksh rksh )
+if [ -r $PKG/usr/man/man1/ksh.1 ]; then
+  gzip -9 $PKG/usr/man/man1/ksh.1
+fi
+( cd $PKG/usr/man/man1 ; ln -sf ksh.1.gz rksh.1.gz )
+
+mkdir -p $PKG/usr/doc/ksh93-$VERSION
+( cd src/cmd/ksh93
+  cp -a COMPATIBILITY* DESIGN* OBSOLETE* README* RELEASE* TYPES* \
+     $PKG/usr/doc/ksh93-$VERSION
+)
+cp -a CHANGELOG* CONTRIBUTING* README* \
+  $PKG/usr/doc/ksh93-$VERSION
+mkdir -p $PKG/usr/doc/ksh93-$VERSION/LICENSE
+cp -a LICENSE $PKG/usr/doc/ksh93-$VERSION/LICENSE/LICENSE
+cp -a lib/package/LICENSES/* $PKG/usr/doc/ksh93-$VERSION/LICENSE
+find . -name "*.def" -exec cp -a "{}" $PKG/usr/doc/ksh93-$VERSION/LICENSE \;
+find . -name "*.lic" -exec cp -a "{}" $PKG/usr/doc/ksh93-$VERSION/LICENSE \;
+
+mkdir -p $PKG/install
+cat <<EOF >> $PKG/install/doinst.sh
+# Backup the old copy if we find one, move the new one in place
+if [ -f bin/ksh ]; then
+   mv bin/ksh bin/ksh.old
+fi
+mv bin/ksh.new bin/ksh
+if [ -f bin/ksh.old ]; then
+  rm -f bin/ksh.old
+fi
+
+# Add entries to /etc/shells if we need them
+if [ ! -r etc/shells ] ; then
+   touch etc/shells
+   chmod 644 etc/shells
+fi
+ 
+if ! grep -q "/bin/ksh" etc/shells ; then
+   echo "/bin/ksh" >> etc/shells
+fi
+EOF
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n /tmp/ksh93-$VERSION-$ARCH-$BUILD.txz
+

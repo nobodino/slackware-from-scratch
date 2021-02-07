@@ -1,0 +1,388 @@
+#!/bin/sh
+
+# 06-May-2009
+# Updated by Stuart Winter <mozes@slackware.com>
+# Run 'setfont' in a chroot.  This makes setfont work
+# correctly in the installer.
+
+# 2010-04-28, add LatKaCyrHeb-14.psfu.gz <volkerdi>
+
+if [ "$TMP" = "" ]; then
+  TMP=/var/log/setup/tmp
+fi
+
+load_font() {
+  if [ ! -z "$T_PX" ]; then
+    CHROOT="chroot $T_PX"
+  fi
+
+  $CHROOT setfont $*
+  if [ ! $? = 0 ]; then
+    if [ -r $T_PX/usr/share/kbd/consolefonts/$1 ]; then
+      $CHROOT setfont $T_PX/usr/share/kbd/consolefonts/$* 1> /dev/null 2> /dev/null
+    elif [ -r $T_PX/usr/lib/kbd/consolefonts/$1 ]; then
+      $CHROOT setfont $T_PX/usr/lib/kbd/consolefonts/$* 1> /dev/null 2> /dev/null
+    elif [ -r /var/adm/mount/live/usr/lib/kbd/consolefonts/$1 ]; then
+      $CHROOT setfont /var/adm/mount/live/usr/lib/kbd/consolefonts/$* 1> /dev/null 2> /dev/null
+    else # load default font
+      $CHROOT setfont
+    fi
+  fi
+}
+
+# Determine effective root path:
+if [ -r $TMP/SeTT_PX ]; then
+  T_PX="`cat $TMP/SeTT_PX`"
+elif [ ! "$1" = "" ]; then
+  T_PX=$1
+else
+  T_PX=/
+fi
+
+if [ ! "$COLOR" = "off" -o -r $TMP/SeTcolor -o -r /tmp/SeTcolor ]; then # use color menus
+  if [ ! "$1" = "" ]; then
+    dialog --title "CONSOLE FONT CONFIGURATION" --defaultno --yesno "Would you like to try \
+out some custom screen fonts?" 5 60
+    if [ $? = 1 ]; then
+      exit
+    fi
+  fi
+  REPLY=`mktemp -q $TMP/temp.XXXXXX`
+  FONT="161.cp.gz -16"
+  while [ 0 ]; do
+    dialog --default-item "$FONT" --title "SELECT A SCREEN FONT" --menu "Select one of the following \
+custom fonts. If you decide you like it, you can make it your new default \
+screen font. You'll be able to try as many of these as you like." 21 65 12 \
+"161.cp.gz -16" "" \
+"162.cp.gz -16" "" \
+"163.cp.gz -16" "" \
+"164.cp.gz -16" "" \
+"165.cp.gz -16" "" \
+"737.cp.gz -16" "" \
+"880.cp.gz -16" "" \
+"928.cp.gz -16" "" \
+"972.cp.gz -16" "" \
+"Agafari-12.psfu.gz" "" \
+"Agafari-14.psfu.gz" "" \
+"Agafari-16.psfu.gz" "" \
+"Cyr_a8x14.psfu.gz" "" \
+"Cyr_a8x16.psfu.gz" "" \
+"Cyr_a8x8.psfu.gz" "" \
+"Goha-12.psfu.gz" "" \
+"Goha-14.psfu.gz" "" \
+"Goha-16.psfu.gz" "" \
+"GohaClassic-12.psfu.gz" "" \
+"GohaClassic-14.psfu.gz" "" \
+"GohaClassic-16.psfu.gz" "" \
+"Lat2-Terminus16.psfu.gz" "" \
+"LatArCyrHeb-08.psfu.gz" "" \
+"LatArCyrHeb-14.psfu.gz" "" \
+"LatArCyrHeb-16+.psfu.gz" "" \
+"LatArCyrHeb-16.psfu.gz" "" \
+"LatArCyrHeb-19.psfu.gz" "" \
+"LatKaCyrHeb-14.psfu.gz" "" \
+"Mik_8x16.gz" "" \
+"UniCyrExt_8x16.psf.gz" "" \
+"UniCyr_8x14.psf.gz" "" \
+"UniCyr_8x16.psf.gz" "" \
+"UniCyr_8x8.psf.gz" "" \
+"alt-8x14.gz" "" \
+"alt-8x16.gz" "" \
+"alt-8x8.gz" "" \
+"altc-8x16.gz" "" \
+"aply16.psf.gz" "" \
+"arm8.fnt.gz" "" \
+"b.fnt.gz" "" \
+"c.fnt.gz" "" \
+"cp1250.psfu.gz" "" \
+"cp850-8x14.psfu.gz" "" \
+"cp850-8x16.psfu.gz" "" \
+"cp850-8x8.psfu.gz" "" \
+"cp857.08.gz" "" \
+"cp857.14.gz" "" \
+"cp857.16.gz" "" \
+"cp865-8x14.psfu.gz" "" \
+"cp865-8x16.psfu.gz" "" \
+"cp865-8x8.psfu.gz" "" \
+"cp866-8x14.psf.gz" "" \
+"cp866-8x16.psf.gz" "" \
+"cp866-8x8.psf.gz" "" \
+"cybercafe.fnt.gz" "" \
+"cyr-sun16.psfu.gz" "" \
+"default8x16.psfu.gz" "" \
+"default8x9.psfu.gz" "" \
+"drdos8x14.psfu.gz" "" \
+"drdos8x16.psfu.gz" "" \
+"drdos8x6.psfu.gz" "" \
+"drdos8x8.psfu.gz" "" \
+"gr737a-8x8.psfu.gz" "" \
+"gr737a-9x14.psfu.gz" "" \
+"gr737a-9x16.psfu.gz" "" \
+"gr737b-8x11.psfu.gz" "" \
+"gr737b-9x16-medieval.psfu.gz" "" \
+"gr737c-8x14.psfu.gz" "" \
+"gr737c-8x16.psfu.gz" "" \
+"gr737c-8x6.psfu.gz" "" \
+"gr737c-8x7.psfu.gz" "" \
+"gr737c-8x8.psfu.gz" "" \
+"gr737d-8x16.psfu.gz" "" \
+"gr928-8x16-thin.psfu.gz" "" \
+"gr928-9x14.psfu.gz" "" \
+"gr928-9x16.psfu.gz" "" \
+"gr928a-8x14.psfu.gz" "" \
+"gr928a-8x16.psfu.gz" "" \
+"gr928b-8x14.psfu.gz" "" \
+"gr928b-8x16.psfu.gz" "" \
+"greek-polytonic.psfu.gz" "" \
+"iso01-12x22.psfu.gz" "" \
+"iso01.08.gz" "" \
+"iso01.14.gz" "" \
+"iso01.16.gz" "" \
+"iso02-12x22.psfu.gz" "" \
+"iso02.08.gz" "" \
+"iso02.14.gz" "" \
+"iso02.16.gz" "" \
+"iso03.08.gz" "" \
+"iso03.14.gz" "" \
+"iso03.16.gz" "" \
+"iso04.08.gz" "" \
+"iso04.14.gz" "" \
+"iso04.16.gz" "" \
+"iso05.08.gz" "" \
+"iso05.14.gz" "" \
+"iso05.16.gz" "" \
+"iso06.08.gz" "" \
+"iso06.14.gz" "" \
+"iso06.16.gz" "" \
+"iso07.14.gz" "" \
+"iso07.16.gz" "" \
+"iso07u-16.psfu.gz" "" \
+"iso08.08.gz" "" \
+"iso08.14.gz" "" \
+"iso08.16.gz" "" \
+"iso09.08.gz" "" \
+"iso09.14.gz" "" \
+"iso09.16.gz" "" \
+"iso10.08.gz" "" \
+"iso10.14.gz" "" \
+"iso10.16.gz" "" \
+"koi8-14.psf.gz" "" \
+"koi8c-8x16.gz" "" \
+"koi8r-8x14.gz" "" \
+"koi8r-8x16.gz" "" \
+"koi8r-8x8.gz" "" \
+"koi8r.8x8.psfu.gz" "" \
+"koi8u_8x14.psfu.gz" "" \
+"koi8u_8x16.psfu.gz" "" \
+"koi8u_8x8.psfu.gz" "" \
+"lat0-08.psfu.gz" "" \
+"lat0-10.psfu.gz" "" \
+"lat0-12.psfu.gz" "" \
+"lat0-14.psfu.gz" "" \
+"lat0-16.psfu.gz" "" \
+"lat1-08.psfu.gz" "" \
+"lat1-10.psfu.gz" "" \
+"lat1-12.psfu.gz" "" \
+"lat1-14.psfu.gz" "" \
+"lat1-16.psfu.gz" "" \
+"lat2-08.psfu.gz" "" \
+"lat2-10.psfu.gz" "" \
+"lat2-12.psfu.gz" "" \
+"lat2-14.psfu.gz" "" \
+"lat2-16.psfu.gz" "" \
+"lat2a-16.psfu.gz" "" \
+"lat4-08.psfu.gz" "" \
+"lat4-10.psfu.gz" "" \
+"lat4-12.psfu.gz" "" \
+"lat4-14.psfu.gz" "" \
+"lat4-16+.psfu.gz" "" \
+"lat4-16.psfu.gz" "" \
+"lat4-19.psfu.gz" "" \
+"lat4a-08.psfu.gz" "" \
+"lat4a-10.psfu.gz" "" \
+"lat4a-12.psfu.gz" "" \
+"lat4a-14.psfu.gz" "" \
+"lat4a-16+.psfu.gz" "" \
+"lat4a-16.psfu.gz" "" \
+"lat4a-19.psfu.gz" "" \
+"lat5-12.psfu.gz" "" \
+"lat5-14.psfu.gz" "" \
+"lat5-16.psfu.gz" "" \
+"lat7-14.psfu.gz" "" \
+"lat7a-14.psfu.gz" "" \
+"lat7a-16.psf.gz" "" \
+"lat9-08.psf.gz" "" \
+"lat9-10.psf.gz" "" \
+"lat9-12.psf.gz" "" \
+"lat9-14.psf.gz" "" \
+"lat9-16.psf.gz" "" \
+"lat9u-08.psfu.gz" "" \
+"lat9u-10.psfu.gz" "" \
+"lat9u-12.psfu.gz" "" \
+"lat9u-14.psfu.gz" "" \
+"lat9u-16.psfu.gz" "" \
+"lat9v-08.psfu.gz" "" \
+"lat9v-10.psfu.gz" "" \
+"lat9v-12.psfu.gz" "" \
+"lat9v-14.psfu.gz" "" \
+"lat9v-16.psfu.gz" "" \
+"lat9w-08.psfu.gz" "" \
+"lat9w-10.psfu.gz" "" \
+"lat9w-12.psfu.gz" "" \
+"lat9w-14.psfu.gz" "" \
+"lat9w-16.psfu.gz" "" \
+"m.fnt.gz" "" \
+"ml.fnt.gz" "" \
+"mod_d.fnt.gz" "" \
+"mod_s.fnt.gz" "" \
+"mr.fnt.gz" "" \
+"mu.fnt.gz" "" \
+"r.fnt.gz" "" \
+"rl.fnt.gz" "" \
+"ro.fnt.gz" "" \
+"ruscii_8x16.psfu.gz" "" \
+"ruscii_8x8.psfu.gz" "" \
+"s.fnt.gz" "" \
+"sc.fnt.gz" "" \
+"scrawl_s.fnt.gz" "" \
+"scrawl_w.fnt.gz" "" \
+"sd.fnt.gz" "" \
+"sun12x22.psfu.gz" "" \
+"t.fnt.gz" "" \
+"t850b.fnt.gz" "" \
+"tcvn8x16.psf.gz" "" \
+"viscii10-8x16.psfu.gz" "" \
+2> $REPLY
+    if [ ! $? = 0 ]; then
+      load_font
+      exit
+    fi
+    FONT=`cat $REPLY`
+    rm -f $REPLY
+    load_font $FONT
+    dialog --title "SET AS DEFAULT FONT" --yesno "Well, what do you think? \
+If you'd like to make this your default font, select YES. You can change \
+the default font any time by typing 'setconsolefont' or by editing \
+/etc/rc.d/rc.font. If you don't \
+like this font, select NO, and you'll be returned to the font selection \
+menu. If you decide you want to stick with the default font, hit ESC or \
+CANCEL once you get to that menu." 11 60
+    if [ $? = 0 ]; then
+      cat << EOF > $T_PX/etc/rc.d/rc.font
+#!/bin/sh
+#
+# This selects your default screen font from among the ones in
+# /usr/share/kbd/consolefonts.
+#
+setfont -v $FONT
+EOF
+      chmod 755 $T_PX/etc/rc.d/rc.font
+      exit
+    else
+      load_font
+    fi
+  done
+else # no color!
+  echo
+  echo -n "Would you like to try out some custom screen fonts ([y]es, [n]o)? "
+  read YESNO;
+  if [ "$YESNO" = "n" ]; then
+    exit
+  fi
+  while [ 0 ]; do
+    cat << EOF
+
+SELECT A SCREEN FONT.  Your choices are:
+161.cp.gz 162.cp.gz 163.cp.gz 164.cp.gz 165.cp.gz 737.cp.gz 880.cp.gz 928.cp.gz
+972.cp.gz Agafari-12.psfu.gz Agafari-14.psfu.gz Agafari-16.psfu.gz
+Cyr_a8x14.psfu.gz Cyr_a8x16.psfu.gz Cyr_a8x8.psfu.gz Goha-12.psfu.gz
+Goha-14.psfu.gz Goha-16.psfu.gz GohaClassic-12.psfu.gz GohaClassic-14.psfu.gz
+GohaClassic-16.psfu.gz Lat2-Terminus16.psfu.gz LatArCyrHeb-08.psfu.gz
+LatArCyrHeb-14.psfu.gz LatArCyrHeb-16+.psfu.gz LatArCyrHeb-16.psfu.gz
+LatArCyrHeb-19.psfu.gz LatKaCyrHeb-14.psfu.gz
+Mik_8x16.gz UniCyrExt_8x16.psf.gz UniCyr_8x14.psf.gz
+UniCyr_8x16.psf.gz UniCyr_8x8.psf.gz alt-8x14.gz alt-8x16.gz alt-8x8.gz
+altc-8x16.gz aply16.psf.gz arm8.fnt.gz b.fnt.gz c.fnt.gz cp1250.psfu.gz
+cp850-8x14.psfu.gz cp850-8x16.psfu.gz cp850-8x8.psfu.gz cp857.08.gz cp857.14.gz
+cp857.16.gz cp865-8x14.psfu.gz cp865-8x16.psfu.gz cp865-8x8.psfu.gz
+cp866-8x14.psf.gz cp866-8x16.psf.gz cp866-8x8.psf.gz cybercafe.fnt.gz
+cyr-sun16.psfu.gz default8x16.psfu.gz default8x9.psfu.gz drdos8x14.psfu.gz
+drdos8x16.psfu.gz drdos8x6.psfu.gz drdos8x8.psfu.gz gr737a-8x8.psfu.gz
+gr737a-9x14.psfu.gz gr737a-9x16.psfu.gz gr737b-8x11.psfu.gz
+gr737b-9x16-medieval.psfu.gz gr737c-8x14.psfu.gz gr737c-8x16.psfu.gz
+gr737c-8x6.psfu.gz gr737c-8x7.psfu.gz gr737c-8x8.psfu.gz gr737d-8x16.psfu.gz
+gr928-8x16-thin.psfu.gz gr928-9x14.psfu.gz gr928-9x16.psfu.gz
+gr928a-8x14.psfu.gz gr928a-8x16.psfu.gz gr928b-8x14.psfu.gz gr928b-8x16.psfu.gz
+greek-polytonic.psfu.gz iso01-12x22.psfu.gz iso01.08.gz iso01.14.gz iso01.16.gz
+iso02-12x22.psfu.gz iso02.08.gz iso02.14.gz iso02.16.gz iso03.08.gz iso03.14.gz
+iso03.16.gz iso04.08.gz iso04.14.gz iso04.16.gz iso05.08.gz iso05.14.gz
+iso05.16.gz iso06.08.gz iso06.14.gz iso06.16.gz iso07.14.gz iso07.16.gz
+iso07u-16.psfu.gz iso08.08.gz iso08.14.gz iso08.16.gz iso09.08.gz iso09.14.gz
+iso09.16.gz iso10.08.gz iso10.14.gz iso10.16.gz koi8-14.psf.gz koi8c-8x16.gz
+koi8r-8x14.gz koi8r-8x16.gz koi8r-8x8.gz koi8r.8x8.psfu.gz koi8u_8x14.psfu.gz
+koi8u_8x16.psfu.gz koi8u_8x8.psfu.gz lat0-08.psfu.gz lat0-10.psfu.gz
+lat0-12.psfu.gz lat0-14.psfu.gz lat0-16.psfu.gz lat1-08.psfu.gz lat1-10.psfu.gz
+lat1-12.psfu.gz lat1-14.psfu.gz lat1-16.psfu.gz lat2-08.psfu.gz lat2-10.psfu.gz
+lat2-12.psfu.gz lat2-14.psfu.gz lat2-16.psfu.gz lat2a-16.psfu.gz lat4-08.psfu.gz
+lat4-10.psfu.gz lat4-12.psfu.gz lat4-14.psfu.gz lat4-16+.psfu.gz lat4-16.psfu.gz
+lat4-19.psfu.gz lat4a-08.psfu.gz lat4a-10.psfu.gz lat4a-12.psfu.gz
+lat4a-14.psfu.gz lat4a-16+.psfu.gz lat4a-16.psfu.gz lat4a-19.psfu.gz
+lat5-12.psfu.gz lat5-14.psfu.gz lat5-16.psfu.gz lat7-14.psfu.gz lat7a-14.psfu.gz
+lat7a-16.psf.gz lat9-08.psf.gz lat9-10.psf.gz lat9-12.psf.gz lat9-14.psf.gz
+lat9-16.psf.gz lat9u-08.psfu.gz lat9u-10.psfu.gz lat9u-12.psfu.gz
+lat9u-14.psfu.gz lat9u-16.psfu.gz lat9v-08.psfu.gz lat9v-10.psfu.gz
+lat9v-12.psfu.gz lat9v-14.psfu.gz lat9v-16.psfu.gz lat9w-08.psfu.gz
+lat9w-10.psfu.gz lat9w-12.psfu.gz lat9w-14.psfu.gz lat9w-16.psfu.gz m.fnt.gz
+ml.fnt.gz mod_d.fnt.gz mod_s.fnt.gz mr.fnt.gz mu.fnt.gz r.fnt.gz rl.fnt.gz
+ro.fnt.gz ruscii_8x16.psfu.gz ruscii_8x8.psfu.gz s.fnt.gz sc.fnt.gz
+scrawl_s.fnt.gz scrawl_w.fnt.gz sd.fnt.gz sun12x22.psfu.gz t.fnt.gz t850b.fnt.gz
+tcvn8x16.psf.gz viscii10-8x16.psfu.gz
+
+EOF
+    echo -n "Which font would you like (or ENTER to quit)? "
+    read FONT;
+    if [ "$FONT" = "" ]; then
+      load_font
+      echo
+      exit
+    fi
+    if [ ! -r $T_PX/usr/share/kbd/consolefonts/$FONT -a ! -r \
+         /var/adm/mount/usr/share/kbd/consolefonts/$FONT ]; then
+      cat << EOF
+
+Sorry, I couldn't find that font. Try again.
+
+EOF
+    fi
+    load_font $FONT
+    cat << EOF
+
+SET AS DEFAULT FONT
+
+Well, what do you think? If you'd like to make this your default font, select
+YES. You can change the default font any time by typing 'setconsolefont' or by 
+editing /etc/rc.d/rc.font. If you don't like this font, select NO, and you'll
+be able to select a different one. If you decide you want to stick with the
+default font, hit RETURN once you return to the font selection menu.
+
+EOF
+    echo -n "Would you like to have this font loaded by default ([y]es, [n]o)? "
+    read DEF
+    if [ "$DEF" = "YES" -o "$DEF" = "y" ]; then
+      cat << EOF > $T_PX/etc/rc.d/rc.font
+#!/bin/sh
+#
+# This selects your default screen font from among the ones in
+# /usr/share/kbd/consolefonts.
+#
+setfont -v $FONT
+EOF
+      chmod 755 $T_PX/etc/rc.d/rc.font
+      echo
+      exit
+    else
+     load_font
+    fi
+    echo
+  done
+fi

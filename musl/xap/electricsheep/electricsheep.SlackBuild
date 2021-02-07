@@ -1,0 +1,292 @@
+#!/bin/bash
+
+# Copyright 2008, 2009  Eric Hameleers, Eindhoven, Netherlands
+# Copyright 2009, 2018  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+#   Permission to use, copy, modify, and distribute this software for
+#   any purpose with or without fee is hereby granted, provided that
+#   the above copyright notice and this permission notice appear in all
+#   copies.
+#
+#   THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+#   WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+#   IN NO EVENT SHALL THE AUTHORS AND COPYRIGHT HOLDERS AND THEIR
+#   CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#   SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+#   LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
+#   USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+#   ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+#   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+#   OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+#   SUCH DAMAGE.
+# -----------------------------------------------------------------------------
+#
+# Slackware SlackBuild script 
+# ===========================
+# By:         Eric Hameleers <alien@slackware.com>
+# For:        electricsheep
+# Descr:      distributed screensaver
+# URL:        http://electricsheep.org/
+# Needs:      MPlayer (to display the sheep)
+# -----------------------------------------------------------------------------
+
+PKGNAM=electricsheep
+VERSION=${VERSION:-20090306}
+BUILD=${BUILD:-5}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+
+# Where do we look for sources?
+cd $(dirname $0) ; SRCDIR=$(pwd)
+
+DOCS="COPYING README $SRCDIR/README.slackware"
+DOCS_FLAM3="COPYING* README*"
+DOCS_FFMPEG="COPYING* CREDITS Changelog MAINTAINERS README"
+
+SOURCE="$SRCDIR/${PKGNAM}-${VERSION}.tar.xz"
+SRCURL=""
+
+# Place to build (TMP) package (PKG) and output (OUTPUT) the program:
+TMP=${TMP:-/tmp/build}
+PKG=$TMP/package-$PKGNAM
+OUTPUT=${OUTPUT:-/tmp}
+
+# Use the src_checkout() function if no downloadable tarball exists.
+# This function checks out sources from SVN/CVS and creates a tarball of them.
+src_checkout() {
+  # Param #1 : index in the SOURCE[] array.
+  # Param #2 : full path to where SOURCE[$1] tarball should be created.
+  # Determine the tarball extension:
+  PEXT=$(echo "${2}" | sed -r -e 's/.*[^.].(tar.xz|tar.gz|tar.bz2|tgz).*/\1/')
+  case "$PEXT" in
+    "tar.xz") TARCOMP="J" ;;
+    "tar.gz") TARCOMP="z" ;;
+    "tgz") TARCOMP="z" ;;
+    "tar.bz2") TARCOMP="j" ;;
+    *) echo "Archive can only have extension 'tar.xz', '.tar.gz' '.tar.bz2' or '.tgz'" ; exit 1 ;;
+  esac
+  case ${1} in
+  0) # electricsheep-$VERSION
+     REV="{${VERSION}}"
+     mkdir electricsheep-${VERSION} \
+       && cd electricsheep-${VERSION} \
+       && svn checkout --revision $REV http://electricsheep.svn.sourceforge.net/svnroot/electricsheep/trunk/client client \
+       && svn checkout --revision $REV http://flam3.svn.sourceforge.net/svnroot/flam3/trunk/src flam3 \
+       && find . -type d -name '.svn' -depth | xargs rm -rf \
+       && chown -R root:root . \
+       && ( cd ..; tar -${TARCOMP}cf ${2} electricsheep-${VERSION} )
+     cd ..
+     rm -rf electricsheep-${VERSION}
+     ;;
+  *) # do nothing
+     ;;
+  esac
+}
+##
+## --- with a little luck, you won't have to edit below this point --- ##
+##
+
+# Exit the script on errors:
+set -e
+trap 'echo "$0 FAILED at line ${LINENO}" | tee $OUTPUT/error-${PKGNAM}.log' ERR
+# Catch unitialized variables:
+set -u
+P1=${1:-1}
+
+case "$ARCH" in
+  i586)      SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+             SLKLDFLAGS=""; LIBDIRSUFFIX=""
+             ;;
+  s390)      SLKCFLAGS="-O2"
+             SLKLDFLAGS=""; LIBDIRSUFFIX=""
+             ;;
+  powerpc)   SLKCFLAGS="-O2"
+             SLKLDFLAGS=""; LIBDIRSUFFIX=""
+             ;;
+  x86_64)    SLKCFLAGS="-O2 -fPIC"
+             SLKLDFLAGS="-L/usr/lib64"; LIBDIRSUFFIX=""
+             ;;
+  athlon-xp) SLKCFLAGS="-march=athlon-xp -O3 -pipe -fomit-frame-pointer"
+             SLKLDFLAGS=""; LIBDIRSUFFIX=""
+             ;;
+  arm)       SLKCFLAGS="-O2 -march=armv4 -mtune=xscale"
+             SLKLDFLAGS=""; LIBDIRSUFFIX=""
+             ;;
+  armel)     SLKCFLAGS="-O2 -march=armv4t"
+             SLKLDFLAGS=""; LIBDIRSUFFIX=""
+             ;;
+  *)         SLKCFLAGS="-O2"
+             SLKLDFLAGS=""; LIBDIRSUFFIX=""
+             ;;
+esac
+
+# Create working directories:
+mkdir -p $OUTPUT          # place for the package to be saved
+mkdir -p $TMP/tmp-$PKGNAM # location to build the source
+mkdir -p $PKG             # place for the package to be built
+rm -rf $PKG/*             # always erase old package's contents
+rm -rf $TMP/tmp-$PKGNAM/* # remove the remnants of previous build
+rm -rf $OUTPUT/{configure,make,install,error,makepkg}-$PKGNAM.log
+                          # remove old log files
+
+# Source file availability:
+if ! [ -f ${SOURCE} ]; then
+  echo "Source '$(basename ${SOURCE})' not available yet..."
+  # Check if the $SRCDIR is writable at all - if not, download to $OUTPUT
+  [ -w "$SRCDIR" ] || SOURCE="$OUTPUT/$(basename ${SOURCE})"
+  if ! [ "x${SRCURL}" == "x" ]; then
+    echo "Will download file to $(dirname $SOURCE)"
+    wget -nv -T 20 -O "${SOURCE}" "${SRCURL}" || true
+    if [ $? -ne 0 -o ! -s "${SOURCE}" ]; then
+      echo "Downloading '$(basename ${SOURCE})' failed.. aborting the build."
+      mv -f "${SOURCE}" "${SOURCE}".FAIL
+      exit 1
+    fi
+  else
+    # Try if we have a SVN/CVS download routine for ${SOURCE}
+    echo "Will checkout sources to $(dirname $SOURCE)"
+    src_checkout 0 "${SOURCE}" 2>&1 > $OUTPUT/checkout-$(basename ${SOURCE}).log
+  fi
+  if [ ! -f "${SOURCE}" -o ! -s "${SOURCE}" ]; then
+    echo "File '$(basename ${SOURCE})' not available.. aborting the build."
+    exit 1
+  fi
+fi
+
+if [ "$P1" == "--download" ]; then
+  echo "Download complete."
+  exit 0
+fi
+
+# --- PACKAGE BUILDING ---
+
+echo "++"
+echo "|| $PKGNAM-$VERSION"
+echo "++"
+
+cd $TMP/tmp-$PKGNAM
+echo "Extracting the source archive(s) for $PKGNAM..."
+tar -xvf ${SOURCE}
+cd ${PKGNAM}-${VERSION}
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \+ -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \+
+
+echo Building ...
+# First the client:
+cd client
+  # mplayer needs a buffer when reading from a pipe:
+  zcat $SRCDIR/electricsheep.mplayer.diff.gz | patch -p2 --verbose || exit 1
+  # To prevent an error later on:
+  chmod +x ffmpeg/doc/texi2pod.pl
+  # We do not use gnome:
+  cat $SRCDIR/electricsheep_gnome-open.patch | patch -p1 --verbose \
+    2>&1 | tee $OUTPUT/patch-$PKGNAM.log
+  # Prevent install errors due to missing gnome
+  sed -i -e "/^install-data-local:/,/^$/d" Makefile.in
+  LDFLAGS="$SLKLDFLAGS" \
+  CXXFLAGS="$SLKCFLAGS" \
+  CFLAGS="$SLKCFLAGS" \
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --mandir=/usr/man \
+    --build=$ARCH-slackware-linux \
+    2>&1 | tee $OUTPUT/configure-${PKGNAM}.log
+  make $NUMJOBS 2>&1 | tee $OUTPUT/make-${PKGNAM}.log
+  make DESTDIR=$PKG install 2>&1 |tee $OUTPUT/install-${PKGNAM}.log
+cd ..
+# Then the flam3 (fractal flames) renderer:
+cd flam3
+  cat $SRCDIR/flam3-3.0.1-libpng15.patch | patch -p1 --verbose || exit 1
+  LDFLAGS="$SLKLDFLAGS" \
+  CXXFLAGS="$SLKCFLAGS" \
+  CFLAGS="$SLKCFLAGS" \
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --mandir=/usr/man \
+    --build=$ARCH-slackware-linux \
+    2>&1 | tee $OUTPUT/configure-${PKGNAM}.log
+  make -j 7 2>&1 | tee $OUTPUT/make-${PKGNAM}.log
+  make DESTDIR=$PKG install 2>&1 |tee $OUTPUT/install-${PKGNAM}.log
+cd ..
+
+# Don't ship .la files:
+rm -f $PKG/{,usr/}lib${LIBDIRSUFFIX}/*.la
+
+# Add documentation:
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/{flam3,ffmpeg}
+( cd client
+  cp -a $DOCS $PKG/usr/doc/$PKGNAM-$VERSION
+)
+( cd client/ffmpeg
+  cp -a $DOCS_FFMPEG $PKG/usr/doc/$PKGNAM-$VERSION/ffmpeg
+)
+( cd flam3
+  cp -a $DOCS_FLAM3 $PKG/usr/doc/$PKGNAM-$VERSION/flam3
+)
+chown -R root:root $PKG/usr/doc/$PKGNAM-$VERSION
+find $PKG/usr/doc -type f -exec chmod 644 {} \+
+
+cd client
+  # Add xscreensaver module:
+  mkdir -p $PKG/usr/share/xscreensaver/config
+  install -m644 electricsheep.xml \
+    $PKG/usr/share/xscreensaver/config/electricsheep.xml
+
+  # Add the KDE4 screensaver file:
+  install -D -m644 electricsheep.desktop.kde \
+    ${PKG}/usr/share/kde4/services/ScreenSavers/electricsheep.desktop
+  sed -i -e 's/^X-KDE-Category=.*$/X-KDE-Category=Fractals/' \
+    ${PKG}/usr/share/kde4/services/ScreenSavers/electricsheep.desktop
+
+  # Add icons:
+  mkdir -p $PKG/usr/share/electricsheep
+  cp -a electricsheep-{smile,frown}.png $PKG/usr/share/electricsheep/
+cd ..
+
+# Compress the man page(s)
+if [ -d $PKG/usr/man ]; then
+  find $PKG/usr/man -type f -name "*.?" -exec gzip -9f {} \+
+  for i in $(find $PKG/usr/man -type l -name "*.?") ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+fi
+
+# Strip binaries:
+find $PKG | xargs file | grep -e "executable" -e "shared object" \
+  | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+
+# Add a package description:
+mkdir -p $PKG/install
+cat $SRCDIR/slack-desc > $PKG/install/slack-desc
+
+# Build the package:
+cd $PKG
+makepkg --linkadd y --chown n $OUTPUT/${PKGNAM}-${VERSION}-${ARCH}-${BUILD}.txz 2>&1 | tee $OUTPUT/makepkg-${PKGNAM}.log
+cd $OUTPUT
+md5sum ${PKGNAM}-${VERSION}-${ARCH}-${BUILD}.txz > ${PKGNAM}-${VERSION}-${ARCH}-${BUILD}.txz.md5
+cd -
+cat $PKG/install/slack-desc | grep "^${PKGNAM}" > $OUTPUT/${PKGNAM}-${VERSION}-${ARCH}-${BUILD}.txt

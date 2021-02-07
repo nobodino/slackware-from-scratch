@@ -1,0 +1,19 @@
+#!/bin/bash
+scan_dirs() {
+        tmpfile=$(mktemp)
+        find "$@" -maxdepth 1 -type f -exec file {} + | grep -E "ELF.*shared object" | cut -f 1 -d : > $tmpfile
+        while read FILE; do
+                SONAME=$(readelf -d $FILE | grep SONAME | cut -d'[' -f2 | cut -d']' -f1)
+                TARGET="${FILE##*/}"
+                LINK="${FILE%/*}/$SONAME"
+                [ -h "$LINK" -o ! -e "$LINK" ] && ln -sf "$TARGET" "$LINK"
+        done < $tmpfile
+        rm $tmpfile
+        return 0
+}
+# eat ldconfig options
+while getopts "nNvXvf:C:r:" opt; do
+        :
+done
+shift $(( $OPTIND - 1 ))
+scan_dirs /lib /usr/lib "$@"

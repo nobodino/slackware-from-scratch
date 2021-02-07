@@ -1,0 +1,834 @@
+diff -ruBN /tmp/libdbusmenu-qt/libdbusmenu-qt.SlackBuild /source/l/libdbusmenu-qt/libdbusmenu-qt.SlackBuild
+--- /tmp/libdbusmenu-qt/libdbusmenu-qt.SlackBuild	2020-11-30 20:49:40.000000000 +0000
++++ /source/l/libdbusmenu-qt/libdbusmenu-qt.SlackBuild	2021-01-11 11:31:07.000000000 +0000
+@@ -66,7 +66,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "armv7hl" ]; then
+   SLKCFLAGS="-O3 -march=armv7-a -mfpu=vfpv3-d16"
+   LIBDIRSUFFIX=""
+@@ -103,6 +103,7 @@
+     -DCMAKE_CXX_FLAGS="$SLKCFLAGS" \
+     -DCMAKE_INSTALL_PREFIX=/usr \
+     -DLIB_SUFFIX="$LIBDIRSUFFIX" \
++-DCMAKE_INSTALL_LIBDIR=lib$LIBDIRSUFFIX \
+     -DDOC_INSTALL_DIR="doc" \
+     -DMAN_INSTALL_DIR=/usr/man \
+     -DUSE_QT4:BOOL=FALSE \
+diff -ruBN /tmp/libdbusmenu-qt/libdbusmenu-qt.SlackBuild.log /source/l/libdbusmenu-qt/libdbusmenu-qt.SlackBuild.log
+--- /tmp/libdbusmenu-qt/libdbusmenu-qt.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/l/libdbusmenu-qt/libdbusmenu-qt.SlackBuild.log	2021-01-11 11:32:16.000000000 +0000
+@@ -0,0 +1,810 @@
++libdbusmenu-qt-0.9.3+16.04.20160218/
++libdbusmenu-qt-0.9.3+16.04.20160218/cmake/
++libdbusmenu-qt-0.9.3+16.04.20160218/cmake/modules/
++libdbusmenu-qt-0.9.3+16.04.20160218/cmake/modules/FindQJSON.cmake
++libdbusmenu-qt-0.9.3+16.04.20160218/tests/
++libdbusmenu-qt-0.9.3+16.04.20160218/tests/dbusmenuimportertest.h
++libdbusmenu-qt-0.9.3+16.04.20160218/tests/dbusmenuexportertest.cpp
++libdbusmenu-qt-0.9.3+16.04.20160218/tests/slowmenu.h
++libdbusmenu-qt-0.9.3+16.04.20160218/tests/testutils.cpp
++libdbusmenu-qt-0.9.3+16.04.20160218/tests/dbusmenushortcuttest.h
++libdbusmenu-qt-0.9.3+16.04.20160218/tests/testutils.h
++libdbusmenu-qt-0.9.3+16.04.20160218/tests/dbusmenushortcuttest.cpp
++libdbusmenu-qt-0.9.3+16.04.20160218/tests/dbusmenuexportertest.h
++libdbusmenu-qt-0.9.3+16.04.20160218/tests/slowmenu.cpp
++libdbusmenu-qt-0.9.3+16.04.20160218/tests/CMakeLists.txt
++libdbusmenu-qt-0.9.3+16.04.20160218/tests/dbusmenuimportertest.cpp
++libdbusmenu-qt-0.9.3+16.04.20160218/src/
++libdbusmenu-qt-0.9.3+16.04.20160218/src/dbusmenushortcut_p.cpp
++libdbusmenu-qt-0.9.3+16.04.20160218/src/dbusmenuexporter.h
++libdbusmenu-qt-0.9.3+16.04.20160218/src/dbusmenuimporter.cpp
++libdbusmenu-qt-0.9.3+16.04.20160218/src/dbusmenutypes_p.h
++libdbusmenu-qt-0.9.3+16.04.20160218/src/debug_p.h
++libdbusmenu-qt-0.9.3+16.04.20160218/src/dbusmenu_export.h
++libdbusmenu-qt-0.9.3+16.04.20160218/src/utils.cpp
++libdbusmenu-qt-0.9.3+16.04.20160218/src/com.canonical.dbusmenu.xml
++libdbusmenu-qt-0.9.3+16.04.20160218/src/dbusmenuexporterdbus_p.cpp
++libdbusmenu-qt-0.9.3+16.04.20160218/src/dbusmenu_p.cpp
++libdbusmenu-qt-0.9.3+16.04.20160218/src/dbusmenu_config.h.in
++libdbusmenu-qt-0.9.3+16.04.20160218/src/utils_p.h
++libdbusmenu-qt-0.9.3+16.04.20160218/src/dbusmenuexporterprivate_p.h
++libdbusmenu-qt-0.9.3+16.04.20160218/src/dbusmenuexporterdbus_p.h
++libdbusmenu-qt-0.9.3+16.04.20160218/src/dbusmenuimporter.h
++libdbusmenu-qt-0.9.3+16.04.20160218/src/dbusmenu_version.h.in
++libdbusmenu-qt-0.9.3+16.04.20160218/src/dbusmenuexporter.cpp
++libdbusmenu-qt-0.9.3+16.04.20160218/src/dbusmenutypes_p.cpp
++libdbusmenu-qt-0.9.3+16.04.20160218/src/dbusmenu_p.h
++libdbusmenu-qt-0.9.3+16.04.20160218/src/CMakeLists.txt
++libdbusmenu-qt-0.9.3+16.04.20160218/src/dbusmenushortcut_p.h
++libdbusmenu-qt-0.9.3+16.04.20160218/README
++libdbusmenu-qt-0.9.3+16.04.20160218/tools/
++libdbusmenu-qt-0.9.3+16.04.20160218/tools/testapp/
++libdbusmenu-qt-0.9.3+16.04.20160218/tools/testapp/main.cpp
++libdbusmenu-qt-0.9.3+16.04.20160218/tools/testapp/CMakeLists.txt
++libdbusmenu-qt-0.9.3+16.04.20160218/tools/CMakeLists.txt
++libdbusmenu-qt-0.9.3+16.04.20160218/COPYING
++libdbusmenu-qt-0.9.3+16.04.20160218/dbusmenu-qt.pc.in
++libdbusmenu-qt-0.9.3+16.04.20160218/dbusmenu-qt-config.cmake.in
++libdbusmenu-qt-0.9.3+16.04.20160218/NEWS
++libdbusmenu-qt-0.9.3+16.04.20160218/RELEASE_CHECK_LIST
++libdbusmenu-qt-0.9.3+16.04.20160218/CMakeLists.txt
++libdbusmenu-qt-0.9.3+16.04.20160218/Doxyfile.in
++-- The C compiler identification is GNU 10.2.0
++-- The CXX compiler identification is GNU 10.2.0
++-- Detecting C compiler ABI info
++-- Detecting C compiler ABI info - done
++-- Check for working C compiler: /usr/bin/cc - skipped
++-- Detecting C compile features
++-- Detecting C compile features - done
++-- Detecting CXX compiler ABI info
++-- Detecting CXX compiler ABI info - done
++-- Check for working CXX compiler: /usr/bin/c++ - skipped
++-- Detecting CXX compile features
++-- Detecting CXX compile features - done
++CMake Deprecation Warning at CMakeLists.txt:2 (cmake_minimum_required):
++  Compatibility with CMake < 2.8.12 will be removed from a future version of
++  CMake.
++
++  Update the VERSION argument <min> value or use a ...<max> suffix to tell
++  CMake that the project does not need compatibility with older versions.
++
++
++-- Performing Test __DBUSMENU_HAVE_GCC_VISIBILITY
++-- Performing Test __DBUSMENU_HAVE_GCC_VISIBILITY - Success
++-- Performing Test __DBUSMENU_HAVE_W_OVERLOADED_VIRTUAL
++-- Performing Test __DBUSMENU_HAVE_W_OVERLOADED_VIRTUAL - Success
++-- Performing Test __DBUSMENU_HAVE_CXX11
++-- Performing Test __DBUSMENU_HAVE_CXX11 - Success
++-- Performing Test __DBUSMENU_HAVE_W_ALL
++-- Performing Test __DBUSMENU_HAVE_W_ALL - Success
++-- Performing Test HAVE_QICON_NAME
++-- Performing Test HAVE_QICON_NAME - Success
++CMake Warning (dev) at /usr/share/cmake-3.19/Modules/FindPackageHandleStandardArgs.cmake:426 (message):
++  The package name passed to `find_package_handle_standard_args` (PkgConfig)
++  does not match the name of the calling package (QJSON).  This can lead to
++  problems in calling code that expects `find_package` result variables
++  (e.g., `_FOUND`) to follow a certain pattern.
++Call Stack (most recent call first):
++  /usr/share/cmake-3.19/Modules/FindPkgConfig.cmake:67 (find_package_handle_standard_args)
++  cmake/modules/FindQJSON.cmake:19 (include)
++  tools/CMakeLists.txt:1 (find_package)
++This warning is for project developers.  Use -Wno-dev to suppress it.
++
++-- Found PkgConfig: /usr/bin/pkg-config (found version "0.29.2") 
++-- Checking for module 'QJson>=0.5'
++--   No package 'QJson' found
++-- Could NOT find QJSON (missing: QJSON_LIBRARIES QJSON_INCLUDE_DIR) 
++-- QJSON not found, testapp will not be built
++-- Configuring done
++CMake Warning (dev) in src/CMakeLists.txt:
++  AUTOMOC: CMAKE_AUTOMOC_RELAXED_MODE is deprecated an will be removed in the
++  future.  Consider disabling it and converting the target dbusmenu-qt5 to
++  regular mode.
++This warning is for project developers.  Use -Wno-dev to suppress it.
++
++CMake Warning (dev) in tests/CMakeLists.txt:
++  AUTOMOC: CMAKE_AUTOMOC_RELAXED_MODE is deprecated an will be removed in the
++  future.  Consider disabling it and converting the target
++  dbusmenushortcuttest to regular mode.
++This warning is for project developers.  Use -Wno-dev to suppress it.
++
++CMake Warning (dev) in tests/CMakeLists.txt:
++  AUTOMOC: CMAKE_AUTOMOC_RELAXED_MODE is deprecated an will be removed in the
++  future.  Consider disabling it and converting the target
++  dbusmenuimportertest to regular mode.
++This warning is for project developers.  Use -Wno-dev to suppress it.
++
++CMake Warning (dev) in tests/CMakeLists.txt:
++  AUTOMOC: CMAKE_AUTOMOC_RELAXED_MODE is deprecated an will be removed in the
++  future.  Consider disabling it and converting the target
++  dbusmenuexportertest to regular mode.
++This warning is for project developers.  Use -Wno-dev to suppress it.
++
++CMake Warning (dev) in tests/CMakeLists.txt:
++  AUTOMOC: CMAKE_AUTOMOC_RELAXED_MODE is deprecated an will be removed in the
++  future.  Consider disabling it and converting the target slowmenu to
++  regular mode.
++This warning is for project developers.  Use -Wno-dev to suppress it.
++
++-- Generating done
++CMake Warning:
++  Manually-specified variables were not used by the project:
++
++    DOC_INSTALL_DIR
++    LIB_SUFFIX
++    MAN_INSTALL_DIR
++
++
++-- Build files have been written to: /tmp/libdbusmenu-qt-0.9.3+16.04.20160218/cmake-build
++Scanning dependencies of target doc
++Scanning dependencies of target dbusmenu-qt5_autogen
++[  3%] Automatic MOC for target dbusmenu-qt5
++AutoMoc warning
++---------------
++"SRC:/src/dbusmenu_p.cpp"
++includes the moc file "dbusmenu_p.moc", but does not contain a
++Q_OBJECT, Q_GADGET, Q_NAMESPACE or Q_NAMESPACE_EXPORT macro.
++Running moc on the header
++  "SRC:/src/dbusmenu_p.h"!
++Better include "moc_dbusmenu_p.cpp" for a compatibility with regular mode.
++This is a CMAKE_AUTOMOC_RELAXED_MODE warning.
++
++AutoMoc warning
++---------------
++"SRC:/src/dbusmenuexporter.cpp"
++includes the moc file "dbusmenuexporter.moc", but does not contain a
++Q_OBJECT, Q_GADGET, Q_NAMESPACE or Q_NAMESPACE_EXPORT macro.
++Running moc on the header
++  "SRC:/src/dbusmenuexporter.h"!
++Better include "moc_dbusmenuexporter.cpp" for a compatibility with regular mode.
++This is a CMAKE_AUTOMOC_RELAXED_MODE warning.
++
++AutoMoc warning
++---------------
++"SRC:/src/dbusmenuexporterdbus_p.cpp"
++includes the moc file "dbusmenuexporterdbus_p.moc", but does not contain a
++Q_OBJECT, Q_GADGET, Q_NAMESPACE or Q_NAMESPACE_EXPORT macro.
++Running moc on the header
++  "SRC:/src/dbusmenuexporterdbus_p.h"!
++Better include "moc_dbusmenuexporterdbus_p.cpp" for a compatibility with regular mode.
++This is a CMAKE_AUTOMOC_RELAXED_MODE warning.
++
++AutoMoc warning
++---------------
++"SRC:/src/dbusmenuimporter.cpp"
++includes the moc file "dbusmenuimporter.moc", but does not contain a
++Q_OBJECT, Q_GADGET, Q_NAMESPACE or Q_NAMESPACE_EXPORT macro.
++Running moc on the header
++  "SRC:/src/dbusmenuimporter.h"!
++Better include "moc_dbusmenuimporter.cpp" for a compatibility with regular mode.
++This is a CMAKE_AUTOMOC_RELAXED_MODE warning.
++
++[  3%] Built target dbusmenu-qt5_autogen
++[  6%] Generating dbusmenuadaptor.cpp, dbusmenuadaptor.h
++warning: Tag 'SYMBOL_CACHE_SIZE' at line 42 of file 'Doxyfile' has become obsolete.
++         To avoid this warning please remove this line from your configuration file or upgrade it using "doxygen -u"
++warning: Tag 'SHOW_DIRECTORIES' at line 75 of file 'Doxyfile' has become obsolete.
++         To avoid this warning please remove this line from your configuration file or upgrade it using "doxygen -u"
++warning: Tag 'HTML_ALIGN_MEMBERS' at line 139 of file 'Doxyfile' has become obsolete.
++         To avoid this warning please remove this line from your configuration file or upgrade it using "doxygen -u"
++warning: Tag 'USE_INLINE_TREES' at line 166 of file 'Doxyfile' has become obsolete.
++         To avoid this warning please remove this line from your configuration file or upgrade it using "doxygen -u"
++warning: Tag 'XML_SCHEMA' at line 212 of file 'Doxyfile' has become obsolete.
++         To avoid this warning please remove this line from your configuration file or upgrade it using "doxygen -u"
++warning: Tag 'XML_DTD' at line 213 of file 'Doxyfile' has become obsolete.
++         To avoid this warning please remove this line from your configuration file or upgrade it using "doxygen -u"
++warning: Tag 'PERL_PATH' at line 245 of file 'Doxyfile' has become obsolete.
++         To avoid this warning please remove this line from your configuration file or upgrade it using "doxygen -u"
++warning: Tag 'MSCGEN_PATH' at line 250 of file 'Doxyfile' has become obsolete.
++         To avoid this warning please remove this line from your configuration file or upgrade it using "doxygen -u"
++qdbusxml2cpp: Warning: deprecated annotation 'com.trolltech.QtDBus.QtTypeName.Out0' found while processing '/tmp/libdbusmenu-qt-0.9.3+16.04.20160218/src/com.canonical.dbusmenu.xml'; suggest updating to 'org.qtproject.QtDBus.QtTypeName.Out0'
++qdbusxml2cpp: Warning: deprecated annotation 'com.trolltech.QtDBus.QtTypeName.In0' found while processing '/tmp/libdbusmenu-qt-0.9.3+16.04.20160218/src/com.canonical.dbusmenu.xml'; suggest updating to 'org.qtproject.QtDBus.QtTypeName.In0'
++qdbusxml2cpp: Warning: deprecated annotation 'com.trolltech.QtDBus.QtTypeName.In0' found while processing '/tmp/libdbusmenu-qt-0.9.3+16.04.20160218/src/com.canonical.dbusmenu.xml'; suggest updating to 'org.qtproject.QtDBus.QtTypeName.In0'
++qdbusxml2cpp: Warning: deprecated annotation 'com.trolltech.QtDBus.QtTypeName.Out1' found while processing '/tmp/libdbusmenu-qt-0.9.3+16.04.20160218/src/com.canonical.dbusmenu.xml'; suggest updating to 'org.qtproject.QtDBus.QtTypeName.Out1'
++qdbusxml2cpp: Warning: deprecated annotation 'com.trolltech.QtDBus.QtTypeName.Out1' found while processing '/tmp/libdbusmenu-qt-0.9.3+16.04.20160218/src/com.canonical.dbusmenu.xml'; suggest updating to 'org.qtproject.QtDBus.QtTypeName.Out1'
++qdbusxml2cpp: Got unknown type `a(ia{sv})' processing '/tmp/libdbusmenu-qt-0.9.3+16.04.20160218/src/com.canonical.dbusmenu.xml'
++You should add <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="<type>"/> to the XML description
++qdbusxml2cpp: Warning: deprecated annotation 'com.trolltech.QtDBus.QtTypeName.In0' found while processing '/tmp/libdbusmenu-qt-0.9.3+16.04.20160218/src/com.canonical.dbusmenu.xml'; suggest updating to 'org.qtproject.QtDBus.QtTypeName.In0'
++qdbusxml2cpp: Got unknown type `a(ias)' processing '/tmp/libdbusmenu-qt-0.9.3+16.04.20160218/src/com.canonical.dbusmenu.xml'
++You should add <annotation name="org.qtproject.QtDBus.QtTypeName.Out1" value="<type>"/> to the XML description
++qdbusxml2cpp: Warning: deprecated annotation 'com.trolltech.QtDBus.QtTypeName.In1' found while processing '/tmp/libdbusmenu-qt-0.9.3+16.04.20160218/src/com.canonical.dbusmenu.xml'; suggest updating to 'org.qtproject.QtDBus.QtTypeName.In1'
++[  9%] Generating dbusmenuadaptor.moc
++[  9%] Built target doc
++Scanning dependencies of target dbusmenu-qt5
++[ 16%] Building CXX object src/CMakeFiles/dbusmenu-qt5.dir/dbusmenu_p.cpp.o
++[ 12%] Building CXX object src/CMakeFiles/dbusmenu-qt5.dir/dbusmenu-qt5_autogen/mocs_compilation.cpp.o
++[ 19%] Building CXX object src/CMakeFiles/dbusmenu-qt5.dir/dbusmenuexporter.cpp.o
++[ 22%] Building CXX object src/CMakeFiles/dbusmenu-qt5.dir/dbusmenuexporterdbus_p.cpp.o
++[ 25%] Building CXX object src/CMakeFiles/dbusmenu-qt5.dir/dbusmenuimporter.cpp.o
++[ 29%] Building CXX object src/CMakeFiles/dbusmenu-qt5.dir/dbusmenutypes_p.cpp.o
++[ 32%] Building CXX object src/CMakeFiles/dbusmenu-qt5.dir/dbusmenushortcut_p.cpp.o
++[ 35%] Building CXX object src/CMakeFiles/dbusmenu-qt5.dir/utils.cpp.o
++[ 38%] Building CXX object src/CMakeFiles/dbusmenu-qt5.dir/dbusmenuadaptor.cpp.o
++[ 41%] Linking CXX shared library libdbusmenu-qt5.so
++[ 41%] Built target dbusmenu-qt5
++Scanning dependencies of target dbusmenuimportertest_autogen
++Scanning dependencies of target dbusmenushortcuttest_autogen
++Scanning dependencies of target dbusmenuexportertest_autogen
++[ 45%] Automatic MOC for target dbusmenushortcuttest
++[ 48%] Automatic MOC for target dbusmenuimportertest
++[ 51%] Automatic MOC for target dbusmenuexportertest
++AutoMoc warning
++---------------
++"SRC:/tests/dbusmenushortcuttest.cpp"
++includes the moc file "dbusmenushortcuttest.moc", but does not contain a
++Q_OBJECT, Q_GADGET, Q_NAMESPACE or Q_NAMESPACE_EXPORT macro.
++Running moc on the header
++  "SRC:/tests/dbusmenushortcuttest.h"!
++Better include "moc_dbusmenushortcuttest.cpp" for a compatibility with regular mode.
++This is a CMAKE_AUTOMOC_RELAXED_MODE warning.
++
++AutoMoc warning
++---------------
++"SRC:/tests/dbusmenuimportertest.cpp"
++includes the moc file "dbusmenuimportertest.moc", but does not contain a
++Q_OBJECT, Q_GADGET, Q_NAMESPACE or Q_NAMESPACE_EXPORT macro.
++Running moc on the header
++  "SRC:/tests/dbusmenuimportertest.h"!
++Better include "moc_dbusmenuimportertest.cpp" for a compatibility with regular mode.
++This is a CMAKE_AUTOMOC_RELAXED_MODE warning.
++
++AutoMoc warning
++---------------
++"SRC:/tests/testutils.cpp"
++includes the moc file "testutils.moc", but does not contain a
++Q_OBJECT, Q_GADGET, Q_NAMESPACE or Q_NAMESPACE_EXPORT macro.
++Running moc on the header
++  "SRC:/tests/testutils.h"!
++Better include "moc_testutils.cpp" for a compatibility with regular mode.
++This is a CMAKE_AUTOMOC_RELAXED_MODE warning.
++
++AutoMoc warning
++---------------
++"SRC:/tests/dbusmenuexportertest.cpp"
++includes the moc file "dbusmenuexportertest.moc", but does not contain a
++Q_OBJECT, Q_GADGET, Q_NAMESPACE or Q_NAMESPACE_EXPORT macro.
++Running moc on the header
++  "SRC:/tests/dbusmenuexportertest.h"!
++Better include "moc_dbusmenuexportertest.cpp" for a compatibility with regular mode.
++This is a CMAKE_AUTOMOC_RELAXED_MODE warning.
++
++AutoMoc warning
++---------------
++"SRC:/tests/testutils.cpp"
++includes the moc file "testutils.moc", but does not contain a
++Q_OBJECT, Q_GADGET, Q_NAMESPACE or Q_NAMESPACE_EXPORT macro.
++Running moc on the header
++  "SRC:/tests/testutils.h"!
++Better include "moc_testutils.cpp" for a compatibility with regular mode.
++This is a CMAKE_AUTOMOC_RELAXED_MODE warning.
++
++[ 51%] Built target dbusmenuimportertest_autogen
++[ 51%] Built target dbusmenushortcuttest_autogen
++Scanning dependencies of target dbusmenushortcuttest
++Scanning dependencies of target slowmenu_autogen
++[ 54%] Automatic MOC for target slowmenu
++[ 54%] Built target dbusmenuexportertest_autogen
++Scanning dependencies of target dbusmenuimportertest
++AutoMoc warning
++---------------
++"SRC:/tests/slowmenu.cpp"
++includes the moc file "slowmenu.moc", but does not contain a
++Q_OBJECT, Q_GADGET, Q_NAMESPACE or Q_NAMESPACE_EXPORT macro.
++Running moc on the header
++  "SRC:/tests/slowmenu.h"!
++Better include "moc_slowmenu.cpp" for a compatibility with regular mode.
++This is a CMAKE_AUTOMOC_RELAXED_MODE warning.
++
++[ 58%] Building CXX object tests/CMakeFiles/dbusmenushortcuttest.dir/dbusmenushortcuttest_autogen/mocs_compilation.cpp.o
++[ 58%] Built target slowmenu_autogen
++[ 61%] Building CXX object tests/CMakeFiles/dbusmenuimportertest.dir/dbusmenuimportertest_autogen/mocs_compilation.cpp.o
++[ 64%] Building CXX object tests/CMakeFiles/dbusmenushortcuttest.dir/dbusmenushortcuttest.cpp.o
++[ 67%] Building CXX object tests/CMakeFiles/dbusmenuimportertest.dir/dbusmenuimportertest.cpp.o
++[ 70%] Building CXX object tests/CMakeFiles/dbusmenuimportertest.dir/testutils.cpp.o
++In file included from /tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/dbusmenushortcuttest.cpp:22:
++/tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/dbusmenushortcuttest.h:24: warning: "QT_GUI_LIB" redefined
++   24 | #define QT_GUI_LIB
++      | 
++<command-line>: note: this is the location of the previous definition
++In file included from /tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/dbusmenuimportertest.cpp:22:
++/tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/dbusmenuimportertest.h:24: warning: "QT_GUI_LIB" redefined
++   24 | #define QT_GUI_LIB
++      | 
++<command-line>: note: this is the location of the previous definition
++/tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/testutils.cpp: In function ‘void waitForDeferredDeletes()’:
++/tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/testutils.cpp:27:30: warning: ‘static bool QCoreApplication::hasPendingEvents()’ is deprecated [-Wdeprecated-declarations]
++   27 |     while (QCoreApplication::hasPendingEvents()) {
++      |                              ^~~~~~~~~~~~~~~~
++In file included from /usr/include/qt5/QtCore/QCoreApplication:1,
++                 from /tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/testutils.cpp:23:
++/usr/include/qt5/QtCore/qcoreapplication.h:129:31: note: declared here
++  129 |     QT_DEPRECATED static bool hasPendingEvents();
++      |                               ^~~~~~~~~~~~~~~~
++/tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/testutils.cpp:27:47: warning: ‘static bool QCoreApplication::hasPendingEvents()’ is deprecated [-Wdeprecated-declarations]
++   27 |     while (QCoreApplication::hasPendingEvents()) {
++      |                                               ^
++In file included from /usr/include/qt5/QtCore/QCoreApplication:1,
++                 from /tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/testutils.cpp:23:
++/usr/include/qt5/QtCore/qcoreapplication.h:129:31: note: declared here
++  129 |     QT_DEPRECATED static bool hasPendingEvents();
++      |                               ^~~~~~~~~~~~~~~~
++Scanning dependencies of target dbusmenuexportertest
++[ 74%] Building CXX object tests/CMakeFiles/dbusmenuexportertest.dir/dbusmenuexportertest_autogen/mocs_compilation.cpp.o
++[ 77%] Building CXX object tests/CMakeFiles/dbusmenuexportertest.dir/dbusmenuexportertest.cpp.o
++In file included from /tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/dbusmenuexportertest.cpp:22:
++/tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/dbusmenuexportertest.h:24: warning: "QT_GUI_LIB" redefined
++   24 | #define QT_GUI_LIB
++      | 
++<command-line>: note: this is the location of the previous definition
++/tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/dbusmenuimportertest.cpp: In member function ‘void DBusMenuImporterTest::testDeletingImporterWhileWaitingForAboutToShow()’:
++/tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/dbusmenuimportertest.cpp:108:39: warning: ‘void QProcess::start(const QString&, QIODevice::OpenMode)’ is deprecated: Use QProcess::start(const QString &program, const QStringList &arguments,OpenMode mode = ReadWrite) instead [-Wdeprecated-declarations]
++  108 |     slowMenuProcess.start("./slowmenu");
++      |                                       ^
++In file included from /usr/include/qt5/QtCore/QtCore:170,
++                 from /usr/include/qt5/QtGui/QtGuiDepends:3,
++                 from /usr/include/qt5/QtGui/QtGui:3,
++                 from /tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/dbusmenuimportertest.h:25,
++                 from /tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/dbusmenuimportertest.cpp:22:
++/usr/include/qt5/QtCore/qprocess.h:168:10: note: declared here
++  168 |     void start(const QString &command, OpenMode mode = ReadWrite);
++      |          ^~~~~
++[ 80%] Linking CXX executable dbusmenushortcuttest
++[ 80%] Built target dbusmenushortcuttest
++Scanning dependencies of target slowmenu
++[ 83%] Building CXX object tests/CMakeFiles/slowmenu.dir/slowmenu_autogen/mocs_compilation.cpp.o
++[ 87%] Building CXX object tests/CMakeFiles/slowmenu.dir/slowmenu.cpp.o
++[ 90%] Linking CXX executable dbusmenuimportertest
++[ 90%] Built target dbusmenuimportertest
++[ 93%] Building CXX object tests/CMakeFiles/dbusmenuexportertest.dir/testutils.cpp.o
++In file included from /usr/include/qt5/QtTest/qtest.h:45,
++                 from /usr/include/qt5/QtTest/QtTest:11,
++                 from /tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/dbusmenuexportertest.cpp:30:
++/tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/dbusmenuexportertest.cpp: In member function ‘void DBusMenuExporterTest::testGetAllProperties()’:
++/tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/dbusmenuexportertest.cpp:171:29: warning: ‘static QSet<T> QSet<T>::fromList(const QList<T>&) [with T = QString]’ is deprecated: Use QSet<T>(list.begin(), list.end()) instead. [-Wdeprecated-declarations]
++  171 |     QCOMPARE(QSet<QString>::fromList(item.properties.keys()), a1Properties);
++      |                             ^~~~~~~~
++In file included from /usr/include/qt5/QtCore/qdebug.h:52,
++                 from /usr/include/qt5/QtCore/qcborcommon.h:45,
++                 from /usr/include/qt5/QtCore/qcborvalue.h:45,
++                 from /usr/include/qt5/QtCore/qcborarray.h:43,
++                 from /usr/include/qt5/QtCore/QtCore:38,
++                 from /usr/include/qt5/QtGui/QtGuiDepends:3,
++                 from /usr/include/qt5/QtGui/QtGui:3,
++                 from /tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/dbusmenuexportertest.h:25,
++                 from /tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/dbusmenuexportertest.cpp:22:
++/usr/include/qt5/QtCore/qset.h:416:9: note: declared here
++  416 | QSet<T> QSet<T>::fromList(const QList<T> &list)
++      |         ^~~~~~~
++In file included from /usr/include/qt5/QtTest/qtest.h:45,
++                 from /usr/include/qt5/QtTest/QtTest:11,
++                 from /tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/dbusmenuexportertest.cpp:30:
++/tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/dbusmenuexportertest.cpp:171:60: warning: ‘static QSet<T> QSet<T>::fromList(const QList<T>&) [with T = QString]’ is deprecated: Use QSet<T>(list.begin(), list.end()) instead. [-Wdeprecated-declarations]
++  171 |     QCOMPARE(QSet<QString>::fromList(item.properties.keys()), a1Properties);
++      |                                                            ^
++In file included from /usr/include/qt5/QtCore/qdebug.h:52,
++                 from /usr/include/qt5/QtCore/qcborcommon.h:45,
++                 from /usr/include/qt5/QtCore/qcborvalue.h:45,
++                 from /usr/include/qt5/QtCore/qcborarray.h:43,
++                 from /usr/include/qt5/QtCore/QtCore:38,
++                 from /usr/include/qt5/QtGui/QtGuiDepends:3,
++                 from /usr/include/qt5/QtGui/QtGui:3,
++                 from /tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/dbusmenuexportertest.h:25,
++                 from /tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/dbusmenuexportertest.cpp:22:
++/usr/include/qt5/QtCore/qset.h:416:9: note: declared here
++  416 | QSet<T> QSet<T>::fromList(const QList<T> &list)
++      |         ^~~~~~~
++In file included from /usr/include/qt5/QtTest/qtest.h:45,
++                 from /usr/include/qt5/QtTest/QtTest:11,
++                 from /tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/dbusmenuexportertest.cpp:30:
++/tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/dbusmenuexportertest.cpp:174:29: warning: ‘static QSet<T> QSet<T>::fromList(const QList<T>&) [with T = QString]’ is deprecated: Use QSet<T>(list.begin(), list.end()) instead. [-Wdeprecated-declarations]
++  174 |     QCOMPARE(QSet<QString>::fromList(item.properties.keys()), separatorProperties);
++      |                             ^~~~~~~~
++In file included from /usr/include/qt5/QtCore/qdebug.h:52,
++                 from /usr/include/qt5/QtCore/qcborcommon.h:45,
++                 from /usr/include/qt5/QtCore/qcborvalue.h:45,
++                 from /usr/include/qt5/QtCore/qcborarray.h:43,
++                 from /usr/include/qt5/QtCore/QtCore:38,
++                 from /usr/include/qt5/QtGui/QtGuiDepends:3,
++                 from /usr/include/qt5/QtGui/QtGui:3,
++                 from /tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/dbusmenuexportertest.h:25,
++                 from /tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/dbusmenuexportertest.cpp:22:
++/usr/include/qt5/QtCore/qset.h:416:9: note: declared here
++  416 | QSet<T> QSet<T>::fromList(const QList<T> &list)
++      |         ^~~~~~~
++In file included from /usr/include/qt5/QtTest/qtest.h:45,
++                 from /usr/include/qt5/QtTest/QtTest:11,
++                 from /tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/dbusmenuexportertest.cpp:30:
++/tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/dbusmenuexportertest.cpp:174:60: warning: ‘static QSet<T> QSet<T>::fromList(const QList<T>&) [with T = QString]’ is deprecated: Use QSet<T>(list.begin(), list.end()) instead. [-Wdeprecated-declarations]
++  174 |     QCOMPARE(QSet<QString>::fromList(item.properties.keys()), separatorProperties);
++      |                                                            ^
++In file included from /usr/include/qt5/QtCore/qdebug.h:52,
++                 from /usr/include/qt5/QtCore/qcborcommon.h:45,
++                 from /usr/include/qt5/QtCore/qcborvalue.h:45,
++                 from /usr/include/qt5/QtCore/qcborarray.h:43,
++                 from /usr/include/qt5/QtCore/QtCore:38,
++                 from /usr/include/qt5/QtGui/QtGuiDepends:3,
++                 from /usr/include/qt5/QtGui/QtGui:3,
++                 from /tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/dbusmenuexportertest.h:25,
++                 from /tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/dbusmenuexportertest.cpp:22:
++/usr/include/qt5/QtCore/qset.h:416:9: note: declared here
++  416 | QSet<T> QSet<T>::fromList(const QList<T> &list)
++      |         ^~~~~~~
++In file included from /usr/include/qt5/QtTest/qtest.h:45,
++                 from /usr/include/qt5/QtTest/QtTest:11,
++                 from /tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/dbusmenuexportertest.cpp:30:
++/tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/dbusmenuexportertest.cpp:177:29: warning: ‘static QSet<T> QSet<T>::fromList(const QList<T>&) [with T = QString]’ is deprecated: Use QSet<T>(list.begin(), list.end()) instead. [-Wdeprecated-declarations]
++  177 |     QCOMPARE(QSet<QString>::fromList(item.properties.keys()), a2Properties);
++      |                             ^~~~~~~~
++In file included from /usr/include/qt5/QtCore/qdebug.h:52,
++                 from /usr/include/qt5/QtCore/qcborcommon.h:45,
++                 from /usr/include/qt5/QtCore/qcborvalue.h:45,
++                 from /usr/include/qt5/QtCore/qcborarray.h:43,
++                 from /usr/include/qt5/QtCore/QtCore:38,
++                 from /usr/include/qt5/QtGui/QtGuiDepends:3,
++                 from /usr/include/qt5/QtGui/QtGui:3,
++                 from /tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/dbusmenuexportertest.h:25,
++                 from /tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/dbusmenuexportertest.cpp:22:
++/usr/include/qt5/QtCore/qset.h:416:9: note: declared here
++  416 | QSet<T> QSet<T>::fromList(const QList<T> &list)
++      |         ^~~~~~~
++In file included from /usr/include/qt5/QtTest/qtest.h:45,
++                 from /usr/include/qt5/QtTest/QtTest:11,
++                 from /tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/dbusmenuexportertest.cpp:30:
++/tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/dbusmenuexportertest.cpp:177:60: warning: ‘static QSet<T> QSet<T>::fromList(const QList<T>&) [with T = QString]’ is deprecated: Use QSet<T>(list.begin(), list.end()) instead. [-Wdeprecated-declarations]
++  177 |     QCOMPARE(QSet<QString>::fromList(item.properties.keys()), a2Properties);
++      |                                                            ^
++In file included from /usr/include/qt5/QtCore/qdebug.h:52,
++                 from /usr/include/qt5/QtCore/qcborcommon.h:45,
++                 from /usr/include/qt5/QtCore/qcborvalue.h:45,
++                 from /usr/include/qt5/QtCore/qcborarray.h:43,
++                 from /usr/include/qt5/QtCore/QtCore:38,
++                 from /usr/include/qt5/QtGui/QtGuiDepends:3,
++                 from /usr/include/qt5/QtGui/QtGui:3,
++                 from /tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/dbusmenuexportertest.h:25,
++                 from /tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/dbusmenuexportertest.cpp:22:
++/usr/include/qt5/QtCore/qset.h:416:9: note: declared here
++  416 | QSet<T> QSet<T>::fromList(const QList<T> &list)
++      |         ^~~~~~~
++/tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/testutils.cpp: In function ‘void waitForDeferredDeletes()’:
++/tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/testutils.cpp:27:30: warning: ‘static bool QCoreApplication::hasPendingEvents()’ is deprecated [-Wdeprecated-declarations]
++   27 |     while (QCoreApplication::hasPendingEvents()) {
++      |                              ^~~~~~~~~~~~~~~~
++In file included from /usr/include/qt5/QtCore/QCoreApplication:1,
++                 from /tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/testutils.cpp:23:
++/usr/include/qt5/QtCore/qcoreapplication.h:129:31: note: declared here
++  129 |     QT_DEPRECATED static bool hasPendingEvents();
++      |                               ^~~~~~~~~~~~~~~~
++/tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/testutils.cpp:27:47: warning: ‘static bool QCoreApplication::hasPendingEvents()’ is deprecated [-Wdeprecated-declarations]
++   27 |     while (QCoreApplication::hasPendingEvents()) {
++      |                                               ^
++In file included from /usr/include/qt5/QtCore/QCoreApplication:1,
++                 from /tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/testutils.cpp:23:
++/usr/include/qt5/QtCore/qcoreapplication.h:129:31: note: declared here
++  129 |     QT_DEPRECATED static bool hasPendingEvents();
++      |                               ^~~~~~~~~~~~~~~~
++/tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/slowmenu.cpp: In member function ‘void SlowMenu::slotAboutToShow()’:
++/tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/slowmenu.cpp:42:16: warning: ‘void QTime::start()’ is deprecated: Use QElapsedTimer instead [-Wdeprecated-declarations]
++   42 |     time.start();
++      |                ^
++In file included from /usr/include/qt5/QtCore/qcborvalue.h:44,
++                 from /usr/include/qt5/QtCore/qcborarray.h:43,
++                 from /usr/include/qt5/QtCore/QtCore:38,
++                 from /usr/include/qt5/QtDBus/QtDBusDepends:3,
++                 from /usr/include/qt5/QtDBus/QtDBus:3,
++                 from /tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/slowmenu.cpp:25:
++/usr/include/qt5/QtCore/qdatetime.h:235:55: note: declared here
++  235 |     QT_DEPRECATED_X("Use QElapsedTimer instead") void start();
++      |                                                       ^~~~~
++/tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/slowmenu.cpp:43:25: warning: ‘int QTime::elapsed() const’ is deprecated: Use QElapsedTimer instead [-Wdeprecated-declarations]
++   43 |     while (time.elapsed() < 2000) {
++      |                         ^
++In file included from /usr/include/qt5/QtCore/qcborvalue.h:44,
++                 from /usr/include/qt5/QtCore/qcborarray.h:43,
++                 from /usr/include/qt5/QtCore/QtCore:38,
++                 from /usr/include/qt5/QtDBus/QtDBusDepends:3,
++                 from /usr/include/qt5/QtDBus/QtDBus:3,
++                 from /tmp/libdbusmenu-qt-0.9.3+16.04.20160218/tests/slowmenu.cpp:25:
++/usr/include/qt5/QtCore/qdatetime.h:237:54: note: declared here
++  237 |     QT_DEPRECATED_X("Use QElapsedTimer instead") int elapsed() const;
++      |                                                      ^~~~~~~
++[ 96%] Linking CXX executable slowmenu
++[ 96%] Built target slowmenu
++[100%] Linking CXX executable dbusmenuexportertest
++[100%] Built target dbusmenuexportertest
++warning: Tag 'SYMBOL_CACHE_SIZE' at line 42 of file 'Doxyfile' has become obsolete.
++         To avoid this warning please remove this line from your configuration file or upgrade it using "doxygen -u"
++warning: Tag 'SHOW_DIRECTORIES' at line 75 of file 'Doxyfile' has become obsolete.
++         To avoid this warning please remove this line from your configuration file or upgrade it using "doxygen -u"
++warning: Tag 'HTML_ALIGN_MEMBERS' at line 139 of file 'Doxyfile' has become obsolete.
++         To avoid this warning please remove this line from your configuration file or upgrade it using "doxygen -u"
++warning: Tag 'USE_INLINE_TREES' at line 166 of file 'Doxyfile' has become obsolete.
++         To avoid this warning please remove this line from your configuration file or upgrade it using "doxygen -u"
++warning: Tag 'XML_SCHEMA' at line 212 of file 'Doxyfile' has become obsolete.
++         To avoid this warning please remove this line from your configuration file or upgrade it using "doxygen -u"
++warning: Tag 'XML_DTD' at line 213 of file 'Doxyfile' has become obsolete.
++         To avoid this warning please remove this line from your configuration file or upgrade it using "doxygen -u"
++warning: Tag 'PERL_PATH' at line 245 of file 'Doxyfile' has become obsolete.
++         To avoid this warning please remove this line from your configuration file or upgrade it using "doxygen -u"
++warning: Tag 'MSCGEN_PATH' at line 250 of file 'Doxyfile' has become obsolete.
++         To avoid this warning please remove this line from your configuration file or upgrade it using "doxygen -u"
++[  0%] Built target doc
++[  3%] Automatic MOC for target dbusmenu-qt5
++AutoMoc warning
++---------------
++"SRC:/src/dbusmenu_p.cpp"
++includes the moc file "dbusmenu_p.moc", but does not contain a
++Q_OBJECT, Q_GADGET, Q_NAMESPACE or Q_NAMESPACE_EXPORT macro.
++Running moc on the header
++  "SRC:/src/dbusmenu_p.h"!
++Better include "moc_dbusmenu_p.cpp" for a compatibility with regular mode.
++This is a CMAKE_AUTOMOC_RELAXED_MODE warning.
++
++AutoMoc warning
++---------------
++"SRC:/src/dbusmenuexporter.cpp"
++includes the moc file "dbusmenuexporter.moc", but does not contain a
++Q_OBJECT, Q_GADGET, Q_NAMESPACE or Q_NAMESPACE_EXPORT macro.
++Running moc on the header
++  "SRC:/src/dbusmenuexporter.h"!
++Better include "moc_dbusmenuexporter.cpp" for a compatibility with regular mode.
++This is a CMAKE_AUTOMOC_RELAXED_MODE warning.
++
++AutoMoc warning
++---------------
++"SRC:/src/dbusmenuexporterdbus_p.cpp"
++includes the moc file "dbusmenuexporterdbus_p.moc", but does not contain a
++Q_OBJECT, Q_GADGET, Q_NAMESPACE or Q_NAMESPACE_EXPORT macro.
++Running moc on the header
++  "SRC:/src/dbusmenuexporterdbus_p.h"!
++Better include "moc_dbusmenuexporterdbus_p.cpp" for a compatibility with regular mode.
++This is a CMAKE_AUTOMOC_RELAXED_MODE warning.
++
++AutoMoc warning
++---------------
++"SRC:/src/dbusmenuimporter.cpp"
++includes the moc file "dbusmenuimporter.moc", but does not contain a
++Q_OBJECT, Q_GADGET, Q_NAMESPACE or Q_NAMESPACE_EXPORT macro.
++Running moc on the header
++  "SRC:/src/dbusmenuimporter.h"!
++Better include "moc_dbusmenuimporter.cpp" for a compatibility with regular mode.
++This is a CMAKE_AUTOMOC_RELAXED_MODE warning.
++
++[  3%] Built target dbusmenu-qt5_autogen
++[ 41%] Built target dbusmenu-qt5
++[ 45%] Automatic MOC for target dbusmenushortcuttest
++AutoMoc warning
++---------------
++"SRC:/tests/dbusmenushortcuttest.cpp"
++includes the moc file "dbusmenushortcuttest.moc", but does not contain a
++Q_OBJECT, Q_GADGET, Q_NAMESPACE or Q_NAMESPACE_EXPORT macro.
++Running moc on the header
++  "SRC:/tests/dbusmenushortcuttest.h"!
++Better include "moc_dbusmenushortcuttest.cpp" for a compatibility with regular mode.
++This is a CMAKE_AUTOMOC_RELAXED_MODE warning.
++
++[ 45%] Built target dbusmenushortcuttest_autogen
++[ 54%] Built target dbusmenushortcuttest
++[ 58%] Automatic MOC for target dbusmenuimportertest
++AutoMoc warning
++---------------
++"SRC:/tests/dbusmenuimportertest.cpp"
++includes the moc file "dbusmenuimportertest.moc", but does not contain a
++Q_OBJECT, Q_GADGET, Q_NAMESPACE or Q_NAMESPACE_EXPORT macro.
++Running moc on the header
++  "SRC:/tests/dbusmenuimportertest.h"!
++Better include "moc_dbusmenuimportertest.cpp" for a compatibility with regular mode.
++This is a CMAKE_AUTOMOC_RELAXED_MODE warning.
++
++AutoMoc warning
++---------------
++"SRC:/tests/testutils.cpp"
++includes the moc file "testutils.moc", but does not contain a
++Q_OBJECT, Q_GADGET, Q_NAMESPACE or Q_NAMESPACE_EXPORT macro.
++Running moc on the header
++  "SRC:/tests/testutils.h"!
++Better include "moc_testutils.cpp" for a compatibility with regular mode.
++This is a CMAKE_AUTOMOC_RELAXED_MODE warning.
++
++[ 58%] Built target dbusmenuimportertest_autogen
++[ 70%] Built target dbusmenuimportertest
++[ 74%] Automatic MOC for target dbusmenuexportertest
++AutoMoc warning
++---------------
++"SRC:/tests/dbusmenuexportertest.cpp"
++includes the moc file "dbusmenuexportertest.moc", but does not contain a
++Q_OBJECT, Q_GADGET, Q_NAMESPACE or Q_NAMESPACE_EXPORT macro.
++Running moc on the header
++  "SRC:/tests/dbusmenuexportertest.h"!
++Better include "moc_dbusmenuexportertest.cpp" for a compatibility with regular mode.
++This is a CMAKE_AUTOMOC_RELAXED_MODE warning.
++
++AutoMoc warning
++---------------
++"SRC:/tests/testutils.cpp"
++includes the moc file "testutils.moc", but does not contain a
++Q_OBJECT, Q_GADGET, Q_NAMESPACE or Q_NAMESPACE_EXPORT macro.
++Running moc on the header
++  "SRC:/tests/testutils.h"!
++Better include "moc_testutils.cpp" for a compatibility with regular mode.
++This is a CMAKE_AUTOMOC_RELAXED_MODE warning.
++
++[ 74%] Built target dbusmenuexportertest_autogen
++[ 87%] Built target dbusmenuexportertest
++[ 90%] Automatic MOC for target slowmenu
++AutoMoc warning
++---------------
++"SRC:/tests/slowmenu.cpp"
++includes the moc file "slowmenu.moc", but does not contain a
++Q_OBJECT, Q_GADGET, Q_NAMESPACE or Q_NAMESPACE_EXPORT macro.
++Running moc on the header
++  "SRC:/tests/slowmenu.h"!
++Better include "moc_slowmenu.cpp" for a compatibility with regular mode.
++This is a CMAKE_AUTOMOC_RELAXED_MODE warning.
++
++[ 90%] Built target slowmenu_autogen
++[100%] Built target slowmenu
++Install the project...
++-- Install configuration: ""
++-- Installing: /tmp/package-libdbusmenu-qt/usr/lib/pkgconfig/dbusmenu-qt5.pc
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/menudata.js
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/splitbar.png
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/folderopen.png
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/hierarchy.html
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/doc.png
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/tabs.css
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/tab_h.png
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/bc_s.png
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/doxygen.css
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/functions.html
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/classDBusMenuImporter.html
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/folderclosed.png
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/menu.js
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/tab_a.png
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/dbusmenu__export_8h_source.html
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/tab_s.png
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/classDBusMenuImporter.png
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/deprecated.html
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/classDBusMenuImporter-members.html
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/files.html
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/pages.html
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/search
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/search/functions_0.html
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/search/functions_6.html
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/search/all_1.js
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/search/mag_sel.svg
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/search/nomatches.html
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/search/functions_3.js
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/search/functions_4.js
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/search/search_l.png
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/search/all_5.html
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/search/functions_1.html
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/search/close.svg
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/search/searchdata.js
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/search/functions_6.js
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/search/search_r.png
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/search/functions_5.js
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/search/search.css
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/search/all_6.html
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/search/pages_0.html
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/search/functions_2.html
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/search/search_m.png
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/search/all_3.js
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/search/all_6.js
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/search/classes_0.html
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/search/all_4.html
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/search/all_0.js
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/search/functions_0.js
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/search/all_2.js
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/search/all_0.html
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/search/all_3.html
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/search/pages_0.js
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/search/all_2.html
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/search/functions_2.js
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/search/functions_5.html
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/search/all_5.js
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/search/functions_3.html
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/search/all_1.html
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/search/functions_1.js
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/search/all_4.js
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/search/classes_0.js
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/search/search.js
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/search/functions_4.html
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/functions_func.html
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/classes.html
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/nav_g.png
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/bdwn.png
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/dbusmenuimporter_8h_source.html
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/classDBusMenuExporter.html
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/classDBusMenuExporter-members.html
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/annotated.html
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/sync_off.png
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/classDBusMenuExporter.png
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/dbusmenuexporter_8h_source.html
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/jquery.js
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/open.png
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/dir_68267d1309a1af8e8297ef4c3efbcdba.html
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/closed.png
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/dynsections.js
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/nav_h.png
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/doxygen.svg
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/tab_b.png
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/index.html
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/sync_on.png
++-- Installing: /tmp/package-libdbusmenu-qt/usr/share/doc/libdbusmenu-qt5-doc/nav_f.png
++-- Installing: /tmp/package-libdbusmenu-qt/usr/lib/cmake/dbusmenu-qt5/dbusmenu-qt5-config.cmake
++-- Installing: /tmp/package-libdbusmenu-qt/usr/lib/cmake/dbusmenu-qt5/dbusmenu-qt5-config-version.cmake
++-- Installing: /tmp/package-libdbusmenu-qt/usr/lib/libdbusmenu-qt5.so.2.6.0
++-- Installing: /tmp/package-libdbusmenu-qt/usr/lib/libdbusmenu-qt5.so.2
++-- Installing: /tmp/package-libdbusmenu-qt/usr/lib/libdbusmenu-qt5.so
++-- Installing: /tmp/package-libdbusmenu-qt/usr/lib/cmake/dbusmenu-qt5/dbusmenu-qt5-targets.cmake
++-- Installing: /tmp/package-libdbusmenu-qt/usr/lib/cmake/dbusmenu-qt5/dbusmenu-qt5-targets-noconfig.cmake
++-- Installing: /tmp/package-libdbusmenu-qt/usr/include/dbusmenu-qt5/.
++-- Installing: /tmp/package-libdbusmenu-qt/usr/include/dbusmenu-qt5/./dbusmenuimporter.h
++-- Installing: /tmp/package-libdbusmenu-qt/usr/include/dbusmenu-qt5/./dbusmenu_export.h
++-- Installing: /tmp/package-libdbusmenu-qt/usr/include/dbusmenu-qt5/./dbusmenuexporter.h
++-- Installing: /tmp/package-libdbusmenu-qt/usr/include/dbusmenu-qt5/dbusmenu_version.h
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++usr/lib/libdbusmenu-qt5.so	libdbusmenu-qt5.so.2
++usr/lib/libdbusmenu-qt5.so.2	libdbusmenu-qt5.so.2.6.0
++
++Making symbolic link creation script:
++( cd usr/lib ; rm -rf libdbusmenu-qt5.so )
++( cd usr/lib ; ln -sf libdbusmenu-qt5.so.2 libdbusmenu-qt5.so )
++( cd usr/lib ; rm -rf libdbusmenu-qt5.so.2 )
++( cd usr/lib ; ln -sf libdbusmenu-qt5.so.2.6.0 libdbusmenu-qt5.so.2 )
++
++It is recommended that you make these lines your new installation script.
++
++Would you like to make this stuff the install script for this package
++and remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './usr/lib/libdbusmenu-qt5.so.2'
++removed './usr/lib/libdbusmenu-qt5.so'
++
++Creating your new ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/libdbusmenu-qt-0.9.3+16.04.20160218-x86_64-1.txz
++
++./
++install/
++install/doinst.sh
++install/slack-desc
++usr/
++usr/doc/
++usr/doc/libdbusmenu-qt-0.9.3+16.04.20160218/
++usr/doc/libdbusmenu-qt-0.9.3+16.04.20160218/COPYING
++usr/doc/libdbusmenu-qt-0.9.3+16.04.20160218/NEWS
++usr/doc/libdbusmenu-qt-0.9.3+16.04.20160218/README
++usr/include/
++usr/include/dbusmenu-qt5/
++usr/include/dbusmenu-qt5/dbusmenu_export.h
++usr/include/dbusmenu-qt5/dbusmenu_version.h
++usr/include/dbusmenu-qt5/dbusmenuexporter.h
++usr/include/dbusmenu-qt5/dbusmenuimporter.h
++usr/lib/
++usr/lib/cmake/
++usr/lib/cmake/dbusmenu-qt5/
++usr/lib/cmake/dbusmenu-qt5/dbusmenu-qt5-config-version.cmake
++usr/lib/cmake/dbusmenu-qt5/dbusmenu-qt5-config.cmake
++usr/lib/cmake/dbusmenu-qt5/dbusmenu-qt5-targets-noconfig.cmake
++usr/lib/cmake/dbusmenu-qt5/dbusmenu-qt5-targets.cmake
++usr/lib/libdbusmenu-qt5.so.2.6.0
++usr/lib/pkgconfig/
++usr/lib/pkgconfig/dbusmenu-qt5.pc
++usr/share/
++
++Slackware package /tmp/libdbusmenu-qt-0.9.3+16.04.20160218-x86_64-1.txz created.
++

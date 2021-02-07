@@ -1,0 +1,60 @@
+
+rm -r ${SLACK_X_BUILD_DIR}/package-xorg-server-xnest
+mkdir -p ${SLACK_X_BUILD_DIR}/package-xorg-server-xnest/usr/bin
+mv $PKG/usr/bin/Xnest ${SLACK_X_BUILD_DIR}/package-xorg-server-xnest/usr/bin
+mkdir -p ${SLACK_X_BUILD_DIR}/package-xorg-server-xnest/usr/man/man1
+mv $PKG/usr/man/man1/Xnest.1.gz ${SLACK_X_BUILD_DIR}/package-xorg-server-xnest/usr/man/man1
+mkdir -p ${SLACK_X_BUILD_DIR}/package-xorg-server-xnest/install
+cat $CWD/slack-desc/xorg-server-xnest > ${SLACK_X_BUILD_DIR}/package-xorg-server-xnest/install/slack-desc
+cd ${SLACK_X_BUILD_DIR}/package-xorg-server-xnest
+/sbin/makepkg -l y -c n ${SLACK_X_BUILD_DIR}/xorg-server-xnest-${MODULAR_PACKAGE_VERSION}-$ARCH-$BUILD.txz
+
+rm -r ${SLACK_X_BUILD_DIR}/package-xorg-server-xvfb
+mkdir -p ${SLACK_X_BUILD_DIR}/package-xorg-server-xvfb/usr/bin
+mv $PKG/usr/bin/Xvfb ${SLACK_X_BUILD_DIR}/package-xorg-server-xvfb/usr/bin
+mkdir -p ${SLACK_X_BUILD_DIR}/package-xorg-server-xvfb/usr/man/man1
+mv $PKG/usr/man/man1/Xvfb.1.gz ${SLACK_X_BUILD_DIR}/package-xorg-server-xvfb/usr/man/man1
+mkdir -p ${SLACK_X_BUILD_DIR}/package-xorg-server-xvfb/install
+cat $CWD/slack-desc/xorg-server-xvfb > ${SLACK_X_BUILD_DIR}/package-xorg-server-xvfb/install/slack-desc
+cd ${SLACK_X_BUILD_DIR}/package-xorg-server-xvfb
+/sbin/makepkg -l y -c n ${SLACK_X_BUILD_DIR}/xorg-server-xvfb-${MODULAR_PACKAGE_VERSION}-$ARCH-$BUILD.txz
+
+rm -r ${SLACK_X_BUILD_DIR}/package-xorg-server-xephyr
+mkdir -p ${SLACK_X_BUILD_DIR}/package-xorg-server-xephyr/usr/bin
+mv $PKG/usr/bin/Xephyr ${SLACK_X_BUILD_DIR}/package-xorg-server-xephyr/usr/bin
+mkdir -p ${SLACK_X_BUILD_DIR}/package-xorg-server-xephyr/usr/man/man1
+mv $PKG/usr/man/man1/Xephyr.1.gz ${SLACK_X_BUILD_DIR}/package-xorg-server-xephyr/usr/man/man1
+mkdir -p ${SLACK_X_BUILD_DIR}/package-xorg-server-xephyr/install
+cat $CWD/slack-desc/xorg-server-xephyr > ${SLACK_X_BUILD_DIR}/package-xorg-server-xephyr/install/slack-desc
+cd ${SLACK_X_BUILD_DIR}/package-xorg-server-xephyr
+/sbin/makepkg -l y -c n ${SLACK_X_BUILD_DIR}/xorg-server-xephyr-${MODULAR_PACKAGE_VERSION}-$ARCH-$BUILD.txz
+
+rm -r ${SLACK_X_BUILD_DIR}/package-xorg-server-xwayland
+mkdir -p ${SLACK_X_BUILD_DIR}/package-xorg-server-xwayland/usr/bin
+mv $PKG/usr/bin/Xwayland ${SLACK_X_BUILD_DIR}/package-xorg-server-xwayland/usr/bin
+# No man page yet...
+#mkdir -p ${SLACK_X_BUILD_DIR}/package-xorg-server-xwayland/usr/man/man1
+#mv $PKG/usr/man/man1/Xwayland.1.gz ${SLACK_X_BUILD_DIR}/package-xorg-server-xwayland/usr/man/man1
+mkdir -p ${SLACK_X_BUILD_DIR}/package-xorg-server-xwayland/install
+cat $CWD/slack-desc/xorg-server-xwayland > ${SLACK_X_BUILD_DIR}/package-xorg-server-xwayland/install/slack-desc
+cd ${SLACK_X_BUILD_DIR}/package-xorg-server-xwayland
+/sbin/makepkg -l y -c n ${SLACK_X_BUILD_DIR}/xorg-server-xwayland-${MODULAR_PACKAGE_VERSION}-$ARCH-$BUILD.txz
+
+# Build the main xorg-server package:
+cd $PKG
+/sbin/makepkg -l y -c n ${SLACK_X_BUILD_DIR}/xorg-server-${MODULAR_PACKAGE_VERSION}-$ARCH-$BUILD.txz
+
+if [ "$UPGRADE_PACKAGES" = "yes" ]; then
+  /sbin/upgradepkg --install-new ${SLACK_X_BUILD_DIR}/xorg-server-xnest-${MODULAR_PACKAGE_VERSION}-$ARCH-$BUILD.txz
+  /sbin/upgradepkg --install-new ${SLACK_X_BUILD_DIR}/xorg-server-xvfb-${MODULAR_PACKAGE_VERSION}-$ARCH-$BUILD.txz
+  /sbin/upgradepkg --install-new ${SLACK_X_BUILD_DIR}/xorg-server-xephyr-${MODULAR_PACKAGE_VERSION}-$ARCH-$BUILD.txz
+  /sbin/upgradepkg --install-new ${SLACK_X_BUILD_DIR}/xorg-server-xwayland-${MODULAR_PACKAGE_VERSION}-$ARCH-$BUILD.txz
+  /sbin/upgradepkg --install-new ${SLACK_X_BUILD_DIR}/xorg-server-${MODULAR_PACKAGE_VERSION}-$ARCH-$BUILD.txz
+elif [ "$UPGRADE_PACKAGES" = "always" ]; then
+  /sbin/upgradepkg --install-new --reinstall ${SLACK_X_BUILD_DIR}/xorg-server-xnest-${MODULAR_PACKAGE_VERSION}-$ARCH-$BUILD.txz
+  /sbin/upgradepkg --install-new --reinstall ${SLACK_X_BUILD_DIR}/xorg-server-xvfb-${MODULAR_PACKAGE_VERSION}-$ARCH-$BUILD.txz
+  /sbin/upgradepkg --install-new --reinstall ${SLACK_X_BUILD_DIR}/xorg-server-xephyr-${MODULAR_PACKAGE_VERSION}-$ARCH-$BUILD.txz
+  /sbin/upgradepkg --install-new --reinstall ${SLACK_X_BUILD_DIR}/xorg-server-xwayland-${MODULAR_PACKAGE_VERSION}-$ARCH-$BUILD.txz
+  /sbin/upgradepkg --install-new --reinstall ${SLACK_X_BUILD_DIR}/xorg-server-${MODULAR_PACKAGE_VERSION}-$ARCH-$BUILD.txz
+fi
+

@@ -1,0 +1,1216 @@
+diff -ruBN /tmp/libwacom/libwacom.SlackBuild /source/x/libwacom/libwacom.SlackBuild
+--- /tmp/libwacom/libwacom.SlackBuild	2021-01-29 18:30:38.000000000 +0000
++++ /source/x/libwacom/libwacom.SlackBuild	2021-01-30 00:25:04.000000000 +0000
+@@ -60,7 +60,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ else
+   SLKCFLAGS="-O2"
+   LIBDIRSUFFIX=""
+@@ -90,7 +90,7 @@
+   --docdir=/usr/doc/$PKGNAM-$VERSION \
+   --disable-static \
+   --with-udev-dir=/lib/udev \
+-  --build=$ARCH-slackware-linux || exit 1
++  --build=$ARCH-slackware-linux-musl || exit 1
+ 
+ make $NUMJOBS || make || exit 1
+ make install DESTDIR=$PKG || exit 1
+diff -ruBN /tmp/libwacom/libwacom.SlackBuild.log /source/x/libwacom/libwacom.SlackBuild.log
+--- /tmp/libwacom/libwacom.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/x/libwacom/libwacom.SlackBuild.log	2021-01-30 00:26:40.000000000 +0000
+@@ -0,0 +1,1191 @@
++libwacom-1.8/
++libwacom-1.8/configure
++libwacom-1.8/config.sub
++libwacom-1.8/libwacom/
++libwacom-1.8/libwacom/libwacom.h
++libwacom-1.8/libwacom/libwacom-error.c
++libwacom-1.8/libwacom/util-strings.h
++libwacom-1.8/libwacom/libwacom.sym
++libwacom-1.8/libwacom/Makefile.in
++libwacom-1.8/libwacom/libwacomint.h
++libwacom-1.8/libwacom/libwacom.c
++libwacom-1.8/libwacom/Makefile.am
++libwacom-1.8/libwacom/libwacom-database.c
++libwacom-1.8/libwacom/libwacom-deprecated.c
++libwacom-1.8/test/
++libwacom-1.8/test/test-ltversion.c
++libwacom-1.8/test/test-load.c
++libwacom-1.8/test/test-dbverify.c
++libwacom-1.8/test/Makefile.in
++libwacom-1.8/test/test-tablet-svg-validity.c
++libwacom-1.8/test/Makefile.am
++libwacom-1.8/test/test-stylus-validity.c
++libwacom-1.8/test/test-deprecated.c
++libwacom-1.8/test/test-tablet-validity.c
++libwacom-1.8/configure.ac
++libwacom-1.8/README.md
++libwacom-1.8/meson.build
++libwacom-1.8/include/
++libwacom-1.8/include/linux/
++libwacom-1.8/include/linux/input-event-codes.h
++libwacom-1.8/test-driver
++libwacom-1.8/aclocal.m4
++libwacom-1.8/NEWS
++libwacom-1.8/Makefile.in
++libwacom-1.8/autogen.sh
++libwacom-1.8/ltmain.sh
++libwacom-1.8/meson_options.txt
++libwacom-1.8/COPYING
++libwacom-1.8/config.guess
++libwacom-1.8/install-sh
++libwacom-1.8/missing
++libwacom-1.8/libwacom.pc.in
++libwacom-1.8/Makefile.am
++libwacom-1.8/depcomp
++libwacom-1.8/data/
++libwacom-1.8/data/isdv4-5128.tablet
++libwacom-1.8/data/bamboo-one-m-p.tablet
++libwacom-1.8/data/isdv4-124.tablet
++libwacom-1.8/data/isdv4-5110.tablet
++libwacom-1.8/data/graphire4-6x8.tablet
++libwacom-1.8/data/intuos-s-p3-wl-android.tablet
++libwacom-1.8/data/isdv4-5002.tablet
++libwacom-1.8/data/isdv4-4824.tablet
++libwacom-1.8/data/isdv4-5040.tablet
++libwacom-1.8/data/intuos-pro-l.tablet
++libwacom-1.8/data/intuos-s-p2.tablet
++libwacom-1.8/data/dtk-1660e-2.tablet
++libwacom-1.8/data/isdv4-93.tablet
++libwacom-1.8/data/dtu-2231.tablet
++libwacom-1.8/data/intuos3-4x5.tablet
++libwacom-1.8/data/isdv4-4875.tablet
++libwacom-1.8/data/dth-2452.tablet
++libwacom-1.8/data/isdv4-5013.tablet
++libwacom-1.8/data/isdv4-51b1.tablet
++libwacom-1.8/data/isdv4-5000.tablet
++libwacom-1.8/data/bamboo-2fg-s-pt.tablet
++libwacom-1.8/data/isdv4-50b6.tablet
++libwacom-1.8/data/cintiq-22.tablet
++libwacom-1.8/data/elan-5515.tablet
++libwacom-1.8/data/isdv4-490b.tablet
++libwacom-1.8/data/xp-pen-star03.tablet
++libwacom-1.8/data/isdv4-4814.tablet
++libwacom-1.8/data/isdv4-101.tablet
++libwacom-1.8/data/check-svg-exists.sh
++libwacom-1.8/data/isdv4-48ed.tablet
++libwacom-1.8/data/isdv4-149.tablet
++libwacom-1.8/data/huion-420.tablet
++libwacom-1.8/data/isdv4-100.tablet
++libwacom-1.8/data/xp-pen-g430.tablet
++libwacom-1.8/data/intuos-m-p3-android.tablet
++libwacom-1.8/data/intuos-m-p2.tablet
++libwacom-1.8/data/isdv4-117.tablet
++libwacom-1.8/data/gaomon-s620.tablet
++libwacom-1.8/data/bamboo-0fg-m-p-alt.tablet
++libwacom-1.8/data/cintiq-13hd.tablet
++libwacom-1.8/data/isdv4-4807.tablet
++libwacom-1.8/data/isdv4-5150.tablet
++libwacom-1.8/data/isdv4-5221.tablet
++libwacom-1.8/data/isdv4-486a.tablet
++libwacom-1.8/data/dtu-1031x.tablet
++libwacom-1.8/data/intuos-s-p.tablet
++libwacom-1.8/data/isdv4-5148.tablet
++libwacom-1.8/data/bamboo-16fg-s-p.tablet
++libwacom-1.8/data/isdv4-51bd.tablet
++libwacom-1.8/data/isdv4-51a0.tablet
++libwacom-1.8/data/isdv4-488f.tablet
++libwacom-1.8/data/isdv4-496c.tablet
++libwacom-1.8/data/intuos2-6x8.tablet
++libwacom-1.8/data/mobilestudio-pro-16.tablet
++libwacom-1.8/data/cintiq-16.tablet
++libwacom-1.8/data/intuos-9x12.tablet
++libwacom-1.8/data/isdv4-48ec.tablet
++libwacom-1.8/data/isdv4-5014.tablet
++libwacom-1.8/data/intuos-s-pt2.tablet
++libwacom-1.8/data/elan-29b6.tablet
++libwacom-1.8/data/isdv4-4957.tablet
++libwacom-1.8/data/elan-22e2.tablet
++libwacom-1.8/data/intuos3-6x11.tablet
++libwacom-1.8/data/graphire-wireless-8x6.tablet
++libwacom-1.8/data/isdv4-50db.tablet
++libwacom-1.8/data/isdv4-48eb.tablet
++libwacom-1.8/data/ek-remote.tablet
++libwacom-1.8/data/isdv4-51be.tablet
++libwacom-1.8/data/isdv4-5157.tablet
++libwacom-1.8/data/intuos4-12x19.tablet
++libwacom-1.8/data/elan-264c.tablet
++libwacom-1.8/data/isdv4-5072.tablet
++libwacom-1.8/data/bamboo-4fg-fun-s.tablet
++libwacom-1.8/data/intuos4-4x6.tablet
++libwacom-1.8/data/bamboo-4fg-fun-m.tablet
++libwacom-1.8/data/isdv4-485e.tablet
++libwacom-1.8/data/isdv4-10e.tablet
++libwacom-1.8/data/isdv4-502a.tablet
++libwacom-1.8/data/cintiq-22hd.tablet
++libwacom-1.8/data/intuos-pro-2-m.tablet
++libwacom-1.8/data/isdv4-51f5.tablet
++libwacom-1.8/data/intuos3-12x19.tablet
++libwacom-1.8/data/intuos5-touch-m.tablet
++libwacom-1.8/data/isdv4-4838.tablet
++libwacom-1.8/data/graphire2-4x5.tablet
++libwacom-1.8/data/cintiq-20wsx.tablet
++libwacom-1.8/data/isdv4-51f6.tablet
++libwacom-1.8/data/intuos-m-pt2.tablet
++libwacom-1.8/data/intuos-s-pt.tablet
++libwacom-1.8/data/isdv4-5122.tablet
++libwacom-1.8/data/isdv4-5090.tablet
++libwacom-1.8/data/isdv4-50b4.tablet
++libwacom-1.8/data/elan-24db.tablet
++libwacom-1.8/data/isdv4-50f1.tablet
++libwacom-1.8/data/isdv4-114.tablet
++libwacom-1.8/data/bamboo-0fg-s-p-alt.tablet
++libwacom-1.8/data/dtu-1141b.tablet
++libwacom-1.8/data/isdv4-48f6.tablet
++libwacom-1.8/data/intuos4-6x9-wl.tablet
++libwacom-1.8/data/cintiq-13hdt.tablet
++libwacom-1.8/data/isdv4-4865.tablet
++libwacom-1.8/data/dtk-1651.tablet
++libwacom-1.8/data/bamboo-16fg-s-pt.tablet
++libwacom-1.8/data/elan-29a1.tablet
++libwacom-1.8/data/isdv4-509f.tablet
++libwacom-1.8/data/isdv4-12c.tablet
++libwacom-1.8/data/intuos5-touch-l.tablet
++libwacom-1.8/data/wacom.example
++libwacom-1.8/data/intuos5-touch-s.tablet
++libwacom-1.8/data/intuos-m-p.tablet
++libwacom-1.8/data/one-by-wacom-s-p2.tablet
++libwacom-1.8/data/isdv4-104.tablet
++libwacom-1.8/data/dtu-1931.tablet
++libwacom-1.8/data/dth-2242.tablet
++libwacom-1.8/data/isdv4-50fd.tablet
++libwacom-1.8/data/isdv4-e2.tablet
++libwacom-1.8/data/isdv4-51bc.tablet
++libwacom-1.8/data/isdv4-48ce.tablet
++libwacom-1.8/data/isdv4-10d.tablet
++libwacom-1.8/data/isdv4-51c4.tablet
++libwacom-1.8/data/cintiq-24hd.tablet
++libwacom-1.8/data/serial-wacf004.tablet
++libwacom-1.8/data/n-trig-pen.tablet
++libwacom-1.8/data/isdv4-ef.tablet
++libwacom-1.8/data/cintiq-16-2.tablet
++libwacom-1.8/data/isdv4-90.tablet
++libwacom-1.8/data/bamboo-2fg-m-p.tablet
++libwacom-1.8/data/isdv4-ed.tablet
++libwacom-1.8/data/cintiq-22hdt.tablet
++libwacom-1.8/data/one-by-wacom-m-p2.tablet
++libwacom-1.8/data/Makefile.in
++libwacom-1.8/data/check-files-in-git.sh
++libwacom-1.8/data/intuos-6x8.tablet
++libwacom-1.8/data/intuos-s-p3.tablet
++libwacom-1.8/data/huion-h950p.tablet
++libwacom-1.8/data/intuos4-8x13.tablet
++libwacom-1.8/data/isdv4-e6.tablet
++libwacom-1.8/data/elan-0732.tablet
++libwacom-1.8/data/dtu-1031.tablet
++libwacom-1.8/data/mobilestudio-pro-16-3.tablet
++libwacom-1.8/data/isdv4-51b2.tablet
++libwacom-1.8/data/isdv4-503e.tablet
++libwacom-1.8/data/isdv4-51e2.tablet
++libwacom-1.8/data/cintiq-companion-hybrid.tablet
++libwacom-1.8/data/isdv4-2d1f-001e.tablet
++libwacom-1.8/data/isdv4-51b0.tablet
++libwacom-1.8/data/intuos5-s.tablet
++libwacom-1.8/data/isdv4-51b3.tablet
++libwacom-1.8/data/isdv4-4004.tablet
++libwacom-1.8/data/isdv4-484c.tablet
++libwacom-1.8/data/isdv4-509d.tablet
++libwacom-1.8/data/isdv4-50f8.tablet
++libwacom-1.8/data/intuos-12x12.tablet
++libwacom-1.8/data/isdv4-5048.tablet
++libwacom-1.8/data/graphire2-5x7.tablet
++libwacom-1.8/data/isdv4-48d6.tablet
++libwacom-1.8/data/elan-2627.tablet
++libwacom-1.8/data/elan-262b.tablet
++libwacom-1.8/data/isdv4-4841.tablet
++libwacom-1.8/data/isdv4-5147.tablet
++libwacom-1.8/data/isdv4-481a.tablet
++libwacom-1.8/data/dtf-720.tablet
++libwacom-1.8/data/bamboo-4fg-s-t.tablet
++libwacom-1.8/data/cintiq-pro-24-pt.tablet
++libwacom-1.8/data/cintiq-companion-2.tablet
++libwacom-1.8/data/graphire4-4x5.tablet
++libwacom-1.8/data/isdv4-51bb.tablet
++libwacom-1.8/data/elan-2072.tablet
++libwacom-1.8/data/dtu-1631.tablet
++libwacom-1.8/data/isdv4-51b8.tablet
++libwacom-1.8/data/dtk-2451.tablet
++libwacom-1.8/data/isdv4-5158.tablet
++libwacom-1.8/data/isdv4-51c7.tablet
++libwacom-1.8/data/dtu-1141.tablet
++libwacom-1.8/data/isdv4-504a.tablet
++libwacom-1.8/data/isdv4-ec.tablet
++libwacom-1.8/data/bamboo-16fg-m-pt.tablet
++libwacom-1.8/data/isdv4-4870.tablet
++libwacom-1.8/data/isdv4-116.tablet
++libwacom-1.8/data/isdv4-51b9.tablet
++libwacom-1.8/data/intuos-m-pt.tablet
++libwacom-1.8/data/dtk-2241.tablet
++libwacom-1.8/data/bamboo-4fg-se-m-pt.tablet
++libwacom-1.8/data/cintiq-27hd.tablet
++libwacom-1.8/data/isdv4-5196.tablet
++libwacom-1.8/data/huion-new-1060-plus.tablet
++libwacom-1.8/data/isdv4-5144.tablet
++libwacom-1.8/data/isdv4-e3.tablet
++libwacom-1.8/data/bamboo-2fg-s-p.tablet
++libwacom-1.8/data/isdv4-48ee.tablet
++libwacom-1.8/data/intuos-4x5.tablet
++libwacom-1.8/data/bamboo-4fg-s-pt.tablet
++libwacom-1.8/data/bamboo-2fg-fun-s-pt.tablet
++libwacom-1.8/data/layouts/
++libwacom-1.8/data/layouts/intuos3-4x6.svg
++libwacom-1.8/data/layouts/dtu-1141.svg
++libwacom-1.8/data/layouts/bamboo-4fg-s-pt.svg
++libwacom-1.8/data/layouts/cintiq-13hd.svg
++libwacom-1.8/data/layouts/intuos3-4x5.svg
++libwacom-1.8/data/layouts/intuos-pro-l.svg
++libwacom-1.8/data/layouts/intuos-pro-2-m.svg
++libwacom-1.8/data/layouts/bamboo-4fg-fun-m-pt.svg
++libwacom-1.8/data/layouts/intuos-pro-s.svg
++libwacom-1.8/data/layouts/intuos-m-p3.svg
++libwacom-1.8/data/layouts/intuos3-12x19.svg
++libwacom-1.8/data/layouts/intuos-m-p.svg
++libwacom-1.8/data/layouts/bamboo-16fg-s-pt.svg
++libwacom-1.8/data/layouts/cintiq-companion.svg
++libwacom-1.8/data/layouts/bamboo-4fg-se-m-pt.svg
++libwacom-1.8/data/layouts/bamboo-0fg-s-p-alt.svg
++libwacom-1.8/data/layouts/graphire4-4x5.svg
++libwacom-1.8/data/layouts/ek-remote.svg
++libwacom-1.8/data/layouts/bamboo-pad.svg
++libwacom-1.8/data/layouts/huion-h950p.svg
++libwacom-1.8/data/layouts/mobilestudio-pro-13.svg
++libwacom-1.8/data/layouts/intuos-m-pt2.svg
++libwacom-1.8/data/layouts/cintiq-21ux.svg
++libwacom-1.8/data/layouts/intuos3-6x8.svg
++libwacom-1.8/data/layouts/dti-520.svg
++libwacom-1.8/data/layouts/intuos4-6x9.svg
++libwacom-1.8/data/layouts/bamboo-2fg-s-t.svg
++libwacom-1.8/data/layouts/dth-2452.svg
++libwacom-1.8/data/layouts/Makefile.in
++libwacom-1.8/data/layouts/intuos4-4x6.svg
++libwacom-1.8/data/layouts/intuos3-6x11.svg
++libwacom-1.8/data/layouts/gaomon-s620.svg
++libwacom-1.8/data/layouts/cintiq-companion-hybrid.svg
++libwacom-1.8/data/layouts/intuos-s-p3.svg
++libwacom-1.8/data/layouts/intuos5-s.svg
++libwacom-1.8/data/layouts/intuos4-8x13.svg
++libwacom-1.8/data/layouts/intuos-s-p2.svg
++libwacom-1.8/data/layouts/bamboo-2fg-fun-s-pt.svg
++libwacom-1.8/data/layouts/intuos-s-pt2.svg
++libwacom-1.8/data/layouts/xp-pen-star03.svg
++libwacom-1.8/data/layouts/cintiq-12wx.svg
++libwacom-1.8/data/layouts/intuos-m-p2.svg
++libwacom-1.8/data/layouts/intuos4-12x19.svg
++libwacom-1.8/data/layouts/graphire4-6x8.svg
++libwacom-1.8/data/layouts/dth-2242.svg
++libwacom-1.8/data/layouts/bamboo-4fg-fun-s-pt.svg
++libwacom-1.8/data/layouts/huion-new-1060-plus.svg
++libwacom-1.8/data/layouts/intuos-s-p.svg
++libwacom-1.8/data/layouts/dtk-1651.svg
++libwacom-1.8/data/layouts/intuos-pro-2-l.svg
++libwacom-1.8/data/layouts/intuos4-6x9-wl.svg
++libwacom-1.8/data/layouts/bamboo-16fg-m-pt.svg
++libwacom-1.8/data/layouts/bamboo-4fg-se-s-pt.svg
++libwacom-1.8/data/layouts/mobilestudio-pro-16.svg
++libwacom-1.8/data/layouts/intuos-pro-m.svg
++libwacom-1.8/data/layouts/bamboo-16fg-s-t.svg
++libwacom-1.8/data/layouts/huion-h420.svg
++libwacom-1.8/data/layouts/bamboo-2fg-s-pt.svg
++libwacom-1.8/data/layouts/cintiq-companion-2.svg
++libwacom-1.8/data/layouts/Makefile.am
++libwacom-1.8/data/layouts/cintiq-20wsx.svg
++libwacom-1.8/data/layouts/bamboo-4fg-s-t.svg
++libwacom-1.8/data/layouts/intuos-m-pt.svg
++libwacom-1.8/data/layouts/README
++libwacom-1.8/data/layouts/intuos3-9x12.svg
++libwacom-1.8/data/layouts/intuos5-m.svg
++libwacom-1.8/data/layouts/intuos5-l.svg
++libwacom-1.8/data/layouts/bamboo-2fg-fun-m-pt.svg
++libwacom-1.8/data/layouts/cintiq-22hd.svg
++libwacom-1.8/data/layouts/dtu-1031.svg
++libwacom-1.8/data/layouts/intuos-s-pt.svg
++libwacom-1.8/data/layouts/cintiq-24hd.svg
++libwacom-1.8/data/layouts/huion-h610-pro.svg
++libwacom-1.8/data/layouts/dtu-1141b.svg
++libwacom-1.8/data/layouts/intuos3-12x12.svg
++libwacom-1.8/data/layouts/bamboo-0fg-s-p.svg
++libwacom-1.8/data/layouts/intuos-pro-2-s.svg
++libwacom-1.8/data/layouts/cintiq-21ux2.svg
++libwacom-1.8/data/layouts/dtk-2451.svg
++libwacom-1.8/data/layouts/graphire-wireless-8x6.svg
++libwacom-1.8/data/isdv4-5115.tablet
++libwacom-1.8/data/isdv4-4809.tablet
++libwacom-1.8/data/isdv4-5215.tablet
++libwacom-1.8/data/dell-canvas-27.tablet
++libwacom-1.8/data/cintiq-24hd-touch.tablet
++libwacom-1.8/data/bamboo-2fg-fun-m-pt.tablet
++libwacom-1.8/data/isdv4-4831.tablet
++libwacom-1.8/data/cintiq-pro-16.tablet
++libwacom-1.8/data/isdv4-5044.tablet
++libwacom-1.8/data/cintiq-pro-32.tablet
++libwacom-1.8/data/isdv4-495f.tablet
++libwacom-1.8/data/intuos-pro-m.tablet
++libwacom-1.8/data/cintiq-companion.tablet
++libwacom-1.8/data/isdv4-5220.tablet
++libwacom-1.8/data/elan-2628.tablet
++libwacom-1.8/data/intuos2-12x18.tablet
++libwacom-1.8/data/isdv4-4800.tablet
++libwacom-1.8/data/bamboo-pad-wireless.tablet
++libwacom-1.8/data/intuos-pro-2-l.tablet
++libwacom-1.8/data/isdv4-4822.tablet
++libwacom-1.8/data/intuos5-m.tablet
++libwacom-1.8/data/isdv4-51e9.tablet
++libwacom-1.8/data/intuos3-12x12.tablet
++libwacom-1.8/data/isdv4-51ba.tablet
++libwacom-1.8/data/isdv4-48ca.tablet
++libwacom-1.8/data/isdv4-4988.tablet
++libwacom-1.8/data/intuos-m-p3-wl-android.tablet
++libwacom-1.8/data/elan-2537.tablet
++libwacom-1.8/data/elan-2514-alt.tablet
++libwacom-1.8/data/Makefile.am
++libwacom-1.8/data/huion-h610-pro.tablet
++libwacom-1.8/data/intuos-pro-2-s.tablet
++libwacom-1.8/data/bamboo-4fg-se-s-pt.tablet
++libwacom-1.8/data/one-by-wacom-m-p.tablet
++libwacom-1.8/data/intuos2-4x5.tablet
++libwacom-1.8/data/graphire3-6x8.tablet
++libwacom-1.8/data/bamboo-pad.tablet
++libwacom-1.8/data/dtk-1660e.tablet
++libwacom-1.8/data/cintiq-12wx.tablet
++libwacom-1.8/data/intuos3-9x12.tablet
++libwacom-1.8/data/isdv4-50ef.tablet
++libwacom-1.8/data/intuos4-6x9.tablet
++libwacom-1.8/data/cintiq-21ux2.tablet
++libwacom-1.8/data/isdv4-513b.tablet
++libwacom-1.8/data/dti-520.tablet
++libwacom-1.8/data/cintiq-pro-24-p.tablet
++libwacom-1.8/data/isdv4-51b6.tablet
++libwacom-1.8/data/huion-h420.tablet
++libwacom-1.8/data/isdv4-517d.tablet
++libwacom-1.8/data/intuos-s-p3-wl.tablet
++libwacom-1.8/data/isdv4-490a.tablet
++libwacom-1.8/data/intuos-s-p3-android.tablet
++libwacom-1.8/data/isdv4-e5.tablet
++libwacom-1.8/data/isdv4-5222.tablet
++libwacom-1.8/data/isdv4-5146.tablet
++libwacom-1.8/data/wacom-one.tablet
++libwacom-1.8/data/dth-1152.tablet
++libwacom-1.8/data/intuos2-12x12.tablet
++libwacom-1.8/data/intuos-pro-s.tablet
++libwacom-1.8/data/isdv4-516b.tablet
++libwacom-1.8/data/isdv4-515a.tablet
++libwacom-1.8/data/bamboo-0fg-s-p.tablet
++libwacom-1.8/data/isdv4-4806.tablet
++libwacom-1.8/data/intuos-m-p3.tablet
++libwacom-1.8/data/cintiq-21ux.tablet
++libwacom-1.8/data/isdv4-51b7.tablet
++libwacom-1.8/data/gaomon-s56k.tablet
++libwacom-1.8/data/isdv4-51af.tablet
++libwacom-1.8/data/isdv4-5010.tablet
++libwacom-1.8/data/isdv4-51bf.tablet
++libwacom-1.8/data/one-by-wacom-s-p.tablet
++libwacom-1.8/data/generic.tablet
++libwacom-1.8/data/isdv4-5202.tablet
++libwacom-1.8/data/isdv4-5169.tablet
++libwacom-1.8/data/test_data_files.py
++libwacom-1.8/data/intuos-12x18.tablet
++libwacom-1.8/data/cintiq-pro-13.tablet
++libwacom-1.8/data/isdv4-5099.tablet
++libwacom-1.8/data/isdv4-503f.tablet
++libwacom-1.8/data/graphire-usb.tablet
++libwacom-1.8/data/intuos2-9x12.tablet
++libwacom-1.8/data/isdv4-50e9.tablet
++libwacom-1.8/data/graphire3-4x5.tablet
++libwacom-1.8/data/libwacom.stylus
++libwacom-1.8/data/isdv4-2d1f-002e.tablet
++libwacom-1.8/data/bamboo-one.tablet
++libwacom-1.8/data/isdv4-521f.tablet
++libwacom-1.8/data/mobilestudio-pro-13-2.tablet
++libwacom-1.8/data/xp-pen-g640.tablet
++libwacom-1.8/data/bamboo-2fg-s-t.tablet
++libwacom-1.8/data/mobilestudio-pro-13.tablet
++libwacom-1.8/data/isdv4-4851.tablet
++libwacom-1.8/data/intuos3-4x6.tablet
++libwacom-1.8/data/isdv4-4834.tablet
++libwacom-1.8/data/bamboo-16fg-s-t.tablet
++libwacom-1.8/data/elan-2514.tablet
++libwacom-1.8/data/isdv4-10f.tablet
++libwacom-1.8/data/cintiq-27hdt.tablet
++libwacom-1.8/data/intuos-m-p3-wl.tablet
++libwacom-1.8/data/intuos3-6x8.tablet
++libwacom-1.8/data/isdv4-48c9.tablet
++libwacom-1.8/data/isdv4-50b8.tablet
++libwacom-1.8/data/volito-4x5.tablet
++libwacom-1.8/data/mobilestudio-pro-16-2.tablet
++libwacom-1.8/doc/
++libwacom-1.8/doc/Makefile.in
++libwacom-1.8/doc/html/
++libwacom-1.8/doc/html/splitbar.png
++libwacom-1.8/doc/html/libwacom_8h_source.html
++libwacom-1.8/doc/html/menudata.js
++libwacom-1.8/doc/html/search/
++libwacom-1.8/doc/html/search/all_2.js
++libwacom-1.8/doc/html/search/search_m.png
++libwacom-1.8/doc/html/search/search_r.png
++libwacom-1.8/doc/html/search/pages_0.js
++libwacom-1.8/doc/html/search/nomatches.html
++libwacom-1.8/doc/html/search/functions_0.html
++libwacom-1.8/doc/html/search/enums_0.js
++libwacom-1.8/doc/html/search/files_0.js
++libwacom-1.8/doc/html/search/enums_0.html
++libwacom-1.8/doc/html/search/all_3.js
++libwacom-1.8/doc/html/search/all_3.html
++libwacom-1.8/doc/html/search/pages_1.js
++libwacom-1.8/doc/html/search/search.js
++libwacom-1.8/doc/html/search/searchdata.js
++libwacom-1.8/doc/html/search/defines_1.js
++libwacom-1.8/doc/html/search/search_l.png
++libwacom-1.8/doc/html/search/typedefs_0.html
++libwacom-1.8/doc/html/search/functions_0.js
++libwacom-1.8/doc/html/search/pages_1.html
++libwacom-1.8/doc/html/search/pages_0.html
++libwacom-1.8/doc/html/search/enumvalues_0.html
++libwacom-1.8/doc/html/search/all_1.html
++libwacom-1.8/doc/html/search/all_0.html
++libwacom-1.8/doc/html/search/all_0.js
++libwacom-1.8/doc/html/search/enumvalues_0.js
++libwacom-1.8/doc/html/search/mag_sel.svg
++libwacom-1.8/doc/html/search/defines_0.html
++libwacom-1.8/doc/html/search/all_2.html
++libwacom-1.8/doc/html/search/typedefs_0.js
++libwacom-1.8/doc/html/search/close.svg
++libwacom-1.8/doc/html/search/search.css
++libwacom-1.8/doc/html/search/all_1.js
++libwacom-1.8/doc/html/search/defines_0.js
++libwacom-1.8/doc/html/search/defines_1.html
++libwacom-1.8/doc/html/search/files_0.html
++libwacom-1.8/doc/html/globals_eval.html
++libwacom-1.8/doc/html/globals.html
++libwacom-1.8/doc/html/tab_b.png
++libwacom-1.8/doc/html/nav_f.png
++libwacom-1.8/doc/html/dynsections.js
++libwacom-1.8/doc/html/closed.png
++libwacom-1.8/doc/html/bc_s.png
++libwacom-1.8/doc/html/dir_2bc10c097a08e7c15dc75588169cd55b.html
++libwacom-1.8/doc/html/globals_enum.html
++libwacom-1.8/doc/html/open.png
++libwacom-1.8/doc/html/doxygen.svg
++libwacom-1.8/doc/html/tab_a.png
++libwacom-1.8/doc/html/sync_on.png
++libwacom-1.8/doc/html/globals_func.html
++libwacom-1.8/doc/html/globals_type.html
++libwacom-1.8/doc/html/files.html
++libwacom-1.8/doc/html/bug.html
++libwacom-1.8/doc/html/nav_g.png
++libwacom-1.8/doc/html/doc.png
++libwacom-1.8/doc/html/doxygen.css
++libwacom-1.8/doc/html/libwacom_8h.html
++libwacom-1.8/doc/html/sync_off.png
++libwacom-1.8/doc/html/menu.js
++libwacom-1.8/doc/html/tab_s.png
++libwacom-1.8/doc/html/tabs.css
++libwacom-1.8/doc/html/tab_h.png
++libwacom-1.8/doc/html/pages.html
++libwacom-1.8/doc/html/bdwn.png
++libwacom-1.8/doc/html/folderclosed.png
++libwacom-1.8/doc/html/deprecated.html
++libwacom-1.8/doc/html/folderopen.png
++libwacom-1.8/doc/html/index.html
++libwacom-1.8/doc/html/jquery.js
++libwacom-1.8/doc/html/globals_defs.html
++libwacom-1.8/doc/html/nav_h.png
++libwacom-1.8/doc/Makefile.am
++libwacom-1.8/doc/doxygen.conf.in
++libwacom-1.8/compile
++libwacom-1.8/tools/
++libwacom-1.8/tools/generate-hwdb.c
++libwacom-1.8/tools/list-devices.c
++libwacom-1.8/tools/65-libwacom.rules
++libwacom-1.8/tools/Makefile.in
++libwacom-1.8/tools/libwacom-list-local-devices.man
++libwacom-1.8/tools/list-local-devices.c
++libwacom-1.8/tools/list-compatible-styli.c
++libwacom-1.8/tools/65-libwacom.hwdb
++libwacom-1.8/tools/65-libwacom.rules.in
++libwacom-1.8/tools/Makefile.am
++libwacom-1.8/config.h.in
++checking for a BSD-compatible install... /usr/bin/ginstall -c
++checking whether build environment is sane... yes
++checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
++checking for gawk... gawk
++checking whether make sets $(MAKE)... yes
++checking whether make supports nested variables... yes
++checking whether to enable maintainer-specific portions of Makefiles... yes
++checking whether make supports nested variables... (cached) yes
++checking build system type... x86_64-slackware-linux-musl
++checking host system type... x86_64-slackware-linux-musl
++checking how to print strings... printf
++checking whether make supports the include directive... yes (GNU style)
++checking for gcc... gcc
++checking whether the C compiler works... yes
++checking for C compiler default output file name... a.out
++checking for suffix of executables... 
++checking whether we are cross compiling... no
++checking for suffix of object files... o
++checking whether we are using the GNU C compiler... yes
++checking whether gcc accepts -g... yes
++checking for gcc option to accept ISO C89... none needed
++checking whether gcc understands -c and -o together... yes
++checking dependency style of gcc... gcc3
++checking for a sed that does not truncate output... /usr/bin/sed
++checking for grep that handles long lines and -e... /usr/bin/grep
++checking for egrep... /usr/bin/grep -E
++checking for fgrep... /usr/bin/grep -F
++checking for ld used by gcc... /usr/bin/ld
++checking if the linker (/usr/bin/ld) is GNU ld... yes
++checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
++checking the name lister (/usr/bin/nm -B) interface... BSD nm
++checking whether ln -s works... yes
++checking the maximum length of command line arguments... 98304
++checking how to convert x86_64-slackware-linux-musl file names to x86_64-slackware-linux-musl format... func_convert_file_noop
++checking how to convert x86_64-slackware-linux-musl file names to toolchain format... func_convert_file_noop
++checking for /usr/bin/ld option to reload object files... -r
++checking for objdump... objdump
++checking how to recognize dependent libraries... pass_all
++checking for dlltool... dlltool
++checking how to associate runtime and link libraries... printf %s\n
++checking for ar... ar
++checking for archiver @FILE support... @
++checking for strip... strip
++checking for ranlib... ranlib
++checking command to parse /usr/bin/nm -B output from gcc object... ok
++checking for sysroot... no
++checking for a working dd... /usr/bin/dd
++checking how to truncate binary pipes... /usr/bin/dd bs=4096 count=1
++checking for mt... mt
++checking if mt is a manifest tool... no
++checking how to run the C preprocessor... gcc -E
++checking for ANSI C header files... yes
++checking for sys/types.h... yes
++checking for sys/stat.h... yes
++checking for stdlib.h... yes
++checking for string.h... yes
++checking for memory.h... yes
++checking for strings.h... yes
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking for unistd.h... yes
++checking for dlfcn.h... yes
++checking for objdir... .libs
++checking if gcc supports -fno-rtti -fno-exceptions... no
++checking for gcc option to produce PIC... -fPIC -DPIC
++checking if gcc PIC flag -fPIC -DPIC works... yes
++checking if gcc static flag -static works... yes
++checking if gcc supports -c -o file.o... yes
++checking if gcc supports -c -o file.o... (cached) yes
++checking whether the gcc linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
++checking whether -lc should be explicitly linked in... no
++checking dynamic linker characteristics... GNU/Linux ld.so
++checking how to hardcode library paths into programs... immediate
++checking whether stripping libraries is possible... yes
++checking if libtool supports shared libraries... yes
++checking whether to build shared libraries... yes
++checking whether to build static libraries... no
++checking for gcc... (cached) gcc
++checking whether we are using the GNU C compiler... (cached) yes
++checking whether gcc accepts -g... (cached) yes
++checking for gcc option to accept ISO C89... (cached) none needed
++checking whether gcc understands -c and -o together... (cached) yes
++checking dependency style of gcc... (cached) gcc3
++checking for gcc option to accept ISO C99... none needed
++checking pkg-config is at least version 0.9.0... yes
++checking for doxygen... yes
++checking for dlsym in -ldl... yes
++checking for GLIB... yes
++checking for LIBXML... yes
++checking that generated files are newer than configure... done
++configure: creating ./config.status
++config.status: creating Makefile
++config.status: creating data/Makefile
++config.status: creating data/layouts/Makefile
++config.status: creating doc/Makefile
++config.status: creating test/Makefile
++config.status: creating tools/Makefile
++config.status: creating tools/65-libwacom.rules
++config.status: creating libwacom/Makefile
++config.status: creating libwacom.pc
++config.status: creating config.h
++config.status: executing depfiles commands
++config.status: executing libtool commands
++make  all-recursive
++make[1]: Entering directory '/tmp/libwacom-1.8'
++Making all in libwacom
++make[2]: Entering directory '/tmp/libwacom-1.8/libwacom'
++  CC       libwacom_la-libwacom.lo
++  CC       libwacom_la-libwacom-error.lo
++  CC       libwacom_la-libwacom-database.lo
++  CC       libwacom_la-libwacom-deprecated.lo
++  CCLD     libwacom.la
++make[2]: Leaving directory '/tmp/libwacom-1.8/libwacom'
++Making all in data
++make[2]: Entering directory '/tmp/libwacom-1.8/data'
++Making all in layouts
++make[3]: Entering directory '/tmp/libwacom-1.8/data/layouts'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/libwacom-1.8/data/layouts'
++make[3]: Entering directory '/tmp/libwacom-1.8/data'
++make[3]: Nothing to be done for 'all-am'.
++make[3]: Leaving directory '/tmp/libwacom-1.8/data'
++make[2]: Leaving directory '/tmp/libwacom-1.8/data'
++Making all in doc
++make[2]: Entering directory '/tmp/libwacom-1.8/doc'
++  GEN      doxygen.conf
++  GEN      doxygen
++make[2]: Leaving directory '/tmp/libwacom-1.8/doc'
++Making all in test
++make[2]: Entering directory '/tmp/libwacom-1.8/test'
++  CC       test_load-test-load.o
++  CC       test_dbverify-test-dbverify.o
++  CC       test_tablet_validity-test-tablet-validity.o
++  CC       test_stylus_validity-test-stylus-validity.o
++  CC       test_ltversion-test-ltversion.o
++  CC       test-deprecated.o
++  CC       test_tablet_svg_validity-test-tablet-svg-validity.o
++  CCLD     test-load
++  CCLD     test-dbverify
++  CCLD     test-tablet-validity
++  CCLD     test-stylus-validity
++  CCLD     test-ltversion
++  CCLD     test-deprecated
++  CCLD     test-tablet-svg-validity
++make[2]: Leaving directory '/tmp/libwacom-1.8/test'
++Making all in tools
++make[2]: Entering directory '/tmp/libwacom-1.8/tools'
++  CC       libwacom_list_local_devices-list-local-devices.o
++  CC       generate_hwdb-generate-hwdb.o
++  CC       list-devices.o
++  CC       list-compatible-styli.o
++  CCLD     list-devices
++  CCLD     list-compatible-styli
++  CCLD     libwacom-list-local-devices
++  CCLD     generate-hwdb
++./generate-hwdb > 65-libwacom.hwdb
++make[2]: Leaving directory '/tmp/libwacom-1.8/tools'
++make[2]: Entering directory '/tmp/libwacom-1.8'
++make[2]: Leaving directory '/tmp/libwacom-1.8'
++make[1]: Leaving directory '/tmp/libwacom-1.8'
++Making install in libwacom
++make[1]: Entering directory '/tmp/libwacom-1.8/libwacom'
++make[2]: Entering directory '/tmp/libwacom-1.8/libwacom'
++ /usr/bin/mkdir -p '/tmp/package-libwacom/usr/lib'
++ /bin/sh ../libtool   --mode=install /usr/bin/ginstall -c   libwacom.la '/tmp/package-libwacom/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/libwacom.so.2.6.1 /tmp/package-libwacom/usr/lib/libwacom.so.2.6.1
++libtool: install: (cd /tmp/package-libwacom/usr/lib && { ln -s -f libwacom.so.2.6.1 libwacom.so.2 || { rm -f libwacom.so.2 && ln -s libwacom.so.2.6.1 libwacom.so.2; }; })
++libtool: install: (cd /tmp/package-libwacom/usr/lib && { ln -s -f libwacom.so.2.6.1 libwacom.so || { rm -f libwacom.so && ln -s libwacom.so.2.6.1 libwacom.so; }; })
++libtool: install: /usr/bin/ginstall -c .libs/libwacom.lai /tmp/package-libwacom/usr/lib/libwacom.la
++libtool: warning: remember to run 'libtool --finish /usr/lib'
++ /usr/bin/mkdir -p '/tmp/package-libwacom/usr/include/libwacom-1.0/libwacom/'
++ /usr/bin/ginstall -c -m 644 libwacom.h '/tmp/package-libwacom/usr/include/libwacom-1.0/libwacom/'
++make[2]: Leaving directory '/tmp/libwacom-1.8/libwacom'
++make[1]: Leaving directory '/tmp/libwacom-1.8/libwacom'
++Making install in data
++make[1]: Entering directory '/tmp/libwacom-1.8/data'
++Making install in layouts
++make[2]: Entering directory '/tmp/libwacom-1.8/data/layouts'
++make[3]: Entering directory '/tmp/libwacom-1.8/data/layouts'
++make[3]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-libwacom/usr/share/libwacom/layouts'
++ /usr/bin/ginstall -c -m 644 bamboo-0fg-s-p-alt.svg bamboo-0fg-s-p.svg bamboo-16fg-m-pt.svg bamboo-16fg-s-pt.svg bamboo-16fg-s-t.svg bamboo-2fg-fun-m-pt.svg bamboo-2fg-fun-s-pt.svg bamboo-2fg-s-pt.svg bamboo-2fg-s-t.svg bamboo-4fg-fun-m-pt.svg bamboo-4fg-fun-s-pt.svg bamboo-4fg-s-pt.svg bamboo-4fg-s-t.svg bamboo-4fg-se-m-pt.svg bamboo-4fg-se-s-pt.svg bamboo-pad.svg cintiq-12wx.svg cintiq-13hd.svg cintiq-20wsx.svg cintiq-21ux.svg cintiq-21ux2.svg cintiq-22hd.svg cintiq-24hd.svg cintiq-companion-2.svg cintiq-companion-hybrid.svg cintiq-companion.svg dth-2242.svg dth-2452.svg dti-520.svg dtk-1651.svg dtk-2451.svg dtu-1031.svg dtu-1141.svg dtu-1141b.svg ek-remote.svg gaomon-s620.svg graphire-wireless-8x6.svg graphire4-4x5.svg graphire4-6x8.svg huion-h420.svg '/tmp/package-libwacom/usr/share/libwacom/layouts'
++ /usr/bin/ginstall -c -m 644 huion-h610-pro.svg huion-h950p.svg huion-new-1060-plus.svg intuos-m-p.svg intuos-m-p2.svg intuos-m-p3.svg intuos-m-pt.svg intuos-m-pt2.svg intuos-pro-2-l.svg intuos-pro-2-m.svg intuos-pro-2-s.svg intuos-pro-l.svg intuos-pro-m.svg intuos-pro-s.svg intuos-s-p.svg intuos-s-p2.svg intuos-s-p3.svg intuos-s-pt.svg intuos-s-pt2.svg intuos3-12x12.svg intuos3-12x19.svg intuos3-4x5.svg intuos3-4x6.svg intuos3-6x11.svg intuos3-6x8.svg intuos3-9x12.svg intuos4-12x19.svg intuos4-4x6.svg intuos4-6x9-wl.svg intuos4-6x9.svg intuos4-8x13.svg intuos5-l.svg intuos5-m.svg intuos5-s.svg mobilestudio-pro-13.svg mobilestudio-pro-16.svg xp-pen-star03.svg '/tmp/package-libwacom/usr/share/libwacom/layouts'
++make[3]: Leaving directory '/tmp/libwacom-1.8/data/layouts'
++make[2]: Leaving directory '/tmp/libwacom-1.8/data/layouts'
++make[2]: Entering directory '/tmp/libwacom-1.8/data'
++make[3]: Entering directory '/tmp/libwacom-1.8/data'
++make[3]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-libwacom/usr/share/libwacom'
++ /usr/bin/ginstall -c -m 644 libwacom.stylus '/tmp/package-libwacom/usr/share/libwacom'
++ /usr/bin/mkdir -p '/tmp/package-libwacom/usr/share/libwacom'
++ /usr/bin/ginstall -c -m 644 bamboo-0fg-m-p-alt.tablet bamboo-0fg-s-p-alt.tablet bamboo-0fg-s-p.tablet bamboo-16fg-m-pt.tablet bamboo-16fg-s-p.tablet bamboo-16fg-s-pt.tablet bamboo-16fg-s-t.tablet bamboo-2fg-fun-m-pt.tablet bamboo-2fg-fun-s-pt.tablet bamboo-2fg-m-p.tablet bamboo-2fg-s-p.tablet bamboo-2fg-s-pt.tablet bamboo-2fg-s-t.tablet bamboo-4fg-fun-m.tablet bamboo-4fg-fun-s.tablet bamboo-4fg-s-pt.tablet bamboo-4fg-s-t.tablet bamboo-4fg-se-m-pt.tablet bamboo-4fg-se-s-pt.tablet bamboo-one-m-p.tablet bamboo-one.tablet bamboo-pad-wireless.tablet bamboo-pad.tablet cintiq-12wx.tablet cintiq-13hd.tablet cintiq-13hdt.tablet cintiq-16-2.tablet cintiq-16.tablet cintiq-20wsx.tablet cintiq-21ux.tablet cintiq-21ux2.tablet cintiq-22.tablet cintiq-22hd.tablet cintiq-22hdt.tablet cintiq-24hd-touch.tablet cintiq-24hd.tablet cintiq-27hd.tablet cintiq-27hdt.tablet cintiq-companion-2.tablet cintiq-companion-hybrid.tablet '/tmp/package-libwacom/usr/share/libwacom'
++ /usr/bin/ginstall -c -m 644 cintiq-companion.tablet cintiq-pro-13.tablet cintiq-pro-16.tablet cintiq-pro-24-p.tablet cintiq-pro-24-pt.tablet cintiq-pro-32.tablet dell-canvas-27.tablet dtf-720.tablet dth-1152.tablet dth-2242.tablet dth-2452.tablet dti-520.tablet dtk-1651.tablet dtk-1660e-2.tablet dtk-1660e.tablet dtk-2241.tablet dtk-2451.tablet dtu-1031.tablet dtu-1031x.tablet dtu-1141.tablet dtu-1141b.tablet dtu-1631.tablet dtu-1931.tablet dtu-2231.tablet ek-remote.tablet elan-0732.tablet elan-2072.tablet elan-22e2.tablet elan-24db.tablet elan-2514-alt.tablet elan-2514.tablet elan-2537.tablet elan-2627.tablet elan-2628.tablet elan-262b.tablet elan-264c.tablet elan-29a1.tablet elan-29b6.tablet elan-5515.tablet gaomon-s56k.tablet '/tmp/package-libwacom/usr/share/libwacom'
++ /usr/bin/ginstall -c -m 644 gaomon-s620.tablet generic.tablet graphire-usb.tablet graphire-wireless-8x6.tablet graphire2-4x5.tablet graphire2-5x7.tablet graphire3-4x5.tablet graphire3-6x8.tablet graphire4-4x5.tablet graphire4-6x8.tablet huion-420.tablet huion-h420.tablet huion-h610-pro.tablet huion-h950p.tablet huion-new-1060-plus.tablet intuos-12x12.tablet intuos-12x18.tablet intuos-4x5.tablet intuos-6x8.tablet intuos-9x12.tablet intuos-m-p.tablet intuos-m-p2.tablet intuos-m-p3-android.tablet intuos-m-p3-wl-android.tablet intuos-m-p3-wl.tablet intuos-m-p3.tablet intuos-m-pt.tablet intuos-m-pt2.tablet intuos-pro-2-l.tablet intuos-pro-2-m.tablet intuos-pro-2-s.tablet intuos-pro-l.tablet intuos-pro-m.tablet intuos-pro-s.tablet intuos-s-p.tablet intuos-s-p2.tablet intuos-s-p3-android.tablet intuos-s-p3-wl-android.tablet intuos-s-p3-wl.tablet intuos-s-p3.tablet '/tmp/package-libwacom/usr/share/libwacom'
++ /usr/bin/ginstall -c -m 644 intuos-s-pt.tablet intuos-s-pt2.tablet intuos2-12x12.tablet intuos2-12x18.tablet intuos2-4x5.tablet intuos2-6x8.tablet intuos2-9x12.tablet intuos3-12x12.tablet intuos3-12x19.tablet intuos3-4x5.tablet intuos3-4x6.tablet intuos3-6x11.tablet intuos3-6x8.tablet intuos3-9x12.tablet intuos4-12x19.tablet intuos4-4x6.tablet intuos4-6x9-wl.tablet intuos4-6x9.tablet intuos4-8x13.tablet intuos5-m.tablet intuos5-s.tablet intuos5-touch-l.tablet intuos5-touch-m.tablet intuos5-touch-s.tablet isdv4-100.tablet isdv4-101.tablet isdv4-104.tablet isdv4-10d.tablet isdv4-10e.tablet isdv4-10f.tablet isdv4-114.tablet isdv4-116.tablet isdv4-117.tablet isdv4-124.tablet isdv4-12c.tablet isdv4-149.tablet isdv4-2d1f-001e.tablet isdv4-2d1f-002e.tablet isdv4-4004.tablet isdv4-4800.tablet '/tmp/package-libwacom/usr/share/libwacom'
++ /usr/bin/ginstall -c -m 644 isdv4-4806.tablet isdv4-4807.tablet isdv4-4809.tablet isdv4-4814.tablet isdv4-481a.tablet isdv4-4822.tablet isdv4-4824.tablet isdv4-4831.tablet isdv4-4834.tablet isdv4-4838.tablet isdv4-4841.tablet isdv4-484c.tablet isdv4-4851.tablet isdv4-485e.tablet isdv4-4865.tablet isdv4-486a.tablet isdv4-4870.tablet isdv4-4875.tablet isdv4-488f.tablet isdv4-48c9.tablet isdv4-48ca.tablet isdv4-48ce.tablet isdv4-48d6.tablet isdv4-48eb.tablet isdv4-48ec.tablet isdv4-48ed.tablet isdv4-48ee.tablet isdv4-48f6.tablet isdv4-490a.tablet isdv4-490b.tablet isdv4-4957.tablet isdv4-495f.tablet isdv4-496c.tablet isdv4-4988.tablet isdv4-5000.tablet isdv4-5002.tablet isdv4-5010.tablet isdv4-5013.tablet isdv4-5014.tablet isdv4-502a.tablet '/tmp/package-libwacom/usr/share/libwacom'
++ /usr/bin/ginstall -c -m 644 isdv4-503e.tablet isdv4-503f.tablet isdv4-5040.tablet isdv4-5044.tablet isdv4-5048.tablet isdv4-504a.tablet isdv4-5072.tablet isdv4-5090.tablet isdv4-5099.tablet isdv4-509d.tablet isdv4-509f.tablet isdv4-50b4.tablet isdv4-50b6.tablet isdv4-50b8.tablet isdv4-50db.tablet isdv4-50e9.tablet isdv4-50ef.tablet isdv4-50f1.tablet isdv4-50f8.tablet isdv4-50fd.tablet isdv4-5110.tablet isdv4-5115.tablet isdv4-5122.tablet isdv4-5128.tablet isdv4-513b.tablet isdv4-5144.tablet isdv4-5146.tablet isdv4-5147.tablet isdv4-5148.tablet isdv4-5150.tablet isdv4-5157.tablet isdv4-5158.tablet isdv4-515a.tablet isdv4-5169.tablet isdv4-516b.tablet isdv4-517d.tablet isdv4-5196.tablet isdv4-51a0.tablet isdv4-51af.tablet isdv4-51b0.tablet '/tmp/package-libwacom/usr/share/libwacom'
++ /usr/bin/ginstall -c -m 644 isdv4-51b1.tablet isdv4-51b2.tablet isdv4-51b3.tablet isdv4-51b6.tablet isdv4-51b7.tablet isdv4-51b8.tablet isdv4-51b9.tablet isdv4-51ba.tablet isdv4-51bb.tablet isdv4-51bc.tablet isdv4-51bd.tablet isdv4-51be.tablet isdv4-51bf.tablet isdv4-51c4.tablet isdv4-51c7.tablet isdv4-51e2.tablet isdv4-51e9.tablet isdv4-51f5.tablet isdv4-51f6.tablet isdv4-5202.tablet isdv4-5215.tablet isdv4-521f.tablet isdv4-5220.tablet isdv4-5221.tablet isdv4-5222.tablet isdv4-90.tablet isdv4-93.tablet isdv4-e2.tablet isdv4-e3.tablet isdv4-e5.tablet isdv4-e6.tablet isdv4-ec.tablet isdv4-ed.tablet isdv4-ef.tablet mobilestudio-pro-13-2.tablet mobilestudio-pro-13.tablet mobilestudio-pro-16-2.tablet mobilestudio-pro-16-3.tablet mobilestudio-pro-16.tablet n-trig-pen.tablet '/tmp/package-libwacom/usr/share/libwacom'
++ /usr/bin/ginstall -c -m 644 one-by-wacom-m-p.tablet one-by-wacom-m-p2.tablet one-by-wacom-s-p.tablet one-by-wacom-s-p2.tablet serial-wacf004.tablet volito-4x5.tablet wacom-one.tablet xp-pen-g430.tablet xp-pen-g640.tablet xp-pen-star03.tablet '/tmp/package-libwacom/usr/share/libwacom'
++make[3]: Leaving directory '/tmp/libwacom-1.8/data'
++make[2]: Leaving directory '/tmp/libwacom-1.8/data'
++make[1]: Leaving directory '/tmp/libwacom-1.8/data'
++Making install in doc
++make[1]: Entering directory '/tmp/libwacom-1.8/doc'
++  GEN      doxygen
++make[2]: Entering directory '/tmp/libwacom-1.8/doc'
++make[2]: Nothing to be done for 'install-exec-am'.
++make[2]: Nothing to be done for 'install-data-am'.
++make[2]: Leaving directory '/tmp/libwacom-1.8/doc'
++make[1]: Leaving directory '/tmp/libwacom-1.8/doc'
++Making install in test
++make[1]: Entering directory '/tmp/libwacom-1.8/test'
++make[2]: Entering directory '/tmp/libwacom-1.8/test'
++make[2]: Nothing to be done for 'install-exec-am'.
++make[2]: Nothing to be done for 'install-data-am'.
++make[2]: Leaving directory '/tmp/libwacom-1.8/test'
++make[1]: Leaving directory '/tmp/libwacom-1.8/test'
++Making install in tools
++make[1]: Entering directory '/tmp/libwacom-1.8/tools'
++make[2]: Entering directory '/tmp/libwacom-1.8/tools'
++ /usr/bin/mkdir -p '/tmp/package-libwacom/usr/bin'
++  /bin/sh ../libtool   --mode=install /usr/bin/ginstall -c libwacom-list-local-devices '/tmp/package-libwacom/usr/bin'
++libtool: warning: '../libwacom/libwacom.la' has not been installed in '/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/libwacom-list-local-devices /tmp/package-libwacom/usr/bin/libwacom-list-local-devices
++ /usr/bin/mkdir -p '/tmp/package-libwacom/lib/udev/hwdb.d'
++ /usr/bin/ginstall -c -m 644 65-libwacom.hwdb '/tmp/package-libwacom/lib/udev/hwdb.d'
++ /usr/bin/mkdir -p '/tmp/package-libwacom/lib/udev/rules.d'
++ /usr/bin/ginstall -c -m 644 65-libwacom.rules '/tmp/package-libwacom/lib/udev/rules.d'
++ /usr/bin/mkdir -p '/tmp/package-libwacom/usr/man/man1'
++ /usr/bin/ginstall -c -m 644 'libwacom-list-local-devices.man' '/tmp/package-libwacom/usr/man/man1/libwacom-list-local-devices.1'
++make[2]: Leaving directory '/tmp/libwacom-1.8/tools'
++make[1]: Leaving directory '/tmp/libwacom-1.8/tools'
++make[1]: Entering directory '/tmp/libwacom-1.8'
++make[2]: Entering directory '/tmp/libwacom-1.8'
++make[2]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-libwacom/usr/lib/pkgconfig'
++ /usr/bin/ginstall -c -m 644 libwacom.pc '/tmp/package-libwacom/usr/lib/pkgconfig'
++make[2]: Leaving directory '/tmp/libwacom-1.8'
++make[1]: Leaving directory '/tmp/libwacom-1.8'
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++usr/lib/libwacom.so	libwacom.so.2.6.1
++usr/lib/libwacom.so.2	libwacom.so.2.6.1
++
++Making symbolic link creation script:
++( cd usr/lib ; rm -rf libwacom.so )
++( cd usr/lib ; ln -sf libwacom.so.2.6.1 libwacom.so )
++( cd usr/lib ; rm -rf libwacom.so.2 )
++( cd usr/lib ; ln -sf libwacom.so.2.6.1 libwacom.so.2 )
++
++It is recommended that you make these lines your new installation script.
++
++Would you like to make this stuff the install script for this package
++and remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './usr/lib/libwacom.so'
++removed './usr/lib/libwacom.so.2'
++
++Creating your new ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/libwacom-1.8-x86_64-1.txz
++
++./
++install/
++install/doinst.sh
++install/slack-desc
++lib/
++lib/udev/
++lib/udev/hwdb.d/
++lib/udev/hwdb.d/65-libwacom.hwdb
++lib/udev/rules.d/
++lib/udev/rules.d/65-libwacom.rules
++usr/
++usr/bin/
++usr/bin/libwacom-list-local-devices
++usr/doc/
++usr/doc/libwacom-1.8/
++usr/doc/libwacom-1.8/COPYING
++usr/doc/libwacom-1.8/NEWS
++usr/doc/libwacom-1.8/README.md
++usr/include/
++usr/include/libwacom-1.0/
++usr/include/libwacom-1.0/libwacom/
++usr/include/libwacom-1.0/libwacom/libwacom.h
++usr/lib/
++usr/lib/libwacom.so.2.6.1
++usr/lib/pkgconfig/
++usr/lib/pkgconfig/libwacom.pc
++usr/man/
++usr/man/man1/
++usr/man/man1/libwacom-list-local-devices.1.gz
++usr/share/
++usr/share/libwacom/
++usr/share/libwacom/bamboo-0fg-m-p-alt.tablet
++usr/share/libwacom/bamboo-0fg-s-p-alt.tablet
++usr/share/libwacom/bamboo-0fg-s-p.tablet
++usr/share/libwacom/bamboo-16fg-m-pt.tablet
++usr/share/libwacom/bamboo-16fg-s-p.tablet
++usr/share/libwacom/bamboo-16fg-s-pt.tablet
++usr/share/libwacom/bamboo-16fg-s-t.tablet
++usr/share/libwacom/bamboo-2fg-fun-m-pt.tablet
++usr/share/libwacom/bamboo-2fg-fun-s-pt.tablet
++usr/share/libwacom/bamboo-2fg-m-p.tablet
++usr/share/libwacom/bamboo-2fg-s-p.tablet
++usr/share/libwacom/bamboo-2fg-s-pt.tablet
++usr/share/libwacom/bamboo-2fg-s-t.tablet
++usr/share/libwacom/bamboo-4fg-fun-m.tablet
++usr/share/libwacom/bamboo-4fg-fun-s.tablet
++usr/share/libwacom/bamboo-4fg-s-pt.tablet
++usr/share/libwacom/bamboo-4fg-s-t.tablet
++usr/share/libwacom/bamboo-4fg-se-m-pt.tablet
++usr/share/libwacom/bamboo-4fg-se-s-pt.tablet
++usr/share/libwacom/bamboo-one-m-p.tablet
++usr/share/libwacom/bamboo-one.tablet
++usr/share/libwacom/bamboo-pad-wireless.tablet
++usr/share/libwacom/bamboo-pad.tablet
++usr/share/libwacom/cintiq-12wx.tablet
++usr/share/libwacom/cintiq-13hd.tablet
++usr/share/libwacom/cintiq-13hdt.tablet
++usr/share/libwacom/cintiq-16-2.tablet
++usr/share/libwacom/cintiq-16.tablet
++usr/share/libwacom/cintiq-20wsx.tablet
++usr/share/libwacom/cintiq-21ux.tablet
++usr/share/libwacom/cintiq-21ux2.tablet
++usr/share/libwacom/cintiq-22.tablet
++usr/share/libwacom/cintiq-22hd.tablet
++usr/share/libwacom/cintiq-22hdt.tablet
++usr/share/libwacom/cintiq-24hd-touch.tablet
++usr/share/libwacom/cintiq-24hd.tablet
++usr/share/libwacom/cintiq-27hd.tablet
++usr/share/libwacom/cintiq-27hdt.tablet
++usr/share/libwacom/cintiq-companion-2.tablet
++usr/share/libwacom/cintiq-companion-hybrid.tablet
++usr/share/libwacom/cintiq-companion.tablet
++usr/share/libwacom/cintiq-pro-13.tablet
++usr/share/libwacom/cintiq-pro-16.tablet
++usr/share/libwacom/cintiq-pro-24-p.tablet
++usr/share/libwacom/cintiq-pro-24-pt.tablet
++usr/share/libwacom/cintiq-pro-32.tablet
++usr/share/libwacom/dell-canvas-27.tablet
++usr/share/libwacom/dtf-720.tablet
++usr/share/libwacom/dth-1152.tablet
++usr/share/libwacom/dth-2242.tablet
++usr/share/libwacom/dth-2452.tablet
++usr/share/libwacom/dti-520.tablet
++usr/share/libwacom/dtk-1651.tablet
++usr/share/libwacom/dtk-1660e-2.tablet
++usr/share/libwacom/dtk-1660e.tablet
++usr/share/libwacom/dtk-2241.tablet
++usr/share/libwacom/dtk-2451.tablet
++usr/share/libwacom/dtu-1031.tablet
++usr/share/libwacom/dtu-1031x.tablet
++usr/share/libwacom/dtu-1141.tablet
++usr/share/libwacom/dtu-1141b.tablet
++usr/share/libwacom/dtu-1631.tablet
++usr/share/libwacom/dtu-1931.tablet
++usr/share/libwacom/dtu-2231.tablet
++usr/share/libwacom/ek-remote.tablet
++usr/share/libwacom/elan-0732.tablet
++usr/share/libwacom/elan-2072.tablet
++usr/share/libwacom/elan-22e2.tablet
++usr/share/libwacom/elan-24db.tablet
++usr/share/libwacom/elan-2514-alt.tablet
++usr/share/libwacom/elan-2514.tablet
++usr/share/libwacom/elan-2537.tablet
++usr/share/libwacom/elan-2627.tablet
++usr/share/libwacom/elan-2628.tablet
++usr/share/libwacom/elan-262b.tablet
++usr/share/libwacom/elan-264c.tablet
++usr/share/libwacom/elan-29a1.tablet
++usr/share/libwacom/elan-29b6.tablet
++usr/share/libwacom/elan-5515.tablet
++usr/share/libwacom/gaomon-s56k.tablet
++usr/share/libwacom/gaomon-s620.tablet
++usr/share/libwacom/generic.tablet
++usr/share/libwacom/graphire-usb.tablet
++usr/share/libwacom/graphire-wireless-8x6.tablet
++usr/share/libwacom/graphire2-4x5.tablet
++usr/share/libwacom/graphire2-5x7.tablet
++usr/share/libwacom/graphire3-4x5.tablet
++usr/share/libwacom/graphire3-6x8.tablet
++usr/share/libwacom/graphire4-4x5.tablet
++usr/share/libwacom/graphire4-6x8.tablet
++usr/share/libwacom/huion-420.tablet
++usr/share/libwacom/huion-h420.tablet
++usr/share/libwacom/huion-h610-pro.tablet
++usr/share/libwacom/huion-h950p.tablet
++usr/share/libwacom/huion-new-1060-plus.tablet
++usr/share/libwacom/intuos-12x12.tablet
++usr/share/libwacom/intuos-12x18.tablet
++usr/share/libwacom/intuos-4x5.tablet
++usr/share/libwacom/intuos-6x8.tablet
++usr/share/libwacom/intuos-9x12.tablet
++usr/share/libwacom/intuos-m-p.tablet
++usr/share/libwacom/intuos-m-p2.tablet
++usr/share/libwacom/intuos-m-p3-android.tablet
++usr/share/libwacom/intuos-m-p3-wl-android.tablet
++usr/share/libwacom/intuos-m-p3-wl.tablet
++usr/share/libwacom/intuos-m-p3.tablet
++usr/share/libwacom/intuos-m-pt.tablet
++usr/share/libwacom/intuos-m-pt2.tablet
++usr/share/libwacom/intuos-pro-2-l.tablet
++usr/share/libwacom/intuos-pro-2-m.tablet
++usr/share/libwacom/intuos-pro-2-s.tablet
++usr/share/libwacom/intuos-pro-l.tablet
++usr/share/libwacom/intuos-pro-m.tablet
++usr/share/libwacom/intuos-pro-s.tablet
++usr/share/libwacom/intuos-s-p.tablet
++usr/share/libwacom/intuos-s-p2.tablet
++usr/share/libwacom/intuos-s-p3-android.tablet
++usr/share/libwacom/intuos-s-p3-wl-android.tablet
++usr/share/libwacom/intuos-s-p3-wl.tablet
++usr/share/libwacom/intuos-s-p3.tablet
++usr/share/libwacom/intuos-s-pt.tablet
++usr/share/libwacom/intuos-s-pt2.tablet
++usr/share/libwacom/intuos2-12x12.tablet
++usr/share/libwacom/intuos2-12x18.tablet
++usr/share/libwacom/intuos2-4x5.tablet
++usr/share/libwacom/intuos2-6x8.tablet
++usr/share/libwacom/intuos2-9x12.tablet
++usr/share/libwacom/intuos3-12x12.tablet
++usr/share/libwacom/intuos3-12x19.tablet
++usr/share/libwacom/intuos3-4x5.tablet
++usr/share/libwacom/intuos3-4x6.tablet
++usr/share/libwacom/intuos3-6x11.tablet
++usr/share/libwacom/intuos3-6x8.tablet
++usr/share/libwacom/intuos3-9x12.tablet
++usr/share/libwacom/intuos4-12x19.tablet
++usr/share/libwacom/intuos4-4x6.tablet
++usr/share/libwacom/intuos4-6x9-wl.tablet
++usr/share/libwacom/intuos4-6x9.tablet
++usr/share/libwacom/intuos4-8x13.tablet
++usr/share/libwacom/intuos5-m.tablet
++usr/share/libwacom/intuos5-s.tablet
++usr/share/libwacom/intuos5-touch-l.tablet
++usr/share/libwacom/intuos5-touch-m.tablet
++usr/share/libwacom/intuos5-touch-s.tablet
++usr/share/libwacom/isdv4-100.tablet
++usr/share/libwacom/isdv4-101.tablet
++usr/share/libwacom/isdv4-104.tablet
++usr/share/libwacom/isdv4-10d.tablet
++usr/share/libwacom/isdv4-10e.tablet
++usr/share/libwacom/isdv4-10f.tablet
++usr/share/libwacom/isdv4-114.tablet
++usr/share/libwacom/isdv4-116.tablet
++usr/share/libwacom/isdv4-117.tablet
++usr/share/libwacom/isdv4-124.tablet
++usr/share/libwacom/isdv4-12c.tablet
++usr/share/libwacom/isdv4-149.tablet
++usr/share/libwacom/isdv4-2d1f-001e.tablet
++usr/share/libwacom/isdv4-2d1f-002e.tablet
++usr/share/libwacom/isdv4-4004.tablet
++usr/share/libwacom/isdv4-4800.tablet
++usr/share/libwacom/isdv4-4806.tablet
++usr/share/libwacom/isdv4-4807.tablet
++usr/share/libwacom/isdv4-4809.tablet
++usr/share/libwacom/isdv4-4814.tablet
++usr/share/libwacom/isdv4-481a.tablet
++usr/share/libwacom/isdv4-4822.tablet
++usr/share/libwacom/isdv4-4824.tablet
++usr/share/libwacom/isdv4-4831.tablet
++usr/share/libwacom/isdv4-4834.tablet
++usr/share/libwacom/isdv4-4838.tablet
++usr/share/libwacom/isdv4-4841.tablet
++usr/share/libwacom/isdv4-484c.tablet
++usr/share/libwacom/isdv4-4851.tablet
++usr/share/libwacom/isdv4-485e.tablet
++usr/share/libwacom/isdv4-4865.tablet
++usr/share/libwacom/isdv4-486a.tablet
++usr/share/libwacom/isdv4-4870.tablet
++usr/share/libwacom/isdv4-4875.tablet
++usr/share/libwacom/isdv4-488f.tablet
++usr/share/libwacom/isdv4-48c9.tablet
++usr/share/libwacom/isdv4-48ca.tablet
++usr/share/libwacom/isdv4-48ce.tablet
++usr/share/libwacom/isdv4-48d6.tablet
++usr/share/libwacom/isdv4-48eb.tablet
++usr/share/libwacom/isdv4-48ec.tablet
++usr/share/libwacom/isdv4-48ed.tablet
++usr/share/libwacom/isdv4-48ee.tablet
++usr/share/libwacom/isdv4-48f6.tablet
++usr/share/libwacom/isdv4-490a.tablet
++usr/share/libwacom/isdv4-490b.tablet
++usr/share/libwacom/isdv4-4957.tablet
++usr/share/libwacom/isdv4-495f.tablet
++usr/share/libwacom/isdv4-496c.tablet
++usr/share/libwacom/isdv4-4988.tablet
++usr/share/libwacom/isdv4-5000.tablet
++usr/share/libwacom/isdv4-5002.tablet
++usr/share/libwacom/isdv4-5010.tablet
++usr/share/libwacom/isdv4-5013.tablet
++usr/share/libwacom/isdv4-5014.tablet
++usr/share/libwacom/isdv4-502a.tablet
++usr/share/libwacom/isdv4-503e.tablet
++usr/share/libwacom/isdv4-503f.tablet
++usr/share/libwacom/isdv4-5040.tablet
++usr/share/libwacom/isdv4-5044.tablet
++usr/share/libwacom/isdv4-5048.tablet
++usr/share/libwacom/isdv4-504a.tablet
++usr/share/libwacom/isdv4-5072.tablet
++usr/share/libwacom/isdv4-5090.tablet
++usr/share/libwacom/isdv4-5099.tablet
++usr/share/libwacom/isdv4-509d.tablet
++usr/share/libwacom/isdv4-509f.tablet
++usr/share/libwacom/isdv4-50b4.tablet
++usr/share/libwacom/isdv4-50b6.tablet
++usr/share/libwacom/isdv4-50b8.tablet
++usr/share/libwacom/isdv4-50db.tablet
++usr/share/libwacom/isdv4-50e9.tablet
++usr/share/libwacom/isdv4-50ef.tablet
++usr/share/libwacom/isdv4-50f1.tablet
++usr/share/libwacom/isdv4-50f8.tablet
++usr/share/libwacom/isdv4-50fd.tablet
++usr/share/libwacom/isdv4-5110.tablet
++usr/share/libwacom/isdv4-5115.tablet
++usr/share/libwacom/isdv4-5122.tablet
++usr/share/libwacom/isdv4-5128.tablet
++usr/share/libwacom/isdv4-513b.tablet
++usr/share/libwacom/isdv4-5144.tablet
++usr/share/libwacom/isdv4-5146.tablet
++usr/share/libwacom/isdv4-5147.tablet
++usr/share/libwacom/isdv4-5148.tablet
++usr/share/libwacom/isdv4-5150.tablet
++usr/share/libwacom/isdv4-5157.tablet
++usr/share/libwacom/isdv4-5158.tablet
++usr/share/libwacom/isdv4-515a.tablet
++usr/share/libwacom/isdv4-5169.tablet
++usr/share/libwacom/isdv4-516b.tablet
++usr/share/libwacom/isdv4-517d.tablet
++usr/share/libwacom/isdv4-5196.tablet
++usr/share/libwacom/isdv4-51a0.tablet
++usr/share/libwacom/isdv4-51af.tablet
++usr/share/libwacom/isdv4-51b0.tablet
++usr/share/libwacom/isdv4-51b1.tablet
++usr/share/libwacom/isdv4-51b2.tablet
++usr/share/libwacom/isdv4-51b3.tablet
++usr/share/libwacom/isdv4-51b6.tablet
++usr/share/libwacom/isdv4-51b7.tablet
++usr/share/libwacom/isdv4-51b8.tablet
++usr/share/libwacom/isdv4-51b9.tablet
++usr/share/libwacom/isdv4-51ba.tablet
++usr/share/libwacom/isdv4-51bb.tablet
++usr/share/libwacom/isdv4-51bc.tablet
++usr/share/libwacom/isdv4-51bd.tablet
++usr/share/libwacom/isdv4-51be.tablet
++usr/share/libwacom/isdv4-51bf.tablet
++usr/share/libwacom/isdv4-51c4.tablet
++usr/share/libwacom/isdv4-51c7.tablet
++usr/share/libwacom/isdv4-51e2.tablet
++usr/share/libwacom/isdv4-51e9.tablet
++usr/share/libwacom/isdv4-51f5.tablet
++usr/share/libwacom/isdv4-51f6.tablet
++usr/share/libwacom/isdv4-5202.tablet
++usr/share/libwacom/isdv4-5215.tablet
++usr/share/libwacom/isdv4-521f.tablet
++usr/share/libwacom/isdv4-5220.tablet
++usr/share/libwacom/isdv4-5221.tablet
++usr/share/libwacom/isdv4-5222.tablet
++usr/share/libwacom/isdv4-90.tablet
++usr/share/libwacom/isdv4-93.tablet
++usr/share/libwacom/isdv4-e2.tablet
++usr/share/libwacom/isdv4-e3.tablet
++usr/share/libwacom/isdv4-e5.tablet
++usr/share/libwacom/isdv4-e6.tablet
++usr/share/libwacom/isdv4-ec.tablet
++usr/share/libwacom/isdv4-ed.tablet
++usr/share/libwacom/isdv4-ef.tablet
++usr/share/libwacom/layouts/
++usr/share/libwacom/layouts/bamboo-0fg-s-p-alt.svg
++usr/share/libwacom/layouts/bamboo-0fg-s-p.svg
++usr/share/libwacom/layouts/bamboo-16fg-m-pt.svg
++usr/share/libwacom/layouts/bamboo-16fg-s-pt.svg
++usr/share/libwacom/layouts/bamboo-16fg-s-t.svg
++usr/share/libwacom/layouts/bamboo-2fg-fun-m-pt.svg
++usr/share/libwacom/layouts/bamboo-2fg-fun-s-pt.svg
++usr/share/libwacom/layouts/bamboo-2fg-s-pt.svg
++usr/share/libwacom/layouts/bamboo-2fg-s-t.svg
++usr/share/libwacom/layouts/bamboo-4fg-fun-m-pt.svg
++usr/share/libwacom/layouts/bamboo-4fg-fun-s-pt.svg
++usr/share/libwacom/layouts/bamboo-4fg-s-pt.svg
++usr/share/libwacom/layouts/bamboo-4fg-s-t.svg
++usr/share/libwacom/layouts/bamboo-4fg-se-m-pt.svg
++usr/share/libwacom/layouts/bamboo-4fg-se-s-pt.svg
++usr/share/libwacom/layouts/bamboo-pad.svg
++usr/share/libwacom/layouts/cintiq-12wx.svg
++usr/share/libwacom/layouts/cintiq-13hd.svg
++usr/share/libwacom/layouts/cintiq-20wsx.svg
++usr/share/libwacom/layouts/cintiq-21ux.svg
++usr/share/libwacom/layouts/cintiq-21ux2.svg
++usr/share/libwacom/layouts/cintiq-22hd.svg
++usr/share/libwacom/layouts/cintiq-24hd.svg
++usr/share/libwacom/layouts/cintiq-companion-2.svg
++usr/share/libwacom/layouts/cintiq-companion-hybrid.svg
++usr/share/libwacom/layouts/cintiq-companion.svg
++usr/share/libwacom/layouts/dth-2242.svg
++usr/share/libwacom/layouts/dth-2452.svg
++usr/share/libwacom/layouts/dti-520.svg
++usr/share/libwacom/layouts/dtk-1651.svg
++usr/share/libwacom/layouts/dtk-2451.svg
++usr/share/libwacom/layouts/dtu-1031.svg
++usr/share/libwacom/layouts/dtu-1141.svg
++usr/share/libwacom/layouts/dtu-1141b.svg
++usr/share/libwacom/layouts/ek-remote.svg
++usr/share/libwacom/layouts/gaomon-s620.svg
++usr/share/libwacom/layouts/graphire-wireless-8x6.svg
++usr/share/libwacom/layouts/graphire4-4x5.svg
++usr/share/libwacom/layouts/graphire4-6x8.svg
++usr/share/libwacom/layouts/huion-h420.svg
++usr/share/libwacom/layouts/huion-h610-pro.svg
++usr/share/libwacom/layouts/huion-h950p.svg
++usr/share/libwacom/layouts/huion-new-1060-plus.svg
++usr/share/libwacom/layouts/intuos-m-p.svg
++usr/share/libwacom/layouts/intuos-m-p2.svg
++usr/share/libwacom/layouts/intuos-m-p3.svg
++usr/share/libwacom/layouts/intuos-m-pt.svg
++usr/share/libwacom/layouts/intuos-m-pt2.svg
++usr/share/libwacom/layouts/intuos-pro-2-l.svg
++usr/share/libwacom/layouts/intuos-pro-2-m.svg
++usr/share/libwacom/layouts/intuos-pro-2-s.svg
++usr/share/libwacom/layouts/intuos-pro-l.svg
++usr/share/libwacom/layouts/intuos-pro-m.svg
++usr/share/libwacom/layouts/intuos-pro-s.svg
++usr/share/libwacom/layouts/intuos-s-p.svg
++usr/share/libwacom/layouts/intuos-s-p2.svg
++usr/share/libwacom/layouts/intuos-s-p3.svg
++usr/share/libwacom/layouts/intuos-s-pt.svg
++usr/share/libwacom/layouts/intuos-s-pt2.svg
++usr/share/libwacom/layouts/intuos3-12x12.svg
++usr/share/libwacom/layouts/intuos3-12x19.svg
++usr/share/libwacom/layouts/intuos3-4x5.svg
++usr/share/libwacom/layouts/intuos3-4x6.svg
++usr/share/libwacom/layouts/intuos3-6x11.svg
++usr/share/libwacom/layouts/intuos3-6x8.svg
++usr/share/libwacom/layouts/intuos3-9x12.svg
++usr/share/libwacom/layouts/intuos4-12x19.svg
++usr/share/libwacom/layouts/intuos4-4x6.svg
++usr/share/libwacom/layouts/intuos4-6x9-wl.svg
++usr/share/libwacom/layouts/intuos4-6x9.svg
++usr/share/libwacom/layouts/intuos4-8x13.svg
++usr/share/libwacom/layouts/intuos5-l.svg
++usr/share/libwacom/layouts/intuos5-m.svg
++usr/share/libwacom/layouts/intuos5-s.svg
++usr/share/libwacom/layouts/mobilestudio-pro-13.svg
++usr/share/libwacom/layouts/mobilestudio-pro-16.svg
++usr/share/libwacom/layouts/xp-pen-star03.svg
++usr/share/libwacom/libwacom.stylus
++usr/share/libwacom/mobilestudio-pro-13-2.tablet
++usr/share/libwacom/mobilestudio-pro-13.tablet
++usr/share/libwacom/mobilestudio-pro-16-2.tablet
++usr/share/libwacom/mobilestudio-pro-16-3.tablet
++usr/share/libwacom/mobilestudio-pro-16.tablet
++usr/share/libwacom/n-trig-pen.tablet
++usr/share/libwacom/one-by-wacom-m-p.tablet
++usr/share/libwacom/one-by-wacom-m-p2.tablet
++usr/share/libwacom/one-by-wacom-s-p.tablet
++usr/share/libwacom/one-by-wacom-s-p2.tablet
++usr/share/libwacom/serial-wacf004.tablet
++usr/share/libwacom/volito-4x5.tablet
++usr/share/libwacom/wacom-one.tablet
++usr/share/libwacom/xp-pen-g430.tablet
++usr/share/libwacom/xp-pen-g640.tablet
++usr/share/libwacom/xp-pen-star03.tablet
++
++Slackware package /tmp/libwacom-1.8-x86_64-1.txz created.
++

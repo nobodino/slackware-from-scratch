@@ -1,0 +1,358 @@
+diff -ruBN /tmp/libnftnl/libnftnl.SlackBuild /source/n/libnftnl/libnftnl.SlackBuild
+--- /tmp/libnftnl/libnftnl.SlackBuild	2019-09-29 23:48:36.000000000 +0000
++++ /source/n/libnftnl/libnftnl.SlackBuild	2021-01-18 18:12:08.000000000 +0000
+@@ -54,7 +54,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ else
+   SLKCFLAGS="-O2"
+   LIBDIRSUFFIX=""
+@@ -88,7 +88,7 @@
+   --mandir=/usr/man \
+   --docdir=/usr/doc/$PKGNAM-$VERSION \
+   --disable-static \
+-  --build=$ARCH-slackware-linux || exit 1
++  --build=$ARCH-slackware-linux-musl || exit 1
+ 
+ make $NUMJOBS || make || exit 1
+ make install DESTDIR=$PKG || exit 1
+diff -ruBN /tmp/libnftnl/libnftnl.SlackBuild.log /source/n/libnftnl/libnftnl.SlackBuild.log
+--- /tmp/libnftnl/libnftnl.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/n/libnftnl/libnftnl.SlackBuild.log	2021-01-18 18:12:55.000000000 +0000
+@@ -0,0 +1,333 @@
++checking build system type... x86_64-slackware-linux-musl
++checking host system type... x86_64-slackware-linux-musl
++checking for gcc... gcc
++checking whether the C compiler works... yes
++checking for C compiler default output file name... a.out
++checking for suffix of executables... 
++checking whether we are cross compiling... no
++checking for suffix of object files... o
++checking whether we are using the GNU C compiler... yes
++checking whether gcc accepts -g... yes
++checking for gcc option to accept ISO C89... none needed
++checking whether gcc understands -c and -o together... yes
++checking for ar... ar
++checking the archiver (ar) interface... ar
++checking for a BSD-compatible install... /usr/bin/ginstall -c
++checking whether build environment is sane... yes
++checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
++checking for gawk... gawk
++checking whether make sets $(MAKE)... yes
++checking whether make supports the include directive... yes (GNU style)
++checking whether make supports nested variables... yes
++checking how to create a pax tar archive... gnutar
++checking dependency style of gcc... gcc3
++checking whether make supports nested variables... (cached) yes
++checking pkg-config is at least version 0.9.0... yes
++checking for LIBMNL... yes
++checking for gcc... (cached) gcc
++checking whether we are using the GNU C compiler... (cached) yes
++checking whether gcc accepts -g... (cached) yes
++checking for gcc option to accept ISO C89... (cached) none needed
++checking whether gcc understands -c and -o together... (cached) yes
++checking how to print strings... printf
++checking for a sed that does not truncate output... /usr/bin/sed
++checking for grep that handles long lines and -e... /usr/bin/grep
++checking for egrep... /usr/bin/grep -E
++checking for fgrep... /usr/bin/grep -F
++checking for ld used by gcc... /usr/bin/ld
++checking if the linker (/usr/bin/ld) is GNU ld... yes
++checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
++checking the name lister (/usr/bin/nm -B) interface... BSD nm
++checking whether ln -s works... yes
++checking the maximum length of command line arguments... 98304
++checking how to convert x86_64-slackware-linux-musl file names to x86_64-slackware-linux-musl format... func_convert_file_noop
++checking how to convert x86_64-slackware-linux-musl file names to toolchain format... func_convert_file_noop
++checking for /usr/bin/ld option to reload object files... -r
++checking for objdump... objdump
++checking how to recognize dependent libraries... pass_all
++checking for dlltool... dlltool
++checking how to associate runtime and link libraries... printf %s\n
++checking for archiver @FILE support... @
++checking for strip... strip
++checking for ranlib... ranlib
++checking command to parse /usr/bin/nm -B output from gcc object... ok
++checking for sysroot... no
++checking for a working dd... /usr/bin/dd
++checking how to truncate binary pipes... /usr/bin/dd bs=4096 count=1
++checking for mt... mt
++checking if mt is a manifest tool... no
++checking how to run the C preprocessor... gcc -E
++checking for ANSI C header files... yes
++checking for sys/types.h... yes
++checking for sys/stat.h... yes
++checking for stdlib.h... yes
++checking for string.h... yes
++checking for memory.h... yes
++checking for strings.h... yes
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking for unistd.h... yes
++checking for dlfcn.h... yes
++checking for objdir... .libs
++checking if gcc supports -fno-rtti -fno-exceptions... no
++checking for gcc option to produce PIC... -fPIC -DPIC
++checking if gcc PIC flag -fPIC -DPIC works... yes
++checking if gcc static flag -static works... yes
++checking if gcc supports -c -o file.o... yes
++checking if gcc supports -c -o file.o... (cached) yes
++checking whether the gcc linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
++checking whether -lc should be explicitly linked in... no
++checking dynamic linker characteristics... GNU/Linux ld.so
++checking how to hardcode library paths into programs... immediate
++checking whether stripping libraries is possible... yes
++checking if libtool supports shared libraries... yes
++checking whether to build shared libraries... yes
++checking whether to build static libraries... no
++checking whether compiler accepts -fvisibility=hidden... yes
++checking that generated files are newer than configure... done
++configure: creating ./config.status
++config.status: creating Makefile
++config.status: creating src/Makefile
++config.status: creating include/Makefile
++config.status: creating include/libnftnl/Makefile
++config.status: creating include/linux/Makefile
++config.status: creating include/linux/netfilter/Makefile
++config.status: creating examples/Makefile
++config.status: creating tests/Makefile
++config.status: creating libnftnl.pc
++config.status: creating doxygen.cfg
++config.status: creating config.h
++config.status: executing depfiles commands
++config.status: executing libtool commands
++make  all-recursive
++make[1]: Entering directory '/tmp/libnftnl-1.1.9'
++Making all in src
++make[2]: Entering directory '/tmp/libnftnl-1.1.9/src'
++  CC       utils.lo
++  CC       batch.lo
++  CC       flowtable.lo
++  CC       common.lo
++  CC       gen.lo
++  CC       table.lo
++  CC       trace.lo
++  CC       chain.lo
++  CC       object.lo
++  CC       rule.lo
++  CC       set.lo
++  CC       set_elem.lo
++  CC       ruleset.lo
++  CC       udata.lo
++  CC       expr.lo
++  CC       expr_ops.lo
++  CC       expr/bitwise.lo
++  CC       expr/byteorder.lo
++  CC       expr/cmp.lo
++  CC       expr/range.lo
++  CC       expr/connlimit.lo
++  CC       expr/counter.lo
++  CC       expr/ct.lo
++  CC       expr/data_reg.lo
++  CC       expr/dup.lo
++  CC       expr/exthdr.lo
++  CC       expr/flow_offload.lo
++  CC       expr/fib.lo
++  CC       expr/fwd.lo
++  CC       expr/limit.lo
++  CC       expr/log.lo
++  CC       expr/lookup.lo
++  CC       expr/dynset.lo
++  CC       expr/immediate.lo
++  CC       expr/match.lo
++  CC       expr/meta.lo
++  CC       expr/numgen.lo
++  CC       expr/nat.lo
++  CC       expr/tproxy.lo
++  CC       expr/objref.lo
++  CC       expr/payload.lo
++  CC       expr/queue.lo
++  CC       expr/quota.lo
++  CC       expr/reject.lo
++  CC       expr/rt.lo
++  CC       expr/target.lo
++  CC       expr/tunnel.lo
++  CC       expr/masq.lo
++  CC       expr/redir.lo
++  CC       expr/hash.lo
++  CC       expr/socket.lo
++  CC       expr/synproxy.lo
++  CC       expr/osf.lo
++  CC       expr/xfrm.lo
++  CC       obj/counter.lo
++  CC       obj/ct_helper.lo
++  CC       obj/quota.lo
++  CC       obj/tunnel.lo
++  CC       obj/limit.lo
++  CC       obj/synproxy.lo
++  CC       obj/ct_timeout.lo
++  CC       obj/secmark.lo
++  CC       obj/ct_expect.lo
++  CCLD     libnftnl.la
++make[2]: Leaving directory '/tmp/libnftnl-1.1.9/src'
++Making all in include
++make[2]: Entering directory '/tmp/libnftnl-1.1.9/include'
++Making all in libnftnl
++make[3]: Entering directory '/tmp/libnftnl-1.1.9/include/libnftnl'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/libnftnl-1.1.9/include/libnftnl'
++Making all in linux
++make[3]: Entering directory '/tmp/libnftnl-1.1.9/include/linux'
++Making all in netfilter
++make[4]: Entering directory '/tmp/libnftnl-1.1.9/include/linux/netfilter'
++make[4]: Nothing to be done for 'all'.
++make[4]: Leaving directory '/tmp/libnftnl-1.1.9/include/linux/netfilter'
++make[4]: Entering directory '/tmp/libnftnl-1.1.9/include/linux'
++make[4]: Nothing to be done for 'all-am'.
++make[4]: Leaving directory '/tmp/libnftnl-1.1.9/include/linux'
++make[3]: Leaving directory '/tmp/libnftnl-1.1.9/include/linux'
++make[3]: Entering directory '/tmp/libnftnl-1.1.9/include'
++make[3]: Nothing to be done for 'all-am'.
++make[3]: Leaving directory '/tmp/libnftnl-1.1.9/include'
++make[2]: Leaving directory '/tmp/libnftnl-1.1.9/include'
++Making all in examples
++make[2]: Entering directory '/tmp/libnftnl-1.1.9/examples'
++make[2]: Nothing to be done for 'all'.
++make[2]: Leaving directory '/tmp/libnftnl-1.1.9/examples'
++Making all in tests
++make[2]: Entering directory '/tmp/libnftnl-1.1.9/tests'
++make[2]: Nothing to be done for 'all'.
++make[2]: Leaving directory '/tmp/libnftnl-1.1.9/tests'
++make[2]: Entering directory '/tmp/libnftnl-1.1.9'
++make[2]: Leaving directory '/tmp/libnftnl-1.1.9'
++make[1]: Leaving directory '/tmp/libnftnl-1.1.9'
++Making install in src
++make[1]: Entering directory '/tmp/libnftnl-1.1.9/src'
++make[2]: Entering directory '/tmp/libnftnl-1.1.9/src'
++ /usr/bin/mkdir -p '/tmp/package-libnftnl/usr/lib'
++ /bin/sh ../libtool   --mode=install /usr/bin/ginstall -c   libnftnl.la '/tmp/package-libnftnl/usr/lib'
++libtool: install: /usr/bin/ginstall -c .libs/libnftnl.so.11.5.0 /tmp/package-libnftnl/usr/lib/libnftnl.so.11.5.0
++libtool: install: (cd /tmp/package-libnftnl/usr/lib && { ln -s -f libnftnl.so.11.5.0 libnftnl.so.11 || { rm -f libnftnl.so.11 && ln -s libnftnl.so.11.5.0 libnftnl.so.11; }; })
++libtool: install: (cd /tmp/package-libnftnl/usr/lib && { ln -s -f libnftnl.so.11.5.0 libnftnl.so || { rm -f libnftnl.so && ln -s libnftnl.so.11.5.0 libnftnl.so; }; })
++libtool: install: /usr/bin/ginstall -c .libs/libnftnl.lai /tmp/package-libnftnl/usr/lib/libnftnl.la
++libtool: warning: remember to run 'libtool --finish /usr/lib'
++make[2]: Nothing to be done for 'install-data-am'.
++make[2]: Leaving directory '/tmp/libnftnl-1.1.9/src'
++make[1]: Leaving directory '/tmp/libnftnl-1.1.9/src'
++Making install in include
++make[1]: Entering directory '/tmp/libnftnl-1.1.9/include'
++Making install in libnftnl
++make[2]: Entering directory '/tmp/libnftnl-1.1.9/include/libnftnl'
++make[3]: Entering directory '/tmp/libnftnl-1.1.9/include/libnftnl'
++make[3]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-libnftnl/usr/include/libnftnl'
++ /usr/bin/ginstall -c -m 644 batch.h table.h trace.h chain.h object.h rule.h expr.h set.h flowtable.h ruleset.h common.h udata.h gen.h '/tmp/package-libnftnl/usr/include/libnftnl'
++make[3]: Leaving directory '/tmp/libnftnl-1.1.9/include/libnftnl'
++make[2]: Leaving directory '/tmp/libnftnl-1.1.9/include/libnftnl'
++Making install in linux
++make[2]: Entering directory '/tmp/libnftnl-1.1.9/include/linux'
++Making install in netfilter
++make[3]: Entering directory '/tmp/libnftnl-1.1.9/include/linux/netfilter'
++make[4]: Entering directory '/tmp/libnftnl-1.1.9/include/linux/netfilter'
++make[4]: Nothing to be done for 'install-exec-am'.
++make[4]: Nothing to be done for 'install-data-am'.
++make[4]: Leaving directory '/tmp/libnftnl-1.1.9/include/linux/netfilter'
++make[3]: Leaving directory '/tmp/libnftnl-1.1.9/include/linux/netfilter'
++make[3]: Entering directory '/tmp/libnftnl-1.1.9/include/linux'
++make[4]: Entering directory '/tmp/libnftnl-1.1.9/include/linux'
++make[4]: Nothing to be done for 'install-exec-am'.
++make[4]: Nothing to be done for 'install-data-am'.
++make[4]: Leaving directory '/tmp/libnftnl-1.1.9/include/linux'
++make[3]: Leaving directory '/tmp/libnftnl-1.1.9/include/linux'
++make[2]: Leaving directory '/tmp/libnftnl-1.1.9/include/linux'
++make[2]: Entering directory '/tmp/libnftnl-1.1.9/include'
++make[3]: Entering directory '/tmp/libnftnl-1.1.9/include'
++make[3]: Nothing to be done for 'install-exec-am'.
++make[3]: Nothing to be done for 'install-data-am'.
++make[3]: Leaving directory '/tmp/libnftnl-1.1.9/include'
++make[2]: Leaving directory '/tmp/libnftnl-1.1.9/include'
++make[1]: Leaving directory '/tmp/libnftnl-1.1.9/include'
++Making install in examples
++make[1]: Entering directory '/tmp/libnftnl-1.1.9/examples'
++make[2]: Entering directory '/tmp/libnftnl-1.1.9/examples'
++make[2]: Nothing to be done for 'install-exec-am'.
++make[2]: Nothing to be done for 'install-data-am'.
++make[2]: Leaving directory '/tmp/libnftnl-1.1.9/examples'
++make[1]: Leaving directory '/tmp/libnftnl-1.1.9/examples'
++Making install in tests
++make[1]: Entering directory '/tmp/libnftnl-1.1.9/tests'
++make[2]: Entering directory '/tmp/libnftnl-1.1.9/tests'
++make[2]: Nothing to be done for 'install-exec-am'.
++make[2]: Nothing to be done for 'install-data-am'.
++make[2]: Leaving directory '/tmp/libnftnl-1.1.9/tests'
++make[1]: Leaving directory '/tmp/libnftnl-1.1.9/tests'
++make[1]: Entering directory '/tmp/libnftnl-1.1.9'
++make[2]: Entering directory '/tmp/libnftnl-1.1.9'
++make[2]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-libnftnl/usr/lib/pkgconfig'
++ /usr/bin/ginstall -c -m 644 libnftnl.pc '/tmp/package-libnftnl/usr/lib/pkgconfig'
++make[2]: Leaving directory '/tmp/libnftnl-1.1.9'
++make[1]: Leaving directory '/tmp/libnftnl-1.1.9'
++cp: cannot stat 'README*': No such file or directory
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++usr/lib/libnftnl.so	libnftnl.so.11.5.0
++usr/lib/libnftnl.so.11	libnftnl.so.11.5.0
++
++Making symbolic link creation script:
++( cd usr/lib ; rm -rf libnftnl.so )
++( cd usr/lib ; ln -sf libnftnl.so.11.5.0 libnftnl.so )
++( cd usr/lib ; rm -rf libnftnl.so.11 )
++( cd usr/lib ; ln -sf libnftnl.so.11.5.0 libnftnl.so.11 )
++
++It is recommended that you make these lines your new installation script.
++
++Would you like to make this stuff the install script for this package
++and remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './usr/lib/libnftnl.so.11'
++removed './usr/lib/libnftnl.so'
++
++Creating your new ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/libnftnl-1.1.9-x86_64-1.txz
++
++./
++install/
++install/doinst.sh
++install/slack-desc
++usr/
++usr/doc/
++usr/doc/libnftnl-1.1.9/
++usr/doc/libnftnl-1.1.9/COPYING
++usr/include/
++usr/include/libnftnl/
++usr/include/libnftnl/batch.h
++usr/include/libnftnl/chain.h
++usr/include/libnftnl/common.h
++usr/include/libnftnl/expr.h
++usr/include/libnftnl/flowtable.h
++usr/include/libnftnl/gen.h
++usr/include/libnftnl/object.h
++usr/include/libnftnl/rule.h
++usr/include/libnftnl/ruleset.h
++usr/include/libnftnl/set.h
++usr/include/libnftnl/table.h
++usr/include/libnftnl/trace.h
++usr/include/libnftnl/udata.h
++usr/lib/
++usr/lib/libnftnl.so.11.5.0
++usr/lib/pkgconfig/
++usr/lib/pkgconfig/libnftnl.pc
++
++Slackware package /tmp/libnftnl-1.1.9-x86_64-1.txz created.
++

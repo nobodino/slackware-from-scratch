@@ -1,0 +1,913 @@
+diff -ruBN /tmp/thunar-volman/thunar-volman.SlackBuild /source/xfce/thunar-volman/thunar-volman.SlackBuild
+--- /tmp/thunar-volman/thunar-volman.SlackBuild	2020-12-19 05:12:05.000000000 +0000
++++ /source/xfce/thunar-volman/thunar-volman.SlackBuild	2021-01-23 22:05:42.000000000 +0000
+@@ -57,7 +57,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ else
+   SLKCFLAGS="-O2"
+   LIBDIRSUFFIX=""
+@@ -82,7 +82,7 @@
+   --prefix=/usr \
+   --libdir=/usr/lib${LIBDIRSUFFIX} \
+   --enable-debug=no \
+-  --build=$ARCH-slackware-linux || exit 1
++  --build=$ARCH-slackware-linux-musl || exit 1
+ 
+ make $NUMJOBS || make || exit 1
+ make install DESTDIR=$PKG || exit 1
+diff -ruBN /tmp/thunar-volman/thunar-volman.SlackBuild.log /source/xfce/thunar-volman/thunar-volman.SlackBuild.log
+--- /tmp/thunar-volman/thunar-volman.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/xfce/thunar-volman/thunar-volman.SlackBuild.log	2021-01-23 22:06:20.000000000 +0000
+@@ -0,0 +1,888 @@
++thunar-volman-4.16.0/
++thunar-volman-4.16.0/missing
++thunar-volman-4.16.0/Makefile.am
++thunar-volman-4.16.0/config.h.in
++thunar-volman-4.16.0/thunar-volman-settings/
++thunar-volman-4.16.0/thunar-volman-settings/Makefile.am
++thunar-volman-4.16.0/thunar-volman-settings/tvm-command-entry.c
++thunar-volman-4.16.0/thunar-volman-settings/Makefile.in
++thunar-volman-4.16.0/thunar-volman-settings/thunar-volman-settings.desktop.in.in
++thunar-volman-4.16.0/thunar-volman-settings/tvm-preferences-dialog.h
++thunar-volman-4.16.0/thunar-volman-settings/main.c
++thunar-volman-4.16.0/thunar-volman-settings/tvm-command-entry.h
++thunar-volman-4.16.0/thunar-volman-settings/tvm-preferences-dialog.c
++thunar-volman-4.16.0/NEWS
++thunar-volman-4.16.0/ChangeLog
++thunar-volman-4.16.0/depcomp
++thunar-volman-4.16.0/COPYING
++thunar-volman-4.16.0/AUTHORS
++thunar-volman-4.16.0/intltool-extract.in
++thunar-volman-4.16.0/configure.ac
++thunar-volman-4.16.0/aclocal.m4
++thunar-volman-4.16.0/configure
++thunar-volman-4.16.0/Makefile.in
++thunar-volman-4.16.0/thunar-volman/
++thunar-volman-4.16.0/thunar-volman/Makefile.am
++thunar-volman-4.16.0/thunar-volman/tvm-context.h
++thunar-volman-4.16.0/thunar-volman/tvm-device.h
++thunar-volman-4.16.0/thunar-volman/tvm-usb-device.h
++thunar-volman-4.16.0/thunar-volman/tvm-block-device.c
++thunar-volman-4.16.0/thunar-volman/tvm-pango-extensions.c
++thunar-volman-4.16.0/thunar-volman/tvm-notify.c
++thunar-volman-4.16.0/thunar-volman/tvm-usb-device.c
++thunar-volman-4.16.0/thunar-volman/tvm-gio-extensions.c
++thunar-volman-4.16.0/thunar-volman/tvm-context.c
++thunar-volman-4.16.0/thunar-volman/tvm-prompt.h
++thunar-volman-4.16.0/thunar-volman/tvm-notify.h
++thunar-volman-4.16.0/thunar-volman/Makefile.in
++thunar-volman-4.16.0/thunar-volman/tvm-prompt.c
++thunar-volman-4.16.0/thunar-volman/tvm-pango-extensions.h
++thunar-volman-4.16.0/thunar-volman/tvm-device.c
++thunar-volman-4.16.0/thunar-volman/tvm-gio-extensions.h
++thunar-volman-4.16.0/thunar-volman/tvm-run.h
++thunar-volman-4.16.0/thunar-volman/tvm-block-device.h
++thunar-volman-4.16.0/thunar-volman/tvm-input-device.h
++thunar-volman-4.16.0/thunar-volman/tvm-input-device.c
++thunar-volman-4.16.0/thunar-volman/main.c
++thunar-volman-4.16.0/thunar-volman/tvm-run.c
++thunar-volman-4.16.0/intltool-merge.in
++thunar-volman-4.16.0/ltmain.sh
++thunar-volman-4.16.0/compile
++thunar-volman-4.16.0/config.sub
++thunar-volman-4.16.0/config.guess
++thunar-volman-4.16.0/install-sh
++thunar-volman-4.16.0/README.md
++thunar-volman-4.16.0/THANKS
++thunar-volman-4.16.0/po/
++thunar-volman-4.16.0/po/en_GB.po
++thunar-volman-4.16.0/po/ca.po
++thunar-volman-4.16.0/po/zh_CN.po
++thunar-volman-4.16.0/po/nb.po
++thunar-volman-4.16.0/po/tr.po
++thunar-volman-4.16.0/po/en_AU.po
++thunar-volman-4.16.0/po/fr.po
++thunar-volman-4.16.0/po/eu.po
++thunar-volman-4.16.0/po/gl.po
++thunar-volman-4.16.0/po/be.po
++thunar-volman-4.16.0/po/zh_TW.po
++thunar-volman-4.16.0/po/th.po
++thunar-volman-4.16.0/po/Makefile.in.in
++thunar-volman-4.16.0/po/sr.po
++thunar-volman-4.16.0/po/fi.po
++thunar-volman-4.16.0/po/pl.po
++thunar-volman-4.16.0/po/ast.po
++thunar-volman-4.16.0/po/it.po
++thunar-volman-4.16.0/po/he.po
++thunar-volman-4.16.0/po/et.po
++thunar-volman-4.16.0/po/pt_BR.po
++thunar-volman-4.16.0/po/de.po
++thunar-volman-4.16.0/po/sl.po
++thunar-volman-4.16.0/po/zh_HK.po
++thunar-volman-4.16.0/po/nl.po
++thunar-volman-4.16.0/po/hy_AM.po
++thunar-volman-4.16.0/po/ja.po
++thunar-volman-4.16.0/po/hu.po
++thunar-volman-4.16.0/po/POTFILES.in
++thunar-volman-4.16.0/po/nn.po
++thunar-volman-4.16.0/po/ar.po
++thunar-volman-4.16.0/po/ko.po
++thunar-volman-4.16.0/po/es.po
++thunar-volman-4.16.0/po/kk.po
++thunar-volman-4.16.0/po/ur.po
++thunar-volman-4.16.0/po/sk.po
++thunar-volman-4.16.0/po/am.po
++thunar-volman-4.16.0/po/te.po
++thunar-volman-4.16.0/po/hr.po
++thunar-volman-4.16.0/po/sq.po
++thunar-volman-4.16.0/po/pt.po
++thunar-volman-4.16.0/po/cs.po
++thunar-volman-4.16.0/po/is.po
++thunar-volman-4.16.0/po/uk.po
++thunar-volman-4.16.0/po/hye.po
++thunar-volman-4.16.0/po/ur_PK.po
++thunar-volman-4.16.0/po/id.po
++thunar-volman-4.16.0/po/vi.po
++thunar-volman-4.16.0/po/da.po
++thunar-volman-4.16.0/po/ug.po
++thunar-volman-4.16.0/po/lv.po
++thunar-volman-4.16.0/po/el.po
++thunar-volman-4.16.0/po/sv.po
++thunar-volman-4.16.0/po/ru.po
++thunar-volman-4.16.0/po/ie.po
++thunar-volman-4.16.0/po/lt.po
++thunar-volman-4.16.0/po/ms.po
++thunar-volman-4.16.0/po/ro.po
++thunar-volman-4.16.0/po/bg.po
++thunar-volman-4.16.0/po/oc.po
++thunar-volman-4.16.0/intltool-update.in
++thunar-volman-4.16.0/icons/
++thunar-volman-4.16.0/icons/scalable/
++thunar-volman-4.16.0/icons/scalable/Makefile.am
++thunar-volman-4.16.0/icons/scalable/Makefile.in
++thunar-volman-4.16.0/icons/scalable/org.xfce.volman.svg
++thunar-volman-4.16.0/icons/Makefile.am
++thunar-volman-4.16.0/icons/16x16/
++thunar-volman-4.16.0/icons/16x16/Makefile.am
++thunar-volman-4.16.0/icons/16x16/Makefile.in
++thunar-volman-4.16.0/icons/16x16/org.xfce.volman.png
++thunar-volman-4.16.0/icons/32x32/
++thunar-volman-4.16.0/icons/32x32/Makefile.am
++thunar-volman-4.16.0/icons/32x32/Makefile.in
++thunar-volman-4.16.0/icons/32x32/org.xfce.volman.png
++thunar-volman-4.16.0/icons/24x24/
++thunar-volman-4.16.0/icons/24x24/Makefile.am
++thunar-volman-4.16.0/icons/24x24/Makefile.in
++thunar-volman-4.16.0/icons/24x24/org.xfce.volman.png
++thunar-volman-4.16.0/icons/48x48/
++thunar-volman-4.16.0/icons/48x48/Makefile.am
++thunar-volman-4.16.0/icons/48x48/Makefile.in
++thunar-volman-4.16.0/icons/48x48/org.xfce.volman.png
++thunar-volman-4.16.0/icons/Makefile.in
++thunar-volman-4.16.0/icons/128x128/
++thunar-volman-4.16.0/icons/128x128/Makefile.am
++thunar-volman-4.16.0/icons/128x128/Makefile.in
++thunar-volman-4.16.0/icons/128x128/org.xfce.volman.png
++checking build system type... x86_64-slackware-linux-musl
++checking host system type... x86_64-slackware-linux-musl
++checking target system type... x86_64-slackware-linux-musl
++checking for a BSD-compatible install... /usr/bin/ginstall -c
++checking whether build environment is sane... yes
++checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
++checking for gawk... gawk
++checking whether make sets $(MAKE)... yes
++checking whether make supports nested variables... yes
++checking whether UID '0' is supported by ustar format... yes
++checking whether GID '0' is supported by ustar format... yes
++checking how to create a ustar tar archive... gnutar
++checking whether to enable maintainer-specific portions of Makefiles... no
++checking whether make supports nested variables... (cached) yes
++checking whether make supports the include directive... yes (GNU style)
++checking for gcc... gcc
++checking whether the C compiler works... yes
++checking for C compiler default output file name... a.out
++checking for suffix of executables... 
++checking whether we are cross compiling... no
++checking for suffix of object files... o
++checking whether we are using the GNU C compiler... yes
++checking whether gcc accepts -g... yes
++checking for gcc option to accept ISO C89... none needed
++checking whether gcc understands -c and -o together... yes
++checking dependency style of gcc... gcc3
++checking how to run the C preprocessor... gcc -E
++checking for grep that handles long lines and -e... /usr/bin/grep
++checking for egrep... /usr/bin/grep -E
++checking for ANSI C header files... yes
++checking for sys/types.h... yes
++checking for sys/stat.h... yes
++checking for stdlib.h... yes
++checking for string.h... yes
++checking for memory.h... yes
++checking for strings.h... yes
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking for unistd.h... yes
++checking minix/config.h usability... no
++checking minix/config.h presence... no
++checking for minix/config.h... no
++checking whether it is safe to define __EXTENSIONS__... yes
++checking for library containing strerror... none required
++checking for gcc... (cached) gcc
++checking whether we are using the GNU C compiler... (cached) yes
++checking whether gcc accepts -g... (cached) yes
++checking for gcc option to accept ISO C89... (cached) none needed
++checking whether gcc understands -c and -o together... (cached) yes
++checking dependency style of gcc... (cached) gcc3
++checking whether gcc and cc understand -c and -o together... yes
++checking for a sed that does not truncate output... /usr/bin/sed
++checking for fgrep... /usr/bin/grep -F
++checking how to print strings... printf
++checking for ld used by gcc... /usr/bin/ld
++checking if the linker (/usr/bin/ld) is GNU ld... yes
++checking whether NLS is requested... yes
++checking for intltool >= 0.35.0... 0.51.0 found
++checking for intltool-update... /usr/bin/intltool-update
++checking for intltool-merge... /usr/bin/intltool-merge
++checking for intltool-extract... /usr/bin/intltool-extract
++checking for xgettext... /usr/bin/xgettext
++checking for msgmerge... /usr/bin/msgmerge
++checking for msgfmt... /usr/bin/msgfmt
++checking for gmsgfmt... /usr/bin/msgfmt
++checking for perl... /usr/bin/perl
++checking for perl >= 5.8.1... 5.32.0
++checking for XML::Parser... ok
++checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
++checking the name lister (/usr/bin/nm -B) interface... BSD nm
++checking whether ln -s works... yes
++checking the maximum length of command line arguments... 98304
++checking how to convert x86_64-slackware-linux-musl file names to x86_64-slackware-linux-musl format... func_convert_file_noop
++checking how to convert x86_64-slackware-linux-musl file names to toolchain format... func_convert_file_noop
++checking for /usr/bin/ld option to reload object files... -r
++checking for objdump... objdump
++checking how to recognize dependent libraries... pass_all
++checking for dlltool... dlltool
++checking how to associate runtime and link libraries... printf %s\n
++checking for ar... ar
++checking for archiver @FILE support... @
++checking for strip... strip
++checking for ranlib... ranlib
++checking command to parse /usr/bin/nm -B output from gcc object... ok
++checking for sysroot... no
++checking for a working dd... /usr/bin/dd
++checking how to truncate binary pipes... /usr/bin/dd bs=4096 count=1
++checking for mt... mt
++checking if mt is a manifest tool... no
++checking for dlfcn.h... yes
++checking for objdir... .libs
++checking if gcc supports -fno-rtti -fno-exceptions... no
++checking for gcc option to produce PIC... -fPIC -DPIC
++checking if gcc PIC flag -fPIC -DPIC works... yes
++checking if gcc static flag -static works... yes
++checking if gcc supports -c -o file.o... yes
++checking if gcc supports -c -o file.o... (cached) yes
++checking whether the gcc linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
++checking whether -lc should be explicitly linked in... no
++checking dynamic linker characteristics... GNU/Linux ld.so
++checking how to hardcode library paths into programs... immediate
++checking whether stripping libraries is possible... yes
++checking if libtool supports shared libraries... yes
++checking whether to build shared libraries... yes
++checking whether to build static libraries... no
++checking errno.h usability... yes
++checking errno.h presence... yes
++checking for errno.h... yes
++checking path.h usability... no
++checking path.h presence... no
++checking for path.h... no
++checking stdarg.h usability... yes
++checking stdarg.h presence... yes
++checking for stdarg.h... yes
++checking for sys/types.h... (cached) yes
++checking sys/wait.h usability... yes
++checking sys/wait.h presence... yes
++checking for sys/wait.h... yes
++checking for dummy... no
++checking for mt... no
++checking locale.h usability... yes
++checking locale.h presence... yes
++checking for locale.h... yes
++checking for LC_MESSAGES... yes
++checking for CFPreferencesCopyAppValue... no
++checking for CFLocaleCopyCurrent... no
++checking libintl.h usability... yes
++checking libintl.h presence... yes
++checking for libintl.h... yes
++checking for ngettext in libc... yes
++checking for dgettext in libc... yes
++checking for bind_textdomain_codeset... yes
++checking for msgfmt... (cached) /usr/bin/msgfmt
++checking for dcgettext... yes
++checking if msgfmt accepts -c... yes
++checking for gmsgfmt... (cached) /usr/bin/msgfmt
++checking for xgettext... (cached) /usr/bin/xgettext
++checking for catalogs to be installed...  en_GB ca zh_CN nb tr en_AU fr eu gl be zh_TW th sr fi pl ast it he et pt_BR de sl zh_HK nl hy_AM ja hu nn ar ko es kk ur sk am te hr sq pt cs is uk hye ur_PK id vi da ug lv el sv ru ie lt ms ro bg oc
++checking for bind_textdomain_codeset... (cached) yes
++checking for locales directory... /usr/lib/locale
++checking for additional xgettext flags... --keyword=Q_ --from-code=UTF-8
++checking pkg-config is at least version 0.9.0... yes
++checking for exo-2 >= 0.10.0... 4.16.0
++checking EXO_CFLAGS... -pthread -I/usr/include/exo-2 -I/usr/include/gtk-3.0 -I/usr/include/at-spi2-atk/2.0 -I/usr/include/at-spi-2.0 -I/usr/include/dbus-1.0 -I/usr/lib/dbus-1.0/include -I/usr/include/gtk-3.0 -I/usr/include/gio-unix-2.0 -I/usr/include/cairo -I/usr/include/pango-1.0 -I/usr/include/fribidi -I/usr/include/harfbuzz -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pixman-1 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/xfce4 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include
++checking EXO_LIBS... -lexo-2 -lgtk-3 -lgdk-3 -lz -lpangocairo-1.0 -lpango-1.0 -lharfbuzz -latk-1.0 -lcairo-gobject -lcairo -lgdk_pixbuf-2.0 -lgio-2.0 -lgobject-2.0 -lxfce4util -lglib-2.0
++checking pkg-config is at least version 0.9.0... yes
++checking for glib-2.0 >= 2.50.0... 2.66.4
++checking GLIB_CFLAGS... -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include
++checking GLIB_LIBS... -lglib-2.0
++checking pkg-config is at least version 0.9.0... yes
++checking for gio-2.0 >= 2.50.0... 2.66.4
++checking GIO_CFLAGS... -pthread -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include
++checking GIO_LIBS... -lgio-2.0 -lgobject-2.0 -lglib-2.0
++checking pkg-config is at least version 0.9.0... yes
++checking for gthread-2.0 >= 2.50.0... 2.66.4
++checking GTHREAD_CFLAGS... -pthread -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include
++checking GTHREAD_LIBS... -lgthread-2.0 -pthread -lglib-2.0
++checking pkg-config is at least version 0.9.0... yes
++checking for gtk+-3.0 >= 3.20.0... 3.24.24
++checking GTK_CFLAGS... -pthread -I/usr/include/gtk-3.0 -I/usr/include/at-spi2-atk/2.0 -I/usr/include/at-spi-2.0 -I/usr/include/dbus-1.0 -I/usr/lib/dbus-1.0/include -I/usr/include/gtk-3.0 -I/usr/include/gio-unix-2.0 -I/usr/include/cairo -I/usr/include/pango-1.0 -I/usr/include/fribidi -I/usr/include/harfbuzz -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pixman-1 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include
++checking GTK_LIBS... -lgtk-3 -lgdk-3 -lz -lpangocairo-1.0 -lpango-1.0 -lharfbuzz -latk-1.0 -lcairo-gobject -lcairo -lgdk_pixbuf-2.0 -lgio-2.0 -lgobject-2.0 -lglib-2.0
++checking pkg-config is at least version 0.9.0... yes
++checking for gudev-1.0 >= 145... 234
++checking GUDEV_CFLAGS... -I/usr/include/gudev-1.0 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include
++checking GUDEV_LIBS... -lgudev-1.0 -lgobject-2.0 -lglib-2.0
++checking pkg-config is at least version 0.9.0... yes
++checking for libxfce4ui-2 >= 4.12.0... 4.16.0
++checking LIBXFCE4UI_CFLAGS... -pthread -I/usr/include/xfce4/libxfce4ui-2 -I/usr/include/gtk-3.0 -I/usr/include/at-spi2-atk/2.0 -I/usr/include/at-spi-2.0 -I/usr/include/dbus-1.0 -I/usr/lib/dbus-1.0/include -I/usr/include/gtk-3.0 -I/usr/include/gio-unix-2.0 -I/usr/include/cairo -I/usr/include/pango-1.0 -I/usr/include/fribidi -I/usr/include/harfbuzz -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pixman-1 -I/usr/include/libxml2 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/xfce4 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include
++checking LIBXFCE4UI_LIBS... -lxfce4ui-2 -lgtk-3 -lgdk-3 -lz -lpangocairo-1.0 -lpango-1.0 -lharfbuzz -latk-1.0 -lcairo-gobject -lcairo -lgdk_pixbuf-2.0 -lgio-2.0 -lgobject-2.0 -lxfce4util -lglib-2.0
++checking pkg-config is at least version 0.9.0... yes
++checking for libxfce4util-1.0 >= 4.12.0... 4.16.0
++checking LIBXFCE4UTIL_CFLAGS... -I/usr/include/xfce4 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include
++checking LIBXFCE4UTIL_LIBS... -lxfce4util -lglib-2.0
++checking pkg-config is at least version 0.9.0... yes
++checking for libxfconf-0 >= 4.12.0... 4.16.0
++checking XFCONF_CFLAGS... -pthread -I/usr/include/xfce4/xfconf-0 -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include
++checking XFCONF_LIBS... -lxfconf-0 -lgio-2.0 -lgobject-2.0 -lglib-2.0
++checking pkg-config is at least version 0.9.0... yes
++checking for libnotify >= 0.4.0... 0.7.9
++checking LIBNOTIFY_CFLAGS... -pthread -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include
++checking LIBNOTIFY_LIBS... -lnotify -lgdk_pixbuf-2.0 -lgio-2.0 -lgobject-2.0 -lglib-2.0
++checking whether to build with debugging support... no
++checking whether /usr/bin/ld -m elf_x86_64 accepts --as-needed... yes
++checking whether /usr/bin/ld -m elf_x86_64 accepts -O1... yes
++checking PLATFORM_CPPFLAGS... 
++checking PLATFORM_CFLAGS... 
++checking PLATFORM_LDFLAGS... 
++checking that generated files are newer than configure... done
++configure: creating ./config.status
++config.status: creating Makefile
++config.status: creating icons/Makefile
++config.status: creating icons/16x16/Makefile
++config.status: creating icons/24x24/Makefile
++config.status: creating icons/32x32/Makefile
++config.status: creating icons/48x48/Makefile
++config.status: creating icons/128x128/Makefile
++config.status: creating icons/scalable/Makefile
++config.status: creating po/Makefile.in
++config.status: creating thunar-volman/Makefile
++config.status: creating thunar-volman-settings/Makefile
++config.status: creating config.h
++config.status: executing depfiles commands
++config.status: executing libtool commands
++config.status: executing default-1 commands
++config.status: executing po/stamp-it commands
++
++Build Configuration:
++
++* Mount notifications: yes
++* Debug Support:       no
++
++make  all-recursive
++make[1]: Entering directory '/tmp/thunar-volman-4.16.0'
++Making all in icons
++make[2]: Entering directory '/tmp/thunar-volman-4.16.0/icons'
++Making all in scalable
++make[3]: Entering directory '/tmp/thunar-volman-4.16.0/icons/scalable'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/thunar-volman-4.16.0/icons/scalable'
++Making all in 16x16
++make[3]: Entering directory '/tmp/thunar-volman-4.16.0/icons/16x16'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/thunar-volman-4.16.0/icons/16x16'
++Making all in 24x24
++make[3]: Entering directory '/tmp/thunar-volman-4.16.0/icons/24x24'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/thunar-volman-4.16.0/icons/24x24'
++Making all in 32x32
++make[3]: Entering directory '/tmp/thunar-volman-4.16.0/icons/32x32'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/thunar-volman-4.16.0/icons/32x32'
++Making all in 48x48
++make[3]: Entering directory '/tmp/thunar-volman-4.16.0/icons/48x48'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/thunar-volman-4.16.0/icons/48x48'
++Making all in 128x128
++make[3]: Entering directory '/tmp/thunar-volman-4.16.0/icons/128x128'
++make[3]: Nothing to be done for 'all'.
++make[3]: Leaving directory '/tmp/thunar-volman-4.16.0/icons/128x128'
++make[3]: Entering directory '/tmp/thunar-volman-4.16.0/icons'
++make[3]: Nothing to be done for 'all-am'.
++make[3]: Leaving directory '/tmp/thunar-volman-4.16.0/icons'
++make[2]: Leaving directory '/tmp/thunar-volman-4.16.0/icons'
++Making all in po
++make[2]: Entering directory '/tmp/thunar-volman-4.16.0/po'
++  MSGFMT en_GB.gmo
++  MSGFMT ca.gmo
++  MSGFMT zh_CN.gmo
++  MSGFMT nb.gmo
++  MSGFMT tr.gmo
++  MSGFMT en_AU.gmo
++  MSGFMT fr.gmo
++  MSGFMT eu.gmo
++  MSGFMT gl.gmo
++  MSGFMT be.gmo
++  MSGFMT zh_TW.gmo
++  MSGFMT th.gmo
++  MSGFMT sr.gmo
++  MSGFMT fi.gmo
++  MSGFMT pl.gmo
++  MSGFMT ast.gmo
++  MSGFMT it.gmo
++  MSGFMT he.gmo
++  MSGFMT et.gmo
++  MSGFMT pt_BR.gmo
++  MSGFMT de.gmo
++  MSGFMT sl.gmo
++  MSGFMT zh_HK.gmo
++  MSGFMT nl.gmo
++  MSGFMT hy_AM.gmo
++  MSGFMT ja.gmo
++  MSGFMT hu.gmo
++  MSGFMT nn.gmo
++  MSGFMT ar.gmo
++  MSGFMT ko.gmo
++  MSGFMT es.gmo
++  MSGFMT kk.gmo
++  MSGFMT ur.gmo
++  MSGFMT sk.gmo
++  MSGFMT am.gmo
++  MSGFMT te.gmo
++  MSGFMT hr.gmo
++  MSGFMT sq.gmo
++  MSGFMT pt.gmo
++  MSGFMT cs.gmo
++  MSGFMT is.gmo
++  MSGFMT uk.gmo
++  MSGFMT hye.gmo
++  MSGFMT ur_PK.gmo
++  MSGFMT id.gmo
++  MSGFMT vi.gmo
++  MSGFMT da.gmo
++  MSGFMT ug.gmo
++  MSGFMT lv.gmo
++  MSGFMT el.gmo
++  MSGFMT sv.gmo
++  MSGFMT ru.gmo
++  MSGFMT ie.gmo
++  MSGFMT lt.gmo
++  MSGFMT ms.gmo
++  MSGFMT ro.gmo
++  MSGFMT bg.gmo
++  MSGFMT oc.gmo
++make[2]: Leaving directory '/tmp/thunar-volman-4.16.0/po'
++Making all in thunar-volman
++make[2]: Entering directory '/tmp/thunar-volman-4.16.0/thunar-volman'
++  CC       thunar_volman-main.o
++  CC       thunar_volman-tvm-context.o
++  CC       thunar_volman-tvm-block-device.o
++  CC       thunar_volman-tvm-device.o
++  CC       thunar_volman-tvm-gio-extensions.o
++  CC       thunar_volman-tvm-input-device.o
++  CC       thunar_volman-tvm-pango-extensions.o
++  CC       thunar_volman-tvm-prompt.o
++  CC       thunar_volman-tvm-run.o
++  CC       thunar_volman-tvm-usb-device.o
++  CC       thunar_volman-tvm-notify.o
++  CCLD     thunar-volman
++make[2]: Leaving directory '/tmp/thunar-volman-4.16.0/thunar-volman'
++Making all in thunar-volman-settings
++make[2]: Entering directory '/tmp/thunar-volman-4.16.0/thunar-volman-settings'
++  CC       thunar_volman_settings-main.o
++  CC       thunar_volman_settings-tvm-command-entry.o
++  CC       thunar_volman_settings-tvm-preferences-dialog.o
++  CC       thunar_volman_settings-tvm-pango-extensions.o
++sed -e "s,\@libexecdir\@,/usr/libexec,g" < thunar-volman-settings.desktop.in.in > thunar-volman-settings.desktop.in
++  ITMRG  thunar-volman-settings.desktop
++  CCLD     thunar-volman-settings
++rm thunar-volman-settings.desktop.in
++make[2]: Leaving directory '/tmp/thunar-volman-4.16.0/thunar-volman-settings'
++make[2]: Entering directory '/tmp/thunar-volman-4.16.0'
++make[2]: Leaving directory '/tmp/thunar-volman-4.16.0'
++make[1]: Leaving directory '/tmp/thunar-volman-4.16.0'
++Making install in icons
++make[1]: Entering directory '/tmp/thunar-volman-4.16.0/icons'
++Making install in scalable
++make[2]: Entering directory '/tmp/thunar-volman-4.16.0/icons/scalable'
++make[3]: Entering directory '/tmp/thunar-volman-4.16.0/icons/scalable'
++make[3]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-thunar-volman/usr/share/icons/hicolor/scalable/apps'
++ /usr/bin/ginstall -c -m 644 org.xfce.volman.svg '/tmp/package-thunar-volman/usr/share/icons/hicolor/scalable/apps'
++make[3]: Leaving directory '/tmp/thunar-volman-4.16.0/icons/scalable'
++make[2]: Leaving directory '/tmp/thunar-volman-4.16.0/icons/scalable'
++Making install in 16x16
++make[2]: Entering directory '/tmp/thunar-volman-4.16.0/icons/16x16'
++make[3]: Entering directory '/tmp/thunar-volman-4.16.0/icons/16x16'
++make[3]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-thunar-volman/usr/share/icons/hicolor/16x16/apps'
++ /usr/bin/ginstall -c -m 644 org.xfce.volman.png '/tmp/package-thunar-volman/usr/share/icons/hicolor/16x16/apps'
++make[3]: Leaving directory '/tmp/thunar-volman-4.16.0/icons/16x16'
++make[2]: Leaving directory '/tmp/thunar-volman-4.16.0/icons/16x16'
++Making install in 24x24
++make[2]: Entering directory '/tmp/thunar-volman-4.16.0/icons/24x24'
++make[3]: Entering directory '/tmp/thunar-volman-4.16.0/icons/24x24'
++make[3]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-thunar-volman/usr/share/icons/hicolor/24x24/apps'
++ /usr/bin/ginstall -c -m 644 org.xfce.volman.png '/tmp/package-thunar-volman/usr/share/icons/hicolor/24x24/apps'
++make[3]: Leaving directory '/tmp/thunar-volman-4.16.0/icons/24x24'
++make[2]: Leaving directory '/tmp/thunar-volman-4.16.0/icons/24x24'
++Making install in 32x32
++make[2]: Entering directory '/tmp/thunar-volman-4.16.0/icons/32x32'
++make[3]: Entering directory '/tmp/thunar-volman-4.16.0/icons/32x32'
++make[3]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-thunar-volman/usr/share/icons/hicolor/32x32/apps'
++ /usr/bin/ginstall -c -m 644 org.xfce.volman.png '/tmp/package-thunar-volman/usr/share/icons/hicolor/32x32/apps'
++make[3]: Leaving directory '/tmp/thunar-volman-4.16.0/icons/32x32'
++make[2]: Leaving directory '/tmp/thunar-volman-4.16.0/icons/32x32'
++Making install in 48x48
++make[2]: Entering directory '/tmp/thunar-volman-4.16.0/icons/48x48'
++make[3]: Entering directory '/tmp/thunar-volman-4.16.0/icons/48x48'
++make[3]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-thunar-volman/usr/share/icons/hicolor/48x48/apps'
++ /usr/bin/ginstall -c -m 644 org.xfce.volman.png '/tmp/package-thunar-volman/usr/share/icons/hicolor/48x48/apps'
++make[3]: Leaving directory '/tmp/thunar-volman-4.16.0/icons/48x48'
++make[2]: Leaving directory '/tmp/thunar-volman-4.16.0/icons/48x48'
++Making install in 128x128
++make[2]: Entering directory '/tmp/thunar-volman-4.16.0/icons/128x128'
++make[3]: Entering directory '/tmp/thunar-volman-4.16.0/icons/128x128'
++make[3]: Nothing to be done for 'install-exec-am'.
++ /usr/bin/mkdir -p '/tmp/package-thunar-volman/usr/share/icons/hicolor/128x128/apps'
++ /usr/bin/ginstall -c -m 644 org.xfce.volman.png '/tmp/package-thunar-volman/usr/share/icons/hicolor/128x128/apps'
++make[3]: Leaving directory '/tmp/thunar-volman-4.16.0/icons/128x128'
++make[2]: Leaving directory '/tmp/thunar-volman-4.16.0/icons/128x128'
++make[2]: Entering directory '/tmp/thunar-volman-4.16.0/icons'
++make[3]: Entering directory '/tmp/thunar-volman-4.16.0/icons'
++make[3]: Nothing to be done for 'install-exec-am'.
++make  install-data-hook
++make[4]: Entering directory '/tmp/thunar-volman-4.16.0/icons'
++*** Icon cache not updated. Remember to run:
++***
++***   gtk-update-icon-cache -f -t /usr/share/icons/hicolor
++***
++make[4]: Leaving directory '/tmp/thunar-volman-4.16.0/icons'
++make[3]: Leaving directory '/tmp/thunar-volman-4.16.0/icons'
++make[2]: Leaving directory '/tmp/thunar-volman-4.16.0/icons'
++make[1]: Leaving directory '/tmp/thunar-volman-4.16.0/icons'
++Making install in po
++make[1]: Entering directory '/tmp/thunar-volman-4.16.0/po'
++linguas="en_GB ca zh_CN nb tr en_AU fr eu gl be zh_TW th sr fi pl ast it he et pt_BR de sl zh_HK nl hy_AM ja hu nn ar ko es kk ur sk am te hr sq pt cs is uk hye ur_PK id vi da ug lv el sv ru ie lt ms ro bg oc "; \
++for lang in $linguas; do \
++  dir=/tmp/package-thunar-volman/usr/lib/locale/$lang/LC_MESSAGES; \
++  /bin/sh /tmp/thunar-volman-4.16.0/install-sh -d $dir; \
++  if test -r $lang.gmo; then \
++    /usr/bin/ginstall -c -m 644 $lang.gmo $dir/thunar-volman.mo; \
++    echo "installing $lang.gmo as $dir/thunar-volman.mo"; \
++  else \
++    /usr/bin/ginstall -c -m 644 ./$lang.gmo $dir/thunar-volman.mo; \
++    echo "installing ./$lang.gmo as" \
++	 "$dir/thunar-volman.mo"; \
++  fi; \
++  if test -r $lang.gmo.m; then \
++    /usr/bin/ginstall -c -m 644 $lang.gmo.m $dir/thunar-volman.mo.m; \
++    echo "installing $lang.gmo.m as $dir/thunar-volman.mo.m"; \
++  else \
++    if test -r ./$lang.gmo.m ; then \
++      /usr/bin/ginstall -c -m 644 ./$lang.gmo.m \
++	$dir/thunar-volman.mo.m; \
++      echo "installing ./$lang.gmo.m as" \
++	   "$dir/thunar-volman.mo.m"; \
++    else \
++      true; \
++    fi; \
++  fi; \
++done
++installing en_GB.gmo as /tmp/package-thunar-volman/usr/lib/locale/en_GB/LC_MESSAGES/thunar-volman.mo
++installing ca.gmo as /tmp/package-thunar-volman/usr/lib/locale/ca/LC_MESSAGES/thunar-volman.mo
++installing zh_CN.gmo as /tmp/package-thunar-volman/usr/lib/locale/zh_CN/LC_MESSAGES/thunar-volman.mo
++installing nb.gmo as /tmp/package-thunar-volman/usr/lib/locale/nb/LC_MESSAGES/thunar-volman.mo
++installing tr.gmo as /tmp/package-thunar-volman/usr/lib/locale/tr/LC_MESSAGES/thunar-volman.mo
++installing en_AU.gmo as /tmp/package-thunar-volman/usr/lib/locale/en_AU/LC_MESSAGES/thunar-volman.mo
++installing fr.gmo as /tmp/package-thunar-volman/usr/lib/locale/fr/LC_MESSAGES/thunar-volman.mo
++installing eu.gmo as /tmp/package-thunar-volman/usr/lib/locale/eu/LC_MESSAGES/thunar-volman.mo
++installing gl.gmo as /tmp/package-thunar-volman/usr/lib/locale/gl/LC_MESSAGES/thunar-volman.mo
++installing be.gmo as /tmp/package-thunar-volman/usr/lib/locale/be/LC_MESSAGES/thunar-volman.mo
++installing zh_TW.gmo as /tmp/package-thunar-volman/usr/lib/locale/zh_TW/LC_MESSAGES/thunar-volman.mo
++installing th.gmo as /tmp/package-thunar-volman/usr/lib/locale/th/LC_MESSAGES/thunar-volman.mo
++installing sr.gmo as /tmp/package-thunar-volman/usr/lib/locale/sr/LC_MESSAGES/thunar-volman.mo
++installing fi.gmo as /tmp/package-thunar-volman/usr/lib/locale/fi/LC_MESSAGES/thunar-volman.mo
++installing pl.gmo as /tmp/package-thunar-volman/usr/lib/locale/pl/LC_MESSAGES/thunar-volman.mo
++installing ast.gmo as /tmp/package-thunar-volman/usr/lib/locale/ast/LC_MESSAGES/thunar-volman.mo
++installing it.gmo as /tmp/package-thunar-volman/usr/lib/locale/it/LC_MESSAGES/thunar-volman.mo
++installing he.gmo as /tmp/package-thunar-volman/usr/lib/locale/he/LC_MESSAGES/thunar-volman.mo
++installing et.gmo as /tmp/package-thunar-volman/usr/lib/locale/et/LC_MESSAGES/thunar-volman.mo
++installing pt_BR.gmo as /tmp/package-thunar-volman/usr/lib/locale/pt_BR/LC_MESSAGES/thunar-volman.mo
++installing de.gmo as /tmp/package-thunar-volman/usr/lib/locale/de/LC_MESSAGES/thunar-volman.mo
++installing sl.gmo as /tmp/package-thunar-volman/usr/lib/locale/sl/LC_MESSAGES/thunar-volman.mo
++installing zh_HK.gmo as /tmp/package-thunar-volman/usr/lib/locale/zh_HK/LC_MESSAGES/thunar-volman.mo
++installing nl.gmo as /tmp/package-thunar-volman/usr/lib/locale/nl/LC_MESSAGES/thunar-volman.mo
++installing hy_AM.gmo as /tmp/package-thunar-volman/usr/lib/locale/hy_AM/LC_MESSAGES/thunar-volman.mo
++installing ja.gmo as /tmp/package-thunar-volman/usr/lib/locale/ja/LC_MESSAGES/thunar-volman.mo
++installing hu.gmo as /tmp/package-thunar-volman/usr/lib/locale/hu/LC_MESSAGES/thunar-volman.mo
++installing nn.gmo as /tmp/package-thunar-volman/usr/lib/locale/nn/LC_MESSAGES/thunar-volman.mo
++installing ar.gmo as /tmp/package-thunar-volman/usr/lib/locale/ar/LC_MESSAGES/thunar-volman.mo
++installing ko.gmo as /tmp/package-thunar-volman/usr/lib/locale/ko/LC_MESSAGES/thunar-volman.mo
++installing es.gmo as /tmp/package-thunar-volman/usr/lib/locale/es/LC_MESSAGES/thunar-volman.mo
++installing kk.gmo as /tmp/package-thunar-volman/usr/lib/locale/kk/LC_MESSAGES/thunar-volman.mo
++installing ur.gmo as /tmp/package-thunar-volman/usr/lib/locale/ur/LC_MESSAGES/thunar-volman.mo
++installing sk.gmo as /tmp/package-thunar-volman/usr/lib/locale/sk/LC_MESSAGES/thunar-volman.mo
++installing am.gmo as /tmp/package-thunar-volman/usr/lib/locale/am/LC_MESSAGES/thunar-volman.mo
++installing te.gmo as /tmp/package-thunar-volman/usr/lib/locale/te/LC_MESSAGES/thunar-volman.mo
++installing hr.gmo as /tmp/package-thunar-volman/usr/lib/locale/hr/LC_MESSAGES/thunar-volman.mo
++installing sq.gmo as /tmp/package-thunar-volman/usr/lib/locale/sq/LC_MESSAGES/thunar-volman.mo
++installing pt.gmo as /tmp/package-thunar-volman/usr/lib/locale/pt/LC_MESSAGES/thunar-volman.mo
++installing cs.gmo as /tmp/package-thunar-volman/usr/lib/locale/cs/LC_MESSAGES/thunar-volman.mo
++installing is.gmo as /tmp/package-thunar-volman/usr/lib/locale/is/LC_MESSAGES/thunar-volman.mo
++installing uk.gmo as /tmp/package-thunar-volman/usr/lib/locale/uk/LC_MESSAGES/thunar-volman.mo
++installing hye.gmo as /tmp/package-thunar-volman/usr/lib/locale/hye/LC_MESSAGES/thunar-volman.mo
++installing ur_PK.gmo as /tmp/package-thunar-volman/usr/lib/locale/ur_PK/LC_MESSAGES/thunar-volman.mo
++installing id.gmo as /tmp/package-thunar-volman/usr/lib/locale/id/LC_MESSAGES/thunar-volman.mo
++installing vi.gmo as /tmp/package-thunar-volman/usr/lib/locale/vi/LC_MESSAGES/thunar-volman.mo
++installing da.gmo as /tmp/package-thunar-volman/usr/lib/locale/da/LC_MESSAGES/thunar-volman.mo
++installing ug.gmo as /tmp/package-thunar-volman/usr/lib/locale/ug/LC_MESSAGES/thunar-volman.mo
++installing lv.gmo as /tmp/package-thunar-volman/usr/lib/locale/lv/LC_MESSAGES/thunar-volman.mo
++installing el.gmo as /tmp/package-thunar-volman/usr/lib/locale/el/LC_MESSAGES/thunar-volman.mo
++installing sv.gmo as /tmp/package-thunar-volman/usr/lib/locale/sv/LC_MESSAGES/thunar-volman.mo
++installing ru.gmo as /tmp/package-thunar-volman/usr/lib/locale/ru/LC_MESSAGES/thunar-volman.mo
++installing ie.gmo as /tmp/package-thunar-volman/usr/lib/locale/ie/LC_MESSAGES/thunar-volman.mo
++installing lt.gmo as /tmp/package-thunar-volman/usr/lib/locale/lt/LC_MESSAGES/thunar-volman.mo
++installing ms.gmo as /tmp/package-thunar-volman/usr/lib/locale/ms/LC_MESSAGES/thunar-volman.mo
++installing ro.gmo as /tmp/package-thunar-volman/usr/lib/locale/ro/LC_MESSAGES/thunar-volman.mo
++installing bg.gmo as /tmp/package-thunar-volman/usr/lib/locale/bg/LC_MESSAGES/thunar-volman.mo
++installing oc.gmo as /tmp/package-thunar-volman/usr/lib/locale/oc/LC_MESSAGES/thunar-volman.mo
++make[1]: Leaving directory '/tmp/thunar-volman-4.16.0/po'
++Making install in thunar-volman
++make[1]: Entering directory '/tmp/thunar-volman-4.16.0/thunar-volman'
++make[2]: Entering directory '/tmp/thunar-volman-4.16.0/thunar-volman'
++ /usr/bin/mkdir -p '/tmp/package-thunar-volman/usr/bin'
++  /bin/sh ../libtool   --mode=install /usr/bin/ginstall -c thunar-volman '/tmp/package-thunar-volman/usr/bin'
++libtool: install: /usr/bin/ginstall -c thunar-volman /tmp/package-thunar-volman/usr/bin/thunar-volman
++make[2]: Nothing to be done for 'install-data-am'.
++make[2]: Leaving directory '/tmp/thunar-volman-4.16.0/thunar-volman'
++make[1]: Leaving directory '/tmp/thunar-volman-4.16.0/thunar-volman'
++Making install in thunar-volman-settings
++make[1]: Entering directory '/tmp/thunar-volman-4.16.0/thunar-volman-settings'
++make[2]: Entering directory '/tmp/thunar-volman-4.16.0/thunar-volman-settings'
++ /usr/bin/mkdir -p '/tmp/package-thunar-volman/usr/bin'
++  /bin/sh ../libtool   --mode=install /usr/bin/ginstall -c thunar-volman-settings '/tmp/package-thunar-volman/usr/bin'
++libtool: install: /usr/bin/ginstall -c thunar-volman-settings /tmp/package-thunar-volman/usr/bin/thunar-volman-settings
++ /usr/bin/mkdir -p '/tmp/package-thunar-volman/usr/share/applications'
++ /usr/bin/ginstall -c -m 644 thunar-volman-settings.desktop '/tmp/package-thunar-volman/usr/share/applications'
++make[2]: Leaving directory '/tmp/thunar-volman-4.16.0/thunar-volman-settings'
++make[1]: Leaving directory '/tmp/thunar-volman-4.16.0/thunar-volman-settings'
++make[1]: Entering directory '/tmp/thunar-volman-4.16.0'
++make[2]: Entering directory '/tmp/thunar-volman-4.16.0'
++make[2]: Nothing to be done for 'install-exec-am'.
++make[2]: Nothing to be done for 'install-data-am'.
++make[2]: Leaving directory '/tmp/thunar-volman-4.16.0'
++make[1]: Leaving directory '/tmp/thunar-volman-4.16.0'
++cp: cannot stat 'INSTALL': No such file or directory
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++
++No symbolic links were found, so we won't make an installation script.
++You can make your own later in ./install/doinst.sh and rebuild the
++package if you like.
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/thunar-volman-4.16.0-x86_64-1.txz
++
++./
++install/
++install/slack-desc
++usr/
++usr/bin/
++usr/bin/thunar-volman
++usr/bin/thunar-volman-settings
++usr/doc/
++usr/doc/thunar-volman-4.16.0/
++usr/doc/thunar-volman-4.16.0/AUTHORS
++usr/doc/thunar-volman-4.16.0/COPYING
++usr/doc/thunar-volman-4.16.0/ChangeLog
++usr/doc/thunar-volman-4.16.0/NEWS
++usr/doc/thunar-volman-4.16.0/README.md
++usr/doc/thunar-volman-4.16.0/THANKS
++usr/lib/
++usr/lib/locale/
++usr/lib/locale/am/
++usr/lib/locale/am/LC_MESSAGES/
++usr/lib/locale/am/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/ar/
++usr/lib/locale/ar/LC_MESSAGES/
++usr/lib/locale/ar/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/ast/
++usr/lib/locale/ast/LC_MESSAGES/
++usr/lib/locale/ast/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/be/
++usr/lib/locale/be/LC_MESSAGES/
++usr/lib/locale/be/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/bg/
++usr/lib/locale/bg/LC_MESSAGES/
++usr/lib/locale/bg/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/ca/
++usr/lib/locale/ca/LC_MESSAGES/
++usr/lib/locale/ca/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/cs/
++usr/lib/locale/cs/LC_MESSAGES/
++usr/lib/locale/cs/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/da/
++usr/lib/locale/da/LC_MESSAGES/
++usr/lib/locale/da/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/de/
++usr/lib/locale/de/LC_MESSAGES/
++usr/lib/locale/de/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/el/
++usr/lib/locale/el/LC_MESSAGES/
++usr/lib/locale/el/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/en_AU/
++usr/lib/locale/en_AU/LC_MESSAGES/
++usr/lib/locale/en_AU/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/en_GB/
++usr/lib/locale/en_GB/LC_MESSAGES/
++usr/lib/locale/en_GB/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/es/
++usr/lib/locale/es/LC_MESSAGES/
++usr/lib/locale/es/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/et/
++usr/lib/locale/et/LC_MESSAGES/
++usr/lib/locale/et/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/eu/
++usr/lib/locale/eu/LC_MESSAGES/
++usr/lib/locale/eu/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/fi/
++usr/lib/locale/fi/LC_MESSAGES/
++usr/lib/locale/fi/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/fr/
++usr/lib/locale/fr/LC_MESSAGES/
++usr/lib/locale/fr/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/gl/
++usr/lib/locale/gl/LC_MESSAGES/
++usr/lib/locale/gl/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/he/
++usr/lib/locale/he/LC_MESSAGES/
++usr/lib/locale/he/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/hr/
++usr/lib/locale/hr/LC_MESSAGES/
++usr/lib/locale/hr/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/hu/
++usr/lib/locale/hu/LC_MESSAGES/
++usr/lib/locale/hu/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/hy_AM/
++usr/lib/locale/hy_AM/LC_MESSAGES/
++usr/lib/locale/hy_AM/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/hye/
++usr/lib/locale/hye/LC_MESSAGES/
++usr/lib/locale/hye/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/id/
++usr/lib/locale/id/LC_MESSAGES/
++usr/lib/locale/id/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/ie/
++usr/lib/locale/ie/LC_MESSAGES/
++usr/lib/locale/ie/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/is/
++usr/lib/locale/is/LC_MESSAGES/
++usr/lib/locale/is/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/it/
++usr/lib/locale/it/LC_MESSAGES/
++usr/lib/locale/it/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/ja/
++usr/lib/locale/ja/LC_MESSAGES/
++usr/lib/locale/ja/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/kk/
++usr/lib/locale/kk/LC_MESSAGES/
++usr/lib/locale/kk/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/ko/
++usr/lib/locale/ko/LC_MESSAGES/
++usr/lib/locale/ko/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/lt/
++usr/lib/locale/lt/LC_MESSAGES/
++usr/lib/locale/lt/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/lv/
++usr/lib/locale/lv/LC_MESSAGES/
++usr/lib/locale/lv/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/ms/
++usr/lib/locale/ms/LC_MESSAGES/
++usr/lib/locale/ms/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/nb/
++usr/lib/locale/nb/LC_MESSAGES/
++usr/lib/locale/nb/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/nl/
++usr/lib/locale/nl/LC_MESSAGES/
++usr/lib/locale/nl/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/nn/
++usr/lib/locale/nn/LC_MESSAGES/
++usr/lib/locale/nn/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/oc/
++usr/lib/locale/oc/LC_MESSAGES/
++usr/lib/locale/oc/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/pl/
++usr/lib/locale/pl/LC_MESSAGES/
++usr/lib/locale/pl/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/pt/
++usr/lib/locale/pt/LC_MESSAGES/
++usr/lib/locale/pt/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/pt_BR/
++usr/lib/locale/pt_BR/LC_MESSAGES/
++usr/lib/locale/pt_BR/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/ro/
++usr/lib/locale/ro/LC_MESSAGES/
++usr/lib/locale/ro/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/ru/
++usr/lib/locale/ru/LC_MESSAGES/
++usr/lib/locale/ru/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/sk/
++usr/lib/locale/sk/LC_MESSAGES/
++usr/lib/locale/sk/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/sl/
++usr/lib/locale/sl/LC_MESSAGES/
++usr/lib/locale/sl/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/sq/
++usr/lib/locale/sq/LC_MESSAGES/
++usr/lib/locale/sq/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/sr/
++usr/lib/locale/sr/LC_MESSAGES/
++usr/lib/locale/sr/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/sv/
++usr/lib/locale/sv/LC_MESSAGES/
++usr/lib/locale/sv/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/te/
++usr/lib/locale/te/LC_MESSAGES/
++usr/lib/locale/te/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/th/
++usr/lib/locale/th/LC_MESSAGES/
++usr/lib/locale/th/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/tr/
++usr/lib/locale/tr/LC_MESSAGES/
++usr/lib/locale/tr/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/ug/
++usr/lib/locale/ug/LC_MESSAGES/
++usr/lib/locale/ug/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/uk/
++usr/lib/locale/uk/LC_MESSAGES/
++usr/lib/locale/uk/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/ur/
++usr/lib/locale/ur/LC_MESSAGES/
++usr/lib/locale/ur/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/ur_PK/
++usr/lib/locale/ur_PK/LC_MESSAGES/
++usr/lib/locale/ur_PK/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/vi/
++usr/lib/locale/vi/LC_MESSAGES/
++usr/lib/locale/vi/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/zh_CN/
++usr/lib/locale/zh_CN/LC_MESSAGES/
++usr/lib/locale/zh_CN/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/zh_HK/
++usr/lib/locale/zh_HK/LC_MESSAGES/
++usr/lib/locale/zh_HK/LC_MESSAGES/thunar-volman.mo
++usr/lib/locale/zh_TW/
++usr/lib/locale/zh_TW/LC_MESSAGES/
++usr/lib/locale/zh_TW/LC_MESSAGES/thunar-volman.mo
++usr/share/
++usr/share/applications/
++usr/share/applications/thunar-volman-settings.desktop
++usr/share/icons/
++usr/share/icons/hicolor/
++usr/share/icons/hicolor/128x128/
++usr/share/icons/hicolor/128x128/apps/
++usr/share/icons/hicolor/128x128/apps/org.xfce.volman.png
++usr/share/icons/hicolor/16x16/
++usr/share/icons/hicolor/16x16/apps/
++usr/share/icons/hicolor/16x16/apps/org.xfce.volman.png
++usr/share/icons/hicolor/24x24/
++usr/share/icons/hicolor/24x24/apps/
++usr/share/icons/hicolor/24x24/apps/org.xfce.volman.png
++usr/share/icons/hicolor/32x32/
++usr/share/icons/hicolor/32x32/apps/
++usr/share/icons/hicolor/32x32/apps/org.xfce.volman.png
++usr/share/icons/hicolor/48x48/
++usr/share/icons/hicolor/48x48/apps/
++usr/share/icons/hicolor/48x48/apps/org.xfce.volman.png
++usr/share/icons/hicolor/scalable/
++usr/share/icons/hicolor/scalable/apps/
++usr/share/icons/hicolor/scalable/apps/org.xfce.volman.svg
++
++Slackware package /tmp/thunar-volman-4.16.0-x86_64-1.txz created.
++

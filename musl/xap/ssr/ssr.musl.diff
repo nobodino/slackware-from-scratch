@@ -1,0 +1,1074 @@
+diff -ruBN /tmp/ssr/ssr.SlackBuild /source/xap/ssr/ssr.SlackBuild
+--- /tmp/ssr/ssr.SlackBuild	2020-11-18 19:43:47.000000000 +0000
++++ /source/xap/ssr/ssr.SlackBuild	2021-01-16 08:16:48.000000000 +0000
+@@ -58,7 +58,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "armv7hl" ]; then
+   SLKCFLAGS="-O3 -march=armv7-a -mfpu=vfpv3-d16"
+   LIBDIRSUFFIX=""
+@@ -93,6 +93,7 @@
+     -DCMAKE_CXX_FLAGS="$SLKCFLAGS" \
+     -DCMAKE_INSTALL_PREFIX=/usr \
+     -DLIB_SUFFIX="$LIBDIRSUFFIX" \
++-DCMAKE_INSTALL_LIBDIR=lib$LIBDIRSUFFIX \
+     -DDOC_INSTALL_DIR="doc" \
+     -DCMAKE_INSTALL_MANDIR=/usr/man \
+     -DWITH_JACK=FALSE \
+diff -ruBN /tmp/ssr/ssr.SlackBuild.log /source/xap/ssr/ssr.SlackBuild.log
+--- /tmp/ssr/ssr.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/xap/ssr/ssr.SlackBuild.log	2021-01-16 08:23:27.000000000 +0000
+@@ -0,0 +1,1050 @@
++ssr-0.4.2/
++ssr-0.4.2/README.md
++ssr-0.4.2/notes.txt
++ssr-0.4.2/src/
++ssr-0.4.2/src/Main.cpp
++ssr-0.4.2/src/AV/
++ssr-0.4.2/src/AV/SourceSink.cpp
++ssr-0.4.2/src/AV/FastResampler_FirFilter_SSE2.cpp
++ssr-0.4.2/src/AV/Output/
++ssr-0.4.2/src/AV/Output/AudioEncoder.cpp
++ssr-0.4.2/src/AV/Output/SyncDiagram.cpp
++ssr-0.4.2/src/AV/Output/SyncDiagram.h
++ssr-0.4.2/src/AV/Output/X264Presets.cpp
++ssr-0.4.2/src/AV/Output/x264-preset-translator.php
++ssr-0.4.2/src/AV/Output/BaseEncoder.h
++ssr-0.4.2/src/AV/Output/X264Presets.h
++ssr-0.4.2/src/AV/Output/Synchronizer.h
++ssr-0.4.2/src/AV/Output/VideoEncoder.h
++ssr-0.4.2/src/AV/Output/Muxer.cpp
++ssr-0.4.2/src/AV/Output/OutputSettings.h
++ssr-0.4.2/src/AV/Output/BaseEncoder.cpp
++ssr-0.4.2/src/AV/Output/OutputManager.h
++ssr-0.4.2/src/AV/Output/VideoEncoder.cpp
++ssr-0.4.2/src/AV/Output/OutputManager.cpp
++ssr-0.4.2/src/AV/Output/AudioEncoder.h
++ssr-0.4.2/src/AV/Output/Synchronizer.cpp
++ssr-0.4.2/src/AV/Output/Muxer.h
++ssr-0.4.2/src/AV/FastScaler.h
++ssr-0.4.2/src/AV/FastResampler.cpp
++ssr-0.4.2/src/AV/Input/
++ssr-0.4.2/src/AV/Input/SSRVideoStreamReader.cpp
++ssr-0.4.2/src/AV/Input/SSRVideoStream.h
++ssr-0.4.2/src/AV/Input/SSRVideoStreamWatcher.h
++ssr-0.4.2/src/AV/Input/PulseAudioInput.h
++ssr-0.4.2/src/AV/Input/PulseAudioInput.cpp
++ssr-0.4.2/src/AV/Input/X11Input.cpp
++ssr-0.4.2/src/AV/Input/JACKInput.h
++ssr-0.4.2/src/AV/Input/X11Input.h
++ssr-0.4.2/src/AV/Input/JACKInput.cpp
++ssr-0.4.2/src/AV/Input/ALSAInput.cpp
++ssr-0.4.2/src/AV/Input/GLInjectInput.h
++ssr-0.4.2/src/AV/Input/GLInjectInput.cpp
++ssr-0.4.2/src/AV/Input/SSRVideoStreamReader.h
++ssr-0.4.2/src/AV/Input/SSRVideoStreamWatcher.cpp
++ssr-0.4.2/src/AV/Input/ALSAInput.h
++ssr-0.4.2/src/AV/AVWrapper.cpp
++ssr-0.4.2/src/AV/FastScaler.cpp
++ssr-0.4.2/src/AV/FastScaler_Convert_SSSE3.cpp
++ssr-0.4.2/src/AV/SimpleSynth.cpp
++ssr-0.4.2/src/AV/FastResampler.h
++ssr-0.4.2/src/AV/AVWrapper.h
++ssr-0.4.2/src/AV/SampleCast.h
++ssr-0.4.2/src/AV/FastResampler_FirFilter_Fallback.cpp
++ssr-0.4.2/src/AV/SourceSink.h
++ssr-0.4.2/src/AV/FastScaler_Scale_Generic.h
++ssr-0.4.2/src/AV/FastScaler_Convert.h
++ssr-0.4.2/src/AV/FastScaler_Scale_Generic.cpp
++ssr-0.4.2/src/AV/FastScaler_Convert_Fallback.cpp
++ssr-0.4.2/src/AV/FastScaler_Scale_Fallback.cpp
++ssr-0.4.2/src/AV/FastScaler_Scale.h
++ssr-0.4.2/src/AV/FastScaler_Scale_SSSE3.cpp
++ssr-0.4.2/src/AV/SimpleSynth.h
++ssr-0.4.2/src/AV/FastResampler_FirFilter.h
++ssr-0.4.2/src/update-translations-clean
++ssr-0.4.2/src/CMakeLists.txt
++ssr-0.4.2/src/Benchmark.h
++ssr-0.4.2/src/Benchmark.cpp
++ssr-0.4.2/src/SimpleScreenRecorder.pro
++ssr-0.4.2/src/translations/
++ssr-0.4.2/src/translations/simplescreenrecorder_hu.ts
++ssr-0.4.2/src/translations/simplescreenrecorder_cs.ts
++ssr-0.4.2/src/translations/simplescreenrecorder_de.ts
++ssr-0.4.2/src/translations/simplescreenrecorder_ar.ts
++ssr-0.4.2/src/translations/simplescreenrecorder_zh_TW.ts
++ssr-0.4.2/src/translations/list.txt
++ssr-0.4.2/src/translations/simplescreenrecorder_pt_BR.ts
++ssr-0.4.2/src/translations/simplescreenrecorder_uk.ts
++ssr-0.4.2/src/translations/CMakeLists.txt
++ssr-0.4.2/src/translations/simplescreenrecorder_zh_CN.ts
++ssr-0.4.2/src/translations/simplescreenrecorder_gl.ts
++ssr-0.4.2/src/translations/simplescreenrecorder_lt.ts
++ssr-0.4.2/src/translations/simplescreenrecorder_it.ts
++ssr-0.4.2/src/translations/simplescreenrecorder_id.ts
++ssr-0.4.2/src/translations/simplescreenrecorder_he.ts
++ssr-0.4.2/src/translations/simplescreenrecorder_pl.ts
++ssr-0.4.2/src/translations/simplescreenrecorder_nl.ts
++ssr-0.4.2/src/translations/simplescreenrecorder_el.ts
++ssr-0.4.2/src/translations/simplescreenrecorder_ru.ts
++ssr-0.4.2/src/translations/simplescreenrecorder_sv.ts
++ssr-0.4.2/src/translations/simplescreenrecorder_bg.ts
++ssr-0.4.2/src/translations/simplescreenrecorder_fr.ts
++ssr-0.4.2/src/translations/simplescreenrecorder_sr.ts
++ssr-0.4.2/src/translations/simplescreenrecorder_ja.ts
++ssr-0.4.2/src/translations/simplescreenrecorder_es.ts
++ssr-0.4.2/src/NVidia.cpp
++ssr-0.4.2/src/GUI/
++ssr-0.4.2/src/GUI/DialogRecordSchedule.h
++ssr-0.4.2/src/GUI/PageRecord.cpp
++ssr-0.4.2/src/GUI/MainWindow.h
++ssr-0.4.2/src/GUI/HotkeyListener.cpp
++ssr-0.4.2/src/GUI/DialogGLInject.cpp
++ssr-0.4.2/src/GUI/HiddenScrollArea.cpp
++ssr-0.4.2/src/GUI/WidgetRack.cpp
++ssr-0.4.2/src/GUI/ProfileBox.h
++ssr-0.4.2/src/GUI/PageInput.h
++ssr-0.4.2/src/GUI/ElidedLabel.h
++ssr-0.4.2/src/GUI/VideoPreviewer.h
++ssr-0.4.2/src/GUI/AudioPreviewer.h
++ssr-0.4.2/src/GUI/PageInput.cpp
++ssr-0.4.2/src/GUI/PageDone.cpp
++ssr-0.4.2/src/GUI/DialogRecordSchedule.cpp
++ssr-0.4.2/src/GUI/MainWindow.cpp
++ssr-0.4.2/src/GUI/ProfileBox.cpp
++ssr-0.4.2/src/GUI/WidgetRack.h
++ssr-0.4.2/src/GUI/Icons.cpp
++ssr-0.4.2/src/GUI/PageDone.h
++ssr-0.4.2/src/GUI/PageRecord.h
++ssr-0.4.2/src/GUI/VideoPreviewer.cpp
++ssr-0.4.2/src/GUI/PageWelcome.cpp
++ssr-0.4.2/src/GUI/AudioPreviewer.cpp
++ssr-0.4.2/src/GUI/HotkeyListener.h
++ssr-0.4.2/src/GUI/DialogGLInject.h
++ssr-0.4.2/src/GUI/PageOutput.cpp
++ssr-0.4.2/src/GUI/ElidedLabel.cpp
++ssr-0.4.2/src/GUI/PageWelcome.h
++ssr-0.4.2/src/GUI/PageOutput.h
++ssr-0.4.2/src/GUI/Icons.h
++ssr-0.4.2/src/GUI/HiddenScrollArea.h
++ssr-0.4.2/src/update-translations
++ssr-0.4.2/src/Global.h
++ssr-0.4.2/src/common/
++ssr-0.4.2/src/common/LockFreeMessageQueue.h
++ssr-0.4.2/src/common/CommandLineOptions.cpp
++ssr-0.4.2/src/common/CPUFeatures.cpp
++ssr-0.4.2/src/common/CPUFeatures.h
++ssr-0.4.2/src/common/Dialogs.h
++ssr-0.4.2/src/common/QueueBuffer.h
++ssr-0.4.2/src/common/MutexDataPair.h
++ssr-0.4.2/src/common/Logger.h
++ssr-0.4.2/src/common/EnumStrings.h
++ssr-0.4.2/src/common/CommandLineOptions.h
++ssr-0.4.2/src/common/Logger.cpp
++ssr-0.4.2/src/common/Dialogs.cpp
++ssr-0.4.2/src/common/TempBuffer.h
++ssr-0.4.2/src/NVidia.h
++ssr-0.4.2/scripts/
++ssr-0.4.2/scripts/ssr-glinject
++ssr-0.4.2/cmake/
++ssr-0.4.2/cmake/FindPulseAudio.cmake
++ssr-0.4.2/cmake/FindFFmpeg.cmake
++ssr-0.4.2/cmake/FindJack.cmake
++ssr-0.4.2/CMakeLists.txt
++ssr-0.4.2/COPYING
++ssr-0.4.2/AUTHORS.md
++ssr-0.4.2/simple-build-and-install
++ssr-0.4.2/CHANGELOG.md
++ssr-0.4.2/data/
++ssr-0.4.2/data/simplescreenrecorder.desktop
++ssr-0.4.2/data/simplescreenrecorder.metainfo.xml
++ssr-0.4.2/data/output-profiles/
++ssr-0.4.2/data/output-profiles/Live%20Stream%20%282000kbps%29.conf
++ssr-0.4.2/data/output-profiles/Live%20Stream%20%283000kbps%29.conf
++ssr-0.4.2/data/output-profiles/High%20Quality%20Intermediate.conf
++ssr-0.4.2/data/output-profiles/Live%20Stream%20%281000kbps%29.conf
++ssr-0.4.2/data/output-profiles/YouTube.conf
++ssr-0.4.2/data/man/
++ssr-0.4.2/data/man/ssr-glinject.1
++ssr-0.4.2/data/man/simplescreenrecorder.1
++ssr-0.4.2/data/screenshots/
++ssr-0.4.2/data/screenshots/screenshot01.png
++ssr-0.4.2/data/screenshots/screenshot03.png
++ssr-0.4.2/data/screenshots/screenshot02.png
++ssr-0.4.2/data/resources/
++ssr-0.4.2/data/resources/about.htm
++ssr-0.4.2/data/resources/resources.qrc
++ssr-0.4.2/data/resources/header.png
++ssr-0.4.2/data/icons/
++ssr-0.4.2/data/icons/16/
++ssr-0.4.2/data/icons/16/simplescreenrecorder-idle.png
++ssr-0.4.2/data/icons/16/simplescreenrecorder-paused.png
++ssr-0.4.2/data/icons/16/simplescreenrecorder-error.png
++ssr-0.4.2/data/icons/16/simplescreenrecorder.png
++ssr-0.4.2/data/icons/16/simplescreenrecorder-recording.png
++ssr-0.4.2/data/icons/192/
++ssr-0.4.2/data/icons/192/simplescreenrecorder-idle.png
++ssr-0.4.2/data/icons/192/simplescreenrecorder-paused.png
++ssr-0.4.2/data/icons/192/simplescreenrecorder-error.png
++ssr-0.4.2/data/icons/192/simplescreenrecorder.png
++ssr-0.4.2/data/icons/192/simplescreenrecorder-recording.png
++ssr-0.4.2/data/icons/22/
++ssr-0.4.2/data/icons/22/simplescreenrecorder-idle.png
++ssr-0.4.2/data/icons/22/simplescreenrecorder-paused.png
++ssr-0.4.2/data/icons/22/simplescreenrecorder-error.png
++ssr-0.4.2/data/icons/22/simplescreenrecorder.png
++ssr-0.4.2/data/icons/22/simplescreenrecorder-recording.png
++ssr-0.4.2/data/icons/48/
++ssr-0.4.2/data/icons/48/simplescreenrecorder-idle.png
++ssr-0.4.2/data/icons/48/simplescreenrecorder-paused.png
++ssr-0.4.2/data/icons/48/simplescreenrecorder-error.png
++ssr-0.4.2/data/icons/48/simplescreenrecorder.png
++ssr-0.4.2/data/icons/48/simplescreenrecorder-recording.png
++ssr-0.4.2/data/icons/64/
++ssr-0.4.2/data/icons/64/simplescreenrecorder-idle.png
++ssr-0.4.2/data/icons/64/simplescreenrecorder-paused.png
++ssr-0.4.2/data/icons/64/simplescreenrecorder-error.png
++ssr-0.4.2/data/icons/64/simplescreenrecorder.png
++ssr-0.4.2/data/icons/64/simplescreenrecorder-recording.png
++ssr-0.4.2/data/icons/96/
++ssr-0.4.2/data/icons/96/simplescreenrecorder-idle.png
++ssr-0.4.2/data/icons/96/simplescreenrecorder-paused.png
++ssr-0.4.2/data/icons/96/simplescreenrecorder-error.png
++ssr-0.4.2/data/icons/96/simplescreenrecorder.png
++ssr-0.4.2/data/icons/96/simplescreenrecorder-recording.png
++ssr-0.4.2/data/icons/32/
++ssr-0.4.2/data/icons/32/simplescreenrecorder-idle.png
++ssr-0.4.2/data/icons/32/simplescreenrecorder-paused.png
++ssr-0.4.2/data/icons/32/simplescreenrecorder-error.png
++ssr-0.4.2/data/icons/32/simplescreenrecorder.png
++ssr-0.4.2/data/icons/32/simplescreenrecorder-recording.png
++ssr-0.4.2/data/icons/128/
++ssr-0.4.2/data/icons/128/simplescreenrecorder-idle.png
++ssr-0.4.2/data/icons/128/simplescreenrecorder-paused.png
++ssr-0.4.2/data/icons/128/simplescreenrecorder-error.png
++ssr-0.4.2/data/icons/128/simplescreenrecorder.png
++ssr-0.4.2/data/icons/128/simplescreenrecorder-recording.png
++ssr-0.4.2/data/icons/256/
++ssr-0.4.2/data/icons/256/simplescreenrecorder-idle.png
++ssr-0.4.2/data/icons/256/simplescreenrecorder-paused.png
++ssr-0.4.2/data/icons/256/simplescreenrecorder-error.png
++ssr-0.4.2/data/icons/256/simplescreenrecorder.png
++ssr-0.4.2/data/icons/256/simplescreenrecorder-recording.png
++ssr-0.4.2/data/icons/24/
++ssr-0.4.2/data/icons/24/simplescreenrecorder-idle.png
++ssr-0.4.2/data/icons/24/simplescreenrecorder-paused.png
++ssr-0.4.2/data/icons/24/simplescreenrecorder-error.png
++ssr-0.4.2/data/icons/24/simplescreenrecorder.png
++ssr-0.4.2/data/icons/24/simplescreenrecorder-recording.png
++ssr-0.4.2/data/icons/scalable/
++ssr-0.4.2/data/icons/scalable/simplescreenrecorder-error.svg
++ssr-0.4.2/data/icons/scalable/simplescreenrecorder-paused.svg
++ssr-0.4.2/data/icons/scalable/simplescreenrecorder-idle.svg
++ssr-0.4.2/data/icons/scalable/simplescreenrecorder-recording.svg
++ssr-0.4.2/data/icons/scalable/simplescreenrecorder.svg
++ssr-0.4.2/todo.txt
++ssr-0.4.2/postinstall
++ssr-0.4.2/simple-uninstall
++ssr-0.4.2/glinject/
++ssr-0.4.2/glinject/elfhacks.h
++ssr-0.4.2/glinject/GLInject.h
++ssr-0.4.2/glinject/GLInject.pro
++ssr-0.4.2/glinject/CMakeLists.txt
++ssr-0.4.2/glinject/elfhacks.c
++ssr-0.4.2/glinject/GLXFrameGrabber.cpp
++ssr-0.4.2/glinject/SSRVideoStreamWriter.cpp
++ssr-0.4.2/glinject/GLXFrameGrabber.h
++ssr-0.4.2/glinject/ShmStructs.h
++ssr-0.4.2/glinject/GLInject.cpp
++ssr-0.4.2/glinject/Global.h
++ssr-0.4.2/glinject/SSRVideoStreamWriter.h
++ssr-0.4.2/glinject/Hook.cpp
++ssr-0.4.2/.gitignore
++-- The C compiler identification is GNU 10.2.0
++-- The CXX compiler identification is GNU 10.2.0
++-- Detecting C compiler ABI info
++-- Detecting C compiler ABI info - done
++-- Check for working C compiler: /usr/bin/cc - skipped
++-- Detecting C compile features
++-- Detecting C compile features - done
++-- Detecting CXX compiler ABI info
++-- Detecting CXX compiler ABI info - done
++-- Check for working CXX compiler: /usr/bin/c++ - skipped
++-- Detecting CXX compile features
++-- Detecting CXX compile features - done
++-- Looking for pthread.h
++-- Looking for pthread.h - found
++-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
++-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
++-- Found Threads: TRUE  
++-- Found X11: /usr/include   
++-- Looking for XOpenDisplay in /usr/lib/libX11.so;/usr/lib/libXext.so
++-- Looking for XOpenDisplay in /usr/lib/libX11.so;/usr/lib/libXext.so - found
++-- Looking for gethostbyname
++-- Looking for gethostbyname - found
++-- Looking for connect
++-- Looking for connect - found
++-- Looking for remove
++-- Looking for remove - found
++-- Looking for shmat
++-- Looking for shmat - found
++-- Looking for IceConnectionNumber in ICE
++-- Looking for IceConnectionNumber in ICE - found
++CMake Warning (dev) at /usr/share/cmake-3.19/Modules/FindOpenGL.cmake:293 (message):
++  Policy CMP0072 is not set: FindOpenGL prefers GLVND by default when
++  available.  Run "cmake --help-policy CMP0072" for policy details.  Use the
++  cmake_policy command to set the policy and suppress this warning.
++
++  FindOpenGL found both a legacy GL library:
++
++    OPENGL_gl_LIBRARY: /usr/lib/libGL.so
++
++  and GLVND libraries for OpenGL and GLX:
++
++    OPENGL_opengl_LIBRARY: /usr/lib/libOpenGL.so
++    OPENGL_glx_LIBRARY: /usr/lib/libGLX.so
++
++  OpenGL_GL_PREFERENCE has not been set to "GLVND" or "LEGACY", so for
++  compatibility with CMake 3.10 and below the legacy GL library will be used.
++Call Stack (most recent call first):
++  glinject/CMakeLists.txt:5 (find_package)
++This warning is for project developers.  Use -Wno-dev to suppress it.
++
++-- Found OpenGL: /usr/lib/libOpenGL.so   
++-- Found PkgConfig: /usr/bin/pkg-config (found version "0.29.2") 
++-- Checking for modules 'libavformat;libavcodec;libavutil;libswscale'
++--   Found libavformat, version 58.45.100
++--   Found libavcodec, version 58.91.100
++--   Found libavutil, version 56.51.100
++--   Found libswscale, version 5.7.100
++CMake Warning (dev) at /usr/share/cmake-3.19/Modules/FindPackageHandleStandardArgs.cmake:426 (message):
++  The package name passed to `find_package_handle_standard_args` (AVFormat)
++  does not match the name of the calling package (FFmpeg).  This can lead to
++  problems in calling code that expects `find_package` result variables
++  (e.g., `_FOUND`) to follow a certain pattern.
++Call Stack (most recent call first):
++  cmake/FindFFmpeg.cmake:19 (find_package_handle_standard_args)
++  src/CMakeLists.txt:6 (find_package)
++This warning is for project developers.  Use -Wno-dev to suppress it.
++
++-- Found AVFormat: /usr/lib/libavformat.so  
++CMake Warning (dev) at /usr/share/cmake-3.19/Modules/FindPackageHandleStandardArgs.cmake:426 (message):
++  The package name passed to `find_package_handle_standard_args` (AVCodec)
++  does not match the name of the calling package (FFmpeg).  This can lead to
++  problems in calling code that expects `find_package` result variables
++  (e.g., `_FOUND`) to follow a certain pattern.
++Call Stack (most recent call first):
++  cmake/FindFFmpeg.cmake:20 (find_package_handle_standard_args)
++  src/CMakeLists.txt:6 (find_package)
++This warning is for project developers.  Use -Wno-dev to suppress it.
++
++-- Found AVCodec: /usr/lib/libavcodec.so  
++CMake Warning (dev) at /usr/share/cmake-3.19/Modules/FindPackageHandleStandardArgs.cmake:426 (message):
++  The package name passed to `find_package_handle_standard_args` (AVUtil)
++  does not match the name of the calling package (FFmpeg).  This can lead to
++  problems in calling code that expects `find_package` result variables
++  (e.g., `_FOUND`) to follow a certain pattern.
++Call Stack (most recent call first):
++  cmake/FindFFmpeg.cmake:21 (find_package_handle_standard_args)
++  src/CMakeLists.txt:6 (find_package)
++This warning is for project developers.  Use -Wno-dev to suppress it.
++
++-- Found AVUtil: /usr/lib/libavutil.so  
++CMake Warning (dev) at /usr/share/cmake-3.19/Modules/FindPackageHandleStandardArgs.cmake:426 (message):
++  The package name passed to `find_package_handle_standard_args` (SWScale)
++  does not match the name of the calling package (FFmpeg).  This can lead to
++  problems in calling code that expects `find_package` result variables
++  (e.g., `_FOUND`) to follow a certain pattern.
++Call Stack (most recent call first):
++  cmake/FindFFmpeg.cmake:22 (find_package_handle_standard_args)
++  src/CMakeLists.txt:6 (find_package)
++This warning is for project developers.  Use -Wno-dev to suppress it.
++
++-- Found SWScale: /usr/lib/libswscale.so  
++-- Found ALSA: /usr/lib/libasound.so (found version "1.2.4") 
++-- Checking for module 'libpulse'
++--   Found libpulse, version 14.0
++-- Found PulseAudio: /usr/lib/libpulse.so  
++-- The following REQUIRED packages have been found:
++
++ * OpenGL
++ * Threads
++ * FFmpeg
++ * X11
++ * ALSA
++ * PkgConfig
++ * PulseAudio
++ * Qt5Core
++ * Qt5Gui
++ * Qt5Widgets
++ * Qt5X11Extras
++ * Qt5 (required version >= 5.7)
++
++-- Configuring done
++-- Generating done
++CMake Warning:
++  Manually-specified variables were not used by the project:
++
++    DOC_INSTALL_DIR
++    LIB_SUFFIX
++
++
++-- Build files have been written to: /tmp/ssr-0.4.2/cmake-build
++Scanning dependencies of target ssr-glinject
++Scanning dependencies of target translations
++Scanning dependencies of target simplescreenrecorder_autogen
++[  1%] Automatic MOC for target simplescreenrecorder
++[  2%] Generating simplescreenrecorder_ar.qm
++[  3%] Building C object glinject/CMakeFiles/ssr-glinject.dir/elfhacks.c.o
++[  4%] Building CXX object glinject/CMakeFiles/ssr-glinject.dir/GLInject.cpp.o
++[  5%] Generating simplescreenrecorder_bg.qm
++[  7%] Generating simplescreenrecorder_cs.qm
++[  8%] Generating simplescreenrecorder_de.qm
++[  9%] Generating simplescreenrecorder_el.qm
++[ 10%] Generating simplescreenrecorder_es.qm
++[ 11%] Generating simplescreenrecorder_fr.qm
++[ 13%] Generating simplescreenrecorder_gl.qm
++[ 14%] Generating simplescreenrecorder_he.qm
++[ 15%] Generating simplescreenrecorder_hu.qm
++[ 16%] Generating simplescreenrecorder_id.qm
++[ 17%] Generating simplescreenrecorder_it.qm
++[ 19%] Generating simplescreenrecorder_ja.qm
++[ 20%] Generating simplescreenrecorder_lt.qm
++[ 21%] Generating simplescreenrecorder_nl.qm
++[ 22%] Generating simplescreenrecorder_pl.qm
++[ 23%] Generating simplescreenrecorder_pt_BR.qm
++[ 25%] Generating simplescreenrecorder_ru.qm
++[ 26%] Generating simplescreenrecorder_sr.qm
++[ 27%] Generating simplescreenrecorder_sv.qm
++[ 28%] Generating simplescreenrecorder_uk.qm
++[ 29%] Generating simplescreenrecorder_zh_CN.qm
++[ 30%] Generating simplescreenrecorder_zh_TW.qm
++[ 30%] Built target translations
++[ 32%] Building CXX object glinject/CMakeFiles/ssr-glinject.dir/GLXFrameGrabber.cpp.o
++[ 33%] Building CXX object glinject/CMakeFiles/ssr-glinject.dir/Hook.cpp.o
++[ 34%] Building CXX object glinject/CMakeFiles/ssr-glinject.dir/SSRVideoStreamWriter.cpp.o
++[ 35%] Linking CXX shared library libssr-glinject.so
++[ 35%] Built target ssr-glinject
++[ 35%] Built target simplescreenrecorder_autogen
++[ 36%] Generating qrc_resources.cpp
++Scanning dependencies of target simplescreenrecorder
++[ 38%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/simplescreenrecorder_autogen/mocs_compilation.cpp.o
++[ 39%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/AV/Input/ALSAInput.cpp.o
++[ 40%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/AV/Input/GLInjectInput.cpp.o
++In file included from /tmp/ssr-0.4.2/cmake-build/src/simplescreenrecorder_autogen/2LCCYRVYXB/moc_ElidedLabel.cpp:10,
++                 from /tmp/ssr-0.4.2/cmake-build/src/simplescreenrecorder_autogen/mocs_compilation.cpp:6:
++/tmp/ssr-0.4.2/cmake-build/src/simplescreenrecorder_autogen/2LCCYRVYXB/../../../../src/GUI/ElidedLabel.h:37:58: warning: ‘constexpr QFlags<T>::QFlags(QFlags<T>::Zero) [with Enum = Qt::WindowType; QFlags<T>::Zero = int QFlags<Qt::WindowType>::Private::*]’ is deprecated: Use default constructor instead [-Wdeprecated-declarations]
++   37 |  ElidedLabel(QWidget* parent = NULL, Qt::WindowFlags f = 0);
++      |                                                          ^
++In file included from /usr/include/qt5/QtCore/qglobal.h:1304,
++                 from /usr/include/qt5/QtCore/QtCore:4,
++                 from /usr/include/qt5/QtGui/QtGuiDepends:3,
++                 from /usr/include/qt5/QtGui/QtGui:3,
++                 from /tmp/ssr-0.4.2/src/Global.h:23,
++                 from /tmp/ssr-0.4.2/cmake-build/src/simplescreenrecorder_autogen/GPQNCQLT6Y/../../../../src/AV/Output/SyncDiagram.h:21,
++                 from /tmp/ssr-0.4.2/cmake-build/src/simplescreenrecorder_autogen/GPQNCQLT6Y/moc_SyncDiagram.cpp:10,
++                 from /tmp/ssr-0.4.2/cmake-build/src/simplescreenrecorder_autogen/mocs_compilation.cpp:2:
++/usr/include/qt5/QtCore/qflags.h:123:80: note: declared here
++  123 |     QT_DEPRECATED_X("Use default constructor instead") Q_DECL_CONSTEXPR inline QFlags(Zero) noexcept : i(0) {}
++      |                                                                                ^~~~~~
++In file included from /tmp/ssr-0.4.2/cmake-build/src/simplescreenrecorder_autogen/2LCCYRVYXB/moc_ElidedLabel.cpp:10,
++                 from /tmp/ssr-0.4.2/cmake-build/src/simplescreenrecorder_autogen/mocs_compilation.cpp:6:
++/tmp/ssr-0.4.2/cmake-build/src/simplescreenrecorder_autogen/2LCCYRVYXB/../../../../src/GUI/ElidedLabel.h:38:78: warning: ‘constexpr QFlags<T>::QFlags(QFlags<T>::Zero) [with Enum = Qt::WindowType; QFlags<T>::Zero = int QFlags<Qt::WindowType>::Private::*]’ is deprecated: Use default constructor instead [-Wdeprecated-declarations]
++   38 |  ElidedLabel(const QString& txt, QWidget* parent = NULL, Qt::WindowFlags f = 0);
++      |                                                                              ^
++In file included from /usr/include/qt5/QtCore/qglobal.h:1304,
++                 from /usr/include/qt5/QtCore/QtCore:4,
++                 from /usr/include/qt5/QtGui/QtGuiDepends:3,
++                 from /usr/include/qt5/QtGui/QtGui:3,
++                 from /tmp/ssr-0.4.2/src/Global.h:23,
++                 from /tmp/ssr-0.4.2/cmake-build/src/simplescreenrecorder_autogen/GPQNCQLT6Y/../../../../src/AV/Output/SyncDiagram.h:21,
++                 from /tmp/ssr-0.4.2/cmake-build/src/simplescreenrecorder_autogen/GPQNCQLT6Y/moc_SyncDiagram.cpp:10,
++                 from /tmp/ssr-0.4.2/cmake-build/src/simplescreenrecorder_autogen/mocs_compilation.cpp:2:
++/usr/include/qt5/QtCore/qflags.h:123:80: note: declared here
++  123 |     QT_DEPRECATED_X("Use default constructor instead") Q_DECL_CONSTEXPR inline QFlags(Zero) noexcept : i(0) {}
++      |                                                                                ^~~~~~
++In file included from /tmp/ssr-0.4.2/cmake-build/src/simplescreenrecorder_autogen/2LCCYRVYXB/moc_ElidedLabel.cpp:10,
++                 from /tmp/ssr-0.4.2/cmake-build/src/simplescreenrecorder_autogen/mocs_compilation.cpp:6:
++/tmp/ssr-0.4.2/cmake-build/src/simplescreenrecorder_autogen/2LCCYRVYXB/../../../../src/GUI/ElidedLabel.h:39:124: warning: ‘constexpr QFlags<T>::QFlags(QFlags<T>::Zero) [with Enum = Qt::WindowType; QFlags<T>::Zero = int QFlags<Qt::WindowType>::Private::*]’ is deprecated: Use default constructor instead [-Wdeprecated-declarations]
++   39 |  ElidedLabel(const QString& txt, Qt::TextElideMode elideMode = Qt::ElideRight, QWidget* parent = NULL, Qt::WindowFlags f = 0);
++      |                                                                                                                            ^
++In file included from /usr/include/qt5/QtCore/qglobal.h:1304,
++                 from /usr/include/qt5/QtCore/QtCore:4,
++                 from /usr/include/qt5/QtGui/QtGuiDepends:3,
++                 from /usr/include/qt5/QtGui/QtGui:3,
++                 from /tmp/ssr-0.4.2/src/Global.h:23,
++                 from /tmp/ssr-0.4.2/cmake-build/src/simplescreenrecorder_autogen/GPQNCQLT6Y/../../../../src/AV/Output/SyncDiagram.h:21,
++                 from /tmp/ssr-0.4.2/cmake-build/src/simplescreenrecorder_autogen/GPQNCQLT6Y/moc_SyncDiagram.cpp:10,
++                 from /tmp/ssr-0.4.2/cmake-build/src/simplescreenrecorder_autogen/mocs_compilation.cpp:2:
++/usr/include/qt5/QtCore/qflags.h:123:80: note: declared here
++  123 |     QT_DEPRECATED_X("Use default constructor instead") Q_DECL_CONSTEXPR inline QFlags(Zero) noexcept : i(0) {}
++      |                                                                                ^~~~~~
++[ 41%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/AV/Input/JACKInput.cpp.o
++[ 42%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/AV/Input/PulseAudioInput.cpp.o
++[ 44%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/AV/Input/SSRVideoStreamReader.cpp.o
++[ 45%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/AV/Input/SSRVideoStreamWatcher.cpp.o
++[ 46%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/AV/Input/X11Input.cpp.o
++[ 47%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/AV/Output/AudioEncoder.cpp.o
++[ 48%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/AV/Output/BaseEncoder.cpp.o
++[ 50%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/AV/Output/Muxer.cpp.o
++[ 51%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/AV/Output/OutputManager.cpp.o
++[ 52%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/AV/Output/SyncDiagram.cpp.o
++[ 53%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/AV/Output/Synchronizer.cpp.o
++[ 54%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/AV/Output/VideoEncoder.cpp.o
++[ 55%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/AV/Output/X264Presets.cpp.o
++[ 57%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/AV/AVWrapper.cpp.o
++[ 58%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/AV/FastResampler.cpp.o
++[ 59%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/AV/FastResampler_FirFilter_Fallback.cpp.o
++[ 60%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/AV/FastScaler.cpp.o
++[ 61%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/AV/FastScaler_Convert_Fallback.cpp.o
++[ 63%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/AV/FastScaler_Scale_Fallback.cpp.o
++[ 64%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/AV/FastScaler_Scale_Generic.cpp.o
++[ 65%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/AV/SimpleSynth.cpp.o
++[ 66%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/AV/SourceSink.cpp.o
++[ 67%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/common/CommandLineOptions.cpp.o
++[ 69%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/common/CPUFeatures.cpp.o
++[ 70%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/common/Dialogs.cpp.o
++[ 71%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/common/Logger.cpp.o
++[ 72%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/GUI/AudioPreviewer.cpp.o
++[ 73%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/GUI/DialogGLInject.cpp.o
++[ 75%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/GUI/DialogRecordSchedule.cpp.o
++[ 76%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/GUI/ElidedLabel.cpp.o
++[ 77%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/GUI/HiddenScrollArea.cpp.o
++In file included from /tmp/ssr-0.4.2/src/GUI/ElidedLabel.cpp:24:
++/tmp/ssr-0.4.2/src/GUI/ElidedLabel.h:37:58: warning: ‘constexpr QFlags<T>::QFlags(QFlags<T>::Zero) [with Enum = Qt::WindowType; QFlags<T>::Zero = int QFlags<Qt::WindowType>::Private::*]’ is deprecated: Use default constructor instead [-Wdeprecated-declarations]
++   37 |  ElidedLabel(QWidget* parent = NULL, Qt::WindowFlags f = 0);
++      |                                                          ^
++In file included from /usr/include/qt5/QtCore/qglobal.h:1304,
++                 from /usr/include/qt5/QtCore/QtCore:4,
++                 from /usr/include/qt5/QtGui/QtGuiDepends:3,
++                 from /usr/include/qt5/QtGui/QtGui:3,
++                 from /tmp/ssr-0.4.2/src/Global.h:23,
++                 from /tmp/ssr-0.4.2/src/GUI/ElidedLabel.h:25,
++                 from /tmp/ssr-0.4.2/src/GUI/ElidedLabel.cpp:24:
++/usr/include/qt5/QtCore/qflags.h:123:80: note: declared here
++  123 |     QT_DEPRECATED_X("Use default constructor instead") Q_DECL_CONSTEXPR inline QFlags(Zero) noexcept : i(0) {}
++      |                                                                                ^~~~~~
++In file included from /tmp/ssr-0.4.2/src/GUI/ElidedLabel.cpp:24:
++/tmp/ssr-0.4.2/src/GUI/ElidedLabel.h:38:78: warning: ‘constexpr QFlags<T>::QFlags(QFlags<T>::Zero) [with Enum = Qt::WindowType; QFlags<T>::Zero = int QFlags<Qt::WindowType>::Private::*]’ is deprecated: Use default constructor instead [-Wdeprecated-declarations]
++   38 |  ElidedLabel(const QString& txt, QWidget* parent = NULL, Qt::WindowFlags f = 0);
++      |                                                                              ^
++In file included from /usr/include/qt5/QtCore/qglobal.h:1304,
++                 from /usr/include/qt5/QtCore/QtCore:4,
++                 from /usr/include/qt5/QtGui/QtGuiDepends:3,
++                 from /usr/include/qt5/QtGui/QtGui:3,
++                 from /tmp/ssr-0.4.2/src/Global.h:23,
++                 from /tmp/ssr-0.4.2/src/GUI/ElidedLabel.h:25,
++                 from /tmp/ssr-0.4.2/src/GUI/ElidedLabel.cpp:24:
++/usr/include/qt5/QtCore/qflags.h:123:80: note: declared here
++  123 |     QT_DEPRECATED_X("Use default constructor instead") Q_DECL_CONSTEXPR inline QFlags(Zero) noexcept : i(0) {}
++      |                                                                                ^~~~~~
++In file included from /tmp/ssr-0.4.2/src/GUI/ElidedLabel.cpp:24:
++/tmp/ssr-0.4.2/src/GUI/ElidedLabel.h:39:124: warning: ‘constexpr QFlags<T>::QFlags(QFlags<T>::Zero) [with Enum = Qt::WindowType; QFlags<T>::Zero = int QFlags<Qt::WindowType>::Private::*]’ is deprecated: Use default constructor instead [-Wdeprecated-declarations]
++   39 |  ElidedLabel(const QString& txt, Qt::TextElideMode elideMode = Qt::ElideRight, QWidget* parent = NULL, Qt::WindowFlags f = 0);
++      |                                                                                                                            ^
++In file included from /usr/include/qt5/QtCore/qglobal.h:1304,
++                 from /usr/include/qt5/QtCore/QtCore:4,
++                 from /usr/include/qt5/QtGui/QtGuiDepends:3,
++                 from /usr/include/qt5/QtGui/QtGui:3,
++                 from /tmp/ssr-0.4.2/src/Global.h:23,
++                 from /tmp/ssr-0.4.2/src/GUI/ElidedLabel.h:25,
++                 from /tmp/ssr-0.4.2/src/GUI/ElidedLabel.cpp:24:
++/usr/include/qt5/QtCore/qflags.h:123:80: note: declared here
++  123 |     QT_DEPRECATED_X("Use default constructor instead") Q_DECL_CONSTEXPR inline QFlags(Zero) noexcept : i(0) {}
++      |                                                                                ^~~~~~
++In file included from /tmp/ssr-0.4.2/src/GUI/PageRecord.h:27,
++                 from /tmp/ssr-0.4.2/src/GUI/DialogRecordSchedule.cpp:23:
++/tmp/ssr-0.4.2/src/GUI/ElidedLabel.h:37:58: warning: ‘constexpr QFlags<T>::QFlags(QFlags<T>::Zero) [with Enum = Qt::WindowType; QFlags<T>::Zero = int QFlags<Qt::WindowType>::Private::*]’ is deprecated: Use default constructor instead [-Wdeprecated-declarations]
++   37 |  ElidedLabel(QWidget* parent = NULL, Qt::WindowFlags f = 0);
++      |                                                          ^
++In file included from /usr/include/qt5/QtCore/qglobal.h:1304,
++                 from /usr/include/qt5/QtCore/QtCore:4,
++                 from /usr/include/qt5/QtGui/QtGuiDepends:3,
++                 from /usr/include/qt5/QtGui/QtGui:3,
++                 from /tmp/ssr-0.4.2/src/Global.h:23,
++                 from /tmp/ssr-0.4.2/src/GUI/DialogRecordSchedule.h:21,
++                 from /tmp/ssr-0.4.2/src/GUI/DialogRecordSchedule.cpp:20:
++/usr/include/qt5/QtCore/qflags.h:123:80: note: declared here
++  123 |     QT_DEPRECATED_X("Use default constructor instead") Q_DECL_CONSTEXPR inline QFlags(Zero) noexcept : i(0) {}
++      |                                                                                ^~~~~~
++In file included from /tmp/ssr-0.4.2/src/GUI/PageRecord.h:27,
++                 from /tmp/ssr-0.4.2/src/GUI/DialogRecordSchedule.cpp:23:
++/tmp/ssr-0.4.2/src/GUI/ElidedLabel.h:38:78: warning: ‘constexpr QFlags<T>::QFlags(QFlags<T>::Zero) [with Enum = Qt::WindowType; QFlags<T>::Zero = int QFlags<Qt::WindowType>::Private::*]’ is deprecated: Use default constructor instead [-Wdeprecated-declarations]
++   38 |  ElidedLabel(const QString& txt, QWidget* parent = NULL, Qt::WindowFlags f = 0);
++      |                                                                              ^
++In file included from /usr/include/qt5/QtCore/qglobal.h:1304,
++                 from /usr/include/qt5/QtCore/QtCore:4,
++                 from /usr/include/qt5/QtGui/QtGuiDepends:3,
++                 from /usr/include/qt5/QtGui/QtGui:3,
++                 from /tmp/ssr-0.4.2/src/Global.h:23,
++                 from /tmp/ssr-0.4.2/src/GUI/DialogRecordSchedule.h:21,
++                 from /tmp/ssr-0.4.2/src/GUI/DialogRecordSchedule.cpp:20:
++/usr/include/qt5/QtCore/qflags.h:123:80: note: declared here
++  123 |     QT_DEPRECATED_X("Use default constructor instead") Q_DECL_CONSTEXPR inline QFlags(Zero) noexcept : i(0) {}
++      |                                                                                ^~~~~~
++In file included from /tmp/ssr-0.4.2/src/GUI/PageRecord.h:27,
++                 from /tmp/ssr-0.4.2/src/GUI/DialogRecordSchedule.cpp:23:
++/tmp/ssr-0.4.2/src/GUI/ElidedLabel.h:39:124: warning: ‘constexpr QFlags<T>::QFlags(QFlags<T>::Zero) [with Enum = Qt::WindowType; QFlags<T>::Zero = int QFlags<Qt::WindowType>::Private::*]’ is deprecated: Use default constructor instead [-Wdeprecated-declarations]
++   39 |  ElidedLabel(const QString& txt, Qt::TextElideMode elideMode = Qt::ElideRight, QWidget* parent = NULL, Qt::WindowFlags f = 0);
++      |                                                                                                                            ^
++In file included from /usr/include/qt5/QtCore/qglobal.h:1304,
++                 from /usr/include/qt5/QtCore/QtCore:4,
++                 from /usr/include/qt5/QtGui/QtGuiDepends:3,
++                 from /usr/include/qt5/QtGui/QtGui:3,
++                 from /tmp/ssr-0.4.2/src/Global.h:23,
++                 from /tmp/ssr-0.4.2/src/GUI/DialogRecordSchedule.h:21,
++                 from /tmp/ssr-0.4.2/src/GUI/DialogRecordSchedule.cpp:20:
++/usr/include/qt5/QtCore/qflags.h:123:80: note: declared here
++  123 |     QT_DEPRECATED_X("Use default constructor instead") Q_DECL_CONSTEXPR inline QFlags(Zero) noexcept : i(0) {}
++      |                                                                                ^~~~~~
++/tmp/ssr-0.4.2/src/GUI/DialogRecordSchedule.cpp: In constructor ‘DialogRecordSchedule::DialogRecordSchedule(PageRecord*)’:
++/tmp/ssr-0.4.2/src/GUI/DialogRecordSchedule.cpp:87:93: warning: ‘int QFontMetrics::width(const QString&, int) const’ is deprecated: Use QFontMetrics::horizontalAdvance [-Wdeprecated-declarations]
++   87 |  m_label_time->setMinimumWidth(m_label_time->fontMetrics().width("0000-00-00 00:00:00 XXXXX") + 10);
++      |                                                                                             ^
++In file included from /usr/include/qt5/QtGui/QtGui:26,
++                 from /tmp/ssr-0.4.2/src/Global.h:23,
++                 from /tmp/ssr-0.4.2/src/GUI/DialogRecordSchedule.h:21,
++                 from /tmp/ssr-0.4.2/src/GUI/DialogRecordSchedule.cpp:20:
++/usr/include/qt5/QtGui/qfontmetrics.h:106:9: note: declared here
++  106 |     int width(const QString &, int len = -1) const;
++      |         ^~~~~
++[ 78%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/GUI/HotkeyListener.cpp.o
++[ 79%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/GUI/Icons.cpp.o
++[ 80%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/GUI/MainWindow.cpp.o
++[ 82%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/GUI/PageDone.cpp.o
++[ 83%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/GUI/PageInput.cpp.o
++In file included from /tmp/ssr-0.4.2/src/GUI/PageRecord.h:27,
++                 from /tmp/ssr-0.4.2/src/GUI/MainWindow.cpp:31:
++/tmp/ssr-0.4.2/src/GUI/ElidedLabel.h:37:58: warning: ‘constexpr QFlags<T>::QFlags(QFlags<T>::Zero) [with Enum = Qt::WindowType; QFlags<T>::Zero = int QFlags<Qt::WindowType>::Private::*]’ is deprecated: Use default constructor instead [-Wdeprecated-declarations]
++   37 |  ElidedLabel(QWidget* parent = NULL, Qt::WindowFlags f = 0);
++      |                                                          ^
++In file included from /usr/include/qt5/QtCore/qglobal.h:1304,
++                 from /usr/include/qt5/QtCore/QtCore:4,
++                 from /usr/include/qt5/QtGui/QtGuiDepends:3,
++                 from /usr/include/qt5/QtGui/QtGui:3,
++                 from /tmp/ssr-0.4.2/src/Global.h:23,
++                 from /tmp/ssr-0.4.2/src/GUI/MainWindow.h:21,
++                 from /tmp/ssr-0.4.2/src/GUI/MainWindow.cpp:20:
++/usr/include/qt5/QtCore/qflags.h:123:80: note: declared here
++  123 |     QT_DEPRECATED_X("Use default constructor instead") Q_DECL_CONSTEXPR inline QFlags(Zero) noexcept : i(0) {}
++      |                                                                                ^~~~~~
++In file included from /tmp/ssr-0.4.2/src/GUI/PageRecord.h:27,
++                 from /tmp/ssr-0.4.2/src/GUI/MainWindow.cpp:31:
++/tmp/ssr-0.4.2/src/GUI/ElidedLabel.h:38:78: warning: ‘constexpr QFlags<T>::QFlags(QFlags<T>::Zero) [with Enum = Qt::WindowType; QFlags<T>::Zero = int QFlags<Qt::WindowType>::Private::*]’ is deprecated: Use default constructor instead [-Wdeprecated-declarations]
++   38 |  ElidedLabel(const QString& txt, QWidget* parent = NULL, Qt::WindowFlags f = 0);
++      |                                                                              ^
++In file included from /usr/include/qt5/QtCore/qglobal.h:1304,
++                 from /usr/include/qt5/QtCore/QtCore:4,
++                 from /usr/include/qt5/QtGui/QtGuiDepends:3,
++                 from /usr/include/qt5/QtGui/QtGui:3,
++                 from /tmp/ssr-0.4.2/src/Global.h:23,
++                 from /tmp/ssr-0.4.2/src/GUI/MainWindow.h:21,
++                 from /tmp/ssr-0.4.2/src/GUI/MainWindow.cpp:20:
++/usr/include/qt5/QtCore/qflags.h:123:80: note: declared here
++  123 |     QT_DEPRECATED_X("Use default constructor instead") Q_DECL_CONSTEXPR inline QFlags(Zero) noexcept : i(0) {}
++      |                                                                                ^~~~~~
++In file included from /tmp/ssr-0.4.2/src/GUI/PageRecord.h:27,
++                 from /tmp/ssr-0.4.2/src/GUI/MainWindow.cpp:31:
++/tmp/ssr-0.4.2/src/GUI/ElidedLabel.h:39:124: warning: ‘constexpr QFlags<T>::QFlags(QFlags<T>::Zero) [with Enum = Qt::WindowType; QFlags<T>::Zero = int QFlags<Qt::WindowType>::Private::*]’ is deprecated: Use default constructor instead [-Wdeprecated-declarations]
++   39 |  ElidedLabel(const QString& txt, Qt::TextElideMode elideMode = Qt::ElideRight, QWidget* parent = NULL, Qt::WindowFlags f = 0);
++      |                                                                                                                            ^
++In file included from /usr/include/qt5/QtCore/qglobal.h:1304,
++                 from /usr/include/qt5/QtCore/QtCore:4,
++                 from /usr/include/qt5/QtGui/QtGuiDepends:3,
++                 from /usr/include/qt5/QtGui/QtGui:3,
++                 from /tmp/ssr-0.4.2/src/Global.h:23,
++                 from /tmp/ssr-0.4.2/src/GUI/MainWindow.h:21,
++                 from /tmp/ssr-0.4.2/src/GUI/MainWindow.cpp:20:
++/usr/include/qt5/QtCore/qflags.h:123:80: note: declared here
++  123 |     QT_DEPRECATED_X("Use default constructor instead") Q_DECL_CONSTEXPR inline QFlags(Zero) noexcept : i(0) {}
++      |                                                                                ^~~~~~
++/tmp/ssr-0.4.2/src/GUI/MainWindow.cpp: In constructor ‘MainWindow::MainWindow()’:
++/tmp/ssr-0.4.2/src/GUI/MainWindow.cpp:118:68: warning: ‘const QRect QDesktopWidget::availableGeometry(int) const’ is deprecated: Use QGuiApplication::screens() [-Wdeprecated-declarations]
++  118 |  QSize available_size = QApplication::desktop()->availableGeometry().size() - QSize(80, 80);
++      |                                                                    ^
++In file included from /usr/include/qt5/QtWidgets/QDesktopWidget:1,
++                 from /tmp/ssr-0.4.2/src/Global.h:33,
++                 from /tmp/ssr-0.4.2/src/GUI/MainWindow.h:21,
++                 from /tmp/ssr-0.4.2/src/GUI/MainWindow.cpp:20:
++/usr/include/qt5/QtWidgets/qdesktopwidget.h:88:67: note: declared here
++   88 |     QT_DEPRECATED_X("Use QGuiApplication::screens()") const QRect availableGeometry(int screen = -1) const;
++      |                                                                   ^~~~~~~~~~~~~~~~~
++[ 84%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/GUI/PageOutput.cpp.o
++[ 85%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/GUI/PageRecord.cpp.o
++[ 86%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/GUI/PageWelcome.cpp.o
++/tmp/ssr-0.4.2/src/GUI/PageOutput.cpp: In constructor ‘PageOutput::PageOutput(MainWindow*)’:
++/tmp/ssr-0.4.2/src/GUI/PageOutput.cpp:129:78: warning: ‘QStringList QString::split(QChar, QString::SplitBehavior, Qt::CaseSensitivity) const’ is deprecated: Use Qt::SplitBehavior variant instead [-Wdeprecated-declarations]
++  129 |   c.suffixes = QString(format->extensions).split(',', QString::SkipEmptyParts);
++      |                                                                              ^
++In file included from /usr/include/qt5/QtCore/qobject.h:47,
++                 from /usr/include/qt5/QtCore/qabstractanimation.h:43,
++                 from /usr/include/qt5/QtCore/QtCore:6,
++                 from /usr/include/qt5/QtGui/QtGuiDepends:3,
++                 from /usr/include/qt5/QtGui/QtGui:3,
++                 from /tmp/ssr-0.4.2/src/Global.h:23,
++                 from /tmp/ssr-0.4.2/src/GUI/PageOutput.h:21,
++                 from /tmp/ssr-0.4.2/src/GUI/PageOutput.cpp:20:
++/usr/include/qt5/QtCore/qstring.h:615:17: note: declared here
++  615 |     QStringList split(QChar sep, SplitBehavior behavior,
++      |                 ^~~~~
++/tmp/ssr-0.4.2/src/GUI/PageOutput.cpp:282:99: warning: ‘int QFontMetrics::width(const QString&, int) const’ is deprecated: Use QFontMetrics::horizontalAdvance [-Wdeprecated-declarations]
++  282 |    m_label_h264_crf_value->setMinimumWidth(QFontMetrics(m_label_h264_crf_value->font()).width("99") + 2);
++      |                                                                                                   ^
++In file included from /usr/include/qt5/QtGui/QtGui:26,
++                 from /tmp/ssr-0.4.2/src/Global.h:23,
++                 from /tmp/ssr-0.4.2/src/GUI/PageOutput.h:21,
++                 from /tmp/ssr-0.4.2/src/GUI/PageOutput.cpp:20:
++/usr/include/qt5/QtGui/qfontmetrics.h:106:9: note: declared here
++  106 |     int width(const QString &, int len = -1) const;
++      |         ^~~~~
++In file included from /tmp/ssr-0.4.2/src/GUI/PageRecord.h:27,
++                 from /tmp/ssr-0.4.2/src/GUI/PageRecord.cpp:20:
++/tmp/ssr-0.4.2/src/GUI/ElidedLabel.h:37:58: warning: ‘constexpr QFlags<T>::QFlags(QFlags<T>::Zero) [with Enum = Qt::WindowType; QFlags<T>::Zero = int QFlags<Qt::WindowType>::Private::*]’ is deprecated: Use default constructor instead [-Wdeprecated-declarations]
++   37 |  ElidedLabel(QWidget* parent = NULL, Qt::WindowFlags f = 0);
++      |                                                          ^
++In file included from /usr/include/qt5/QtCore/qglobal.h:1304,
++                 from /usr/include/qt5/QtCore/QtCore:4,
++                 from /usr/include/qt5/QtGui/QtGuiDepends:3,
++                 from /usr/include/qt5/QtGui/QtGui:3,
++                 from /tmp/ssr-0.4.2/src/Global.h:23,
++                 from /tmp/ssr-0.4.2/src/GUI/PageRecord.h:21,
++                 from /tmp/ssr-0.4.2/src/GUI/PageRecord.cpp:20:
++/usr/include/qt5/QtCore/qflags.h:123:80: note: declared here
++  123 |     QT_DEPRECATED_X("Use default constructor instead") Q_DECL_CONSTEXPR inline QFlags(Zero) noexcept : i(0) {}
++      |                                                                                ^~~~~~
++In file included from /tmp/ssr-0.4.2/src/GUI/PageRecord.h:27,
++                 from /tmp/ssr-0.4.2/src/GUI/PageRecord.cpp:20:
++/tmp/ssr-0.4.2/src/GUI/ElidedLabel.h:38:78: warning: ‘constexpr QFlags<T>::QFlags(QFlags<T>::Zero) [with Enum = Qt::WindowType; QFlags<T>::Zero = int QFlags<Qt::WindowType>::Private::*]’ is deprecated: Use default constructor instead [-Wdeprecated-declarations]
++   38 |  ElidedLabel(const QString& txt, QWidget* parent = NULL, Qt::WindowFlags f = 0);
++      |                                                                              ^
++In file included from /usr/include/qt5/QtCore/qglobal.h:1304,
++                 from /usr/include/qt5/QtCore/QtCore:4,
++                 from /usr/include/qt5/QtGui/QtGuiDepends:3,
++                 from /usr/include/qt5/QtGui/QtGui:3,
++                 from /tmp/ssr-0.4.2/src/Global.h:23,
++                 from /tmp/ssr-0.4.2/src/GUI/PageRecord.h:21,
++                 from /tmp/ssr-0.4.2/src/GUI/PageRecord.cpp:20:
++/usr/include/qt5/QtCore/qflags.h:123:80: note: declared here
++  123 |     QT_DEPRECATED_X("Use default constructor instead") Q_DECL_CONSTEXPR inline QFlags(Zero) noexcept : i(0) {}
++      |                                                                                ^~~~~~
++In file included from /tmp/ssr-0.4.2/src/GUI/PageRecord.h:27,
++                 from /tmp/ssr-0.4.2/src/GUI/PageRecord.cpp:20:
++/tmp/ssr-0.4.2/src/GUI/ElidedLabel.h:39:124: warning: ‘constexpr QFlags<T>::QFlags(QFlags<T>::Zero) [with Enum = Qt::WindowType; QFlags<T>::Zero = int QFlags<Qt::WindowType>::Private::*]’ is deprecated: Use default constructor instead [-Wdeprecated-declarations]
++   39 |  ElidedLabel(const QString& txt, Qt::TextElideMode elideMode = Qt::ElideRight, QWidget* parent = NULL, Qt::WindowFlags f = 0);
++      |                                                                                                                            ^
++In file included from /usr/include/qt5/QtCore/qglobal.h:1304,
++                 from /usr/include/qt5/QtCore/QtCore:4,
++                 from /usr/include/qt5/QtGui/QtGuiDepends:3,
++                 from /usr/include/qt5/QtGui/QtGui:3,
++                 from /tmp/ssr-0.4.2/src/Global.h:23,
++                 from /tmp/ssr-0.4.2/src/GUI/PageRecord.h:21,
++                 from /tmp/ssr-0.4.2/src/GUI/PageRecord.cpp:20:
++/usr/include/qt5/QtCore/qflags.h:123:80: note: declared here
++  123 |     QT_DEPRECATED_X("Use default constructor instead") Q_DECL_CONSTEXPR inline QFlags(Zero) noexcept : i(0) {}
++      |                                                                                ^~~~~~
++/tmp/ssr-0.4.2/src/GUI/PageRecord.cpp: In function ‘std::vector<std::pair<QString, QString> > GetOptionsFromString(const QString&)’:
++/tmp/ssr-0.4.2/src/GUI/PageRecord.cpp:72:65: warning: ‘QStringList QString::split(QChar, QString::SplitBehavior, Qt::CaseSensitivity) const’ is deprecated: Use Qt::SplitBehavior variant instead [-Wdeprecated-declarations]
++   72 |  QStringList optionlist = str.split(',', QString::SkipEmptyParts);
++      |                                                                 ^
++In file included from /usr/include/qt5/QtCore/qobject.h:47,
++                 from /usr/include/qt5/QtCore/qabstractanimation.h:43,
++                 from /usr/include/qt5/QtCore/QtCore:6,
++                 from /usr/include/qt5/QtGui/QtGuiDepends:3,
++                 from /usr/include/qt5/QtGui/QtGui:3,
++                 from /tmp/ssr-0.4.2/src/Global.h:23,
++                 from /tmp/ssr-0.4.2/src/GUI/PageRecord.h:21,
++                 from /tmp/ssr-0.4.2/src/GUI/PageRecord.cpp:20:
++/usr/include/qt5/QtCore/qstring.h:615:17: note: declared here
++  615 |     QStringList split(QChar sep, SplitBehavior behavior,
++      |                 ^~~~~
++/tmp/ssr-0.4.2/src/GUI/PageRecord.cpp: In constructor ‘PageRecord::PageRecord(MainWindow*)’:
++/tmp/ssr-0.4.2/src/GUI/PageRecord.cpp:251:94: warning: ‘constexpr QFlags<T>::QFlags(QFlags<T>::Zero) [with Enum = Qt::WindowType; QFlags<T>::Zero = int QFlags<Qt::WindowType>::Private::*]’ is deprecated: Use default constructor instead [-Wdeprecated-declarations]
++  251 |     m_label_info_file_name = new ElidedLabel(QString(), Qt::ElideMiddle, groupbox_information);
++      |                                                                                              ^
++In file included from /usr/include/qt5/QtCore/qglobal.h:1304,
++                 from /usr/include/qt5/QtCore/QtCore:4,
++                 from /usr/include/qt5/QtGui/QtGuiDepends:3,
++                 from /usr/include/qt5/QtGui/QtGui:3,
++                 from /tmp/ssr-0.4.2/src/Global.h:23,
++                 from /tmp/ssr-0.4.2/src/GUI/PageRecord.h:21,
++                 from /tmp/ssr-0.4.2/src/GUI/PageRecord.cpp:20:
++/usr/include/qt5/QtCore/qflags.h:123:80: note: declared here
++  123 |     QT_DEPRECATED_X("Use default constructor instead") Q_DECL_CONSTEXPR inline QFlags(Zero) noexcept : i(0) {}
++      |                                                                                ^~~~~~
++[ 88%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/GUI/ProfileBox.cpp.o
++[ 89%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/GUI/VideoPreviewer.cpp.o
++[ 90%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/GUI/WidgetRack.cpp.o
++[ 91%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/Benchmark.cpp.o
++[ 92%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/Main.cpp.o
++[ 94%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/NVidia.cpp.o
++[ 95%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/AV/FastResampler_FirFilter_SSE2.cpp.o
++[ 96%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/AV/FastScaler_Convert_SSSE3.cpp.o
++[ 97%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/AV/FastScaler_Scale_SSSE3.cpp.o
++[ 98%] Building CXX object src/CMakeFiles/simplescreenrecorder.dir/qrc_resources.cpp.o
++[100%] Linking CXX executable simplescreenrecorder
++[100%] Built target simplescreenrecorder
++[  7%] Built target ssr-glinject
++[  8%] Automatic MOC for target simplescreenrecorder
++[  8%] Built target simplescreenrecorder_autogen
++[ 72%] Built target simplescreenrecorder
++[100%] Built target translations
++Install the project...
++-- Install configuration: ""
++-- Installing: /tmp/package-ssr/usr/bin/ssr-glinject
++-- Installing: /tmp/package-ssr/usr/share/simplescreenrecorder/output-profiles
++-- Installing: /tmp/package-ssr/usr/share/simplescreenrecorder/output-profiles/High%20Quality%20Intermediate.conf
++-- Installing: /tmp/package-ssr/usr/share/simplescreenrecorder/output-profiles/Live%20Stream%20%282000kbps%29.conf
++-- Installing: /tmp/package-ssr/usr/share/simplescreenrecorder/output-profiles/YouTube.conf
++-- Installing: /tmp/package-ssr/usr/share/simplescreenrecorder/output-profiles/Live%20Stream%20%283000kbps%29.conf
++-- Installing: /tmp/package-ssr/usr/share/simplescreenrecorder/output-profiles/Live%20Stream%20%281000kbps%29.conf
++-- Installing: /tmp/package-ssr/usr/man/man1
++-- Installing: /tmp/package-ssr/usr/man/man1/simplescreenrecorder.1
++-- Installing: /tmp/package-ssr/usr/man/man1/ssr-glinject.1
++-- Installing: /tmp/package-ssr/usr/share/applications/simplescreenrecorder.desktop
++-- Installing: /tmp/package-ssr/usr/share/metainfo/simplescreenrecorder.metainfo.xml
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/16x16/apps
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/16x16/apps/simplescreenrecorder-error.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/16x16/apps/simplescreenrecorder.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/16x16/apps/simplescreenrecorder-paused.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/16x16/apps/simplescreenrecorder-recording.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/16x16/apps/simplescreenrecorder-idle.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/22x22/apps
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/22x22/apps/simplescreenrecorder-error.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/22x22/apps/simplescreenrecorder.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/22x22/apps/simplescreenrecorder-paused.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/22x22/apps/simplescreenrecorder-recording.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/22x22/apps/simplescreenrecorder-idle.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/24x24/apps
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/24x24/apps/simplescreenrecorder-error.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/24x24/apps/simplescreenrecorder.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/24x24/apps/simplescreenrecorder-paused.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/24x24/apps/simplescreenrecorder-recording.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/24x24/apps/simplescreenrecorder-idle.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/32x32/apps
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/32x32/apps/simplescreenrecorder-error.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/32x32/apps/simplescreenrecorder.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/32x32/apps/simplescreenrecorder-paused.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/32x32/apps/simplescreenrecorder-recording.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/32x32/apps/simplescreenrecorder-idle.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/48x48/apps
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/48x48/apps/simplescreenrecorder-error.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/48x48/apps/simplescreenrecorder.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/48x48/apps/simplescreenrecorder-paused.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/48x48/apps/simplescreenrecorder-recording.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/48x48/apps/simplescreenrecorder-idle.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/64x64/apps
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/64x64/apps/simplescreenrecorder-error.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/64x64/apps/simplescreenrecorder.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/64x64/apps/simplescreenrecorder-paused.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/64x64/apps/simplescreenrecorder-recording.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/64x64/apps/simplescreenrecorder-idle.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/96x96/apps
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/96x96/apps/simplescreenrecorder-error.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/96x96/apps/simplescreenrecorder.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/96x96/apps/simplescreenrecorder-paused.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/96x96/apps/simplescreenrecorder-recording.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/96x96/apps/simplescreenrecorder-idle.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/128x128/apps
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/128x128/apps/simplescreenrecorder-error.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/128x128/apps/simplescreenrecorder.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/128x128/apps/simplescreenrecorder-paused.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/128x128/apps/simplescreenrecorder-recording.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/128x128/apps/simplescreenrecorder-idle.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/192x192/apps
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/192x192/apps/simplescreenrecorder-error.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/192x192/apps/simplescreenrecorder.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/192x192/apps/simplescreenrecorder-paused.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/192x192/apps/simplescreenrecorder-recording.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/192x192/apps/simplescreenrecorder-idle.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/256x256/apps
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/256x256/apps/simplescreenrecorder-error.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/256x256/apps/simplescreenrecorder.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/256x256/apps/simplescreenrecorder-paused.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/256x256/apps/simplescreenrecorder-recording.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/256x256/apps/simplescreenrecorder-idle.png
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/scalable/apps
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/scalable/apps/simplescreenrecorder-idle.svg
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/scalable/apps/simplescreenrecorder-error.svg
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/scalable/apps/simplescreenrecorder.svg
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/scalable/apps/simplescreenrecorder-paused.svg
++-- Installing: /tmp/package-ssr/usr/share/icons/hicolor/scalable/apps/simplescreenrecorder-recording.svg
++-- Installing: /tmp/package-ssr/usr/lib/libssr-glinject.so
++-- Installing: /tmp/package-ssr/usr/bin/simplescreenrecorder
++-- Installing: /tmp/package-ssr/usr/share/simplescreenrecorder/translations/simplescreenrecorder_ar.qm
++-- Installing: /tmp/package-ssr/usr/share/simplescreenrecorder/translations/simplescreenrecorder_bg.qm
++-- Installing: /tmp/package-ssr/usr/share/simplescreenrecorder/translations/simplescreenrecorder_cs.qm
++-- Installing: /tmp/package-ssr/usr/share/simplescreenrecorder/translations/simplescreenrecorder_de.qm
++-- Installing: /tmp/package-ssr/usr/share/simplescreenrecorder/translations/simplescreenrecorder_el.qm
++-- Installing: /tmp/package-ssr/usr/share/simplescreenrecorder/translations/simplescreenrecorder_es.qm
++-- Installing: /tmp/package-ssr/usr/share/simplescreenrecorder/translations/simplescreenrecorder_fr.qm
++-- Installing: /tmp/package-ssr/usr/share/simplescreenrecorder/translations/simplescreenrecorder_gl.qm
++-- Installing: /tmp/package-ssr/usr/share/simplescreenrecorder/translations/simplescreenrecorder_he.qm
++-- Installing: /tmp/package-ssr/usr/share/simplescreenrecorder/translations/simplescreenrecorder_hu.qm
++-- Installing: /tmp/package-ssr/usr/share/simplescreenrecorder/translations/simplescreenrecorder_id.qm
++-- Installing: /tmp/package-ssr/usr/share/simplescreenrecorder/translations/simplescreenrecorder_it.qm
++-- Installing: /tmp/package-ssr/usr/share/simplescreenrecorder/translations/simplescreenrecorder_ja.qm
++-- Installing: /tmp/package-ssr/usr/share/simplescreenrecorder/translations/simplescreenrecorder_lt.qm
++-- Installing: /tmp/package-ssr/usr/share/simplescreenrecorder/translations/simplescreenrecorder_nl.qm
++-- Installing: /tmp/package-ssr/usr/share/simplescreenrecorder/translations/simplescreenrecorder_pl.qm
++-- Installing: /tmp/package-ssr/usr/share/simplescreenrecorder/translations/simplescreenrecorder_pt_BR.qm
++-- Installing: /tmp/package-ssr/usr/share/simplescreenrecorder/translations/simplescreenrecorder_ru.qm
++-- Installing: /tmp/package-ssr/usr/share/simplescreenrecorder/translations/simplescreenrecorder_sr.qm
++-- Installing: /tmp/package-ssr/usr/share/simplescreenrecorder/translations/simplescreenrecorder_sv.qm
++-- Installing: /tmp/package-ssr/usr/share/simplescreenrecorder/translations/simplescreenrecorder_uk.qm
++-- Installing: /tmp/package-ssr/usr/share/simplescreenrecorder/translations/simplescreenrecorder_zh_CN.qm
++-- Installing: /tmp/package-ssr/usr/share/simplescreenrecorder/translations/simplescreenrecorder_zh_TW.qm
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++
++No symbolic links were found, so we won't make an installation script.
++You can make your own later in ./install/doinst.sh and rebuild the
++package if you like.
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/ssr-0.4.2-x86_64-2.txz
++
++./
++install/
++install/doinst.sh
++install/slack-desc
++usr/
++usr/bin/
++usr/bin/simplescreenrecorder
++usr/bin/ssr-glinject
++usr/doc/
++usr/doc/ssr-0.4.2/
++usr/doc/ssr-0.4.2/AUTHORS.md
++usr/doc/ssr-0.4.2/CHANGELOG.md
++usr/doc/ssr-0.4.2/COPYING
++usr/doc/ssr-0.4.2/README.md
++usr/lib/
++usr/lib/libssr-glinject.so
++usr/man/
++usr/man/man1/
++usr/man/man1/simplescreenrecorder.1.gz
++usr/man/man1/ssr-glinject.1.gz
++usr/share/
++usr/share/applications/
++usr/share/applications/simplescreenrecorder.desktop
++usr/share/icons/
++usr/share/icons/hicolor/
++usr/share/icons/hicolor/128x128/
++usr/share/icons/hicolor/128x128/apps/
++usr/share/icons/hicolor/128x128/apps/simplescreenrecorder-error.png
++usr/share/icons/hicolor/128x128/apps/simplescreenrecorder-idle.png
++usr/share/icons/hicolor/128x128/apps/simplescreenrecorder-paused.png
++usr/share/icons/hicolor/128x128/apps/simplescreenrecorder-recording.png
++usr/share/icons/hicolor/128x128/apps/simplescreenrecorder.png
++usr/share/icons/hicolor/16x16/
++usr/share/icons/hicolor/16x16/apps/
++usr/share/icons/hicolor/16x16/apps/simplescreenrecorder-error.png
++usr/share/icons/hicolor/16x16/apps/simplescreenrecorder-idle.png
++usr/share/icons/hicolor/16x16/apps/simplescreenrecorder-paused.png
++usr/share/icons/hicolor/16x16/apps/simplescreenrecorder-recording.png
++usr/share/icons/hicolor/16x16/apps/simplescreenrecorder.png
++usr/share/icons/hicolor/192x192/
++usr/share/icons/hicolor/192x192/apps/
++usr/share/icons/hicolor/192x192/apps/simplescreenrecorder-error.png
++usr/share/icons/hicolor/192x192/apps/simplescreenrecorder-idle.png
++usr/share/icons/hicolor/192x192/apps/simplescreenrecorder-paused.png
++usr/share/icons/hicolor/192x192/apps/simplescreenrecorder-recording.png
++usr/share/icons/hicolor/192x192/apps/simplescreenrecorder.png
++usr/share/icons/hicolor/22x22/
++usr/share/icons/hicolor/22x22/apps/
++usr/share/icons/hicolor/22x22/apps/simplescreenrecorder-error.png
++usr/share/icons/hicolor/22x22/apps/simplescreenrecorder-idle.png
++usr/share/icons/hicolor/22x22/apps/simplescreenrecorder-paused.png
++usr/share/icons/hicolor/22x22/apps/simplescreenrecorder-recording.png
++usr/share/icons/hicolor/22x22/apps/simplescreenrecorder.png
++usr/share/icons/hicolor/24x24/
++usr/share/icons/hicolor/24x24/apps/
++usr/share/icons/hicolor/24x24/apps/simplescreenrecorder-error.png
++usr/share/icons/hicolor/24x24/apps/simplescreenrecorder-idle.png
++usr/share/icons/hicolor/24x24/apps/simplescreenrecorder-paused.png
++usr/share/icons/hicolor/24x24/apps/simplescreenrecorder-recording.png
++usr/share/icons/hicolor/24x24/apps/simplescreenrecorder.png
++usr/share/icons/hicolor/256x256/
++usr/share/icons/hicolor/256x256/apps/
++usr/share/icons/hicolor/256x256/apps/simplescreenrecorder-error.png
++usr/share/icons/hicolor/256x256/apps/simplescreenrecorder-idle.png
++usr/share/icons/hicolor/256x256/apps/simplescreenrecorder-paused.png
++usr/share/icons/hicolor/256x256/apps/simplescreenrecorder-recording.png
++usr/share/icons/hicolor/256x256/apps/simplescreenrecorder.png
++usr/share/icons/hicolor/32x32/
++usr/share/icons/hicolor/32x32/apps/
++usr/share/icons/hicolor/32x32/apps/simplescreenrecorder-error.png
++usr/share/icons/hicolor/32x32/apps/simplescreenrecorder-idle.png
++usr/share/icons/hicolor/32x32/apps/simplescreenrecorder-paused.png
++usr/share/icons/hicolor/32x32/apps/simplescreenrecorder-recording.png
++usr/share/icons/hicolor/32x32/apps/simplescreenrecorder.png
++usr/share/icons/hicolor/48x48/
++usr/share/icons/hicolor/48x48/apps/
++usr/share/icons/hicolor/48x48/apps/simplescreenrecorder-error.png
++usr/share/icons/hicolor/48x48/apps/simplescreenrecorder-idle.png
++usr/share/icons/hicolor/48x48/apps/simplescreenrecorder-paused.png
++usr/share/icons/hicolor/48x48/apps/simplescreenrecorder-recording.png
++usr/share/icons/hicolor/48x48/apps/simplescreenrecorder.png
++usr/share/icons/hicolor/64x64/
++usr/share/icons/hicolor/64x64/apps/
++usr/share/icons/hicolor/64x64/apps/simplescreenrecorder-error.png
++usr/share/icons/hicolor/64x64/apps/simplescreenrecorder-idle.png
++usr/share/icons/hicolor/64x64/apps/simplescreenrecorder-paused.png
++usr/share/icons/hicolor/64x64/apps/simplescreenrecorder-recording.png
++usr/share/icons/hicolor/64x64/apps/simplescreenrecorder.png
++usr/share/icons/hicolor/96x96/
++usr/share/icons/hicolor/96x96/apps/
++usr/share/icons/hicolor/96x96/apps/simplescreenrecorder-error.png
++usr/share/icons/hicolor/96x96/apps/simplescreenrecorder-idle.png
++usr/share/icons/hicolor/96x96/apps/simplescreenrecorder-paused.png
++usr/share/icons/hicolor/96x96/apps/simplescreenrecorder-recording.png
++usr/share/icons/hicolor/96x96/apps/simplescreenrecorder.png
++usr/share/icons/hicolor/scalable/
++usr/share/icons/hicolor/scalable/apps/
++usr/share/icons/hicolor/scalable/apps/simplescreenrecorder-error.svg
++usr/share/icons/hicolor/scalable/apps/simplescreenrecorder-idle.svg
++usr/share/icons/hicolor/scalable/apps/simplescreenrecorder-paused.svg
++usr/share/icons/hicolor/scalable/apps/simplescreenrecorder-recording.svg
++usr/share/icons/hicolor/scalable/apps/simplescreenrecorder.svg
++usr/share/metainfo/
++usr/share/metainfo/simplescreenrecorder.metainfo.xml
++usr/share/simplescreenrecorder/
++usr/share/simplescreenrecorder/output-profiles/
++usr/share/simplescreenrecorder/output-profiles/High%20Quality%20Intermediate.conf
++usr/share/simplescreenrecorder/output-profiles/Live%20Stream%20%281000kbps%29.conf
++usr/share/simplescreenrecorder/output-profiles/Live%20Stream%20%282000kbps%29.conf
++usr/share/simplescreenrecorder/output-profiles/Live%20Stream%20%283000kbps%29.conf
++usr/share/simplescreenrecorder/output-profiles/YouTube.conf
++usr/share/simplescreenrecorder/translations/
++usr/share/simplescreenrecorder/translations/simplescreenrecorder_ar.qm
++usr/share/simplescreenrecorder/translations/simplescreenrecorder_bg.qm
++usr/share/simplescreenrecorder/translations/simplescreenrecorder_cs.qm
++usr/share/simplescreenrecorder/translations/simplescreenrecorder_de.qm
++usr/share/simplescreenrecorder/translations/simplescreenrecorder_el.qm
++usr/share/simplescreenrecorder/translations/simplescreenrecorder_es.qm
++usr/share/simplescreenrecorder/translations/simplescreenrecorder_fr.qm
++usr/share/simplescreenrecorder/translations/simplescreenrecorder_gl.qm
++usr/share/simplescreenrecorder/translations/simplescreenrecorder_he.qm
++usr/share/simplescreenrecorder/translations/simplescreenrecorder_hu.qm
++usr/share/simplescreenrecorder/translations/simplescreenrecorder_id.qm
++usr/share/simplescreenrecorder/translations/simplescreenrecorder_it.qm
++usr/share/simplescreenrecorder/translations/simplescreenrecorder_ja.qm
++usr/share/simplescreenrecorder/translations/simplescreenrecorder_lt.qm
++usr/share/simplescreenrecorder/translations/simplescreenrecorder_nl.qm
++usr/share/simplescreenrecorder/translations/simplescreenrecorder_pl.qm
++usr/share/simplescreenrecorder/translations/simplescreenrecorder_pt_BR.qm
++usr/share/simplescreenrecorder/translations/simplescreenrecorder_ru.qm
++usr/share/simplescreenrecorder/translations/simplescreenrecorder_sr.qm
++usr/share/simplescreenrecorder/translations/simplescreenrecorder_sv.qm
++usr/share/simplescreenrecorder/translations/simplescreenrecorder_uk.qm
++usr/share/simplescreenrecorder/translations/simplescreenrecorder_zh_CN.qm
++usr/share/simplescreenrecorder/translations/simplescreenrecorder_zh_TW.qm
++
++Slackware package /tmp/ssr-0.4.2-x86_64-2.txz created.
++

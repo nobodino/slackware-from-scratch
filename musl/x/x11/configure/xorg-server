@@ -1,0 +1,51 @@
+# Servers to build:
+BUILD_SERVERS="--enable-xorg \
+  --enable-dmx \
+  --enable-xvfb \
+  --enable-xnest \
+  --enable-glamor \
+  --enable-kdrive \
+  --enable-xephyr \
+  --enable-xwayland \
+  --enable-config-udev \
+  --disable-config-hal \
+  --disable-systemd-logind"
+
+#MESA_VERSION=${MESA_VERSION:-7.5}	# unused in 1.7+
+
+# Default font paths to be used by the X server:
+DEF_FONTPATH="/usr/share/fonts/misc,/usr/share/fonts/local,/usr/share/fonts/TTF,/usr/share/fonts/OTF,/usr/share/fonts/Type1,/usr/share/fonts/CID,/usr/share/fonts/75dpi/:unscaled,/usr/share/fonts/100dpi/:unscaled,/usr/share/fonts/75dpi,/usr/share/fonts/100dpi,/usr/share/fonts/cyrillic"
+
+# Reconf (don't remove this plz):
+autoreconf -vif
+
+CFLAGS="$SLKCFLAGS -D_GNU_SOURCE -D__gid_t=gid_t -D__uid_t=uid_t" \
+LDFLAGS="$LDFLAGS -Wl,-z,lazy" \
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
+  --infodir=/usr/info \
+  --mandir=/usr/man \
+  --disable-static \
+  --with-pic \
+  --enable-suid-wrapper \
+  --with-int10=x86emu \
+  --with-default-font-path="${DEF_FONTPATH}" \
+  --with-module-dir=/usr/lib${LIBDIRSUFFIX}/xorg/modules \
+  --with-os-name="Slackware 15.0" \
+  --with-os-vendor="Slackware Linux Project" \
+  --with-xkb-path=/etc/X11/xkb \
+  --with-xkb-output=/var/lib/xkb \
+  $BUILD_SERVERS \
+  --build=$ARCH-slackware-linux-musl
+
+#  --with-dri-driver-path=/usr/lib${LIBDIRSUFFIX}/xorg/modules/dri
+
+if [ "$ARCH" = "x86_64" ]; then
+  # To prevent the error "No rule to make target `-ldl'"
+  sed -i -e 's#-ldl##' hw/xfree86/Makefile
+  sed -i -e 's#-lm#-lm -ldl#' hw/xfree86/Makefile
+fi
+

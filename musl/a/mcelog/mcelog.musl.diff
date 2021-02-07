@@ -1,0 +1,368 @@
+diff -ruBN /tmp/mcelog/mcelog.SlackBuild.log /source/a/mcelog/mcelog.SlackBuild.log
+--- /tmp/mcelog/mcelog.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/a/mcelog/mcelog.SlackBuild.log	2021-01-10 07:19:15.000000000 +0000
+@@ -0,0 +1,364 @@
++mcelog-175/
++mcelog-175/.gitignore
++mcelog-175/CHANGES
++mcelog-175/LICENSE
++mcelog-175/Makefile
++mcelog-175/README.md
++mcelog-175/README.releases
++mcelog-175/bitfield.c
++mcelog-175/bitfield.h
++mcelog-175/broadwell_de.c
++mcelog-175/broadwell_de.h
++mcelog-175/broadwell_epex.c
++mcelog-175/broadwell_epex.h
++mcelog-175/bus.c
++mcelog-175/bus.h
++mcelog-175/cache.c
++mcelog-175/cache.h
++mcelog-175/client.c
++mcelog-175/client.h
++mcelog-175/config-intro.man
++mcelog-175/config.c
++mcelog-175/config.h
++mcelog-175/core2.c
++mcelog-175/core2.h
++mcelog-175/denverton.c
++mcelog-175/denverton.h
++mcelog-175/dimm.c
++mcelog-175/dimm.h
++mcelog-175/dmi.c
++mcelog-175/dmi.h
++mcelog-175/dunnington.c
++mcelog-175/dunnington.h
++mcelog-175/eventloop.c
++mcelog-175/eventloop.h
++mcelog-175/genconfig.py
++mcelog-175/haswell.c
++mcelog-175/haswell.h
++mcelog-175/i10nm.c
++mcelog-175/i10nm.h
++mcelog-175/input/
++mcelog-175/input/GENCACHE
++mcelog-175/input/GENMCA
++mcelog-175/input/GENMEM
++mcelog-175/input/GENPAGE
++mcelog-175/input/bdw_mirror1
++mcelog-175/input/bdw_mirror2
++mcelog-175/input/dimm0
++mcelog-175/input/full1
++mcelog-175/input/iomca
++mcelog-175/input/simple1
++mcelog-175/input/skx_mirror1
++mcelog-175/input/skx_mirror2
++mcelog-175/input/spr_uc_patscrub
++mcelog-175/input/unknown
++mcelog-175/input/xen
++mcelog-175/intel.c
++mcelog-175/intel.h
++mcelog-175/ivy-bridge.c
++mcelog-175/ivy-bridge.h
++mcelog-175/k8.c
++mcelog-175/k8.h
++mcelog-175/leaky-bucket.c
++mcelog-175/leaky-bucket.h
++mcelog-175/list.h
++mcelog-175/lk10-mcelog.pdf
++mcelog-175/mce.pdf
++mcelog-175/mcelog.8
++mcelog-175/mcelog.c
++mcelog-175/mcelog.conf
++mcelog-175/mcelog.conf.5
++mcelog-175/mcelog.cron
++mcelog-175/mcelog.h
++mcelog-175/mcelog.init
++mcelog-175/mcelog.logrotate
++mcelog-175/mcelog.service
++mcelog-175/mcelog.triggers.5
++mcelog-175/memdb.c
++mcelog-175/memdb.h
++mcelog-175/memutil.c
++mcelog-175/memutil.h
++mcelog-175/msg.c
++mcelog-175/msg.h
++mcelog-175/msr.c
++mcelog-175/nehalem.c
++mcelog-175/nehalem.h
++mcelog-175/p4.c
++mcelog-175/p4.h
++mcelog-175/page.c
++mcelog-175/page.h
++mcelog-175/paths.h
++mcelog-175/rbtree.c
++mcelog-175/rbtree.h
++mcelog-175/sandy-bridge.c
++mcelog-175/sandy-bridge.h
++mcelog-175/server.c
++mcelog-175/server.h
++mcelog-175/skylake_xeon.c
++mcelog-175/skylake_xeon.h
++mcelog-175/sysfs.c
++mcelog-175/sysfs.h
++mcelog-175/tests/
++mcelog-175/tests/Makefile
++mcelog-175/tests/cache/
++mcelog-175/tests/cache/cache.conf
++mcelog-175/tests/cache/inject
++mcelog-175/tests/mcaerr_test
++mcelog-175/tests/memdb/
++mcelog-175/tests/memdb/inject
++mcelog-175/tests/memdb/memdb-1.conf
++mcelog-175/tests/memdb/memdb-2.conf
++mcelog-175/tests/page/
++mcelog-175/tests/page/inject
++mcelog-175/tests/page/page-account.conf
++mcelog-175/tests/page/page-error-counter-replacement.conf
++mcelog-175/tests/page/page-hard.conf
++mcelog-175/tests/page/page-memdb.conf
++mcelog-175/tests/page/page-off.conf
++mcelog-175/tests/page/page-soft-then-hard.conf
++mcelog-175/tests/page/page-soft.conf
++mcelog-175/tests/pfa/
++mcelog-175/tests/pfa/PFA_test_howto
++mcelog-175/tests/pfa/inject
++mcelog-175/tests/pfa/page-account.conf
++mcelog-175/tests/pfa/page-hard.conf
++mcelog-175/tests/pfa/page-soft-then-hard.conf
++mcelog-175/tests/pfa/page-soft.conf
++mcelog-175/tests/server/
++mcelog-175/tests/server/inject
++mcelog-175/tests/server/server.conf
++mcelog-175/tests/socket/
++mcelog-175/tests/socket/inject
++mcelog-175/tests/socket/socket-1.conf
++mcelog-175/tests/socket/socket-2.conf
++mcelog-175/tests/socket/socket-memdb.conf
++mcelog-175/tests/test
++mcelog-175/tests/trigger
++mcelog-175/tests/unknown/
++mcelog-175/tests/unknown/inject
++mcelog-175/tests/unknown/unknown.conf
++mcelog-175/trigger.c
++mcelog-175/trigger.h
++mcelog-175/triggers/
++mcelog-175/triggers/bus-error-trigger
++mcelog-175/triggers/cache-error-trigger
++mcelog-175/triggers/dimm-error-trigger
++mcelog-175/triggers/iomca-error-trigger
++mcelog-175/triggers/page-error-counter-replacement-trigger
++mcelog-175/triggers/page-error-post-sync-soft-trigger
++mcelog-175/triggers/page-error-pre-sync-soft-trigger
++mcelog-175/triggers/page-error-trigger
++mcelog-175/triggers/socket-memory-error-trigger
++mcelog-175/triggers/unknown-error-trigger
++mcelog-175/tsc.c
++mcelog-175/tsc.h
++mcelog-175/tulsa.c
++mcelog-175/tulsa.h
++mcelog-175/unknown.c
++mcelog-175/unknown.h
++mcelog-175/version.h
++mcelog-175/yellow.c
++mcelog-175/yellow.h
++Hmm...  Looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|--- ./mcelog.init.orig	2010-01-20 20:36:52.000000000 -0600
++|+++ ./mcelog.init	2010-09-27 17:23:24.964394022 -0500
++--------------------------
++patching file mcelog.init
++Using Plan A...
++Hunk #1 succeeded at 2.
++Hunk #2 succeeded at 11.
++Hunk #3 succeeded at 45.
++Hunk #4 succeeded at 55.
++Hunk #5 succeeded at 78.
++done
++cc -MM -I. p4.c k8.c mcelog.c dmi.c tsc.c core2.c bitfield.c intel.c nehalem.c dunnington.c tulsa.c config.c memutil.c msg.c eventloop.c leaky-bucket.c memdb.c server.c trigger.c client.c cache.c sysfs.c yellow.c page.c rbtree.c sandy-bridge.c ivy-bridge.c haswell.c broadwell_de.c broadwell_epex.c skylake_xeon.c denverton.c i10nm.c msr.c bus.c unknown.c > .depend.X && mv .depend.X .depend
++cc -c -g -Os  -Wall -Wextra -Wno-missing-field-initializers -Wno-unused-parameter -Wstrict-prototypes -Wformat-security -Wmissing-declarations -Wdeclaration-after-statement  -o mcelog.o mcelog.c
++cc -c -g -Os  -Wall -Wextra -Wno-missing-field-initializers -Wno-unused-parameter -Wstrict-prototypes -Wformat-security -Wmissing-declarations -Wdeclaration-after-statement  -o p4.o p4.c
++cc -c -g -Os  -Wall -Wextra -Wno-missing-field-initializers -Wno-unused-parameter -Wstrict-prototypes -Wformat-security -Wmissing-declarations -Wdeclaration-after-statement  -o k8.o k8.c
++In file included from mcelog.c:21:
++/usr/include/sys/fcntl.h:1:2: warning: #warning redirecting incorrect #include <sys/fcntl.h> to <fcntl.h> [-Wcpp]
++    1 | #warning redirecting incorrect #include <sys/fcntl.h> to <fcntl.h>
++      |  ^~~~~~~
++cc -c -g -Os  -Wall -Wextra -Wno-missing-field-initializers -Wno-unused-parameter -Wstrict-prototypes -Wformat-security -Wmissing-declarations -Wdeclaration-after-statement  -o dmi.o dmi.c
++In file included from dmi.c:28:
++/usr/include/sys/fcntl.h:1:2: warning: #warning redirecting incorrect #include <sys/fcntl.h> to <fcntl.h> [-Wcpp]
++    1 | #warning redirecting incorrect #include <sys/fcntl.h> to <fcntl.h>
++      |  ^~~~~~~
++cc -c -g -Os  -Wall -Wextra -Wno-missing-field-initializers -Wno-unused-parameter -Wstrict-prototypes -Wformat-security -Wmissing-declarations -Wdeclaration-after-statement  -o tsc.o tsc.c
++cc -c -g -Os  -Wall -Wextra -Wno-missing-field-initializers -Wno-unused-parameter -Wstrict-prototypes -Wformat-security -Wmissing-declarations -Wdeclaration-after-statement  -o core2.o core2.c
++cc -c -g -Os  -Wall -Wextra -Wno-missing-field-initializers -Wno-unused-parameter -Wstrict-prototypes -Wformat-security -Wmissing-declarations -Wdeclaration-after-statement  -o bitfield.o bitfield.c
++cc -c -g -Os  -Wall -Wextra -Wno-missing-field-initializers -Wno-unused-parameter -Wstrict-prototypes -Wformat-security -Wmissing-declarations -Wdeclaration-after-statement  -o intel.o intel.c
++cc -c -g -Os  -Wall -Wextra -Wno-missing-field-initializers -Wno-unused-parameter -Wstrict-prototypes -Wformat-security -Wmissing-declarations -Wdeclaration-after-statement  -o nehalem.o nehalem.c
++cc -c -g -Os  -Wall -Wextra -Wno-missing-field-initializers -Wno-unused-parameter -Wstrict-prototypes -Wformat-security -Wmissing-declarations -Wdeclaration-after-statement  -o dunnington.o dunnington.c
++cc -c -g -Os  -Wall -Wextra -Wno-missing-field-initializers -Wno-unused-parameter -Wstrict-prototypes -Wformat-security -Wmissing-declarations -Wdeclaration-after-statement  -o tulsa.o tulsa.c
++cc -c -g -Os  -Wall -Wextra -Wno-missing-field-initializers -Wno-unused-parameter -Wstrict-prototypes -Wformat-security -Wmissing-declarations -Wdeclaration-after-statement  -o config.o config.c
++cc -c -g -Os  -Wall -Wextra -Wno-missing-field-initializers -Wno-unused-parameter -Wstrict-prototypes -Wformat-security -Wmissing-declarations -Wdeclaration-after-statement  -o memutil.o memutil.c
++cc -c -g -Os  -Wall -Wextra -Wno-missing-field-initializers -Wno-unused-parameter -Wstrict-prototypes -Wformat-security -Wmissing-declarations -Wdeclaration-after-statement  -o msg.o msg.c
++cc -c -g -Os  -Wall -Wextra -Wno-missing-field-initializers -Wno-unused-parameter -Wstrict-prototypes -Wformat-security -Wmissing-declarations -Wdeclaration-after-statement  -o eventloop.o eventloop.c
++In file included from eventloop.c:23:
++/usr/include/sys/fcntl.h:1:2: warning: #warning redirecting incorrect #include <sys/fcntl.h> to <fcntl.h> [-Wcpp]
++    1 | #warning redirecting incorrect #include <sys/fcntl.h> to <fcntl.h>
++      |  ^~~~~~~
++cc -c -g -Os  -Wall -Wextra -Wno-missing-field-initializers -Wno-unused-parameter -Wstrict-prototypes -Wformat-security -Wmissing-declarations -Wdeclaration-after-statement  -o leaky-bucket.o leaky-bucket.c
++cc -c -g -Os  -Wall -Wextra -Wno-missing-field-initializers -Wno-unused-parameter -Wstrict-prototypes -Wformat-security -Wmissing-declarations -Wdeclaration-after-statement  -o memdb.o memdb.c
++cc -c -g -Os  -Wall -Wextra -Wno-missing-field-initializers -Wno-unused-parameter -Wstrict-prototypes -Wformat-security -Wmissing-declarations -Wdeclaration-after-statement  -o server.o server.c
++server.c: In function ‘server_ping’:
++server.c:304:19: warning: passing argument 2 of ‘connect’ from incompatible pointer type [-Wincompatible-pointer-types]
++  304 |   if (connect(fd, un, sizeof(struct sockaddr_un)) < 0)
++      |                   ^~
++      |                   |
++      |                   struct sockaddr_un *
++In file included from server.c:28:
++/usr/include/sys/socket.h:384:19: note: expected ‘const struct sockaddr *’ but argument is of type ‘struct sockaddr_un *’
++  384 | int connect (int, const struct sockaddr *, socklen_t);
++      |                   ^~~~~~~~~~~~~~~~~~~~~~~
++cc -c -g -Os  -Wall -Wextra -Wno-missing-field-initializers -Wno-unused-parameter -Wstrict-prototypes -Wformat-security -Wmissing-declarations -Wdeclaration-after-statement  -o trigger.o trigger.c
++cc -c -g -Os  -Wall -Wextra -Wno-missing-field-initializers -Wno-unused-parameter -Wstrict-prototypes -Wformat-security -Wmissing-declarations -Wdeclaration-after-statement  -o client.o client.c
++cc -c -g -Os  -Wall -Wextra -Wno-missing-field-initializers -Wno-unused-parameter -Wstrict-prototypes -Wformat-security -Wmissing-declarations -Wdeclaration-after-statement  -o cache.o cache.c
++client.c: In function ‘ask_server’:
++client.c:47:2: warning: implicit declaration of function ‘strncpy’ [-Wimplicit-function-declaration]
++   47 |  strncpy(sun.sun_path, path, sizeof(sun.sun_path)-1);
++      |  ^~~~~~~
++client.c:47:2: warning: incompatible implicit declaration of built-in function ‘strncpy’
++client.c:26:1: note: include ‘<string.h>’ or provide a declaration of ‘strncpy’
++   25 | #include "config.h"
++  +++ |+#include <string.h>
++   26 | 
++client.c:60:19: warning: implicit declaration of function ‘memcmp’ [-Wimplicit-function-declaration]
++   60 |    if (n >= 5 && !memcmp(buf + n - 5, "done\n", 5)) {
++      |                   ^~~~~~
++client.c:60:49: warning: ‘memcmp’ argument 3 type is ‘int’ where ‘long unsigned int’ is expected in a call to built-in function declared without prototype [-Wbuiltin-declaration-mismatch]
++   60 |    if (n >= 5 && !memcmp(buf + n - 5, "done\n", 5)) {
++      |                                                 ^
++<built-in>: note: built-in ‘memcmp’ declared here
++cc -c -g -Os  -Wall -Wextra -Wno-missing-field-initializers -Wno-unused-parameter -Wstrict-prototypes -Wformat-security -Wmissing-declarations -Wdeclaration-after-statement  -o sysfs.o sysfs.c
++In file included from sysfs.c:22:
++/usr/include/sys/fcntl.h:1:2: warning: #warning redirecting incorrect #include <sys/fcntl.h> to <fcntl.h> [-Wcpp]
++    1 | #warning redirecting incorrect #include <sys/fcntl.h> to <fcntl.h>
++      |  ^~~~~~~
++cc -c -g -Os  -Wall -Wextra -Wno-missing-field-initializers -Wno-unused-parameter -Wstrict-prototypes -Wformat-security -Wmissing-declarations -Wdeclaration-after-statement  -o yellow.o yellow.c
++cc -c -g -Os  -Wall -Wextra -Wno-missing-field-initializers -Wno-unused-parameter -Wstrict-prototypes -Wformat-security -Wmissing-declarations -Wdeclaration-after-statement  -o page.o page.c
++page.c: In function ‘mempage_insert_lookup’:
++page.c:144:8: warning: taking address of packed member of ‘struct rb_node’ may result in an unaligned pointer value [-Waddress-of-packed-member]
++  144 |    p = &(*p)->rb_left;
++      |        ^~~~~~~~~~~~~~
++page.c:146:8: warning: taking address of packed member of ‘struct rb_node’ may result in an unaligned pointer value [-Waddress-of-packed-member]
++  146 |    p = &(*p)->rb_right;
++      |        ^~~~~~~~~~~~~~~
++cc -c -g -Os  -Wall -Wextra -Wno-missing-field-initializers -Wno-unused-parameter -Wstrict-prototypes -Wformat-security -Wmissing-declarations -Wdeclaration-after-statement  -o rbtree.o rbtree.c
++cc -c -g -Os  -Wall -Wextra -Wno-missing-field-initializers -Wno-unused-parameter -Wstrict-prototypes -Wformat-security -Wmissing-declarations -Wdeclaration-after-statement  -o sandy-bridge.o sandy-bridge.c
++cc -c -g -Os  -Wall -Wextra -Wno-missing-field-initializers -Wno-unused-parameter -Wstrict-prototypes -Wformat-security -Wmissing-declarations -Wdeclaration-after-statement  -o ivy-bridge.o ivy-bridge.c
++cc -c -g -Os  -Wall -Wextra -Wno-missing-field-initializers -Wno-unused-parameter -Wstrict-prototypes -Wformat-security -Wmissing-declarations -Wdeclaration-after-statement  -o haswell.o haswell.c
++cc -c -g -Os  -Wall -Wextra -Wno-missing-field-initializers -Wno-unused-parameter -Wstrict-prototypes -Wformat-security -Wmissing-declarations -Wdeclaration-after-statement  -o broadwell_de.o broadwell_de.c
++cc -c -g -Os  -Wall -Wextra -Wno-missing-field-initializers -Wno-unused-parameter -Wstrict-prototypes -Wformat-security -Wmissing-declarations -Wdeclaration-after-statement  -o broadwell_epex.o broadwell_epex.c
++cc -c -g -Os  -Wall -Wextra -Wno-missing-field-initializers -Wno-unused-parameter -Wstrict-prototypes -Wformat-security -Wmissing-declarations -Wdeclaration-after-statement  -o skylake_xeon.o skylake_xeon.c
++cc -c -g -Os  -Wall -Wextra -Wno-missing-field-initializers -Wno-unused-parameter -Wstrict-prototypes -Wformat-security -Wmissing-declarations -Wdeclaration-after-statement  -o denverton.o denverton.c
++cc -c -g -Os  -Wall -Wextra -Wno-missing-field-initializers -Wno-unused-parameter -Wstrict-prototypes -Wformat-security -Wmissing-declarations -Wdeclaration-after-statement  -o i10nm.o i10nm.c
++cc -c -g -Os  -Wall -Wextra -Wno-missing-field-initializers -Wno-unused-parameter -Wstrict-prototypes -Wformat-security -Wmissing-declarations -Wdeclaration-after-statement  -o msr.o msr.c
++cc -c -g -Os  -Wall -Wextra -Wno-missing-field-initializers -Wno-unused-parameter -Wstrict-prototypes -Wformat-security -Wmissing-declarations -Wdeclaration-after-statement  -o bus.o bus.c
++cc -c -g -Os  -Wall -Wextra -Wno-missing-field-initializers -Wno-unused-parameter -Wstrict-prototypes -Wformat-security -Wmissing-declarations -Wdeclaration-after-statement  -o unknown.o unknown.c
++( printf "char version[] = \"" ; 			\
++if test -e .os_version; then				\
++	cat .os_version	| tr -d '\n' ;			\
++elif command -v git >/dev/null; then 			\
++	if [ -d .git ] ; then 				\
++		git describe --tags HEAD | tr -d '\n'; 	\
++	else 						\
++		printf "unknown" ; 			\
++	fi ;						\
++else							\
++	printf "unknown" ;				\
++fi ;							\
++printf '";\n'						\
++) > version.tmp
++cmp version.tmp version.c || mv version.tmp version.c
++cmp: version.c: No such file or directory
++cc -c -g -Os  -Wall -Wextra -Wno-missing-field-initializers -Wno-unused-parameter -Wstrict-prototypes -Wformat-security -Wmissing-declarations -Wdeclaration-after-statement  -o version.o version.c
++cc   mcelog.o p4.o k8.o dmi.o tsc.o core2.o bitfield.o intel.o nehalem.o dunnington.o tulsa.o config.o memutil.o msg.o eventloop.o leaky-bucket.o memdb.o server.o trigger.o client.o cache.o sysfs.o yellow.o page.o rbtree.o sandy-bridge.o ivy-bridge.o haswell.o broadwell_de.o broadwell_epex.o skylake_xeon.o denverton.o i10nm.o msr.o bus.o unknown.o version.o   -o mcelog
++( printf "char version[] = \"" ; 			\
++if test -e .os_version; then				\
++	cat .os_version	| tr -d '\n' ;			\
++elif command -v git >/dev/null; then 			\
++	if [ -d .git ] ; then 				\
++		git describe --tags HEAD | tr -d '\n'; 	\
++	else 						\
++		printf "unknown" ; 			\
++	fi ;						\
++else							\
++	printf "unknown" ;				\
++fi ;							\
++printf '";\n'						\
++) > version.tmp
++cmp version.tmp version.c || mv version.tmp version.c
++mkdir -p /tmp/package-mcelog/etc/mcelog /tmp/package-mcelog/usr/sbin /tmp/package-mcelog/usr/man/man5 /tmp/package-mcelog/usr/man/man8
++install -m 755 -p mcelog /tmp/package-mcelog/usr/sbin/mcelog
++install -m 644 -p mcelog.8 /tmp/package-mcelog/usr/man/man8
++install -m 644 -p mcelog.conf.5 /tmp/package-mcelog/usr/man/man5
++install -m 644 -p mcelog.triggers.5 /tmp/package-mcelog/usr/man/man5
++install -m 644 -p -b mcelog.conf /tmp/package-mcelog/etc/mcelog/mcelog.conf
++for i in cache-error-trigger dimm-error-trigger page-error-trigger socket-memory-error-trigger bus-error-trigger iomca-error-trigger unknown-error-trigger page-error-pre-sync-soft-trigger page-error-post-sync-soft-trigger page-error-counter-replacement-trigger ; do 						\
++	install -m 755 -p -b triggers/$i /tmp/package-mcelog/etc/mcelog ; 	\
++done
++install -d 755 /tmp/package-mcelog/usr/doc/mcelog-175
++install -m 644 -p mce.pdf /tmp/package-mcelog/usr/doc/mcelog-175
++cp: cannot stat 'TODO*': No such file or directory
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++
++No symbolic links were found, so we won't make an installation script.
++You can make your own later in ./install/doinst.sh and rebuild the
++package if you like.
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/mcelog-175-x86_64-1.txz
++
++./
++etc/
++etc/logrotate.d/
++etc/logrotate.d/mcelog.new
++etc/mcelog/
++etc/mcelog/bus-error-trigger
++etc/mcelog/cache-error-trigger
++etc/mcelog/dimm-error-trigger
++etc/mcelog/iomca-error-trigger
++etc/mcelog/mcelog.conf.new
++etc/mcelog/page-error-counter-replacement-trigger
++etc/mcelog/page-error-post-sync-soft-trigger
++etc/mcelog/page-error-pre-sync-soft-trigger
++etc/mcelog/page-error-trigger
++etc/mcelog/socket-memory-error-trigger
++etc/mcelog/unknown-error-trigger
++etc/rc.d/
++etc/rc.d/rc.mcelog.new
++install/
++install/doinst.sh
++install/slack-desc
++usr/
++usr/doc/
++usr/doc/mcelog-175/
++usr/doc/mcelog-175/CHANGES
++usr/doc/mcelog-175/README.md
++usr/doc/mcelog-175/README.releases
++usr/doc/mcelog-175/lk10-mcelog.pdf
++usr/doc/mcelog-175/mce.pdf
++usr/man/
++usr/man/man5/
++usr/man/man5/mcelog.conf.5.gz
++usr/man/man5/mcelog.triggers.5.gz
++usr/man/man8/
++usr/man/man8/mcelog.8.gz
++usr/sbin/
++usr/sbin/mcelog
++
++Slackware package /tmp/mcelog-175-x86_64-1.txz created.
++

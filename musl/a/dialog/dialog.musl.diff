@@ -1,0 +1,1142 @@
+diff -ruBN /tmp/dialog/dialog.SlackBuild /source/a/dialog/dialog.SlackBuild
+--- /tmp/dialog/dialog.SlackBuild	2020-03-01 19:15:09.000000000 +0000
++++ /source/a/dialog/dialog.SlackBuild	2021-01-22 22:03:03.000000000 +0000
+@@ -78,7 +78,7 @@
+   LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "x86_64" ]; then
+   SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX="64"
++  LIBDIRSUFFIX=""
+ elif [ "$ARCH" = "armv7hl" ]; then
+   SLKCFLAGS="-O3 -march=armv7-a -mfpu=vfpv3-d16"
+   LIBDIRSUFFIX=""
+@@ -116,7 +116,7 @@
+   --enable-nls \
+   --with-ncursesw \
+   --enable-widec \
+-  --build=$ARCH-slackware-linux
++  --build=$ARCH-slackware-linux-musl
+ 
+ # Build and install:
+ make -j4 || exit 1
+diff -ruBN /tmp/dialog/dialog.SlackBuild.log /source/a/dialog/dialog.SlackBuild.log
+--- /tmp/dialog/dialog.SlackBuild.log	1970-01-01 00:00:00.000000000 +0000
++++ /source/a/dialog/dialog.SlackBuild.log	2021-01-22 22:03:25.000000000 +0000
+@@ -0,0 +1,1117 @@
++dialog-1.3-20210117/
++dialog-1.3-20210117/guage.c
++dialog-1.3-20210117/dialog.3
++dialog-1.3-20210117/treeview.c
++dialog-1.3-20210117/arrows.c
++dialog-1.3-20210117/inputbox.c
++dialog-1.3-20210117/configure.in
++dialog-1.3-20210117/argv.c
++dialog-1.3-20210117/dialog.h
++dialog-1.3-20210117/config.guess
++dialog-1.3-20210117/VERSION
++dialog-1.3-20210117/dlg_keys.c
++dialog-1.3-20210117/mixedgauge.c
++dialog-1.3-20210117/buttons.c
++dialog-1.3-20210117/editbox.c
++dialog-1.3-20210117/yesno.c
++dialog-1.3-20210117/samples/
++dialog-1.3-20210117/samples/tailboxbg
++dialog-1.3-20210117/samples/dselect
++dialog-1.3-20210117/samples/msgbox4-utf8
++dialog-1.3-20210117/samples/menubox5
++dialog-1.3-20210117/samples/inputbox2
++dialog-1.3-20210117/samples/msgbox1
++dialog-1.3-20210117/samples/password1
++dialog-1.3-20210117/samples/textbox3
++dialog-1.3-20210117/samples/setup-vars
++dialog-1.3-20210117/samples/debian.rc
++dialog-1.3-20210117/samples/radiolist
++dialog-1.3-20210117/samples/infobox6
++dialog-1.3-20210117/samples/yesno-extra
++dialog-1.3-20210117/samples/calendar2-stdout
++dialog-1.3-20210117/samples/menubox7
++dialog-1.3-20210117/samples/report-edit
++dialog-1.3-20210117/samples/rangebox3
++dialog-1.3-20210117/samples/yesno-utf8
++dialog-1.3-20210117/samples/whiptail.rc
++dialog-1.3-20210117/samples/with-squotes
++dialog-1.3-20210117/samples/form1
++dialog-1.3-20210117/samples/rangebox2
++dialog-1.3-20210117/samples/checklist6
++dialog-1.3-20210117/samples/mixedform2
++dialog-1.3-20210117/samples/msgbox-help
++dialog-1.3-20210117/samples/menubox3
++dialog-1.3-20210117/samples/gauge
++dialog-1.3-20210117/samples/form1-help
++dialog-1.3-20210117/samples/password
++dialog-1.3-20210117/samples/radiolist2
++dialog-1.3-20210117/samples/rotated-data
++dialog-1.3-20210117/samples/inputbox5
++dialog-1.3-20210117/samples/form6
++dialog-1.3-20210117/samples/msgbox2
++dialog-1.3-20210117/samples/editbox4
++dialog-1.3-20210117/samples/passwordform1
++dialog-1.3-20210117/samples/form1-utf8
++dialog-1.3-20210117/samples/msgbox4-8bit
++dialog-1.3-20210117/samples/report-string
++dialog-1.3-20210117/samples/inputbox6-8bit
++dialog-1.3-20210117/samples/treeview2
++dialog-1.3-20210117/samples/yesno2
++dialog-1.3-20210117/samples/inputbox1
++dialog-1.3-20210117/samples/editbox2
++dialog-1.3-20210117/samples/menubox1
++dialog-1.3-20210117/samples/menubox-utf8
++dialog-1.3-20210117/samples/textbox2
++dialog-1.3-20210117/samples/msgbox-utf8
++dialog-1.3-20210117/samples/inputbox6-utf8
++dialog-1.3-20210117/samples/msgbox5
++dialog-1.3-20210117/samples/form4
++dialog-1.3-20210117/samples/fselect0
++dialog-1.3-20210117/samples/menubox8
++dialog-1.3-20210117/samples/menubox12
++dialog-1.3-20210117/samples/infobox3
++dialog-1.3-20210117/samples/menubox9
++dialog-1.3-20210117/samples/mixedgauge
++dialog-1.3-20210117/samples/setup-edit
++dialog-1.3-20210117/samples/inputmenu1
++dialog-1.3-20210117/samples/textbox-help
++dialog-1.3-20210117/samples/checklist9
++dialog-1.3-20210117/samples/programbox
++dialog-1.3-20210117/samples/rangebox
++dialog-1.3-20210117/samples/testdata-8bit
++dialog-1.3-20210117/samples/gauge0-input-fd
++dialog-1.3-20210117/samples/menubox10
++dialog-1.3-20210117/samples/tailboxbg2
++dialog-1.3-20210117/samples/pause-help
++dialog-1.3-20210117/samples/setup-tempfile
++dialog-1.3-20210117/samples/infobox4
++dialog-1.3-20210117/samples/fselect2
++dialog-1.3-20210117/samples/programbox3
++dialog-1.3-20210117/samples/checklist
++dialog-1.3-20210117/samples/editbox3
++dialog-1.3-20210117/samples/copifuncs/
++dialog-1.3-20210117/samples/copifuncs/copi.ifpoll1
++dialog-1.3-20210117/samples/copifuncs/copi.sendifm2
++dialog-1.3-20210117/samples/copifuncs/copi.ifmcfg4
++dialog-1.3-20210117/samples/copifuncs/copi.ifreq1
++dialog-1.3-20210117/samples/copifuncs/copi.ifmcfg2
++dialog-1.3-20210117/samples/copifuncs/ifpatch
++dialog-1.3-20210117/samples/copifuncs/copi.trnrc
++dialog-1.3-20210117/samples/copifuncs/copi.ifmcfg5
++dialog-1.3-20210117/samples/copifuncs/copi.rcnews
++dialog-1.3-20210117/samples/copifuncs/copi.ifman1
++dialog-1.3-20210117/samples/checklist5
++dialog-1.3-20210117/samples/shortlist
++dialog-1.3-20210117/samples/checklist9.txt
++dialog-1.3-20210117/samples/inputbox-both
++dialog-1.3-20210117/samples/timebox
++dialog-1.3-20210117/samples/buildlist2
++dialog-1.3-20210117/samples/pause
++dialog-1.3-20210117/samples/rangebox4
++dialog-1.3-20210117/samples/infobox
++dialog-1.3-20210117/samples/yesno-both
++dialog-1.3-20210117/samples/calendar
++dialog-1.3-20210117/samples/menubox-8bit
++dialog-1.3-20210117/samples/run_test.sh
++dialog-1.3-20210117/samples/form5
++dialog-1.3-20210117/samples/wheel
++dialog-1.3-20210117/samples/passwordform1-utf8
++dialog-1.3-20210117/samples/calendar3
++dialog-1.3-20210117/samples/suse.rc
++dialog-1.3-20210117/samples/programbox2
++dialog-1.3-20210117/samples/inputmenu-stdout
++dialog-1.3-20210117/samples/report-yesno
++dialog-1.3-20210117/samples/dft-cancel
++dialog-1.3-20210117/samples/checklist2
++dialog-1.3-20210117/samples/msgbox4-eucjp
++dialog-1.3-20210117/samples/buildlist4
++dialog-1.3-20210117/samples/form3
++dialog-1.3-20210117/samples/infobox1
++dialog-1.3-20210117/samples/inputmenu4
++dialog-1.3-20210117/samples/msgbox6a
++dialog-1.3-20210117/samples/yesno
++dialog-1.3-20210117/samples/fselect
++dialog-1.3-20210117/samples/radiolist10
++dialog-1.3-20210117/samples/timebox2-stdout
++dialog-1.3-20210117/samples/killall
++dialog-1.3-20210117/samples/radiolist3
++dialog-1.3-20210117/samples/with-dquotes
++dialog-1.3-20210117/samples/treeview4
++dialog-1.3-20210117/samples/checklist8
++dialog-1.3-20210117/samples/sourcemage.rc
++dialog-1.3-20210117/samples/dft-help
++dialog-1.3-20210117/samples/timebox-stdout
++dialog-1.3-20210117/samples/inputbox-extra
++dialog-1.3-20210117/samples/listing
++dialog-1.3-20210117/samples/calendar3-stdout
++dialog-1.3-20210117/samples/slackware.rc
++dialog-1.3-20210117/samples/checklist3
++dialog-1.3-20210117/samples/checklist12
++dialog-1.3-20210117/samples/prgbox
++dialog-1.3-20210117/samples/inputbox
++dialog-1.3-20210117/samples/textbox
++dialog-1.3-20210117/samples/fselect1-stdout
++dialog-1.3-20210117/samples/checklist4
++dialog-1.3-20210117/samples/prgbox2
++dialog-1.3-20210117/samples/fselect1
++dialog-1.3-20210117/samples/pause-both
++dialog-1.3-20210117/samples/dft-extra
++dialog-1.3-20210117/samples/timebox2
++dialog-1.3-20210117/samples/menubox11
++dialog-1.3-20210117/samples/checklist11
++dialog-1.3-20210117/samples/textbox-both
++dialog-1.3-20210117/samples/checklist1
++dialog-1.3-20210117/samples/textbox.txt
++dialog-1.3-20210117/samples/msgbox3
++dialog-1.3-20210117/samples/radiolist4
++dialog-1.3-20210117/samples/yesno3
++dialog-1.3-20210117/samples/progress
++dialog-1.3-20210117/samples/tailboxbg1
++dialog-1.3-20210117/samples/inputbox3
++dialog-1.3-20210117/samples/inputbox4
++dialog-1.3-20210117/samples/calendar2
++dialog-1.3-20210117/samples/menubox6
++dialog-1.3-20210117/samples/infobox2
++dialog-1.3-20210117/samples/checklist-8bit
++dialog-1.3-20210117/samples/checklist-utf8
++dialog-1.3-20210117/samples/checklist10
++dialog-1.3-20210117/samples/calendar-stdout
++dialog-1.3-20210117/samples/pause-extra
++dialog-1.3-20210117/samples/install/
++dialog-1.3-20210117/samples/install/makefile.in
++dialog-1.3-20210117/samples/install/setup.help
++dialog-1.3-20210117/samples/install/setup.c
++dialog-1.3-20210117/samples/install/FDISK.TEST
++dialog-1.3-20210117/samples/editbox-utf8
++dialog-1.3-20210117/samples/fselect-stdout
++dialog-1.3-20210117/samples/yesno4
++dialog-1.3-20210117/samples/inputmenu
++dialog-1.3-20210117/samples/inputmenu3
++dialog-1.3-20210117/samples/buildlist
++dialog-1.3-20210117/samples/fselect2-stdout
++dialog-1.3-20210117/samples/menubox
++dialog-1.3-20210117/samples/tailbox
++dialog-1.3-20210117/samples/yesno-help
++dialog-1.3-20210117/samples/progress2
++dialog-1.3-20210117/samples/gauge2
++dialog-1.3-20210117/samples/form2
++dialog-1.3-20210117/samples/setup-utf8
++dialog-1.3-20210117/samples/README
++dialog-1.3-20210117/samples/inputbox-help
++dialog-1.3-20210117/samples/treeview
++dialog-1.3-20210117/samples/form1-extra
++dialog-1.3-20210117/samples/report-button
++dialog-1.3-20210117/samples/password2
++dialog-1.3-20210117/samples/dft-no
++dialog-1.3-20210117/samples/menubox2
++dialog-1.3-20210117/samples/inputbox7
++dialog-1.3-20210117/samples/msgbox
++dialog-1.3-20210117/samples/msgbox6
++dialog-1.3-20210117/samples/report-tempfile
++dialog-1.3-20210117/samples/mixedform
++dialog-1.3-20210117/samples/form1-both
++dialog-1.3-20210117/samples/gauge0
++dialog-1.3-20210117/samples/checklist7
++dialog-1.3-20210117/samples/menubox4
++dialog-1.3-20210117/samples/dialog.py
++dialog-1.3-20210117/samples/radiolist1
++dialog-1.3-20210117/samples/inputmenu2
++dialog-1.3-20210117/samples/infobox5
++dialog-1.3-20210117/samples/editbox
++dialog-1.3-20210117/makefile.in
++dialog-1.3-20210117/dlg_keys.h
++dialog-1.3-20210117/dlg_internals.h
++dialog-1.3-20210117/rename.sh
++dialog-1.3-20210117/buildlist.c
++dialog-1.3-20210117/columns.c
++dialog-1.3-20210117/ui_getc.c
++dialog-1.3-20210117/configure
++dialog-1.3-20210117/util.c
++dialog-1.3-20210117/pause.c
++dialog-1.3-20210117/rangebox.c
++dialog-1.3-20210117/mixedform.c
++dialog-1.3-20210117/menubox.c
++dialog-1.3-20210117/package/
++dialog-1.3-20210117/package/dialog.sym
++dialog-1.3-20210117/package/freebsd/
++dialog-1.3-20210117/package/freebsd/Makefile
++dialog-1.3-20210117/package/freebsd/distinfo
++dialog-1.3-20210117/package/freebsd/pkg-descr
++dialog-1.3-20210117/package/freebsd/pkg-plist
++dialog-1.3-20210117/package/dialog.spec
++dialog-1.3-20210117/package/dialog.map
++dialog-1.3-20210117/package/debian/
++dialog-1.3-20210117/package/debian/source/
++dialog-1.3-20210117/package/debian/source/format
++dialog-1.3-20210117/package/debian/postinst
++dialog-1.3-20210117/package/debian/control
++dialog-1.3-20210117/package/debian/watch
++dialog-1.3-20210117/package/debian/rules
++dialog-1.3-20210117/package/debian/copyright
++dialog-1.3-20210117/package/debian/compat
++dialog-1.3-20210117/package/debian/docs
++dialog-1.3-20210117/package/debian/changelog
++dialog-1.3-20210117/ttysize.c
++dialog-1.3-20210117/config.sub
++dialog-1.3-20210117/prgbox.c
++dialog-1.3-20210117/run_test.sh
++dialog-1.3-20210117/COPYING
++dialog-1.3-20210117/help.c
++dialog-1.3-20210117/headers-sh.in
++dialog-1.3-20210117/timebox.c
++dialog-1.3-20210117/CHANGES
++dialog-1.3-20210117/dialog.c
++dialog-1.3-20210117/rc.c
++dialog-1.3-20210117/dialog-config.in
++dialog-1.3-20210117/mousewget.c
++dialog-1.3-20210117/dialog.lsm
++dialog-1.3-20210117/tailbox.c
++dialog-1.3-20210117/demo.pl
++dialog-1.3-20210117/dlg_colors.h
++dialog-1.3-20210117/progressbox.c
++dialog-1.3-20210117/checklist.c
++dialog-1.3-20210117/aclocal.m4
++dialog-1.3-20210117/version.c
++dialog-1.3-20210117/install-sh
++dialog-1.3-20210117/fselect.c
++dialog-1.3-20210117/config.hin
++dialog-1.3-20210117/README
++dialog-1.3-20210117/mouse.c
++dialog-1.3-20210117/textbox.c
++dialog-1.3-20210117/msgbox.c
++dialog-1.3-20210117/po/
++dialog-1.3-20210117/po/pl.po
++dialog-1.3-20210117/po/eu.po
++dialog-1.3-20210117/po/da.po
++dialog-1.3-20210117/po/ro.po
++dialog-1.3-20210117/po/et.po
++dialog-1.3-20210117/po/ku.po
++dialog-1.3-20210117/po/sw.po
++dialog-1.3-20210117/po/bg.po
++dialog-1.3-20210117/po/th.po
++dialog-1.3-20210117/po/gl.po
++dialog-1.3-20210117/po/fa.po
++dialog-1.3-20210117/po/uk.po
++dialog-1.3-20210117/po/fi.po
++dialog-1.3-20210117/po/lv.po
++dialog-1.3-20210117/po/pt.po
++dialog-1.3-20210117/po/nb.po
++dialog-1.3-20210117/po/sq.po
++dialog-1.3-20210117/po/is.po
++dialog-1.3-20210117/po/mg.po
++dialog-1.3-20210117/po/ar.po
++dialog-1.3-20210117/po/lt.po
++dialog-1.3-20210117/po/hr.po
++dialog-1.3-20210117/po/sv.po
++dialog-1.3-20210117/po/ga.po
++dialog-1.3-20210117/po/hu.po
++dialog-1.3-20210117/po/nl.po
++dialog-1.3-20210117/po/eo.po
++dialog-1.3-20210117/po/cs.po
++dialog-1.3-20210117/po/cy.po
++dialog-1.3-20210117/po/ms.po
++dialog-1.3-20210117/po/sk.po
++dialog-1.3-20210117/po/POTFILES.in
++dialog-1.3-20210117/po/ru.po
++dialog-1.3-20210117/po/sl.po
++dialog-1.3-20210117/po/gd.po
++dialog-1.3-20210117/po/ja.po
++dialog-1.3-20210117/po/dialog.pot
++dialog-1.3-20210117/po/zh_CN.po
++dialog-1.3-20210117/po/rw.po
++dialog-1.3-20210117/po/el.po
++dialog-1.3-20210117/po/de.po
++dialog-1.3-20210117/po/ia.po
++dialog-1.3-20210117/po/fr.po
++dialog-1.3-20210117/po/pt_BR.po
++dialog-1.3-20210117/po/zh_TW.po
++dialog-1.3-20210117/po/an.po
++dialog-1.3-20210117/po/wa.po
++dialog-1.3-20210117/po/ca.po
++dialog-1.3-20210117/po/id.po
++dialog-1.3-20210117/po/be@latin.po
++dialog-1.3-20210117/po/makefile.inn
++dialog-1.3-20210117/po/hi.po
++dialog-1.3-20210117/po/es.po
++dialog-1.3-20210117/po/it.po
++dialog-1.3-20210117/po/sr.po
++dialog-1.3-20210117/po/mk.po
++dialog-1.3-20210117/po/fur.po
++dialog-1.3-20210117/po/rm.po
++dialog-1.3-20210117/po/ast.po
++dialog-1.3-20210117/po/vi.po
++dialog-1.3-20210117/po/tr.po
++dialog-1.3-20210117/calendar.c
++dialog-1.3-20210117/trace.c
++dialog-1.3-20210117/dialog.pl
++dialog-1.3-20210117/formbox.c
++dialog-1.3-20210117/dialog.1
++dialog-1.3-20210117/inputstr.c
++Hmm...  Looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|--- ./menubox.c.orig	2019-11-10 19:41:15.000000000 -0600
++|+++ ./menubox.c	2019-12-06 13:16:39.400865476 -0600
++--------------------------
++patching file menubox.c
++Using Plan A...
++Hunk #1 succeeded at 431 (offset -2 lines).
++Hmm...  The next patch looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|--- ./buildlist.c.orig	2019-11-10 19:41:43.000000000 -0600
++|+++ ./buildlist.c	2019-12-06 13:16:39.402865476 -0600
++--------------------------
++patching file buildlist.c
++Using Plan A...
++Hunk #1 succeeded at 652 (offset -1 lines).
++Hmm...  The next patch looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|--- ./checklist.c.orig	2019-11-10 19:26:35.000000000 -0600
++|+++ ./checklist.c	2019-12-06 13:16:39.404865476 -0600
++--------------------------
++patching file checklist.c
++Using Plan A...
++Hunk #1 succeeded at 303 (offset -1 lines).
++Hmm...  The next patch looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|--- ./treeview.c.orig	2019-11-10 19:38:22.000000000 -0600
++|+++ ./treeview.c	2019-12-06 13:17:35.604866677 -0600
++--------------------------
++patching file treeview.c
++Using Plan A...
++Hunk #1 succeeded at 290 (offset -1 lines).
++done
++Hmm...  Looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|--- ./checklist.c.orig	2008-06-20 15:58:21.000000000 -0500
++|+++ ./checklist.c	2009-04-22 19:00:18.000000000 -0500
++--------------------------
++patching file checklist.c
++Using Plan A...
++Hunk #1 succeeded at 29 with fuzz 2 (offset -2 lines).
++Hmm...  The next patch looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|--- ./menubox.c.orig	2008-06-19 19:54:16.000000000 -0500
++|+++ ./menubox.c	2009-04-22 19:00:07.000000000 -0500
++--------------------------
++patching file menubox.c
++Using Plan A...
++Hunk #1 succeeded at 48 with fuzz 2 (offset 13 lines).
++done
++Hmm...  Looks like a unified diff to me...
++The text leading up to this was:
++--------------------------
++|--- ./util.c.orig	2019-11-10 17:20:58.000000000 -0600
++|+++ ./util.c	2019-12-07 14:40:23.404722986 -0600
++--------------------------
++patching file util.c
++Using Plan A...
++Hunk #1 succeeded at 1286 (offset 49 lines).
++done
++checking build system type... x86_64-slackware-linux-musl
++checking host system type... x86_64-slackware-linux-musl
++checking for gcc... gcc
++checking for C compiler default output... a.out
++checking whether the C compiler works... yes
++checking whether we are cross compiling... no
++checking for executable suffix... 
++checking for object suffix... o
++checking whether we are using the GNU C compiler... yes
++checking whether gcc accepts -g... yes
++checking version of gcc... 10.2.0
++checking if this is really Intel C compiler... no
++checking if this is really Clang C compiler... no
++checking for gcc option to accept ANSI C... none needed
++checking $CFLAGS variable... ok
++checking $CC variable... ok
++checking for ggrep... no
++checking for grep... grep
++checking for egrep... grep -E
++checking how to run the C preprocessor... gcc -E
++checking whether make sets ${MAKE}... yes
++checking for ranlib... ranlib
++checking for a BSD compatible install... /usr/bin/ginstall -c
++checking whether ln -s works... yes
++checking if ln -s -f options work... yes
++checking for lint... no
++checking for cppcheck... no
++checking for splint... no
++checking for groff... /usr/bin/groff
++checking for nroff... /usr/bin/nroff
++checking for tbl... /usr/bin/tbl
++checking for ar... ar
++checking for options to update archives... -curvU
++checking for fgrep... grep -F
++checking for makeflags variable... 
++checking if filesystem supports mixed-case filenames... yes
++checking for exctags... no
++checking for ctags... ctags
++checking for exetags... no
++checking for etags... etags
++checking for ctags... yes
++checking for etags... yes
++checking if you want to see long compiling messages... yes
++Configuring for linux-musl
++checking for PATH separator... :
++checking if the POSIX test-macros are already defined... no
++checking if this is the GNU C library... no
++checking if _XOPEN_SOURCE really is set... yes
++checking for special C compiler options needed for large files... no
++checking for _FILE_OFFSET_BITS value needed for large files... no
++checking for _LARGE_FILES value needed for large files... no
++checking for _LARGEFILE_SOURCE value needed for large files... no
++checking for fseeko... yes
++checking whether to use struct dirent64... no
++checking for install-prefix... no
++checking if you want to turn on gcc warnings... no
++configure: checking for gcc __attribute__ directives...
++... scanf
++... printf
++... unused
++... noreturn
++checking if you want to use pkg-config... yes
++checking for pkg-config... /usr/bin/pkg-config
++checking for this package's name... dialog
++checking for package version... 1.3
++checking for package patch date... 20210117
++checking if we should install dlg_XXX headers to subdirectory... no
++checking for man2html... no
++checking for program to convert manpage to html... /usr/bin/groff
++checking for ANSI C header files... yes
++checking for inline... inline
++checking for sys/types.h... yes
++checking for sys/stat.h... yes
++checking for stdlib.h... yes
++checking for string.h... yes
++checking for memory.h... yes
++checking for strings.h... yes
++checking for inttypes.h... yes
++checking for stdint.h... yes
++checking for unistd.h... yes
++checking for off_t... yes
++checking for size_t... yes
++checking for working alloca.h... yes
++checking for alloca... yes
++checking for stdlib.h... (cached) yes
++checking for unistd.h... (cached) yes
++checking for getpagesize... yes
++checking for working mmap... yes
++checking whether we are using the GNU C Library 2.1 or newer... no
++checking for argz.h... no
++checking for limits.h... yes
++checking for locale.h... yes
++checking for nl_types.h... yes
++checking for malloc.h... yes
++checking for stddef.h... yes
++checking for stdlib.h... (cached) yes
++checking for string.h... (cached) yes
++checking for unistd.h... (cached) yes
++checking for sys/param.h... yes
++checking for feof_unlocked... yes
++checking for fgets_unlocked... yes
++checking for getcwd... yes
++checking for getegid... yes
++checking for geteuid... yes
++checking for getgid... yes
++checking for getuid... yes
++checking for mempcpy... yes
++checking for munmap... yes
++checking for putenv... yes
++checking for setenv... yes
++checking for setlocale... yes
++checking for stpcpy... yes
++checking for strchr... yes
++checking for strcasecmp... yes
++checking for strdup... yes
++checking for strtoul... yes
++checking for tsearch... yes
++checking for __argz_count... no
++checking for __argz_stringify... no
++checking for __argz_next... no
++checking for iconv... yes
++checking if the declaration of iconv() needs const.... no
++checking for nl_langinfo and CODESET... yes
++checking for LC_MESSAGES... yes
++checking whether NLS is requested... yes
++checking whether included gettext is requested... no
++checking for msgfmt... /usr/bin/msgfmt
++checking for gmsgfmt... /usr/bin/msgfmt
++checking for xgettext... /usr/bin/xgettext
++checking for libintl.h and gettext()... yes
++checking for dcgettext... yes
++checking for catalogs to be installed...  an ar ast be@latin bg ca cs cy da de el eo es et eu fa fi fr fur ga gd gl hi hr hu ia id is it ja ku lt lv mg mk ms nb nl pl pt pt_BR rm ro ru rw sk sl sq sr sv sw th tr uk vi wa zh_CN zh_TW
++checking if we should use included message-library... yes
++checking for libintl.h... yes
++checking if -lm needed for math functions... no
++checking if you want to use dmalloc for testing... no
++checking if you want to use dbmalloc for testing... no
++checking if you want to use purify for testing... no
++checking if you want to use valgrind for testing... no
++checking if you want to perform memory-leak testing... no
++checking if you want --trace option... yes
++checking if rpath option should be used... no
++checking if libtool -version-number should be used... yes
++checking if you want to build libraries with libtool... no
++checking if you want to build shared libraries... no
++checking for specific curses-directory... no
++checking for specific curses-directory... no
++checking for specified curses library type... ncursesw
++checking for multibyte character support... yes
++checking pkg-config for ncursesw... yes
++checking if the ncursesw package files work... yes
++checking for terminfo header... term.h
++checking for _nc_init_pthreads in -lncursesw... no
++checking if curses supports wide characters... yes
++checking if we must include wchar.h to declare mbstate_t... no
++checking if you want extra dialogs... yes
++checking if you want config-file support... yes
++checking if you want extra attributes in config-file... yes
++checking if you want Xdialog-style dialogs... yes
++checking if you want extra Xdialog-style dialogs (1.2)... yes
++checking if you want compatibility with whiptail options... yes
++checking if you want the form dialog... yes
++checking if you want the gauge dialog... yes
++checking if you want the tailbox dialog... yes
++checking if you want the mixedform dialog... yes
++checking if you want the mixedgauge dialog... yes
++checking if you want the wide-curses features... yes
++checking for ANSI C header files... (cached) yes
++checking whether time.h and sys/time.h may both be included... yes
++checking for dirent.h that defines DIR... yes
++checking for opendir in -ldir... no
++checking for search.h... yes
++checking for stdint.h... (cached) yes
++checking for sys/param.h... (cached) yes
++checking for unistd.h... (cached) yes
++checking for term.h... (cached) term.h
++checking return type of signal handlers... void
++checking for btowc... yes
++checking for mblen... yes
++checking for mbrlen... yes
++checking for mbrtowc... yes
++checking for mbtowc... yes
++checking for strcasecmp... (cached) yes
++checking for strftime... yes
++checking for tsearch... (cached) yes
++checking for waitpid... yes
++checking for wcsrtombs... yes
++checking for wcstombs... yes
++checking for wctob... yes
++checking for wctomb... yes
++checking for mktime... yes
++checking definition to turn on extended curses functions... none
++checking for unctrl.h... unctrl.h
++checking for flushinp... yes
++checking for getattrs... yes
++checking for getbegx... yes
++checking for getbegy... yes
++checking for getbegyx... yes
++checking for getcurx... yes
++checking for getcury... yes
++checking for getmaxx... yes
++checking for getmaxy... yes
++checking for getmaxyx... yes
++checking for getparx... yes
++checking for getpary... yes
++checking for getparyx... yes
++checking for use_default_colors... yes
++checking for wchgat... yes
++checking for wcursyncup... yes
++checking for wget_wch... yes
++checking for wsyncup... yes
++checking for curses_exit... no
++checking for _nc_free_and_exit... no
++checking for start_color... yes
++checking for chtype typedef... yes
++checking if chtype is scalar or struct... scalar
++checking for wide alternate character set array... _nc_wacs
++checking for wide alternate character constants... yes
++checking for wgetparent... yes
++checking for sys/wait.h... yes
++checking for union wait... no
++checking if we must include wchar.h to declare mbstate_t... yes
++checking for termio.h... no
++checking for termios.h... yes
++checking for unistd.h... (cached) yes
++checking for sys/ioctl.h... yes
++checking for sys/termio.h... no
++checking whether termios.h needs _POSIX_SOURCE... no
++checking declaration of size-change... yes
++checking if runtime has nl_langinfo support for first weekday... no
++checking if rpath-hack should be disabled... no
++checking for updated LDFLAGS... no
++checking for linker search path... /usr/local/lib64 /lib64 /usr/lib64 /usr/x86_64-slackware-linux-musl/lib /usr/local/lib /lib /usr/lib
++configure: creating ./config.status
++config.status: creating dialog-config
++config.status: creating makefile
++config.status: creating headers-sh
++config.status: creating po/makefile.in
++config.status: creating dlg_config.h
++config.status: creating po/POTFILES
++config.status: creating po/makefile
++gcc -O2 -fPIC   -I. -I.  -DHAVE_CONFIG_H -DLOCALEDIR=\"/usr/share/locale\" -c trace.c
++gcc -O2 -fPIC   -I. -I.  -DHAVE_CONFIG_H -DLOCALEDIR=\"/usr/share/locale\" -c rc.c
++gcc -O2 -fPIC   -I. -I.  -DHAVE_CONFIG_H -DLOCALEDIR=\"/usr/share/locale\" -c calendar.c
++gcc -O2 -fPIC   -I. -I.  -DHAVE_CONFIG_H -DLOCALEDIR=\"/usr/share/locale\" -c fselect.c
++gcc -O2 -fPIC   -I. -I.  -DHAVE_CONFIG_H -DLOCALEDIR=\"/usr/share/locale\" -c timebox.c
++gcc -O2 -fPIC   -I. -I.  -DHAVE_CONFIG_H -DLOCALEDIR=\"/usr/share/locale\" -c buildlist.c
++gcc -O2 -fPIC   -I. -I.  -DHAVE_CONFIG_H -DLOCALEDIR=\"/usr/share/locale\" -c rangebox.c
++gcc -O2 -fPIC   -I. -I.  -DHAVE_CONFIG_H -DLOCALEDIR=\"/usr/share/locale\" -c treeview.c
++gcc -O2 -fPIC   -I. -I.  -DHAVE_CONFIG_H -DLOCALEDIR=\"/usr/share/locale\" -c formbox.c
++gcc -O2 -fPIC   -I. -I.  -DHAVE_CONFIG_H -DLOCALEDIR=\"/usr/share/locale\" -c guage.c
++gcc -O2 -fPIC   -I. -I.  -DHAVE_CONFIG_H -DLOCALEDIR=\"/usr/share/locale\" -c pause.c
++gcc -O2 -fPIC   -I. -I.  -DHAVE_CONFIG_H -DLOCALEDIR=\"/usr/share/locale\" -c prgbox.c
++gcc -O2 -fPIC   -I. -I.  -DHAVE_CONFIG_H -DLOCALEDIR=\"/usr/share/locale\" -c progressbox.c
++gcc -O2 -fPIC   -I. -I.  -DHAVE_CONFIG_H -DLOCALEDIR=\"/usr/share/locale\" -c tailbox.c
++gcc -O2 -fPIC   -I. -I.  -DHAVE_CONFIG_H -DLOCALEDIR=\"/usr/share/locale\" -c mixedform.c
++gcc -O2 -fPIC   -I. -I.  -DHAVE_CONFIG_H -DLOCALEDIR=\"/usr/share/locale\" -c mixedgauge.c
++gcc -O2 -fPIC   -I. -I.  -DHAVE_CONFIG_H -DLOCALEDIR=\"/usr/share/locale\" -c argv.c
++gcc -O2 -fPIC   -I. -I.  -DHAVE_CONFIG_H -DLOCALEDIR=\"/usr/share/locale\" -c arrows.c
++gcc -O2 -fPIC   -I. -I.  -DHAVE_CONFIG_H -DLOCALEDIR=\"/usr/share/locale\" -c buttons.c
++gcc -O2 -fPIC   -I. -I.  -DHAVE_CONFIG_H -DLOCALEDIR=\"/usr/share/locale\" -c checklist.c
++gcc -O2 -fPIC   -I. -I.  -DHAVE_CONFIG_H -DLOCALEDIR=\"/usr/share/locale\" -c columns.c
++gcc -O2 -fPIC   -I. -I.  -DHAVE_CONFIG_H -DLOCALEDIR=\"/usr/share/locale\" -c dlg_keys.c
++gcc -O2 -fPIC   -I. -I.  -DHAVE_CONFIG_H -DLOCALEDIR=\"/usr/share/locale\" -c editbox.c
++gcc -O2 -fPIC   -I. -I.  -DHAVE_CONFIG_H -DLOCALEDIR=\"/usr/share/locale\" -c help.c
++gcc -O2 -fPIC   -I. -I.  -DHAVE_CONFIG_H -DLOCALEDIR=\"/usr/share/locale\" -c inputbox.c
++gcc -O2 -fPIC   -I. -I.  -DHAVE_CONFIG_H -DLOCALEDIR=\"/usr/share/locale\" -c inputstr.c
++gcc -O2 -fPIC   -I. -I.  -DHAVE_CONFIG_H -DLOCALEDIR=\"/usr/share/locale\" -c menubox.c
++gcc -O2 -fPIC   -I. -I.  -DHAVE_CONFIG_H -DLOCALEDIR=\"/usr/share/locale\" -c mouse.c
++gcc -O2 -fPIC   -I. -I.  -DHAVE_CONFIG_H -DLOCALEDIR=\"/usr/share/locale\" -c mousewget.c
++gcc -O2 -fPIC   -I. -I.  -DHAVE_CONFIG_H -DLOCALEDIR=\"/usr/share/locale\" -c msgbox.c
++gcc -O2 -fPIC   -I. -I.  -DHAVE_CONFIG_H -DLOCALEDIR=\"/usr/share/locale\" -c textbox.c
++gcc -O2 -fPIC   -I. -I.  -DHAVE_CONFIG_H -DLOCALEDIR=\"/usr/share/locale\" -c ttysize.c
++gcc -O2 -fPIC   -I. -I.  -DHAVE_CONFIG_H -DLOCALEDIR=\"/usr/share/locale\" -c ui_getc.c
++gcc -O2 -fPIC   -I. -I.  -DHAVE_CONFIG_H -DLOCALEDIR=\"/usr/share/locale\" -c util.c
++gcc -O2 -fPIC   -I. -I.  -DHAVE_CONFIG_H -DLOCALEDIR=\"/usr/share/locale\" -c version.c
++gcc -O2 -fPIC   -I. -I.  -DHAVE_CONFIG_H -DLOCALEDIR=\"/usr/share/locale\" -c yesno.c
++gcc -O2 -fPIC   -I. -I.  -DHAVE_CONFIG_H -DLOCALEDIR=\"/usr/share/locale\" -c dialog.c
++linking libdialog.a
++ar -cr libdialog.a trace.o rc.o calendar.o fselect.o timebox.o buildlist.o rangebox.o treeview.o formbox.o guage.o pause.o prgbox.o progressbox.o tailbox.o mixedform.o mixedgauge.o argv.o arrows.o buttons.o checklist.o columns.o dlg_keys.o editbox.o help.o inputbox.o inputstr.o menubox.o mouse.o mousewget.o msgbox.o textbox.o ttysize.o ui_getc.o util.o version.o yesno.o 
++gcc -o dialog dialog.o -L. -ldialog -O2 -fPIC   -lncursesw -ltinfo  -lintl 
++making install
++make[1]: Entering directory '/tmp/dialog-1.3-20210117/po'
++file=./`echo an | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file an.po
++file=./`echo ar | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file ar.po
++file=./`echo ast | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file ast.po
++file=./`echo be@latin | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file be@latin.po
++file=./`echo bg | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file bg.po
++file=./`echo ca | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file ca.po
++file=./`echo cs | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file cs.po
++file=./`echo cy | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file cy.po
++file=./`echo da | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file da.po
++file=./`echo de | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file de.po
++file=./`echo el | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file el.po
++file=./`echo eo | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file eo.po
++file=./`echo es | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file es.po
++file=./`echo et | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file et.po
++file=./`echo eu | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file eu.po
++file=./`echo fa | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file fa.po
++file=./`echo fi | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file fi.po
++file=./`echo fr | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file fr.po
++file=./`echo fur | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file fur.po
++file=./`echo ga | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file ga.po
++file=./`echo gd | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file gd.po
++file=./`echo gl | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file gl.po
++file=./`echo hi | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file hi.po
++file=./`echo hr | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file hr.po
++file=./`echo hu | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file hu.po
++file=./`echo ia | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file ia.po
++file=./`echo id | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file id.po
++file=./`echo is | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file is.po
++file=./`echo it | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file it.po
++file=./`echo ja | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file ja.po
++file=./`echo ku | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file ku.po
++file=./`echo lt | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file lt.po
++file=./`echo lv | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file lv.po
++file=./`echo mg | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file mg.po
++file=./`echo mk | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file mk.po
++file=./`echo ms | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file ms.po
++file=./`echo nb | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file nb.po
++file=./`echo nl | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file nl.po
++file=./`echo pl | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file pl.po
++file=./`echo pt | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file pt.po
++file=./`echo pt_BR | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file pt_BR.po
++file=./`echo rm | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file rm.po
++file=./`echo ro | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file ro.po
++file=./`echo ru | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file ru.po
++file=./`echo rw | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file rw.po
++file=./`echo sk | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file sk.po
++file=./`echo sl | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file sl.po
++file=./`echo sq | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file sq.po
++file=./`echo sr | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file sr.po
++file=./`echo sv | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file sv.po
++file=./`echo sw | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file sw.po
++file=./`echo th | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file th.po
++file=./`echo tr | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file tr.po
++file=./`echo uk | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file uk.po
++file=./`echo vi | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file vi.po
++file=./`echo wa | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file wa.po
++file=./`echo zh_CN | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file zh_CN.po
++file=./`echo zh_TW | sed 's,.*/,,'`.gmo \
++  && rm -f $file && PATH=../src:$PATH /usr/bin/msgfmt -o $file zh_TW.po
++installing an.gmo as /tmp/package-dialog/usr/share/locale/an/LC_MESSAGES/dialog.mo
++installing ar.gmo as /tmp/package-dialog/usr/share/locale/ar/LC_MESSAGES/dialog.mo
++installing ast.gmo as /tmp/package-dialog/usr/share/locale/ast/LC_MESSAGES/dialog.mo
++installing be@latin.gmo as /tmp/package-dialog/usr/share/locale/be@latin/LC_MESSAGES/dialog.mo
++installing bg.gmo as /tmp/package-dialog/usr/share/locale/bg/LC_MESSAGES/dialog.mo
++installing ca.gmo as /tmp/package-dialog/usr/share/locale/ca/LC_MESSAGES/dialog.mo
++installing cs.gmo as /tmp/package-dialog/usr/share/locale/cs/LC_MESSAGES/dialog.mo
++installing cy.gmo as /tmp/package-dialog/usr/share/locale/cy/LC_MESSAGES/dialog.mo
++installing da.gmo as /tmp/package-dialog/usr/share/locale/da/LC_MESSAGES/dialog.mo
++installing de.gmo as /tmp/package-dialog/usr/share/locale/de/LC_MESSAGES/dialog.mo
++installing el.gmo as /tmp/package-dialog/usr/share/locale/el/LC_MESSAGES/dialog.mo
++installing eo.gmo as /tmp/package-dialog/usr/share/locale/eo/LC_MESSAGES/dialog.mo
++installing es.gmo as /tmp/package-dialog/usr/share/locale/es/LC_MESSAGES/dialog.mo
++installing et.gmo as /tmp/package-dialog/usr/share/locale/et/LC_MESSAGES/dialog.mo
++installing eu.gmo as /tmp/package-dialog/usr/share/locale/eu/LC_MESSAGES/dialog.mo
++installing fa.gmo as /tmp/package-dialog/usr/share/locale/fa/LC_MESSAGES/dialog.mo
++installing fi.gmo as /tmp/package-dialog/usr/share/locale/fi/LC_MESSAGES/dialog.mo
++installing fr.gmo as /tmp/package-dialog/usr/share/locale/fr/LC_MESSAGES/dialog.mo
++installing fur.gmo as /tmp/package-dialog/usr/share/locale/fur/LC_MESSAGES/dialog.mo
++installing ga.gmo as /tmp/package-dialog/usr/share/locale/ga/LC_MESSAGES/dialog.mo
++installing gd.gmo as /tmp/package-dialog/usr/share/locale/gd/LC_MESSAGES/dialog.mo
++installing gl.gmo as /tmp/package-dialog/usr/share/locale/gl/LC_MESSAGES/dialog.mo
++installing hi.gmo as /tmp/package-dialog/usr/share/locale/hi/LC_MESSAGES/dialog.mo
++installing hr.gmo as /tmp/package-dialog/usr/share/locale/hr/LC_MESSAGES/dialog.mo
++installing hu.gmo as /tmp/package-dialog/usr/share/locale/hu/LC_MESSAGES/dialog.mo
++installing ia.gmo as /tmp/package-dialog/usr/share/locale/ia/LC_MESSAGES/dialog.mo
++installing id.gmo as /tmp/package-dialog/usr/share/locale/id/LC_MESSAGES/dialog.mo
++installing is.gmo as /tmp/package-dialog/usr/share/locale/is/LC_MESSAGES/dialog.mo
++installing it.gmo as /tmp/package-dialog/usr/share/locale/it/LC_MESSAGES/dialog.mo
++installing ja.gmo as /tmp/package-dialog/usr/share/locale/ja/LC_MESSAGES/dialog.mo
++installing ku.gmo as /tmp/package-dialog/usr/share/locale/ku/LC_MESSAGES/dialog.mo
++installing lt.gmo as /tmp/package-dialog/usr/share/locale/lt/LC_MESSAGES/dialog.mo
++installing lv.gmo as /tmp/package-dialog/usr/share/locale/lv/LC_MESSAGES/dialog.mo
++installing mg.gmo as /tmp/package-dialog/usr/share/locale/mg/LC_MESSAGES/dialog.mo
++installing mk.gmo as /tmp/package-dialog/usr/share/locale/mk/LC_MESSAGES/dialog.mo
++installing ms.gmo as /tmp/package-dialog/usr/share/locale/ms/LC_MESSAGES/dialog.mo
++installing nb.gmo as /tmp/package-dialog/usr/share/locale/nb/LC_MESSAGES/dialog.mo
++installing nl.gmo as /tmp/package-dialog/usr/share/locale/nl/LC_MESSAGES/dialog.mo
++installing pl.gmo as /tmp/package-dialog/usr/share/locale/pl/LC_MESSAGES/dialog.mo
++installing pt.gmo as /tmp/package-dialog/usr/share/locale/pt/LC_MESSAGES/dialog.mo
++installing pt_BR.gmo as /tmp/package-dialog/usr/share/locale/pt_BR/LC_MESSAGES/dialog.mo
++installing rm.gmo as /tmp/package-dialog/usr/share/locale/rm/LC_MESSAGES/dialog.mo
++installing ro.gmo as /tmp/package-dialog/usr/share/locale/ro/LC_MESSAGES/dialog.mo
++installing ru.gmo as /tmp/package-dialog/usr/share/locale/ru/LC_MESSAGES/dialog.mo
++installing rw.gmo as /tmp/package-dialog/usr/share/locale/rw/LC_MESSAGES/dialog.mo
++installing sk.gmo as /tmp/package-dialog/usr/share/locale/sk/LC_MESSAGES/dialog.mo
++installing sl.gmo as /tmp/package-dialog/usr/share/locale/sl/LC_MESSAGES/dialog.mo
++installing sq.gmo as /tmp/package-dialog/usr/share/locale/sq/LC_MESSAGES/dialog.mo
++installing sr.gmo as /tmp/package-dialog/usr/share/locale/sr/LC_MESSAGES/dialog.mo
++installing sv.gmo as /tmp/package-dialog/usr/share/locale/sv/LC_MESSAGES/dialog.mo
++installing sw.gmo as /tmp/package-dialog/usr/share/locale/sw/LC_MESSAGES/dialog.mo
++installing th.gmo as /tmp/package-dialog/usr/share/locale/th/LC_MESSAGES/dialog.mo
++installing tr.gmo as /tmp/package-dialog/usr/share/locale/tr/LC_MESSAGES/dialog.mo
++installing uk.gmo as /tmp/package-dialog/usr/share/locale/uk/LC_MESSAGES/dialog.mo
++installing vi.gmo as /tmp/package-dialog/usr/share/locale/vi/LC_MESSAGES/dialog.mo
++installing wa.gmo as /tmp/package-dialog/usr/share/locale/wa/LC_MESSAGES/dialog.mo
++installing zh_CN.gmo as /tmp/package-dialog/usr/share/locale/zh_CN/LC_MESSAGES/dialog.mo
++installing zh_TW.gmo as /tmp/package-dialog/usr/share/locale/zh_TW/LC_MESSAGES/dialog.mo
++if test "dialog" = "gettext"; then \
++  mkdir -p /tmp/package-dialog/usr/share/gettext/po; \
++  /usr/bin/ginstall -c -m 644 ./makefile.inn \
++		  /tmp/package-dialog/usr/share/gettext/po/makefile.inn; \
++else \
++  : ; \
++fi
++make[1]: Leaving directory '/tmp/dialog-1.3-20210117/po'
++mkdir -p /tmp/package-dialog/usr/bin
++/usr/bin/ginstall -c dialog /tmp/package-dialog/usr/bin/`echo dialog |sed s,x,x,`
++mkdir -p /tmp/package-dialog/usr/man/man1
++** installing dialog.1
++made install
++mkdir -p /tmp/package-dialog/usr/lib
++linking /tmp/package-dialog/usr/lib/libdialog.a
++ar -cr /tmp/package-dialog/usr/lib/libdialog.a trace.o rc.o calendar.o fselect.o timebox.o buildlist.o rangebox.o treeview.o formbox.o guage.o pause.o prgbox.o progressbox.o tailbox.o mixedform.o mixedgauge.o argv.o arrows.o buttons.o checklist.o columns.o dlg_keys.o editbox.o help.o inputbox.o inputstr.o menubox.o mouse.o mousewget.o msgbox.o textbox.o ttysize.o ui_getc.o util.o version.o yesno.o 
++
++Slackware package maker, version 3.14159265.
++
++Searching for symbolic links:
++usr/bin/dialog	../../bin/dialog
++
++Making symbolic link creation script:
++( cd usr/bin ; rm -rf dialog )
++( cd usr/bin ; ln -sf ../../bin/dialog dialog )
++
++It is recommended that you make these lines your new installation script.
++
++Would you like to make this stuff the install script for this package
++and remove the symbolic links ([y]es, [n]o)? y
++
++
++Removing symbolic links:
++removed './usr/bin/dialog'
++
++Creating your new ./install/doinst.sh...
++
++This next step is optional - you can set the directories in your package
++to some sane permissions. If any of the directories in your package have
++special permissions, then DO NOT reset them here!
++
++Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
++directory ownerships to root.root ([y]es, [n]o)? n
++
++Creating Slackware package:  /tmp/dialog-1.3_20210117-x86_64-1.txz
++
++./
++bin/
++bin/dialog
++etc/
++etc/dialogrc
++install/
++install/doinst.sh
++install/slack-desc
++usr/
++usr/bin/
++usr/doc/
++usr/doc/dialog-1.3-20210117/
++usr/doc/dialog-1.3-20210117/CHANGES
++usr/doc/dialog-1.3-20210117/COPYING
++usr/doc/dialog-1.3-20210117/README
++usr/doc/dialog-1.3-20210117/VERSION
++usr/doc/dialog-1.3-20210117/dialog.lsm
++usr/man/
++usr/man/man1/
++usr/man/man1/dialog.1.gz
++usr/share/
++usr/share/locale/
++usr/share/locale/an/
++usr/share/locale/an/LC_MESSAGES/
++usr/share/locale/an/LC_MESSAGES/dialog.mo
++usr/share/locale/ar/
++usr/share/locale/ar/LC_MESSAGES/
++usr/share/locale/ar/LC_MESSAGES/dialog.mo
++usr/share/locale/ast/
++usr/share/locale/ast/LC_MESSAGES/
++usr/share/locale/ast/LC_MESSAGES/dialog.mo
++usr/share/locale/be@latin/
++usr/share/locale/be@latin/LC_MESSAGES/
++usr/share/locale/be@latin/LC_MESSAGES/dialog.mo
++usr/share/locale/bg/
++usr/share/locale/bg/LC_MESSAGES/
++usr/share/locale/bg/LC_MESSAGES/dialog.mo
++usr/share/locale/ca/
++usr/share/locale/ca/LC_MESSAGES/
++usr/share/locale/ca/LC_MESSAGES/dialog.mo
++usr/share/locale/cs/
++usr/share/locale/cs/LC_MESSAGES/
++usr/share/locale/cs/LC_MESSAGES/dialog.mo
++usr/share/locale/cy/
++usr/share/locale/cy/LC_MESSAGES/
++usr/share/locale/cy/LC_MESSAGES/dialog.mo
++usr/share/locale/da/
++usr/share/locale/da/LC_MESSAGES/
++usr/share/locale/da/LC_MESSAGES/dialog.mo
++usr/share/locale/de/
++usr/share/locale/de/LC_MESSAGES/
++usr/share/locale/de/LC_MESSAGES/dialog.mo
++usr/share/locale/el/
++usr/share/locale/el/LC_MESSAGES/
++usr/share/locale/el/LC_MESSAGES/dialog.mo
++usr/share/locale/eo/
++usr/share/locale/eo/LC_MESSAGES/
++usr/share/locale/eo/LC_MESSAGES/dialog.mo
++usr/share/locale/es/
++usr/share/locale/es/LC_MESSAGES/
++usr/share/locale/es/LC_MESSAGES/dialog.mo
++usr/share/locale/et/
++usr/share/locale/et/LC_MESSAGES/
++usr/share/locale/et/LC_MESSAGES/dialog.mo
++usr/share/locale/eu/
++usr/share/locale/eu/LC_MESSAGES/
++usr/share/locale/eu/LC_MESSAGES/dialog.mo
++usr/share/locale/fa/
++usr/share/locale/fa/LC_MESSAGES/
++usr/share/locale/fa/LC_MESSAGES/dialog.mo
++usr/share/locale/fi/
++usr/share/locale/fi/LC_MESSAGES/
++usr/share/locale/fi/LC_MESSAGES/dialog.mo
++usr/share/locale/fr/
++usr/share/locale/fr/LC_MESSAGES/
++usr/share/locale/fr/LC_MESSAGES/dialog.mo
++usr/share/locale/fur/
++usr/share/locale/fur/LC_MESSAGES/
++usr/share/locale/fur/LC_MESSAGES/dialog.mo
++usr/share/locale/ga/
++usr/share/locale/ga/LC_MESSAGES/
++usr/share/locale/ga/LC_MESSAGES/dialog.mo
++usr/share/locale/gd/
++usr/share/locale/gd/LC_MESSAGES/
++usr/share/locale/gd/LC_MESSAGES/dialog.mo
++usr/share/locale/gl/
++usr/share/locale/gl/LC_MESSAGES/
++usr/share/locale/gl/LC_MESSAGES/dialog.mo
++usr/share/locale/hi/
++usr/share/locale/hi/LC_MESSAGES/
++usr/share/locale/hi/LC_MESSAGES/dialog.mo
++usr/share/locale/hr/
++usr/share/locale/hr/LC_MESSAGES/
++usr/share/locale/hr/LC_MESSAGES/dialog.mo
++usr/share/locale/hu/
++usr/share/locale/hu/LC_MESSAGES/
++usr/share/locale/hu/LC_MESSAGES/dialog.mo
++usr/share/locale/ia/
++usr/share/locale/ia/LC_MESSAGES/
++usr/share/locale/ia/LC_MESSAGES/dialog.mo
++usr/share/locale/id/
++usr/share/locale/id/LC_MESSAGES/
++usr/share/locale/id/LC_MESSAGES/dialog.mo
++usr/share/locale/is/
++usr/share/locale/is/LC_MESSAGES/
++usr/share/locale/is/LC_MESSAGES/dialog.mo
++usr/share/locale/it/
++usr/share/locale/it/LC_MESSAGES/
++usr/share/locale/it/LC_MESSAGES/dialog.mo
++usr/share/locale/ja/
++usr/share/locale/ja/LC_MESSAGES/
++usr/share/locale/ja/LC_MESSAGES/dialog.mo
++usr/share/locale/ku/
++usr/share/locale/ku/LC_MESSAGES/
++usr/share/locale/ku/LC_MESSAGES/dialog.mo
++usr/share/locale/lt/
++usr/share/locale/lt/LC_MESSAGES/
++usr/share/locale/lt/LC_MESSAGES/dialog.mo
++usr/share/locale/lv/
++usr/share/locale/lv/LC_MESSAGES/
++usr/share/locale/lv/LC_MESSAGES/dialog.mo
++usr/share/locale/mg/
++usr/share/locale/mg/LC_MESSAGES/
++usr/share/locale/mg/LC_MESSAGES/dialog.mo
++usr/share/locale/mk/
++usr/share/locale/mk/LC_MESSAGES/
++usr/share/locale/mk/LC_MESSAGES/dialog.mo
++usr/share/locale/ms/
++usr/share/locale/ms/LC_MESSAGES/
++usr/share/locale/ms/LC_MESSAGES/dialog.mo
++usr/share/locale/nb/
++usr/share/locale/nb/LC_MESSAGES/
++usr/share/locale/nb/LC_MESSAGES/dialog.mo
++usr/share/locale/nl/
++usr/share/locale/nl/LC_MESSAGES/
++usr/share/locale/nl/LC_MESSAGES/dialog.mo
++usr/share/locale/pl/
++usr/share/locale/pl/LC_MESSAGES/
++usr/share/locale/pl/LC_MESSAGES/dialog.mo
++usr/share/locale/pt/
++usr/share/locale/pt/LC_MESSAGES/
++usr/share/locale/pt/LC_MESSAGES/dialog.mo
++usr/share/locale/pt_BR/
++usr/share/locale/pt_BR/LC_MESSAGES/
++usr/share/locale/pt_BR/LC_MESSAGES/dialog.mo
++usr/share/locale/rm/
++usr/share/locale/rm/LC_MESSAGES/
++usr/share/locale/rm/LC_MESSAGES/dialog.mo
++usr/share/locale/ro/
++usr/share/locale/ro/LC_MESSAGES/
++usr/share/locale/ro/LC_MESSAGES/dialog.mo
++usr/share/locale/ru/
++usr/share/locale/ru/LC_MESSAGES/
++usr/share/locale/ru/LC_MESSAGES/dialog.mo
++usr/share/locale/rw/
++usr/share/locale/rw/LC_MESSAGES/
++usr/share/locale/rw/LC_MESSAGES/dialog.mo
++usr/share/locale/sk/
++usr/share/locale/sk/LC_MESSAGES/
++usr/share/locale/sk/LC_MESSAGES/dialog.mo
++usr/share/locale/sl/
++usr/share/locale/sl/LC_MESSAGES/
++usr/share/locale/sl/LC_MESSAGES/dialog.mo
++usr/share/locale/sq/
++usr/share/locale/sq/LC_MESSAGES/
++usr/share/locale/sq/LC_MESSAGES/dialog.mo
++usr/share/locale/sr/
++usr/share/locale/sr/LC_MESSAGES/
++usr/share/locale/sr/LC_MESSAGES/dialog.mo
++usr/share/locale/sv/
++usr/share/locale/sv/LC_MESSAGES/
++usr/share/locale/sv/LC_MESSAGES/dialog.mo
++usr/share/locale/sw/
++usr/share/locale/sw/LC_MESSAGES/
++usr/share/locale/sw/LC_MESSAGES/dialog.mo
++usr/share/locale/th/
++usr/share/locale/th/LC_MESSAGES/
++usr/share/locale/th/LC_MESSAGES/dialog.mo
++usr/share/locale/tr/
++usr/share/locale/tr/LC_MESSAGES/
++usr/share/locale/tr/LC_MESSAGES/dialog.mo
++usr/share/locale/uk/
++usr/share/locale/uk/LC_MESSAGES/
++usr/share/locale/uk/LC_MESSAGES/dialog.mo
++usr/share/locale/vi/
++usr/share/locale/vi/LC_MESSAGES/
++usr/share/locale/vi/LC_MESSAGES/dialog.mo
++usr/share/locale/wa/
++usr/share/locale/wa/LC_MESSAGES/
++usr/share/locale/wa/LC_MESSAGES/dialog.mo
++usr/share/locale/zh_CN/
++usr/share/locale/zh_CN/LC_MESSAGES/
++usr/share/locale/zh_CN/LC_MESSAGES/dialog.mo
++usr/share/locale/zh_TW/
++usr/share/locale/zh_TW/LC_MESSAGES/
++usr/share/locale/zh_TW/LC_MESSAGES/dialog.mo
++
++Slackware package /tmp/dialog-1.3_20210117-x86_64-1.txz created.
++
