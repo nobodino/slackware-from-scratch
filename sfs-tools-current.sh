@@ -63,7 +63,7 @@ export SFS_TGT
 #*******************************************************************
 # set your own MAKEFLAGS
 #*******************************************************************
-export MAKEFLAGS='-j 8'
+export MAKEFLAGS='-j 9'
 #*******************************************************************
 export GREEN="\\033[1;32m"
 export NORMAL="\\033[0;39m"
@@ -104,6 +104,31 @@ echo_begin () {
         fi
     done
     echo -e "$RED" "You choose to build 'tools' for SFS." "$NORMAL"
+}
+
+ada_choice () {
+#*****************************
+	PS3="Your choice:"
+	echo
+	echo -e "$GREEN" "Do you want to build the tools with gnat ada: yes or no." "$NORMAL"
+	echo
+	select ada_enable in yes no
+	do
+		if [[ "$ada_enable" = "yes" ]]
+		then
+			echo
+			echo -e "$RED" "You decided to build the tools with gnat ada. It will be quiet long" "$NORMAL"
+			echo
+			break
+		elif [[ "$ada_enable" = "no" ]]
+		then
+			echo
+			echo -e "$RED" "You decided to build the tools without gnat ada." "$NORMAL"
+			echo -e "$YELLOW" "You may chose that option when building a minimal SFS system with no gnat compiler." "$NORMAL"
+			echo
+			break
+		fi
+	done
 }
 
 copy_src () {
@@ -171,10 +196,8 @@ copy_src () {
 	export AUTOMAKEVER=${VERSION:-$(echo automake-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/d/automake/automake-$AUTOMAKEVER.tar.xz $SRCDIR || exit 1
     cd $RDIR/d/make
-	export MAKEVER=${VERSION:-$(echo make-*.tar.?z2 | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
-    cp -v $RDIR/d/make/make-$MAKEVER.tar.bz2 $SRCDIR || exit 1
-    cp -v $RDIR/d/make/make.glibc-2.27.glob.diff.gz $SRCDIR || exit 1
-    cp -v $RDIR/d/make/b552b05251980f693c729e251f93f5225b400714.patch.gz $SRCDIR || exit 1
+	export MAKEVER=${VERSION:-$(echo make-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
+    cp -v $RDIR/d/make/make-$MAKEVER.tar.?z $SRCDIR || exit 1
     cd $RDIR/l/libmpc
 	export LIBMPCVER=${VERSION:-$(echo libpmc-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/l/libmpc/mpc-$LIBMPCVER.tar.lz $SRCDIR || exit 1
@@ -216,21 +239,26 @@ copy_src () {
     cd $RDIR/l/zstd
 	export ZSTDVER=${VERSION:-$(echo zstd-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/l/zstd/zstd-$ZSTDVER.tar.?z $SRCDIR || exit 1
-	case $(uname -m) in
-		i686 ) 
-			if [ -f $RDIR/others/gnat-gpl-2014-x86-linux-bin.tar.gz ]; then
-				cd $RDIR/others
-				cp -v $RDIR/others/gnat-gpl-2014-x86-linux-bin.tar.gz $SRCDIR || exit 1
-			fi
-			[ $? != 0 ] && exit 1 ;;
-		x86_64 )
-			if [ -f $RDIR/others/gnat-gpl-2017-x86_64-linux-bin.tar.gz ]; then
-				cd $RDIR/others 
-				cp -v $RDIR/others/gnat-gpl-2017-x86_64-linux-bin.tar.gz $SRCDIR || exit 1
-			fi
-			[ $? != 0 ] && exit 1 ;;
-	esac
-   
+	if [[ "$ada_enable" = "yes" ]]
+	then
+		case $(uname -m) in
+			i686 ) 
+				if [ -f $RDIR/others/gnat-gpl-2014-x86-linux-bin.tar.gz ]; then
+					cd $RDIR/others
+					cp -v $RDIR/others/gnat-gpl-2014-x86-linux-bin.tar.gz $SRCDIR || exit 1
+				fi
+				[ $? != 0 ] && exit 1 ;;
+			x86_64 )
+				if [ -f $RDIR/others/gnat-gpl-2017-x86_64-linux-bin.tar.gz ]; then
+					cd $RDIR/others 
+					cp -v $RDIR/others/gnat-gpl-2017-x86_64-linux-bin.tar.gz $SRCDIR || exit 1
+				fi
+				[ $? != 0 ] && exit 1 ;;
+		esac
+	elif [[ "$ada_enable" = "no" ]]
+	then
+		echo
+	fi
 }
 
 test_to_go () {
@@ -371,6 +399,9 @@ glibc_build () {
 
 		2.32 )
 			sed -e '1161 s|^|//|' -i libsanitizer/sanitizer_common/sanitizer_platform_limits_posix.cc ;;
+
+		2.33 )
+			echo ;;
 	esac
 
 	mkdir -v build && cd build
@@ -788,10 +819,7 @@ automake_build () {
 
 make_build () {
 #*****************************
-    tar xvf make-$MAKEVER.tar.bz2 && cd make-$MAKEVER
-
-	zcat ../make.glibc-2.27.glob.diff.gz | patch -p1 --verbose || exit 1
-	zcat ../b552b05251980f693c729e251f93f5225b400714.patch.gz | patch -p1 --verbose || exit 1
+    tar xvf make-$MAKEVER.tar.?z && cd make-$MAKEVER
 
     ./configure --prefix=/tools --without-guile || exit 1
 
@@ -984,20 +1012,28 @@ echo_end () {
 #*****************************
     echo "The building of tools for sfs is finished."
     echo
-    echo "Now you can 'exit' from 'sfs environment"
-    echo
-    echo "Just type:"
-	echo
-	echo -e "$GREEN" "exit" "$NORMAL"
-	echo
-    echo "then type:"
-	echo
-	echo -e "$GREEN" "cd gcc*/build && make install 2>&1 | tee > /dev/null" "$NORMAL"
-	echo
-    echo "then type:"
-	echo
-	echo -e "$GREEN" "cd ../.. && rm -rf gcc*" "$NORMAL"
-	echo
+	if [[ "$ada_enable" = "yes" ]]
+		then
+		echo "Now you can 'exit' from 'sfs environment"
+		echo
+		echo "Just type:"
+		echo
+		echo -e "$GREEN" "exit" "$NORMAL"
+		echo
+		echo "then type:"
+		echo
+		echo -e "$GREEN" "cd gcc*/build && make install 2>&1 | tee > /dev/null" "$NORMAL"
+		echo
+		echo "then type:"
+		echo
+		echo -e "$GREEN" "cd ../.. && rm -rf gcc*" "$NORMAL"
+		echo
+	elif [[ "$ada_enable" = "no" ]]
+		then
+			echo "Just type:"
+			echo
+			echo -e "$GREEN" "exit" "$NORMAL"
+	fi
     echo "then type:"
 	echo
 	echo -e "$GREEN" "./chroot_sfs.sh" "$NORMAL"
@@ -1008,8 +1044,8 @@ echo_end () {
 #*****************************
 # core script
 #*****************************
-
 echo_begin
+ada_choice
 copy_src
 test_to_go
 cd $SRCDIR
@@ -1050,39 +1086,46 @@ which_build
 util_linux_build
 zstd_build
 #*****************************
-case $(uname -m) in
-	x86_64)
-		tar xf gnat-gpl-2017-x86_64-linux-bin.tar.gz
-		if [ $? != 0 ]; then
-			echo
-			echo "Tar extraction of gnat-gpl-2017-x86_64-linux-bin failed."
-			echo
-		exit 1
-		fi
-		# Now prepare the environment
-		cd gnat-gpl-2017-x86_64-linux-bin
+if [[ "$ada_enable" = "yes" ]]
+then
+	case $(uname -m) in
+		x86_64)
+			tar xf gnat-gpl-2017-x86_64-linux-bin.tar.gz
+			if [ $? != 0 ]; then
+				echo
+				echo "Tar extraction of gnat-gpl-2017-x86_64-linux-bin failed."
+				echo
+			exit 1
+			fi
+			# Now prepare the environment
+			cd gnat-gpl-2017-x86_64-linux-bin
 
-		[ $? != 0 ] && exit 1 ;;
-	i686)
-		tar xf gnat-gpl-2014-x86-linux-bin.tar.gz
-		if [ $? != 0 ]; then
-			echo
-			echo "Tar extraction of gnat-gpl-2014-x86-linux-bin failed."
-			echo
-		exit 1
-		fi
-		# Now prepare the environment
-		cd gnat-gpl-2014-x86-linux-bin
-		[ $? != 0 ] && exit 1 ;;
-esac
-mkdir -pv /tools/opt/gnat
-make ins-all prefix=/tools/opt/gnat
-PATH_HOLD=$PATH && export PATH=/tools/opt/gnat/bin:$PATH_HOLD
-echo $PATH
-find /tools/opt/gnat -name ld -exec mv -v {} {}.old \;
-find /tools/opt/gnat -name ld -exec as -v {} {}.old \;
+			[ $? != 0 ] && exit 1 ;;
+		i686)
+			tar xf gnat-gpl-2014-x86-linux-bin.tar.gz
+			if [ $? != 0 ]; then
+				echo
+				echo "Tar extraction of gnat-gpl-2014-x86-linux-bin failed."
+				echo
+			exit 1
+			fi
+			# Now prepare the environment
+			cd gnat-gpl-2014-x86-linux-bin
+			[ $? != 0 ] && exit 1 ;;
+	esac
+	mkdir -pv /tools/opt/gnat
+	make ins-all prefix=/tools/opt/gnat
+	PATH_HOLD=$PATH && export PATH=/tools/opt/gnat/bin:$PATH_HOLD
+	echo $PATH
+	find /tools/opt/gnat -name ld -exec mv -v {} {}.old \;
+	find /tools/opt/gnat -name ld -exec as -v {} {}.old \;
+	gnat_build_sp2
+elif [[ "$ada_enable" = "no" ]]
+ then
+	echo
+	break
+fi
 #*****************************
-gnat_build_sp2
 strip_libs
 clean_sources
 echo_end

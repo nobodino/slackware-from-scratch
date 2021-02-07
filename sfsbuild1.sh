@@ -74,7 +74,7 @@ adjust_i686 () {
 # link to its counterpart in /tools/$(gcc -dumpmachine)/bin:
 #
 # Note: Much of this script is copied from the LFS manual.
-#       Copyright © 1999-2018 Gerard Beekmans and may be
+#       Copyright © 1999-2021 Gerard Beekmans and may be
 #       copied under the MIT License.
 #***********************************************************
 mv -v /tools/bin/{ld,ld-old}
@@ -102,7 +102,7 @@ adjust_x86_64 () {
 # link to its counterpart in /tools/$(gcc -dumpmachine)/bin:
 #
 # Note: Much of this script is copied from the LFS manual.
-#       Copyright © 1999-2018 Gerard Beekmans and may be
+#       Copyright © 1999-2021 Gerard Beekmans and may be
 #       copied under the MIT License.
 #***********************************************************
 mv -v /tools/bin/{ld,ld-old}
@@ -568,7 +568,7 @@ kernel_build_all () {
 #***********************************************************
 cd /slacksrc/k
 
-./build-all-kernels.sh || exit 1
+chmod +x *.sh *.SlackBuild && ./build-all-kernels.sh || exit 1
 
 case $(uname -m) in
 	x86_64 )
@@ -619,6 +619,10 @@ case $PACKNAME in
 		# two packages in gettext: gettext and gettext-tools
 		DIRNAME=gettext
 		cd /slacksrc/$SRCDIR/$DIRNAME && chmod +x $PACKNAME.SlackBuild && ./$PACKNAME.SlackBuild
+		[ $? != 0 ] && exit 1 ;;
+
+	installer )
+		cd /slacksrc/installer && chmod +x installer.SlackBuild && ./installer.SlackBuild
 		[ $? != 0 ] && exit 1 ;;
 
 	java )
@@ -702,6 +706,11 @@ case $PACKNAME in
 #		$INSTALLPRG /tmp/glibc-2*.t?z
 #		cd /sources ;;
 
+	installer )
+		# doesn't neeed any install
+		echo
+		[ $? != 0 ] && exit 1 ;;
+
 	java )
 		# install java
 		$INSTALLPRG /tmp/j*.txz
@@ -750,6 +759,11 @@ case $PACKNAME in
 		# don't forget to mv gettext-tools in d/
 		cd /tmp
 		mv /tmp/$PACKNAME*.t?z /sfspacks/d/
+		cd /sources ;;
+
+	installer )
+		# only move the package to installer directory
+		mv /tmp/installer*.txz /sfspacks/installer
 		cd /sources ;;
 
 	java )
@@ -944,12 +958,12 @@ echo
 echo "You can also do it with only one script, by executing the"
 echo "following command, there will be 4 steps:"
 echo
-echo -e "$YELLOW" "time (./sfsbuild1.sh build1_s.list)" "$NORMAL"
+echo -e "$YELLOW" "time ./sfsbuild1.sh build1_s.list" "$NORMAL"
 echo
 echo "Either, you can also do it in one step, by executing the"
 echo "following command, it will build the entire system till the end:"
 echo
-echo -e "$YELLOW" "time (./full-sfs.sh)" "$NORMAL"
+echo -e "$YELLOW" "time ./full-sfs.sh" "$NORMAL"
 }
 
 test_arch () {
@@ -1131,7 +1145,7 @@ link_tools () {
 # pkgtools building, which is not in LFS of course.
 #
 # Note: Much of this script is copied from the LFS manual.
-#       Copyright © 1999-2020 Gerard Beekmans and may be
+#       Copyright © 1999-2021 Gerard Beekmans and may be
 #       copied under the MIT License.
 #****************************************************************
 mkdir -pv /usr/lib && mkdir -v /bin && mkdir -pv /usr/include
@@ -1157,7 +1171,7 @@ link_tools_x64 () {
 # pkgtools building, which is not in LFS of course.
 #
 # Note: Much of this script is copied from the LFS manual.
-#       Copyright © 1999-2020 Gerard Beekmans and may be
+#       Copyright © 1999-2021 Gerard Beekmans and may be
 #       copied under the MIT License.
 #****************************************************************
 mkdir -pv /usr/lib64 && mkdir -v /bin && mkdir -pv /usr/include
@@ -2310,7 +2324,7 @@ echo -e "$RED" "Or if you want to go on building slackware from scratch" "$NORMA
 echo
 echo "Just execute the following command:"
 echo
-echo -e "$YELLOW" "time (./sfsbuild1.sh build2_s.list)" "$NORMAL"
+echo -e "$YELLOW" "time ./sfsbuild1.sh build2_s.list" "$NORMAL"
 echo
 echo "After that, you should have an X11 system with blackbox."
 echo
@@ -2343,7 +2357,7 @@ echo -e "$RED" "Or if you want to go on building slackware from scratch" "$NORMA
 echo
 echo "Just execute the following command:"
 echo
-echo -e "$YELLOW" "time (./sfsbuild1.sh build3_s.list)" "$NORMAL"
+echo -e "$YELLOW" "time ./sfsbuild1.sh build3_s.list" "$NORMAL"
 echo
 echo "After that you should have an X11 system with xfce."
 echo
@@ -2375,7 +2389,7 @@ echo -e "$RED" "Or if you want to go on building slackware from scratch" "$NORMA
 echo
 echo "Just execute the following command:"
 echo
-echo -e "$YELLOW"  "time (./sfsbuild1.sh build4_s.list)" "$NORMAL"
+echo -e "$YELLOW"  "time ./sfsbuild1.sh build4_s.list" "$NORMAL"
 echo
 echo "After that you should have a complete Slackware system"
 echo
@@ -2428,7 +2442,7 @@ define_path_lib
 # Ensure that the /sfspacks/$SAVDIRs exists.
 #****************************************************************
 distribution="slackware"
-mkdir -pv /sfspacks/{others,a,ap,d,e,extra,f,k,kde,l,n,t,tcl,x,xap,xfce,y}
+mkdir -pv /sfspacks/{others,a,ap,d,e,extra,f,installer,k,kde,l,n,t,tcl,x,xap,xfce,y}
 #******************************************************************
 # Some packages need two pass to be built completely.
 # Alteration of the slackware sources is made "on the fly" during
@@ -2770,6 +2784,10 @@ while (( LINE < $FILELEN )); do
 							[ $? != 0 ] && exit 1 ;;
 					esac
 					continue ;;
+
+				installer )
+					build $SRCDIR $PACKNAME
+					[ $? != 0 ] && exit 1 ;;
 
 				isapnptools )
 					case $ARCH in

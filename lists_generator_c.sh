@@ -41,6 +41,14 @@ lists_generator_c () {
 	generate_slackware_build_list4_c
 }
 
+test_gnat () {
+#******************************************
+# test the existence of gnat in tools
+# if not, modify build1_s.list to take of
+#******************************************
+(! /tools/bin/gnat) 2> /dev/null && sed -i -e 's/# d/d/g' build1_s.list
+}
+
 generate_slackware_link_build_list () {
 cat > $SFS/sources/link.list << "EOF"
 a link_tools_slackware
@@ -269,6 +277,7 @@ n lynx
 n nss-pam-ldapd
 n pam-krb5
 a elogind
+installer installer
 a end1
 EOF
 }
@@ -1373,7 +1382,6 @@ a end4
 EOF
 }
 
-
 #************************************************************************
 #************************************************************************
 # MAIN CORE SCRIPT
@@ -1381,3 +1389,4 @@ EOF
 #************************************************************************
 
 lists_generator_c
+test_gnat

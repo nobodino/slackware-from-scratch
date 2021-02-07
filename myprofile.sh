@@ -43,7 +43,7 @@ generate_etc_fstab () {
 mkdir -pv $SFS/etc
 cat > $SFS/etc/fstab << "EOF"
 /dev/sdc2        swap             swap        defaults         0   0
-/dev/sdc12       /                ext4        defaults,noatime,discard  	   1   1
+/dev/sdc13       /                ext4        defaults,noatime,discard  	   1   1
 /dev/fd0         /mnt/floppy      auto        noauto,owner     0   0
 devpts           /dev/pts         devpts      gid=5,mode=620   0   0
 proc             /proc            proc        defaults         0   0
@@ -128,6 +128,7 @@ cat > /root/.profile << "EOF"
 #!/bin/sh
 setxkbmap -model pc104 -layout fr
 TZ='Europe/Paris' ; export TZ
+export TERM=xterm
 EOF
 }
 

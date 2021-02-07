@@ -91,20 +91,16 @@ EOF
 source_bash_profile () {
 #*****************************
 echo
-echo "By now, you have to enter 'sfs' environment."
+echo "By now, you're in the 'sfs' environment."
 echo
-echo "Execute the 3 following commands:"
-echo
-echo -e "$YELLOW" "su - sfs" "$NORMAL"
-echo
-echo "then:"
+echo "Execute the 2 following commands:"
 echo
 echo -e "$YELLOW" "cd $SFS/sources  && source ~/.bash_profile" "$NORMAL"
 echo 
-echo "and to finish:"
+echo "and then:"
 echo 
 echo -e "$YELLOW"  "./sfs-tools-current.sh"  "$NORMAL"
-echo
+echo && su - sfs
 }
 
 tools_test () {
