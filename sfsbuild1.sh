@@ -700,7 +700,7 @@ case $PACKNAME in
 
 #	glibc )
 #		# install glibc in the right order in case upgrading
-#		$INSTALLPRG /tmp/glibc-solibs*.t?z
+#		$INSTALLPRG /tmp/aaa_glibc-solibs*.t?z
 #		$INSTALLPRG /tmp/glibc-profile*.t?z
 #		$INSTALLPRG /tmp/glibc-i18n*.t?z
 #		$INSTALLPRG /tmp/glibc-2*.t?z
@@ -775,7 +775,7 @@ case $PACKNAME in
 	glibc )
 		cd /tmp
 		# don't forget to mv glibc-solibs in a/
-		mv glibc-solibs*.t?z /sfspacks/a/
+		mv aaa_glibc-solibs*.t?z /sfspacks/a/
 		mv glibc*.t?z /sfspacks/$SRCDIR
 		rm -rf /tmp/*
 		cd /sources ;;
@@ -1184,10 +1184,10 @@ ln -sv bash /bin/sh
 ln -sv /proc/self/mounts /etc/mtab
 }
 
-pre_elflibs_c () {
+pre_aaa_libraries_c () {
 #******************************************************************
-# Install packages from slackware-14.2 to be able
-# to build aaa_alflibs
+# Install packages from previous slackware to be able
+# to build aaa_libraries
 #******************************************************************
 cd /slacksrc/others
 installpkg cxxlibs-6.0.18-i486-1.txz
@@ -1202,10 +1202,10 @@ installpkg /sfspacks/l/libpng-1.6.*.txz
 cd /sources
 }
 
-pre_elflibs64_c () {
+pre_aaa_libraries64_c () {
 #******************************************************************
-# Install packages from slackware-14.2 to be able
-# to build aaa_alflibs
+# Install packages from previous slackware to be able
+# to build aaa_libraries
 #******************************************************************
 cd /slacksrc/others
 installpkg cxxlibs-6.0.18-x86_64-1.txz
@@ -1220,10 +1220,10 @@ installpkg /sfspacks/l/libpng-1.6.*-x86_64*.txz
 cd /sources
 }
 
-post_elflibs_c () {
+post_aaa_libraries_c () {
 #******************************************************************
 # Remove packages temporary installed after
-# aaa_elflibs has been built and installed
+# aaa_libraries has been built and installed
 #******************************************************************
 removepkg cxxlibs-6.0.18-i486-1.txz readline-6.3-i586-2 ncurses-5.9-i486-4
 removepkg gmp-5.1.3-i486-1  libtermcap-1.2.3-i486-7 libpng-1.4.12-i486-1.txz
@@ -1234,10 +1234,10 @@ upgradepkg --reinstall /sfspacks/l/readline-8.0.*.txz
 cd /sources
 }
 
-post_elflibs64_c () {
+post_aaa_libraries64_c () {
 #******************************************************************
 # Remove packages temporary installed after
-# aaa_elflibs has been built and installed
+# aaa_libraries has been built and installed
 #******************************************************************
 removepkg cxxlibs-6.0.18-x86_64-1.txz readline-6.3-x86_64-2 ncurses-5.9-x86_64-4
 removepkg gmp-5.1.3-x86_64-1 libtermcap-1.2.3-x86_64-7 libpng-1.4.12-x86_64-1.txz
@@ -1253,7 +1253,7 @@ pre_gcc () {
 # Install gnat-gpl to be able to build gnat-ada package
 #
 # Note: Much of this script is copied from the LFS manual.
-#       Copyright © 1999-2020 Gerard Beekmans and may be
+#       Copyright © 1999-2021 Gerard Beekmans and may be
 #       copied under the MIT License.
 #******************************************************************
 cd /tmp
@@ -3017,24 +3017,24 @@ while (( LINE < $FILELEN )); do
 					esac
 					continue ;;
 
-				pre-elflibs )
+				pre-aaa_libraries )
 					case $ARCH in
 						x86_64 )
-							pre_elflibs64_c
+							pre_aaa_libraries64_c
 							[ $? != 0 ] && exit 1 ;;
 						* )
-							pre_elflibs_c
+							pre_aaa_libraries_c
 							[ $? != 0 ] && exit 1 ;;
 					esac
 					continue ;;
 
-				post-elflibs )
+				post-aaa_libraries )
 					case $ARCH in
 						x86_64 )
-							post_elflibs64_c
+							post_aaa_libraries64_c
 							[ $? != 0 ] && exit 1 ;;
 						* )
-							post_elflibs_c
+							post_aaa_libraries_c
 							[ $? != 0 ] && exit 1 ;;
 					esac
 					continue ;;
