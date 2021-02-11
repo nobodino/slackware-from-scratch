@@ -25,7 +25,7 @@ cd $(dirname $0) ; CWD=$(pwd)
 PKGNAM=glibc
 VERSION=${VERSION:-$(echo glibc-*.tar.xz | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
 CHECKOUT=${CHECKOUT:-""}
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-1_testing}
 
 # I was considering disabling NSCD, but MoZes talked me out of it.  :)
 #DISABLE_NSCD=" --disable-nscd "
@@ -48,7 +48,7 @@ if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
   echo "glibc-$VERSION-$ARCH-$BUILD.txz"
   echo "glibc-i18n-$VERSION-$ARCH-$BUILD.txz"
   echo "glibc-profile-$VERSION-$ARCH-$BUILD.txz"
-  echo "glibc-solibs-$VERSION-$ARCH-$BUILD.txz"
+  echo "aaa_glibc-solibs-$VERSION-$ARCH-$BUILD.txz"
   exit 0
 fi
 
@@ -164,7 +164,7 @@ apply_patches() {
 # This is going to be the initial $DESTDIR:
 export PKG=$TMP/package-glibc-incoming-tree
 PGLIBC=$TMP/package-glibc
-PSOLIBS=$TMP/package-glibc-solibs
+PSOLIBS=$TMP/package-aaa_glibc-solibs
 PI18N=$TMP/package-glibc-i18n
 PPROFILE=$TMP/package-glibc-profile
 PDEBUG=$TMP/package-glibc-debug
@@ -223,7 +223,16 @@ mkdir build-glibc-$VERSION
 cd build-glibc-$VERSION || exit 1
 
 echo "BUILDING DAS NPTL GLIBC"
-CFLAGS="-g $OPTIMIZ" \
+# We are setting the variable below so that x86 ISA level is not included
+# in shared libraries. Without this, glibc compiled with -march= may not
+# run on some CPUs that it should be able to support. Needed for glibc-2.33.
+# FIXME: revisit this with future glibc releases!
+# CFLAGS="-g $OPTIMIZ" \
+# replace CFLAGS by those from clearlinux
+libc_cv_include_x86_isa_level=no \
+CFLAGS="-O3 -march=skylake -mtune=skylake -g2 -m64  -Wl,-z,max-page-size=0x1000 -fPIC " \
+ASFLAGS="-D__AVX__=1 -D__AVX2__=1 -msse2avx -D__FMA__=1" \
+LDFLAGS="-Wl,-z,max-page-size=0x1000 " \
 ../configure \
   --prefix=/usr \
   --libdir=/usr/lib${LIBDIRSUFFIX} \
@@ -388,7 +397,7 @@ mkdir install
 cp -a $CWD/slack-desc.glibc-i18n install/slack-desc
 makepkg -l y -c n $TMP/glibc-i18n-$VERSION-$SLACKWARE_ARCH-$BUILD.txz
 
-# glibc-solibs:
+# aaa_glibc-solibs:
 cd $PSOLIBS
 mkdir -p etc/profile.d
 cp -a $CWD/profile.d/* etc/profile.d
@@ -418,8 +427,8 @@ mv sbin/ldconfig .
 rm sbin/*
 mv ldconfig sbin
 mkdir install
-cp -a $CWD/slack-desc.glibc-solibs install/slack-desc
-cp -a $CWD/doinst.sh-glibc-solibs install/doinst.sh
+cp -a $CWD/slack-desc.aaa_glibc-solibs install/slack-desc
+cp -a $CWD/doinst.sh-aaa_glibc-solibs install/doinst.sh
 # Fix specific versioning for the symlink creation script. This part of the
 # script would only be used in the case where there is no ldconfig on the
 # running system that's used to install the package. That should never be the
@@ -430,7 +439,7 @@ fix_doinst
 # Only scrub the links in /lib{,64} that will be created by ldconfig:
 find lib${LIBDIRSUFFIX} -type l -exec rm {} \+
 # Build the package:
-makepkg -l y -c n $TMP/glibc-solibs-$VERSION-$SLACKWARE_ARCH-$BUILD.txz
+makepkg -l y -c n $TMP/aaa_glibc-solibs-$VERSION-$SLACKWARE_ARCH-$BUILD.txz
 
 # And finally, the complete "all-in-one" glibc package is created
 # from whatever was leftover:
