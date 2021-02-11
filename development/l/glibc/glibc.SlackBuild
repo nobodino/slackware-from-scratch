@@ -223,11 +223,7 @@ mkdir build-glibc-$VERSION
 cd build-glibc-$VERSION || exit 1
 
 echo "BUILDING DAS NPTL GLIBC"
-# CFLAGS="-g $OPTIMIZ" \
-# replace CFLAGS by those from clearlinux
-CFLAGS="-O3 -march=skylake -mtune=skylake -g2 -m64  -Wl,-z,max-page-size=0x1000 -fPIC " \
-ASFLAGS="-D__AVX__=1 -D__AVX2__=1 -msse2avx -D__FMA__=1" \
-LDFLAGS="-Wl,-z,max-page-size=0x1000 " \
+CFLAGS="-g $OPTIMIZ" \
 ../configure \
   --prefix=/usr \
   --libdir=/usr/lib${LIBDIRSUFFIX} \
