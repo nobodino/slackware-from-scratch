@@ -69,16 +69,50 @@ k kernel-source
 d kernel-headers
 d python2
 d bison
-l glibc
-a adjust
+# l glibc
+d autoconf
+d automake
+a infozip
+a sed
+d pkg-config
+l zlib
+d help2man
+d libtool
+d flex
+others musl
+a adjust1
 # a test-glibc
 l zlib
 d bison
 d help2man
 a lzip
-d flex
+# d flex
+# d binutils
+# d libtool
+l gmp
+l isl
+l mpfr
+l libmpc
+# l gmp
+# a infozip
+l expat
+d python2
+d python3
+l gc
+d autoconf
+d automake
+d patchelf
+a xz
+l lz4
+l zstd
+# others musl
+# a adjust
+# d pre-gcc
+d gcc
+# d post-gcc
 d binutils
-d libtool
+others musl
+d gcc
 l gmp
 l isl
 l mpfr
@@ -94,11 +128,27 @@ d patchelf
 a xz
 l lz4
 l zstd
-# d pre-gcc
-d gcc
-# d post-gcc
-a bzip2
+a findutils
+a pkgtools
+a aaa_base
+a etc
+a sed
+a coreutils
+n rsync
+d python2
+d bison
+# l glibc
+d autoconf
+d automake
+a infozip
+a sed
 d pkg-config
+l zlib
+d help2man
+d libtool
+d flex
+a bzip2
+# d pkg-config
 l ncurses
 a attr
 a acl
@@ -116,8 +166,8 @@ l gdbm
 d gperf
 n openssl
 a kmod
-a gettext
-a gettext-tools
+others gettext-tiny
+# a gettext-tools
 l libssh2
 n curl
 l elfutils
@@ -184,7 +234,7 @@ n libnftnl
 n iptables
 n iproute2
 a hostname
-a kbd
+others kbd
 l libunistring
 l gc
 l gmp
@@ -277,7 +327,7 @@ n lynx
 n nss-pam-ldapd
 n pam-krb5
 a elogind
-installer installer
+# installer installer
 a end1
 EOF
 }

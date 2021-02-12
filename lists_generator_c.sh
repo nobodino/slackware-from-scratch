@@ -277,7 +277,7 @@ n lynx
 n nss-pam-ldapd
 n pam-krb5
 a elogind
-installer installer
+# installer installer
 a end1
 EOF
 }

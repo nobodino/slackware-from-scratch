@@ -266,6 +266,8 @@ copy_src () {
     cd $RDIR/l/zstd
 	export ZSTDVER=${VERSION:-$(echo zstd-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/l/zstd/zstd-$ZSTDVER.tar.?z $SRCDIR || exit 1
+	# copy patch from void to build mlfs
+	cp -v $RDIR/others/musl_patch_void/*.patch $SRCDIR || exit 1
 	if [[ "$ada_enable" = "yes" ]]
 	then
 		case $(uname -m) in
