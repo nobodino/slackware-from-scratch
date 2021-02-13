@@ -823,32 +823,35 @@ ncurses_build () {
     make || exit 1
     make install || exit 1
     ln -s libncursesw.so /mnt/mlfs/tools/lib/libncurses.so
-	cd /mnt/mlfs/sources
+	cd ..
     rm -rf ncurses-$NCURVER
 	echo ncurses-$NCURVER >> $MLFS/tools/etc/tools_version
 }
 
 generate_bash_config () {
 #*****************************
-	cat > config.cache << "EOF"
-	ac_cv_func_mmap_fixed_mapped=yes
-	ac_cv_func_strcoll_works=yes
-	ac_cv_func_working_mktime=yes
-	bash_cv_func_sigsetjmp=present
-	bash_cv_getcwd_malloc=yes
-	bash_cv_job_control_missing=present
-	bash_cv_printf_a_format=yes
-	bash_cv_sys_named_pipes=present
-	bash_cv_ulimit_maxfds=yes
-	bash_cv_under_sys_siglist=yes
-	bash_cv_unusable_rtsigs=no
-	gt_cv_int_divbyzero_sigfpe=yes
-	EOF
+cat > config.cache << "EOF"
+ac_cv_func_mmap_fixed_mapped=yes
+ac_cv_func_strcoll_works=yes
+ac_cv_func_working_mktime=yes
+bash_cv_func_sigsetjmp=present
+bash_cv_getcwd_malloc=yes
+bash_cv_job_control_missing=present
+bash_cv_printf_a_format=yes
+bash_cv_sys_named_pipes=present
+bash_cv_ulimit_maxfds=yes
+bash_cv_under_sys_siglist=yes
+bash_cv_unusable_rtsigs=no
+gt_cv_int_divbyzero_sigfpe=yes
+EOF
 }
 
 bash_build () {
 #*****************************
-    tar xvf bash-$BASHVER.tar.?z && cd bash-$BASHVER
+    tar xvf bash-$BASHVER.tar.?z && cd bash-$BASHVER || exit 1
+
+	# fix a race condition if using multiple cores: 
+	sed -i  '/^bashline.o:.*shmbchar.h/a bashline.o: ${DEFDIR}/builtext.h' Makefile.in
 
 	# Cross Compiling the configure script 
 	# does not does not determine the correct 
@@ -856,11 +859,10 @@ bash_build () {
 	# manually: 
 	generate_bash_config
 
-	./configure \
+	./configure --build=${MLFS_HOST} \
+        --host=${MLFS_TARGET} \
 		--prefix=/tools \
         --without-bash-malloc \
-        --build=${MLFS_HOST} \
-        --host=${MLFS_TARGET} \
         --cache-file=config.cache || exit 1
 
     make || exit 1
@@ -1149,6 +1151,17 @@ bison_build () {
 bzip2_build () {
 #*****************************
     tar xvf bzip2-$BZIP2VER.tar.lz && cd bzip2-$BZIP2VER
+
+	# Set the environment to cross-compile with cross-tools
+	export CC="${MLFS_TARGET}-gcc"
+	export CXX="${MLFS_TARGET}-g++"
+	export AR="${MLFS_TARGET}-ar"
+	export AS="${MLFS_TARGET}-as"
+	export RANLIB="${MLFS_TARGET}-ranlib"
+	export LD="${MLFS_TARGET}-ld"
+	export STRIP="${MLFS_TARGET}-strip"
+
+	PATH=/cross-tools/bin:tools/bin:/bin:/usr/bin
 
 	# Fix the Makefiles for  ensures installation of symbolic 
 	# links are relative and the man pages are installed into 
@@ -1648,7 +1661,7 @@ strip_libs () {
 clean_sources () {
 #*****************************
 echo "clean sources packages"
-rm *.xz *.lz *.bz2 *.gz
+rm *.xz *.lz *.bz2 *.gz *.patch
 }
 
 echo_end () {
