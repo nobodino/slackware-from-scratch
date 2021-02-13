@@ -655,6 +655,9 @@ bash_build () {
 #*****************************
     tar xvf bash-$BASHVER.tar.?z && cd bash-$BASHVER
 
+	# fix a race condition if using multiple cores: 
+	sed -i  '/^bashline.o:.*shmbchar.h/a bashline.o: ${DEFDIR}/builtext.h' Makefile.in
+
     ./configure --prefix=/tools --without-bash-malloc  || exit 1
 
     make || exit 1
