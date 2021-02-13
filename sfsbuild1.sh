@@ -544,9 +544,11 @@ kernel_source_build_c () {
 #********************************************************
 cd /slacksrc/k
 cp -v kernel-source.SlackBuild kernel-source.SlackBuild.old
-sed -i -e '52,89d;109,111d;138,163d' kernel-source.SlackBuild && ./kernel-source.SlackBuild 
-upgradepkg --install-new --reinstall /tmp/kernel-source*.txz && mv -v /tmp/kernel-source*.txz /sfspacks/k
-rm -rf /tmp/package-kernel-source/
+sed -i -e '52,89d;109,111d;138,163d' kernel-source.SlackBuild
+./kernel-source.SlackBuild || exit 1 
+upgradepkg --install-new --reinstall /tmp/kernel-source*.txz || exit 1  
+mv -v /tmp/kernel-source*.txz /sfspacks/k || exit 1 
+rm -rf /tmp/package-kernel-source/ || exit 1 
 mv kernel-source.SlackBuild.old kernel-source.SlackBuild
 }
 
@@ -556,9 +558,11 @@ kernel_headers_build_c () {
 #********************************************************
 cd /slacksrc/k
 cp -v kernel-headers.SlackBuild kernel-headers.SlackBuild.old
-sed -i -e '45,47d;57,64d' kernel-headers.SlackBuild && ./kernel-headers.SlackBuild 
-upgradepkg --install-new --reinstall /tmp/kernel-headers*.txz && mv -v /tmp/kernel-headers*.txz /sfspacks/d
-rm -rf /tmp/package-kernel-headers/
+sed -i -e '45,47d;57,64d' kernel-headers.SlackBuild 
+./kernel-headers.SlackBuild || exit 1 
+upgradepkg --install-new --reinstall /tmp/kernel-headers*.txz || exit 1  
+mv -v /tmp/kernel-headers*.txz /sfspacks/d || exit 1 
+rm -rf /tmp/package-kernel-headers/ || exit 1 
 mv kernel-headers.SlackBuild.old kernel-headers.SlackBuild
 }
 
@@ -622,6 +626,14 @@ case $PACKNAME in
 		[ $? != 0 ] && exit 1 ;;
 
 	installer )
+		case "$(uname -m)" in
+			i?86)
+			  mkdir -pv /root/slackware-current
+			  [ $? != 0 ] && exit 1 ;;
+			x86_64)
+			  mkdir -pv /root/slackware64-current}
+			  [ $? != 0 ] && exit 1 ;;
+		esac
 		cd /slacksrc/installer && chmod +x installer.SlackBuild && ./installer.SlackBuild
 		[ $? != 0 ] && exit 1 ;;
 
@@ -701,9 +713,9 @@ case $PACKNAME in
 #	glibc )
 #		# install glibc in the right order in case upgrading
 #		$INSTALLPRG /tmp/aaa_glibc-solibs*.t?z
+#		$INSTALLPRG /tmp/glibc-2*.t?z
 #		$INSTALLPRG /tmp/glibc-profile*.t?z
 #		$INSTALLPRG /tmp/glibc-i18n*.t?z
-#		$INSTALLPRG /tmp/glibc-2*.t?z
 #		cd /sources ;;
 
 	installer )
