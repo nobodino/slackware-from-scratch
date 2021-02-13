@@ -102,10 +102,10 @@ echo
 
 dev_selector () {
 #**********************************
-# -current or -dev selector
+# -currentv -development or -musl selector
 #**********************************
 PS3="Your choice:"
-select dev_select in current development quit
+select dev_select in current development musl quit
 do
 	if [[ "$dev_select" = "current" ]]; then
 		if [[ "$build_arch" = "x86" ]]; then
@@ -134,6 +134,23 @@ do
 			break
 		elif [[ "$build_arch" = "x86_64" ]]; then
 			tools_dir='tools_64_dev'
+			export $tools_dir && echo $tools_dir
+			echo
+			echo -e "$BLUE" "You chose $tools_dir" "$NORMAL"
+			echo
+			break
+		fi
+		break
+	elif [[ "$dev_select" = "musl" ]]; then
+		if [[ "$build_arch" = "x86" ]]; then
+			tools_dir='tools_musl'
+			export $tools_dir && echo $tools_dir
+			echo
+			echo -e "$BLUE" "You chose $tools_dir" "$NORMAL"
+			echo
+			break
+		elif [[ "$build_arch" = "x86_64" ]]; then
+			tools_dir='tools_64_musl'
 			export $tools_dir && echo $tools_dir
 			echo
 			echo -e "$BLUE" "You chose $tools_dir" "$NORMAL"
@@ -301,6 +318,14 @@ if [[ "$dev_select" = "current" ]]; then
 #		fi
 		cp -r --preserve=timestamps $MLFS/slacksrc/development/* $MLFS/slacksrc
 #		rm -rf $MLFS/slacksrc/development
+	elif [[ "$dev_select" = "musl" ]]; then
+		echo "You chose the -musl branch of slackware to build MLFS."
+		echo
+		rm -rf $MLFS/slacksrc/musl && mkdir $MLFS/slacksrc/musl
+		svn checkout $DLDIR13/musl $MLFS/slacksrc/musl > /dev/null 2>&1
+		rm -rf $MLFS/slacksrc/musl/.svn
+#		cp -r --preserve=timestamps $MLFS/slacksrc/musl/* $MLFS/slacksrc
+#		rm -rf $MLFS/slacksrc/musl
 
 fi
 
@@ -393,12 +418,8 @@ if [[ "$build_arch" = "x86" ]]
 #		cp -v jre-$JDK-linux-i586.tar.gz $SRCDIR/extra/java
 		cd $SRCDIR/d/rust && sed -i -e '1,22d' rust.url && sed -i -e '9,14d' rust.url && source rust.url
 		cd $SRCDIR/others
-		if [ ! -f readline-7.0.005-i586-1.txz ]; then
-			wget -c -v $DLDIR12/readline-7.0.005-i586-1.txz
-		fi
-		if [ ! -f libffi-3.2.1-i586-2.txz ]; then
-			wget -c -v $DLDIR12/libffi-3.2.1-i586-2.txz
-		fi
+		# download the missing aaa_libraries packages
+		svn checkout $DLDIR12
 	elif [[ "$build_arch" = "x86_64" ]]
 	then
 		mkdir $SRCDIR/others > /dev/null 2>&1
@@ -439,14 +460,9 @@ if [[ "$build_arch" = "x86" ]]
 #		cp -rv jre-$JDK-linux-x64.tar.gz $SRCDIR/extra/java
 		cd $SRCDIR/d/rust && sed -i -e '1,22d' rust.url && sed -i -e '4,9d' rust.url && source rust.url
 		cd $SRCDIR/others
-		if [ ! -f readline-7.0.005-x86_64-1.txz ]; then
-			wget -c -v $DLDIR12/readline-7.0.005-x86_64-1.txz
-		fi
-		if [ ! -f libffi-3.2.1-x86_64-2.txz ]; then
-			wget -c -v $DLDIR12/libffi-3.2.1-x86_64-2.txz
-		fi
+		# download the missing aaa_libraries packages
+		svn checkout $DLDIR12
 fi
-
 }
 
 etc_group () {
@@ -497,7 +513,7 @@ chmod 755 $MLFS/sbin/makepkg $MLFS/sbin/installpkg
 #**************************************
 test_root
 . export_variables.sh
-. export_variables_perso.sh
+. export_variables_perso_mlfs.sh
 distribution_selector
 arch_selector
 dev_selector

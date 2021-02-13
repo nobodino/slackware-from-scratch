@@ -300,7 +300,7 @@ if [[ "$dev_select" = "current" ]]; then
 #			cd $SFS/slacksrc/d/rust && lftpget https://static.rust-lang.org/dist/2020-12-31/rustc-1.49.0-src.tar.xz
 #		fi
 		cp -r --preserve=timestamps $SFS/slacksrc/development/* $SFS/slacksrc
-		rm -rf $SFS/slacksrc/development
+#		rm -rf $SFS/slacksrc/development
 
 fi
 
@@ -393,12 +393,8 @@ if [[ "$build_arch" = "x86" ]]
 #		cp -v jre-$JDK-linux-i586.tar.gz $SRCDIR/extra/java
 		cd $SRCDIR/d/rust && sed -i -e '1,22d' rust.url && sed -i -e '9,14d' rust.url && source rust.url
 		cd $SRCDIR/others
-		if [ ! -f readline-7.0.005-i586-1.txz ]; then
-			wget -c -v $DLDIR12/readline-7.0.005-i586-1.txz
-		fi
-		if [ ! -f libffi-3.2.1-i586-2.txz ]; then
-			wget -c -v $DLDIR12/libffi-3.2.1-i586-2.txz
-		fi
+		# download the missing aaa_libraries packages
+		svn checkout $DLDIR12
 	elif [[ "$build_arch" = "x86_64" ]]
 	then
 		mkdir $SRCDIR/others > /dev/null 2>&1
@@ -439,12 +435,8 @@ if [[ "$build_arch" = "x86" ]]
 #		cp -rv jre-$JDK-linux-x64.tar.gz $SRCDIR/extra/java
 		cd $SRCDIR/d/rust && sed -i -e '1,22d' rust.url && sed -i -e '4,9d' rust.url && source rust.url
 		cd $SRCDIR/others
-		if [ ! -f readline-7.0.005-x86_64-1.txz ]; then
-			wget -c -v $DLDIR12/readline-7.0.005-x86_64-1.txz
-		fi
-		if [ ! -f libffi-3.2.1-x86_64-2.txz ]; then
-			wget -c -v $DLDIR12/libffi-3.2.1-x86_64-2.txz
-		fi
+		# download the missing aaa_libraries packages
+		svn checkout $DLDIR12
 fi
 
 }
