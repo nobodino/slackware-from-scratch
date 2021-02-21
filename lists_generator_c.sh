@@ -277,6 +277,7 @@ n lynx
 n nss-pam-ldapd
 n pam-krb5
 a elogind
+a mkinitrd
 # installer installer
 a end1
 EOF
@@ -826,7 +827,6 @@ a lilo
 a mcelog
 a mdadm
 a minicom
-a mkinitrd
 a mt-st
 a mtx
 a ncompress
