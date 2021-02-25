@@ -1,0 +1,429 @@
+diff -ruBN /tmp/kbd/kbd.SlackBuild.log /root/muskat/kbd2/kbd.SlackBuild.log
+--- /tmp/kbd/kbd.SlackBuild.log	2020-12-18 18:08:11.302216995 +0000
++++ /root/muskat/kbd2/kbd.SlackBuild.log	2021-01-07 19:56:48.451508064 +0000
+@@ -1,109 +1,3 @@
+-#!/bin/sh
+-
+-# Slackware build script for kbd
+-
+-# Copyright 2020  Patrick J. Volkerding, Sebeka, Minnesota, USA
+-# All rights reserved.
+-#
+-# Redistribution and use of this script, with or without modification, is
+-# permitted provided that the following conditions are met:
+-#
+-# 1. Redistributions of this script must retain the above copyright
+-#    notice, this list of conditions and the following disclaimer.
+-#
+-#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+-#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+-#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+-#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+-#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+-#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+-#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+-#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+-#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+-#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-
+-cd $(dirname $0) ; CWD=$(pwd)
+-++ dirname kbd.SlackBuild
+-+ cd .
+-++ pwd
+-+ CWD=/root/muskat/kbd
+-
+-PKGNAM=kbd
+-+ PKGNAM=kbd
+-VERSION=${VERSION:-$(echo $PKGNAM-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+-++ rev
+-++ cut -f 1 -d -
+-++ rev
+-++ cut -f 3- -d .
+-++ echo kbd-2.3.0.tar.lz
+-+ VERSION=2.3.0
+-BUILD=${BUILD:-1}
+-+ BUILD=1
+-
+-# Automatically determine the architecture we're building on:
+-if [ -z "$ARCH" ]; then
+-  case "$( uname -m )" in
+-    i?86) export ARCH=i586 ;;
+-    arm*) export ARCH=arm ;;
+-    # Unless $ARCH is already set, use uname -m for all other archs:
+-       *) export ARCH=$( uname -m ) ;;
+-  esac
+-fi
+-+ '[' -z '' ']'
+-+ case "$( uname -m )" in
+-++ uname -m
+-++ uname -m
+-+ export ARCH=x86_64
+-+ ARCH=x86_64
+-
+-# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+-# the name of the created package would be, and then exit. This information
+-# could be useful to other scripts.
+-if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+-  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+-  exit 0
+-fi
+-+ '[' '!' -z '' ']'
+-
+-NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+-+++ nproc
+-++ expr 2 + 1
+-+ NUMJOBS=' -j3 '
+-
+-TMP=${TMP:-/tmp}
+-+ TMP=/tmp
+-PKG=$TMP/package-$PKGNAM
+-+ PKG=/tmp/package-kbd
+-
+-if [ "$ARCH" = "i586" ]; then
+-  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+-  LIBDIRSUFFIX=""
+-elif [ "$ARCH" = "s390" ]; then
+-  SLKCFLAGS="-O2"
+-  LIBDIRSUFFIX=""
+-elif [ "$ARCH" = "x86_64" ]; then
+-  SLKCFLAGS="-O2 -fPIC"
+-  LIBDIRSUFFIX=""
+-else
+-  SLKCFLAGS="-O2"
+-  LIBDIRSUFFIX=""
+-fi
+-+ '[' x86_64 = i586 ']'
+-+ '[' x86_64 = s390 ']'
+-+ '[' x86_64 = x86_64 ']'
+-+ SLKCFLAGS='-O2 -fPIC'
+-+ LIBDIRSUFFIX=
+-
+-rm -rf $PKG
+-+ rm -rf /tmp/package-kbd
+-mkdir -p $TMP $PKG
+-+ mkdir -p /tmp /tmp/package-kbd
+-cd $TMP
+-+ cd /tmp
+-rm -rf $PKGNAM-$VERSION
+-+ rm -rf kbd-2.3.0
+-tar xvf $CWD/$PKGNAM-$VERSION.tar.?z || exit 1
+-+ tar xvf /root/muskat/kbd/kbd-2.3.0.tar.lz
+ kbd-2.3.0/
+ kbd-2.3.0/config.h.in
+ kbd-2.3.0/configure.ac
+@@ -1331,23 +1225,6 @@
+ kbd-2.3.0/data/keymaps/atari/atari-uk-falcon.map
+ kbd-2.3.0/data/keymaps/atari/atari-se.map
+ kbd-2.3.0/data/keymaps/atari/atari-us.map
+-cd $PKGNAM-$VERSION || exit 1
+-+ cd kbd-2.3.0
+-
+-# Make sure ownerships and permissions are sane:
+-chown -R root:root .
+-+ chown -R root:root .
+-find . \
+- \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+- -exec chmod 755 {} \+ -o \
+- \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+- -exec chmod 644 {} \+
+-+ find . '(' -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 ')' -exec chmod 755 '{}' + -o '(' -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 ')' -exec chmod 644 '{}' +
+-
+-# Thanks, LFS
+-zcat $CWD/kbd-2.3.0-backspace-1.patch.gz | patch -p1 --verbose || exit 1
+-+ zcat /root/muskat/kbd/kbd-2.3.0-backspace-1.patch.gz
+-+ patch -p1 --verbose
+ Hmm...  Looks like a unified diff to me...
+ The text leading up to this was:
+ --------------------------
+@@ -1544,73 +1421,16 @@
+ Using Plan A...
+ Hunk #1 succeeded at 260.
+ done
+-
+-# 7-bit maps are obsolete; so are non-euro maps
+-cp -fav data/keymaps/i386/qwerty/pt-latin9.map \
+-        data/keymaps/i386/qwerty/pt.map
+-+ cp -fav data/keymaps/i386/qwerty/pt-latin9.map data/keymaps/i386/qwerty/pt.map
+ 'data/keymaps/i386/qwerty/pt-latin9.map' -> 'data/keymaps/i386/qwerty/pt.map'
+-cp -fav data/keymaps/i386/qwerty/sv-latin1.map \
+-        data/keymaps/i386/qwerty/se-latin1.map
+-+ cp -fav data/keymaps/i386/qwerty/sv-latin1.map data/keymaps/i386/qwerty/se-latin1.map
+ 'data/keymaps/i386/qwerty/sv-latin1.map' -> 'data/keymaps/i386/qwerty/se-latin1.map'
+-mv -fv data/keymaps/i386/azerty/fr.map \
+-       data/keymaps/i386/azerty/fr-old.map
+-+ mv -fv data/keymaps/i386/azerty/fr.map data/keymaps/i386/azerty/fr-old.map
+ renamed 'data/keymaps/i386/azerty/fr.map' -> 'data/keymaps/i386/azerty/fr-old.map'
+-cp -fav data/keymaps/i386/azerty/fr-latin9.map \
+-        data/keymaps/i386/azerty/fr.map
+-+ cp -fav data/keymaps/i386/azerty/fr-latin9.map data/keymaps/i386/azerty/fr.map
+ 'data/keymaps/i386/azerty/fr-latin9.map' -> 'data/keymaps/i386/azerty/fr.map'
+-
+-# legacy alias
+-cp -fav data/keymaps/i386/azerty/fr-latin9.map \
+-        data/keymaps/i386/azerty/fr-latin0.map
+-+ cp -fav data/keymaps/i386/azerty/fr-latin9.map data/keymaps/i386/azerty/fr-latin0.map
+ 'data/keymaps/i386/azerty/fr-latin9.map' -> 'data/keymaps/i386/azerty/fr-latin0.map'
+-
+-# Rename conflicting keymaps
+-mv -fv data/keymaps/i386/colemak/en-latin9.map \
+-       data/keymaps/i386/colemak/colemak.map
+-+ mv -fv data/keymaps/i386/colemak/en-latin9.map data/keymaps/i386/colemak/colemak.map
+ renamed 'data/keymaps/i386/colemak/en-latin9.map' -> 'data/keymaps/i386/colemak/colemak.map'
+-mv -fv data/keymaps/i386/fgGIod/trf.map \
+-       data/keymaps/i386/fgGIod/trf-fgGIod.map
+-+ mv -fv data/keymaps/i386/fgGIod/trf.map data/keymaps/i386/fgGIod/trf-fgGIod.map
+ renamed 'data/keymaps/i386/fgGIod/trf.map' -> 'data/keymaps/i386/fgGIod/trf-fgGIod.map'
+-mv -fv data/keymaps/i386/olpc/es.map \
+-       data/keymaps/i386/olpc/es-olpc.map
+-+ mv -fv data/keymaps/i386/olpc/es.map data/keymaps/i386/olpc/es-olpc.map
+ renamed 'data/keymaps/i386/olpc/es.map' -> 'data/keymaps/i386/olpc/es-olpc.map'
+-mv -fv data/keymaps/i386/olpc/pt.map \
+-       data/keymaps/i386/olpc/pt-olpc.map
+-+ mv -fv data/keymaps/i386/olpc/pt.map data/keymaps/i386/olpc/pt-olpc.map
+ renamed 'data/keymaps/i386/olpc/pt.map' -> 'data/keymaps/i386/olpc/pt-olpc.map'
+-mv -fv data/keymaps/i386/qwerty/cz.map \
+-       data/keymaps/i386/qwerty/cz-qwerty.map
+-+ mv -fv data/keymaps/i386/qwerty/cz.map data/keymaps/i386/qwerty/cz-qwerty.map
+ renamed 'data/keymaps/i386/qwerty/cz.map' -> 'data/keymaps/i386/qwerty/cz-qwerty.map'
+-
+-CFLAGS="$SLKCFLAGS" \
+-CXXFLAGS="$SLKCFLAGS" \
+-./configure \
+-  --prefix=/usr \
+-  --libdir=/usr/lib${LIBDIRSUFFIX} \
+-  --sysconfdir=/etc \
+-  --localstatedir=/var \
+-  --mandir=/usr/man \
+-  --docdir=/usr/doc/$PKGNAM-$VERSION \
+-  --localedir=/usr/share/locale/ \
+-  --datadir=/usr/share/kbd \
+-  --enable-nls \
+-  --enable-optional-progs \
+-  --enable-libkeymap \
+-  --disable-tests \
+-  --disable-static \
+-  --build=$ARCH-slackware-linux-musl
+-+ CFLAGS='-O2 -fPIC'
+-+ CXXFLAGS='-O2 -fPIC'
+-+ ./configure --prefix=/usr --libdir=/usr/lib --sysconfdir=/etc --localstatedir=/var --mandir=/usr/man --docdir=/usr/doc/kbd-2.3.0 --localedir=/usr/share/locale/ --datadir=/usr/share/kbd --enable-nls --enable-optional-progs --enable-libkeymap --disable-tests --disable-static --build=x86_64-slackware-linux-musl
+ checking for a BSD-compatible install... /usr/bin/ginstall -c
+ checking whether build environment is sane... yes
+ checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
+@@ -1851,10 +1671,6 @@
+ 	libkbdfile:             yes
+ 	libkeymap:              yes
+ 
+-
+-# Build and install:
+-make $NUMJOBS || make || exit 1
+-+ make -j3
+ make  all-recursive
+ make[1]: Entering directory '/tmp/kbd-2.3.0'
+ Making all in src
+@@ -1883,8 +1699,8 @@
+ Making all in libkfont
+ make[3]: Entering directory '/tmp/kbd-2.3.0/src/libkfont'
+   CC       psffontop.lo
+-  CC       context.lo
+   CC       psfxtable.lo
++  CC       context.lo
+ psffontop.c: In function ‘writepsffontheader’:
+ psffontop.c:453:16: warning: conversion from ‘unsigned int’ to ‘unsigned char’ may change value [-Wconversion]
+   453 |   h.charsize = charsize;
+@@ -1893,12 +1709,12 @@
+   CC       utf8.lo
+   CC       kdmapop.lo
+   CC       loadunimap.lo
++  CC       mapscrn.lo
++  CC       setfont.lo
+ loadunimap.c: In function ‘parseline’:
+ loadunimap.c:220:45: warning: conversion from ‘int’ to ‘short unsigned int’ may change value [-Wconversion]
+   220 |    if ((ret = add_unipair(ctx, i, un0 - fp0 + i, list, listsz, listct)) < 0)
+       |                                   ~~~~~~~~~~^~~
+-  CC       mapscrn.lo
+-  CC       setfont.lo
+ mapscrn.c: In function ‘kfont_load_consolemap’:
+ mapscrn.c:163:13: warning: conversion from ‘unsigned int’ to ‘unsigned char’ may change value [-Wconversion]
+   163 |   buf[i]  = i;
+@@ -1906,6 +1722,7 @@
+ mapscrn.c:164:13: warning: conversion from ‘unsigned int’ to ‘short unsigned int’ may change value [-Wconversion]
+   164 |   ubuf[i] = (0xf000 + i);
+       |             ^
++  CC       kdfontop.lo
+ setfont.c: In function ‘do_loadfont’:
+ setfont.c:101:14: warning: conversion from ‘int’ to ‘unsigned char’ may change value [-Wconversion]
+   101 |        b2 |= 3 << (j * 2);
+@@ -1920,15 +1737,14 @@
+ setfont.c:250:16: warning: conversion from ‘unsigned int’ to ‘short unsigned int’ may change value [-Wconversion]
+   250 |  ud.entry_ct = ct;
+       |                ^~
+-  CC       kdfontop.lo
+   CCLD     libkfont.la
+ make[3]: Leaving directory '/tmp/kbd-2.3.0/src/libkfont'
+ Making all in libkeymap
+ make[3]: Entering directory '/tmp/kbd-2.3.0/src/libkeymap'
+ make  all-am
+ make[4]: Entering directory '/tmp/kbd-2.3.0/src/libkeymap'
+-  CC       array.lo
+   CC       common.lo
++  CC       array.lo
+   CC       kernel.lo
+ kernel.c: In function ‘lk_kernel_diacrs’:
+ kernel.c:101:16: warning: conversion from ‘long unsigned int’ to ‘int’ may change value [-Wconversion]
+@@ -1942,7 +1758,6 @@
+   CC       loadkeys.lo
+   CC       parser.lo
+   CC       analyze.lo
+-  CC       modifiers.lo
+ parser.c: In function ‘yytnamerr’:
+ parser.c:1057:34: warning: conversion to ‘long unsigned int’ from ‘long int’ may change the sign of the result [-Wsign-conversion]
+  1057 |   return yystpcpy (yyres, yystr) - yyres;
+@@ -1954,6 +1769,7 @@
+ parser.c:1310:25: warning: conversion to ‘long unsigned int’ from ‘long int’ may change the sign of the result [-Wsign-conversion]
+  1310 |       YYSIZE_T yysize = yyssp - yyss + 1;
+       |                         ^~~~~
++  CC       modifiers.lo
+   CC       ksyms.lo
+ /usr/bin/sed \
+     -e 's,[@]VERSION[@],2.3.0,g' \
+@@ -1970,10 +1786,10 @@
+ Making all in vlock
+ make[3]: Entering directory '/tmp/kbd-2.3.0/src/vlock'
+   CC       auth.o
+-  CC       parse.o
+   CC       pam.o
+-  CC       username.o
++  CC       parse.o
+   CC       screen.o
++  CC       username.o
+   CC       vlock.o
+   CC       vt.o
+   CCLD     vlock
+@@ -2239,8 +2055,6 @@
+ make[2]: Entering directory '/tmp/kbd-2.3.0'
+ make[2]: Leaving directory '/tmp/kbd-2.3.0'
+ make[1]: Leaving directory '/tmp/kbd-2.3.0'
+-make install DESTDIR=$PKG || exit 1
+-+ make install DESTDIR=/tmp/package-kbd
+ Making install in src
+ make[1]: Entering directory '/tmp/kbd-2.3.0/src'
+ Making install in libcommon
+@@ -2878,116 +2692,8 @@
+ make[2]: Nothing to be done for 'install-data-am'.
+ make[2]: Leaving directory '/tmp/kbd-2.3.0'
+ make[1]: Leaving directory '/tmp/kbd-2.3.0'
+-
+-# Install PAM configuration for vlock
+-mkdir -p $PKG/etc/pam.d
+-+ mkdir -p /tmp/package-kbd/etc/pam.d
+-cat $CWD/vlock.pamd > $PKG/etc/pam.d/vlock.new
+-+ cat /root/muskat/kbd/vlock.pamd
+-
+-# Install the setup script that will be run from the Slackware installer:
+-mkdir -pm755 $PKG/var/log/setup
+-+ mkdir -pm755 /tmp/package-kbd/var/log/setup
+-install -vpm755 $CWD/setup.setconsolefont $PKG/var/log/setup/
+-+ install -vpm755 /root/muskat/kbd/setup.setconsolefont /tmp/package-kbd/var/log/setup/
+-'/root/muskat/kbd/setup.setconsolefont' -> '/tmp/package-kbd/var/log/setup/setup.setconsolefont'
+-install -vpm755 $CWD/setconsolefont $PKG/usr/bin/
+-+ install -vpm755 /root/muskat/kbd/setconsolefont /tmp/package-kbd/usr/bin/
+-'/root/muskat/kbd/setconsolefont' -> '/tmp/package-kbd/usr/bin/setconsolefont'
+-
+-# Create the default run control script which will set the
+-# console font to the "default"...  though this might not be
+-# the same state as if setfont were not used at all.
+-# For that reason, default the script to non-executable.
+-mkdir -pm755 $PKG/etc/rc.d
+-+ mkdir -pm755 /tmp/package-kbd/etc/rc.d
+-cat << EOF > $PKG/etc/rc.d/rc.font.new
+-#!/bin/sh
+-#
+-# This selects your default screen font from among the ones in
+-# /usr/share/kbd/consolefonts.
+-#
+-setfont -v
+-EOF
+-+ cat
+-chmod 0644 $PKG/etc/rc.d/rc.font.new
+-+ chmod 0644 /tmp/package-kbd/etc/rc.d/rc.font.new
+-
+-# Don't ship .la files:
+-rm -f $PKG/{,usr/}lib${LIBDIRSUFFIX}/*.la
+-+ rm -f '/tmp/package-kbd/lib/*.la' /tmp/package-kbd/usr/lib/libkbdfile.la /tmp/package-kbd/usr/lib/libkeymap.la
+-
+-# Strip binaries:
+-find $PKG | xargs file | grep -e "executable" -e "shared object" \
+-  | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+-+ find /tmp/package-kbd
+-+ xargs strip --strip-unneeded
+-+ grep ELF
+-+ xargs file
+-+ grep -e executable -e 'shared object'
+-+ cut -f 1 -d :
+-
+-# Compress and link manpages, if any:
+-if [ -d $PKG/usr/man ]; then
+-  ( cd $PKG/usr/man
+-    for manpagedir in $(find . -type d -name "man*") ; do
+-      ( cd $manpagedir
+-        for eachpage in $( find . -type l -maxdepth 1) ; do
+-          ln -s $( readlink $eachpage ).gz $eachpage.gz
+-          rm $eachpage
+-        done
+-        gzip -9 *.*
+-      )
+-    done
+-  )
+-fi
+-+ '[' -d /tmp/package-kbd/usr/man ']'
+-+ cd /tmp/package-kbd/usr/man
+-++ find . -type d -name 'man*'
+-+ for manpagedir in $(find . -type d -name "man*")
+-+ cd ./man8
+-++ find . -type l -maxdepth 1
+-+ gzip -9 clrunimap.8 getkeycodes.8 getunimap.8 kbdrate.8 loadunimap.8 mapscrn.8 mk_modmap.8 resizecons.8 setfont.8 setkeycodes.8 setlogcons.8 setvesablank.8 setvtrgb.8 showconsolefont.8 vcstime.8
+-+ for manpagedir in $(find . -type d -name "man*")
+-+ cd ./man5
+-++ find . -type l -maxdepth 1
+-+ gzip -9 keymaps.5
+-+ for manpagedir in $(find . -type d -name "man*")
+-+ cd ./man1
+-++ find . -type l -maxdepth 1
+-+ gzip -9 chvt.1 codepage.1 deallocvt.1 dumpkeys.1 fgconsole.1 kbd_mode.1 kbdinfo.1 loadkeys.1 openvt.1 psfaddtable.1 psfgettable.1 psfstriptable.1 psfxtable.1 screendump.1 setleds.1 setmetamode.1 showkey.1 splitfont.1 unicode_start.1 unicode_stop.1 vlock.1
+-
+-# Add a documentation directory:
+-mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION
+-+ mkdir -p /tmp/package-kbd/usr/doc/kbd-2.3.0
+-cp -a AUTHORS COPYING CREDITS NEWS README $PKG/usr/doc/$PKGNAM-$VERSION
+-+ cp -a AUTHORS COPYING CREDITS NEWS README /tmp/package-kbd/usr/doc/kbd-2.3.0
+-
+-# If there's a ChangeLog, installing at least part of the recent history
+-# is useful, but don't let it get totally out of control:
+-if [ -r ChangeLog ]; then
+-  DOCSDIR=$(echo $PKG/usr/doc/*-$VERSION)
+-  cat ChangeLog | head -n 1000 > $DOCSDIR/ChangeLog
+-  touch -r ChangeLog $DOCSDIR/ChangeLog
+-fi
+-+ '[' -r ChangeLog ']'
+-++ echo /tmp/package-kbd/usr/doc/kbd-2.3.0
+-+ DOCSDIR=/tmp/package-kbd/usr/doc/kbd-2.3.0
+-+ head -n 1000
+-+ cat ChangeLog
+-+ touch -r ChangeLog /tmp/package-kbd/usr/doc/kbd-2.3.0/ChangeLog
+-
+-mkdir -p $PKG/install
+-+ mkdir -p /tmp/package-kbd/install
+-zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
+-+ zcat /root/muskat/kbd/doinst.sh.gz
+-cat $CWD/slack-desc > $PKG/install/slack-desc
+-+ cat /root/muskat/kbd/slack-desc
+-
+-cd $PKG
+-+ cd /tmp/package-kbd
+-/sbin/makepkg -l y -c n $TMP/$PKGNAM-$VERSION-$ARCH-$BUILD.txz
+-+ /sbin/makepkg -l y -c n /tmp/kbd-2.3.0-x86_64-1.txz
++'/root/muskat/kbd2/setup.setconsolefont' -> '/tmp/package-kbd/var/log/setup/setup.setconsolefont'
++'/root/muskat/kbd2/setconsolefont' -> '/tmp/package-kbd/usr/bin/setconsolefont'
+ 
+ Slackware package maker, version 3.14159265.
+ 

@@ -1,0 +1,133 @@
+#!/bin/bash
+
+# Copyright 2005-2020  Patrick J. Volkerding, Sebeka, Minnesota, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=sysvinit
+VERSION=${VERSION:-$(echo $PKGNAM-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+BUILD=${BUILD:-3}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-sysvinit
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+
+cd $TMP
+rm -rf sysvinit-$VERSION
+tar xvf $CWD/sysvinit-$VERSION.tar.xz || exit 1
+cd sysvinit-$VERSION
+
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \+ -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \+
+
+# Fix paths for /etc/forcefsck and /etc/fastboot:
+zcat $CWD/sysvinit.paths.diff.gz | patch -p1 -E --verbose --backup --suffix=.orig || exit 1
+
+# Fix failure to show program version:
+zcat $CWD/sysvinit.always.define.version.diff.gz | patch -p1 --verbose || exit 1
+
+# This seems to be a recurring theme:
+zcat $CWD/sysvinit.wrong.version.in.init.c.again.diff.gz | patch -p1 --verbose || exit 1
+
+# Use /dev/initctl instead of /run/initctl ; this is a named pipe and probably
+# should be in /dev anyway, but more importantly, having the upgraded package
+# expect it in /run breaks shutdown/reboot without manual intervention:
+zcat $CWD/sysvinit.use_dev_initctl_not_run_initctl.diff.gz | patch -p1 --verbose || exit 1
+
+mkdir -p $PKG/usr/doc/sysvinit-$VERSION
+cp -a COPYING* COPYRIGHT* README* \
+  doc/* \
+  $PKG/usr/doc/sysvinit-$VERSION
+# This is interesting, but it looks like the output won't really work out
+# of the box, so we'll add it as a contrib example to the docs:
+mkdir -p $PKG/usr/doc/sysvinit-$VERSION/contrib
+cp -a contrib/sysd2v.sh $PKG/usr/doc/sysvinit-$VERSION/contrib
+
+cd src
+make clobber || exit 1
+make || exit 1
+
+mkdir -p $PKG/etc/inittab.d
+mkdir -p $PKG/sbin
+for program in bootlogd halt init killall5 shutdown runlevel ; do
+  strip --strip-unneeded $program
+  cat $program > $PKG/sbin/$program
+  chmod 755 $PKG/sbin/$program
+  chown root:root $PKG/sbin/$program
+done
+mkdir -p $PKG/usr/bin
+for program in last ; do
+  strip --strip-unneeded $program
+  cat $program > $PKG/usr/bin/$program
+  chmod 755 $PKG/usr/bin/$program
+  chown root:root $PKG/usr/bin/$program
+done
+( cd $PKG/usr/bin ; ln -sf last lastb )
+mv $PKG/sbin/init $PKG/sbin/init.new
+chmod 755 $PKG/sbin/init.new
+chown root:root $PKG/sbin/init.new
+
+cd ../man
+mkdir -p $PKG/usr/man/man{1,5,8}
+for page in last.1 ; do
+  cat $page | gzip -9c > $PKG/usr/man/man1/$page.gz
+done
+for page in inittab.5 initscript.5 ; do
+  cat $page | gzip -9c > $PKG/usr/man/man5/$page.gz
+done
+for page in halt.8 init.8 killall5.8 poweroff.8 reboot.8 runlevel.8 \
+  shutdown.8 telinit.8 bootlogd.8 ; do
+  cat $page | gzip -9c > $PKG/usr/man/man8/$page.gz
+done
+( cd $PKG/usr/man/man1 ; ln -sf last.1.gz lastb.1.gz )
+
+mkdir -p $PKG/install
+zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+# Build the package:
+cd $PKG
+makepkg -l y -c n $TMP/sysvinit-$VERSION-$ARCH-$BUILD.txz
+

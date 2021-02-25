@@ -1,0 +1,116 @@
+.\" -*- nroff -*-
+.ds g \" empty
+.ds G \" empty
+.\" Like TP, but if specified indent is more than half
+.\" the current line-length - indent, use the default indent.
+.de Tp
+.ie \\n(.$=0:((0\\$1)*2u>(\\n(.lu-\\n(.iu)) .TP
+.el .TP "\\$1"
+..
+.TH UPGRADEPKG 8 "31 May 2002" "Slackware Version 8.1.0"
+.SH NAME
+upgradepkg \- upgrade Slackware packages.
+.SH SYNOPSIS
+.B upgradepkg
+[
+.B --dry-run
+]
+[
+.B --install-new
+]
+[
+.B --reinstall
+]
+[
+.B \--terse
+]
+[
+.B \--terselength <length>
+]
+[
+.B --verbose
+]
+.BI newpackagename
+.BI [ newpackagename2 ]
+.LP
+.B upgradepkg
+[
+.B --dry-run
+]
+[
+.B --install-new
+]
+[
+.B --reinstall
+]
+[
+.B \--terse
+]
+[
+.B \--terselength <length>
+]
+[
+.B --verbose
+]
+.BI oldpackagename%newpackagename
+.BI [ old2%new2 ]
+.SH DESCRIPTION
+.B upgradepkg
+upgrades a Slackware package from an older version to a
+newer one.  It does this by
+.B INSTALLING
+the new package onto the system, and then
+.B REMOVING 
+any files from the old package that aren't in the new package.
+If the old and new packages have the same name, a single argument is all that
+is required.  If the packages have different names, supply the name of the
+old package followed by a percent symbol (%), then the name of the new package.
+Do not add any extra whitespace between pairs of old/new package names.
+.P
+Before upgrading a package, save any configuration files (such as in /etc)
+that you wish to keep.  Sometimes these will be preserved, but it depends on
+the package structure.  If you want to force new versions of the config files
+to be installed, remove the old ones manually prior to running upgradepkg.
+.P
+If upgradepkg finds more than one installed package matching the old package's
+name, it will remove them all.
+.TP
+To upgrade in a directory other than / (such as /mnt):
+.TP
+ROOT=/mnt upgradepkg package.txz (or .tbz, .tgz, .tlz)
+.SH OPTIONS
+.TP
+.B \--dry-run
+Output a report about which packages would be installed or upgraded
+but don't actually perform the upgrades.
+.TP
+.B \--install-new
+Normally upgradepkg only upgrades packages that are already installed on the system, and
+will skip any packages that do not already have a version installed.
+If
+.B --install-new
+is specified, the behavior is modified to install new packages in addition to upgrading
+existing ones.
+.TP
+.B \--reinstall
+Upgradepkg usually skips packages if the exact same package
+(matching name, version, arch, and build number) is already installed on the system.
+Use the --reinstall option if you want to upgrade all packages even if the same
+version is already installed.
+.TP
+.B \--terse
+Upgrade the package displaying only a single description line to stdout.
+.TP
+.B \--terselength <length>
+Maximum line length of --terse mode output. Default is the number of terminal columns.
+.TP
+.B \--verbose
+Show all the gory details of the upgrade.
+.SH AUTHOR
+Patrick J. Volkerding <volkerdi@slackware.com>
+.SH "SEE ALSO"
+.BR makepkg(8),
+.BR installpkg(8),
+.BR removepkg(8),
+.BR explodepkg(8),
+.BR pkgtool(8)

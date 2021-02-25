@@ -1,0 +1,11 @@
+#!/bin/sh
+#
+# Load the loop device kernel module.
+#
+
+if modinfo loop 1> /dev/null 2> /dev/null ; then
+  if ! lsmod | grep -wq "^loop" ; then
+    modprobe loop
+  fi
+fi
+

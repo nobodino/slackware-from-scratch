@@ -1,0 +1,725 @@
+#!/bin/sh
+# Copyright 1994, 1998, 2000  Patrick Volkerding, Concord, CA, USA 
+# Copyright 2001, 2003  Slackware Linux, Inc., Concord, CA, USA
+# Copyright 2007, 2009, 2011, 2017, 2018, 2019, 2020  Patrick Volkerding, Sebeka, MN, USA 
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+# Wed Apr  1 21:59:41 UTC 2020
+# If the package contains /install/douninst.sh, copy the uninstall script to
+# $ADM_DIR/douninst.sh/$shortname and add the filename to the package list
+# in $ADM_DIR/packages/$shortname.
+#
+# Fri Oct  4 06:04:39 UTC 2019
+# Add support for --no-overwrite so that upgradepkg can be kind to SSDs.
+#
+# Mon Jun  4 21:17:58 UTC 2018
+# Migrate the package database and directories from /var/log to
+# /var/lib/pkgtools. /var/log was never a good place for this data, as it is
+# considered by many to be a directory that could be wiped to free up some
+# space. Originally the package database was in /var/adm, but the FSSTND
+# (later FHS) group decided that directory should be a symlink to /var/log,
+# and I went along with that since it was years ago and I was a n00b and didn't
+# know any better. /var/lib/pkgtools will be a better and safer location.
+#
+# Thu May 24 20:23:55 UTC 2018
+# Added --terselength option to set the line length in --terse mode.
+# Allow adding NOLOCK in an install script to allow it to run without locking.
+#
+# Sat May 19 22:42:03 UTC 2018
+# Implement locking to prevent screen output or install script collisions if
+# multiple copies of installpkg are running simultaneously.
+# Use ${MCOOKIE} instead of $$ (might as well, since we already generated it).
+#
+# Tue Apr 17 17:26:44 UTC 2018
+# Quit with the funny business in /install. Note however that /install still
+# isn't a safe directory to use in a package for anything other than package
+# metadata. Other files placed there are going to be left on the system in
+# /installpkg-$(mcookie). That could be worked around, but we'll wait until
+# someone reports there is a need. The main reason to do this is that /install
+# was a collision point if more than one copy of installpkg was running at
+# once. With this change, the pkgtools are (more or less) thread-safe.
+#
+# Tue Feb 13 01:19:46 UTC 2018
+# Use recent tar, and support restoring POSIX ACLs and extended attributes.
+#
+# Tue Dec 12 21:49:48 UTC 2017
+# If possible, use multiple decompression threads.
+#
+# Thu Dec  7 04:09:17 UTC 2017
+# Change meaning of .tlz to tar.lz (lzip)
+#
+# Sun Sep  6 21:58:36 BST 2009
+# Replaced usage of "cat" with STDIN redirection or file name parameters
+# to speed up execution on ARM.
+# Replaced pkgbase & package_name code with 'sed' script by Jim Hawkins.
+#
+# Sat Apr 25 21:18:53 UTC 2009
+# Converted to use new pkgbase() function to remove pathname and
+# valid package extensions.
+#
+# Sat Apr  4 22:58:06 CDT 2009
+# Support additional compression formats if the supporting utilities exist:
+# .tbz - bzip2
+# .tlz - lzma
+# .txz - xz (also LZMA)
+# And of course, .tgz (gzip) is not going anywhere.  :-) <volkerdi>
+# Add command switches to determine the uncompressed package size even if
+# that will slow things down, and to add the package's md5sum to the
+# metadata stored in /var/log/packages/.
+#
+# Fri Dec 21 17:21:35 CST 2007
+# Added a patch from Johnny Morano to work around package removal issues
+# caused by packages that do not comply with FHS combined with a grep
+# regex error in installpkg.  Any package with a single-letter top-
+# level directory could not be removed.
+#
+# Shortened some of the top-line dialog output to avoid overflowing the
+# textbox (needed as some of the packages, especially in X, have very
+# long base package names now).  <pjv>
+#
+# Sun Nov 26 12:38:25 CST 1995
+# Added patch from Glenn Moloney <glenn@physics.unimelb.edu.au> to allow
+# packages to be installed to directories other than /.
+#
+# Wed Mar 18 15:15:51 CST 1998
+# Changed $TMP directory to /var/log/setup/tmp, and chmod'ed it 700 to close
+# some security holes.
+
+# Return a package name that has been stripped of the dirname portion
+# and any of the valid extensions (only):
+pkgbase() {
+  # basename + strip extensions .tbz, .tgz, .tlz and .txz
+  echo "$1" | sed 's?.*/??;s/\.t[bglx]z$//'
+}
+
+# If installpkg encounters a problem, it will return a non-zero error code.
+# If it finds more than one problem (i.e. with a list of packages) you'll only
+# hear about the most recent one. :)
+# 1 = tar returned error code
+# 2 = corrupt compression envelope
+# 3 = does not end in .tgz
+# 4 = no such file
+# 5 = external compression utility missing
+# 99 = user abort from menu mode
+EXITSTATUS=0
+
+# Do not store md5sums by default:
+MD5SUM=0
+
+# So that we know what to expect...
+umask 022
+
+# If we have mcookie and a tar that is recent enough to support --transform,
+# then we can stop needlessly erasing files in the /install directory while
+# also making installpkg thread-safe. Don't check for recent tar - we'll
+# already break from --attrs and --xattrs anyway if the wrong tar is used.
+if which mcookie 1> /dev/null 2> /dev/null ; then
+  MCOOKIE=$(mcookie)
+  INSTDIR=installpkg-${MCOOKIE}
+else
+  # Well, we will make due with this:
+  MCOOKIE=$$
+  INSTDIR=installpkg-${MCOOKIE}
+fi
+
+# Create a lockfile directory if it doesn't exist. We can use it to prevent
+# screen corruption (from multiple dialogs) and install script collisions
+# (from multiple scripts trying to work on the same files) in the case of
+# parallel instances of installpkg.
+INSTLOCKDIR=${INSTLOCKDIR:-/run/lock/pkgtools}
+if [ ! -d $INSTLOCKDIR ]; then
+  mkdir -p $INSTLOCKDIR
+fi
+
+usage() {
+ cat << EOF
+Usage: installpkg [options] <package_filename>
+
+Installpkg is used to install a .t{gz,bz,lz,xz} package like this:
+   installpkg slackware-package-1.0.0-i486-1.tgz (or .tbz, .tlz, .txz)
+
+options:      --warn (warn if files will be overwritten, but do not install)
+              --root /mnt (install someplace else, like /mnt)
+              --infobox (use dialog to draw an info box)
+              --terse (display a one-line short description for install)
+              --terselength <length> (line length in terse mode - default is
+                    the number of columns available)
+              --menu (confirm package installation with a menu, unless
+                    the priority is [required] or ADD)
+              --ask (used with menu mode: always ask if a package should be
+                   installed regardless of what the package's priority is)
+              --priority ADD|REC|OPT|SKP (provide a priority for the entire
+                    package list to use instead of the priority in the
+                    tagfile)
+              --tagfile /somedir/tagfile (specify a different file to use
+                    for package priorities. The default is "tagfile" in
+                    the package's directory)
+              --threads <number> For xz/plzip compressed packages, set the max
+                    number of threads to be used for decompression. Only has
+                    an effect if a multithreaded compressor was used, and then
+                    only on large packages. For plzip, the default is equal to
+                    the number of CPU threads available on the machine. For xz,
+                    the default is equal to 2.
+              --md5sum (record the package's md5sum in the metadata file)
+              --no-overwrite When extracting the package, do not overwrite
+                    existing files. Usually, this option should not be used.
+                    It exists so that upgradepkg can use it for the second
+                    installation pass. The first pass has already overwritten
+                    the previous package's files, and this will catch the few
+                    corner cases without generating unnecessary writes.
+
+EOF
+}
+
+# Eliminate whitespace function:
+crunch() {
+  while read FOO ; do
+    echo $FOO
+  done
+}
+
+# Strip version, architecture and build from the end of the name
+package_name() {
+  pkgbase $1 | sed 's?-[^-]*-[^-]*-[^-]*$??'
+}
+
+# Set maximum number of threads to use. By default, this will be the number
+# of CPU threads:
+THREADS="$(nproc)"
+
+# Set default line length for terse mode:
+if tty -s && which tput 1> /dev/null 2> /dev/null ; then
+  TERSELENGTH=$(tput cols)
+else
+  TERSELENGTH=80
+fi
+
+# Default install mode is standard text mode:
+MODE=install
+# If $TERSE is set to 0 in the environment, then use terse mode:
+if [ "$TERSE" = "0" ]; then
+  MODE=terse
+fi
+
+# Parse options:
+while [ 0 ]; do
+  if [ "$1" = "-warn" -o "$1" = "--warn" ]; then
+    MODE=warn
+    shift 1
+  elif [ "$1" = "-md5sum" -o "$1" = "--md5sum" ]; then
+    MD5SUM=1
+    shift 1
+  elif [ "$1" = "-infobox" -o "$1" = "--infobox" ]; then
+    MODE=infobox
+    shift 1
+  elif [ "$1" = "-terse" -o "$1" = "--terse" ]; then
+    MODE=terse
+    shift 1
+  elif [ "$1" = "-terselength" -o "$1" = "--terselength" ]; then
+    TERSELENGTH=$2
+    shift 2
+  elif [ "$1" = "-menu" -o "$1" = "--menu" ]; then
+    MODE=menu
+    shift 1
+  elif [ "$1" = "-ask" -o "$1" = "--ask" ]; then
+    ALWAYSASK="yes"
+    shift 1
+  elif [ "$1" = "--no-overwrite" ]; then
+    NO_OVERWRITE=" --skip-old-files "
+    shift 1
+  elif [ "$1" = "-tagfile" -o "$1" = "--tagfile" ]; then
+    if [ -r "$2" ]; then
+      USERTAGFILE="$2"
+    elif [ -r "$(pwd)/$2" ]; then
+      USERTAGFILE="$(pwd)/$2"
+    else
+      usage
+      exit
+    fi
+    shift 2
+  elif [ "$1" = "-threads" -o "$1" = "--threads" ]; then
+    THREADS="$2"
+    shift 2
+    # xz has not yet implemented multi-threaded decompression.
+    # Who knows if or how well it will work...
+    XZ_THREADS_FORCED=yes
+  elif [ "$1" = "-priority" -o "$1" = "--priority" ]; then
+    if [ "$2" = "" ]; then
+      usage
+      exit
+    fi
+    USERPRIORITY="$2"
+    shift 2
+  elif [ "$1" = "-root" -o "$1" = "--root" ]; then
+    if [ "$2" = "" ]; then
+      usage
+      exit
+    fi
+    ROOT="$2"
+    shift 2
+  else
+    break
+  fi
+done
+
+# Set the prefix for the package database directories (packages, scripts).
+ADM_DIR="$ROOT/var/lib/pkgtools"
+
+# Set the prefix for the removed packages/scripts log files:
+LOG_DIR="$ROOT/var/log/pkgtools"
+
+# If the directories don't exist, "initialize" the package database:
+for PKGDBDIR in douninst.sh packages scripts setup ; do
+  if [ ! -d $ADM_DIR/$PKGDBDIR ]; then
+    mkdir -p $ADM_DIR/$PKGDBDIR
+    chmod 755 $ADM_DIR/$PKGDBDIR 
+  fi
+done
+for PKGLOGDIR in removed_packages removed_scripts ; do
+ if [ ! -d $LOG_DIR/$PKGLOGDIR ]; then
+    rm -rf $LOG_DIR/$PKGLOGDIR # make sure it's not a symlink or something stupid
+    mkdir -p $LOG_DIR/$PKGLOGDIR
+    chmod 755 $LOG_DIR/$PKGLOGDIR
+  fi
+done
+# Likewise, make sure that the symlinks in /var/log exist. We no longer
+# trust anything to remain in /var/log. Let the admin wipe it if that's
+# what they like.
+for symlink in packages scripts setup ; do
+  if [ ! -L $LOG_DIR/../$symlink -a ! -d $LOG_DIR/../$symlink ]; then
+    ( cd $LOG_DIR/.. ; ln -sf ../lib/pkgtools/$symlink . )
+  fi
+done
+
+# Make sure there's a proper temp directory:
+TMP=$ADM_DIR/setup/tmp
+# If the $TMP directory doesn't exist, create it:
+if [ ! -d $TMP ]; then
+  mkdir -p $TMP
+  chmod 700 $TMP # no need to leave it open
+fi
+
+# usage(), exit if called with no arguments:
+if [ $# = 0 ]; then
+  usage;
+  exit
+fi
+
+# If -warn mode was requested, produce the output and then exit:
+if [ "$MODE" = "warn" ]; then
+  while [ -f "$1" ]; do
+    mkdir -p $TMP/scan${MCOOKIE}
+    # Determine extension:
+    packageext="$( echo $1 | rev | cut -f 1 -d . | rev)"
+    # Determine decompressor utility:
+    case $packageext in
+    'tgz' )
+      packagecompression=gzip
+      ;;
+    'tbz' )
+      if which lbzip2 1> /dev/null 2> /dev/null ; then
+        packagecompression=lbzip2
+      else
+        packagecompression=bzip2
+      fi
+      ;;
+    'tlz' )
+      if which plzip 1> /dev/null 2> /dev/null ; then
+        packagecompression="plzip --threads=${THREADS}"
+      elif which lzip 1> /dev/null 2> /dev/null ; then
+        packagecompression=lzip
+      else
+        echo "ERROR:  lzip compression utility not found in \$PATH."
+        exit 3
+      fi
+      ;;
+    'txz' )
+      if [ ! "$XZ_THREADS_FORCED" = "yes" ]; then
+        packagecompression="xz --threads=${THREADS}"
+      else
+        packagecompression="xz --threads=2"
+      fi
+      ;;
+    esac
+    ( cd $TMP/scan${MCOOKIE} ; $packagecompression -dc | tar xf - install ) < $1 2> /dev/null 
+    if [ -r $TMP/scan${MCOOKIE}/install/doinst.sh ]; then
+      if grep ' rm -rf ' $TMP/scan${MCOOKIE}/install/doinst.sh 1>/dev/null 2>/dev/null ; then
+        grep ' rm -rf ' $TMP/scan${MCOOKIE}/install/doinst.sh > $TMP/scan${MCOOKIE}/install/delete
+	for f in `cat $TMP/scan${MCOOKIE}/install/delete | cut -f 3,7 -d ' ' | tr ' ' '/'`; do
+	  f="/$f"
+	  if [ -f "$f" -o -L "$f" ]; then
+	    echo "$f"
+	  fi
+	done
+      fi
+      if [ -d $TMP/scan${MCOOKIE} ]; then
+        ( cd $TMP/scan${MCOOKIE} ; rm -rf install ) 2> /dev/null
+        ( cd $TMP ; rmdir scan${MCOOKIE} ) 2> /dev/null
+      fi
+    fi
+    for f in `( $packagecompression -dc | tar tf - ) < $1 | grep -v 'drwx'`; do
+      f="/$f"
+      if [ -f "$f" -o -L "$f" ]; then
+        echo "$f"
+      fi
+    done
+    shift 1
+  done
+  exit
+fi
+
+# Main loop:
+for package in $* ; do
+
+  # Simple package integrity check:
+  if [ ! -f $package ]; then
+    EXITSTATUS=4
+    if [ "$MODE" = "install" ]; then
+      echo "Cannot install $package:  file not found"
+    fi
+    continue;
+  fi
+
+  # "shortname" isn't really THAT short...
+  # it's just the full name without ".t{gz,bz,lz,xz}"
+  shortname="$(pkgbase $package)"
+  packagedir="$(dirname $package)"
+  # This is the base package name, used for grepping tagfiles and descriptions:
+  packagebase="$(package_name $shortname)"
+
+  # Reject package if it does not end in '.t{gz,bz,lz,xz}':
+  if [ "$shortname" = "$(basename $package)" ]; then
+    EXITSTATUS=3
+    if [ "$MODE" = "install" ]; then
+      echo "Cannot install $package:  file does not end in .tgz, .tbz, .tlz, or .txz"
+    fi
+    continue;
+  fi
+
+  # Determine extension:
+  packageext="$(echo $package | rev | cut -f 1 -d . | rev)"
+
+  # Determine compressor utility:
+  case $packageext in
+  'tgz' )
+    packagecompression=gzip
+    ;;
+  'tbz' )
+    if which lbzip2 1> /dev/null 2> /dev/null ; then
+      packagecompression=lbzip2
+    else
+      packagecompression=bzip2
+    fi
+    ;;
+  'tlz' )
+    if which plzip 1> /dev/null 2> /dev/null ; then
+      packagecompression="plzip --threads=${THREADS}"
+    elif which lzip 1> /dev/null 2> /dev/null ; then
+      packagecompression=lzip
+    else
+      echo "ERROR:  lzip compression utility not found in \$PATH."
+      exit 3
+    fi
+    ;;
+  'txz' )
+    if [ ! "$XZ_THREADS_FORCED" = "yes" ]; then
+      packagecompression="xz --threads=${THREADS}"
+    else
+      packagecompression="xz --threads=2"
+    fi
+    ;;
+  esac
+
+  # Test presence of external compression utility:
+  if ! $(echo $packagecompression | cut -f 1 -d ' ') --help 1> /dev/null 2> /dev/null ; then
+    EXITSTATUS=5
+    if [ "$MODE" = "install" ]; then
+      echo "Cannot install $package:  external compression utility $packagecompression missing"
+    fi
+    continue;
+  fi
+
+  # Determine package's priority:
+  unset PRIORITY
+  if [ "$USERTAGFILE" = "" ]; then
+    TAGFILE="$packagedir/tagfile"   
+  else
+    TAGFILE="$USERTAGFILE"
+  fi
+  if [ ! -r "$TAGFILE" ]; then
+    TAGFILE=/dev/null
+  fi
+  if grep "^$packagebase:" "$TAGFILE" | grep ADD > /dev/null 2> /dev/null ; then
+    PRIORITY="ADD"
+  elif grep "^$packagebase:" "$TAGFILE" | grep REC > /dev/null 2> /dev/null ; then
+    PRIORITY="REC"
+  elif grep "^$packagebase:" "$TAGFILE" | grep OPT > /dev/null 2> /dev/null ; then
+    PRIORITY="OPT"
+  elif grep "^$packagebase:" "$TAGFILE" | grep SKP > /dev/null 2> /dev/null ; then
+    PRIORITY="SKP"
+  fi
+  if [ "$PRIORITY" = "ADD" ]; then
+    PMSG="[ADD]"
+  elif [ "$PRIORITY" = "REC" ]; then
+    PMSG="[REC]"
+  elif [ "$PRIORITY" = "OPT" ]; then
+    PMSG="[OPT]"
+  elif [ "$PRIORITY" = "SKP" ]; then
+    PMSG="[SKP]"
+  else
+    PMSG=""
+  fi
+
+  # If a tagfile wants this package to be skipped, do that now before
+  # wasting any more CPU on it:
+  if [ "$PRIORITY" = "SKP" -a ! "$ALWAYSASK" = "yes" ]; then
+    continue # next package
+  fi
+
+  # Figure out some package information, like the compressed and uncompressed
+  # sizes, and where to find the package description:
+  COMPRESSED="$(/bin/du -sh "$(readlink -f $package)" | cut -f 1)"
+  DESCRIPTION=""
+  # First check for .txt file next to the package, since this is faster:
+  if grep "^$packagebase:" "$packagedir/$shortname.txt" 1> /dev/null 2> /dev/null ; then
+    DESCRIPTION="$packagedir/$shortname.txt"
+  elif grep "^$shortname:" "$packagedir/$shortname.txt" 1> /dev/null 2> /dev/null ; then
+    DESCRIPTION="$packagedir/$shortname.txt"
+  fi
+
+  # Test tarball integrity and get uncompressed package size:
+  if [ "$MODE" = "install" ]; then
+    echo "Verifying package $(basename $package)."
+  fi
+  cat $package | $packagecompression -dc | LC_ALL=C dd 2> $TMP/tmpsize${MCOOKIE} | tar tf - 2> /dev/null 1> $TMP/tmplist${MCOOKIE}
+  TARERROR=$?
+  if [ ! "$TARERROR" = "0" ]; then
+    EXITSTATUS=1 # tar file corrupt
+    if [ "$MODE" = "install" ]; then
+      echo "Unable to install $package:  tar archive is corrupt (tar returned error code $TARERROR)"
+    fi
+    rm -f $TMP/tmplist${MCOOKIE} $TMP/tmpsize${MCOOKIE}
+    continue
+  fi
+  UNCOMPRESSED="$(cat $TMP/tmpsize${MCOOKIE} | tail -n 1 | cut -f 1 -d ' ' | numfmt --to=iec)"
+  rm -f $TMP/tmpsize${MCOOKIE}
+
+  # If we still don't have a package description, look inside the package.
+  # This requires a costly untar.
+  if [ "$DESCRIPTION" = "" ]; then
+    mkdir -p $TMP/scan${MCOOKIE}
+    ( cd $TMP/scan${MCOOKIE} ; $packagecompression -dc | tar xf - install ) < $package 2> /dev/null
+    if grep "^$packagebase:" "$TMP/scan${MCOOKIE}/install/slack-desc" 1> /dev/null 2> /dev/null ; then
+      DESCRIPTION="$TMP/scan${MCOOKIE}/install/slack-desc"
+    elif grep "^$shortname:" "$TMP/scan${MCOOKIE}/install/slack-desc" 1> /dev/null 2> /dev/null ; then
+      DESCRIPTION="$TMP/scan${MCOOKIE}/install/slack-desc"
+    fi
+  fi
+
+  if [ "$DESCRIPTION" = "" ]; then
+    #echo "WARNING NO SLACK-DESC"
+    DESCRIPTION="/dev/null"
+  fi
+
+  # Gather package infomation into a temporary file:
+  grep "^$packagebase:" $DESCRIPTION | cut -f 2- -d : | cut -b2- 1> $TMP/tmpmsg${MCOOKIE} 2> /dev/null
+  if [ "$shortname" != "$packagebase" ]; then
+    grep "^$shortname:" $DESCRIPTION | cut -f 2- -d : | cut -b2- 1>> $TMP/tmpmsg${MCOOKIE} 2> /dev/null
+  fi
+  # Adjust the length here.  This allows a slack-desc to be any size up to 13 lines instead of fixed at 11.
+  LENGTH=$(wc -l < $TMP/tmpmsg${MCOOKIE} )
+  while [ $LENGTH -lt 12 ]; do
+    echo >> $TMP/tmpmsg${MCOOKIE}
+    LENGTH=$(expr $LENGTH + 1)
+  done
+  echo "Size: Compressed: ${COMPRESSED}, uncompressed: ${UNCOMPRESSED}." >> $TMP/tmpmsg${MCOOKIE}
+  # For recent versions of dialog it is necessary to add \n to the end of each line
+  # or it will remove repeating spaces and mess up our careful formatting:
+  cat << EOF > $TMP/controlns${MCOOKIE}
+\n
+\n
+\n
+\n
+\n
+\n
+\n
+\n
+\n
+\n
+\n
+\n
+\n
+EOF
+  paste -d "" $TMP/tmpmsg${MCOOKIE} $TMP/controlns${MCOOKIE} > $TMP/pasted${MCOOKIE}
+  rm -f $TMP/controlns${MCOOKIE}
+  mv $TMP/pasted${MCOOKIE} $TMP/tmpmsg${MCOOKIE}
+  # Emit information to the console:
+  if [ "$MODE" = "install" ]; then
+    if [ "$PMSG" = "" ]; then
+      echo "Installing package $(basename $package):"
+    else
+      echo "Installing package $(basename $package) $PMSG:"
+    fi
+    echo "PACKAGE DESCRIPTION:"
+    grep "^$packagebase:" $DESCRIPTION | uniq | sed "s/^$packagebase:/#/g"
+    if [ "$shortname" != "$packagebase" ]; then
+      grep "^$shortname:" $DESCRIPTION | uniq | sed "s/^$shortname:/#/g"
+    fi
+  elif [ "$MODE" = "terse" ]; then # emit a single description line
+    ( flock 9 || exit 11
+      printf "%-$(expr $TERSELENGTH - 8)s %-6s\n" "$(echo $shortname: $(echo $(cat $DESCRIPTION | grep "^$packagebase:" | sed "s/^$packagebase: //g" | head -n 1 | tr -d '()' | sed "s/^$packagebase //g" ) $(echo " $(printf '.%.0s' {1..256})")) | cut -b1-$(expr $TERSELENGTH - 8))" "$(printf "[%5s]" $UNCOMPRESSED)" | cut -b 1-${TERSELENGTH}
+    ) 9> $INSTLOCKDIR/dialog.lock
+  elif [ "$MODE" = "infobox" ]; then # install infobox package
+    ( flock 9 || exit 11
+      dialog --title "Installing package $shortname $PMSG" --infobox "$(cat $TMP/tmpmsg${MCOOKIE})" 0 0
+    ) 9> $INSTLOCKDIR/dialog.lock
+  elif [ "$MODE" = "menu" -a "$PRIORITY" = "ADD" -a ! "$ALWAYSASK" = "yes" ]; then # ADD overrides menu mode unless -ask was used
+    ( flock 9 || exit 11
+      dialog --title "Installing package $shortname $PMSG" --infobox "$(cat $TMP/tmpmsg${MCOOKIE})" 0 0
+    ) 9> $INSTLOCKDIR/dialog.lock
+  elif [ "$MODE" = "menu" -a "$USERPRIORITY" = "ADD" ]; then # install no matter what $PRIORITY
+    ( flock 9 || exit 11
+      dialog --title "Installing package $shortname $PMSG" --infobox "$(cat $TMP/tmpmsg${MCOOKIE})" 0 0
+    ) 9> $INSTLOCKDIR/dialog.lock
+  else # we must need a full menu:
+    ( flock 9 || exit 11
+      dialog --title "Package Name: $shortname $PMSG" --menu "$(cat $TMP/tmpmsg${MCOOKIE})" 0 0 3 \
+      "Yes" "Install package $shortname" \
+      "No" "Do not install package $shortname" \
+      "Quit" "Abort software installation completely" 2> $TMP/reply${MCOOKIE}
+      if [ ! $? = 0 ]; then
+        echo "No" > $TMP/reply${MCOOKIE}
+      fi
+    ) 9> $INSTLOCKDIR/dialog.lock
+    REPLY="$(cat $TMP/reply${MCOOKIE})"
+    rm -f $TMP/reply${MCOOKIE} $TMP/tmpmsg${MCOOKIE}
+    if [ "$REPLY" = "Quit" ]; then
+      exit 99 # EXIT STATUS 99 = ABORT!
+    elif [ "$REPLY" = "No" ]; then
+      continue # skip the package
+    fi
+  fi
+
+  # Make sure there are no symbolic links sitting in the way of
+  # incoming package files:
+    grep -v "/$" $TMP/tmplist${MCOOKIE} | while read file ; do
+    if [ -L "$ROOT/$file" ]; then
+      rm -f "$ROOT/$file"
+    fi
+  done
+  rm -f $TMP/tmplist${MCOOKIE}
+
+  # Write the package file database entry and install the package:
+  echo "PACKAGE NAME:     $shortname" > $ADM_DIR/packages/$shortname
+  echo "COMPRESSED PACKAGE SIZE:     $COMPRESSED" >> $ADM_DIR/packages/$shortname
+  echo "UNCOMPRESSED PACKAGE SIZE:     $UNCOMPRESSED" >> $ADM_DIR/packages/$shortname
+  echo "PACKAGE LOCATION: $package" >> $ADM_DIR/packages/$shortname
+  # Record the md5sum if that's a selected option:
+  if [ $MD5SUM = 1 ]; then
+    echo "PACKAGE MD5SUM: $(md5sum $package | cut -f 1 -d ' ')" >> $ADM_DIR/packages/$shortname
+  fi
+  echo "PACKAGE DESCRIPTION:" >> $ADM_DIR/packages/$shortname
+  grep "^$packagebase:" $DESCRIPTION >> $ADM_DIR/packages/$shortname 2> /dev/null
+  if [ "$shortname" != "$packagebase" ]; then
+    grep "^$shortname:" $DESCRIPTION >> $ADM_DIR/packages/$shortname 2> /dev/null
+  fi
+  echo "FILE LIST:" >> $ADM_DIR/packages/$shortname
+  if [ "$INSTDIR" = "install" ]; then
+    ( cd $ROOT/ ; $packagecompression -dc | tar --acls --xattrs --xattrs-include='*' --keep-directory-symlink $NO_OVERWRITE -xpvf - | LC_ALL=C sort ) < $package >> $TMP/$shortname 2> /dev/null
+  else
+    ( cd $ROOT/ ; $packagecompression -dc | tar --transform "s,^install$,$INSTDIR," --transform "s,^install/,$INSTDIR/," --acls --xattrs --xattrs-include='*' --keep-directory-symlink $NO_OVERWRITE -xpvf - | LC_ALL=C sort ) < $package >> $TMP/$shortname 2> /dev/null
+  fi
+  if [ "$( grep '^\./' $TMP/$shortname | wc -l | tr -d ' ')" = "1" ]; then
+    # Good.  We have a package that meets the Slackware spec.
+    cat $TMP/$shortname >> $ADM_DIR/packages/$shortname
+  else
+    # Some dumb bunny built a package with something other than makepkg.  Bad!
+    # Oh well.  Bound to happen.  Par for the course.  Fix it and move on...
+    # We'll assume it's just a recent tar with an unfiltered filelist with all
+    # files prefixed with "./". No guarantees, but this will usually work.
+    cat $TMP/$shortname | sed '2,$s,^\./,,' >> $ADM_DIR/packages/$shortname
+  fi
+  rm -f $TMP/$shortname
+
+  # It's a good idea to make sure those newly installed libraries are properly
+  # activated for use, unless ROOT is pointing somewhere else in which case
+  # running ldconfig on the host system won't make any difference:
+  if [ "$ROOT" = ""  ] && [ -x /sbin/ldconfig ]; then
+    ( flock 9 || exit 11
+      /sbin/ldconfig 2> /dev/null
+    ) 9> $INSTLOCKDIR/ldconfig.lock
+  fi
+
+  if [ -f $ROOT/$INSTDIR/doinst.sh ]; then
+    if [ "$MODE" = "install" ]; then
+      echo "Executing install script for $(basename $package)."
+    fi
+    # Don't use locking if the script contains "NOLOCK":
+    if grep -q NOLOCK $ROOT/$INSTDIR/doinst.sh ; then
+      # If bash is available, use sed to convert the install script to use pushd/popd
+      # rather than spawning subshells which is slow on ARM.  This will also speed up
+      # install script processing on any platform.
+      if [ -x /bin/bash ]; then
+        ( cd $ROOT/ ; sed -e's?^( cd \([^;]*\);\(.*\) )$?pushd \1 \&\> /dev/null ; \2 ; popd \&\> /dev/null?g ' $INSTDIR/doinst.sh | /bin/bash )
+      else
+        ( cd $ROOT/ ; sh $INSTDIR/doinst.sh )
+      fi
+    else # use locking
+      # If bash is available, use sed to convert the install script to use pushd/popd
+      # rather than spawning subshells which is slow on ARM.  This will also speed up
+      # install script processing on any platform.
+      if [ -x /bin/bash ]; then
+        ( flock 9 || exit 11
+          cd $ROOT/ ; sed -e's?^( cd \([^;]*\);\(.*\) )$?pushd \1 \&\> /dev/null ; \2 ; popd \&\> /dev/null?g ' $INSTDIR/doinst.sh | /bin/bash
+        ) 9> $INSTLOCKDIR/doinst.sh.lock
+      else
+        ( flock 9 || exit 11
+          cd $ROOT/ ; sh $INSTDIR/doinst.sh
+        ) 9> $INSTLOCKDIR/doinst.sh.lock
+      fi
+    fi
+  fi 
+  # Clean up the mess...
+  if [ -d $ROOT/$INSTDIR ]; then
+    if [ -r $ROOT/$INSTDIR/doinst.sh ]; then
+      cp $ROOT/$INSTDIR/doinst.sh $ADM_DIR/scripts/$shortname
+      chmod 755 $ADM_DIR/scripts/$shortname
+    fi
+    if [ -r $ROOT/$INSTDIR/douninst.sh ]; then
+      cp $ROOT/$INSTDIR/douninst.sh $ADM_DIR/douninst.sh/$shortname
+      chmod 755 $ADM_DIR/douninst.sh/$shortname
+      echo "$(echo $ADM_DIR | rev | cut -f 1-3 -d / | rev)/douninst.sh/$shortname" >> $ADM_DIR/packages/$shortname
+    fi
+    # /install/do*inst.sh and /install/slack-* are reserved locations for the package system.
+    # Heh, not any more with a recent tar :-)
+    ( cd $ROOT/$INSTDIR ; rm -f do*inst.sh slack-* 1> /dev/null 2>&1 )
+    rmdir $ROOT/$INSTDIR 1> /dev/null 2>&1
+  fi
+  # If we used a scan directory, get rid of it:
+  if [ -d "$TMP/scan${MCOOKIE}" ]; then
+    rm -rf "$TMP/scan${MCOOKIE}"
+  fi
+  rm -f $TMP/tmpmsg${MCOOKIE} $TMP/reply${MCOOKIE}
+  if [ "$MODE" = "install" ]; then
+    echo "Package $(basename $package) installed."
+  fi
+done
+
+exit $EXITSTATUS

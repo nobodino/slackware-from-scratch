@@ -1,0 +1,134 @@
+#!/bin/bash
+# Copyright 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2015, 2018, 2020, 2021  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=aaa_libraries
+VERSION=${VERSION:-15.0}
+BUILD=${BUILD:-3}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+if [ "$ARCH" = "x86_64" ]; then
+  LIBDIRSUFFIX=""
+else
+  LIBDIRSUFFIX=""
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-${PKGNAM}
+rm -rf $PKG
+mkdir -p $TMP $PKG
+
+if [ -x /sbin/ldconfig ]; then
+  /sbin/ldconfig
+fi
+
+cd $PKG
+cat $CWD/symlinks-to-tracked-libs \
+  | grep -v "^#" | grep -v "^$" \
+  | sed -e "s#^/lib/#/lib${LIBDIRSUFFIX}/#" \
+        -e "s#^/usr/lib/#/usr/lib${LIBDIRSUFFIX}/#" \
+  | while read library ; do
+  ( [ ! -e $library ] && exit 0
+    echo "Adding $library"
+    mkdir -p $(dirname $library | cut -b2- )
+    cd $(dirname $library | cut -b2- )
+    rm -f $(basename $library)
+    cp -a $library .
+    rm -f $(readlink $library)
+    cp -a $(dirname $library)/$(readlink $library) .
+  )
+done
+
+cat $CWD/tracked-files \
+  | grep -v "^#" | grep -v "^$" \
+  | sed -e "s#^/lib/#/lib${LIBDIRSUFFIX}/#" \
+        -e "s#^/usr/lib/#/usr/lib${LIBDIRSUFFIX}/#" \
+  | while read library ; do
+  ( [ ! -e $library ] && exit 0
+    echo "Adding $library"
+    mkdir -p $(dirname $library | cut -b2- )
+    cd $(dirname $library | cut -b2- )
+    rm -f $(basename $library)
+    cp -a $library .
+  )
+done
+
+cat $CWD/symlinks-to-tracked-libs-tmp \
+  | grep -v "^#" | grep -v "^$" \
+  | sed -e "s#^/lib/#/lib${LIBDIRSUFFIX}/#" \
+        -e "s#^/usr/lib/#/usr/lib${LIBDIRSUFFIX}/#" \
+  | while read library ; do
+  ( [ ! -e $library ] && exit 0
+    echo "Adding $library"
+    mkdir -p $(dirname $library | cut -b2- )
+    cd $(dirname $library | cut -b2- )
+    rm -f $(basename $library)
+    cp -a $library .
+    rm -f $(readlink $library)
+    cp -a $(dirname $library)/$(readlink $library) .
+  )
+done
+
+cat $CWD/tracked-files-tmp \
+  | grep -v "^#" | grep -v "^$" \
+  | sed -e "s#^/lib/#/lib${LIBDIRSUFFIX}/#" \
+        -e "s#^/usr/lib/#/usr/lib${LIBDIRSUFFIX}/#" \
+  | while read library ; do
+  ( [ ! -e $library ] && exit 0
+    echo "Adding $library"
+    mkdir -p $(dirname $library | cut -b2- )
+    cd $(dirname $library | cut -b2- )
+    rm -f $(basename $library)
+    cp -a $library .
+  )
+done
+
+# Make sure shared libraries are executable:
+chmod 755 $PKG/lib${LIBDIRSUFFIX}/lib*.so.* $PKG/usr/lib${LIBDIRSUFFIX}/lib*.so.*
+
+# Don't ship symlinks in aaa_libraries... it's just asking for trouble.
+# installpkg will create them if needed by running ldconfig.
+find $PKG -type l -exec rm --verbose "{}" \+
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/${PKGNAM}-$VERSION-$ARCH-$BUILD.txz
+

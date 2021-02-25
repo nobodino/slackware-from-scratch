@@ -1,0 +1,57 @@
+.\" -*- nroff -*-
+.ds g \" empty
+.ds G \" empty
+.\" Like TP, but if specified indent is more than half
+.\" the current line-length - indent, use the default indent.
+.de Tp
+.ie \\n(.$=0:((0\\$1)*2u>(\\n(.lu-\\n(.iu)) .TP
+.el .TP "\\$1"
+..
+.TH PKGDIFF 8 "11 Apr 2018" "Slackware Version 15.0
+.SH NAME
+pkgdiff \- compare the file contents of two packages.
+.SH SYNOPSIS
+.B pkgdiff
+[
+.B \--help
+]
+[
+.B \-c
+]
+[
+.B \-a
+]
+.BI packagename
+.BI packagename2
+.SH DESCRIPTION
+.B pkgdiff
+Displays the differences in the files contained in two packages. This works with
+plain .tar, Slackware packages (.tgz, .tbz, .tlz, .txz), .rpm, and .deb. By default,
+the results will be displayed in a tree-style unified diff format.
+.SH OPTIONS
+.TP
+.B \--help
+Display help for using the pkgdiff utility.
+.TP
+.B \-c
+Colorize the tree-style output a-la DIR_COLORS. If piping to a pager such as
+less, you'll need to enable displaying raw data. For example:
+.P
+pkgdiff -c package-1.0-i586-1.txz package-2.0-i586-1.txz | less -r
+.TP
+.B \-a
+Instead of a tree-style output format, generate a simple unified diff of the
+package file lists.
+.SH EXAMPLES
+.TP
+.B Compare two packages and pipe the result to less:
+.P
+pkgdiff package-1.0-i586-1.txz package-2.0-i586-1.txz | less
+.SH AUTHOR
+Patrick J. Volkerding <volkerdi@slackware.com>
+.SH "SEE ALSO"
+.BR makepkg(8),
+.BR removepkg(8),
+.BR explodepkg(8),
+.BR pkgtool(8), 
+.BR upgradepkg(8)

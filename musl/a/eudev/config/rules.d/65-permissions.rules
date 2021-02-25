@@ -1,0 +1,41 @@
+# Slackware permission rules
+#
+# These rules are here instead of 40-slackware.rules because
+# many of them need to run after the block section in
+# 50-udev.default.rules
+#
+# Remember, in any upgrade, this file will be overwritten.
+# Put your custom rules somewhere else (90-local.rules is 
+# a good idea).
+#
+
+# all disks with group disk
+KERNEL!="fd*", SUBSYSTEM=="block",             GROUP="disk"
+
+# put all removable devices in group "plugdev"
+KERNEL=="sd*[!0-9]", ATTR{removable}=="1", GROUP="plugdev"
+KERNEL=="sd*[0-9]", ATTRS{removable}=="1", GROUP="plugdev"
+
+# Many hot-pluggable devices (ZIP, Jazz, LS-120, etc...)
+# need to be in plugdev, too.
+KERNEL=="diskonkey*",	GROUP="plugdev"
+KERNEL=="jaz*",		GROUP="plugdev"
+KERNEL=="pocketzip*",	GROUP="plugdev"
+KERNEL=="zip*",		GROUP="plugdev"
+KERNEL=="ls120",	GROUP="plugdev"
+KERNEL=="microdrive*",	GROUP="plugdev"
+
+# CD group and permissions 
+ENV{ID_CDROM}=="?*", 		GROUP="cdrom", MODE="0660"
+KERNEL=="pktcdvd",		GROUP="cdrom", MODE="0660"
+KERNEL=="pktcdvd[0-9]*",	GROUP="cdrom", MODE="0660"
+# permissions for SCSI sg devices
+SUBSYSTEMS=="scsi", KERNEL=="s[gt][0-9]*", ATTRS{type}=="5", \
+				GROUP="cdrom", MODE="0660"
+
+# Make DRI video devices usable by anyone in group "video":
+KERNEL=="card[0-9]*",GROUP:="video"
+
+# Make the real time clock readable by all, and writable by root:
+KERNEL=="rtc|rtc0",             MODE="0644"
+

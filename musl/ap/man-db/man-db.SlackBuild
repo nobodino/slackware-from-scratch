@@ -156,7 +156,7 @@ CXXFLAGS="$SLKCFLAGS" \
  
 make $NUMJOBS || make || exit 1
 make install-strip DESTDIR=$PKG || exit 1
-# Musl does not honorp LD_LIBRARY_PATH later on, so put libpipeline directly on the system
+# Musl does honorp LD_LIBRARY_PATH, but somehow it does not work later on, so put libpipeline directly on the system
 make install-strip || exit 1
 
 mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/$LIBNAM-$LIBVER
@@ -203,7 +203,7 @@ CXXFLAGS="$SLKCFLAGS" \
 
 make $NUMJOBS || make || exit 1
 make install-strip DESTDIR=$PKG || exit 1
-# Musl does not honorp LD_LIBRARY_PATH later on, so put libpipeline directly on the system
+# Musl does honorp LD_LIBRARY_PATH, but somehow it does not work later on, so put libpipeline directly on the system
 make install-strip || exit 1
 
 # Add man2html

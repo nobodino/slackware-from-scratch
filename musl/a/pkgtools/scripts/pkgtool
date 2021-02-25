@@ -1,0 +1,723 @@
+#!/bin/sh
+#
+# Copyright 1993, 1994, 1995, 1996, 1997, 1998, 1999  Patrick Volkerding,  Moorhead, MN  USA
+# Copyright 2001, 2004  Slackware Linux, Inc.,  Concord, CA  USA
+#    All rights reserved.
+# Copyright 2007, 2009, 2010, 2011, 2013, 2015, 2016, 2018  Patrick Volkerding, Sebeka, MN, USA
+#
+# Redistribution and use of this script, with or without modification, is 
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF 
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR 
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+
+# Mon Jun  4 21:17:58 UTC 2018
+# Use /var/lib/pkgtools, not /var/log.
+#
+# Sat Apr 25 21:18:53 UTC 2009
+# Converted to use new pkgbase() function to remove pathname and
+# valid package extensions.
+#
+# Wed Oct 31 16:28:46 CDT 2007
+#  * Thanks to Gabriele Inghirami for a patch allowing this script to work
+#    with much larger numbers of installed packages.
+# Wed, 27 Apr 1994 00:06:50 -0700 (PDT)
+#  * Optimization by David Hinds.
+# Sun Oct 24 23:11:40 BST 2004
+#  * Further optimisations by Jim Hawkins <jawkins@armedslack.org>
+#    - dramatically improved the speed of the "View" option
+# Thu Nov 04 12:19:56 BST 2004
+#  * More optimisations by Jim Hawkins
+#    - improved "Remove" speed in a similar manner to "View"
+# Wed Jan 12 16:53:48 GMT 2005
+#  * Fixed quoting bug thanks to Lasse Collin
+# Wed Jan 26 23:06:22 GMT 2005
+#  * Fix for non-standard package descriptions by Jim Hawkins
+
+# Return a package name that has been stripped of the dirname portion
+# and any of the valid extensions (only):
+pkgbase() {
+  PKGEXT=$(echo $1 | rev | cut -f 1 -d . | rev)
+  case $PKGEXT in
+  'tgz' )
+    PKGRETURN=$(basename $1 .tgz)
+    ;;
+  'tbz' )
+    PKGRETURN=$(basename $1 .tbz)
+    ;;
+  'tlz' )
+    PKGRETURN=$(basename $1 .tlz)
+    ;;
+  'txz' )
+    PKGRETURN=$(basename $1 .txz)
+    ;;
+  *)
+    PKGRETURN=$(basename $1)
+    ;;
+  esac
+  echo $PKGRETURN
+}
+
+SOURCE_DIR=/var/lib/pkgtools/mount
+ASK="tagfiles"
+if [ -L /bin/chmod -a -L /bin/chown ]; then # probably on the bootdisk using busybox
+ TARGET_DIR=/mnt
+ rootdevice="$(mount | grep ' on /mnt ' | tail -n 1 | cut -f 1 -d ' ' 2> /dev/null)"
+ TMP=/mnt/var/lib/pkgtools/setup/tmp
+ if ! mount | grep ' on /mnt ' 1> /dev/null 2> /dev/null ; then
+  echo
+  echo
+  echo "You can't run pkgtool from the rootdisk until you've mounted your Linux"
+  echo "partitions beneath /mnt. Here are some examples:"
+  echo
+  echo "If your root partition is /dev/sda1 you would type:"
+  echo "mount /dev/sda1 /mnt"
+  echo
+  echo "Now you can find a list of all your partitions in /mnt/etc/fstab."
+  echo
+  echo "Then, supposing your /usr partition is /dev/sda2, you must do this:"
+  echo "mount /dev/sda2 /mnt/usr"
+  echo
+  echo "Please mount your Linux partitions and then run pkgtool again."
+  echo
+  exit
+ fi
+else
+ TARGET_DIR=/
+ rootdevice="$(mount | grep ' on / ' | tail -n 1 | cut -f 1 -d ' ')"
+ TMP=/var/lib/pkgtools/setup/tmp
+fi
+if [ ! -d $TMP ]; then
+ mkdir -p $TMP
+ chmod 700 $TMP
+ fi
+ADM_DIR=$TARGET_DIR/var/lib/pkgtools
+LOG=$TMP/PKGTOOL.REMOVED
+
+# remove whitespace
+crunch() {
+  while read FOO ; do
+    echo $FOO
+  done
+}
+
+package_name() {
+  STRING=$(pkgbase $1)
+  # Check for old style package name with one segment:
+  if [ "$(echo $STRING | cut -f 1 -d -)" = "$(echo $STRING | cut -f 2 -d -)" ]; then
+    echo $STRING
+  else # has more than one dash delimited segment
+    # Count number of segments:
+    INDEX=1
+    while [ ! "$(echo $STRING | cut -f $INDEX -d -)" = "" ]; do
+      INDEX=$(expr $INDEX + 1)
+    done
+    INDEX=$(expr $INDEX - 1) # don't include the null value
+    # If we don't have four segments, return the old-style (or out of spec) package name:
+    if [ "$INDEX" = "2" -o "$INDEX" = "3" ]; then
+      echo $STRING
+    else # we have four or more segments, so we'll consider this a new-style name:
+      NAME=$(expr $INDEX - 3)
+      NAME="$(echo $STRING | cut -f 1-$NAME -d -)"
+      echo $NAME
+      # cruft for later ;)
+      #VER=$(expr $INDEX - 2)
+      #VER="$(echo $STRING | cut -f $VER -d -)"
+      #ARCH=$(expr $INDEX - 1)
+      #ARCH="$(echo $STRING | cut -f $ARCH -d -)"
+      #BUILD="$(echo $STRING | cut -f $INDEX -d -)"
+    fi
+  fi
+}
+
+remove_packages() {
+ for pkg_name in $(cat $TMP/return | tr -d "\042")
+ do
+  if [ -r $ADM_DIR/packages/$pkg_name ]; then
+   dialog --title "PACKAGE REMOVAL IN PROGRESS" --cr-wrap --infobox \
+"\nRemoving package $pkg_name.\n\
+\n\
+Since each file must be checked \
+against the contents of every other installed package to avoid wiping out \
+areas of overlap, this process can take quite some time. If you'd like to \
+watch the progress, flip over to another virtual console and type:\n\
+\n\
+tail -f $TMP/PKGTOOL.REMOVED\n" 13 60
+   export ROOT=$TARGET_DIR
+   removepkg $pkg_name >> $LOG 2> /dev/null
+  else
+   echo "No such package: $pkg_name. Can't remove." >> $LOG
+  fi
+ done
+}
+
+create_list_of_installed_packages()
+{
+    	FILES=$(ls $ADM_DIR/packages)
+      if [ -n "$FILES" ]; then
+      cd $ADM_DIR/packages
+      { grep '^PACKAGE DESCRIPTION:$' -Z -H -m1 -A1 $FILES; echo; } \
+      | sed -n 'h;n;/\x00/{h;n;};x;s/  */ /g;s/ $//;s/[\"`$]/\\&/g
+       s/\(.*\)\x00\([^:]*:\)\? *\(.*\)/ "\1" "\3" "View information about package \1" \\/;p' > $TMP/list_of_installed_packages \
+
+      fi
+}
+
+  create_list_of_files_to_remove ()
+{
+FILES=$(ls $ADM_DIR/packages)
+     if [ -n "$FILES" ]; then
+       cd $ADM_DIR/packages
+       { grep '^PACKAGE DESCRIPTION:$' -Z -H -m1 -A1 $FILES; echo; } \
+       | sed -n 'h;n;/\x00/{h;n;};x;s/  */ /g;s/ $//;s/[\"`$]/\\&/g
+           s/\(.*\)\x00\([^:]*:\)\? *\(.*\)/ "\1" "\3" off "Select\/Unselect removing package \1" \\/;p' > $TMP/temporary_list \
+     
+   fi
+}
+
+# Here, we read the list of arguments passed to the pkgtool script.
+if [ $# -gt 0 ]; then # there are arguments to the command
+ while [ $# -gt 0 ]; do
+  case "$1" in
+  -sets | --sets)
+   DISK_SETS=$(echo $2 | tr "[A-Z]" "[a-z]") ; shift 2 ;;
+  -source_mounted | --source-mounted)
+   SOURCE_MOUNTED="always" ; shift 1 ;;
+  -ignore_tagfiles | --ignore-tagfiles)
+   ASK="never" ; shift 1 ;;
+  -tagfile | --tagfile)
+   USETAG=$2 ; shift 2 ;;
+  -source_dir | --source_dir)
+   SOURCE_DIR=$2 ; shift 2 ;;
+  -target_dir | --target_dir)
+   TARGET_DIR=$2
+   ADM_DIR=$TARGET_DIR/var/lib/pkgtools
+   shift 2 ;;
+  -source_device | --source_device)
+   SOURCE_DEVICE=$2 ; shift 2 ;;
+  esac
+ done
+else  # there were no arguments, so we'll get the needed information from the
+      # user and then go on.
+ CMD_START="true"
+ rm -f $TMP/SeT*
+ while [ 0 ]; do
+  dialog --title "Slackware Package Tool (pkgtool version 15.0)" \
+--menu "\nWelcome to the Slackware package tool.\n\
+\nWhich option would you like?\n" 16 75 6 \
+"Current" "Install packages from the current directory" \
+"Other" "Install packages from some other directory" \
+"Remove" "Remove packages that are currently installed" \
+"View" "View the list of files contained in a package" \
+"Setup" "Choose Slackware installation scripts to run again" \
+"Exit" "Exit Pkgtool" 2> $TMP/reply
+  if [ ! $? = 0 ]; then
+   rm -f $TMP/reply
+   dialog --clear
+   exit
+  fi
+  REPLY="$(cat $TMP/reply)"
+  rm -f $TMP/reply
+  if [ "$REPLY" = "Exit" ]; then
+   dialog --clear
+   exit
+  fi
+  if [ "$REPLY" = "Setup" ]; then
+    echo 'dialog --title "SELECT SYSTEM SETUP SCRIPTS" --item-help --checklist \
+    "Please use the spacebar to select the setup scripts to run. Hit enter when you \
+are done selecting to run the scripts." 17 70 9 \' > $TMP/setupscr
+    for script in $ADM_DIR/setup/setup.* ; do
+      BLURB=$(grep '#BLURB' $script | cut -b8-)
+      if [ "$BLURB" = "" ]; then
+        BLURB="\"\""
+      fi
+      echo " \"$(basename $script | cut -f2- -d .)\" $BLURB \"no\" $BLURB \\" >> $TMP/setupscr 
+    done
+    echo "2> $TMP/return" >> $TMP/setupscr
+    . $TMP/setupscr
+    if [ ! "$(cat $TMP/return)" = "" ]; then
+      # Run each script:
+      for script in $(cat $TMP/return) ; do
+        scrpath=$ADM_DIR/setup/setup.$(echo $script | tr -d \")
+        ( COLOR=on ; cd $TARGET_DIR ; . $scrpath $TARGET_DIR $rootdevice )
+      done
+    fi
+    rm -f $TMP/return $TMP/setupscr
+    continue
+  fi # end Setup
+
+  if [ "$REPLY" = "View" ]; then
+create_list_of_installed_packages
+   DEFITEM=""
+   export DEFITEM
+   #dialog --title "SCANNING" --infobox "Please wait while \
+#Pkgtool scans your system to determine which packages you have \
+#installed and prepares a list for you." 0 0
+   (
+     echo 'dialog $DEFITEM --item-help --menu "Please select the package you wish to view." 17 68 10 \'
+   ) > $TMP/viewscr
+   cat $TMP/list_of_installed_packages >> $TMP/viewscr
+   echo "2> $TMP/return" >> $TMP/viewscr
+   while [ 0 ]; do
+    . $TMP/viewscr
+    if [ ! "$(cat $TMP/return)" = "" ]; then
+     DEFITEM="--default-item $(cat $TMP/return)"
+     dialog --title "CONTENTS OF PACKAGE: $(cat $TMP/return)" --no-shadow --textbox "$ADM_DIR/packages/$(cat $TMP/return)" \
+     0 0 2> /dev/null
+    else
+     break 
+    fi
+   done
+   rm -f $TMP/return $TMP/viewscr $TMP/tmpmsg $TMP/list_of_installed_packages
+   # This will clean up after most defective packages:
+   chmod 755 /
+   chmod 1777 /tmp
+   continue
+  fi  
+
+  if [ "$REPLY" = "Remove" ]; then
+   #dialog --title "SCANNING" --infobox "Please wait while Pkgtool scans \
+#your system to determine which packages you have installed and prepares \
+#a list for you." 0 0
+   # end section
+   (
+create_list_of_files_to_remove #call the function to create a list of installed packages
+     cat << EOF
+dialog --title "SELECT PACKAGES TO REMOVE" --item-help --checklist \
+"Please select the \
+packages you wish to Remove. Use the \
+spacebar to select packages to delete, and the UP/DOWN arrow keys to \
+scroll up and down through the entire list." 20 75 11 \\
+EOF
+   ) > $TMP/rmscript
+   cat $TMP/temporary_list >> $TMP/rmscript
+   echo "2> $TMP/return" >> $TMP/rmscript
+   if [ -L $LOG -o -r $LOG ]; then
+     rm -f $LOG
+   fi
+   cat /dev/null > $LOG
+   chmod 600 $LOG
+   chmod 700 $TMP/rmscript
+   export ADM_DIR;
+   $TMP/rmscript
+   remove_packages
+   if [ "$(cat $TMP/PKGTOOL.REMOVED)" = "" ]; then
+    rm -f $TMP/PKGTOOL.REMOVED
+    dialog --title "NO PACKAGES REMOVED" --msgbox "Hit OK to return \
+to the main menu." 5 40
+   else
+    dialog --title "PACKAGE REMOVAL COMPLETE" --msgbox "The packages have \
+been removed. A complete log of the files that were removed has been created \
+in $TMP: PKGTOOL.REMOVED." 0 0
+   fi
+   rm -f $TMP/rmscript $TMP/return $TMP/tmpmsg $TMP/SeT* $TMP/temporary_list
+   chmod 755 /
+   chmod 1777 /tmp
+# No, return to the main menu:
+#   exit
+  elif [ "$REPLY" = "Other" ]; then
+   dialog --title "SELECT SOURCE DIRECTORY" --inputbox "Please enter the name of the directory that you wish to \
+install packages from:" 10 50 2> $TMP/pkgdir
+   if [ $? = 1 ]; then
+    rm -f $TMP/pkgdir $TMP/SeT*
+    dialog --clear
+    exit
+   fi 
+   SOURCE_DIR="$(cat $TMP/pkgdir)"
+   SOURCE_MOUNTED="always"
+   DISK_SETS="disk" 
+   chmod 755 $TARGET_DIR
+   chmod 1777 $TARGET_DIR/tmp
+   rm -f $TMP/pkgdir
+   if [ ! -d $SOURCE_DIR ]; then
+    dialog --title "DIRECTORY NOT FOUND" --msgbox "The directory you want to \
+install from ($SOURCE_DIR) \
+does not seem to exist. Please check the directory and then try again." \
+10 50
+    dialog --clear
+    exit
+   fi
+   break;
+  else # installing from current directory
+   SOURCE_MOUNTED="always"
+   SOURCE_DIR="$PWD"
+   DISK_SETS="disk" 
+   chmod 755 $TARGET_DIR
+   chmod 1777 $TARGET_DIR/tmp
+   break;
+  fi 
+ done
+fi
+if [ "$DISK_SETS" = "disk" ]; then
+ ASK="always"
+fi
+
+mount_the_source() {
+ # is the source supposed to be mounted already?
+ if [ "$SOURCE_MOUNTED" = "always" ]; then
+  # The source should already be mounted, so we test it
+  if [ ! -d $SOURCE_DIR ]; then # the directory is missing
+   cat << EOF > $TMP/tmpmsg
+
+Your source device cannot be accessed properly.
+
+Please be sure that it is mounted on $SOURCE_DIR,
+and that the Slackware disks are found in subdirectories 
+of $SOURCE_DIR like specified.
+
+EOF
+   dialog --title "MOUNT ERROR" --msgbox "$(cat $TMP/tmpmsg)" 11 67
+   rm -f $TMP/tmpmsg
+   exit 1;
+  fi
+  return 0;
+ fi
+ dialog --title "INSERT DISK" --menu "Please insert disk $1 and \
+press ENTER to continue." \
+11 50 3 \
+"Continue" "Continue with the installation" \
+"Skip" "Skip the current disk series" \
+"Quit" "Abort the installation process" 2> $TMP/reply
+ if [ ! $? = 0 ]; then
+  REPLY="Quit"
+ else
+  REPLY="$(cat $TMP/reply)"
+ fi
+ rm -f $TMP/reply
+ if [ "$REPLY" = "Skip" ]; then
+  return 1;
+ fi
+ if [ "$REPLY" = "Quit" ]; then
+   dialog --title "ABORTING" --msgbox "Aborting software installation." 5 50
+   chmod 755 $TARGET_DIR
+   chmod 1777 $TARGET_DIR/tmp
+   exit 1;
+ fi;
+ # Old line:
+ # mount -r -t msdos $SOURCE_DEVICE $SOURCE_DIR
+ # New ones: (thanks to Andy Schwierskott!)
+ go_on=y
+ not_successfull_mounted=1
+ while [ "$go_on" = y -a "$not_successfull_mounted" = 1 ]; do
+  mount -r -t msdos $SOURCE_DEVICE $SOURCE_DIR
+  not_successfull_mounted=$?
+  if [ "$not_successfull_mounted" = 1 ]; then
+   mount_answer=x
+   while [ "$mount_answer" != "y" -a "$mount_answer" != "q" ] ; do
+    dialog --title "MOUNT PROBLEM" --menu "Media was not successfully \
+mounted! Do you want to \
+retry, or quit?" 10 60 2 \
+"Yes" "Try to mount the disk again" \
+"No" "No, abort." 2> $TMP/mntans
+    mount_answer="$(cat $TMP/mntans)"
+    rm -f $TMP/mntans
+    if [ "$mount_answer" = "Yes" ]; then
+     mount_answer="y"
+    else
+     mount_answer="q"
+    fi
+   done
+   go_on=$mount_answer
+  fi
+ done
+ test $not_successfull_mounted = 0
+}
+
+umount_the_source() {
+ if [ ! "$SOURCE_MOUNTED" = "always" ]; then
+  umount $SOURCE_DEVICE 1> /dev/null 2> /dev/null
+ fi;
+}
+
+install_disk() {
+ mount_the_source $1
+ if [ $? = 1 ]; then
+  umount_the_source;
+  return 1;
+ fi
+ CURRENT_DISK_NAME="$1"
+ PACKAGE_DIR=$SOURCE_DIR
+ if [ "$SOURCE_MOUNTED" = "always" -a ! "$DISK_SETS" = "disk" ]; then
+   PACKAGE_DIR=$PACKAGE_DIR/$1
+ fi
+
+ # If this directory is missing or contains no *.t?z files, bail.
+ if [ ! -d $PACKAGE_DIR ]; then
+  return 1
+ fi
+ if ! ls $PACKAGE_DIR/*.t?z 1> /dev/null 2> /dev/null ; then
+  return 1
+ fi
+
+ #
+ # look for tagfile for this series and copy into $TMP/tagfile
+ #
+ touch $TMP/tagfile
+ if [ ! "$DISK_SETS" = "disk" ]; then
+  if [ -r $TMP/SeTtagext ]; then
+   if [ -r $PACKAGE_DIR/tagfile$(cat $TMP/SeTtagext) ]; then
+    cat $PACKAGE_DIR/tagfile$(cat $TMP/SeTtagext) >> $TMP/tagfile
+   else
+    if [ -r $PACKAGE_DIR/tagfile ]; then
+     cat $PACKAGE_DIR/tagfile >> $TMP/tagfile
+    fi
+   fi
+
+  #
+  # Do we need to follow a custom path to the tagfiles?
+  #
+  elif [ -r $TMP/SeTtagpath ]; then
+   custom_path=$(cat $TMP/SeTtagpath)
+   short_path=$(basename $PACKAGE_DIR)
+
+   # If tagfile exists at the specified custom path, copy it over.
+   if [ -r $custom_path/$short_path/tagfile ]; then
+    cat $custom_path/$short_path/tagfile >> $TMP/tagfile
+
+   else # well, I guess we'll use the default one then.
+    if [ -r $PACKAGE_DIR/tagfile ]; then
+     cat $PACKAGE_DIR/tagfile >> $TMP/tagfile
+    fi
+   fi
+  #
+  # We seem to be testing for this too often... maybe this code should
+  # be optimized a little...
+  # 
+  elif [ -r $PACKAGE_DIR/tagfile ]; then
+   cat $PACKAGE_DIR/tagfile >> $TMP/tagfile
+  fi
+
+  #
+  # Execute menus if in QUICK mode:
+  #
+  if [ -r $TMP/SeTQUICK -a -r $PACKAGE_DIR/maketag ]; then
+   if [ ! "$MAKETAG" = "" -a -r $PACKAGE_DIR/$MAKETAG ]; then # use alternate maketag
+    sh $PACKAGE_DIR/$MAKETAG
+   else    
+    sh $PACKAGE_DIR/maketag
+   fi
+   if [ -r $TMP/SeTnewtag ]; then
+    mv $TMP/SeTnewtag $TMP/tagfile
+   fi
+  fi
+
+  #
+  # Protect tagfile from hacker attack:
+  #
+  if [ -r $TMP/tagfile ]; then
+   chmod 600 $TMP/tagfile
+  fi
+
+ fi #  ! "$DISK_SETS" = "disk" 
+
+ # It's possible that the tagfile was specified on the command line. If that's
+ # the case, then we'll just override whatever we figured out up above.
+ if [ ! "$USETAG" = "" ]; then
+   cat $USETAG > $TMP/tagfile
+ fi
+
+ # If there's a catalog file present, use it to check for missing files.
+ # If not, forget about that and install whatever's there.
+ if [ "$1" = "single_disk" -o -r $PACKAGE_DIR/disk$1 -o -r $PACKAGE_DIR/package-list.txt ]; then
+  if [ -r $PACKAGE_DIR/package-list.txt ]; then
+   CATALOG_FILE=$PACKAGE_DIR/package-list.txt
+  else
+   CATALOG_FILE=$(basename $PACKAGE_DIR/disk*);
+  fi
+  if [ -r $PACKAGE_DIR/$CATALOG_FILE -a ! -d $PACKAGE_DIR/$CATALOG_FILE ]; then
+   if grep CONTENTS: $PACKAGE_DIR/$CATALOG_FILE 1> /dev/null 2> /dev/null ; then
+    # First we check for missing packages...
+    for PKGTEST in $(grep "^CONTENTS:" $PACKAGE_DIR/$CATALOG_FILE | cut -f2- -d : 2> /dev/null) ; do
+     # This is not a perfect test.  (say emacs is missing but emacs-nox is not)
+     if ls $PACKAGE_DIR/$PKGTEST*.t?z 1> /dev/null 2> /dev/null ; then # found something like it
+      true
+     else
+      cat << EOF > $TMP/tmpmsg
+
+WARNING!!!
+
+While looking through your index file ($CATALOG_FILE),
+I noticed that you might be missing a package:
+
+$PKGTEST-\*-\*-\*.t?z
+
+that is supposed to be on this disk (disk $1). You may go
+on with the installation if you wish, but if this is a 
+crucial file I'm making no promises that your machine will
+boot.
+
+EOF
+      dialog --title "FILE MISSING FROM YOUR DISK" --msgbox \
+"$(cat $TMP/tmpmsg)" 17 67
+     fi
+    done # checking for missing packages
+    # Now we test for extra packages:
+    ALLOWED="$(grep CONTENTS: $PACKAGE_DIR/$CATALOG_FILE | cut -b10- 2> /dev/null)" 
+    for PACKAGE_FILENAME in $PACKAGE_DIR/*.t?z; do
+     BASE=$(pkgbase $PACKAGE_FILENAME)
+     BASE="$(package_name $BASE)"
+     if echo $ALLOWED | grep $BASE 1> /dev/null 2> /dev/null ; then
+      true
+     else
+      cat << EOF > $TMP/tmpmsg
+
+WARNING!!!
+
+While looking through your index file ($CATALOG_FILE),
+I noticed that you have this extra package:
+
+($BASE.t?z) 
+
+that I don't recognize. Please be sure this package is
+really supposed to be here, and is not left over from an
+old version of Slackware. Sometimes this can happen at the 
+archive sites.
+
+EOF
+      dialog --title "EXTRA FILE FOUND ON YOUR DISK" \
+--msgbox "$(cat $TMP/tmpmsg)" 17 67 
+      rm -f $TMP/tmpmsg
+     fi
+    done 
+   fi
+  fi
+ fi # check for missing/extra packages
+
+ # Install the packages:
+ for PACKAGE_FILENAME in $PACKAGE_DIR/*.t?z; do
+  if [ "$PACKAGE_FILENAME" = "$PACKAGE_DIR/*.t?z" ]; then
+   continue;
+  fi
+  if [ "$ASK" = "never" ]; then # install the package
+   installpkg -root $TARGET_DIR -infobox -tagfile $TMP/tagfile $PACKAGE_FILENAME
+   ERROR=$?
+  elif [ "$ASK" = "tagfiles" ]; then
+   installpkg -root $TARGET_DIR -menu -tagfile $TMP/tagfile $PACKAGE_FILENAME
+   ERROR=$?
+  else # ASK should be = always here, and that's how we'll treat it
+   installpkg -root $TARGET_DIR -menu -ask -tagfile $TMP/tagfile $PACKAGE_FILENAME
+   ERROR=$?
+  fi
+  # Check for abort:
+  if [ "$ERROR" = "99" ]; then
+   umount_the_source;
+   chmod 755 $TARGET_DIR
+   chmod 1777 $TARGET_DIR/tmp
+   exit 1;
+   fi
+ done
+ OUTTAHERE="false"
+ if [ -r $PACKAGE_DIR/install.end ]; then
+  OUTTAHERE="true"
+ fi
+ umount_the_source;
+ if [ "$OUTTAHERE" = "true" ]; then
+  return 1;
+ fi
+}
+
+install_disk_set() { # accepts one argument: the series name in lowercase.
+ SERIES_NAME=$1
+ CURRENT_DISK_NUMBER="1";
+ while [ 0 ]; do
+  # Don't start numbering the directories until 2:
+  if [ $CURRENT_DISK_NUMBER = 1 ]; then
+    DISKTOINSTALL=$SERIES_NAME
+  else
+    DISKTOINSTALL=$SERIES_NAME$CURRENT_DISK_NUMBER
+  fi
+  install_disk $DISKTOINSTALL
+  if [ ! $? = 0 ]; then # install.end was found, or the user chose
+        # to quit installing packages.
+   return 0;
+  fi
+  CURRENT_DISK_NUMBER=$(expr $CURRENT_DISK_NUMBER + 1)
+ done;
+}
+
+# /* main() */ ;)
+if [ "$DISK_SETS" = "disk" ]; then
+ install_disk single_disk;
+ ASK="always"
+else
+ touch $TMP/tagfile
+ chmod 600 $TMP/tagfile
+ if echo $DISK_SETS | grep "#a#" 1> /dev/null 2> /dev/null ; then
+  A_IS_NEEDED="true"
+ else
+  A_IS_NEEDED="false"
+ fi
+ while [ 0 ];
+ do
+  while [ 0 ]; # strip leading '#'s
+  do
+   if [ "$(echo $DISK_SETS | cut -b1)" = "#" ]; then
+    DISK_SETS="$(echo $DISK_SETS | cut -b2-)"
+   else
+    break;
+   fi
+  done
+  if [ "$A_IS_NEEDED" = "true" ]; then
+   cat << EOF > $TMP/tmpmsg
+
+--- Installing package series ==>a<==
+
+EOF
+   dialog --infobox "$(cat $TMP/tmpmsg)" 5 45
+   sleep 1
+   rm -f $TMP/tmpmsg
+   install_disk_set a;
+   A_IS_NEEDED="false"
+  fi
+  count="1"
+  if [ "$(echo $DISK_SETS | cut -b$count)" = "" ]; then
+   break; # we be done here :^)
+  else
+   count="2"
+   while [ 0 ]; do
+    if [ "$(echo $DISK_SETS | cut -b$count)" = "" -o "$(echo $DISK_SETS | cut -b$count)" = "#" ]; then
+     count="$(expr $count - 1)"
+     break;
+    else
+     count="$(expr $count + 1)"
+    fi 
+   done
+  fi 
+  diskset="$(echo $DISK_SETS | cut -b1-$count)"
+  count="$(expr $count + 1)"
+  DISK_SETS="$(echo $DISK_SETS | cut -b$count-)"
+  if [ "$diskset" = "a" ]; then
+   continue; # we expect this to be done elsewhere
+  fi
+  cat << EOF > $TMP/tmpmsg
+
+Installing package series ==>$diskset<==
+
+EOF
+  dialog --infobox "$(cat $TMP/tmpmsg)" 5 45
+  sleep 1
+  rm -f $TMP/tmpmsg
+  install_disk_set $diskset; 
+ done
+fi
+
+if [ "$DISK_SETS" = "disk" -o "$CMD_START" = "true" ]; then
+ if [ -r $TMP/tagfile ]; then
+  rm $TMP/tagfile
+ fi
+ dialog --clear
+fi
+chmod 755 $TARGET_DIR $TARGET_DIR/var $TARGET_DIR/usr
+chmod 1777 $TARGET_DIR/tmp

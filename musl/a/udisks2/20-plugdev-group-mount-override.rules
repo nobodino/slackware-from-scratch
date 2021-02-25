@@ -1,0 +1,16 @@
+/* http://udisks.freedesktop.org/docs/latest/udisks-polkit-actions.html */
+
+polkit.addRule(function(action, subject) {
+    if (action.id == "org.freedesktop.udisks2.filesystem-mount" &&
+        subject.isInGroup("plugdev")) {
+        return polkit.Result.YES;
+    }
+});
+
+polkit.addRule(function(action, subject) {
+    if (action.id == "org.freedesktop.udisks2.eject-media" &&
+        subject.isInGroup("plugdev")) {
+        return polkit.Result.YES;
+    }
+});
+

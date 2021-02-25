@@ -1,0 +1,267 @@
+#!/bin/sh
+#BLURB="Create a USB Linux boot stick"
+if [ -r /usr/lib/setup/setup ]; then
+  RDIR=/dev/tty4
+else
+  RDIR=/dev/null
+fi
+TMP=/var/lib/pkgtools/setup/tmp
+
+if [ ! -d $TMP ]; then
+  mkdir -p $TMP
+fi
+if [ -z "$1" ]; then
+  T_PX=/
+else
+  T_PX="$1"
+fi
+if [ -z "$2" ]; then
+  ROOT_DEVICE=$(mount | head -n 1 | cut -f 1 -d ' ')
+else
+  ROOT_DEVICE="$2"
+fi
+
+if [ -r $T_PX/usr/share/syslinux/mbr.bin ]; then
+  MBR_BIN=$T_PX/usr/share/syslinux/mbr.bin
+elif [ -r /usr/share/syslinux/mbr.bin ]; then
+  MBR_BIN=/usr/share/syslinux/mbr.bin
+else
+  dialog --title "ERROR: USB BOOT STICK NOT CREATED" --msgbox \
+  "Master Boot Record file mbr.bin not found. This script requires that the syslinux package is installed." 6 60
+  exit
+fi
+
+while [ 0 ]; do # the bootdisk menu loop
+ # Run "rescan-scsi-bus -l" to get an up to date overview of devices:
+ /sbin/rescan-scsi-bus -l 1>$RDIR 2>$RDIR
+ # Get a list of removable block devices before the USB stick is inserted:
+ echo "" > $TMP/remov_prior
+ for BDEV in $(ls --indicator-style none /sys/block | egrep -v "loop|ram"); do
+   [ -r /sys/block/$BDEV/removable -a "$(cat /sys/block/$BDEV/removable)" == "1" ] \
+     && echo $BDEV >> $TMP/remov_prior
+ done
+ if [ "$T_PX" = "/" ]; then
+   DEFAULTITEM="Create"
+ else
+   DEFAULTITEM="Skip"
+ fi
+ dialog --title "MAKE USB FLASH BOOT" --default-item "$DEFAULTITEM" --menu \
+"If your computer supports booting from a USB device, it is recommended that you make \
+a USB boot stick for your system at this time. It will boot your computer straight \
+into the root filesystem on $ROOT_DEVICE. \n\
+\n\
+Please insert a USB flash memory stick and then press ENTER to create a boot stick. \n\
+\n\
+WARNING! The existing contents of the USB stick will be erased. \n\
+   " 18 70 2 \
+ "Create" "Make a USB Linux boot stick" \
+ "Skip" "Skip making a USB boot stick" \
+ 2> $TMP/return
+ REPLY=`cat $TMP/return`
+ rm -f $TMP/return
+ if [ "$REPLY" = "Create" ]; then
+  # Run "rescan-scsi-bus -l" to discover our USB stick if needed:
+  /sbin/rescan-scsi-bus -l 1>$RDIR 2>$RDIR
+  # Get a list of removable block devices after the USB stick is inserted:
+  echo "" > $TMP/remov_after
+  for BDEV in $(ls --indicator-style none /sys/block | egrep -v "loop|ram"); do
+    [ -r /sys/block/$BDEV/removable -a "$(cat /sys/block/$BDEV/removable)" == "1" ] \
+      && echo $BDEV >> $TMP/remov_after
+  done
+  ADDED=$(diff -u $TMP/remov_prior $TMP/remov_after | sed -n 's/^\+//p' | grep -v '^+')
+  REMVD=$(diff -u $TMP/remov_prior $TMP/remov_after | sed -n 's/^\+//p' | grep -v '^+')
+  if [ -n "$ADDED" ] ; then STICK=$ADDED ; else STICK="" ; fi
+  rm $TMP/remov_prior $TMP/remov_after
+  if [ ! -n "$STICK" ]; then
+   dialog --title "NO NEW DEVICE DETECTED" --ok-label Restart --msgbox  \
+"No new USB device was detected. 
+If you had already inserted your USB stick, please remove it now. \
+Then select 'Restart'." 7 70
+   continue
+  else
+   VENDOR="Vendor : $(cat /sys/block/$STICK/device/vendor)"
+   MODEL="Model  : $(cat /sys/block/$STICK/device/model)"
+   SIZE="Size   : $(( $(cat /sys/block/$STICK/size) / 2048)) MB"
+   dialog --title "NEW DEVICE DETECTED" --yesno \
+"A new USB device '/dev/$STICK' was detected with specifications:
+
+--  $VENDOR
+--  $MODEL
+--  $SIZE
+
+If this is the USB stick to use, select 'Yes',
+otherwise select 'No'." 12 70
+   if [ $? -eq 1 ]; then
+    continue
+   fi
+  fi
+
+  dialog --title "CREATING USB BOOT STICK" --infobox "Creating SYSLINUX bootdisk for \
+$ROOT_DEVICE on /dev/$STICK." 3 64 
+  # Create a 16M partition with FAT16. This should be large enough for any kernel (for now).
+  PARTSIZE="+16384K"
+  # Zero out master boot record and then initialize it with one bootable dos partition  
+  dd if=/dev/zero of=/dev/$STICK bs=512 count=1  1> $RDIR 2> $RDIR
+  echo "PARTSIZE=$PARTSIZE" 1> $RDIR 
+  fdisk /dev/$STICK << EOF 1> $RDIR 2> $RDIR
+n
+p
+1
+2048
+$PARTSIZE
+t 1
+6
+a
+w
+EOF
+  if [ -x /sbin/mkdosfs ]; then
+    /sbin/mkdosfs -I -n USBSLACK -F 16 /dev/${STICK}1 1> $RDIR 2> $RDIR
+  else
+    chroot $T_PX /sbin/mkdosfs -I -n USBSLACK -F 16 /dev/${STICK}1 1> $RDIR 2> $RDIR
+  fi
+  sync
+  # install syslinux
+  if which syslinux-nomtools 1> $RDIR 2> $RDIR ; then
+    syslinux-nomtools -i -s /dev/${STICK}1 1> $RDIR 2> $RDIR
+  elif which strace 1> $RDIR 2> $RDIR ; then
+    # There is a race condition between udev >= 214 and mtools which causes
+    # the regular version of syslinux to fail when installing to USB, but
+    # strace changes the timing just enough that it usually works:
+    strace syslinux -i -s /dev/${STICK}1 1> $RDIR 2> $RDIR
+  else
+    # This might work when the issues with mtools and udev are addressed,
+    # or if syslinux is eventually able to work around them.
+    syslinux -i -s /dev/${STICK}1 1> $RDIR 2> $RDIR
+  fi
+  # make the device bootable:
+  echo "dd if=$MBR_BIN of=/dev/$STICK" 1> $RDIR 2> $RDIR
+  dd if=$MBR_BIN of=/dev/$STICK  1> $RDIR 2> $RDIR
+  sync
+  # mount the device and write some configuration files
+  if [ ! -d $TMP/bootdisk ]; then
+    mkdir $TMP/bootdisk 2> $RDIR
+  fi
+  mount -t vfat /dev/${STICK}1 $TMP/bootdisk 1> $RDIR 2> $RDIR
+  if [ -r $T_PX/boot/vmlinuz ]; then
+    cp $T_PX/boot/vmlinuz $TMP/bootdisk/vmlinuz 1> $RDIR 2> $RDIR
+  elif [ -r $T_PX/vmlinuz ]; then
+    cp $T_PX/vmlinuz $TMP/bootdisk/vmlinuz  1> $RDIR 2> $RDIR
+  fi
+  cat << EOF > $TMP/bootdisk/message.txt 2> $RDIR
+
+Welcome to the 09Slackware07 Linux custom USB boot stick!
+
+By default, this stick boots a root Linux partition on $ROOT_DEVICE when you
+hit ENTER. If you'd like to boot some other partition, use a command like
+this on the prompt below:
+
+    mount root=/dev/sda1 ro
+
+Where "/dev/sda1" is the partition you want to boot, and "ro" specifies that
+the partition should be initially mounted as read-only. If you wish to mount
+the partition read-write, use "rw" instead. To set the video console mode,
+use the vga= parameter (press F1 to see a table). You may also add any other
+kernel parameters you might need depending on your hardware, and which
+drivers are included in your kernel.
+
+EOF
+   cat << EOF > $TMP/bootdisk/syslinux.cfg 2> $RDIR
+default vmlinuz root=$ROOT_DEVICE vga=normal ro
+prompt 1
+timeout 6000
+display message.txt
+F1 f1.txt
+F2 message.txt
+#F3 f3.txt
+#F4 f4.txt
+#F5 f5.txt
+#F6 f6.txt
+#F7 f7.txt
+label mount
+  kernel vmlinuz
+  append root=$ROOT_DEVICE vga=normal ro
+EOF
+  cat << EOF > $TMP/bootdisk/f1.txt 2> $RDIR
+ STANDARD MODES:
+ To make the kernel prompt for standard video modes use: vga=ask
+
+ FRAMEBUFFER MODES:
+ To get the kernel to start in VESA framebuffer mode, you need to pass it
+ a vga= init string on the "boot:" prompt. Here's a table:
+
+   Colors   640x480 800x600 1024x768 1280x1024 1600x1200
+  --------+---------------------------------------------
+  256     |   769     771      773      775       796
+  32,768  |   784     787      790      793       797
+  65,536  |   785     788      791      794       798
+  16.8M   |   786     789      792      795       799
+
+  ...such as this for 1024x768x64k:
+   vga=791
+
+  F2 returns to the previous page.
+
+EOF
+  if [ "$(uname -m)" == "x86_64" ]; then # also install an EFI bootloader
+    mkdir -p $TMP/bootdisk/EFI/BOOT 1> $RDIR 2> $RDIR
+    cp $T_PX/boot/elilo-x86_64.efi $TMP/bootdisk/EFI/BOOT/BOOTX64.EFI 1> $RDIR 2> $RDIR
+    cat << EOF > $TMP/bootdisk/EFI/BOOT/message.txt 2> $RDIR
+
+Welcome to the Slackware Linux custom USB boot stick!
+
+By default, this stick boots a root Linux partition on $ROOT_DEVICE when you
+hit ENTER. If you'd like to boot some other partition, use a command like
+this on the prompt below:
+
+    huge.s root=/dev/sda1 ro
+
+Where "/dev/sda1" is the partition you want to boot, and "ro" specifies that
+the partition should be initially mounted as read-only. If you wish to mount
+the partition read-write, use "rw" instead. You may also add any other
+kernel parameters you might need depending on your hardware, and which
+drivers are included in your kernel.
+
+Hit ENTER to boot:
+
+EOF
+  cat << EOF > $TMP/bootdisk/EFI/BOOT/elilo.conf 2> $RDIR
+chooser=simple
+message=message.txt
+delay=300
+timeout=300
+#
+image=/vmlinuz
+        label=huge.s
+        read-only
+        append="root=$ROOT_DEVICE vga=normal ro"
+EOF
+  fi # end EFI installation
+  sync
+  umount /dev/${STICK}1
+  rm -r $TMP/bootdisk
+  # Sometimes the nomtools version of syslinux will leave the volume mounted,
+  # so umount again:
+  umount /dev/${STICK}1 2> $RDIR
+  if [ "$T_PX" = "/" ]; then
+    dialog --title "USB BOOT STICK CREATED" --msgbox \
+    "The USB boot stick has been successfully created on device /dev/$STICK." 6 60
+    exit
+  fi
+  dialog --title "USB BOOT STICK CREATED" --ok-label Continue --cancel-label Create --menu \
+"The USB boot stick has been successfully created on device /dev/$STICK. If you would like to \
+create an additional boot stick, please select 'Create' and we'll go back and make another \
+one, otherwise select 'Continue' to continue configuring your system." 12 71 2 \
+ "Continue" "Continue the configuration (done making boot sticks)" \
+ "Create" "Make a spare Linux boot stick in /dev/$STICK" \
+ 2> $TMP/return
+  REPLY=`cat $TMP/return`
+  rm -f $TMP/return
+  if [ "$REPLY" = "Create" ]; then
+   continue
+  else
+   break
+  fi
+ else # ! Create
+  break
+ fi
+done

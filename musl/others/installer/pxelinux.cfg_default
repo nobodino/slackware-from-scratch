@@ -1,0 +1,17 @@
+default huge.s
+prompt 1
+timeout 1200
+display message.txt
+F1 message.txt
+F2 f2.txt
+label huge.s
+  kernel kernels/huge.s/bzImage
+  append initrd=initrd.img load_ramdisk=1 prompt_ramdisk=0 rw printk.time=0 nomodeset SLACK_KERNEL=huge.s
+label kms.s
+  kernel kernels/huge.s/bzImage
+  append initrd=initrd.img load_ramdisk=1 prompt_ramdisk=0 rw printk.time=0 SLACK_KERNEL=huge.s
+label speakup.s
+  kernel kernels/huge.s/bzImage
+  append initrd=initrd.img load_ramdisk=1 prompt_ramdisk=0 rw printk.time=0 nomodeset SLACK_KERNEL=huge.s
+label memtest
+  kernel kernels/memtest/memtest

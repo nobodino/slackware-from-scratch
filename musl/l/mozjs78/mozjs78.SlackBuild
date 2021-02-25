@@ -111,9 +111,10 @@ cd js/src
 # We need to do this because patches above touch configure.in:
 autoconf-2.13
 
+export MACH_USE_SYSTEM_PYTHON=1
 CFLAGS+="$SLKCFLAGS -fno-delete-null-pointer-checks -fno-strict-aliasing -fno-tree-vrp " \
 CXXFLAGS+="$SLKCFLAGS -fno-delete-null-pointer-checks -fno-strict-aliasing -fno-tree-vrp " \
-LDFLAGS+=" -Wl,-z,stack-size=1048576" \
+LDFLAGS+=" -Wl,-z,stack-size=524288" \
 ./configure \
   --prefix=/usr \
   --libdir=/usr/lib${LIBDIRSUFFIX} \
@@ -130,12 +131,7 @@ LDFLAGS+=" -Wl,-z,stack-size=1048576" \
   --disable-optimize \
   --enable-pie \
   --disable-jemalloc \
---enable-linker=bfd \
---enable-ctypes \
---enable-readline \
---enable-system-ffi \
 --with-system-nspr \
---enable-hardening \
 --enable-release \
 --build=$ARCH-unknown-linux-musl \
 --host=$ARCH-unknown-linux-musl \

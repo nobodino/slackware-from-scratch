@@ -1,0 +1,174 @@
+#!/bin/bash
+
+# Copyright 2005-2018  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# Slackware build script for tar
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=tar
+VERSION=1.34
+BUILD=${BUILD:-1}
+
+NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+
+# Automatically determine architecture for build & packaging:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+    *)    export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-tar
+
+# Don't use icecream:
+PATH=$(echo $PATH | sed "s|/usr/libexec/icecc/bin||g" | tr -s : | sed "s/^://g" | sed "s/:$//g")
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+else
+  SLKCFLAGS="-O2"
+fi
+
+# This old version is the only one that won't clobber symlinks, e.g.:
+# someone moves /opt to /usr/opt and makes a symlink.  With newer
+# versions of tar, installing any new package will remove the /opt
+# symlink and plop down a new directory there.
+# Well, there's a lot of other bugs (the remote stuff particularly I'm
+# told is flaky) in tar-1.13, so it'll only be here now for use by the
+# Slackware package utils.  And, we'll even let people remove it and
+# the pkgutils will still try to work (but eventually they'll pay the
+# price :)
+#
+# NOTE:  The latest versions of tar can supposedly work for the pkgtools,
+# but some changes to add new options to the scripts might be required.
+#
+# Until tar-1.13 won't compile any more, it might be safer to keep using
+# it, though.
+cd $TMP
+rm -rf tar-1.13
+tar xvf $CWD/tar-1.13.tar.gz || exit 1
+cd tar-1.13 || exit 1
+zcat $CWD/tar-1.13.bzip2.diff.gz | patch -p1 --verbose || exit 1
+# The original config.{guess,sub} do not work on x86_64
+cp -p --verbose /usr/share/libtool/build-aux/config.{guess,sub} .
+chown -R root:root .
+CFLAGS="$SLKCFLAGS" \
+./configure \
+  --prefix=/usr \
+  --disable-nls \
+  --build=$ARCH-slackware-linux-musl || exit 1
+make $NUMJOBS || make || exit 1
+mkdir -p $PKG/bin
+cat src/tar > $PKG/bin/tar-1.13
+chmod 0755 $PKG/bin/tar-1.13
+# End building of tar-1.13
+
+cd $TMP
+rm -rf tar-$VERSION
+tar xvf $CWD/tar-$VERSION.tar.xz || exit 1
+cd tar-$VERSION || exit 1
+chown -R root:root .
+find . \
+ \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+ -exec chmod 755 {} \+ -o \
+ \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+ -exec chmod 644 {} \+
+
+# The "A lone zero block at %s" messages also cause problems:
+zcat $CWD/tar.nolonezero.diff.gz | patch -p1 --verbose || exit 1
+
+FORCE_UNSAFE_CONFIGURE=1 \
+CFLAGS="$SLKCFLAGS" \
+./configure \
+  --prefix=/usr \
+  --infodir=/usr/info \
+  --mandir=/usr/man \
+  --docdir=/usr/doc/tar-$VERSION \
+  --enable-backup-scripts \
+  --build=$ARCH-slackware-linux-musl || exit 1
+
+make $NUMJOBS || make || exit 1
+make install DESTDIR=$PKG || exit 1
+
+( cd $PKG
+  find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | \
+    xargs strip --strip-unneeded 2> /dev/null
+  find . | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | \
+    xargs strip --strip-unneeded 2> /dev/null
+)
+
+mv $PKG/usr/bin/tar $PKG/bin
+( cd $PKG/usr/bin ; ln -sf /bin/tar . )
+( cd $PKG/bin ; ln -sf tar tar-$VERSION )
+
+# Support "historic" rmt locations:
+mkdir -p $PKG/{etc,sbin}
+( cd $PKG/etc
+  ln -sf /usr/libexec/rmt .
+  cd $PKG/sbin
+  ln -sf /usr/libexec/rmt .
+)
+
+# Compress manual pages:
+find $PKG/usr/man -type f -exec gzip -9 {} \+
+for i in $( find $PKG/usr/man -type l ) ; do
+  ln -s $( readlink $i ).gz $i.gz
+  rm $i
+done
+
+# Compress info files, if any:
+if [ -d $PKG/usr/info ]; then
+  ( cd $PKG/usr/info
+    rm -f dir
+    gzip -9 *
+  )
+fi
+
+mkdir -p $PKG/usr/doc/tar-$VERSION
+cp -a \
+  AUTHORS COPYING* NEWS PORTS README* THANKS TODO \
+  $PKG/usr/doc/tar-$VERSION
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/tar-$VERSION-$ARCH-$BUILD.txz
+

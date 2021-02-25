@@ -1,0 +1,20 @@
+diff -Nur dropbear-2020.81.orig/svr-authpasswd.c dropbear-2020.81/svr-authpasswd.c
+--- dropbear-2020.81.orig/svr-authpasswd.c	2020-10-29 08:35:50.000000000 -0500
++++ dropbear-2020.81/svr-authpasswd.c	2020-12-06 02:20:50.744491126 -0600
+@@ -98,12 +98,16 @@
+ 	}
+ 
+ 	/* check for empty password */
++	/* Yep, good idea, but for our usage, it's okay - dropbear has to be
++	   started manually in the installer, so setting a password or not is
++	   up to the admin
+ 	if (passwdcrypt[0] == '\0') {
+ 		dropbear_log(LOG_WARNING, "User '%s' has blank password, rejected",
+ 				ses.authstate.pw_name);
+ 		send_msg_userauth_failure(0, 1);
+ 		return;
+ 	}
++	*/
+ 
+ 	if (constant_time_strcmp(testcrypt, passwdcrypt) == 0) {
+ 		/* successful authentication */

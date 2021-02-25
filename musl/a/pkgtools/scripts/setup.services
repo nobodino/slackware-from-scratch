@@ -1,0 +1,364 @@
+#!/bin/sh
+#BLURB="Select/deselect system daemons (services)"
+TMP=/var/lib/pkgtools/setup/tmp
+if [ ! -d $TMP ]; then
+  mkdir -p $TMP
+fi
+T_PX="$1"
+cd $T_PX
+rm -f $TMP/tmpscript
+
+cat << EOF > $TMP/tmpscript
+dialog --title "CONFIRM STARTUP SERVICES TO RUN" --item-help --checklist \\
+"The selected services will be started at boot time. If you \\
+don't need them, you may unselect them to turn them off (which may improve \\
+overall system security). You may also choose to start services that are \\
+not run by default, but be aware that more services means less security. \\
+Use the spacebar to select or unselect the services you wish to run. \\
+Recommended choices have been preselected. \\
+Press the ENTER key when you are finished." \\
+20 75 7 \\
+EOF
+
+if [ -r etc/rc.d/rc.atalk ]; then
+  if [ -x etc/rc.d/rc.atalk ]; then
+    RC_ATALK=on
+  else
+    RC_ATALK=off
+  fi
+  cat << EOF >> $TMP/tmpscript
+    "rc.atalk" "Netatalk Appletalk file/print server" $RC_ATALK "The Netatalk server is a file and print server for Macintosh networks." \\
+EOF
+fi
+
+if [ -r etc/rc.d/rc.atd ]; then
+  if [ -x etc/rc.d/rc.atd ]; then
+    RC_ATD=on
+  else
+    RC_ATD=off
+  fi
+  cat << EOF >> $TMP/tmpscript
+    "rc.atd" "Schedules jobs for later" $RC_ATD "The at daemon schedules jobs to be run at a specified time." \\
+EOF
+fi
+
+if [ -r etc/rc.d/rc.bind ]; then
+  if [ -x etc/rc.d/rc.bind ]; then
+    RC_BIND=on
+  else
+    RC_BIND=off
+  fi
+  cat << EOF >> $TMP/tmpscript
+    "rc.bind" "BIND (Domain Name System) server" $RC_BIND "BIND (Berkeley Internet Name Domain) is a Domain Name System (DNS) server." \\
+EOF
+fi
+
+if [ -r etc/rc.d/rc.crond ]; then
+  if [ -x etc/rc.d/rc.crond ]; then
+    RC_CROND=on
+  else
+    RC_CROND=off
+  fi
+  cat << EOF >> $TMP/tmpscript
+    "rc.crond" "Time based job scheduler" $RC_CROND "The cron daemon schedules jobs to run at fixed times, dates, or intervals." \\
+EOF
+fi
+
+if [ -r etc/rc.d/rc.cups ]; then
+  if [ -x etc/rc.d/rc.cups ]; then
+    RC_CUPS=on
+  else
+    RC_CUPS=off
+  fi
+  cat << EOF >> $TMP/tmpscript
+    "rc.cups" "CUPS print server" $RC_CUPS "The Common UNIX Printing system (print spooler choice #1)." \\
+EOF
+fi
+
+if [ -r etc/rc.d/rc.dnsmasq ]; then
+  if [ -x etc/rc.d/rc.dnsmasq ]; then
+    RC_DNSMASQ=on
+  else
+    RC_DNSMASQ=off
+  fi
+  cat << EOF >> $TMP/tmpscript
+    "rc.dnsmasq" "dnsmasq DHCP/DNS server" $RC_DNSMASQ "dnsmasq provides DNS and DHCP service to a LAN." \\
+EOF
+fi
+
+if [ -r etc/rc.d/rc.dovecot ]; then
+  if [ -x etc/rc.d/rc.dovecot ]; then
+    RC_DOVECOT=on
+  else
+    RC_DOVECOT=off
+  fi
+  cat << EOF >> $TMP/tmpscript
+    "rc.dovecot" "Dovecot IMAP/POP3 server" $RC_DOVECOT "Dovecot provides remote mailbox access for email clients." \\
+EOF
+fi
+
+if [ -r etc/rc.d/rc.fuse ]; then
+  if [ -x etc/rc.d/rc.fuse ]; then
+    RC_FUSE=on
+  else
+    RC_FUSE=off
+  fi
+  cat << EOF >> $TMP/tmpscript
+    "rc.fuse" "Filesystem in Userspace library" $RC_FUSE "FUSE is an interface to allow userspace programs to use filesystems." \\
+EOF
+fi
+
+if [ -r etc/rc.d/rc.hald ]; then
+  if [ -x etc/rc.d/rc.hald ]; then
+    RC_HALD=on
+  else
+    RC_HALD=off
+  fi
+  cat << EOF >> $TMP/tmpscript
+    "rc.hald" "Hardware Abstraction Layer" $RC_HALD "HAL makes access to CD/DVD drives and USB devices easier." \\
+EOF
+fi
+
+if [ -r etc/rc.d/rc.hplip ]; then
+  if [ -x etc/rc.d/rc.hplip ]; then
+    RC_HPLIP=on
+  else
+    RC_HPLIP=off
+  fi
+  cat << EOF >> $TMP/tmpscript
+    "rc.hplip" "HP printer/scanner daemons" $RC_HPLIP "Programs used to run printers and scanners from Hewlett Packard." \\
+EOF
+fi
+
+if [ -r etc/rc.d/rc.httpd ]; then
+  if [ -x etc/rc.d/rc.httpd ]; then
+    RC_HTTPD=on
+  else
+    RC_HTTPD=off
+  fi
+  cat << EOF >> $TMP/tmpscript
+    "rc.httpd" "The Apache web server" $RC_HTTPD "Apache, the most widely used web server on the net." \\
+EOF
+fi
+
+if [ -r etc/rc.d/rc.inetd ]; then
+  if [ -x etc/rc.d/rc.inetd ]; then
+    RC_INETD=on
+  else
+    RC_INETD=off
+  fi
+  cat << EOF >> $TMP/tmpscript
+    "rc.inetd" "The BSD Inetd daemon" $RC_INETD "Inetd daemon (this allows:  time, ftp, comsat, talk, finger, and auth)." \\
+EOF
+fi
+
+if [ -r etc/rc.d/rc.ip_forward ]; then
+  if [ -x etc/rc.d/rc.ip_forward ]; then
+    RC_IP_FORWARD=on
+  else
+    RC_IP_FORWARD=off
+  fi
+  cat << EOF >> $TMP/tmpscript
+    "rc.ip_forward" "Activate IP packet forwarding" $RC_IP_FORWARD "Packet forwarding allows your Linux machine to act as a router." \\
+EOF
+fi
+
+if [ -r etc/rc.d/rc.lprng ]; then
+  if [ -x etc/rc.d/rc.lprng ]; then
+    RC_LPRNG=on
+  else
+    RC_LPRNG=off
+  fi
+  cat << EOF >> $TMP/tmpscript
+    "rc.lprng" "LPRng print server" $RC_LPRNG "The LPRng printing system (print spooler choice #2)." \\
+EOF
+fi
+
+if [ -r etc/rc.d/rc.messagebus ]; then
+  if [ -x etc/rc.d/rc.messagebus ]; then
+    RC_MESSAGEBUS=on
+  else
+    RC_MESSAGEBUS=off
+  fi
+  cat << EOF >> $TMP/tmpscript
+    "rc.messagebus" "D-Bus system message bus" $RC_MESSAGEBUS "Used for interprocess communication and coordination." \\
+EOF
+fi
+
+if [ -r etc/rc.d/rc.mysqld ]; then
+  if [ -x etc/rc.d/rc.mysqld ]; then
+    RC_MYSQLD=on
+  else
+    RC_MYSQLD=off
+  fi
+  cat << EOF >> $TMP/tmpscript
+    "rc.mysqld" "The MySQL database server" $RC_MYSQLD "MySQL, an SQL-based relational database daemon." \\
+EOF
+fi
+
+if [ -r etc/rc.d/rc.ntpd ]; then
+  if [ -x etc/rc.d/rc.ntpd ]; then
+    RC_NTPD=on
+  else
+    RC_NTPD=off
+  fi
+  cat << EOF >> $TMP/tmpscript
+    "rc.ntpd" "The network time server" $RC_NTPD "NTP synchronizes your time to/from other NTP servers." \\
+EOF
+fi
+
+if [ -r etc/rc.d/rc.openldap ]; then
+  if [ -x etc/rc.d/rc.openldap ]; then
+    RC_OPENLDAP=on
+  else
+    RC_OPENLDAP=off
+  fi
+  cat << EOF >> $TMP/tmpscript
+    "rc.openldap" "OpenLDAP server" $RC_OPENLDAP "The stand-alone LDAP daemon (slapd)." \\
+EOF
+fi
+
+if [ -r etc/rc.d/rc.openvpn ]; then
+  if [ -x etc/rc.d/rc.openvpn ]; then
+    RC_OPENVPN=on
+  else
+    RC_OPENVPN=off
+  fi
+  cat << EOF >> $TMP/tmpscript
+    "rc.openvpn" "OpenVPN daemon" $RC_OPENVPN "A secure IP tunnel daemon." \\
+EOF
+fi
+
+if [ -r etc/rc.d/rc.pcmcia ]; then
+  if [ -x etc/rc.d/rc.pcmcia ]; then
+    RC_PCMCIA=on
+  else
+    RC_PCMCIA=off
+  fi
+  cat << EOF >> $TMP/tmpscript
+    "rc.pcmcia" "PCMCIA/Cardbus card services" $RC_PCMCIA "This supports PCMCIA or Cardbus cards used with laptops." \\
+EOF
+fi
+
+if [ -r etc/rc.d/rc.postfix ]; then
+  if [ -x etc/rc.d/rc.postfix ]; then
+    RC_POSTFIX=on
+  else
+    RC_POSTFIX=off
+  fi
+  cat << EOF >> $TMP/tmpscript
+    "rc.postfix" "The Postfix mail server" $RC_POSTFIX "The Postfix server allows your machine to send and receive mail." \\
+EOF
+fi
+
+if [ -r etc/rc.d/rc.rpc ]; then
+  if [ -x etc/rc.d/rc.rpc ]; then
+    RC_RPC=on
+  else
+    RC_RPC=off
+  fi
+  cat << EOF >> $TMP/tmpscript
+    "rc.rpc" "RPC (NFS) daemons" $RC_RPC "Needed to serve or mount NFS (Network File System) partitions." \\
+EOF
+fi
+
+if [ -r etc/rc.d/rc.samba ]; then
+  if [ -x etc/rc.d/rc.samba ]; then
+    RC_SAMBA=on
+  else
+    RC_SAMBA=off
+  fi
+  cat << EOF >> $TMP/tmpscript
+    "rc.samba" "The Samba file/print server" $RC_SAMBA "Samba is a file and print server for Windows networks." \\
+EOF
+fi
+
+if [ -r etc/rc.d/rc.saslauthd ]; then
+  if [ -x etc/rc.d/rc.saslauthd ]; then
+    RC_SASLAUTHD=on
+  else
+    RC_SASLAUTHD=off
+  fi
+  cat << EOF >> $TMP/tmpscript
+    "rc.saslauthd" "The SASL authentication server" $RC_SASLAUTHD "SASL is an authentication method often used by mail servers." \\
+EOF
+fi
+
+if [ -r etc/rc.d/rc.sendmail ]; then
+  if [ -x etc/rc.d/rc.sendmail ]; then
+    RC_SENDMAIL=on
+  else
+    RC_SENDMAIL=off
+  fi
+  cat << EOF >> $TMP/tmpscript
+    "rc.sendmail" "The Sendmail mail server" $RC_SENDMAIL "The Sendmail server allows your machine to send and receive mail." \\
+EOF
+fi
+
+if [ -r etc/rc.d/rc.smartd ]; then
+  if [ -x etc/rc.d/rc.smartd ]; then
+    RC_SMARTD=on
+  else
+    RC_SMARTD=off
+  fi
+  cat << EOF >> $TMP/tmpscript
+    "rc.smartd" "SMART monitoring daemon" $RC_SMARTD "The SMART daemon monitors your hard drives to help predict failures." \\
+EOF
+fi
+
+if [ -r etc/rc.d/rc.snmpd ]; then
+  if [ -x etc/rc.d/rc.snmpd ]; then
+    RC_SNMPD=on
+  else
+    RC_SNMPD=off
+  fi
+  cat << EOF >> $TMP/tmpscript
+    "rc.snmpd" "Net-SNMP daemon" $RC_SNMPD "SNMP daemon that receives and logs SNMP TRAP and INFORM messages." \\
+EOF
+fi
+
+if [ -r etc/rc.d/rc.syslog ]; then
+  if [ -x etc/rc.d/rc.syslog ]; then
+    RC_SYSLOGD=on
+  else
+    RC_SYSLOGD=off
+  fi
+  cat << EOF >> $TMP/tmpscript
+    "rc.syslog" "The Linux system logging utilities" $RC_SYSLOGD "The syslogd and klogd daemons log important messages under /var/log." \\
+EOF
+fi
+
+if [ -r etc/rc.d/rc.sshd ]; then
+  if [ -x etc/rc.d/rc.sshd ]; then
+    RC_SSHD=on
+  else
+    RC_SSHD=off
+  fi
+  cat << EOF >> $TMP/tmpscript
+    "rc.sshd" "The SSHD (secure shell) daemon" $RC_SSHD "SSHD allows secure encrypted logins to your machine." \\
+EOF
+fi
+
+cat << EOF >> $TMP/tmpscript
+  2> $TMP/reply
+EOF
+
+. $TMP/tmpscript
+
+if [ ! $? = 0 ]; then
+  rm -f $TMP/reply $TMP/tmpscript
+  exit
+fi
+
+for service in rc.atalk rc.atd rc.bind rc.crond rc.cups rc.dovecot rc.dnsmasq rc.fuse rc.hald rc.hplip rc.httpd rc.inetd rc.ip_forward rc.lprng rc.messagebus rc.mysqld rc.ntpd rc.openldap rc.openvpn rc.pcmcia rc.postfix rc.rpc rc.samba rc.saslauthd rc.smartd rc.snmpd rc.sendmail rc.syslog rc.sshd ; do
+  if [ -f etc/rc.d/$service ]; then
+    if grep -w $service $TMP/reply 1> /dev/null ; then
+      chmod 755 etc/rc.d/$service
+    else
+      chmod 644 etc/rc.d/$service
+    fi
+  fi
+done
+
+rm -f $TMP/reply $TMP/tmpscript
+

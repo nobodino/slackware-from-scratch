@@ -1,0 +1,102 @@
+#!/bin/bash
+
+# Copyright 2010 B. Watson (yalhcru@gmail.com)
+# Copyright 2010, 2015, 2018, 2020  Patrick J. Volkerding, Sebeka, Minnesota, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=xaos
+SRCNAM=XaoS-release
+VERSION=${VERSION:-$(echo $SRCNAM-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+BUILD=${BUILD:-2}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    # might as well use i686 since it won't listen to our CFLAGS anyway
+    i?86) ARCH=i686 ;;
+    arm*) ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+NUMJOBS=${NUMJOBS:-" -j $(expr $(nproc) + 1) "}
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-$PKGNAM
+OUTPUT=${OUTPUT:-/tmp}
+
+rm -rf $PKG
+mkdir -p $TMP $PKG $OUTPUT
+cd $TMP
+rm -rf $SRCNAM-$VERSION
+tar xvf $CWD/$SRCNAM-$VERSION.tar.?z || exit 1
+cd $SRCNAM-$VERSION || exit 1
+
+chown -R root:root .
+chmod -R a-s,u+w,go+r-w .
+
+qmake-qt5
+make $NUMJOBS || exit 1
+
+mkdir -p $PKG/usr/bin
+cp -a bin/xaos $PKG/usr/bin/xaos
+chown root:root $PKG/usr/bin/xaos
+chmod 755 $PKG/usr/bin/xaos
+
+mkdir -p $PKG/usr/share/XaoS
+cp -a catalogs tutorial $PKG/usr/share/XaoS
+
+mkdir -p $PKG/usr/share/XaoS/examples
+cp -a examples/README $(find examples -name "*.xpf") $(find examples -name "*.xaf") $PKG/usr/share/XaoS/examples
+
+mkdir -p $PKG/usr/share/pixmaps
+cp -a xdg/xaos.png $PKG/usr/share/pixmaps
+
+mkdir -p $PKG/usr/share/applications
+cp -a xdg/xaos.desktop $PKG/usr/share/applications
+
+# Replace bogus manpage:
+mkdir -p $PKG/usr/man/man6
+zcat $CWD/xaos.6.gz > $PKG/usr/man/man6/xaos.6
+gzip -9 $PKG/usr/man/man6/xaos.6
+
+mkdir -p $PKG/usr/doc/xaos-$VERSION
+cp -a \
+  COPYING* CREDITS* NEWS* README* \
+  $PKG/usr/doc/xaos-$VERSION
+cp -a doc/XaoS.lsm $PKG/usr/doc/xaos-$VERSION
+cp -a doc/README $PKG/usr/doc/xaos-$VERSION/wiki.url
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n $OUTPUT/$PKGNAM-$VERSION-$ARCH-$BUILD.txz

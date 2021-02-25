@@ -1,0 +1,443 @@
+#!/bin/sh
+# Copyright 1995, 1998, 2002, 2005  Patrick Volkerding, Moorhead, Minnesota USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+
+if [ ! "$UID" = "0" ]; then
+    echo "You need to be root to run this script."
+    exit 1
+fi
+
+# Was a kernel specified on the command line?
+if [ -r "$1" ]; then
+  KERNEL=$1
+  KMSG="Using kernel $KERNEL"
+else
+  KMSG="No kernel selected yet"
+fi
+
+# Make sure there's a proper temp directory:
+TMP=/var/lib/pkgtools/setup/tmp
+# If the $TMP directory doesn't exist, create it:
+if [ ! -d $TMP ]; then
+  mkdir -p $TMP
+  chmod 700 $TMP # no need to leave it open
+fi
+
+ROOT_DEVICE="`mount | grep ' on / ' | cut -f 1 -d ' '`"
+
+if mount | grep ' on / ' | grep umsdos 1> /dev/null 2> /dev/null ; then
+ MOUNT="read-write"
+else
+ MOUNT="read-only"
+fi
+
+make_root_device() {
+# Make a device:
+makedev() {
+  if [ ! -b $1 ]; then
+    mknod $1 b $2 $3
+    chown root.disk $1
+    chmod 640 $1
+  fi  
+}
+
+# Make ide device
+# make ide major minor hd1 hd2 (2 base devs for major)
+make_ide() {
+  # Handle base devices:
+  if [ "$2" = "0" ]; then
+    makedev $TMP/lilo/dev/$3 $1 $2
+    return 0
+  elif [ "$2" = "64" ]; then
+    makedev $TMP/lilo/dev/$4 $1 $2
+    return 0
+  fi
+  # Must be a partition:
+  if [ "`expr $2 / 64`" = "0" ]; then
+    DEV=$3
+    NUM=$2
+  else
+    DEV=$4
+    NUM=`expr $2 - 64`
+  fi
+  makedev $TMP/lilo/dev/$DEV$NUM $1 $2
+}
+
+# Make SCSI device
+make_scsi() {
+  # find drive # 0 - 15
+  DRV=`expr $1 / 16`
+  NUM=`expr $1 % 16`
+  if [ "$NUM" = "0" ]; then
+    NUM=""
+  fi
+  if [ "$DRV" = "0" ]; then
+    makedev $TMP/lilo/dev/sda$NUM 8 $1
+  elif [ "$DRV" = "1" ]; then
+    makedev $TMP/lilo/dev/sdb$NUM 8 $1
+  elif [ "$DRV" = "2" ]; then
+    makedev $TMP/lilo/dev/sdc$NUM 8 $1
+  elif [ "$DRV" = "3" ]; then
+    makedev $TMP/lilo/dev/sdd$NUM 8 $1
+  elif [ "$DRV" = "4" ]; then
+    makedev $TMP/lilo/dev/sde$NUM 8 $1
+  elif [ "$DRV" = "5" ]; then
+    makedev $TMP/lilo/dev/sdf$NUM 8 $1
+  elif [ "$DRV" = "6" ]; then
+    makedev $TMP/lilo/dev/sdg$NUM 8 $1
+  elif [ "$DRV" = "7" ]; then
+    makedev $TMP/lilo/dev/sdh$NUM 8 $1
+  elif [ "$DRV" = "8" ]; then
+    makedev $TMP/lilo/dev/sdi$NUM 8 $1
+  elif [ "$DRV" = "9" ]; then
+    makedev $TMP/lilo/dev/sdj$NUM 8 $1
+  elif [ "$DRV" = "10" ]; then
+    makedev $TMP/lilo/dev/sdk$NUM 8 $1
+  elif [ "$DRV" = "11" ]; then
+    makedev $TMP/lilo/dev/sdl$NUM 8 $1
+  elif [ "$DRV" = "12" ]; then
+    makedev $TMP/lilo/dev/sdm$NUM 8 $1
+  elif [ "$DRV" = "13" ]; then
+    makedev $TMP/lilo/dev/sdn$NUM 8 $1
+  elif [ "$DRV" = "14" ]; then
+    makedev $TMP/lilo/dev/sdo$NUM 8 $1
+  elif [ "$DRV" = "15" ]; then
+    makedev $TMP/lilo/dev/sdp$NUM 8 $1
+  fi
+}
+
+if cat /proc/partitions | grep / 1> /dev/null 2> /dev/null ; then # new
+  cat /proc/partitions | grep / | while read line ; do
+    SMASHED_LINE=$line
+    MAJOR=`echo $SMASHED_LINE | cut -f 1 -d ' '`
+    MINOR=`echo $SMASHED_LINE | cut -f 2 -d ' '`
+    if [ "$MAJOR" = "3" ]; then
+      make_ide $MAJOR $MINOR hda hdb
+    elif [ "$MAJOR" = "8" ]; then
+      make_scsi $MINOR
+    elif [ "$MAJOR" = "22" ]; then
+      make_ide $MAJOR $MINOR hdc hdd
+    elif [ "$MAJOR" = "33" ]; then
+      make_ide $MAJOR $MINOR hde hdf
+    elif [ "$MAJOR" = "34" ]; then
+      make_ide $MAJOR $MINOR hdg hdh
+    elif [ "$MAJOR" = "56" ]; then
+      make_ide $MAJOR $MINOR hdi hdj
+    fi
+  done
+else # old format
+  cat /proc/partitions | grep d | while read line ; do
+    SMASHED_LINE=$line
+    MAJOR=`echo $SMASHED_LINE | cut -f 1 -d ' '`
+    MINOR=`echo $SMASHED_LINE | cut -f 2 -d ' '`
+    DEVNAME=`echo $SMASHED_LINE | cut -f 4 -d ' '`
+    makedev $TMP/lilo/dev/$DEVNAME $MAJOR $MINOR
+  done
+fi
+}
+
+choose_kernel() {
+while [ 0 ]; do # input loop
+cat << EOF > $TMP/tmpmsg
+
+Some possible paths to kernels are these: 
+
+/boot/vmlinuz 
+/usr/src/linux/arch/i386/boot/bzImage
+/usr/src/linux/arch/i386/boot/zImage
+/vmlinuz
+
+Put the path to the kernel you want to use in the box below.
+
+EOF
+
+ dialog --title "CHOOSE KERNEL" --inputbox "`cat $TMP/tmpmsg`" \
+ 16 72 "/boot/vmlinuz" 2> $TMP/return
+ if [ ! $? = 0 ]; then
+  exit
+ fi
+
+ KERNEL="`cat $TMP/return`"
+    
+ if [ ! -r "$KERNEL" ]; then  
+    dialog --title "NOT FOUND!" --msgbox "$KERNEL" 5 60
+    continue
+ fi
+ KMSG="Using kernel $KERNEL"
+break
+done
+}
+
+format_disk() {
+  # If anyone still uses 1.2 MB, you'll have to uncomment this.
+  # It's no longer a default option.
+  #FDEV=/dev/fd0h1200
+  #FDEV=/dev/fd0u1400
+  FDEV=/dev/fd0u1680
+  if [ "$FDEV" = "/dev/fd0u1680" ]; then
+   dialog --title "Formatting /dev/fd0u1680" --infobox \
+   "Formatting /dev/fd0, 1.68 megabytes." 3 42
+  elif [ "$FDEV" = "/dev/fd0u1400" ]; then
+   dialog --title "Formatting /dev/fd0u1440" --infobox \
+   "Formatting /dev/fd0, 1.44 megabytes." 3 42
+  elif [ "$FDEV" = "/dev/fd0h1200" ]; then
+   dialog --title "Formatting /dev/fd0h1200" --infobox \
+   "Formatting /dev/fd0, 1.2 megabytes." 3 42
+  fi
+  fdformat $FDEV 1> /dev/null 2> /dev/null
+  if [ ! $? = 0 ]; then
+    dialog --title "ERROR: FLOPPY FORMAT FAILED" --msgbox "The attempt to format the floppy \
+disk in /dev/fd0 has failed, probably due to bad media. Please try again with a \
+different disk. If that doesn't work, perhaps the drive needs cleaning." 0 0
+    return 1
+  fi
+}
+
+DEFAULT_ITEM="syslinux"
+
+while [ 0 ]; do # menu loop
+ dialog --title "MAKE BOOT FLOPPY FROM KERNEL" \
+--default-item $DEFAULT_ITEM \
+--backtitle "$KMSG" --menu "This menu allows you to make a SYSLINUX bootdisk \
+from a compiled kernel. The SYSLINUX bootloader has the advantage of \
+using a FAT filesystem making it easy to replace the kernel later. \
+Which option would you like?" 12 67 2 \
+"syslinux" "Make a SYSLINUX bootdisk" \
+"exit" "Exit this program" 2> $TMP/return
+ if [ ! $? = 0 ]; then
+  break;
+ fi
+ REPLY=`cat $TMP/return`
+ rm -f $TMP/return
+ if [ "$REPLY" = "simple" ]; then # make simple bootdisk
+  if [ "$KERNEL" = "" ]; then
+   choose_kernel
+  fi
+  kernel_size=`du -Lk $KERNEL | cut -f1`
+  if [ "$kernel_size" -gt "1023" ]; then
+cat << EOF > $TMP/tmpmsg
+
+The kernel $KERNEL is $kernel_size K (which is
+more than 1023 Kb in size), so it probably won't 
+boot standalone on the floppy. Use the 'syslinux' 
+method instead.
+ 
+EOF
+   dialog --title "KERNEL TOO BIG!" --msgbox "`cat $TMP/tmpmsg`" 10 60
+   continue
+  fi
+  dialog --title "BOOT DISK CREATION" --backtitle "$KMSG" --yesno \
+"\n\
+Now put a formatted floppy in your boot drive. \n\
+This will be made into your Linux boot disk. Use this to\n\
+boot Linux until LILO has been configured to boot from\n\
+the hard drive.\n\n\
+Any data on the target disk will be destroyed.\n\n\
+YES creates the disk, NO aborts.\n" 14 62
+  if [ $? = 0 ]; then
+   format_disk
+   dialog --title "CREATING DISK" --infobox "Creating boot disk from $KERNEL..." 5 72
+   dd if=$KERNEL of=/dev/fd0 2> /dev/null
+   rdev /dev/fd0 $ROOT_DEVICE
+   rdev -v /dev/fd0 -1
+   if [ "$MOUNT" = "read-only" ]; then
+    rdev -R /dev/fd0 1
+   else
+    rdev -R /dev/fd0 0
+   fi
+  fi
+ elif [ "$REPLY" = "syslinux" ]; then # make syslinux bootdisk
+  DEFAULT_ITEM="exit"
+  if [ "$KERNEL" = "" ]; then
+   choose_kernel
+  fi
+  dialog --title "CREATING SYSLINUX BOOTDISK IN /dev/fd0" --backtitle "$KMSG" --yesno "Now put a \
+floppy in your boot drive. This will be made into a SYSLINUX \
+bootdisk that you can use to start your Linux system. Any data on the \
+target disk will be destroyed. YES creates the disk, NO aborts." 8 62
+  if [ $? = 0 ]; then # make the disk
+   format_disk
+   if [ ! $? = 0 ]; then
+    continue
+   fi
+   dialog --title "CREATING BOOT FLOPPY" --infobox "Creating SYSLINUX bootdisk for \
+$ROOT_DEVICE in /dev/fd0." 3 64
+   mkdosfs -F 12 /dev/fd0u1680 1680 1> /dev/null 2> /dev/null
+   if [ ! -d $TMP/bootdisk ]; then
+    mkdir $TMP/bootdisk
+   fi
+   mount -t vfat /dev/fd0 $TMP/bootdisk 1> /dev/null 2> /dev/null
+   cp $KERNEL $TMP/bootdisk/vmlinuz
+   ## This avoids a syslinux-1.72 bug, and doesn't seem to hurt anything:
+   #dd if=/dev/zero bs=1k count=1 >> $TMP/bootdisk/vmlinuz 2> /dev/null
+   if [ ! "$?" = "0" ]; then
+     dialog --title "ERROR COPYING KERNEL TO FLOPPY" \
+     --msgbox "Sorry, but there was an error copying the kernel to the \
+floppy disk. Possibly the kernel is too large to fit the disk.  \
+This program will now exit." 0 0
+     umount /dev/fd0
+     rm -rf $TMP/bootdisk
+     exit 1
+   fi
+   cat << EOF > $TMP/bootdisk/message.txt
+
+Welcome to the 09Slackware07 Linux custom bootdisk!
+
+By default, this disk boots a root Linux partition on $ROOT_DEVICE when you
+hit ENTER. If you'd like to boot some other partition, use a command like
+this on the prompt below:
+
+    mount root=/dev/sda1 ro
+
+Where "/dev/sda1" is the partition you want to boot, and "ro" specifies that
+the partition should be initially mounted as read-only. If you wish to mount
+the partition read-write, use "rw" instead. To set the video console mode,
+use the vga= parameter (press F1 to see a table). You may also add any other
+kernel parameters you might need depending on your hardware, and which
+drivers are included in your kernel.
+
+EOF
+   cat << EOF > $TMP/bootdisk/syslinux.cfg
+default vmlinuz ramdisk_size=7000 root=$ROOT_DEVICE vga=normal ro
+prompt 1
+timeout 6000
+display message.txt
+F1 f1.txt
+F2 message.txt
+#F3 f3.txt
+#F4 f4.txt
+#F5 f5.txt
+#F6 f6.txt
+#F7 f7.txt
+label mount
+  kernel vmlinuz
+  append ramdisk_size=7000 root=$ROOT_DEVICE vga=normal ro
+label ramdisk
+  kernel vmlinuz
+  append vmlinuz ramdisk_size=7000 root=/dev/fd0u1440 vga=normal rw
+EOF
+   cat << EOF > $TMP/bootdisk/f1.txt
+ STANDARD MODES:
+ To make the kernel prompt for standard video modes use: vga=ask
+
+ FRAMEBUFFER MODES:
+ To get the kernel to start in VESA framebuffer mode, you need to pass it
+ a vga= init string on the "boot:" prompt. Here's a table:
+
+   Colors   640x480 800x600 1024x768 1280x1024 1600x1200
+  --------+---------------------------------------------
+  256     |   769     771      773      775       796
+  32,768  |   784     787      790      793       797
+  65,536  |   785     788      791      794       798
+  16.8M   |   786     789      792      795       799
+
+  ...such as this for 1024x768x64k:
+   vga=791
+
+  F2 returns to the previous page.
+
+EOF
+   umount /dev/fd0
+   syslinux-nomtools -s /dev/fd0
+   rm -r $TMP/bootdisk
+  fi
+ elif [ "$REPLY" = "lilo" ]; then # make lilo bootdisk
+  DEFAULT_ITEM="exit"
+  if [ ! -x "`type -path lilo`" ]; then
+cat << EOF > $TMP/tmpmsg
+
+You don't have 'lilo' installed on the system.
+I guess you didn't install the lilo package.
+ 
+EOF
+   dialog --title "LILO NOT FOUND" --msgbox "`cat $TMP/tmpmsg`" 8 60
+   continue
+  fi
+  if [ "$KERNEL" = "" ]; then
+   choose_kernel
+  fi
+  dialog --title "CREATING LILO BOOTDISK IN /dev/fd0" --backtitle "$KMSG" --yesno "Now put a \
+floppy in your boot drive. This will be made into a LILO \
+bootdisk that you can use to start your Linux system. Any data on the \
+target disk will be destroyed. YES creates the disk, NO aborts." 8 62
+  if [ $? = 0 ]; then # make the disk
+   format_disk
+   DEV=/dev/fd0u1680
+   mknod_fd="-m 0640 $TMP/lilo$DEV b 2 44"
+   dialog --infobox "Creating LILO bootdisk from $KERNEL for $ROOT_DEVICE..." 4 60
+   mke2fs -q -m 0 -i 4096 $DEV 1> /dev/null 2> /dev/null || exit 1
+   if [ ! -d $TMP/lilo ]; then
+    mkdir -p $TMP/lilo
+   fi
+   mount -t ext2 $DEV $TMP/lilo 1> /dev/null || exit 1
+   rmdir $TMP/lilo/lost+found
+   cp $KERNEL $TMP/lilo/vmlinuz || exit 1
+   mkdir $TMP/lilo/dev
+   make_root_device
+   mknod -m 0640 $TMP/lilo/dev/fd0 b 2 0
+   mknod -m 0640 $TMP/lilo/dev/fd1 b 2 1
+   mknod $mknod_fd
+   mknod -m 0666 $TMP/lilo/dev/null c 1 3
+   mkdir $TMP/lilo/etc
+   cat << EOF > $TMP/lilo/etc/lilo.conf
+boot = $DEV
+message=/boot/message
+backup=/dev/null
+prompt
+image = /vmlinuz
+        label = mount
+        ramdisk = 0
+        root = $ROOT_DEVICE
+        vga = normal
+        $MOUNT
+EOF
+   mkdir $TMP/lilo/boot
+   cp -a /boot/chain.b $TMP/lilo/boot
+   if [ -f /boot/boot-text.b ]; then
+   cp -a /boot/boot-text.b $TMP/lilo/boot/boot.b
+   else
+   cp -a /boot/boot.b $TMP/lilo/boot
+   fi   
+   cat << EOF > $TMP/lilo/boot/message
+
+Welcome to the Slackware Linux custom LILO bootdisk!  
+
+By default, this disk boots a root Linux partition on $ROOT_DEVICE when
+you hit ENTER. If you'd like to boot some other partition, use a command
+like this on the LILO prompt below:
+
+    mount root=/dev/sda1 ro
+
+Where "/dev/sda1" is the partition you want to boot, and "ro" specifies that
+the partition should be initially mounted as read-only. If you which to mount
+the partition read-write, use "rw" instead. You may also add any other kernel
+parameters you might need depending on your hardware, and which drivers are
+included in your kernel.
+
+EOF
+   lilo -r $TMP/lilo > /dev/null
+   umount $TMP/lilo
+   rm -rf $TMP/lilo
+  fi
+ elif [ "$REPLY" = "exit" ]; then
+  break;
+ fi
+done

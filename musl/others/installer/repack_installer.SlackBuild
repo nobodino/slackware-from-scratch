@@ -1,0 +1,136 @@
+#!/bin/sh
+
+# Copyright 2019  Patrick J. Volkerding, Sebeka, Minnesota, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+# This script repacks initrd.gz and usbboot.img from an existing tree in
+# $TMP/build-slackware-installer/package-slackware-installer/*-installer-filesystem
+# to allow making some changes to the installer files and then testing them.
+
+INSTALLERVERSION=${INSTALLERVERSION:-"15.0"}
+EFIBOOT=${EFIBOOT:-1}
+TMP=${TMP:-/tmp}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$(uname -m)" in
+    i?86) ARCH=i586
+      SLACKROOT=${SLACKROOT:-/root/slackware-current}
+      OUTPUT=${OUTPUT:-$TMP/output-ia32-$(basename $(uname -r) -smp)}
+      ;;
+    x86_64) ARCH=x86_64
+      SLACKROOT=${SLACKROOT:-/root/slackware64-current}
+      OUTPUT=${OUTPUT:-$TMP/output-x86_64-$(uname -r)}
+      ;;
+    arm*) readelf /usr/bin/file -A | egrep -q "Tag_CPU.*[4,5]" && ARCH=arm || ARCH=armv7hl
+      SLACKROOT=${SLACKROOT:-/root/slackware-current}
+      OUTPUT=${OUTPUT:-$TMP/output-arm-$(uname -r)}
+      ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+    *) ARCH=$(uname -m)
+      SLACKROOT=${SLACKROOT:-/root/slackware-current}
+      OUTPUT=${OUTPUT:-$TMP/output-$(uname -m)-$(uname -r)}
+      ;;
+  esac
+  export ARCH
+fi
+
+NUMJOBS=${NUMJOBS:-" -j7 "}
+
+mkdir -p $OUTPUT
+( cd $TMP/build-slackware-installer/package-slackware-installer/*-installer-filesystem
+  # CREATE INITRD.GZ:
+  # Determine the size of the installer:
+  echo "    Installer size (uncompressed): $( du -sh . )"
+  find . | cpio -o -H newc | xz -9fv -C crc32 > $OUTPUT/initrd.img
+  echo "    New installer image is ${OUTPUT}/initrd.img"
+
+  # CREATE USBBOOT.IMG:
+  # Like initrd.img, the usbboot.img will be created in the current directory
+  echo "--- Creating an image for the USB boot disk ---"
+
+  # Calculate sizes:
+  let USBIMG=$( LC_ALL=C du -ck ${OUTPUT}/initrd*.img | grep total | cut -f1 )
+  for KERN in ${SLACKROOT}/kernels/*.?/*zImage ; do
+    let USBIMG=USBIMG+$( LC_ALL=C du -sk $KERN | cut -f1 )
+  done
+  let USBIMG=USBIMG+777  # Add just that little extra...
+
+  if [ $EFIBOOT -eq 1 ]; then
+    # A bit more extra space since elilo will be added...
+    let USBIMG=USBIMG+256
+  fi
+
+  # Generate a pxelinux.cfg/default file (used for usbboot.img too)
+  cat ${SLACKROOT}/isolinux/isolinux.cfg \
+    | sed -e "s#/kernels/#kernels/#" > ${OUTPUT}/pxelinux.cfg_default
+
+  # Create a DOS formatted image file
+  if $(which mkfs.msdos 1>/dev/null 2>&1) ; then
+    MKDOS=mkfs.msdos
+  else
+    MKDOS=mkdosfs
+  fi
+  rm -f ${OUTPUT}/usbboot.img
+  ${MKDOS} -n USBSLACK -F 16 -C ${OUTPUT}/usbboot.img $USBIMG || exit 1
+  file ${OUTPUT}/usbboot.img
+
+  # Copy all relevant files into the image.
+  rm -rf ${OUTPUT}/usbmount
+  mkdir -p -m700 ${OUTPUT}/usbmount
+  mount -o loop,rw ${OUTPUT}/usbboot.img ${OUTPUT}/usbmount
+  echo "--- Copying data to the USB boot disk image: ---"
+  cp $SLACKROOT/isolinux/setpkg ${OUTPUT}/usbmount/
+  cp $SLACKROOT/isolinux/{f*.txt,message.txt} ${OUTPUT}/usbmount/
+  cp ${OUTPUT}/initrd*.img ${OUTPUT}/usbmount/
+  cat ${OUTPUT}/pxelinux.cfg_default |sed -e 's# kernels/# #g' -e 's#/.zImage##' \
+    -e 's#/memtest##' \
+    > ${OUTPUT}/usbmount/syslinux.cfg
+
+  # Add EFI support:
+  if [ $EFIBOOT -eq 1 ]; then
+    cp -a ${SLACKROOT}/source/installer/sources/efi.${ARCH}/* ${OUTPUT}/usbmount
+    # Make sure the Slackware and kernel version in message.txt are up to date:
+    cat ${SLACKROOT}/source/installer/sources/efi.${ARCH}/EFI/BOOT/message.txt | sed "s/version.*/version ${INSTALLERVERSION} \(Linux kernel $(uname -r | cut -f 1 -d -)\)\!/g" > ${OUTPUT}/usbmount/EFI/BOOT/message.txt
+  fi
+
+  # Older syslinux can not cope with subdirectories - let's just be safe:
+  echo "--- Making the usbboot image bootable: ---"
+  (
+    cd $SLACKROOT/kernels/
+    for dir in `find  -type d -name "*.?" -maxdepth 1` ; do
+      cp $dir/*zImage ${OUTPUT}/usbmount/$dir
+    done
+    cp $SLACKROOT/kernels/memtest/memtest ${OUTPUT}/usbmount/memtest
+  )
+  sync
+
+  # Stamp the file with the syslinux bootloader:
+  #   > Do "vi ~/.mtoolsrc" to add "mtools_skip_check=1",
+  #   > if the next command gives an error:
+  umount ${OUTPUT}/usbmount
+  syslinux ${OUTPUT}/usbboot.img
+
+  # Clean up:
+  rm -rf ${OUTPUT}/usbmount
+  
+)

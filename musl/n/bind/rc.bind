@@ -1,0 +1,145 @@
+#!/bin/sh
+# Start/stop/restart the BIND name server daemon (named).
+
+# Start BIND. In the past it was more secure to run BIND as a non-root
+# user (for example, with '-u daemon'), but the modern version of BIND
+# knows how to use the kernel's capability mechanism to drop all root
+# privileges except the ability to bind() to a privileged port and set
+# process resource limits, so running as a non-root user is not needed.
+# But if you want to run as a non-root user anyway, the command options
+# can be set like this in /etc/default/named:
+#       NAMED_OPTIONS="-u daemon"
+# So you will not have to edit this script.
+#
+# Please note that if you run BIND as a non-root user, your files in
+# /var/named may need to be chowned to this user or else named will
+# refuse to start.
+
+# You might also consider running BIND in a "chroot jail",
+# a discussion of which may be found in
+# /usr/doc/Linux-HOWTOs/Chroot-BIND-HOWTO.
+ 
+# One last note: rndc has a lot of other nice features that it is not
+# within the scope of this start/stop/restart script to support.
+# For more details, see "man rndc" or just type "rndc" to see the options.
+
+# Load command defaults:
+if [ -f /etc/default/named ] ; then . /etc/default/named ; fi
+if [ -f /etc/default/rndc ] ; then . /etc/default/rndc ; fi
+
+# Sanity check. If /usr/sbin/named is missing then it
+# doesn't make much sense to try to run this script:
+if [ ! -x /usr/sbin/named ]; then
+  echo "/etc/rc.d/rc.bind:  no /usr/sbin/named found (or not executable); cannot start."
+  exit 1
+fi
+
+# Function to find the user BIND is running as in $NAMED_OPTIONS:
+find_bind_user() {
+  if echo $NAMED_OPTIONS | grep -wq "\-u" ; then
+    unset BIND_USER USER_FOUND
+    echo $NAMED_OPTIONS | tr ' ' '\n' | while read element ; do
+      if [ "$USER_FOUND" = "true" ]; then
+        BIND_USER="$element"
+        echo $BIND_USER
+        break
+      elif [ "$element" = "-u" ]; then
+        USER_FOUND="true"
+      fi
+    done
+  else
+    echo "root"
+  fi
+}
+
+# Start BIND. As many times as you like. ;-)
+# Seriously, don't run "rc.bind start" if BIND is already
+# running or you'll get more than one copy running.
+bind_start() {
+  # Make sure /var/run/named exists:
+  mkdir -p /var/run/named
+  # If we are running as a non-root user, we'll need to be sure that
+  # /var/run/named is chowned properly to that user. Your files in
+  # /var/named may need to be chowned as well, but that will be up to
+  # the sysadmin to do.
+  BIND_USER="$(find_bind_user)"
+  if [ ! "$BIND_USER" = "root" ]; then
+    chown -R $BIND_USER /var/run/named
+  else # prevent error if switching back to running as root:
+    chown -R root /var/run/named
+  fi
+  # Start named:
+  if [ -x /usr/sbin/named ]; then
+    echo "Starting BIND:  /usr/sbin/named $NAMED_OPTIONS"
+    /usr/sbin/named $NAMED_OPTIONS
+    sleep 1
+  fi
+  # Make sure that named started:
+  if ! ps axc | grep -q named ; then
+    echo "WARNING:  named did not start."
+    echo "Attempting to start named again:  /usr/sbin/named $NAMED_OPTIONS"
+    /usr/sbin/named $NAMED_OPTIONS
+    sleep 1
+    if ps axc | grep -q named ; then
+      echo "SUCCESS:  named started."
+    else
+      echo "FAILED: Sorry, a second attempt to start named has also failed."
+      echo "There may be a configuration error that needs fixing. Good luck!"
+    fi
+  fi
+}
+
+# Stop all running copies of BIND (/usr/sbin/named):
+bind_stop() {
+  echo "Stopping BIND:  /usr/sbin/rndc $RDNC_OPTIONS stop"
+  /usr/sbin/rndc $RDNC_OPTIONS stop
+  # A problem with using "/usr/sbin/rndc stop" is that if you
+  # managed to get multiple copies of named running it will
+  # only stop one of them and then can't stop the others even
+  # if you run it again. So, after doing things the nice way
+  # we'll do them the old-fashioned way. If you don't like
+  # it you can comment it out, but unless you have a lot of
+  # other programs you run called "named" this is unlikely
+  # to have any ill effects:
+  sleep 1
+  if ps axc | grep -q named ; then
+    echo "Stopping all named processes in this namespace:  /bin/killall --ns \$\$ named"
+    /bin/killall --ns $$ named 2> /dev/null
+  fi
+}
+
+# Reload BIND:
+bind_reload() {
+  /usr/sbin/rndc $RDNC_OPTIONS reload
+}
+
+# Restart BIND:
+bind_restart() {
+  bind_stop
+  bind_start
+}
+
+# Get BIND status:
+bind_status() {
+  /usr/sbin/rndc $RDNC_OPTIONS status
+}
+
+case "$1" in
+'start')
+  bind_start
+  ;;
+'stop')
+  bind_stop
+  ;;
+'reload')
+  bind_reload
+  ;;
+'restart')
+  bind_restart
+  ;;
+'status')
+  bind_status
+  ;;
+*)
+  echo "usage $0 start|stop|reload|restart|status"
+esac

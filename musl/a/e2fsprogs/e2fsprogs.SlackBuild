@@ -1,0 +1,226 @@
+#!/bin/bash
+
+# Copyright 2008, 2009, 2010, 2015, 2016, 2018, 2020, 2021  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# Modified 2012 by Eric Hameleers <alien at slackware.com> for ARM port.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=e2fsprogs
+VERSION=${VERSION:-$(echo e2fsprogs*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
+BUILD=${BUILD:-2}
+
+NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+
+# Automatically determine the architecture we're building on:
+MARCH=$( uname -m )
+if [ -z "$ARCH" ]; then
+  case "$MARCH" in
+    i?86)    export ARCH=i586 ;;
+    armv7hl) export ARCH=$MARCH ;;
+    arm*)    export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+    *)       export ARCH=$MARCH ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "armv7hl" ]; then
+  SLKCFLAGS="-O2 -march=armv7-a -mfpu=vfpv3-d16"
+  LIBDIRSUFFIX=""
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+case "$ARCH" in
+    arm*) TARGET=$ARCH-slackware-linux-gnueabi ;;
+    *)    TARGET=$ARCH-slackware-linux-musl ;;
+esac
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-e2fsprogs
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+cd $TMP
+rm -rf e2fsprogs-$VERSION
+tar xvf $CWD/e2fsprogs-$VERSION.tar.?z || exit 1
+cd e2fsprogs-$VERSION || exit 1
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \+ -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \+
+
+# Do not use 64-bit by default on ext4, since some bootloaders cannot handle
+# it yet.  But use "auto_64-bit_support = 1", which will enable 64-bit if the
+# number of blocks for the file system requires the feature to be enabled.
+zcat $CWD/e2fsprogs.no.64bit.by.default.diff.gz | patch -p1 --verbose || exit 1
+
+# Disable libblkid and libuuid, as we'll be using the ones in u-l-ng
+CFLAGS="$SLKCFLAGS" \
+./configure \
+  --prefix= \
+  --libdir=/lib${LIBDIRSUFFIX} \
+  --bindir=/usr/bin \
+  --includedir=/usr/include \
+  --datadir=/usr/share \
+  --datarootdir=/usr/share \
+  --mandir=/usr/man \
+  --infodir=/usr/info \
+  --docdir=/usr/doc/e2fsprogs-$VERSION \
+  --enable-elf-shlibs \
+  --disable-libblkid \
+  --disable-libuuid \
+  --disable-uuidd \
+  --build=$TARGET || exit 1
+
+make $NUMJOBS || make || exit 1
+make install DESTDIR=$PKG || exit 1
+make install-libs DESTDIR=$PKG || exit 1
+
+# I guess Ted would rather not have this included, so we won't.
+# ( cd misc 
+#   make findsuper
+#   cat findsuper > $PKG/sbin/findsuper
+#   chmod 0755 $PKG/sbin/findsuper )
+
+# Don't clobber an existing config file
+mv $PKG/etc/mke2fs.conf $PKG/etc/mke2fs.conf.new
+
+find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
+  | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+
+# Fix up package:
+mkdir -p $PKG/usr/lib${LIBDIRSUFFIX}
+mv $PKG/lib${LIBDIRSUFFIX}/pkgconfig $PKG/lib${LIBDIRSUFFIX}/*.so \
+  $PKG/usr/lib${LIBDIRSUFFIX}
+( cd $PKG/usr/lib${LIBDIRSUFFIX}
+  for i in *.so ; do 
+    ln -sf /lib${LIBDIRSUFFIX}/$(readlink $i) $i ; 
+  done
+)
+
+# Since fsck is now part of util-linux, let's prefer that version:
+if [ -r $PKG/sbin/fsck ]; then
+  mv $PKG/sbin/fsck $PKG/sbin/fsck-e2fsprogs
+fi
+if [ -r $PKG/usr/man/man8/fsck.8 ]; then
+  mv $PKG/usr/man/man8/fsck.8 $PKG/usr/man/man8/fsck-e2fsprogs.8
+fi
+
+# Get rid of systemd cron.d cruft:
+rm -rf $PKG/etc/cron.d
+
+# findfs is intentionally left out here - we use the one in util-linux-ng
+( cd $PKG/sbin
+  rm -f \
+    mkfs.ext2 mkfs.ext3 mkfs.ext4 mkfs.ext4dev \
+    fsck.ext2 fsck.ext3 fsck.ext4dev e2label findfs
+  ln -sf mke2fs mkfs.ext2
+  ln -sf mke2fs mkfs.ext3
+  ln -sf mke2fs mkfs.ext4
+  ln -sf mke2fs mkfs.ext4dev
+  ln -sf tune2fs e2label
+  cat << EOF > fsck.ext2
+#!/bin/bash
+exec /sbin/e2fsck -C 0 \$*
+EOF
+  chmod 0755 fsck.ext2
+  # Why won't symlinks work here?  --RW
+  # Because $0 will always be "fsck.ext2" in that case.  --PJV
+  # rworkman is correct, so ignore the previous two comments  :)  --PJV
+  cp -a fsck.ext2 fsck.ext3
+  cp -a fsck.ext2 fsck.ext4
+  cp -a fsck.ext2 fsck.ext4dev
+)
+( cd $PKG/usr/man/man5
+  ln -sf ext4.5 ext2.5
+  ln -sf ext4.5 ext3.5
+)
+( cd $PKG/usr/man/man8
+  rm -f fsck.ext2.8 fsck.ext3.8 mkfs.ext2.8 mkfs.ext3.8 \
+    mkfs.ext4.8 mkfs.ext4dev.8
+  ln -sf e2fsck.8 fsck.ext2.8
+  ln -sf e2fsck.8 fsck.ext3.8
+  ln -sf e2fsck.8 fsck.ext4.8
+  ln -sf e2fsck.8 fsck.ext4dev.8
+  ln -sf mke2fs.8 mkfs.ext2.8
+  ln -sf mke2fs.8 mkfs.ext3.8
+  ln -sf mke2fs.8 mkfs.ext4.8
+  ln -sf mke2fs.8 mkfs.ext4dev.8
+)
+
+# Compress manual pages:
+find $PKG/usr/man -type f -exec gzip -9 {} \+
+for i in $( find $PKG/usr/man -type l ) ; do
+  ln -s $( readlink $i ).gz $i.gz
+  rm $i
+done
+
+mkdir -p $PKG/usr/doc/e2fsprogs-$VERSION
+cp -a \
+  COPYING* INSTALL* NOTICE README* RELEASE-NOTES SHLIBS SUBMITTING-PATCHES \
+  $PKG/usr/doc/e2fsprogs-$VERSION
+cp -a ext2ed/COPYRIGHT $PKG/usr/doc/e2fsprogs-$VERSION/COPYRIGHT.ext2ed
+cp -a ext2ed/README $PKG/usr/doc/e2fsprogs-$VERSION/README.ext2ed
+cp -a lib/uuid/COPYING $PKG/usr/doc/e2fsprogs-$VERSION/COPYING.uuid
+chmod 644 $PKG/usr/doc/e2fsprogs-$VERSION/*
+
+# If RELEASE-NOTES is a symlink, fix that:
+if [ -L $PKG/usr/doc/e2fsprogs-$VERSION/RELEASE-NOTES ]; then
+  rm $PKG/usr/doc/e2fsprogs-$VERSION/RELEASE-NOTES
+  cp -a $(readlink RELEASE-NOTES) $PKG/usr/doc/e2fsprogs-$VERSION/RELEASE-NOTES
+  chmod 644 $PKG/usr/doc/e2fsprogs-$VERSION/RELEASE-NOTES
+fi
+
+# Trim RELEASE-NOTES to only include recent history:
+if [ -r RELEASE-NOTES ]; then
+  DOCSDIR=$(echo $PKG/usr/doc/${PKGNAM}-$VERSION)
+  cat RELEASE-NOTES | head -n 1000 > $DOCSDIR/RELEASE-NOTES
+  touch -r RELEASE-NOTES $DOCSDIR/RELEASE-NOTES
+fi
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/e2fsprogs-$VERSION-$ARCH-$BUILD.txz
+

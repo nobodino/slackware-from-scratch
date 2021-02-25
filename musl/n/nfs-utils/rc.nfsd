@@ -1,0 +1,110 @@
+#!/bin/sh
+# Start/stop/restart the NFS server.
+#
+# This is an init script for the knfsd NFS daemons.
+# To use NFS, you must first set up /etc/exports.
+# See exports(5) for information on /etc/exports format.
+#
+# Written for Slackware Linux by Patrick J. Volkerding <volkerdi@slackware.com>.
+
+# Source default settings:
+if [ -r /etc/default/rpc ]; then
+  . /etc/default/rpc
+fi
+if [ -r /etc/default/nfs ]; then
+  . /etc/default/nfs
+fi
+
+nfsd_start() {
+  # There used to be "sanity checks" here to exit without starting if various
+  # config files didn't exist, or didn't contain certain expected content.
+  # This behavior led to some bugs and has been removed. It's not our business
+  # to check your config files - that's for the binaries that use them.
+
+  # If we do not detect nfsd support built into the kernel (or previously
+  # loaded as a module), we will try to load the nfsd.ko kernel module:
+  if [ ! -r /proc/1/net/rpc/nfsd ]; then
+    /sbin/modprobe nfsd
+  fi
+
+  # Mount the nfsd filesystem:
+  if awk '$NF == "nfsd"' /proc/filesystems | grep -q . ; then
+    if ! awk '$3 == "nfsd" && $2 == "/proc/fs/nfs"' /proc/mounts | grep -q . ; then
+      /sbin/mount -t nfsd nfsd /proc/fs/nfs 2> /dev/null
+    fi
+  fi
+
+  # If basic RPC services are not running, start them:
+  if ! ps axc | grep -q rpc.statd ; then
+    if [ -r /etc/rc.d/rc.rpc ]; then
+      sh /etc/rc.d/rc.rpc start
+    else
+      # Sure, we tested for rpc.statd, but this is the probable cause:
+      echo "FATAL:  Can't start NFS server without rpcbind package."
+      sleep 5
+      exit 1
+    fi
+  fi
+
+  echo "Starting NFS server daemons:"
+
+  if [ -x /usr/sbin/exportfs ]; then
+    echo "  /usr/sbin/exportfs -r"
+    /usr/sbin/exportfs -r
+  fi
+
+  if [ -x /usr/sbin/rpc.rquotad ]; then
+    if [ -n "$RPC_RQUOTAD_PORT" ]; then
+      RPC_RQUOTAD_OPTS="$RPC_RQUOTAD_OPTS -p $RPC_RQUOTAD_PORT"
+    fi
+    echo "  /usr/sbin/rpc.rquotad $RPC_RQUOTAD_OPTS"
+    /usr/sbin/rpc.rquotad $RPC_RQUOTAD_OPTS
+  fi
+
+  # Start nfsd servers - 8 if not set otherwise (an old Sun standard):
+  if [ -x /usr/sbin/rpc.nfsd ]; then
+    if [ -z "$RPC_NFSD_COUNT" ]; then
+      RPC_NFSD_COUNT=8
+    fi
+    echo "  /usr/sbin/rpc.nfsd $RPC_NFSD_OPTS $RPC_NFSD_COUNT"
+    /usr/sbin/rpc.nfsd $RPC_NFSD_OPTS $RPC_NFSD_COUNT
+  fi
+
+  if [ -x /usr/sbin/rpc.mountd ]; then
+    if [ -n "$RPC_MOUNTD_PORT" ]; then
+      RPC_MOUNTD_OPTS="$RPC_MOUNTD_OPTS -p $RPC_MOUNTD_PORT"
+    fi
+    echo "  /usr/sbin/rpc.mountd $RPC_MOUNTD_OPTS"
+    /usr/sbin/rpc.mountd $RPC_MOUNTD_OPTS
+  fi
+
+}
+
+nfsd_stop() {
+  killall rpc.mountd 2> /dev/null
+  killall nfsd 2> /dev/null
+  sleep 1
+  killall -9 nfsd 2> /dev/null # make sure :)
+  killall rpc.rquotad 2> /dev/null
+  /usr/sbin/exportfs -au 2> /dev/null
+}
+
+nfsd_restart() {
+  nfsd_stop
+  sleep 1
+  nfsd_start
+}
+
+case "$1" in
+'start')
+  nfsd_start
+  ;;
+'stop')
+  nfsd_stop
+  ;;
+'restart')
+  nfsd_restart
+  ;;
+*)
+  echo "usage $0 start|stop|restart"
+esac

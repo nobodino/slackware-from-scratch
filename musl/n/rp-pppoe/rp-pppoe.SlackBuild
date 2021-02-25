@@ -1,0 +1,110 @@
+#!/bin/bash
+
+# Copyright 2008, 2009, 2010, 2012, 2015, 2018  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=rp-pppoe
+VERSION=${VERSION:-$(echo $PKGNAM-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+BUILD=${BUILD:-3}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+else
+  SLKCFLAGS="-O2"
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-rp-pppoe
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+cd $TMP
+rm -rf rp-pppoe-$VERSION
+tar xvf $CWD/rp-pppoe-$VERSION.tar.?z || exit 1
+cd rp-pppoe-$VERSION || exit 1
+for i in $CWD/*patch; do echo $i; patch -p1 < $i || exit  ; done
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \+ -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \+
+
+zcat $CWD/rp-pppoe-3.14-ip-allocation.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/rp-pppoe-3.12-plugin.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/rp-pppoe-3.12-pluginpath.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/rp-pppoe-manpages.patch.gz | patch -p1 --verbose || exit 1
+
+cd src
+
+CFLAGS="$SLKCFLAGS" \
+./configure \
+  --enable-plugin=/ppp-2.4.4 \
+  --prefix=/usr \
+  --mandir=/usr/man \
+  --build=$ARCH-slackware-linux-musl || exit 1
+
+make $NUMJOBS || make || exit 1
+make install docdir=/usr/doc/rp-pppoe-$VERSION DESTDIR=$PKG install || exit 1
+
+find $PKG | xargs file | grep -e "executable" -e "shared object" \
+  | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+
+( cd $PKG/etc/ppp
+  for config in firewall-masq firewall-standalone pppoe-server-options pppoe.conf ; do
+    mv $config ${config}.new
+  done
+)
+
+gzip -9 $PKG/usr/man/man?/*.?
+
+mkdir -p $PKG/install
+zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/rp-pppoe-$VERSION-$ARCH-$BUILD.txz
+

@@ -1,0 +1,171 @@
+.\" -*- nroff -*-
+.ds g \" empty
+.ds G \" empty
+.\" Like TP, but if specified indent is more than half
+.\" the current line-length - indent, use the default indent.
+.de Tp
+.ie \\n(.$=0:((0\\$1)*2u>(\\n(.lu-\\n(.iu)) .TP
+.el .TP "\\$1"
+..
+.TH MAKEPKG 8 "21 May 1994" "Slackware Version 2.0.0"
+.SH NAME
+makepkg \- make Slackware packages.
+.SH SYNOPSIS
+.B makepkg
+[
+.B -l, --linkadd y|n
+]
+[
+.B -c, --chown y|n
+]
+[
+.B --threads <number>
+]
+[
+.B --compress <option>
+]
+[
+.B --acls
+]
+[
+.B --xattrs
+]
+.BI packagename
+.SH DESCRIPTION
+.B makepkg
+creates a new Slackware compatible package.
+The package is constructed using the contents of the current directory and
+all subdirectories. If symbolic links exist, they will be converted to script
+code to recreate them when the package is installed. This code will be
+appended to the primary installation script 
+.B ( install/doinst.sh )
+, or, if that script does not exist it will be created with those contents.
+The package will be written out to the file
+.BI packagename
+which should be the full name, including the extension.  This is usually .txz,
+but .tgz, .tbz, and .tlz are also accepted.  The proper compression utility
+(xz, gzip, bzip2, or lzip) needs to be installed on the machine.
+.SH OPTIONS
+.TP
+.B \-l, --linkadd y|n
+If y, add any symbolic links found to the install script (doinst.sh) and
+delete them.  This is the recommended action.  If this option is not used,
+makepkg will prompt if symbolic links are found.
+.TP
+.B \-p, --prepend
+If this option is given, then any symbolic links added to doinst.sh will be
+prepended to the existing script.  This is useful for packages that contain
+shared libraries that need to be linked first because programs will use them
+later in the doinst.sh script.
+.TP
+.B \-c, --chown y|n
+If y, makepkg will reset all directory permissions to 755 and ownership to root:root.
+In general, you should have the permissions and ownerships worked out yourself, so
+relying on setting this option to y is somewhat sloppy.  It is not the default.  If an
+option is not provided, makepkg will prompt.
+.TP
+.B --threads <number>
+For xz/plzip compressed packages, set the maximum number of threads to be used for
+compression. Only has an effect on large packages. For plzip, the default is the number
+of CPU threads available. For xz, the default is 2 (due to commonly occuring memory
+related failures on 32-bit with too many threads and multithreaded xz compression).
+.TP
+.B --compress <option>
+Supply a custom option to the compressor. This will be used in place of the default, which is: -9
+.TP
+.B --acls
+Support storing POSIX ACLs in the package. The resulting package will not be compatible
+with pkgtools version < 15.0.
+.TP
+.B --xattrs
+Support storing extended attributes in the package. The resulting package will not be
+compatible with pkgtools version < 15.0.
+.SH ENVIRONMENT
+.TP
+.B SOURCE_DATE_EPOCH
+A UNIX date-time (seconds since 1 Jan 1970). If set, any newer timestamps in the package
+will be rewritten ("clamped") to this date-time. See
+.I https://reproducible-builds.org/specs/source-date-epoch/
+for more details.
+.SH INSTALLATION SCRIPTS
+There are 3 types of installation scripts supported in the Slackware package
+system. 
+.TP
+The first is the 
+.B primary
+installation script. This is found in the subdirectory
+.B ./install
+and must have the name
+.B doinst.sh
+in order to be recognized. This ( and other install scripts ) should be written
+using the basic Bourne shell syntax recognized by the
+.B ash
+shell, since this is the shell that will be used to execute the script when
+installing from a Slackware install floppy. This is a common trap - beware of
+using
+.B bash
+syntax extensions, because the script will work fine when installed from the
+hard drive, but will bomb out when installed from floppy. If the package is
+for personal use, this isn't a problem. Be careful, though, if you plan to
+share your package with other users. The
+.B primary installation script
+is executed immediately after the package is installed with 
+.B installpkg, pkgtool, 
+or
+.B setup.
+.TP
+The second type of script is the
+.B configuration
+script. This is found in the subdirectory
+.B ./var/lib/pkgtools/setup
+and must have a name that starts with
+.B setup.
+in order to be recongnized. An example is the timezone script: 
+.B /var/lib/pkgtools/setup/setup.timeconfig. 
+These scripts are executed during the
+.B CONFIGURE
+phase of
+.B setup, 
+and are re-executed each time the user runs the
+.B CONFIGURE
+option from
+.B setup
+from then on.
+Typically, the user will go through this phase of setup following the 
+installation of all the packages. Anything that needs to be interactive
+should go in one of these scripts to avoid halting the package installation
+process during 
+.B setup. 
+.TP
+The third type of script is the
+.B onlyonce
+script. Like the name suggests, these are executed only once after the package
+is installed, in contrast to the standard
+.B configuration
+script. These scripts are also found in the
+.B ./var/lib/pkgtools/setup
+directory and must have a name that starts with
+.B setup., 
+but in addition the name must contain the string
+.B onlyonce.
+An example might be a script with the name 
+.B /var/lib/pkgtools/setup/setup.onlyonce.testscript
+.SH PACKAGE FORMAT
+.B makepkg
+uses GNU tar plus GNU gzip to create its packages. A simple way to 
+extract the contents of a package (without executing the installation
+scripts, of course) is to use a command like this:
+.TP
+explodepkg package.tgz
+.TP
+Or, something like this:
+.TP
+gzip -dc package.tgz | tar xvvf -
+.SH AUTHOR
+Patrick J. Volkerding <volkerdi@slackware.com>
+.SH "SEE ALSO"
+.BR installpkg(8),
+.BR explodepkg(8),
+.BR removepkg(8),
+.BR pkgtool(8), 
+.BR upgradepkg(8)

@@ -1,0 +1,41 @@
+.\" -*- nroff -*-
+.ds g \" empty
+.ds G \" empty
+.\" Like TP, but if specified indent is more than half
+.\" the current line-length - indent, use the default indent.
+.de Tp
+.ie \\n(.$=0:((0\\$1)*2u>(\\n(.lu-\\n(.iu)) .TP
+.el .TP "\\$1"
+..
+.TH EXPLODEPKG 8 "21 May 1994" "Slackware Version 2.0.0"
+.SH NAME
+explodepkg \- Extract the contents of a tar+compression package (such as a Slackware
+software package) in the current directory.
+.SH SYNOPSIS
+.B explodepkg
+.BI package
+.BI [ 
+.BI package2, 
+.BI package3, 
+.BI ...
+.BI ]
+.SH DESCRIPTION
+.B explodepkg
+uncompresses and untars Slackware *.tgz (or .tbz, .tlz, .txz) packages (or any archive 
+that was created by
+compressing a tarfile with one of the supported compression utilities) in the current directory. It is not usually
+used to install packages, since it doesn't execute the installation scripts 
+in ./install or ./var/lib/pkgtools/setup. The primary use for
+.B explodepkg
+is in package maintenance - exploding a package in a subdirectory, making fixes
+to it or upgrading the software, and then building the updated package with
+.B makepkg.
+.SH AUTHOR
+Patrick J. Volkerding <volkerdi@slackware.com>
+.SH "SEE ALSO"
+.BR tar(1),
+.BR gzip(1),
+.BR installpkg(8),
+.BR makepkg(8),
+.BR pkgtool(8), 
+.BR upgradepkg(8)

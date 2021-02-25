@@ -3,6 +3,7 @@
 # Slackware build script for ModemManager
 
 # Copyright 2010, 2011  Robby Workman, Tuscaloosa, Alabama, USA
+# Copyright 2021  Patrick J. Volkerding, Sebeka, Minnesota, USA
 # All rights reserved.
 #
 # Redistribution and use of this script, with or without modification, is
@@ -27,8 +28,8 @@
 cd $(dirname $0) ; CWD=$(pwd)
 
 PKGNAM=ModemManager
-VERSION=${VERSION:-$(echo $PKGNAM-*.tar.?z* | rev | cut -f 3- -d . | cut -f 1 -d- | rev)}
-BUILD=${BUILD:-2}
+VERSION=${VERSION:-$(echo $PKGNAM-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d- | rev)}
+BUILD=${BUILD:-3}
 
 if [ -z "$ARCH" ]; then
   case "$( uname -m )" in
@@ -70,7 +71,7 @@ rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 rm -rf $PKGNAM-$VERSION
-tar xvf $CWD/$PKGNAM-$VERSION.tar.?z* || exit 1
+tar xvf $CWD/$PKGNAM-$VERSION.tar.?z || exit 1
 cd $PKGNAM-$VERSION || exit 1
 chown -R root:root .
 find . \

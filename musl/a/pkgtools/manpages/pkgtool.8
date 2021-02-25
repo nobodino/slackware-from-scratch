@@ -1,0 +1,95 @@
+.\" -*- nroff -*-
+.ds g \" empty
+.ds G \" empty
+.\" Like TP, but if specified indent is more than half
+.\" the current line-length - indent, use the default indent.
+.de Tp
+.ie \\n(.$=0:((0\\$1)*2u>(\\n(.lu-\\n(.iu)) .TP
+.el .TP "\\$1"
+..
+.TH PKGTOOL 8 "24 Nov 1995" "Slackware Version 3.1.0"
+.SH NAME
+pkgtool \- software package maintenance tool.
+.SH SYNOPSIS
+.B pkgtool
+.LP
+.B pkgtool
+[
+.B --sets #a#b#c#
+]
+[
+.B --source_mounted
+]
+[
+.B --ignore_tagfiles
+]
+[
+.B --tagfile tagfile
+]
+[
+.B --source_dir directory
+]
+[
+.B --target_dir directory
+]
+[
+.B --source_device device
+]
+.SH DESCRIPTION
+.B pkgtool
+is a menu-driven package maintenance tool provided with the Slackware Linux 
+distribution.  It allows the user to install, remove, or view
+software packages through an interactive
+system.  Pkgtool can also be used to re-run the menu-driven scripts normally
+executed at the end of a Slackware installation.  This is useful for doing
+basic reconfiguration (like changing the mouse type).
+.SH OPTIONS
+Most users will not want to use any options when running
+.B pkgtool.
+These are generally used only when
+.B pkgtool
+is run during the initial system installation.
+Feel free to try them, but be careful.
+.TP
+.B \--sets #A#B#C#
+Install the disk sets A, B, C. Seperate the disk set names by '#' symbols.
+.TP
+.B \--source_mounted
+When this flag is present, 
+.B pkgtool
+will not attempt to unmount and remount the source device with each disk.
+.TP
+.B \--ignore_tagfiles
+When this flag is present, 
+.B pkgtool
+will install every package encountered no matter what the tagfiles say.
+.TP
+.B \--tagfile tagfile
+This flag is used to specify from the command line which tagfile should be
+used for the installation.
+.TP
+.B \--source_dir directory
+Used when installing multiple packages from disk sets. This is the directory
+in which the subdirectories for each disk are found. This isn't used when
+installing from floppy.
+.TP
+.B \--target_dir directory
+The directory where the target root directory is located. This is '/' when 
+installing on the hard drive, or typically '/mnt' when installing from an
+install disk.
+.TP
+.B \--source_device device
+The source device to install from. This is not used if you've provided the
+.B \--source_mounted
+flag. It's usually used when installing from floppy, as in:
+ \--source_device /dev/fd0u1440
+or
+ \--source_device /dev/fd1h1200.
+.SH AUTHOR
+Patrick J. Volkerding <volkerdi@slackware.com>
+.SH "SEE ALSO"
+.BR makepkg(8),
+.BR explodepkg(8),
+.BR installpkg(8),
+.BR removepkg(8),
+.BR upgradepkg(8)

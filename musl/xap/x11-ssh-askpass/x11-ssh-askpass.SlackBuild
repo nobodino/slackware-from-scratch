@@ -1,0 +1,86 @@
+#!/bin/bash
+
+# Slackware build script for x11-ssh-askpass
+# Written by "Vincent Batts <vbatts@batts.mine.nu>"
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=x11-ssh-askpass
+VERSION=1.2.4.1
+BUILD=${BUILD:-4}
+TAG=${TAG:-}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-x11-ssh-askpass
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX=""
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+rm -rf $PKG
+mkdir -p $TMP $PKG $OUTPUT
+cd $TMP
+rm -rf x11-ssh-askpass-$VERSION
+tar xvf $CWD/x11-ssh-askpass-$VERSION.tar.gz || exit 1
+cd x11-ssh-askpass-$VERSION || exit 1
+chown -R root:root .
+chmod -R a-s,u+rw,go+r-w .
+
+CFLAGS="$SLKCFLAGS" \
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --mandir=/usr/man \
+  --with-app-defaults-dir=/etc/X11/app-defaults
+
+xmkmf || exit 1
+make includes || exit 1
+make || exit 1
+make install DESTDIR=$PKG || exit 1
+make install.man DESTDIR=$PKG || exit 1
+
+find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
+  | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
+
+find $PKG/usr/man -type f -exec gzip -9 {} \+
+for i in $( find $PKG/usr/man -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+
+mkdir -p $PKG/usr/doc/x11-ssh-askpass-$VERSION
+cp -a \
+  README TODO ChangeLog $CWD/xprofile.sample \
+  $PKG/usr/doc/x11-ssh-askpass-$VERSION
+chown -R root:root $PKG/usr/doc/x11-ssh-askpass-$VERSION
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/x11-ssh-askpass-$VERSION-$ARCH-$BUILD.txz

@@ -1,0 +1,135 @@
+.\" -*- nroff -*-
+.ds g \" empty
+.ds G \" empty
+.\" Like TP, but if specified indent is more than half
+.\" the current line-length - indent, use the default indent.
+.de Tp
+.ie \\n(.$=0:((0\\$1)*2u>(\\n(.lu-\\n(.iu)) .TP
+.el .TP "\\$1"
+..
+.TH INSTALLPKG 8 "22 Nov 2001" "Slackware Version 8.1.0"
+.SH NAME
+installpkg \- install Slackware packages.
+.SH SYNOPSIS
+.B installpkg
+[
+.B \--warn
+]
+[
+.B \--md5sum
+]
+[
+.B \--root /otherroot
+]
+[
+.B \--infobox
+]
+[
+.B \--menu
+]
+[
+.B \--terse
+]
+[
+.B \--terselength <length>
+]
+[
+.B \--ask
+]
+[
+.B \--priority ADD|REC|OPT|SKP
+]
+[
+.B \--tagfile /somedir/tagfile
+]
+[
+.B \--threads <number>
+]
+[
+.B \--no-overwrite
+]
+.BI packagename
+[
+.B packagename2 ...
+]
+.SH DESCRIPTION
+.B installpkg
+installs single or multiple *.txz (or .tbz, .tgz, .tlz) binary packages designed
+for use with the Slackware Linux distribution onto your system.
+.SH OPTIONS
+.TP
+.B \--warn packagename
+Generate a list of files that would be overwritten to the standard output, but do
+not actually install the package.  The list is formatted in a suitable fashion to
+use as a list of files to backup.
+.TP
+.B \--md5sum packagename
+Record the package md5sum in the metadata written in /var/lib/pkgtools/packages.
+.TP
+.B \--root /otherroot
+Install using a location other than / (the default) as the root of the
+filesystem to install on.  In the example given, use /otherroot instead.  Setting
+the ROOT environment variable does the same thing.
+.TP
+.B \--infobox
+Use /bin/dialog to display an informational dialog as the package is installed.
+Primarily used when installpkg is called from other scripts.
+.TP
+.B \--menu
+Use /bin/dialog to display a menu asking the user if they would like to install the
+package(s) or not.  Generally used when installpkg is called from other scripts.
+.TP
+.B \--terse
+Install the package displaying only a single description line to stdout.
+.TP
+.B \--terselength <length>
+Maximum line length of --terse mode output. Default is the number of terminal columns.
+.TP
+.B \--ask
+Used with -menu mode.  When selected, always ask if a package should be
+installed regardless of what the package's priority is.
+.TP
+.B \--priority ADD|REC|OPT|SKP
+When installing with the \-menu option, package priority levels (found in the file
+"tagfile" in the package directory) are used to automatically install (ADD) or 
+skip (SKP) a package, or to suggest recommended (REC) or optional (OPT) to the user
+if a menu is displayed.  If a priority is set on the command line, it will override
+the values set in the tagfile for the entire package list.
+.TP
+.B \--tagfile /somedir/tagfile
+Specify a different file to use for package priorities (in this example, /somedir/tagfile
+will be used).  The default is "tagfile" in the package's directory.
+.TP
+.B \--threads <number>
+For xz/plzip compressed packages, set the maximum number of threads to be used for
+decompression. Only has an effect if a multithreaded compressor was used, and then
+only on large packages. The default for plzip is the number of CPU threads available.
+The default for xz is 2.
+.TP
+.B \--no-overwrite
+When extracting the package, do not overwrite existing files. Usually, this option
+should not be used. It exists so that upgradepkg can use it for the second installation
+pass. The first pass has already overwritten the previous package's files, and this will
+catch the few corner cases without generating unnecessary writes.
+.SH EXAMPLES
+.TP
+.B Install a font package for X:
+.P
+installpkg font-bh-ttf-1.0.3-noarch-1.txz
+.P
+Note that if a package is already installed, upgradepkg(8) should be used instead.
+.TP
+.B Create a backup of the files that would be overwritten if the package is installed:
+.P
+.nf
+tar czvf /tmp/backup.tar.gz \\
+  $(installpkg --warn font-bh-ttf-1.0.3-noarch-1.txz)
+.fi
+.SH AUTHOR
+Patrick J. Volkerding <volkerdi@slackware.com>
+.SH "SEE ALSO"
+.BR makepkg(8),
+.BR removepkg(8),
+.BR explodepkg(8),
+.BR pkgtool(8), 
+.BR upgradepkg(8)

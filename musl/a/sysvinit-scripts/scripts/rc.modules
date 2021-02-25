@@ -1,0 +1,28 @@
+#!/bin/sh
+
+# /etc/rc.d/rc.modules
+
+# Determine the version of the running kernel:
+RELEASE=$(uname -r)
+
+# Update kernel module dependencies:
+if [ -e "/lib/modules/$RELEASE/modules.dep" ]; then 
+  echo "Updating module dependency list for $RELEASE:  /sbin/depmod --quick"
+  /sbin/depmod --quick
+else 
+  echo "Creating module dependency list for $RELEASE:  /sbin/depmod --all"
+  /sbin/depmod --all
+fi
+
+# Run any rc.modules-$(uname -r) file that exists (this is used
+# if you have specific modules which should only be loaded for
+# specific kernel versions):
+if [ -x "/etc/rc.d/rc.modules-$RELEASE" ]; then
+  /etc/rc.d/rc.modules-$RELEASE
+fi
+
+# Run a local (sysadmin-version) of rc.modules if it exists:
+if [ -x "/etc/rc.d/rc.modules.local" ]; then
+  /etc/rc.d/rc.modules.local
+fi
+

@@ -1,0 +1,185 @@
+#!/bin/sh
+# This is a script to initialize udev, which populates the /dev
+# directory with device nodes, scans for devices, loads the
+# appropriate kernel modules, and configures the devices.
+
+PATH="/sbin:/bin"
+
+check_mounted() {
+  grep -E -q "^[^[:space:]]+ $1 $2" /proc/mounts
+  return $?	
+}
+
+mount_devpts() {
+  if ! check_mounted /dev/pts devpts ; then
+    mkdir /dev/pts 2> /dev/null
+    mount -n -o mode=0620,gid=5 -t devpts devpts /dev/pts
+  fi
+}
+
+mount_devshm() {
+  if ! check_mounted /dev/shm tmpfs ; then
+    mkdir /dev/shm 2> /dev/null
+    mount /dev/shm
+  fi
+}
+
+case "$1" in
+    start)
+	# Sanity check #1, udev requires that the kernel support tmpfs:
+        if ! grep -wq tmpfs /proc/filesystems ; then
+          echo "Sorry, but you need tmpfs support in the kernel to use udev."
+          echo
+          echo "FATAL:  Refusing to run /etc/rc.d/rc.udev."
+          exit 1
+        fi
+
+        # Sanity check #2, make sure that a 2.6.x kernel is new enough:
+        if [ "$(uname -r | cut -f 1,2 -d .)" = "2.6" ]; then
+          if [ "$(uname -r | cut -f 3 -d . | sed 's/[^[:digit:]].*//')" -lt "32" ]; then
+            echo "Sorry, but you need a 2.6.32+ kernel to use this udev."
+            echo "Your kernel version is only $(uname -r)."
+            echo
+            echo "FATAL:  Refusing to run /etc/rc.d/rc.udev."
+            exit 1
+          fi
+        fi
+
+        # Sanity check #3, make sure the udev package was not removed.  If udevd
+        # is not there, this will also shut off this script to prevent further
+        # problems:
+        if [ ! -x /sbin/udevd ]; then
+          chmod 0644 /etc/rc.d/rc.udev
+          echo "No udevd daemon found."
+          echo "Turning off udev:  chmod 644 /etc/rc.d/rc.udev"
+          echo "FATAL:  Refusing to run /etc/rc.d/rc.udev."
+          exit 1
+        fi
+
+        # Disable hotplug helper since udevd listens to netlink:
+        if [ -e /proc/sys/kernel/hotplug ]; then
+          echo "" > /proc/sys/kernel/hotplug
+        fi
+
+	if grep -qw devtmpfs /proc/filesystems ; then
+          if ! check_mounted /dev devtmpfs ; then
+            # umount shm if needed
+            check_mounted /dev/shm tmpfs && umount -l /dev/shm
+
+            # Umount pts if needed, we will remount it later:
+            check_mounted /dev/pts devpts && umount -l /dev/pts
+		
+            # Mount tmpfs on /dev:
+            mount -n -t devtmpfs -o size=8M devtmpfs /dev 
+          fi
+	else 
+          # Mount tmpfs on /dev:
+          if ! check_mounted /dev tmpfs ; then
+            # umount shm if needed
+            check_mounted /dev/shm tmpfs && umount -l /dev/shm
+
+            # Umount pts if needed, we will remount it later:
+            check_mounted /dev/pts devpts && umount -l /dev/pts
+		
+            # Mount tmpfs on /dev:
+            # the -n is because we don't want /dev umounted when
+            # someone (rc.[06]) calls umount -a
+            mount -n -o mode=0755 -t tmpfs -o size=8M tmpfs /dev 
+          fi
+        fi
+
+	# Mount devpts
+	mount_devpts
+	mount_devshm
+
+        if ! /sbin/pidof udevd 1>/dev/null 2>/dev/null; then # start udevd
+          echo "Creating static nodes in /dev."
+          kmod static-nodes -f tmpfiles --output /run/static-nodes
+          grep "^d\ " /run/static-nodes | while read line ; do
+            mkdir -p -m $(echo $line | cut -f 3 -d ' ') $(echo $line | cut -f 2 -d ' ')
+          done
+          grep -v "^d\ " /run/static-nodes | while read line ; do
+            mknod -m $(echo $line | cut -f 3 -d ' ') \
+            $(echo $line | cut -f 2 -d ' ') \
+            $(echo $line | cut -b1 ) \
+            $(echo $line | cut -f 7 -d ' ' | cut -f 1 -d :) \
+            $(echo $line | cut -f 7 -d ' ' | cut -f 2 -d :) 2> /dev/null
+          done
+          rm -f /run/static-nodes
+          # Add any system defined additional device nodes:
+          cp --preserve=all --recursive --update /lib/udev/devices/* /dev 2> /dev/null
+          # Add any locally defined additional device nodes:
+          cp --preserve=all --recursive --update /etc/udev/devices/* /dev 2> /dev/null
+          echo "Starting udevd:  /sbin/udevd --daemon"
+          /sbin/udevd --daemon
+          # Since udev is just now being started we want to use add events:
+          echo "Triggering udev events:  /sbin/udevadm trigger --action=add"
+          # Call udevtrigger and udevsettle to do the device configuration:
+          /sbin/udevadm trigger --type=subsystems --action=add
+          /sbin/udevadm trigger --type=devices --action=add
+        else # trigger changes for already running udevd
+          # If the persistent network rules file does not exist, trigger an add event:
+          if [ ! -r /etc/udev/rules.d/70-persistent-net.rules ]; then
+            # Test that we can actually write to the directory first:
+            if touch /etc/udev/rules.d/testfile 2> /dev/null ; then
+              rm -f /etc/udev/rules.d/testfile
+              # This should add persistent net rules:
+              echo "Triggering udev to write persistent rules to /etc/udev/rules.d/"
+              /sbin/udevadm trigger --type=devices --action=add
+              sleep 3
+              # Create the files if they don't exist at this point.
+              # If a machine does not have a network device or an optical
+              # device, we don't want to waste time trying to generate
+              # rules at every boot.
+              # To force another attempt, delete the file(s).
+              touch /etc/udev/rules.d/70-persistent-net.rules
+            fi
+          fi
+          # Update the hardware database index (/etc/udev/hwdb.bin), if possible:
+          if touch /etc/udev/testfile 2> /dev/null ; then
+            rm -f /etc/udev/testfile
+            echo "Updating hardware database index:  /sbin/udevadm hwdb --update"
+            /sbin/udevadm hwdb --update
+          fi
+          # Since udevd is running, most of the time we only need change events:
+          echo "Triggering udev events:  /sbin/udevadm trigger --action=change"
+          /sbin/udevadm trigger --type=subsystems --action=change
+          /sbin/udevadm trigger --type=devices --action=change
+        fi
+        /sbin/udevadm settle --timeout=120
+        ;;
+    stop)
+	echo "Stopping udevd is STRONGLY discouraged and not supported."
+	echo "If you are sure you want to do this, use 'force-stop' instead."
+	;;
+    force-stop)
+	echo "Stopping udevd"
+	udevadm control --exit
+	killall udevd 2>/dev/null
+	;;
+    restart)
+	echo "Restarting udevd is STRONGLY discouraged and not supported."
+	echo "If you are sure you want to do this, use 'force-restart' instead."
+	;;
+    force-restart)
+	echo "Restarting udevd"
+	udevadm control --exit
+	sleep 3
+	udevd --daemon
+	;;
+    reload)
+	echo "Reloading udev rules"
+	udevadm control --reload
+	;;
+    force-reload)
+	echo "Updating all available device nodes in /dev"
+	udevadm control --reload
+	rm -rf /dev/.udev /dev/disk
+	cp --preserve=all --recursive --update /lib/udev/devices/* /dev 2> /dev/null
+	;;
+	
+    *)
+	echo "Usage: $0 {start|stop|restart|reload|force-reload}"
+	exit 1
+	;;
+esac

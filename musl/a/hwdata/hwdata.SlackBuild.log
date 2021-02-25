@@ -1,0 +1,86 @@
+hwdata-0.344/
+hwdata-0.344/oui.txt
+hwdata-0.344/blacklist.conf
+hwdata-0.344/LICENSE
+hwdata-0.344/check-usb-ids.sh
+hwdata-0.344/check-pci-ids.py
+hwdata-0.344/COPYING
+hwdata-0.344/Dockerfile
+hwdata-0.344/iab.txt
+hwdata-0.344/hwdata.spec
+hwdata-0.344/compare-pci-ids.py
+hwdata-0.344/pci.ids
+hwdata-0.344/README
+hwdata-0.344/usb.ids
+hwdata-0.344/configure
+hwdata-0.344/pnp.ids.patch
+hwdata-0.344/Makefile
+hwdata-0.344/pnp.ids
+get1: /v2.2/pci.ids: Fatal error: Certificate verification: unable to get local issuer certificate (48:50:4E:97:4C:0D:AC:5B:5C:D4:76:C8:20:22:74:B2:4C:8C:71:72)
+get1: /usb.ids: Fatal error: Certificate verification: unable to get local issuer certificate (48:50:4E:97:4C:0D:AC:5B:5C:D4:76:C8:20:22:74:B2:4C:8C:71:72)
+fatal: not a git repository (or any of the parent directories): .git
+mkdir -p -m 755 /tmp/package-hwdata/usr/share/hwdata
+for foo in pci.ids usb.ids oui.txt iab.txt pnp.ids ; do \
+	install -m 644 $foo /tmp/package-hwdata/usr/share/hwdata ;\
+done
+install: cannot stat 'pci.ids': No such file or directory
+install: cannot stat 'usb.ids': No such file or directory
+mkdir -p -m 755 /tmp/package-hwdata/lib/modprobe.d
+install -m 644 -T blacklist.conf /tmp/package-hwdata/lib/modprobe.d/dist-blacklist.conf
+
+Slackware package maker, version 3.14159265.
+
+Searching for symbolic links:
+usr/share/iab.txt	hwdata/iab.txt
+usr/share/oui.txt	hwdata/oui.txt
+usr/share/pnp.ids	hwdata/pnp.ids
+
+Making symbolic link creation script:
+( cd usr/share ; rm -rf iab.txt )
+( cd usr/share ; ln -sf hwdata/iab.txt iab.txt )
+( cd usr/share ; rm -rf oui.txt )
+( cd usr/share ; ln -sf hwdata/oui.txt oui.txt )
+( cd usr/share ; rm -rf pnp.ids )
+( cd usr/share ; ln -sf hwdata/pnp.ids pnp.ids )
+
+It is recommended that you make these lines your new installation script.
+
+Would you like to make this stuff the install script for this package
+and remove the symbolic links ([y]es, [n]o)? y
+
+
+Removing symbolic links:
+removed './usr/share/iab.txt'
+removed './usr/share/pnp.ids'
+removed './usr/share/oui.txt'
+
+Creating your new ./install/doinst.sh...
+
+This next step is optional - you can set the directories in your package
+to some sane permissions. If any of the directories in your package have
+special permissions, then DO NOT reset them here!
+
+Would you like to reset all directory permissions to 755 (drwxr-xr-x) and
+directory ownerships to root.root ([y]es, [n]o)? n
+
+Creating Slackware package:  /tmp/hwdata-0.344-noarch-1.txz
+
+./
+install/
+install/doinst.sh
+install/slack-desc
+usr/
+usr/doc/
+usr/doc/hwdata-0.344/
+usr/doc/hwdata-0.344/COPYING
+usr/doc/hwdata-0.344/LICENSE
+usr/doc/hwdata-0.344/README
+usr/doc/hwdata-0.344/dist-blacklist.conf
+usr/share/
+usr/share/hwdata/
+usr/share/hwdata/iab.txt
+usr/share/hwdata/oui.txt
+usr/share/hwdata/pnp.ids
+
+Slackware package /tmp/hwdata-0.344-noarch-1.txz created.
+

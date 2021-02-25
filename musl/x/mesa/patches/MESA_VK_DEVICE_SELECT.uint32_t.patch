@@ -1,0 +1,78 @@
+diff --git a/src/vulkan/device-select-layer/device_select.h b/src/vulkan/device-select-layer/device_select.h
+index 2335070..8debb77 100644
+--- a/src/vulkan/device-select-layer/device_select.h
++++ b/src/vulkan/device-select-layer/device_select.h
+@@ -24,10 +24,18 @@
+ #define DEVICE_SELECT_H
+ 
+ #include <stdbool.h>
++#include <stdint.h>
+ #include "xf86drm.h"
+ 
++/* We don't use `drmPciDeviceInfo` because it uses 16-bit ids,
++ * instead of Vulkan's 32-bit ones */
++struct device_info {
++  uint32_t vendor_id;
++  uint32_t device_id;
++};
++
+ struct device_pci_info {
+-  drmPciDeviceInfo dev_info;
++  struct device_info dev_info;
+   drmPciBusInfo bus_info;
+   bool has_bus_info;
+   bool cpu_device;
+diff --git a/src/vulkan/device-select-layer/device_select_layer.c b/src/vulkan/device-select-layer/device_select_layer.c
+index 5b708bc..bd18511 100644
+--- a/src/vulkan/device-select-layer/device_select_layer.c
++++ b/src/vulkan/device-select-layer/device_select_layer.c
+@@ -222,7 +222,7 @@ static void print_gpu(const struct instance_info *info, unsigned index, VkPhysic
+       type = "CPU";
+       break;
+    }
+-   fprintf(stderr, "  GPU %d: %x:%x \"%s\" %s", index, properties.properties.vendorID,
++   fprintf(stderr, "  GPU %d: 0x%04x:0x%04x \"%s\" %s", index, properties.properties.vendorID,
+            properties.properties.deviceID, properties.properties.deviceName, type);
+    if (info->has_pci_bus)
+       fprintf(stderr, " %04x:%02x:%02x.%x", ext_pci_properties.pciDomain,
+@@ -267,18 +267,18 @@ static int device_select_find_explicit_default(struct device_pci_info *pci_infos
+                                                uint32_t device_count,
+                                                const char *selection)
+ {
+-   int default_idx = -1;
+-   unsigned vendor_id, device_id;
++   uint32_t vendor_id, device_id;
+    int matched = sscanf(selection, "%x:%x", &vendor_id, &device_id);
+-   if (matched != 2)
+-      return default_idx;
++   if (matched != 2) {
++      return -1;
++   }
+ 
+    for (unsigned i = 0; i < device_count; ++i) {
+       if (pci_infos[i].dev_info.vendor_id == vendor_id &&
+           pci_infos[i].dev_info.device_id == device_id)
+-         default_idx = i;
++         return i;
+    }
+-   return default_idx;
++   return -1;
+ }
+ 
+ static int device_select_find_dri_prime_tag_default(struct device_pci_info *pci_infos,
+@@ -378,8 +378,14 @@ static uint32_t get_default_device(const struct instance_info *info,
+       cpu_count += fill_drm_device_info(info, &pci_infos[i], pPhysicalDevices[i]) ? 1 : 0;
+    }
+ 
+-   if (selection)
++   if (selection) {
+       default_idx = device_select_find_explicit_default(pci_infos, physical_device_count, selection);
++      if (default_idx == -1) {
++         fprintf(stderr, "device-select: cannot find device vendorID:deviceID match "
++                         "using MESA_VK_DEVICE_SELECT=%s. Use 'list' for available devices.\n", selection);
++         exit(0);
++      }
++   }
+    if (default_idx == -1 && info->has_pci_bus && dri_prime && !dri_prime_is_one)
+       default_idx = device_select_find_dri_prime_tag_default(pci_infos, physical_device_count, dri_prime);
+    if (default_idx == -1 && info->has_wayland)

@@ -1,0 +1,185 @@
+#!/bin/bash
+
+# Copyright 2008, 2009, 2012, 2013, 2016, 2018, 2020  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=python2
+SRCNAM=Python
+VERSION=$(echo $SRCNAM-*.tar.xz | rev | cut -f 3- -d . | cut -f 1 -d - | rev)
+BRANCH_VERSION=$(echo $VERSION | cut -f 1,2 -d . )
+BUILD=${BUILD:-3}
+
+NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-$PKGNAM
+rm -rf $PKG
+mkdir -p $TMP $PKG
+
+# Don't set any SLKCFLAGS here, or OPT="$SLKCFLAGS" before the ./configure.
+# Python gets the compile options right without any help.
+if [ "$ARCH" = "i586" ]; then
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "arm" ]; then
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "armel" ]; then
+  LIBDIRSUFFIX=""
+fi
+
+# Location for Python site-packages:
+SITEPK=$PKG/usr/lib${LIBDIRSUFFIX}/python${BRANCH_VERSION}/site-packages
+# same as above without $PKG
+TOOLSDIR=/usr/lib${LIBDIRSUFFIX}/python${BRANCH_VERSION}/site-packages
+
+cd $TMP
+rm -rf $SRCNAM-$VERSION
+tar xf $CWD/$SRCNAM-$VERSION.tar.xz || exit 1
+cd $SRCNAM-$VERSION || exit 1
+
+zcat $CWD/python.readline.set_pre_input_hook.diff.gz | patch -p1 --verbose || exit 1
+# We don't want a large libpython*.a:
+zcat $CWD/python.no-static-library.diff.gz | patch -p1 --verbose || exit 1
+
+if [ "$LIBDIRSUFFIX" = "64" ]; then
+  # Install to lib64 instead of lib and 
+  # Python must report /usr/lib64/python2.7/site-packages as python_lib_dir:
+  zcat $CWD/python.x86_64.diff.gz | patch -p1 --verbose || exit 1
+fi
+
+chown -R root:root .
+find . \
+ \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+ -exec chmod 755 {} \+ -o \
+ \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+ -exec chmod 644 {} \+
+
+# Enable built-in SQLite module to load extensions
+sed -i "/SQLITE_OMIT_LOAD_EXTENSION/d" setup.py
+
+export OPT="-DTHREAD_STACK_SIZE=0x80000"
+export OPT=""
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --mandir=/usr/man \
+  --docdir=/usr/doc/python2-$VERSION \
+  --with-threads \
+  --enable-ipv6 \
+  --enable-shared \
+  --enable-unicode=ucs4 \
+  --with-system-expat \
+  --with-system-ffi \
+  --without-ensurepip \
+  --build=$ARCH-slackware-linux-musl || exit 1
+
+make $NUMJOBS || make || exit 1
+make install DESTDIR=$PKG || exit 1
+
+# Install some python-demo files:
+mkdir -p $PKG/usr/doc/python2-$VERSION
+cp -a Demo $PKG/usr/doc/python2-$VERSION
+
+# We'll install the python-tools under site-packages:
+mkdir -p $SITEPK
+cp -a Tools/* $SITEPK
+
+mkdir -p $PKG/usr/doc/python2-$VERSION
+mv $SITEPK/README $PKG/usr/doc/python2-$VERSION/README.python-tools
+( cd $PKG/usr/doc/python2-$VERSION
+  ln -sf $TOOLSDIR Tools
+)
+
+# Make a few useful symlinks:
+mkdir -p $PKG/usr/bin
+( cd $PKG/usr/bin
+  ln -sf $TOOLSDIR/pynche/pynche pynche
+  ln -sf $TOOLSDIR/i18n/msgfmt.py .
+  ln -sf $TOOLSDIR/i18n/pygettext.py .
+)
+
+# Install docs:
+mkdir -p $PKG/usr/doc/python2-$VERSION/Documentation
+cp -a README LICENSE $PKG/usr/doc/python2-$VERSION
+cp -a Misc $PKG/usr/doc/python2-$VERSION
+tar xf $CWD/python-$VERSION-docs-text.tar.?z*
+mv python-${VERSION}-docs-text/* $PKG/usr/doc/python2-$VERSION/Documentation
+chown -R root:root $PKG/usr/doc/python2-$VERSION
+
+# Fix possible incorrect permissions:
+( cd $PKG
+  find . -type d -exec chmod 755 "{}" \+
+  find . -perm 640 -exec chmod 644 "{}" \+
+  find . -perm 750 -exec chmod 755 "{}" \+
+)
+
+
+( cd $PKG/usr/bin
+  rm -f python
+  ln -sf python${BRANCH_VERSION} python
+)
+
+( cd $PKG
+  find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | \
+    xargs strip --strip-unneeded 2> /dev/null
+  find . | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | \
+    xargs strip --strip-unneeded 2> /dev/null
+)
+
+( cd $PKG/usr/man
+  find . -type f -exec gzip -9 {} \+
+  for i in $(find . -type l) ; do ln -s $(readlink $i).gz $i.gz ; rm $i ; done
+)
+
+( cd $PKG/usr/man
+  if [ -r python${BRANCH_VERSION}.1.gz ] ; then
+	  ln -sf python${BRANCH_VERSION}.1.gz python.1.gz
+  fi
+)
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/python2-$VERSION-$ARCH-$BUILD.txz
+

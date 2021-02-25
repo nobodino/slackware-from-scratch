@@ -1,0 +1,180 @@
+#!/bin/bash
+
+# Copyright 2007-2008  Frank Caraballo <fecaraballo{at}gmail{dot}com>
+# Copyright 2009, 2010, 2016, 2018  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ''AS IS'' AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+# EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=libgphoto2
+VERSION=${VERSION:-$(echo $PKGNAM-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+BUILD=${BUILD:-1}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i686" ]; then
+  SLKCFLAGS="-O2 -march=i686 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX=""
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-$PKGNAM
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+cd $TMP
+rm -rf $PKGNAM-$VERSION
+tar xvf $CWD/$PKGNAM-$VERSION.tar.?z || exit 1
+cd $PKGNAM-$VERSION || exit 1
+chown -R root:root .
+find . \
+ \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+ -exec chmod 755 {} \+ -o \
+ \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+ -exec chmod 644 {} \+
+
+CFLAGS="$SLKCFLAGS" \
+CXXFLAGS="$SLKCFLAGS" \
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --disable-static \
+  --mandir=/usr/man \
+  --docdir=/usr/doc/$PKGNAM-$VERSION \
+  --with-doc-dir=/usr/doc/$PKGNAM-$VERSION \
+  --build=$ARCH-slackware-linux-musl || exit 1
+
+make $NUMJOBS || make || exit 1
+
+# Make sure udev helper scripts are put in the right place and
+# install the other utilities to /usr/bin instead of /usr/lib/libgphoto2/
+make $NUMJOBS \
+  udevscriptdir=/lib/udev \
+  utilsdir=/usr/bin \
+  || make \
+  udevscriptdir=/lib/udev \
+  utilsdir=/usr/bin \
+  || exit 1
+make \
+  udevscriptdir=/lib/udev \
+  utilsdir=/usr/bin \
+  install DESTDIR=$PKG || exit 1
+
+# Don't ship .la files:
+rm -f $PKG/{,usr/}lib${LIBDIRSUFFIX}/*.la
+
+# Strip binaries:
+find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
+  | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+
+# Generate udev rules and hal device information files
+# First, we'll have to set (and export) some important variables
+LD_LIBRARY_PATH=$PKG/usr/lib${LIBDIRSUFFIX}
+CAMLIBS=$PKG/usr/lib${LIBDIRSUFFIX}/$PKGNAM/$VERSION 
+LIBDIR=$PKG/usr/lib${LIBDIRSUFFIX}
+export LD_LIBRARY_PATH CAMLIBS LIBDIR
+
+# Generate udev rules -- for udev >= 201
+mkdir -p $PKG/lib/udev/rules.d
+$PKG/usr/bin/print-camera-list udev-rules version 201 mode 0660 owner root group plugdev \
+  > $PKG/lib/udev/rules.d/40-libgphoto2.rules
+mkdir -p $PKG/lib/udev/hwdb.d/
+$PKG/usr/bin/print-camera-list hwdb > $PKG/lib/udev/hwdb.d/20-libgphoto2.hwdb
+unset LD_LIBRARY_PATH CAMLIBS LIBDIR   # Unset these just in case
+
+# Compress and link manpages, if any:
+if [ -d $PKG/usr/man ]; then
+  ( cd $PKG/usr/man
+    for manpagedir in $(find . -type d -name "man*") ; do
+      ( cd $manpagedir
+        for eachpage in $( find . -type l -maxdepth 1) ; do
+          ln -s $( readlink $eachpage ).gz $eachpage.gz
+          rm $eachpage
+        done
+        gzip -9 *.?
+      )
+    done
+  )
+fi
+
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION
+cp -a \
+  AUTHORS COPYING* HACKING INSTALL MAINTAINERS \
+  NEWS README* TESTERS \
+  $PKG/usr/doc/$PKGNAM-$VERSION
+
+# If there's a ChangeLog, installing at least part of the recent history
+# is useful, but don't let it get totally out of control:
+if [ -r ChangeLog ]; then
+  DOCSDIR=$(echo $PKG/usr/doc/*-$VERSION)
+  cat ChangeLog | head -n 1000 > $DOCSDIR/ChangeLog
+  touch -r ChangeLog $DOCSDIR/ChangeLog
+fi
+
+# The apidocs are huge, and probably only of interest to developers who will
+# very likely use the source code as a reference:
+rm -r $PKG/usr/doc/$PKGNAM-$VERSION/apidocs.html
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/apidocs.html
+cat << EOF > $PKG/usr/doc/$PKGNAM-$VERSION/apidocs.html/README
+The complete API documentation may be found in the
+libgphoto2 source code archive.
+EOF
+
+# This library is not built, but it is useful for users to know why that is:
+cp -a camlibs/jl2005a/README.jl2005a $PKG/usr/doc/$PKGNAM-$VERSION/camlibs
+chmod 644 $PKG/usr/doc/$PKGNAM-$VERSION/camlibs/README.jl2005a
+chown root:root $PKG/usr/doc/$PKGNAM-$VERSION/camlibs/README.jl2005a
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/$PKGNAM-$VERSION-$ARCH-$BUILD.txz
+

@@ -1,0 +1,50 @@
+#!/bin/sh
+#BLURB="Configure the ex/vi symlinks."
+T_PX=$1
+TMP=/var/log/setup/tmp
+rm -f $TMP/exvitype
+dialog --title "CHOOSE DEFAULT EX/VI EDITOR" --default-item "nvi" --menu \
+"This part of the configuration \
+process will create ex and vi symlinks in /usr/bin pointing to your default \
+ex/vi editors. On a fresh installation, these will point to nvi by default, \
+as it is lightweight and supports UTF8. You may choose a different default \
+if you prefer, but please note that elvis does not support UTF8." 14 76 3 \
+"elvis" "Slackware's traditional ex/vi, no UTF8 support" \
+"nvi" "Classic BSD ex/vi, supports UTF8" \
+"vim" "Vi IMproved - top rated ex/vi clone, supports UTF8" \
+2> $TMP/exvitype
+if [ ! $? = 0 ]; then
+ rm -f $TMP/exvitype
+ exit
+fi
+if [ -f $TMP/exvitype ]; then
+ DEFAULT_VI=$(cat $TMP/exvitype)
+else
+ exit 0
+fi
+# Only make the symlinks if the targets actually exist.
+if [ "$DEFAULT_VI" = "elvis" ]; then
+  ( cd $T_PX/usr/bin
+    if [ -e elvis ]; then
+      rm -f ex vi
+      ln -sf elvis ex
+      ln -sf elvis vi
+    fi
+  )
+elif [ "$DEFAULT_VI" = "nvi" ]; then
+  ( cd $T_PX/usr/bin
+    if [ -e nex -a -e nvi ]; then
+      rm -f ex vi
+      ln -sf nex ex
+      ln -sf nvi vi
+    fi
+  )
+elif [ "$DEFAULT_VI" = "vim" ]; then
+  ( cd $T_PX/usr/bin
+    if [ -e vim ]; then
+      rm -f ex vi
+      ln -sf vim ex
+      ln -sf vim vi
+    fi
+  )
+fi

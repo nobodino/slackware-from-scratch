@@ -1,0 +1,264 @@
+#!/bin/bash
+
+# Copyright 2000 BSDi, Inc. Concord, CA, USA
+# Copyright 2001, 2002 Slackware Linux, Inc.  Concord, CA, USA
+# Copyright 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2018  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# Set initial variables:
+cd $(dirname $0) ; CWD=$(pwd)
+TMP=${TMP:-/tmp}
+
+PKGNAM=openssl
+VERSION=${VERSION:-$(echo openssl-*.tar.gz | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+BUILD=${BUILD:-1}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+PKG1=$TMP/package-openssl
+PKG2=$TMP/package-ossllibs
+NAME1=openssl-$VERSION-$ARCH-$BUILD
+NAME2=openssl-solibs-$VERSION-$ARCH-$BUILD
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "${NAME1}.txz"
+  echo "${NAME2}.txz"
+  exit 0
+fi
+
+# Parallel build doesn't link properly.
+#NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+
+# So that ls has the right field counts for parsing...
+export LC_ALL=C
+
+cd $TMP
+rm -rf $PKG1 $PKG2 openssl-$VERSION
+
+tar xvf $CWD/openssl-$VERSION.tar.gz || exit 1
+cd openssl-$VERSION
+
+# Fix pod syntax errors which are fatal wih a newer perl:
+find . -name "*.pod" -exec sed -i "s/^\=item \([0-9]\)\(\ \|$\)/\=item C<\1>/g" {} \;
+
+## For openssl-1.1.x, don't try to change the soname.
+## Use .so.1, not .so.1.0.0:
+#sed -i "s/soname=\$\$SHLIB\$\$SHLIB_SOVER\$\$SHLIB_SUFFIX/soname=\$\$SHLIB.1/g" Makefile.shared
+
+if [ "$ARCH" = "i586" ]; then
+  # Build with -march=i586 -mtune=i686:
+  sed -i "/linux-elf/s/fomit-frame-pointer/fomit-frame-pointer -march=i586 -mtune=i686/g" Configure
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i686" ]; then
+  # Build with -march=i686 -mtune=i686:
+  sed -i "/linux-elf/s/fomit-frame-pointer/fomit-frame-pointer -march=i686 -mtune=i686/g" Configure
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  LIBDIRSUFFIX=""
+fi
+
+# OpenSSL has a (nasty?) habit of bumping the internal version number with
+# every release.  This wouldn't be so bad, but some applications are so
+# paranoid that they won't run against a different OpenSSL version than
+# what they were compiled against, whether or not the ABI has changed.
+#
+# So, we will use the OPENSSL_VERSION_NUMBER from openssl-1.1.1 unless ABI
+# breakage forces it to change.  Yes, we're finally using this old trick.  :)
+sed -i "s/#define OPENSSL_VERSION_NUMBER.*/\/* Use 0x1010100fL (1.1.1) below to avoid pointlessly breaking the ABI *\/\n#define OPENSSL_VERSION_NUMBER 0x1010100fL/g" include/openssl/opensslv.h || exit 1
+
+chown -R root:root .
+mkdir -p $PKG1/usr/doc/openssl-$VERSION
+cp -a ACKNOWLEDGEMENTS AUTHORS CHANGES* CONTRIBUTING FAQ INSTALL* \
+  LICENSE* NEWS NOTES* README* doc \
+  $PKG1/usr/doc/openssl-$VERSION
+find $PKG1/usr/doc/openssl-$VERSION -type d -exec chmod 755 {} \+
+find $PKG1/usr/doc/openssl-$VERSION -type f -exec chmod 644 {} \+
+
+# If there's a CHANGES file, installing at least part of the recent history
+# is useful, but don't let it get totally out of control:
+if [ -r CHANGES ]; then
+  DOCSDIR=$(echo $PKG1/usr/doc/*-$VERSION)
+  cat CHANGES | head -n 2000 > $DOCSDIR/CHANGES
+  touch -r CHANGES $DOCSDIR/CHANGES
+fi
+
+# These are the known patent issues with OpenSSL:
+# name   #         expires
+# MDC-2: 4,908,861  2007-03-13, not included.
+# IDEA:  5,214,703  2010-05-25, not included.
+#
+# Although all of the above are expired, it's still probably
+# not a good idea to include them as there are better
+# algorithms to use.
+
+./config \
+ --prefix=/usr \
+--libdir=lib$LIBDIRSUFFIX \
+ --openssldir=/etc/ssl \
+ zlib \
+ enable-camellia \
+ enable-seed \
+ enable-rfc3779 \
+ enable-cms \
+ enable-md2 \
+ enable-rc5 \
+ enable-ssl3 \
+ enable-ssl3-method \
+ no-weak-ssl-ciphers \
+ no-mdc2 \
+ no-ec2m \
+ no-idea \
+ no-sse2 \
+ shared
+
+make $NUMJOBS depend || make depend || exit 1
+
+make $NUMJOBS || make || exit 1
+
+make install DESTDIR=$PKG1 || exit 1
+
+# No thanks on the static libraries:
+rm -f $PKG1/usr/lib${LIBDIRSUFFIX}/*.a
+
+# No thanks on manpages duplicated as html:
+rm -rf $PKG1/usr/share/doc
+
+# Make the .so.? library symlinks:
+( cd $PKG1/usr/lib${LIBDIRSUFFIX} ; ldconfig -l lib*.so.* )
+
+# Move libraries, as they might be needed by programs that bring a network
+# mounted /usr online:
+
+mkdir $PKG1/lib${LIBDIRSUFFIX}
+( cd $PKG1/usr/lib${LIBDIRSUFFIX}
+  for file in lib*.so.?.* ; do
+    mv $file ../../lib${LIBDIRSUFFIX}
+    ln -sf ../../lib${LIBDIRSUFFIX}/$file .
+  done 
+  cp -a lib*.so.? ../../lib${LIBDIRSUFFIX}
+)
+
+# Add a cron script to warn root if a certificate is going to expire soon:
+mkdir -p $PKG1/etc/cron.daily
+zcat $CWD/certwatch.gz > $PKG1/etc/cron.daily/certwatch.new
+chmod 755 $PKG1/etc/cron.daily/certwatch.new
+
+# Make config file non-clobber:
+mv $PKG1/etc/ssl/openssl.cnf $PKG1/etc/ssl/openssl.cnf.new
+
+# Remove duplicate config file:
+rm -f $PKG1/etc/ssl/openssl.cnf.dist
+
+( cd $PKG1
+  find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+  find . | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+)
+
+# Relocate the manpages:
+mv $PKG1/usr/share/man $PKG1/usr
+rmdir $PKG1/usr/share
+
+# Fix manpage name collisions, and relink anything that linked to the old name:
+( cd $PKG1/usr/man/man1
+  mv passwd.1 ssl_passwd.1
+  for file in *.1 ; do
+    if [ -L $file ]; then
+      if [ "$(readlink $file)" = "passwd.1" ]; then
+        rm -f $file
+        ln -sf ssl_passwd.1 $file
+      fi
+    fi
+  done )
+
+# Compress and symlink the man pages:
+if [ -d $PKG1/usr/man ]; then
+  ( cd $PKG1/usr/man
+    for manpagedir in $(find . -type d -name "man*") ; do
+      ( cd $manpagedir
+        for eachpage in $( find . -type l -maxdepth 1) ; do
+          ln -s $( readlink $eachpage ).gz $eachpage.gz
+          rm $eachpage
+        done
+        gzip -9 *.?
+      )
+    done
+  )
+fi
+
+# If there's an openssl1 directory, then build openssl-1.0 shared libraries for
+# compatibility with programs linked to those:
+if [ -d $CWD/openssl1 ]; then
+  ( cd $CWD/openssl1
+    ./openssl1.build || exit 1
+  ) || exit 1
+  # Don't put these in the openssl package...  openssl-solibs is enough.
+  #mkdir -p $PKG1/lib${LIBDIRSUFFIX}
+  #cp -a $TMP/package-openssl1/usr/lib/lib*.so.?.?.? $PKG1/lib${LIBDIRSUFFIX}
+  #( cd $PKG1/lib${LIBDIRSUFFIX} ; ldconfig -l lib*.so.?.?.? )
+  mkdir -p $PKG2/lib${LIBDIRSUFFIX}
+  cp -a $TMP/package-openssl1/usr/lib${LIBDIRSUFFIX}/lib*.so.?.?.? $PKG2/lib${LIBDIRSUFFIX}
+  ( cd $PKG2/lib${LIBDIRSUFFIX} ; ldconfig -l lib*.so.?.?.? )
+fi
+
+cd $PKG1
+chmod 755 usr/lib${LIBDIRSUFFIX}/pkgconfig
+sed -i -e "s#lib\$#lib${LIBDIRSUFFIX}#" usr/lib${LIBDIRSUFFIX}/pkgconfig/*.pc
+mkdir -p install
+zcat $CWD/doinst.sh-openssl.gz > install/doinst.sh
+cat $CWD/slack-desc.openssl > install/slack-desc
+/sbin/makepkg -l y -c n $TMP/${NAME1}.txz
+
+# Make runtime package:
+mkdir -p $PKG2/lib${LIBDIRSUFFIX}
+( cd lib${LIBDIRSUFFIX} ; cp -a lib*.so.* $PKG2/lib${LIBDIRSUFFIX} )
+( cd $PKG2/lib${LIBDIRSUFFIX} ; ldconfig -l * )
+mkdir -p $PKG2/etc
+( cd $PKG2/etc ; cp -a $PKG1/etc/ssl . )
+mkdir -p $PKG2/usr/doc/openssl-$VERSION
+( cd $TMP/openssl-$VERSION
+  cp -a ACKNOWLEDGEMENTS AUTHORS CHANGES* CONTRIBUTING FAQ INSTALL* \
+  LICENSE* NEWS NOTES* README* $PKG2/usr/doc/openssl-$VERSION
+  # If there's a CHANGES file, installing at least part of the recent history
+  # is useful, but don't let it get totally out of control:
+  if [ -r CHANGES ]; then
+    DOCSDIR=$(echo $PKG2/usr/doc/*-$VERSION)
+    cat CHANGES | head -n 2000 > $DOCSDIR/CHANGES
+    touch -r CHANGES $DOCSDIR/CHANGES
+  fi
+)
+
+find $PKG2/usr/doc/openssl-$VERSION -type d -exec chmod 755 {} \+
+find $PKG2/usr/doc/openssl-$VERSION -type f -exec chmod 644 {} \+
+cd $PKG2
+mkdir -p install
+zcat $CWD/doinst.sh-openssl-solibs.gz > install/doinst.sh
+cat $CWD/slack-desc.openssl-solibs > install/slack-desc
+/sbin/makepkg -l y -c n $TMP/${NAME2}.txz

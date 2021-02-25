@@ -1,0 +1,87 @@
+#!/bin/bash
+
+# Copyright 2011, 2016, 2018  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=kernel-firmware
+ARCH=noarch
+BUILD=${BUILD:-1}
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  # Internally, git considers the repo date to be the date the last committed
+  # patch was submitted. This is somewhat confusing, as it can lead to a newer
+  # git clone having a date older than the last one we used. To avoid this
+  # situation, we're going to deviate a little and use the date the HEAD
+  # patch or merge occured as the repo date, rather than the date of the
+  # patch itself.
+  #DATE="$(lynx -dump -width=256 https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/commit/?id=HEAD | grep "    author   " | head -n 1 | rev | cut -f 3 -d ' ' | rev | tr -d -)"
+  DATE="$(lynx -dump -width=256 https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/commit/?id=HEAD | grep "   committer " | head -n 1 | rev | cut -f 3 -d ' ' | rev | tr -d -)"
+  HEADISAT="$(lynx -dump -width=256 https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/commit/?id=HEAD | grep "    commit   " | head -n 1 | cut -f 2 -d ] | cut -b 1-7)"
+  echo "$PKGNAM-${DATE}_${HEADISAT}-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-$PKGNAM
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+
+cd $PKG
+git clone git://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git
+# Better determine these the same way as above.
+DATE="$(lynx -dump -width=256 https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/commit/?id=HEAD | grep "   committer " | head -n 1 | rev | cut -f 3 -d ' ' | rev | tr -d -)"
+HEADISAT="$(lynx -dump -width=256 https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/commit/?id=HEAD | grep "    commit   " | head -n 1 | cut -f 2 -d ] | cut -b 1-7)"
+find . -name ".git*" -exec rm -rf "{}" \+
+chown -R root:root .
+mkdir -p lib
+mv linux-firmware lib/firmware
+# Make sure that symlinks are created by running "make install":
+( cd lib/firmware
+  echo "Running make DESTDIR=$PKG install..."
+  make DESTDIR=$PKG install 2> /dev/null
+)
+
+# Remove sources for carl9170fw:
+( cd $PKG/lib/firmware
+  if [ -d carl9170fw ]; then
+    mv carl9170fw/COPYRIGHT COPYRIGHT.carl9170fw
+    mv carl9170fw/GPL LICENSE.carl9170fw
+    rm -rf carl9170fw
+  fi
+)
+
+# Install documentation link:
+mkdir -p $PKG/usr/doc
+( cd $PKG/usr/doc
+  ln -sf /lib/firmware kernel-firmware-${DATE}_${HEADISAT}
+)
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/$PKGNAM-${DATE}_${HEADISAT}-$ARCH-$BUILD.txz
+

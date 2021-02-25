@@ -1,0 +1,174 @@
+#!/bin/bash
+
+# Copyright 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2018, 2019, 2020  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=bind
+VERSION=${VERSION:-$(echo ${PKGNAM}-[0-9]*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+BUILD=${BUILD:-1}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$(echo $VERSION | tr - _)-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-${PKGNAM}
+rm -rf $PKG
+mkdir -p $TMP $PKG/etc/default
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX=""
+fi
+
+cd $TMP
+rm -rf ${PKGNAM}-${VERSION}
+tar xvf $CWD/${PKGNAM}-$VERSION.tar.?z || exit 1
+cd ${PKGNAM}-$VERSION || exit 1
+
+# Make sure ownerships and permissions are sane:
+chown -R root:root .
+find . \
+ \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+ -exec chmod 755 {} \+ -o \
+ \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+ -exec chmod 644 {} \+
+
+# Detect krb5:
+if ls /lib*/libgssapi_krb5* 1> /dev/null 2> /dev/null ; then
+  GSSAPI=" --with-gssapi "
+else
+  GSSAPI=" "
+fi
+
+# Configure:
+CFLAGS="$SLKCFLAGS" \
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
+  --with-libtool \
+  --with-libidn2 \
+  --with-python=/usr/bin/python3 \
+  --mandir=/usr/man \
+  --enable-shared \
+  --disable-static \
+  --with-openssl=/usr \
+  $GSSAPI \
+  --build=$ARCH-slackware-linux-musl || exit 1
+
+# Build and install:
+make $NUMJOBS || make || exit 1
+make install DESTDIR=$PKG || exit 1
+
+# Don't ship .la files:
+rm -f $PKG/{,usr/}lib${LIBDIRSUFFIX}/*.la
+
+# We like symlinks.
+( cd $PKG/usr/sbin
+  ln -sf named lwresd
+)
+
+# We like a lot of symlinks.
+( cd $PKG/usr/man/man3
+  sh $CWD/3link.sh
+)
+
+# Install init script:
+mkdir -p $PKG/etc/rc.d
+cp -a $CWD/rc.bind $PKG/etc/rc.d/rc.bind.new
+chmod 644 $PKG/etc/rc.d/rc.bind.new
+
+# Fix library perms:
+chmod 755 $PKG/usr/lib${LIBDIRSUFFIX}/*
+
+# Strip binaries:
+find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
+  | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+
+# Symlink hardlinked man pages:
+( cd $PKG/usr/man/man1
+  ln -sf isc-config.sh.1 bind9-config.1
+)
+
+# Compress manual pages:
+find $PKG/usr/man -type f -exec gzip -9 {} \+
+for i in $( find $PKG/usr/man -type l ) ; do
+  ln -s $( readlink $i ).gz $i.gz
+  rm $i
+done
+
+# Add a documentation directory:
+mkdir -p $PKG/usr/doc/${PKGNAM}-$VERSION
+cp -a \
+  CHANGES COPYRIGHT FAQ* README* \
+  doc/arm doc/misc \
+  $PKG/usr/doc/${PKGNAM}-$VERSION 
+
+# This one should have the correct perms of the config file:
+chmod 644 $PKG/usr/doc/${PKGNAM}-$VERSION/misc/rndc.conf-sample
+
+# One format of this is plenty.  Especially get rid of the bloated PDF.
+( cd $PKG/usr/doc/bind-$VERSION/arm
+  rm -f Makefile* *.pdf *.xml README.SGML latex-fixup.pl
+)
+
+# Add sample config files for a simple caching nameserver:
+mkdir -p $PKG/var/named/caching-example
+cat $CWD/caching-example/named.conf > $PKG/etc/named.conf.new
+cat $CWD/caching-example/localhost.zone > $PKG/var/named/caching-example/localhost.zone
+cat $CWD/caching-example/named.local > $PKG/var/named/caching-example/named.local
+cat $CWD/caching-example/named.root > $PKG/var/named/caching-example/named.root
+# This name is deprecated, but having it here doesn't hurt in case
+# an old configuration file wants it:
+cat $CWD/caching-example/named.root > $PKG/var/named/caching-example/named.ca
+
+mkdir -p $PKG/install
+zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/${PKGNAM}-$(echo $VERSION | tr - _)-$ARCH-$BUILD.txz
+

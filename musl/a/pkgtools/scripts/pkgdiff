@@ -1,0 +1,164 @@
+#!/bin/sh
+# Copyright 2002  Patrick J. Volkerding, Concord, CA, USA
+# Copyright 2018  Patrick J. Volkerding, Sebeka, Minnesota, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+CWD=$(pwd)
+
+# Display usage for basic usage errors:
+usage() {
+  cat << EOF
+pkgdiff: missing file arguments
+Try 'pkgdiff --help' for more information.
+EOF
+}
+
+# Display full --help if requested:
+helpme() {
+  cat << EOF
+Usage: pkgdiff [OPTION] FILE1 FILE2
+Show which files are new and which are removed between two tar archives.
+The tar archives may be uncompressed, or compressed with gzip, bzip2,
+xz, or lzip. Also works with .rpm and .deb.
+
+  --help           display this help and exit
+  -c               use ANSI color with default tree mode
+  -a               show simple text (ASCII) diff of package file lists
+
+By default, the trees are drawn with in crude ASCII with no color. For
+the full-color effect, try something like this:
+
+  pkgdiff -c package1 package2 | less -r
+
+EOF
+  # --help doesn't return
+  exit 22
+}
+
+# How the heck do I open this?
+explode() {
+  tar xf $1 1> /dev/null 2> /dev/null
+  # Check for common extensions and do additional magic:
+  if [ ! "$(basename $1)" = "$(basename $1 .zip)" ]; then
+    unzip $1 1> /dev/null 2> /dev/null
+  fi
+  if [ ! "$(basename $1)" = "$(basename $1 .rpm)" ]; then
+    cp $1 .
+    rpm2tgz $(basename $1) 1> /dev/null 2> /dev/null
+    rm -f $(basename $1)
+    tar xzf $(basename $1 .rpm).tgz 1> /dev/null 2> /dev/null
+    rm -f $(basename $1 .rpm).tgz
+  fi
+  if [ ! "$(basename $1)" = "$(basename $1 .deb)" ]; then
+    cp $1 .
+    ar x $(basename $1) 1> /dev/null 2> /dev/null
+    tar xf data.tar.xz 1> /dev/null 2> /dev/null
+    rm -f * 2> /dev/null
+  fi
+  # Diffs for other archive formats are welcome.
+}
+
+# Parse options.
+# -c turns on colorization ala dircolors:
+unset COLOR
+if [ "$1" = "-c" ]; then
+  COLOR="-C"
+  shift 1
+fi
+if [ "$1" = "-a" ]; then
+  ASCII=true
+  shift 1
+fi
+if [ "$1" = "--help" ]; then
+  helpme
+fi
+
+TMPDIR=$(mktemp -d)
+cd $TMPDIR
+
+if [ ! -r "$1" ]; then
+  if [ -d "$CWD/$1" ]; then
+    usage
+    exit 99
+  else
+    PKG1="$CWD/$1"
+  fi
+else
+  PKG1="$1"
+fi
+
+if [ ! -r "$2" ]; then
+  if [ -d "$CWD/$2" ]; then
+    usage
+    #echo "pkgdiff -- find the difference between two tar archives"
+    #echo "usage: pkgdiff [ -C ] pkg1 pkg2"
+    exit 99
+  else
+    PKG2="$CWD/$2"
+  fi
+else
+  PKG2="$2"
+fi
+
+# We have to account for the possibility that the packages have the
+# same name, but different contents...
+if [ "$(basename $PKG1)" = "$(basename $PKG2)" ]; then
+  PKG1=${PKG1}.orig
+fi
+
+# This will be mighty safe even if we ended up in /tmp.
+PKG=.pkgdiff.$(mcookie)
+
+( mkdir -p $TMPDIR/$PKG/1
+  cd $TMPDIR/$PKG/1
+  if [ -r $PKG1 ]; then
+    explode $PKG1
+  elif [ -r $(dirname $PKG1)/$(basename $PKG1 .orig) ]; then
+    explode $(dirname $PKG1)/$(basename $PKG1 .orig)
+  fi
+  if [ ! "$ASCII" = "true" ]; then
+    tree $COLOR -a --noreport > ../$(basename $PKG1)
+  else
+    find ./ | sed '2,$s,^\./,,' | tar --no-recursion -T - -cf - | tar tf - | sort > ../$(basename $PKG1)
+  fi
+)
+( mkdir -p $TMPDIR/$PKG/2
+  cd $TMPDIR/$PKG/2
+  explode $PKG2
+  if [ ! "$ASCII" = "true" ]; then
+    tree $COLOR -a --noreport > ../$(basename $PKG2)
+  else
+    find ./ | sed '2,$s,^\./,,' | tar --no-recursion -T - -cf - | tar tf - | sort > ../$(basename $PKG2)
+  fi
+)
+
+# Always going that extra mile... ;)
+if [ -r $PKG1 ]; then
+  touch -r $PKG1 $TMPDIR/$PKG/$(basename $PKG1)
+elif [ -r $(dirname $PKG1)/$(basename $PKG1 .orig) ]; then
+  touch -r $(dirname $PKG1)/$(basename $PKG1 .orig) $TMPDIR/$PKG/$(basename $PKG1)
+fi
+touch -r $PKG2 $TMPDIR/$PKG/$(basename $PKG2)
+
+rm -rf $TMPDIR/$PKG/{1,2}
+( cd $TMPDIR/$PKG ; diff -d -u $(basename $PKG1) $(basename $PKG2) )
+
+# cleanup:
+rm -rf $PKG $TMPDIR

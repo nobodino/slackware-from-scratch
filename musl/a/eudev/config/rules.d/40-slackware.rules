@@ -1,0 +1,25 @@
+# /lib/udev/rules.d/40-slackware.rules
+#
+# Slackware custom udev rules
+# Also see the following Slackware-provided custom rules files:
+# 65-permissions.rules and 90-network.rules
+#
+# Any change in this file will be overwritten in upgrades. Put your
+# custom rules somewhere else (90-local.rules is a good idea).
+#
+# See the udev man page to know the parameters you can use in udev
+# rules.
+#
+
+# input devices
+KERNEL=="mice",		SYMLINK+="mouse"
+
+# Set rfkill device writable by netdev group
+KERNEL=="rfkill", GROUP:="netdev", MODE:="0664"
+
+# Mount fusectl filesystem
+KERNEL=="fuse", ACTION=="add", RUN+="/bin/mount -t fusectl fusectl /sys/fs/fuse/connections"
+
+# Set default perms for /dev/ppp:
+KERNEL=="ppp", MODE="0660", GROUP="dialout", OPTIONS+="static_node=ppp"
+

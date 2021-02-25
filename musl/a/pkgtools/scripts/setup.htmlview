@@ -1,0 +1,33 @@
+#!/bin/sh
+#BLURB="Set a default browser link."
+# Sorry, this is not a full menu, and may not ever be.
+# It is trivial to find the htmllink symbolic link and
+# point it at the browser that you like. Besides,
+# this is not a Linux standard that could be locating
+# in any official document. It seems to have been
+# started without any consultation with other
+# distributions by <take a wild guess>, and now things
+# expect it to be there.
+#
+#
+# Note 1. Listing a browser doesn't mean we ship it.
+# Note 2. Complaints about our preferences or missing
+#         browsers in the list will be considered.
+#         Yell at Pat about it. ;-)
+
+# There must be no link, or we assume the admin set it and
+# do nothing. Can you tell this Q+D script was written for
+# the initial installation?
+
+for browser in firefox seamonkey konqueror galeon epiphany links lynx ; do
+  if [ ! -e usr/bin/htmlview -a -x usr/bin/$browser ]; then
+    cat << EOF > usr/bin/htmlview
+#!/bin/sh
+exec $browser "\$@"
+EOF
+  fi
+done
+if [ -e usr/bin/htmlview ]; then
+  chmod 755 usr/bin/htmlview
+fi
+

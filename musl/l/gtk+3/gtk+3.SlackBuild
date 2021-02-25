@@ -1,0 +1,168 @@
+#!/bin/bash
+
+# Copyright 2008, 2009, 2010, 2011, 2013, 2018, 2020  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=gtk+3
+VERSION=${VERSION:-$(echo gtk+-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+BUILD=${BUILD:-1}
+
+NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-gtk3
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX=""
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+rm -rf $PKG
+mkdir -p $TMP $PKG/usr
+cd $TMP
+rm -rf gtk+-$VERSION
+tar xvf $CWD/gtk+-$VERSION.tar.?z || exit 1
+cd gtk+-$VERSION || exit 1
+
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \+ -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \+
+
+# The version-check.py seems to be missing from the top-level directory, but
+# since we've checked the version numbers manually we'll just fix things so
+# the configure process doesn't try to call it:
+zcat $CWD/gtk.fix.missing.version-check.py.diff.gz | patch -p1 --verbose || exit 1
+
+# Configure, build, and install:
+export CFLAGS="$SLKCFLAGS -DG_ENABLE_DEBUG -DG_DISABLE_CAST_CHECKS"
+export CXXFLAGS="$SLKCFLAGS -DG_ENABLE_DEBUG -DG_DISABLE_CAST_CHECKS"
+mkdir meson-build
+cd meson-build
+meson setup \
+  --prefix=/usr \
+  --libdir=lib${LIBDIRSUFFIX} \
+  --libexecdir=/usr/libexec \
+  --bindir=/usr/bin \
+  --sbindir=/usr/sbin \
+  --includedir=/usr/include \
+  --datadir=/usr/share \
+  --mandir=/usr/man \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
+  --buildtype=release \
+  -Dman=true \
+  -Ddemos=true \
+  -Dgtk_doc=true \
+  -Dbroadway_backend=true \
+  -Dexamples=false \
+  -Dtests=false \
+  -Dinstalled_tests=false \
+  -Dwayland_backend=true \
+  .. || exit 1
+  "${NINJA:=ninja}" $NUMJOBS || exit 1
+  DESTDIR=$PKG $NINJA install || exit 1
+cd ..
+
+# Don't clobber im-multipress.conf
+mv $PKG/etc/gtk-3.0/im-multipress.conf $PKG/etc/gtk-3.0/im-multipress.conf.new
+
+# Install a "starter" gtkrc
+echo 'gtk-theme-name="Adwaita"' > $PKG/etc/gtk-3.0/gtkrc.new
+
+# We need to have separate 32-bit and 64-bit binaries for places where we have
+# two copies of the GTK+ package installed (we might have x86_64 and i586
+# packages on the same system, for example.)
+if [ "$LIBDIRSUFFIX" = "64" ]; then
+  mv $PKG/usr/bin/gtk-query-immodules-3.0{,-64}
+  ( cd $PKG/usr/bin
+    ln -sf gtk-query-immodules-3.0-64 gtk-query-immodules-3.0
+  )
+else
+  mv $PKG/usr/bin/gtk-query-immodules-3.0{,-32}
+  ( cd $PKG/usr/bin
+    ln -sf gtk-query-immodules-3.0-32 gtk-query-immodules-3.0
+  )
+fi
+
+# Install wrappers for the binaries:
+cp $CWD/update-gtk-immodules-3.0 $PKG/usr/bin/update-gtk-immodules-3.0
+chmod 0755 $PKG/usr/bin/update-*
+
+# Strip binaries:
+find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+
+# Compress manual pages:
+find $PKG/usr/man -type f -exec gzip -9 {} \+
+for i in $( find $PKG/usr/man -type l ) ; do
+  ln -s $( readlink $i ).gz $i.gz
+  rm $i
+done
+
+# Copy extra documentation into package.
+mkdir -p $PKG/usr/doc/gtk+3-$VERSION
+cp -a \
+  AUTHORS COPYING NEWS README \
+  $PKG/usr/doc/gtk+3-$VERSION
+( cd $PKG/usr/doc/gtk+3-$VERSION
+  ln -s /usr/share/gtk-doc/html/gail-libgail-util .
+  ln -s /usr/share/gtk-doc/html/gdk3 .
+  ln -s /usr/share/gtk-doc/html/gtk3 .
+)
+find $PKG/usr/doc/gtk+3-$VERSION/ -type f -exec chmod 644 {} \+
+chown -R root:root $PKG/usr/doc/gtk+3-$VERSION
+
+mkdir -p $PKG/install 
+zcat $CWD/doinst.sh > $PKG/install/doinst.sh
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -p -l y -c n $TMP/gtk+3-${VERSION}-$ARCH-${BUILD}.txz

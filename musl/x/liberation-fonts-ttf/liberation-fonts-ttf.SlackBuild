@@ -1,0 +1,75 @@
+#!/bin/bash
+
+# Copyright 2008, 2009, 2010, 2011, 2012, 2018, 2020  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=liberation-fonts-ttf
+VERSION=2.1.3
+ARCH=noarch
+BUILD=${BUILD:-1}
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-liberation-fonts-ttf
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+cd $TMP
+rm -rf liberation-fonts-ttf-$VERSION
+tar xvf $CWD/liberation-fonts-ttf-${VERSION}.tar.* || exit 1
+cd liberation-fonts-ttf-${VERSION} || exit 1
+
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \+ -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \+
+
+mkdir -p $PKG/usr/share/fonts/TTF/
+cp -a *.ttf $PKG/usr/share/fonts/TTF/
+
+mkdir -p $PKG/usr/doc/liberation-fonts-ttf-$VERSION
+cp -a \
+  $CWD/docs/* \
+  $PKG/usr/doc/liberation-fonts-ttf-$VERSION
+
+mkdir -p $PKG/etc/fonts/conf.{d,avail}
+cat $CWD/60-liberation.conf > $PKG/etc/fonts/conf.avail/60-liberation.conf
+( cd $PKG/etc/fonts/conf.d && \
+  ln -sf ../conf.avail/60-liberation.conf
+)
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/liberation-fonts-ttf-${VERSION}-$ARCH-$BUILD.txz
+

@@ -1,0 +1,382 @@
+#!/bin/bash
+
+# Copyright 2008, 2009, 2010, 2011, 2012, 2013, 2015, 2017, 2018, 2020  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# Slackware build script for util-linux
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=util-linux
+VERSION=${VERSION:-$(echo util-linux*.tar.xz | cut -d - -f 3  | rev | cut -f 3- -d . | rev)}
+BUILD=${BUILD:-1}
+
+ADJTIMEXVERS=1.29
+SETSERIALVERS=2.17
+ZIPTOOLVERS=1.4.0
+
+NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX=""
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-util-linux
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+cd $TMP || exit 1
+rm -rf util-linux-$VERSION
+tar xvf $CWD/util-linux-$VERSION.tar.xz || exit 1
+cd util-linux-$VERSION || exit 1
+chown -R root.root .
+find . \
+ \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+ -exec chmod 755 {} \+ -o \
+ \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+ -exec chmod 644 {} \+
+
+# Choose correct options depending on whether PAM is installed:
+if [ -L /lib${LIBDIRSUFFIX}/libpam.so.? ]; then
+  LOGIN_OPTIONS=""
+  # By default, don't use the util-linux version of /bin/su:
+  SHIP_SU=${SHIP_SU:-NO}
+  # Add /etc/pam.d config files:
+  rm -rf $PKG/etc/pam.d
+  mkdir -p $PKG/etc/pam.d
+  for file in $CWD/pam.d/* ; do
+    cp -a ${file} $PKG/etc/pam.d/
+  done
+  if [ "$SHIP_SU" = "YES" ]; then
+    # Add su default file to ensure using ENV_SUPATH with 'su':
+    mkdir -p $PKG/etc/default
+    cp -a $CWD/su.default $PKG/etc/default/su.new
+    chown root:root $PKG/etc/default/su.new
+    chmod 644 $PKG/etc/default/su.new
+    # Add su /etc/pam.d files:
+    cp -a $CWD/pam.d-su/* $PKG/etc/pam.d/
+  fi
+  # Ensure correct perms/ownership on files in /etc/pam.d/:
+  chown root:root $PKG/etc/pam.d/*
+  chmod 644 $PKG/etc/pam.d/*
+  # Don't clobber existing config files:
+  find $PKG/etc/pam.d -type f -exec mv {} {}.new \;
+else
+  # Don't use the util-linux version of /bin/su.
+  # It can't be built without PAM anyway.
+  SHIP_SU=NO
+  LOGIN_OPTIONS="--disable-login"
+fi
+
+# Changing the fdisk -l output (this was done prior to util-linux-ng) broke
+# our installation scripts, so we have changed the name of partition type
+# 83 back to "Linux swap":
+zcat $CWD/util-linux.fdisk-no-solaris.diff.gz | patch -p1 --verbose || exit 1
+
+# Revert to the behavior of earlier versions of fdisk which did not list the
+# /dev/ram* devices in 'fdisk -l' output:
+zcat $CWD/util-linux.do.not.list.ram.devices.diff.gz | patch -p1 --verbose || exit 1
+
+# This just call the configure script with $1 either being 2 for python2
+# or 3 for python3.
+#
+# The releasenotes say to use --runstatedir, but it doesn't work and the
+# configure script fails. So we'll leave things using localstatedir, but
+# check again later:
+#
+#   --runstatedir=/run
+configure_with_python(){
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
+  --mandir=/usr/man \
+  --infodir=/usr/info \
+  --docdir=/usr/doc/util-linux-$VERSION \
+  --disable-static \
+  --enable-agetty \
+  --enable-kill \
+  --disable-last \
+  --enable-libmount-support-mtab \
+  --enable-line \
+  --enable-mesg \
+  --enable-partx \
+  --enable-pg \
+  --enable-raw \
+  --enable-rename \
+  $LOGIN_OPTIONS \
+  --enable-schedutils \
+  --enable-wall \
+  --enable-write \
+  --enable-use-tty-group \
+  --enable-libblkid \
+  --enable-libmount \
+  --enable-libuuid \
+  --disable-uuidd \
+  --with-python=$1 \
+  --build=$ARCH-slackware-linux-musl
+}
+
+CFLAGS="$SLKCFLAGS" \
+  configure_with_python 2 || exit 1
+
+make $NUMJOBS || make || exit 1
+make install $NUMJOBS DESTDIR=$PKG || exit 1
+
+# These need to be setuid root to work properly (only built for PAM):
+if [ -r $PKG/usr/bin/chfn ]; then
+  chmod 4711 $PKG/usr/bin/chfn
+fi
+if [ -r $PKG/usr/bin/chsh ]; then
+  chmod 4711 $PKG/usr/bin/chsh
+fi
+
+# Build python3 bindings for libmount:
+make clean
+CFLAGS="$SLKCFLAGS" \
+  configure_with_python 3 || exit 1
+make $NUMJOBS \
+  install-pylibmountexecLTLIBRARIES \
+  install-pylibmountexecPYTHON \
+  DESTDIR=$PKG || exit 1
+
+# Remove all overlap with the shadow package, since --disable-login doesn't quite do that:
+rm $PKG/sbin/nologin $PKG/usr/man/man8/nologin.8 $PKG/sbin/sulogin $PKG/usr/man/man8/sulogin.8
+
+# If we aren't shipping su, remove the files:
+if [ "$SHIP_SU" = "NO" ]; then
+  rm -f $PKG/bin/su
+  rm -f $PKG/usr/man/man1/su.1
+  rm -f $PKG/usr/share/bash-completion/completions/su
+fi
+
+# Move the libblkid, libfdisk, libmount, libsmartcols, and
+# libuuid libraries to /lib${LIBSUFFIX}:
+mkdir -p $PKG/lib${LIBDIRSUFFIX}
+( cd $PKG/usr/lib${LIBDIRSUFFIX}
+  mv libblkid.so.1* $PKG/lib${LIBDIRSUFFIX}
+  mv libfdisk.so.1* $PKG/lib${LIBDIRSUFFIX}
+  mv libmount.so.1* $PKG/lib${LIBDIRSUFFIX}
+  mv libsmartcols.so.1* $PKG/lib${LIBDIRSUFFIX}
+  mv libuuid.so.1* $PKG/lib${LIBDIRSUFFIX}
+  rm -f libblkid.so libfdisk.so libmount.so libsmartcols.so libuuid.so
+  ln -sf ../../lib${LIBDIRSUFFIX}/libblkid.so.1 libblkid.so
+  ln -sf ../../lib${LIBDIRSUFFIX}/libfdisk.so.1 libfdisk.so
+  ln -sf ../../lib${LIBDIRSUFFIX}/libmount.so.1 libmount.so
+  ln -sf ../../lib${LIBDIRSUFFIX}/libsmartcols.so.1 libsmartcols.so
+  ln -sf ../../lib${LIBDIRSUFFIX}/libuuid.so.1 libuuid.so
+)
+
+# Moving things around that have been in the same place
+# for 15 years is, IMHO, not a wise idea AT ALL.
+# If this had to be moved, some place out of /usr might
+# have shown a grain of insight...
+if [ -r $PKG/usr/sbin/fdformat ]; then
+  mkdir -p $PKG/usr/bin
+  mv $PKG/usr/sbin/fdformat $PKG/usr/bin/fdformat
+  # Now since stuff will start looking in this new place,
+  # we have no choice but to link these:
+  ( cd $PKG/usr/sbin
+    ln -sf ../bin/fdformat .
+  )
+fi
+
+# Add the rc.setterm init script to set default terminal attributes:
+mkdir -p $PKG/etc/rc.d
+cp -a $CWD/rc.setterm $PKG/etc/rc.d/rc.setterm.new
+chown root:root $PKG/etc/rc.d/rc.setterm.new
+chmod 755 $PKG/etc/rc.d/rc.setterm.new
+
+# ddate.{1,c} taken from https://github.com/bo0ts/ddate:
+cp -a $CWD/ddate.? .
+cc -O -o ddate ddate.c
+cp -a ddate $PKG/usr/bin
+cat ddate.1 > $PKG/usr/man/man1/ddate.1
+chown root:root $PKG/usr/bin/ddate
+
+# Build ziptool (install as jaztool to avoid conflict with libzip):
+cd $TMP || exit 1
+rm -rf ziptool-$ZIPTOOLVERS
+tar xvf $CWD/ziptool-$ZIPTOOLVERS.tar.xz || exit 1
+cd ziptool-$ZIPTOOLVERS || exit 1
+zcat $CWD/ziptool-fix_build.patch.gz | patch -p1 || exit 1
+mkdir scsi
+cat $CWD/scsi_ioctl.h > scsi/scsi_ioctl.h
+chown -R root:root .
+make || exit 1
+strip ziptool
+cat ziptool > $PKG/sbin/jaztool
+chmod 0755 $PKG/sbin/jaztool
+mkdir -p $PKG/usr/doc/ziptool-$ZIPTOOLVERS
+cp -a README $PKG/usr/doc/ziptool-$ZIPTOOLVERS
+chmod 644 $PKG/usr/doc/ziptool-$ZIPTOOLVERS/*
+cat ziptool.1.gz > $PKG/usr/man/man1/jaztool.1.gz
+
+# Build bsdstrings
+cd $TMP || exit 1
+rm -rf bsdstrings
+tar xvf $CWD/bsdstrings.tar.gz || exit 1
+cd bsdstrings || exit 1
+sed -i "s|a.out.h|linux/a.out.h|" strings.c
+zcat $CWD/bsdstrings-util-linux_overflow.diff.gz | patch -p1 --verbose || exit 1
+make || exit 1
+strip strings
+cat strings > $PKG/usr/bin/strings-BSD
+chmod 0755 $PKG/usr/bin/strings-BSD
+cat strings.1 | gzip -9c > $PKG/usr/man/man1/strings-BSD.1.gz
+
+# Build adjtimex
+cd $TMP || exit 1
+rm -rf adjtimex-$ADJTIMEXVERS
+tar xvf $CWD/adjtimex_${ADJTIMEXVERS}.orig.tar.gz || exit 1
+cd adjtimex-$ADJTIMEXVERS || exit 1
+chown -R root:root .
+zcat $CWD/adjtimex_1.29-2.2.diff.gz | patch -p1 || exit 1
+CFLAGS=-O2 ./configure --prefix=/usr || exit 1
+make || exit 1
+strip adjtimex
+cat adjtimex > $PKG/sbin/adjtimex
+chmod 0755 $PKG/sbin/adjtimex
+cat adjtimex.8 | gzip -9c > $PKG/usr/man/man8/adjtimex.8.gz
+mkdir -p $PKG/usr/doc/adjtimex-$ADJTIMEXVERS
+cp -a COPYING COPYRIGHT README README.ru adjtimex.lsm \
+  $PKG/usr/doc/adjtimex-$ADJTIMEXVERS
+
+# Build setserial
+cd $TMP || exit 1
+rm -rf setserial-$SETSERIALVERS
+tar xvf $CWD/setserial-$SETSERIALVERS.tar.gz || exit 1
+cd setserial-$SETSERIALVERS || exit 1
+chown -R root:root .
+zcat $CWD/setserial-rc.serial.diff.gz | patch -E -p1 --verbose || exit 1
+zcat $CWD/setserial-undef_TIOCGHAYESESP.diff.gz | patch -E -p1 --verbose || exit 1
+# The original config.{guess,sub} do not work on x86_64
+cp -p /usr/share/libtool/config/config.{guess,sub} .
+./configure --prefix=/usr || exit 1
+make || exit 1
+strip setserial
+cat setserial > $PKG/sbin/setserial
+chmod 0755 $PKG/sbin/setserial
+mkdir -p $PKG/etc/rc.d
+cat rc.serial > $PKG/etc/rc.d/rc.serial.new
+cat serial.conf > $PKG/etc/serial.conf.new
+cat setserial.8 | gzip -9c > $PKG/usr/man/man8/setserial.8.gz
+
+# These have always traditionally been available before /usr
+# might be mounted:
+( cd $PKG/usr/bin
+  mv getopt setterm $PKG/bin
+  cd $PKG/usr/bin
+  ln -s ../../bin/getopt .
+  ln -s ../../bin/setterm .
+)
+
+cd $TMP/util-linux-$VERSION # Go back home :)
+
+# Now let's add some important symlinks :)
+( cd $PKG/sbin
+  ln -s ../bin/mount .
+  ln -s ../bin/umount .
+  #ln -s ziptool jaztool
+  ln -s hwclock clock
+  cd $PKG/usr/sbin
+  ln -s ../../sbin/cfdisk .
+  ln -s ../../sbin/ctrlaltdel .
+  ln -s ../../sbin/sfdisk .
+  cd $PKG/usr/bin
+  ln -s ../sbin/readprofile .
+  # tunelp was removed by upstream:
+  #ln -s ../sbin/tunelp .
+  ln -s ../../bin/more .
+  ln -s ../../sbin/raw .
+  cd $PKG/usr/man/man1
+  #ln -s ziptool.1 jaztool.1
+  cd $PKG/usr/man/man8
+  ln -s hwclock.8 clock.8
+)
+
+find $PKG | xargs file | grep -e "executable" -e "shared object" \
+  | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+
+# Don't ship .la files:
+rm -f $PKG/{,usr/}lib${LIBDIRSUFFIX}/*.la
+
+# Compress and if needed symlink the man pages:
+if [ -d $PKG/usr/man ]; then
+  ( cd $PKG/usr/man
+    for manpagedir in $(find . -type d -name "man*") ; do
+      ( cd $manpagedir
+        for eachpage in $( find . -type l -maxdepth 1) ; do
+          ln -s $( readlink $eachpage ).gz $eachpage.gz
+          rm $eachpage
+        done
+        gzip -9 *.?
+      )
+    done
+  )
+fi
+
+# Compress info page and remove dir file
+rm $PKG/usr/info/dir
+gzip -9 $PKG/usr/info/*
+
+mkdir -p $PKG/usr/doc/util-linux-$VERSION
+cp -a AUTHORS COPYING* DEPRECATED NEWS README* \
+  Documentation/v${VERSION}-ReleaseNotes \
+  Documentation/licenses/* Documentation/{TODO,*.txt} \
+  $PKG/usr/doc/util-linux-$VERSION
+
+mkdir $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/util-linux-$VERSION-$ARCH-$BUILD.txz
+

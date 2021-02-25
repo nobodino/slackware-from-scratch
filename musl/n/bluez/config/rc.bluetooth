@@ -1,0 +1,74 @@
+#!/bin/sh
+
+# /etc/rc.d/rc.bluetooth (based on BLFS script)
+
+# Populated from /etc/default/bluetooth:
+# ACTIVE_HCI_DEVICES_ON_BOOT and SDPTOOL_OPTIONS
+
+[ -r /etc/default/bluetooth ] && . /etc/default/bluetooth
+
+start_hci_dev() {
+   for dev in ${ACTIVE_HCI_DEVICES_ON_BOOT} ; do
+      hciconfig $dev up > /dev/null 2>&1 
+   done
+}
+
+run_sdptool() {
+  # Declaring IFS local in this function, removes the need to save/restore it
+  local IFS option
+  test -x /usr/bin/sdptool || return 1
+  IFS=";"
+  for option in ${SDPTOOL_OPTIONS}; do
+    IFS=" "
+    /usr/bin/sdptool $option > /dev/null 2>&1
+  done
+}
+
+start_uarts() {
+  [ -r /etc/bluetooth/uart.conf ] || return
+  grep -v '^[[:space:]]*(#|$)' /etc/bluetooth/uart.conf | while read i; do
+    /usr/bin/hciattach $i > /dev/null 2>&1
+  done
+}
+
+stop_uarts() {
+  killall /usr/bin/hciattach > /dev/null 2>&1 
+}
+
+start() {
+  if [ -d /sys/class/bluetooth ]; then
+    # Start as background process and assume OK
+    echo -n "Starting Bluetooth services:  bluetoothd "
+    /usr/sbin/bluetoothd &
+    echo -n "hciconfig "
+    start_hci_dev
+    echo -n "sdptool "
+    run_sdptool
+    echo "hciattach"
+    start_uarts
+  fi
+}
+
+stop() {
+  stop_uarts
+  killall /usr/sbin/bluetoothd > /dev/null 2>&1
+}
+
+case "${1}" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  restart)
+    stop
+    sleep 1
+    start
+    ;;
+  *)
+    echo "Usage: ${0} {start|stop|restart}"
+    exit 1
+    ;;
+esac
+

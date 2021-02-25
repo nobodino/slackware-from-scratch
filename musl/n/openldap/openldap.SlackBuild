@@ -1,0 +1,269 @@
+#!/bin/bash
+
+# Copyright 2008, 2009, 2010, 2018, 2019, 2020  Patrick J. Volkerding, Sebeka, Minnesota, USA
+# Copyright 2015-2017 Giuseppe Di Terlizzi <giuseppe.diterlizzi@gmail.com>
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=openldap
+VERSION=${VERSION:-$(echo $PKGNAM-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+BUILD=${BUILD:-2}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$(uname -m)" in
+    i?86) ARCH=i586 ;;
+    arm*) readelf /usr/bin/file -A | egrep -q "Tag_CPU.*[4,5]" && ARCH=arm || ARCH=armv7hl ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+    *) ARCH=$(uname -m) ;;
+  esac
+  export ARCH
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i686" ]; then
+  SLKCFLAGS="-O2 -march=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "armv7hl" ]; then
+  SLKCFLAGS="-O3 -march=armv7-a -mfpu=vfpv3-d16"
+  LIBDIRSUFFIX=""
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-$PKGNAM
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+
+cd $TMP
+rm -rf $PKGNAM-$VERSION
+tar xvf $CWD/$PKGNAM-$VERSION.tar.?z || exit 1
+cd $PKGNAM-$VERSION || exit 1
+
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \+ -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \+
+
+# Ensure user:group exists before building:
+if ! grep -q "^ldap:" /etc/passwd ; then
+  echo "ldap:x:330:330:OpenLDAP server:/var/lib/openldap:/bin/false" >> /etc/passwd
+fi
+if ! grep -q "^ldap:" /etc/group ; then
+  echo "ldap:x:330:" >> /etc/group
+fi
+if ! grep -q "^ldap:" /etc/shadow ; then
+  echo "ldap:*:9797:0:::::" >> /etc/shadow
+fi
+
+# Change the location of run directory into /var/run/openldap:
+sed -i -e 's|%LOCALSTATEDIR%/run/|/var/run/openldap/|' \
+  servers/slapd/slapd.*
+
+# Change the location of ldapi socket into /var/run/openldap:
+sed -i -e 's|\(#define LDAPI_SOCK\).*|\1 "/var/run/openldap/ldapi"|' \
+  include/ldap_defaults.h
+
+# Change the default OpenLDAP database directory:
+sed -i -e 's|openldap-data|lib/openldap|' \
+  servers/slapd/slapd.* include/ldap_defaults.h servers/slapd/Makefile.in
+
+# Fix man pages:
+sed -i "s/openldap\\\-data/lib\/openldap/g" doc/man/man5/slapd-config.5 doc/man/man5/slapd-bdb.5 doc/man/man5/slapd-mdb.5 doc/man/man5/slapd.conf.5
+
+# Configure, build, and install:
+CFLAGS="$SLKCFLAGS" \
+CXXFLAGS="$SLKCFLAGS" \
+./configure \
+  --prefix=/usr \
+  --exec-prefix=/usr \
+  --sysconfdir=/etc \
+  --mandir=/usr/man \
+  --localstatedir=/var \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  \
+  --enable-debug \
+  --enable-dynamic \
+  --enable-syslog \
+  --enable-proctitle \
+  --enable-ipv6 \
+  --enable-local \
+  \
+  --enable-slapd \
+  --enable-dynacl \
+  --enable-aci \
+  --enable-cleartext \
+  --enable-crypt \
+  --enable-lmpasswd \
+  --enable-spasswd \
+  --enable-modules \
+  --enable-rewrite \
+  --enable-rlookups \
+  --enable-slapi \
+  --disable-slp \
+  \
+  --enable-backends=mod \
+  --enable-bdb=yes \
+  --enable-hdb=yes \
+  --enable-mdb=yes \
+  --enable-monitor=yes \
+  --enable-perl=yes \
+  --disable-ndb \
+  \
+  --enable-overlays=mod \
+  \
+  --disable-static \
+  --enable-shared \
+  \
+  --with-cyrus-sasl \
+  --without-fetch \
+  --with-threads \
+  --with-pic \
+  --with-tls \
+  \
+  --build=$ARCH-slackware-linux-musl || exit 1
+make depend
+make $NUMJOBS || make || exit 1
+make install DESTDIR=$PKG || exit 1
+
+# Don't ship .la files:
+rm -f $PKG/{,usr/}lib${LIBDIRSUFFIX}/*.la
+
+# Don't package this directory:
+rmdir $PKG/var/run
+
+# Fix permissions on shared libraries:
+chmod 755 $PKG/usr/lib${LIBDIRSUFFIX}/*.so.*
+
+# Restrict access to database:
+chmod 700 $PKG/var/lib/openldap
+
+# Fix ownership:
+chown -R ldap:ldap $PKG/var/lib/openldap
+chown -R ldap:ldap $PKG/etc/openldap
+
+# Get rid of .default config files:
+rm -f $PKG/etc/openldap/*.default
+
+# Move ldap.conf to ldap.conf.new and add an additional option:
+mv $PKG/etc/openldap/ldap.conf $PKG/etc/openldap/ldap.conf.new
+cat << EOF >> $PKG/etc/openldap/ldap.conf.new
+
+# In order to avoid problems with self-signed certificates using TLS:
+# "TLS certificate verification: Error, self signed certificate"
+# See also 'man ldap.conf' or http://www.openldap.org/doc/admin/tls.html
+TLS_REQCERT allow
+
+EOF
+# Move other config files to .new:
+mv $PKG/etc/openldap/slapd.conf $PKG/etc/openldap/slapd.conf.new
+mv $PKG/etc/openldap/slapd.ldif $PKG/etc/openldap/slapd.ldif.new
+
+# Create a symlink for slapd in /usr/sbin:
+if [ ! -x $PKG/usr/sbin/slapd ]; then
+  ( cd $PKG/usr/sbin ; ln -sf ../libexec/slapd slapd )
+fi
+
+# Create OpenLDAP certificates directory:
+mkdir -p $PKG/etc/openldap/certs
+
+# Copy rc.openldap:
+mkdir -p $PKG/etc/rc.d
+cat $CWD/rc.openldap > $PKG/etc/rc.d/rc.openldap.new
+
+# Copy slapd default file:
+mkdir -p $PKG/etc/default
+cat $CWD/slapd > $PKG/etc/default/slapd.new
+
+# Strip binaries:
+find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+
+# Compress manual pages:
+find $PKG/usr/man -type f -exec gzip -9 {} \+
+for i in $( find $PKG/usr/man -type l ) ; do
+  ln -s $( readlink $i ).gz $i.gz
+  rm $i
+done
+
+# Add a documentation directory:
+mkdir -p $PKG/usr/doc/${PKGNAM}-$VERSION
+cp -a \
+  ANNOUNCEMENT* CHANGES COPYRIGHT* INSTALL* LICENSE* README* \
+  $PKG/usr/doc/${PKGNAM}-$VERSION
+
+# If there's a CHANGES file, installing at least part of the recent history
+# is useful, but don't let it get totally out of control:
+if [ -r CHANGES ]; then
+  DOCSDIR=$(echo $PKG/usr/doc/${PKGNAM}-$VERSION)
+  cat CHANGES | head -n 1000 > $DOCSDIR/CHANGES
+  touch -r CHANGES $DOCSDIR/CHANGES
+fi
+
+# Include monitor backend README
+cp -a \
+  servers/slapd/back-monitor/README \
+  $PKG/usr/doc/$PKGNAM-$VERSION/README.back-monitor
+
+# Include Perl backend README
+cp -a \
+  servers/slapd/back-perl/README \
+  $PKG/usr/doc/$PKGNAM-$VERSION/README.back-perl
+
+# Include Perl backend sample file
+cp -a \
+  servers/slapd/back-perl/SampleLDAP.pm \
+  $PKG/usr/doc/$PKGNAM-$VERSION
+
+# Include OpenLDAP documentation
+cp -a \
+  doc/guide/admin/*.png \
+  doc/guide/admin/*.html \
+  $PKG/usr/doc/$PKGNAM-$VERSION
+
+mkdir -p $PKG/install
+zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/$PKGNAM-$VERSION-$ARCH-$BUILD.txz

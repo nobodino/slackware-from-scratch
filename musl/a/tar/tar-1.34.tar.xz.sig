@@ -1,0 +1,7 @@
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iEYEABECAAYFAmAnuBMACgkQNgKwf1XQxzJIVgCfR5Z7coRkU2+aOW4KNhumGl/1
+jn4AoI9OuQPpyzZN1CIwejDYxbV7u59P
+=mfma
+-----END PGP SIGNATURE-----

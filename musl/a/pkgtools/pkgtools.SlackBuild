@@ -1,0 +1,109 @@
+#!/bin/bash
+# Copyright 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2018  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# Set initial variables:
+cd $(dirname $0) ; CWD=$(pwd)
+if [ "$TMP" = "" ]; then
+  TMP=/tmp
+fi
+PKG=$TMP/package-pkgtools
+
+PKGNAM=pkgtools
+# *** UPDATE THESE WITH EACH BUILD:
+VERSION=15.0
+ARCH=${ARCH:-noarch}
+BUILD=${BUILD:-37}
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+if [ ! -d $TMP ]; then
+  mkdir -p $TMP # location to build the source
+fi
+rm -rf $PKG
+mkdir -p $PKG
+
+# Install Slackware script manpages:
+( cd $CWD/manpages
+  mkdir -p $PKG/usr/man/man8
+  for page in explodepkg.8 installpkg.8 makepkg.8 upgradepkg.8 pkgdiff.8 \
+    pkgtool.8 removepkg.8 ; do
+    cat $page | gzip -9c > $PKG/usr/man/man8/$page.gz
+  done
+)
+
+# Install internationalized manpages from
+# http://slint.fr/forSlackware/man_l10n/pkgtools/
+( cd $PKG/usr/man
+  tar xf $CWD/manpages-l10n.tar.xz
+  for page in manpages-l10n/* ; do
+    manpage=$(basename $page)
+    mkdir -p ${manpage%%.*}/man8
+    mv $page ${manpage%%.*}/man8/${page#*.}.8
+  done
+  gzip -9 */man8/*.8
+  rmdir manpages-l10n
+)
+
+# Install Slackware scripts:
+( cd $CWD/scripts
+  # Install the core Slackware package tools:
+  mkdir -p $PKG/sbin
+  # Don't include makebootdisk...  it's useless since a kernel won't fit on a
+  # floppy disk, and nobody uses floppies any more anyway.
+  for file in explodepkg installpkg makepkg pkgdiff pkgtool removepkg upgradepkg ; do
+    cp -a $CWD/scripts/$file $PKG/sbin
+  done
+  chown root:root $PKG/sbin/*
+  chmod 755 $PKG/sbin/*
+  # These scripts are used during the installation:
+  mkdir -p $PKG/var/lib/pkgtools/setup/tmp
+  chmod 700 $PKG/var/lib/pkgtools/setup/tmp
+  for file in setup.* ; do
+    cp -a $file $PKG/var/lib/pkgtools/setup
+  done
+  chown root:root $PKG/var/lib/pkgtools/setup/setup.*
+  chmod 755 $PKG/var/lib/pkgtools/setup/setup.*
+  # Add a link for makebootstick:
+  ( cd $PKG/sbin ; ln -sf ../var/lib/pkgtools/setup/setup.80.make-bootdisk makebootstick )
+)
+
+# Create the base directories (not really necessary, but doesn't hurt):
+mkdir -p $PKG/var/lib/pkgtools/{packages,scripts,douninst.sh}
+mkdir -p $PKG/var/log/pkgtools/{removed_packages,removed_scripts}
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
+
+# Build the package:
+cd $PKG
+makepkg -l y -c n $TMP/pkgtools-$VERSION-$ARCH-$BUILD.txz
+
+echo
+echo "HEY -- did you remember to update the version numbers in the setup scripts?"
+echo
+
