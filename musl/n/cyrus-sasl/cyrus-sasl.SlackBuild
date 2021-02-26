@@ -1,0 +1,138 @@
+#!/bin/bash
+
+# Copyright 2008, 2009, 2010, 2013, 2015, 2017, 2018, 2020  Patrick J. Volkerding, Sebeka, Minnesota, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=cyrus-sasl
+VERSION=${VERSION:-$(echo $PKGNAM-*.tar.?z* | cut -f 3- -d - | rev | cut -f 3- -d . | rev)}
+BUILD=${BUILD:-7}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$(echo $VERSION | tr - _)-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-cyrus-sasl
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX=""
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+cd $TMP
+rm -rf cyrus-sasl-$VERSION
+tar xvf $CWD/cyrus-sasl-$VERSION.tar.?z* || exit 1
+cd cyrus-sasl-$(echo $VERSION | cut -f 1 -d -) || exit 1
+
+chown -R root:root .
+find . -perm 777 -exec chmod 755 {} \+
+find . -perm 664 -exec chmod 644 {} \+
+CFLAGS="$SLKCFLAGS" \
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --with-plugindir=/usr/lib${LIBDIRSUFFIX}/sasl2 \
+  --with-configdir=/etc/sasl2 \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
+  --mandir=/usr/man \
+  --disable-static \
+  --enable-login \
+  --enable-sql \
+  --disable-anon \
+  --with-ldap \
+  --without-pgsql \
+  --with-saslauthd \
+  --with-mysql=/usr \
+  --with-sqlite3=/usr \
+  --with-gdbm \
+  --with-devrandom=/dev/urandom \
+  --with-dblib=gdbm || exit 1
+
+# How stupid that I need to specify 'sasldir' again for 'make' or else you get
+# the warning "Plugins are being installed into /usr/lib/sasl2, but the library
+# will look for them in /usr/lib64/sasl2" and advised to create a symlink...
+make $NUMJOBS sasldir=/usr/lib${LIBDIRSUFFIX}/sasl2 || exit 1
+make $NUMJOBS sasldir=/usr/lib${LIBDIRSUFFIX}/sasl2 install DESTDIR=$PKG || exit 1
+
+# Don't ship .la files:
+rm -f $PKG/{,usr/}lib${LIBDIRSUFFIX}/*.la
+
+( cd $PKG
+  find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+  find . | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+)
+
+mkdir -p $PKG/var/state/saslauthd
+mkdir -p $PKG/etc/rc.d
+mkdir -p $PKG/etc/sasl2
+
+zcat $CWD/rc.saslauthd.gz > $PKG/etc/rc.d/rc.saslauthd.new
+
+# Fix sloppy man page installation:
+rm -r $PKG/usr/man/cat8
+cat saslauthd/saslauthd.mdoc > $PKG/usr/man/man8/saslauthd.8
+gzip -9 $PKG/usr/man/man?/*.?
+
+# Add other documentation:
+mkdir -p $PKG/usr/doc/cyrus-sasl-$VERSION
+cp -a \
+  AUTHORS COPYING* INSTALL NEWS README* \
+  saslauthd/LDAP_SASLAUTHD \
+  doc \
+  $PKG/usr/doc/cyrus-sasl-$VERSION
+find $PKG/usr/doc/cyrus-sasl-$VERSION -type f -exec chmod 644 {} \+
+rm -f $PKG/usr/doc/cyrus-sasl-$VERSION/doc/*Makefile*
+
+mkdir -p $PKG/install
+zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+makepkg -l y -c n $TMP/cyrus-sasl-$(echo $VERSION | tr - _)-$ARCH-$BUILD.txz

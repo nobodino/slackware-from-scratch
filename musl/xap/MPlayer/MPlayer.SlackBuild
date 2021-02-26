@@ -1,0 +1,411 @@
+#!/bin/bash
+# $Id: MPlayer.SlackBuild,v 1.27 2012/07/01 13:07:08 root Exp root $
+# Copyright 2006, 2007, 2008, 2010, 2011, 2012  Eric Hameleers, Eindhoven, NL
+# Copyright 2013, 2018  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+#   Permission to use, copy, modify, and distribute this software for
+#   any purpose with or without fee is hereby granted, provided that
+#   the above copyright notice and this permission notice appear in all
+#   copies.
+#
+#   THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+#   WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+#   IN NO EVENT SHALL THE AUTHORS AND COPYRIGHT HOLDERS AND THEIR
+#   CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#   SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+#   LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
+#   USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+#   ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+#   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+#   OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+#   SUCH DAMAGE.
+
+# Set initial variables:
+
+PKGNAM=MPlayer
+VERSION=${VERSION:-20200103}
+# Need to build trunk until there's a stable branch compatible with the
+# latest ffmpeg stable release:
+#BRANCH=${BRANCH:-1.3}        # leave empty if you want to build MPlayer trunk
+BUILD=${BUILD:-4}
+TAG=${TAG:-}
+NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+
+# Show the branch version in the package name if we build from a branch:
+[ -n "$BRANCH" ] && PKGVERSION=${BRANCH}_${VERSION} || PKGVERSION=${VERSION}
+
+DOCS="AUTHORS Changelog Copyright LICENSE README VERSION DOCS/HTML DOCS/tech"
+
+# MPlayer repository characteristics:
+MPURI="svn://svn.mplayerhq.hu/mplayer/"
+if [ -n "$BRANCH" ]; then
+  MPBRANCH="branches/$BRANCH"
+else
+  MPBRANCH="trunk"
+fi
+
+DEFSKIN=${DEFSKIN:-"Blue"}  # Download more skins at the following url:
+SKINVER=${SKINVER:-"1.13"}   # http://www.mplayerhq.hu/design7/dload.html
+
+# Available languages: all cs de en es fr hu it pl ru zh_CN
+LANGUAGES="en,de,es,fr"
+
+# Automatically determine the architecture we're building on:
+MARCH=$( uname -m )
+if [ -z "$ARCH" ]; then
+  case "$MARCH" in
+    i?86)    export ARCH=i586 ;;
+    armv7hl) export ARCH=$MARCH ;;
+    arm*)    export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+    *)       export ARCH=$MARCH ;;
+  esac
+fi
+
+if [ "$ARCH" = "x86_64" ]; then
+  LIBDIRSUFFIX=""
+  # --enable-runtime-cpudetection is supported only for x86, x86_64, and PPC
+  EXTRACONFIGUREOPTIONS="--enable-runtime-cpudetection"
+elif [ "$ARCH" = "i486" -o \
+       "$ARCH" = "i586" -o \
+       "$ARCH" = "i686" ]; then
+  LIBDIRSUFFIX=""
+  # --enable-runtime-cpudetection is failing on 32-bit, so we'll set -march=i586
+  # manually after ./configure.
+  #EXTRACONFIGUREOPTIONS="--enable-runtime-cpudetection"
+  EXTRACONFIGUREOPTIONS=""
+else
+  LIBDIRSUFFIX=""
+  EXTRACONFIGUREOPTIONS=""
+fi
+
+# If this package is being built for ALSA (no PulseAudio), use the _alsa $TAG:
+if [ ! -r /usr/lib${LIBDIRSUFFIX}/pkgconfig/libpulse.pc ]; then
+  TAG="_alsa"
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "${PKGNAM}-${PKGVERSION}-${ARCH}-${BUILD}${TAG}.txz"
+  exit 0
+fi
+
+# Where the WIN32 codecs are expectedfor instance
+CODECSDIR=/usr/lib${LIBDIRSUFFIX}/codecs
+
+# ---------------------------------------------------------------------------
+# -- PATENT ALERT! --
+# MPLayer can be built with AMR audio encoders
+# (needed for FLV and .3GP videos) but these libraries are 'contaminated'
+# with patents from 3GPP.
+# Also, the AAC encoder has patent issues.
+# You can build these patended algorithms into ffmpeg, and if you are an
+# ordinary end user, no one will bother you for using them.
+# For the binaries based on this SlackBuild that I distribute, it is a
+# different story. I am not allowed to distribute binary packages that
+# incorporate patented code. So here you go. My Slackware package was
+# built with "USE_PATENTS=NO" i.e. without using
+# the faac, AMR and dvdcss libraries.
+# ---------------------------------------------------------------------------
+USE_PATENTS=${USE_PATENTS:-"NO"}
+
+# MPlayer will try to use one of the TrueType fonts present on the target
+# system for it's On Screen Display (OSD) font.
+# Slackware 11.0 ships with the Vera and DejaVu fonts, you may want to add
+# more fonts to this list. The first font found will be used by creating a
+# symbolic link "/usr/share/mplayer/subfont.ttf" to it.
+# The use of bitmapped fonts is considered deprecated, but you can still use
+# those if you want. Read http://www.mplayerhq.hu/DOCS/HTML/en/fonts-osd.html
+# if you want to know more about OSD font configuration.
+OSDFONTS="LiberationSans-Regular.ttf \
+          Arialuni.ttf arial.ttf \
+          DejaVuSans.ttf Vera.ttf"
+
+# Where do we look for sources?
+cd $(dirname $0) ; SRCDIR=$(pwd)
+
+SOURCE[0]="$SRCDIR/${PKGNAM}-${VERSION}.tar.xz"
+SRCURL[0]=""
+
+# The default skin to use (we need to add at least one)
+SOURCE[1]="$SRCDIR/${DEFSKIN}-${SKINVER}.tar.bz2"
+SRCURL[1]="http://www.mplayerhq.hu/MPlayer/skins/${DEFSKIN}-${SKINVER}.tar.bz2"
+
+# Use the src_checkout() function if no downloadable tarball exists.
+# This function checks out sources from SVN/CVS and creates a tarball of them.
+src_checkout() {
+  # Param #1 : index in the SOURCE[] array.
+  # Param #2 : full path to where SOURCE[$1] tarball should be created.
+  # Determine the tarball extension:
+  PEXT=$(echo "${2}" | sed -r -e 's/.*[^.].(tar.xz|tar.gz|tar.bz2|tgz).*/\1/')
+  case "$PEXT" in
+    "tar.xz") TARCOMP="J" ;;
+    "tar.gz") TARCOMP="z" ;;
+    "tgz") TARCOMP="z" ;;
+    "tar.bz2") TARCOMP="j" ;;
+    *) echo "Archive can only have extension 'tar.xz', '.tar.gz' '.tar.bz2' or '.tgz'" ; exit 1 ;;
+  esac
+  case ${1} in
+  0) # mplayer
+     if [ "$(echo ${VERSION}|cut -c1)" == 'r' ]; then # revision instead of date
+       echo "Only supported VERSION is a date - yyyymmdd - or 'HEAD'"
+     else
+       REV="{${VERSION}}"
+     fi
+     mkdir MPlayer-${VERSION} \
+       && cd MPlayer-${VERSION} \
+       && svn checkout --revision $REV ${MPURI}/${MPBRANCH} . \
+       && svn propget svn:externals | sed -e 's/[[:space:]].*$//g' | xargs svn up --revision $REV \
+       && chown -R root:root . \
+       && cd .. \
+       && tar --exclude-vcs -${TARCOMP}cf ${2} MPlayer-${VERSION}
+     rm -rf MPlayer-${VERSION}
+     ;;
+  *) # Do nothing
+     ;;
+  esac
+}
+
+# Place to build (TMP) package (PKG) and output (OUTPUT) the program:
+TMP=${TMP:-/tmp/build}
+PKG=$TMP/package-$PKGNAM
+OUTPUT=${OUTPUT:-/tmp}
+
+##
+## --- with a little luck, you won't have to edit below this point --- ##
+##
+
+# Exit the script on errors:
+set -e
+trap 'echo "$0 FAILED at line $LINENO!" | tee $OUTPUT/error-${PKGNAM}.log' ERR
+# Catch unitialized variables:
+set -u
+P1=${1:-1}
+
+# Create working directories:
+mkdir -p $TMP/tmp-$PKGNAM # location to build the source
+rm -rf $TMP/tmp-$PKGNAM/* # remove the remnants of previous build
+mkdir -p $PKG             # place for the package to be built
+rm -rf $PKG/*             # erase old package's contents
+mkdir -p $OUTPUT          # place for the package to be saved
+
+# Source file availability:
+for (( i = 0; i < ${#SOURCE[*]}; i++ )) ; do
+  if ! [ -f ${SOURCE[$i]} ]; then
+    echo "Source '$(basename ${SOURCE[$i]})' not available yet..."
+    # Check if the $SRCDIR is writable at all - if not, download to $OUTPUT
+    [ -w "$SRCDIR" ] || SOURCE[$i]="$OUTPUT/$(basename ${SOURCE[$i]})"
+    if ! [ "x${SRCURL[$i]}" == "x" ]; then
+      echo "Will download file to $(dirname $SOURCE[$i])"
+      wget -nv -T 20 -O "${SOURCE[$i]}" "${SRCURL[$i]}" || true
+      if [ $? -ne 0 -o ! -s "${SOURCE[$i]}" ]; then
+        echo "Downloading '$(basename ${SOURCE[$i]})' failed.. aborting the build."
+        mv -f "${SOURCE[$i]}" "${SOURCE[$i]}".FAIL
+        exit 1
+      fi
+    else
+      # Try if we have a SVN/CVS download routine for ${SOURCE[$i]}
+      echo "Will checkout sources to $(dirname $SOURCE[$i])"
+      src_checkout $i "${SOURCE[$i]}" 2>&1 > $OUTPUT/checkout-$(basename ${SOURCE[$i]}).log
+    fi
+    if [ ! -f "${SOURCE[$i]}" -o ! -s "${SOURCE[$i]}" ]; then
+      echo "File '$(basename ${SOURCE[$i]})' not available.. aborting the build."
+      exit 1
+    fi
+  fi
+done
+
+if [ "$P1" == "--download" ]; then
+  echo "Download complete."
+  exit 0
+fi
+
+# --- PACKAGE BUILDING ---
+
+echo "++"
+echo "|| $PKGNAM-$VERSION"
+echo "++"
+
+cd $TMP/tmp-$PKGNAM
+echo "Extracting the source archive(s) for $PKGNAM..."
+tar -xvf ${SOURCE[0]}
+
+chown -R root:root *
+chmod -R u+w,go+r-w,a+X-s *
+cd ${PKGNAM}-${VERSION}
+
+# Determine what X we're running (the modular X returns the prefix
+# in the next command, while older versions stay silent):
+XPREF=$(pkg-config --variable=prefix x11) || true
+[ "$XPREF" == "" ] && XPREF='/usr/X11R6'
+
+# Remove support for patent encumbered and possibly illegal code:
+if [ "$USE_PATENTS" != "YES" ]; then
+  DO_PATENTED="--disable-libopencore_amrnb \
+               --disable-libopencore_amrwb"
+else
+  DO_PATENTED=""
+fi
+
+# fix building against samba 4
+zcat $SRCDIR/include-samba-4.0.patch.gz | patch -p1 --verbose || exit 1
+
+echo Building ...
+# MPlayer wants to automatically determine compiler flags,
+# so we don't provide CFLAGS.
+./configure \
+  --prefix=/usr \
+  --mandir=/usr/man \
+  --confdir=/etc/mplayer \
+  --enable-gui \
+  --enable-menu \
+  --enable-vdpau \
+  --disable-arts \
+  --disable-ossaudio \
+  --disable-bitmap-font \
+  --disable-ffmpeg_a \
+  --codecsdir=${CODECSDIR} \
+  --language="${LANGUAGES}" \
+  ${EXTRACONFIGUREOPTIONS} \
+  ${DO_PATENTED} \
+  2>&1 | tee $OUTPUT/configure-${PKGNAM}.log
+
+# So that MPlayer does not report "UNKNOWN" as it's version:
+if [ ! -f VERSION ]; then
+  echo $VERSION > VERSION
+fi
+
+# Set -march/-mtune manually since runtime cpu detection causes a compile error
+# on 32-bit x86:
+if [ "$ARCH" = "i586" ]; then
+  sed -i "s/march=native/march=i586/g" config.mak
+  sed -i "s/mtune=native/mtune=generic/g" config.mak
+fi
+
+make $NUMJOBS 2>&1 | tee $OUTPUT/make-${PKGNAM}.log
+make DESTDIR=$PKG install 2>&1 |tee $OUTPUT/install-${PKGNAM}.log
+
+# Build the html documentation (not all languages are available):
+if [ "$LANGUAGES" = "all" ]; then
+  # make html-chunked
+  make html-single
+else
+  for i in $(echo $LANGUAGES | tr , ' ') ; do
+    # make html-chunked-$i ;
+    make html-single-$i ;
+  done
+fi
+
+# Prepare the configfile:
+mkdir -p $PKG/etc/mplayer
+cp etc/example.conf $PKG/etc/mplayer/mplayer.conf.new
+
+# Install our default skin:
+cd $PKG/usr/share/mplayer/skins
+tar -xvf ${SOURCE[1]}
+chown -R root:root *
+chmod -R u+w,go+r-w,a+X-s *
+ln -s ${DEFSKIN} default
+cd -
+
+# Add this to the doinst.sh:
+mkdir -p $PKG/install
+cat <<EOINS >> $PKG/install/doinst.sh
+# Handle the incoming configuration files:
+config() {
+  for infile in \$1; do
+    NEW="\$infile"
+    OLD="\`dirname \$NEW\`/\`basename \$NEW .new\`"
+    # If there's no config file by that name, mv it over:
+    if [ ! -r \$OLD ]; then
+      mv \$NEW \$OLD
+    elif [ "\`cat \$OLD | md5sum\`" = "\`cat \$NEW | md5sum\`" ]; then
+      # toss the redundant copy
+      rm \$NEW
+    fi
+    # Otherwise, we leave the .new copy for the admin to consider...
+  done
+}
+
+# Installing a bitmap font is considered deprecated; use a TTF font instead.
+# We try to link to an installed TTF font at install time.
+# Configure a default TrueType font to use for the OSD :
+if [ ! -f usr/share/mplayer/subfont.ttf ]; then
+  for font in ${OSDFONTS}; do
+    if [ -f .${XPREF}/lib${LIBDIRSUFFIX}/X11/fonts/TTF/\${font} ]; then
+      ( cd usr/share/mplayer/
+        ln -sf ${XPREF}/lib${LIBDIRSUFFIX}/X11/fonts/TTF/\${font} subfont.ttf
+      )
+      break
+    fi
+  done
+fi
+
+# Prepare the new configuration file
+config etc/mplayer/mplayer.conf.new
+
+# Update the desktop database:
+if [ -x usr/bin/update-desktop-database ]; then
+  chroot . /usr/bin/update-desktop-database usr/share/applications 1> /dev/null 2> /dev/null
+fi
+
+# Update hicolor theme cache:
+if [ -e usr/share/icons/hicolor/icon-theme.cache ]; then
+  if [ -x usr/bin/gtk-update-icon-cache ]; then
+    chroot . /usr/bin/gtk-update-icon-cache /usr/share/icons/hicolor >/dev/null 2>&1
+  fi
+fi
+
+# Update the mime database:
+if [ -x usr/bin/update-mime-database ]; then
+  chroot . /usr/bin/update-mime-database usr/share/mime >/dev/null 2>&1
+fi
+
+EOINS
+
+# Add documentation:
+mkdir -p $PKG/usr/doc/$PKGNAM-$PKGVERSION
+cp -a $DOCS $PKG/usr/doc/$PKGNAM-$PKGVERSION || true
+cp -a $SRCDIR/$(basename $0) $PKG/usr/doc/$PKGNAM-$PKGVERSION/$PKGNAM.SlackBuild
+mv $PKG/usr/doc/$PKGNAM-$PKGVERSION/HTML $PKG/usr/doc/$PKGNAM-$PKGVERSION/html
+# Save a sample of all configuration files:
+for i in etc/*.conf ; do
+  cp $i $PKG/usr/doc/$PKGNAM-$PKGVERSION/$(basename $i)-sample
+done
+# Save a transcript of all configured options for this specific build:
+if [ -n $OUTPUT/configure-${PKGNAM}.log ]; then
+  cat $OUTPUT/configure-${PKGNAM}.log \
+    | sed -n "/^Config files successfully generated/,/^'config.h' and 'config.mak' contain your configuration options./p" \
+    > $PKG/usr/doc/$PKGNAM-$PKGVERSION/${PKGNAM}.configuration
+fi
+find $PKG/usr/doc -type f -exec chmod 644 {} \+
+
+# Compress the man page(s):
+if [ -d $PKG/usr/man ]; then
+  find $PKG/usr/man -type f -name "*.?" -exec gzip -9f {} \+
+  for i in $(find $PKG/usr/man -type l -name "*.?") ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+fi
+
+# Strip binaries:
+( find $PKG | xargs file | grep -e "executable" -e "shared object" \
+  | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null )
+
+# Add a package description:
+mkdir -p $PKG/install
+cat $SRCDIR/slack-desc > $PKG/install/slack-desc
+if [ -f $SRCDIR/doinst.sh ]; then
+  cat $SRCDIR/doinst.sh >> $PKG/install/doinst.sh
+fi
+
+# Build the package:
+cd $PKG
+makepkg --linkadd y --chown n $OUTPUT/${PKGNAM}-${PKGVERSION}-${ARCH}-${BUILD}${TAG}.txz 2>&1 | tee $OUTPUT/makepkg-${PKGNAM}.log
+cd $OUTPUT
+md5sum ${PKGNAM}-${PKGVERSION}-${ARCH}-${BUILD}${TAG}.txz > ${PKGNAM}-${PKGVERSION}-${ARCH}-${BUILD}${TAG}.txz.md5
+cd -
+cat $PKG/install/slack-desc | grep "^${PKGNAM}" > $OUTPUT/${PKGNAM}-${PKGVERSION}-${ARCH}-${BUILD}${TAG}.txt
+

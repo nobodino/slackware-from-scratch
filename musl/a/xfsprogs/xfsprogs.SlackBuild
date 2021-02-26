@@ -1,0 +1,152 @@
+#!/bin/bash
+
+# Copyright 2008, 2009, 2010, 2012, 2017, 2018  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=xfsprogs
+VERSION=${VERSION:-$(echo xfsprogs-*.tar.xz | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+BUILD=${BUILD:-3}
+
+NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-xfsprogs
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX=""
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+
+cd $TMP
+rm -rf xfsprogs-$VERSION
+tar xvf $CWD/xfsprogs-$VERSION.tar.xz || exit 1
+cd xfsprogs-$VERSION || exit 1
+
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \+ -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \+
+
+## Make sure you have the same version of autoconf as the
+## developers did...  ;-)
+#autoconf
+
+CFLAGS="$SLKCFLAGS" \
+./configure \
+  --prefix=/usr \
+  --libdir=/lib${LIBDIRSUFFIX} \
+  --libexecdir=/usr/lib${LIBDIRSUFFIX} \
+  --sbindir=/sbin \
+  --bindir=/usr/sbin \
+  --datadir=/usr/share \
+  --mandir=/usr/man \
+  --docdir=/usr/doc/xfsprogs-$VERSION \
+  --enable-shared=yes \
+  --enable-gettext=yes \
+  --build=$ARCH-slackware-linux-musl || exit 1
+
+make $NUMJOBS || make || exit 1
+make install DIST_ROOT=$PKG || exit 1
+make install-dev DIST_ROOT=$PKG || exit 1
+
+mv $PKG/usr/share/doc $PKG/usr
+mv $PKG/usr/doc/xfsprogs $PKG/usr/doc/xfsprogs-$VERSION
+#It would be nice to keep the same timestamps that the files have in the source:
+cp -a README doc/COPYING doc/CREDITS doc/PORTING \
+  $PKG/usr/doc/xfsprogs-$VERSION
+
+rm -f $PKG/usr/doc/xfsprogs-$VERSION/CHANGES.gz
+
+# If there's a ChangeLog, installing at least part of the recent history
+# is useful, but don't let it get totally out of control:
+if [ -r doc/CHANGES ]; then
+  DOCSDIR=$(echo $PKG/usr/doc/*-$VERSION)
+  cat doc/CHANGES | head -n 1000 > $DOCSDIR/CHANGES
+  touch -r doc/CHANGES $DOCSDIR/CHANGES
+fi
+
+# The install location for many binaries changed with the update to 3.1.1,
+# but it seems like the wrong place to put most of this stuff:
+mkdir -p $PKG/usr/sbin
+mv $PKG/sbin/xfs_* $PKG/usr/sbin
+mv $PKG/usr/sbin/xfs_repair $PKG/sbin
+
+# Remove bogus files:
+rm -f $PKG/lib${LIBDIRSUFFIX}/*.a $PKG/lib${LIBDIRSUFFIX}/*.so \
+  $PKG/lib${LIBDIRSUFFIX}/*.la $PKG/usr/lib${LIBDIRSUFFIX}/*.la
+# Make /usr/lib/libhandle.so a symlink to /lib/libhandle.so.1:
+if [ -f $PKG/lib${LIBDIRSUFFIX}/libhandle.so.1 ]; then
+  mkdir -p $PKG/usr/lib${LIBDIRSUFFIX}
+  ( cd $PKG/usr/lib${LIBDIRSUFFIX}
+    rm -f libhandle.so
+    ln -sf /lib${LIBDIRSUFFIX}/libhandle.so.1 libhandle.so
+  )
+else
+  exit 1
+  # and fix your script!  ;-)
+fi
+# Fix shared library perms:
+chmod 755 $PKG/lib${LIBDIRSUFFIX}/*
+
+# Strip libraries:
+find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
+  | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+strip -g $PKG/usr/lib${LIBDIRSUFFIX}/*.a
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/xfsprogs-$VERSION-$ARCH-$BUILD.txz
+

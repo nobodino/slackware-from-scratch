@@ -1,0 +1,129 @@
+#!/bin/bash
+
+# Copyright 2016, 2018, 2021  Patrick J. Volkerding, Sebeka, Minnesota, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=slackpkg
+VERSION=${VERSION:-15.0}
+ARCH="noarch"
+BUILD=${BUILD:-3}
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-$PKGNAM
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+
+# I never use this because it tends to bail on useless errors, but since
+# we're actually the upstream here it should never do that.  :-)
+set -e
+
+cd $CWD/files
+
+# Install main script:
+mkdir -pv $PKG/usr/sbin
+cp -av slackpkg $PKG/usr/sbin
+chmod 755 $PKG/usr/sbin/slackpkg
+chown root:root $PKG/usr/sbin/slackpkg
+
+# Prepare /etc directory:
+mkdir -pv $PKG/etc/slackpkg
+cp -av blacklist.new slackpkg.conf.new $PKG/etc/slackpkg
+chmod 644 $PKG/etc/slackpkg/*
+chown root:root $PKG/etc/slackpkg/*
+mkdir -pv $PKG/etc/slackpkg/templates
+
+# Install support scripts in /usr/libexec/slackpkg:
+mkdir -pv $PKG/usr/libexec/slackpkg
+cp -av core-functions.sh cutpkg.awk filelist.awk install-new.awk pkglist.awk \
+  $PKG/usr/libexec/slackpkg
+chmod 755 $PKG/usr/libexec/slackpkg/*
+chown root:root $PKG/usr/libexec/slackpkg/*
+mkdir -pv $PKG/usr/libexec/slackpkg/functions.d
+cp -av dialog-functions.sh post-functions.sh \
+  $PKG/usr/libexec/slackpkg/functions.d
+chmod 755 $PKG/usr/libexec/slackpkg/functions.d/*
+chown root:root $PKG/usr/libexec/slackpkg/functions.d/*
+
+# Install man pages:
+mkdir -pv $PKG/usr/man/man5
+cp -av slackpkg.conf.5 $PKG/usr/man/man5
+chmod 644 $PKG/usr/man/man5/slackpkg.conf.5
+chown root:root $PKG/usr/man/man5/slackpkg.conf.5
+mkdir -pv $PKG/usr/man/man8
+cp -av slackpkg.8 $PKG/usr/man/man8
+chmod 644 $PKG/usr/man/man8/slackpkg.8
+chown root:root $PKG/usr/man/man8/slackpkg.8
+
+# Install internationalized man pages from
+# http://slint.fr/forSlackware/man_l10n/slackpkg/
+for page in manpages-l10n/*slackpkg.conf ; do
+  manpage=$(basename $page)
+  mkdir -p $PKG/usr/man/${manpage%%.*}/man5
+  cp -av $page $PKG/usr/man/${manpage%%.*}/man5/${page#*.}.5
+done
+for page in manpages-l10n/*slackpkg ; do
+  manpage=$(basename $page)
+  mkdir -p $PKG/usr/man/${manpage%%.*}/man8
+  cp -av $page $PKG/usr/man/${manpage%%.*}/man8/${page#*.}.8
+done
+chown -R root:root $PKG/usr/man
+
+# Compress manual pages
+find $PKG/usr/man -type f -exec gzip -9 {} \;
+
+# Update version number:
+sed -i "s/@VERSION@/$VERSION/g" $PKG/usr/sbin/slackpkg
+
+# Prepare documentation directory:
+mkdir -pv $PKG/usr/doc/slackpkg-$VERSION
+cp -av ChangeLog GPL README mirrors* \
+  $PKG/usr/doc/slackpkg-$VERSION
+chown root:root $PKG/usr/doc/slackpkg-$VERSION/*
+chmod 644 $PKG/usr/doc/slackpkg-$VERSION/*
+
+# Create additional directories needed by slackpkg:
+mkdir -pv $PKG/var/lib/slackpkg
+mkdir -pv $PKG/var/cache/packages
+
+# Allow new-config after slackpkg upgrade itself:
+( cd $PKG/usr/libexec/slackpkg
+  cat $CWD/0001-Allow-new-config-after-slackpkg-upgrade-itself.patch | patch -p2 --verbose || exit 1
+) || exit 1
+
+# use mktemp from coreutils instead of tempfile from bin package
+sed -i "s/tempfile --directory=/mktemp -p /" $PKG/usr/libexec/slackpkg/core-functions.sh
+
+mkdir -p $PKG/install
+cat $CWD/doinst.sh | sed -e "s/@VERSION@/$VERSION/g" > $PKG/install/doinst.sh
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/$PKGNAM-$VERSION-$ARCH-$BUILD.txz

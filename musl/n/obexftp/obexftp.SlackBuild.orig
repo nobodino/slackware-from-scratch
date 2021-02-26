@@ -1,0 +1,196 @@
+#!/bin/bash
+# Copyright 2006, 2007, 2008, 2009, 2010, 2011, 2015, 2017, 2018  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=obexftp
+VERSION=${VERSION:-$(echo $PKGNAM-*-Source.tar.?z* | rev | cut -f 3- -d . | cut -f 2 -d - | rev)}
+BUILD=${BUILD:-8}
+
+NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-${PKGNAM}
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX=""
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+PYTHONLIB=$( python -c 'from distutils.sysconfig import get_python_lib; print(get_python_lib())' )
+PYTHON3LIB=$( python3 -c 'from distutils.sysconfig import get_python_lib; print(get_python_lib())' )
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+cd $TMP
+rm -rf ${PKGNAM}-${VERSION}-Source
+tar xvf $CWD/${PKGNAM}-${VERSION}-Source.tar.?z* || exit 1
+cd ${PKGNAM}-${VERSION}-Source || exit 1
+
+# Make sure ownerships and permissions are sane:
+chown -R root:root .
+find . \
+ \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+ -exec chmod 755 {} \+ -o \
+ \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+ -exec chmod 644 {} \+
+
+# Thanks to Fedora for these
+zcat $CWD/patches/obexftp-0.24-fix-absurd-install-path.patch.gz | patch -p1 || exit 1
+zcat $CWD/patches/obexftp-norpath.patch.gz | patch -p1 || exit 1
+
+mkdir -p build
+cd build
+  cmake \
+    -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DLIB_SUFFIX=${LIBDIRSUFFIX} \
+-DCMAKE_INSTALL_LIBDIR=lib$LIBDIRSUFFIX \
+    -DCMAKE_INSTALL_DOCDIR=/usr/doc/$PKGNAM-$VERSION \
+    -DCMAKE_BUILD_TYPE=Release ..
+  make $NUMJOBS || make || exit 1
+  make doc || exit 1
+  make install DESTDIR=$PKG || exit 1
+cd ..
+
+mkdir -p build-python2
+cd build-python2
+  cmake \
+    -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DLIB_SUFFIX=${LIBDIRSUFFIX} \
+-DCMAKE_INSTALL_LIBDIR=lib$LIBDIRSUFFIX \
+    -DCMAKE_INSTALL_DOCDIR=/usr/doc/$PKGNAM-$VERSION \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DPython_ADDITIONAL_VERSIONS=2.7 ..
+  cd swig/python
+  make $NUMJOBS || make || exit 1
+  make install DESTDIR=$PKG || exit 1
+cd ../../../
+
+# Relocate man pages:
+mv $PKG/usr/share/man $PKG/usr
+rmdir $PKG/usr/share 2> /dev/null
+
+if [ -e $PKG/usr/bin/obexftpd ]; then
+  mkdir -p $PKG/usr/sbin
+  mv $PKG/usr/bin/obexftpd $PKG/usr/sbin/obexftpd
+fi
+
+( cd $PKG/usr/bin
+  for link in obexls obexget obexput obexrm ; do
+    ln -sf obexftp $link
+  done
+  cd $PKG/usr/man/man1
+  for link in obexls obexget obexput obexrm ; do
+    ln -sf obexftp.1 ${link}.1
+  done
+)
+
+# Generate .pyc files
+python -m compileall "${PKG}$PYTHONLIB"
+python -O -m compileall "${PKG}$PYTHONLIB"
+python3 -m compileall "${PKG}$PYTHON3LIB"
+python3 -O -m compileall "${PKG}$PYTHON3LIB"
+
+# Strip binaries:
+find $PKG | xargs file | grep -e "executable" -e "shared object" \
+  | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+
+# Compress and link manpages, if any:
+if [ -d $PKG/usr/man ]; then
+  ( cd $PKG/usr/man
+    for manpagedir in $(find . -type d -name "man*") ; do
+      ( cd $manpagedir
+        for eachpage in $( find . -type l -maxdepth 1) ; do
+          ln -s $( readlink $eachpage ).gz $eachpage.gz
+          rm $eachpage
+        done
+        gzip -9 *.*
+      )
+    done
+  )
+fi
+
+# Add a documentation directory:
+mkdir -p $PKG/usr/doc/${PKGNAM}-$VERSION
+cp -a \
+  AUTHORS COPYING* INSTALL NEWS README* THANKS TODO contrib \
+  $PKG/usr/doc/${PKGNAM}-$VERSION
+rm -f $PKG/usr/doc/${PKGNAM}-$VERSION/contrib/Makefile*
+find $PKG/usr/doc/${PKGNAM}-$VERSION -type f -exec chmod 0644 {} \+
+
+# If there's a ChangeLog, installing at least part of the recent history
+# is useful, but don't let it get totally out of control:
+if [ -r ChangeLog ]; then
+  DOCSDIR=$(echo $PKG/usr/doc/${PKGNAM}-$VERSION)
+  cat ChangeLog | head -n 1000 > $DOCSDIR/ChangeLog
+  touch -r ChangeLog $DOCSDIR/ChangeLog
+fi
+
+# Remove perllocal files:
+find $PKG -name perllocal.pod -exec rm "{}" \+
+
+# This removes our DESTDIR from the packlist filenames, to keep perl's
+# internal inventories consistent and correct.
+find $PKG -name .packlist | while read plist ; do
+  sed -e "s%$PKG%%g" \
+      -e "s%/share/man%/man%g" \
+      -re "s%\.([1-9]n?|3pm)$%&.gz%g   # extend man filenames for .gz" \
+      ${plist} > ${plist}.new
+      mv -f ${plist}.new ${plist}
+done
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/${PKGNAM}-$VERSION-$ARCH-$BUILD.txz
+

@@ -1,0 +1,125 @@
+#!/bin/sh
+
+# Copyright 2014, 2018, 2019  Eric Hameleers, Eindhoven, NL
+# Copyright 2018, 2020  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=cryptopp
+VERSION=${VERSION:-8.2.0}
+SRCVER=$(echo $VERSION | tr -d '.')
+BUILD=${BUILD:-3}
+
+NUMJOBS=${NUMJOBS:-" -j $(expr $(nproc) + 1) "}
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-$PKGNAM
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$(uname -m)" in
+    i?86) ARCH=i586 ;;
+    arm*) readelf /usr/bin/file -A | egrep -q "Tag_CPU.*[4,5]" && ARCH=arm || ARCH=armv7hl ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+    *) ARCH=$(uname -m) ;;
+  esac
+  export ARCH
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  SLKLDFLAGS=""
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  SLKLDFLAGS="-L/usr/lib64"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "armv7hl" ]; then
+  SLKCFLAGS="-O3 -march=armv7-a -mfpu=vfpv3-d16"
+  SLKLDFLAGS=""
+  LIBDIRSUFFIX=""
+else
+  SLKCFLAGS="-O2"
+  SLKLDFLAGS=""
+  LIBDIRSUFFIX=""
+fi
+
+case "$ARCH" in
+    arm*) TARGET=$ARCH-slackware-linux-gnueabi ;;
+    *)    TARGET=$ARCH-slackware-linux-musl ;;
+esac
+
+# Extract the sources:
+rm -rf $PKG
+mkdir -p $TMP $PKG
+cd $TMP
+rm -rf ${PKGNAM}-${VERSION}
+mkdir -p ${PKGNAM}-${VERSION}
+unzip -a ${CWD}/${PKGNAM}${SRCVER}.zip -d ${PKGNAM}-${VERSION} || exit 1
+cd ${PKGNAM}-${VERSION} || exit 1
+
+# Fix bogus permissions:
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \+ -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \+
+
+# Cater to 64-bit Slackware:
+sed -i -e "s,(PREFIX)/lib,(PREFIX)/lib${LIBDIRSUFFIX},g" GNUmakefile
+
+# Compile and install:
+make all dynamic libcryptopp.pc $NUMJOBS \
+  CXXFLAGS="${SLKCFLAGS} -DNDEBUG" LDFLAGS="${LDFLAGS}"
+make install-lib PREFIX=$PKG/usr
+
+# Dump the static library:
+rm -f $PKG/usr/lib${LIBDIRSUFFIX}/libcryptopp.a
+
+# Fix the installed pkg-config file:
+sed \
+  -i $PKG/usr/lib${LIBDIRSUFFIX}/pkgconfig/libcryptopp.pc \
+  -e "s,/usr/local,/usr,g"
+
+# Add documentation:
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION
+cp -a *.txt $PKG/usr/doc/$PKGNAM-$VERSION
+
+# Strip binaries (if any):
+find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
+  | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
+
+# Add a package description:
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+# Build the package:
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/${PKGNAM}-${VERSION}-${ARCH}-${BUILD}.txz

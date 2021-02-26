@@ -1,0 +1,265 @@
+#!/bin/bash
+
+# Copyright 2005-2020  Patrick J. Volkerding, Sebeka, Minnesota, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=shadow
+VERSION=${VERSION:-$(echo $PKGNAM-*.tar.xz | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+BUILD=${BUILD:-12}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-shadow
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX=""
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+cd $TMP
+rm -rf shadow-$VERSION
+tar xvf $CWD/shadow-$VERSION.tar.xz || exit 1
+cd shadow-$VERSION
+sed -i "s/^password    requisite     pam_pwquality.so minlen=6 retry=3$/#password    requisite     pam_pwquality.so minlen=6 retry=3/" $CWD/pam.d/system-auth
+sed -i "s/^password    sufficient    pam_unix.so nullok sha512 shadow minlen=6 try_first_pass use_authtok$/#password    sufficient    pam_unix.so nullok sha512 shadow minlen=6 try_first_pass use_authtok/" $CWD/pam.d/system-auth
+sed -i "s/^#password    sufficient    pam_unix.so nullok sha512 shadow minlen=6$/password    sufficient    pam_unix.so nullok sha512 shadow minlen=6/" $CWD/pam.d/system-auth
+
+# Choose correct options depending on whether PAM is installed:
+if [ -L /lib${LIBDIRSUFFIX}/libpam.so.? ]; then
+  PAM_OPTIONS="--with-libpam"
+  unset SHADOW_OPTIONS
+  # By default, use the shadow version of /bin/su:
+  SHIP_SU=${SHIP_SU:-YES}
+else
+  unset PAM_OPTIONS
+  SHADOW_OPTIONS="--enable-shadowgrp --without-libcrack"
+  # By default, use the shadow version of /bin/su:
+  SHIP_SU=${SHIP_SU:-YES}
+fi
+
+# Apply some patches taken from the svn trunk that
+# fix some of the more serious bugs in 4.1.4.3:
+for patch in $CWD/patches/*.diff.gz ; do
+  zcat $patch | patch -p0 --verbose || exit 1
+done
+
+# Relax the restrictions on "su -c" when it is used to become root.
+# It's not likely that root is going to try to inject commands back into
+# the user's shell to hack it, and the unnecessary restriction is causing
+# breakage:
+zcat $CWD/shadow.CVE-2005-4890.relax.diff.gz | patch -p1 --verbose || exit 1
+
+# Even if gethostname() returns the FQDN (long hostname), just display the
+# short version up to the first '.' on the login prompt:
+zcat $CWD/shadow.login.display.short.hostname.diff.gz | patch -p1 --verbose || exit 1
+
+# Add missing file:
+if [ ! -r man/login.defs.d/HOME_MODE.xml ]; then
+  zcat $CWD/HOME_MODE.xml.gz > man/login.defs.d/HOME_MODE.xml
+fi
+
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \+ -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \+
+
+if [ ! -r ./configure ]; then
+  ./autogen.sh
+fi
+
+CFLAGS="$SLKCFLAGS" \
+./configure \
+  --prefix=/usr \
+  --sbindir=/usr/sbin \
+  --bindir=/usr/bin \
+  --sysconfdir=/etc \
+  --mandir=/usr/man \
+  --docdir=/usr/doc/shadow-$VERSION \
+  --enable-man \
+  --enable-subordinate-ids \
+  --disable-shared \
+  --with-group-name-max-length=32 \
+  $SHADOW_OPTIONS \
+  $PAM_OPTIONS \
+  --build=$ARCH-slackware-linux-musl
+
+#  --enable-utmpx   # defaults to 'no'
+
+make $NUMJOBS || make || exit 1
+make install DESTDIR=$PKG || exit 1
+
+# Fix user group = 100:
+zcat $CWD/useradd.gz > $PKG/etc/default/useradd
+mv $PKG/etc/default/useradd $PKG/etc/default/useradd.new
+
+# Put some stuff back in "old" locations and make symlinks for compat
+mkdir -p $PKG/bin $PKG/sbin
+( cd $PKG/usr/bin
+  mv groups ../../bin
+  mv login ../../bin
+  mv su ../../bin
+  mv faillog ../sbin
+  mv lastlog ../sbin
+  ln -s ../sbin/faillog
+  ln -s ../sbin/lastlog
+)
+mv $PKG/usr/sbin/nologin $PKG/sbin/nologin
+
+if [ ! -z "$PAM_OPTIONS" ]; then
+  # Don't ship the login utilities. We'll be using the ones from util-linux:
+  for file in /bin/login /sbin/runuser /usr/bin/chfn /usr/bin/chsh \
+    /usr/man/man1/chfn.1.gz /usr/man/man1/chsh.1.gz /usr/man/man1/login.1.gz \
+    /usr/man/man1/runuser.1.gz ; do
+    rm -f $PKG${file}
+  done
+  # Install config files in /etc/pam.d/. We'll use our own copies... I'm not
+  # sure that I trust upstream enough to let them handle this stuff.
+  rm -rf $PKG/etc/pam.d
+  mkdir -p $PKG/etc/pam.d
+  for file in $CWD/pam.d/* ; do
+    cp -a ${file} $PKG/etc/pam.d/
+  done
+  if [ "$SHIP_SU" = "YES" ]; then
+    cp -a $CWD/pam.d-su/* $PKG/etc/pam.d/
+  fi
+  # Ensure correct perms/ownership on files in /etc/pam.d/:
+  chown root:root $PKG/etc/pam.d/*
+  chmod 644 $PKG/etc/pam.d/*
+  # Don't clobber existing config files:
+  find $PKG/etc/pam.d -type f -exec mv {} {}.new \;
+  # Install a login.defs with unsurprising defaults:
+  rm -f $PKG/etc/login.defs
+  zcat $CWD/login.defs.pam.gz > $PKG/etc/login.defs.new
+else # not using PAM
+  mv $PKG/etc/login.access $PKG/etc/login.access.new
+  # Install a login.defs with unsurprising defaults:
+  rm -f $PKG/etc/login.defs
+  zcat $CWD/login.defs.shadow.gz > $PKG/etc/login.defs.new
+fi
+
+# If we	aren't using this version of su, remove the files:
+if [ "$SHIP_SU" = "NO" ]; then
+  rm $PKG/bin/su
+  find $PKG/usr/man -name su.1 | xargs rm
+  find $PKG/usr/man -name suauth.5 | xargs rm
+fi
+
+# /etc/suauth doesn't work with PAM, even if configure.ac is hacked to try
+# to turn the feature on, so remove the man pages if we're using PAM:
+if [ -L /lib${LIBDIRSUFFIX}/libpam.so.? ]; then
+  find $PKG/usr/man -name suauth.5 | xargs rm
+fi
+
+# /bin/groups is provided by coreutils.
+rm -f $PKG/bin/groups
+find $PKG -name groups.1 -exec rm {} \+
+
+# I don't think this works well enough to recommend it.
+#mv $PKG/etc/limits $PKG/etc/limits.new
+rm -f $PKG/etc/limits
+
+# Add the friendly 'adduser' script:
+cat $CWD/adduser > $PKG/usr/sbin/adduser
+chmod 0755 $PKG/usr/sbin/adduser
+
+# Add sulogin to the package:
+cp -a src/sulogin $PKG/sbin
+( cd $PKG/bin ; ln -s ../sbin/sulogin )
+cp -a ./man/zh_CN/man8/sulogin.8 $PKG/usr/man/zh_CN/man8/sulogin.8 || exit 1
+cp -a ./man/ru/man8/sulogin.8 $PKG/usr/man/ru/man8/sulogin.8 || exit 1
+cp -a ./man/de/man8/sulogin.8 $PKG/usr/man/de/man8/sulogin.8 || exit 1
+cp -a ./man/ja/man8/sulogin.8 $PKG/usr/man/ja/man8/sulogin.8 || exit 1
+cp -a ./man/man8/sulogin.8 $PKG/usr/man/man8/sulogin.8 || exit 1
+
+# Add the empty faillog log file:
+mkdir -p $PKG/var/log
+touch $PKG/var/log/faillog.new
+
+# Use 4711 rather than 4755 permissions where setuid root is required:
+find $PKG -type f -perm 4755 -exec chmod 4711 "{}" \+
+
+# Compress and if needed symlink the man pages:
+if [ -d $PKG/usr/man ]; then
+  ( cd $PKG/usr/man
+    for manpagedir in $(find . -type d -name "man*") ; do
+      ( cd $manpagedir
+        for eachpage in $( find . -type l -maxdepth 1) ; do
+          ln -s $( readlink $eachpage ).gz $eachpage.gz
+          rm $eachpage
+        done
+        gzip -9 *.?
+      )
+    done
+  )
+fi
+
+mkdir -p $PKG/usr/doc/shadow-$VERSION
+cp -a \
+  COPYING* NEWS README* TODO doc/{README*,HOWTO,WISHLIST,*.txt} \
+  $PKG/usr/doc/shadow-$VERSION
+
+# If there's a ChangeLog, installing at least part of the recent history
+# is useful, but don't let it get totally out of control:
+if [ -r ChangeLog ]; then
+  DOCSDIR=$(echo $PKG/usr/doc/${PKGNAM}-$VERSION)
+  cat ChangeLog | head -n 1000 > $DOCSDIR/ChangeLog
+  touch -r ChangeLog $DOCSDIR/ChangeLog
+fi
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/shadow-$VERSION-$ARCH-$BUILD.txz

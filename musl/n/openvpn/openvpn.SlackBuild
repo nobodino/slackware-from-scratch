@@ -1,0 +1,192 @@
+#!/bin/bash
+
+# Copyright 2006, Alan Hicks, Lizella, GA
+# Copyright 2008, 2009, 2010, 2011, 2013, 2016, 2018  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=openvpn
+VERSION=${VERSION:-$(echo $PKGNAM-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+BUILD=${BUILD:-3}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX=""
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-$PKGNAM
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+cd $TMP
+rm -rf $PKGNAM-$VERSION
+tar xvf $CWD/$PKGNAM-$VERSION.tar.?z || exit 1
+cd $PKGNAM-$VERSION || exit 1
+
+# Fix ownership and permissions inside the source tarball.
+# It's appalling how many projects have 777 permissions or
+# even suid, sgid, and sticky bits set on things.
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \+ -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \+
+
+# Choose correct options depending on whether PAM is installed:
+if [ -L /lib${LIBDIRSUFFIX}/libpam.so.? ]; then
+  PAM_OPTIONS="--enable-plugin-auth-pam"
+  unset SHADOW_OPTIONS
+else
+  unset PAM_OPTIONS
+  SHADOW_OPTIONS="--disable-plugin-auth-pam"
+fi
+
+if [ ! -x configure ]; then
+  autoreconf -vif
+fi
+
+CFLAGS="$SLKCFLAGS" \
+CXXFLAGS="$SLKCFLAGS" \
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --sysconfdir=/etc/openvpn \
+  --localstatedir=/var \
+  --mandir=/usr/man \
+  --docdir=/usr/doc/openvpn-${VERSION} \
+  --enable-lzo \
+  --enable-iproute2 \
+  $PAM_OPTIONS \
+  $SHADOW_OPTIONS \
+  --build=$ARCH-slackware-linux-musl || exit 1
+
+make $NUMJOBS || make || exit 1
+make install-strip DESTDIR=$PKG || exit 1
+
+if [ ! -z "$PAM_OPTIONS" ]; then
+  # Make openvpn-auth-pam.so:
+  make -C plugin/auth-pam
+  strip --strip-unneeded plugin/auth-pam/openvpn-auth-pam.so
+  mkdir -p $PKG/usr/lib${LIBDIRSUFFIX}
+  cp -a plugin/auth-pam/openvpn-auth-pam.so $PKG/usr/lib${LIBDIRSUFFIX}/
+  mv plugin/auth-pam/README plugin/auth-pam/README.pam
+fi
+
+# Create a decent config directory. openvpn doesn't have one by
+# default, nor does it have a single config file.
+mkdir -p $PKG/etc/openvpn/{certs,keys}
+chown root:nobody $PKG/etc/openvpn/{certs,keys}
+chmod 750 $PKG/etc/openvpn/{certs,keys}
+
+# Install a startup script:
+mkdir -p $PKG/etc/rc.d
+cp -a $CWD/rc.openvpn $PKG/etc/rc.d/rc.openvpn.new
+chmod 644 $PKG/etc/rc.d/rc.openvpn.new
+chown root:root $PKG/etc/rc.d/rc.openvpn.new
+
+# Let folks know about the other configs, if they haven't found them.
+# They might even find the documentation there useful.  ;-)
+cat << EOF > $PKG/etc/openvpn/README.TXT
+One or more OpenVPN config files should be installed in this directory
+as files ending in ".conf" (i.e. client.conf, server.conf, etc.).
+
+Have a look in sample-config-files for some more examples of how to
+configure OpenVPN.
+
+To start OpenVPN, use this command as root:
+sh /etc/rc.d/rc.openvpn start
+
+To make OpenVPN start automatically at boot, change the script permissions:
+chmod 755 /etc/rc.d/rc.openvpn
+
+See "man openvpn" and the other docs for more information.
+EOF
+
+# Add a link, too:
+( cd $PKG/etc/openvpn
+  ln -sf /usr/doc/$PKGNAM-$VERSION/sample-config-files .
+)
+
+if [ -d $PKG/usr/man ]; then
+( cd $PKG/usr/man
+  find . -type f -exec gzip -9 {} \+
+  for i in $(find . -type l) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+)
+fi
+
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION
+cp -a AUTHORS COPYING* COPYRIGHT* INSTALL* \
+  NEWS PORTS README* sample/sample-config-files sample/sample-keys sample/sample-scripts \
+  $PKG/usr/doc/$PKGNAM-$VERSION
+
+# Install a reasonably generic sample config file:
+# (put this in with the other samples)
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/sample-config-files
+cp -a $CWD/slackware.conf $PKG/usr/doc/$PKGNAM-$VERSION/sample-config-files
+chown root:root $PKG/usr/doc/$PKGNAM-$VERSION/sample-config-files/slackware.conf
+chmod 644 $PKG/usr/doc/$PKGNAM-$VERSION/sample-config-files/slackware.conf
+
+# If there's a ChangeLog, installing at least part of the recent history
+# is useful, but don't let it get totally out of control:
+if [ -r ChangeLog ]; then
+  DOCSDIR=$(echo $PKG/usr/doc/${PKGNAM}-$VERSION)
+  cat ChangeLog | head -n 1000 > $DOCSDIR/ChangeLog
+  touch -r ChangeLog $DOCSDIR/ChangeLog
+fi
+
+mkdir -p $PKG/install
+zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/$PKGNAM-$VERSION-$ARCH-$BUILD.txz
+

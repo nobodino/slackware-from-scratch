@@ -1,0 +1,105 @@
+#!/bin/bash
+# Copyright 2006, 2007, 2009, 2010, 2011, 2015, 2017, 2018  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# If the ncurses package is not available, we might have to build it.
+# Therefore, for use with make_world.sh, REQUIRE_GLOBAL_LOCK.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=aaa_terminfo
+# Note the version of ncurses in use:
+VERSION=${VERSION:-$(PRINT_PACKAGE_NAME=yes ./ncurses.SlackBuild | cut -f 2 -d -)}
+BUILD=${BUILD:-4}
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-${PKGNAM}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+if [ "$ARCH" = "x86_64" ]; then
+  LIBDIRSUFFIX=""
+else
+  LIBDIRSUFFIX=""
+fi
+
+# If we don't have an ncurses package available in $TMP, we need to build it:
+if ! /bin/ls $TMP/$(PRINT_PACKAGE_NAME=yes sh $CWD/ncurses.SlackBuild) 1> /dev/null 2> /dev/null ; then
+  TMP=$TMP sh $CWD/ncurses.SlackBuild
+fi
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+
+cd $PKG
+mkdir cruft
+cd cruft
+explodepkg $TMP/$(PRINT_PACKAGE_NAME=yes sh $CWD/ncurses.SlackBuild)
+sh install/doinst.sh
+cd ..
+
+# I wonder if anything still looks here?
+mkdir -p usr/lib${LIBDIRSUFFIX}
+( cd usr/lib${LIBDIRSUFFIX}
+  rm -rf terminfo
+  ln -sf /usr/share/terminfo terminfo
+)
+
+# This has been the traditional starter collection since forever.
+for dir in l n u v x ; do
+  mkdir -p usr/share/terminfo/$dir
+  ( cd usr/share/terminfo/$dir
+    cp -a $PKG/cruft/usr/share/terminfo/$dir/* .
+  )
+done
+
+# Remove dangling symlinks:
+( cd usr/share/terminfo
+  for file in $(find . -type l) ; do
+    if [ "$(readlink -e $file)" = "" ]; then
+      rm --verbose $file
+    fi
+  done
+)
+
+# Get rid of cruft:
+rm -rf $PKG/cruft
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc.aaa_terminfo > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/${PKGNAM}-$VERSION-$ARCH-$BUILD.txz
+

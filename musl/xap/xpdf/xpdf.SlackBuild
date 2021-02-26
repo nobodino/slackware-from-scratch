@@ -1,0 +1,159 @@
+#!/bin/bash
+
+# Copyright 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2017, 2018, 2019  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=xpdf
+VERSION=4.03
+PATCHLEVEL=
+BUILD=${BUILD:-2}
+
+NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-${VERSION}${PATCHLEVEL}-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX=""
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-xpdf
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+
+cd $TMP
+rm -rf xpdf-$VERSION
+tar xvf $CWD/xpdf-$VERSION.tar.?z || exit 1
+cd xpdf-$VERSION || exit 1
+
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \+ -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \+
+
+zcat $CWD/patches/xpdfrc.diff.gz | patch -p1 --verbose || exit 1
+
+mkdir build
+cd build
+  cmake \
+    -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DLIB_SUFFIX=${LIBDIRSUFFIX} \
+-DCMAKE_INSTALL_LIBDIR=lib$LIBDIRSUFFIX \
+    -DCMAKE_INSTALL_MANDIR=/usr/man \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DXPDFWIDGET_PRINTING=1 \
+    -DSYSTEM_XPDFRC="/etc/xpdfrc" \
+    .. || exit 1
+  make $NUMJOBS || make || exit 1
+  make install DESTDIR=$PKG || exit 1
+cd ..
+
+chmod 0755 $PKG/usr/bin/*
+gzip -9 $PKG/usr/man/man?/*
+
+# We'll use the versions of these from the poppler derived work (if they exist here):
+for file in pdfinfo pdftops pdftoppm pdftohtml pdftotext pdfimages pdffonts ; do
+  rm -f $PKG/usr/bin/${file}
+  rm -f $PKG/usr/man/man1/${file}.1.gz
+done
+
+# Don't clobber /etc/xpdfrc
+mkdir -p $PKG/etc
+cat doc/sample-xpdfrc > $PKG/etc/xpdfrc
+mv $PKG/etc/xpdfrc $PKG/etc/xpdfrc.new
+
+# Add desktop menu entry and icon:
+mkdir -p $PKG/usr/share/{applications,pixmaps}
+cat $CWD/xpdf.desktop > $PKG/usr/share/applications/xpdf.desktop
+cat $CWD/xpdfIcon.xpm > $PKG/usr/share/pixmaps/xpdfIcon.xpm
+
+# Add additional language support:
+for language in xpdf-arabic xpdf-chinese-simplified xpdf-chinese-traditional xpdf-cyrillic xpdf-greek xpdf-hebrew xpdf-japanese xpdf-korean xpdf-latin2 xpdf-thai xpdf-turkish ; do
+  rm -rf ${language}
+  tar xf $CWD/lang/${language}*.tar.?z
+  ( cd ${language}
+    echo "Patching for ${language}:"
+    zcat $CWD/lang/${language}.diff.gz | patch -p1 --verbose --backup --suffix=.orig || exit 1
+    chown -R root:root .
+    find . -type f -exec chmod 644 {} \+
+    cat add-to-xpdfrc >> $PKG/etc/xpdfrc.new
+    mkdir -p $PKG/usr/share/xpdf/$(echo ${language} | cut -f2- -d -)
+    cp -a * $PKG/usr/share/xpdf/$(echo ${language} | cut -f2- -d -)
+  ) || exit 1 
+done
+
+find $PKG | xargs file | grep -e "executable" -e "shared object" \
+  | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+
+mkdir -p $PKG/usr/doc/xpdf-$VERSION
+cp -a \
+  ANNOUNCE CHANGES COPYING* INSTALL README \
+  $PKG/usr/doc/xpdf-$VERSION
+chmod 0644 $PKG/usr/doc/xpdf-$VERSION/*
+
+# If there's a ChangeLog, installing at least part of the recent history
+# is useful, but don't let it get totally out of control:
+if [ -r CHANGES ]; then
+  DOCSDIR=$(echo $PKG/usr/doc/*-$VERSION)
+  cat CHANGES | tail -n 1000 > $DOCSDIR/CHANGES
+  touch -r CHANGES $DOCSDIR/CHANGES
+fi
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
+
+# Build the package:
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/xpdf-${VERSION}${PATCHLEVEL}-$ARCH-$BUILD.txz
+

@@ -1,0 +1,162 @@
+#!/bin/bash
+
+# Copyright 2008, 2009, 2010, 2011, 2013, 2014, 2015, 2016, 2018, 2019, 2020  Patrick J. Volkerding, Sebeka, Minnesota, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=screen
+VERSION=${VERSION:-$(echo $PKGNAM-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+BUILD=${BUILD:-4}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX=""
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-screen
+
+NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+cd $TMP
+rm -rf screen-$VERSION
+tar xvf $CWD/screen-$VERSION.tar.?z || exit 1
+
+cd screen-$VERSION || exit 1
+
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \+ -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \+
+
+# Apply patches taken from Debian:
+for pf in \
+  26source_encoding.patch.gz \
+  45suppress_remap.patch.gz \
+  52fix_screen_utf8_nfd.patch.gz \
+  ; do zcat $CWD/$pf | patch --verbose -p1 || exit 1
+done
+
+# Revert a change to /etc/screenrc introduced in screen-4.3.x that prevents
+# the console from being properly cleared when detaching from a screen session:
+zcat $CWD/60-revert-screenrc-change.diff.gz | patch -p1 --verbose || exit 1
+
+# Choose correct options depending on whether PAM is installed:
+if [ -L /lib${LIBDIRSUFFIX}/libpam.so.? ]; then
+  PAM_OPTIONS="--enable-pam"
+  unset SHADOW_OPTIONS
+else
+  unset PAM_OPTIONS
+  SHADOW_OPTIONS="--disable-pam"
+fi
+
+# Configure:
+CFLAGS="$SLKCFLAGS" \
+./configure \
+  --prefix=/usr \
+  --sysconfdir=/etc \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --mandir=/usr/man \
+  --infodir=/usr/info \
+  --with-sys-screenrc=/etc/screenrc \
+  --with-pty-mode=0620 \
+  --with-pty-group=5 \
+  $PAM_OPTIONS \
+  $SHADOW_OPTIONS \
+  --enable-telnet \
+  --disable-socket-dir \
+  --enable-use-locale \
+  --enable-colors256 \
+  --enable-rxvt_osc \
+  --build=$ARCH-slackware-linux-musl || exit 1
+
+# Substitutions:
+perl -pi -e 's|.*#undef HAVE_BRAILLE.*|#define HAVE_BRAILLE 1|' config.h
+perl -pi -e 's|/usr/local/etc/screenrc|/etc/screenrc|' etc/etcscreenrc doc/*
+perl -pi -e 's|/local/etc/screenrc|/etc/screenrc|' doc/*
+
+# Build screen:
+make $NUMJOBS || make || exit 1
+make install DESTDIR=$PKG || exit 1
+
+# Prepare package:
+( cd $PKG
+  find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+  find . | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+)
+
+# Sorry, pal.  Not around here.
+chmod 755 $PKG/usr/bin/screen-$VERSION
+mkdir -p $PKG/etc/skel
+cat etc/etcscreenrc > $PKG/etc/screenrc.new
+cat etc/screenrc > $PKG/etc/skel/.screenrc.new
+
+if [ ! -z "$PAM_OPTIONS" ]; then
+  mkdir -p $PKG/etc/pam.d
+  cat $CWD/screen.pam > $PKG/etc/pam.d/screen.new
+fi
+
+rm -f $PKG/usr/info/dir
+gzip -9 $PKG/usr/info/*
+gzip -9 $PKG/usr/man/man1/*
+mkdir -p $PKG/usr/doc/screen-$VERSION
+chmod 644 doc/FAQ
+cp -a COPYING ChangeLog HACKING INSTALL NEWS README TODO \
+  doc/FAQ doc/README.DOTSCREEN \
+  $PKG/usr/doc/screen-$VERSION
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
+
+# Build package:
+cd $PKG
+makepkg -l y -c n $TMP/screen-$VERSION-$ARCH-$BUILD.txz

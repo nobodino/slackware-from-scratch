@@ -1,0 +1,192 @@
+#!/bin/bash
+
+# Slackware build script for hplip
+
+# Copyright 2006-2010  Robby Workman, Northport, Alabama, USA
+# Copyright 2006-2018  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ''AS IS'' AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+# EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=hplip
+VERSION=${VERSION:-$(echo $PKGNAM-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+BUILD=${BUILD:-6}
+
+NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-$PKGNAM
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+
+cd $TMP
+rm -rf $PKGNAM-$VERSION
+tar xvf $CWD/$PKGNAM-$VERSION.tar.?z || exit 1
+cd $PKGNAM-$VERSION || exit 1
+patch -p1 < $CWD/fix-includes.patch || exit 1
+patch -p1 < $CWD/types-musl.patch || exit 1
+
+# Upgrades should not be done outside the package system:
+zcat $CWD/hplip.no.upgrade.diff.gz | patch -p1 --verbose || exit 1
+
+# Set LC_ALL=C to fix issues with CUPS output parsing in hp-setup:
+zcat $CWD/setup.py.lc_all.c.diff.gz | patch -p1 --verbose || exit 1
+
+# Fix a few .py files lacking #!/usr/bin/python3:
+zcat $CWD/hplip.python3.shebang.diff.gz | patch -p1 --verbose || exit 1
+
+# Choose correct options depending on whether PAM is installed:
+if [ -L /lib${LIBDIRSUFFIX}/libpam.so.? ]; then
+  unset SHADOW_OPTIONS
+else
+  SHADOW_OPTIONS="--enable-shadow-build"
+fi
+
+chown -R root:root .
+find . \
+ \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+ -exec chmod 755 {} \+ -o \
+ \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+ -exec chmod 644 {} \+
+
+find -name '*.py' -print0 | xargs -0 \
+    sed -i.env-python -e 's,^#!/usr/bin/env python,#!/usr/bin/python3,'
+sed -i.env-python -e 's,^#!/usr/bin/env python,#!/usr/bin/python3,' \
+    prnt/filters/hpps \
+    fax/filters/pstotiff
+
+# Forget it folks - this ImageProcessor closed-source blob is broken, and there
+# is no way to fix it. We will use this patch from Debian to remove it from
+# hplip, reverting to the way things worked in the 3.18.6 release. If HP ever
+# sees fit to make ImageProcessor mandatory, we'll likely stick with the last
+# hplip release that can be made to work without it, and any HP printers that
+# require a newer version of hplip will not be supported.
+zcat $CWD/0025-Remove-all-ImageProcessor-functionality-which-is-clo.patch.gz | patch -p1 -l --verbose || exit 1
+
+# Add a cups-2.2.x header since some definitions were moved:
+zcat $CWD/0021-Add-include-cups-ppd.h-in-various-places-as-CUPS-2.2.patch.gz | patch -p1 -l --verbose || exit 1
+
+# autoreconf will fail if these files do not exist:
+for file in NEWS README AUTHORS ChangeLog ; do
+  if [ ! -r $file ]; then
+    touch $file
+  fi
+done
+
+# Needed because Makefile.am was patched:
+autoreconf -vif || exit 1
+
+CFLAGS="$SLKCFLAGS -I/usr/include/python3.8" \
+CXXFLAGS="$SLKCFLAGS" \
+PYTHON=/usr/bin/python3 \
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --with-cupsbackenddir=/usr/lib${LIBDIRSUFFIX}/cups/backend \
+  --with-cupsfilterdir=/usr/lib${LIBDIRSUFFIX}/cups/filter \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
+  --docdir=/usr/doc/hplip-$VERSION \
+  --with-docdir=/usr/doc/hplip-$VERSION \
+  --with-htmldir=/usr/doc/hplip-$VERSION/html \
+  --with-hpppddir=/usr/share/ppd/HP \
+  --with-drvdir=/usr/share/cups/drv/HP \
+  --enable-hpijs-install \
+  $SHADOW_OPTIONS \
+  --enable-scan-build \
+  --enable-gui-build \
+  --enable-fax-build \
+  --enable-doc-build \
+  --enable-foomatic-rip-hplip-install \
+  --enable-pp-build \
+  --disable-foomatic-ppd-install \
+  --enable-foomatic-drv-install \
+  --enable-network-build=yes \
+  --enable-qt5 \
+  --enable-policykit \
+  --enable-cups-ppd-install \
+  --build=$ARCH-slackware-linux \
+  --host=$ARCH-slackware-linux \
+  || exit 1
+
+make $NUMJOBS || make || exit 1
+make install DESTDIR=$PKG rulesdir=/lib/udev/rules.d || exit 1
+
+# Move dbus configs to system location:
+mkdir -p $PKG/usr/share/dbus-1/system.d/
+mv $PKG/etc/dbus-1/system.d/* $PKG/usr/share/dbus-1/system.d/
+rmdir --parents $PKG/etc/dbus-1/system.d/
+
+# Don't ship .la files:
+rm -f $PKG/{,usr/}lib${LIBDIRSUFFIX}/*.la
+
+# 3.16.8 is not making this directory even though several scripts
+# continue to make use of it:
+mkdir -p $PKG/var/lib/hp/
+
+# HAL is long gone:
+rm -rf $PKG/usr/share/hal
+
+find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
+  | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+
+# No thanks, we don't replace/add files which are part of other packages
+rm -rf $PKG/etc/sane.d
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/$PKGNAM-$VERSION-$ARCH-$BUILD.txz
+

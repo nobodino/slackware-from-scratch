@@ -1,0 +1,103 @@
+#!/bin/bash
+
+# Copyright 2008, 2009, 2010, 2013, 2018  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=popa3d
+VERSION=1.0.3
+BUILD=${BUILD:-6}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-popa3d
+rm -rf $PKG
+mkdir -p $TMP $PKG
+
+cd $TMP
+rm -rf popa3d-$VERSION
+tar xvf $CWD/popa3d-$VERSION.tar.?z || exit 1
+cd popa3d-$VERSION || exit 1
+
+# Choose correct options depending on whether PAM is installed:
+if [ -L /lib${LIBDIRSUFFIX}/libpam.so.? ]; then
+  zcat $CWD/popa3d.pam.diff.gz | patch -p1 --verbose --backup --suffix=.orig || exit 1
+else
+  zcat $CWD/popa3d.shadow.diff.gz | patch -p1 --verbose --backup --suffix=.orig || exit 1
+fi
+
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \+ -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \+
+
+make $NUMJOBS || make || exit 1
+
+# already stripped
+mkdir -p $PKG/usr/sbin
+cat popa3d > $PKG/usr/sbin/popa3d
+chmod 755 $PKG/usr/sbin/popa3d
+
+mkdir -p $PKG/usr/man/man8
+cat popa3d.8 | gzip -9c > $PKG/usr/man/man8/popa3d.8.gz
+
+# Empty directory to chroot() into.  Should already be installed by aaa_base, or
+# openssh, or both:
+#mkdir -p $PKG/var/empty
+
+# Docs:
+mkdir -p $PKG/usr/doc/popa3d-$VERSION
+cp -a \
+  CHANGES CONTACT DESIGN INSTALL LICENSE VIRTUAL \
+  $PKG/usr/doc/popa3d-$VERSION
+chmod 644 $PKG/usr/doc/popa3d-$VERSION/*
+
+# Add install script -- this ensures pop user/group are there:
+mkdir -p $PKG/install
+zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
+# Description:
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+# Build the package:
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/popa3d-$VERSION-$ARCH-$BUILD.txz
+
