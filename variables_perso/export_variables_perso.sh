@@ -1,5 +1,5 @@
-#######################  export_variables.sh ###################################
 #!/bin/bash
+#######################  export_variables.sh ###################################
 #
 # Copyright 2018, 2019,2020  J. E. Garrott Sr, Puyallup, WA, USA
 # Copyright 2018, 2019,2020  "nobodino", Bordeaux, FRANCE
