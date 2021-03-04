@@ -1,5 +1,5 @@
-#######################  prep-sfs-tools.sh #####################################
 #!/bin/bash
+#######################  prep-sfs-tools.sh #####################################
 #
 # Copyright 2018,2019,2020,2021  J. E. Garrott Sr, Puyallup, WA, USA
 # Copyright 2018,2019,2020,2021  "nobodino", Bordeaux, FRANCE
@@ -105,14 +105,13 @@ echo && su - sfs
 
 tools_test () {
 #*****************************
-	if [[ ! -f $PATDIR/$tools_dir/tools.tar.?z ]]; then
-		cat <<- EndofText
+file_path=("$PATDIR"/"$tools_dir"/tools.tar.?z)
+[ -e "${file_path[*]}" ] && cat <<- EndofText
 	
-		A copy of "tools.tar.?z" has been found.
+		A copy of 'tools.tar.?z' has been found.
 		if you wish to untar this for your tools directory, select "old"
 		otherwise select "new" to build a new tools directory.
 		If you desire to quit, select "quit"
-
 		EndofText
 
 		PS3="Your choice: "
@@ -123,26 +122,24 @@ tools_test () {
 				*    ) return 2 ;;
 			esac
 		done
-	else
-		return 1
-	fi
+[ ! -e "${file_path[*]}" ] && cat <<- EndofText
+	
+		No copy of 'tools.tar.?z' has been found.
+		The script will exit.
+		EndofText
+		exit 1
 }
 
 get_tools_dir () {
 #****************************
-	cd $SFS
-	echo "
+	cd "$SFS" || exit 1
+	echo "Untarring tools.tar.?z"
 
-	Untarring tools.tar.?z
-	"
-	tar xf $PATDIR/$tools_dir/tools.tar.?z
+	tar xf "$PATDIR"/"$tools_dir"/tools.tar.?z
 
-	echo "
+	echo "The tools directory has been installed and /tools link remade!	"
 
-	The tools directory has been installed and /tools link remade!
-	"
-
-	cd -
+	cd - || exit 1
 }
 
 
