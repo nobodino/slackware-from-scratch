@@ -389,25 +389,15 @@ glibc_build () {
 
 	case "$GLIBCVER" in
 		2.30 )
-#			cat ../e1d559f.patch | patch -p1 --verbose
 			patch -p1 --verbose < ../e1d559f.patch
-#			cat ../glibc.git-cba932a5a9e91cffd7f4172d7e91f9b2efb1f84b.patch | patch -p1 --verbose
 			patch -p1 --verbose < ../glibc.git-cba932a5a9e91cffd7f4172d7e91f9b2efb1f84b.patch
-#			cat ../glibc.git-84df7a4637be8ecb545df3501cc724f3a4d53c46.patch | patch -p1 --verbose
 			patch -p1 --verbose < ../glibc.git-84df7a4637be8ecb545df3501cc724f3a4d53c46.patch
-#			cat ../glibc.git-e21a7867713c87d0b0698254685d414d811d72b2.patch | patch -p1 --verbose
 			patch -p1 --verbose < ../glibc.git-e21a7867713c87d0b0698254685d414d811d72b2.patch
-#			cat ../glibc.git-70c6e15654928c603c6d24bd01cf62e7a8e2ce9b.patch | patch -p1 --verbose
 			patch -p1 --verbose < ../glibc.git-70c6e15654928c603c6d24bd01cf62e7a8e2ce9b.patch
-#		  	cat ../glibc-2.30-gcc-10.2.patch | patch -p1 --verbose
 			patch -p1 --verbose < ../glibc-2.30-gcc-10.2.patch
-#		  	cat ../glibc.8a80ee5e2bab17a1f8e1e78fab5c33ac7efa8b29.patch | patch -p1 --verbose
 			patch -p1 --verbose < ../glibc.8a80ee5e2bab17a1f8e1e78fab5c33ac7efa8b29.patch
-#		  	cat ../glibc.b0f6679bcd738ea244a14acd879d974901e56c8e.patch | patch -p1 --verbose
 			patch -p1 --verbose < ../glibc.b0f6679bcd738ea244a14acd879d974901e56c8e.patch
-#		  	cat ../glibc.b6d2c4475d5abc05dd009575b90556bdd3c78ad0.patch | patch -p1 --verbose
 			patch -p1 --verbose < ../glibc.b6d2c4475d5abc05dd009575b90556bdd3c78ad0.patch
-#		  	cat ../glibc.e1df30fbc2e2167a982c0e77a7ebee28f4dd0800.patch | patch -p1 --verbose ;;
 			patch -p1 --verbose < ../glibc.e1df30fbc2e2167a982c0e77a7ebee28f4dd0800.patch ;;
 	
 		2.31 )
@@ -1143,7 +1133,6 @@ then
 	case $(uname -m) in
 		x86_64 )
 			if ! tar xf gnat-gpl-2017-x86_64-linux-bin.tar.gz; then
-#			if [ $? != 0 ]; then
 				echo
 				echo "Tar extraction of gnat-gpl-2017-x86_64-linux-bin failed."
 				echo
@@ -1152,10 +1141,8 @@ then
 			# Now prepare the environment
 			cd gnat-gpl-2017-x86_64-linux-bin || exit 1
 			echo ;;  
-#			[ $? != 0 ] && exit 1 ;;
 		i686 )
 			if ! tar xf gnat-gpl-2014-x86-linux-bin.tar.gz; then
-#			if [ $? != 0 ]; then
 				echo
 				echo "Tar extraction of gnat-gpl-2014-x86-linux-bin failed."
 				echo
@@ -1164,7 +1151,6 @@ then
 			# Now prepare the environment
 			cd gnat-gpl-2014-x86-linux-bin || exit 1
 			echo ;; 
-#			[ $? != 0 ] && exit 1 ;;
 	esac
 	mkdir -pv /tools/opt/gnat
 	make ins-all prefix=/tools/opt/gnat
@@ -1176,13 +1162,9 @@ then
 elif [[ "$ada_enable" = "no" ]]
  then
 	echo
-#	break
 fi
 #*****************************
 strip_libs
 clean_sources
 echo_end
 exit 0
-
-
-
