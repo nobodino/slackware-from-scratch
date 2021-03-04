@@ -1,5 +1,5 @@
-#######################  myprofile.sh ##########################################
 #!/bin/bash
+#######################  myprofile.sh ##########################################
 #
 # Copyright 2018, 2019,2020,2021  J. E. Garrott Sr, Puyallup, WA, USA
 # Copyright 2018, 2019,2020,2021  "nobodino", Bordeaux, FRANCE
@@ -40,10 +40,10 @@
 
 generate_etc_fstab () {
 #*******************************************************************
-mkdir -pv $SFS/etc
-cat > $SFS/etc/fstab << "EOF"
+mkdir -pv "$SFS"/etc
+cat > "$SFS"/etc/fstab << "EOF"
 /dev/sdc2        swap             swap        defaults         0   0
-/dev/sdc13       /                ext4        defaults,noatime,discard  	   1   1
+/dev/sdc12       /                ext4        defaults,noatime,discard  	   1   1
 /dev/fd0         /mnt/floppy      auto        noauto,owner     0   0
 devpts           /dev/pts         devpts      gid=5,mode=620   0   0
 proc             /proc            proc        defaults         0   0
