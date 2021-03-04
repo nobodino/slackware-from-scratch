@@ -1,5 +1,5 @@
-#######################  chroot_sfs.sh #########################################
 #!/bin/bash
+#######################  chroot_sfs.sh #########################################
 #
 # Copyright 2018, 2019,2020,2021  J. E. Garrott Sr, Puyallup, WA, USA
 # Copyright 2018, 2019,2020,2021  "nobodino", Bordeaux, FRANCE
@@ -42,9 +42,9 @@ export YELLOW="\\033[1;33m"
 #**********************************
 # chown from sfs:sfs to root:root
 #**********************************
-cd .. && chown -R root:root $SFS/tools
+cd .. && chown -R root:root "$SFS"/tools
 #**********************************
-mkdir -pv $SFS/{dev,proc,sys,run}
+mkdir -pv "$SFS"/{dev,proc,sys,run}
 #**********************************
 # When the kernel boots the system, it requires the presence of
 # a few device nodes, in particular the console and null
@@ -53,26 +53,26 @@ mkdir -pv $SFS/{dev,proc,sys,run}
 # started, and additionally when Linux is started with
 # init=/bin/bash. Create the devices by running the following commands:
 #**********************************
-mknod -m 600 $SFS/dev/console c 5 1
-mknod -m 666 $SFS/dev/null c 1 3
+mknod -m 600 "$SFS"/dev/console c 5 1
+mknod -m 666 "$SFS"/dev/null c 1 3
 #**********************************
 # Mounting and Populating /dev ('cause udev ain't yet!)
 #**********************************
-mount -v --bind /dev $SFS/dev
+mount -v --bind /dev "$SFS"/dev
 #**********************************
 # Now mount the remaining virtual kernel filesystems:
 #**********************************
-mount -v --bind /dev/pts $SFS/dev/pts -o gid=5,mode=620
-mount -vt proc proc $SFS/proc
-mount -vt sysfs sysfs $SFS/sys
-mount -vt tmpfs tmpfs $SFS/run
+mount -v --bind /dev/pts "$SFS"/dev/pts -o gid=5,mode=620
+mount -vt proc proc "$SFS"/proc
+mount -vt sysfs sysfs "$SFS"/sys
+mount -vt tmpfs tmpfs "$SFS"/run
 #**********************************
 # In some host systems, /dev/shm is a symbolic link to /run/shm.
 # The /run tmpfs was mounted above so in this case only a directory
 # needs to be created.
 #**********************************
-if [ -h $SFS/dev/shm ]; then
-  mkdir -pv $SFS/$(readlink $SFS/dev/shm)
+if [ -h "$SFS"/dev/shm ]; then
+  mkdir -pv "$SFS"/"$(readlink "$SFS"/dev/shm)"
 fi
 #**********************************
 echo
