@@ -1,5 +1,5 @@
-#######################  list_generator_c.sh ###################################
 #!/bin/bash
+#######################  list_generator_c.sh ###################################
 #
 # Copyright 2018,2019,2020,2021  J. E. Garrott Sr, Puyallup, WA, USA
 # Copyright 2018,2019,2020,2021  "nobodino", Bordeaux, FRANCE
@@ -50,14 +50,14 @@ test_gnat () {
 }
 
 generate_slackware_link_build_list () {
-cat > $SFS/sources/link.list << "EOF"
+cat > "$SFS"/sources/link.list << "EOF"
 a link_tools_slackware
 EOF
 }
 
 generate_slackware_build_list1_c () {
 #******************************************
-cat > $SFS/sources/build1_s.list << "EOF"
+cat > "$SFS"/sources/build1_s.list << "EOF"
 a findutils
 a pkgtools
 a aaa_base
@@ -285,7 +285,7 @@ EOF
 
 generate_slackware_build_list2_c () {
 #******************************************
-cat > $SFS/sources/build2_s.list << "EOF"
+cat > "$SFS"/sources/build2_s.list << "EOF"
 a dhcpcd_up
 a haveged
 a gpm
@@ -482,7 +482,7 @@ EOF
 
 generate_slackware_build_list3_c () {
 #******************************************
-cat > $SFS/sources/build3_s.list << "EOF"
+cat > "$SFS"/sources/build3_s.list << "EOF"
 a dhcpcd_up
 l python-pygments
 ap linuxdoc-tools
@@ -604,6 +604,7 @@ tcl tix
 t fig2dev
 l libsigsegv
 l libsigc++
+d poke
 d cscope
 d distcc
 d icecream
@@ -762,7 +763,7 @@ EOF
 
 generate_slackware_build_list4_c () {
 #******************************************
-cat > $SFS/sources/build4_s.list << "EOF"
+cat > "$SFS"/sources/build4_s.list << "EOF"
 a dhcpcd_up
 l python-six
 d opencl-headers
