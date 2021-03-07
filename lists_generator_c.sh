@@ -198,7 +198,7 @@ a sysvinit-scripts
 l popt
 a sysvinit-functions
 a bin
- a devs
+a devs
 n network-scripts
 l pcre
 d re2c
@@ -814,6 +814,12 @@ a cpufrequtils
 a dcron
 a dosfstools
 a elvis
+l gmp
+l mpfr
+l icu4c
+l harfbuzz
+l graphite2
+t texlive
 a floppy
 a genpower
 a gptfdisk
