@@ -1,4 +1,3 @@
-
 ################################  sfsbuild1.sh #################################
 #!/bin/bash
 #
@@ -42,7 +41,7 @@
 #   https://github.com/nobodino/slackware-from-scratch 
 #
 ############################################################################
-# set -x
+# set -xv
 #*********************************
 export GREEN="\\033[1;32m"
 export NORMAL="\\033[0;39m"
@@ -64,7 +63,7 @@ echo	"The build.list of programs to build, and their source directories is requi
 echo
 echo	"The packages will not be processed until the end of the build{1,4}.list."
 echo
-exit -1
+exit 255
 }
 
 adjust_i686 () {
@@ -78,9 +77,9 @@ adjust_i686 () {
 #       copied under the MIT License.
 #***********************************************************
 mv -v /tools/bin/{ld,ld-old}
-mv -v /tools/$(uname -m)-pc-linux-gnu/bin/{ld,ld-old}
+mv -v /tools/"$(uname -m)"-pc-linux-gnu/bin/{ld,ld-old}
 mv -v /tools/bin/{ld-new,ld}
-ln -sv /tools/bin/ld /tools/$(uname -m)-pc-linux-gnu/bin/ld
+ln -sv /tools/bin/ld /tools/"$(uname -m)"-pc-linux-gnu/bin/ld
 #***********************************************************
 # Next, amend the GCC specs file so that it points to the
 # new dynamic linker. Simply deleting all instances of
@@ -89,6 +88,7 @@ ln -sv /tools/bin/ld /tools/$(uname -m)-pc-linux-gnu/bin/ld
 # knows where to find the correct headers and Glibc start
 # files. A sed command accomplishes this:
 #***********************************************************
+# shellcheck disable=SC2006,SC2046
 gcc -dumpspecs | sed -e 's@/tools@@g'                   \
     -e '/\*startfile_prefix_spec:/{n;s@.*@/usr/lib/ @}' \
     -e '/\*cpp:/{n;s@$@ -isystem /usr/include@}' >      \
@@ -106,9 +106,9 @@ adjust_x86_64 () {
 #       copied under the MIT License.
 #***********************************************************
 mv -v /tools/bin/{ld,ld-old}
-mv -v /tools/$(uname -m)-pc-linux-gnu/bin/{ld,ld-old}
+mv -v /tools/"$(uname -m)"-pc-linux-gnu/bin/{ld,ld-old}
 mv -v /tools/bin/{ld-new,ld}
-ln -sv /tools/bin/ld /tools/$(uname -m)-pc-linux-gnu/bin/ld
+ln -sv /tools/bin/ld /tools/"$(uname -m)"-pc-linux-gnu/bin/ld
 #***********************************************************
 # Next, amend the GCC specs file so that it points to the
 # new dynamic linker. Simply deleting all instances of
@@ -117,6 +117,7 @@ ln -sv /tools/bin/ld /tools/$(uname -m)-pc-linux-gnu/bin/ld
 # knows where to find the correct headers and Glibc start
 # files. A sed command accomplishes this:
 #***********************************************************
+# shellcheck disable=SC2006,SC2046
 gcc -dumpspecs | sed -e 's@/tools@@g'                   \
     -e '/\*startfile_prefix_spec:/{n;s@.*@/usr/lib64/ @}' \
     -e '/\*cpp:/{n;s@$@ -isystem /usr/include@}' >      \
@@ -126,7 +127,7 @@ gcc -dumpspecs | sed -e 's@/tools@@g'                   \
 answer () {
 #****************************
 local testvar
-read testvar
+read -r testvar
 if [ "$testvar" != "" ]; then
 	exit
 fi
@@ -141,11 +142,11 @@ execute_cmake_sed () {
 #******************************************************************
 # delete "--qt-gui" line in SlackBuild
 #******************************************************************
-if [ ! -f $SLACKSRC/d/cmake/cmake.SlackBuild.old ]; then
-	cp -v $SLACKSRC/d/cmake/cmake.SlackBuild $SLACKSRC/d/cmake/cmake.SlackBuild.old
+if [ ! -f "$SLACKSRC"/d/cmake/cmake.SlackBuild.old ]; then
+	cp -v "$SLACKSRC"/d/cmake/cmake.SlackBuild "$SLACKSRC"/d/cmake/cmake.SlackBuild.old
 	(
-		cd $SLACKSRC/d/cmake
-		sed -i -e '/--qt-gui/d' cmake.SlackBuild
+		cd "$SLACKSRC"/d/cmake || exit 1
+		sed -i -e "/--qt-gui/d" cmake.SlackBuild
 	)
 fi
 }
@@ -154,14 +155,14 @@ execute_cyrus_sasl_sed () {
 #******************************************************************
 # delete several lines in SlackBuild
 #******************************************************************
-if [ ! -f $SLACKSRC/n/cyrus-sasl/cyrus-sasl.SlackBuild.old ]; then
-	cp -v $SLACKSRC/n/cyrus-sasl/cyrus-sasl.SlackBuild $SLACKSRC/n/cyrus-sasl/cyrus-sasl.SlackBuild.old
+if [ ! -f "$SLACKSRC"/n/cyrus-sasl/cyrus-sasl.SlackBuild.old ]; then
+	cp -v "$SLACKSRC"/n/cyrus-sasl/cyrus-sasl.SlackBuild "$SLACKSRC"/n/cyrus-sasl/cyrus-sasl.SlackBuild.old
 	(
-		cd $SLACKSRC/n/cyrus-sasl
-		sed -i -e '/--enable-sql/d' cyrus-sasl.SlackBuild
-		sed -i -e '/--without-pgsql/d' cyrus-sasl.SlackBuild
-		sed -i -e '/--with-mysql/d' cyrus-sasl.SlackBuild
-		sed -i -e '/--with-sqlite3/d' cyrus-sasl.SlackBuild
+		cd "$SLACKSRC"/n/cyrus-sasl || exit 1
+		sed -i -e "/--enable-sql/d" cyrus-sasl.SlackBuild
+		sed -i -e "/--without-pgsql/d" cyrus-sasl.SlackBuild
+		sed -i -e "/--with-mysql/d" cyrus-sasl.SlackBuild
+		sed -i -e "/--with-sqlite3/d" cyrus-sasl.SlackBuild
 	)
 fi
 }
@@ -170,11 +171,11 @@ execute_doxygen_sed () {
 #******************************************************************
 # change "-Dbuild_wizard=yes" to "no" line in SlackBuild
 #******************************************************************
-if [ ! -f $SLACKSRC/d/doxygen/doxygen.SlackBuild.old ]; then
-	cp -v $SLACKSRC/d/doxygen/doxygen.SlackBuild $SLACKSRC/d/doxygen/doxygen.SlackBuild.old
+if [ ! -f "$SLACKSRC"/d/doxygen/doxygen.SlackBuild.old ]; then
+	cp -v "$SLACKSRC"/d/doxygen/doxygen.SlackBuild "$SLACKSRC"/d/doxygen/doxygen.SlackBuild.old
 	(
-		cd $SLACKSRC/d/doxygen
-		sed -i -e 's/Dbuild_wizard=yes/Dbuild_wizard=no/g' doxygen.SlackBuild
+		cd "$SLACKSRC"/d/doxygen || exit 1
+		sed -i -e "s/Dbuild_wizard=yes/Dbuild_wizard=no/g" doxygen.SlackBuild
 	)
 fi
 }
@@ -183,11 +184,11 @@ execute_dbus_sed () {
 #******************************************************************
 # delete "--enable-x11-autolaunch" line in SlackBuild
 #******************************************************************
-if [ ! -f $SLACKSRC/a/dbus/dbus.SlackBuild.old ]; then
-	cp -v $SLACKSRC/a/dbus/dbus.SlackBuild $SLACKSRC/a/dbus/dbus.SlackBuild.old
+if [ ! -f "$SLACKSRC"/a/dbus/dbus.SlackBuild.old ]; then
+	cp -v "$SLACKSRC"/a/dbus/dbus.SlackBuild "$SLACKSRC"/a/dbus/dbus.SlackBuild.old
 	(
-		cd $SLACKSRC/a/dbus
-		sed -i -e '/--enable-x11-autolaunch/d' dbus.SlackBuild
+		cd "$SLACKSRC"/a/dbus || exit 1
+		sed -i -e "/--enable-x11-autolaunch/d" dbus.SlackBuild
 	)
 fi
 }
@@ -196,11 +197,11 @@ execute_elogind_sed () {
 #******************************************************************
 # change all "true" options to "false" options in SlackBuild
 #******************************************************************
-if [ ! -f $SLACKSRC/a/elogind/elogind.SlackBuild.old ]; then
-	cp -v $SLACKSRC/a/elogind/elogind.SlackBuild $SLACKSRC/a/elogind/elogind.SlackBuild.old
+if [ ! -f "$SLACKSRC"/a/elogind/elogind.SlackBuild.old ]; then
+	cp -v "$SLACKSRC"/a/elogind/elogind.SlackBuild "$SLACKSRC"/a/elogind/elogind.SlackBuild.old
 	(
-		cd $SLACKSRC/a/elogind
-		sed -i -e 's/Dman=true/Dman=false/g' elogind.SlackBuild
+		cd "$SLACKSRC"/a/elogind || exit 1
+		sed -i -e "s/Dman=true/Dman=false/g" elogind.SlackBuild
 	)
 fi
 }
@@ -212,9 +213,9 @@ execute_findutils_sed () {
 if [ ! -f /slacksrc/a/findutils/findutils.SlackBuild.old ]; then
 	cp -v /slacksrc/a/findutils/findutils.SlackBuild /slacksrc/a/findutils/findutils.SlackBuild.old
 	(
-		cd /slacksrc/a/findutils
-		sed -i -e 's/zcat/# zcat/g' findutils.SlackBuild
-		sed -i -e 's/autoreconf/# autoreconf/g' findutils.SlackBuild
+		cd /slacksrc/a/findutils || exit 1
+		sed -i -e "s/zcat/# zcat/g" findutils.SlackBuild
+		sed -i -e "s/autoreconf/# autoreconf/g" findutils.SlackBuild
 	)
 fi
 }
@@ -223,12 +224,12 @@ execute_fontconfig_sed () {
 #******************************************************************
 # add "--disable-docs" to SlackBuild
 #******************************************************************
-if [ ! -f $SLACKSRC/x/fontconfig/fontconfig.SlackBuild.old ]; then
-	cp -v $SLACKSRC/x/fontconfig/fontconfig.SlackBuild $SLACKSRC/x/fontconfig/fontconfig.SlackBuild.old
+if [ ! -f "$SLACKSRC"/x/fontconfig/fontconfig.SlackBuild.old ]; then
+	cp -v "$SLACKSRC"/x/fontconfig/fontconfig.SlackBuild "$SLACKSRC"/x/fontconfig/fontconfig.SlackBuild.old
 	(
-		cd $SLACKSRC/x/fontconfig
-		sed -i -e '/--sysconfdir/p' fontconfig.SlackBuild
-		sed -i -e '0,/sysconfdir/! s/sysconfdir=\/\etc/disable-docs/' fontconfig.SlackBuild
+		cd "$SLACKSRC"/x/fontconfig || exit 1
+		sed -i -e "/--sysconfdir/p" fontconfig.SlackBuild
+		sed -i -e "0,/sysconfdir/! s/sysconfdir=\/\etc/disable-docs/" fontconfig.SlackBuild
 	)
 fi
 }
@@ -237,19 +238,21 @@ execute_freetype_sed () {
 #******************************************************************
 # remove "exit 1" code and add headers (ft2build.h and ftoption.h) to SlackBuild
 #******************************************************************
-if [ ! -f $SLACKSRC/l/freetype/freetype.SlackBuild.old ]; then
-	cp -v $SLACKSRC/l/freetype/freetype.SlackBuild $SLACKSRC/l/freetype/freetype.SlackBuild.old
+if [ ! -f "$SLACKSRC"/l/freetype/freetype.SlackBuild.old ]; then
+	cp -v "$SLACKSRC"/l/freetype/freetype.SlackBuild "$SLACKSRC"/l/freetype/freetype.SlackBuild.old
 	(
-		cd $SLACKSRC/l/freetype
+		cd "$SLACKSRC"/l/freetype || exit 1
+		# shellcheck disable=SC2016
 		sed -i -e 's/make $NUMJOBS || make || exit 1/make $NUMJOBS/' freetype.SlackBuild
+		# shellcheck disable=SC2016
 		sed -i -e 's/make install DESTDIR=$PKG || exit 1/make install DESTDIR=$PKG/' freetype.SlackBuild
-		sed -i -e '/make install DESTDIR=$PKG/p' freetype.SlackBuild
-		sed -i -e '0,/make install DESTDIR=$PKG/ s/make install DESTDIR=$PKG/make/' freetype.SlackBuild
-		sed -i -e '/make install DESTDIR=$PKG/a # install freetype headers to build harfbuzz/' freetype.SlackBuild
-		sed -i -e '/# install freetype headers/a mkdir -pv $PKG/usr/include/freetype2/' freetype.SlackBuild
-		sed -i -e '/mkdir -pv/a cp devel/ft2build.h $PKG/usr/include/freetype2/ft2build.h' freetype.SlackBuild
-		sed -i -e '/cp devel\/\ft2build.h/a cp devel/ftoption.h $PKG/usr/include/freetype2/ftoption.h' freetype.SlackBuild
-		sed -i -e '/ft2build.h/a cp devel/ftoption.h $PKG/usr/include/freetype2/ftoption.h' freetype.SlackBuild
+		sed -i -e "/make install DESTDIR=$PKG/p" freetype.SlackBuild
+		sed -i -e "0,/make install DESTDIR=$PKG/ s/make install DESTDIR=$PKG/make/" freetype.SlackBuild
+		sed -i -e "/make install DESTDIR=$PKG/a # install freetype headers to build harfbuzz/" freetype.SlackBuild
+		sed -i -e "/# install freetype headers/a mkdir -pv $PKG/usr/include/freetype2/" freetype.SlackBuild
+		sed -i -e "/mkdir -pv/a cp devel/ft2build.h $PKG/usr/include/freetype2/ft2build.h" freetype.SlackBuild
+		sed -i -e "/cp devel\/\ft2build.h/a cp devel/ftoption.h $PKG/usr/include/freetype2/ftoption.h" freetype.SlackBuild
+		sed -i -e "/ft2build.h/a cp devel/ftoption.h $PKG/usr/include/freetype2/ftoption.h" freetype.SlackBuild
 	)
 fi
 }
@@ -258,16 +261,16 @@ execute_gd_sed () {
 #******************************************************************
 # add "--without-fontconfig" and "--without-xpm" to SlackBuild
 #******************************************************************
-if [ ! -f $SLACKSRC/l/gd/gd.SlackBuild.old ]; then
-	cp -v $SLACKSRC/l/gd/gd.SlackBuild $SLACKSRC/l/gd/gd.SlackBuild.old
+if [ ! -f "$SLACKSRC"/l/gd/gd.SlackBuild.old ]; then
+	cp -v "$SLACKSRC"/l/gd/gd.SlackBuild "$SLACKSRC"/l/gd/gd.SlackBuild.old
 	(
-		cd $SLACKSRC/l/gd
-		sed -i -e '/--disable-static/p' gd.SlackBuild
-		sed -i -e '/--program-prefix=/p' gd.SlackBuild
-		sed -i -e '0,/disable-static/ s/disable-static/without-fontconfig/' gd.SlackBuild
-		sed -i -e '0,/program-prefix=/ s/program-prefix=/without-xpm/' gd.SlackBuild
-		sed -i -e 's/make $NUMJOBS || make || exit 1/make $NUMJOBS || make/' gd.SlackBuild
-		sed -i -e 's/make install DESTDIR=$PKG || exit 1/make install DESTDIR=$PKG/' gd.SlackBuild
+		cd "$SLACKSRC"/l/gd || exit 1
+		sed -i -e "/--disable-static/p" gd.SlackBuild
+		sed -i -e "/--program-prefix=/p" gd.SlackBuild
+		sed -i -e "0,/disable-static/ s/disable-static/without-fontconfig/" gd.SlackBuild
+		sed -i -e "0,/program-prefix=/ s/program-prefix=/without-xpm/" gd.SlackBuild
+		sed -i -e "s/make $NUMJOBS || make || exit 1/make $NUMJOBS || make/" gd.SlackBuild
+		sed -i -e "s/make install DESTDIR=$PKG || exit 1/make install DESTDIR=$PKG/" gd.SlackBuild
 	)
 fi
 }
@@ -276,11 +279,11 @@ execute_glib2_sed () {
 #******************************************************************
 # change all "true" options to "false" options in SlackBuild
 #******************************************************************
-if [ ! -f $SLACKSRC/l/glib2/glib2.SlackBuild.old ]; then
-	cp -v $SLACKSRC/l/glib2/glib2.SlackBuild $SLACKSRC/l/glib2/glib2.SlackBuild.old
+if [ ! -f "$SLACKSRC"/l/glib2/glib2.SlackBuild.old ]; then
+	cp -v "$SLACKSRC"/l/glib2/glib2.SlackBuild "$SLACKSRC"/l/glib2/glib2.SlackBuild.old
 	(
-		cd $SLACKSRC/l/glib2
-		sed -i -e 's/true/false/g' glib2.SlackBuild
+		cd "$SLACKSRC"/l/glib2 || exit 1
+		sed -i -e "s/true/false/g" glib2.SlackBuild
 	)
 fi
 }
@@ -289,11 +292,11 @@ execute_gobject_sed () {
 #******************************************************************
 # change all "true" options to "false" options in SlackBuild
 #******************************************************************
-if [ ! -f $SLACKSRC/l/gobject-introspection/gobject-introspection.SlackBuild.old ]; then
-	cp -v $SLACKSRC/l/gobject-introspection/gobject-introspection.SlackBuild $SLACKSRC/l/gobject-introspection/gobject-introspection.SlackBuild.old
+if [ ! -f "$SLACKSRC"/l/gobject-introspection/gobject-introspection.SlackBuild.old ]; then
+	cp -v "$SLACKSRC"/l/gobject-introspection/gobject-introspection.SlackBuild "$SLACKSRC"/l/gobject-introspection/gobject-introspection.SlackBuild.old
 	(
-		cd $SLACKSRC/l/gobject-introspection
-		sed -i -e 's/true/false/' gobject-introspection.SlackBuild
+		cd "$SLACKSRC"/l/gobject-introspection || exit 1
+		sed -i -e "s/true/false/" gobject-introspection.SlackBuild
 	)
 fi
 }
@@ -302,11 +305,11 @@ execute_gpgme_sed () {
 #******************************************************************
 # remove qt5 option fo the first build in SlackBuild
 #******************************************************************
-if [ ! -f $SLACKSRC/n/gpgme/gpgme.SlackBuild.old ]; then
-	cp -v $SLACKSRC/n/gpgme/gpgme.SlackBuild $SLACKSRC/n/gpgme/gpgme.SlackBuild.old
+if [ ! -f "$SLACKSRC"/n/gpgme/gpgme.SlackBuild.old ]; then
+	cp -v "$SLACKSRC"/n/gpgme/gpgme.SlackBuild "$SLACKSRC"/n/gpgme/gpgme.SlackBuild.old
 	(
-		cd $SLACKSRC/n/gpgme
-		sed -i -e 's/python qt/python/' gpgme.SlackBuild
+		cd "$SLACKSRC"/n/gpgme || exit 1
+		sed -i -e "s/python qt/python/" gpgme.SlackBuild
 	)
 fi
 }
@@ -315,12 +318,12 @@ execute_harfbuzz_sed () {
 #******************************************************************
 # remove "exit 1" code and add harfbuzz headers to SlackBuild
 #******************************************************************
-if [ ! -f $SLACKSRC/l/harfbuzz/harfbuzz.SlackBuild.old ]; then
-	cp -v $SLACKSRC/l/harfbuzz/harfbuzz.SlackBuild $SLACKSRC/l/harfbuzz/harfbuzz.SlackBuild.old
+if [ ! -f "$SLACKSRC"/l/harfbuzz/harfbuzz.SlackBuild.old ]; then
+	cp -v "$SLACKSRC"/l/harfbuzz/harfbuzz.SlackBuild "$SLACKSRC"/l/harfbuzz/harfbuzz.SlackBuild.old
 	(
-		cd $SLACKSRC/l/harfbuzz
-		sed -i -e 's/"${NINJA:=ninja}" $NUMJOBS || exit 1/"${NINJA:=ninja}" $NUMJOBS/' harfbuzz.SlackBuild
-		sed -i -e 's/DESTDIR=$PKG $NINJA install || exit 1/DESTDIR=$PKG $NINJA install || exit 1/' harfbuzz.SlackBuild
+		cd "$SLACKSRC"/l/harfbuzz || exit 1
+		sed -i -e "s/\"\${NINJA:=ninja}\"\ $NUMJOBS || exit 1/\"\${NINJA:=ninja}\"\ $NUMJOBS/" harfbuzz.SlackBuild
+		sed -i -e "s/DESTDIR=$PKG $NINJA install || exit 1/DESTDIR=$PKG $NINJA install || exit 1/" harfbuzz.SlackBuild
 	)
 fi
 }
@@ -329,11 +332,12 @@ execute_kmod_sed () {
 #******************************************************************
 # remove "exit 1" code in SlackBuild
 #******************************************************************
-if [ ! -f $SLACKSRC/a/kmod/kmod.SlackBuild.old ]; then
-	cp -v $SLACKSRC/a/kmod/kmod.SlackBuild $SLACKSRC/a/kmod/kmod.SlackBuild.old
+if [ ! -f "$SLACKSRC"/a/kmod/kmod.SlackBuild.old ]; then
+	cp -v "$SLACKSRC"/a/kmod/kmod.SlackBuild "$SLACKSRC"/a/kmod/kmod.SlackBuild.old
 	(
-		cd $SLACKSRC/a/kmod
-		sed -i -e 's/make || exit 1/make/' kmod.SlackBuild
+		cd "$SLACKSRC"/a/kmod || exit 1
+		sed -i -e "s/make || exit 1/make/" kmod.SlackBuild
+		# shellcheck disable=SC2016
 		sed -i -e 's/make install DESTDIR=$PKG || exit 1/make install DESTDIR=$PKG/' kmod.SlackBuild
 	)
 fi
@@ -343,13 +347,13 @@ execute_libusb_sed () {
 #******************************************************************
 # add "--disable-dev" to SlackBuild
 #******************************************************************
-if [ ! -f $SLACKSRC/l/libusb/libusb.SlackBuild.old ]; then
-	cp -v $SLACKSRC/l/libusb/libusb.SlackBuild \
-		$SLACKSRC/l/libusb/libusb.SlackBuild.old
+if [ ! -f "$SLACKSRC"/l/libusb/libusb.SlackBuild.old ]; then
+	cp -v "$SLACKSRC"/l/libusb/libusb.SlackBuild \
+		"$SLACKSRC"/l/libusb/libusb.SlackBuild.old
 	(
-		cd $SLACKSRC/l/libusb
-		sed -i -e '/--disable-static/p' libusb.SlackBuild
-		sed -i -e '0,/disable-static/ s/static/udev/' libusb.SlackBuild
+		cd "$SLACKSRC"/l/libusb || exit 1
+		sed -i -e "/--disable-static/p" libusb.SlackBuild
+		sed -i -e "0,/disable-static/ s/static/udev/" libusb.SlackBuild
 	)
 fi
 }
@@ -358,29 +362,13 @@ execute_libxkbcommon_sed () {
 #******************************************************************
 # add "-Denable-docs=false" to SlackBuild
 #******************************************************************
-if [ ! -f $SLACKSRC/l/libxkbcommon/libxkbcommon.SlackBuild.old ]; then
-	cp -v $SLACKSRC/l/libxkbcommon/libxkbcommon.SlackBuild \
-		$SLACKSRC/l/libxkbcommon/libxkbcommon.SlackBuild.old
+if [ ! -f "$SLACKSRC"/l/libxkbcommon/libxkbcommon.SlackBuild.old ]; then
+	cp -v "$SLACKSRC"/l/libxkbcommon/libxkbcommon.SlackBuild \
+		"$SLACKSRC"/l/libxkbcommon/libxkbcommon.SlackBuild.old
 	(
-		cd $SLACKSRC/l/libxkbcommon
-		sed -i -e '/-Denable-wayland=true/p' libxkbcommon.SlackBuild
-		sed -i -e 's/wayland=true/docs=false/' libxkbcommon.SlackBuild
-	)
-fi
-}
-
-execute_openldap_sed () {
-#******************************************************************
-# disable some options in SlackBuild
-#******************************************************************
-if [ ! -f $SLACKSRC/n/openldap/openldap.SlackBuild.old ]; then
-	cp -v $SLACKSRC/n/openldap/openldap.SlackBuild \
-		$SLACKSRC/n/openldap/openldap.SlackBuild.old
-	(
-		cd $SLACKSRC/n/openldap
-		sed -i -e 's/--enable-wrappers/--disable-wrappers/' openldap.SlackBuild
-		sed -i -e 's/--enable-backends=mod/--enable-backends=no/' openldap.SlackBuild
-		sed -i -e 's/--enable-perl=yes/--enable-perl=no/' openldap.SlackBuild
+		cd "$SLACKSRC"/l/libxkbcommon || exit 1
+		sed -i -e "/-Denable-wayland=true/p" libxkbcommon.SlackBuild
+		sed -i -e "s/wayland=true/docs=false/" libxkbcommon.SlackBuild
 	)
 fi
 }
@@ -389,18 +377,35 @@ execute_llvm_sed () {
 #******************************************************************
 # change "clang++" to "g++" and "clang" to "gcc" in SlackBuild
 #******************************************************************
-if [ ! -f $SLACKSRC/d/llvm/llvm.SlackBuild.old ]; then
-	cp -v $SLACKSRC/d/llvm/llvm.SlackBuild $SLACKSRC/d/llvm/llvm.SlackBuild.old
+if [ ! -f "$SLACKSRC"/d/llvm/llvm.SlackBuild.old ]; then
+	cp -v "$SLACKSRC"/d/llvm/llvm.SlackBuild "$SLACKSRC"/d/llvm/llvm.SlackBuild.old
 	(
-		cd $SLACKSRC/d/llvm
+		cd "$SLACKSRC"/d/llvm || exit 1
+		# shellcheck disable=SC2016
 		sed -i -e 's/"clang++"/"g++"/' llvm.SlackBuild
 		sed -i -e 's/"clang"/"gcc"/' llvm.SlackBuild
-		sed -i -e 's/-GNinja/-Wno-dev -GNinja/' llvm.SlackBuild
-		sed -i -e 's/-DBUILD_SHARED_LIBS=ON/-DLLVM_BUILD_LLVM_DYLIB=ON/' llvm.SlackBuild
-		sed -i -e 's/-DLLVM_USE_LINKER=gold/-DLLVM_LINK_LLVM_DYLIB=ON/' llvm.SlackBuild
-		sed -i -e '/-DLLVM_ENABLE_RTTI=ON/d' llvm.SlackBuild
-		sed -i -e '/-DLLVM_ENABLE_ASSERTIONS=OFF/d' llvm.SlackBuild
-		sed -i -e '/-DLLVM_INSTALL_UTILS=ON/d' llvm.SlackBuild
+		sed -i -e "s/-GNinja/-Wno-dev -GNinja/" llvm.SlackBuild
+		sed -i -e "s/-DBUILD_SHARED_LIBS=ON/-DLLVM_BUILD_LLVM_DYLIB=ON/" llvm.SlackBuild
+		sed -i -e "s/-DLLVM_USE_LINKER=gold/-DLLVM_LINK_LLVM_DYLIB=ON/" llvm.SlackBuild
+		sed -i -e "/-DLLVM_ENABLE_RTTI=ON/d" llvm.SlackBuild
+		sed -i -e "/-DLLVM_ENABLE_ASSERTIONS=OFF/d" llvm.SlackBuild
+		sed -i -e "/-DLLVM_INSTALL_UTILS=ON/d" llvm.SlackBuild
+	)
+fi
+}
+
+execute_openldap_sed () {
+#******************************************************************
+# disable some options in SlackBuild
+#******************************************************************
+if [ ! -f "$SLACKSRC"/n/openldap/openldap.SlackBuild.old ]; then
+	cp -v "$SLACKSRC"/n/openldap/openldap.SlackBuild \
+		"$SLACKSRC"/n/openldap/openldap.SlackBuild.old
+	(
+		cd "$SLACKSRC"/n/openldap || exit 1
+		sed -i -e "s/--enable-wrappers/--disable-wrappers/" openldap.SlackBuild
+		sed -i -e "s/--enable-backends=mod/--enable-backends=no/" openldap.SlackBuild
+		sed -i -e "s/--enable-perl=yes/--enable-perl=no/" openldap.SlackBuild
 	)
 fi
 }
@@ -409,11 +414,11 @@ execute_pam_sed () {
 #******************************************************************
 # delete lines that doesn't allow build in build1_.list
 #******************************************************************
-if [ ! -f $SLACKSRC/a/pam/pam.SlackBuild.old ]; then
-	cp -v $SLACKSRC/a/pam/pam.SlackBuild $SLACKSRC/a/pam/pam.SlackBuild.old
+if [ ! -f "$SLACKSRC"/a/pam/pam.SlackBuild.old ]; then
+	cp -v "$SLACKSRC"/a/pam/pam.SlackBuild "$SLACKSRC"/a/pam/pam.SlackBuild.old
 	(
-		cd $SLACKSRC/a/pam
-		sed -i -e '/xmlto man/d' pam.SlackBuild
+		cd "$SLACKSRC"/a/pam || exit 1
+		sed -i -e "/xmlto man/d" pam.SlackBuild
 	)
 fi
 }
@@ -422,11 +427,11 @@ execute_perl_sed () {
 #******************************************************************
 # delete several lines in SlackBuild
 #******************************************************************
-if [ ! -f $SLACKSRC/d/perl/perl.SlackBuild.old ]; then
-	cp -v $SLACKSRC/d/perl/perl.SlackBuild $SLACKSRC/d/perl/perl.SlackBuild.old
+if [ ! -f "$SLACKSRC"/d/perl/perl.SlackBuild.old ]; then
+	cp -v "$SLACKSRC"/d/perl/perl.SlackBuild "$SLACKSRC"/d/perl/perl.SlackBuild.old
 	(
-		cd $SLACKSRC/d/perl
-		sed -i -e '227,240d' perl.SlackBuild
+		cd "$SLACKSRC"/d/perl || exit 1
+		sed -i -e "227,240d" perl.SlackBuild
 	)
 fi
 }
@@ -435,13 +440,13 @@ execute_pkg_config_sed () {
 #******************************************************************
 # add "--with-internel-glib" to SlackBuild
 #******************************************************************
-if [ ! -f $SLACKSRC/d/pkg-config/pkg-config.SlackBuild.old ]; then
-	cp -v $SLACKSRC/d/pkg-config/pkg-config.SlackBuild \
-		$SLACKSRC/d/pkg-config/pkg-config.SlackBuild.old
+if [ ! -f "$SLACKSRC"/d/pkg-config/pkg-config.SlackBuild.old ]; then
+	cp -v "$SLACKSRC"/d/pkg-config/pkg-config.SlackBuild \
+		"$SLACKSRC"/d/pkg-config/pkg-config.SlackBuild.old
 	(
-		cd $SLACKSRC/d/pkg-config
-		sed -i -e '/--prefix=\/\usr/p' pkg-config.SlackBuild
-		sed -i -e '0,/--prefix=\/\usr/ s/--prefix=\/\usr/--with-internal-glib/' pkg-config.SlackBuild
+		cd "$SLACKSRC"/d/pkg-config || exit 1
+		sed -i -e "/--prefix=\/\usr/p" pkg-config.SlackBuild
+		sed -i -e "0,/--prefix=\/\usr/ s/--prefix=\/\usr/--with-internal-glib/" pkg-config.SlackBuild
 	)
 fi
 }
@@ -451,13 +456,13 @@ execute_readline_sed () {
 # disable shared SHLIBS code in SlackBuild
 # delete examples/rlfe lines in SlackBuild
 #******************************************************************
-if [ ! -f $SLACKSRC/l/readline/readline.SlackBuild.old ]; then
-	cp -v $SLACKSRC/l/readline/readline.SlackBuild $SLACKSRC/l/readline/readline.SlackBuild.old
+if [ ! -f "$SLACKSRC"/l/readline/readline.SlackBuild.old ]; then
+	cp -v "$SLACKSRC"/l/readline/readline.SlackBuild "$SLACKSRC"/l/readline/readline.SlackBuild.old
 	(
-		cd $SLACKSRC/l/readline
-		sed -i -e '/make $NUMJOBS static shared SHLIB_LIBS=-ltinfo/d' readline.SlackBuild
-		sed -i -e '/# Link with libtinfo:/a make $NUMJOBS static' readline.SlackBuild
-		sed -i -e '/# build rlfe/,+16d' readline.SlackBuild
+		cd "$SLACKSRC"/l/readline || exit 1
+		sed -i -e "/make $NUMJOBS static shared SHLIB_LIBS=-ltinfo/d" readline.SlackBuild
+		sed -i -e "/# Link with libtinfo:/a make $NUMJOBS static" readline.SlackBuild
+		sed -i -e "/# build rlfe/,+16d" readline.SlackBuild
 	)
 fi
 }
@@ -467,18 +472,18 @@ execute_rsync_sed () {
 # disable shared SHLIBS code in SlackBuild
 # delete examples/rlfe lines in SlackBuild
 #******************************************************************
-if [ ! -f $SLACKSRC/n/rsync/rsync.SlackBuild.old ]; then
-	cp -v $SLACKSRC/n/rsync/rsync.SlackBuild $SLACKSRC/n/rsync/rsync.SlackBuild.old
+if [ ! -f "$SLACKSRC"/n/rsync/rsync.SlackBuild.old ]; then
+	cp -v "$SLACKSRC"/n/rsync/rsync.SlackBuild "$SLACKSRC"/n/rsync/rsync.SlackBuild.old
 	(
-		cd $SLACKSRC/n/rsync
-		sed -i -e '/--prefix=\/\usr/p' rsync.SlackBuild
-		sed -i -e '0,/--prefix=\/\usr/ s/--prefix=\/\usr/--disable-lz4/' rsync.SlackBuild
-		sed -i -e '/--prefix=\/\usr/p' rsync.SlackBuild
-		sed -i -e '0,/--prefix=\/\usr/ s/--prefix=\/\usr/--disable-zstd/' rsync.SlackBuild
-		sed -i -e '/--prefix=\/\usr/p' rsync.SlackBuild
-		sed -i -e '0,/--prefix=\/\usr/ s/--prefix=\/\usr/--disable-xxhash/' rsync.SlackBuild
-		sed -i -e '/--prefix=\/\usr/p' rsync.SlackBuild
-		sed -i -e '0,/--prefix=\/\usr/ s/--prefix=\/\usr/--disable-openssl/' rsync.SlackBuild
+		cd "$SLACKSRC"/n/rsync || exit 1
+		sed -i -e "/--prefix=\/\usr/p" rsync.SlackBuild
+		sed -i -e "0,/--prefix=\/\usr/ s/--prefix=\/\usr/--disable-lz4/" rsync.SlackBuild
+		sed -i -e "/--prefix=\/\usr/p" rsync.SlackBuild
+		sed -i -e "0,/--prefix=\/\usr/ s/--prefix=\/\usr/--disable-zstd/" rsync.SlackBuild
+		sed -i -e "/--prefix=\/\usr/p" rsync.SlackBuild
+		sed -i -e "0,/--prefix=\/\usr/ s/--prefix=\/\usr/--disable-xxhash/" rsync.SlackBuild
+		sed -i -e "/--prefix=\/\usr/p" rsync.SlackBuild
+		sed -i -e "0,/--prefix=\/\usr/ s/--prefix=\/\usr/--disable-openssl/" rsync.SlackBuild
 	)
 fi
 }
@@ -487,12 +492,12 @@ execute_subversion_sed () {
 #******************************************************************
 # delete "--with-kwallet" line in SlackBuild
 #******************************************************************
-if [ ! -f $SLACKSRC/d/subversion/subversion.SlackBuild.old ]; then
-	cp -v $SLACKSRC/d/subversion/subversion.SlackBuild \
-		$SLACKSRC/d/subversion/subversion.SlackBuild.old
+if [ ! -f "$SLACKSRC"/d/subversion/subversion.SlackBuild.old ]; then
+	cp -v "$SLACKSRC"/d/subversion/subversion.SlackBuild \
+		"$SLACKSRC"/d/subversion/subversion.SlackBuild.old
 	(
-		cd $SLACKSRC/d/subversion
-		sed -i -e '/--with-kwallet/d' subversion.SlackBuild
+		cd "$SLACKSRC"/d/subversion || exit 1
+		sed -i -e "/--with-kwallet/d" subversion.SlackBuild
 	)
 fi
 }
@@ -502,21 +507,21 @@ execute_texlive_sed () {
 # change some options from "--with-xxx" in "--without-xxx",
 # and add "--disable-web2c" and "--disable-xetex" in SlackBuild
 #******************************************************************
-if [ ! -f $SLACKSRC/t/texlive/texlive.SlackBuild.old ]; then
-	cp -v $SLACKSRC/t/texlive/texlive.SlackBuild $SLACKSRC/t/texlive/texlive.SlackBuild.old
+if [ ! -f "$SLACKSRC"/t/texlive/texlive.SlackBuild.old ]; then
+	cp -v "$SLACKSRC"/t/texlive/texlive.SlackBuild "$SLACKSRC"/t/texlive/texlive.SlackBuild.old
 	(
-		cd $SLACKSRC/t/texlive
-		sed -i -e 's/with-x/without-x/' texlive.SlackBuild
-		sed -i -e 's/enable-xindy/disable-xindy/' texlive.SlackBuild
-		sed -i -e 's/with-system-pixman/without-system-pixman/' texlive.SlackBuild
-		sed -i -e 's/with-system-cairo/without-system-cairo/' texlive.SlackBuild
-		sed -i -e 's/with-system-gmp/without-system-gmp/' texlive.SlackBuild
-		sed -i -e 's/with-system-mpfr/without-system-mpfr/' texlive.SlackBuild
-		sed -i -e 's/with-system-fontconfig/without-system-fontconfig/' texlive.SlackBuild
-		sed -i -e '/disable-xindy-rules/p' texlive.SlackBuild
-		sed -i -e '0,/disable-xindy-rules/ s/disable-xindy-rules/disable-web2c/' texlive.SlackBuild
-		sed -i -e '/disable-web2c/p' texlive.SlackBuild
-		sed -i -e '0,/disable-web2c/ s/disable-web2c/disable-xetex/' texlive.SlackBuild
+		cd "$SLACKSRC"/t/texlive || exit 1
+		sed -i -e "s/with-x/without-x/" texlive.SlackBuild
+		sed -i -e "s/enable-xindy/disable-xindy/" texlive.SlackBuild
+		sed -i -e "s/with-system-pixman/without-system-pixman/" texlive.SlackBuild
+		sed -i -e "s/with-system-cairo/without-system-cairo/" texlive.SlackBuild
+		sed -i -e "s/with-system-gmp/without-system-gmp/" texlive.SlackBuild
+		sed -i -e "s/with-system-mpfr/without-system-mpfr/" texlive.SlackBuild
+		sed -i -e "s/with-system-fontconfig/without-system-fontconfig/" texlive.SlackBuild
+		sed -i -e "/disable-xindy-rules/p" texlive.SlackBuild
+		sed -i -e "0,/disable-xindy-rules/ s/disable-xindy-rules/disable-web2c/" texlive.SlackBuild
+		sed -i -e "/disable-web2c/p" texlive.SlackBuild
+		sed -i -e "0,/disable-web2c/ s/disable-web2c/disable-xetex/" texlive.SlackBuild
 	)
 fi
 }
@@ -525,11 +530,11 @@ execute_zstd_sed () {
 #******************************************************************
 # delete "zcat" patch line in SlackBuild
 #******************************************************************
-if [ ! -f $SLACKSRC/l/zstd/zstd.SlackBuild.old ]; then
-	cp -v $SLACKSRC/l/zstd/zstd.SlackBuild $SLACKSRC/l/zstd/zstd.SlackBuild.old
+if [ ! -f "$SLACKSRC"/l/zstd/zstd.SlackBuild.old ]; then
+	cp -v "$SLACKSRC"/l/zstd/zstd.SlackBuild "$SLACKSRC"/l/zstd/zstd.SlackBuild.old
 	(
-		cd $SLACKSRC/l/zstd
-		sed -i -e '/zcat/d' zstd.SlackBuild
+		cd "$SLACKSRC"/l/zstd || exit 1
+		sed -i -e "/zcat/d" zstd.SlackBuild
 	)
 fi
 }
@@ -542,9 +547,10 @@ kernel_source_build_c () {
 #********************************************************
 # remove everything related to building the kernel image
 #********************************************************
-cd /slacksrc/k
+cd /slacksrc/k || exit 1
+chmod +x kernel-source.SlackBuild
 cp -v kernel-source.SlackBuild kernel-source.SlackBuild.old
-sed -i -e '52,89d;109,111d;138,163d' kernel-source.SlackBuild && ./kernel-source.SlackBuild 
+sed -i -e "52,89d;109,111d;138,163d" kernel-source.SlackBuild && ./kernel-source.SlackBuild 
 upgradepkg --install-new --reinstall /tmp/kernel-source*.txz && mv -v /tmp/kernel-source*.txz /sfspacks/k
 rm -rf /tmp/package-kernel-source/
 mv kernel-source.SlackBuild.old kernel-source.SlackBuild
@@ -554,9 +560,10 @@ kernel_headers_build_c () {
 #********************************************************
 # remove everything related to .config and PRINT_PACKAGE_NAME
 #********************************************************
-cd /slacksrc/k
+cd /slacksrc/k || exit 1
+chmod +x kernel-headers.SlackBuild
 cp -v kernel-headers.SlackBuild kernel-headers.SlackBuild.old
-sed -i -e '45,47d;57,64d' kernel-headers.SlackBuild && ./kernel-headers.SlackBuild 
+sed -i -e "45,47d;57,64d" kernel-headers.SlackBuild && ./kernel-headers.SlackBuild 
 upgradepkg --install-new --reinstall /tmp/kernel-headers*.txz && mv -v /tmp/kernel-headers*.txz /sfspacks/d
 rm -rf /tmp/package-kernel-headers/
 mv kernel-headers.SlackBuild.old kernel-headers.SlackBuild
@@ -566,34 +573,43 @@ kernel_build_all () {
 #***********************************************************
 # build kernel and modules before packaging with SlackBuild
 #***********************************************************
-cd /slacksrc/k
+cd /slacksrc/k || exit 1
 
-chmod +x *.sh *.SlackBuild && ./build-all-kernels.sh || exit 1
+chmod +x build-all-kernels.sh 
+chmod +x kernel-*.SlackBuild
+if ! ./build-all-kernels.sh;
+then 
+	exit 1
+fi
 
 case $(uname -m) in
 	x86_64 )
-		cd /tmp/output-x86_64*
+		cd /tmp/output-x86_64* || exit 1
 		mv kernel-source*.t?z /sfspacks/k
 		mv kernel-headers*.t?z /sfspacks/d
-		mv kernel-*.t?z /sfspacks/a
-		[ $? != 0 ] && exit 1 ;;
+		if ! mv kernel-*.t?z /sfspacks/a ;
+		then 
+			exit 1
+		fi ;;
 	* )
-		cd /tmp/output-ia32*
+		cd /tmp/output-ia32* || exit 1
 		mv kernel-source*.t?z /sfspacks/k
 		mv kernel-headers*.t?z /sfspacks/d
-		mv kernel-*.t?z /sfspacks/a
-		[ $? != 0 ] && exit 1 ;;
+		if ! mv kernel-*.t?z /sfspacks/a ;
+		then 
+			exit 1
+		fi ;;
 esac
-cd /tmp
-rm -rf *
+cd /tmp || exit 1
+rm -rf ./*
 }
 
 build () {
 #***********************************************************
 # main build procedure for slackware package
 #***********************************************************
-which upgradepkg 2>&1 >/dev/null
-if [ $? == 0 ]; then
+if { command -v upgradepkg > /dev/null; } 2>&1; 
+then
 	INSTALLPRG="upgradepkg --install-new --reinstall"
 else
 	INSTALLPRG=installpkg
@@ -612,69 +628,121 @@ case $PACKNAME in
 #**************************
 
 	aspell-word-lists )
-		cd /slacksrc/extra/aspell-word-lists && chmod +x aspell-dict.SlackBuild && ./aspell-dict.SlackBuild
-		[ $? != 0 ] && exit 1 ;;
+		cd /slacksrc/extra/aspell-word-lists || exit 1
+		chmod +x aspell-dict.SlackBuild
+		if ! ./aspell-dict.SlackBuild;
+		then
+			exit 1
+		fi ;;
 
 	gettext-tools )
 		# two packages in gettext: gettext and gettext-tools
 		DIRNAME=gettext
-		cd /slacksrc/$SRCDIR/$DIRNAME && chmod +x $PACKNAME.SlackBuild && ./$PACKNAME.SlackBuild
-		[ $? != 0 ] && exit 1 ;;
+		cd /slacksrc/"$SRCDIR"/"$DIRNAME" || exit 1
+		chmod +x "$PACKNAME".SlackBuild
+		if ! ./"$PACKNAME".SlackBuild;
+		then
+			exit 1
+		fi ;;
 
 	installer )
 		case "$(uname -m)" in
 			i?86)
-			  mkdir -pv /root/slackware-current
-			  [ $? != 0 ] && exit 1 ;;
+			  mkdir -pv /root/slackware-current ;;
 			x86_64)
-			  mkdir -pv /root/slackware64-current}
-			  [ $? != 0 ] && exit 1 ;;
+			  mkdir -pv /root/slackware64-current ;;
 		esac
-		cd /slacksrc/installer && chmod +x installer.SlackBuild && ./installer.SlackBuild
-		[ $? != 0 ] && exit 1 ;;
+		cd /slacksrc/installer || exit 1
+		chmod +x installer.SlackBuild
+		if ! ./installer.SlackBuild;
+		then
+			exit 1
+		fi ;;
 
 	java )
-		cd /slacksrc/extra/java && chmod +x java.SlackBuild && ./java.SlackBuild
-		[ $? != 0 ] && exit 1 ;;
+		cd /slacksrc/extra/"$PACKNAME" || exit 1
+		chmod +x "$PACKNAME".SlackBuild
+		if ! ./"$PACKNAME".SlackBuild
+		then
+			exit 1
+		fi ;;
 		
 	linuxdoc-tools )
-		cd /slacksrc/$SRCDIR/$PACKNAME && chmod +x trackbuild.linuxdoc-tools && chmod +x linuxdoc-tools.build && chmod +x $PACKNAME.SlackBuild && ./$PACKNAME.SlackBuild
-		[ $? != 0 ] && exit 1 ;;
+		cd /slacksrc/"$SRCDIR"/"$PACKNAME" || exit 1
+		chmod +x trackbuild.linuxdoc-tools && chmod +x linuxdoc-tools.build && chmod +x "$PACKNAME".SlackBuild
+		if ! ./"$PACKNAME".SlackBuild;
+		then
+			exit 1
+		fi ;;
 
 	mozilla-firefox )
 		# need sh shell to be built
-		cd /slacksrc/$SRCDIR/$PACKNAME && chmod +x *.SlackBuild && SHELL=/bin/sh ./$PACKNAME.SlackBuild
-		[ $? != 0 ] && exit 1 ;;
+		cd /slacksrc/"$SRCDIR"/"$PACKNAME" || exit 1
+		chmod +x build-deps/autoconf/autoconf.build
+		chmod +x build-deps/cbindgen/cbindgen.build
+		chmod +x build-deps/nodejs/nodejs.build
+		chmod +x ./*.SlackBuild 
+		if ! ( SHELL=/bin/sh ./"$PACKNAME".SlackBuild );
+		then
+			exit 1
+		fi ;;
 
 	mozjs78 )
 		# need sh shell to be built
-		cd /slacksrc/$SRCDIR/$PACKNAME && chmod +x *.SlackBuild && SHELL=/bin/sh ./$PACKNAME.SlackBuild
-		[ $? != 0 ] && exit 1 ;;
+		cd /slacksrc/"$SRCDIR"/"$PACKNAME" || exit 1
+		chmod +x autoconf/autoconf.build
+		chmod +x ./*.SlackBuild
+		if ! ( SHELL=/bin/sh ./"$PACKNAME".SlackBuild );
+		then
+			exit 1
+		fi ;;
 
 	mozilla-thunderbird )
 		# need sh shell to be built
-		cd /slacksrc/$SRCDIR/$PACKNAME && chmod +x *.SlackBuild && SHELL=/bin/sh ./$PACKNAME.SlackBuild
-		[ $? != 0 ] && exit 1 ;;
+		cd /slacksrc/"$SRCDIR"/"$PACKNAME" || exit 1
+		chmod +x build-deps/autoconf/autoconf.build
+		chmod +x build-deps/cbindgen/cbindgen.build
+		chmod +x build-deps/nodejs/nodejs.build
+		chmod +x ./*.SlackBuild
+		if ! ( SHELL=/bin/sh ./"$PACKNAME".SlackBuild );
+		then
+			exit 1
+		fi ;;
 
 	seamonkey )
 		# need sh shell to be built
-		cd /slacksrc/$SRCDIR/$PACKNAME && chmod +x *.SlackBuild && SHELL=/bin/sh ./$PACKNAME.SlackBuild
-		[ $? != 0 ] && exit 1 ;;
+		cd /slacksrc/"$SRCDIR"/"$PACKNAME" || exit 1
+		chmod +x autoconf/autoconf.build 
+		chmod +x ./*.SlackBuild
+		if ! ( SHELL=/bin/sh ./"$PACKNAME".SlackBuild );
+		then
+			exit 1
+		fi ;;
 
 	snownews )
-		cd /slacksrc/$SRCDIR/$PACKNAME && chmod +x *.SlackBuild && gzip -d *.diff.gz && sed -i 's/root//' *.diff && gzip -9 *.diff && ./$PACKNAME.SlackBuild
-		[ $? != 0 ] && exit 1 ;;
+		cd /slacksrc/"$SRCDIR"/"$PACKNAME" || exit 1
+		chmod +x ./*.SlackBuild && gzip -d ./*.diff.gz && sed -i 's/root//' ./*.diff && gzip -9 ./*.diff
+		if ! ./"$PACKNAME".SlackBuild
+		then
+			exit 1
+		fi ;;
 	
 	vim )
-		cd /slacksrc/$SRCDIR/$PACKNAME
-		chmod +x $PACKNAME.SlackBuild && ./$PACKNAME.SlackBuild
-		chmod +x vim-gvim.SlackBuild && ./vim-gvim.SlackBuild
-		[ $? != 0 ] && exit 1 ;;
+		cd /slacksrc/"$SRCDIR"/"$PACKNAME" || exit 1
+		chmod +x "$PACKNAME".SlackBuild && chmod +x vim-gvim.SlackBuild
+		if ! ( ./"$PACKNAME".SlackBuild && ./vim-gvim.SlackBuild )
+		then
+			exit 1
+		fi ;;
 
 	* )
 		# every other package treatment
-		cd /slacksrc/$SRCDIR/$PACKNAME && chmod +x $PACKNAME.SlackBuild && ./$PACKNAME.SlackBuild
-		[ $? != 0 ] && exit 1 ;;
+		cd /slacksrc/"$SRCDIR"/"$PACKNAME" || exit 1
+		chmod +x "$PACKNAME".SlackBuild
+		if ! ./"$PACKNAME".SlackBuild
+		then
+			exit 1
+		fi ;;
 esac
 
 case $PACKNAME in
@@ -685,26 +753,34 @@ case $PACKNAME in
 	aaa_terminfo )
 		# remove extra ncurses packages
 		rm /tmp/ncurses*.t?z
-		$INSTALLPRG /tmp/$PACKNAME*.t?z
-		[ $? != 0 ] && exit 1 ;;
+		if ! $INSTALLPRG /tmp/"$PACKNAME"*.t?z;
+		then
+			exit 1
+		fi ;;
 
 	alpine )
 		# package name is not alpine but imapd
 		$INSTALLPRG /tmp/imapd*.txz
-		$INSTALLPRG /tmp/alpine*.txz
-		[ $? != 0 ] && exit 1 ;;
+		if ! $INSTALLPRG /tmp/alpine*.txz;
+		then
+			exit 1
+		fi ;;
 
 	aspell-word-lists )
 		# install aspell-en
-		$INSTALLPRG /tmp/aspell-en*.txz
-		[ $? != 0 ] && exit 1 ;;
+		if ! $INSTALLPRG /tmp/aspell-en*.txz;
+		then
+			exit 1
+		fi ;;
 
 	etc )
 		# remove mini /etc/group and etc/passwd
 		rm /etc/group && rm /etc/passwd
-		cd /tmp
-		$INSTALLPRG /tmp/$PACKNAME*.t?z
-		[ $? != 0 ] && exit 1 ;;
+		cd /tmp || exit 1
+		if ! $INSTALLPRG /tmp/"$PACKNAME"*.t?z
+		then
+			exit 1
+		fi ;;
 
 #	glibc )
 #		# install glibc in the right order in case upgrading
@@ -716,32 +792,39 @@ case $PACKNAME in
 
 	installer )
 		# doesn't neeed any install
-		echo
-		[ $? != 0 ] && exit 1 ;;
+		echo ;;
 
 	java )
 		# install java
-		$INSTALLPRG /tmp/j*.txz
-		[ $? != 0 ] && exit 1 ;;
+		if ! $INSTALLPRG /tmp/j*.txz;
+		then
+			exit 1
+		fi ;;
 
 	php )
 		# remove extra alpine and imapd packages
 		rm /tmp/imapd*.t?z
 		rm /tmp/alpine*.t?z
-		$INSTALLPRG /tmp/$PACKNAME*.t?z
-		[ $? != 0 ] && exit 1 ;;
+		if ! $INSTALLPRG /tmp/"$PACKNAME"*.t?z;
+		then
+			exit 1
+		fi ;;
 
 	vim )
 		# install both vim and vim-gvim packages
-		$INSTALLPRG /tmp/vim-gvim*.t?z
-		$INSTALLPRG /tmp/$PACKNAME-*.t?z
-		[ $? != 0 ] && exit 1 ;;
+#		$INSTALLPRG /tmp/vim-gvim*.t?z
+		if ! ( $INSTALLPRG /tmp/"$PACKNAME"-*.t?z )
+		then
+			exit 1
+		fi ;;
 
 	* )
 		# every other package is built in /tmp
-		export TERM=xterm && cd /tmp
-		$INSTALLPRG /tmp/$PACKNAME*.t?z
-		[ $? != 0 ] && exit 1 ;;
+		export TERM=xterm && cd /tmp || exit 1
+		if ! $INSTALLPRG /tmp/"$PACKNAME"*.t?z;
+		then
+			exit 1
+		fi ;;
 
 esac
 
@@ -752,149 +835,153 @@ case $PACKNAME in
 
 	alpine )
 		# package name is not 'alpine' but 'imapd'
-		mv /tmp/alpine*.txz /sfspacks/$SRCDIR
-		cd /sources ;;
+		if ! ( mv -v /tmp/alpine*.txz /sfspacks/"$SRCDIR"); then
+			exit 1
+		fi
+		cd /sources || exit 1 ;;
 
 	aspell-word-lists )
 		# don't forget to move aspell-en in l/
-		mv /tmp/aspell-en*.txz /sfspacks/l
+		mv -v /tmp/aspell-en*.txz /sfspacks/l
 		# don't forget to move others aspell in extra/
 		mkdir -pv /sfspacks/extra/aspell-words-list
-		mv /tmp/aspell*.txz /sfspacks/extra/aspell-words-list
-		cd /sources ;;
+		if ! ( mv /tmp/aspell*.txz /sfspacks/extra/aspell-words-list); then
+			exit 1
+		fi
+		cd /sources || exit 1 ;;
 
 	gettext-tools )
 		# don't forget to mv gettext-tools in d/
-		cd /tmp
-		mv /tmp/$PACKNAME*.t?z /sfspacks/d/
-		cd /sources ;;
+		if ! ( mv -v /tmp/"$PACKNAME"*.t?z /sfspacks/d/ ); then
+			exit 1
+		fi
+		cd /sources || exit 1 ;;
 
 	installer )
 		# only move the package to installer directory
-		mv /tmp/installer*.txz /sfspacks/installer
-		cd /sources ;;
+		if ! ( mv -v /tmp/installer*.txz /sfspacks/installer); then
+			exit 1
+		fi
+		cd /sources || exit 1 ;;
 
 	java )
 		# don't forget to mv java in extra/
-		cd /tmp
-		mv /tmp/j*.t?z /sfspacks/extra/
-		cd /sources ;;
+		if ! ( mv -v /tmp/j*.t?z /sfspacks/extra/ ); then
+			exit 1
+		fi
+		cd /sources || exit 1 ;;
 
 	glibc )
-		cd /tmp
 		# don't forget to mv glibc-solibs in a/
-		mv aaa_glibc-solibs*.t?z /sfspacks/a/
-		mv glibc*.t?z /sfspacks/$SRCDIR
+		mv -v /tmp/aaa_glibc-solibs*.t?z /sfspacks/a/
+		if ! ( mv -v /tmp/glibc*.t?z /sfspacks/"$SRCDIR"); then
+			exit 1
+		fi
 		rm -rf /tmp/*
-		cd /sources ;;
+		cd /sources || exit 1 ;;
 
 	openssl )
 		# don't forget to mv opennsl-solibs in a/
-		cd /tmp
-		mv /tmp/$PACKNAME-solibs*.t?z /sfspacks/a/
-		mv -v /tmp/$PACKNAME*.t?z /sfspacks/$SRCDIR
-		cd /sources ;;
+		mv -v /tmp/"$PACKNAME"-solibs*.t?z /sfspacks/a/
+		if ! ( mv -v /tmp/"$PACKNAME"*.t?z /sfspacks/"$SRCDIR" ); then
+			exit 1
+		fi
+		cd /sources || exit 1 ;;
 
 	openssl10 )
 		# don't forget to mv opennsl-solibs in a/
-		cd /tmp
-		mv /tmp/$PACKNAME-solibs*.t?z /sfspacks/a/
-		mv -v /tmp/$PACKNAME*.t?z /sfspacks/$SRCDIR
-		cd /sources ;;
+		if ! ( mv /tmp/"$PACKNAME"-solibs*.t?z /sfspacks/a/ ); then
+		mv -v /tmp/"$PACKNAME"*.t?z /sfspacks/"$SRCDIR"
+			exit 1
+		fi
+		cd /sources || exit 1 ;;
 
 	vim )
 		# don't forget to mv vim-gvim in xap/ and vim in ap/
-		mv -v /tmp/vim-gvim*.txz /sfspacks/xap
-		mv -v /tmp/$PACKNAME-*.txz /sfspacks/ap
-		[ $? != 0 ] && exit 1 ;;
+		if ! ( mv -v /tmp/vim-gvim*.txz /sfspacks/xap && mv -v /tmp/"$PACKNAME"-*.txz /sfspacks/ap ); then
+			exit 1
+		fi
+#		[ $? != 0 ] && exit 1 ;;
+		cd /sources || exit 1 ;;
 
 	xz )
 		# package built in /tmp 
-		cd /tmp
-		mv xz*.txz /sfspacks/$SRCDIR
-		cd /sources ;;
+		if ! ( mv /tmp/xz*.txz /sfspacks/"$SRCDIR" ); then
+			exit 1
+		fi
+		cd /sources || exit 1 ;;
 	* )
 		# mv every built package in its destination directory
-		mv -v /tmp/$PACKNAME*.t?z /sfspacks/$SRCDIR ;;
+		if ! ( mv -v /tmp/"$PACKNAME"*.t?z /sfspacks/"$SRCDIR" ); then
+			exit 1
+		fi
 esac
 
-cd /tmp
+cd /tmp || exit 1
 #***************************************************
 # Note that the following removes any directory in /tmp.
 #***************************************************
 for i in *; do
-    [ -d "$i" ] && rm -rf $i
+    [ -d "$i" ] && rm -rf "$i"
 done
-cd /sources
+cd /sources || exit 1
 }
 
 build_linux_howtos () {
 #*******************************************************************
 BUILD=${BUILD:-1}
 
-SRCDIR=$1
-shift
-PACKNAME=$1
-shift
-
-CWD=$(pwd)
 TMP=${TMP:-/tmp}
 PKG=$TMP/package-Linux-HOWTOS
 
-cd $TMP
-mkdir -pv $PKG/usr/doc/Linux-HOWTOs
-cd $PKG/usr/doc/Linux-HOWTOs
+cd "$TMP" || exit 1
+mkdir -pv "$PKG"/usr/doc/Linux-HOWTOs
+cd "$PKG"/usr/doc/Linux-HOWTOs || exit 1
 wget -c http://www.tldp.org/Linux-HOWTO-text.tar.gz
-tar xf *.tar.gz && rm *.tar.gz .htacess
+tar xf ./*.tar.gz && rm ./*.tar.gz .htacess
 
-mkdir -p $PKG/install
-cat /slacksrc/f/slack-desc.linux-howtos > $PKG/install/slack-desc.linux-howtos
+mkdir -p "$PKG"/install
+cat /slacksrc/f/slack-desc.linux-howtos > "$PKG"/install/slack-desc.linux-howtos
 
-cd $PKG
+cd "$PKG" || exit 1
 chown -R root:root .
-/sbin/makepkg -l y -c n $TMP/linux-howtos-20160401-noarch-$BUILD.txz
-installpkg $TMP/linux-howtos-20160401-noarch-$BUILD.txz
-mv -v $TMP/linux-howtos-20160401-noarch-$BUILD.txz /sfspacks/f
-rm -rf $PKG
-cd /sources
+/sbin/makepkg -l y -c n "$TMP"/linux-howtos-20160401-noarch-"$BUILD".txz
+installpkg "$TMP"/linux-howtos-20160401-noarch-"$BUILD".txz
+mv -v "$TMP"/linux-howtos-20160401-noarch-"$BUILD".txz /sfspacks/f
+rm -rf "$PKG"
+cd /sources || exit 1
 }
 
 build_linux_faqs () {
 #*******************************************************************
 BUILD=${BUILD:-1}
 
-SRCDIR=$1
-shift
-PACKNAME=$1
-shift
-
-CWD=$(pwd)
 TMP=${TMP:-/tmp}
 PKG=$TMP/package-Linux-FAQS
 
-cd $TMP
-mkdir -pv $PKG/usr/doc/Linux-FAQs
-cd $PKG/usr/doc/Linux-FAQs
-mkdir -pv AfterStep-FAQ && cd AfterStep-FAQ
+cd "$TMP" || exit 1
+mkdir -pv "$PKG"/usr/doc/Linux-FAQs
+cd "$PKG"/usr/doc/Linux-FAQs || exit 1
+mkdir -pv AfterStep-FAQ && cd AfterStep-FAQ || exit 1
 wget -c http://www.tldp.org/pub/Linux/docs/faqs-archived/AfterStep-FAQ/AfterStep-FAQ
-cd .. && mkdir -pv Ftape-FAQ && cd Ftape-FAQ
+cd .. && mkdir -pv Ftape-FAQ && cd Ftape-FAQ || exit 1
 wget -c http://www.tldp.org/pub/Linux/docs/faqs-archived/Ftape-FAQ/Ftape-FAQ
-cd .. && mkdir -pv LDP-FAQ && cd LDP-FAQ
+cd .. && mkdir -pv LDP-FAQ && cd LDP-FAQ || exit 1
 wget -c http://www.tldp.org/pub/Linux/docs/faqs-archived/LDP-FAQ/LDP-FAQ
-cd .. && mkdir -pv Linux-FAQ && cd Linux-FAQ
+cd .. && mkdir -pv Linux-FAQ && cd Linux-FAQ || exit 1
 wget -c http://www.tldp.org/pub/Linux/docs/faqs-archived/Linux-FAQ/Linux-FAQ
-cd .. && mkdir -pv Linux-RAID-FAQ && cd Linux-RAID-FAQ
+cd .. && mkdir -pv Linux-RAID-FAQ && cd Linux-RAID-FAQ || exit 1
 wget -c http://www.tldp.org/pub/Linux/docs/faqs-archived/Linux-RAID-FAQ/Linux-RAID-FAQ
-cd .. && mkdir -pv PPP-FAQ && cd PPP-FAQ
+cd .. && mkdir -pv PPP-FAQ && cd PPP-FAQ || exit 1
 wget -c http://www.tldp.org/pub/Linux/docs/faqs-archived/PPP-FAQ/PPP-FAQ
-cd .. && mkdir -pv Threads-FAQ/html && cd Threads-FAQ/html
+cd .. && mkdir -pv Threads-FAQ/html && cd Threads-FAQ/html || exit 1
 wget -c www.tldp.org/pub/Linux/docs/faqs-archived/Threads-FAQ/Threads-FAQ-html.tar.gz
-tar xf *.tar.gz && rm *.tar.gz
-cd .. && mkdir -pv WordPerfect-Linux-FAQ && cd WordPerfect-Linux-FAQ
+tar xf ./*.tar.gz && rm ./*.tar.gz
+cd .. && mkdir -pv WordPerfect-Linux-FAQ && cd WordPerfect-Linux-FAQ || exit 1
 wget -c http://www.tldp.org/pub/Linux/docs/faqs-archived/WordPerfect-Linux-FAQ/WordPerfect-Linux-FAQ
-cd .. && mkdir -pv linux-FAQ && cd linux-FAQ
+cd .. && mkdir -pv linux-FAQ && cd linux-FAQ || exit 1
 wget -c http://www.tldp.org/pub/Linux/docs/faqs-archived/linux-faq/linux-FAQ
-cd .. && mkdir -pv security && cd security
+cd .. && mkdir -pv security && cd security || exit 1
 wget -c http://www.tldp.org/pub/Linux/docs/faqs-archived/security/Cryptographic-File-System
 cd ..
 wget -c http://www.tldp.org/FAQ/faqs/ATAPI-FAQ
@@ -916,16 +1003,16 @@ wget -c http://slackware.uk/splack/splack-8.0/docs/faqs/prev.gif
 wget -c http://slackware.uk/splack/splack-8.0/docs/faqs/toc.gif
 wget -c http://slackware.uk/splack/splack-8.0/docs/faqs/updated.gif
 
-mkdir -p $PKG/install
-cat /slacksrc/f/slack-desc.linux-faqs > $PKG/install/slack-desc.linux-faqs
+mkdir -p "$PKG"/install
+cat /slacksrc/f/slack-desc.linux-faqs > "$PKG"/install/slack-desc.linux-faqs
 
-cd $PKG
+cd "$PKG" || exit 1
 chown -R root:root .
-/sbin/makepkg -l y -c n $TMP/linux-faqs-20060228-noarch-$BUILD.txz
-installpkg $TMP/linux-faqs-20060228-noarch-$BUILD.txz
-mv -v $TMP/linux-faqs-20060228-noarch-$BUILD.txz /sfspacks/f
-rm -rf $PKG
-cd /sources
+/sbin/makepkg -l y -c n "$TMP"/linux-faqs-20060228-noarch-"$BUILD".txz
+installpkg "$TMP"/linux-faqs-20060228-noarch-"$BUILD".txz
+mv -v "$TMP"/linux-faqs-20060228-noarch-"$BUILD".txz /sfspacks/f
+rm -rf "$PKG"
+cd /sources || exit 1
 }
 
 clean_tmp () {
@@ -933,10 +1020,10 @@ clean_tmp () {
 # cleanup /tmp directory
 #*************************
 cd / && [ -f localtime ] && rm localtime
-cd /tmp
-rm *
-rm -rf /tmp/*
-cd /sources
+cd /tmp || exit 1
+rm ./*
+rm -rf /tmp/./*
+cd /sources || exit 1
 }
 
 define_path_lib () {
@@ -980,7 +1067,7 @@ test_arch () {
 # will be build the  slackware distribution,
 #******************************************
 ARCH=$(uname -m)
-echo $ARCH
+echo "$ARCH"
 if [ "$ARCH" != "x86_64" ] && [ "$ARCH" != "i686" ] && [ "$ARCH" != "i586" ] && [ "$ARCH" != "i386" ]; then
 	boot_mesg "
  >>> This arch ($ARCH) is not supported."
@@ -1048,8 +1135,8 @@ echo
 echo "References to paths that have components with '-linux-gnu'"
 echo "should be ignored, but otherwise the output of the last"
 echo "command should be:"
-echo "	SEARCH_DIR("/usr/lib")"
-echo "	SEARCH_DIR("/lib")"
+echo "	SEARCH_DIR(/usr/lib)"
+echo "	SEARCH_DIR(/lib)"
 echo
 echo -n "Enter <Enter> to continue:"
 }
@@ -1113,29 +1200,23 @@ echo "	/tools/bin/patch"
 echo "	/sbin/makepkg"
 echo "	/sbin/installpkg"
 
-	if ! (`which which > /dev/null`); then
-		error "which was not found on the system, the 'tools' you built are not complete"
-		[ $? != 0 ] && exit 1
+	if ! { command -v which > /dev/null; } 2>&1; then
+		error "which was not found on the system, the 'tools' you built are not complete" && exit 1
 	fi
-	if ! (`which tar-1.13 > /dev/null`); then
-		error "tar-1.13 was not found on the system, the 'tools' you built are not complete"
-		[ $? != 0 ] && exit 1
+	if ! { command -v tar-1.13 > /dev/null; } 2>&1; then
+		error "tar-1.13 was not found on the system, the 'tools' you built are not complete" && exit 1
 	fi
-	if ! (`which xz > /dev/null`); then
-		error "xz was not found on the system, the 'tools' you built are not complete"
-		[ $? != 0 ] && exit 1
+	if ! { command -v xz > /dev/null; } 2>&1; then
+		error "xz was not found on the system, the 'tools' you built are not complete" && exit 1
 	fi
-	if ! (`which patch > /dev/null`); then
-		error "patch was not found on the system, the 'tools' you built are not complete"
-		[ $? != 0 ] && exit 1
+	if ! { command -v patch > /dev/null; } 2>&1; then
+		error "patch was not found on the system, the 'tools' you built are not complete" && exit 1
 	fi
-	if ! (`which makepkg > /dev/null`); then
-		error "makepkg was not found on the system, the 'tools' you built are not complete"
-		[ $? != 0 ] && exit 1
+	if ! { command -v makepkg > /dev/null; } 2>&1; then
+		error "makepkg was not found on the system, the 'tools' you built are not complete" && exit 1
 	fi
-	if ! (`which installpkg > /dev/null`); then
-		error "installpkg was not found on the system, the 'tools' you built are not complete"
-		[ $? != 0 ] && exit 1
+	if ! { command -v installpkg > /dev/null; } 2>&1; then
+		error "installpkg was not found on the system, the 'tools' you built are not complete" && exit 1
 	fi
 
 echo
@@ -1197,7 +1278,7 @@ pre_aaa_libraries_c () {
 # Install packages from previous slackware to be able
 # to build aaa_libraries
 #******************************************************************
-cd /slacksrc/others
+cd /slacksrc/others || exit 1
 installpkg cxxlibs-6.0.18-i486-1.txz
 installpkg gmp-5.1.3-i486-1.txz
 installpkg readline-6.3-i586-2.txz
@@ -1207,7 +1288,7 @@ installpkg ncurses-5.9-i486-4.txz
 installpkg libpng-1.4.12-i486-1.txz
 installpkg libffi-3.2.1-i586-2.txz
 installpkg /sfspacks/l/libpng-1.6.*.txz
-cd /sources
+cd /sources || exit 1
 }
 
 pre_aaa_libraries64_c () {
@@ -1215,7 +1296,7 @@ pre_aaa_libraries64_c () {
 # Install packages from previous slackware to be able
 # to build aaa_libraries
 #******************************************************************
-cd /slacksrc/others
+cd /slacksrc/others || exit 1
 installpkg cxxlibs-6.0.18-x86_64-1.txz
 installpkg gmp-5.1.3-x86_64-1.txz
 installpkg readline-6.3-x86_64-2.txz
@@ -1225,7 +1306,7 @@ installpkg ncurses-5.9-x86_64-4.txz
 installpkg libpng-1.4.12-x86_64-1.txz
 installpkg libffi-3.2.1-x86_64-2.txz
 installpkg /sfspacks/l/libpng-1.6.*-x86_64*.txz
-cd /sources
+cd /sources || exit 1
 }
 
 post_aaa_libraries_c () {
@@ -1239,7 +1320,7 @@ removepkg readline-7.0.005-i586-1.txz
 removepkg libffi-3.2.1-i586-2.txz
 upgradepkg --reinstall /sfspacks/l/libpng-1.6.*.txz
 upgradepkg --reinstall /sfspacks/l/readline-8.0.*.txz
-cd /sources
+cd /sources || exit 1
 }
 
 post_aaa_libraries64_c () {
@@ -1253,7 +1334,7 @@ removepkg readline-7.0.005-x86_64-1.txz
 removepkg libffi-3.2.1-x86_64-2.txz
 upgradepkg --reinstall /sfspacks/l/libpng-1.6.*.txz
 upgradepkg --reinstall /sfspacks/l/readline-8.0.*.txz
-cd /sources
+cd /sources || exit 1
 }
 
 pre_gcc () {
@@ -1264,38 +1345,32 @@ pre_gcc () {
 #       Copyright © 1999-2021 Gerard Beekmans and may be
 #       copied under the MIT License.
 #******************************************************************
-cd /tmp
+cd /tmp || exit 1
 case $(uname -m) in
 	x86_64)
-		tar xf /slacksrc/others/gnat-gpl-2017-x86_64-linux-bin.tar.gz
-		if [ $? != 0 ]; then
+		if ! tar xf /slacksrc/others/gnat-gpl-2017-x86_64-linux-bin.tar.gz; then
 			echo
 			echo "Tar extraction of gnat-gpl-2017-x86_64-linux-bin failed."
-			echo
-		exit 1
+			echo && exit 1
 		fi
-		cd gnat-gpl-2017-x86_64-linux-bin
-		[ $? != 0 ] && exit 1 ;;
+		cd gnat-gpl-2017-x86_64-linux-bin || exit 1;;
 	i686)
-		tar xf /slacksrc/others/gnat-gpl-2014-x86-linux-bin.tar.gz
-		if [ $? != 0 ]; then
+		if ! tar xf /slacksrc/others/gnat-gpl-2014-x86-linux-bin.tar.gz; then
 			echo
 			echo "Tar extraction of gnat-gpl-2014-x86-linux-bin failed."
-			echo
-		exit 1
+			echo && exit 1
 		fi
-		cd gnat-gpl-2014-x86-linux-bin
-		[ $? != 0 ] && exit 1 ;;
+		cd gnat-gpl-2014-x86-linux-bin || exit 1 ;;
 esac
 
 mkdir -pv /tools/opt/gnat
 make ins-all prefix=/tools/opt/gnat
 PATH_HOLD=$PATH && export PATH=/tools/opt/gnat/bin:$PATH_HOLD
-echo $PATH
+echo "$PATH"
 find /tools/opt/gnat -name ld -exec mv -v {} {}.old \;
 find /tools/opt/gnat -name ld -exec as -v {} {}.old \;
 
-cd /sources
+cd /sources || exit 1
 }
 
 post_gcc () {
@@ -1310,7 +1385,9 @@ rm -rf /opt/gnat
 
 build_x11_group1 () {
 #***********************
-cd /slacksrc/x/x11
+cd /slacksrc/x/x11 || exit 1
+
+chmod +x x11.SlackBuild
 
 export UPGRADE_PACKAGES=always
 
@@ -1318,22 +1395,22 @@ for package in \
   xorg-sgml-doctools \
   xorg-docs \
   ; do
-   ./x11.SlackBuild doc $package
- 	[ $? != 0 ] && exit 1
-	mv -v /tmp/x11-build/*.txz /sfspacks/x
+   	if ! ./x11.SlackBuild doc $package; then
+ 		exit 1
+	fi
 done
 
-./x11.SlackBuild util util-macros
- [ $? != 0 ] && exit 1
-mv -v /tmp/x11-build/*.txz /sfspacks/x
+if ! ./x11.SlackBuild util util-macros; then
+	exit 1
+fi
 
-./x11.SlackBuild xcb libpthread-stubs
-[ $? != 0 ] && exit 1
-mv -v /tmp/x11-build/*.txz /sfspacks/x
+if ! ./x11.SlackBuild xcb libpthread-stubs; then
+	exit 1
+fi
 
-./x11.SlackBuild proto xorgproto
-[ $? != 0 ] && exit 1
-mv -v /tmp/x11-build/*.txz /sfspacks/x
+if ! ./x11.SlackBuild proto xorgproto; then
+	exit 1
+fi
 
 for package in \
   xorg-cf-files \
@@ -1342,17 +1419,18 @@ for package in \
   lndir \
   makedepend \
   ; do
-   ./x11.SlackBuild util $package
- 	[ $? != 0 ] && exit 1
-	mv -v /tmp/x11-build/*.txz /sfspacks/x
+	if ! ./x11.SlackBuild util $package; then
+ 		exit 1
+	fi
 done
 
-cd /sources
+mv -v /tmp/x11-build/*.txz /sfspacks/x
+cd /sources || exit 1
 }
 
 build_x11_lib () {
 #***********************
-cd /slacksrc/x/x11
+cd /slacksrc/x/x11 || exit 1
 
 export UPGRADE_PACKAGES=always
 
@@ -1397,36 +1475,37 @@ for package in \
   pixman \
   libXfont2 \
   ; do
-   ./x11.SlackBuild lib $package
- 	[ $? != 0 ] && exit 1
-	mv -v /tmp/x11-build/*.txz /sfspacks/x
+	if ! ./x11.SlackBuild lib $package; then
+		exit 1
+	fi
 done
 
-cd /sources
+mv -v /tmp/x11-build/*.txz /sfspacks/x
+cd /sources || exit 1
 }
 
 build_x11_xcb () {
 #*****************************
-cd /slacksrc/x/x11
+cd /slacksrc/x/x11 || exit 1
 
 export UPGRADE_PACKAGES=always
 
-./x11.SlackBuild proto xcb-proto
-[ $? != 0 ] && exit 1
-mv -v /tmp/x11-build/*.txz /sfspacks/x
+if ! ./x11.SlackBuild proto xcb-proto; then
+	exit 1
+fi
 
-./x11.SlackBuild xcb libpthread-stubs
-[ $? != 0 ] && exit 1
-mv -v /tmp/x11-build/*.txz /sfspacks/x
+if ! ./x11.SlackBuild xcb libpthread-stubs; then
+	exit 1
+fi
 
 for package in \
   libXau \
   libXdmcp \
   libxcb \
   ; do
-   ./x11.SlackBuild lib $package
- 	[ $? != 0 ] && exit 1
-	mv -v /tmp/x11-build/*.txz /sfspacks/x
+   	if ! ./x11.SlackBuild lib $package; then
+		exit 1
+	fi
 done
 
 for package in \
@@ -1439,27 +1518,28 @@ for package in \
   xcb-util-errors \
   xpyb \
   ; do
-   ./x11.SlackBuild xcb $package
- 	[ $? != 0 ] && exit 1
-	mv -v /tmp/x11-build/*.txz /sfspacks/x
+   	if ! ./x11.SlackBuild xcb $package; then
+ 		exit 1
+	fi
 done
 
-cd /sources
+mv -v /tmp/x11-build/*.txz /sfspacks/x
+cd /sources || exit 1
 }
 
 build_x11_group2 () {
 #*****************************
-cd /slacksrc/x/x11
+cd /slacksrc/x/x11 || exit 1
 
 export UPGRADE_PACKAGES=always
 
-./x11.SlackBuild data xbitmaps
-[ $? != 0 ] && exit 1
-mv -v /tmp/x11-build/*.txz /sfspacks/x
+if ! ./x11.SlackBuild data xbitmaps; then
+	exit 1
+fi
 
-./x11.SlackBuild font font-util
-[ $? != 0 ] && exit 1
-mv -v /tmp/x11-build/*.txz /sfspacks/x
+if ! ./x11.SlackBuild font font-util; then
+	exit 1
+fi
 
 for package in \
   bdftopcf \
@@ -1544,14 +1624,14 @@ for package in \
   xstdcmap \
   xvidtune \
   ; do
-   ./x11.SlackBuild app $package
- 	[ $? != 0 ] && exit 1
-	mv -v /tmp/x11-build/*.txz /sfspacks/x
+   	if ! ./x11.SlackBuild app $package; then
+ 		exit 1
+	fi
 done
 
-./x11.SlackBuild data xcursor-themes
-[ $? != 0 ] && exit 1
-mv -v /tmp/x11-build/*.txz /sfspacks/x
+if ! ./x11.SlackBuild data xcursor-themes; then
+	exit 1
+fi
 
 for package in \
   font-adobe-100dpi \
@@ -1591,18 +1671,18 @@ for package in \
   font-winitzki-cyrillic \
   font-xfree86-type1 \
   ; do
-   ./x11.SlackBuild font $package
- 	[ $? != 0 ] && exit 1
-	mv -v /tmp/x11-build/*.txz /sfspacks/x
+   	if ! ./x11.SlackBuild font $package; then
+ 		exit 1
+	fi
 done
 
-./x11.SlackBuild data xkeyboard-config
-[ $? != 0 ] && exit 1
-mv -v /tmp/x11-build/*.txz /sfspacks/x
+if ! ./x11.SlackBuild data xkeyboard-config; then
+	exit 1
+fi
 
-./x11.SlackBuild xserver xorg-server
-[ $? != 0 ] && exit 1
-mv /tmp/x11-build/*.txz /sfspacks/x
+if ! ./x11.SlackBuild xserver xorg-server; then
+	exit 1
+fi
 
 for package in \
   xf86-input-acecad \
@@ -1623,7 +1703,6 @@ for package in \
   xf86-video-chips \
   xf86-video-cirrus \
   xf86-video-dummy \
-  xf86-video-geode \
   xf86-video-glint \
   xf86-video-i128 \
   xf86-video-i740 \
@@ -1651,14 +1730,14 @@ for package in \
   xf86-video-vmware \
   xf86-video-voodoo \
   ; do
-   ./x11.SlackBuild driver $package
- 	[ $? != 0 ] && exit 1
-	mv -v /tmp/x11-build/*.txz /sfspacks/x
+   	if ! ./x11.SlackBuild driver $package; then
+ 		exit 1
+	fi
 done
 
-./x11.SlackBuild font encodings
-[ $? != 0 ] && exit 1
-mv -v /tmp/x11-build/*.txz /sfspacks/x
+if ! ./x11.SlackBuild font encodings; then
+	exit 1
+fi
 
 for package in \
   luit \
@@ -1666,50 +1745,50 @@ for package in \
   twm \
   xinit \
   ; do
-   ./x11.SlackBuild app $package
- 	[ $? != 0 ] && exit 1
-	mv -v /tmp/x11-build/*.txz /sfspacks/x
+   	if ! ./x11.SlackBuild app $package; then
+ 		exit 1
+	fi
 done
 
-./x11.SlackBuild driver xf86-video-vboxvideo
-[ $? != 0 ] && exit 1
-mv -v /tmp/x11-build/*.txz /sfspacks/x
+if ! ./x11.SlackBuild driver xf86-video-vboxvideo; then
+	exit 1
+fi
 
-cd /sources
+mv -v /tmp/x11-build/*.txz /sfspacks/x
+cd /sources || exit 1
 }
 
 build_x11_app_post () {
 #*****************************
-cd /slacksrc/x/x11
+cd /slacksrc/x/x11 || exit 1
 
 export UPGRADE_PACKAGES=always
 
-./x11.SlackBuild driver xf86-input-libinput
-[ $? != 0 ] && exit 1
-mv -v /tmp/x11-build/*.txz /sfspacks/x
+if ! ./x11.SlackBuild driver xf86-input-libinput; then
+	exit 1
+fi
 
-./x11.SlackBuild app xisxwayland
-[ $? != 0 ] && exit 1
-mv -v /tmp/x11-build/*.txz /sfspacks/x
+if ! ./x11.SlackBuild app xisxwayland; then
+	exit 1
+fi
 
-cd /sources
+mv -v /tmp/x11-build/*.txz /sfspacks/x
+cd /sources || exit 1
 }
 
 build_extra_cmake_kde () {
 #********************************************************
-cd /slacksrc/kde/kde
+cd /slacksrc/kde/kde || exit 1
+
+chmod +x kde.SlackBuild
 
 export UPGRADE_PACKAGES=always
-./kde.SlackBuild frameworks:extra-cmake-modules 
-[ $? != 0 ] && touch /tmp/kde_build/extra-cmake-modules.failed
-mv -v /tmp/kde_build/*.txz /sfspacks/kde
-#	if [ $? = 0 ]; then
-#		mv -v /tmp/kde_build/*.txz /sfspacks/kde
-#	else
-#		touch /tmp/kde_build/extra-cmake-modules.failed
-#		exit 1
-#	fi
+if ! ./kde.SlackBuild frameworks:extra-cmake-modules; then 
+	touch /tmp/kde_build/extra-cmake-modules.failed && exit 1
+fi
 
+mv -v /tmp/kde_build/*.txz /sfspacks/kde
+cd /sources || exit 1
 }
 
 build_frameworks_kde () {
@@ -1725,7 +1804,7 @@ build_frameworks_kde () {
 #  applications-extra \
 #  applications:umbrello \
 #********************************************************
-cd /slacksrc/kde/kde
+cd /slacksrc/kde/kde || exit 1
 
 export UPGRADE_PACKAGES=always
 
@@ -1815,14 +1894,8 @@ for package in \
 	khtml \
 	kdav \
   ; do
-   ./kde.SlackBuild frameworks:$package 
-# 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-#	mv -v /tmp/kde_build/*.txz /sfspacks/kde
-	if [ $? = 0 ]; then
-		mv -v /tmp/kde_build/*.txz /sfspacks/kde
-	else
-		touch /tmp/kde_build/$package.failed
-		exit 1
+   	if ! ./kde.SlackBuild frameworks:$package; then
+		touch /tmp/kde_build/$package.failed && exit 1
 	fi
 done
 
@@ -1837,33 +1910,27 @@ for package in \
 	kross \
 	kxmlrpcclient \
   ; do
-   ./kde.SlackBuild frameworks:$package 
-# 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-#	mv -v /tmp/kde_build/*.txz /sfspacks/kde
-	if [ $? = 0 ]; then
-		mv -v /tmp/kde_build/*.txz /sfspacks/kde
-	else
-		touch /tmp/kde_build/$package.failed
-		exit 1
+   	if ! ./kde.SlackBuild frameworks:$package; then 
+		touch /tmp/kde_build/$package.failed && exit 1
 	fi
  done
 
 # Keep MIME database current:
 /usr/bin/update-mime-database /usr/share/mime 1>/dev/null 2>/dev/null &
 
-cd /sources
-
+mv -v /tmp/kde_build/*.txz /sfspacks/kde
+cd /sources || exit 1
 }
 
 build_kdepim_kde () {
 #********************************************************
-cd /slacksrc/kde/kde
+cd /slacksrc/kde/kde || exit 1
 
 export UPGRADE_PACKAGES=always
 
-./kde.SlackBuild applications-extra:kdiagram
-[ $? != 0 ] && touch /tmp/kde_build/kdiagram.failed
-mv -v /tmp/kde_build/*.txz /sfspacks/kde
+if ! ./kde.SlackBuild applications-extra:kdiagram; then
+	touch /tmp/kde_build/kdiagram.failed
+fi
 
 for package in \
 	akonadi \
@@ -1918,41 +1985,35 @@ for package in \
 	pim-data-exporter \
 	pim-sieve-editor \
   ; do
-   ./kde.SlackBuild kdepim:$package
-# 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-#	mv -v /tmp/kde_build/*.txz /sfspacks/kde
-	if [ $? = 0 ]; then
-		mv -v /tmp/kde_build/*.txz /sfspacks/kde
-	else
-		touch /tmp/kde_build/$package.failed
-		exit 1
+   	if ! ./kde.SlackBuild kdepim:$package; then
+		touch /tmp/kde_build/$package.failed && exit 1
 	fi
 done
 
-./kde.SlackBuild plasma-extra:plasma-wayland-protocols
-[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-mv -v /tmp/kde_build/*.txz /sfspacks/kde
+if ! ./kde.SlackBuild plasma-extra:plasma-wayland-protocols; then
+	touch /tmp/kde_build/$package.failed && exit 1
+fi
 
 # Keep MIME database current:
 /usr/bin/update-mime-database /usr/share/mime 1>/dev/null 2>/dev/null &
 
-cd /sources
-
+mv -v /tmp/kde_build/*.txz /sfspacks/kde
+cd /sources || exit 1
 }
 
 build_plasma_kde () {
 #********************************************************
-cd /slacksrc/kde/kde
+cd /slacksrc/kde/kde || exit 1
 
 export UPGRADE_PACKAGES=always
 
-./kde.SlackBuild plasma-extra:plasma-wayland-protocols
-[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-mv -v /tmp/kde_build/*.txz /sfspacks/kde
+if ! ./kde.SlackBuild plasma-extra:plasma-wayland-protocols; then
+	touch /tmp/kde_build/$package.failed && exit 1
+fi
 
-./kde.SlackBuild frameworks:kwayland 
-[ $? != 0 ] && touch /tmp/kde_build/kwayland.failed
-mv -v /tmp/kde_build/*.txz /sfspacks/kde
+if ! ./kde.SlackBuild frameworks:kwayland; then 
+	touch /tmp/kde_build/kwayland.failed && exit 1
+fi
 
 for package in \
 	kgamma5 \
@@ -2008,27 +2069,21 @@ for package in \
 	plasma-thunderbolt \
 	plasma-kcm \
   ; do
-   ./kde.SlackBuild plasma:$package
-# 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-#	mv -v /tmp/kde_build/*.txz /sfspacks/kde
-	if [ $? = 0 ]; then
-		mv -v /tmp/kde_build/*.txz /sfspacks/kde
-	else
-		touch /tmp/kde_build/$package.failed
-		exit 1
+   	if ! ./kde.SlackBuild plasma:$package; then
+		touch /tmp/kde_build/$package.failed && exit 1
 	fi
 done
 
 # Keep MIME database current:
 /usr/bin/update-mime-database /usr/share/mime 1>/dev/null 2>/dev/null &
 
-cd /sources
-
+mv -v /tmp/kde_build/*.txz /sfspacks/kde
+cd /sources || exit 1
 }
 
 build_plasma_extra_kde () {
 #********************************************************
-cd /slacksrc/kde/kde
+cd /slacksrc/kde/kde || exit 1
 
 export UPGRADE_PACKAGES=always
 
@@ -2041,42 +2096,35 @@ for package in \
 	plasma-wayland-protocols \
 	wacomtablet \
   ; do
-   ./kde.SlackBuild plasma-extra:$package
-#	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-#	mv -v /tmp/kde_build/*.txz /sfspacks/kde
-	if [ $? = 0 ]; then
-		mv -v /tmp/kde_build/*.txz /sfspacks/kde
-	else
-		touch /tmp/kde_build/$package.failed
-		exit 1
+   	if ! ./kde.SlackBuild plasma-extra:$package; then
+		touch /tmp/kde_build/$package.failed && exit 1
 	fi
 done
 
-	./kde.SlackBuild applications:libktorrent
-# 	[ $? != 0 ] && touch /tmp/kde_build/libktorrent.failed
-# 	mv -v /tmp/kde_build/*.txz /sfspacks/kde
-	if [ $? = 0 ]; then
-		mv -v /tmp/kde_build/*.txz /sfspacks/kde
-	else
-		touch /tmp/kde_build/$package.failed
-		exit 1
-	fi
+if ! ./kde.SlackBuild applications:libktorrent; then
+	touch /tmp/kde_build/libktorrent.failed && exit 1
+fi
 
 # Keep MIME database current:
 /usr/bin/update-mime-database /usr/share/mime 1>/dev/null 2>/dev/null &
 
-cd /slacksrc/kde/kcm-fcitx
-./kcm-fcitx.SlackBuild
-[ $? != 0 ] && touch /tmp/kde_build/kcm-fcitx.failed
+cd /slacksrc/kde/kcm-fcitx || exit 1
+chmod +x kcm-fcitx.SlackBuild
+if ! ./kcm-fcitx.SlackBuild; then
+	touch /tmp/kde_build/kcm-fcitx.failed && exit 1
+fi
+
 mv -v /tmp/kcm-fcitx*.txz /sfspacks/kde
-
-cd /sources
-
+mv -v /tmp/kde_build/*.txz /sfspacks/kde
+cd /tmp || exit 1
+rm ./*
+rm -rf /tmp/./*
+cd /sources || exit 1
 }
 
 build_applications_kde () {
 #********************************************************
-cd /slacksrc/kde/kde
+cd /slacksrc/kde/kde || exit 1
 
 export UPGRADE_PACKAGES=always
 
@@ -2237,27 +2285,21 @@ for package in \
 	kpmcore \
 	partitionmanager \
   ; do
-   ./kde.SlackBuild applications:$package
-#	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-#	mv -v /tmp/kde_build/*.txz /sfspacks/kde
-	if [ $? = 0 ]; then
-		mv -v /tmp/kde_build/*.txz /sfspacks/kde
-	else
-		touch /tmp/kde_build/$package.failed
-		exit 1
+   	if ! ./kde.SlackBuild applications:$package; then
+		touch /tmp/kde_build/$package.failed && exit 1
 	fi
 done
 
 # Keep MIME database current:
 /usr/bin/update-mime-database /usr/share/mime 1>/dev/null 2>/dev/null &
 
-cd /sources
-
+mv -v /tmp/kde_build/*.txz /sfspacks/kde
+cd /sources || exit 1
 }
 
 build_applications_extra_kde () {
 #********************************************************
-cd /slacksrc/kde/kde
+cd /slacksrc/kde/kde || exit 1
 
 export UPGRADE_PACKAGES=always
 
@@ -2287,32 +2329,20 @@ for package in \
 	kid3 \
 	umbrello \
   ; do
-   ./kde.SlackBuild applications-extra:$package
-# 	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-#	mv -v /tmp/kde_build/*.txz /sfspacks/kde
-	if [ $? = 0 ]; then
-		mv -v /tmp/kde_build/*.txz /sfspacks/kde
-	else
-		touch /tmp/kde_build/$package.failed
-		exit 1
+   	if ! ./kde.SlackBuild applications-extra:$package; then
+		touch /tmp/kde_build/$package.failed && exit 1
 	fi
 done
 
-	./kde.SlackBuild applications:umbrello
-#	[ $? != 0 ] && touch /tmp/kde_build/$package.failed
-#	mv -v /tmp/kde_build/*.txz /sfspacks/kde
-	if [ $? = 0 ]; then
-		mv -v /tmp/kde_build/*.txz /sfspacks/kde
-	else
-		touch /tmp/kde_build/$package.failed
-		exit 1
-	fi 
+if ! ./kde.SlackBuild applications:umbrello; then
+	touch /tmp/kde_build/$package.failed && exit 1
+fi 
 
 # Keep MIME database current:
 /usr/bin/update-mime-database /usr/share/mime 1>/dev/null 2>/dev/null &
 
-cd /sources
-
+mv -v /tmp/kde_build/*.txz /sfspacks/kde
+cd /sources || exit 1
 }
 
 message_end1 () {
@@ -2435,7 +2465,7 @@ echo
 echo -e "$YELLOW"  "upgrade your boot loader and reboot in your SFS system" "$NORMAL"
 echo
 echo
-cd /sfspacks && rm */*_alsa*
+cd /sfspacks && rm ./*/*_alsa*
 cd /sources && killall -9 dhcpcd
 }
 
@@ -2443,7 +2473,9 @@ update_slackbuild () {
 #****************************************************************
 # rename SlackBuild.old to original SlackBuild
 #****************************************************************
-cd /slacksrc/$SRCDIR/$PACKNAME && mv $PACKNAME.SlackBuild.old $PACKNAME.SlackBuild && cd /sources
+cd /slacksrc/"$SRCDIR"/"$PACKNAME" || exit 1 
+mv "$PACKNAME".SlackBuild.old "$PACKNAME".SlackBuild
+cd /sources || exit 1
 }
 
 
@@ -2458,7 +2490,6 @@ define_path_lib
 #****************************************************************
 # Ensure that the /sfspacks/$SAVDIRs exists.
 #****************************************************************
-distribution="slackware"
 mkdir -pv /sfspacks/{others,a,ap,d,e,extra,f,installer,k,kde,l,n,t,tcl,x,xap,xfce,y}
 #******************************************************************
 # Some packages need two pass to be built completely.
@@ -2493,12 +2524,8 @@ mkdir -pv /sfspacks/{others,a,ap,d,e,extra,f,installer,k,kde,l,n,t,tcl,x,xap,xfc
 #******************************************************************
 # init libusb variable
 LUSB=1
-# init pkg-config variable
-LPKG=1
 # init llvm variable
 LPVM=1
-# init libcaca variable
-LCAC=1
 # init kmod variable
 LKMO=1
 # init readline variable
@@ -2511,18 +2538,8 @@ LFRE=1
 LHAR=1
 # init gd variable
 LGD=1
-# init zstd variable
-LPHP=1
-# init QScintilla variable
-LQSC=1
 # init findutils variable
 LFIN=1
-# init pam variable
-LPAM=1
-# init cyrus-sasl variable
-LCYR=1
-# init gpgme variable
-LGPG=1
 # init zstd variable
 LZST=1
 # init rsync variable
@@ -2533,8 +2550,6 @@ LPER=1
 LOPE=1
 # init libtirpc variable
 LRPC=1
-# init elogind variable
-LELO=1
 # init libxkbcommon variable
 LXKB=1
 # init doxygen variable
@@ -2547,22 +2562,22 @@ NUMJOBS="-j$(( $(nproc) * 2 )) -l$(( $(nproc) + 1 ))"
 #**************************************************************
 
 [ "$1" == "" ] && on_error
-[ ! -f $1 ] && on_error
+[ ! -f "$1" ] && on_error
 LISTFILE=$1
 
-FILELEN=$(wc -l $LISTFILE |cut -d' ' -f1)
+FILELEN=$(wc -l "$LISTFILE" |cut -d' ' -f1)
 
 typeset -i LINE=0
-while read ra[LINE]; do
+while read -r RA[LINE]; do
 	(( LINE = LINE + 1 ))
-done <<< "`cat $LISTFILE`"
+done <<< "$(cat "$LISTFILE")"
 
 (( LINE = 0 ))
-while (( LINE < $FILELEN )); do
-	aline=${ra[LINE]}
-	echo $aline
-	SRCDIR=`echo $aline |cut -d' ' -f1`
-	PACKNAME=`echo $aline |cut -d' ' -f2`
+while (( LINE < FILELEN )); do
+	aline=${RA[LINE]}
+	echo "$aline"
+	SRCDIR=$(echo "$aline" |cut -d' ' -f1)
+	PACKNAME=$(echo "$aline" |cut -d' ' -f2)
 	(( LINE = LINE + 1 ))
 	[ "$SRCDIR" == "#" ] && continue
 
@@ -2571,91 +2586,114 @@ while (( LINE < $FILELEN )); do
 				adjust )
 					case $(uname -m) in
 						x86_64 )
-							adjust_x86_64
-							[ $? != 0 ] && exit 1 ;;
+							if ! adjust_x86_64; then
+								exit 1
+							fi
+							return ;;
 						* )
-							adjust_i686
-							[ $? != 0 ] && exit 1 ;;
+							if ! adjust_i686; then
+								exit 1
+							fi
+							return ;;
 					esac
 					continue ;;
 
 				alsa-lib )
 					case $LISTFILE in
 						build2_s.list )
-							build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1 ;;
-
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi
+							return ;;
 						* )
 							rm /sfspacks/l/alsa-lib*.t?z
-							build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1 ;;
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi
+							return ;;
 					esac
 					continue ;;
 
 				ca-certificates )
-					build $SRCDIR $PACKNAME
-					[ $? != 0 ] && exit 1
+					if ! build "$SRCDIR" "$PACKNAME"; then
+						exit 1
+					fi
 					update-ca-certificates ;;
 
 				cmake )
 					case $LISTFILE in
 						build1_s.list )
-							execute_cmake_sed && build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1 
+							execute_cmake_sed
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi 
 							update_slackbuild ;;
 
 						* )
-							build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1 ;;
-
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi
+							return ;;
 					esac
 					continue ;;
 
 				cyrus-sasl )
 					case $LISTFILE in
 						build1_s.list )
-							execute_cyrus_sasl_sed && build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1 
-							update_slackbuild && LCYR=2 ;;
-
+							execute_cyrus_sasl_sed
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi 
+							update_slackbuild ;;
 						* )
-							build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1 ;;
-
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi
+							return ;;
 					esac
 					continue ;;
 
 				dbus )
 					case $LISTFILE in
 						build2_s.list )
-							execute_dbus_sed && build $SRCDIR $PACKNAME && 
-							[ $? != 0 ] && exit 1  
-							dbus-uuidgen --ensure && update_slackbuild ;;
+							execute_dbus_sed
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi
+							update_slackbuild  
+							dbus-uuidgen --ensure ;;
 
 						* )
-							build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1 ;;
-
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi
+							return ;;
 					esac
 					continue ;;
 
 				doxygen )
 					case $LDOX in
 						1 )
-							execute_doxygen_sed && build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1 
-							update_slackbuild && LDOX=2 ;;
+							execute_doxygen_sed
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi  
+							update_slackbuild 
+							LDOX=2 ;;
 
 						* )
-							build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1 ;;
-
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi
+							return ;;
 					esac
 					continue ;;
 
 				dhcpcd_up )
-					dhcpcd -t 15 -L eth0 || dhcpcd -t 15 -L wlan0 && echo
-					[ $? != 0 ] && exit 1 ;;
+					if ! (dhcpcd -t 15 -L eth0 || dhcpcd -t 15 -L wlan0); then
+						exit 1
+					fi
+					return ;;
 
 				end1 )
 					message_end1
@@ -2676,456 +2714,602 @@ while (( LINE < $FILELEN )); do
 				elogind )
 					case $LISTFILE in
 						build1_s.list )
-							execute_elogind_sed && build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1
-							update_slackbuild && LELO=2 ;;
+							execute_elogind_sed
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi 
+							update_slackbuild ;;
 						* )
-							build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1 ;;
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi
+							return ;;
 					esac
 					continue ;;
 
 				findutils )
 					case $LFIN in
 						1 )
-							execute_findutils_sed && build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1
-							update_slackbuild && LFIN=2 ;;
+							execute_findutils_sed
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi 
+							update_slackbuild
+							LFIN=2 ;;
 						2 )
-							build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1 ;;
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi
+							return ;;
 					esac
 					continue ;;
 
 				fontconfig )
 					case $LISTFILE in
 						build2_s.list )
-							execute_fontconfig_sed && build $SRCDIR $PACKNAME 
-							[ $? != 0 ] && exit 1
+							execute_fontconfig_sed
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi 
 							update_slackbuild ;;
 
 						* )
-							build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1 ;;
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi
+							return ;;
 					esac
 					continue ;;
 
 				freetype )
 					case $LFRE in
 						1 )
-							execute_freetype_sed && build $SRCDIR $PACKNAME 
-							[ $? != 0 ] && exit 1
-							update_slackbuild && LFRE=2 ;;
+							execute_freetype_sed
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi 
+							update_slackbuild 
+							LFRE=2 ;;
 						2 )
-							build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1 ;;
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi
+							return ;;
 					esac
 					continue ;;
 
 				gd )
 					case $LGD in
 						1 )
-							execute_gd_sed && build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1
-							update_slackbuild && LGD=2 ;;
+							execute_gd_sed
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi 
+							update_slackbuild
+							LGD=2 ;;
 						2 )
-							build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1 ;;
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi
+							return ;;
 					esac
 					continue ;;
 
 				glib2 )
 					case $LISTFILE in
 						build1_s.list )
-							execute_glib2_sed && build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1 
+							execute_glib2_sed
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi 
 							update_slackbuild ;;
 
 						build2_s.list )
-							execute_glib2_sed && build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1 
+							execute_glib2_sed
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi 
 							update_slackbuild ;;
 
 						* )
-							build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1 ;;
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi
+							return ;;
 					esac
 					continue ;;
 
 				glib-networking )
-					update-ca-certificates && build $SRCDIR $PACKNAME
-					[ $? != 0 ] && exit 1 ;;
+					update-ca-certificates
+					if ! build "$SRCDIR" "$PACKNAME"; then
+						exit 1
+					fi ;;
 
 				gobject-introspection )
 					case $LISTFILE in
 						build1_s.list )
-							execute_gobject_sed && build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1 
+							execute_gobject_sed
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi 
 							update_slackbuild ;; 
 
 						build2_s.list )
-							execute_gobject_sed && build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1 
+							execute_gobject_sed
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi 
 							update_slackbuild ;;
 
 						* )
-							build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1 ;;
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi
+							return ;;
 					esac
 					continue ;;
 
 				gpgme )
 					case $LISTFILE in
 						build3_s.list )
-							execute_gpgme_sed && build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1
-							update_slackbuild && LGPG=2 ;;
+							execute_gpgme_sed
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi 
+							update_slackbuild ;;
 						build4_s.list )
-							build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1 ;;
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi
+							return ;;
 					esac
 					continue ;;
 
 				gucharmap )
-					update-ca-certificates --fresh && build $SRCDIR $PACKNAME
-					[ $? != 0 ] && exit 1 ;;
+					update-ca-certificates --fresh
+					if ! build "$SRCDIR" "$PACKNAME"; then
+						exit 1
+					fi
+					return ;; 
 
 				harfbuzz )
 					case $LHAR in
 						1 )
-							execute_harfbuzz_sed && build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1
-							 update_slackbuild && LHAR=2 ;;
+							execute_harfbuzz_sed
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi 
+							update_slackbuild
+							LHAR=2 ;;
 						2 )
-							build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1 ;;
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi
+							return ;;
 					esac
 					continue ;;
 
 				installer )
-					build $SRCDIR $PACKNAME
-					[ $? != 0 ] && exit 1 ;;
+					if ! build "$SRCDIR" "$PACKNAME"; then
+						exit 1
+					fi
+					return ;;
 
 				isapnptools )
 					case $ARCH in
 						x86_64 )
 							echo ;;
 						* )
-							build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1 ;;
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi
+							return ;;
 					esac
 					continue ;;
 
 				extra-cmake-modules )
-					build_extra_cmake_kde
-					[ $? != 0 ] && exit 1 ;;
+					if ! build_extra_cmake_kde; then
+						exit 1
+					fi
+					return ;;
 
 				frameworks )
-					build_frameworks_kde
-					[ $? != 0 ] && exit 1 ;;
+					if ! build_frameworks_kde; then
+						exit 1
+					fi ;;
 
 				kdepim )
-					build_kdepim_kde
-					[ $? != 0 ] && exit 1 ;;
+					if ! build_kdepim_kde; then
+						exit 1
+					fi
+					return ;;
 
 				applications )
-					build_applications_kde
-					[ $? != 0 ] && exit 1 ;;
+					if ! build_applications_kde; then
+						exit 1
+					fi
+					return ;;
 
 				applications-extra )
-					build_applications_extra_kde
-					[ $? != 0 ] && exit 1 ;;
+					if ! build_applications_extra_kde; then
+						exit 1
+					fi
+					return ;;
 
 				plasma )
-					build_plasma_kde
-					[ $? != 0 ] && exit 1 ;;
+					if ! build_plasma_kde; then
+						exit 1
+					fi
+					return ;;
 
 				plasma-extra )
-					build_plasma_extra_kde
-					[ $? != 0 ] && exit 1 ;;
+					if ! build_plasma_extra_kde; then
+						exit 1
+					fi
+					return ;;
 
 				kernel-all )
-					kernel_build_all
-					[ $? != 0 ] && exit 1 ;;
+					if ! kernel_build_all; then
+						exit 1
+					fi
+					return ;;
 
 				kernel-headers )
-					kernel_headers_build_c
-					[ $? != 0 ] && exit 1 ;;
+					if ! kernel_headers_build_c; then
+						exit 1
+					fi
+					return ;;
 
 				kernel-source )
-					kernel_source_build_c
-					[ $? != 0 ] && exit 1 ;;
+					if ! kernel_source_build_c; then
+						exit 1
+					fi
+					return ;;
 
 				kmod )
 					case $LKMO in
 						1 )
-							execute_kmod_sed && build $SRCDIR  $PACKNAME
-							[ $? != 0 ] && exit 1
-							update_slackbuild && LKMO=2 ;;
+							execute_kmod_sed
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi 
+							update_slackbuild
+							LKMO=2 ;;
 						2 )
-							build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1 ;;
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi
+							return ;;
 					esac
 					continue ;;
 
 				ksh93 )
-					case $ARCH in
-						x86_64 )
-							upgradepkg --install-new /slacksrc/others/ksh93-2012_08_01-x86_64-2.txz
-							build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1 ;;
-						* )
-							upgradepkg --install-new /slacksrc/others/ksh93-2012_08_01-i586-2.txz
-							build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1 ;;
-					esac
+					upgradepkg --install-new /slacksrc/others/"$PACKNAME"-*"$ARCH"-*.txz
+					if ! build "$SRCDIR" "$PACKNAME"; then
+						exit 1
+					fi 
+					update_slackbuild
 					continue ;;
 
 				link_tools_slackware )
 					test_progs
-					distribution="slackware"
 					case $ARCH in
 						x86_64 )
- 							link_tools_x64
-							echo_message_slackware && exit 1 ;;
+ 							if ( link_tools_x64 ); then
+								echo_message_slackware && exit 1
+							fi
+							return ;;
 						* )
-							link_tools
-							echo_message_slackware && exit 1 ;;
+							if ( link_tools ); then
+							echo_message_slackware && exit 1
+							fi
+							return ;;
 					esac
 					continue ;;
 
 				libcaca )
-					case $ARCH in
-						x86_64 )
-							upgradepkg --install-new /slacksrc/others/libcaca-0.99.beta18-x86_64-2.txz
-							build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1 ;;
-						* )
-							upgradepkg --install-new /slacksrc/others/libcaca-0.99.beta18-i486-2.txz
-							build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1 ;;
-					esac
+					upgradepkg --install-new /slacksrc/others/"$PACKNAME"-*"$ARCH"-*.txz
+					if ! build "$SRCDIR" "$PACKNAME"; then
+						exit 1
+					fi 
+					update_slackbuild
 					continue ;;
 
 				libsoup )
 					source /root/.bashrc
-					build $SRCDIR $PACKNAME
-					[ $? != 0 ] && exit 1 ;;
+					if ! build "$SRCDIR" "$PACKNAME"; then
+						exit 1
+					fi
+					return ;;
 
 				libtirpc )
 					case $LRPC in
 						1 )
-							export WITH_GSS="NO" && build $SRCDIR $PACKNAME 
-							[ $? != 0 ] && exit 1
-							export WITH_GSS="YES" && LRPC=2 ;;
+							export WITH_GSS="NO"
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi 
+							export WITH_GSS="YES"
+							LRPC=2 ;;
 						* )
-							export WITH_GSS="YES" && build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1 ;;
+							export WITH_GSS="YES"
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi
+							return ;;
 					esac
 					continue ;;
 
 				libusb )
 					case $LUSB in
 						1 )
-							execute_libusb_sed && build $SRCDIR $PACKNAME 
-							[ $? != 0 ] && exit 1
-							update_slackbuild && LUSB=2 ;;
+							execute_libusb_sed
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi 
+							update_slackbuild
+							LUSB=2 ;;
 						2 )
-							build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1 ;;
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi
+							return ;;
 					esac
 					continue ;;
 
 				linux-faqs )
-					build_linux_faqs
-					[ $? != 0 ] && exit 1 ;;
+					if ! build_linux_faqs; then 
+						exit 1
+					fi
+					return ;;
 
 				linux-howtos )
-					build_linux_howtos
-					[ $? != 0 ] && exit 1 ;;
+					if ! build_linux_howtos; then
+						exit 1
+					fi
+					return ;;
 
 				libxkbcommon )
 					case $LXKB in
 						1 )
-							execute_libxkbcommon_sed && build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1
-							update_slackbuild && LXKB=2 ;;
+							execute_libxkbcommon_sed
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi 
+							update_slackbuild 
+							LXKB=2 ;;
 						2 )
-							build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1 ;;
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi
+							return ;;
 					esac
 					continue ;;
 
 				llvm )
 					case $LPVM in
 						1 )
-							execute_llvm_sed && build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1
-							update_slackbuild && LPVM=2 ;;
+							execute_llvm_sed
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi 
+							update_slackbuild
+							LPVM=2 ;;
 						2 )
-							build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1 ;;
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi
+							return ;;
 					esac
 					continue ;;
 
 				mesa )
 					case $LMES in
 						1 )
-							export BUILD_DEMOS=NO && build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1
+							export BUILD_DEMOS=NO
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi 
 							LMES=2 ;;
 						2 )
-							export BUILD_DEMOS=YES && build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1 ;;
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi
+							return ;;
 					esac
 					continue ;;
 
 				openldap )
 					case $LOPE in
 						1 )
-							execute_openldap_sed && build $SRCDIR $PACKNAME 
-							[ $? != 0 ] && exit 1
-							update_slackbuild && LOPE=2 ;;
+							execute_openldap_sed
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi
+							update_slackbuild
+							LOPE=2 ;;
 						* )
-							build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1 ;;
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi
+							return ;;
 					esac
 					continue ;;
 
 				pam )
 					case $LISTFILE in
 						build1_s.list )
-							execute_pam_sed && build $SRCDIR $PACKNAME 
-							[ $? != 0 ] && exit 1
-							update_slackbuild && LPAM=2 ;;
+							execute_pam_sed
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi
+							update_slackbuild ;;
 						build2_s.list )
-							build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1 ;;
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi
+							return ;;
 					esac
 					continue ;;
 
 
 				pci-utils )
-					build $SRCDIR $PACKNAME
-					[ $? != 0 ] && exit 1
+					if ! build "$SRCDIR" "$PACKNAME"; then
+						exit 1
+					fi
 					update-pciids ;;
 
 				perl )
 					case $LPER in
 						1 )
-							execute_perl_sed && build $SRCDIR $PACKNAME 
-							[ $? != 0 ] && exit 1
-							update_slackbuild && LPER=2 ;;
+							execute_perl_sed
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi
+							update_slackbuild
+							LPER=2 ;;
 						2 )
-							build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1 ;;
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi
+							return ;;
 					esac
 					continue ;;
 
 				pkg-config )
 					case $LISTFILE in
 						build1_s.list )
-							execute_pkg_config_sed && build $SRCDIR $PACKNAME 
-							[ $? != 0 ] && exit 1
-							update_slackbuild && LPKG=2 ;;
+							execute_pkg_config_sed
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi
+							update_slackbuild ;;
 						* )
-							build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1 ;;
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi
+							return ;;
 					esac
 					continue ;;
 
 				pre-aaa_libraries )
 					case $ARCH in
 						x86_64 )
-							pre_aaa_libraries64_c
-							[ $? != 0 ] && exit 1 ;;
+							if ! pre_aaa_libraries64_c; then
+								exit 1
+							fi
+							return ;;
 						* )
-							pre_aaa_libraries_c
-							[ $? != 0 ] && exit 1 ;;
+							if ! pre_aaa_libraries_c; then
+								exit 1
+							fi
+							return ;;
 					esac
 					continue ;;
 
 				post-aaa_libraries )
 					case $ARCH in
 						x86_64 )
-							post_aaa_libraries64_c
-							[ $? != 0 ] && exit 1 ;;
+							if ! post_aaa_libraries64_c; then
+								exit 1
+							fi
+							return ;;
 						* )
-							post_aaa_libraries_c
-							[ $? != 0 ] && exit 1 ;;
+							if ! post_aaa_libraries_c; then
+								exit 1
+							fi
+							return ;;
 					esac
 					continue ;;
 
 				pre-gcc )
-					pre_gcc
-					[ $? != 0 ] && exit 1 ;;
+					if ! pre_gcc; then
+						exit 1
+					fi
+					return ;;
 
 				post-gcc )
-					post_gcc
-					[ $? != 0 ] && exit 1 ;;
+					if ! post_gcc; then
+						exit 1
+					fi
+					return ;;
 
 				readline )
 					case $LREA in
 						1 )
-							execute_readline_sed && build $SRCDIR $PACKNAME 
-							[ $? != 0 ] && exit 1
-							update_slackbuild && LREA=2 ;;
-						2 )
-							build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1
-							LREA=3 ;;
-
+							execute_readline_sed
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi
+							update_slackbuild
+							LREA=2 ;;
 						* )
-							rm /sfspacks/l/readline*.t?z
- 							build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1 ;;
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi
+							return ;;
 					esac
 					continue ;;
 
 				rsync)
 					case $LRSY in
 						1 )
-							execute_rsync_sed && build $SRCDIR $PACKNAME 
-							[ $? != 0 ] && exit 1
-							update_slackbuild && LRSY=2 ;;
+							execute_rsync_sed
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi
+							update_slackbuild
+							LRSY=2 ;;
 
 						* )
- 							build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1 ;;
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi
+							return ;;
 					esac
 					continue ;;
 
 				subversion )
 					case $LISTFILE in
 						build3_s.list )
-							execute_subversion_sed && build $SRCDIR $PACKNAME 
-							[ $? != 0 ] && exit 1 
+							execute_subversion_sed
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi 
 							update_slackbuild ;;
 
 						* )
-							build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1 ;;
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi
+							return ;;
 					esac
 					continue ;;
 
 				texlive )
 					case $LISTFILE in
 						build2_s.list )
-							execute_texlive_sed && build $SRCDIR $PACKNAME 
-							[ $? != 0 ] && exit 1 
+							execute_texlive_sed
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi 
 							update_slackbuild ;;
 				
 						* )
-							build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1 ;;
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi
+							return ;;
 
 					esac
 					continue ;;
 
 				utempter )
 					touch /var/run/utmp
-					build $SRCDIR $PACKNAME
-					[ $? != 0 ] && exit 1 ;;
+					if ! build "$SRCDIR" "$PACKNAME"; then
+						exit 1
+					fi
+					return ;; 
 
 				test-glibc )
 					test_1
@@ -3144,40 +3328,57 @@ while (( LINE < $FILELEN )); do
 					answer ;;
 
 				x11-group1 )
-					build_x11_group1
-					[ $? != 0 ] && exit 1 ;;
+					if ! build_x11_group1; then
+						exit 1
+					fi
+					return ;; 
 
 				x11-group2 )
-					build_x11_group2
-					[ $? != 0 ] && exit 1 ;;
+					if ! build_x11_group2; then
+						exit 1
+					fi
+					return ;;  
 
 				x11-lib )
-					build_x11_lib
-					[ $? != 0 ] && exit 1 ;;
+					if ! build_x11_lib; then
+						exit 1
+					fi
+					return ;;  
 
 				x11-xcb )
-					build_x11_xcb
-					[ $? != 0 ] && exit 1 ;;
+					if ! build_x11_xcb; then
+						exit 1
+					fi
+					return ;;  
 
 				x11-app-post )
-					build_x11_app_post
-					[ $? != 0 ] && exit 1 ;;
+					if ! build_x11_app_post; then
+						exit 1
+					fi
+					return ;;  
 
 				zstd )
 					case $LZST in
 						1 )
-							execute_zstd_sed && build $SRCDIR $PACKNAME 
-							[ $? != 0 ] && exit 1
-							update_slackbuild && LPKG=2 ;;
+							execute_zstd_sed
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi
+							update_slackbuild
+							LZST=2 ;;
 						2 )
-							build $SRCDIR $PACKNAME
-							[ $? != 0 ] && exit 1 ;;
+							if ! build "$SRCDIR" "$PACKNAME"; then
+								exit 1
+							fi
+							return ;;  
 					esac
 					continue ;;
 	
 				* )
-					build $SRCDIR $PACKNAME
-					[ $? != 0 ] && exit 1 ;;
+					if ! build "$SRCDIR" "$PACKNAME"; then
+						exit 1
+					fi
+					return ;; 
 
 			esac
 done
