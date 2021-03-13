@@ -570,6 +570,8 @@ n npth
 n gnupg2
 n gpgme
 l libssh
+l python-dnspython
+l python-markdown
 n samba
 l v4l-utils
 l libvpx
