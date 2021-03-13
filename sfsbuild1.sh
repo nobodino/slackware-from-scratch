@@ -288,7 +288,7 @@ if [ ! -f "$SLACKSRC"/l/glib2/glib2.SlackBuild.old ]; then
 fi
 }
 
-execute_sed_gobject () {
+execute_sed_gobject-introspection () {
 #******************************************************************
 # change all "true" options to "false" options in SlackBuild
 #******************************************************************
