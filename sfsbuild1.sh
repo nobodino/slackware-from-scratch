@@ -138,7 +138,7 @@ echo
 # sub-system of execution of patches on the fly
 #*******************************************************************
 
-execute_cmake_sed () {
+execute_sed_cmake () {
 #******************************************************************
 # delete "--qt-gui" line in SlackBuild
 #******************************************************************
@@ -151,7 +151,7 @@ if [ ! -f "$SLACKSRC"/d/cmake/cmake.SlackBuild.old ]; then
 fi
 }
 
-execute_cyrus_sasl_sed () {
+execute_sed_cyrus-sasl () {
 #******************************************************************
 # delete several lines in SlackBuild
 #******************************************************************
@@ -167,7 +167,7 @@ if [ ! -f "$SLACKSRC"/n/cyrus-sasl/cyrus-sasl.SlackBuild.old ]; then
 fi
 }
 
-execute_doxygen_sed () {
+execute_sed_doxygen () {
 #******************************************************************
 # change "-Dbuild_wizard=yes" to "no" line in SlackBuild
 #******************************************************************
@@ -180,7 +180,7 @@ if [ ! -f "$SLACKSRC"/d/doxygen/doxygen.SlackBuild.old ]; then
 fi
 }
 
-execute_dbus_sed () {
+execute_sed_dbus () {
 #******************************************************************
 # delete "--enable-x11-autolaunch" line in SlackBuild
 #******************************************************************
@@ -193,7 +193,7 @@ if [ ! -f "$SLACKSRC"/a/dbus/dbus.SlackBuild.old ]; then
 fi
 }
 
-execute_elogind_sed () {
+execute_sed_elogind () {
 #******************************************************************
 # change all "true" options to "false" options in SlackBuild
 #******************************************************************
@@ -206,7 +206,7 @@ if [ ! -f "$SLACKSRC"/a/elogind/elogind.SlackBuild.old ]; then
 fi
 }
 
-execute_findutils_sed () {
+execute_sed_findutils () {
 #******************************************************************
 # disable the patch and autoreconf in SlackBuild
 #******************************************************************
@@ -220,7 +220,7 @@ if [ ! -f /slacksrc/a/findutils/findutils.SlackBuild.old ]; then
 fi
 }
 
-execute_fontconfig_sed () {
+execute_sed_fontconfig () {
 #******************************************************************
 # add "--disable-docs" to SlackBuild
 #******************************************************************
@@ -234,7 +234,7 @@ if [ ! -f "$SLACKSRC"/x/fontconfig/fontconfig.SlackBuild.old ]; then
 fi
 }
 
-execute_freetype_sed () {
+execute_sed_freetype () {
 #******************************************************************
 # remove "exit 1" code and add headers (ft2build.h and ftoption.h) to SlackBuild
 #******************************************************************
@@ -257,7 +257,7 @@ if [ ! -f "$SLACKSRC"/l/freetype/freetype.SlackBuild.old ]; then
 fi
 }
 
-execute_gd_sed () {
+execute_sed_gd () {
 #******************************************************************
 # add "--without-fontconfig" and "--without-xpm" to SlackBuild
 #******************************************************************
@@ -275,7 +275,7 @@ if [ ! -f "$SLACKSRC"/l/gd/gd.SlackBuild.old ]; then
 fi
 }
 
-execute_glib2_sed () {
+execute_sed_glib2 () {
 #******************************************************************
 # change all "true" options to "false" options in SlackBuild
 #******************************************************************
@@ -288,7 +288,7 @@ if [ ! -f "$SLACKSRC"/l/glib2/glib2.SlackBuild.old ]; then
 fi
 }
 
-execute_gobject_sed () {
+execute_sed_gobject () {
 #******************************************************************
 # change all "true" options to "false" options in SlackBuild
 #******************************************************************
@@ -301,7 +301,7 @@ if [ ! -f "$SLACKSRC"/l/gobject-introspection/gobject-introspection.SlackBuild.o
 fi
 }
 
-execute_gpgme_sed () {
+execute_sed_gpgme () {
 #******************************************************************
 # remove qt5 option fo the first build in SlackBuild
 #******************************************************************
@@ -314,7 +314,7 @@ if [ ! -f "$SLACKSRC"/n/gpgme/gpgme.SlackBuild.old ]; then
 fi
 }
 
-execute_harfbuzz_sed () {
+execute_sed_harfbuzz () {
 #******************************************************************
 # remove "exit 1" code and add harfbuzz headers to SlackBuild
 #******************************************************************
@@ -322,13 +322,15 @@ if [ ! -f "$SLACKSRC"/l/harfbuzz/harfbuzz.SlackBuild.old ]; then
 	cp -v "$SLACKSRC"/l/harfbuzz/harfbuzz.SlackBuild "$SLACKSRC"/l/harfbuzz/harfbuzz.SlackBuild.old
 	(
 		cd "$SLACKSRC"/l/harfbuzz || exit 1
-		sed -i -e "s/\"\${NINJA:=ninja}\"\ $NUMJOBS || exit 1/\"\${NINJA:=ninja}\"\ $NUMJOBS/" harfbuzz.SlackBuild
-		sed -i -e "s/DESTDIR=$PKG $NINJA install || exit 1/DESTDIR=$PKG $NINJA install || exit 1/" harfbuzz.SlackBuild
+		# shellcheck disable=SC2016
+		sed -i -e 's/\"\${NINJA:=ninja}\"\ $NUMJOBS || exit 1/\"\${NINJA:=ninja}\"\ $NUMJOBS/' harfbuzz.SlackBuild
+		# shellcheck disable=SC2016
+		sed -i -e 's/DESTDIR=$PKG $NINJA install || exit 1/DESTDIR=$PKG $NINJA install || exit 1/' harfbuzz.SlackBuild
 	)
 fi
 }
 
-execute_kmod_sed () {
+execute_sed_kmod () {
 #******************************************************************
 # remove "exit 1" code in SlackBuild
 #******************************************************************
@@ -343,7 +345,7 @@ if [ ! -f "$SLACKSRC"/a/kmod/kmod.SlackBuild.old ]; then
 fi
 }
 
-execute_libusb_sed () {
+execute_sed_libusb () {
 #******************************************************************
 # add "--disable-dev" to SlackBuild
 #******************************************************************
@@ -358,7 +360,7 @@ if [ ! -f "$SLACKSRC"/l/libusb/libusb.SlackBuild.old ]; then
 fi
 }
 
-execute_libxkbcommon_sed () {
+execute_sed_libxkbcommon () {
 #******************************************************************
 # add "-Denable-docs=false" to SlackBuild
 #******************************************************************
@@ -373,7 +375,7 @@ if [ ! -f "$SLACKSRC"/l/libxkbcommon/libxkbcommon.SlackBuild.old ]; then
 fi
 }
 
-execute_llvm_sed () {
+execute_sed_llvm () {
 #******************************************************************
 # change "clang++" to "g++" and "clang" to "gcc" in SlackBuild
 #******************************************************************
@@ -394,7 +396,7 @@ if [ ! -f "$SLACKSRC"/d/llvm/llvm.SlackBuild.old ]; then
 fi
 }
 
-execute_openldap_sed () {
+execute_sed_openldap () {
 #******************************************************************
 # disable some options in SlackBuild
 #******************************************************************
@@ -410,7 +412,7 @@ if [ ! -f "$SLACKSRC"/n/openldap/openldap.SlackBuild.old ]; then
 fi
 }
 
-execute_pam_sed () {
+execute_sed_pam () {
 #******************************************************************
 # delete lines that doesn't allow build in build1_.list
 #******************************************************************
@@ -423,20 +425,20 @@ if [ ! -f "$SLACKSRC"/a/pam/pam.SlackBuild.old ]; then
 fi
 }
 
-execute_perl_sed () {
+execute_sed_perl () {
 #******************************************************************
-# delete several lines in SlackBuild
+# delete several lines in SlackBuild (disable DBD-mysql build on first pass)
 #******************************************************************
 if [ ! -f "$SLACKSRC"/d/perl/perl.SlackBuild.old ]; then
 	cp -v "$SLACKSRC"/d/perl/perl.SlackBuild "$SLACKSRC"/d/perl/perl.SlackBuild.old
 	(
 		cd "$SLACKSRC"/d/perl || exit 1
-		sed -i -e "227,240d" perl.SlackBuild
+		sed -i -e "237,250d" perl.SlackBuild
 	)
 fi
 }
 
-execute_pkg_config_sed () {
+execute_sed_pkg-config () {
 #******************************************************************
 # add "--with-internel-glib" to SlackBuild
 #******************************************************************
@@ -451,7 +453,7 @@ if [ ! -f "$SLACKSRC"/d/pkg-config/pkg-config.SlackBuild.old ]; then
 fi
 }
 
-execute_readline_sed () {
+execute_sed_readline () {
 #******************************************************************
 # disable shared SHLIBS code in SlackBuild
 # delete examples/rlfe lines in SlackBuild
@@ -467,7 +469,7 @@ if [ ! -f "$SLACKSRC"/l/readline/readline.SlackBuild.old ]; then
 fi
 }
 
-execute_rsync_sed () {
+execute_sed_rsync () {
 #******************************************************************
 # disable shared SHLIBS code in SlackBuild
 # delete examples/rlfe lines in SlackBuild
@@ -488,7 +490,7 @@ if [ ! -f "$SLACKSRC"/n/rsync/rsync.SlackBuild.old ]; then
 fi
 }
 
-execute_subversion_sed () {
+execute_sed_subversion () {
 #******************************************************************
 # delete "--with-kwallet" line in SlackBuild
 #******************************************************************
@@ -502,7 +504,7 @@ if [ ! -f "$SLACKSRC"/d/subversion/subversion.SlackBuild.old ]; then
 fi
 }
 
-execute_texlive_sed () {
+execute_sed_texlive () {
 #******************************************************************
 # change some options from "--with-xxx" in "--without-xxx",
 # and add "--disable-web2c" and "--disable-xetex" in SlackBuild
@@ -526,7 +528,7 @@ if [ ! -f "$SLACKSRC"/t/texlive/texlive.SlackBuild.old ]; then
 fi
 }
 
-execute_zstd_sed () {
+execute_sed_zstd () {
 #******************************************************************
 # delete "zcat" patch line in SlackBuild
 #******************************************************************
@@ -543,7 +545,7 @@ fi
 # End of sub-system of execution of patches
 #*******************************************************************
 
-kernel_source_build_c () {
+kernel_source_build () {
 #********************************************************
 # remove everything related to building the kernel image
 #********************************************************
@@ -556,7 +558,7 @@ rm -rf /tmp/package-kernel-source/
 mv kernel-source.SlackBuild.old kernel-source.SlackBuild
 }
 
-kernel_headers_build_c () {
+kernel_headers_build () {
 #********************************************************
 # remove everything related to .config and PRINT_PACKAGE_NAME
 #********************************************************
@@ -782,14 +784,6 @@ case $PACKNAME in
 			exit 1
 		fi ;;
 
-#	glibc )
-#		# install glibc in the right order in case upgrading
-#		$INSTALLPRG /tmp/aaa_glibc-solibs*.t?z
-#		$INSTALLPRG /tmp/glibc-2*.t?z
-#		$INSTALLPRG /tmp/glibc-profile*.t?z
-#		$INSTALLPRG /tmp/glibc-i18n*.t?z
-#		cd /sources ;;
-
 	installer )
 		# doesn't neeed any install
 		echo ;;
@@ -812,7 +806,6 @@ case $PACKNAME in
 
 	vim )
 		# install both vim and vim-gvim packages
-#		$INSTALLPRG /tmp/vim-gvim*.t?z
 		if ! ( $INSTALLPRG /tmp/"$PACKNAME"-*.t?z )
 		then
 			exit 1
@@ -1021,8 +1014,8 @@ clean_tmp () {
 #*************************
 cd / && [ -f localtime ] && rm localtime
 cd /tmp || exit 1
-rm ./*
-rm -rf /tmp/./*
+rm ./*  2>&1 | tee > /dev/null
+rm -rf /tmp/./*  2>&1 | tee > /dev/null
 cd /sources || exit 1
 }
 
@@ -1776,7 +1769,7 @@ mv -v /tmp/x11-build/*.txz /sfspacks/x
 cd /sources || exit 1
 }
 
-build_extra_cmake_kde () {
+build-extra-cmake-modules () {
 #********************************************************
 cd /slacksrc/kde/kde || exit 1
 
@@ -1791,7 +1784,7 @@ mv -v /tmp/kde_build/*.txz /sfspacks/kde
 cd /sources || exit 1
 }
 
-build_frameworks_kde () {
+build_frameworks () {
 #********************************************************
 #  frameworks/portaingAids \
 #  frameworks \
@@ -1922,7 +1915,7 @@ mv -v /tmp/kde_build/*.txz /sfspacks/kde
 cd /sources || exit 1
 }
 
-build_kdepim_kde () {
+build_kdepim () {
 #********************************************************
 cd /slacksrc/kde/kde || exit 1
 
@@ -2001,7 +1994,7 @@ mv -v /tmp/kde_build/*.txz /sfspacks/kde
 cd /sources || exit 1
 }
 
-build_plasma_kde () {
+build_plasma () {
 #********************************************************
 cd /slacksrc/kde/kde || exit 1
 
@@ -2081,7 +2074,7 @@ mv -v /tmp/kde_build/*.txz /sfspacks/kde
 cd /sources || exit 1
 }
 
-build_plasma_extra_kde () {
+build_plasma-extra () {
 #********************************************************
 cd /slacksrc/kde/kde || exit 1
 
@@ -2122,7 +2115,7 @@ rm -rf /tmp/./*
 cd /sources || exit 1
 }
 
-build_applications_kde () {
+build_applications () {
 #********************************************************
 cd /slacksrc/kde/kde || exit 1
 
@@ -2297,7 +2290,7 @@ mv -v /tmp/kde_build/*.txz /sfspacks/kde
 cd /sources || exit 1
 }
 
-build_applications_extra_kde () {
+build_applications-extra () {
 #********************************************************
 cd /slacksrc/kde/kde || exit 1
 
@@ -2465,7 +2458,7 @@ echo
 echo -e "$YELLOW"  "upgrade your boot loader and reboot in your SFS system" "$NORMAL"
 echo
 echo
-cd /sfspacks && rm ./*/*_alsa*
+cd /sfspacks && rm ./*/*_alsa* 2>&1 | tee > /dev/null
 cd /sources && killall -9 dhcpcd
 }
 
@@ -2478,6 +2471,30 @@ mv "$PACKNAME".SlackBuild.old "$PACKNAME".SlackBuild
 cd /sources || exit 1
 }
 
+build_pkg_1 () {
+#**************
+execute_sed_"$PACKNAME"
+if ! build "$SRCDIR" "$PACKNAME"; then
+	exit 1
+fi
+update_slackbuild
+}
+
+build_pkg_2 () {
+#**************
+if ! build "$SRCDIR" "$PACKNAME"; then
+	exit 1
+fi
+return
+}
+
+build_pkg_3 () {
+#**************
+if ! build_"$PACKNAME"; then
+	exit 1
+fi
+return
+}
 
 #****************************************************************
 #****************************************************************
@@ -2588,365 +2605,216 @@ while (( LINE < FILELEN )); do
 						x86_64 )
 							if ! adjust_x86_64; then
 								exit 1
-							fi
-							return ;;
+							fi ;;
 						* )
 							if ! adjust_i686; then
 								exit 1
-							fi
-							return ;;
+							fi ;;
 					esac
 					continue ;;
 
 				alsa-lib )
 					case $LISTFILE in
 						build2_s.list )
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi
-							return ;;
+							build_pkg_1 ;;
 						* )
 							rm /sfspacks/l/alsa-lib*.t?z
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi
-							return ;;
+							build_pkg_1 ;;
 					esac
 					continue ;;
 
 				ca-certificates )
-					if ! build "$SRCDIR" "$PACKNAME"; then
-						exit 1
-					fi
+					build_pkg_2
 					update-ca-certificates ;;
 
 				cmake )
 					case $LISTFILE in
 						build1_s.list )
-							execute_cmake_sed
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi 
-							update_slackbuild ;;
-
+							build_pkg_1 ;; 
 						* )
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi
-							return ;;
+							build_pkg_2 ;;
 					esac
 					continue ;;
 
 				cyrus-sasl )
 					case $LISTFILE in
 						build1_s.list )
-							execute_cyrus_sasl_sed
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi 
-							update_slackbuild ;;
+							build_pkg_1 ;;
 						* )
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi
-							return ;;
+							build_pkg_2 ;;
 					esac
 					continue ;;
 
 				dbus )
 					case $LISTFILE in
 						build2_s.list )
-							execute_dbus_sed
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi
-							update_slackbuild  
+							build_pkg_1 
 							dbus-uuidgen --ensure ;;
-
 						* )
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi
-							return ;;
+							build_pkg_2 ;;
 					esac
 					continue ;;
 
 				doxygen )
 					case $LDOX in
 						1 )
-							execute_doxygen_sed
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi  
-							update_slackbuild 
+							build_pkg_1
 							LDOX=2 ;;
-
 						* )
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi
-							return ;;
+							build_pkg_2 ;;
 					esac
 					continue ;;
 
 				dhcpcd_up )
 					if ! (dhcpcd -t 15 -L eth0 || dhcpcd -t 15 -L wlan0); then
 						exit 1
-					fi
-					return ;;
+					fi ;;
 
 				end1 )
-					message_end1
+					message_"$PACKNAME"
 					clean_tmp ;;
 
 				end2 )
-					message_end2
+					message_"$PACKNAME"
 					clean_tmp ;;
 
 				end3 )
-					message_end3
+					message_"$PACKNAME"
 					clean_tmp ;;
 
 				end4 )
-					message_end4
+					message_"$PACKNAME"
 					clean_tmp ;;
 
 				elogind )
 					case $LISTFILE in
 						build1_s.list )
-							execute_elogind_sed
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi 
-							update_slackbuild ;;
+							build_pkg_1 ;;
 						* )
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi
-							return ;;
+							build_pkg_2 ;;
 					esac
 					continue ;;
 
 				findutils )
 					case $LFIN in
 						1 )
-							execute_findutils_sed
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi 
-							update_slackbuild
+							build_pkg_1
 							LFIN=2 ;;
 						2 )
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi
-							return ;;
+							build_pkg_2 ;;
 					esac
 					continue ;;
 
 				fontconfig )
 					case $LISTFILE in
 						build2_s.list )
-							execute_fontconfig_sed
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi 
-							update_slackbuild ;;
-
+							build_pkg_1 ;;
 						* )
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi
-							return ;;
+							build_pkg_2 ;;
 					esac
 					continue ;;
 
 				freetype )
 					case $LFRE in
 						1 )
-							execute_freetype_sed
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi 
-							update_slackbuild 
+							build_pkg_1 
 							LFRE=2 ;;
 						2 )
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi
-							return ;;
+							build_pkg_2 ;;
 					esac
 					continue ;;
 
 				gd )
 					case $LGD in
 						1 )
-							execute_gd_sed
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi 
-							update_slackbuild
+							build_pkg_1
 							LGD=2 ;;
 						2 )
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi
-							return ;;
+							build_pkg_2 ;;
 					esac
 					continue ;;
 
 				glib2 )
 					case $LISTFILE in
 						build1_s.list )
-							execute_glib2_sed
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi 
-							update_slackbuild ;;
-
+							build_pkg_1 ;;
 						build2_s.list )
-							execute_glib2_sed
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi 
-							update_slackbuild ;;
-
+							build_pkg_1 ;;
 						* )
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi
-							return ;;
+							build_pkg_2 ;;
 					esac
 					continue ;;
 
 				glib-networking )
 					update-ca-certificates
-					if ! build "$SRCDIR" "$PACKNAME"; then
-						exit 1
-					fi ;;
+					build_pkg_2 ;;
 
 				gobject-introspection )
 					case $LISTFILE in
 						build1_s.list )
-							execute_gobject_sed
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi 
-							update_slackbuild ;; 
-
+							build_pkg_1 ;; 
 						build2_s.list )
-							execute_gobject_sed
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi 
-							update_slackbuild ;;
-
+							build_pkg_1 ;;
 						* )
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi
-							return ;;
+							build_pkg_2 ;;
 					esac
 					continue ;;
 
 				gpgme )
 					case $LISTFILE in
 						build3_s.list )
-							execute_gpgme_sed
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi 
-							update_slackbuild ;;
+							build_pkg_1 ;;
 						build4_s.list )
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi
-							return ;;
+							build_pkg_2 ;;
 					esac
 					continue ;;
 
 				gucharmap )
 					update-ca-certificates --fresh
-					if ! build "$SRCDIR" "$PACKNAME"; then
-						exit 1
-					fi
-					return ;; 
+					build_pkg_1 ;; 
 
 				harfbuzz )
 					case $LHAR in
 						1 )
-							execute_harfbuzz_sed
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi 
-							update_slackbuild
+							build_pkg_1
 							LHAR=2 ;;
 						2 )
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi
-							return ;;
+							build_pkg_2 ;;
 					esac
 					continue ;;
 
 				installer )
-					if ! build "$SRCDIR" "$PACKNAME"; then
-						exit 1
-					fi
-					return ;;
+					build_pkg_2 ;;
 
 				isapnptools )
 					case $ARCH in
 						x86_64 )
 							echo ;;
 						* )
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi
-							return ;;
+							build_pkg_1 ;;
 					esac
 					continue ;;
 
 				extra-cmake-modules )
-					if ! build_extra_cmake_kde; then
-						exit 1
-					fi
-					return ;;
+					build_pkg_3 ;;
 
 				frameworks )
-					if ! build_frameworks_kde; then
-						exit 1
-					fi ;;
+					build_pkg_3 ;;
 
 				kdepim )
-					if ! build_kdepim_kde; then
-						exit 1
-					fi
-					return ;;
+					build_pkg_3 ;;
 
 				applications )
-					if ! build_applications_kde; then
-						exit 1
-					fi
-					return ;;
+					build_pkg_3 ;;
 
 				applications-extra )
-					if ! build_applications_extra_kde; then
-						exit 1
-					fi
-					return ;;
+					build_pkg_3 ;;
 
 				plasma )
-					if ! build_plasma_kde; then
-						exit 1
-					fi
-					return ;;
+					build_pkg_3 ;;
 
 				plasma-extra )
-					if ! build_plasma_extra_kde; then
-						exit 1
-					fi
-					return ;;
+					build_pkg_3 ;;
 
 				kernel-all )
 					if ! kernel_build_all; then
@@ -2955,13 +2823,13 @@ while (( LINE < FILELEN )); do
 					return ;;
 
 				kernel-headers )
-					if ! kernel_headers_build_c; then
+					if ! kernel_headers_build; then
 						exit 1
 					fi
 					return ;;
 
 				kernel-source )
-					if ! kernel_source_build_c; then
+					if ! kernel_source_build; then
 						exit 1
 					fi
 					return ;;
@@ -2969,27 +2837,16 @@ while (( LINE < FILELEN )); do
 				kmod )
 					case $LKMO in
 						1 )
-							execute_kmod_sed
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi 
-							update_slackbuild
+							build_pkg_1
 							LKMO=2 ;;
 						2 )
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi
-							return ;;
+							build_pkg_2 ;;
 					esac
 					continue ;;
 
 				ksh93 )
 					upgradepkg --install-new /slacksrc/others/"$PACKNAME"-*"$ARCH"-*.txz
-					if ! build "$SRCDIR" "$PACKNAME"; then
-						exit 1
-					fi 
-					update_slackbuild
-					continue ;;
+					build_pkg_2 ;;
 
 				link_tools_slackware )
 					test_progs
@@ -3001,7 +2858,7 @@ while (( LINE < FILELEN )); do
 							return ;;
 						* )
 							if ( link_tools ); then
-							echo_message_slackware && exit 1
+								echo_message_slackware && exit 1
 							fi
 							return ;;
 					esac
@@ -3009,51 +2866,32 @@ while (( LINE < FILELEN )); do
 
 				libcaca )
 					upgradepkg --install-new /slacksrc/others/"$PACKNAME"-*"$ARCH"-*.txz
-					if ! build "$SRCDIR" "$PACKNAME"; then
-						exit 1
-					fi 
-					update_slackbuild
-					continue ;;
+					build_pkg_2 ;;
 
 				libsoup )
 					source /root/.bashrc
-					if ! build "$SRCDIR" "$PACKNAME"; then
-						exit 1
-					fi
-					return ;;
+					build_pkg_2 ;;
 
 				libtirpc )
 					case $LRPC in
 						1 )
 							export WITH_GSS="NO"
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi 
+							build_pkg_2 
 							export WITH_GSS="YES"
 							LRPC=2 ;;
 						* )
 							export WITH_GSS="YES"
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi
-							return ;;
+							build_pkg_2 ;;
 					esac
 					continue ;;
 
 				libusb )
 					case $LUSB in
 						1 )
-							execute_libusb_sed
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi 
-							update_slackbuild
+							build_pkg_1
 							LUSB=2 ;;
 						2 )
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi
-							return ;;
+							build_pkg_2 ;;
 					esac
 					continue ;;
 
@@ -3072,34 +2910,20 @@ while (( LINE < FILELEN )); do
 				libxkbcommon )
 					case $LXKB in
 						1 )
-							execute_libxkbcommon_sed
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi 
-							update_slackbuild 
+							build_pkg_1
 							LXKB=2 ;;
 						2 )
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi
-							return ;;
+							build_pkg_2 ;;
 					esac
 					continue ;;
 
 				llvm )
 					case $LPVM in
 						1 )
-							execute_llvm_sed
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi 
-							update_slackbuild
+							build_pkg_1
 							LPVM=2 ;;
 						2 )
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi
-							return ;;
+							build_pkg_2 ;;
 					esac
 					continue ;;
 
@@ -3107,88 +2931,53 @@ while (( LINE < FILELEN )); do
 					case $LMES in
 						1 )
 							export BUILD_DEMOS=NO
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi 
+							build_pkg_2
 							LMES=2 ;;
 						2 )
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi
-							return ;;
+							build_pkg_2 ;;
 					esac
 					continue ;;
 
 				openldap )
 					case $LOPE in
 						1 )
-							execute_openldap_sed
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi
-							update_slackbuild
+							build_pkg_1
 							LOPE=2 ;;
 						* )
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi
-							return ;;
+							build_pkg_2 ;;
 					esac
 					continue ;;
 
 				pam )
 					case $LISTFILE in
 						build1_s.list )
-							execute_pam_sed
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi
-							update_slackbuild ;;
+							build_pkg_1 ;;
 						build2_s.list )
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi
-							return ;;
+							build_pkg_2 ;;
 					esac
 					continue ;;
 
 
 				pci-utils )
-					if ! build "$SRCDIR" "$PACKNAME"; then
-						exit 1
-					fi
+					build_pkg_2
 					update-pciids ;;
 
 				perl )
 					case $LPER in
 						1 )
-							execute_perl_sed
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi
-							update_slackbuild
+							build_pkg_1
 							LPER=2 ;;
 						2 )
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi
-							return ;;
+							build_pkg_2 ;;
 					esac
 					continue ;;
 
 				pkg-config )
 					case $LISTFILE in
 						build1_s.list )
-							execute_pkg_config_sed
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi
-							update_slackbuild ;;
+							build_pkg_1 ;;
 						* )
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi
-							return ;;
+							build_pkg_2 ;;
 					esac
 					continue ;;
 
@@ -3237,79 +3026,44 @@ while (( LINE < FILELEN )); do
 				readline )
 					case $LREA in
 						1 )
-							execute_readline_sed
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi
-							update_slackbuild
+							build_pkg_1
 							LREA=2 ;;
 						* )
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi
-							return ;;
+							build_pkg_2 ;;
 					esac
 					continue ;;
 
 				rsync)
 					case $LRSY in
 						1 )
-							execute_rsync_sed
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi
-							update_slackbuild
+							build_pkg_1
 							LRSY=2 ;;
 
 						* )
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi
-							return ;;
+							build_pkg_2 ;;
 					esac
 					continue ;;
 
 				subversion )
 					case $LISTFILE in
 						build3_s.list )
-							execute_subversion_sed
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi 
-							update_slackbuild ;;
-
+							build_pkg_1 ;;
 						* )
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi
-							return ;;
+							build_pkg_2 ;;
 					esac
 					continue ;;
 
 				texlive )
 					case $LISTFILE in
 						build2_s.list )
-							execute_texlive_sed
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi 
-							update_slackbuild ;;
-				
+							build_pkg_1 ;;
 						* )
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi
-							return ;;
-
+							build_pkg_2 ;;
 					esac
 					continue ;;
 
 				utempter )
-					touch /var/run/utmp
-					if ! build "$SRCDIR" "$PACKNAME"; then
-						exit 1
-					fi
-					return ;; 
+					touch /var/run/utmp && build_pkg_2 ;;
 
 				test-glibc )
 					test_1
@@ -3360,27 +3114,15 @@ while (( LINE < FILELEN )); do
 				zstd )
 					case $LZST in
 						1 )
-							execute_zstd_sed
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi
-							update_slackbuild
+							build_pkg_1
 							LZST=2 ;;
 						2 )
-							if ! build "$SRCDIR" "$PACKNAME"; then
-								exit 1
-							fi
-							return ;;  
+							build_pkg_2 ;; 
 					esac
 					continue ;;
 	
 				* )
-					if ! build "$SRCDIR" "$PACKNAME"; then
-						exit 1
-					fi
-					return ;; 
-
+					build_pkg_2 ;;
 			esac
 done
-
 echo
