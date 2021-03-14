@@ -1769,7 +1769,7 @@ mv -v /tmp/x11-build/*.txz /sfspacks/x
 cd /sources || exit 1
 }
 
-build-extra-cmake-modules () {
+build_extra-cmake-modules () {
 #********************************************************
 cd /slacksrc/kde/kde || exit 1
 
