@@ -175,7 +175,7 @@ if [ ! -f "$SLACKSRC"/d/doxygen/doxygen.SlackBuild.old ]; then
 	cp -v "$SLACKSRC"/d/doxygen/doxygen.SlackBuild "$SLACKSRC"/d/doxygen/doxygen.SlackBuild.old
 	(
 		cd "$SLACKSRC"/d/doxygen || exit 1
-		sed -i -e "s/Dbuild_wizard=yes/Dbuild_wizard=no/g" doxygen.SlackBuild
+		sed -i -e "s/Dbuild_wizard=ON/Dbuild_wizard=OFF/g" doxygen.SlackBuild
 	)
 fi
 }
