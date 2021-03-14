@@ -2934,6 +2934,7 @@ while (( LINE < FILELEN )); do
 							build_pkg_2
 							LMES=2 ;;
 						2 )
+							export BUILD_DEMOS=YES
 							build_pkg_2 ;;
 					esac
 					continue ;;
