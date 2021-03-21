@@ -476,6 +476,7 @@ ap nvme-cli
 ap neofetch
 ap undervolt
 ap inxi
+n wireguard-tools
 a end2
 EOF
 }
