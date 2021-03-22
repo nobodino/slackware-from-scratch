@@ -301,6 +301,7 @@ a hwdata
 a pciutils
 d pkg-config
 l gamin
+d vala
 a libgudev
 d pkg-config
 n wget
