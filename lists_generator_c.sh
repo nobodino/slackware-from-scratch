@@ -608,6 +608,7 @@ tcl tix
 t fig2dev
 l libsigsegv
 l libsigc++
+l libsigc++3
 d poke
 d cscope
 d distcc
