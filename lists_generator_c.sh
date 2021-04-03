@@ -265,6 +265,7 @@ d llvm
 d llvm
 ap linuxdoc-tools
 d ccache
+n ca-certificates
 d rust
 a kernel-all
 d help2man
