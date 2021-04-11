@@ -119,6 +119,7 @@ a kmod
 a gettext
 a gettext-tools
 l libssh2
+n c-ares
 n curl
 l elfutils
 l libffi
