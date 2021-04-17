@@ -494,9 +494,9 @@ a zerofree
 l libpcap
 a f2fs-tools
 a exfatprogs
+l gnu-efi
 a efivar
 a efibootmgr
-l gnu-efi
 a elilo
 d autoconf-archive
 a dbus
