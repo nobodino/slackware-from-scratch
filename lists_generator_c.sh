@@ -583,6 +583,9 @@ l wavpack
 l python-six
 d opencl-headers
 l ocl-icd
+l vid.stab
+l frei0r-plugins
+l librsvg
 l ffmpeg
 l gstreamer
 l gst-plugins-base
