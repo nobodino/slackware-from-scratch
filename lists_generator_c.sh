@@ -528,6 +528,8 @@ l sdl
 l openal-soft
 l libxkbcommon
 l brotli
+x eglexternalplatform
+x egl-wayland
 x wayland
 x wayland-protocols
 l woff2
@@ -1356,6 +1358,7 @@ l quazip
 l kdsoap
 l quazip
 l pipewire
+n daemon
 l qrencode
 n gpgme
 l poppler

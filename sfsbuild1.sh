@@ -1673,6 +1673,7 @@ if ! ./x11.SlackBuild data xkeyboard-config; then
 	exit 1
 fi
 
+sed -i -e 's/BUILD_XWAYLAND=NO/BUILD_XWAYLAND=YES/' configure/xorg-server
 if ! ./x11.SlackBuild xserver xorg-server; then
 	exit 1
 fi
@@ -1959,6 +1960,7 @@ for package in \
 	mailcommon \
 	kleopatra \
 	kpkpass \
+  kopeninghours \
 	kitinerary \
 	kdepim-addons \
 	kdepim-runtime \
