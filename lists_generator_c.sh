@@ -458,6 +458,7 @@ x xcm
 x libwacom
 l libunwind
 x x11-group2
+x xorg-server-xwayland
 x compiz
 x dejavu-fonts-ttf
 x liberation-fonts-ttf
@@ -1019,6 +1020,7 @@ xap pavucontrol
 l libnice
 l graphene
 l farstream
+l libgnt
 xap pidgin
 xap rdesktop
 xap windowmaker

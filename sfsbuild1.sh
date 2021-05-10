@@ -1682,7 +1682,6 @@ for package in \
 	fi
 done
 
-sed -i -e 's/BUILD_XWAYLAND=NO/BUILD_XWAYLAND=YES/' configure/xorg-server
 if ! ./x11.SlackBuild xserver xorg-server; then
 	exit 1
 fi
