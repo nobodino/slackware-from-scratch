@@ -410,6 +410,13 @@ glibc_build () {
 			echo ;;
 	esac
 
+	case "$GCCVER" in
+		11.1.0 )
+			sed -e 's/amx_/amx-/' -i sysdeps/x86/tst-cpu-features-supports.c ;;
+		* )
+			echo ;;
+	esac
+
 	mkdir -v build
 	cd build || exit 1 
 
