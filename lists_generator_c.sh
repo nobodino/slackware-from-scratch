@@ -459,7 +459,7 @@ x xcm
 x libwacom
 l libunwind
 x x11-group2
-x xorg-server-xwayland
+# x xorg-server-xwayland
 x compiz
 x dejavu-fonts-ttf
 x liberation-fonts-ttf
@@ -534,6 +534,7 @@ x eglexternalplatform
 x egl-wayland
 x wayland
 x wayland-protocols
+x xorg-server-xwayland
 l woff2
 ap flac
 l hyphen
