@@ -621,6 +621,7 @@ l libsigc++
 l libsigc++3
 d poke
 d cscope
+l gtk+3
 d distcc
 d icecream
 d dev86
