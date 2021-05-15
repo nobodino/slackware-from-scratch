@@ -443,6 +443,7 @@ l Mako
 x libglvnd
 x wayland
 x wayland-protocols
+x vulkan-sdk
 x mesa
 x glew
 x glu
