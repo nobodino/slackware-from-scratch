@@ -2030,6 +2030,7 @@ for package in \
 	kwayland-server \
 	plasma-integration \
 	kinfocenter \
+	layer-shell-qt \
 	libksysguard \
 	ksysguard \
 	kscreenlocker \
@@ -2071,6 +2072,7 @@ for package in \
 	plasma-tests \
 	plasma-thunderbolt \
 	plasma-kcm \
+	ksystemstats \
   ; do
    	if ! ./kde.SlackBuild plasma:$package; then
 		touch /tmp/kde_build/$package.failed && exit 1
