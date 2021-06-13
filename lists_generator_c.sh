@@ -503,6 +503,8 @@ a elilo
 d autoconf-archive
 a dbus
 d ruby
+l rubygem-asciidoctor
+a util-linux
 l libunistring
 l gc
 l gmp
@@ -511,8 +513,6 @@ d mercurial
 d python-setuptools
 l imagemagick
 l xapian-core
-l poppler
-l poppler-data
 l shared-mime-info
 l gdk-pixbuf2
 l atk
@@ -657,6 +657,9 @@ l alsa-lib
 l gst-plugins-good
 l qt5
 l qt5-webkit
+l boost
+l poppler
+l poppler-data
 d doxygen
 l libxkbcommon
 n bluez
