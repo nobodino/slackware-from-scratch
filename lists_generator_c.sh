@@ -437,6 +437,7 @@ x libva
 x libva-utils
 x intel-vaapi-driver
 x libvdpau
+l spirv-llvm-translator
 l libclc
 d python-setuptools
 l Mako
