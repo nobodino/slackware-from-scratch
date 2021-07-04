@@ -405,6 +405,7 @@ d python3
 d vala
 l libical
 a dbus
+l python-docutils
 n bluez
 n net-tools
 x x11-skel
