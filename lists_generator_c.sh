@@ -641,6 +641,7 @@ l python-chardet
 l python-docutils
 l python-idna
 l python-packaging
+l python-charset-normalizer
 l python-requests
 xap sane
 l python2-module-collection
@@ -1372,6 +1373,7 @@ n daemon
 l qrencode
 n gpgme
 l poppler
+l editorconfig-core-c
 kde frameworks
 kde kdepim
 kde plasma
