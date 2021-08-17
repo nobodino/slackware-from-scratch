@@ -240,6 +240,7 @@ n curl
 l libarchive
 d cmake
 n dhcpcd
+l liburing
 ap mariadb
 d perl
 n openldap
@@ -265,9 +266,9 @@ l libedit
 d llvm
 d llvm
 ap linuxdoc-tools
-d ccache
+# d ccache
 n ca-certificates
-d rust
+# d rust
 a kernel-all
 d help2man
 d flex
@@ -366,6 +367,8 @@ a libgudev
 a usbutils
 a dialog
 d help2man
+d ccache
+d rust
 ap linuxdoc-tools
 a pam
 l gobject-introspection
@@ -373,6 +376,7 @@ l glib2
 ap nano
 l xxHash
 n rsync
+l aspell
 ap mc
 l libedit
 n openssh
@@ -483,6 +487,7 @@ ap nvme-cli
 ap neofetch
 ap undervolt
 ap inxi
+n openresolv
 n wireguard-tools
 a end2
 EOF
@@ -624,6 +629,7 @@ l libsigc++3
 d poke
 d cscope
 l gtk+3
+l gtk4
 d distcc
 d icecream
 d dev86
