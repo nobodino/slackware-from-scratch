@@ -2289,6 +2289,7 @@ for package in \
 	ktorrent \
 	kpmcore \
 	partitionmanager \
+	skanlite \
   ; do
    	if ! ./kde.SlackBuild applications:$package; then
 		touch /tmp/kde_build/$package.failed && exit 1
@@ -2314,7 +2315,6 @@ for package in \
 	digikam \
 	krita \
 	falkon \
-	skanlite \
 	kdevelop-pg-qt \
 	kdevelop \
 	kdev-php \
