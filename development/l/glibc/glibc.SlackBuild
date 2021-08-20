@@ -25,7 +25,7 @@ cd $(dirname $0) ; CWD=$(pwd)
 PKGNAM=glibc
 VERSION=${VERSION:-$(echo glibc-*.tar.xz | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
 CHECKOUT=${CHECKOUT:-""}
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-4}
 
 # I was considering disabling NSCD, but MoZes talked me out of it.  :)
 #DISABLE_NSCD=" --disable-nscd "
@@ -227,12 +227,8 @@ echo "BUILDING DAS NPTL GLIBC"
 # in shared libraries. Without this, glibc compiled with -march= may not
 # run on some CPUs that it should be able to support. Needed for glibc-2.33.
 # FIXME: revisit this with future glibc releases!
-# CFLAGS="-g $OPTIMIZ" \
-# replace CFLAGS by those from clearlinux
 libc_cv_include_x86_isa_level=no \
-CFLAGS="-O3 -march=skylake -mtune=skylake -g2 -m64  -Wl,-z,max-page-size=0x1000 -fPIC " \
-ASFLAGS="-D__AVX__=1 -D__AVX2__=1 -msse2avx -D__FMA__=1" \
-LDFLAGS="-Wl,-z,max-page-size=0x1000 " \
+CFLAGS="-g $OPTIMIZ" \
 ../configure \
   --prefix=/usr \
   --libdir=/usr/lib${LIBDIRSUFFIX} \
