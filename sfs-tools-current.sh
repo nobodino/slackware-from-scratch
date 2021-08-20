@@ -42,7 +42,7 @@
 #--------------------------------------------------------------------------
 #
 #	Above july 2018, revisions made through github project: 
-#   https://github.com/nobodino/slackware-from-scratch 
+#	https://github.com/nobodino/slackware-from-scratch 
 # 
 #*******************************************************************
 # set -x
@@ -340,10 +340,10 @@ gcc_build_sp1 () {
 	cd build || exit 1 
 
 	../configure                                       \
-		--target="$SFS_TGT"                              \
+		--target="$SFS_TGT"                            \
 		--prefix=/tools                                \
 		--with-glibc-version=2.11                      \
-		--with-sysroot="$SFS"                            \
+		--with-sysroot="$SFS"                          \
 		--with-newlib                                  \
 		--without-headers                              \
 		--with-local-prefix=/tools                     \
@@ -387,17 +387,6 @@ glibc_build () {
 	cd glibc-"$GLIBCVER" || exit 1 
 
 	case "$GLIBCVER" in
-		2.30 )
-			patch -p1 --verbose < ../e1d559f.patch
-			patch -p1 --verbose < ../glibc.git-cba932a5a9e91cffd7f4172d7e91f9b2efb1f84b.patch
-			patch -p1 --verbose < ../glibc.git-84df7a4637be8ecb545df3501cc724f3a4d53c46.patch
-			patch -p1 --verbose < ../glibc.git-e21a7867713c87d0b0698254685d414d811d72b2.patch
-			patch -p1 --verbose < ../glibc.git-70c6e15654928c603c6d24bd01cf62e7a8e2ce9b.patch
-			patch -p1 --verbose < ../glibc-2.30-gcc-10.2.patch
-			patch -p1 --verbose < ../glibc.8a80ee5e2bab17a1f8e1e78fab5c33ac7efa8b29.patch
-			patch -p1 --verbose < ../glibc.b0f6679bcd738ea244a14acd879d974901e56c8e.patch
-			patch -p1 --verbose < ../glibc.b6d2c4475d5abc05dd009575b90556bdd3c78ad0.patch
-			patch -p1 --verbose < ../glibc.e1df30fbc2e2167a982c0e77a7ebee28f4dd0800.patch ;;
 	
 		2.31 )
 			sed -e '1161 s|^|//|' -i libsanitizer/sanitizer_common/sanitizer_platform_limits_posix.cc ;;
@@ -406,6 +395,9 @@ glibc_build () {
 			sed -e '1161 s|^|//|' -i libsanitizer/sanitizer_common/sanitizer_platform_limits_posix.cc ;;
 
 		2.33 )
+			echo ;;
+
+		2.34 )
 			echo ;;
 	esac
 
@@ -417,7 +409,9 @@ glibc_build () {
 	esac
 
 	mkdir -v build
-	cd build || exit 1 
+	cd build || exit 1
+
+	echo "rootsbindir=/usr/sbin" > configparms 
 
 	../configure 							 \
 		  --prefix=/tools                    \
@@ -429,6 +423,8 @@ glibc_build () {
 
 	make || exit 1
 	make install || exit 1
+	sed '/RTLDLIST=/s@/usr@@g' -i $LFS/usr/bin/ldd
+	$LFS/tools/libexec/gcc/$LFS_TGT/11.2.0/install-tools/mkheaders
 	cd ../..
 	rm -rf glibc-"$GLIBCVER"
 	echo glibc-"$GLIBCVER" >> "$SFS"/tools/etc/tools_version
