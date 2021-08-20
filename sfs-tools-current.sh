@@ -387,9 +387,6 @@ glibc_build () {
 	cd glibc-"$GLIBCVER" || exit 1 
 
 	case "$GLIBCVER" in
-	
-		2.31 )
-			sed -e '1161 s|^|//|' -i libsanitizer/sanitizer_common/sanitizer_platform_limits_posix.cc ;;
 
 		2.32 )
 			sed -e '1161 s|^|//|' -i libsanitizer/sanitizer_common/sanitizer_platform_limits_posix.cc ;;
@@ -423,8 +420,8 @@ glibc_build () {
 
 	make || exit 1
 	make install || exit 1
-	sed '/RTLDLIST=/s@/usr@@g' -i $LFS/usr/bin/ldd
-	$LFS/tools/libexec/gcc/$LFS_TGT/11.2.0/install-tools/mkheaders
+#	sed '/RTLDLIST=/s@/usr@@g' -i $LFS/usr/bin/ldd
+#	$LFS/tools/libexec/gcc/$LFS_TGT/11.2.0/install-tools/mkheaders
 	cd ../..
 	rm -rf glibc-"$GLIBCVER"
 	echo glibc-"$GLIBCVER" >> "$SFS"/tools/etc/tools_version
@@ -938,6 +935,16 @@ texinfo_build () {
 
 	zcat ../texinfo.fix.unescaped.left.brace.diff.gz | patch -p1 --verbose || exit 1
 
+	case "$GLIBCVER" in
+
+		2.33 )
+			echo ;;
+
+		2.34 )
+			sed -e 's/__attribute_nonnull__/__nonnull/' \
+    		-i gnulib/lib/malloc/dynarray-skeleton.c ;;
+	esac
+
     ./configure --prefix=/tools --disable-perl-xs || exit 1
 
     make || exit 1
@@ -1028,7 +1035,7 @@ zstd_build () {
 	cd zstd-"$ZSTDVER" || exit 1 
 
 	make || exit 1
-	make  -C contrib/pzstd || exit 1
+#	make  -C contrib/pzstd || exit 1
 
 	make prefix=/tools install || exit 1
     cd ..
