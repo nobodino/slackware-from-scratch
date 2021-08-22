@@ -206,6 +206,20 @@ if [ ! -f "$SLACKSRC"/a/elogind/elogind.SlackBuild.old ]; then
 fi
 }
 
+
+execute_sed_efivar () {
+#******************************************************************
+# remove '|| exit 1' on first build
+#******************************************************************
+if [ ! -f $SLACKSRC/a/efivar/efivar.SlackBuild.old ]; then
+	cp -v $SLACKSRC/a/efivar/efivar.SlackBuild $SLACKSRC/a/efivar/efivar.SlackBuild.old
+	(
+		cd $SLACKSRC/a/efivar
+		sed -i -e 's/man\/\ || exit 1/man\/\ /' efivar.SlackBuild
+	)
+fi
+}
+
 execute_sed_findutils () {
 #******************************************************************
 # disable the patch and autoreconf in SlackBuild
@@ -2583,6 +2597,8 @@ LRPC=1
 LXKB=1
 # init doxygen variable
 LDOX=1
+# init efivar variable
+LEFI=1
 # init NUMJOBS variable
 NUMJOBS="-j$(( $(nproc) * 2 )) -l$(( $(nproc) + 1 ))"
 
@@ -2703,6 +2719,18 @@ while (( LINE < FILELEN )); do
 						build1_s.list )
 							build_pkg_1 ;;
 						* )
+							build_pkg_2 ;;
+					esac
+					continue ;;
+
+
+				efivar )
+					case $LEFI in
+						1 )
+							build_pkg_1
+							[ $? != 0 ] && exit 1
+							LEFI=2 ;;
+						2 )
 							build_pkg_2 ;;
 					esac
 					continue ;;

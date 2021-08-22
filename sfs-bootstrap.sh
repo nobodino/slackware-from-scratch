@@ -282,12 +282,12 @@ if [[ "$dev_select" = "current" ]]; then
 		if find "$SFS"/slacksrc/development/d/binutils -mindepth 1 | read -r ; then
 			rm -rf "$SFS"/slacksrc/d/binutils
 		fi
-		if find "$SFS"/slacksrc/development/d/gcc -mindepth 1 | read -r ; then
-			rm -rf "$SFS"/slacksrc/d/gcc
-		fi
-		if find "$SFS"/slacksrc/development/d/make -mindepth 1 | read -r ; then
-			rm -rf "$SFS"/slacksrc/d/make
-		fi
+#		if find "$SFS"/slacksrc/development/d/gcc -mindepth 1 | read -r ; then
+#			rm -rf "$SFS"/slacksrc/d/gcc
+#		fi
+#		if find "$SFS"/slacksrc/development/d/make -mindepth 1 | read -r ; then
+#			rm -rf "$SFS"/slacksrc/d/make
+#		fi
 #		if find "$SFS"/slacksrc/development/d/rust -mindepth 1 | read -r ; then
 #			rm -rf "$SFS"/slacksrc/d/rust && mkdir -pv "$SFS"/slacksrc/d/rust
 #			cd "$SFS"/slacksrc/d/rust || exit 1 

@@ -505,6 +505,7 @@ a f2fs-tools
 a exfatprogs
 l gnu-efi
 a efivar
+a efivar
 a efibootmgr
 a elilo
 d autoconf-archive
