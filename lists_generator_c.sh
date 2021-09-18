@@ -266,9 +266,9 @@ l libedit
 d llvm
 d llvm
 ap linuxdoc-tools
-# d ccache
+d ccache
 n ca-certificates
-# d rust
+d rust
 a kernel-all
 d help2man
 d flex
@@ -308,6 +308,7 @@ d vala
 a libgudev
 d pkg-config
 n wget
+n wget2
 l libcap-ng
 extra bash-completion
 n libgpg-error
@@ -367,8 +368,8 @@ a libgudev
 a usbutils
 a dialog
 d help2man
-d ccache
-d rust
+# d ccache
+# d rust
 ap linuxdoc-tools
 a pam
 l gobject-introspection
