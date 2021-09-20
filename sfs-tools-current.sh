@@ -399,7 +399,14 @@ glibc_build () {
 
 	make || exit 1
 	make install || exit 1
-	cp -v /tools/lib/libc-$GLIBCVER.so /tools/lib/libc-$GLIBCVER.so.backup
+	
+	case $GLIBCVER in
+		2.33 )
+			cp -v /tools/lib/libc-$GLIBCVER.so /tools/lib/libc-$GLIBCVER.so.backup ;;
+		2.34 )
+			echo ;;
+	esac
+
 	cd ../..
 	rm -rf glibc-$GLIBCVER
 	echo glibc-$GLIBCVER >> $SFS/tools/etc/tools_version
@@ -1016,11 +1023,16 @@ zstd_build () {
 
 glibc_repair () {
 #*****************************
-	cd /tools/lib
-	cp -v libc-$GLIBCVER.so.backup libc-$GLIBCVER.so
-	ln -sf libc-$GLIBCVER.so libc.so.6
-	rm libc-$GLIBCVER.so.backup
-	cd $SFS/sources
+	case $GLIBCVER in
+		2.33 )
+			cd /tools/lib
+			cp -v libc-$GLIBCVER.so.backup libc-$GLIBCVER.so
+			ln -sf libc-$GLIBCVER.so libc.so.6
+			rm libc-$GLIBCVER.so.backup
+			cd $SFS/sources ;;
+		2.34 )
+			echo ;;
+	esac
 }
 
 strip_libs () {
