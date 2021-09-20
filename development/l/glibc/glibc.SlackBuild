@@ -155,10 +155,6 @@ apply_patches() {
   zcat $CWD/glibc-c-utf8-locale.patch.gz | patch -p1 --verbose || exit 1
   # Don't use AM/PM format for date(1). That's just plain crazy.
   zcat $CWD/glibc-2.32.en_US.no.am.pm.date.format.diff.gz | patch -p1 --verbose || exit 1
-  # Other regression fixes from git:
-  for git_patch in $CWD/patches/*.patch.gz ; do
-    zcat $git_patch | patch -p1 --verbose || exit 1
-  done
 }
 
 # This is going to be the initial $DESTDIR:
