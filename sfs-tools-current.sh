@@ -383,7 +383,8 @@ linux_headers_build () {
 
 glibc_build () {
 #*****************************
-	tar xvf glibc-$GLIBCVER.tar.xz && cd glibc-$GLIBCVER
+	tar xvf glibc-$GLIBCVER.tar.xz || exit 1 
+	cd glibc-$GLIBCVER  || exit 1
 
     zcat ../glibc.libc.texinfo.no.utf8.patch.gz | patch -p1 --verbose || exit 1
 
@@ -457,7 +458,7 @@ binutils_build_sp2 () {
 
 gmp_build () {
 #*****************************
-    tar xvf gmp-"$GMPVER".tar.lz || exit 1
+    tar xvf gmp-"$GMPVER".tar.?z || exit 1
 	cd gmp-"$GMPVER" || exit 1 
 
     ./configure --prefix=/tools || exit 1
