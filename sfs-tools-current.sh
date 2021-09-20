@@ -288,7 +288,7 @@ binutils_build_sp1 () {
 
     ../configure --prefix=/tools \
     --with-sysroot=$SFS        \
-    --with-lib-path=/tools/lib \
+	--with-lib-path=/tools/lib \
     --target="$SFS_TGT"          \
     --disable-nls              \
     --disable-werror || exit 1
@@ -383,48 +383,25 @@ linux_headers_build () {
 
 glibc_build () {
 #*****************************
-	tar xvf glibc-"$GLIBCVER".tar.xz || exit 1  
-	cd glibc-"$GLIBCVER" || exit 1 
+	tar xvf glibc-$GLIBCVER.tar.xz && cd glibc-$GLIBCVER
 
-	case "$GLIBCVER" in
+    zcat ../glibc.libc.texinfo.no.utf8.patch.gz | patch -p1 --verbose || exit 1
 
-		2.32 )
-			sed -e '1161 s|^|//|' -i libsanitizer/sanitizer_common/sanitizer_platform_limits_posix.cc ;;
+	mkdir -v build && cd build
 
-		2.33 )
-			echo ;;
-
-		2.34 )
-			echo ;;
-	esac
-
-	case "$GCCVER" in
-		11.1.0 )
-			sed -e 's/amx_/amx-/' -i sysdeps/x86/tst-cpu-features-supports.c ;;
-		* )
-			echo ;;
-	esac
-
-	mkdir -v build
-	cd build || exit 1
-
-	echo "rootsbindir=/usr/sbin" > configparms 
-
-	../configure 							 \
+	../configure                             \
 		  --prefix=/tools                    \
 		  --host="$SFS_TGT"                    \
 		  --build="$(../scripts/config.guess)" \
-		  --enable-kernel=2.6.32             \
-		  --disable-werror                   \
-		  --with-headers=/tools/include || exit 1
+		  --enable-kernel=3.2             \
+		  --with-headers=/tools/include || exit 1  
 
 	make || exit 1
 	make install || exit 1
-#	sed '/RTLDLIST=/s@/usr@@g' -i $LFS/usr/bin/ldd
-#	$LFS/tools/libexec/gcc/$LFS_TGT/11.2.0/install-tools/mkheaders
+	cp -v /tools/lib/libc-$GLIBCVER.so /tools/lib/libc-$GLIBCVER.so.backup
 	cd ../..
-	rm -rf glibc-"$GLIBCVER"
-	echo glibc-"$GLIBCVER" >> "$SFS"/tools/etc/tools_version
+	rm -rf glibc-$GLIBCVER
+	echo glibc-$GLIBCVER >> $SFS/tools/etc/tools_version
 }
 
 libstdc_build () {
@@ -435,7 +412,7 @@ libstdc_build () {
 	cd build || exit 1 
 
 	../libstdc++-v3/configure           \
-		--host="$SFS_TGT"                 \
+		--host="$SFS_TGT"               \
 		--prefix=/tools                 \
 		--disable-multilib              \
 		--disable-nls                   \
@@ -480,7 +457,7 @@ binutils_build_sp2 () {
 
 gmp_build () {
 #*****************************
-    tar xvf gmp-"$GMPVER".tar.?z || exit 1
+    tar xvf gmp-"$GMPVER".tar.lz || exit 1
 	cd gmp-"$GMPVER" || exit 1 
 
     ./configure --prefix=/tools || exit 1
@@ -540,9 +517,6 @@ gcc_build_sp2 () {
     mv -v gmp-"$GMPVER" gmp
     tar xvf ../mpc-"$LIBMPCVER".tar.lz
     mv -v mpc-"$LIBMPCVER" mpc
-
-	# fix a problem introduced by glibc-2.31
-	sed -e '1161 s|^|//|' -i libsanitizer/sanitizer_common/sanitizer_platform_limits_posix.cc
 
    	mkdir -v build
 	cd build || exit 1 
@@ -604,9 +578,6 @@ gnat_build_sp2 () {
     mv -v gmp-"$GMPVER" gmp
     tar xvf ../mpc-"$LIBMPCVER".tar.lz
     mv -v mpc-"$LIBMPCVER" mpc
-
-	# fix a problem introduced by glibc-2.31
-	 sed -e '1161 s|^|//|' -i libsanitizer/sanitizer_common/sanitizer_platform_limits_posix.cc
 
    	mkdir -v build
 	cd build || exit 1 
@@ -1035,7 +1006,6 @@ zstd_build () {
 	cd zstd-"$ZSTDVER" || exit 1 
 
 	make || exit 1
-#	make  -C contrib/pzstd || exit 1
 
 	make prefix=/tools install || exit 1
     cd ..
@@ -1043,9 +1013,18 @@ zstd_build () {
     echo zstd-"$ZSTDVER" >> "$SFS"/tools/etc/tools_version
 }
 
+glibc_repair () {
+#*****************************
+	cd /tools/lib
+	cp -v libc-$GLIBCVER.so.backup libc-$GLIBCVER.so
+	ln -sf libc-$GLIBCVER.so libc.so.6
+	rm libc-$GLIBCVER.so.backup
+	cd $SFS/sources
+}
+
 strip_libs () {
 #*****************************
-    strip --strip-debug /tools/lib/*
+#    strip --strip-debug /tools/lib/*
     /usr/bin/strip --strip-unneeded /tools/{,s}bin/*
     rm -rf /tools/{,share}/{info,man,doc}
 	find /tools/{lib,libexec} -name \*.la -delete
@@ -1054,7 +1033,7 @@ strip_libs () {
 clean_sources () {
 #*****************************
 echo "clean sources packages"
-rm ./*.xz ./*.lz .:*.bz2 ./*.gz
+rm ./*.xz ./*.lz ./*.bz2 ./*.gz
 }
 
 echo_end () {
@@ -1134,6 +1113,7 @@ tar_slack_build
 which_build
 util_linux_build
 zstd_build
+glibc_repair
 #*****************************
 if [[ "$ada_enable" = "yes" ]]
 then
