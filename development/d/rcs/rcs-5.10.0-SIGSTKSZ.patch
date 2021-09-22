@@ -1,0 +1,29 @@
+diff -up rcs-5.10.0.orig/src/b-isr.c rcs-5.10.0/src/b-isr.c
+--- rcs-5.10.0.orig/src/b-isr.c	2021-04-04 14:13:59.185941494 +0200
++++ rcs-5.10.0/src/b-isr.c	2021-04-04 14:15:21.087397267 +0200
+@@ -198,22 +198,16 @@ setup_catchsig (size_t count, int const
+ #undef MUST
+ }
+ 
+-#if defined HAVE_SIGALTSTACK && defined SIGSTKSZ
+-#define ISR_STACK_SIZE  (10 * SIGSTKSZ)
+-#else
+-#define ISR_STACK_SIZE  0
+-#endif
+-
+ struct isr_scratch *
+ isr_init (bool *be_quiet)
+ {
+   struct isr_scratch *scratch = ZLLOC (1, struct isr_scratch);
+ 
+-#if ISR_STACK_SIZE
++#if defined HAVE_SIGALTSTACK && defined SIGSTKSZ
+   stack_t ss =
+     {
+-      .ss_sp = alloc (PLEXUS, ISR_STACK_SIZE),
+-      .ss_size = ISR_STACK_SIZE,
++      .ss_sp = alloc (PLEXUS, (10 * SIGSTKSZ)),
++      .ss_size = (10 * SIGSTKSZ),
+       .ss_flags = 0
+     };
+ 
