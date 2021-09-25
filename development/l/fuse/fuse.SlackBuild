@@ -76,6 +76,8 @@ cd $PKGNAM-$VERSION || exit 1
 # patch to build with glibc-2.34 from https://src.fedoraproject.org/rpms/fuse/raw/rawhide/f/fuse2-0007-util-ulockmgr_server.c-conditionally-define-closefro.patch
 cat $CWD/fuse2-0007-util-ulockmgr_server.c-conditionally-define-closefro.patch | patch -Esp1 --verbose || exit 1
 
+autoreconf -vif
+
 chown -R root:root .
 find . \
  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
