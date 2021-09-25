@@ -1382,6 +1382,8 @@ l qrencode
 n gpgme
 l poppler
 l editorconfig-core-c
+xap freerdp
+x xdg-desktop-portal
 kde frameworks
 kde kdepim
 kde plasma
