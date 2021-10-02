@@ -369,8 +369,6 @@ a libgudev
 a usbutils
 a dialog
 d help2man
-# d ccache
-# d rust
 ap linuxdoc-tools
 a pam
 l gobject-introspection
