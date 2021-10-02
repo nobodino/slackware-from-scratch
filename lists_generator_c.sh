@@ -149,6 +149,7 @@ a e2fsprogs
 n krb5
 a cracklib
 a pam
+n ca-certificates
 l glib2
 l gamin
 l gobject-introspection
@@ -267,7 +268,7 @@ d llvm
 d llvm
 ap linuxdoc-tools
 d ccache
-n ca-certificates
+# n ca-certificates
 d rust
 a kernel-all
 d help2man
@@ -605,6 +606,7 @@ l gstreamer
 l gst-plugins-base
 l gst-plugins-good
 l gst-plugins-libav
+l gst-plugins-bad-free
 d strace
 d rcs
 d ccache
@@ -619,6 +621,7 @@ n httpd
 l neon
 l utf8proc
 l lz4
+l libsecret
 d subversion
 tcl tk
 tcl tclx
