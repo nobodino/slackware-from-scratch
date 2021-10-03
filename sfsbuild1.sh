@@ -514,6 +514,7 @@ if [ ! -f "$SLACKSRC"/d/subversion/subversion.SlackBuild.old ]; then
 	(
 		cd "$SLACKSRC"/d/subversion || exit 1
 		sed -i -e "/--with-kwallet/d" subversion.SlackBuild
+		sed -i -e "s/\$\NUMJOBS\ install/install/" subversion.SlackBuild
 	)
 fi
 }
@@ -1982,7 +1983,7 @@ for package in \
 	mailcommon \
 	kleopatra \
 	kpkpass \
-  kopeninghours \
+  	kopeninghours \
 	kitinerary \
 	kdepim-addons \
 	kdepim-runtime \

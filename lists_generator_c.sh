@@ -44,7 +44,8 @@ lists_generator_c () {
 test_gnat () {
 #******************************************
 # test the existence of gnat in tools
-# if not, modify build1_s.list to take of
+# if not, modify build1_s.list to have 
+# 'd pre-gcc' and 'd post-gcc' to build gcc
 #******************************************
 (! /tools/bin/gnat) 2> /dev/null && sed -i -e 's/# d/d/g' build1_s.list
 }
@@ -282,7 +283,6 @@ n nss-pam-ldapd
 n pam-krb5
 a elogind
 a mkinitrd
-# installer installer
 a end1
 EOF
 }
@@ -620,6 +620,7 @@ l neon
 l utf8proc
 l lz4
 l libsecret
+l libgnome-keyring
 d subversion
 tcl tk
 tcl tclx
@@ -1308,6 +1309,8 @@ a nvi
 n ulogd
 l fuse3
 n sshfs
+l python-cffi
+l python-pycparser
 xap hexchat
 n ipset
 xap xscreensaver
