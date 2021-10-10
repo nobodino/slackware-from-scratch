@@ -1195,7 +1195,6 @@ l djvulibre
 l libzip
 l ebook-tools
 l libzip
-l eigen2
 l eigen3
 l esound
 l exiv2
@@ -1421,6 +1420,7 @@ l id3lib
 l sip
 n gpgme
 n wpa_supplicant
+l gst-plugins-bad-free
 xap NetworkManager-openvpn
 xap mozilla-firefox
 xap mozilla-thunderbird

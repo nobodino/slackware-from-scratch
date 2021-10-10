@@ -2340,7 +2340,6 @@ for package in \
 	kile \
 	kwebkitpart \
 	oxygen-gtk2 \
-	kdev-python \
 	alkimia \
  	kmymoney \
 	okteta \
