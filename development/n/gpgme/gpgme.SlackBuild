@@ -77,8 +77,8 @@ find . \
   \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
   -exec chmod 644 {} \+
 
-# sed line to solve an issue introduced by glibc-2.34 from https://www.linuxfromscratch.org/blfs/view/svn/postlfs/gpgme.html
-sed 's/defined(__sun.*$/1/' -i src/posix-io.c
+# patch to solve an issue introduced by glibc-2.34 from hhttps://github.com/i386x/gpgme/commit/ed9939afc0bc1ef6a0a2dccaae62f19bc30b363d.patch
+cat $CWD/ed9939afc0bc1ef6a0a2dccaae62f19bc30b363d.patch | patch -Esp1 --verbose || exit 1
 
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
