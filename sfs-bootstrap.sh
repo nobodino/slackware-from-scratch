@@ -291,13 +291,10 @@ if [[ "$dev_select" = "current" ]]; then
 		if find "$SFS"/slacksrc/development/d/automake -mindepth 1 | read -r ; then
 			rm -rf "$SFS"/slacksrc/d/automake
 		fi
-#		if find "$SFS"/slacksrc/development/d/rust -mindepth 1 | read -r ; then
-#			rm -rf "$SFS"/slacksrc/d/rust && mkdir -pv "$SFS"/slacksrc/d/rust
-#			cd "$SFS"/slacksrc/d/rust || exit 1 
-#			lftpget https://static.rust-lang.org/dist/2020-12-31/rustc-1.49.0-src.tar.xz
-#		fi
+		if find "$SFS"/slacksrc/development/n/gpgme -mindepth 1 | read -r ; then
+			rm -rf "$SFS"/slacksrc/n/gpgme
+		fi
 		cp -r --preserve=timestamps "$SFS"/slacksrc/development/* "$SFS"/slacksrc
-#		rm -rf $SFS/slacksrc/development
 
 fi
 
