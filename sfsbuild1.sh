@@ -2338,7 +2338,6 @@ for package in \
 	kstars \
 	krusader \
 	kile \
-	kwebkitpart \
 	oxygen-gtk2 \
 	alkimia \
  	kmymoney \
