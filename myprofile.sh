@@ -43,7 +43,7 @@ generate_etc_fstab () {
 mkdir -pv "$SFS"/etc
 cat > "$SFS"/etc/fstab << "EOF"
 /dev/sdc2        swap             swap        defaults         0   0
-/dev/sdc12       /                ext4        defaults,noatime,discard  	   1   1
+/dev/sdc13       /                ext4        defaults,noatime,discard  	   1   1
 /dev/fd0         /mnt/floppy      auto        noauto,owner     0   0
 devpts           /dev/pts         devpts      gid=5,mode=620   0   0
 proc             /proc            proc        defaults         0   0
@@ -101,7 +101,7 @@ EOF
 sync_clock () {
 #***************************************************
 cat > /root/scripts/SyncClock.sh << "EOF"
-#!/usr/bin/bash
+#!/bin/sh
  
 echo "Clock is syncing to NTP, please wait..."
  
