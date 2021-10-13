@@ -294,6 +294,9 @@ if [[ "$dev_select" = "current" ]]; then
 		if find "$SFS"/slacksrc/development/n/gpgme -mindepth 1 | read -r ; then
 			rm -rf "$SFS"/slacksrc/n/gpgme
 		fi
+		if find "$SFS"/slacksrc/development/l/vid.stab -mindepth 1 | read -r ; then
+			rm -rf "$SFS"/slacksrc/l/vid.stab
+		fi
 		cp -r --preserve=timestamps "$SFS"/slacksrc/development/* "$SFS"/slacksrc
 
 fi
