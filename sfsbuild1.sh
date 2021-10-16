@@ -2047,7 +2047,6 @@ for package in \
 	kinfocenter \
 	layer-shell-qt \
 	libksysguard \
-	ksysguard \
 	kscreenlocker \
 	kwin \
 	kwrited \
