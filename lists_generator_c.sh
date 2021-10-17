@@ -86,7 +86,6 @@ l mpfr
 l libmpc
 a infozip
 l expat
-l python-cffi
 d python2
 d python3
 l gc
