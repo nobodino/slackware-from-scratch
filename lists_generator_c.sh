@@ -385,6 +385,7 @@ l python-ply
 l libuv
 n bind
 l gmp
+n nettle
 n gnutls
 ap cups
 n iputils
