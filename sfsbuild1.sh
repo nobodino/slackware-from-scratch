@@ -567,7 +567,7 @@ kernel_source_build () {
 cd /slacksrc/k || exit 1
 chmod +x kernel-source.SlackBuild
 cp -v kernel-source.SlackBuild kernel-source.SlackBuild.old
-sed -i -e "52,89d;109,111d;138,163d" kernel-source.SlackBuild && ./kernel-source.SlackBuild 
+sed -i -e "55,92d;111,113d;140,181d" kernel-source.SlackBuild && ./kernel-source.SlackBuild 
 upgradepkg --install-new --reinstall /tmp/kernel-source*.txz && mv -v /tmp/kernel-source*.txz /sfspacks/k
 rm -rf /tmp/package-kernel-source/
 mv kernel-source.SlackBuild.old kernel-source.SlackBuild
@@ -909,7 +909,6 @@ case $PACKNAME in
 		if ! ( mv -v /tmp/vim-gvim*.txz /sfspacks/xap && mv -v /tmp/"$PACKNAME"-*.txz /sfspacks/ap ); then
 			exit 1
 		fi
-#		[ $? != 0 ] && exit 1 ;;
 		cd /sources || exit 1 ;;
 
 	xz )
