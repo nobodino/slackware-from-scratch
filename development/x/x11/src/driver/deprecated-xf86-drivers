@@ -7,6 +7,30 @@ non building drivers:
 - s3 failure due to IBM.h removal
 - tga failure due to BT.h removal
 - trident failure due to xf86RamDac.h removal
+- mach64 failure:
+-------------------
+aticonfig.c:322:66: error: ‘ValueUnion’ has no member named ‘bool’; did you mean ‘boolean’?
+  322 | #   define HWCursor      PublicOption[ATI_OPTION_HWCURSOR].value.bool
+      |                                                                  ^~~~
+aticonfig.c:465:13: note: in expansion of macro ‘HWCursor’
+  465 |         if (HWCursor && PublicOption[ATI_OPTION_HWCURSOR].found)
+      |             ^~~~~~~~
+make[2]: *** [Makefile:599: aticonfig.lo] Error 1
+make[2]: *** Waiting for unfinished jobs....
+In file included from atiadjust.c:31:
+atimach64io.h: In function ‘ATIDRIMarkSyncInt’:
+atimach64io.h:243:12: warning: unused variable ‘_pATI’ [-Wunused-variable]
+  243 |     ATIPtr _pATI=ATIPTR(_pScrInfo);
+      |            ^~~~~
+atimach64io.h: In function ‘ATIDRISync’:
+atimach64io.h:267:12: warning: unused variable ‘_pATI’ [-Wunused-variable]
+  267 |     ATIPtr _pATI=ATIPTR(_pScrInfo);
+      |            ^~~~~
+make[2]: Leaving directory '/tmp/x11-build/xf86-video-mach64-6.9.6/src'
+make[1]: *** [Makefile:443: all-recursive] Error 1
+make[1]: Leaving directory '/tmp/x11-build/xf86-video-mach64-6.9.6'
+make: *** [Makefile:375: all] Error 2
+------------------
 
 - nouveau can be built with a git version from the driver
 - ati can be built with a git version from the driver
