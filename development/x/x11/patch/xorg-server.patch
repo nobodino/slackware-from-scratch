@@ -1,0 +1,30 @@
+# We've used this one forever.
+zcat $CWD/patch/xorg-server/x11.startwithblackscreen.diff.gz | patch -p1 --verbose || { touch ${SLACK_X_BUILD_DIR}/${PKGNAME}.failed ; continue ; }
+
+# Without this patch, combo mouse/keyboard (such as Logitech through unified
+# receiver) may be unable to set the desired keyboard layout.
+#zcat $CWD/patch/xorg-server/xorg-server.combo.mouse.keyboard.layout.patch.gz | patch -p1 --verbose || { touch ${SLACK_X_BUILD_DIR}/${PKGNAME}.failed ; continue ; }
+
+# Fix a segfault in xorg-server-1.20.0. Odds are good this will be fixed in
+# the next xorg-server and will no longer apply then.
+#zcat $CWD/patch/xorg-server/fix-nouveau-segfault.diff.gz | patch -p1 --verbose || { touch ${SLACK_X_BUILD_DIR}/${PKGNAME}.failed ; continue ; }
+
+# From Fedora Rawhide 2018/7 (possibly useful, doesn't seem like it will hurt anything):
+#zcat $CWD/patch/xorg-server/0001-Always-install-vbe-and-int10-sdk-headers.patch.gz | patch -p1 --verbose || { touch ${SLACK_X_BUILD_DIR}/${PKGNAME}.failed ; continue ; }
+
+# From Fedora Rawhide 2018/7, looks like many other distributions have added
+# this patch for a long time. Keep an eye out for newer versions though, and
+# revisit this if any DE begin to manage secondary GPUs (although none do yet):
+#zcat $CWD/patch/xorg-server/0001-autobind-GPUs-to-the-screen.patch.gz | patch -p1 --verbose || { touch ${SLACK_X_BUILD_DIR}/${PKGNAME}.failed ; continue ; }
+
+# The upstream nouveau developers recommend this. On newer nvidia cards it works
+# better to use the generic modesetting ddx rather than nouveau.
+# Reference: https://bugs.freedesktop.org/show_bug.cgi?id=94844
+# Added here 2018/7.
+#zcat $CWD/patch/xorg-server/0001-xfree86-use-modesetting-driver-by-default-on-GeForce.patch.gz | patch -p1 --verbose || { touch ${SLACK_X_BUILD_DIR}/${PKGNAME}.failed ; continue ; }
+
+# Fix a PCI related segfault:
+#zcat $CWD/patch/xorg-server/fix-pci-segfault.diff.gz | patch -p1 --verbose || { touch ${SLACK_X_BUILD_DIR}/${PKGNAME}.failed ; continue ; }
+
+# Only use Intel DDX with pre-gen4 hardware. Newer hardware will the the modesetting driver by default:
+#zcat $CWD/patch/xorg-server/06_use-intel-only-on-pre-gen4.diff.gz | patch -p1 --verbose || { touch ${SLACK_X_BUILD_DIR}/${PKGNAME}.failed ; continue ; }
