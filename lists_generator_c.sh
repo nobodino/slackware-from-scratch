@@ -47,7 +47,7 @@ test_gnat () {
 # if not, modify build1_s.list to have 
 # 'd pre-gcc' and 'd post-gcc' to build gcc
 #******************************************
-(! /tools/bin/gnat) 2> /dev/null && sed -i -e 's/# d/d/g' build1_s.list
+(! /tools/bin/gnat) 1> /dev/null && sed -i -e 's/# d/d/g' build1_s.list
 }
 
 generate_slackware_link_build_list () {
@@ -151,6 +151,7 @@ n krb5
 a cracklib
 a pam
 n ca-certificates
+l pcre
 l glib2
 l gamin
 l gobject-introspection
@@ -505,6 +506,7 @@ l libpcap
 a f2fs-tools
 a exfatprogs
 l gnu-efi
+a os-prober
 a efivar
 a efivar
 a efibootmgr
