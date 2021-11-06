@@ -1,0 +1,203 @@
+#!/bin/bash
+
+# Copyright 2010, 2011, 2014, 2016  Robby Workman, Northport, Alabama, USA
+# Copyright 2013, 2014, 2015, 2016, 2018, 2020  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR "AS IS" AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# Modified 2011, 2012  by Eric Hameleers, Eindhoven, NL
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=NetworkManager
+VERSION=${VERSION:-$(echo $PKGNAM-*.tar.?z* | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+BUILD=${BUILD:-1}
+
+# Automatically determine the architecture we're building on:
+MARCH=$( uname -m )
+if [ -z "$ARCH" ]; then
+  case "$MARCH" in
+    i?86)    export ARCH=i586 ;;
+    armv7hl) export ARCH=$MARCH ;;
+    arm*)    export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+    *)       export ARCH=$MARCH ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-$PKGNAM
+OUTPUT=${OUTPUT:-/tmp}
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i686" ]; then
+  SLKCFLAGS="-O2 -march=i686 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
+elif [ "$ARCH" = "armv7hl" ]; then
+  SLKCFLAGS="-O2 -march=armv7-a -mfpu=vfpv3-d16"
+  LIBDIRSUFFIX=""
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+case "$ARCH" in
+    arm*) TARGET=$ARCH-slackware-linux-gnueabi ;;
+    *)    TARGET=$ARCH-slackware-linux ;;
+esac
+
+rm -rf $PKG
+mkdir -p $TMP $PKG $OUTPUT
+cd $TMP
+rm -rf $PKGNAM-$VERSION
+tar xvf $CWD/$PKGNAM-$VERSION.tar.?z* || exit 1
+cd $PKGNAM-$VERSION || exit 1
+chown -R root:root .
+find . \
+ \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+ -exec chmod 755 {} \+ -o \
+ \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+ -exec chmod 644 {} \+
+
+# Find the version number for pppd, used to specify the plugin directory:
+PPPD=$(echo /usr/lib${LIBDIRSUFFIX}/pppd/?.?.? | rev | cut -f 1 -d / | rev)
+
+# Apply bugfix patches from upstream git:
+for dfile in $CWD/patches/* ; do 
+  zcat $dfile | patch -p1 --verbose || exit 1
+done
+
+# For git-patched builds
+autoreconf -vif
+automake
+./autogen.sh
+
+# Configuring --enable-json-validation --enable-ovs requires the Jansson
+# json-c library. If there's any interest or usefulness with that, let me
+# know. The library is fairly small, but in order to actually use team
+# interfaces will probably require more stuff (not sure how much).
+#
+# Update September 2018: Added those options since we needed Jansson
+# already for HTTP/2 support.
+
+CFLAGS="$SLKCFLAGS" \
+CXXFLAGS="$SLKCFLAGS" \
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
+  --mandir=/usr/man \
+  --docdir=/usr/doc/$PKGNAM-$VERSION \
+  --with-udev-dir=/lib/udev \
+  --with-pppd-plugin-dir=/usr/lib${LIBDIRSUFFIX}/pppd/$PPPD \
+  --with-crypto=nss \
+  --enable-more-warnings=no \
+  --without-resolvconf \
+  --with-dhcpcd=/sbin/dhcpcd \
+  --with-dhclient=yes \
+  --with-modem-manager-1=yes \
+  --with-nmtui=yes \
+  --enable-json-validation \
+  --enable-ovs \
+  --with-session-tracking=consolekit \
+  --with-suspend-resume=consolekit \
+  --with-hostname-persist=slackware \
+  --build=$TARGET || exit 1
+
+make $NUMJOBS || exit 1
+make install DESTDIR=$PKG || exit 1
+
+# Don't ship .la files:
+rm -f $PKG/{,usr/}lib${LIBDIRSUFFIX}/*.la
+
+find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
+  | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
+
+# Fix hardlinked manpages:
+( cd $PKG/usr/man/man1
+  ln -sf nmtui.1 nmtui-connect.1
+  ln -sf nmtui.1 nmtui-edit.1
+  ln -sf nmtui.1 nmtui-hostname.1
+  cd ../man5
+  ln -sf NetworkManager.conf.5 nm-system-settings.conf.5
+)
+
+find $PKG/usr/man -type f -exec gzip -9 {} \+
+for i in $( find $PKG/usr/man -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+
+# In case NetworkManager tries to install something here:
+rm -f $PKG/etc/rc.d/rc.networkmanager
+
+# Don't clobber existing rc.networkmanager
+# Don't run NetworkManager by default just because it got installed.
+# Instead, the init script will have to be made executable first.
+# This should avoid nasty surprises on potentially remotely located machines.
+mkdir -p $PKG/etc/rc.d
+cat $CWD/rc.networkmanager > $PKG/etc/rc.d/rc.networkmanager.new
+chmod 0644 $PKG/etc/rc.d/rc.networkmanager.new
+
+# Add the pm-utils hook back in
+# xfce4-power-manager needs to be built *without* NM support
+mkdir -p $PKG/usr/lib${LIBDIRSUFFIX}/pm-utils/sleep.d/
+cat $CWD/55NetworkManager > $PKG/usr/lib${LIBDIRSUFFIX}/pm-utils/sleep.d/55NetworkManager
+chmod 0755 $PKG/usr/lib${LIBDIRSUFFIX}/pm-utils/sleep.d/55NetworkManager
+
+# Add default (plain) config file to enable keyfile plugin
+cat $CWD/NetworkManager.conf > $PKG/etc/NetworkManager/NetworkManager.conf.new
+
+# Set dhcp client to "dhcpcd" and rc-manager to "file" by default
+mkdir -p $PKG/etc/NetworkManager/conf.d
+cat $CWD/conf.d/00-dhcp-client.conf > $PKG/etc/NetworkManager/conf.d/00-dhcp-client.conf.new
+cat $CWD/conf.d/00-rc-manager.conf > $PKG/etc/NetworkManager/conf.d/00-rc-manager.conf.new
+
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION
+cp -a \
+  AUTHORS CONTRIBUTING COPYING ChangeLog INSTALL NEWS README TODO \
+  $PKG/usr/doc/$PKGNAM-$VERSION
+
+# If there's a ChangeLog, installing at least part of the recent history
+# is useful, but don't let it get totally out of control:
+if [ -r ChangeLog ]; then
+  cat ChangeLog | head -n 1000 > $PKG/usr/doc/$PKGNAM-$VERSION/ChangeLog
+  touch -r ChangeLog $PKG/usr/doc/$PKGNAM-$VERSION/ChangeLog
+fi
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
+
+cd $PKG
+/sbin/makepkg --prepend -l y -c n $OUTPUT/$PKGNAM-$VERSION-$ARCH-$BUILD.txz
+

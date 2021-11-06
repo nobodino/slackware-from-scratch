@@ -586,8 +586,8 @@ root_bashrc
 sfsprep
 
 cd "$SFS"/sources || exit 1
-. lists_generator_c.sh
 . prep-sfs-tools.sh
+. lists_generator_c.sh
 #*************************************
 # finally chroot in $SFS environment
 #*************************************
