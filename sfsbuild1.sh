@@ -2190,7 +2190,6 @@ for package in \
 	kompare \
 	lokalize \
 	poxml \
-	umbrello \
 	kdegraphics-mobipocket \
 	okular \
 	kdegraphics-thumbnailers \
@@ -2343,7 +2342,6 @@ for package in \
 	krename \
 	ktimetracker \
 	kid3 \
-	umbrello \
   ; do
    	if ! ./kde.SlackBuild applications-extra:$package; then
 		touch /tmp/kde_build/$package.failed && exit 1
