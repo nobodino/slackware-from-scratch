@@ -1,0 +1,170 @@
+#!/bin/bash
+
+# Slackware build script for SpiderMonkey
+
+# Copyright 2011, 2018  Robby Workman, Tuscaloosa, Alabama, USA
+# Copyright 2019, 2020  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR "AS IS" AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=mozjs78
+SRCNAME=firefox
+VERSION=$(basename $(ls $SRCNAME-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev) .source)
+BUILD=${BUILD:-1}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) ARCH=i586 ;;
+    arm*) ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-$PKGNAM
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i686" ]; then
+  SLKCFLAGS="-O2 -march=i686 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+cd $TMP
+rm -rf $SRCNAME-$VERSION ; rm -rf $SRCNAME-$(echo $VERSION | cut -f 1 -d e)
+# Unpack this in a subdirectory to prevent changing permissions on /tmp:
+rm -rf firefox-unpack
+mkdir firefox-unpack
+cd firefox-unpack
+tar xvf $CWD/$SRCNAME-$VERSION.source.tar.?z || exit 1
+mv * ..
+cd ..
+rm -rf firefox-unpack
+cd $SRCNAME-$(echo $VERSION | cut -f 1 -d e) || cd $SRCNAME-$VERSION || exit 1
+chown -R root:root .
+find . \
+ \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+ -exec chmod 755 {} \+ -o \
+ \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+ -exec chmod 644 {} \+
+
+# We need to use the incredibly ancient autoconf-2.13 for this  :/                                                                                             
+( cd $CWD/autoconf ; ./autoconf.build )
+PATH=$TMP/autoconf-tmp/usr/bin:$PATH
+
+# Patches from Fedora:
+zcat $CWD/patches/fix-soname.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/copy-headers.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/tests-increase-timeout.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/icu_sources_data.py-Decouple-from-Mozilla-build-system.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/icu_sources_data-Write-command-output-to-our-stderr.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/emitter.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/init_patch.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/patches/spidermonkey_checks_disable.patch.gz | patch -p1 --verbose || exit 1
+#zcat $CWD/patches/encies.armv7_disable_WASM_EMULATE_ARM_UNALIGNED_FP_ACCESS.patch.gz | patch -p1 --verbose || exit 1
+
+# Patch to allow building with Python 3.10:
+zcat $CWD/patches/Fixup-compatibility-of-mozbuild-with-Python-3.10.patch.gz | patch -p1 --verbose || exit 1
+
+# Remove bundled zlib directory and use system version:
+rm -rf modules/zlib
+
+cd js/src
+
+# We need to do this because patches above touch configure.in:
+autoconf-2.13
+
+CFLAGS+="$SLKCFLAGS -fno-delete-null-pointer-checks -fno-strict-aliasing -fno-tree-vrp " \
+CXXFLAGS+="$SLKCFLAGS -fno-delete-null-pointer-checks -fno-strict-aliasing -fno-tree-vrp " \
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
+  --mandir=/usr/man \
+  --without-system-icu \
+  --with-system-zlib \
+  --enable-tests \
+  --disable-strip \
+  --with-intl-api \
+  --enable-readline \
+  --enable-shared-js \
+  --disable-optimize \
+  --enable-pie \
+  --disable-jemalloc \
+  --build=$ARCH-slackware-linux \
+
+make $NUMJOBS || make || exit 1
+make install DESTDIR=$PKG || exit 1
+
+# No need for the huge static library:
+rm -f $PKG/usr/lib${LIBDIRSUFFIX}/libjs_static.*
+
+# Don't ship -config:
+rm -f $PKG/usr/bin/js*-config
+
+# Rename shared library to have a proper soname:
+mv $PKG/usr/lib${LIBDIRSUFFIX}/libmozjs-78.so $PKG/usr/lib${LIBDIRSUFFIX}/libmozjs-78.so.0.0.0
+( cd $PKG/usr/lib${LIBDIRSUFFIX}
+  ln -sf libmozjs-78.so.0.0.0 libmozjs-78.so.0
+  ln -sf libmozjs-78.so.0 libmozjs-78.so
+)
+
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION
+cp ../../README.txt README.html $PKG/usr/doc/$PKGNAM-$VERSION
+
+# If there's a ChangeLog, installing at least part of the recent history
+# is useful, but don't let it get totally out of control:
+if [ -r ChangeLog ]; then
+  DOCSDIR=$(echo $PKG/usr/doc/${PKGNAM}-$VERSION)
+  cat ChangeLog | head -n 1000 > $DOCSDIR/ChangeLog
+  touch -r ChangeLog $DOCSDIR/ChangeLog
+fi
+
+find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
+  | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/$PKGNAM-$VERSION-$ARCH-$BUILD.txz

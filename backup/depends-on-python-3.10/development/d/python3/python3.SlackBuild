@@ -1,0 +1,179 @@
+#!/bin/bash
+
+# Slackware build script for python3
+
+# Copyright 2012-2017 Audrius Kažukauskas <audrius@neutrino.lt>
+# Copyright 2017, 2018, 2019  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR "AS IS" AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=python3
+SRCNAM=Python
+VERSION=$(echo $SRCNAM-*.tar.xz | rev | cut -f 3- -d . | cut -f 1 -d - | rev)
+BRANCH_VERSION=$(echo $VERSION | cut -f 1,2 -d . )
+BUILD=${BUILD:-1}
+
+NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-$PKGNAM
+rm -rf $PKG
+mkdir -p $TMP $PKG
+
+# Don't set any SLKCFLAGS here, or OPT="$SLKCFLAGS" before the ./configure.
+# Python gets the compile options right without any help.
+if [ "$ARCH" = "i586" ]; then
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  LIBDIRSUFFIX="64"
+elif [ "$ARCH" = "arm" ]; then
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "armel" ]; then
+  LIBDIRSUFFIX=""
+fi
+
+# Location for Python site-packages:
+SITEPK=$PKG/usr/lib${LIBDIRSUFFIX}/python${BRANCH_VERSION}/site-packages
+# same as above without $PKG
+TOOLSDIR=/usr/lib${LIBDIRSUFFIX}/python${BRANCH_VERSION}/site-packages
+
+cd $TMP
+rm -rf $SRCNAM-$VERSION
+tar xf $CWD/$SRCNAM-$VERSION.tar.xz || exit 1
+cd $SRCNAM-$VERSION || exit 1
+
+zcat $CWD/python3.readline.set_pre_input_hook.diff.gz | patch -p1 --verbose || exit 1
+
+if [ "$ARCH" = "x86_64" ]; then
+  # Install to lib64 instead of lib.
+  zcat $CWD/python.sysconfig.py.x86_64.diff.gz | patch -p1 --verbose || exit 1
+  zcat $CWD/python3.distutils.x86_64.diff.gz | patch -p1 --verbose || exit 1
+  zcat $CWD/python3.setup.py.x86_64.diff.gz | patch -p1 --verbose || exit 1
+fi
+
+# Fix python3 path in cgi.py.
+sed -i '1s|^#.*/usr/local/bin/python|#!/usr/bin/python3|' Lib/cgi.py
+
+# If system we're building on already has Python3 with pip in site-packages,
+# ignore it and install pip anyway.
+sed -i 's|\("install",\)|\1 "--ignore-installed",|' Lib/ensurepip/__init__.py
+
+chown -R root:root .
+find -L . \
+ \( -perm 777 -o -perm 775 -o -perm 750 -o -perm 711 -o -perm 555 \
+  -o -perm 511 \) -exec chmod 755 {} \+ -o \
+ \( -perm 666 -o -perm 664 -o -perm 640 -o -perm 600 -o -perm 444 \
+  -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \+
+
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --with-platlibdir=lib${LIBDIRSUFFIX} \
+  --mandir=/usr/man \
+  --docdir=/usr/doc/$PKGNAM-$VERSION \
+  --enable-ipv6 \
+  --enable-shared \
+  --with-system-expat \
+  --with-system-ffi \
+  --enable-loadable-sqlite-extensions \
+  --without-ensurepip \
+  --without-static-libpython \
+  --build=$ARCH-slackware-linux || exit 1
+
+make $NUMJOBS || make || exit 1
+make install DESTDIR=$PKG || exit 1
+
+# Remove to avoid overwriting a copy from Python2.
+rm -f $PKG/usr/bin/2to3
+
+## NOPE, let's try using -I instead.
+## Add a symlink to cpython include directory to fix various builds that
+## do not expect the new location:
+#( cd $PKG/usr/include
+#  ln -sf python?.?/cpython .
+#)
+
+# We'll install the python-tools under site-packages.
+mkdir -p $SITEPK
+cp -a Tools/* $SITEPK
+
+# Remove DOS batch/exe files.
+find $PKG \( -name '*.exe' -o -name '*.bat' \) -exec rm -f '{}' \+
+
+# Fix permissions on dynamic libraries.
+find $PKG -type f -perm 555 -exec chmod 755 '{}' \+
+
+# Install docs.
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION
+cp -a README.rst LICENSE Misc $PKG/usr/doc/$PKGNAM-$VERSION
+# Delete stuff that we don't need to package:
+rm -f $PKG/usr/doc/$PKGNAM-$VERSION/Misc/{HISTORY,*.in,*.wpr,python.man,svnmap.txt}
+mv $SITEPK/README $PKG/usr/doc/$PKGNAM-$VERSION/README.python-tools
+( cd $PKG/usr/doc/$PKGNAM-$VERSION ; ln -sf $TOOLSDIR Tools )
+if [ -e "$CWD/python-$VERSION-docs-html.tar.bz2" ]; then
+  tar xf $CWD/python-$VERSION-docs-html.tar.bz2
+  mv python-$VERSION-docs-html $PKG/usr/doc/$PKGNAM-$VERSION/docs-html
+  chown -R root:root $PKG/usr/doc/$PKGNAM-$VERSION/docs-html
+fi
+if [ -e "$CWD/python-$VERSION-docs-text.tar.bz2" ]; then
+  tar xf $CWD/python-$VERSION-docs-text.tar.bz2
+  mv python-$VERSION-docs-text $PKG/usr/doc/$PKGNAM-$VERSION/docs-text
+  chown -R root:root $PKG/usr/doc/$PKGNAM-$VERSION/docs-text
+fi
+
+# Fix possible incorrect permissions.
+( cd $PKG
+  find . -type d -exec chmod 755 "{}" \+
+  find . -perm 640 -exec chmod 644 "{}" \+
+  find . -perm 750 -exec chmod 755 "{}" \+
+)
+
+find $PKG -print0 | xargs -0 file | grep -e "executable" -e "shared object" | grep ELF \
+  | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
+
+find $PKG/usr/man -type f -exec gzip -9 {} \+
+for i in $( find $PKG/usr/man -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/python3-$VERSION-$ARCH-$BUILD.txz
