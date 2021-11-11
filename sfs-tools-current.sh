@@ -239,6 +239,9 @@ copy_src () {
     cd $RDIR/l/zstd || exit 1
 	export ZSTDVER=${VERSION:-$(echo zstd-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/l/zstd/zstd-"$ZSTDVER".tar.?z "$SRCDIR" || exit 1
+    cd $RDIR/l/zlib || exit 1
+	export ZLIBVER=${VERSION:-$(echo zlib-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+    cp -v $RDIR/l/zlib/zlib-"$ZLIBVER".tar.?z "$SRCDIR" || exit 1
 	if [[ "$ada_enable" = "yes" ]]
 	then
 		case $(uname -m) in
@@ -865,6 +868,34 @@ perl_build () {
 	echo perl-"$PERLVER" >> "$SFS"/tools/etc/tools_version
 }
 
+zlib_build () {
+#*****************************
+    tar xvf "zlib-$ZLIBVER".tar.?z || exit 1
+	cd zlib-"$ZLIBVER" || exit 1 
+
+    ./configure --prefix=/tools || exit 1
+
+    make || exit 1
+    make install || exit 1
+    cd ..
+    rm -rf zlib-"$ZLIBVER"
+	echo zlib-"$ZLIBVER" >> "$SFS"/tools/etc/tools_version
+}
+
+xz_build () {
+#*****************************
+    tar xvf "xz-$XZVER".tar.?z || exit 1
+	cd xz-"$XZVER" || exit 1 
+
+    ./configure --prefix=/tools || exit 1
+
+    make || exit 1
+    make install || exit 1
+    cd ..
+    rm -rf xz-"$XZVER"
+	echo xz-"$XZVER" >> "$SFS"/tools/etc/tools_version
+}
+
 python_build () {
 #*****************************
     tar xvf Python-"$PYTHVER".tar.?z || exit 1
@@ -950,20 +981,6 @@ util_linux_build () {
     cd ..
     rm -rf util-linux-"$UTILVER"
 	echo util-linux-"$UTILVER" >> "$SFS"/tools/etc/tools_version
-}
-
-xz_build () {
-#*****************************
-    tar xvf "xz-$XZVER".tar.xz || exit 1
-	cd xz-"$XZVER" || exit 1 
-
-    ./configure --prefix=/tools || exit 1
-
-    make || exit 1
-    make install || exit 1
-    cd ..
-    rm -rf xz-"$XZVER"
-	echo xz-"$XZVER" >> "$SFS"/tools/etc/tools_version
 }
 
 lzip_build () {
@@ -1116,11 +1133,12 @@ automake_build
 make_build
 patch_build
 perl_build
+zlib_build
+xz_build
 python_build
 sed_build
 tar_build
 texinfo_build
-xz_build
 lzip_build
 tar_slack_build
 which_build

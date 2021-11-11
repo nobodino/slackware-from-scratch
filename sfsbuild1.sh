@@ -2330,6 +2330,7 @@ for package in \
 	kdevelop-pg-qt \
 	kdevelop \
 	kdev-php \
+	kdev-python \
 	kdiagram \
 	kjots \
 	kstars \
