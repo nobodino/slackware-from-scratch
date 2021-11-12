@@ -947,6 +947,7 @@ ap ksh93
 ap libx86
 ap lsof
 ap lsscsi
+l libseccomp
 ap lxc
 l libmad
 l libid3tag
