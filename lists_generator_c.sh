@@ -591,6 +591,8 @@ n gnupg2
 n gpgme
 l libssh
 l python-dnspython
+l python-tomli
+l python-setuptools_scm
 l python-markdown
 n samba
 l v4l-utils
