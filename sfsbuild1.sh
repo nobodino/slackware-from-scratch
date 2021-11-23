@@ -2480,7 +2480,7 @@ echo
 echo -e "$YELLOW"  "upgrade your boot loader and reboot in your SFS system" "$NORMAL"
 echo
 echo
-cd /sfspacks && rm ./*/*_alsa* 2>&1 | tee > /dev/null
+cd /sfspacks && rm */*_alsa* 2>&1 | tee > /dev/null
 cd /sources && killall -9 dhcpcd
 }
 

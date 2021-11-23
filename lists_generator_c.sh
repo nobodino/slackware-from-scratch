@@ -591,9 +591,13 @@ n gnupg2
 n gpgme
 l libssh
 l python-dnspython
+l pyparsing
+l python-packaging
 l python-tomli
 l python-setuptools_scm
 l python-markdown
+l pyparsing
+l python-packaging
 n samba
 l v4l-utils
 l libvpx
@@ -1393,6 +1397,12 @@ l poppler
 l editorconfig-core-c
 xap freerdp
 x xdg-desktop-portal
+l python-Jinja2
+l python-MarkupSafe
+l python-PyYAML
+l python-doxypypy
+l python-doxyqml
+l python-pbr
 kde frameworks
 kde kdepim
 kde plasma
