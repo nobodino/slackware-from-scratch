@@ -1,0 +1,171 @@
+#!/bin/bash
+
+# Copyright 2008, 2009, 2010, 2018, 2021  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=cdrtools
+VERSION=${VERSION:-$(echo cdrtools-*.tar.?z* | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
+BUILD=${BUILD:-6}
+
+ZISOFSTOOLS=1.0.8
+# This package does not support parallel build:
+#NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+unset NUMJOBS
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-cdrtools
+
+rm -rf $PKG
+mkdir -p $TMP $PKG/usr
+
+cd $TMP
+rm -rf cdrtools-$(echo $VERSION | cut -f 1 -d a)
+tar xvf $CWD/cdrtools-$VERSION.tar.?z* || exit 1
+cd cdrtools-$(echo $VERSION | cut -f 1 -d a) || exit 1
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \+ -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \+
+
+zcat $CWD/cdrtools-3.01-fix-20151126-mkisofs-isoinfo.patch.gz | patch -p1 --verbose || exit 1
+
+# When running make below, you'll see "errors" like these:
+# config.h:34:10: fatal error: lconfig.h: No such file or directory
+#    34 | #include "lconfig.h"
+# However, lconfig.h will eventually be generated from lconfig.h.in, the build
+# will restart, and the package will be correctly built. Since there are no
+# ill effects from this I see no compelling reason to try to patch it here.
+export GMAKE_NOWARN=true && make -e INS_BASE=/usr DEFMANBASE=. || exit 1
+export GMAKE_NOWARN=true && make -e install INS_BASE=/usr DEFMANBASE=. DESTDIR=$PKG || exit 1
+
+# I don't know why this couldn't be "/etc/cdrtools" or something, but since
+# getty uses it already I'm not going to argue the point.
+mv $PKG/etc/default/cdrecord $PKG/etc/default/cdrecord.new
+
+# These don't need to be in the package, IMHO.
+rm -rf $PKG/usr/include \
+       $PKG/usr/lib/profiled \
+       $PKG/usr/lib/*.a \
+       $PKG/usr/man/man5
+
+# Next big hole? ;)   (don't ship rscsi)
+rm -r $PKG/usr/sbin
+rm -f $PKG/etc/default/rscsi $PKG/usr/man/man1/rscsi.1
+
+# Remove dupes:
+rm -rf $PKG/usr/share/doc
+rmdir $PKG/usr/share
+
+mkdir -p $PKG/usr/doc/cdrtools-$VERSION
+cp -a \
+  ABOUT AN-* BUILD CDDL* COMPILE CONTRIBUTING COPYING* Changelog \
+  *GPL* INSTALL README* START \
+  $PKG/usr/doc/cdrtools-$VERSION
+chown -R root:root $PKG/usr/doc/cdrtools-$VERSION/*
+find $PKG/usr/doc/cdrtools-$VERSION -type f -exec chmod 644 {} \+
+(
+   cd mkisofs
+   mkdir -p $PKG/usr/doc/cdrtools-$VERSION/mkisofs
+   cp -a \
+     COPYING* ChangeLog* README* RELEASE TODO \
+     $PKG/usr/doc/cdrtools-$VERSION/mkisofs
+   chown root:root $PKG/usr/doc/cdrtools-$VERSION/mkisofs/*
+   chmod 644 $PKG/usr/doc/cdrtools-$VERSION/mkisofs/*
+)
+(
+   cd cdda2wav
+   mkdir -p $PKG/usr/doc/cdrtools-$VERSION/cdda2wav
+   cp -a \
+     Changelog FAQ Frontends HOWTOUSE NEEDED OtherProgs README THANKS TODO \
+     $PKG/usr/doc/cdrtools-$VERSION/cdda2wav
+   chown root:root $PKG/usr/doc/cdrtools-$VERSION/cdda2wav/*
+   chmod 644 $PKG/usr/doc/cdrtools-$VERSION/cdda2wav/*
+)
+# The entire ChangeLog is excessive for most users:
+cat $PKG/usr/doc/cdrtools-$VERSION/Changelog | head -n 1000 > $PKG/usr/doc/cdrtools-$VERSION/CL
+mv $PKG/usr/doc/cdrtools-$VERSION/CL $PKG/usr/doc/cdrtools-$VERSION/Changelog
+cat $PKG/usr/doc/cdrtools-$VERSION/mkisofs/ChangeLog | head -n 1000 > $PKG/usr/doc/cdrtools-$VERSION/mkisofs/CL
+mv $PKG/usr/doc/cdrtools-$VERSION/mkisofs/CL $PKG/usr/doc/cdrtools-$VERSION/mkisofs/ChangeLog
+
+mkdir -p $PKG/install
+zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+# Add the mkzftree tool for zisofs:
+cd $TMP
+rm -rf zisofs-tools-$ZISOFSTOOLS
+tar xf $CWD/zisofs-tools-$ZISOFSTOOLS.tar.bz2 || exit 1
+cd zisofs-tools-$ZISOFSTOOLS
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \+ -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \+
+CFLAGS="-O2" ./configure --prefix=/usr --build=$ARCH-slackware-linux
+make || exit 1
+cat mkzftree > $PKG/usr/bin/mkzftree
+chmod 0755 $PKG/usr/bin/mkzftree
+cat mkzftree.1 | gzip -9c > $PKG/usr/man/man1/mkzftree.1.gz
+mkdir -p $PKG/usr/doc/zisofs-tools-$ZISOFSTOOLS
+cp -a \
+  CHANGES COPYING INSTALL README zisofs.magic \
+  $PKG/usr/doc/zisofs-tools-$ZISOFSTOOLS
+
+# Remove these useless man pages that stomp on actual C library pages:
+rm -rf $PKG/usr/man/man3
+
+# Fix permissions:
+cd $PKG
+find . -type d -exec chmod 755 {} \+
+chown root:root -R $PKG
+find $PKG/usr/man -type f -exec chmod 644 {} \+
+find $PKG/usr/man -type f -exec gzip -9 {} \+
+find $PKG/usr/doc/cdrtools-$VERSION -type f -exec chmod 0644 {} \+
+chmod 0755 $PKG/usr/bin/*
+
+find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
+  | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/cdrtools-$VERSION-$ARCH-$BUILD.txz
+
