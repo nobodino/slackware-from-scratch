@@ -42,7 +42,7 @@ export SFS=/mnt/sfs
 #*******************************************************************
 # the directory where will be stored the slackware source for SFS
 #*******************************************************************
-export SRCDIR=$SFS/sources
+export SRCDIR=$SFS/scripts
 SFS_TGT=$(uname -m)-sfs-linux-gnu
 export SFS_TGT
 #*******************************************************************
@@ -65,7 +65,7 @@ groupadd sfs
 useradd -s /bin/bash -g sfs -m -k /dev/null sfs
 
 chown -v sfs $SFS/tools
-chown -Rv sfs:sfs $SFS/sources
+chown -Rv sfs:sfs $SFS/scripts
 }
 
 generate_bash_profile () {
@@ -95,7 +95,7 @@ echo "By now, you're in the 'sfs' environment."
 echo
 echo "Execute the 2 following commands:"
 echo
-echo -e "$YELLOW" "cd $SFS/sources  && source ~/.bash_profile" "$NORMAL"
+echo -e "$YELLOW" "cd $SFS/scripts  && source ~/.bash_profile" "$NORMAL"
 echo 
 echo "and then:"
 echo 
