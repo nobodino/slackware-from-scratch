@@ -53,11 +53,11 @@ export SFS=/mnt/sfs
 #*******************************************************************
 # the directory where is stored the resynced slackware sources
 #*******************************************************************
-export RDIR=$SFS/slacksrc
+export RDIR=$SFS/source
 #*******************************************************************
 # the directory where will be stored the slackware source for SFS
 #*******************************************************************
-export SRCDIR=$SFS/sources
+export SRCDIR=$SFS/scripts
 SFS_TGT=$(uname -m)-sfs-linux-gnu
 export SFS_TGT
 #*******************************************************************
@@ -556,7 +556,7 @@ gcc_build_sp2 () {
 
 gnat_build_sp2 () {
 #*****************************
-	cd "$SFS"/sources || exit 1 
+	cd "$SFS"/scripts || exit 1 
 	tar xvf gcc-"$SRCVER".tar.xz || exit 1
 	cd gcc-"$SRCVER" || exit 1 
 
@@ -642,7 +642,7 @@ ncurses_build () {
     make || exit 1
     make install || exit 1
     ln -s libncursesw.so /mnt/sfs/tools/lib/libncurses.so
-	cd /mnt/sfs/sources || exit 1 
+	cd /mnt/sfs/scripts || exit 1 
     rm -rf ncurses-"$NCURVER"
 	echo ncurses-"$NCURVER" >> "$SFS"/tools/etc/tools_version
 }
@@ -1046,7 +1046,7 @@ glibc_repair () {
 			cp -v libc-$GLIBCVER.so.backup libc-$GLIBCVER.so
 			ln -sf libc-$GLIBCVER.so libc.so.6
 			rm libc-$GLIBCVER.so.backup
-			cd $SFS/sources ;;
+			cd $SFS/scripts ;;
 		2.34 )
 			echo ;;
 	esac
