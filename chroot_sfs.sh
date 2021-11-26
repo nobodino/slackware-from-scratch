@@ -87,7 +87,7 @@ echo "	- /tools/lib and /usr/lib:"
 echo
 echo "You can execute now the following instructions."
 echo
-echo -e "$YELLOW" "cd /sources && ./sfsbuild1.sh link.list" "$NORMAL" 
+echo -e "$YELLOW" "cd /scripts && ./sfsbuild1.sh link.list" "$NORMAL" 
 echo
 #**********************************
 # and finally, enter the chroot environment.
