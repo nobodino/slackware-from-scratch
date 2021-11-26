@@ -39,26 +39,19 @@ lists_generator_c () {
 	generate_slackware_build_list2_c
 	generate_slackware_build_list3_c
 	generate_slackware_build_list4_c
-}
-
-test_gnat () {
-#******************************************
-# test the existence of gnat in tools
-# if not, modify build1_s.list to have 
-# 'd pre-gcc' and 'd post-gcc' to build gcc
-#******************************************
-(! /tools/bin/gnat) 1> /dev/null && sed -i -e 's/# d/d/g' build1_s.list
+	generate_slackware_build_list5_c
+	generate_slackware_build_list0_c
 }
 
 generate_slackware_link_build_list () {
-cat > "$SFS"/sources/link.list << "EOF"
+cat > "$SFS"/scripts/link.list << "EOF"
 a link_tools_slackware
 EOF
 }
 
 generate_slackware_build_list1_c () {
 #******************************************
-cat > "$SFS"/sources/build1_s.list << "EOF"
+cat > "$SFS"/scripts/build1_s.list << "EOF"
 a findutils
 a pkgtools
 a aaa_base
@@ -270,7 +263,6 @@ d llvm
 d llvm
 ap linuxdoc-tools
 d ccache
-# n ca-certificates
 d rust
 a kernel-all
 d help2man
@@ -290,7 +282,7 @@ EOF
 
 generate_slackware_build_list2_c () {
 #******************************************
-cat > "$SFS"/sources/build2_s.list << "EOF"
+cat > "$SFS"/scripts/build2_s.list << "EOF"
 a dhcpcd_up
 a haveged
 a gpm
@@ -497,7 +489,7 @@ EOF
 
 generate_slackware_build_list3_c () {
 #******************************************
-cat > "$SFS"/sources/build3_s.list << "EOF"
+cat > "$SFS"/scripts/build3_s.list << "EOF"
 a dhcpcd_up
 l python-pygments
 ap linuxdoc-tools
@@ -804,7 +796,7 @@ EOF
 
 generate_slackware_build_list4_c () {
 #******************************************
-cat > "$SFS"/sources/build4_s.list << "EOF"
+cat > "$SFS"/scripts/build4_s.list << "EOF"
 a dhcpcd_up
 l python-six
 d opencl-headers
@@ -1444,6 +1436,22 @@ a end4
 EOF
 }
 
+generate_slackware_build_list5_c () {
+#******************************************
+rm "$SFS"/scripts/build5_s.list
+cat  "$SFS"/scripts/build1_s.list > "$SFS"/scripts/build5_s.list
+cat  "$SFS"/scripts/build2_s.list >> "$SFS"/scripts/build5_s.list
+cat  "$SFS"/scripts/build3_s.list >> "$SFS"/scripts/build5_s.list
+cat  "$SFS"/scripts/build4_s.list >> "$SFS"/scripts/build5_s.list
+}
+
+generate_slackware_build_list0_c () {
+#******************************************
+rm "$SFS"/scripts/build0_s.list
+cat  "$SFS"/scripts/build1_s.list > "$SFS"/scripts/build0_s.list
+sed -i -e "207,212d" "$SFS"/scripts/build0_s.list
+}
+
 #************************************************************************
 #************************************************************************
 # MAIN CORE SCRIPT
@@ -1451,4 +1459,3 @@ EOF
 #************************************************************************
 
 lists_generator_c
-test_gnat
