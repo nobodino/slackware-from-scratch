@@ -52,9 +52,15 @@ export RDIR5=/mnt/dvd
 #*******************************************************************
 # the directory where will be copied the slackware sources from RDIR
 #*******************************************************************
-export SRCDIR=$SFS/slacksrc
+export SRCDIR=$SFS/source
 #*******************************************************************
 # the directory where will be stored the patches necessary to build SFS
 #*******************************************************************
-export PATCHDIR=$SFS/sources/patches
+# export PATCHDIR=$SFS/scripts/patches
+#******************************************************************
+# Command for retrieve the native flags: 
+# gcc -march=native -v -E - < /dev/null 2>&1 | grep cc1 | perl -pe 's/ -mno-\S+//g; s/^.* - //g;'
+#******************************************************************
+# CFLAGS="-O3 -fPIC -march=skylake -mmmx -msse -msse2 -msse3 -mssse3 -mcx16 -msahf -mmovbe -maes -mpclmul -mpopcnt -mabm -mfma -mbmi -msgx -mbmi2 -mavx -mavx2 -msse4.2 -msse4.1 -mlzcnt -mrtm -mhle -mrdrnd -mf16c -mfsgsbase -mrdseed -mprfchw -madx -mfxsr -mxsave -mxsaveopt -mclflushopt -mxsavec -mxsaves --param l1-cache-size=32 --param l1-cache-line-size=64 --param l2-cache-size=8192 -mtune=skylake"
+# export CFLAGS 
 #******************************************************************
