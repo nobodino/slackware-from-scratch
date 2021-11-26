@@ -63,7 +63,9 @@ arch_selector () {
 # architecture selector
 #**********************************
 PS3="Your choice:"
-select build_arch in x86 x86_64 quit
+# disable x86 for this new version
+# will reactivated later
+select build_arch in x86_64 quit
 do
 	if [[ "$build_arch" = "x86" ]]
 	then
@@ -173,7 +175,7 @@ if (mount -l -t proc |grep sfs >/dev/null); then
 fi
 
 [ -d "$SFS"/proc ] && rm -rf bin boot dev etc jre home lib media mnt \
-	lib64 opt proc root run sbin sfspacks srv sys tmp tools usr var font*
+	lib64 opt proc root run sbin slackware64 slackware srv sys tmp tools usr var font*
 
 }
 
@@ -192,22 +194,22 @@ do
 	then
 		echo "You chose to upgrade the sources of SFS."
 		echo
-		echo "rsync the slacksrc tree from a slackware mirror"
-		mkdir "$SFS"/sources/others > /dev/null 2>&1
-		cp -r --preserve=timestamps "$SRCDIR"/others/* "$SFS"/sources/others > /dev/null 2>&1
-		mkdir "$SFS"/sources/extra > /dev/null 2>&1
-		cp -r --preserve=timestamps "$SRCDIR"/extra/* "$SFS"/sources/extra > /dev/null 2>&1
+		echo "rsync the slackware source tree from a slackware mirror"
+		mkdir "$SFS"/scripts/others > /dev/null 2>&1
+		cp -r --preserve=timestamps "$SRCDIR"/others/* "$SFS"/scripts/others > /dev/null 2>&1
+		mkdir "$SFS"/scripts/extra > /dev/null 2>&1
+		cp -r --preserve=timestamps "$SRCDIR"/extra/* "$SFS"/scripts/extra > /dev/null 2>&1
 		rsync -arvz --stats --progress -I --delete-after "$RSYNCDIR"/source/ "$SRCDIR"
 		mkdir "$SRCDIR"/others > /dev/null 2>&1
-		cp -r --preserve=timestamps "$SFS"/sources/others/* "$SRCDIR"/others > /dev/null 2>&1
+		cp -r --preserve=timestamps "$SFS"/scripts/others/* "$SRCDIR"/others > /dev/null 2>&1
 		mkdir "$SRCDIR"/extra > /dev/null 2>&1
-		cp -r --preserve=timestamps  "$SFS"/sources/extra/* "$SRCDIR"/extra > /dev/null 2>&1
+		cp -r --preserve=timestamps  "$SFS"/scripts/extra/* "$SRCDIR"/extra > /dev/null 2>&1
 		rsync -arvz --stats --progress -I --delete-after "$RSYNCDIR"/extra/source/ "$SRCDIR"/extra > /dev/null 2>&1
-		cd "$SFS"/sources || exit 1
+		cd "$SFS"/scripts || exit 1
 		rm end* > /dev/null 2>&1
 		rm ./*.t?z > /dev/null 2>&1
-		rm -rf "$SFS"/sources/others > /dev/null 2>&1 
-		rm -rf "$SFS"/sources/extra > /dev/null 2>&1
+		rm -rf "$SFS"/scripts/others > /dev/null 2>&1 
+		rm -rf "$SFS"/scripts/extra > /dev/null 2>&1
 		break
 	elif [[ "$upgrade_sources" = "No" ]]
 	then
@@ -234,7 +236,7 @@ do
 	then
 		echo
 		echo "You chose to upgrade the sources of SFS."
-		echo "Removing old slacksrc."
+		echo "Removing old slackware source."
 		[ -d "$SRCDIR" ] && rm -rf "$SRCDIR"
 		echo "Installing new sources."
 		cp -r --preserve=timestamps "$RDIR"/source "$SRCDIR"
@@ -242,10 +244,10 @@ do
 		mkdir -pv "$SRCDIR"/extra > /dev/null 2>&1
 		cp -r --preserve=timestamps "$DNDIR1"/* "$SRCDIR"/others
 		cp -r --preserve=timestamps "$RDIR"/extra/source/* "$SRCDIR"/extra
-		cd "$SFS"/sources || exit 1
+		cd "$SFS"/scripts || exit 1
 		rm end* > /dev/null 2>&1
 		rm ./*.t?z > /dev/null 2>&1
-		rm -rf "$SFS"/sources/extra && rm -rf "$SFS"/sources/others
+		rm -rf "$SFS"/scripts/extra && rm -rf "$SFS"/scripts/others
 		break
 	elif [[ "$upgrade_sources" = "No" ]]
 	then
@@ -265,33 +267,33 @@ rsync_dev_current () {
 if [[ "$dev_select" = "current" ]]; then
 		echo "You chose the -current branch of slackware to build SFS."
 		echo
-		rm -rf "$SFS"/slacksrc/current && mkdir "$SFS"/slacksrc/current
-		svn checkout "$DLDIR13"/current "$SFS"/slacksrc/current > /dev/null 2>&1
-		rm -rf "$SFS"/slacksrc/current/.svn
-		cp -r --preserve=timestamps "$SFS"/slacksrc/current/* "$SFS"/slacksrc
-		rm -rf "$SFS"/slacksrc/current
+		rm -rf "$SFS"/source/current && mkdir "$SFS"/source/current
+		svn checkout "$DLDIR13"/current "$SFS"/source/current > /dev/null 2>&1
+		rm -rf "$SFS"/source/current/.svn
+		cp -r --preserve=timestamps "$SFS"/source/current/* "$SFS"/source
+		rm -rf "$SFS"/source/current
 	elif [[ "$dev_select" = "development" ]]; then
 		echo "You chose the -development branch of slackware to build SFS."
 		echo
-		rm -rf "$SFS"/slacksrc/development && mkdir "$SFS"/slacksrc/development
-		svn checkout "$DLDIR13"/development "$SFS"/slacksrc/development > /dev/null 2>&1
-		rm -rf "$SFS"/slacksrc/development/.svn
-		if find "$SFS"/slacksrc/development/l/glibc -mindepth 1 | read -r ; then
-			rm -rf "$SFS"/slacksrc/l/glibc
+		rm -rf "$SFS"/source/development && mkdir "$SFS"/source/development
+		svn checkout "$DLDIR13"/development "$SFS"/source/development > /dev/null 2>&1
+		rm -rf "$SFS"/source/development/.svn
+		if find "$SFS"/source/development/l/glibc -mindepth 1 | read -r ; then
+			rm -rf "$SFS"/source/l/glibc
 		fi
-		if find "$SFS"/slacksrc/development/d/binutils -mindepth 1 | read -r ; then
-			rm -rf "$SFS"/slacksrc/d/binutils
+		if find "$SFS"/source/development/d/binutils -mindepth 1 | read -r ; then
+			rm -rf "$SFS"/source/d/binutils
 		fi
-		if find "$SFS"/slacksrc/development/d/gcc -mindepth 1 | read -r ; then
-			rm -rf "$SFS"/slacksrc/d/gcc
+		if find "$SFS"/source/development/d/gcc -mindepth 1 | read -r ; then
+			rm -rf "$SFS"/source/d/gcc
 		fi
-		if find "$SFS"/slacksrc/development/d/make -mindepth 1 | read -r ; then
-			rm -rf "$SFS"/slacksrc/d/make
+		if find "$SFS"/source/development/d/make -mindepth 1 | read -r ; then
+			rm -rf "$SFS"/source/d/make
 		fi
-		if find "$SFS"/slacksrc/development/d/automake -mindepth 1 | read -r ; then
-			rm -rf "$SFS"/slacksrc/d/automake
+		if find "$SFS"/source/development/d/automake -mindepth 1 | read -r ; then
+			rm -rf "$SFS"/source/d/automake
 		fi
-		cp -r --preserve=timestamps "$SFS"/slacksrc/development/* "$SFS"/slacksrc
+		cp -r --preserve=timestamps "$SFS"/source/development/* "$SFS"/source
 fi
 
 }
@@ -316,7 +318,7 @@ do
 		if ! (mount -l |grep "$RDIR5" >/dev/null); then
 			mount /dev/sr0 "$RDIR5"
 		fi
-		echo "Removing old slacksrc."
+		echo "Removing old slackware source."
 		[ -d "$SRCDIR" ] && rm -rf "$SRCDIR"
 		echo "Installing new sources."
 		cp -r --preserve=timestamps "$RDIR5"/source "$SRCDIR"
@@ -324,10 +326,10 @@ do
 		mkdir -pv "$SRCDIR"/extra > /dev/null 2>&1
 		cp -r --preserve=timestamps "$DNDIR1"/* "$SRCDIR"/others
 		cp -r --preserve=timestamps "$RDIR5"/extra/source/* "$SRCDIR"/extra
-		cd "$SFS"/sources || exit 1
+		cd "$SFS"/scripts || exit 1
 		rm end* > /dev/null 2>&1
 		rm ./*.t?z > /dev/null 2>&1
-		rm -rf "$SFS"/sources/extra && rm -rf "$SFS"/sources/others
+		rm -rf "$SFS"/scripts/extra && rm -rf "$SFS"/scripts/others
 		break
 	elif [[ "$upgrade_sources" = "No" ]]
 	then
@@ -476,8 +478,8 @@ sfsprep () {
 # package management: copy tools from slackware source:
 #***********************************************************
 mkdir -pv "$SFS"/sbin
-cp "$SFS"/slacksrc/a/pkgtools/scripts/makepkg "$SFS"/sbin/makepkg
-cp "$SFS"/slacksrc/a/pkgtools/scripts/installpkg "$SFS"/sbin/installpkg
+cp "$SFS"/source/a/pkgtools/scripts/makepkg "$SFS"/sbin/makepkg
+cp "$SFS"/source/a/pkgtools/scripts/installpkg "$SFS"/sbin/installpkg
 chmod 755 "$SFS"/sbin/makepkg "$SFS"/sbin/installpkg
 }
 
@@ -541,9 +543,9 @@ do
 	elif [[ "$upgrade_type" = "rsync" ]]
 	then
 		echo
-		echo -e "$RED" "You chose to rsync slacksrc directly from a slackware mirror." "$NORMAL"
+		echo -e "$RED" "You chose to rsync slackawre source directly from a slackware mirror." "$NORMAL"
 		echo
-		cd "$SFS"/sources || exit 1
+		cd "$SFS"/scripts || exit 1
 		rsync_src
 		rsync_dev_current
 		populate_others
@@ -551,7 +553,7 @@ do
 	elif [[ "$upgrade_type" = "local" ]]
 	then
 		echo
-		echo  -e "$RED" "You chose to rsync slacksrc from a local mirror." "$NORMAL"
+		echo  -e "$RED" "You chose to rsync slackawre source from a local mirror." "$NORMAL"
 		echo 
 		upgrade_src
 		rsync_dev_current
@@ -560,7 +562,7 @@ do
 	elif [[ "$upgrade_type" = "DVD" ]]
 	then
 		echo
-		echo  -e "$RED" "You chose to rsync slacksrc from a local DVD or BluRay." "$NORMAL"
+		echo  -e "$RED" "You chose to rsync slackawre source from a local DVD or BluRay." "$NORMAL"
 		echo 
 		mount -t auto /dev/sr0 /mnt/dvd && sleep 5 && echo -e "$RED" "DVD mounted on /mnt/DVD" "$NORMAL"
 		upgrade_dvd
@@ -585,7 +587,7 @@ root_bashrc
 #***********************************************************
 sfsprep
 
-cd "$SFS"/sources || exit 1
+cd "$SFS"/scripts || exit 1
 . lists_generator_c.sh
 . prep-sfs-tools.sh
 #*************************************
