@@ -1,0 +1,16 @@
+#!/bin/bash
+
+execute_sed_perl () {
+#******************************************************************
+# delete several lines in SlackBuild (disable DBD-mysql build on first pass)
+#******************************************************************
+if [ ! -f "$SLACKSRC"/d/perl/perl.SlackBuild.old ]; then
+	cp -v "$SLACKSRC"/d/perl/perl.SlackBuild "$SLACKSRC"/d/perl/perl.SlackBuild.old
+	(
+		cd "$SLACKSRC"/d/perl || exit 1
+		sed -i -e "237,250d" perl.SlackBuild
+	)
+fi
+}
+
+execute_sed_perl

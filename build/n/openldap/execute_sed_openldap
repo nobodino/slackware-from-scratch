@@ -1,0 +1,18 @@
+#!/bin/bash
+
+execute_sed_openldap () {
+#******************************************************************
+# disable some options in SlackBuild
+#******************************************************************
+if [ ! -f "$SLACKSRC"/n/openldap/openldap.SlackBuild.old ]; then
+	cp -v "$SLACKSRC"/n/openldap/openldap.SlackBuild \
+		"$SLACKSRC"/n/openldap/openldap.SlackBuild.old
+	(
+		cd "$SLACKSRC"/n/openldap || exit 1
+		sed -i -e "s/--enable-wrappers/--disable-wrappers/" openldap.SlackBuild
+		sed -i -e "s/--enable-backends=mod/--enable-backends=no/" openldap.SlackBuild
+		sed -i -e "s/--enable-perl=yes/--enable-perl=no/" openldap.SlackBuild
+	)
+fi
+}
+execute_sed_openldap

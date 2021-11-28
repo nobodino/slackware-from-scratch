@@ -1,0 +1,17 @@
+#!/bin/bash
+
+execute_sed_kmod () {
+#******************************************************************
+# remove "exit 1" code in SlackBuild
+#******************************************************************
+if [ ! -f "$SLACKSRC"/a/kmod/kmod.SlackBuild.old ]; then
+	cp -v "$SLACKSRC"/a/kmod/kmod.SlackBuild "$SLACKSRC"/a/kmod/kmod.SlackBuild.old
+	(
+		cd "$SLACKSRC"/a/kmod || exit 1
+		sed -i -e "s/make || exit 1/make/" kmod.SlackBuild
+		# shellcheck disable=SC2016
+		sed -i -e 's/make install DESTDIR=$PKG || exit 1/make install DESTDIR=$PKG/' kmod.SlackBuild
+	)
+fi
+}
+execute_sed_kmod

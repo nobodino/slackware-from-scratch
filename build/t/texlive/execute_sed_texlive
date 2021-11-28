@@ -1,0 +1,26 @@
+#!/bin/bash
+
+execute_sed_texlive () {
+#******************************************************************
+# change some options from "--with-xxx" in "--without-xxx",
+# and add "--disable-web2c" and "--disable-xetex" in SlackBuild
+#******************************************************************
+if [ ! -f "$SLACKSRC"/t/texlive/texlive.SlackBuild.old ]; then
+	cp -v "$SLACKSRC"/t/texlive/texlive.SlackBuild "$SLACKSRC"/t/texlive/texlive.SlackBuild.old
+	(
+		cd "$SLACKSRC"/t/texlive || exit 1
+		sed -i -e "s/with-x/without-x/" texlive.SlackBuild
+		sed -i -e "s/enable-xindy/disable-xindy/" texlive.SlackBuild
+		sed -i -e "s/with-system-pixman/without-system-pixman/" texlive.SlackBuild
+		sed -i -e "s/with-system-cairo/without-system-cairo/" texlive.SlackBuild
+		sed -i -e "s/with-system-gmp/without-system-gmp/" texlive.SlackBuild
+		sed -i -e "s/with-system-mpfr/without-system-mpfr/" texlive.SlackBuild
+		sed -i -e "s/with-system-fontconfig/without-system-fontconfig/" texlive.SlackBuild
+		sed -i -e "/disable-xindy-rules/p" texlive.SlackBuild
+		sed -i -e "0,/disable-xindy-rules/ s/disable-xindy-rules/disable-web2c/" texlive.SlackBuild
+		sed -i -e "/disable-web2c/p" texlive.SlackBuild
+		sed -i -e "0,/disable-web2c/ s/disable-web2c/disable-xetex/" texlive.SlackBuild
+	)
+fi
+}
+execute_sed_texlive

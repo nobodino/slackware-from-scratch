@@ -1,0 +1,15 @@
+#!/bin/bash
+
+execute_sed_findutils () {
+#******************************************************************
+# disable the patch and autoreconf in SlackBuild
+#******************************************************************
+if [ ! -f findutils.SlackBuild.old ]; then
+	cp -v findutils.SlackBuild findutils.SlackBuild.old
+	(
+		sed -i -e "s/zcat/# zcat/g" findutils.SlackBuild
+		sed -i -e "s/autoreconf/# autoreconf/g" findutils.SlackBuild
+	)
+fi
+}
+execute_sed_findutils

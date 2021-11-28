@@ -1,0 +1,16 @@
+#!/bin/bash
+
+execute_sed_fontconfig () {
+#******************************************************************
+# add "--disable-docs" to SlackBuild
+#******************************************************************
+if [ ! -f "$SLACKSRC"/x/fontconfig/fontconfig.SlackBuild.old ]; then
+	cp -v "$SLACKSRC"/x/fontconfig/fontconfig.SlackBuild "$SLACKSRC"/x/fontconfig/fontconfig.SlackBuild.old
+	(
+		cd "$SLACKSRC"/x/fontconfig || exit 1
+		sed -i -e "/--sysconfdir/p" fontconfig.SlackBuild
+		sed -i -e "0,/sysconfdir/! s/sysconfdir=\/\etc/disable-docs/" fontconfig.SlackBuild
+	)
+fi
+}
+execute_sed_fontconfig

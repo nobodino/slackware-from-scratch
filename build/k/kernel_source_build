@@ -1,0 +1,15 @@
+#!/bin/bash
+
+kernel_source_build () {
+#********************************************************
+# remove everything related to building the kernel image
+#********************************************************
+cd "$SLACKSRC"/k || exit 1
+chmod +x kernel-source.SlackBuild
+cp -v kernel-source.SlackBuild kernel-source.SlackBuild.old
+sed -i -e "55,92d;111,113d;140,181d" kernel-source.SlackBuild && ./kernel-source.SlackBuild 
+upgradepkg --install-new --reinstall /tmp/kernel-source*.txz && mv -v /tmp/kernel-source*.txz /slackware64/k
+rm -rf /tmp/package-kernel-source/
+mv kernel-source.SlackBuild.old kernel-source.SlackBuild
+}
+kernel_source_build

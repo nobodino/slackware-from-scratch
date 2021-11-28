@@ -1,0 +1,23 @@
+#!/bin/bash
+
+execute_sed_rsync () {
+#******************************************************************
+# disable shared SHLIBS code in SlackBuild
+# delete examples/rlfe lines in SlackBuild
+#******************************************************************
+if [ ! -f "$SLACKSRC"/n/rsync/rsync.SlackBuild.old ]; then
+	cp -v "$SLACKSRC"/n/rsync/rsync.SlackBuild "$SLACKSRC"/n/rsync/rsync.SlackBuild.old
+	(
+		cd "$SLACKSRC"/n/rsync || exit 1
+		sed -i -e "/--prefix=\/\usr/p" rsync.SlackBuild
+		sed -i -e "0,/--prefix=\/\usr/ s/--prefix=\/\usr/--disable-lz4/" rsync.SlackBuild
+		sed -i -e "/--prefix=\/\usr/p" rsync.SlackBuild
+		sed -i -e "0,/--prefix=\/\usr/ s/--prefix=\/\usr/--disable-zstd/" rsync.SlackBuild
+		sed -i -e "/--prefix=\/\usr/p" rsync.SlackBuild
+		sed -i -e "0,/--prefix=\/\usr/ s/--prefix=\/\usr/--disable-xxhash/" rsync.SlackBuild
+		sed -i -e "/--prefix=\/\usr/p" rsync.SlackBuild
+		sed -i -e "0,/--prefix=\/\usr/ s/--prefix=\/\usr/--disable-openssl/" rsync.SlackBuild
+	)
+fi
+}
+execute_sed_rsync

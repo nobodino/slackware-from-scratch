@@ -1,0 +1,15 @@
+#!/bin/bash
+
+execute_sed_zstd () {
+#******************************************************************
+# delete "zcat" patch line in SlackBuild
+#******************************************************************
+if [ ! -f "$SLACKSRC"/l/zstd/zstd.SlackBuild.old ]; then
+	cp -v "$SLACKSRC"/l/zstd/zstd.SlackBuild "$SLACKSRC"/l/zstd/zstd.SlackBuild.old
+	(
+		cd "$SLACKSRC"/l/zstd || exit 1
+		sed -i -e "/zcat/d" zstd.SlackBuild
+	)
+fi
+}
+execute_sed_zstd

@@ -1,0 +1,20 @@
+#!/bin/bash
+
+execute_sed_gd () {
+#******************************************************************
+# add "--without-fontconfig" and "--without-xpm" to SlackBuild
+#******************************************************************
+if [ ! -f "$SLACKSRC"/l/gd/gd.SlackBuild.old ]; then
+	cp -v "$SLACKSRC"/l/gd/gd.SlackBuild "$SLACKSRC"/l/gd/gd.SlackBuild.old
+	(
+		cd "$SLACKSRC"/l/gd || exit 1
+		sed -i -e "/--disable-static/p" gd.SlackBuild
+		sed -i -e "/--program-prefix=/p" gd.SlackBuild
+		sed -i -e "0,/disable-static/ s/disable-static/without-fontconfig/" gd.SlackBuild
+		sed -i -e "0,/program-prefix=/ s/program-prefix=/without-xpm/" gd.SlackBuild
+		sed -i -e "s/make $NUMJOBS || make || exit 1/make $NUMJOBS || make/" gd.SlackBuild
+		sed -i -e "s/make install DESTDIR=$PKG || exit 1/make install DESTDIR=$PKG/" gd.SlackBuild
+	)
+fi
+}
+execute_sed_gd

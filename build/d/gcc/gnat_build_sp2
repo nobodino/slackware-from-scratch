@@ -2,6 +2,36 @@
 #*****************************
 gnat_build_sp2 () {
 #*****************************
+	case $(uname -m) in
+		x86_64 )
+			if ! tar xf gnat-gpl-2017-x86_64-linux-bin.tar.gz; then
+				echo
+				echo "Tar extraction of gnat-gpl-2017-x86_64-linux-bin failed."
+				echo
+			exit 1
+			fi
+			# Now prepare the environment
+			cd gnat-gpl-2017-x86_64-linux-bin || exit 1
+			echo ;;  
+		i686 )
+			if ! tar xf gnat-gpl-2014-x86-linux-bin.tar.gz; then
+				echo
+				echo "Tar extraction of gnat-gpl-2014-x86-linux-bin failed."
+				echo
+			exit 1
+			fi
+			# Now prepare the environment
+			cd gnat-gpl-2014-x86-linux-bin || exit 1
+			echo ;; 
+	esac
+	mkdir -pv /tools/opt/gnat
+	make ins-all prefix=/tools/opt/gnat
+	PATH_HOLD=$PATH && export PATH=/tools/opt/gnat/bin:$PATH_HOLD
+	echo "$PATH"
+	find /tools/opt/gnat -name ld -exec mv -v {} {}.old \;
+	find /tools/opt/gnat -name ld -exec as -v {} {}.old \;
+
+	cd $RDIR/d/gcc
 	export SRCVER=${VERSION:-$(echo gcc-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
 	GCCVER=$(echo "$SRCVER" | cut -f 1 -d _)
 	export GCCVER
@@ -61,6 +91,8 @@ gnat_build_sp2 () {
 	rm -rf gnat-gpl*
 	rm -rf /tools/opt/gnat
 	rm -rf /tools/tmp
+    rm -rf gcc-"$SRCVER"
+	cd ../..
 }
 
 gnat_build_sp2

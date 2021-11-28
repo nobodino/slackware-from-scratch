@@ -1,0 +1,15 @@
+#!/bin/bash
+
+execute_sed_glib2 () {
+#******************************************************************
+# change all "true" options to "false" options in SlackBuild
+#******************************************************************
+if [ ! -f "$SLACKSRC"/l/glib2/glib2.SlackBuild.old ]; then
+	cp -v "$SLACKSRC"/l/glib2/glib2.SlackBuild "$SLACKSRC"/l/glib2/glib2.SlackBuild.old
+	(
+		cd "$SLACKSRC"/l/glib2 || exit 1
+		sed -i -e "s/true/false/g" glib2.SlackBuild
+	)
+fi
+}
+execute_sed_glib2

@@ -1,0 +1,15 @@
+#!/bin/bash
+
+execute_sed_pam () {
+#******************************************************************
+# delete lines that doesn't allow build in build1_.list
+#******************************************************************
+if [ ! -f "$SLACKSRC"/a/pam/pam.SlackBuild.old ]; then
+	cp -v "$SLACKSRC"/a/pam/pam.SlackBuild "$SLACKSRC"/a/pam/pam.SlackBuild.old
+	(
+		cd "$SLACKSRC"/a/pam || exit 1
+		sed -i -e "/xmlto man/d" pam.SlackBuild
+	)
+fi
+}
+execute_sed_pam

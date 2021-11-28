@@ -1,0 +1,37 @@
+#!/bin/bash
+
+kernel_build_all () {
+#***********************************************************
+# build kernel and modules before packaging with SlackBuild
+#***********************************************************
+cd "$SLACKSRC"/k || exit 1
+
+chmod +x build-all-kernels.sh 
+chmod +x kernel-*.SlackBuild
+if ! ./build-all-kernels.sh;
+then 
+	exit 1
+fi
+
+case $(uname -m) in
+	x86_64 )
+		cd /tmp/output-x86_64* || exit 1
+		mv kernel-source*.t?z /slackware64/k
+		mv kernel-headers*.t?z /slackware64/d
+		if ! mv kernel-*.t?z /slackware64/a ;
+		then 
+			exit 1
+		fi ;;
+	* )
+		cd /tmp/output-ia32* || exit 1
+		mv kernel-source*.t?z /slackware/k
+		mv kernel-headers*.t?z /slackware/d
+		if ! mv kernel-*.t?z /slackware/a ;
+		then 
+			exit 1
+		fi ;;
+esac
+cd /tmp || exit 1
+rm -rf ./*
+}
+kernel_build_all

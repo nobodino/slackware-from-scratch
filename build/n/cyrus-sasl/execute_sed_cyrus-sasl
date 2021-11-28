@@ -1,0 +1,18 @@
+#!/bin/bash
+
+execute_sed_cyrus-sasl () {
+#******************************************************************
+# delete several lines in SlackBuild
+#******************************************************************
+if [ ! -f "$SLACKSRC"/n/cyrus-sasl/cyrus-sasl.SlackBuild.old ]; then
+	cp -v "$SLACKSRC"/n/cyrus-sasl/cyrus-sasl.SlackBuild "$SLACKSRC"/n/cyrus-sasl/cyrus-sasl.SlackBuild.old
+	(
+		cd "$SLACKSRC"/n/cyrus-sasl || exit 1
+		sed -i -e "/--enable-sql/d" cyrus-sasl.SlackBuild
+		sed -i -e "/--without-pgsql/d" cyrus-sasl.SlackBuild
+		sed -i -e "/--with-mysql/d" cyrus-sasl.SlackBuild
+		sed -i -e "/--with-sqlite3/d" cyrus-sasl.SlackBuild
+	)
+fi
+}
+execute_sed_cyrus-sasl

@@ -1,0 +1,15 @@
+#!/bin/bash
+
+execute_sed_efivar () {
+#******************************************************************
+# remove '|| exit 1' on first build
+#******************************************************************
+if [ ! -f "$SLACKSRC"/a/efivar/efivar.SlackBuild.old ]; then
+	cp -v "$SLACKSRC"/a/efivar/efivar.SlackBuild "$SLACKSRC"/a/efivar/efivar.SlackBuild.old
+	(
+		cd $SLACKSRC/a/efivar
+		sed -i -e 's/man\/\ || exit 1/man\/\ /' efivar.SlackBuild
+	)
+fi
+}
+execute_sed_efivar
