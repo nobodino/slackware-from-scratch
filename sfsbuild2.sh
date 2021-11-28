@@ -727,70 +727,6 @@ ln -sv bash /bin/sh
 ln -sv /proc/self/mounts /etc/mtab
 }
 
-pre_aaa_libraries_c () {
-#******************************************************************
-# Install packages from previous slackware to be able
-# to build aaa_libraries
-#******************************************************************
-cd /source/others || exit 1
-installpkg cxxlibs-6.0.18-i486-1.txz
-installpkg gmp-5.1.3-i486-1.txz
-installpkg readline-6.3-i586-2.txz
-installpkg readline-7.0.005-i586-1.txz
-installpkg libtermcap-1.2.3-i486-7.txz
-installpkg ncurses-5.9-i486-4.txz
-installpkg libpng-1.4.12-i486-1.txz
-installpkg libffi-3.2.1-i586-2.txz
-installpkg /slackware/l/libpng-1.6.*.txz
-cd /scripts || exit 1
-}
-
-pre_aaa_libraries64_c () {
-#******************************************************************
-# Install packages from previous slackware to be able
-# to build aaa_libraries
-#******************************************************************
-cd /source/others || exit 1
-installpkg cxxlibs-6.0.18-x86_64-1.txz
-installpkg gmp-5.1.3-x86_64-1.txz
-installpkg readline-6.3-x86_64-2.txz
-installpkg readline-7.0.005-x86_64-1.txz
-installpkg libtermcap-1.2.3-x86_64-7.txz
-installpkg ncurses-5.9-x86_64-4.txz
-installpkg libpng-1.4.12-x86_64-1.txz
-installpkg libffi-3.2.1-x86_64-2.txz
-installpkg /slackware64/l/libpng-1.6.*-x86_64*.txz
-cd /scripts || exit 1
-}
-
-post_aaa_libraries_c () {
-#******************************************************************
-# Remove packages temporary installed after
-# aaa_libraries has been built and installed
-#******************************************************************
-removepkg cxxlibs-6.0.18-i486-1.txz readline-6.3-i586-2 ncurses-5.9-i486-4
-removepkg gmp-5.1.3-i486-1  libtermcap-1.2.3-i486-7 libpng-1.4.12-i486-1.txz
-removepkg readline-7.0.005-i586-1.txz
-removepkg libffi-3.2.1-i586-2.txz
-upgradepkg --reinstall /slackware/l/libpng-1.6.*.txz
-upgradepkg --reinstall /slackware/l/readline-8.0.*.txz
-cd /scripts || exit 1
-}
-
-post_aaa_libraries64_c () {
-#******************************************************************
-# Remove packages temporary installed after
-# aaa_libraries has been built and installed
-#******************************************************************
-removepkg cxxlibs-6.0.18-x86_64-1.txz readline-6.3-x86_64-2 ncurses-5.9-x86_64-4
-removepkg gmp-5.1.3-x86_64-1 libtermcap-1.2.3-x86_64-7 libpng-1.4.12-x86_64-1.txz
-removepkg readline-7.0.005-x86_64-1.txz
-removepkg libffi-3.2.1-x86_64-2.txz
-upgradepkg --reinstall /slackware64/l/libpng-1.6.*.txz
-upgradepkg --reinstall /slackware64/l/readline-8.0.*.txz
-cd /scripts || exit 1
-}
-
 pre_gcc () {
 #******************************************************************
 # Install gnat-gpl to be able to build gnat-ada package
@@ -1334,25 +1270,34 @@ while (( LINE < FILELEN )); do
 				plasma-extra )
 					build_pkg_3 ;;
 
+#				kernel-all )
+#					if ! kernel_build_all; then
+#						exit 1
+#					fi
+#					return ;;
+
 				kernel-all )
-					if ! kernel_build_all; then
-						exit 1
-					fi
-					return ;;
+					build_pkg_3 ;;
+
+#				kernel-headers )
+#					cd  /source/"$SRCDIR" && source kernel_headers_build
+#					if ! kernel_headers_build; then
+#						exit 1
+#					fi
+#					return ;;
 
 				kernel-headers )
-					cd  /source/"$SRCDIR" && source kernel_headers_build
-					if ! kernel_headers_build; then
-						exit 1
-					fi
-					return ;;
+					build_pkg_3 ;; 
+
+#				kernel-source )
+#					cd  /source/"$SRCDIR" && source kernel_source_build
+#					if ! kernel_source_build; then
+#						exit 1
+#					fi
+#					return ;;
 
 				kernel-source )
-					cd  /source/"$SRCDIR" && source kernel_source_build
-					if ! kernel_source_build; then
-						exit 1
-					fi
-					return ;;
+					build_pkg_3 ;; 
 
 				kmod )
 					case $LKMO in
@@ -1504,51 +1449,62 @@ while (( LINE < FILELEN )); do
 					esac
 					continue ;;
 
+#				aaa_libraries_pre )
+#					case $ARCH in
+#						x86_64 )
+#						cd  /source/"$SRCDIR" && source aaa_libraries_pre_64
+#							if ! aaa_libraries_pre_64; then
+#								exit 1
+#							fi
+#							return ;;
+#						* )
+#						cd  /source/"$SRCDIR" && source aaa_libraries_pre
+#							if ! aaa_libraries_pre; then
+#								exit 1
+#							fi
+#							return ;;
+#					esac
+#					continue ;;
 				aaa_libraries_pre )
-					case $ARCH in
-						x86_64 )
-						cd  /source/"$SRCDIR" && source aaa_libraries_pre_64
-							if ! aaa_libraries_pre_64; then
-								exit 1
-							fi
-							return ;;
-						* )
-						cd  /source/"$SRCDIR" && source aaa_libraries_pre
-							if ! aaa_libraries_pre; then
-								exit 1
-							fi
-							return ;;
-					esac
-					continue ;;
+					build_pkg_3 ;;
 
+#				aaa_libraries_post )
+#					case $ARCH in
+#						x86_64 )
+#						cd  /source/"$SRCDIR" && source aaa_libraries_post_64
+#							if ! aaa_libraries_post_64; then
+#								exit 1
+#							fi
+#							return ;;
+#						* )
+#						cd  /source/"$SRCDIR" && source aaa_libraries_post
+#							if ! aaa_libraries_post; then
+#								exit 1
+#							fi
+#							return ;;
+#					esac
+#					continue ;;
+				
 				aaa_libraries_post )
-					case $ARCH in
-						x86_64 )
-						cd  /source/"$SRCDIR" && source aaa_libraries_post_64
-							if ! aaa_libraries_post_64; then
-								exit 1
-							fi
-							return ;;
-						* )
-						cd  /source/"$SRCDIR" && source aaa_libraries_post
-							if ! aaa_libraries_post; then
-								exit 1
-							fi
-							return ;;
-					esac
-					continue ;;
+					build_pkg_3 ;;
 
-				pre-gcc )
-					if ! pre_gcc; then
-						exit 1
-					fi
-					return ;;
+#				gcc-pre )
+#					if ! gcc-pre; then
+#						exit 1
+#					fi
+#					return ;;
 
-				post-gcc )
-					if ! post_gcc; then
-						exit 1
-					fi
-					return ;;
+				gcc-pre )
+					build_pkg_3 ;;
+
+#				gcc-post )
+#					if ! gcc-post; then
+#						exit 1
+#					fi
+#					return ;;
+
+				gcc-post )
+					build_pkg_3 ;;
 
 				readline )
 					case $LREA in
@@ -1608,40 +1564,55 @@ while (( LINE < FILELEN )); do
 					test_7
 					answer ;;
 
+#				x11-group1 )
+#					cd  /source/"$SRCDIR" && source build_x11-group1
+#					if ! build_x11_group1; then
+#						exit 1
+#					fi
+#					return ;;
+				
 				x11-group1 )
-					cd  /source/"$SRCDIR" && source build_x11-group1
-					if ! build_x11_group1; then
-						exit 1
-					fi
-					return ;; 
+					build_pkg_3 ;; 
+
+#				x11-group2 )
+#					cd  /source/"$SRCDIR" && source build_x11-group2
+#					if ! build_x11_group2; then
+#						exit 1
+#					fi
+#					return ;;
 
 				x11-group2 )
-					cd  /source/"$SRCDIR" && source build_x11-group2
-					if ! build_x11_group2; then
-						exit 1
-					fi
-					return ;;  
+					build_pkg_3 ;;  
+
+#				x11-lib )
+#					cd  /source/"$SRCDIR" && source build_x11-lib
+#					if ! build_x11_lib; then
+#						exit 1
+#					fi
+#					return ;;
 
 				x11-lib )
-					cd  /source/"$SRCDIR" && source build_x11-lib
-					if ! build_x11_lib; then
-						exit 1
-					fi
-					return ;;  
+					build_pkg_3 ;;  
 
-				x11-xcb )
-					cd  /source/"$SRCDIR" && source build_x11-xcb
-					if ! build_x11_xcb; then
-						exit 1
-					fi
-					return ;;  
+#				x11-xcb )
+#					cd  /source/"$SRCDIR" && source build_x11-xcb
+#					if ! build_x11_xcb; then
+#						exit 1
+#					fi
+#					return ;;
 
-				x11-app-post )
-					cd  /source/"$SRCDIR" && source build_x11-app-post
-					if ! build_x11_app_post; then
-						exit 1
-					fi
-					return ;;  
+				x11-lib )
+					build_pkg_3 ;;   
+
+#				x11-app-post )
+#					cd  /source/"$SRCDIR" && source build_x11-app-post
+#					if ! build_x11_app_post; then
+#						exit 1
+#					fi
+#					return ;;
+
+				x11-lib )
+					build_pkg_3 ;;   
 
 				zstd )
 					case $LZST in
