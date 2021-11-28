@@ -1101,6 +1101,7 @@ test_gnat () {
 # 'd pre-gcc' and 'd post-gcc' to build gcc
 #******************************************
 (! /tools/bin/gnat) 1> /dev/null && sed -i -e 's/# d/d/g' build1_s.list
+(! /tools/bin/gnat) 1> /dev/null && sed -i -e 's/# d/d/g' build0_s.list
 }
 
 test_1 () {
@@ -2548,10 +2549,17 @@ test_gnat
 define_path_lib
 
 #****************************************************************
-# Ensure that the /slackware64/$SAVDIRs exists.
+# Ensure that the /{slackware;salckware64}/$SAVDIRs exists.
 #****************************************************************
-mkdir -pv /slackware64/{others,a,ap,d,e,extra,f,installer,k,kde,l,n,t,tcl,x,xap,xfce,y}
-mkdir -pv /slackware64/extra/{aspell-words-list,bash-completion,bittornado,brltty,fltk,getty-ps,java,php8,sendmail,tigervnc,xf86-video-fbdev,xfractint,xv}
+case $(uname -m) in
+	x86_64 )
+		mkdir -pv /slackware64/{others,a,ap,d,e,extra,f,installer,k,kde,l,n,t,tcl,x,xap,xfce,y}
+		mkdir -pv /slackware64/extra/{aspell-words-list,bash-completion,bittornado,brltty,fltk,getty-ps,java,php8,sendmail,tigervnc,xf86-video-fbdev,xfractint,xv};;
+
+	* )
+		mkdir -pv /slackware/{others,a,ap,d,e,extra,f,installer,k,kde,l,n,t,tcl,x,xap,xfce,y}
+		mkdir -pv /slackware/extra/{aspell-words-list,bash-completion,bittornado,brltty,fltk,getty-ps,java,php8,sendmail,tigervnc,xf86-video-fbdev,xfractint,xv};;
+esac
 #******************************************************************
 # Some packages need two pass to be built completely.
 # Alteration of the slackware sources is made "on the fly" during
