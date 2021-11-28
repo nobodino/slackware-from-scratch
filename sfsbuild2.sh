@@ -1360,19 +1360,25 @@ while (( LINE < FILELEN )); do
 					esac
 					continue ;;
 
+#				linux-faqs )
+#					cd  /source/"$SRCDIR" && source build_linux_faqs
+#					if ! build_linux_faqs; then 
+#						exit 1
+#					fi
+#					return ;;
+
 				linux-faqs )
-					cd  /source/"$SRCDIR" && source build_linux_faqs
-					if ! build_linux_faqs; then 
-						exit 1
-					fi
-					return ;;
+					build_pkg_3 ;;
+
+#				linux-howtos )
+#					cd  /source/"$SRCDIR" && source build_linux_howtos
+#					if ! build_linux_howtos; then
+#						exit 1
+#					fi
+#					return ;;
 
 				linux-howtos )
-					cd  /source/"$SRCDIR" && source build_linux_howtos
-					if ! build_linux_howtos; then
-						exit 1
-					fi
-					return ;;
+					build_pkg_3 ;;
 
 				libxkbcommon )
 					case $LXKB in
