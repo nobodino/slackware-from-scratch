@@ -1,0 +1,20 @@
+#!/bin/bash
+#*****************************
+perl_build () {
+#*****************************
+	export PERLVER=${VERSION:-$(echo perl-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
+
+    tar xvf perl-"$PERLVER".tar.?z || exit 1
+	cd perl-"$PERLVER" || exit 1 
+
+    sh Configure -des -Dprefix=/tools -Dlibs=-lm -Uloclibpth -Ulocincpth || exit 1
+    make || exit 1
+    cp -v perl cpan/podlators/scripts/pod2man /tools/bin || exit 1
+    mkdir -pv /tools/lib/perl5/"$PERLVER" || exit 1
+    cp -Rv lib/* /tools/lib/perl5/"$PERLVER" || exit 1
+    cd ..
+    rm -rf perl-"$PERLVER"
+	echo perl-"$PERLVER" >> "$SFS"/tools/etc/tools_version
+}
+
+perl_build

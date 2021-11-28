@@ -1,0 +1,31 @@
+#!/bin/bash
+#*****************************
+texinfo_build () {
+#*****************************
+	export TEXINFOVER=${VERSION:-$(echo texinfo-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
+
+    tar xvf texinfo-"$TEXINFOVER".tar.xz || exit 1
+	cd texinfo-"$TEXINFOVER" || exit 1 
+
+	zcat ../texinfo.fix.unescaped.left.brace.diff.gz | patch -p1 --verbose || exit 1
+
+	case "$GLIBCVER" in
+
+		2.33 )
+			echo ;;
+
+		2.34 )
+			sed -e 's/__attribute_nonnull__/__nonnull/' \
+    		-i gnulib/lib/malloc/dynarray-skeleton.c ;;
+	esac
+
+    ./configure --prefix=/tools --disable-perl-xs || exit 1
+
+    make || exit 1
+    make install || exit 1
+    cd ..
+    rm -rf texinfo-"$TEXINFOVER"
+	echo texinfo-"$TEXINFOVER" >> "$SFS"/tools/etc/tools_version
+}
+
+texinfo_build 

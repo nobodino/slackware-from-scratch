@@ -1,0 +1,30 @@
+#!/bin/bash
+#*****************************
+binutils_build_sp1 () {
+#*****************************
+	export BINUVER=${VERSION:-$(echo binutils-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+
+    tar xvf binutils-"$BINUVER".tar.?z || exit 1 
+	cd binutils-"$BINUVER" || exit 1 
+    mkdir -v build
+	cd build  || exit 1 
+
+    ../configure --prefix=/tools \
+    --with-sysroot=$SFS        \
+	--with-lib-path=/tools/lib \
+    --target="$SFS_TGT"          \
+    --disable-nls              \
+    --disable-werror || exit 1
+
+    make || exit 1
+
+    case $(uname -m) in
+        x86_64) mkdir -v /tools/lib && ln -sv lib /tools/lib64 ;;
+    esac
+
+    make install || exit 1
+    cd ../..
+    rm -rf binutils-"$BINUVER"
+}
+
+binutils_build_sp1

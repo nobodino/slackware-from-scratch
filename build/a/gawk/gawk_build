@@ -1,0 +1,19 @@
+#!/bin/bash
+#*****************************
+gawk_build () {
+#*****************************
+	export GAWKVER=${VERSION:-$(echo gawk-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
+
+    tar xvf gawk-"$GAWKVER".tar.lz || exit 1
+	cd gawk-"$GAWKVER" || exit 1 
+
+    ./configure --prefix=/tools || exit 1
+
+    make || exit 1
+    make install || exit 1
+    cd ..
+    rm -rf gawk-"$GAWKVER"
+	echo gawk-"$GAWKVER" >> "$SFS"/tools/etc/tools_version
+}
+
+gawk_build

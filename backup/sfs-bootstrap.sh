@@ -1,8 +1,8 @@
-#######################  sfs-bootstrap.sh ######################################
 #!/bin/bash
+#######################  sfs-bootstrap.sh ######################################
 #
-# Copyright 2018,2019  J. E. Garrott Sr, Puyallup, WA, USA
-# Copyright 2018,2019  "nobodino", Bordeaux, FRANCE
+# Copyright 2018,2019,2020,2021  J. E. Garrott Sr, Puyallup, WA, USA
+# Copyright 2018,2019,2020,2021  "nobodino", Bordeaux, FRANCE
 # All rights reserved.
 #
 # Redistribution and use of this script, with or without modification, is
@@ -54,25 +54,26 @@ do
 	echo -e "$RED" "You have decided to quit. Goodbye." "$NORMAL"  && exit 1
 done
 echo -e "$BLUE" "You chose $distribution."  "$NORMAL" 
-export $distribution
 echo
 
 }
 
 arch_selector () {
 #**********************************
-# architecture selector selector
+# architecture selector
 #**********************************
 PS3="Your choice:"
-select build_arch in x86 x86_64 quit
+# disable x86 for this new version
+# will reactivated later
+select build_arch in x86_64 quit
 do
 	if [[ "$build_arch" = "x86" ]]
 	then
 		if [[ "$distribution" = "slackware" ]]
 		then
-			tools_dir='tools'
+			tools_dir1='tools_x86'
 			echo
-			echo -e "$BLUE" "You chose $tools_dir" "$NORMAL"
+			echo -e "$BLUE" "You chose $tools_dir1" "$NORMAL"
 			echo
 			break
 		fi
@@ -81,9 +82,9 @@ do
 	then
 		if [[ "$distribution" = "slackware" ]]
 		then
-			tools_dir='tools_64'
+			tools_dir1='tools_x86_64'
 			echo
-			echo -e "$BLUE" "You chose $tools_dir" "$NORMAL"
+			echo -e "$BLUE" "You chose $tools_dir1" "$NORMAL"
 			echo
 			break
 		fi
@@ -96,6 +97,55 @@ do
 done
 echo
 echo -e "$BLUE"  "You chose $build_arch." "$NORMAL"
+echo
+
+}
+
+dev_selector () {
+#**********************************
+# -current or -dev selector
+#**********************************
+PS3="Your choice:"
+select dev_select in current development quit
+do
+	if [[ "$dev_select" = "current" ]]; then
+		if [[ "$build_arch" = "x86" ]]; then
+			tools_dir='tools'
+			echo
+			echo -e "$BLUE" "You chose $tools_dir" "$NORMAL"
+			echo
+			break
+		elif [[ "$build_arch" = "x86_64" ]]; then
+			tools_dir='tools_64'
+			echo
+			echo -e "$BLUE" "You chose $tools_dir" "$NORMAL"
+			echo
+			break
+		fi
+		break
+	elif [[ "$dev_select" = "development" ]]; then
+		if [[ "$build_arch" = "x86" ]]; then
+			tools_dir='tools_dev'
+			echo
+			echo -e "$BLUE" "You chose $tools_dir" "$NORMAL"
+			echo
+			break
+		elif [[ "$build_arch" = "x86_64" ]]; then
+			tools_dir='tools_64_dev'
+			echo
+			echo -e "$BLUE" "You chose $tools_dir" "$NORMAL"
+			echo
+			break
+		fi
+		break
+	elif [[ "$dev_select" = "quit" ]]
+	then
+		echo
+		echo -e "$RED" "You have decided to quit. Goodbye." "$NORMAL" && exit 1
+	fi
+done
+echo
+echo -e "$BLUE"  "You chose $dev_select." "$NORMAL"
 echo
 #**********************************************
 # defines RDIR according to x86 or x86_64:
@@ -115,18 +165,17 @@ clean_sfs () {
 #**********************************
 # Clear $SFS
 #**********************************
-cd $SFS
-mount -l -t proc |grep sfs >/dev/null
-if [ $? == 0 ]; then
-	umount -v $SFS/dev/pts
-	umount -v $SFS/dev
-	umount -v $SFS/proc
-	umount -v $SFS/sys
-	umount -v $SFS/run
+cd "$SFS" || exit 1
+if (mount -l -t proc |grep sfs >/dev/null); then
+	umount -v "$SFS"/dev/pts
+	umount -v "$SFS"/dev
+	umount -v "$SFS"/proc
+	umount -v "$SFS"/sys
+	umount -v "$SFS"/run
 fi
 
-[ -d $SFS/proc ] && rm -rf bin boot dev etc jre home lib media mnt \
-	lib64 opt proc root run sbin sfspacks srv sys tmp tools usr var font*
+[ -d "$SFS"/proc ] && rm -rf bin boot dev etc jre home lib media mnt \
+	lib64 opt proc root run sbin slackware64 slackware srv sys tmp tools usr var font*
 
 }
 
@@ -145,22 +194,22 @@ do
 	then
 		echo "You chose to upgrade the sources of SFS."
 		echo
-		echo "rsync the slacksrc tree from a slackware mirror"
-		mkdir $SFS/sources/others > /dev/null 2>&1
-		cp -r --preserve=timestamps $SRCDIR/others/* $SFS/sources/others > /dev/null 2>&1
-		mkdir $SFS/sources/extra > /dev/null 2>&1
-		cp -r --preserve=timestamps $SRCDIR/extra/* $SFS/sources/extra > /dev/null 2>&1
-		rsync -arvz --stats --progress -I --delete-after $RSYNCDIR/source/ $SRCDIR
-		mkdir $SRCDIR/others > /dev/null 2>&1
-		cp -r --preserve=timestamps $SFS/sources/others/* $SRCDIR/others > /dev/null 2>&1
-		mkdir $SRCDIR/extra > /dev/null 2>&1
-		cp -r --preserve=timestamps  $SFS/sources/extra/* $SRCDIR/extra > /dev/null 2>&1
-		rsync -arvz --stats --progress -I --delete-after $RSYNCDIR/extra/source/ $SRCDIR/extra > /dev/null 2>&1
-		cd $SFS/sources 
+		echo "rsync the slackware source tree from a slackware mirror"
+		mkdir "$SFS"/scripts/others > /dev/null 2>&1
+		cp -r --preserve=timestamps "$SRCDIR"/others/* "$SFS"/scripts/others > /dev/null 2>&1
+		mkdir "$SFS"/scripts/extra > /dev/null 2>&1
+		cp -r --preserve=timestamps "$SRCDIR"/extra/* "$SFS"/scripts/extra > /dev/null 2>&1
+		rsync -arvz --stats --progress -I --delete-after "$RSYNCDIR"/source/ "$SRCDIR"
+		mkdir "$SRCDIR"/others > /dev/null 2>&1
+		cp -r --preserve=timestamps "$SFS"/scripts/others/* "$SRCDIR"/others > /dev/null 2>&1
+		mkdir "$SRCDIR"/extra > /dev/null 2>&1
+		cp -r --preserve=timestamps  "$SFS"/scripts/extra/* "$SRCDIR"/extra > /dev/null 2>&1
+		rsync -arvz --stats --progress -I --delete-after "$RSYNCDIR"/extra/source/ "$SRCDIR"/extra > /dev/null 2>&1
+		cd "$SFS"/scripts || exit 1
 		rm end* > /dev/null 2>&1
-		rm *.t?z > /dev/null 2>&1
-		rm -rf $SFS/sources/others > /dev/null 2>&1 
-		rm -rf $SFS/sources/extra > /dev/null 2>&1
+		rm ./*.t?z > /dev/null 2>&1
+		rm -rf "$SFS"/scripts/others > /dev/null 2>&1 
+		rm -rf "$SFS"/scripts/extra > /dev/null 2>&1
 		break
 	elif [[ "$upgrade_sources" = "No" ]]
 	then
@@ -168,7 +217,6 @@ do
 		break
 	fi
 done
-export $upgrade_sources
 
 }
 
@@ -188,18 +236,18 @@ do
 	then
 		echo
 		echo "You chose to upgrade the sources of SFS."
-		echo "Removing old slacksrc."
-		[ -d $SRCDIR ] && rm -rf $SRCDIR
+		echo "Removing old slackware source."
+		[ -d "$SRCDIR" ] && rm -rf "$SRCDIR"
 		echo "Installing new sources."
-		cp -r --preserve=timestamps $RDIR/source $SRCDIR
-		mkdir -pv $SRCDIR/others  > /dev/null 2>&1
-		mkdir -pv $SRCDIR/extra > /dev/null 2>&1
-		cp -r --preserve=timestamps $DNDIR1/* $SRCDIR/others
-		cp -r --preserve=timestamps $RDIR/extra/source/* $SRCDIR/extra
-		cd $SFS/sources
+		cp -r --preserve=timestamps "$RDIR"/source "$SRCDIR"
+		mkdir -pv "$SRCDIR"/others  > /dev/null 2>&1
+		mkdir -pv "$SRCDIR"/extra > /dev/null 2>&1
+		cp -r --preserve=timestamps "$DNDIR1"/* "$SRCDIR"/others
+		cp -r --preserve=timestamps "$RDIR"/extra/source/* "$SRCDIR"/extra
+		cd "$SFS"/scripts || exit 1
 		rm end* > /dev/null 2>&1
-		rm *.t?z > /dev/null 2>&1
-		rm -rf $SFS/sources/extra && rm -rf $SFS/sources/others
+		rm ./*.t?z > /dev/null 2>&1
+		rm -rf "$SFS"/scripts/extra && rm -rf "$SFS"/scripts/others
 		break
 	elif [[ "$upgrade_sources" = "No" ]]
 	then
@@ -208,7 +256,45 @@ do
 		break
 	fi
 done
-export $upgrade_sources
+
+}
+
+rsync_dev_current () {
+#*************************************
+# download directly from github repository
+#*************************************
+
+if [[ "$dev_select" = "current" ]]; then
+		echo "You chose the -current branch of slackware to build SFS."
+		echo
+		rm -rf "$SFS"/source/current && mkdir "$SFS"/source/current
+		svn checkout "$DLDIR13"/current "$SFS"/source/current > /dev/null 2>&1
+		rm -rf "$SFS"/source/current/.svn
+		cp -r --preserve=timestamps "$SFS"/source/current/* "$SFS"/source
+		rm -rf "$SFS"/source/current
+	elif [[ "$dev_select" = "development" ]]; then
+		echo "You chose the -development branch of slackware to build SFS."
+		echo
+		rm -rf "$SFS"/source/development && mkdir "$SFS"/source/development
+		svn checkout "$DLDIR13"/development "$SFS"/source/development > /dev/null 2>&1
+		rm -rf "$SFS"/source/development/.svn
+		if find "$SFS"/source/development/l/glibc -mindepth 1 | read -r ; then
+			rm -rf "$SFS"/source/l/glibc
+		fi
+		if find "$SFS"/source/development/d/binutils -mindepth 1 | read -r ; then
+			rm -rf "$SFS"/source/d/binutils
+		fi
+		if find "$SFS"/source/development/d/gcc -mindepth 1 | read -r ; then
+			rm -rf "$SFS"/source/d/gcc
+		fi
+		if find "$SFS"/source/development/d/make -mindepth 1 | read -r ; then
+			rm -rf "$SFS"/source/d/make
+		fi
+		if find "$SFS"/source/development/d/automake -mindepth 1 | read -r ; then
+			rm -rf "$SFS"/source/d/automake
+		fi
+		cp -r --preserve=timestamps "$SFS"/source/development/* "$SFS"/source
+fi
 
 }
 
@@ -228,21 +314,22 @@ do
 		echo
 		echo "You chose to upgrade the sources of SFS from DVD."
 		# Check that dvd has been mounted
-		[ ! -d "$RDIR5" ] && mkdir $RDIR5
-		mount -l |grep "$RDIR5" >/dev/null
-		[ $? != 0 ] && mount /dev/sr0 $RDIR5
-		echo "Removing old slacksrc."
-		[ -d $SRCDIR ] && rm -rf $SRCDIR
+		[ ! -d "$RDIR5" ] && mkdir "$RDIR5"
+		if ! (mount -l |grep "$RDIR5" >/dev/null); then
+			mount /dev/sr0 "$RDIR5"
+		fi
+		echo "Removing old slackware source."
+		[ -d "$SRCDIR" ] && rm -rf "$SRCDIR"
 		echo "Installing new sources."
-		cp -r --preserve=timestamps $RDIR5/source $SRCDIR
-		mkdir -pv $SRCDIR/others  > /dev/null 2>&1
-		mkdir -pv $SRCDIR/extra > /dev/null 2>&1
-		cp -r --preserve=timestamps $DNDIR1/* $SRCDIR/others
-		cp -r --preserve=timestamps $RDIR5/extra/source/* $SRCDIR/extra
-		cd $SFS/sources
+		cp -r --preserve=timestamps "$RDIR5"/source "$SRCDIR"
+		mkdir -pv "$SRCDIR"/others  > /dev/null 2>&1
+		mkdir -pv "$SRCDIR"/extra > /dev/null 2>&1
+		cp -r --preserve=timestamps "$DNDIR1"/* "$SRCDIR"/others
+		cp -r --preserve=timestamps "$RDIR5"/extra/source/* "$SRCDIR"/extra
+		cd "$SFS"/scripts || exit 1
 		rm end* > /dev/null 2>&1
-		rm *.t?z > /dev/null 2>&1
-		rm -rf $SFS/sources/extra && rm -rf $SFS/sources/others
+		rm ./*.t?z > /dev/null 2>&1
+		rm -rf "$SFS"/scripts/extra && rm -rf "$SFS"/scripts/others
 		break
 	elif [[ "$upgrade_sources" = "No" ]]
 	then
@@ -251,8 +338,6 @@ do
 		break
 	fi
 done
-export $upgrade_sources
-return
 
 }
 
@@ -263,89 +348,99 @@ populate_others () {
 
 if [[ "$build_arch" = "x86" ]]
 	then
-		mkdir $SRCDIR/others > /dev/null 2>&1
-		cd $SRCDIR/others
+		mkdir "$SRCDIR"/others > /dev/null 2>&1
+		cd "$SRCDIR"/others || exit 1
 		if [ ! -f cxxlibs-6.0.18-i486-1.txz ]; then
-			wget -c -v $DLDIR2/slackware/a/cxxlibs-6.0.18-i486-1.txz
+			wget -c -v "$DLDIR2"/slackware/a/cxxlibs-6.0.18-i486-1.txz
 		fi
 		if [ ! -f gmp-5.1.3-i486-1.txz ]; then
-			wget -c -v $DLDIR2/slackware/l/gmp-5.1.3-i486-1.txz
+			wget -c -v "$DLDIR2"/slackware/l/gmp-5.1.3-i486-1.txz
 		fi
 		if [ ! -f libtermcap-1.2.3-i486-7.txz ]; then
-			wget -c -v $DLDIR2/slackware/l/libtermcap-1.2.3-i486-7.txz
+			wget -c -v "$DLDIR2"/slackware/l/libtermcap-1.2.3-i486-7.txz
 		fi
 		if [ ! -f ncurses-5.9-i486-4.txz ]; then
-			wget -c -v $DLDIR3/slackware/l/ncurses-5.9-i486-4.txz
+			wget -c -v "$DLDIR3"/slackware/l/ncurses-5.9-i486-4.txz
 		fi
 		if [ ! -f readline-6.3-i586-2.txz ]; then
-			wget -c -v $DLDIR3/slackware/l/readline-6.3-i586-2.txz
+			wget -c -v "$DLDIR3"/slackware/l/readline-6.3-i586-2.txz
 		fi
 		if [ ! -f libpng-1.4.12-i486-1.txz ]; then
-			wget -c -v $DLDIR2/slackware/l/libpng-1.4.12-i486-1.txz
+			wget -c -v "$DLDIR2"/slackware/l/libpng-1.4.12-i486-1.txz
 		fi
 		if [ ! -f ksh93-2012_08_01-i586-2.txz ]; then
-			wget -c -v $DLDIR3/slackware/ap/ksh93-2012_08_01-i586-2.txz
+			wget -c -v "$DLDIR3"/slackware/ap/ksh93-2012_08_01-i586-2.txz
 		fi
-		cd $SRCDIR/others
-		if [ ! -f $GNAT_x86 ]; then
-			wget -c -v $DLDIR6/$GNAT_x86  && chmod 644 *.tar.gz
+		if [ ! -f libcaca-0.99.beta18-i486-2.txz ]; then
+			wget -c -v "$DLDIR3"/slackware/l/libcaca-0.99.beta18-i486-2.txz
 		fi
-		cd $SRCDIR/others 
-		if [ ! -f jre-$JDK-linux-i586.tar.gz ]; then
-			# from https://gist.github.com/P7h/9741922
-			curl -C - -LR#OH "Cookie: oraclelicense=accept-securebackup-cookie" -k $DLDIR9
+		cd "$SRCDIR"/others || exit 1
+		if [ ! -f "$GNAT_x86" ]; then
+			wget -c -v "$DLDIR6"/"$GNAT_x86"  && chmod 644 ./*.tar.gz
 		fi
-		cp -v jre-$JDK-linux-i586.tar.gz $SRCDIR/extra/java
-		cd $SRCDIR/d/rust && sed -i -e '1,12d' rust.url && sed -i -e '7,11d' rust.url && source rust.url
-		cd $SRCDIR/others
+#		cd "$SRCDIR"/others || exit 1
+#		if [ ! -f jre-$JDK-linux-i586.tar.gz ]; then
+#			# from https://gist.github.com/P7h/9741922
+#			curl -C - -LR#OH "Cookie: oraclelicense=accept-securebackup-cookie" -k $DLDIR9
+#		fi
+#		cp -v jre-$JDK-linux-i586.tar.gz "$SRCDIR"/extra/java
+		cd "$SRCDIR"/d/rust || exit 1
+		# shellcheck disable=SC1091 
+		sed -i -e '1,22d' rust.url && sed -i -e '9,14d' rust.url && source rust.url
+		cd "$SRCDIR"/others || exit 1
 		if [ ! -f readline-7.0.005-i586-1.txz ]; then
-			wget -c -v $DLDIR12/readline-7.0.005-i586-1.txz
+			wget -c -v "$DLDIR12"/readline-7.0.005-i586-1.txz
 		fi
 		if [ ! -f libffi-3.2.1-i586-2.txz ]; then
-			wget -c -v $DLDIR12/libffi-3.2.1-i586-2.txz
+			wget -c -v "$DLDIR12"/libffi-3.2.1-i586-2.txz
 		fi
 	elif [[ "$build_arch" = "x86_64" ]]
 	then
-		mkdir $SRCDIR/others > /dev/null 2>&1
-		cd $SRCDIR/others
+		mkdir "$SRCDIR"/others > /dev/null 2>&1
+		cd "$SRCDIR"/others || exit 1
 		if [ ! -f cxxlibs-6.0.18-x86_64-1.txz ]; then
-			wget -c -v $DLDIR4/slackware64/a/cxxlibs-6.0.18-x86_64-1.txz
+			wget -c -v "$DLDIR4"/slackware64/a/cxxlibs-6.0.18-x86_64-1.txz
 		fi
 		if [ ! -f gmp-5.1.3-x86_64-1.txz ]; then
-			wget -c -v $DLDIR4/slackware64/l/gmp-5.1.3-x86_64-1.txz
+			wget -c -v "$DLDIR4"/slackware64/l/gmp-5.1.3-x86_64-1.txz
 		fi
 		if [ ! -f libtermcap-1.2.3-x86_64-7.txz ]; then
-			wget -c -v $DLDIR4/slackware64/l/libtermcap-1.2.3-x86_64-7.txz
+			wget -c -v "$DLDIR4"/slackware64/l/libtermcap-1.2.3-x86_64-7.txz
 		fi
 		if [ ! -f ncurses-5.9-x86_64-4.txz ]; then
-			wget -c -v $DLDIR5/slackware64/l/ncurses-5.9-x86_64-4.txz
+			wget -c -v "$DLDIR5"/slackware64/l/ncurses-5.9-x86_64-4.txz
 		fi
 		if [ ! -f readline-6.3-x86_64-2.txz ]; then
-			wget -c -v $DLDIR5/slackware64/l/readline-6.3-x86_64-2.txz
+			wget -c -v "$DLDIR5"/slackware64/l/readline-6.3-x86_64-2.txz
 		fi
 		if [ ! -f libpng-1.4.12-x86_64-1.txz ]; then
-			wget -c -v $DLDIR4/slackware64/l/libpng-1.4.12-x86_64-1.txz
+			wget -c -v "$DLDIR4"/slackware64/l/libpng-1.4.12-x86_64-1.txz
 		fi
 		if [ ! -f ksh93-2012_08_01-x86_64-2.txz ]; then
-			wget -c -v $DLDIR5/slackware64/ap/ksh93-2012_08_01-x86_64-2.txz
+			wget -c -v "$DLDIR5"/slackware64/ap/ksh93-2012_08_01-x86_64-2.txz
 		fi
-		cd $SRCDIR/others
-		if [ ! -f $GNAT_x86_64 ]; then
-			wget -c -v $DLDIR6/$GNAT_x86_64 && chmod 644 *.tar.gz
+		if [ ! -f libcaca-0.99.beta18-x86_64-2.txz ]; then
+			wget -c -v "$DLDIR5"/slackware64/l/libcaca-0.99.beta18-x86_64-2.txz
 		fi
-		cd $SRCDIR/others 
-		if [ ! -f jre-$JDK-linux-x64.tar.gz ]; then
-			# from https://gist.github.com/P7h/9741922
-			curl -C - -LR#OH "Cookie: oraclelicense=accept-securebackup-cookie" -k $DLDIR10
+		cd "$SRCDIR"/others || exit 1
+		if [ ! -f "$GNAT_x86_64" ]; then
+			wget -c -v "$DLDIR6"/"$GNAT_x86_64" && chmod 644 ./*.tar.gz
 		fi
-		cp -rv jre-$JDK-linux-x64.tar.gz $SRCDIR/extra/java
-		cd $SRCDIR/d/rust && sed -i -e '1,18d' rust.url && source rust.url
-		cd $SRCDIR/others
+#		cd "$SRCDIR"/others || exit 1
+#		if [ ! -f jre-$JDK-linux-x64.tar.gz ]; then
+#			# from https://gist.github.com/P7h/9741922
+#			curl -C - -LR#OH "Cookie: oraclelicense=accept-securebackup-cookie" -k $DLDIR10
+#		fi
+#		cp -rv jre-$JDK-linux-x64.tar.gz "$SRCDIR"/extra/java
+		cd "$SRCDIR"/d/rust || exit 1
+		# shellcheck disable=SC1091  
+		sed -i -e '1,22d' rust.url && sed -i -e '4,9d' rust.url && source rust.url
+		cd "$SRCDIR"/others || exit 1
 		if [ ! -f readline-7.0.005-x86_64-1.txz ]; then
-			wget -c -v $DLDIR12/readline-7.0.005-x86_64-1.txz
+			wget -c -v "$DLDIR12"/readline-7.0.005-x86_64-1.txz
 		fi
 		if [ ! -f libffi-3.2.1-x86_64-2.txz ]; then
-			wget -c -v $DLDIR12/libffi-3.2.1-x86_64-2.txz
+			wget -c -v "$DLDIR12"/libffi-3.2.1-x86_64-2.txz
 		fi
 fi
 
@@ -353,25 +448,25 @@ fi
 
 etc_group () {
 #***************************************************
-mkdir -pv $SFS/etc
-cat > $SFS/etc/group << "EOF"
+mkdir -pv "$SFS"/etc
+cat > "$SFS"/etc/group << "EOF"
 root:x:0:root
 EOF
-chmod 644 $SFS/etc/group
+chmod 644 "$SFS"/etc/group
 }
 
 etc_passwd () {
 #***************************************************
-cat > $SFS/etc/passwd << "EOF"
+cat > "$SFS"/etc/passwd << "EOF"
 root:x:0:0::/root:/bin/bash
 EOF
-chmod 644 $SFS/etc/passwd
+chmod 644 "$SFS"/etc/passwd
 }
 
 root_bashrc () {
 #***************************************************
-mkdir -pv $SFS/root
-cat >  $SFS/root/.bashrc << "EOF"
+mkdir -pv "$SFS"/root
+cat >  "$SFS"/root/.bashrc << "EOF"
 #!/bin/sh
 LC_ALL=C.UTF-8
 export LC_ALL
@@ -382,10 +477,10 @@ sfsprep () {
 #***********************************************************
 # package management: copy tools from slackware source:
 #***********************************************************
-mkdir -pv $SFS/sbin
-cp $SFS/slacksrc/a/pkgtools/scripts/makepkg $SFS/sbin/makepkg
-cp $SFS/slacksrc/a/pkgtools/scripts/installpkg $SFS/sbin/installpkg
-chmod 755 $SFS/sbin/makepkg $SFS/sbin/installpkg
+mkdir -pv "$SFS"/sbin
+cp "$SFS"/source/a/pkgtools/scripts/makepkg "$SFS"/sbin/makepkg
+cp "$SFS"/source/a/pkgtools/scripts/installpkg "$SFS"/sbin/installpkg
+chmod 755 "$SFS"/sbin/makepkg "$SFS"/sbin/installpkg
 }
 
 #************************************************************************
@@ -398,17 +493,18 @@ chmod 755 $SFS/sbin/makepkg $SFS/sbin/installpkg
 # before everything we test if we are root
 #**************************************
 test_root
-. export_variables_perso.sh
 . export_variables.sh
+. export_variables_perso.sh
 distribution_selector
 arch_selector
+dev_selector
 
 #**************************************
 # preparation of $SFS side
 #**************************************
 mkdir -pv $SRCDIR
 
-cd $SFS/sources
+cd "$SFS"/sources || exit 1
 
 #*************************************
 # Erase old installation, if any.
@@ -447,27 +543,30 @@ do
 	elif [[ "$upgrade_type" = "rsync" ]]
 	then
 		echo
-		echo -e "$RED" "You chose to rsync slacksrc directly from a slackware mirror." "$NORMAL"
+		echo -e "$RED" "You chose to rsync slackawre source directly from a slackware mirror." "$NORMAL"
 		echo
-		cd $SFS/sources
+		cd "$SFS"/scripts || exit 1
 		rsync_src
+		rsync_dev_current
 		populate_others
 		break
 	elif [[ "$upgrade_type" = "local" ]]
 	then
 		echo
-		echo  -e "$RED" "You chose to rsync slacksrc from a local mirror." "$NORMAL"
+		echo  -e "$RED" "You chose to rsync slackawre source from a local mirror." "$NORMAL"
 		echo 
 		upgrade_src
+		rsync_dev_current
 		populate_others
 		break
 	elif [[ "$upgrade_type" = "DVD" ]]
 	then
 		echo
-		echo  -e "$RED" "You chose to rsync slacksrc from a local DVD or BluRay." "$NORMAL"
+		echo  -e "$RED" "You chose to rsync slackawre source from a local DVD or BluRay." "$NORMAL"
 		echo 
 		mount -t auto /dev/sr0 /mnt/dvd && sleep 5 && echo -e "$RED" "DVD mounted on /mnt/DVD" "$NORMAL"
 		upgrade_dvd
+		rsync_dev_current
 		populate_others
 		umount /mnt/dvd && sleep 3 && eject && echo -e "$RED" "DVD unmounted from /mnt/DVD and ejected." "$NORMAL"
  		break
@@ -488,7 +587,7 @@ root_bashrc
 #***********************************************************
 sfsprep
 
-cd $SFS/sources
+cd "$SFS"/scripts || exit 1
 . lists_generator_c.sh
 . prep-sfs-tools.sh
 #*************************************

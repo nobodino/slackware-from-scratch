@@ -1,8 +1,8 @@
-####################### sfs-tools-current.sh ###################################
+############ sfs-tools-current-with-ada-builtin.sh #############################
 #!/bin/bash
 #
-# Copyright 2018, 2019  J. E. Garrott Sr, Puyallup, WA, USA
-# Copyright 2018, 2019  "nobodino", Bordeaux, FRANCE
+# Copyright 2018,2019,2020  J. E. Garrott Sr, Puyallup, WA, USA
+# Copyright 2018,2019,2020  "nobodino", Bordeaux, FRANCE
 # All rights reserved.
 #
 # Redistribution and use of this script, with or without modification, is
@@ -103,7 +103,7 @@ echo_begin () {
             echo  -e "$GREEN" "You have decided to quit. Goodbye."  "$NORMAL" && exit 1
         fi
     done
-    echo -e "$RED" "You chose to build 'tools' for SFS." "$NORMAL"
+    echo -e "$RED" "You choose to build 'tools' for SFS." "$NORMAL"
 }
 
 copy_src () {
@@ -141,13 +141,13 @@ copy_src () {
     cp -v $RDIR/d/gcc/gcc-$SRCVER.tar.?z $SRCDIR || exit 1
     cd $RDIR/a/gettext
 	export GETTVER=${VERSION:-$(echo gettext-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
-    cp -v $RDIR/a/gettext/gettext-$GETTVER.tar.xz $SRCDIR || exit 1
+    cp -v $RDIR/a/gettext/gettext-$GETTVER.tar.lz $SRCDIR || exit 1
     cd $RDIR/l/glibc
 	export GLIBCVER=${VERSION:-$(echo glibc-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/l/glibc/glibc-$GLIBCVER.tar.xz $SRCDIR || exit 1
     cd $RDIR/l/gmp
 	export GMPVER=${VERSION:-$(echo gmp-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
-    cp -v $RDIR/l/gmp/gmp-$GMPVER.tar.xz $SRCDIR || exit 1
+    cp -v $RDIR/l/gmp/gmp-$GMPVER.tar.?z $SRCDIR || exit 1
     cd $RDIR/l/isl
 	export ISLVER=${VERSION:-$(echo isl-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
 	cp -v $RDIR/l/isl/isl-$ISLVER.tar.xz $SRCDIR || exit 1
@@ -183,7 +183,7 @@ copy_src () {
     cp -v $RDIR/l/mpfr/mpfr-$MPFRVER.tar.xz $SRCDIR || exit 1
     cd $RDIR/l/ncurses
 	PKGNAM=ncurses && export NCURVER=${VERSION:-$(echo $PKGNAM-*.tar.?z | cut -f 2- -d - | cut -f 1,2 -d .)}
-    cp -v $RDIR/l/ncurses/ncurses-$NCURVER.tar.?z $SRCDIR || exit 1
+	cp -v $RDIR/l/ncurses/ncurses-$NCURVER.tar.?z $SRCDIR || exit 1
     cd $RDIR/a/patch
 	export PATCHVER=${VERSION:-$(echo patch-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/a/patch/patch-$PATCHVER.tar.xz $SRCDIR || exit 1
@@ -213,9 +213,25 @@ copy_src () {
     cd $RDIR/a/xz
 	export XZVER=${VERSION:-$(echo xz-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/a/xz/xz-$XZVER.tar.xz $SRCDIR || exit 1
+    cd $RDIR/l/zstd
+	export ZSTDVER=${VERSION:-$(echo zstd-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
+    cp -v $RDIR/l/zstd/zstd-$ZSTDVER.tar.?z $SRCDIR || exit 1
+	case $(uname -m) in
+		i686 ) 
+			if [ -f $RDIR/others/gnat-gpl-2014-x86-linux-bin.tar.gz ]; then
+				cd $RDIR/others
+				cp -v $RDIR/others/gnat-gpl-2014-x86-linux-bin.tar.gz $SRCDIR || exit 1
+			fi
+			[ $? != 0 ] && exit 1 ;;
+		x86_64 )
+			if [ -f $RDIR/others/gnat-gpl-2017-x86_64-linux-bin.tar.gz ]; then
+				cd $RDIR/others 
+				cp -v $RDIR/others/gnat-gpl-2017-x86_64-linux-bin.tar.gz $SRCDIR || exit 1
+			fi
+			[ $? != 0 ] && exit 1 ;;
+	esac
    
 }
-
 
 test_to_go () {
 #*****************************
@@ -232,12 +248,12 @@ test_to_go () {
             echo -e "$RED" "You have decided to quit. Goodbye." "$NORMAL" && exit 1
         fi
     done
-    echo -e "$GREEN" "You chose to continue the process of building 'tools' for SFS." "$NORMAL" 
+    echo -e "$GREEN" "You choose to continue the process of building 'tools' for SFS." "$NORMAL" 
 }
 
 binutils_build_sp1 () {
 #*****************************
-    tar xvf binutils-$BINUVER.tar.lz && cd binutils-$BINUVER
+    tar xvf binutils-$BINUVER.tar.?z && cd binutils-$BINUVER
 
     mkdir -v build && cd build
 
@@ -265,7 +281,7 @@ gcc_build_sp1 () {
 
     tar xvf ../mpfr-$MPFRVER.tar.xz
     mv -v mpfr-$MPFRVER mpfr
-    tar xvf ../gmp-$GMPVER.tar.xz
+    tar xvf ../gmp-$GMPVER.tar.?z
     mv -v gmp-$GMPVER gmp
     tar xvf ../mpc-$LIBMPCVER.tar.lz
     mv -v mpc-$LIBMPCVER mpc
@@ -346,9 +362,10 @@ glibc_build () {
 		  --host=$SFS_TGT                    \
 		  --build=$(../scripts/config.guess) \
 		  --enable-kernel=2.6.32             \
-		  --with-headers=/tools/include      \
-		  libc_cv_forced_unwind=yes          \
-		  libc_cv_c_cleanup=yes || exit 1
+		  --with-headers=/tools/include || exit 1  
+#		  --with-headers=/tools/include      \
+#		  libc_cv_forced_unwind=yes          \
+#		  libc_cv_c_cleanup=yes || exit 1
 
 	make || exit 1
 	make install || exit 1
@@ -380,7 +397,7 @@ libstdc_build () {
 
 binutils_build_sp2 () {
 #*****************************
-	tar xvf binutils-$BINUVER.tar.lz && cd binutils-$BINUVER
+	tar xvf binutils-$BINUVER.tar.?z && cd binutils-$BINUVER
 
 	mkdir -v build && cd build
 
@@ -408,7 +425,7 @@ binutils_build_sp2 () {
 
 gmp_build () {
 #*****************************
-    tar xvf gmp-$GMPVER.tar.xz && cd gmp-$GMPVER
+    tar xvf gmp-$GMPVER.tar.?z && cd gmp-$GMPVER
 
     ./configure --prefix=/tools || exit 1
 
@@ -461,10 +478,13 @@ esac
 
     tar xvf ../mpfr-$MPFRVER.tar.xz
     mv -v mpfr-$MPFRVER mpfr
-    tar xvf ../gmp-$GMPVER.tar.xz
+    tar xvf ../gmp-$GMPVER.tar.?z
     mv -v gmp-$GMPVER gmp
     tar xvf ../mpc-$LIBMPCVER.tar.lz
     mv -v mpc-$LIBMPCVER mpc
+
+# fix a problem introduced by glibc-2.31
+ sed -e '1161 s|^|//|' -i libsanitizer/sanitizer_common/sanitizer_platform_limits_posix.cc
 
    mkdir -v build && cd build
 
@@ -476,7 +496,7 @@ esac
 		 --prefix=/tools                                \
 		 --with-local-prefix=/tools                     \
 		 --with-native-system-header-dir=/tools/include \
-		 --enable-languages=c,c++						\
+		 --enable-languages=c,c++                       \
 		 --disable-libstdcxx-pch                        \
 		 --disable-multilib                             \
 		 --disable-bootstrap                            \
@@ -488,6 +508,64 @@ esac
     cd ../..
     rm -rf gcc-$SRCVER
 	 echo gcc-$SRCVER >> $SFS/tools/etc/tools_version
+}
+
+gnat_build_sp2 () {
+#*****************************
+cd $SFS/sources
+tar xvf gcc-$SRCVER.tar.xz && cd gcc-$SRCVER
+
+cat gcc/limitx.h gcc/glimits.h gcc/limity.h > \
+  `dirname $($SFS_TGT-gcc -print-libgcc-file-name)`/include-fixed/limits.h
+
+for file in gcc/config/{linux,i386/linux{,64}}.h
+do
+  cp -uv $file{,.orig}
+  sed -e 's@/lib\(64\)\?\(32\)\?/ld@/tools&@g' \
+      -e 's@/usr@/tools@g' $file.orig > $file
+  echo '
+#undef STANDARD_STARTFILE_PREFIX_1
+#undef STANDARD_STARTFILE_PREFIX_2
+#define STANDARD_STARTFILE_PREFIX_1 "/tools/lib/"
+#define STANDARD_STARTFILE_PREFIX_2 ""' >> $file
+  touch $file.orig
+done
+
+case $(uname -m) in
+  x86_64)
+    sed -e '/m64=/s/lib64/lib/' \
+        -i.orig gcc/config/i386/t-linux64
+  ;;
+esac
+
+    tar xvf ../mpfr-$MPFRVER.tar.xz
+    mv -v mpfr-$MPFRVER mpfr
+    tar xvf ../gmp-$GMPVER.tar.xz
+    mv -v gmp-$GMPVER gmp
+    tar xvf ../mpc-$LIBMPCVER.tar.lz
+    mv -v mpc-$LIBMPCVER mpc
+
+# fix a problem introduced by glibc-2.31
+ sed -e '1161 s|^|//|' -i libsanitizer/sanitizer_common/sanitizer_platform_limits_posix.cc
+
+   mkdir -v build && cd build
+
+	../configure \
+		--prefix=/tools \
+		--disable-multilib \
+		--enable-bootstrap \
+		--enable-languages=ada || exit 1
+
+    make || exit 1
+	make bootstrap || exit 1
+	make -C gcc gnatlib || exit 1
+	make -C gcc gnattools || exit 1
+    make install || exit 1
+	export PATH=$PATH_HOLD
+    cd ../..
+	rm -rf gnat-gpl*
+	rm -rf /tools/opt/gnat
+	rm -rf /tools/tmp
 }
 
 m4_build () {
@@ -557,8 +635,13 @@ bzip2_build () {
 #*****************************
     tar xvf bzip2-$BZIP2VER.tar.lz && cd bzip2-$BZIP2VER
 
+	make -f Makefile-libbz2_so
+	make clean
     make || exit 1
     make PREFIX=/tools install || exit 1
+	cp -v bzip2-shared /tools/bin/bzip2
+	cp -av libbz2.so* /tools/lib
+	ln -sv libbz2.so.1.0 /tools/lib/libbz2.so
     cd ..
     rm -rf bzip2-$BZIP2VER
 	echo bzip2-$BZIP2VER >> $SFS/tools/etc/tools_version
@@ -594,7 +677,7 @@ file_build () {
 #*****************************
     tar xvf file-$FILEVER.tar.?z && cd file-$FILEVER
 
-    ./configure --prefix=/tools || exit 1
+	./configure --prefix=/tools || exit 1
 
     make || exit 1
     make install || exit 1
@@ -629,10 +712,9 @@ gawk_build () {
 	echo gawk-$GAWKVER >> $SFS/tools/etc/tools_version
 }
 
-
 gettext_build () {
 #*****************************
-    tar xvf gettext-$GETTVER.tar.xz && cd gettext-$GETTVER
+    tar xvf gettext-$GETTVER.tar.lz && cd gettext-$GETTVER
 
     ./configure --disable-shared || exit 1
 
@@ -854,6 +936,19 @@ which_build () {
     echo which-$WHICHVER >> $SFS/tools/etc/tools_version
 }
 
+zstd_build () {
+#*****************************
+    tar xvf zstd-$ZSTDVER.tar.?z && cd zstd-$ZSTDVER
+
+	make || exit 1
+	make  -C contrib/pzstd || exit 1
+
+	make prefix=/tools install || exit 1
+#	make install -Dm755 contrib/pzstd/pzstd /tools/bin/pzstd || exit 1
+    cd ..
+    rm -rf zstd-$ZSTDVER
+    echo zstd-$ZSTDVER >> $SFS/tools/etc/tools_version
+}
 
 strip_libs () {
 #*****************************
@@ -878,6 +973,14 @@ echo_end () {
     echo "Just type:"
 	echo
 	echo -e "$GREEN" "exit" "$NORMAL"
+	echo
+    echo "then type:"
+	echo
+	echo -e "$GREEN" "cd gcc*/build && make install 2>&1 | tee > /dev/null" "$NORMAL"
+	echo
+    echo "then type:"
+	echo
+	echo -e "$GREEN" "cd ../.. && rm -rf gcc*" "$NORMAL"
 	echo
     echo "then type:"
 	echo
@@ -924,16 +1027,50 @@ python_build
 sed_build
 tar_build
 texinfo_build
-util_linux_build
 xz_build
 lzip_build
 tar_slack_build
 which_build
+util_linux_build
+zstd_build
+#*****************************
+case $(uname -m) in
+	x86_64)
+		tar xf gnat-gpl-2017-x86_64-linux-bin.tar.gz
+		if [ $? != 0 ]; then
+			echo
+			echo "Tar extraction of gnat-gpl-2017-x86_64-linux-bin failed."
+			echo
+		exit 1
+		fi
+		# Now prepare the environment
+		cd gnat-gpl-2017-x86_64-linux-bin
+
+		[ $? != 0 ] && exit 1 ;;
+	i686)
+		tar xf gnat-gpl-2014-x86-linux-bin.tar.gz
+		if [ $? != 0 ]; then
+			echo
+			echo "Tar extraction of gnat-gpl-2014-x86-linux-bin failed."
+			echo
+		exit 1
+		fi
+		# Now prepare the environment
+		cd gnat-gpl-2014-x86-linux-bin
+		[ $? != 0 ] && exit 1 ;;
+esac
+mkdir -pv /tools/opt/gnat
+make ins-all prefix=/tools/opt/gnat
+PATH_HOLD=$PATH && export PATH=/tools/opt/gnat/bin:$PATH_HOLD
+echo $PATH
+find /tools/opt/gnat -name ld -exec mv -v {} {}.old \;
+find /tools/opt/gnat -name ld -exec as -v {} {}.old \;
+#*****************************
+gnat_build_sp2
 strip_libs
 clean_sources
 echo_end
 exit 0
-
 
 
 

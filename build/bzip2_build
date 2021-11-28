@@ -1,0 +1,22 @@
+#!/bin/bash
+#*****************************
+bzip2_build () {
+#*****************************
+	export BZIP2VER=${VERSION:-$(echo bzip2-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+
+    tar xvf bzip2-"$BZIP2VER".tar.lz || exit 1
+	cd bzip2-"$BZIP2VER" || exit 1 
+
+	make -f Makefile-libbz2_so
+	make clean
+    make || exit 1
+    make PREFIX=/tools install || exit 1
+	cp -v bzip2-shared /tools/bin/bzip2
+	cp -av libbz2.so* /tools/lib
+	ln -sv libbz2.so.1.0 /tools/lib/libbz2.so
+    cd ..
+    rm -rf bzip2-"$BZIP2VER"
+	echo bzip2-"$BZIP2VER" >> "$SFS"/tools/etc/tools_version
+}
+
+bzip2_build

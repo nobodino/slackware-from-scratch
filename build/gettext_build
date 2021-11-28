@@ -1,0 +1,20 @@
+#!/bin/bash
+#*****************************
+gettext_build () {
+#*****************************
+	export GETTVER=${VERSION:-$(echo gettext-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
+
+    tar xvf gettext-"$GETTVER".tar.lz || exit 1
+	cd gettext-"$GETTVER" || exit 1 
+
+    ./configure --disable-shared || exit 1
+
+    make || exit 1
+
+    cp -v gettext-tools/src/{msgfmt,msgmerge,xgettext} /tools/bin || exit 1
+    cd ..
+    rm -rf gettext-"$GETTVER"
+	echo gettext-"$GETTVER" >> "$SFS"/tools/etc/tools_version
+}
+
+gettext_build

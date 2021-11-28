@@ -34,10 +34,10 @@
 #*******************************************************************
 # export RSYNCDIR=rsync://mirror.slackbuilds.org/slackware/slackware-current
 # export RSYNCDIR=rsync://mirrors.slackware.bg/slackware/slackware-current
-# export RSYNCDIR=rsync://slackware.uk/slackware/slackware64-current
+export RSYNCDIR=rsync://slackware.uk/slackware/slackware64-current
 # export RSYNDIR=rsync://rsync.slackware.no/slackware/slackware64-current/
 # export RSYNCDIR=rsync://bear.alienbase.nl/mirrors/slackware/slackware64-current
-export RSYNCDIR=rsync://ftp5.gwdg.de/pub/linux/slackware/slackware64-current
+# export RSYNCDIR=rsync://ftp5.gwdg.de/pub/linux/slackware/slackware64-current
 #*******************************************************************
 # the mirrors from which we download files to populate "others" directly
 #*******************************************************************

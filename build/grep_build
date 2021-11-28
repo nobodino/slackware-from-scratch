@@ -1,0 +1,19 @@
+#!/bin/bash
+#*****************************
+grep_build () {
+#*****************************
+	export GREPVER=${VERSION:-$(echo grep-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
+
+    tar xvf grep-"$GREPVER".tar.xz || exit 1
+	cd grep-"$GREPVER" || exit 1 
+
+    ./configure --prefix=/tools || exit 1
+
+    make || exit 1
+    make install || exit 1
+    cd ..
+    rm -rf grep-"$GREPVER"
+	echo grep-"$GREPVER" >> "$SFS"/tools/etc/tools_version
+}
+
+grep_build

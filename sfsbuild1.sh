@@ -57,7 +57,7 @@ on_error () {
 #***********************************************************
 # recalls the usage of the main script in case of error
 #***********************************************************
-echo 	"Usage: sfsbuild1.sh build1.list"
+echo 	"Usage: ./sfsbuild1.sh build1.list"
 echo
 echo	"The build.list of programs to build, and their source directories is required."
 echo
@@ -1071,12 +1071,12 @@ echo
 echo "Either, you can also do it in one step, by executing the"
 echo "following command, it will build the entire system till the end:"
 echo
-echo -e "$YELLOW" "time ./sfsbuild1.sh build5_s.list" "$NORMAL"
+echo -e "$BLUE" "time ./sfsbuild1.sh build5_s.list" "$NORMAL"
 echo
 echo "Either, you can also build a small slackware system with no X11 system, "
 echo "by executing the following command:"
 echo
-echo -e "$YELLOW" "time ./sfsbuild1.sh build0_s.list" "$NORMAL"
+echo -e "$RED" "time ./sfsbuild1.sh build0_s.list" "$NORMAL"
 }
 
 test_arch () {

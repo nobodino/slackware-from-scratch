@@ -1,0 +1,19 @@
+#!/bin/bash
+#*****************************
+isl_build () {
+#*****************************
+	export ISLVER=${VERSION:-$(echo isl-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
+
+    tar xvf isl-"$ISLVER".tar.xz || exit 1
+	cd isl-"$ISLVER" || exit 1 
+
+    ./configure --prefix=/tools || exit 1
+
+    make || exit 1
+    make install || exit 1
+    cd ..
+    rm -rf isl-"$ISLVER"
+	echo isl-"$ISLVER" >> "$SFS"/tools/etc/tools_version
+}
+
+isl_build

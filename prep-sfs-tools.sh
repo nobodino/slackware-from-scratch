@@ -65,7 +65,8 @@ groupadd sfs
 useradd -s /bin/bash -g sfs -m -k /dev/null sfs
 
 chown -v sfs $SFS/tools
-chown -Rv sfs:sfs $SFS/scripts
+chown -R sfs:sfs $SFS/scripts
+chown -R sfs:sfs $SFS/source
 }
 
 generate_bash_profile () {
@@ -95,11 +96,19 @@ echo "By now, you're in the 'sfs' environment."
 echo
 echo "Execute the 2 following commands:"
 echo
-echo -e "$YELLOW" "cd $SFS/scripts  && source ~/.bash_profile" "$NORMAL"
+echo -e "$GREEN" "cd $SFS/scripts  && source ~/.bash_profile" "$NORMAL"
 echo 
-echo "and then:"
-echo 
+echo "and then: (standard version of sfs-tools-current)"
+echo
 echo -e "$YELLOW"  "./sfs-tools-current.sh"  "$NORMAL"
+echo
+echo "or: (new modular version of sfs-tools-current)"
+echo
+echo -e "$BLUE"  "./sfs-tools-current-new.sh"  "$NORMAL"
+echo
+echo "or: (new modular and fully integrated sfs-tools inside slackware source tree)"
+echo  
+echo -e "$RED"  "./sfs-tools.sh"  "$NORMAL"
 echo && su - sfs
 }
 
