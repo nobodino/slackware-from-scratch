@@ -1,0 +1,66 @@
+#!/bin/bash
+
+build_linux_faqs () {
+#**********************
+BUILD=${BUILD:-1}
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-Linux-FAQS
+
+cd "$TMP" || exit 1
+mkdir -pv "$PKG"/usr/doc/Linux-FAQs
+cd "$PKG"/usr/doc/Linux-FAQs || exit 1
+mkdir -pv AfterStep-FAQ && cd AfterStep-FAQ || exit 1
+wget -c http://www.tldp.org/pub/Linux/docs/faqs-archived/AfterStep-FAQ/AfterStep-FAQ
+cd .. && mkdir -pv Ftape-FAQ && cd Ftape-FAQ || exit 1
+wget -c http://www.tldp.org/pub/Linux/docs/faqs-archived/Ftape-FAQ/Ftape-FAQ
+cd .. && mkdir -pv LDP-FAQ && cd LDP-FAQ || exit 1
+wget -c http://www.tldp.org/pub/Linux/docs/faqs-archived/LDP-FAQ/LDP-FAQ
+cd .. && mkdir -pv Linux-FAQ && cd Linux-FAQ || exit 1
+wget -c http://www.tldp.org/pub/Linux/docs/faqs-archived/Linux-FAQ/Linux-FAQ
+cd .. && mkdir -pv Linux-RAID-FAQ && cd Linux-RAID-FAQ || exit 1
+wget -c http://www.tldp.org/pub/Linux/docs/faqs-archived/Linux-RAID-FAQ/Linux-RAID-FAQ
+cd .. && mkdir -pv PPP-FAQ && cd PPP-FAQ || exit 1
+wget -c http://www.tldp.org/pub/Linux/docs/faqs-archived/PPP-FAQ/PPP-FAQ
+cd .. && mkdir -pv Threads-FAQ/html && cd Threads-FAQ/html || exit 1
+wget -c www.tldp.org/pub/Linux/docs/faqs-archived/Threads-FAQ/Threads-FAQ-html.tar.gz
+tar xf ./*.tar.gz && rm ./*.tar.gz
+cd .. && mkdir -pv WordPerfect-Linux-FAQ && cd WordPerfect-Linux-FAQ || exit 1
+wget -c http://www.tldp.org/pub/Linux/docs/faqs-archived/WordPerfect-Linux-FAQ/WordPerfect-Linux-FAQ
+cd .. && mkdir -pv linux-FAQ && cd linux-FAQ || exit 1
+wget -c http://www.tldp.org/pub/Linux/docs/faqs-archived/linux-faq/linux-FAQ
+cd .. && mkdir -pv security && cd security || exit 1
+wget -c http://www.tldp.org/pub/Linux/docs/faqs-archived/security/Cryptographic-File-System
+cd ..
+wget -c http://www.tldp.org/FAQ/faqs/ATAPI-FAQ
+wget -c http://www.tldp.org/FAQ/sig11/text/GCC-SIG11-FAQ
+wget -c http://slackware.uk/splack/splack-8.0/docs/faqs/SCSI-Generic-FAQ
+wget -c http://slackware.uk/splack/splack-8.0/docs/faqs/BLFAQ
+wget -c http://slackware.uk/splack/splack-8.0/docs/faqs/BLFAQ.lsm
+wget -c http://slackware.uk/splack/splack-8.0/docs/faqs/FTP-FAQ
+wget -c http://slackware.uk/splack/splack-8.0/docs/faqs/Joe-Command-Reference
+wget -c http://slackware.uk/splack/splack-8.0/docs/faqs/Linux-RAID-FAQ
+wget -c http://slackware.uk/splack/splack-8.0/docs/faqs/MSSQL6-via-Openlink-PHP-ODBC-FAQ
+wget -c http://slackware.uk/splack/splack-8.0/docs/faqs/README
+wget -c http://slackware.uk/splack/splack-8.0/docs/faqs/SMP-FAQ
+wget -c http://slackware.uk/splack/splack-8.0/docs/faqs/Swap-space-FAQ
+wget -c http://slackware.uk/splack/splack-8.0/docs/faqs/Wine-FAQ
+wget -c http://slackware.uk/splack/splack-8.0/docs/faqs/new.gif
+wget -c http://slackware.uk/splack/splack-8.0/docs/faqs/next.gif
+wget -c http://slackware.uk/splack/splack-8.0/docs/faqs/prev.gif
+wget -c http://slackware.uk/splack/splack-8.0/docs/faqs/toc.gif
+wget -c http://slackware.uk/splack/splack-8.0/docs/faqs/updated.gif
+
+mkdir -p "$PKG"/install
+cat /source/f/slack-desc.linux-faqs > "$PKG"/install/slack-desc.linux-faqs
+
+cd "$PKG" || exit 1
+chown -R root:root .
+/sbin/makepkg -l y -c n "$TMP"/linux-faqs-20060228-noarch-"$BUILD".txz
+installpkg "$TMP"/linux-faqs-20060228-noarch-"$BUILD".txz
+mv -v "$TMP"/linux-faqs-20060228-noarch-"$BUILD".txz /slackware64/f
+rm -rf "$PKG"
+cd /scripts || exit 1
+}
+
+build_linux_faqs
