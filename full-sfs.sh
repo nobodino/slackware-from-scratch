@@ -10,8 +10,7 @@
 # set -x
 
 #!/bin/sh
-./sfsbuild1.sh build1_s.list && ./sfsbuild1.sh build2_s.list && ./sfsbuild1.sh build3_s.list && ./sfsbuild1.sh build4_s.list
-# ./sfsbuild1.sh build2_s.list && ./sfsbuild1.sh build3_s.list && ./sfsbuild1.sh build4_s.list
-# ./sfsbuild1.sh build2_s.list && ./sfsbuild1.sh build3_s.list
-# ./sfsbuild1.sh build4_s.list
-# ./sfsbuild1.sh build1_s.list && ./sfsbuild1.sh build2_s.list && ./sfsbuild1.sh build3_s.list
+ ./sfsbuild1.sh build1.list && ./sfsbuild1.sh build2.list && ./sfsbuild1.sh build3.list && ./sfsbuild1.sh build4.list
+# ./sfsbuild1.sh build2.list && ./sfsbuild1.sh build3.list && ./sfsbuild1.sh build4.list
+# ./sfsbuild1.sh build2.list && ./sfsbuild1.sh build3.list
+# ./sfsbuild1.sh build4.list
