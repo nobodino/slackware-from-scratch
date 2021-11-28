@@ -42,7 +42,8 @@ export YELLOW="\\033[1;33m"
 #**********************************
 # chown from sfs:sfs to root:root
 #**********************************
-cd .. && chown -R root:root "$SFS"/tools
+cd .. && chown -fR root:root "$SFS"/tools
+chown -fR root:root $SFS/source
 #**********************************
 mkdir -pv "$SFS"/{dev,proc,sys,run}
 #**********************************
