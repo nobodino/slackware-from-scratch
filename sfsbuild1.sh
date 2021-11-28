@@ -2565,28 +2565,28 @@ esac
 # Alteration of the slackware sources is made "on the fly" during
 # the first build. On the second pass, the old SlackBuild is 
 # renamed to its original version, and package can be built normally. 
-#	execute_cmake_sed # 2 pass
-#	execute_dbus_sed # 2 pass
-#	execute_findutils_sed # 2 pass
-#	execute_fontconfig_sed # 2 pass
-#	execute_freetype_sed # 2 pass
-#	execute_gd_sed # 2 pass
-#	execute_glib2_sed # 2 pass
-#	execute_gobject_sed # 2 pass
-#	execute_harfbuzz_sed # 2 pass
-#	execute_kmod_sed # 2 pass
-#	execute_libusb_sed # 2 pass
-#	execute_llvm_sed # 2 pass
-#	execute_pkg_config_sed # 2 pass
-#	execute_readline_sed # 3 pass
-#	execute_subversion_sed # 2 pass
-#	execute_texlive_sed # 2 pass
-#	execute_zstd_sed # 2 pass
-#	execute_perl_sed # 2 pass
-#	execute_openldap_sed # 2 pass
-# 	execute_libtirpc_sed variable # 2 pass
-# 	execute_elogind_sed variable # 2 pass
-# 	execute_libxkbcommon_sed variable # 2 pass
+#	execute_sed_cmake # 2 pass
+#	execute_sed_dbus # 2 pass
+#	execute_sed_findutils # 2 pass
+#	execute_sed_fontconfig # 2 pass
+#	execute_sed_freetype # 2 pass
+#	execute_sed_gd # 2 pass
+#	execute_sed_glib2 # 2 pass
+#	execute_sed_gobject # 2 pass
+#	execute_sed_harfbuzz # 2 pass
+#	execute_sed_kmod # 2 pass
+#	execute_sed_libusb # 2 pass
+#	execute_sed_llvm # 2 pass
+#	execute_sed_pkg_config # 2 pass
+#	execute_sed_readline # 3 pass
+#	execute_sed_subversion # 2 pass
+#	execute_sed_texlive # 2 pass
+#	execute_sed_zstd # 2 pass
+#	execute_sed_perl # 2 pass
+#	execute_sed_openldap # 2 pass
+# 	execute_sed_libtirpc variable # 2 pass
+# 	execute_sed_elogind variable # 2 pass
+# 	execute_sed_libxkbcommon variable # 2 pass
 #
 #******************************************************************
 # BUILDN: defines if package will be installed or upgraded
