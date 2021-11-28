@@ -1097,7 +1097,7 @@ fi
 test_gnat () {
 #******************************************
 # test the existence of gnat in tools
-# if not, modify build1_s.list to have 
+# if not, modify build1.list to have 
 # 'd pre-gcc' and 'd post-gcc' to build gcc
 #******************************************
 (! /tools/bin/gnat) 1> /dev/null && sed -i -e 's/# d/d/g' build1.list
@@ -2669,7 +2669,7 @@ while (( LINE < FILELEN )); do
 
 				alsa-lib )
 					case $LISTFILE in
-						build2_s.list )
+						build2.list )
 							build_pkg_1 ;;
 						* )
 							rm /slackware64/l/alsa-lib*.t?z
@@ -2683,7 +2683,7 @@ while (( LINE < FILELEN )); do
 
 				cmake )
 					case $LISTFILE in
-						build1_s.list )
+						build1.list )
 							build_pkg_1 ;; 
 						* )
 							build_pkg_2 ;;
@@ -2692,7 +2692,7 @@ while (( LINE < FILELEN )); do
 
 				cyrus-sasl )
 					case $LISTFILE in
-						build1_s.list )
+						build1.list )
 							build_pkg_1 ;;
 						* )
 							build_pkg_2 ;;
@@ -2701,7 +2701,7 @@ while (( LINE < FILELEN )); do
 
 				dbus )
 					case $LISTFILE in
-						build2_s.list )
+						build2.list )
 							build_pkg_1 
 							dbus-uuidgen --ensure ;;
 						* )
@@ -2742,7 +2742,7 @@ while (( LINE < FILELEN )); do
 
 				elogind )
 					case $LISTFILE in
-						build1_s.list )
+						build1.list )
 							build_pkg_1 ;;
 						* )
 							build_pkg_2 ;;
@@ -2773,7 +2773,7 @@ while (( LINE < FILELEN )); do
 
 				fontconfig )
 					case $LISTFILE in
-						build2_s.list )
+						build2.list )
 							build_pkg_1 ;;
 						* )
 							build_pkg_2 ;;
@@ -2802,9 +2802,9 @@ while (( LINE < FILELEN )); do
 
 				glib2 )
 					case $LISTFILE in
-						build1_s.list )
+						build1.list )
 							build_pkg_1 ;;
-						build2_s.list )
+						build2.list )
 							build_pkg_1 ;;
 						* )
 							build_pkg_2 ;;
@@ -2817,9 +2817,9 @@ while (( LINE < FILELEN )); do
 
 				gobject-introspection )
 					case $LISTFILE in
-						build1_s.list )
+						build1.list )
 							build_pkg_1 ;; 
-						build2_s.list )
+						build2.list )
 							build_pkg_1 ;;
 						* )
 							build_pkg_2 ;;
@@ -2828,9 +2828,9 @@ while (( LINE < FILELEN )); do
 
 				gpgme )
 					case $LISTFILE in
-						build3_s.list )
+						build3.list )
 							build_pkg_1 ;;
-						build4_s.list )
+						build4.list )
 							build_pkg_2 ;;
 					esac
 					continue ;;
@@ -3017,9 +3017,9 @@ while (( LINE < FILELEN )); do
 
 				pam )
 					case $LISTFILE in
-						build1_s.list )
+						build1.list )
 							build_pkg_1 ;;
-						build2_s.list )
+						build2.list )
 							build_pkg_2 ;;
 					esac
 					continue ;;
@@ -3041,7 +3041,7 @@ while (( LINE < FILELEN )); do
 
 				pkg-config )
 					case $LISTFILE in
-						build1_s.list )
+						build1.list )
 							build_pkg_1 ;;
 						* )
 							build_pkg_2 ;;
@@ -3113,7 +3113,7 @@ while (( LINE < FILELEN )); do
 
 				subversion )
 					case $LISTFILE in
-						build3_s.list )
+						build3.list )
 							build_pkg_1 ;;
 						* )
 							build_pkg_2 ;;
@@ -3122,7 +3122,7 @@ while (( LINE < FILELEN )); do
 
 				texlive )
 					case $LISTFILE in
-						build2_s.list )
+						build2.list )
 							build_pkg_1 ;;
 						* )
 							build_pkg_2 ;;
