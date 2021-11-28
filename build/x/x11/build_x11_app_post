@@ -1,0 +1,21 @@
+#!/bin/bash
+
+build_x11_app_post () {
+#*****************************
+cd /source/x/x11 || exit 1
+
+export UPGRADE_PACKAGES=always
+
+if ! ./x11.SlackBuild driver xf86-input-libinput; then
+	exit 1
+fi
+
+if ! ./x11.SlackBuild app xisxwayland; then
+	exit 1
+fi
+
+mv -v /tmp/x11-build/*.txz /slackware64/x
+cd /scripts || exit 1
+}
+
+build_x11_app_post

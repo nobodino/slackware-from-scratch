@@ -1,0 +1,134 @@
+#!/bin/bash
+
+build_frameworks () {
+#********************************************************
+#  frameworks/portaingAids \
+#  frameworks \
+#  applications-extra:kdiagram \
+#  kdepim \
+#  plasma \
+#  plasma-extra \
+#  applications-extra:libktorrent \
+#  applications \
+#  applications-extra \
+#  applications:umbrello \
+#********************************************************
+cd /source/kde/kde || exit 1
+
+export UPGRADE_PACKAGES=always
+
+# build all frameworks first
+
+for package in \
+	extra-cmake-modules \
+	attica \
+	kitemmodels \
+	kitemviews \
+	kplotting \
+	threadweaver \
+	kcodecs \
+	kdbusaddons \
+	kcoreaddons \
+	kguiaddons \
+	kidletime \
+	kwidgetsaddons \
+	sonnet \
+	kconfig \
+	kwindowsystem \
+	solid \
+	karchive \
+	ki18n \
+	networkmanager-qt \
+	modemmanager-qt \
+	bluez-qt \
+	prison \
+	kirigami2 \
+	syntax-highlighting \
+	kholidays \
+	kcalendarcore \
+	kcontacts \
+	breeze-icons \
+	kapidox \
+	kdnssd \
+	oxygen-icons5 \
+	kauth \
+	kcrash \
+	kjobwidgets \
+	kcompletion \
+	kdoctools \
+	kpackage \
+	knotifications \
+	kunitconversion \
+	kpty \
+	kimageformats \
+	kfilemetadata \
+	syndication \
+	kquickcharts \
+	kconfigwidgets \
+	kservice \
+	kglobalaccel \
+	kiconthemes \
+	kwallet \
+	kemoticons \
+	kdesu \
+	ktextwidgets \
+	kxmlgui \
+	kbookmarks \
+	kded \
+	kio \
+	knewstuff \
+	kparts \
+	kdewebkit \
+	kdesignerplugin \
+	kdeclarative \
+	kcmutils \
+	kinit \
+	knotifyconfig \
+	ktexteditor \
+	kactivities \
+	kactivities-stats \
+	plasma-framework \
+	kpeople \
+	kxmlrpcclient \
+	baloo \
+	qqc2-desktop-style \
+	purpose \
+	kjs \
+	kjsembed \
+	kross \
+	kmediaplayer \
+	krunner \
+	frameworkintegration \
+	kdelibs4support \
+	khtml \
+	kdav \
+  ; do
+   	if ! ./kde.SlackBuild frameworks:$package; then
+		touch /tmp/kde_build/$package.failed && exit 1
+	fi
+done
+
+for package in \
+	kdelibs4support \
+	kdesignerplugin \
+	kdewebkit \
+	khtml \
+	kjs \
+	kjsembed \
+	kmediaplayer \
+	kross \
+	kxmlrpcclient \
+  ; do
+   	if ! ./kde.SlackBuild frameworks:$package; then 
+		touch /tmp/kde_build/$package.failed && exit 1
+	fi
+ done
+
+# Keep MIME database current:
+/usr/bin/update-mime-database /usr/share/mime 1>/dev/null 2>/dev/null &
+
+mv -v /tmp/kde_build/*.txz /slackware64/kde
+cd /scripts || exit 1
+}
+
+build_frameworks

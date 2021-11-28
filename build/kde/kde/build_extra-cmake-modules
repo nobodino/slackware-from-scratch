@@ -1,0 +1,18 @@
+#!/bin/bash
+
+build_extra-cmake-modules () {
+#********************************************************
+cd /source/kde/kde || exit 1
+
+chmod +x kde.SlackBuild
+
+export UPGRADE_PACKAGES=always
+if ! ./kde.SlackBuild frameworks:extra-cmake-modules; then 
+	touch /tmp/kde_build/extra-cmake-modules.failed && exit 1
+fi
+
+mv -v /tmp/kde_build/*.txz /slackware64/kde
+cd /scripts || exit 1
+}
+
+build_extra-cmake-modules
