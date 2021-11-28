@@ -63,9 +63,7 @@ arch_selector () {
 # architecture selector
 #**********************************
 PS3="Your choice:"
-# disable x86 for this new version
-# will reactivated later
-select build_arch in x86_64 quit
+select build_arch in x86 x86_64 quit
 do
 	if [[ "$build_arch" = "x86" ]]
 	then
