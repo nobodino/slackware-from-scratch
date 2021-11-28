@@ -39,7 +39,6 @@ lists_generator () {
 	generate_slackware_build_list2
 	generate_slackware_build_list3
 	generate_slackware_build_list4
-	generate_slackware_build_list5
 	generate_slackware_build_list0
 }
 
@@ -88,9 +87,9 @@ d patchelf
 a xz
 l lz4
 l zstd
-# d pre-gcc
+d gcc-pre
 d gcc
-# d post-gcc
+d gcc-post
 a bzip2
 d pkg-config
 l ncurses
@@ -1436,16 +1435,7 @@ a end4
 EOF
 }
 
-generate_slackware_build_list5 () {
-#******************************************
-rm "$SFS"/scripts/build5.list
-cat  "$SFS"/scripts/build1.list > "$SFS"/scripts/build5.list
-cat  "$SFS"/scripts/build2.list >> "$SFS"/scripts/build5.list
-cat  "$SFS"/scripts/build3.list >> "$SFS"/scripts/build5.list
-cat  "$SFS"/scripts/build4.list >> "$SFS"/scripts/build5.list
-}
-
-generate_slackware_build_list0_c () {
+generate_slackware_build_list0 () {
 #******************************************
 rm "$SFS"/scripts/build0.list
 cat  "$SFS"/scripts/build1.list > "$SFS"/scripts/build0.list
