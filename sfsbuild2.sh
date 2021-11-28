@@ -1270,34 +1270,14 @@ while (( LINE < FILELEN )); do
 				plasma-extra )
 					build_pkg_3 ;;
 
-#				kernel-all )
-#					if ! kernel_build_all; then
-#						exit 1
-#					fi
-#					return ;;
-
 				kernel-all )
-					build_pkg_3 ;;
-
-#				kernel-headers )
-#					cd  /source/"$SRCDIR" && source kernel_headers_build
-#					if ! kernel_headers_build; then
-#						exit 1
-#					fi
-#					return ;;
+					cd  /source/k && source build_kernel-all ;;
 
 				kernel-headers )
-					build_pkg_3 ;; 
-
-#				kernel-source )
-#					cd  /source/"$SRCDIR" && source kernel_source_build
-#					if ! kernel_source_build; then
-#						exit 1
-#					fi
-#					return ;;
+					cd  /source/k && source build_kernel-headers ;; 
 
 				kernel-source )
-					build_pkg_3 ;; 
+					cd  /source/k && source build_kdernel-source ;;
 
 				kmod )
 					case $LKMO in
