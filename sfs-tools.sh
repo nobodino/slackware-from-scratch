@@ -102,7 +102,7 @@ echo_begin () {
             echo  -e "$GREEN" "You have decided to quit. Goodbye."  "$NORMAL" && exit 1
         fi
     done
-    echo -e "$RED" "You choose to build 'tools' for SFS." "$NORMAL"
+    echo -e "$RED" "You chose to build 'tools' for SFS." "$NORMAL"
 }
 
 ada_choice () {
@@ -142,24 +142,19 @@ copy_src () {
     cd $RDIR/l/mpfr || exit 1
 	export MPFRVER=${VERSION:-$(echo mpfr-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/l/mpfr/mpfr-"$MPFRVER".tar.?z "$RDIR/d/gcc" || exit 1
-    cd $RDIR/d/gcc || exit 1	
-	export SRCVER=${VERSION:-$(echo gcc-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
-	GCCVER=$(echo "$SRCVER" | cut -f 1 -d _)
-	export GCCVER
-    cp -v $RDIR/d/gcc/gcc-"$SRCVER".tar.?z "$SRCDIR" || exit 1
 	if [[ "$ada_enable" = "yes" ]]
 	then
 		case $(uname -m) in
 			i686 ) 
 				if [ -f "$RDIR"/others/gnat-gpl-2014-x86-linux-bin.tar.gz ]; then
 					cd "$RDIR"/others || exit 1
-					cp -v "$RDIR"/others/gnat-gpl-2014-x86-linux-bin.tar.gz "$SRCDIR" || exit 1
+					cp -v "$RDIR"/others/gnat-gpl-2014-x86-linux-bin.tar.gz "$RDIR/d/gcc" || exit 1
 				fi
 				return ;;
 			x86_64 )
 				if [ -f "$RDIR"/others/gnat-gpl-2017-x86_64-linux-bin.tar.gz ]; then
 					cd "$RDIR"/others || exit 1 
-					cp -v "$RDIR"/others/gnat-gpl-2017-x86_64-linux-bin.tar.gz "$SRCDIR" || exit 1
+					cp -v "$RDIR"/others/gnat-gpl-2017-x86_64-linux-bin.tar.gz "$RDIR/d/gcc" || exit 1
 				fi
 				return ;;
 		esac
@@ -184,64 +179,7 @@ test_to_go () {
             echo -e "$RED" "You have decided to quit. Goodbye." "$NORMAL" && exit 1
         fi
     done
-    echo -e "$GREEN" "You choose to continue the process of building 'tools' for SFS." "$NORMAL" 
-}
-
-gnat_build_sp2 () {
-#*****************************
-	cd "$SFS"/scripts || exit 1 
-	tar xvf gcc-"$SRCVER".tar.xz || exit 1
-	cd gcc-"$SRCVER" || exit 1 
-
-	cat gcc/limitx.h gcc/glimits.h gcc/limity.h > \
-	  "dirname $("$SFS_TGT"-gcc -print-libgcc-file-name)"/include-fixed/limits.h
-
-	for file in gcc/config/{linux,i386/linux{,64}}.h
-	do
-	  cp -uv $file{,.orig}
-	  sed -e 's@/lib\(64\)\?\(32\)\?/ld@/tools&@g' \
-		  -e 's@/usr@/tools@g' $file.orig > $file
-	  echo '
-	#undef STANDARD_STARTFILE_PREFIX_1
-	#undef STANDARD_STARTFILE_PREFIX_2
-	#define STANDARD_STARTFILE_PREFIX_1 "/tools/lib/"
-	#define STANDARD_STARTFILE_PREFIX_2 ""' >> $file
-	  touch $file.orig
-	done
-
-	case $(uname -m) in
-	  x86_64)
-		sed -e '/m64=/s/lib64/lib/' \
-		    -i.orig gcc/config/i386/t-linux64
-	  ;;
-	esac
-
-    tar xvf ../mpfr-"$MPFRVER".tar.xz
-    mv -v mpfr-"$MPFRVER" mpfr
-    tar xvf ../gmp-"$GMPVER".tar.xz
-    mv -v gmp-"$GMPVER" gmp
-    tar xvf ../mpc-"$LIBMPCVER".tar.lz
-    mv -v mpc-"$LIBMPCVER" mpc
-
-   	mkdir -v build
-	cd build || exit 1 
-
-	../configure \
-		--prefix=/tools \
-		--disable-multilib \
-		--enable-bootstrap \
-		--enable-languages=ada || exit 1
-
-    make || exit 1
-	make bootstrap || exit 1
-	make -C gcc gnatlib || exit 1
-	make -C gcc gnattools || exit 1
-    make install || exit 1
-	export PATH=$PATH_HOLD
-    cd ../..
-	rm -rf gnat-gpl*
-	rm -rf /tools/opt/gnat
-	rm -rf /tools/tmp
+    echo -e "$GREEN" "You chose to continue the process of building 'tools' for SFS." "$NORMAL" 
 }
 
 glibc_repair () {
@@ -265,14 +203,9 @@ strip_libs () {
 	find /tools/{lib,libexec} -name \*.la -delete
 }
 
-clean_sources () {
-#*****************************
-echo "clean sources packages"
-rm *.xz *.lz *.gz
-chown -fR root:root $SFS/source
-}
-
 echo_end () {
+#*****************************
+chown -fR root:root $SFS/source
 #*****************************
     echo "The building of tools for sfs is finished."
     echo
@@ -284,14 +217,6 @@ echo_end () {
 		echo
 		echo -e "$GREEN" "exit" "$NORMAL"
 		echo
-		echo "then type:"
-		echo
-		echo -e "$GREEN" "cd gcc*/build && make install 2>&1 | tee > /dev/null" "$NORMAL"
-		echo
-		echo "then type:"
-		echo
-		echo -e "$GREEN" "cd ../.. && rm -rf gcc*" "$NORMAL"
-		echo
 	elif [[ "$ada_enable" = "no" ]]
 		then
 			echo "Just type:"
@@ -302,14 +227,13 @@ echo_end () {
 	echo
 	echo -e "$GREEN" "./chroot_sfs.sh" "$NORMAL"
     echo
-
 }
 
 #*****************************
 # core script
 #*****************************
 echo_begin
-# ada_choice
+ada_choice
 copy_src
 test_to_go
 cd "$SRCDIR" || exit 1 
@@ -354,41 +278,13 @@ glibc_repair
 #*****************************
 if [[ "$ada_enable" = "yes" ]]
 then
-	case $(uname -m) in
-		x86_64 )
-			if ! tar xf gnat-gpl-2017-x86_64-linux-bin.tar.gz; then
-				echo
-				echo "Tar extraction of gnat-gpl-2017-x86_64-linux-bin failed."
-				echo
-			exit 1
-			fi
-			# Now prepare the environment
-			cd gnat-gpl-2017-x86_64-linux-bin || exit 1
-			echo ;;  
-		i686 )
-			if ! tar xf gnat-gpl-2014-x86-linux-bin.tar.gz; then
-				echo
-				echo "Tar extraction of gnat-gpl-2014-x86-linux-bin failed."
-				echo
-			exit 1
-			fi
-			# Now prepare the environment
-			cd gnat-gpl-2014-x86-linux-bin || exit 1
-			echo ;; 
-	esac
-	mkdir -pv /tools/opt/gnat
-	make ins-all prefix=/tools/opt/gnat
-	PATH_HOLD=$PATH && export PATH=/tools/opt/gnat/bin:$PATH_HOLD
-	echo "$PATH"
-	find /tools/opt/gnat -name ld -exec mv -v {} {}.old \;
-	find /tools/opt/gnat -name ld -exec as -v {} {}.old \;
-	gnat_build_sp2
+	cd $RDIR/d/gcc && source gnat_build_sp2
 elif [[ "$ada_enable" = "no" ]]
  then
 	echo
 fi
 #*****************************
 strip_libs
-clean_sources
+# clean_sources
 echo_end
 exit 0
