@@ -1071,7 +1071,7 @@ echo
 echo "Either, you can also do it in one step, by executing the"
 echo "following command, it will build the entire system till the end:"
 echo
-echo -e "$BLUE" "time ./sfsbuild1.sh build5.list" "$NORMAL"
+echo -e "$BLUE" "time ./full-sfs.sh" "$NORMAL"
 echo
 echo "Either, you can also build a small slackware system with no X11 system, "
 echo "by executing the following command:"
@@ -1098,7 +1098,7 @@ test_gnat () {
 #******************************************
 # test the existence of gnat in tools
 # if not, modify build1.list to have 
-# 'd pre-gcc' and 'd post-gcc' to build gcc
+# 'd gcc-pre' and 'd gcc-post' to build gcc
 #******************************************
 (! /tools/bin/gnat) 1> /dev/null && sed -i -e 's/# d/d/g' build1.list
 (! /tools/bin/gnat) 1> /dev/null && sed -i -e 's/# d/d/g' build0.list
@@ -1343,9 +1343,9 @@ aaa_libraries_post () {
 # aaa_libraries has been built and installed
 #******************************************************************
 removepkg cxxlibs-6.0.18-i486-1.txz readline-6.3-i586-2 ncurses-5.9-i486-4
-removepkg gmp-5.1.3-i486-1  libtermcap-1.2.3-i486-7 libpng-1.4.12-i486-1.txz
-removepkg readline-7.0.005-i586-1.txz
-removepkg libffi-3.2.1-i586-2.txz
+removepkg gmp-5.1.3-i486-1  libtermcap-1.2.3-i486-7 libpng-1.4.12-i486-1
+removepkg readline-7.0.005-i586-1
+removepkg libffi-3.2.1-i586-2
 upgradepkg --reinstall /slackware/l/libpng-1.6.*.txz
 upgradepkg --reinstall /slackware/l/readline-8.0.*.txz
 cd /scripts || exit 1
@@ -1358,14 +1358,14 @@ aaa_libraries_post_64 () {
 #******************************************************************
 removepkg cxxlibs-6.0.18-x86_64-1.txz readline-6.3-x86_64-2 ncurses-5.9-x86_64-4
 removepkg gmp-5.1.3-x86_64-1 libtermcap-1.2.3-x86_64-7 libpng-1.4.12-x86_64-1.txz
-removepkg readline-7.0.005-x86_64-1.txz
-removepkg libffi-3.2.1-x86_64-2.txz
+removepkg readline-7.0.005-x86_64-1
+removepkg libffi-3.2.1-x86_64-2
 upgradepkg --reinstall /slackware64/l/libpng-1.6.*.txz
 upgradepkg --reinstall /slackware64/l/readline-8.0.*.txz
 cd /scripts || exit 1
 }
 
-pre_gcc () {
+gcc_pre () {
 #******************************************************************
 # Install gnat-gpl to be able to build gnat-ada package
 #
@@ -1401,7 +1401,7 @@ find /tools/opt/gnat -name ld -exec as -v {} {}.old \;
 cd /scripts || exit 1
 }
 
-post_gcc () {
+gcc_post () {
 #***************************************************************
 export PATH=$PATH_HOLD
 rm -rf /opt/gnat
@@ -3078,14 +3078,14 @@ while (( LINE < FILELEN )); do
 					esac
 					continue ;;
 
-				pre-gcc )
-					if ! pre_gcc; then
+				gcc-pre )
+					if ! gcc_pre; then
 						exit 1
 					fi
 					return ;;
 
-				post-gcc )
-					if ! post_gcc; then
+				gcc-post )
+					if ! gcc_post; then
 						exit 1
 					fi
 					return ;;

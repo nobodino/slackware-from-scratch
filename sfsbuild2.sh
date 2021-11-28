@@ -497,7 +497,7 @@ echo
 echo "Either, you can also do it in one step, by executing the"
 echo "following command, it will build the entire system till the end:"
 echo
-echo -e "$BLUE" "time ./sfsbuild1.sh build5.list" "$NORMAL"
+echo -e "$BLUE" "time ./full-sfs.sh" "$NORMAL"
 echo
 echo "Either, you can also build a small slackware system with no X11 system, "
 echo "by executing the following command:"
