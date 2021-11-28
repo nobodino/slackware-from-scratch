@@ -1066,17 +1066,17 @@ echo
 echo "You can also do it with only one script, by executing the"
 echo "following command, there will be 4 steps:"
 echo
-echo -e "$YELLOW" "time ./sfsbuild1.sh build1_s.list" "$NORMAL"
+echo -e "$YELLOW" "time ./sfsbuild1.sh build1.list" "$NORMAL"
 echo
 echo "Either, you can also do it in one step, by executing the"
 echo "following command, it will build the entire system till the end:"
 echo
-echo -e "$BLUE" "time ./sfsbuild1.sh build5_s.list" "$NORMAL"
+echo -e "$BLUE" "time ./sfsbuild1.sh build5.list" "$NORMAL"
 echo
 echo "Either, you can also build a small slackware system with no X11 system, "
 echo "by executing the following command:"
 echo
-echo -e "$RED" "time ./sfsbuild1.sh build0_s.list" "$NORMAL"
+echo -e "$RED" "time ./sfsbuild1.sh build0.list" "$NORMAL"
 }
 
 test_arch () {
@@ -1100,8 +1100,8 @@ test_gnat () {
 # if not, modify build1_s.list to have 
 # 'd pre-gcc' and 'd post-gcc' to build gcc
 #******************************************
-(! /tools/bin/gnat) 1> /dev/null && sed -i -e 's/# d/d/g' build1_s.list
-(! /tools/bin/gnat) 1> /dev/null && sed -i -e 's/# d/d/g' build0_s.list
+(! /tools/bin/gnat) 1> /dev/null && sed -i -e 's/# d/d/g' build1.list
+(! /tools/bin/gnat) 1> /dev/null && sed -i -e 's/# d/d/g' build0.list
 }
 
 test_1 () {
@@ -2407,7 +2407,7 @@ echo -e "$RED" "Or if you want to go on building slackware from scratch" "$NORMA
 echo
 echo "Just execute the following command:"
 echo
-echo -e "$YELLOW" "time ./sfsbuild1.sh build2_s.list" "$NORMAL"
+echo -e "$YELLOW" "time ./sfsbuild1.sh build2.list" "$NORMAL"
 echo
 echo "After that, you should have an X11 system with blackbox."
 echo
@@ -2440,7 +2440,7 @@ echo -e "$RED" "Or if you want to go on building slackware from scratch" "$NORMA
 echo
 echo "Just execute the following command:"
 echo
-echo -e "$YELLOW" "time ./sfsbuild1.sh build3_s.list" "$NORMAL"
+echo -e "$YELLOW" "time ./sfsbuild1.sh build3.list" "$NORMAL"
 echo
 echo "After that you should have an X11 system with xfce."
 echo
@@ -2472,7 +2472,7 @@ echo -e "$RED" "Or if you want to go on building slackware from scratch" "$NORMA
 echo
 echo "Just execute the following command:"
 echo
-echo -e "$YELLOW"  "time ./sfsbuild1.sh build4_s.list" "$NORMAL"
+echo -e "$YELLOW"  "time ./sfsbuild1.sh build4.list" "$NORMAL"
 echo
 echo "After that you should have a complete Slackware system"
 echo
