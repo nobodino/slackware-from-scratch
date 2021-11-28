@@ -1341,7 +1341,7 @@ while (( LINE < FILELEN )); do
 					return ;;
 
 				kernel-headers )
-					cd  /source/"$SRCDIR" && source kerne_headers_build
+					cd  /source/"$SRCDIR" && source kernel_headers_build
 					if ! kernel_headers_build; then
 						exit 1
 					fi
@@ -1504,30 +1504,34 @@ while (( LINE < FILELEN )); do
 					esac
 					continue ;;
 
-				pre-aaa_libraries )
+				aaa_libraries_pre )
 					case $ARCH in
 						x86_64 )
-							if ! pre_aaa_libraries64_c; then
+						cd  /source/"$SRCDIR" && source aaa_libraries_pre_64
+							if ! aaa_libraries_pre_64; then
 								exit 1
 							fi
 							return ;;
 						* )
-							if ! pre_aaa_libraries_c; then
+						cd  /source/"$SRCDIR" && source aaa_libraries_pre
+							if ! aaa_libraries_pre; then
 								exit 1
 							fi
 							return ;;
 					esac
 					continue ;;
 
-				post-aaa_libraries )
+				aaa_libraries_post )
 					case $ARCH in
 						x86_64 )
-							if ! post_aaa_libraries64_c; then
+						cd  /source/"$SRCDIR" && source aaa_libraries_post_64
+							if ! aaa_libraries_post_64; then
 								exit 1
 							fi
 							return ;;
 						* )
-							if ! post_aaa_libraries_c; then
+						cd  /source/"$SRCDIR" && source aaa_libraries_post
+							if ! aaa_libraries_post; then
 								exit 1
 							fi
 							return ;;
@@ -1605,35 +1609,35 @@ while (( LINE < FILELEN )); do
 					answer ;;
 
 				x11-group1 )
-					cd  /source/"$SRCDIR" && source build_x11_group1
+					cd  /source/"$SRCDIR" && source build_x11-group1
 					if ! build_x11_group1; then
 						exit 1
 					fi
 					return ;; 
 
 				x11-group2 )
-					cd  /source/"$SRCDIR" && source build_x11_group2
+					cd  /source/"$SRCDIR" && source build_x11-group2
 					if ! build_x11_group2; then
 						exit 1
 					fi
 					return ;;  
 
 				x11-lib )
-					cd  /source/"$SRCDIR" && source build_x11_lib
+					cd  /source/"$SRCDIR" && source build_x11-lib
 					if ! build_x11_lib; then
 						exit 1
 					fi
 					return ;;  
 
 				x11-xcb )
-					cd  /source/"$SRCDIR" && source build_x11_xcb
+					cd  /source/"$SRCDIR" && source build_x11-xcb
 					if ! build_x11_xcb; then
 						exit 1
 					fi
 					return ;;  
 
 				x11-app-post )
-					cd  /source/"$SRCDIR" && source build_x11_app_post
+					cd  /source/"$SRCDIR" && source build_x11-app-post
 					if ! build_x11_app_post; then
 						exit 1
 					fi

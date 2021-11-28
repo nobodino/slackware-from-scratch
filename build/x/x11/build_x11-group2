@@ -1,0 +1,243 @@
+#!/bin/bash
+
+build_x11-group2 () {
+#*****************************
+cd /source/x/x11 || exit 1
+
+export UPGRADE_PACKAGES=always
+
+if ! ./x11.SlackBuild data xbitmaps; then
+	exit 1
+fi
+
+if ! ./x11.SlackBuild font font-util; then
+	exit 1
+fi
+
+for package in \
+  bdftopcf \
+  iceauth \
+  mkfontscale \
+  sessreg\
+  setxkbmap \
+  smproxy \
+  x11perf \
+  xauth \
+  xbacklight \
+  xcmsdb \
+  xcursorgen \
+  xdpyinfo \
+  xdriinfo \
+  xev \
+  xgamma \
+  xhost \
+  xinput \
+  xkbcomp \
+  xkbevd \
+  xkbutils \
+  xkill \
+  xlsatoms \
+  xlsclients \
+  xmessage \
+  xmodmap \
+  xpr \
+  xprop \
+  xrandr \
+  xrdb \
+  xrefresh \
+  xset \
+  xsetroot \
+  xvinfo \
+  xwd \
+  xwininfo \
+  xwud \
+  appres \
+  beforelight \
+  bitmap \
+  editres \
+  fonttosfnt \
+  fslsfonts \
+  fstobdf \
+  ico \
+  listres \
+  mkcomposecache \
+  oclock \
+  rendercheck \
+  rgb \
+  showfont \
+  transset \
+  viewres \
+  xbiff \
+  xcalc \
+  xclipboard \
+  xclock \
+  xcompmgr \
+  xconsole \
+  xdbedizzy \
+  xditview \
+  xdm \
+  xedit \
+  xeyes \
+  xf86dga \
+  xfd \
+  xfontsel \
+  xfs \
+  xfsinfo \
+  xgc \
+  xkbprint \
+  xload \
+  xlogo \
+  xlsfonts \
+  xmag \
+  xman \
+  xmh \
+  xmore \
+  xscope \
+  xsm \
+  xstdcmap \
+  xvidtune \
+  ; do
+   	if ! ./x11.SlackBuild app $package; then
+ 		exit 1
+	fi
+done
+
+if ! ./x11.SlackBuild data xcursor-themes; then
+	exit 1
+fi
+
+for package in \
+  font-adobe-100dpi \
+  font-adobe-75dpi \
+  font-adobe-utopia-100dpi \
+  font-adobe-utopia-75dpi \
+  font-adobe-utopia-type1 \
+  font-alias \
+  font-arabic-misc \
+  font-bh-100dpi \
+  font-bh-75dpi \
+  font-bh-lucidatypewriter-100dpi \
+  font-bh-lucidatypewriter-75dpi \
+  font-bh-ttf \
+  font-bh-type1 \
+  font-bitstream-100dpi \
+  font-bitstream-75dpi \
+  font-bitstream-speedo \
+  font-bitstream-type1 \
+  font-cronyx-cyrillic \
+  font-cursor-misc \
+  font-daewoo-misc \
+  font-dec-misc \
+  font-ibm-type1 \
+  font-isas-misc \
+  font-jis-misc \
+  font-micro-misc \
+  font-misc-cyrillic \
+  font-misc-ethiopic \
+  font-misc-meltho \
+  font-misc-misc \
+  font-mutt-misc \
+  font-schumacher-misc \
+  font-screen-cyrillic \
+  font-sony-misc \
+  font-sun-misc \
+  font-winitzki-cyrillic \
+  font-xfree86-type1 \
+  ; do
+   	if ! ./x11.SlackBuild font $package; then
+ 		exit 1
+	fi
+done
+
+if ! ./x11.SlackBuild data xkeyboard-config; then
+	exit 1
+fi
+
+for package in \
+  xorg-sgml-doctools \
+  xorg-docs \
+  ; do
+   	if ! ./x11.SlackBuild doc $package; then
+ 		exit 1
+	fi
+done
+
+if ! ./x11.SlackBuild xserver xorg-server; then
+	exit 1
+fi
+
+for package in \
+  xf86-input-acecad \
+  xf86-input-evdev \
+  xf86-input-joystick \
+  xf86-input-keyboard \
+  xf86-input-mouse \
+  xf86-input-penmount \
+  xf86-input-synaptics \
+  xf86-input-vmmouse \
+  xf86-input-void \
+  xf86-input-wacom \
+  xf86-video-amdgpu \
+  xf86-video-apm \
+  xf86-video-ark \
+  xf86-video-ast \
+  xf86-video-ati \
+  xf86-video-chips \
+  xf86-video-cirrus \
+  xf86-video-dummy \
+  xf86-video-glint \
+  xf86-video-i128 \
+  xf86-video-i740 \
+  xf86-video-intel \
+  xf86-video-mach64 \
+  xf86-video-mga \
+  xf86-video-neomagic\
+  xf86-video-nouveau \
+  xf86-video-nv \
+  xf86-video-openchrome \
+  xf86-video-r128 \
+  xf86-video-rendition \
+  xf86-video-s3 \
+  xf86-video-s3virge \
+  xf86-video-savage \
+  xf86-video-siliconmotion \
+  xf86-video-sis \
+  xf86-video-sisusb \
+  xf86-video-tdfx \
+  xf86-video-tga \
+  xf86-video-trident \
+  xf86-video-tseng \
+  xf86-video-v4l \
+  xf86-video-vesa \
+  xf86-video-vmware \
+  xf86-video-voodoo \
+  ; do
+   	if ! ./x11.SlackBuild driver $package; then
+ 		exit 1
+	fi
+done
+
+if ! ./x11.SlackBuild font encodings; then
+	exit 1
+fi
+
+for package in \
+  luit \
+  igt-gpu-tools \
+  twm \
+  xinit \
+  ; do
+   	if ! ./x11.SlackBuild app $package; then
+ 		exit 1
+	fi
+done
+
+if ! ./x11.SlackBuild driver xf86-video-vboxvideo; then
+	exit 1
+fi
+
+mv -v /tmp/x11-build/*.txz /slackware64/x
+cd /scripts || exit 1
+}
+
+build_x11-group2
