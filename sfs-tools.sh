@@ -182,20 +182,6 @@ test_to_go () {
     echo -e "$GREEN" "You chose to continue the process of building 'tools' for SFS." "$NORMAL" 
 }
 
-glibc_repair () {
-#*****************************
-	case $GLIBCVER in
-		2.33 )
-			cd /tools/lib
-			cp -v libc-$GLIBCVER.so.backup libc-$GLIBCVER.so
-			ln -sf libc-$GLIBCVER.so libc.so.6
-			rm libc-$GLIBCVER.so.backup
-			cd $SFS/scripts ;;
-		2.34 )
-			echo ;;
-	esac
-}
-
 strip_libs () {
 #*****************************
     /usr/bin/strip --strip-unneeded /tools/{,s}bin/*
@@ -274,7 +260,7 @@ cd $RDIR/a/tar && source tar_slack_build
 cd $RDIR/a/which && source which_build
 cd $RDIR/a/util-linux && source util_linux_build
 cd $RDIR/l/zstd && source zstd_build
-glibc_repair
+cd $RDIR/l/glibc && source glibc_repair
 #*****************************
 if [[ "$ada_enable" = "yes" ]]
 then
@@ -285,6 +271,5 @@ elif [[ "$ada_enable" = "no" ]]
 fi
 #*****************************
 strip_libs
-# clean_sources
 echo_end
 exit 0
