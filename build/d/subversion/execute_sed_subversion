@@ -4,9 +4,8 @@ execute_sed_subversion () {
 #******************************************************************
 # delete "--with-kwallet" line in SlackBuild
 #******************************************************************
-if [ ! -f "$SLACKSRC"/d/subversion/subversion.SlackBuild.old ]; then
-	cp -v "$SLACKSRC"/d/subversion/subversion.SlackBuild \
-		"$SLACKSRC"/d/subversion/subversion.SlackBuild.old
+if [ ! -f subversion.SlackBuild.old ]; then
+	cp -v subversion.SlackBuild subversion.SlackBuild.old
 	(
 		cd "$SLACKSRC"/d/subversion || exit 1
 		sed -i -e "/--with-kwallet/d" subversion.SlackBuild

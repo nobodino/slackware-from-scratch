@@ -4,9 +4,8 @@ execute_sed_openldap () {
 #******************************************************************
 # disable some options in SlackBuild
 #******************************************************************
-if [ ! -f "$SLACKSRC"/n/openldap/openldap.SlackBuild.old ]; then
-	cp -v "$SLACKSRC"/n/openldap/openldap.SlackBuild \
-		"$SLACKSRC"/n/openldap/openldap.SlackBuild.old
+if [ ! -f openldap.SlackBuild.old ]; then
+	cp -v openldap.SlackBuild openldap.SlackBuild.old
 	(
 		cd "$SLACKSRC"/n/openldap || exit 1
 		sed -i -e "s/--enable-wrappers/--disable-wrappers/" openldap.SlackBuild

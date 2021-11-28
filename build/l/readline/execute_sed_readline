@@ -5,8 +5,8 @@ execute_sed_readline () {
 # disable shared SHLIBS code in SlackBuild
 # delete examples/rlfe lines in SlackBuild
 #******************************************************************
-if [ ! -f "$SLACKSRC"/l/readline/readline.SlackBuild.old ]; then
-	cp -v "$SLACKSRC"/l/readline/readline.SlackBuild "$SLACKSRC"/l/readline/readline.SlackBuild.old
+if [ ! -f readline.SlackBuild.old ]; then
+	cp -v readline.SlackBuild readline.SlackBuild.old
 	(
 		cd "$SLACKSRC"/l/readline || exit 1
 		sed -i -e "/make $NUMJOBS static shared SHLIB_LIBS=-ltinfo/d" readline.SlackBuild
