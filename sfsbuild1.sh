@@ -1301,7 +1301,7 @@ ln -sv bash /bin/sh
 ln -sv /proc/self/mounts /etc/mtab
 }
 
-pre_aaa_libraries_c () {
+aaa_libraries_pre () {
 #******************************************************************
 # Install packages from previous slackware to be able
 # to build aaa_libraries
@@ -1319,7 +1319,7 @@ installpkg /slackware/l/libpng-1.6.*.txz
 cd /scripts || exit 1
 }
 
-pre_aaa_libraries64_c () {
+aaa_libraries_pre_64 () {
 #******************************************************************
 # Install packages from previous slackware to be able
 # to build aaa_libraries
@@ -1337,7 +1337,7 @@ installpkg /slackware64/l/libpng-1.6.*-x86_64*.txz
 cd /scripts || exit 1
 }
 
-post_aaa_libraries_c () {
+aaa_libraries_post () {
 #******************************************************************
 # Remove packages temporary installed after
 # aaa_libraries has been built and installed
@@ -1351,7 +1351,7 @@ upgradepkg --reinstall /slackware/l/readline-8.0.*.txz
 cd /scripts || exit 1
 }
 
-post_aaa_libraries64_c () {
+aaa_libraries_post_64 () {
 #******************************************************************
 # Remove packages temporary installed after
 # aaa_libraries has been built and installed
@@ -3048,30 +3048,30 @@ while (( LINE < FILELEN )); do
 					esac
 					continue ;;
 
-				pre-aaa_libraries )
+				aaa_libraries_pre )
 					case $ARCH in
 						x86_64 )
-							if ! pre_aaa_libraries64_c; then
+							if ! aaa_libraries_pre_64; then
 								exit 1
 							fi
 							return ;;
 						* )
-							if ! pre_aaa_libraries_c; then
+							if ! aaa_libraries_pre; then
 								exit 1
 							fi
 							return ;;
 					esac
 					continue ;;
 
-				post-aaa_libraries )
+				aaa_libraries_post )
 					case $ARCH in
 						x86_64 )
-							if ! post_aaa_libraries64_c; then
+							if ! aaa_libraries_post_64; then
 								exit 1
 							fi
 							return ;;
 						* )
-							if ! post_aaa_libraries_c; then
+							if ! aaa_libraries_post; then
 								exit 1
 							fi
 							return ;;

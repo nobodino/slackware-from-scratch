@@ -388,9 +388,9 @@ l argon2
 l pcre2
 l libpsl
 l keyutils
-a pre-aaa_libraries
+a aaa_libraries_pre
 a aaa_libraries
-a post-aaa_libraries
+a aaa_libraries_post
 a aaa_terminfo
 a kmod
 a eudev
