@@ -26,7 +26,7 @@
 #
 # Note: The adjust and link_tools procedures of this script are 
 #       inspired from the LFS manual chapter 6.10
-#       Copyright © 1999-2020 Gerard Beekmans and may be
+#       Copyright © 1999-2021 Gerard Beekmans and may be
 #       copied under the MIT License.
 #
 #--------------------------------------------------------------------------
@@ -185,14 +185,6 @@ case $PACKNAME in
 		cd "$SLACKSRC"/installer || exit 1
 		chmod +x installer.SlackBuild
 		if ! ./installer.SlackBuild;
-		then
-			exit 1
-		fi ;;
-
-	java )
-		cd "$SLACKSRC"/extra/"$PACKNAME" || exit 1
-		chmod +x "$PACKNAME".SlackBuild
-		if ! ./"$PACKNAME".SlackBuild
 		then
 			exit 1
 		fi ;;
@@ -725,48 +717,6 @@ ln -sv /tools/lib64/libgcc_s.so{,.1} /usr/lib64
 ln -sv /tools/lib64/libstdc++.{a,so{,.6}} /usr/lib64
 ln -sv bash /bin/sh
 ln -sv /proc/self/mounts /etc/mtab
-}
-
-pre_gcc () {
-#******************************************************************
-# Install gnat-gpl to be able to build gnat-ada package
-#
-# Note: Much of this script is copied from the LFS manual.
-#       Copyright © 1999-2021 Gerard Beekmans and may be
-#       copied under the MIT License.
-#******************************************************************
-cd /tmp || exit 1
-case $(uname -m) in
-	x86_64)
-		if ! tar xf /source/others/gnat-gpl-2017-x86_64-linux-bin.tar.gz; then
-			echo
-			echo "Tar extraction of gnat-gpl-2017-x86_64-linux-bin failed."
-			echo && exit 1
-		fi
-		cd gnat-gpl-2017-x86_64-linux-bin || exit 1;;
-	i686)
-		if ! tar xf /source/others/gnat-gpl-2014-x86-linux-bin.tar.gz; then
-			echo
-			echo "Tar extraction of gnat-gpl-2014-x86-linux-bin failed."
-			echo && exit 1
-		fi
-		cd gnat-gpl-2014-x86-linux-bin || exit 1 ;;
-esac
-
-mkdir -pv /tools/opt/gnat
-make ins-all prefix=/tools/opt/gnat
-PATH_HOLD=$PATH && export PATH=/tools/opt/gnat/bin:$PATH_HOLD
-echo "$PATH"
-find /tools/opt/gnat -name ld -exec mv -v {} {}.old \;
-find /tools/opt/gnat -name ld -exec as -v {} {}.old \;
-
-cd /scripts || exit 1
-}
-
-post_gcc () {
-#***************************************************************
-export PATH=$PATH_HOLD
-rm -rf /opt/gnat
 }
 
 message_end1 () {
@@ -1339,23 +1289,10 @@ while (( LINE < FILELEN )); do
 							build_pkg_2 ;;
 					esac
 					continue ;;
-
-#				linux-faqs )
-#					cd  /source/"$SRCDIR" && source build_linux_faqs
-#					if ! build_linux_faqs; then 
-#						exit 1
-#					fi
-#					return ;;
+					return ;;
 
 				linux-faqs )
 					build_pkg_3 ;;
-
-#				linux-howtos )
-#					cd  /source/"$SRCDIR" && source build_linux_howtos
-#					if ! build_linux_howtos; then
-#						exit 1
-#					fi
-#					return ;;
 
 				linux-howtos )
 					build_pkg_3 ;;
@@ -1435,59 +1372,14 @@ while (( LINE < FILELEN )); do
 					esac
 					continue ;;
 
-#				aaa_libraries_pre )
-#					case $ARCH in
-#						x86_64 )
-#						cd  /source/"$SRCDIR" && source aaa_libraries_pre_64
-#							if ! aaa_libraries_pre_64; then
-#								exit 1
-#							fi
-#							return ;;
-#						* )
-#						cd  /source/"$SRCDIR" && source aaa_libraries_pre
-#							if ! aaa_libraries_pre; then
-#								exit 1
-#							fi
-#							return ;;
-#					esac
-#					continue ;;
 				aaa_libraries_pre )
 					build_pkg_3 ;;
 
-#				aaa_libraries_post )
-#					case $ARCH in
-#						x86_64 )
-#						cd  /source/"$SRCDIR" && source aaa_libraries_post_64
-#							if ! aaa_libraries_post_64; then
-#								exit 1
-#							fi
-#							return ;;
-#						* )
-#						cd  /source/"$SRCDIR" && source aaa_libraries_post
-#							if ! aaa_libraries_post; then
-#								exit 1
-#							fi
-#							return ;;
-#					esac
-#					continue ;;
-				
 				aaa_libraries_post )
 					build_pkg_3 ;;
 
-#				gcc-pre )
-#					if ! gcc-pre; then
-#						exit 1
-#					fi
-#					return ;;
-
 				gcc-pre )
 					build_pkg_3 ;;
-
-#				gcc-post )
-#					if ! gcc-post; then
-#						exit 1
-#					fi
-#					return ;;
 
 				gcc-post )
 					build_pkg_3 ;;
@@ -1550,52 +1442,17 @@ while (( LINE < FILELEN )); do
 					test_7
 					answer ;;
 
-#				x11-group1 )
-#					cd  /source/"$SRCDIR" && source build_x11-group1
-#					if ! build_x11_group1; then
-#						exit 1
-#					fi
-#					return ;;
-				
 				x11-group1 )
 					build_pkg_3 ;; 
-
-#				x11-group2 )
-#					cd  /source/"$SRCDIR" && source build_x11-group2
-#					if ! build_x11_group2; then
-#						exit 1
-#					fi
-#					return ;;
 
 				x11-group2 )
 					build_pkg_3 ;;  
 
-#				x11-lib )
-#					cd  /source/"$SRCDIR" && source build_x11-lib
-#					if ! build_x11_lib; then
-#						exit 1
-#					fi
-#					return ;;
-
 				x11-lib )
 					build_pkg_3 ;;  
 
-#				x11-xcb )
-#					cd  /source/"$SRCDIR" && source build_x11-xcb
-#					if ! build_x11_xcb; then
-#						exit 1
-#					fi
-#					return ;;
-
 				x11-lib )
 					build_pkg_3 ;;   
-
-#				x11-app-post )
-#					cd  /source/"$SRCDIR" && source build_x11-app-post
-#					if ! build_x11_app_post; then
-#						exit 1
-#					fi
-#					return ;;
 
 				x11-lib )
 					build_pkg_3 ;;   
