@@ -260,7 +260,7 @@ cd $RDIR/a/tar && source tools_tar_slack
 cd $RDIR/a/which && source tools_which
 cd $RDIR/a/util-linux && source tools_util-linux
 cd $RDIR/l/zstd && source tools_zstd
-cd $RDIR/l/glibc && source glibc_repair
+cd $RDIR/l/glibc && source tools_glibc_repair
 #*****************************
 if [[ "$ada_enable" = "yes" ]]
 then
