@@ -66,7 +66,7 @@ echo
 exit 255
 }
 
-adjust_i686 () {
+adjust_links () {
 #***********************************************************
 # First, backup the /tools linker, and replace it with the
 # adjusted linker we made in chapter 5. We'll also create a
@@ -89,39 +89,18 @@ ln -sv /tools/bin/ld /tools/"$(uname -m)"-pc-linux-gnu/bin/ld
 # files. A sed command accomplishes this:
 #***********************************************************
 # shellcheck disable=SC2006,SC2046
-gcc -dumpspecs | sed -e 's@/tools@@g'                   \
-    -e '/\*startfile_prefix_spec:/{n;s@.*@/usr/lib/ @}' \
-    -e '/\*cpp:/{n;s@$@ -isystem /usr/include@}' >      \
-    `dirname $(gcc --print-libgcc-file-name)`/specs
-}
-
-adjust_x86_64 () {
-#***********************************************************
-# First, backup the /tools linker, and replace it with the
-# adjusted linker we made in chapter 5. We'll also create a
-# link to its counterpart in /tools/$(gcc -dumpmachine)/bin:
-#
-# Note: Much of this script is copied from the LFS manual.
-#       Copyright © 1999-2021 Gerard Beekmans and may be
-#       copied under the MIT License.
-#***********************************************************
-mv -v /tools/bin/{ld,ld-old}
-mv -v /tools/"$(uname -m)"-pc-linux-gnu/bin/{ld,ld-old}
-mv -v /tools/bin/{ld-new,ld}
-ln -sv /tools/bin/ld /tools/"$(uname -m)"-pc-linux-gnu/bin/ld
-#***********************************************************
-# Next, amend the GCC specs file so that it points to the
-# new dynamic linker. Simply deleting all instances of
-# '/tools' should leave us with the correct path to the
-# dynamic linker. Also adjust the specs file so that GCC
-# knows where to find the correct headers and Glibc start
-# files. A sed command accomplishes this:
-#***********************************************************
-# shellcheck disable=SC2006,SC2046
-gcc -dumpspecs | sed -e 's@/tools@@g'                   \
-    -e '/\*startfile_prefix_spec:/{n;s@.*@/usr/lib64/ @}' \
-    -e '/\*cpp:/{n;s@$@ -isystem /usr/include@}' >      \
-    `dirname $(gcc --print-libgcc-file-name)`/specs
+case $(uname -m) in
+	x86_64 )
+		gcc -dumpspecs | sed -e 's@/tools@@g'                   \
+			-e '/\*startfile_prefix_spec:/{n;s@.*@/usr/lib64/ @}' \
+			-e '/\*cpp:/{n;s@$@ -isystem /usr/include@}' >      \
+			`dirname $(gcc --print-libgcc-file-name)`/specs ;;
+	* )
+		gcc -dumpspecs | sed -e 's@/tools@@g'                   \
+			-e '/\*startfile_prefix_spec:/{n;s@.*@/usr/lib/ @}' \
+			-e '/\*cpp:/{n;s@$@ -isystem /usr/include@}' >      \
+			`dirname $(gcc --print-libgcc-file-name)`/specs ;;
+esac
 }
 
 answer () {
@@ -687,36 +666,20 @@ mkdir -pv /usr/lib && mkdir -v /bin && mkdir -pv /usr/include
 mkdir -pv /usr/src && mkdir -pv /usr/bin
 ln -sv /tools/bin/{bash,cat,dd,du,echo,ln,pwd,rm,stty} /bin
 ln -sv /tools/bin/{install,perl} /usr/bin
-ln -sv /tools/lib/libgcc_s.so{,.1} /usr/lib
-ln -sv /tools/lib/libstdc++.{a,so{,.6}} /usr/lib
-ln -sv bash /bin/sh
-ln -sv /proc/self/mounts /etc/mtab
-echo
-}
 
-link_tools_x64 () {
-#****************************************************************
-# Some programs use hard-wired paths to programs which do not
-# exist yet. In order to satisfy these programs, create a
-# number of symbolic links which will be replaced by real
-# files throughout the course of this chapter after the
-# software has been installed. And create some directories
-# to install the first slackware programs.
-# We added a link to /tools/bin/du to avoid 'noise' during
-# pkgtools building, which is not in LFS of course.
-#
-# Note: Much of this script is copied from the LFS manual.
-#       Copyright © 1999-2021 Gerard Beekmans and may be
-#       copied under the MIT License.
-#****************************************************************
-mkdir -pv /usr/lib64 && mkdir -v /bin && mkdir -pv /usr/include
-mkdir -pv /usr/src && mkdir -pv /usr/bin
-ln -sv /tools/bin/{bash,cat,dd,du,echo,ln,pwd,rm,stty} /bin
-ln -sv /tools/bin/{install,perl} /usr/bin
-ln -sv /tools/lib64/libgcc_s.so{,.1} /usr/lib64
-ln -sv /tools/lib64/libstdc++.{a,so{,.6}} /usr/lib64
+case $ARCH in
+	x86_64 )
+		ln -sv /tools/lib64/libgcc_s.so{,.1} /usr/lib64
+		ln -sv /tools/lib64/libstdc++.{a,so{,.6}} /usr/lib64 ;;
+	* )
+		ln -sv /tools/lib/libgcc_s.so{,.1} /usr/lib
+		ln -sv /tools/lib/libstdc++.{a,so{,.6}} /usr/lib ;;
+esac
+
 ln -sv bash /bin/sh
 ln -sv /proc/self/mounts /etc/mtab
+
+echo_message_slackware && echo
 }
 
 message_end1 () {
@@ -992,18 +955,8 @@ while (( LINE < FILELEN )); do
 
 			case $PACKNAME in
 
-				adjust )
-					case $(uname -m) in
-						x86_64 )
-							if ! adjust_x86_64; then
-								exit 1
-							fi ;;
-						* )
-							if ! adjust_i686; then
-								exit 1
-							fi ;;
-					esac
-					continue ;;
+				adjust)
+					adjust_links ;;
 
 				alsa-lib )
 					case $LISTFILE in
@@ -1244,20 +1197,7 @@ while (( LINE < FILELEN )); do
 					build_pkg_2 ;;
 
 				link_tools_slackware )
-					test_progs
-					case $ARCH in
-						x86_64 )
- 							if ( link_tools_x64 ); then
-								echo_message_slackware && exit 1
-							fi
-							return ;;
-						* )
-							if ( link_tools ); then
-								echo_message_slackware && exit 1
-							fi
-							return ;;
-					esac
-					continue ;;
+					test_progs && links_tools ;;
 
 				libcaca )
 					upgradepkg --install-new /source/others/"$PACKNAME"-*"$ARCH"-*.txz
