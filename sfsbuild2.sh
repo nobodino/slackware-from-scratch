@@ -1312,16 +1312,16 @@ while (( LINE < FILELEN )); do
 					continue ;;
 
 				aaa_libraries_pre )
-					build_pkg_3 ;;
+					cd /source/a/aaa_libraries && source build_aaa_libraries_pre ;; 
 
 				aaa_libraries_post )
-					build_pkg_3 ;;
+					cd /source/a/aaa_libraries && source build_aaa_libraries_post ;; 
 
 				gcc-pre )
-					build_pkg_3 ;;
+					cd /source/d/gcc && source build_gcc_pre ;; 
 
 				gcc-post )
-					build_pkg_3 ;;
+					cd /source/d/gcc && source build_gcc_post ;; 
 
 				readline )
 					case $LREA in
