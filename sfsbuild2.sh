@@ -1153,25 +1153,25 @@ while (( LINE < FILELEN )); do
 					continue ;;
 
 				extra-cmake-modules )
-					build_pkg_3 ;;
+					cd /source/kde/kde && source build_extra-cmake-modules ;; 
 
 				frameworks )
-					build_pkg_3 ;;
+					cd /source/kde/kde && source build_frameworks ;; 
 
 				kdepim )
-					build_pkg_3 ;;
+					cd /source/kde/kde && source build_kdepim ;; 
 
 				applications )
-					build_pkg_3 ;;
+					cd /source/kde/kde && source build_applications ;; 
 
 				applications-extra )
-					build_pkg_3 ;;
+					cd /source/kde/kde && source build_applications-extra ;; 
 
 				plasma )
-					build_pkg_3 ;;
+					cd /source/kde/kde && source build_plasma ;; 
 
 				plasma-extra )
-					build_pkg_3 ;;
+					cd /source/kde/kde && source build_plasma-extra ;; 
 
 				kernel-all )
 					cd  /source/k && source build_kernel-all ;;
@@ -1229,7 +1229,6 @@ while (( LINE < FILELEN )); do
 							build_pkg_2 ;;
 					esac
 					continue ;;
-					return ;;
 
 				linux-faqs )
 					build_pkg_3 ;;
@@ -1383,19 +1382,19 @@ while (( LINE < FILELEN )); do
 					answer ;;
 
 				x11-group1 )
-					build_pkg_3 ;; 
+					cd /source/x/x11 && source build_x11-group1 ;; 
 
 				x11-group2 )
-					build_pkg_3 ;;  
+					cd /source/x/x11 && source build_x11-group2 ;;  
+
+				x11-app-post )
+					cd /source/x/x11 && source build_x11-app-post ;;    
 
 				x11-lib )
-					build_pkg_3 ;;  
+					cd /source/x/x11 && source build_x11-lib ;;  
 
-				x11-lib )
-					build_pkg_3 ;;   
-
-				x11-lib )
-					build_pkg_3 ;;   
+				x11-xcb )
+					cd /source/x/x11 && source build_x11-xcb ;;   
 
 				zstd )
 					case $LZST in
