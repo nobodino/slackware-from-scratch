@@ -1,0 +1,27 @@
+#!/bin/bash
+#*****************************
+tools_ncurses () {
+#*****************************
+	export NCURVER=${VERSION:-$(echo ncurses-*.tar.?z | cut -f 2- -d - | cut -f 1,2 -d .)}
+
+    tar xvf ncurses-"$NCURVER".tar.lz || exit 1
+	cd ncurses-"$NCURVER" || exit 1 
+	 
+	sed -i s/mawk// configure
+    
+	./configure --prefix=/tools \
+           		 --with-shared  \
+            	--without-debug \
+            	--without-ada   \
+            	--enable-widec  \
+            	--enable-overwrite || exit 1
+
+    make || exit 1
+    make install || exit 1
+    ln -s libncursesw.so /mnt/sfs/tools/lib/libncurses.so
+	cd /mnt/sfs/scripts || exit 1 
+    rm -rf ncurses-"$NCURVER"
+	echo ncurses-"$NCURVER" >> "$SFS"/tools/etc/tools_version
+}
+
+tools_ncurses

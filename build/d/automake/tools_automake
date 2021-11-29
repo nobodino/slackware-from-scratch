@@ -1,0 +1,24 @@
+#!/bin/bash
+#*****************************
+tools_automake () {
+#*****************************
+	export AUTOMAKEVER=${VERSION:-$(echo automake-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
+
+    tar xvf automake-"$AUTOMAKEVER".tar.xz || exit 1
+	cd automake-"$AUTOMAKEVER" || exit 1 
+
+    ./configure --prefix=/tools || exit 1
+
+    make || exit 1
+    make install || exit 1
+
+# links necessary to build "make" with patches
+
+	ln -sf /tools/bin/aclocal /tools/bin/aclocal-1.15
+	ln -sf /tools/bin/automake /tools/bin/automake-1.15
+    cd ..
+    rm -rf automake-"$AUTOMAKEVER"
+	echo automake-"$AUTOMAKEVER" >> "$SFS"/tools/etc/tools_version
+}
+
+tools_automake

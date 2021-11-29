@@ -1,0 +1,19 @@
+#!/bin/bash
+#*****************************
+tools_patch () {
+#*****************************
+	export PATCHVER=${VERSION:-$(echo patch-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
+
+    tar xvf patch-"$PATCHVER".tar.xz || exit 1
+	cd patch-"$PATCHVER" || exit 1 
+
+    ./configure --prefix=/tools || exit 1
+
+    make || exit 1
+    make install || exit 1
+    cd ..
+    rm -rf patch-"$PATCHVER"
+	echo patch-"$PATCHVER" >> "$SFS"/tools/etc/tools_version
+}
+
+tools_patch

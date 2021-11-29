@@ -1,0 +1,19 @@
+#!/bin/bash
+#*****************************
+tools_bison () {
+#*****************************
+	export BISONVER=${VERSION:-$(echo bison-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+
+    tar xvf bison-"$BISONVER".tar.?z || exit 1
+	cd bison-"$BISONVER" || exit 1 
+
+    ./configure --prefix=/tools || exit 1
+
+    make || exit 1
+    make install || exit 1
+    cd ..
+    rm -rf bison-"$BISONVER"
+	echo bison-"$BISONVER" >> "$SFS"/tools/etc/tools_version
+}
+
+tools_bison

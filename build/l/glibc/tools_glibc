@@ -1,0 +1,36 @@
+#!/bin/bash
+#*****************************
+tools_glibc () {
+#*****************************
+	export GLIBCVER=${VERSION:-$(echo glibc-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
+
+	tar xvf glibc-$GLIBCVER.tar.xz || exit 1 
+	cd glibc-$GLIBCVER  || exit 1
+
+    zcat ../glibc.libc.texinfo.no.utf8.patch.gz | patch -p1 --verbose || exit 1
+
+	mkdir -v build && cd build
+
+	../configure                             \
+		  --prefix=/tools                    \
+		  --host="$SFS_TGT"                    \
+		  --build="$(../scripts/config.guess)" \
+		  --enable-kernel=3.2             \
+		  --with-headers=/tools/include || exit 1  
+
+	make || exit 1
+	make install || exit 1
+	
+	case $GLIBCVER in
+		2.33 )
+			cp -v /tools/lib/libc-$GLIBCVER.so /tools/lib/libc-$GLIBCVER.so.backup ;;
+		2.34 )
+			echo ;;
+	esac
+
+	cd ../..
+	rm -rf glibc-$GLIBCVER
+	echo glibc-$GLIBCVER >> $SFS/tools/etc/tools_version
+}
+
+tools_glibc

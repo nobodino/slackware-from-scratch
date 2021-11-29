@@ -1,0 +1,19 @@
+#!/bin/bash
+#*****************************
+tools_coreutils () {
+#*****************************
+	export COREVER=${VERSION:-$(echo coreutils-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
+
+    tar xvf coreutils-"$COREVER".tar.xz || exit 1
+	cd coreutils-"$COREVER" || exit 1 
+
+    ./configure --prefix=/tools --enable-install-program=hostname || exit 1
+
+    make || exit 1
+    make install || exit 1
+    cd ..
+    rm -rf coreutils-"$COREVER"
+	echo coreutils-"$COREVER" >> "$SFS"/tools/etc/tools_version
+}
+
+tools_coreutils

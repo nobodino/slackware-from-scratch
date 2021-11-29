@@ -1,0 +1,34 @@
+#!/bin/bash
+#*****************************
+tools_binutils_sp2 () {
+#*****************************
+	export BINUVER=${VERSION:-$(echo binutils-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+
+	tar xvf binutils-"$BINUVER".tar.?z || exit 1
+	cd binutils-"$BINUVER" || exit 1 
+	mkdir -v build
+	cd build || exit 1 
+
+	CC="$SFS_TGT"-gcc                \
+	AR="$SFS_TGT"-ar                 \
+	RANLIB="$SFS_TGT"-ranlib         \
+	../configure                   \
+		--prefix=/tools            \
+		--disable-nls              \
+		--disable-werror           \
+		--with-lib-path=/tools/lib \
+		--with-sysroot || exit 1
+
+	make || exit 1
+	make install || exit 1
+
+	make -C ld clean || exit 1
+	make -C ld LIB_PATH=/usr/lib:/lib || exit 1
+	cp -v ld/ld-new /tools/bin || exit 1
+
+	cd ../..
+	rm -rf binutils-"$BINUVER"
+	echo binutils-"$BINUVER" >> "$SFS"/tools/etc/tools_version
+}
+
+tools_binutils_sp2
