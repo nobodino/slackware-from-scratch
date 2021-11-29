@@ -249,7 +249,7 @@ cd $RDIR/d/automake && source tools_automake
 cd $RDIR/d/make && source tools_make
 cd $RDIR/a/patch && source tools_patch
 cd $RDIR/d/perl && source tools_perl
-cd $RDIR/l/zlib && source tools_zlib_build
+cd $RDIR/l/zlib && source tools_zlib
 cd $RDIR/a/xz && source tools_xz
 cd $RDIR/d/python3 && source tools_python
 cd $RDIR/a/sed && source tools_sed
