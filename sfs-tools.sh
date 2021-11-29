@@ -243,7 +243,7 @@ cd $RDIR/a/file && source tools_file
 cd $RDIR/a/findutils && source findutils_build
 cd $RDIR/a/gawk && source tools_gawk
 cd $RDIR/a/gettext && source tools_gettext
-cd $RDIR/a/grep && source toolsgrep
+cd $RDIR/a/grep && source tools_grep
 cd $RDIR/a/gzip && source tools_gzip
 cd $RDIR/d/automake && source tools_automake
 cd $RDIR/d/make && source tools_make
