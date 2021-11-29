@@ -458,7 +458,6 @@ x xcm
 x libwacom
 l libunwind
 x x11-group2
-# x xorg-server-xwayland
 x compiz
 x dejavu-fonts-ttf
 x liberation-fonts-ttf
@@ -1052,8 +1051,6 @@ l libcdio
 l libcdio-paranoia
 l libdvdread
 l libdvdnav
-# extra java
-# l libcaca
 l libcaca
 l fribidi
 l talloc
