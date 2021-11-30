@@ -136,14 +136,6 @@ case $PACKNAME in
 # special BUILD package treatment
 #**************************
 
-	aspell-word-lists )
-		cd "$SLACKSRC"/extra/aspell-word-lists || exit 1
-		chmod +x aspell-dict.SlackBuild
-		if ! ./aspell-dict.SlackBuild;
-		then
-			exit 1
-		fi ;;
-
 	installer )
 		case "$(uname -m)" in
 			i?86)
@@ -249,13 +241,6 @@ case $PACKNAME in
 			exit 1
 		fi ;;
 
-	aspell-word-lists )
-		# install aspell-en
-		if ! $INSTALLPRG /tmp/aspell-en*.txz;
-		then
-			exit 1
-		fi ;;
-
 	etc )
 		# remove mini /etc/group and etc/passwd
 		rm /etc/group && rm /etc/passwd
@@ -303,16 +288,6 @@ case $PACKNAME in
 	alpine )
 		# package name is not 'alpine' but 'imapd'
 		if ! ( mv -v /tmp/alpine*.txz /slackware64/"$SRCDIR"); then
-			exit 1
-		fi
-		cd /scripts || exit 1 ;;
-
-	aspell-word-lists )
-		# don't forget to move aspell-en in l/
-		mv -v /tmp/aspell-en*.txz /slackware64/l
-		# don't forget to move others aspell in extra/
-		mkdir -pv /slackware64/extra/aspell-words-list
-		if ! ( mv /tmp/aspell*.txz /slackware64/extra/aspell-words-list); then
 			exit 1
 		fi
 		cd /scripts || exit 1 ;;
@@ -938,6 +913,9 @@ while (( LINE < FILELEN )); do
 							build_pkg_1 ;;
 					esac
 					continue ;;
+
+				aspell-word-lists )
+					cd /source/extra/aspell-word-lists && source build_aspell-dict ;;
 
 				ca-certificates )
 					build_pkg_2
