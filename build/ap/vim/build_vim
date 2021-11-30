@@ -1,0 +1,54 @@
+#!/bin/bash
+########################## build_vim #############################
+#
+# Copyright 2021 "nobodino", Bordeaux, FRANCE
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+###################################################################
+build_vim () {
+###################################################################
+INSTALLPRG="upgradepkg --install-new --reinstall"
+
+chmod +x "$PACKNAME".SlackBuild && chmod +x "$PACKNAME"-gvim.SlackBuild
+./"$PACKNAME".SlackBuild && ./"$PACKNAME"-gvim.SlackBuild
+
+# install both vim and vim-gvim packages
+if ! ( $INSTALLPRG /tmp/"$PACKNAME"-*.t?z )
+then
+	exit 1
+fi
+# don't forget to mv vim-gvim in xap/ and vim in ap/
+case $(uname -m) in
+	x86_64 )
+		if ! ( mv -v /tmp/"$PACKNAME"-gvim*.txz /slackware64/xap && mv -v /tmp/"$PACKNAME"-*.txz /slackware64/ap ); then
+			exit 1
+		fi ;;
+	* )
+		if ! ( mv -v /tmp/"$PACKNAME"-gvim*.txz /slackware/xap && mv -v /tmp/"$PACKNAME"-*.txz /slackware/ap ); then
+			exit 1
+		fi ;;
+esac
+
+cd /tmp  && rm -rf *
+
+cd /scripts || exit 1
+}
+
+build_vim
