@@ -144,16 +144,6 @@ case $PACKNAME in
 			exit 1
 		fi ;;
 
-	gettext-tools )
-		# two packages in gettext: gettext and gettext-tools
-		DIRNAME=gettext
-		cd "$SLACKSRC"/"$SRCDIR"/"$DIRNAME" || exit 1
-		chmod +x "$PACKNAME".SlackBuild
-		if ! ./"$PACKNAME".SlackBuild;
-		then
-			exit 1
-		fi ;;
-
 	installer )
 		case "$(uname -m)" in
 			i?86)
@@ -227,14 +217,6 @@ case $PACKNAME in
 		then
 			exit 1
 		fi ;;
-	
-	vim )
-		cd "$SLACKSRC"/"$SRCDIR"/"$PACKNAME" || exit 1
-		chmod +x "$PACKNAME".SlackBuild && chmod +x vim-gvim.SlackBuild
-		if ! ( ./"$PACKNAME".SlackBuild && ./vim-gvim.SlackBuild )
-		then
-			exit 1
-		fi ;;
 
 	* )
 		# every other package treatment
@@ -303,13 +285,6 @@ case $PACKNAME in
 			exit 1
 		fi ;;
 
-	vim )
-		# install both vim and vim-gvim packages
-		if ! ( $INSTALLPRG /tmp/"$PACKNAME"-*.t?z )
-		then
-			exit 1
-		fi ;;
-
 	* )
 		# every other package is built in /tmp
 		export TERM=xterm && cd /tmp || exit 1
@@ -349,13 +324,6 @@ case $PACKNAME in
 		fi
 		cd /scripts || exit 1 ;;
 
-	gettext-tools )
-		# don't forget to mv gettext-tools in d/
-		if ! ( mv -v /tmp/"$PACKNAME"*.t?z /slackware64/d/ ); then
-			exit 1
-		fi
-		cd /scripts || exit 1 ;;
-
 	installer )
 		# only move the package to installer directory
 		if ! ( mv -v /tmp/installer*.txz /slackware64/installer); then
@@ -391,13 +359,6 @@ case $PACKNAME in
 		# don't forget to mv opennsl-solibs in a/
 		if ! ( mv /tmp/"$PACKNAME"-solibs*.t?z /slackware64/a/ ); then
 		mv -v /tmp/"$PACKNAME"*.t?z /slackware64/"$SRCDIR"
-			exit 1
-		fi
-		cd /scripts || exit 1 ;;
-
-	vim )
-		# don't forget to mv vim-gvim in xap/ and vim in ap/
-		if ! ( mv -v /tmp/vim-gvim*.txz /slackware64/xap && mv -v /tmp/"$PACKNAME"-*.txz /slackware64/ap ); then
 			exit 1
 		fi
 		cd /scripts || exit 1 ;;
@@ -840,6 +801,16 @@ fi
 return
 }
 
+build_pkg_4 () {
+#**************
+cd  /source/"$SRCDIR"/"$PACKNAME"
+if ! (source build_"$PACKNAME" ) 
+then
+	exit 1
+fi
+return
+}
+
 #****************************************************************
 #****************************************************************
 # MAIN CORE SCRIPT of sfsbuild1
@@ -1091,6 +1062,9 @@ while (( LINE < FILELEN )); do
 					esac
 					continue ;;
 
+				gettext-tools )
+					cd /source/a/gettext && source build_gettext-tools ;;
+
 				glib2 )
 					case $LISTFILE in
 						build1.list )
@@ -1153,7 +1127,10 @@ while (( LINE < FILELEN )); do
 					continue ;;
 
 				extra-cmake-modules )
-					cd /source/kde/kde && source build_extra-cmake-modules ;; 
+					cd /source/kde/kde && source build_extra-cmake-modules ;;
+
+				kde )
+					cd /source/kde/kde && source build_kde ;;  
 
 				frameworks )
 					cd /source/kde/kde && source build_frameworks ;; 
@@ -1231,10 +1208,10 @@ while (( LINE < FILELEN )); do
 					continue ;;
 
 				linux-faqs )
-					build_pkg_3 ;;
+					cd  /source/f && source linux-faqs ;;
 
 				linux-howtos )
-					build_pkg_3 ;;
+					cd  /source/f && source linux-howtos ;;
 
 				libxkbcommon )
 					case $LXKB in
@@ -1364,6 +1341,9 @@ while (( LINE < FILELEN )); do
 
 				utempter )
 					touch /var/run/utmp && build_pkg_2 ;;
+
+				vim )
+					build_pkg_4 ;;
 
 				test-glibc )
 					test_1
