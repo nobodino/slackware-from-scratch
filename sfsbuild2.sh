@@ -315,14 +315,6 @@ case $PACKNAME in
 		fi
 		cd /scripts || exit 1 ;;
 
-	openssl10 )
-		# don't forget to mv opennsl-solibs in a/
-		if ! ( mv /tmp/"$PACKNAME"-solibs*.t?z /slackware64/a/ ); then
-		mv -v /tmp/"$PACKNAME"*.t?z /slackware64/"$SRCDIR"
-			exit 1
-		fi
-		cd /scripts || exit 1 ;;
-
 	xz )
 		# package built in /tmp 
 		if ! ( mv /tmp/xz*.txz /slackware64/"$SRCDIR" ); then
