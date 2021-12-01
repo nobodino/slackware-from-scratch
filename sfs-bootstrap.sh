@@ -376,12 +376,6 @@ if [[ "$build_arch" = "x86" ]]
 		if [ ! -f "$GNAT_x86" ]; then
 			wget -c -v "$DLDIR6"/"$GNAT_x86"  && chmod 644 ./*.tar.gz
 		fi
-#		cd "$SRCDIR"/others || exit 1
-#		if [ ! -f jre-$JDK-linux-i586.tar.gz ]; then
-#			# from https://gist.github.com/P7h/9741922
-#			curl -C - -LR#OH "Cookie: oraclelicense=accept-securebackup-cookie" -k $DLDIR9
-#		fi
-#		cp -v jre-$JDK-linux-i586.tar.gz "$SRCDIR"/extra/java
 		cd "$SRCDIR"/d/rust || exit 1
 		# shellcheck disable=SC1091 
 		sed -i -e '1,22d' rust.url && sed -i -e '9,14d' rust.url && source rust.url
@@ -424,12 +418,6 @@ if [[ "$build_arch" = "x86" ]]
 		if [ ! -f "$GNAT_x86_64" ]; then
 			wget -c -v "$DLDIR6"/"$GNAT_x86_64" && chmod 644 ./*.tar.gz
 		fi
-#		cd "$SRCDIR"/others || exit 1
-#		if [ ! -f jre-$JDK-linux-x64.tar.gz ]; then
-#			# from https://gist.github.com/P7h/9741922
-#			curl -C - -LR#OH "Cookie: oraclelicense=accept-securebackup-cookie" -k $DLDIR10
-#		fi
-#		cp -rv jre-$JDK-linux-x64.tar.gz "$SRCDIR"/extra/java
 		cd "$SRCDIR"/d/rust || exit 1
 		# shellcheck disable=SC1091  
 		sed -i -e '1,22d' rust.url && sed -i -e '4,9d' rust.url && source rust.url
@@ -502,7 +490,7 @@ dev_selector
 #**************************************
 mkdir -pv $SRCDIR
 
-cd "$SFS"/sources || exit 1
+cd "$SFS"/scripts || exit 1
 
 #*************************************
 # Erase old installation, if any.
