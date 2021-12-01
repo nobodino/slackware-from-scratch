@@ -135,81 +135,6 @@ case $PACKNAME in
 #**************************
 # special BUILD package treatment
 #**************************
-
-	installer )
-		case "$(uname -m)" in
-			i?86)
-			  mkdir -pv /root/slackware-current ;;
-			x86_64)
-			  mkdir -pv /root/slackware64-current ;;
-		esac
-		cd "$SLACKSRC"/installer || exit 1
-		chmod +x installer.SlackBuild
-		if ! ./installer.SlackBuild;
-		then
-			exit 1
-		fi ;;
-		
-#	linuxdoc-tools )
-#		cd "$SLACKSRC"/"$SRCDIR"/"$PACKNAME" || exit 1
-#		chmod +x trackbuild.linuxdoc-tools && chmod +x linuxdoc-tools.build && chmod +x "$PACKNAME".SlackBuild
-#		if ! ./"$PACKNAME".SlackBuild;
-#		then
-#			exit 1
-#		fi ;;
-
-	mozilla-firefox )
-		# need sh shell to be built
-		cd "$SLACKSRC"/"$SRCDIR"/"$PACKNAME" || exit 1
-		chmod +x build-deps/autoconf/autoconf.build
-		chmod +x build-deps/cbindgen/cbindgen.build
-		chmod +x build-deps/nodejs/nodejs.build
-		chmod +x ./*.SlackBuild 
-		if ! ( SHELL=/bin/sh ./"$PACKNAME".SlackBuild );
-		then
-			exit 1
-		fi ;;
-
-	mozjs78 )
-		# need sh shell to be built
-		cd "$SLACKSRC"/"$SRCDIR"/"$PACKNAME" || exit 1
-		chmod +x autoconf/autoconf.build
-		chmod +x ./*.SlackBuild
-		if ! ( SHELL=/bin/sh ./"$PACKNAME".SlackBuild );
-		then
-			exit 1
-		fi ;;
-
-	mozilla-thunderbird )
-		# need sh shell to be built
-		cd "$SLACKSRC"/"$SRCDIR"/"$PACKNAME" || exit 1
-		chmod +x build-deps/autoconf/autoconf.build
-		chmod +x build-deps/cbindgen/cbindgen.build
-		chmod +x build-deps/nodejs/nodejs.build
-		chmod +x ./*.SlackBuild
-		if ! ( SHELL=/bin/sh ./"$PACKNAME".SlackBuild );
-		then
-			exit 1
-		fi ;;
-
-	seamonkey )
-		# need sh shell to be built
-		cd "$SLACKSRC"/"$SRCDIR"/"$PACKNAME" || exit 1
-		chmod +x autoconf/autoconf.build 
-		chmod +x ./*.SlackBuild
-		if ! ( SHELL=/bin/sh ./"$PACKNAME".SlackBuild );
-		then
-			exit 1
-		fi ;;
-
-	snownews )
-		cd "$SLACKSRC"/"$SRCDIR"/"$PACKNAME" || exit 1
-		chmod +x ./*.SlackBuild && gzip -d ./*.diff.gz && sed -i 's/root//' ./*.diff && gzip -9 ./*.diff
-		if ! ./"$PACKNAME".SlackBuild
-		then
-			exit 1
-		fi ;;
-
 	* )
 		# every other package treatment
 		cd "$SLACKSRC"/"$SRCDIR"/"$PACKNAME" || exit 1
@@ -224,43 +149,6 @@ case $PACKNAME in
 #****************************
 # special INSTALL package treatment
 #****************************
-
-	aaa_terminfo )
-		# remove extra ncurses packages
-		rm /tmp/ncurses*.t?z
-		if ! $INSTALLPRG /tmp/"$PACKNAME"*.t?z;
-		then
-			exit 1
-		fi ;;
-
-	etc )
-		# remove mini /etc/group and etc/passwd
-		rm /etc/group && rm /etc/passwd
-		cd /tmp || exit 1
-		if ! $INSTALLPRG /tmp/"$PACKNAME"*.t?z
-		then
-			exit 1
-		fi ;;
-
-	installer )
-		# doesn't neeed any install
-		echo ;;
-
-	java )
-		# install java
-		if ! $INSTALLPRG /tmp/j*.txz;
-		then
-			exit 1
-		fi ;;
-
-	php )
-		# remove extra alpine and imapd packages
-		rm /tmp/imapd*.t?z
-		rm /tmp/alpine*.t?z
-		if ! $INSTALLPRG /tmp/"$PACKNAME"*.t?z;
-		then
-			exit 1
-		fi ;;
 
 	* )
 		# every other package is built in /tmp
@@ -277,27 +165,6 @@ case $PACKNAME in
 # special MOVE package treatment
 #****************************
 
-	bash-completion )
-		mkdir -pv /slackware64/extra/bash-completion
-		if ! ( mv /tmp/bash*.txz /slackware64/extra/bash-completion); then
-			exit 1
-		fi
-		cd /scripts || exit 1 ;;
-
-	installer )
-		# only move the package to installer directory
-		if ! ( mv -v /tmp/installer*.txz /slackware64/installer); then
-			exit 1
-		fi
-		cd /scripts || exit 1 ;;
-
-	java )
-		# don't forget to mv java in extra/
-		if ! ( mv -v /tmp/j*.t?z /slackware64/extra/ ); then
-			exit 1
-		fi
-		cd /scripts || exit 1 ;;
-
 #	glibc )
 #		# don't forget to mv glibc-solibs in a/
 #		mv -v /tmp/aaa_glibc-solibs*.t?z /slackware64/a/
@@ -307,20 +174,6 @@ case $PACKNAME in
 #		rm -rf /tmp/*
 #		cd /scripts || exit 1 ;;
 
-	openssl )
-		# don't forget to mv opennsl-solibs in a/
-		mv -v /tmp/"$PACKNAME"-solibs*.t?z /slackware64/a/
-		if ! ( mv -v /tmp/"$PACKNAME"*.t?z /slackware64/"$SRCDIR" ); then
-			exit 1
-		fi
-		cd /scripts || exit 1 ;;
-
-	xz )
-		# package built in /tmp 
-		if ! ( mv /tmp/xz*.txz /slackware64/"$SRCDIR" ); then
-			exit 1
-		fi
-		cd /scripts || exit 1 ;;
 	* )
 		# mv every built package in its destination directory
 		if ! ( mv -v /tmp/"$PACKNAME"*.t?z /slackware64/"$SRCDIR" ); then
@@ -756,8 +609,7 @@ return
 build_pkg_4 () {
 #**************
 cd  /source/"$SRCDIR"/"$PACKNAME"
-if ! (source build_"$PACKNAME" ) 
-then
+if ! (source build_"$PACKNAME" ); then
 	exit 1
 fi
 return
@@ -878,10 +730,13 @@ while (( LINE < FILELEN )); do
 
 			case $PACKNAME in
 
+				aaa_terminfo )
+					build_pkg_4 ;;
+
 				adjust)
 					adjust_links ;;
 
-				alpine)
+				alpine )
 					build_pkg_4 ;;
 
 				alsa-lib )
@@ -896,6 +751,9 @@ while (( LINE < FILELEN )); do
 
 				aspell-word-lists )
 					cd /source/extra/aspell-word-lists && source build_aspell-dict ;;
+
+				bash-completion )
+					build_pkg_4 ;;
 
 				ca-certificates )
 					build_pkg_2
@@ -1084,6 +942,9 @@ while (( LINE < FILELEN )); do
 					esac
 					continue ;;
 
+				java )
+					build_pkg_4 ;;
+
 				extra-cmake-modules )
 					cd /source/kde/kde && source build_extra-cmake-modules ;;
 
@@ -1185,6 +1046,15 @@ while (( LINE < FILELEN )); do
 					esac
 					continue ;;
 
+				mozjs78 )
+					build_pkg_4 ;;
+
+				mozilla-firefox )
+					build_pkg_4 ;;
+
+				mozilla-thunderbird )
+					build_pkg_4 ;;
+
 				openldap )
 					case $LOPE in
 						1 )
@@ -1194,6 +1064,9 @@ while (( LINE < FILELEN )); do
 							build_pkg_2 ;;
 					esac
 					continue ;;
+
+				openssl )
+					build_pkg_4 ;;
 
 				pam )
 					case $LISTFILE in
@@ -1218,6 +1091,9 @@ while (( LINE < FILELEN )); do
 							build_pkg_2 ;;
 					esac
 					continue ;;
+
+				php )
+					build_pkg_4 ;;
 
 				pkg-config )
 					case $LISTFILE in
@@ -1260,6 +1136,12 @@ while (( LINE < FILELEN )); do
 							build_pkg_2 ;;
 					esac
 					continue ;;
+
+				seamonkey )
+					build_pkg_4 ;;
+
+				snownews )
+					build_pkg_4 ;;
 
 				subversion )
 					case $LISTFILE in
@@ -1314,7 +1196,10 @@ while (( LINE < FILELEN )); do
 					cd /source/x/x11 && source build_x11-lib ;;  
 
 				x11-xcb )
-					cd /source/x/x11 && source build_x11-xcb ;;   
+					cd /source/x/x11 && source build_x11-xcb ;;
+
+				xz )
+					build_pkg_4 ;;   
 
 				zstd )
 					case $LZST in
