@@ -1391,13 +1391,7 @@ l python-PyYAML
 l python-doxypypy
 l python-doxyqml
 l python-pbr
-kde frameworks
-kde kdepim
-kde plasma
-kde plasma-extra
-kde applications
-kde applications-extra
-# kde kde
+kde kde
 d subversion
 l libxml2
 l ncurses
