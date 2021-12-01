@@ -1,4 +1,4 @@
-################################  sfsbuild1.sh #################################
+################################  sfsbuild.sh #################################
 #!/bin/bash
 #
 # Copyright 2018,2019,2020,2021  J. E. Garrott Sr, Puyallup, WA, USA
@@ -31,7 +31,7 @@
 #
 #--------------------------------------------------------------------------
 #
-#	sfsbuild1.sh
+#	sfsbuild.sh
 #
 #	This script builds part of the Slackware from Scratch system using the
 #	source directory from the Slackware sources
@@ -130,55 +130,29 @@ SRCDIR=$1
 shift
 PACKNAME=$1
 shift
-
-case $PACKNAME in
-#**************************
-# special BUILD package treatment
-#**************************
-	* )
-		# every other package treatment
-		cd "$SLACKSRC"/"$SRCDIR"/"$PACKNAME" || exit 1
-		chmod +x "$PACKNAME".SlackBuild
-		if ! ./"$PACKNAME".SlackBuild
-		then
-			exit 1
-		fi ;;
-esac
-
-case $PACKNAME in
-#****************************
-# special INSTALL package treatment
-#****************************
-
-	* )
-		# every other package is built in /tmp
-		export TERM=xterm && cd /tmp || exit 1
-		if ! $INSTALLPRG /tmp/"$PACKNAME"*.t?z;
-		then
-			exit 1
-		fi ;;
-
-esac
-
-case $PACKNAME in
-#****************************
-# special MOVE package treatment
-#****************************
-
-#	glibc )
-#		# don't forget to mv glibc-solibs in a/
-#		mv -v /tmp/aaa_glibc-solibs*.t?z /slackware64/a/
-#		if ! ( mv -v /tmp/glibc*.t?z /slackware64/"$SRCDIR"); then
-#			exit 1
-#		fi
-#		rm -rf /tmp/*
-#		cd /scripts || exit 1 ;;
-
-	* )
-		# mv every built package in its destination directory
+# build the $PACKAGE
+cd "$SLACKSRC"/"$SRCDIR"/"$PACKNAME" || exit 1
+chmod +x "$PACKNAME".SlackBuild
+if ! ./"$PACKNAME".SlackBuild
+then
+	exit 1
+fi
+# install the $PACKAGE
+export TERM=xterm && cd /tmp || exit 1
+if ! $INSTALLPRG /tmp/"$PACKNAME"*.t?z;
+then
+	exit 1
+fi
+# move the $PACKAGE where it should be
+case $(uname -m) in
+	x86_64 )
 		if ! ( mv -v /tmp/"$PACKNAME"*.t?z /slackware64/"$SRCDIR" ); then
 			exit 1
-		fi
+		fi ;;
+	* )
+		if ! ( mv -v /tmp/"$PACKNAME"*.t?z /slackware/"$SRCDIR" ); then
+			exit 1
+		fi ;;
 esac
 
 cd /tmp || exit 1
@@ -229,7 +203,7 @@ echo
 echo "You can also do it with only one script, by executing the"
 echo "following command, there will be 4 steps:"
 echo
-echo -e "$YELLOW" "time ./sfsbuild1.sh build1.list" "$NORMAL"
+echo -e "$YELLOW" "time ./sfsbuild.sh build1.list" "$NORMAL"
 echo
 echo "Either, you can also do it in one step, by executing the"
 echo "following command, it will build the entire system till the end:"
@@ -239,7 +213,7 @@ echo
 echo "Either, you can also build a small slackware system with no X11 system, "
 echo "by executing the following command:"
 echo
-echo -e "$RED" "time ./sfsbuild1.sh build0.list" "$NORMAL"
+echo -e "$RED" "time ./sfsbuild.sh build0.list" "$NORMAL"
 }
 
 test_arch () {
@@ -451,7 +425,7 @@ echo_message_slackware && echo
 message_end1 () {
 #****************************************************************
 echo
-echo "sfsbuild1.sh has finished to build the first part of SFS."
+echo "sfsbuild.sh has finished to build the first part of SFS."
 echo "You now have a bare slackware system able to boot."
 echo "You can even go on internet with the lynx browser." 
 echo
@@ -474,7 +448,7 @@ echo -e "$RED" "Or if you want to go on building slackware from scratch" "$NORMA
 echo
 echo "Just execute the following command:"
 echo
-echo -e "$YELLOW" "time ./sfsbuild1.sh build2.list" "$NORMAL"
+echo -e "$YELLOW" "time ./sfsbuild.sh build2.list" "$NORMAL"
 echo
 echo "After that, you should have an X11 system with blackbox."
 echo
@@ -485,7 +459,7 @@ cd /scripts && killall -9 dhcpcd
 message_end2 () {
 #****************************************************************
 echo
-echo "sfsbuild1.sh has finished to build the second part of SFS."
+echo "sfsbuild.sh has finished to build the second part of SFS."
 echo "You should now have an X11 system with just blackbox."
 echo
 echo "You can modify your bootloader to test your new environment."
@@ -507,7 +481,7 @@ echo -e "$RED" "Or if you want to go on building slackware from scratch" "$NORMA
 echo
 echo "Just execute the following command:"
 echo
-echo -e "$YELLOW" "time ./sfsbuild1.sh build3.list" "$NORMAL"
+echo -e "$YELLOW" "time ./sfsbuild.sh build3.list" "$NORMAL"
 echo
 echo "After that you should have an X11 system with xfce."
 echo
@@ -518,7 +492,7 @@ cd /scripts && killall -9 dhcpcd
 message_end3 () {
 #****************************************************************
 echo
-echo "sfsbuild1.sh has finished to build the third part of SFS."
+echo "sfsbuild.sh has finished to build the third part of SFS."
 echo "You should now have an X11 system with xfce and seamonkey."
 echo
 echo "Before you test your new system, you must execute the script"
@@ -539,7 +513,7 @@ echo -e "$RED" "Or if you want to go on building slackware from scratch" "$NORMA
 echo
 echo "Just execute the following command:"
 echo
-echo -e "$YELLOW"  "time ./sfsbuild1.sh build4.list" "$NORMAL"
+echo -e "$YELLOW"  "time ./sfsbuild.sh build4.list" "$NORMAL"
 echo
 echo "After that you should have a complete Slackware system"
 echo
@@ -550,7 +524,7 @@ cd /scripts && killall -9 dhcpcd
 message_end4 () {
 #****************************************************************
 echo
-echo "sfsbuild1.sh has finished to build the fourth part of SFS."
+echo "sfsbuild.sh has finished to build the fourth part of SFS."
 echo "You should now have a complete slackware system."
 echo
 echo "Before you test your new system, you must execute the script"
@@ -569,6 +543,7 @@ echo -e "$YELLOW"  "upgrade your boot loader and reboot in your SFS system" "$NO
 echo
 echo
 cd /slackware64 && rm */*_alsa* 2>&1 | tee > /dev/null
+ls */*.t?z > /scripts/list-sfs
 cd /scripts && killall -9 dhcpcd
 }
 
@@ -582,7 +557,9 @@ cd /scripts || exit 1
 }
 
 build_pkg_1 () {
-#**************
+#****************************************************************
+# modify the original SlackBuild
+#****************************************************************
 cd  /source/"$SRCDIR"/"$PACKNAME" && source execute_sed_"$PACKNAME"
 if ! ( build "$SRCDIR" "$PACKNAME" ); then
 	exit 1
@@ -591,7 +568,9 @@ update_slackbuild
 }
 
 build_pkg_2 () {
-#**************
+#****************************************************************
+# build a normal $PACKAGE with SlackBuild
+#****************************************************************
 if ! ( build "$SRCDIR" "$PACKNAME" ); then
 	exit 1
 fi
@@ -599,15 +578,10 @@ return
 }
 
 build_pkg_3 () {
-#**************
-if ! ( build_"$PACKNAME" ); then
-	exit 1
-fi
-return
-}
-
-build_pkg_4 () {
-#**************
+#****************************************************************
+# build a special $PACKAGE with build_$PACKNAME in slackware
+# source tree like gettext-tools, seamonkey....
+#****************************************************************
 cd  /source/"$SRCDIR"/"$PACKNAME"
 if ! (source build_"$PACKNAME" ); then
 	exit 1
@@ -617,7 +591,7 @@ return
 
 #****************************************************************
 #****************************************************************
-# MAIN CORE SCRIPT of sfsbuild1
+# MAIN CORE SCRIPT of sfsbuild
 #****************************************************************
 #****************************************************************
 test_arch
@@ -731,13 +705,13 @@ while (( LINE < FILELEN )); do
 			case $PACKNAME in
 
 				aaa_terminfo )
-					build_pkg_4 ;;
+					build_pkg_3 ;;
 
 				adjust)
 					adjust_links ;;
 
 				alpine )
-					build_pkg_4 ;;
+					build_pkg_3 ;;
 
 				alsa-lib )
 					case $LISTFILE in
@@ -753,7 +727,7 @@ while (( LINE < FILELEN )); do
 					cd /source/extra/aspell-word-lists && source build_aspell-dict ;;
 
 				bash-completion )
-					build_pkg_4 ;;
+					build_pkg_3 ;;
 
 				ca-certificates )
 					build_pkg_2
@@ -943,7 +917,7 @@ while (( LINE < FILELEN )); do
 					continue ;;
 
 				java )
-					build_pkg_4 ;;
+					build_pkg_3 ;;
 
 				extra-cmake-modules )
 					cd /source/kde/kde && source build_extra-cmake-modules ;;
@@ -975,7 +949,7 @@ while (( LINE < FILELEN )); do
 					build_pkg_2 ;;
 
 				link_tools_slackware )
-					test_progs && links_tools ;;
+					test_progs && link_tools ;;
 
 				libcaca )
 					upgradepkg --install-new /source/others/"$PACKNAME"-*"$ARCH"-*.txz
@@ -1047,13 +1021,13 @@ while (( LINE < FILELEN )); do
 					continue ;;
 
 				mozjs78 )
-					build_pkg_4 ;;
+					build_pkg_3 ;;
 
 				mozilla-firefox )
-					build_pkg_4 ;;
+					build_pkg_3 ;;
 
 				mozilla-thunderbird )
-					build_pkg_4 ;;
+					build_pkg_3 ;;
 
 				openldap )
 					case $LOPE in
@@ -1066,7 +1040,7 @@ while (( LINE < FILELEN )); do
 					continue ;;
 
 				openssl )
-					build_pkg_4 ;;
+					build_pkg_3 ;;
 
 				pam )
 					case $LISTFILE in
@@ -1093,7 +1067,7 @@ while (( LINE < FILELEN )); do
 					continue ;;
 
 				php )
-					build_pkg_4 ;;
+					build_pkg_3 ;;
 
 				pkg-config )
 					case $LISTFILE in
@@ -1138,10 +1112,10 @@ while (( LINE < FILELEN )); do
 					continue ;;
 
 				seamonkey )
-					build_pkg_4 ;;
+					build_pkg_3 ;;
 
 				snownews )
-					build_pkg_4 ;;
+					build_pkg_3 ;;
 
 				subversion )
 					case $LISTFILE in
@@ -1165,7 +1139,7 @@ while (( LINE < FILELEN )); do
 					touch /var/run/utmp && build_pkg_2 ;;
 
 				vim )
-					build_pkg_4 ;;
+					build_pkg_3 ;;
 
 				test-glibc )
 					test_1
@@ -1199,7 +1173,7 @@ while (( LINE < FILELEN )); do
 					cd /source/x/x11 && source build_x11-xcb ;;
 
 				xz )
-					build_pkg_4 ;;   
+					build_pkg_3 ;;   
 
 				zstd )
 					case $LZST in
