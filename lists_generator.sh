@@ -1397,6 +1397,7 @@ kde plasma
 kde plasma-extra
 kde applications
 kde applications-extra
+# kde kde
 d subversion
 l libxml2
 l ncurses
