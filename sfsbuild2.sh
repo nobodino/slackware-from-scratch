@@ -233,14 +233,6 @@ case $PACKNAME in
 			exit 1
 		fi ;;
 
-	alpine )
-		# package name is not alpine but imapd
-		$INSTALLPRG /tmp/imapd*.txz
-		if ! $INSTALLPRG /tmp/alpine*.txz;
-		then
-			exit 1
-		fi ;;
-
 	etc )
 		# remove mini /etc/group and etc/passwd
 		rm /etc/group && rm /etc/passwd
@@ -285,13 +277,6 @@ case $PACKNAME in
 # special MOVE package treatment
 #****************************
 
-	alpine )
-		# package name is not 'alpine' but 'imapd'
-		if ! ( mv -v /tmp/alpine*.txz /slackware64/"$SRCDIR"); then
-			exit 1
-		fi
-		cd /scripts || exit 1 ;;
-
 	bash-completion )
 		mkdir -pv /slackware64/extra/bash-completion
 		if ! ( mv /tmp/bash*.txz /slackware64/extra/bash-completion); then
@@ -313,14 +298,14 @@ case $PACKNAME in
 		fi
 		cd /scripts || exit 1 ;;
 
-	glibc )
-		# don't forget to mv glibc-solibs in a/
-		mv -v /tmp/aaa_glibc-solibs*.t?z /slackware64/a/
-		if ! ( mv -v /tmp/glibc*.t?z /slackware64/"$SRCDIR"); then
-			exit 1
-		fi
-		rm -rf /tmp/*
-		cd /scripts || exit 1 ;;
+#	glibc )
+#		# don't forget to mv glibc-solibs in a/
+#		mv -v /tmp/aaa_glibc-solibs*.t?z /slackware64/a/
+#		if ! ( mv -v /tmp/glibc*.t?z /slackware64/"$SRCDIR"); then
+#			exit 1
+#		fi
+#		rm -rf /tmp/*
+#		cd /scripts || exit 1 ;;
 
 	openssl )
 		# don't forget to mv opennsl-solibs in a/
@@ -904,6 +889,9 @@ while (( LINE < FILELEN )); do
 				adjust)
 					adjust_links ;;
 
+				alpine)
+					build_pkg_4 ;;
+
 				alsa-lib )
 					case $LISTFILE in
 						build2.list )
@@ -1186,10 +1174,10 @@ while (( LINE < FILELEN )); do
 					continue ;;
 
 				linux-faqs )
-					cd  /source/f && source linux-faqs ;;
+					cd /source/f && source build_linux-faqs ;;
 
 				linux-howtos )
-					cd  /source/f && source linux-howtos ;;
+					cd /source/f && source build_linux-howtos ;;
 
 				libxkbcommon )
 					case $LXKB in
