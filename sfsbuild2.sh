@@ -150,13 +150,13 @@ case $PACKNAME in
 			exit 1
 		fi ;;
 		
-	linuxdoc-tools )
-		cd "$SLACKSRC"/"$SRCDIR"/"$PACKNAME" || exit 1
-		chmod +x trackbuild.linuxdoc-tools && chmod +x linuxdoc-tools.build && chmod +x "$PACKNAME".SlackBuild
-		if ! ./"$PACKNAME".SlackBuild;
-		then
-			exit 1
-		fi ;;
+#	linuxdoc-tools )
+#		cd "$SLACKSRC"/"$SRCDIR"/"$PACKNAME" || exit 1
+#		chmod +x trackbuild.linuxdoc-tools && chmod +x linuxdoc-tools.build && chmod +x "$PACKNAME".SlackBuild
+#		if ! ./"$PACKNAME".SlackBuild;
+#		then
+#			exit 1
+#		fi ;;
 
 	mozilla-firefox )
 		# need sh shell to be built
@@ -1089,24 +1089,6 @@ while (( LINE < FILELEN )); do
 
 				kde )
 					cd /source/kde/kde && source build_kde ;;  
-
-				frameworks )
-					cd /source/kde/kde && source build_frameworks ;; 
-
-				kdepim )
-					cd /source/kde/kde && source build_kdepim ;; 
-
-				applications )
-					cd /source/kde/kde && source build_applications ;; 
-
-				applications-extra )
-					cd /source/kde/kde && source build_applications-extra ;; 
-
-				plasma )
-					cd /source/kde/kde && source build_plasma ;; 
-
-				plasma-extra )
-					cd /source/kde/kde && source build_plasma-extra ;; 
 
 				kernel-all )
 					cd  /source/k && source build_kernel-all ;;
