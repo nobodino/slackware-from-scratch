@@ -902,14 +902,6 @@ case $PACKNAME in
 		fi
 		cd /scripts || exit 1 ;;
 
-	openssl10 )
-		# don't forget to mv opennsl-solibs in a/
-		if ! ( mv /tmp/"$PACKNAME"-solibs*.t?z /slackware64/a/ ); then
-		mv -v /tmp/"$PACKNAME"*.t?z /slackware64/"$SRCDIR"
-			exit 1
-		fi
-		cd /scripts || exit 1 ;;
-
 	vim )
 		# don't forget to mv vim-gvim in xap/ and vim in ap/
 		if ! ( mv -v /tmp/vim-gvim*.txz /slackware64/xap && mv -v /tmp/"$PACKNAME"-*.txz /slackware64/ap ); then
