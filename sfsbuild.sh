@@ -57,7 +57,7 @@ on_error () {
 #***********************************************************
 # recalls the usage of the main script in case of error
 #***********************************************************
-echo 	"Usage: ./sfsbuild1.sh build1.list"
+echo 	"Usage: ./sfsbuild.sh build1.list"
 echo
 echo	"The build.list of programs to build, and their source directories is required."
 echo
@@ -584,7 +584,7 @@ cd /scripts || exit 1
 build_pkg_1 () {
 #**************
 cd  /source/"$SRCDIR"/"$PACKNAME" && source execute_sed_"$PACKNAME"
-if ! build "$SRCDIR" "$PACKNAME"; then
+if ! ( build "$SRCDIR" "$PACKNAME" ); then
 	exit 1
 fi
 update_slackbuild
@@ -592,7 +592,7 @@ update_slackbuild
 
 build_pkg_2 () {
 #**************
-if ! build "$SRCDIR" "$PACKNAME"; then
+if ! ( build "$SRCDIR" "$PACKNAME" ); then
 	exit 1
 fi
 return
@@ -600,7 +600,7 @@ return
 
 build_pkg_3 () {
 #**************
-if ! build_"$PACKNAME"; then
+if ! ( build_"$PACKNAME" ); then
 	exit 1
 fi
 return
@@ -952,13 +952,13 @@ while (( LINE < FILELEN )); do
 					cd /source/kde/kde && source build_kde ;;  
 
 				kernel-all )
-					cd  /source/k && source build_kernel-all ;;
+					cd /source/k && source build_kernel-all ;;
 
 				kernel-headers )
-					cd  /source/k && source build_kernel-headers ;; 
+					cd /source/k && source build_kernel-headers ;; 
 
 				kernel-source )
-					cd  /source/k && source build_kdernel-source ;;
+					cd /source/k && source build_kdernel-source ;;
 
 				kmod )
 					case $LKMO in
