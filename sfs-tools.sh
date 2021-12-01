@@ -264,7 +264,7 @@ cd $RDIR/l/glibc && source tools_glibc_repair
 #*****************************
 if [[ "$ada_enable" = "yes" ]]
 then
-	cd $RDIR/d/gcc && source gnat_build_sp2
+	cd $RDIR/d/gcc && source tools_gnat
 elif [[ "$ada_enable" = "no" ]]
  then
 	echo
