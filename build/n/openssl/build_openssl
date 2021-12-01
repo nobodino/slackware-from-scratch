@@ -1,5 +1,5 @@
 #!/bin/bash
-########################## build_gettext-tools #####################
+##################### build_openssl ###############################
 #
 # Copyright 2021 "nobodino", Bordeaux, FRANCE
 # All rights reserved.
@@ -22,30 +22,31 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 ###################################################################
-build_gettext-tools () {
+build_openssl () {
 ###################################################################
 INSTALLPRG="upgradepkg --install-new --reinstall"
-# two packages in gettext: gettext and gettext-tools
-# DIRNAME=gettext
+
+# every other package treatment
+cd "$SLACKSRC"/"$SRCDIR"/"$PACKNAME" || exit 1
 chmod +x "$PACKNAME".SlackBuild
-if ! ./"$PACKNAME".SlackBuild;
+if ! ./"$PACKNAME".SlackBuild
 then
 	exit 1
 fi
 # every other package is built in /tmp
-cd /tmp || exit 1
+export TERM=xterm && cd /tmp || exit 1
 if ! $INSTALLPRG /tmp/"$PACKNAME"*.t?z;
 then
 	exit 1
 fi
-# don't forget to mv gettext-tools in d/
+# mv every built package in its destination directory
 case $(uname -m) in
 	x86_64 )
-		if ! ( mv -v /tmp/"$PACKNAME"*.t?z /slackware64/d/ ); then
+		if ! ( mv -v /tmp/"$PACKNAME"-solibs*.t?z /slackware64/a/ && mv -v /tmp/"$PACKNAME"*.t?z /slackware64/"$SRCDIR" ); then
 			exit 1
 		fi ;;
 	* )
-		if ! ( mv -v /tmp/"$PACKNAME"*.t?z /slackware/d/ ); then
+		if ! ( mv -v /tmp/"$PACKNAME"-solibs*.t?z /slackware/a/ && mv -v /tmp/"$PACKNAME"*.t?z /slackware/"$SRCDIR" ); then
 			exit 1
 		fi ;;
 esac
@@ -55,4 +56,4 @@ cd /tmp  && rm -rf *
 cd /scripts || exit 1
 }
 
-build_gettext-tools
+build_openssl
