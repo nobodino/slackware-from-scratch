@@ -240,7 +240,7 @@ cd $RDIR/a/bzip2 && source tools_bzip2 || exit 1
 cd $RDIR/a/coreutils && source tools_coreutils || exit 1
 cd $RDIR/ap/diffutils && source tools_diffutils || exit 1
 cd $RDIR/a/file && source tools_file || exit 1
-cd $RDIR/a/findutils && source findutils_build || exit 1
+cd $RDIR/a/findutils && source tools_findutils || exit 1
 cd $RDIR/a/gawk && source tools_gawk || exit 1
 cd $RDIR/a/gettext && source tools_gettext || exit 1
 cd $RDIR/a/grep && source tools_grep || exit 1
