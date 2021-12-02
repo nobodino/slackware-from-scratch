@@ -1,4 +1,4 @@
-################################  sfsbuild.sh #################################
+################################  sfsbuild.sh ##############################
 #!/bin/bash
 #
 # Copyright 2018,2019,2020,2021  J. E. Garrott Sr, Puyallup, WA, USA
@@ -564,6 +564,8 @@ cd  /source/"$SRCDIR"/"$PACKNAME" && source execute_sed_"$PACKNAME"
 if ! ( build "$SRCDIR" "$PACKNAME" ); then
 	exit 1
 fi
+
+echo 2 > /source/"$SRCDIR"/"$PACKNAME"/FLAG
 update_slackbuild
 }
 
@@ -595,7 +597,7 @@ return
 #****************************************************************
 #****************************************************************
 test_arch
-test_gnat
+# test_gnat
 define_path_lib
 
 #****************************************************************
