@@ -916,9 +916,6 @@ while (( LINE < FILELEN )); do
 					esac
 					continue ;;
 
-				java )
-					build_pkg_3 ;;
-
 				extra-cmake-modules )
 					cd /source/kde/kde && source build_extra-cmake-modules ;;
 
@@ -1094,10 +1091,10 @@ while (( LINE < FILELEN )); do
 					cd /source/a/aaa_libraries && source build_aaa_libraries_post ;; 
 
 				gcc-pre )
-					cd /source/d/gcc && source build_gcc_pre ;; 
+					cd /source/d/gcc && source build_gcc-pre ;; 
 
 				gcc-post )
-					cd /source/d/gcc && source build_gcc_post ;; 
+					cd /source/d/gcc && source build_gcc-post ;; 
 
 				readline )
 					case $LREA in
