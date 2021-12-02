@@ -223,48 +223,48 @@ ada_choice
 copy_src
 test_to_go
 cd "$SRCDIR" || exit 1 
-cd $RDIR/d/binutils && source tools_binutils_sp1
-cd $RDIR/d/gcc && source tools_gcc_sp1
-cd $RDIR/k && source tools_linux-headers
-cd $RDIR/l/glibc && source tools_glibc
-cd $RDIR/d/gcc && source tools_libstdc
-cd $RDIR/d/binutils && source tools_binutils_sp2
-cd $RDIR/l/gmp && source tools_gmp
-cd $RDIR/l/isl && source tools_isl
-cd $RDIR/d/gcc && source tools_gcc_sp2
-cd $RDIR/d/m4 && source tools_m4
-cd $RDIR/l/ncurses && source tools_ncurses
-cd $RDIR/a/bash/ && source tools_bash
-cd $RDIR/d/bison && source tools_bison
-cd $RDIR/a/bzip2 && source tools_bzip2
-cd $RDIR/a/coreutils && source tools_coreutils
-cd $RDIR/ap/diffutils && source tools_diffutils
-cd $RDIR/a/file && source tools_file
-cd $RDIR/a/findutils && source findutils_build
-cd $RDIR/a/gawk && source tools_gawk
-cd $RDIR/a/gettext && source tools_gettext
-cd $RDIR/a/grep && source tools_grep
-cd $RDIR/a/gzip && source tools_gzip
-cd $RDIR/d/automake && source tools_automake
-cd $RDIR/d/make && source tools_make
-cd $RDIR/a/patch && source tools_patch
-cd $RDIR/d/perl && source tools_perl
-cd $RDIR/l/zlib && source tools_zlib
-cd $RDIR/a/xz && source tools_xz
-cd $RDIR/d/python3 && source tools_python
-cd $RDIR/a/sed && source tools_sed
-cd $RDIR/a/tar && source tools_tar
-cd $RDIR/ap/texinfo && source tools_texinfo
-cd $RDIR/a/lzip && source tools_lzip
-cd $RDIR/a/tar && source tools_tar_slack
-cd $RDIR/a/which && source tools_which
-cd $RDIR/a/util-linux && source tools_util-linux
-cd $RDIR/l/zstd && source tools_zstd
-cd $RDIR/l/glibc && source tools_glibc_repair
+cd $RDIR/d/binutils && source tools_binutils_sp1 || exit 1
+cd $RDIR/d/gcc && source tools_gcc_sp1 || exit 1
+cd $RDIR/k && source tools_linux-headers || exit 1
+cd $RDIR/l/glibc && source tools_glibc || exit 1
+cd $RDIR/d/gcc && source tools_libstdc || exit 1
+cd $RDIR/d/binutils && source tools_binutils_sp2 || exit 1
+cd $RDIR/l/gmp && source tools_gmp || exit 1
+cd $RDIR/l/isl && source tools_isl || exit 1
+cd $RDIR/d/gcc && source tools_gcc_sp2 || exit 1
+cd $RDIR/d/m4 && source tools_m4 || exit 1
+cd $RDIR/l/ncurses && source tools_ncurses || exit 1
+cd $RDIR/a/bash/ && source tools_bash || exit 1
+cd $RDIR/d/bison && source tools_bison || exit 1
+cd $RDIR/a/bzip2 && source tools_bzip2 || exit 1
+cd $RDIR/a/coreutils && source tools_coreutils || exit 1
+cd $RDIR/ap/diffutils && source tools_diffutils || exit 1
+cd $RDIR/a/file && source tools_file || exit 1
+cd $RDIR/a/findutils && source findutils_build || exit 1
+cd $RDIR/a/gawk && source tools_gawk || exit 1
+cd $RDIR/a/gettext && source tools_gettext || exit 1
+cd $RDIR/a/grep && source tools_grep || exit 1
+cd $RDIR/a/gzip && source tools_gzip || exit 1
+cd $RDIR/d/automake && source tools_automake || exit 1
+cd $RDIR/d/make && source tools_make || exit 1
+cd $RDIR/a/patch && source tools_patch || exit 1
+cd $RDIR/d/perl && source tools_perl || exit 1
+cd $RDIR/l/zlib && source tools_zlib || exit 1
+cd $RDIR/a/xz && source tools_xz || exit 1
+cd $RDIR/d/python3 && source tools_python || exit 1
+cd $RDIR/a/sed && source tools_sed || exit 1
+cd $RDIR/a/tar && source tools_tar || exit 1
+cd $RDIR/ap/texinfo && source tools_texinfo || exit 1
+cd $RDIR/a/lzip && source tools_lzip || exit 1
+cd $RDIR/a/tar && source tools_tar_slack || exit 1
+cd $RDIR/a/which && source tools_which || exit 1
+cd $RDIR/a/util-linux && source tools_util-linux || exit 1
+cd $RDIR/l/zstd && source tools_zstd || exit 1
+cd $RDIR/l/glibc && source tools_glibc_repair || exit 1
 #*****************************
 if [[ "$ada_enable" = "yes" ]]
 then
-	cd $RDIR/d/gcc && source tools_gnat
+	cd $RDIR/d/gcc && source tools_gnat || exit 1
 elif [[ "$ada_enable" = "no" ]]
  then
 	echo
