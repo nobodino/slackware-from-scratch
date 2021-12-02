@@ -154,62 +154,6 @@ case $(uname -m) in
 			exit 1
 		fi ;;
 esac
-#case $PACKNAME in
-#**************************
-# special BUILD package treatment
-#**************************
-#	* )
-#		# every other package treatment
-#		cd "$SLACKSRC"/"$SRCDIR"/"$PACKNAME" || exit 1
-#		chmod +x "$PACKNAME".SlackBuild
-#		if ! ./"$PACKNAME".SlackBuild
-#		then
-#			exit 1
-#		fi ;;
-#esac
-
-#case $PACKNAME in
-#****************************
-# special INSTALL package treatment
-#****************************
-
-#	* )
-		# every other package is built in /tmp
-#		export TERM=xterm && cd /tmp || exit 1
-#		if ! $INSTALLPRG /tmp/"$PACKNAME"*.t?z;
-#		then
-#			exit 1
-#		fi ;;
-
-#esac
-
-#case $PACKNAME in
-#****************************
-# special MOVE package treatment
-#****************************
-
-#	glibc )
-#		# don't forget to mv glibc-solibs in a/
-#		mv -v /tmp/aaa_glibc-solibs*.t?z /slackware64/a/
-#		if ! ( mv -v /tmp/glibc*.t?z /slackware64/"$SRCDIR"); then
-#			exit 1
-#		fi
-#		rm -rf /tmp/*
-#		cd /scripts || exit 1 ;;
-
-#	* )
-		# mv every built package in its destination directory
-#		case $(uname -m) in
-#			x86_64 )
-#				if ! ( mv -v /tmp/"$PACKNAME"*.t?z /slackware64/"$SRCDIR" ); then
-#					exit 1
-#				fi ;;
-#			* )
-#				if ! ( mv -v /tmp/"$PACKNAME"*.t?z /slackware/"$SRCDIR" ); then
-#					exit 1
-#				fi ;;
-#		esac
-#esac
 
 cd /tmp || exit 1
 #***************************************************
@@ -982,13 +926,22 @@ while (( LINE < FILELEN )); do
 					cd /source/kde/kde && source build_kde ;;  
 
 				kernel-all )
-					cd /source/k && source build_kernel-all ;;
+					cd /source/k
+					if ! (source build_kernel-all ); then
+						exit 1
+					fi ;;
 
 				kernel-headers )
-					cd /source/k && source build_kernel-headers ;; 
+					cd /source/k
+					if ! (source build_kernel-headers ); then
+						exit 1
+					fi ;; 
 
 				kernel-source )
-					cd /source/k && source build_kdernel-source ;;
+					cd /source/k
+					if ! (source build_kernel-source ); then
+						exit 1
+					fi ;;
 
 				kmod )
 					case $LKMO in
