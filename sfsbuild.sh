@@ -565,8 +565,7 @@ if ! ( build "$SRCDIR" "$PACKNAME" ); then
 	exit 1
 fi
 
-echo 2 > /source/"$SRCDIR"/"$PACKNAME"/FLAG
-update_slackbuild
+update_slackbuild && echo 2 > /source/"$SRCDIR"/"$PACKNAME"/FLAG
 }
 
 build_pkg_2 () {
