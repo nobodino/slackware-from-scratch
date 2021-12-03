@@ -203,7 +203,8 @@ do
 		mkdir "$SRCDIR"/extra > /dev/null 2>&1
 		cp -r --preserve=timestamps  "$SFS"/scripts/extra/* "$SRCDIR"/extra > /dev/null 2>&1
 		rsync -arvz --stats --progress -I --delete-after "$RSYNCDIR"/extra/source/ "$SRCDIR"/extra > /dev/null 2>&1
-		cp -r --preserve=timestamps  "$SFS"/scripts/build/* "$SRCDIR" > /dev/null 2>&1
+		cp -r "$SFS"/scripts/build/* "$SRCDIR" > /dev/null 2>&1
+		cp -r "$SFS"/scripts/flags/* "$SRCDIR" > /dev/null 2>&1
 		cd "$SFS"/scripts || exit 1
 		rm end* > /dev/null 2>&1
 		rm ./*.t?z > /dev/null 2>&1
