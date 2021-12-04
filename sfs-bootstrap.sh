@@ -29,7 +29,7 @@
 #   https://github.com/nobodino/slackware-from-scratch 
 #
 #*******************************************************************
-# set -x
+# set -xv
 #*******************************************************************
 
 test_root () {
@@ -204,7 +204,6 @@ do
 		cp -r --preserve=timestamps  "$SFS"/scripts/extra/* "$SRCDIR"/extra > /dev/null 2>&1
 		rsync -arvz --stats --progress -I --delete-after "$RSYNCDIR"/extra/source/ "$SRCDIR"/extra > /dev/null 2>&1
 		cp -r "$SFS"/scripts/build/* "$SRCDIR" > /dev/null 2>&1
-		cp -r "$SFS"/scripts/flags/* "$SRCDIR" > /dev/null 2>&1
 		cd "$SFS"/scripts || exit 1
 		rm end* > /dev/null 2>&1
 		rm ./*.t?z > /dev/null 2>&1
@@ -236,18 +235,24 @@ do
 	then
 		echo
 		echo "You chose to upgrade the sources of SFS."
-		echo "Removing old slackware source."
-		[ -d "$SRCDIR" ] && rm -rf "$SRCDIR"
-		echo "Installing new sources."
-		cp -r --preserve=timestamps "$RDIR"/source "$SRCDIR"
+		echo
+		echo "rsync the slackware source tree from a slackware local mirror"
+		rsync -arvz --stats --progress -I --delete-after "$RDIR"/source "$SFS"
 		mkdir -pv "$SRCDIR"/others  > /dev/null 2>&1
 		mkdir -pv "$SRCDIR"/extra > /dev/null 2>&1
 		cp -r --preserve=timestamps "$DNDIR1"/* "$SRCDIR"/others
 		cp -r --preserve=timestamps "$RDIR"/extra/source/* "$SRCDIR"/extra
-		cd "$SFS"/scripts || exit 1
+		case $(uname -m) in
+			x86_64 )
+				ls "$RDIR"/slackware64/*.t?z > "$SFS"/scripts/list-slackware > /dev/null 2>&1 ;;
+			* )
+				ls "$RDIR"/slackware/*.t?z > "$SFS"/scripts/list-slackware > /dev/null 2>&1 ;;
+		esac
+		cp -r "$SFS"/scripts/build/* "$SRCDIR" > /dev/null 2>&1
 		rm end* > /dev/null 2>&1
 		rm ./*.t?z > /dev/null 2>&1
-		rm -rf "$SFS"/scripts/extra && rm -rf "$SFS"/scripts/others
+		rm -rf "$SFS"/scripts/others > /dev/null 2>&1 
+		rm -rf "$SFS"/scripts/extra > /dev/null 2>&1
 		break
 	elif [[ "$upgrade_sources" = "No" ]]
 	then
