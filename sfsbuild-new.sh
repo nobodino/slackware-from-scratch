@@ -646,40 +646,6 @@ esac
 #******************************************************************
 # BUILDN: defines if package will be installed or upgraded
 #******************************************************************
-# init libusb variable
-LUSB=1
-# init llvm variable
-LPVM=1
-# init kmod variable
-LKMO=1
-# init readline variable
-LREA=1
-# init mesa variable
-LMES=1
-# init freetype variable
-LFRE=1
-# init harfbuzz variable
-LHAR=1
-# init gd variable
-LGD=1
-# init findutils variable
-LFIN=1
-# init zstd variable
-LZST=1
-# init rsync variable
-LRSY=1
-# init perl variable
-LPER=1
-# init openldap variable
-LOPE=1
-# init libtirpc variable
-LRPC=1
-# init libxkbcommon variable
-LXKB=1
-# init doxygen variable
-LDOX=1
-# init efivar variable
-LEFI=1
 # init NUMJOBS variable
 NUMJOBS="-j$(( $(nproc) * 2 )) -l$(( $(nproc) + 1 ))"
 
