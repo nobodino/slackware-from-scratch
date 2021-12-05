@@ -22,28 +22,19 @@
 #  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-#	sfsbuild.sh
+#  The sfsbuild script builds the Slackware from Scratch system using the
+#  source directory from the original Slackware source tree.
 #
-#	This script builds part of the Slackware from Scratch system using the
-#	source directory from the Slackware sources
+#  The project is located on github at the following address:
 #
-#	Above july 2018, revisions made through github project:
-#
-#   https://github.com/nobodino/slackware-from-scratch 
+#  https://github.com/nobodino/slackware-from-scratch 
 #
 ############################################################################
 # set -xv
-#*********************************
-export GREEN="\\033[1;32m"
-export NORMAL="\\033[0;39m"
-export RED="\\033[1;31m"
-export PINK="\\033[1;35m"
-export BLUE="\\033[1;34m"
-export YELLOW="\\033[1;33m"
-#**********************************
+#***********************************************************
 export TERM=linux
 export SLACKSRC=/source
-#**********************************
+#***********************************************************
 on_error () {
 #***********************************************************
 # recalls the usage of the main script in case of error
@@ -159,19 +150,19 @@ build_package () {
 # SlackBuild. Different cases may occur like kde, kernel, linux-faqs
 #****************************************************************
 cd  /source/"$SRCDIR"/"$PACKNAME"
-
-# build with build_$PACKANME for all two pass packages
+# build with build_$PACKNAME for all two pass packages 
+# and x11 sub group of packages
 if [ -f /source/"$SRCDIR"/"$PACKNAME"/build_"$PACKNAME" ]; then
 	if ! (source build_"$PACKNAME" ); then
 		exit 1
 	fi
-# special build with build_$PACKANME for linux-howtos, linux-faqs
+# special build with build_$PACKNAME for linux-howtos, linux-faqs
 # and kernel-headers,kernel-source, kernel-all
 elif [ -f /source/"$SRCDIR"/build_"$PACKNAME" ]; then
 	if ! (source build_"$PACKNAME" ); then
 		exit 1
 	fi
-# special build with build_$PACKANME for kde
+# special build with build_$PACKNAME for kde
 elif [ -f /source/"$SRCDIR"/"$SRCDIR"/build_"$PACKNAME" ]; then
 	if ! (source build_"$PACKNAME" ); then
 		exit 1
@@ -194,13 +185,14 @@ sfs_preparation
 # Some packages need two pass to be built completely.
 # Alteration of the slackware sources is made "on the fly" during
 # the first build. On the second pass, the old SlackBuild is 
-# renamed to its original version, and package can be built normally. 
+# renamed to its original version, and package can be built normally: 
 #	cmake, dbus, findutils, fontconfig, freetype, gd, glib2
 #	gobject-introspection, harfbuzz, kmod, liusb, llvm, pkg-config
 #	readline, subversion, texlive, zstd, perl, openldap, libtirpc
 #   elogind, libxkbcommon
-#******************************************************************
+#****************************************************************
 # init NUMJOBS variable
+#****************************************************************
 NUMJOBS="-j$(( $(nproc) * 2 )) -l$(( $(nproc) + 1 ))"
 #**************************************************************
 # read the length of build.list and affect $SRCDIR and $PACKNAME
