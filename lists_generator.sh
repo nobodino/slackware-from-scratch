@@ -409,7 +409,7 @@ x x11-skel
 x libevdev
 x mtdev
 x xdg-user-dirs
-x x11-group1
+x group1
 x xdg-utils
 x fontconfig
 ap ghostscript
@@ -425,8 +425,8 @@ d oprofile
 d binutils
 d git
 l icu4c
-x x11-xcb
-x x11-lib
+x xcb
+x lib
 l gd
 l startup-notification
 l zstd
@@ -457,7 +457,7 @@ x libXcm
 x xcm
 x libwacom
 l libunwind
-x x11-group2
+x group2
 x compiz
 x dejavu-fonts-ttf
 x liberation-fonts-ttf
@@ -685,7 +685,7 @@ a upower
 l libxkbcommon
 l gtk+3
 x libinput
-x x11-app-post
+x app-post
 ap cups
 l pcre2
 d vala
@@ -1434,6 +1434,16 @@ cat  "$SFS"/scripts/build1.list > "$SFS"/scripts/build0.list
 sed -i -e "207,212d" "$SFS"/scripts/build0.list
 }
 
+test_gnat () {
+#******************************************
+# test the existence of gnat in tools
+# if not, modify build1.list to have 
+# 'd pre-gcc' and 'd post-gcc' to build gcc
+#******************************************
+(! /tools/bin/gnat) 1> /dev/null && sed -i -e 's/# d/d/g' build1.list
+(! /tools/bin/gnat) 1> /dev/null && sed -i -e 's/# d/d/g' build0.list
+}
+
 #************************************************************************
 #************************************************************************
 # MAIN CORE SCRIPT
@@ -1441,3 +1451,4 @@ sed -i -e "207,212d" "$SFS"/scripts/build0.list
 #************************************************************************
 
 lists_generator
+test_gnat
