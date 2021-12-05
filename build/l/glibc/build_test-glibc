@@ -1,0 +1,163 @@
+#!/bin/bash
+########################## build_test-glibc #############################
+#
+# Copyright 2021 "nobodino", Bordeaux, FRANCE
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+###################################################################
+build_test-glibc  () {
+###################################################################
+test_1
+answer
+test_2
+answer
+test_3
+answer
+test_4
+answer
+test_5
+answer
+test_6
+answer
+test_7
+answer
+
+cd /scripts || exit 1
+}
+
+answer () {
+#****************************
+local testvar
+read -r testvar
+if [ "$testvar" != "" ]; then
+	exit
+fi
+echo
+}
+
+test_1 () {
+#******************************************
+echo 'main(){}' > dummy.c
+cc dummy.c -v -Wl,--verbose &> dummy.log
+readelf -l a.out | grep ': /lib'
+
+echo
+echo "There should be no errors, and the output of the last command"
+echo "will be (allowing for platform-specific differences in dynamic"
+echo "linker name):"
+echo "[Requesting program interpreter: /lib/ld-linux.so.2]"
+echo
+echo "or on x86_64"
+echo
+echo "[Requesting program interpreter: /lib64/ld-linux-x86-64.so.2]"
+echo
+echo -n "Enter <Enter> to continue:"
+
+}
+
+test_2 () {
+# Now make sure that we're setup to use the correct startfiles:
+	grep -o '/usr/lib.*/crt[1in].*succeeded' dummy.log
+
+echo
+echo "The output of the last command should be:"
+echo "	/usr/lib/crt1.o succeeded"
+echo "	/usr/lib/crti.o succeeded"
+echo "	/usr/lib/crtn.o succeeded"
+echo 
+echo "or on x86_64"
+echo
+echo "	/usr/lib64/crt1.o succeeded"
+echo "	/usr/lib64/crti.o succeeded"
+echo "	/usr/lib64/crtn.o succeeded"
+echo
+echo -n "Enter <Enter> to continue:"
+}
+
+test_3 () {
+# Verify that the compiler is searching for the correct header files:
+grep -B1 '^ /usr/include' dummy.log
+
+echo
+echo "This command should return the following output:"
+echo "	#include <...> search starts here:"
+echo "	 /usr/include"
+echo
+echo -n "Enter <Enter> to continue:"
+}
+
+test_4 () {
+# Next, verify that the new linker is being used with the
+# correct search paths:
+grep 'SEARCH.*/usr/lib' dummy.log |sed 's|; |\n|g'
+echo
+echo "References to paths that have components with '-linux-gnu'"
+echo "should be ignored, but otherwise the output of the last"
+echo "command should be:"
+echo "	SEARCH_DIR(/usr/lib)"
+echo "	SEARCH_DIR(/lib)"
+echo
+echo -n "Enter <Enter> to continue:"
+}
+
+test_5 () {
+# Next make sure that we're using the correct libc:
+grep "/lib.*/libc.so.6" dummy.log
+
+echo
+echo "The output of the last command (allowing for a lib64"
+echo "directory on 64-bit hosts) should be:"
+echo "	attempt to open /lib/libc.so.6 succeeded"
+echo
+echo "or on x86_64"
+echo "attempt to open /lib64/libc.so.6 succeeded"
+echo "/lib64/libc.so.6"
+echo "ld-linux-x86-64.so.2 needed by /lib64/libc.so.6"
+echo
+echo -n "Enter <Enter> to continue:"
+}
+
+test_6 () {
+# Lastly, make sure GCC is using the correct dynamic linker:
+grep found dummy.log
+
+echo
+echo "The output of the last commnand should be (allowing for"
+echo "platform-specific differences in dynamic linker name and"
+echo "a lib64 directory on 64-bit hosts):"
+echo "     found ld-linux.so.2 at /lib/ld-linux.so.2"
+echo
+echo "or on x86_64"
+echo
+echo "     found ld-linux-x86-64.so.2 at /lib64/ld-linux-x86-64.so.2"
+echo
+echo -n "Enter <Enter> to continue: "
+}
+
+test_7 () {
+# Now we clean up our mess and exit:
+rm -v dummy.c a.out dummy.log
+echo
+echo -n "Enter <Enter> to continue: "
+echo "the process of building slackware from scratch can continue."
+echo
+}
+###################################################################
+build_test-glibc
