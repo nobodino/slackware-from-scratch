@@ -135,6 +135,18 @@ case $ARCH in
 		mkdir -pv /usr/lib/java/bin && mkdir -pv /usr/lib/jre/bin
 		PATH_HOLD=$PATH && export PATH=/usr/lib/java/bin:/usr/lib/jre/bin:$PATH_HOLD ;;
 esac
+#****************************************************************
+# create the directories
+#****************************************************************
+case $(uname -m) in
+	x86_64 )
+		mkdir -pv /slackware64/{others,a,ap,d,e,extra,f,installer,k,kde,l,n,t,tcl,x,xap,xfce,y}
+		mkdir -pv /slackware64/extra/{aspell-words-list,bash-completion,bittornado,brltty,fltk,getty-ps,java,php8,sendmail,tigervnc,xf86-video-fbdev,xfractint,xv};;
+
+	* )
+		mkdir -pv /slackware/{others,a,ap,d,e,extra,f,installer,k,kde,l,n,t,tcl,x,xap,xfce,y}
+		mkdir -pv /slackware/extra/{aspell-words-list,bash-completion,bittornado,brltty,fltk,getty-ps,java,php8,sendmail,tigervnc,xf86-video-fbdev,xfractint,xv};;
+esac
 }
 
 update_slackbuild () {
@@ -183,24 +195,10 @@ return
 }
 
 #****************************************************************
-#****************************************************************
 # MAIN CORE SCRIPT of sfsbuild
-#****************************************************************
 #****************************************************************
 sfs_preparation
 #****************************************************************
-# Ensure that the /{slackware;salckware64}/$SAVDIRs exists.
-#****************************************************************
-case $(uname -m) in
-	x86_64 )
-		mkdir -pv /slackware64/{others,a,ap,d,e,extra,f,installer,k,kde,l,n,t,tcl,x,xap,xfce,y}
-		mkdir -pv /slackware64/extra/{aspell-words-list,bash-completion,bittornado,brltty,fltk,getty-ps,java,php8,sendmail,tigervnc,xf86-video-fbdev,xfractint,xv};;
-
-	* )
-		mkdir -pv /slackware/{others,a,ap,d,e,extra,f,installer,k,kde,l,n,t,tcl,x,xap,xfce,y}
-		mkdir -pv /slackware/extra/{aspell-words-list,bash-completion,bittornado,brltty,fltk,getty-ps,java,php8,sendmail,tigervnc,xf86-video-fbdev,xfractint,xv};;
-esac
-#******************************************************************
 # Some packages need two pass to be built completely.
 # Alteration of the slackware sources is made "on the fly" during
 # the first build. On the second pass, the old SlackBuild is 
@@ -212,11 +210,9 @@ esac
 #******************************************************************
 # init NUMJOBS variable
 NUMJOBS="-j$(( $(nproc) * 2 )) -l$(( $(nproc) + 1 ))"
-
 #**************************************************************
-# read the length of build.list and affect SRCDIR and PACKNAME
+# read the length of build.list and affect $SRCDIR and $PACKNAME
 #**************************************************************
-
 [ "$1" == "" ] && on_error
 [ ! -f "$1" ] && on_error
 LISTFILE=$1
