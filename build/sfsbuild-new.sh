@@ -22,15 +22,6 @@
 #  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-#--------------------------------------------------------------------------
-#
-# Note: The adjust and link_tools procedures of this script are 
-#       inspired from the LFS manual chapter 6.10
-#       Copyright © 1999-2021 Gerard Beekmans and may be
-#       copied under the MIT License.
-#
-#--------------------------------------------------------------------------
-#
 #	sfsbuild.sh
 #
 #	This script builds part of the Slackware from Scratch system using the
@@ -64,53 +55,6 @@ echo
 echo	"The packages will not be processed until the end of the build{1,4}.list."
 echo
 exit 255
-}
-
-adjust_links () {
-#***********************************************************
-# First, backup the /tools linker, and replace it with the
-# adjusted linker we made in chapter 5. We'll also create a
-# link to its counterpart in /tools/$(gcc -dumpmachine)/bin:
-#
-# Note: Much of this script is copied from the LFS manual.
-#       Copyright © 1999-2021 Gerard Beekmans and may be
-#       copied under the MIT License.
-#***********************************************************
-mv -v /tools/bin/{ld,ld-old}
-mv -v /tools/"$(uname -m)"-pc-linux-gnu/bin/{ld,ld-old}
-mv -v /tools/bin/{ld-new,ld}
-ln -sv /tools/bin/ld /tools/"$(uname -m)"-pc-linux-gnu/bin/ld
-#***********************************************************
-# Next, amend the GCC specs file so that it points to the
-# new dynamic linker. Simply deleting all instances of
-# '/tools' should leave us with the correct path to the
-# dynamic linker. Also adjust the specs file so that GCC
-# knows where to find the correct headers and Glibc start
-# files. A sed command accomplishes this:
-#***********************************************************
-# shellcheck disable=SC2006,SC2046
-case $(uname -m) in
-	x86_64 )
-		gcc -dumpspecs | sed -e 's@/tools@@g'                   \
-			-e '/\*startfile_prefix_spec:/{n;s@.*@/usr/lib64/ @}' \
-			-e '/\*cpp:/{n;s@$@ -isystem /usr/include@}' >      \
-			`dirname $(gcc --print-libgcc-file-name)`/specs ;;
-	* )
-		gcc -dumpspecs | sed -e 's@/tools@@g'                   \
-			-e '/\*startfile_prefix_spec:/{n;s@.*@/usr/lib/ @}' \
-			-e '/\*cpp:/{n;s@$@ -isystem /usr/include@}' >      \
-			`dirname $(gcc --print-libgcc-file-name)`/specs ;;
-esac
-}
-
-answer () {
-#****************************
-local testvar
-read -r testvar
-if [ "$testvar" != "" ]; then
-	exit
-fi
-echo
 }
 
 build () {
@@ -165,17 +109,6 @@ done
 cd /scripts || exit 1
 }
 
-clean_tmp () {
-#*************************
-# cleanup /tmp directory
-#*************************
-cd / && [ -f localtime ] && rm localtime
-cd /tmp || exit 1
-rm ./*  2>&1 | tee > /dev/null
-rm -rf /tmp/./*  2>&1 | tee > /dev/null
-cd /scripts || exit 1
-}
-
 define_path_lib () {
 #****************************************
 case $ARCH in
@@ -188,32 +121,6 @@ case $ARCH in
 		mkdir -pv /usr/lib/java/bin && mkdir -pv /usr/lib/jre/bin
 		PATH_HOLD=$PATH && export PATH=/usr/lib/java/bin:/usr/lib/jre/bin:$PATH_HOLD ;;
 esac
-}
-
-echo_message_slackware () {
-#****************************************************************
-echo "-------------------------------------------"
-echo
-echo "By now, you are ready to build Slackware From Scratch."
-echo "and wait a long time, a few hours."
-echo 
-echo "Now, you can build SFS by hand, by building packages, one by one."
-echo "./package.SlackBuild && installpkg /tmp/package*.t?z"
-echo
-echo "You can also do it with only one script, by executing the"
-echo "following command, there will be 4 steps:"
-echo
-echo -e "$YELLOW" "time ./sfsbuild.sh build1.list" "$NORMAL"
-echo
-echo "Either, you can also do it in one step, by executing the"
-echo "following command, it will build the entire system till the end:"
-echo
-echo -e "$BLUE" "time ./full-sfs.sh" "$NORMAL"
-echo
-echo "Either, you can also build a small slackware system with no X11 system, "
-echo "by executing the following command:"
-echo
-echo -e "$RED" "time ./sfsbuild.sh build0.list" "$NORMAL"
 }
 
 test_arch () {
@@ -229,316 +136,6 @@ if [ "$ARCH" != "x86_64" ] && [ "$ARCH" != "i686" ] && [ "$ARCH" != "i586" ] && 
 	echo_failure
 	exit 1
 fi
-}
-
-test_1 () {
-#******************************************
-echo 'main(){}' > dummy.c
-cc dummy.c -v -Wl,--verbose &> dummy.log
-readelf -l a.out | grep ': /lib'
-
-echo
-echo "There should be no errors, and the output of the last command"
-echo "will be (allowing for platform-specific differences in dynamic"
-echo "linker name):"
-echo "[Requesting program interpreter: /lib/ld-linux.so.2]"
-echo
-echo "or on x86_64"
-echo
-echo "[Requesting program interpreter: /lib64/ld-linux-x86-64.so.2]"
-echo
-echo -n "Enter <Enter> to continue:"
-
-}
-
-test_2 () {
-# Now make sure that we're setup to use the correct startfiles:
-	grep -o '/usr/lib.*/crt[1in].*succeeded' dummy.log
-
-echo
-echo "The output of the last command should be:"
-echo "	/usr/lib/crt1.o succeeded"
-echo "	/usr/lib/crti.o succeeded"
-echo "	/usr/lib/crtn.o succeeded"
-echo 
-echo "or on x86_64"
-echo
-echo "	/usr/lib64/crt1.o succeeded"
-echo "	/usr/lib64/crti.o succeeded"
-echo "	/usr/lib64/crtn.o succeeded"
-echo
-echo -n "Enter <Enter> to continue:"
-}
-
-test_3 () {
-# Verify that the compiler is searching for the correct header files:
-grep -B1 '^ /usr/include' dummy.log
-
-echo
-echo "This command should return the following output:"
-echo "	#include <...> search starts here:"
-echo "	 /usr/include"
-echo
-echo -n "Enter <Enter> to continue:"
-}
-
-test_4 () {
-# Next, verify that the new linker is being used with the
-# correct search paths:
-grep 'SEARCH.*/usr/lib' dummy.log |sed 's|; |\n|g'
-echo
-echo "References to paths that have components with '-linux-gnu'"
-echo "should be ignored, but otherwise the output of the last"
-echo "command should be:"
-echo "	SEARCH_DIR(/usr/lib)"
-echo "	SEARCH_DIR(/lib)"
-echo
-echo -n "Enter <Enter> to continue:"
-}
-
-test_5 () {
-# Next make sure that we're using the correct libc:
-grep "/lib.*/libc.so.6" dummy.log
-
-echo
-echo "The output of the last command (allowing for a lib64"
-echo "directory on 64-bit hosts) should be:"
-echo "	attempt to open /lib/libc.so.6 succeeded"
-echo
-echo "or on x86_64"
-echo "attempt to open /lib64/libc.so.6 succeeded"
-echo "/lib64/libc.so.6"
-echo "ld-linux-x86-64.so.2 needed by /lib64/libc.so.6"
-echo
-echo -n "Enter <Enter> to continue:"
-}
-
-test_6 () {
-# Lastly, make sure GCC is using the correct dynamic linker:
-grep found dummy.log
-
-echo
-echo "The output of the last commnand should be (allowing for"
-echo "platform-specific differences in dynamic linker name and"
-echo "a lib64 directory on 64-bit hosts):"
-echo "     found ld-linux.so.2 at /lib/ld-linux.so.2"
-echo
-echo "or on x86_64"
-echo
-echo "     found ld-linux-x86-64.so.2 at /lib64/ld-linux-x86-64.so.2"
-echo
-echo -n "Enter <Enter> to continue: "
-}
-
-test_7 () {
-# Now we clean up our mess and exit:
-rm -v dummy.c a.out dummy.log
-echo
-echo -n "Enter <Enter> to continue: "
-echo "the process of building slackware from scratch can continue."
-echo
-}
-
-test_progs () {
-#*************************************************************************
-# test essential program presence and location for makepkg and installpkg
-# for which, tar-1.13, xz and patch, the existence is sufficient
-# if one of those test fails, the script will exit.
-#*************************************************************************
-
-echo "Now we test essential program locations."
-echo "The following should be located:"
-echo "	/tools/bin/which"
-echo "	/tools/bin/tar-1.13"
-echo "	/tools/bin/xz"
-echo "	/tools/bin/patch"
-echo "	/sbin/makepkg"
-echo "	/sbin/installpkg"
-
-	if ! { command -v which > /dev/null; } 2>&1; then
-		error "which was not found on the system, the 'tools' you built are not complete" && exit 1
-	fi
-	if ! { command -v tar-1.13 > /dev/null; } 2>&1; then
-		error "tar-1.13 was not found on the system, the 'tools' you built are not complete" && exit 1
-	fi
-	if ! { command -v xz > /dev/null; } 2>&1; then
-		error "xz was not found on the system, the 'tools' you built are not complete" && exit 1
-	fi
-	if ! { command -v patch > /dev/null; } 2>&1; then
-		error "patch was not found on the system, the 'tools' you built are not complete" && exit 1
-	fi
-	if ! { command -v makepkg > /dev/null; } 2>&1; then
-		error "makepkg was not found on the system, the 'tools' you built are not complete" && exit 1
-	fi
-	if ! { command -v installpkg > /dev/null; } 2>&1; then
-		error "installpkg was not found on the system, the 'tools' you built are not complete" && exit 1
-	fi
-
-echo
-}
-
-link_tools () {
-#****************************************************************
-# Some programs use hard-wired paths to programs which do not
-# exist yet. In order to satisfy these programs, create a
-# number of symbolic links which will be replaced by real
-# files throughout the course of this chapter after the
-# software has been installed. And create some directories
-# to install the first slackware programs.
-# We added a link to /tools/bin/du to avoid 'noise' during
-# pkgtools building, which is not in LFS of course.
-#
-# Note: Much of this script is copied from the LFS manual.
-#       Copyright © 1999-2021 Gerard Beekmans and may be
-#       copied under the MIT License.
-#****************************************************************
-mkdir -pv /usr/lib && mkdir -v /bin && mkdir -pv /usr/include
-mkdir -pv /usr/src && mkdir -pv /usr/bin
-ln -sv /tools/bin/{bash,cat,dd,du,echo,ln,pwd,rm,stty} /bin
-ln -sv /tools/bin/{install,perl} /usr/bin
-
-case $ARCH in
-	x86_64 )
-		ln -sv /tools/lib64/libgcc_s.so{,.1} /usr/lib64
-		ln -sv /tools/lib64/libstdc++.{a,so{,.6}} /usr/lib64 ;;
-	* )
-		ln -sv /tools/lib/libgcc_s.so{,.1} /usr/lib
-		ln -sv /tools/lib/libstdc++.{a,so{,.6}} /usr/lib ;;
-esac
-
-ln -sv bash /bin/sh
-ln -sv /proc/self/mounts /etc/mtab
-
-echo_message_slackware && echo
-}
-
-message_end1 () {
-#****************************************************************
-echo
-echo "sfsbuild.sh has finished to build the first part of SFS."
-echo "You now have a bare slackware system able to boot."
-echo "You can even go on internet with the lynx browser." 
-echo
-echo "You can modify your bootloader to test your new environment."
-echo "Before you test your new system, you must execute the script"
-echo "myprofile.sh to have /etc/fstab and some other conveniences."
-echo "You must edit that script to adapt to your needs and execute it:"
-echo 
-echo -e "$YELLOW"  "./myprofile.sh" "$NORMAL"
-echo
-echo "Then you can:"
-echo
-echo -e "$YELLOW"  "exit" "$NORMAL"
-echo
-echo "and:"
-echo
-echo -e "$YELLOW"  "upgrade your boot loader and reboot in your SFS system" "$NORMAL"
-echo
-echo -e "$RED" "Or if you want to go on building slackware from scratch" "$NORMAL"
-echo
-echo "Just execute the following command:"
-echo
-echo -e "$YELLOW" "time ./sfsbuild.sh build2.list" "$NORMAL"
-echo
-echo "After that, you should have an X11 system with blackbox."
-echo
-echo
-cd /scripts && killall -9 dhcpcd
-}
-
-message_end2 () {
-#****************************************************************
-echo
-echo "sfsbuild.sh has finished to build the second part of SFS."
-echo "You should now have an X11 system with just blackbox."
-echo
-echo "You can modify your bootloader to test your new environment."
-echo "Before you test your new system, you must execute the script"
-echo "myprofile.sh to have /etc/fstab and some other conveniences."
-echo "You must edit that script to adapt to your needs and execute it:"
-echo 
-echo -e "$YELLOW"  "./myprofile.sh" "$NORMAL"
-echo
-echo "Then you can:"
-echo
-echo -e "$YELLOW"  "exit" "$NORMAL"
-echo
-echo "and:"
-echo
-echo -e "$YELLOW"  "upgrade your boot loader and reboot in your SFS system" "$NORMAL"
-echo
-echo -e "$RED" "Or if you want to go on building slackware from scratch" "$NORMAL"
-echo
-echo "Just execute the following command:"
-echo
-echo -e "$YELLOW" "time ./sfsbuild.sh build3.list" "$NORMAL"
-echo
-echo "After that you should have an X11 system with xfce."
-echo
-echo
-cd /scripts && killall -9 dhcpcd
-}
-
-message_end3 () {
-#****************************************************************
-echo
-echo "sfsbuild.sh has finished to build the third part of SFS."
-echo "You should now have an X11 system with xfce and seamonkey."
-echo
-echo "Before you test your new system, you must execute the script"
-echo "myprofile.sh to have /etc/fstab and some other conveniences."
-echo "You must edit that script to adapt to your needs and execute it:"
-echo 
-echo -e "$YELLOW"  "./myprofile.sh" "$NORMAL"
-echo
-echo "Then you can:"
-echo
-echo -e "$YELLOW"  "exit" "$NORMAL"
-echo
-echo "and:"
-echo
-echo -e "$YELLOW"  "upgrade your boot loader and reboot in your SFS system" "$NORMAL"
-echo
-echo -e "$RED" "Or if you want to go on building slackware from scratch" "$NORMAL"
-echo
-echo "Just execute the following command:"
-echo
-echo -e "$YELLOW"  "time ./sfsbuild.sh build4.list" "$NORMAL"
-echo
-echo "After that you should have a complete Slackware system"
-echo
-echo
-cd /scripts && killall -9 dhcpcd
-}
-build_$PACKANME
-message_end4 () {
-#****************************************************************
-echo
-echo "sfsbuild.sh has finished to build the fourth part of SFS."
-echo "You should now have a complete slackware system."
-echo
-echo "Before you test your new system, you must execute the script"
-echo "myprofile.sh to have /etc/fstab and some other conveniences."
-echo "You must edit that script to adapt to your needs and execute it:"
-echo 
-echo -e "$YELLOW"  "./myprofile.sh" "$NORMAL"
-echo
-echo "Then you can:"
-echo
-echo -e "$YELLOW"  "exit" "$NORMAL"
-echo
-echo "and:"
-echo
-echo -e "$YELLOW"  "upgrade your boot loader and reboot in your SFS system" "$NORMAL"
-echo
-echo
-cd /slackware64 && rm */*_alsa* 2>&1 | tee > /dev/null
-ls */*.t?z > /scripts/list-sfs
-cd /scripts
-if [ -f list-slackware ]; then 
-	diff -au list-slackware list-sfs > list.diff
-fi
-killall -9 dhcpcd
 }
 
 update_slackbuild () {
@@ -654,52 +251,15 @@ while (( LINE < FILELEN )); do
 
 			case $PACKNAME in
 
-# not packages but necessary
-
-				adjust)
-					adjust_links ;;
+# special build package or just utilities 
 
 				dhcpcd_up )
 					if ! (dhcpcd -t 15 -L eth0 || dhcpcd -t 15 -L wlan0); then
 						exit 1
 					fi ;;
 
-				end1 )
-					message_"$PACKNAME"
-					clean_tmp ;;
-
-				end2 )
-					message_"$PACKNAME"
-					clean_tmp ;;
-
-				end3 )
-					message_"$PACKNAME"
-					clean_tmp ;;
-
-				end4 )
-					message_"$PACKNAME"
-					clean_tmp ;;
-
-				link_tools_slackware )
-					test_progs && link_tools ;;
-
 				test-glibc )
-					test_1
-					answer
-					test_2
-					answer
-					test_3
-					answer
-					test_4
-					answer
-					test_5
-					answer
-					test_6
-					answer
-					test_7
-					answer ;;
-
-# special build packages
+					cd /source/l/glibc && source build_test-glibc ;;
 
 				extra-cmake-modules )
 					cd /source/kde/kde && source build_extra-cmake-modules ;;
