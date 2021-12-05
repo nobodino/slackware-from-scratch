@@ -520,7 +520,7 @@ echo
 echo
 cd /scripts && killall -9 dhcpcd
 }
-
+build_$PACKANME
 message_end4 () {
 #****************************************************************
 echo
@@ -560,37 +560,27 @@ mv "$PACKNAME".SlackBuild.old "$PACKNAME".SlackBuild
 cd /scripts || exit 1
 }
 
-build_pkg_1 () {
-#****************************************************************
-# modify the original SlackBuild
-#****************************************************************
-cd  /source/"$SRCDIR"/"$PACKNAME" && source execute_sed_"$PACKNAME"
-if ! ( build "$SRCDIR" "$PACKNAME" ); then
-	exit 1
-fi
-
-update_slackbuild && echo 2 > /source/"$SRCDIR"/"$PACKNAME"/FLAG
-}
-
-build_pkg_2 () {
-#****************************************************************
-# build a normal $PACKAGE with SlackBuild
-#****************************************************************
-if ! ( build "$SRCDIR" "$PACKNAME" ); then
-	exit 1
-fi
-return
-}
-
-build_pkg_3 () {
+build_package () {
 #****************************************************************
 # build a special $PACKAGE with build_$PACKNAME in slackware
 # source tree like gettext-tools, seamonkey....
 #****************************************************************
 cd  /source/"$SRCDIR"/"$PACKNAME"
-if ! (source build_"$PACKNAME" ); then
-	exit 1
+
+# test the existence of build_$PACKANME to decide whether the 
+# build is special (with build_$PACKANME) or normal with the 
+# SlackBuild
+if [ -f /source/"$SRCDIR"/"$PACKNAME"/build_"$PACKNAME" ]; then
+	if ! (source build_"$PACKNAME" ); then
+		exit 1
+	fi
+elif
+# normal build with the SlackBuild
+	if ! ( build "$SRCDIR" "$PACKNAME" ); then
+		exit 1
+	fi
 fi
+
 return
 }
 
@@ -675,39 +665,10 @@ while (( LINE < FILELEN )); do
 
 			case $PACKNAME in
 
-				aaa_terminfo )
-					build_pkg_3 ;;
+# not packages but necessary
 
 				adjust)
 					adjust_links ;;
-
-				alpine )
-					build_pkg_3 ;;
-
-				alsa-lib )
-					build_pkg_3 ;;
-
-				aspell-word-lists )
-					cd /source/extra/aspell-word-lists && source build_aspell-dict ;;
-
-				bash-completion )
-					build_pkg_3 ;;
-
-				ca-certificates )
-					build_pkg_2
-					update-ca-certificates ;;
-
-				cmake )
-					build_pkg_3 ;;
-
-				cyrus-sasl )
-					build_pkg_3 ;;
-
-				dbus )
-					build_pkg_3 ;;
-
-				doxygen )
-					build_pkg_3 ;;
 
 				dhcpcd_up )
 					if ! (dhcpcd -t 15 -L eth0 || dhcpcd -t 15 -L wlan0); then
@@ -730,58 +691,26 @@ while (( LINE < FILELEN )); do
 					message_"$PACKNAME"
 					clean_tmp ;;
 
-				elogind )
-					build_pkg_3 ;;
+				link_tools_slackware )
+					test_progs && link_tools ;;
 
-				efivar )
-					build_pkg_3 ;;
+				test-glibc )
+					test_1
+					answer
+					test_2
+					answer
+					test_3
+					answer
+					test_4
+					answer
+					test_5
+					answer
+					test_6
+					answer
+					test_7
+					answer ;;
 
-				findutils )
-					build_pkg_3 ;;
-
-				fontconfig )
-					build_pkg_3 ;;
-
-				freetype )
-					build_pkg_3 ;;
-
-				gd )
-					build_pkg_3 ;;
-
-				gettext-tools )
-					cd /source/a/gettext && source build_gettext-tools ;;
-
-				glib2 )
-					build_pkg_3 ;;
-
-				glib-networking )
-					update-ca-certificates
-					build_pkg_2 ;;
-
-				gobject-introspection )
-					build_pkg_3 ;;
-
-				gpgme )
-					build_pkg_3 ;;
-
-				gucharmap )
-					update-ca-certificates --fresh
-					build_pkg_1 ;; 
-
-				harfbuzz )
-					build_pkg_3 ;;
-
-				installer )
-					build_pkg_2 ;;
-
-				isapnptools )
-					case $ARCH in
-						x86_64 )
-							echo ;;
-						* )
-							build_pkg_1 ;;
-					esac
-					continue ;;
+# special build packages
 
 				extra-cmake-modules )
 					cd /source/kde/kde && source build_extra-cmake-modules ;;
@@ -807,127 +736,11 @@ while (( LINE < FILELEN )); do
 						exit 1
 					fi ;;
 
-				kmod )
-					build_pkg_3 ;;
-
-				ksh93 )
-					upgradepkg --install-new /source/others/"$PACKNAME"-*"$ARCH"-*.txz
-					build_pkg_2 ;;
-
-				link_tools_slackware )
-					test_progs && link_tools ;;
-
-				libcaca )
-					upgradepkg --install-new /source/others/"$PACKNAME"-*"$ARCH"-*.txz
-					build_pkg_2 ;;
-
-				libsoup )
-					source /root/.bashrc
-					build_pkg_2 ;;
-
-				libtirpc )
-					build_pkg_3 ;;
-
-				libusb )
-					build_pkg_3 ;;
-
 				linux-faqs )
 					cd /source/f && source build_linux-faqs ;;
 
 				linux-howtos )
 					cd /source/f && source build_linux-howtos ;;
-
-				libxkbcommon )
-					build_pkg_3 ;;
-
-				llvm )
-					build_pkg_3 ;;
-
-				mesa )
-					build_pkg_3 ;;
-
-				mozjs78 )
-					build_pkg_3 ;;
-
-				mozilla-firefox )
-					build_pkg_3 ;;
-
-				mozilla-thunderbird )
-					build_pkg_3 ;;
-
-				openldap )
-					build_pkg_3 ;;
-
-				openssl )
-					build_pkg_3 ;;
-
-				pam )
-					build_pkg_3 ;;
-
-				pci-utils )
-					build_pkg_2
-					update-pciids ;;
-
-				perl )
-					build_pkg_3 ;;
-
-				php )
-					build_pkg_3 ;;
-
-				pkg-config )
-					build_pkg_3 ;;
-
-				aaa_libraries_pre )
-					cd /source/a/aaa_libraries && source build_aaa_libraries_pre ;; 
-
-				aaa_libraries_post )
-					cd /source/a/aaa_libraries && source build_aaa_libraries_post ;; 
-
-				gcc-pre )
-					cd /source/d/gcc && source build_gcc-pre ;; 
-
-				gcc-post )
-					cd /source/d/gcc && source build_gcc-post ;; 
-
-				readline )
-					build_pkg_3 ;;
-
-				rsync )
-					build_pkg_3 ;;
-
-				seamonkey )
-					build_pkg_3 ;;
-
-				snownews )
-					build_pkg_3 ;;
-
-				subversion )
-					build_pkg_3 ;;
-
-				texlive )
-					build_pkg_3 ;;
-
-				utempter )
-					touch /var/run/utmp && build_pkg_2 ;;
-
-				vim )
-					build_pkg_3 ;;
-
-				test-glibc )
-					test_1
-					answer
-					test_2
-					answer
-					test_3
-					answer
-					test_4
-					answer
-					test_5
-					answer
-					test_6
-					answer
-					test_7
-					answer ;;
 
 				x11-group1 )
 					cd /source/x/x11 && source build_x11-group1 ;; 
@@ -942,16 +755,11 @@ while (( LINE < FILELEN )); do
 					cd /source/x/x11 && source build_x11-lib ;;  
 
 				x11-xcb )
-					cd /source/x/x11 && source build_x11-xcb ;;
+					cd /source/x/x11 && source build_x11-xcb ;; 
 
-				xz )
-					build_pkg_3 ;;   
-
-				zstd )
-					build_pkg_3 ;;
-	
+# package built with build_package
 				* )
-					build_pkg_2 ;;
+					build_package ;;
 			esac
 done
 echo
