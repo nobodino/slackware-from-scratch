@@ -121,13 +121,13 @@ case $ARCH in
 		export LD_LIBRARY_PATH="/lib64:/usr/lib64"
 		mkdir -pv /usr/lib64/java/bin && mkdir -pv /usr/lib64/jre/bin
 		mkdir -pv /slackware64/{others,a,ap,d,e,extra,f,installer,k,kde,l,n,t,tcl,x,xap,xfce,y}
-		mkdir -pv /slackware64/extra/{aspell-words-list,bash-completion,bittornado,brltty,fltk,getty-ps,java,php80,php81,sendmail,tigervnc,xf86-video-fbdev,xfractint,xv}
+		mkdir -pv /slackware64/extra/{aspell-word-list,bash-completion,bittornado,brltty,fltk,getty-ps,java,php80,php81,sendmail,tigervnc,xf86-video-fbdev,xfractint,xv}
 		PATH_HOLD=$PATH && export PATH=/usr/lib64/java/bin:/usr/lib64/jre/bin:$PATH_HOLD ;;
 
 	* )
 		mkdir -pv /usr/lib/java/bin && mkdir -pv /usr/lib/jre/bin
 		mkdir -pv /slackware/{others,a,ap,d,e,extra,f,installer,k,kde,l,n,t,tcl,x,xap,xfce,y}
-		mkdir -pv /slackware/extra/{aspell-words-list,bash-completion,bittornado,brltty,fltk,getty-ps,java,php80,php81,sendmail,tigervnc,xf86-video-fbdev,xfractint,xv}
+		mkdir -pv /slackware/extra/{aspell-word-list,bash-completion,bittornado,brltty,fltk,getty-ps,java,php80,php81,sendmail,tigervnc,xf86-video-fbdev,xfractint,xv}
 		PATH_HOLD=$PATH && export PATH=/usr/lib/java/bin:/usr/lib/jre/bin:$PATH_HOLD ;;
 esac
 }
