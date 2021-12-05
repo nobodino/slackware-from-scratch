@@ -112,7 +112,7 @@ cd /scripts || exit 1
 sfs_preparation () {
 #****************************************************************
 # test the architecture i686/586/386 or x86_64 we will be build
-#  the slackware distribution,
+# the slackware distribution,
 #****************************************************************
 ARCH=$(uname -m)
 echo "$ARCH"
@@ -123,29 +123,21 @@ if [ "$ARCH" != "x86_64" ] && [ "$ARCH" != "i686" ] && [ "$ARCH" != "i586" ] && 
 	exit 1
 fi
 #****************************************************************
-# define the path lib
+# define the path lib and create the packages directories
 #****************************************************************
 case $ARCH in
 	x86_64 )
 		export LD_LIBRARY_PATH="/lib64:/usr/lib64"
 		mkdir -pv /usr/lib64/java/bin && mkdir -pv /usr/lib64/jre/bin
+		mkdir -pv /slackware64/{others,a,ap,d,e,extra,f,installer,k,kde,l,n,t,tcl,x,xap,xfce,y}
+		mkdir -pv /slackware64/extra/{aspell-words-list,bash-completion,bittornado,brltty,fltk,getty-ps,java,php80,php81,sendmail,tigervnc,xf86-video-fbdev,xfractint,xv}
 		PATH_HOLD=$PATH && export PATH=/usr/lib64/java/bin:/usr/lib64/jre/bin:$PATH_HOLD ;;
 
 	* )
 		mkdir -pv /usr/lib/java/bin && mkdir -pv /usr/lib/jre/bin
-		PATH_HOLD=$PATH && export PATH=/usr/lib/java/bin:/usr/lib/jre/bin:$PATH_HOLD ;;
-esac
-#****************************************************************
-# create the directories
-#****************************************************************
-case $(uname -m) in
-	x86_64 )
-		mkdir -pv /slackware64/{others,a,ap,d,e,extra,f,installer,k,kde,l,n,t,tcl,x,xap,xfce,y}
-		mkdir -pv /slackware64/extra/{aspell-words-list,bash-completion,bittornado,brltty,fltk,getty-ps,java,php8,sendmail,tigervnc,xf86-video-fbdev,xfractint,xv};;
-
-	* )
 		mkdir -pv /slackware/{others,a,ap,d,e,extra,f,installer,k,kde,l,n,t,tcl,x,xap,xfce,y}
-		mkdir -pv /slackware/extra/{aspell-words-list,bash-completion,bittornado,brltty,fltk,getty-ps,java,php8,sendmail,tigervnc,xf86-video-fbdev,xfractint,xv};;
+		mkdir -pv /slackware/extra/{aspell-words-list,bash-completion,bittornado,brltty,fltk,getty-ps,java,php80,php81,sendmail,tigervnc,xf86-video-fbdev,xfractint,xv}
+		PATH_HOLD=$PATH && export PATH=/usr/lib/java/bin:/usr/lib/jre/bin:$PATH_HOLD ;;
 esac
 }
 
