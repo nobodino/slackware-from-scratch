@@ -109,8 +109,22 @@ done
 cd /scripts || exit 1
 }
 
-define_path_lib () {
-#****************************************
+sfs_preparation () {
+#****************************************************************
+# test the architecture i686/586/386 or x86_64 we will be build
+#  the slackware distribution,
+#****************************************************************
+ARCH=$(uname -m)
+echo "$ARCH"
+if [ "$ARCH" != "x86_64" ] && [ "$ARCH" != "i686" ] && [ "$ARCH" != "i586" ] && [ "$ARCH" != "i386" ]; then
+	boot_mesg "
+ >>> This arch ($ARCH) is not supported."
+	echo_failure
+	exit 1
+fi
+#****************************************************************
+# define the path lib
+#****************************************************************
 case $ARCH in
 	x86_64 )
 		export LD_LIBRARY_PATH="/lib64:/usr/lib64"
@@ -121,21 +135,6 @@ case $ARCH in
 		mkdir -pv /usr/lib/java/bin && mkdir -pv /usr/lib/jre/bin
 		PATH_HOLD=$PATH && export PATH=/usr/lib/java/bin:/usr/lib/jre/bin:$PATH_HOLD ;;
 esac
-}
-
-test_arch () {
-#******************************************
-# test the architecture i686/586/386 or x86_64 we
-# will be build the  slackware distribution,
-#******************************************
-ARCH=$(uname -m)
-echo "$ARCH"
-if [ "$ARCH" != "x86_64" ] && [ "$ARCH" != "i686" ] && [ "$ARCH" != "i586" ] && [ "$ARCH" != "i386" ]; then
-	boot_mesg "
- >>> This arch ($ARCH) is not supported."
-	echo_failure
-	exit 1
-fi
 }
 
 update_slackbuild () {
@@ -149,7 +148,7 @@ cd /scripts || exit 1
 
 build_package () {
 #****************************************************************
-# build a $PACKAGE with build_$PACKNAME or with SlackBuild 
+# build a $PACKAGE  with SlackBuild or with build_$PACKNAME 
 #****************************************************************
 # first test the existence of build_$PACKANME to decide whether the 
 # build is special (with build_$PACKANME) or normal with the 
@@ -188,9 +187,7 @@ return
 # MAIN CORE SCRIPT of sfsbuild
 #****************************************************************
 #****************************************************************
-test_arch
-define_path_lib
-
+sfs_preparation
 #****************************************************************
 # Ensure that the /{slackware;salckware64}/$SAVDIRs exists.
 #****************************************************************
@@ -208,31 +205,10 @@ esac
 # Alteration of the slackware sources is made "on the fly" during
 # the first build. On the second pass, the old SlackBuild is 
 # renamed to its original version, and package can be built normally. 
-#	execute_sed_cmake # 2 pass
-#	execute_sed_dbus # 2 pass
-#	execute_sed_findutils # 2 pass
-#	execute_sed_fontconfig # 2 pass
-#	execute_sed_freetype # 2 pass
-#	execute_sed_gd # 2 pass
-#	execute_sed_glib2 # 2 pass
-#	execute_sed_gobject # 2 pass
-#	execute_sed_harfbuzz # 2 pass
-#	execute_sed_kmod # 2 pass
-#	execute_sed_libusb # 2 pass
-#	execute_sed_llvm # 2 pass
-#	execute_sed_pkg_config # 2 pass
-#	execute_sed_readline # 3 pass
-#	execute_sed_subversion # 2 pass
-#	execute_sed_texlive # 2 pass
-#	execute_sed_zstd # 2 pass
-#	execute_sed_perl # 2 pass
-#	execute_sed_openldap # 2 pass
-# 	execute_sed_libtirpc variable # 2 pass
-# 	execute_sed_elogind variable # 2 pass
-# 	execute_sed_libxkbcommon variable # 2 pass
-#
-#******************************************************************
-# BUILDN: defines if package will be installed or upgraded
+#	cmake, dbus, findutils, fontconfig, freetype, gd, glib2
+#	gobject-introspection, harfbuzz, kmod, liusb, llvm, pkg-config
+#	readline, subversion, texlive, zstd, perl, openldap, libtirpc
+#   elogind, libxkbcommon
 #******************************************************************
 # init NUMJOBS variable
 NUMJOBS="-j$(( $(nproc) * 2 )) -l$(( $(nproc) + 1 ))"
