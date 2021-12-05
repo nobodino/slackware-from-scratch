@@ -231,16 +231,6 @@ if [ "$ARCH" != "x86_64" ] && [ "$ARCH" != "i686" ] && [ "$ARCH" != "i586" ] && 
 fi
 }
 
-test_gnat () {
-#******************************************
-# test the existence of gnat in tools
-# if not, modify build1.list to have 
-# 'd pre-gcc' and 'd post-gcc' to build gcc
-#******************************************
-(! /tools/bin/gnat) 1> /dev/null && sed -i -e 's/# d/d/g' build1.list
-(! /tools/bin/gnat) 1> /dev/null && sed -i -e 's/# d/d/g' build0.list
-}
-
 test_1 () {
 #******************************************
 echo 'main(){}' > dummy.c
@@ -590,7 +580,6 @@ return
 #****************************************************************
 #****************************************************************
 test_arch
-# test_gnat
 define_path_lib
 
 #****************************************************************
