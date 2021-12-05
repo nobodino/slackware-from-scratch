@@ -1164,20 +1164,20 @@ while (( LINE < FILELEN )); do
 					test_7
 					answer ;;
 
-				x11-group1 )
-					cd /source/x/x11 && source build_x11-group1 ;; 
+				group1 )
+					cd /source/x/group1 && source build_x11-group1 ;; 
 
-				x11-group2 )
-					cd /source/x/x11 && source build_x11-group2 ;;  
+				group2 )
+					cd /source/x/group2 && source build_x11-group2 ;;  
 
-				x11-app-post )
-					cd /source/x/x11 && source build_x11-app-post ;;    
+				app-post )
+					cd /source/x/app-post && source build_x11-app-post ;;    
 
-				x11-lib )
-					cd /source/x/x11 && source build_x11-lib ;;  
+				lib )
+					cd /source/x/lib && source build_x11-lib ;;  
 
-				x11-xcb )
-					cd /source/x/x11 && source build_x11-xcb ;;
+				xcb )
+					cd /source/x/xcb && source build_x11-xcb ;;
 
 				xz )
 					build_pkg_3 ;;   
