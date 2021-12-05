@@ -39,6 +39,7 @@ lists_generator () {
 	generate_slackware_build_list2
 	generate_slackware_build_list3
 	generate_slackware_build_list4
+	generate_slackware_build_list5
 	generate_slackware_build_list0
 }
 
@@ -1427,11 +1428,20 @@ a end4
 EOF
 }
 
-generate_slackware_build_list0 () {
+generate_slackware_build_list5 () {
 #******************************************
 rm "$SFS"/scripts/build0.list
 cat  "$SFS"/scripts/build1.list > "$SFS"/scripts/build0.list
 sed -i -e "207,212d" "$SFS"/scripts/build0.list
+}
+
+generate_slackware_build_list0 () {
+#******************************************
+rm "$SFS"/scripts/build5.list
+cat  "$SFS"/scripts/build1.list > "$SFS"/scripts/build5.list
+cat  "$SFS"/scripts/build2.list >> "$SFS"/scripts/build5.list
+cat  "$SFS"/scripts/build3.list >> "$SFS"/scripts/build5.list
+cat  "$SFS"/scripts/build4.list >> "$SFS"/scripts/build5.list
 }
 
 test_gnat () {
