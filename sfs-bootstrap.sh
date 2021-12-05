@@ -361,8 +361,11 @@ if [[ "$build_arch" = "x86" ]]
 		if [ ! -f gmp-5.1.3-i486-1.txz ]; then
 			wget -c -v "$DLDIR2"/slackware/l/gmp-5.1.3-i486-1.txz
 		fi
-		if [ ! -f libtermcap-1.2.3-i486-7.txz ]; then
-			wget -c -v "$DLDIR2"/slackware/l/libtermcap-1.2.3-i486-7.txz
+		if [ ! -f db44-4.4.20-i486-3.txz ]; then
+			wget -c -v "$DLDIR2"/slackware/l/db44-4.4.20-i486-3.txz
+		fi
+		if [ ! -f libelf-0.8.13-i486-2.txz ]; then
+			wget -c -v "$DLDIR2"/slackware/l/libelf-0.8.13-i486-2.txz
 		fi
 		if [ ! -f ncurses-5.9-i486-4.txz ]; then
 			wget -c -v "$DLDIR3"/slackware/l/ncurses-5.9-i486-4.txz
@@ -403,8 +406,11 @@ if [[ "$build_arch" = "x86" ]]
 		if [ ! -f gmp-5.1.3-x86_64-1.txz ]; then
 			wget -c -v "$DLDIR4"/slackware64/l/gmp-5.1.3-x86_64-1.txz
 		fi
-		if [ ! -f libtermcap-1.2.3-x86_64-7.txz ]; then
-			wget -c -v "$DLDIR4"/slackware64/l/libtermcap-1.2.3-x86_64-7.txz
+		if [ ! -f db44-4.4.20-x86_64-3.txz ]; then
+			wget -c -v "$DLDIR4"/slackware64/l/db44-4.4.20-x86_64-3.txz
+		fi
+		if [ ! -f libelf-0.8.13-x86_64-2.txz ]; then
+			wget -c -v "$DLDIR4"/slackware64/l/libelf-0.8.13-x86_64-2.txz
 		fi
 		if [ ! -f ncurses-5.9-x86_64-4.txz ]; then
 			wget -c -v "$DLDIR5"/slackware64/l/ncurses-5.9-x86_64-4.txz
