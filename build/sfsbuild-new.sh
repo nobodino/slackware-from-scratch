@@ -253,11 +253,6 @@ while (( LINE < FILELEN )); do
 
 # special build package or just utilities 
 
-				dhcpcd_up )
-					if ! (dhcpcd -t 15 -L eth0 || dhcpcd -t 15 -L wlan0); then
-						exit 1
-					fi ;;
-
 				test-glibc )
 					cd /source/l/glibc && source build_test-glibc ;;
 
