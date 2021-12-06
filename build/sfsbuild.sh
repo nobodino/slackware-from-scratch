@@ -145,8 +145,8 @@ build_package () {
 #****************************************************************
 # build a $PACKAGE  with SlackBuild or with build_$PACKNAME 
 #****************************************************************
-# first test the existence of build_$PACKANME to decide whether the 
-# build is special (with build_$PACKANME) or normal with the 
+# first test the existence of build_$PACKNAME to decide whether the 
+# build is special (with build_$PACKNAME) or normal with the 
 # SlackBuild. Different cases may occur like kde, kernel, linux-faqs
 #****************************************************************
 cd  /source/"$SRCDIR"/"$PACKNAME" || exit 1 
@@ -193,7 +193,7 @@ sfs_preparation
 #   elogind, libxkbcommon
 #****************************************************************
 # read the length of build.list and affect $SRCDIR and $PACKNAME
-#**************************************************************
+#****************************************************************
 [ "$1" == "" ] && on_error
 [ ! -f "$1" ] && on_error
 LISTFILE=$1
@@ -217,4 +217,3 @@ while (( LINE < FILELEN )); do
 	build_package
 
 done
-echo
