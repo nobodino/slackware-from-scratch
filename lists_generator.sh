@@ -60,7 +60,7 @@ a sed
 a coreutils
 n rsync
 k kernel-source
-d kernel-headers
+k kernel-headers
 d python2
 d bison
 l glibc
@@ -264,7 +264,7 @@ d llvm
 ap linuxdoc-tools
 d ccache
 d rust
-a kernel-all
+k kernel-all
 d help2man
 d flex
 d bison
