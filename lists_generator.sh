@@ -88,9 +88,7 @@ d patchelf
 a xz
 l lz4
 l zstd
-# d gcc-pre
 d gcc
-# d gcc-post
 a bzip2
 d pkg-config
 l ncurses
