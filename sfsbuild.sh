@@ -149,10 +149,11 @@ build_package () {
 # build is special (with build_$PACKNAME) or normal with the 
 # SlackBuild. Different cases may occur like kde, kernel, linux-faqs
 #****************************************************************
-cd  /source/"$SRCDIR"/"$PACKNAME" || exit 1 
+cd  /source/"$SRCDIR" || exit 1 
 # build with build_$PACKNAME for all two pass packages 
 # and x11 sub group of packages
 if [ -f /source/"$SRCDIR"/"$PACKNAME"/build_"$PACKNAME" ]; then
+	cd  /source/"$SRCDIR"/"$PACKNAME" || exit 1 
 	if ! (source build_"$PACKNAME" ); then
 		exit 1
 	fi
