@@ -218,16 +218,7 @@ while (( LINE < FILELEN )); do
 	(( LINE = LINE + 1 ))
 	[ "$SRCDIR" == "#" ] && continue
 
-			case $PACKNAME in
+	build_package
 
-# special build package or just utilities 
-
-				test-glibc )
-					cd /source/l/glibc && source build_test-glibc ;;
-
-# package built with build_package
-				* )
-					build_package ;;
-			esac
 done
 echo
