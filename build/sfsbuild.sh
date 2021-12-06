@@ -1,5 +1,5 @@
-################################  sfsbuild.sh ##############################
 #!/bin/bash
+################################  sfsbuild.sh ##############################
 #
 # Copyright 2018,2019,2020,2021  J. E. Garrott Sr, Puyallup, WA, USA
 # Copyright 2018,2019,2020,2021  "nobodino", Bordeaux, FRANCE
@@ -149,7 +149,7 @@ build_package () {
 # build is special (with build_$PACKANME) or normal with the 
 # SlackBuild. Different cases may occur like kde, kernel, linux-faqs
 #****************************************************************
-cd  /source/"$SRCDIR"/"$PACKNAME"
+cd  /source/"$SRCDIR"/"$PACKNAME" || exit 1 
 # build with build_$PACKNAME for all two pass packages 
 # and x11 sub group of packages
 if [ -f /source/"$SRCDIR"/"$PACKNAME"/build_"$PACKNAME" ]; then
@@ -159,7 +159,7 @@ if [ -f /source/"$SRCDIR"/"$PACKNAME"/build_"$PACKNAME" ]; then
 # special build with build_$PACKNAME for linux-howtos, linux-faqs
 # and kernel-headers,kernel-source, kernel-all
 elif [ -f /source/"$SRCDIR"/build_"$PACKNAME" ]; then
-	cd /source/"$SRCDIR"
+	cd /source/"$SRCDIR" || exit 1 
 	if ! (source build_"$PACKNAME" ); then
 		exit 1
 	fi
@@ -192,10 +192,6 @@ sfs_preparation
 #	readline, subversion, texlive, zstd, perl, openldap, libtirpc
 #   elogind, libxkbcommon
 #****************************************************************
-# init NUMJOBS variable
-#****************************************************************
-NUMJOBS="-j$(( $(nproc) * 2 )) -l$(( $(nproc) + 1 ))"
-#**************************************************************
 # read the length of build.list and affect $SRCDIR and $PACKNAME
 #**************************************************************
 [ "$1" == "" ] && on_error
