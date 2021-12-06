@@ -27,13 +27,13 @@ build_gcc () {
 # set -xv
 
 # test the absence of the gnat compiler in tools, and execute gcc_pre if so
-(! /tools/bin/gnat) 1> /dev/null && cd /source/d/gcc && source build_gcc_pre
+(! /tools/bin/gnat) 1> /dev/null && cd /source/d/gcc && source build_gcc-pre
 
 if ! ( build "$SRCDIR" "$PACKNAME" ); then
 	exit 1
 fi
 # test the absence of the gnat compiler in tools, and execute gcc_post if so
-(! /tools/bin/gnat) 1> /dev/null && source build_gcc_post
+(! /tools/bin/gnat) 1> /dev/null && source build_gcc-post
 
 cd /scripts || exit 1
 }

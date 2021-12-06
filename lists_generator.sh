@@ -45,7 +45,7 @@ lists_generator () {
 
 generate_slackware_link_build_list () {
 cat > "$SFS"/scripts/link.list << "EOF"
-a link_tools_slackware
+a link-tools
 EOF
 }
 
@@ -1444,16 +1444,6 @@ cat  "$SFS"/scripts/build3.list >> "$SFS"/scripts/build5.list
 cat  "$SFS"/scripts/build4.list >> "$SFS"/scripts/build5.list
 }
 
-test_gnat () {
-#******************************************
-# test the existence of gnat in tools
-# if not, modify build1.list to have 
-# 'd pre-gcc' and 'd post-gcc' to build gcc
-#******************************************
-(! /tools/bin/gnat) 1> /dev/null && sed -i -e 's/# d/d/g' build1.list
-(! /tools/bin/gnat) 1> /dev/null && sed -i -e 's/# d/d/g' build0.list
-}
-
 #************************************************************************
 #************************************************************************
 # MAIN CORE SCRIPT
@@ -1461,4 +1451,3 @@ test_gnat () {
 #************************************************************************
 
 lists_generator
-test_gnat
