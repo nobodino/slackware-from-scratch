@@ -159,6 +159,7 @@ if [ -f /source/"$SRCDIR"/"$PACKNAME"/build_"$PACKNAME" ]; then
 # special build with build_$PACKNAME for linux-howtos, linux-faqs
 # and kernel-headers,kernel-source, kernel-all
 elif [ -f /source/"$SRCDIR"/build_"$PACKNAME" ]; then
+	cd /source/"$SRCDIR"
 	if ! (source build_"$PACKNAME" ); then
 		exit 1
 	fi
@@ -167,7 +168,7 @@ elif [ -f /source/"$SRCDIR"/"$SRCDIR"/build_"$PACKNAME" ]; then
 	if ! (source build_"$PACKNAME" ); then
 		exit 1
 	fi
-elif
+elif [ ! -f /source/"$SRCDIR"/"$PACKNAME"/build_"$PACKNAME" ] && [ ! -f /source/"$SRCDIR"/build_"$PACKNAME" ] && [ ! -f /source/"$SRCDIR"/"$SRCDIR"/build_"$PACKNAME" ]; then
 # normal build with the SlackBuild
 	if ! ( build "$SRCDIR" "$PACKNAME" ); then
 		exit 1
