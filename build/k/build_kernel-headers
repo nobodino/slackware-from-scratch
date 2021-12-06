@@ -32,7 +32,21 @@ cd "$SLACKSRC"/k || exit 1
 chmod +x kernel-headers.SlackBuild
 cp -v kernel-headers.SlackBuild kernel-headers.SlackBuild.old
 sed -i -e "45,47d;57,64d" kernel-headers.SlackBuild && ./kernel-headers.SlackBuild 
-$INSTALLPRG /tmp/kernel-headers*.txz && mv -v /tmp/kernel-headers*.txz /slackware64/d
+$INSTALLPRG /tmp/kernel-headers*.txz
+
+case $(uname -m) in
+	x86_64 )
+		if ! mv -v /tmp/kernel-headers*.txz /slackware64/d ;
+		then 
+			exit 1
+		fi ;;
+	* )
+		if ! mv -v /tmp/kernel-headers*.txz /slackware/d ;
+		then 
+			exit 1
+		fi ;;
+esac
+
 rm -rf /tmp/package-kernel-headers/
 mv kernel-headers.SlackBuild.old kernel-headers.SlackBuild
 

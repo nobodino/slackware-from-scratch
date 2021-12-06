@@ -32,7 +32,21 @@ cd "$SLACKSRC"/k || exit 1
 chmod +x kernel-source.SlackBuild
 cp -v kernel-source.SlackBuild kernel-source.SlackBuild.old
 sed -i -e "55,92d;111,113d;140,181d" kernel-source.SlackBuild && ./kernel-source.SlackBuild 
-$INSTALLPRG /tmp/kernel-source*.txz && mv -v /tmp/kernel-source*.txz /slackware64/k
+$INSTALLPRG /tmp/kernel-source*.txz
+
+case $(uname -m) in
+	x86_64 )
+		if ! mv -v /tmp/kernel-source*.txz /slackware64/k ;
+		then 
+			exit 1
+		fi ;;
+	* )
+		if ! mv -v /tmp/kernel-source*.txz /slackware/k ;
+		then 
+			exit 1
+		fi ;;
+esac
+
 rm -rf /tmp/package-kernel-source/
 mv kernel-source.SlackBuild.old kernel-source.SlackBuild
 
