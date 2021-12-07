@@ -1,5 +1,5 @@
 #!/bin/bash
-########################## build_gettext ##########################
+########################## build_gettext-tools #####################
 #
 # Copyright 2021 "nobodino", Bordeaux, FRANCE
 # All rights reserved.
@@ -24,13 +24,33 @@
 ###################################################################
 build_gettext () {
 ###################################################################
-# set -xv
-
-if ! ( build "$SRCDIR" "$PACKNAME" ); then
+INSTALLPRG="upgradepkg --install-new --reinstall"
+# two packages in gettext: gettext and gettext-tools
+# DIRNAME=gettext
+chmod +x "$PACKNAME".SlackBuild
+if ! ./"$PACKNAME".SlackBuild;
+then
 	exit 1
 fi
+# every other package is built in /tmp
+cd /tmp || exit 1
+if ! $INSTALLPRG /tmp/"$PACKNAME"*.t?z;
+then
+	exit 1
+fi
+# don't forget to mv gettext-tools in d/
+case $(uname -m) in
+	x86_64 )
+		if ! ( mv -v /tmp/"$PACKNAME"*.t?z /slackware64/d/ ); then
+			exit 1
+		fi ;;
+	* )
+		if ! ( mv -v /tmp/"$PACKNAME"*.t?z /slackware/d/ ); then
+			exit 1
+		fi ;;
+esac
 
-cd /source/a/gettext && source build_gettext-tools
+cd /tmp  && rm -rf *
 
 cd /scripts || exit 1
 }

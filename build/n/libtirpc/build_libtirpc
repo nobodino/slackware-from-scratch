@@ -28,13 +28,14 @@ build_libtirpc () {
 cat FLAG > COUNTER
 
 if [ COUNTER==1 ]; then
-	source execute_sed_"$PACKNAME"
+	export WITH_GSS="NO"
 	if ( build "$SRCDIR" "$PACKNAME" ); then
-		update_slackbuild && echo 2 > /source/"$SRCDIR"/"$PACKNAME"/FLAG
+		export WITH_GSS="YES" && echo 2 > /source/"$SRCDIR"/"$PACKNAME"/FLAG
 	elif ( ! build "$SRCDIR" "$PACKNAME" ); then
 		exit 1
 	fi
 elif [ ! COUNTER==1]; then
+	export WITH_GSS="YES"
 	if ( build "$SRCDIR" "$PACKNAME" ); then
 		echo 1 > FLAG
 	elif ! ( build "$SRCDIR" "$PACKNAME" ); then
