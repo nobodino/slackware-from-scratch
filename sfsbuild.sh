@@ -48,6 +48,35 @@ echo
 exit 255
 }
 
+test_arch () {
+#******************************************
+# test the architecture i686/586/386 or x86_64 we
+# will be build the  slackware distribution,
+#******************************************
+ARCH=$(uname -m)
+echo $ARCH
+if [ "$ARCH" != "x86_64" ] && [ "$ARCH" != "i686" ] && [ "$ARCH" != "i586" ] && [ "$ARCH" != "i386" ]; then
+	boot_mesg "
+ >>> This arch ($ARCH) is not supported."
+	echo_failure
+	exit 1
+fi
+}
+
+define_path_lib () {
+#****************************************
+case $ARCH in
+	x86_64 )
+		export LD_LIBRARY_PATH="/lib64:/usr/lib64"
+		mkdir -pv /usr/lib64/java/bin && mkdir -pv /usr/lib64/jre/bin
+		PATH_HOLD=$PATH && export PATH=/usr/lib64/java/bin:/usr/lib64/jre/bin:$PATH_HOLD ;;
+
+	* )
+		mkdir -pv /usr/lib/java/bin && mkdir -pv /usr/lib/jre/bin
+		PATH_HOLD=$PATH && export PATH=/usr/lib/java/bin:/usr/lib/jre/bin:$PATH_HOLD ;;
+esac
+}
+
 build () {
 #***********************************************************
 # main build procedure for slackware package
@@ -100,38 +129,6 @@ done
 cd /scripts || exit 1
 }
 
-sfs_preparation () {
-#****************************************************************
-# test the architecture i686/586/386 or x86_64 we will be build
-# the slackware distribution,
-#****************************************************************
-ARCH=$(uname -m)
-echo "$ARCH"
-if [ "$ARCH" != "x86_64" ] && [ "$ARCH" != "i686" ] && [ "$ARCH" != "i586" ] && [ "$ARCH" != "i386" ]; then
-	boot_mesg "
- >>> This arch ($ARCH) is not supported."
-	echo_failure
-	exit 1
-fi
-#****************************************************************
-# define the path lib and create the packages directories
-#****************************************************************
-case $ARCH in
-	x86_64 )
-		export LD_LIBRARY_PATH="/lib64:/usr/lib64"
-		mkdir -pv /usr/lib64/java/bin && mkdir -pv /usr/lib64/jre/bin
-		mkdir -pv /slackware64/{others,a,ap,d,e,extra,f,installer,k,kde,l,n,t,tcl,x,xap,xfce,y}
-		mkdir -pv /slackware64/extra/{aspell-word-list,bash-completion,bittornado,brltty,fltk,getty-ps,java,php80,php81,sendmail,tigervnc,xf86-video-fbdev,xfractint,xv}
-		PATH_HOLD=$PATH && export PATH=/usr/lib64/java/bin:/usr/lib64/jre/bin:$PATH_HOLD ;;
-
-	* )
-		mkdir -pv /usr/lib/java/bin && mkdir -pv /usr/lib/jre/bin
-		mkdir -pv /slackware/{others,a,ap,d,e,extra,f,installer,k,kde,l,n,t,tcl,x,xap,xfce,y}
-		mkdir -pv /slackware/extra/{aspell-word-list,bash-completion,bittornado,brltty,fltk,getty-ps,java,php80,php81,sendmail,tigervnc,xf86-video-fbdev,xfractint,xv}
-		PATH_HOLD=$PATH && export PATH=/usr/lib/java/bin:/usr/lib/jre/bin:$PATH_HOLD ;;
-esac
-}
-
 update_slackbuild () {
 #****************************************************************
 # rename SlackBuild.old to original SlackBuild
@@ -182,7 +179,8 @@ return
 #****************************************************************
 # MAIN CORE SCRIPT of sfsbuild
 #****************************************************************
-sfs_preparation
+test_arch
+define_path_lib
 #****************************************************************
 # Some packages need two pass to be built completely.
 # Alteration of the slackware sources is made "on the fly" during
@@ -215,6 +213,6 @@ while (( LINE < FILELEN )); do
 	(( LINE = LINE + 1 ))
 	[ "$SRCDIR" == "#" ] && continue
 
-	build_package
+build_package
 
 done
