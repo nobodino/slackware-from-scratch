@@ -1,0 +1,153 @@
+#!/bin/bash
+########################## link-tools #############################
+#
+# Copyright 2021 "nobodino", Bordeaux, FRANCE
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+###################################################################
+#
+# Note: The link_tools procedure of this script is 
+#       inspired from the LFS manual chapter 6.10
+#       Copyright © 1999-2021 Gerard Beekmans and may be
+#       copied under the MIT License.
+#
+###################################################################
+export GREEN="\\033[1;32m"
+export NORMAL="\\033[0;39m"
+export RED="\\033[1;31m"
+export BLUE="\\033[1;34m"
+export YELLOW="\\033[1;33m"
+###################################################################
+test_progs () {
+#*************************************************************************
+# test essential program presence and location for makepkg and installpkg
+# for which, tar-1.13, xz and patch, the existence is sufficient
+# if one of those test fails, the script will exit.
+#*************************************************************************
+# set -xv
+
+echo "Now we test essential program locations."
+echo "The following should be located:"
+echo "	/tools/bin/which"
+echo "	/tools/bin/tar-1.13"
+echo "	/tools/bin/xz"
+echo "	/tools/bin/patch"
+echo "	/sbin/makepkg"
+echo "	/sbin/installpkg"
+
+	if ! { command -v which > /dev/null; } 2>&1; then
+		error "which was not found on the system, the 'tools' you built are not complete" && exit 1
+	fi
+	if ! { command -v tar-1.13 > /dev/null; } 2>&1; then
+		error "tar-1.13 was not found on the system, the 'tools' you built are not complete" && exit 1
+	fi
+	if ! { command -v xz > /dev/null; } 2>&1; then
+		error "xz was not found on the system, the 'tools' you built are not complete" && exit 1
+	fi
+	if ! { command -v patch > /dev/null; } 2>&1; then
+		error "patch was not found on the system, the 'tools' you built are not complete" && exit 1
+	fi
+	if ! { command -v makepkg > /dev/null; } 2>&1; then
+		error "makepkg was not found on the system, the 'tools' you built are not complete" && exit 1
+	fi
+	if ! { command -v installpkg > /dev/null; } 2>&1; then
+		error "installpkg was not found on the system, the 'tools' you built are not complete" && exit 1
+	fi
+
+echo
+}
+
+create_slackware_directories () {
+#****************************************************************
+case $(uname -m) in
+	x86_64 )
+		mkdir -pv /slackware64/{others,a,ap,d,e,extra,f,installer,k,kde,l,n,t,tcl,x,xap,xfce,y}
+		mkdir -pv /slackware64/extra/{aspell-words-list,bash-completion,bittornado,brltty,fltk,getty-ps,java,php8,sendmail,tigervnc,xf86-video-fbdev,xfractint,xv};;
+
+	* )
+		mkdir -pv /slackware/{others,a,ap,d,e,extra,f,installer,k,kde,l,n,t,tcl,x,xap,xfce,y}
+		mkdir -pv /slackware/extra/{aspell-words-list,bash-completion,bittornado,brltty,fltk,getty-ps,java,php8,sendmail,tigervnc,xf86-video-fbdev,xfractint,xv};;
+esac
+}
+
+echo_message_slackware () {
+#****************************************************************
+echo "-------------------------------------------"
+echo
+echo "By now, you are ready to build Slackware From Scratch."
+echo "and wait a long time, a few hours."
+echo 
+echo "Now, you can build SFS by hand, by building packages, one by one."
+echo "./package.SlackBuild && installpkg /tmp/package*.t?z"
+echo
+echo "You can also do it with only one script, by executing the"
+echo "following command, there will be 4 steps:"
+echo
+echo -e "$YELLOW" "time ./sfsbuild.sh build1.list" "$NORMAL"
+echo
+echo "Either, you can also do it in one step, by executing the"
+echo "following command, it will build the entire system till the end:"
+echo
+echo -e "$BLUE" "time ./full-sfs.sh" "$NORMAL"
+echo
+echo "Either, you can also build a small slackware system with no X11 system, "
+echo "by executing the following command:"
+echo
+echo -e "$RED" "time ./sfsbuild.sh build0.list" "$NORMAL"
+echo
+}
+
+link-tools () {
+#****************************************************************
+# Some programs use hard-wired paths to programs which do not
+# exist yet. In order to satisfy these programs, create a
+# number of symbolic links which will be replaced by real
+# files throughout the course of this chapter after the
+# software has been installed. And create some directories
+# to install the first slackware programs.
+# We added a link to /tools/bin/du to avoid 'noise' during
+# pkgtools building, which is not in LFS of course.
+#
+# Note: Much of this script is copied from the LFS manual.
+#       Copyright © 1999-2021 Gerard Beekmans and may be
+#       copied under the MIT License.
+#****************************************************************
+mkdir -pv /bin && mkdir -pv /usr/include
+mkdir -pv /usr/src && mkdir -pv /usr/bin
+ln -sv /tools/bin/{bash,cat,dd,du,echo,ln,pwd,rm,stty} /bin
+ln -sv /tools/bin/{install,perl} /usr/bin
+
+case $ARCH in
+	x86_64 )
+		mkdir -pv /usr/lib64
+		ln -sv /tools/lib64/libgcc_s.so{,.1} /usr/lib64
+		ln -sv /tools/lib64/libstdc++.{a,so{,.6}} /usr/lib64 ;;
+	* )
+		mkdir -pv /usr/lib
+		ln -sv /tools/lib/libgcc_s.so{,.1} /usr/lib
+		ln -sv /tools/lib/libstdc++.{a,so{,.6}} /usr/lib ;;
+esac
+
+ln -sv bash /bin/sh
+ln -sv /proc/self/mounts /etc/mtab
+
+}
+
+test_progs && create_slackware_directories && link-tools && echo_message_slackware
