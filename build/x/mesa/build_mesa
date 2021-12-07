@@ -28,13 +28,14 @@ build_mesa () {
 cat FLAG > COUNTER
 
 if [ COUNTER==1 ]; then
-	source execute_sed_"$PACKNAME"
+	export BUILD_DEMOS=NO
 	if ( build "$SRCDIR" "$PACKNAME" ); then
-		update_slackbuild && echo 2 > /source/"$SRCDIR"/"$PACKNAME"/FLAG
+		echo 2 > /source/"$SRCDIR"/"$PACKNAME"/FLAG
 	elif ( ! build "$SRCDIR" "$PACKNAME" ); then
 		exit 1
 	fi
 elif [ ! COUNTER==1]; then
+	export BUILD_DEMOS=YES
 	if ( build "$SRCDIR" "$PACKNAME" ); then
 		echo 1 > FLAG
 	elif ! ( build "$SRCDIR" "$PACKNAME" ); then
