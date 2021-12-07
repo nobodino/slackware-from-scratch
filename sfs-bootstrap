@@ -1,5 +1,5 @@
 #!/bin/bash
-#######################  sfs-bootstrap.sh ######################################
+#######################  sfs-bootstrap ####################################
 #
 # Copyright 2018,2019,2020,2021  J. E. Garrott Sr, Puyallup, WA, USA
 # Copyright 2018,2019,2020,2021  "nobodino", Bordeaux, FRANCE
@@ -492,8 +492,8 @@ chmod 755 "$SFS"/sbin/makepkg "$SFS"/sbin/installpkg
 # before everything we test if we are root
 #**************************************
 test_root
-. export_variables.sh
-. export_variables_perso.sh
+. export_variables
+. export_variables_perso
 distribution_selector
 arch_selector
 dev_selector
@@ -587,10 +587,10 @@ root_bashrc
 sfsprep
 
 cd "$SFS"/scripts || exit 1
-. lists_generator.sh
-. prep-sfs-tools.sh
+. lists_generator
+. prep-sfs-tools
 #*************************************
 # finally chroot in $SFS environment
 #*************************************
-. chroot_sfs.sh
+. chroot_sfs
 exit 0

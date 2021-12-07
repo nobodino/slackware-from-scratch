@@ -1,0 +1,62 @@
+#!/bin/bash
+#######################  export_variables ################################
+#
+# Copyright 2018, 2019,2020  J. E. Garrott Sr, Puyallup, WA, USA
+# Copyright 2018, 2019,2020  "nobodino", Bordeaux, FRANCE
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+#--------------------------------------------------------------------------
+#
+#	Above july 2018, revisions made through github project: 
+#   https://github.com/nobodino/slackware-from-scratch 
+#
+##########################################################################
+# set -x
+#*******************************************************************
+# VARIABLES to be set by the user
+#*******************************************************************
+# SFS is the directory where will be built slackware from scratch
+#*******************************************************************
+export SFS=/mnt/sfs
+#******************************************************************
+# PATDIR is the directory where you store eveything about sfs (tools, others...)
+#*******************************************************************
+export PATDIR=/mnt/ext4/sda4/sfs
+#*******************************************************************
+# the directory where are stored everything else slackware (gnat..)
+#*******************************************************************
+export DNDIR1=/mnt/ext4/sda4/sfs/others
+#*******************************************************************
+# the directory where is stored the resynced slackware sources
+#*******************************************************************
+export RDIR1=/mnt/ext4/sda4/home/ftp/pub/Linux/Slackware/slackware-current
+export RDIR3=/mnt/ext4/sda4/home/ftp/pub/Linux/Slackware/slackware64-current
+export RDIR5=/mnt/dvd
+#*******************************************************************
+# the directory where will be copied the slackware sources from RDIR
+#*******************************************************************
+export SRCDIR=$SFS/source
+#*******************************************************************
+# Command for retrieve the native flags: 
+# gcc -march=native -v -E - < /dev/null 2>&1 | grep cc1 | perl -pe 's/ -mno-\S+//g; s/^.* - //g;'
+#******************************************************************
+# CFLAGS="-O3 -fPIC -march=skylake -mmmx -msse -msse2 -msse3 -mssse3 -mcx16 -msahf -mmovbe -maes -mpclmul -mpopcnt -mabm -mfma -mbmi -msgx -mbmi2 -mavx -mavx2 -msse4.2 -msse4.1 -mlzcnt -mrtm -mhle -mrdrnd -mf16c -mfsgsbase -mrdseed -mprfchw -madx -mfxsr -mxsave -mxsaveopt -mclflushopt -mxsavec -mxsaves --param l1-cache-size=32 --param l1-cache-line-size=64 --param l2-cache-size=8192 -mtune=skylake"
+# export CFLAGS 
+#******************************************************************
