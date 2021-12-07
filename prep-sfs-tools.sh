@@ -36,11 +36,11 @@
 #*******************************************************************
 # set -x
 #*******************************************************************
-# the directory where will be built slackware from scratch
+# SFS is the directory where will be built slackware from scratch
 #*******************************************************************
 export SFS=/mnt/sfs
 #*******************************************************************
-# the directory where will be stored the slackware source for SFS
+# SRCDIR is the directory where is be stored the slackware source
 #*******************************************************************
 export SRCDIR=$SFS/scripts
 SFS_TGT=$(uname -m)-sfs-linux-gnu
@@ -98,15 +98,7 @@ echo "Execute the 2 following commands:"
 echo
 echo -e "$GREEN" "cd $SFS/scripts  && source ~/.bash_profile" "$NORMAL"
 echo 
-echo "and then: (standard version of sfs-tools-current)"
-echo
-echo -e "$YELLOW"  "./sfs-tools-current.sh"  "$NORMAL"
-echo
-echo "or: (new modular version of sfs-tools-current)"
-echo
-echo -e "$BLUE"  "./sfs-tools-current-new.sh"  "$NORMAL"
-echo
-echo "or: (new modular and fully integrated sfs-tools inside slackware source tree)"
+echo "and then: "
 echo  
 echo -e "$RED"  "./sfs-tools.sh"  "$NORMAL"
 echo && su - sfs
@@ -151,7 +143,6 @@ get_tools_dir () {
 	cd - || exit 1
 }
 
-
 #*****************************
 # core script
 #*****************************
@@ -169,5 +160,3 @@ elif [[ $tool_sel == 1 ]]; then
 else 		# [[ $tools_test == 3 ]]
 	exit 1	# note: this quits sfs-bootstrap.sh
 fi
-
-
