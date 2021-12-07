@@ -25,9 +25,9 @@ NOTE:
 # cd slackware-from-scratch
 # mv * ..
 # cd ..; rm -rf slackware-from-scratch
-# chmod +x *.sh
+# chmod +x *
 
-3) Edit "myprofile.sh" to adjust to your fstab characteristics,
+3) Edit "myprofile" to adjust to your fstab characteristics,
    root partition, and swap partition. In the example the options for
    the root partition are applicable to my ssd disk.
    "defaults,noatime,discard", may not be applicable to your disk if
@@ -45,9 +45,9 @@ NOTE:
    # End /fstab
 
 
-   In addition, several other things in "myprofile.sh" may need adjusting.
+   In addition, several other things in "myprofile" may need adjusting.
    Time zone information in "localtime ()" and "root_profile ()", for
-   instance.  "myprofile.sh" comes with LANGUAGE (and several other 
+   instance.  "myprofile" comes with LANGUAGE (and several other 
    variables) set to "fr_FR.UTF-8".  This may not be ideal for your
    system.
 
@@ -55,7 +55,7 @@ NOTE:
    "ntp_conf ()".
 
 
-4) Edit "export_variable_perso.sh" to adjust PATDIR, DNDIR1, RDIR1 and RDRIR3.
+4) Edit "export_variable_perso" to adjust PATDIR, DNDIR1, RDIR1 and RDRIR3.
 This script is personal for your own convenience. If you update the script from
 github, you must keep this one unchanged. 
    - PATDIR: the directory where you store eveything about sfs
@@ -71,13 +71,13 @@ github, you must keep this one unchanged.
 # mkdir -pv $PATDIR/tools_64  (to store the "tools" build further on x86_64 -current branch)
 # mkdir -pv $PATDIR/tools_64_dev  (to store the "tools" build further on x86_64 -development branch)
 # mkdir -pv $PATDIR/others  (to store what the sub-script of
-                             "sfs-bootstrap.sh" grabs to "populate_others",
+                             "sfs-bootstrap" grabs to "populate_others",
 							 get the different repositories)
 
 NOTE: a smart way to populate 'others' directory is to choose on your first
 SFS building, the 'rsync' option and then copy it $DNDIR1.
 
-5) Edit "export_variable.sh" to adjust RSYNCDIR.
+5) Edit "export_variable" to adjust RSYNCDIR.
 You can adjust the mirrors to your own convenience, this may depend on your 
 location. Choose mirrors closer to you if you're on another continent than mine.
    - RSYNCDIR: the rsync mirror from which you get the slackware source tree
@@ -85,7 +85,7 @@ location. Choose mirrors closer to you if you're on another continent than mine.
 6) Now you are ready to begin building slackware from scratch. Just execute
 the following command:
 
-# ./sfs-bootsrap.sh
+# ./sfs-bootsrap
 
    You will be presented with two choices: "slackware" or "quit".
    If you choose slackware, then you will see three more choice:
@@ -115,7 +115,7 @@ the following command:
       - list1+2+3+4: builds all the available packages of slackware.
 
 7) If it's your first time building SFS, you will have to build the "tools"
-   which are compulsory to build SFS. It will use the "sfs-tools.sh"
+   which are compulsory to build SFS. It will use the "sfs-tools"
    script.
 
    The "tools" have been built thanks to LFS chapter 5 (Linux From Scratch)
@@ -132,16 +132,16 @@ the following command:
 # move it to $PATDIR/tools or tools_dev (for x86)  or $PATDIR/tools_64 or tools_64_dev (for x86_64)
 
 8) from now you can build SFS either list by list or completely with a unique 
-   script "full-sfs.sh".
+   script "full-sfs".
 
 Either by executing:
-# time (./sfsbuild.sh build1.list)
-# time (./sfsbuild.sh build2.list)
-# time (./sfsbuild.sh build3.list)
-# time (./sfsbuild.sh build4.list)
+# time (./sfsbuild build1.list)
+# time (./sfsbuild build2.list)
+# time (./sfsbuild build3.list)
+# time (./sfsbuild build4.list)
 
 Or by executing:
-# time (./full-sfs.sh)
+# time (./full-sfs)
 
 On my machine the full build takes about 26/27 hours. (nobodino)
 On my machine the full build takes about 37 hours. (worsel)
@@ -153,26 +153,26 @@ the case with SFS (4.14.x series) and slackware-14.2 (4.4.x series). You may
 disable it in build4_s.list by adding '#' in front of 'n ipset' line. You will
 able to build it in real environment, after you reboot your new SFS system. 
 
-9) at the end of the building, adjust "my_profile.sh" to your needs, and 
+9) at the end of the building, adjust "my_profile" to your needs, and 
    execute the script before rebooting. You wil have to update grub (or 
    whatever bootloader you use) so that your boot loader allow you to
    boot in your new system.
 
 10) 3 scripts are not really used by the process of building SFS
-   ("mount-sfs.sh", "umount-sfs.sh" and "chroot1.sh). Their purpose is:
+   ("mount-sfs", "umount-sfs" and "chroot1). Their purpose is:
    - after building the list1, you reboot in your new system and test it.
    - if you want to go on building your system in your chrooted environment
      you will need to execute the following commands:
 
 # cd $SFS/scripts
-# ./mount-sfs.sh
-# ./chroot1.sh
+# ./mount-sfs
+# ./chroot1
 # cd /scripts
 
 You can go on building your system.
 
 # at the end to umount the $SFS/{dev,run,proc,sys}
-# ./umount-sfs.sh 
+# ./umount-sfs 
 
 
 
