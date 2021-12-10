@@ -851,8 +851,8 @@ case $PACKNAME in
 		# don't forget to move aspell-en in l/
 		mv -v /tmp/aspell-en*.txz /slackware64/l
 		# don't forget to move others aspell in extra/
-		mkdir -pv /slackware64/extra/aspell-words-list
-		if ! ( mv /tmp/aspell*.txz /slackware64/extra/aspell-words-list); then
+		mkdir -pv /slackware64/extra/aspell-word-lists
+		if ! ( mv /tmp/aspell*.txz /slackware64/extra/aspell-word-lists); then
 			exit 1
 		fi
 		cd /scripts || exit 1 ;;
