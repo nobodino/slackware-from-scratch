@@ -87,7 +87,6 @@ then
 else
 	INSTALLPRG=installpkg
 fi
-
 # BUILDN: defines if package will be installed or upgraded
 [ "$BUILDN" != "" ] && export BUILDN
 SRCDIR=$1
@@ -126,15 +125,6 @@ cd /tmp || exit 1
 for i in *; do
     [ -d "$i" ] && rm -rf "$i"
 done
-cd /scripts || exit 1
-}
-
-update_slackbuild () {
-#****************************************************************
-# rename SlackBuild.old to original SlackBuild
-#****************************************************************
-cd /source/"$SRCDIR"/"$PACKNAME" || exit 1 
-mv "$PACKNAME".SlackBuild.old "$PACKNAME".SlackBuild
 cd /scripts || exit 1
 }
 
@@ -185,7 +175,7 @@ define_path_lib
 # Some packages need two pass to be built completely.
 # Alteration of the slackware sources is made "on the fly" during
 # the first build. On the second pass, the old SlackBuild is 
-# renamed to its original version, and package can be built normally: 
+# renamed to its original version, so the package can build normally: 
 #	cmake, dbus, findutils, fontconfig, freetype, gd, glib2
 #	gobject-introspection, harfbuzz, kmod, liusb, llvm, pkg-config
 #	readline, subversion, texlive, zstd, perl, openldap, libtirpc
@@ -193,7 +183,6 @@ define_path_lib
 #****************************************************************
 # read the length of build.list and affect $SRCDIR and $PACKNAME
 #****************************************************************
-
 [ "$1" == "" ] && on_error
 [ ! -f "$1" ] && on_error
 LISTFILE=$1
@@ -213,7 +202,5 @@ while (( LINE < FILELEN )); do
 	PACKNAME=$(echo "$aline" |cut -d' ' -f2)
 	(( LINE = LINE + 1 ))
 	[ "$SRCDIR" == "#" ] && continue
-
-build_package
-
+	build_package
 done
