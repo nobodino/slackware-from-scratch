@@ -26,29 +26,21 @@ build_aspell-word-lists () {
 ###################################################################
 INSTALLPRG="upgradepkg --install-new --reinstall"
 
-# every other package treatment
-cd "$SLACKSRC"/"$SRCDIR"/"$PACKNAME" || exit 1
-chmod +x "$PACKNAME".SlackBuild
-if ! ./"$PACKNAME".SlackBuild
+cd "$SLACKSRC"/"$SRCDIR"/"$PACKNAME"  || exit 1
+chmod +x aspell-dict.SlackBuild
+if ! ./aspell-dict.SlackBuild;
 then
 	exit 1
 fi
-# every other package is built in /tmp
-export TERM=xterm && cd /tmp || exit 1
-if ! $INSTALLPRG /tmp/"$PACKNAME"*.t?z;
-then
+# install only aspell-en package
+if ! $INSTALLPRG /tmp/aspell-en*.txz ; then
 	exit 1
 fi
-# mv every built package in its destination directory
 case $(uname -m) in
 	x86_64 )
-		if ! ( mv /tmp/bash*.txz /slackware64/extra/aspell-word-lists); then
-			exit 1
-		fi ;;
+		mv -v /tmp/aspell-en*.txz /slackware64/l && mv -v /tmp/aspell*.txz /slackware64/extra/aspell-word-lists ;;
 	* )
-		if ! ( mv /tmp/bash*.txz /slackware/extra/aspell-word-lists); then
-			exit 1
-		fi ;;
+		mv -v /tmp/aspell-en*.txz /slackware/l && mv -v /tmp/aspell*.txz /slackware/extra/aspell-word-lists ;;
 esac
 
 cd /tmp  && rm -rf *
