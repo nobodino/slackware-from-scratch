@@ -25,23 +25,27 @@
 build_texlive () {
 ###################################################################
 # set -xv
-cat FLAG > COUNTER
+FLAG=${FLAG:-$(cat FLAG )}
 
-if [ COUNTER==1 ]; then
-	source execute_sed_"$PACKNAME"
-	if ( build "$SRCDIR" "$PACKNAME" ); then
-		update_slackbuild && echo 2 > /source/"$SRCDIR"/"$PACKNAME"/FLAG
-	elif ( ! build "$SRCDIR" "$PACKNAME" ); then
-		exit 1
-	fi
-elif [ ! COUNTER==1]; then
-	if ( build "$SRCDIR" "$PACKNAME" ); then
-		echo 1 > FLAG
-	elif ! ( build "$SRCDIR" "$PACKNAME" ); then
-		exit 1
-	fi 
+if [[ "$FLAG" -eq 1 ]]; then
+	COUNTER=1
+elif [[ ! "$FLAG" -eq 1 ]]; then
+	COUNTER=2
 fi
 
+case $COUNTER in
+	1 )
+		source execute_sed_"$PACKNAME"
+		if ! build "$SRCDIR" "$PACKNAME"; then
+			exit 1
+		fi
+		cd  /source/$SRCDIR/$PACKNAME/
+		mv "$PACKNAME".SlackBuild.old "$PACKNAME".SlackBuild && echo 2 > /source/$SRCDIR/$PACKNAME/FLAG ;;
+	* )
+		if ! build "$SRCDIR" "$PACKNAME"; then
+			exit 1
+		fi ;;
+esac
 cd /scripts || exit 1
 }
 

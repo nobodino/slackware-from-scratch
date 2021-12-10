@@ -1,5 +1,5 @@
 #!/bin/bash
-##################### build_isapnp ##############################
+##################### build_isapnptools ##############################
 #
 # Copyright 2021 "nobodino", Bordeaux, FRANCE
 # All rights reserved.
@@ -22,17 +22,18 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 ###################################################################
-build_isapnp () {
+build_isapnptools () {
 ###################################################################
 INSTALLPRG="upgradepkg --install-new --reinstall"
 
 case $ARCH in
 	x86_64 )
 		echo ;;
-		* )
-			if ! ( build "$SRCDIR" "$PACKNAME" ); then
-				exit 1
-			fi ;;
+
+	* )
+		if ! ( build "$SRCDIR" "$PACKNAME" ); then
+			exit 1
+		fi ;;
 esac
 
 cd /tmp  && rm -rf *
@@ -40,4 +41,4 @@ cd /tmp  && rm -rf *
 cd /scripts || exit 1
 }
 
-build_isapnp
+build_isapnptools
