@@ -193,6 +193,7 @@ define_path_lib
 #****************************************************************
 # read the length of build.list and affect $SRCDIR and $PACKNAME
 #****************************************************************
+
 [ "$1" == "" ] && on_error
 [ ! -f "$1" ] && on_error
 LISTFILE=$1
@@ -213,6 +214,14 @@ while (( LINE < FILELEN )); do
 	(( LINE = LINE + 1 ))
 	[ "$SRCDIR" == "#" ] && continue
 
-build_package
+	case $PACKNAME in
+
+		extra-cmake-modules )
+			cd /source/kde/kde && source build_"$PACKNAME" ;;
+
+		* )
+			build_package ;;
+
+	esac
 
 done
