@@ -128,35 +128,6 @@ done
 cd /scripts || exit 1
 }
 
-build_FLAG () {
-#****************************************************************
-# build a $PACKAGE which need two pass to be built normally 
-#****************************************************************
-FLAG=${FLAG:-$(cat /source/$SRCDIR/$PACKNAME/FLAG )}
-
-if [[ "$FLAG" -eq 1 ]]; then
-	COUNTER=1
-elif [[ ! "$FLAG" -eq 1 ]]; then
-	COUNTER=2
-fi
-
-case $COUNTER in
-	1 )
-		source /source/$SRCDIR/$PACKNAME/execute_sed_"$PACKNAME"
-		if ! build "$SRCDIR" "$PACKNAME"; then
-			exit 1
-		fi
-		cd  /source/$SRCDIR/$PACKNAME/
-		mv "$PACKNAME".SlackBuild.old "$PACKNAME".SlackBuild && echo 2 > /source/$SRCDIR/$PACKNAME/FLAG ;;
-	* )
-		if ! build "$SRCDIR" "$PACKNAME"; then
-			exit 1
-		fi ;;
-esac
-
-return
-}
-
 build_package () {
 #****************************************************************
 # build a $PACKAGE  with SlackBuild or with build_$PACKNAME 
