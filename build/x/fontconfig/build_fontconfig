@@ -1,10 +1,52 @@
 #!/bin/bash
-########################
+########################## build_fontconfig ##############################
+#
+# Copyright 2021 "nobodino", Bordeaux, FRANCE
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+###################################################################
 build_fontconfig () {
-########################
-if ! build_FLAG ; then
-	exit 1
-fi 
+###################################################################
+# set -xv
+FLAG=${FLAG:-$(cat FLAG )}
+
+if [[ "$FLAG" -eq 1 ]]; then
+	COUNTER=1
+elif [[ ! "$FLAG" -eq 1 ]]; then
+	COUNTER=2
+fi
+
+case $COUNTER in
+	1 )
+		source execute_sed_"$PACKNAME"
+		if ! build "$SRCDIR" "$PACKNAME"; then
+			exit 1
+		fi
+		cd  /source/$SRCDIR/$PACKNAME/
+		mv "$PACKNAME".SlackBuild.old "$PACKNAME".SlackBuild && echo 2 > /source/$SRCDIR/$PACKNAME/FLAG ;;
+	* )
+		if ! build "$SRCDIR" "$PACKNAME"; then
+			exit 1
+		fi ;;
+esac
 cd /scripts || exit 1
 }
+
 build_fontconfig 
