@@ -505,6 +505,16 @@ case $COUNTER in
 			fi
 		done
 
+		for package in \
+			kdevelop \
+			kdev-php \
+			kdev-python \
+		  ; do
+		   	if ! ./kde.SlackBuild applications:$package; then
+				touch /tmp/kde_build/$package.failed && exit 1
+			fi
+		done
+
 		if ! ./kde.SlackBuild applications:umbrello; then
 			touch /tmp/kde_build/$package.failed && exit 1
 		fi 
