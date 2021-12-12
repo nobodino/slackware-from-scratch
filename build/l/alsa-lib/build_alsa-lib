@@ -25,22 +25,28 @@
 build_alsa-lib () {
 ###################################################################
 # set -xv
-cat FLAG > COUNTER
+FLAG=${FLAG:-$(cat FLAG )}
 
-if [ COUNTER==1 ]; then
-	if ( build "$SRCDIR" "$PACKNAME" ); then
-		echo 2 > /source/"$SRCDIR"/"$PACKNAME"/FLAG
-	elif ( ! build "$SRCDIR" "$PACKNAME" ); then
-		exit 1
-	fi
-elif [ ! COUNTER==1]; then
-	rm /slackware64/l/alsa-lib*.t?z
-	if ( build "$SRCDIR" "$PACKNAME" ); then
-		echo 1 > FLAG
-	elif ! ( build "$SRCDIR" "$PACKNAME" ); then
-		exit 1
-	fi 
+if [[ "$FLAG" -eq 1 ]]; then
+	COUNTER=1
+elif [[ ! "$FLAG" -eq 1 ]]; then
+	COUNTER=2
 fi
+
+case $COUNTER in
+	1 )
+		if ( build "$SRCDIR" "$PACKNAME" ); then
+			echo 2 > /source/"$SRCDIR"/"$PACKNAME"/FLAG
+		elif ( ! build "$SRCDIR" "$PACKNAME" ); then
+			exit 1
+		fi ;;
+	* )
+		rm /slackware64/l/alsa-lib*.t?z
+		if ( build "$SRCDIR" "$PACKNAME" ); then
+			echo 1 > FLAG
+		elif ! ( build "$SRCDIR" "$PACKNAME" ); then
+			exit 1
+		fi ;;
 
 cd /scripts || exit 1
 }
