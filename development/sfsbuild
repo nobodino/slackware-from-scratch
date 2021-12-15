@@ -168,8 +168,8 @@ build_package () {
 # SlackBuild. Different cases may occur like kde, kernel, linux-faqs
 #****************************************************************
 cd  /source/"$SRCDIR" || exit 1 
-# build with build_$PACKNAME for all two pass packages 
-if [ -f /source/"$SRCDIR"/"$PACKNAME"/FLAG ] && [ ! -f /source/"$SRCDIR"/"$PACKNAME"/build_"$PACKNAME" ]; then
+# build with build_$PACKNAME for all two pass packages (need FLAG and execute_sed_"PACKNAME"
+if [ -f /source/"$SRCDIR"/"$PACKNAME"/FLAG ] && [ -f /source/"$SRCDIR"/"$PACKNAME"/execute_sed_"$PACKNAME" ]; then
 	cd  /source/"$SRCDIR"/"$PACKNAME" || exit 1 
 	if ! build_FLAG ; then
 		exit 1
