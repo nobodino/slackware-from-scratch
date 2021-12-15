@@ -75,6 +75,13 @@ cd /scripts
 if [ -f list-slackware ]; then 
 	diff -au list-slackware list-sfs > list.diff
 fi
+case $(uname -a) in
+	x86-64 )
+		upgradepkg --reinstall --install-new /slackware64/d/rust-1.*-x86-64*.txz ;;
+	* )
+		upgradepkg --reinstall --install-new /slackware/d/rust-1.*-x86-64*.txz ;;
+esac
+
 killall -9 dhcpcd
 }
 ###################################################################
