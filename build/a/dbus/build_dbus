@@ -25,22 +25,15 @@
 build_dbus () {
 ###################################################################
 # set -xv
-FLAG=${FLAG:-$(cat FLAG )}
 
-if [[ "$FLAG" -eq 1 ]]; then
-	COUNTER=1
-elif [[ ! "$FLAG" -eq 1 ]]; then
-	COUNTER=2
-fi
-
-case $COUNTER in
-	1 )
+case $LISTFILE in
+	build2.list )
 		source execute_sed_"$PACKNAME"
 		if ! build "$SRCDIR" "$PACKNAME"; then
 			exit 1
 		fi
-		cd  /source/$SRCDIR/$PACKNAME/
-		mv "$PACKNAME".SlackBuild.old "$PACKNAME".SlackBuild && echo 2 > /source/$SRCDIR/$PACKNAME/FLAG ;;
+		dbus-uuidgen --ensure && cd  /source/$SRCDIR/$PACKNAME/
+		mv "$PACKNAME".SlackBuild.old "$PACKNAME".SlackBuild ;;
 	* )
 		if ! build "$SRCDIR" "$PACKNAME"; then
 			exit 1
