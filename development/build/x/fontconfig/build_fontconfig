@@ -1,5 +1,5 @@
 #!/bin/bash
-########################## build_glib2 ##############################
+########################## build_fontconfig ##############################
 #
 # Copyright 2021 "nobodino", Bordeaux, FRANCE
 # All rights reserved.
@@ -22,18 +22,11 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 ###################################################################
-build_glib2 () {
+build_fontconfig () {
 ###################################################################
 # set -xv
 
 case $LISTFILE in
-	build1.list )
-		source execute_sed_"$PACKNAME"
-		if ! build "$SRCDIR" "$PACKNAME"; then
-			exit 1
-		fi
-		cd  /source/$SRCDIR/$PACKNAME/
-		mv "$PACKNAME".SlackBuild.old "$PACKNAME".SlackBuild ;;
 	build2.list )
 		source execute_sed_"$PACKNAME"
 		if ! build "$SRCDIR" "$PACKNAME"; then
@@ -46,8 +39,7 @@ case $LISTFILE in
 			exit 1
 		fi ;;
 esac
-
 cd /scripts || exit 1
 }
 
-build_glib2
+build_fontconfig 
