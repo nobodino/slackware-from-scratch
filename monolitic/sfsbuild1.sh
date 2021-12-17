@@ -3017,7 +3017,7 @@ while (( LINE < FILELEN )); do
 					continue ;;
 
 
-				pci-utils )
+				pciutils )
 					build_pkg_2
 					update-pciids ;;
 
