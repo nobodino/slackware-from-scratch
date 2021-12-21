@@ -54,7 +54,7 @@ test_arch () {
 # will be build the  slackware distribution,
 #******************************************
 ARCH=$(uname -m)
-
+echo $ARCH
 if [ "$ARCH" != "x86_64" ] && [ "$ARCH" != "i686" ] && [ "$ARCH" != "i586" ] && [ "$ARCH" != "i386" ]; then
 	boot_mesg "
  >>> This arch ($ARCH) is not supported."
@@ -148,7 +148,7 @@ case $COUNTER in
 		if ! build "$SRCDIR" "$PACKNAME"; then
 			exit 1
 		fi
-		cd  /source/$SRCDIR/$PACKNAME/ 
+		cd  /source/$SRCDIR/$PACKNAME/
 		mv "$PACKNAME".SlackBuild.old "$PACKNAME".SlackBuild && echo 2 > /source/$SRCDIR/$PACKNAME/FLAG ;;
 	* )
 		if ! build "$SRCDIR" "$PACKNAME"; then
@@ -181,7 +181,8 @@ elif [ -f /source/"$SRCDIR"/build_"$PACKNAME" ]; then
 	if ! ( source build_"$PACKNAME" ); then
 		exit 1
 	fi
-# special build with build_$PACKNAME for glibc, pciutils
+# special build with build_$PACKNAME for glibc, dbus, elogind, pam
+# cmake, pkg-config, glib2, gobject-introspection, cyrus-sasl, fontconfig
 elif [ -f /source/"$SRCDIR"/"$PACKNAME"/build_"$PACKNAME" ]; then
 	cd  /source/"$SRCDIR"/"$PACKNAME" || exit 1 
 	if ! ( source build_"$PACKNAME" ); then
