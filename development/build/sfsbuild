@@ -54,7 +54,7 @@ test_arch () {
 # will be build the  slackware distribution,
 #******************************************
 ARCH=$(uname -m)
-echo $ARCH
+
 if [ "$ARCH" != "x86_64" ] && [ "$ARCH" != "i686" ] && [ "$ARCH" != "i586" ] && [ "$ARCH" != "i386" ]; then
 	boot_mesg "
  >>> This arch ($ARCH) is not supported."
@@ -143,15 +143,14 @@ fi
 case $COUNTER in
 	1 )
 		if [ -f /source/"$SRCDIR"/"$PACKNAME"/execute_sed_"$PACKNAME" ]; then
-			source /source/$SRCDIR/$PACKNAME/execute_sed_"$PACKNAME"
+			source /source/$SRCDIR/$PACKNAME/execute_sed_"$PACKNAME" 
 		fi
-		if ! build "$SRCDIR" "$PACKNAME"; then
+		if ( ! build "$SRCDIR" "$PACKNAME" ); then
 			exit 1
 		fi
-		cd  /source/$SRCDIR/$PACKNAME/
-		mv "$PACKNAME".SlackBuild.old "$PACKNAME".SlackBuild && echo 2 > /source/$SRCDIR/$PACKNAME/FLAG ;;
-	* )
-		if ! build "$SRCDIR" "$PACKNAME"; then
+		cd /source/$SRCDIR/$PACKNAME/ && mv "$PACKNAME".SlackBuild.old "$PACKNAME".SlackBuild && echo 2 > /source/$SRCDIR/$PACKNAME/FLAG ;;
+	2 )
+		if ( ! build "$SRCDIR" "$PACKNAME" ); then
 			exit 1
 		fi ;;
 esac
@@ -170,41 +169,23 @@ build_package () {
 cd  /source/"$SRCDIR" || exit 1 
 # build with build_$PACKNAME for all two pass packages (need FLAG and execute_sed_"PACKNAME"
 if [ -f /source/"$SRCDIR"/"$PACKNAME"/FLAG ] && [ -f /source/"$SRCDIR"/"$PACKNAME"/execute_sed_"$PACKNAME" ]; then
-	cd  /source/"$SRCDIR"/"$PACKNAME" || exit 1 
-	if ! build_FLAG ; then
-		exit 1
-	fi
+	cd  /source/"$SRCDIR"/"$PACKNAME" && build_FLAG 
 # special build with build_$PACKNAME for linux-howtos, linux-faqs
 # and kernel-headers,kernel-source, kernel-all
 elif [ -f /source/"$SRCDIR"/build_"$PACKNAME" ]; then
-	cd /source/"$SRCDIR" || exit 1 
-	if ! ( source build_"$PACKNAME" ); then
-		exit 1
-	fi
-# special build with build_$PACKNAME for glibc, dbus, elogind, pam
-# cmake, pkg-config, glib2, gobject-introspection, cyrus-sasl, fontconfig
+	cd /source/"$SRCDIR" && source build_"$PACKNAME" 
+# special build with build_$PACKNAME for glibc, pciutils
 elif [ -f /source/"$SRCDIR"/"$PACKNAME"/build_"$PACKNAME" ]; then
-	cd  /source/"$SRCDIR"/"$PACKNAME" || exit 1 
-	if ! ( source build_"$PACKNAME" ); then
-		exit 1
-	fi
+	cd  /source/"$SRCDIR"/"$PACKNAME" && source build_"$PACKNAME"  
 # special build with build_$PACKNAME for libtirpc and mesa
 elif [ -f /source/"$SRCDIR"/"$PACKNAME"/FLAG ] && [ -f /source/"$SRCDIR"/"$PACKNAME"/build_"$PACKNAME" ]; then
-	cd  /source/"$SRCDIR"/"$PACKNAME" || exit 1 
-	if ! ( source build_"$PACKNAME" ); then
-		exit 1
-	fi
+	cd  /source/"$SRCDIR"/"$PACKNAME" && source build_"$PACKNAME" 
 # special build with build_$PACKNAME for kde
 elif [ -f /source/"$SRCDIR"/"$SRCDIR"/build_"$PACKNAME" ]; then
-	cd  /source/"$SRCDIR"/"$SRCDIR" || exit 1 
-	if ! ( source build_"$PACKNAME" ); then
-		exit 1
-	fi
+	cd  /source/"$SRCDIR"/"$SRCDIR" && source build_"$PACKNAME"  
 elif [ ! -f /source/"$SRCDIR"/"$PACKNAME"/build_"$PACKNAME" ] && [ ! -f /source/"$SRCDIR"/build_"$PACKNAME" ] && [ ! -f /source/"$SRCDIR"/"$SRCDIR"/build_"$PACKNAME" ] && [ ! -f /source/"$SRCDIR"/"$PACKNAME"/build_"$PACKNAME" ]; then
 # normal build with the SlackBuild
-	if ! ( build "$SRCDIR" "$PACKNAME" ); then
-		exit 1
-	fi
+	cd  /source/"$SRCDIR"/"$PACKNAME" && build "$SRCDIR" "$PACKNAME"
 fi
 
 return
