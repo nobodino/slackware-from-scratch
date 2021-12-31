@@ -1,0 +1,71 @@
+#!/bin/bash
+########################## build_adjust ##########################
+#
+# Copyright 2021 "nobodino", Bordeaux, FRANCE
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+###################################################################
+#
+# Note: The adjust procedure of this script is 
+#       inspired from the LFS manual chapter 6.10
+#       Copyright © 1999-2021 Gerard Beekmans and may be
+#       copied under the MIT License.
+#
+###################################################################
+build_adjust  () {
+###################################################################
+# set -xv
+###################################################################
+# First, backup the /tools linker, and replace it with the
+# adjusted linker we made in chapter 5. We'll also create a
+# link to its counterpart in /tools/$(gcc -dumpmachine)/bin:
+#
+# Note: Much of this script is copied from the LFS manual.
+#       Copyright © 1999-2021 Gerard Beekmans and may be
+#       copied under the MIT License.
+###################################################################
+mv -v /tools/bin/{ld,ld-old}
+mv -v /tools/"$(uname -m)"-pc-linux-gnu/bin/{ld,ld-old}
+mv -v /tools/bin/{ld-new,ld}
+ln -sv /tools/bin/ld /tools/"$(uname -m)"-pc-linux-gnu/bin/ld
+###################################################################
+# Next, amend the GCC specs file so that it points to the
+# new dynamic linker. Simply deleting all instances of
+# '/tools' should leave us with the correct path to the
+# dynamic linker. Also adjust the specs file so that GCC
+# knows where to find the correct headers and Glibc start
+# files. A sed command accomplishes this:
+###################################################################
+# shellcheck disable=SC2006,SC2046
+case $(uname -m) in
+	x86_64 )
+		gcc -dumpspecs | sed -e 's@/tools@@g'                   \
+			-e '/\*startfile_prefix_spec:/{n;s@.*@/usr/lib64/ @}' \
+			-e '/\*cpp:/{n;s@$@ -isystem /usr/include@}' >      \
+			`dirname $(gcc --print-libgcc-file-name)`/specs ;;
+	* )
+		gcc -dumpspecs | sed -e 's@/tools@@g'                   \
+			-e '/\*startfile_prefix_spec:/{n;s@.*@/usr/lib/ @}' \
+			-e '/\*cpp:/{n;s@$@ -isystem /usr/include@}' >      \
+			`dirname $(gcc --print-libgcc-file-name)`/specs ;;
+esac
+}
+
+build_adjust

@@ -1,0 +1,28 @@
+#!/bin/bash
+
+build_linux-howtos () {
+#**********************
+BUILD=${BUILD:-1}
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-Linux-HOWTOS
+
+cd "$TMP" || exit 1
+mkdir -pv "$PKG"/usr/doc/Linux-HOWTOs
+cd "$PKG"/usr/doc/Linux-HOWTOs || exit 1
+wget -c http://www.tldp.org/Linux-HOWTO-text.tar.gz
+tar xf ./*.tar.gz && rm ./*.tar.gz .htacess
+
+mkdir -p "$PKG"/install
+cat /source/f/slack-desc.linux-howtos > "$PKG"/install/slack-desc.linux-howtos
+
+cd "$PKG" || exit 1
+chown -R root:root .
+/sbin/makepkg -l y -c n "$TMP"/linux-howtos-20160401-noarch-"$BUILD".txz
+installpkg "$TMP"/linux-howtos-20160401-noarch-"$BUILD".txz
+mv -v "$TMP"/linux-howtos-20160401-noarch-"$BUILD".txz /slackware64/f
+rm -rf "$PKG"
+cd /scripts || exit 1
+}
+
+build_linux-howtos

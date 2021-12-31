@@ -1,0 +1,536 @@
+#!/bin/bash
+########################## build_kde #############################
+#
+# Copyright 2021 "nobodino", Bordeaux, FRANCE
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+###################################################################
+build_kde () {
+###################################################################
+#  frameworks/portaingAids \
+#  frameworks \
+#  applications-extra:kdiagram \
+#  kdepim \
+#  plasma \
+#  plasma-extra \
+#  applications-extra:libktorrent \
+#  applications \
+#  applications-extra \
+#  applications:umbrello \
+#********************************************************
+# set -xv
+
+cd /source/kde/kde || exit 1
+
+export UPGRADE_PACKAGES=always
+
+FLAG=${FLAG:-$(cat FLAG )}
+
+if [[ "$FLAG" -eq 1 ]]; then
+	COUNTER=1
+elif [[ ! "$FLAG" -eq 1 ]]; then
+	COUNTER=2
+fi
+
+case $COUNTER in
+	1 )
+	   	if ! ./kde.SlackBuild frameworks:extra-cmake-modules; then
+			touch /tmp/kde_build/extra-cmake-modules.failed && exit 1
+		fi
+		echo 2 > /source/$SRCDIR/$SRCDIR/FLAG ;;
+	* )
+		# build all frameworks first
+		for package in \
+			attica \
+			kitemmodels \
+			kitemviews \
+			kplotting \
+			threadweaver \
+			kcodecs \
+			kdbusaddons \
+			kcoreaddons \
+			kguiaddons \
+			kidletime \
+			kwidgetsaddons \
+			sonnet \
+			kconfig \
+			kwindowsystem \
+			solid \
+			karchive \
+			ki18n \
+			networkmanager-qt \
+			modemmanager-qt \
+			bluez-qt \
+			prison \
+			kirigami2 \
+			syntax-highlighting \
+			kholidays \
+			kcalendarcore \
+			kcontacts \
+			breeze-icons \
+			kapidox \
+			kdnssd \
+			oxygen-icons5 \
+			kauth \
+			kcrash \
+			kjobwidgets \
+			kcompletion \
+			kdoctools \
+			kpackage \
+			knotifications \
+			kunitconversion \
+			kpty \
+			kimageformats \
+			kfilemetadata \
+			syndication \
+			kquickcharts \
+			kconfigwidgets \
+			kservice \
+			kglobalaccel \
+			kiconthemes \
+			kwallet \
+			kemoticons \
+			kdesu \
+			ktextwidgets \
+			kxmlgui \
+			kbookmarks \
+			kded \
+			kio \
+			knewstuff \
+			kparts \
+			kdewebkit \
+			kdesignerplugin \
+			kdeclarative \
+			kcmutils \
+			kinit \
+			knotifyconfig \
+			ktexteditor \
+			kactivities \
+			kactivities-stats \
+			plasma-framework \
+			kpeople \
+			kxmlrpcclient \
+			baloo \
+			qqc2-desktop-style \
+			purpose \
+			kjs \
+			kjsembed \
+			kross \
+			kmediaplayer \
+			krunner \
+			frameworkintegration \
+			kdelibs4support \
+			khtml \
+			kdav \
+		  ; do
+		   	if ! ./kde.SlackBuild frameworks:$package; then
+				touch /tmp/kde_build/$package.failed && exit 1
+			fi
+		done
+
+		for package in \
+			kdelibs4support \
+			kdesignerplugin \
+			kdewebkit \
+			khtml \
+			kjs \
+			kjsembed \
+			kmediaplayer \
+			kross \
+			kxmlrpcclient \
+		  ; do
+		   	if ! ./kde.SlackBuild frameworks:$package; then 
+				touch /tmp/kde_build/$package.failed && exit 1
+			fi
+		done
+
+		if ! ./kde.SlackBuild applications-extra:kdiagram; then
+			touch /tmp/kde_build/kdiagram.failed
+		fi
+
+		for package in \
+			akonadi \
+			kpimtextedit \
+			kidentitymanagement \
+			kcalutils \
+			libkgapi \
+			kmime \
+			ksmtp \
+			kimap \
+			kmbox \
+			kldap \
+			kontactinterface \
+			ktnef \
+			grantleetheme \
+			akonadi-mime \
+			libkleo \
+			akonadi-contacts \
+			akonadi-notes \
+			akonadi-search \
+			kalarmcal \
+			kmailtransport \
+			akonadi-calendar \
+			libkdepim \
+			pimcommon \
+			libgravatar \
+			libksieve \
+			mailimporter \
+			calendarsupport \
+			eventviews \
+			incidenceeditor \
+			messagelib \
+			mailcommon \
+			kleopatra \
+			kpkpass \
+		  	kopeninghours \
+			kitinerary \
+			kdepim-addons \
+			kdepim-runtime \
+			akonadi-calendar-tools \
+			akonadiconsole \
+			akonadi-import-wizard \
+			akregator \
+			grantlee-editor \
+			kaddressbook \
+			kalarm \
+			kmail \
+			kmail-account-wizard \
+			knotes \
+			kontact \
+			korganizer \
+			mbox-importer \
+			pim-data-exporter \
+			pim-sieve-editor \
+		  ; do
+		   	if ! ./kde.SlackBuild kdepim:$package; then
+				touch /tmp/kde_build/$package.failed && exit 1
+			fi
+		done
+
+		if ! ./kde.SlackBuild plasma-extra:plasma-wayland-protocols; then
+			touch /tmp/kde_build/$package.failed && exit 1
+		fi
+
+		if ! ./kde.SlackBuild plasma-extra:plasma-wayland-protocols; then
+			touch /tmp/kde_build/$package.failed && exit 1
+		fi
+
+		if ! ./kde.SlackBuild frameworks:kwayland; then 
+			touch /tmp/kde_build/kwayland.failed && exit 1
+		fi
+
+		for package in \
+			kgamma5 \
+			kdecoration \
+			breeze \
+			breeze-gtk \
+			breeze-grub \
+			breeze-plymouth \
+			qqc2-breeze-style \
+			kwayland-integration \
+			kwayland-server \
+			plasma-integration \
+			kinfocenter \
+			layer-shell-qt \
+			libksysguard \
+			kscreenlocker \
+			kwin \
+			kwrited \
+			libkscreen \
+			milou \
+			oxygen \
+			plasma-workspace \
+			kde-cli-tools \
+			systemsettings \
+			plasma-desktop \
+			kdeplasma-addons \
+			plasma-workspace-wallpapers \
+			plasma5-nm \
+			powerdevil \
+			bluedevil \
+			khotkeys \
+			kmenuedit \
+			polkit-kde-agent-1 \
+			kscreen \
+			sddm-kcm \
+			kde-gtk-config \
+			ksshaskpass \
+			plasma-sdk \
+			plasma-pa \
+			kactivitymanagerd \
+			xdg-desktop-portal-kde \
+			drkonqi \
+			plasma-vault \
+			plasma-browser-integration \
+			kwallet-pam \
+			plasma-disks \
+			plasma-nm \
+			plasma-nano \
+			plasma-firewall \
+			plasma-phone-components \
+			plasma-systemmonitor \
+			plasma-tests \
+			plasma-thunderbolt \
+			plasma-kcm \
+			ksystemstats \
+		  ; do
+		   	if ! ./kde.SlackBuild plasma:$package; then
+				touch /tmp/kde_build/$package.failed && exit 1
+			fi
+		done
+
+		for package in \
+			sddm \
+			kpeoplevcard \
+			pulseaudio-qt \
+			latte-dock \
+			oxygen-fonts \
+			plasma-wayland-protocols \
+			wacomtablet \
+		  ; do
+		   	if ! ./kde.SlackBuild plasma-extra:$package; then
+				touch /tmp/kde_build/$package.failed && exit 1
+			fi
+		done
+
+		if ! ./kde.SlackBuild applications:libktorrent; then
+			touch /tmp/kde_build/libktorrent.failed && exit 1
+		fi
+
+		for package in \
+			libkipi \
+			kipi-plugins \
+			libkexiv2 \
+			libkdcraw \
+			libksane \
+			gwenview \
+			kio-extras \
+			kio-gdrive \
+			konsole \
+			kate \
+			kdialog \
+			keditbookmarks \
+			kfind \
+			konqueror \
+			ark \
+			baloo-widgets \
+			filelight \
+			kcalc \
+			kcharselect \
+			kdf \
+			kfloppy \
+			kgpg \
+			print-manager \
+			kbackup \
+			ktimer \
+			khelpcenter \
+			kwalletmanager \
+			sweeper \
+			dolphin \
+			kdebugsettings \
+			kapptemplate \
+			cervisia \
+			dolphin-plugins \
+			kcachegrind \
+			kde-dev-scripts \
+			kde-dev-utils \
+			kdesdk-kioslaves \
+			kdesdk-thumbnailers \
+			kross-interpreters \
+			libkomparediff2 \
+			kompare \
+			lokalize \
+			poxml \
+			kdegraphics-mobipocket \
+			okular \
+			kdegraphics-thumbnailers \
+			kamera \
+			kcolorchooser \
+			kolourpaint \
+			kruler \
+			spectacle \
+			svgpart \
+			kirigami-gallery \
+			kmouth \
+			kmousetool \
+			kmag \
+			libkcddb \
+			libkcompactdisc \
+			audiocd-kio \
+			dragon \
+			juk \
+			kmix \
+			ffmpegthumbs \
+			kwave \
+			k3b \
+			kamoso \
+			elisa \
+			kdenetwork-filesharing \
+			zeroconf-ioslave \
+			kget \
+			kopete \
+			krdc \
+			krfb \
+			kcron \
+			ksystemlog \
+			libkdegames \
+			libkmahjongg \
+			klickety \
+			ksudoku \
+			ksquares \
+			kpat \
+			klines \
+			ksnakeduel \
+			kollision \
+			kshisen \
+			kblocks \
+			lskat \
+			kreversi \
+			bovo \
+			granatier \
+			kmines \
+			kiriki \
+			kigo \
+			bomber \
+			kolf \
+			kdiamond \
+			kbounce \
+			konquest \
+			kapman \
+			knavalbattle \
+			killbots \
+			kubrick \
+			kgoldrunner \
+			knetwalk \
+			kbreakout \
+			ksirk \
+			kfourinline \
+			picmi \
+			kblackbox \
+			palapeli \
+			katomic \
+			kjumpingcube \
+			kmahjongg \
+			kspaceduel \
+			knights \
+			kteatime \
+			kdeedu-data \
+			libkeduvocdocument \
+			analitza \
+			kalgebra \
+			kanagram \
+			khangman \
+			kig \
+			parley \
+			artikulate \
+			blinken \
+			cantor \
+			kalzium \
+		 	kbruch \
+			kgeography \
+			kiten \
+			kmplot \
+			kqtquickcharts \
+			ktouch \
+			kturtle \
+			kwordquiz \
+			marble \
+			rocs \
+			step \
+			minuet \
+			kdenlive \
+			kimagemapeditor \
+			yakuake \
+			kdeconnect-kde \
+			markdownpart \
+			kpublictransport \
+			kosmindoormap \
+			itinerary \
+			kontrast \
+			konversation \
+			libktorrent \
+			ktorrent \
+			kpmcore \
+			partitionmanager \
+			skanlite \
+			zanshin \
+		  ; do
+		   	if ! ./kde.SlackBuild applications:$package; then
+				touch /tmp/kde_build/$package.failed && exit 1
+			fi
+		done
+
+		for package in \
+			calligra \
+			calligraplan \
+			digikam \
+			krita \
+			falkon \
+			kdevelop-pg-qt \
+			kdevelop \
+			kdev-php \
+			kdev-python \
+			kdiagram \
+			kjots \
+			kstars \
+			krusader \
+			kile \
+			oxygen-gtk2 \
+			alkimia \
+		 	kmymoney \
+			okteta \
+			krename \
+			ktimetracker \
+			kid3 \
+		  ; do
+		   	if ! ./kde.SlackBuild applications-extra:$package; then
+				touch /tmp/kde_build/$package.failed && exit 1
+			fi
+		done
+
+		if ! ./kde.SlackBuild applications:umbrello; then
+			touch /tmp/kde_build/$package.failed && exit 1
+		fi 
+
+		# Keep MIME database current:
+		/usr/bin/update-mime-database /usr/share/mime 1>/dev/null 2>/dev/null &
+
+		cd /source/kde/kcm-fcitx || exit 1
+		chmod +x kcm-fcitx.SlackBuild
+		if ! ./kcm-fcitx.SlackBuild; then
+			touch /tmp/kde_build/kcm-fcitx.failed && exit 1
+		fi
+esac
+
+case $(uname -m) in
+	x86_64 )
+		mv -v /tmp/kcm-fcitx*.txz /slackware64/kde
+		mv -v /tmp/kde_build/*.txz /slackware64/kde ;;
+	* )
+		mv -v /tmp/kcm-fcitx*.txz /slackware/kde
+		mv -v /tmp/kde_build/*.txz /slackware/kde ;;
+esac
+
+cd /tmp || exit 1
+rm ./*
+rm -rf /tmp/./*
+}
+
+build_kde

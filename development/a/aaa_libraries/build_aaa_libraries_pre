@@ -1,0 +1,36 @@
+#!/bin/bash
+
+build_aaa_libraries_pre () {
+#******************************************************************
+# Install packages from previous slackware to be able
+# to build aaa_libraries
+#******************************************************************
+cd /source/others || exit 1
+
+case $(uname -m) in
+	x86_64 )
+		installpkg cxxlibs-6.0.18-x86_64-1.txz
+		installpkg gmp-5.1.3-x86_64-1.txz
+		installpkg readline-6.3-x86_64-2.txz
+		installpkg readline-7.0.005-x86_64-1.txz
+		installpkg libtermcap-1.2.3-x86_64-7.txz
+		installpkg ncurses-5.9-x86_64-4.txz
+		installpkg libpng-1.4.12-x86_64-1.txz
+		installpkg libffi-3.2.1-x86_64-2.txz
+		installpkg /slackware64/l/libpng-1.6.*-x86_64*.txz ;;
+	* )
+		installpkg cxxlibs-6.0.18-i486-1.txz
+		installpkg gmp-5.1.3-i486-1.txz
+		installpkg readline-6.3-i586-2.txz
+		installpkg readline-7.0.005-i586-1.txz
+		installpkg libtermcap-1.2.3-i486-7.txz
+		installpkg ncurses-5.9-i486-4.txz
+		installpkg libpng-1.4.12-i486-1.txz
+		installpkg libffi-3.2.1-i586-2.txz
+		installpkg /slackware/l/libpng-1.6.*.txz ;;
+esac
+
+cd /scripts || exit 1
+}
+
+build_aaa_libraries_pre

@@ -1,0 +1,47 @@
+#!/bin/bash
+########################## execute_sed_freetype #################
+#
+# Copyright 2021 "nobodino", Bordeaux, FRANCE
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+###################################################################
+execute_sed_freetype () {
+#******************************************************************
+# remove "exit 1" code and add headers (ft2build.h and ftoption.h) to SlackBuild
+#******************************************************************
+if [ ! -f freetype.SlackBuild.old ]; then
+	cp -v freetype.SlackBuild freetype.SlackBuild.old
+	(
+		cd "$SLACKSRC"/l/freetype || exit 1
+		# shellcheck disable=SC2016
+		sed -i -e 's/make $NUMJOBS || make || exit 1/make $NUMJOBS/' freetype.SlackBuild
+		# shellcheck disable=SC2016
+		sed -i -e 's/make install DESTDIR=$PKG || exit 1/make install DESTDIR=$PKG/' freetype.SlackBuild
+		sed -i -e "/make install DESTDIR=$PKG/p" freetype.SlackBuild
+		sed -i -e "0,/make install DESTDIR=$PKG/ s/make install DESTDIR=$PKG/make/" freetype.SlackBuild
+		sed -i -e "/make install DESTDIR=$PKG/a # install freetype headers to build harfbuzz/" freetype.SlackBuild
+		sed -i -e "/# install freetype headers/a mkdir -pv $PKG/usr/include/freetype2/" freetype.SlackBuild
+		sed -i -e "/mkdir -pv/a cp devel/ft2build.h $PKG/usr/include/freetype2/ft2build.h" freetype.SlackBuild
+		sed -i -e "/cp devel\/\ft2build.h/a cp devel/ftoption.h $PKG/usr/include/freetype2/ftoption.h" freetype.SlackBuild
+		sed -i -e "/ft2build.h/a cp devel/ftoption.h $PKG/usr/include/freetype2/ftoption.h" freetype.SlackBuild
+	)
+fi
+}
+execute_sed_freetype

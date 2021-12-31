@@ -1,0 +1,91 @@
+#!/bin/bash
+########################## build_lib  #####################
+#
+# Copyright 2021 "nobodino", Bordeaux, FRANCE
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+###################################################################
+build_lib () {
+#***********************
+cd /source/x/x11 || exit 1
+
+export UPGRADE_PACKAGES=always
+
+for package in \
+  xtrans \
+  libX11 \
+  libXext \
+  libFS \
+  libICE \
+  libSM \
+  libXScrnSaver \
+  libXt \
+  libXmu \
+  libXpm \
+  libXaw \
+  libXfixes \
+  libXcomposite \
+  libXrender \
+  libXcursor \
+  libXdamage \
+  libXft \
+  libXi \
+  libXinerama \
+  libXrandr \
+  libXres \
+  libXtst \
+  libXv \
+  libXvMC \
+  libXpresent \
+  libXxf86dga \
+  libXxf86vm \
+  libdmx \
+  libfontenc \
+  libpciaccess \
+  libxkbfile \
+  libxshmfence \
+  libXevie \
+  libXxf86misc \
+  libXp \
+  libXfontcache \
+  libXaw3d \
+  pixman \
+  libXfont2 \
+  ; do
+	if ! ./x11.SlackBuild lib $package; then
+		exit 1
+	fi
+done
+
+case $(uname -m) in
+	x86_64 )
+		if ! ( mv -v /tmp/x11-build/*.txz /slackware64/x ); then
+			exit 1
+		fi ;;
+	* )
+		if ! ( mv -v /tmp/x11-build/*.txz /slackware/x ); then
+			exit 1
+		fi ;;
+esac
+
+cd /scripts || exit 1
+}
+
+build_lib
