@@ -78,7 +78,7 @@ echo_begin () {
     echo
     echo "You have decided to build 'tools' for sfs (aka Slackware From Scratch)."
     echo
-    echo "You are at the end of paragraph 4.4 of LFS-8.1 book"
+    echo "You are at the end of paragraph 4.4 of LFS-8.4 book"
     echo
     echo "The last command you executed was:"
     echo
@@ -219,7 +219,14 @@ chown -fR root:root $SFS/source
 # core script
 #*****************************
 echo_begin
-ada_choice
+#*****************************
+case $(uname -m) in
+	x86_64)
+		ada_choice ;;
+	* )
+		echo ;;
+esac
+#*****************************
 copy_src
 test_to_go
 cd "$SRCDIR" || exit 1
