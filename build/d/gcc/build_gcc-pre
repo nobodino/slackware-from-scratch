@@ -8,6 +8,7 @@ build_gcc-pre () {
 #       Copyright © 1999-2021 Gerard Beekmans and may be
 #       copied under the MIT License.
 #******************************************************************
+# set -xv
 cd /tmp || exit 1
 case $(uname -m) in
 	x86_64)
@@ -16,22 +17,17 @@ case $(uname -m) in
 			echo "Tar extraction of gnat-gpl-2017-x86_64-linux-bin failed."
 			echo && exit 1
 		fi
-		cd gnat-gpl-2017-x86_64-linux-bin || exit 1;;
+		cd gnat-gpl-2017-x86_64-linux-bin || exit 1
+		mkdir -pv /tools/opt/gnat
+		make ins-all prefix=/tools/opt/gnat
+		PATH_HOLD=$PATH && export PATH=/tools/opt/gnat/bin:$PATH_HOLD
+		echo "$PATH"
+		find /tools/opt/gnat -name ld -exec mv -v {} {}.old \;
+		find /tools/opt/gnat -name ld -exec as -v {} {}.old \;
+		echo ;;
 	*)
-		if ! tar xf /source/others/gnat-gpl-2014-x86-linux-bin.tar.gz; then
-			echo
-			echo "Tar extraction of gnat-gpl-2014-x86-linux-bin failed."
-			echo && exit 1
-		fi
-		cd gnat-gpl-2014-x86-linux-bin || exit 1 ;;
+		upgradepkg --install-new /source/others/gcc-gnat-10.3.0-i586-2.txz ;;
 esac
-
-mkdir -pv /tools/opt/gnat
-make ins-all prefix=/tools/opt/gnat
-PATH_HOLD=$PATH && export PATH=/tools/opt/gnat/bin:$PATH_HOLD
-echo "$PATH"
-find /tools/opt/gnat -name ld -exec mv -v {} {}.old \;
-find /tools/opt/gnat -name ld -exec as -v {} {}.old \;
 
 cd /scripts || exit 1
 }
