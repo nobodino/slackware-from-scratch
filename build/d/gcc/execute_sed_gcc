@@ -1,5 +1,5 @@
 #!/bin/bash
-########################## build_glib2 ##############################
+########################## execute_sed_gcc ####################
 #
 # Copyright 2021 "nobodino", Bordeaux, FRANCE
 # All rights reserved.
@@ -22,32 +22,20 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 ###################################################################
-build_glib2 () {
-###################################################################
+execute_sed_gcc () {
+#******************************************************************
+# disable ada building, doesn't work for the x86 version
+#******************************************************************
 # set -xv
+cd "$SLACKSRC"/d/gcc || exit 1
 
-case $LISTFILE in
-	list1 )
-		source execute_sed_"$PACKNAME"
-		if ! build "$SRCDIR" "$PACKNAME"; then
-			exit 1
-		fi
-		cd  /source/$SRCDIR/$PACKNAME/
-		mv "$PACKNAME".SlackBuild.old "$PACKNAME".SlackBuild ;;
-	list2 )
-		source execute_sed_"$PACKNAME"
-		if ! build "$SRCDIR" "$PACKNAME"; then
-			exit 1
-		fi
-		cd  /source/$SRCDIR/$PACKNAME/
-		mv "$PACKNAME".SlackBuild.old "$PACKNAME".SlackBuild ;;
-	* )
-		if ! build "$SRCDIR" "$PACKNAME"; then
-			exit 1
-		fi ;;
-esac
-
-cd /scripts || exit 1
+if [ ! -f gcc.SlackBuild.old ]; then
+	cp -v gcc.SlackBuild gcc.SlackBuild.old
+	(
+		sed -i -e "s/languages=ada,brig/languages=brig/g" gcc.SlackBuild
+		sed -i -e "83d;143d;159d;224,234d;293,300d;389,390d;394,397d;548,561d;647,648d" gcc.SlackBuild
+	)
+fi
 }
 
-build_glib2
+execute_sed_gcc
