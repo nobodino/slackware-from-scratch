@@ -32,15 +32,8 @@ case $LISTFILE in
 		if ! build "$SRCDIR" "$PACKNAME"; then
 			exit 1
 		fi
-		cd  /source/$SRCDIR/$PACKNAME/
-		mv "$PACKNAME".SlackBuild.old "$PACKNAME".SlackBuild ;;
-	list2 )
-		source execute_sed_"$PACKNAME"
-		if ! build "$SRCDIR" "$PACKNAME"; then
-			exit 1
-		fi
-		cd  /source/$SRCDIR/$PACKNAME/
-		mv "$PACKNAME".SlackBuild.old "$PACKNAME".SlackBuild ;;
+		cd  /source/"$SRCDIR"/"$PACKNAME" || exit 1
+		mv "$PACKNAME".SlackBuild{.old,} ;;
 	* )
 		if ! build "$SRCDIR" "$PACKNAME"; then
 			exit 1

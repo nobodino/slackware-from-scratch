@@ -39,8 +39,8 @@ case $COUNTER in
 		if ! build "$SRCDIR" "$PACKNAME"; then
 			exit 1
 		fi
-		cd  /source/$SRCDIR/$PACKNAME/
-		mv "$PACKNAME".SlackBuild.old "$PACKNAME".SlackBuild && echo 2 > /source/$SRCDIR/$PACKNAME/FLAG ;;
+		cd  /source/"$SRCDIR"/"$PACKNAME" || exit 1
+		mv "$PACKNAME".SlackBuild{.old,} && echo 2 > /source/"$SRCDIR"/"$PACKNAME"/FLAG ;;
 	* )
 		if ! build "$SRCDIR" "$PACKNAME"; then
 			exit 1
