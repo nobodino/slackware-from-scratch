@@ -35,12 +35,12 @@ lists_generator () {
 # generator of lists of packages
 #******************************************
 	generate_slackware_link_build_list
-	generate_slackware_build_list1
-	generate_slackware_build_list2
-	generate_slackware_build_list3
-	generate_slackware_build_list4
-	generate_slackware_build_list5
-	generate_slackware_build_list0
+	generate_slackware_list1
+	generate_slackware_list2
+	generate_slackware_list3
+	generate_slackware_list4
+	generate_slackware_list5
+	generate_slackware_list0
 }
 
 generate_slackware_link_build_list () {
@@ -49,9 +49,9 @@ a link-tools
 EOF
 }
 
-generate_slackware_build_list1 () {
+generate_slackware_list1 () {
 #******************************************
-cat > "$SFS"/scripts/build1.list << "EOF"
+cat > "$SFS"/scripts/list1 << "EOF"
 a findutils
 a pkgtools
 a aaa_base
@@ -272,9 +272,9 @@ a end1
 EOF
 }
 
-generate_slackware_build_list2 () {
+generate_slackware_list2 () {
 #******************************************
-cat > "$SFS"/scripts/build2.list << "EOF"
+cat > "$SFS"/scripts/list2 << "EOF"
 a dhcpcd_up
 a haveged
 a gpm
@@ -471,9 +471,9 @@ a end2
 EOF
 }
 
-generate_slackware_build_list3 () {
+generate_slackware_list3 () {
 #******************************************
-cat > "$SFS"/scripts/build3.list << "EOF"
+cat > "$SFS"/scripts/list3 << "EOF"
 a dhcpcd_up
 l python-pygments
 ap linuxdoc-tools
@@ -777,9 +777,9 @@ a end3
 EOF
 }
 
-generate_slackware_build_list4 () {
+generate_slackware_list4 () {
 #******************************************
-cat > "$SFS"/scripts/build4.list << "EOF"
+cat > "$SFS"/scripts/list4 << "EOF"
 a dhcpcd_up
 l python-six
 d opencl-headers
@@ -952,6 +952,7 @@ a plzip
 a lbzip2
 l libplist
 l libusbmuxd
+l libimobiledevice-glue
 l libimobiledevice
 ap usbmuxd
 ap vbetool
@@ -1405,20 +1406,17 @@ a end4
 EOF
 }
 
-generate_slackware_build_list5 () {
+generate_slackware_list0 () {
 #******************************************
-rm "$SFS"/scripts/build0.list
-cat  "$SFS"/scripts/build1.list > "$SFS"/scripts/build0.list
-sed -i -e "207,212d" "$SFS"/scripts/build0.list
+rm "$SFS"/scripts/list0
+cat  "$SFS"/scripts/list1 > "$SFS"/scripts/list0
+sed -i -e "199,204d" "$SFS"/scripts/list0
 }
 
-generate_slackware_build_list0 () {
+generate_slackware_list5 () {
 #******************************************
-rm "$SFS"/scripts/build5.list
-cat  "$SFS"/scripts/build1.list > "$SFS"/scripts/build5.list
-cat  "$SFS"/scripts/build2.list >> "$SFS"/scripts/build5.list
-cat  "$SFS"/scripts/build3.list >> "$SFS"/scripts/build5.list
-cat  "$SFS"/scripts/build4.list >> "$SFS"/scripts/build5.list
+rm "$SFS"/scripts/list5
+cd "$SFS"/scripts && cat list{1,4} >> list5
 }
 
 #************************************************************************

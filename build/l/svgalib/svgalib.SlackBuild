@@ -1,0 +1,141 @@
+#!/bin/bash
+
+# Copyright 2006, 2007, 2008, 2009, 2010, 2015, 2018  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=svgalib
+VERSION=${VERSION:-$(echo $PKGNAM-*.tar.?z* | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+BUILD=${BUILD:-6}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-svgalib
+rm -rf $PKG
+mkdir -p $TMP $PKG
+
+cd $TMP
+rm -rf ${PKGNAM}-${VERSION}
+tar xvf $CWD/${PKGNAM}-$VERSION.tar.?z* || exit 1
+cd ${PKGNAM}-$VERSION || exit 1
+
+# Make sure ownerships and permissions are sane:
+chown -R root:root .
+find . -perm 666 -exec chmod 644 {} \+
+find . -perm 664 -exec chmod 644 {} \+
+find . -perm 600 -exec chmod 644 {} \+
+find . -perm 444 -exec chmod 644 {} \+
+find . -perm 400 -exec chmod 644 {} \+
+find . -perm 440 -exec chmod 644 {} \+
+find . -perm 777 -exec chmod 755 {} \+
+find . -perm 775 -exec chmod 755 {} \+
+find . -perm 511 -exec chmod 755 {} \+
+find . -perm 711 -exec chmod 755 {} \+
+find . -perm 555 -exec chmod 755 {} \+
+find . -name "*.h" -exec chmod 644 {} \+
+
+zcat $CWD/svgalib.prefix.diff.gz | patch -p1 --verbose || exit 1
+zcat $CWD/svgalib-1.9.25-kernel-2.6.26.diff.gz | patch -p1 --verbose || exit 1
+zcat $CWD/svgalib.nohelper.diff.gz | patch -p1 --verbose || exit 1
+zcat $CWD/svgalib-1.9.25-round_gtf_gtfcalc_c.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/svgalib-1.9.25-vga_getmodenumber.patch.gz | patch -p1 --verbose || exit 1
+zcat $CWD/svgalib-1.9.25-quickmath-h-redefinitions.patch.gz | patch -p1 --verbose || exit 1
+# patch to allow the package to be built on slackware version x86
+cat $CWD/svgalib-1.9.25-gl-asm-width.patch | patch -p1 --verbose || exit 1
+
+# Build and install - spamming your partition first...:
+make install NO_HELPER=y || exit 1
+make install \
+ TOPDIR=$PKG \
+  prefix=$PKG/usr \
+  mandir=$PKG/usr/man \
+  sharedlibdir=$PKG/usr/lib${LIBDIRSUFFIX} \
+  MANFORMAT=compressed \
+  NO_HELPER=y \
+  || exit 1
+
+# Build demos:
+make demoprogs || exit 1
+
+# Install demos:
+mkdir -p $PKG/usr/share/svgalib-demos
+( cd demos
+  # this will produce a harmless error... hey, some of these demos might come back, right?
+  cp fun testgl speedtest mousetest vgatest scrolltest testlinear keytest testaccel accel forktest eventtest spin bg_test printftest joytest mjoytest bankspeed lineart linearspeed addmodetest svidtune linearfork cursor vgatweak buildcsr rwpage \
+  linuxlogo.bitmap \
+  $PKG/usr/share/svgalib-demos
+  chmod 755 $PKG/usr/share/svgalib-demos/*
+)
+
+# Add a documentation directory:
+mkdir -p $PKG/usr/doc/${PKGNAM}-$VERSION
+cp -a \
+  0-README LICENSE README svgalib.lsm \
+  $PKG/usr/doc/${PKGNAM}-$VERSION
+( cd doc
+  cp -a \
+  0-INSTALL CHANGES DESIGN Driver-programming-HOWTO README.joystick \
+  README.keymap README.multi-monitor README.patching README.vesa TODO dual-head-howto \
+  $PKG/usr/doc/${PKGNAM}-$VERSION
+)
+
+# Make sure the package contains all library symlinks:
+( cd $PKG/usr/lib${LIBDIRSUFFIX}
+  ldconfig -l *
+)
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/$PKGNAM-$VERSION-$ARCH-$BUILD.txz
+
