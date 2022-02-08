@@ -1,0 +1,638 @@
+#!/bin/bash
+
+# Slackware build script for vulkan-sdk
+
+# Copyright 2016, 2017, 2018, 2020, 2021  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ''AS IS'' AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+# EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=vulkan-sdk
+# The ./VERSION file is created by ./fetch-sources.sh:
+VERSION=${VERSION:-$(cat VERSION)}
+BUILD=${BUILD:-2}
+
+# Automatically determine the architecture we're building on:
+MARCH=$( uname -m )
+if [ -z "$ARCH" ]; then
+  case "$MARCH" in
+    i?86)    export ARCH=i586 ;;
+    armv7hl) export ARCH=$MARCH ;;
+    arm*)    export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+    *)       export ARCH=$MARCH ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
+elif [ "$ARCH" = "armv7hl" ]; then
+  SLKCFLAGS="-O2 -march=armv7-a -mfpu=vfpv3-d16"
+  LIBDIRSUFFIX=""
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-vulkan-sdk
+
+GLSLANG_VERSION=$(echo glslang-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)
+SPIRV_HEADERS_VERSION=$(echo SPIRV-Headers-sdk-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)
+SPIRV_TOOLS_VERSION=$(echo SPIRV-Tools-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)
+VULKAN_HEADERS_VERSION=$(echo Vulkan-Headers-sdk-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)
+VULKAN_LOADER_VERSION=$(echo Vulkan-Loader-sdk-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)
+VULKAN_VALIDATIONLAYERS_VERSION=$(echo Vulkan-ValidationLayers-sdk-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)
+ROBIN_HOOD_VERSION=$(echo robin-hood-hashing-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)
+VULKAN_EXTENSIONLAYER_VERSION=$(echo Vulkan-ExtensionLayer-sdk-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)
+VULKAN_TOOLS_VERSION=$(echo Vulkan-Tools-sdk-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)
+VULKANTOOLS_VERSION=$(echo VulkanTools-sdk-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)
+SHADERC_VERSION=$(echo shaderc-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)
+SPIRV_CROSS_VERSION=$(echo SPIRV-Cross-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)
+GFXRECONSTRUCT_VERSION=$(echo gfxreconstruct-sdk-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)
+DXC_VERSION=$(echo DirectXShaderCompiler-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)
+SPIRV_REFLECT_VERSION=$(echo SPIRV-Reflect-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)
+
+# upstream builder order:
+# - SPIRV-Headers
+# - glslang
+# - Vulkan-Headers
+# - Vulkan-Loader
+# - Vulkan-ValidationLayers
+# - Vulkan-ExtensionLayer
+# - Vulkan-Tools
+# - VulkanTools
+# - shaderc
+# - SPIRV-Cross
+# - gfxreconstruct
+# - DirectXShaderCompiler
+# - SPIRV-Reflect
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+
+cd $TMP
+# Clear existing tmp sources:
+rm -rf SPIRV-Headers-$SPIRV_HEADERS_VERSION \
+  glslang-${GLSLANG_VERSION} \
+  Vulkan-Headers-sdk-$VULKAN_HEADERS_VERSION \
+  Vulkan-Loader-sdk-$VULKAN_LOADER_VERSION \
+  Vulkan-ValidationLayers-sdk-$VULKAN_VALIDATIONLAYERS_VERSION \
+  Vulkan-ExtensionLayer-sdk-$VULKAN_EXTENSIONLAYER_VERSION \
+  Vulkan-Tools-sdk-$VULKAN_TOOLS_VERSION \
+  VulkanTools-sdk-$VULKANTOOLS_VERSION \
+  shaderc-$SHADERC_VERSION \
+  SPIRV-Cross-$SPIRV_CROSS_VERSION \
+  gfxreconstruct-sdk-$GFXRECONSTRUCT_VERSION \
+  DirectXShaderCompiler-$DXC_VERSION \
+  SPIRV-Reflect-$SPIRV_REFLECT_VERSION
+
+tar xvf $CWD/SPIRV-Headers-$SPIRV_HEADERS_VERSION.tar.?z || exit 1
+cd SPIRV-Headers-$SPIRV_HEADERS_VERSION
+
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \+ -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \+
+
+mkdir -p build
+cd build
+cmake \
+  -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
+  -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
+  -DCMAKE_INSTALL_PREFIX=/usr \
+  -DCMAKE_INSTALL_LIBDIR=lib$LIBDIRSUFFIX \
+  -DCMAKE_BUILD_TYPE=Release \
+  ..
+make $NUMJOBS || make || exit 1
+make install DESTDIR=$PKG || exit 1
+
+cd $TMP
+tar xvf $CWD/glslang-${GLSLANG_VERSION}.tar.?z || exit 1
+cd glslang-$GLSLANG_VERSION/External
+tar xvf $CWD/SPIRV-Tools-$SPIRV_TOOLS_VERSION.tar.?z || exit 1
+mv SPIRV-Tools-$SPIRV_TOOLS_VERSION spirv-tools
+cd spirv-tools/external
+tar xvf $CWD/SPIRV-Headers-$SPIRV_HEADERS_VERSION.tar.?z || exit 1
+mv SPIRV-Headers-$SPIRV_HEADERS_VERSION spirv-headers
+
+cd $TMP/glslang-${GLSLANG_VERSION}
+
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \+ -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \+
+
+# Fix LIBDIRSUFFIX
+for i in $(find . -name CMakeLists.txt); do
+  sed -i "s|DESTINATION lib|DESTINATION \${CMAKE_INSTALL_LIBDIR}|" "$i"
+done
+
+mkdir -p build
+cd build
+cmake \
+  -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
+  -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
+  -DCMAKE_INSTALL_PREFIX=/usr \
+  -DCMAKE_INSTALL_LIBDIR=lib$LIBDIRSUFFIX \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DBUILD_SHARED_LIBS=On \
+  -DSPIRV_TOOLS_BUILD_STATIC=Off \
+  ..
+make $NUMJOBS || make || exit 1
+make install DESTDIR=$PKG || exit 1
+
+cd $TMP
+tar xvf $CWD/Vulkan-Headers-sdk-$VULKAN_HEADERS_VERSION.tar.?z || exit 1
+cd Vulkan-Headers-sdk-$VULKAN_HEADERS_VERSION
+
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \+ -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \+
+
+mkdir -p build
+cd build
+cmake \
+  -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
+  -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
+  -DCMAKE_INSTALL_PREFIX=/usr\
+  -DCMAKE_INSTALL_LIBDIR=lib$LIBDIRSUFFIX \
+  -DCMAKE_BUILD_TYPE=Release \
+  ..
+make $NUMJOBS || make || exit 1
+make install DESTDIR=$PKG || exit 1
+
+cd $TMP
+tar xvf $CWD/Vulkan-Loader-sdk-$VULKAN_LOADER_VERSION.tar.?z || exit 1
+cd $TMP/Vulkan-Loader-sdk-$VULKAN_LOADER_VERSION
+
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \+ -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \+
+
+mkdir -p build
+cd build
+  cmake \
+    -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DVULKAN_HEADERS_INSTALL_DIR=$PKG/usr \
+    -DBUILD_WSI_WAYLAND_SUPPORT=On \
+    ..
+
+  make $NUMJOBS || make || exit 1
+  make install DESTDIR=$PKG || exit 1
+
+cd $TMP
+tar xvf $CWD/Vulkan-ValidationLayers-sdk-$VULKAN_VALIDATIONLAYERS_VERSION.tar.?z || exit 1
+cd $TMP/Vulkan-ValidationLayers-sdk-$VULKAN_VALIDATIONLAYERS_VERSION/external
+tar xvf $CWD/robin-hood-hashing-$ROBIN_HOOD_VERSION.tar.?z || exit 1
+mv robin-hood-hashing-$ROBIN_HOOD_VERSION robin-hood-hashing
+cd ..
+
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \+ -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \+
+
+mkdir -p build
+cd build
+  cmake \
+    -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_SYSCONFDIR=/etc \
+    -DCMAKE_INSTALL_DATADIR=/share \
+    -DCMAKE_SKIP_RPATH=True \
+    -DBUILD_TESTS=Off \
+    -DBUILD_WSI_XLIB_SUPPORT=On \
+    -DBUILD_WSI_XCB_SUPPORT=On \
+    -DBUILD_WSI_WAYLAND_SUPPORT=On \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DGLSLANG_INSTALL_DIR=$PKG/usr \
+    -DVULKAN_HEADERS_INSTALL_DIR=$PKG/usr \
+    -DSPIRV_HEADERS_INSTALL_DIR=$PKG/usr \
+    -DBUILD_LAYER_SUPPORT_FILES=On \
+    -DROBIN_HOOD_HASHING_INSTALL_DIR="$TMP/Vulkan-ValidationLayers-sdk-$VULKAN_VALIDATIONLAYERS_VERSION/external/robin-hood-hashing" \
+    ..
+
+  make $NUMJOBS || make || exit 1
+  make install DESTDIR=$PKG || exit 1
+
+cd $TMP
+tar xvf $CWD/Vulkan-ExtensionLayer-sdk-$VULKAN_EXTENSIONLAYER_VERSION.tar.?z || exit 1
+cd $TMP/Vulkan-ExtensionLayer-sdk-$VULKAN_EXTENSIONLAYER_VERSION
+
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \+ -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \+
+
+mkdir -p build
+cd build
+  cmake \
+    -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_SYSCONFDIR=/etc \
+    -DCMAKE_INSTALL_DATADIR=/share \
+    -DCMAKE_SKIP_RPATH=True \
+    -DBUILD_TESTS=Off \
+    -DBUILD_WSI_XLIB_SUPPORT=On \
+    -DBUILD_WSI_XCB_SUPPORT=On \
+    -DBUILD_WSI_WAYLAND_SUPPORT=On \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DVULKAN_HEADERS_INSTALL_DIR=$PKG/usr \
+    -DBUILD_LAYER_SUPPORT_FILES=On \
+    ..
+
+  make $NUMJOBS || make || exit 1
+  make install DESTDIR=$PKG || exit 1
+
+cd $TMP
+tar xvf $CWD/Vulkan-Tools-sdk-$VULKAN_TOOLS_VERSION.tar.?z || exit 1
+cd $TMP/Vulkan-Tools-sdk-$VULKAN_TOOLS_VERSION
+
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \+ -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \+
+
+mkdir -p build
+cd build
+  cmake \
+    -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DVULKAN_HEADERS_INSTALL_DIR=$PKG/usr \
+    -DGLSLANG_INSTALL_DIR=$PKG/usr \
+    -DVULKAN_LOADER_INSTALL_DIR=$PKG/usr \
+    -DBUILD_WSI_WAYLAND_SUPPORT=On \
+    ..
+
+  # make uses glslangValidator, which is built against a shared
+  # libglslang that isn't installed yet
+  export LD_LIBRARY_PATH=$PKG/usr/lib$LIBDIRSUFFIX
+
+  make $NUMJOBS || make || exit 1
+  make install DESTDIR=$PKG || exit 1
+
+cd $TMP
+tar xvf $CWD/VulkanTools-sdk-$VULKANTOOLS_VERSION.tar.?z || exit 1
+cd $TMP/VulkanTools-sdk-$VULKANTOOLS_VERSION
+
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \+ -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \+
+
+# building jsoncpp
+cd submodules/jsoncpp
+  python3 amalgamate.py
+cd ../../
+
+mkdir -p build
+cd build
+  cmake \
+    -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_SYSCONFDIR=/usr/share \
+    -DVULKAN_HEADERS_INSTALL_DIR=$PKG/usr \
+    -DVULKAN_REGISTRY_PATH_HINT=$PKG/usr \
+    -DVULKAN_LOADER_INSTALL_DIR=$PKG/usr \
+    -DVULKAN_VALIDATIONLAYERS_INSTALL_DIR=$PKG/usr \
+    -DBUILD_WSI_WAYLAND_SUPPORT=On \
+    -DBUILD_TESTS=Off \
+    -DINSTALL_GTEST=Off \
+    ..
+
+  make $NUMJOBS || make || exit 1
+  make install DESTDIR=$PKG || exit 1
+
+  mkdir -p $PKG/usr/share/vulkan/config/VK_LAYER_LUNARG_device_simulation
+  install -m 644 ../layersvt/device_simulation_examples/sdk_sample_configs/*.json \
+    $PKG/usr/share/vulkan/config/VK_LAYER_LUNARG_device_simulation/
+
+cd $TMP
+tar xvf $CWD/shaderc-$SHADERC_VERSION.tar.?z || exit 1
+cd $TMP/shaderc-$SHADERC_VERSION
+
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \+ -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \+
+
+# Report correct versions in `glslc --version`
+# git describe output collected in fetch-sources.sh
+sed -i "s|\['git', 'describe'\]|\['cat', '.git-version'\]|" \
+  utils/update_build_version.py
+
+# We're pointing shaderc to the sources we just compiled
+# This won't avoid compiling them again, but slightly better than
+# extracting them twice.
+# Short of polluting the build system with the libraries we built
+# so far, there's no (easy) way to point shaderc to the already
+# built versions.
+
+mkdir -p build
+cd build
+  cmake \
+    -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_SYSCONFDIR=/usr/share \
+    -DSHADERC_SKIP_TESTS=On \
+    -DSHADERC_SKIP_EXAMPLES=On \
+    -DSHADERC_SPIRV_TOOLS_DIR=$TMP/glslang-$GLSLANG_VERSION/External/spirv-tools \
+    -DSHADERC_GLSLANG_DIR=$TMP/glslang-$GLSLANG_VERSION \
+    -DSKIP_GLSLANG_INSTALL=On \
+    -DSKIP_SPIRV_TOOLS_INSTALL=On \
+    -DBUILD_SHARED_LIBS=On \
+    -DSPIRV_TOOLS_BUILD_STATIC=Off \
+    -DBUILD_TESTING=Off \
+    ..
+
+
+  make $NUMJOBS || make || exit 1
+  make install DESTDIR=$PKG || exit 1
+
+cd $TMP
+tar xvf $CWD/SPIRV-Cross-$SPIRV_CROSS_VERSION.tar.?z || exit 1
+cd $TMP/SPIRV-Cross-$SPIRV_CROSS_VERSION
+
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \+ -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \+
+
+# Set git hash
+SPIRV_CROSS_SHORT_HASH=$(echo $SPIRV_CROSS_VERSION | cut -c 1-8)
+sed -i "s|version \"unknown\"|version \"$SPIRV_CROSS_SHORT_HASH\"|" \
+  CMakeLists.txt
+
+mkdir -p build
+cd build
+  cmake \
+    -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DSPIRV_CROSS_ENABLE_TESTS=Off \
+    -DSPIRV_CROSS_SHARED=On \
+    -DSPIRV_CROSS_FORCE_PIC=On \
+    -DCMAKE_DISABLE_FIND_PACKAGE_Git=ON \
+    ..
+
+  make $NUMJOBS || make || exit 1
+  make install DESTDIR=$PKG || exit 1
+
+cd $TMP
+tar xvf $CWD/gfxreconstruct-sdk-$GFXRECONSTRUCT_VERSION.tar.?z || exit 1
+cd $TMP/gfxreconstruct-sdk-$GFXRECONSTRUCT_VERSION
+
+# patch to build with glibc-2.34
+cd framework/util
+sed -i -e 's/SIGSTKSZ/_SC_SIGSTKSZ/' page_guard_manager.cpp
+cd ../..
+
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \+ -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \+
+
+mkdir -p build
+cd build
+  cmake \
+    -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS  -Wno-error=stringop-overflow" \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    ..
+
+  make $NUMJOBS || make || exit 1
+  make install DESTDIR=$PKG || exit 1
+
+cd $TMP
+tar xvf $CWD/DirectXShaderCompiler-$DXC_VERSION.tar.?z || exit 1
+cd $TMP/DirectXShaderCompiler-$DXC_VERSION
+
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \+ -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \+
+
+mkdir -p build
+cd build
+  cmake \
+    -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS -Wno-error=stringop-truncation" \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_INCLUDEDIR=include/dxc \
+    -DLLVM_LIBDIR_SUFFIX=$LIBDIRSUFFIX \
+    $(cat ../utils/cmake-predefined-config-params) \
+    ..
+
+  make $NUMJOBS || make || exit 1
+
+  # "make install" is essentially useless at this point
+  # It installs a bunch of unnecessary llvm files
+  # https://github.com/microsoft/DirectXShaderCompiler/issues/3276
+
+  # install steps taken from appveyor.yml
+  mkdir -p $PKG/usr/{bin,lib$LIBDIRSUFFIX,include}
+  cp -P bin/dxc* $PKG/usr/bin/
+  cp -P lib$LIBDIRSUFFIX/libdxcompiler.so* $PKG/usr/lib$LIBDIRSUFFIX/
+  cp -r ../include/dxc $PKG/usr/include/
+
+cd $TMP
+tar xvf $CWD/SPIRV-Reflect-$SPIRV_REFLECT_VERSION.tar.?z || exit 1
+cd $TMP/SPIRV-Reflect-$SPIRV_REFLECT_VERSION
+
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \+ -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \+
+
+mkdir -p build
+cd build
+  cmake \
+    -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    ..
+
+  make $NUMJOBS || make || exit 1
+  make install DESTDIR=$PKG || exit 1
+
+  mkdir -p $PKG/usr/include/SPIRV-Reflect/include/spirv/unified1
+
+  install -m 644 ../spirv_reflect.c $PKG/usr/include/SPIRV-Reflect/
+  install -m 644 ../spirv_reflect.h $PKG/usr/include/SPIRV-Reflect/
+  install -m 644 ../include/spirv/unified1/spirv.h \
+    $PKG/usr/include/SPIRV-Reflect/include/spirv/unified1/
+
+cd $TMP
+
+find $PKG -print0 | xargs -0 file | grep -e "executable" -e "shared object" | grep ELF \
+  | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
+
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/SPIRV-Headers
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/SPIRV-Tools
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/glslang
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/Vulkan-Headers
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/Vulkan-Loader
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/Vulkan-ValidationLayers
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/Vulkan-ExtensionLayer
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/Vulkan-Tools
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/VulkanTools
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/shaderc
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/SPIRV-Cross
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/gfxreconstruct
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/DirectXShaderCompiler
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/SPIRV-Reflect
+cp -a \
+  SPIRV-Headers-$SPIRV_HEADERS_VERSION/LICENSE* \
+  SPIRV-Headers-$SPIRV_HEADERS_VERSION/README* \
+  $PKG/usr/doc/$PKGNAM-$VERSION/SPIRV-Headers
+cp -a \
+  glslang-$GLSLANG_VERSION/External/spirv-tools/LICENSE* \
+  glslang-$GLSLANG_VERSION/External/spirv-tools/README* \
+  glslang-$GLSLANG_VERSION/External/spirv-tools/*.md \
+  $PKG/usr/doc/$PKGNAM-$VERSION/SPIRV-Tools
+cp -a \
+  glslang-$GLSLANG_VERSION/LICENSE* \
+  glslang-$GLSLANG_VERSION/README* \
+  glslang-$GLSLANG_VERSION/*.md \
+  $PKG/usr/doc/$PKGNAM-$VERSION/glslang
+cp -a \
+  Vulkan-Headers-sdk-$VULKAN_HEADERS_VERSION/LICENSE* \
+  Vulkan-Headers-sdk-$VULKAN_HEADERS_VERSION/README* \
+  Vulkan-Headers-sdk-$VULKAN_HEADERS_VERSION/*.md \
+  $PKG/usr/doc/$PKGNAM-$VERSION/Vulkan-Headers
+cp -a \
+  Vulkan-Loader-sdk-$VULKAN_LOADER_VERSION/LICENSE* \
+  Vulkan-Loader-sdk-$VULKAN_LOADER_VERSION/README* \
+  Vulkan-Loader-sdk-$VULKAN_LOADER_VERSION/*.md \
+  Vulkan-Loader-sdk-$VULKAN_LOADER_VERSION/loader/LoaderAndLayerInterface.md \
+  $PKG/usr/doc/$PKGNAM-$VERSION/Vulkan-Loader
+cp -a \
+  Vulkan-ValidationLayers-sdk-$VULKAN_VALIDATIONLAYERS_VERSION/LICENSE* \
+  Vulkan-ValidationLayers-sdk-$VULKAN_VALIDATIONLAYERS_VERSION/README* \
+  Vulkan-ValidationLayers-sdk-$VULKAN_VALIDATIONLAYERS_VERSION/*.md \
+  $PKG/usr/doc/$PKGNAM-$VERSION/Vulkan-ValidationLayers
+cp -a \
+  Vulkan-ExtensionLayer-sdk-$VULKAN_EXTENSIONLAYER_VERSION/LICENSE* \
+  Vulkan-ExtensionLayer-sdk-$VULKAN_EXTENSIONLAYER_VERSION/README* \
+  Vulkan-ExtensionLayer-sdk-$VULKAN_EXTENSIONLAYER_VERSION/*.md \
+  $PKG/usr/doc/$PKGNAM-$VERSION/Vulkan-ExtensionLayer
+cp -a \
+  Vulkan-Tools-sdk-$VULKAN_TOOLS_VERSION/LICENSE* \
+  Vulkan-Tools-sdk-$VULKAN_TOOLS_VERSION/README* \
+  Vulkan-Tools-sdk-$VULKAN_TOOLS_VERSION/*.md \
+  $PKG/usr/doc/$PKGNAM-$VERSION/Vulkan-Tools
+cp -a \
+  VulkanTools-sdk-$VULKANTOOLS_VERSION/LICENSE* \
+  VulkanTools-sdk-$VULKANTOOLS_VERSION/README* \
+  VulkanTools-sdk-$VULKANTOOLS_VERSION/*.md \
+  $PKG/usr/doc/$PKGNAM-$VERSION/VulkanTools
+cp -a \
+  shaderc-$SHADERC_VERSION/AUTHORS \
+  shaderc-$SHADERC_VERSION/LICENSE* \
+  shaderc-$SHADERC_VERSION/README* \
+  shaderc-$SHADERC_VERSION/*.md \
+  $PKG/usr/doc/$PKGNAM-$VERSION/shaderc
+cp -a \
+  SPIRV-Cross-$SPIRV_CROSS_VERSION/LICENSE* \
+  SPIRV-Cross-$SPIRV_CROSS_VERSION/README* \
+  SPIRV-Cross-$SPIRV_CROSS_VERSION/*.md \
+  $PKG/usr/doc/$PKGNAM-$VERSION/SPIRV-Cross
+cp -a \
+  gfxreconstruct-sdk-$GFXRECONSTRUCT_VERSION/LICENSE* \
+  gfxreconstruct-sdk-$GFXRECONSTRUCT_VERSION/README* \
+  gfxreconstruct-sdk-$GFXRECONSTRUCT_VERSION/*.md \
+  $PKG/usr/doc/$PKGNAM-$VERSION/gfxreconstruct
+cp -a \
+  DirectXShaderCompiler-$DXC_VERSION/LICENSE* \
+  DirectXShaderCompiler-$DXC_VERSION/README* \
+  DirectXShaderCompiler-$DXC_VERSION/ThirdPartyNotices.txt \
+  DirectXShaderCompiler-$DXC_VERSION/*.md \
+  $PKG/usr/doc/$PKGNAM-$VERSION/DirectXShaderCompiler
+cp -a \
+  SPIRV-Reflect-$SPIRV_REFLECT_VERSION/LICENSE* \
+  SPIRV-Reflect-$SPIRV_REFLECT_VERSION/README* \
+  SPIRV-Reflect-$SPIRV_REFLECT_VERSION/*.md \
+  $PKG/usr/doc/$PKGNAM-$VERSION/SPIRV-Reflect
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/$PKGNAM-$VERSION-$ARCH-$BUILD.txz
