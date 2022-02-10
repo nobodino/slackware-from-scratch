@@ -95,7 +95,7 @@ PACKNAME=$1
 shift
 # build the $PACKAGE
 cd "$SLACKSRC"/"$SRCDIR"/"$PACKNAME" || exit 1
-sed -i -e 's/"-fPIC"/"-fPIC -march=native"/' *.SlackBuild
+sed -i -e 's/-fPIC/-fPIC -march=native/' *.SlackBuild
 chmod +x "$PACKNAME".SlackBuild
 if ! ./"$PACKNAME".SlackBuild
 then
