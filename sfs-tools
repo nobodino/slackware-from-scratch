@@ -145,7 +145,7 @@ copy_src () {
 	if [[ "$ada_enable" = "yes" ]]
 	then
 		case $(uname -m) in
-			i686 ) 
+			* ) 
 				if [ -f "$RDIR"/others/gnat-gpl-2014-x86-linux-bin.tar.gz ]; then
 					cd "$RDIR"/others || exit 1
 					cp -v "$RDIR"/others/gnat-gpl-2014-x86-linux-bin.tar.gz "$RDIR/d/gcc" || exit 1
@@ -211,7 +211,7 @@ chown -fR root:root $SFS/source
 	fi
     echo "then type:"
 	echo
-	echo -e "$GREEN" "./chroot_sfs" "$NORMAL"
+	echo -e "$GREEN" "source chroot_sfs" "$NORMAL"
     echo
 }
 
@@ -224,6 +224,7 @@ case $(uname -m) in
 	x86_64)
 		ada_choice ;;
 	* )
+# building ada with gcc > 9.4.0 doesn't work
 		echo ;;
 esac
 #*****************************
