@@ -78,13 +78,9 @@ find . \
   -exec chmod 644 {} \+
 
 # Configure:
-if [ ! -r configure ]; then
-  if [ -x ./autogen.sh ]; then
-    NOCONFIGURE=1 ./autogen.sh
-  else
-    autoreconf -vif
-  fi
-fi
+./autogen.sh
+autoreconf -vif
+
 CFLAGS="$SLKCFLAGS" \
 ./configure \
   --prefix=/usr \
