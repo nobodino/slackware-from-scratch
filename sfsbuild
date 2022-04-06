@@ -184,6 +184,7 @@ return
 # MAIN CORE SCRIPT of sfsbuild
 #****************************************************************
 test_arch
+define_path_lib
 #****************************************************************
 # Some packages need two pass to be built completely.
 # Alteration of the slackware sources is made "on the fly" during
@@ -215,12 +216,5 @@ while (( LINE < FILELEN )); do
 	PACKNAME=$(echo "$aline" |cut -d' ' -f2)
 	(( LINE = LINE + 1 ))
 	[ "$SRCDIR" == "#" ] && continue
-	
-	case $PACKNAME in
-		postfix )
-			unset LD_LIBRARY_PATH ;;
-		* )
-			define_path_lib ;;
-	esac
 	build_package
 done
