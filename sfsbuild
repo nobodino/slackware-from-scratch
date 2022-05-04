@@ -215,5 +215,12 @@ while (( LINE < FILELEN )); do
 	PACKNAME=$(echo "$aline" |cut -d' ' -f2)
 	(( LINE = LINE + 1 ))
 	[ "$SRCDIR" == "#" ] && continue
+	
+	case $PACKNAME in
+		postfix )
+			unset LD_LIBRARY_PATH ;;
+		* )
+			define_path_lib ;;
+	esac
 	build_package
 done
