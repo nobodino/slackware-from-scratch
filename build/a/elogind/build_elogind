@@ -25,9 +25,16 @@
 build_elogind () {
 ###################################################################
 # set -xv
+FLAG=${FLAG:-$(cat FLAG )}
 
-case $LISTFILE in
-	list1 )
+if [[ "$FLAG" -eq 1 ]]; then
+	COUNTER=1
+elif [[ ! "$FLAG" -eq 1 ]]; then
+	COUNTER=2
+fi
+
+case $COUNTER in
+	1 )
 		source execute_sed_"$PACKNAME"
 		if ! build "$SRCDIR" "$PACKNAME"; then
 			exit 1
