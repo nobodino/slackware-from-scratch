@@ -1,6 +1,9 @@
 # We've used this one forever.
 zcat $CWD/patch/xorg-server/x11.startwithblackscreen.diff.gz | patch -p1 --verbose || { touch ${SLACK_X_BUILD_DIR}/${PKGNAME}.failed ; continue ; }
 
+# patch to buid with gcc-12.1.0:
+cat $CWD/patch/xorg-server/xorg-server-gcc-12.1.0.patch | patch -p1 --verbose || { touch ${SLACK_X_BUILD_DIR}/${PKGNAME}.failed ; continue ; }
+
 # Without this patch, combo mouse/keyboard (such as Logitech through unified
 # receiver) may be unable to set the desired keyboard layout.
 #zcat $CWD/patch/xorg-server/xorg-server.combo.mouse.keyboard.layout.patch.gz | patch -p1 --verbose || { touch ${SLACK_X_BUILD_DIR}/${PKGNAME}.failed ; continue ; }
