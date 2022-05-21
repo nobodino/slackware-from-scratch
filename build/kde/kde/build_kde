@@ -56,6 +56,11 @@ case $COUNTER in
 		fi
 		echo 2 > /source/$SRCDIR/$SRCDIR/FLAG ;;
 	* )
+		# build this package before to build kguiaddons
+		if ! ./kde.SlackBuild plasma-extra:plasma-wayland-protocols; then
+			touch /tmp/kde_build/$package.failed && exit 1
+		fi
+
 		# build all frameworks first
 		for package in \
 			attica \
@@ -223,14 +228,6 @@ case $COUNTER in
 				touch /tmp/kde_build/$package.failed && exit 1
 			fi
 		done
-
-		if ! ./kde.SlackBuild plasma-extra:plasma-wayland-protocols; then
-			touch /tmp/kde_build/$package.failed && exit 1
-		fi
-
-		if ! ./kde.SlackBuild plasma-extra:plasma-wayland-protocols; then
-			touch /tmp/kde_build/$package.failed && exit 1
-		fi
 
 		if ! ./kde.SlackBuild frameworks:kwayland; then 
 			touch /tmp/kde_build/kwayland.failed && exit 1
