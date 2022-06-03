@@ -1,0 +1,42 @@
+#!/bin/bash
+########################## execute_sed_gcc ####################
+#
+# Copyright 2022 "nobodino", Bordeaux, FRANCE
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+###################################################################
+execute_sed_gcc () {
+#******************************************************************
+# disable gdc building on first pass, can't bootstrap
+#******************************************************************
+# set -xv
+
+if [ ! -f gcc.SlackBuild.old ]; then
+	cp -v gcc.SlackBuild gcc.SlackBuild.old
+	(
+		sed -i -e "s/ada,c,c++,d,fortran,go,lto,objc,obj-c++/ada,c,c++,fortran/g" gcc.SlackBuild
+		sed -i -e "s/{1,2,3,4,6,8,9,10}/{1,2,3,4}/g" gcc.SlackBuild
+		sed -i -e "s/{1,2,3,4,6,8,10}/{1,2,3,4}/g" gcc.SlackBuild
+		sed -i -e "84,86d;143,145d;157,159d;219,260d;285,295d;337d;538,603d;614,619d" gcc.SlackBuild
+	)
+fi
+}
+
+execute_sed_gcc
