@@ -1,0 +1,151 @@
+#!/bin/sh
+# Copyright 2001 BSDi, Inc. Concord, CA, USA
+# Copyright 2004 Slackware Linux, Inc.  Concord, CA, USA
+# Copyright 2007, 2008, 2009, 2010, 2013, 2016, 2021  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=ksh93
+VERSION=${VERSION:-$(echo ksh-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+BUILD=${BUILD:-1}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-$PKGNAM
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+cd $TMP
+
+rm -rf $PKGNAM-$VERSION
+tar xvf $CWD/ksh-$VERSION.tar.?z || exit 1
+cd ksh-$VERSION || exit 1
+
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \+ -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \+
+
+# patch to build ksh96 with gcc-12.1.0
+cat $CWD/ksh93-gcc-12.1.0.patch | patch -Esp1 --verbose || exit 1
+
+# ast uses its own architecture labels
+SARCH=$(bin/package host type) || exit
+
+bin/package make || exit
+
+mkdir -p $PKG/bin $PKG/usr/bin
+cp arch/$SARCH/bin/ksh $PKG/bin/ksh.new || exit
+cp arch/$SARCH/bin/shcomp $PKG/usr/bin/ || exit
+
+# this may be re-enabled and updated someday when ksh 93u+m
+# regains the ability to build and use dynamic libraries...
+#cp arch/$SARCH/lib/libshell.so.1.1 /usr/lib
+#cp arch/$SARCH/lib/libshell.a /usr/lib
+#cp arch/$SARCH/lib/libast.so.5.4 /usr/lib
+#cp arch/$SARCH/lib/libast.a /usr/lib
+#cp arch/$SARCH/src/cmd/ksh93/cc-g,-fpic/libshell.so.1.1 /usr/lib
+#cp arch/$SARCH/src/cmd/ksh93/cc-g,-fpic/libshell.a /usr/lib
+#cp arch/$SARCH/src/lib/libast/libast.so.5.4 /usr/lib
+#cp arch/$SARCH/src/cmd/ksh93/cc-g,-fpic/libast.a /usr/lib
+
+mkdir -p $PKG/usr/man/man1
+cp src/cmd/ksh93/sh.1 $PKG/usr/man/man1/ksh.1
+LD_LIBRARY_PATH=$PKG/lib $PKG/usr/bin/shcomp --nroff 2> $PKG/usr/man/man1/shcomp.1 || :
+#mkdir -p $PKG/usr/man/man3
+#cp src/cmd/ksh93/shell.3 $PKG/usr/man/man3/
+#cp src/cmd/ksh93/nval.3 $PKG/usr/man/man3/
+( cd $PKG/usr/man/man1 ; ln -sf ksh.1 rksh.1 )
+
+# Compress manual pages:
+find $PKG/usr/man -type f -exec gzip -9 {} \+
+for i in $( find $PKG/usr/man -type l ) ; do
+  ln -s $( readlink $i ).gz $i.gz
+  rm $i
+done
+
+## Install locale files:
+#mkdir -p $PKG/usr/share
+#cp -a share/lib/locale $PKG/usr/share
+#chown -R root:root $PKG/usr/share
+#( cd $PKG/usr/share
+#  find . -type d -exec chmod 755 {} \;
+#  find . -type f -exec chmod 644 {} \;
+#)
+
+#cp src/cmd/ksh93/include/shell.h /usr/include
+
+# If anyone is actually using the ksh libraries, drop me some mail
+# and explain which libs you use and what they're for.  As it is, I
+# don't see a compeling reason to include them, as ksh itself doesn't
+# use them.
+#( cd /usr/lib ; ln -sf libshell.so.1.1 libshell.so )
+#( cd /usr/lib rm -rf libast.so ; ln -sf libast.so.5.4 libast.so )
+
+( cd $PKG/bin ; ln -sf ksh rksh )
+
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION
+( cd src/cmd/ksh93
+  cp -a COMPATIBILITY* DESIGN* OBSOLETE* README* RELEASE* TYPES* \
+     $PKG/usr/doc/$PKGNAM-$VERSION
+)
+cp -a ANNOUNCE* CHANGELOG* CONTRIBUTING* LICENSE* NEWS* README* \
+  $PKG/usr/doc/$PKGNAM-$VERSION
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/LICENSES
+cp -a lib/package/LICENSES/* $PKG/usr/doc/$PKGNAM-$VERSION/LICENSES
+find . -name "*.def" -exec cp -a "{}" $PKG/usr/doc/$PKGNAM-$VERSION/LICENSES \;
+find . -name "*.lic" -exec cp -a "{}" $PKG/usr/doc/$PKGNAM-$VERSION/LICENSES \;
+rmdir $PKG/usr/doc/$PKGNAM-$VERSION/LICENSES 2> /dev/null
+chown -R root:root $PKG/usr/doc/$PKGNAM-$VERSION
+find $PKG/usr/doc/$PKGNAM-$VERSION -type f -exec chmod 644 "{}" \;
+find $PKG/usr/doc/$PKGNAM-$VERSION -type d -exec chmod 755 "{}" \;
+
+#chmod 755 $PKG/usr/lib/libshell.so.1.1
+#chmod 755 $PKG/usr/lib/libast.so.5.4
+
+# Strip binaries:
+find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+
+mkdir -p $PKG/install
+zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/$PKGNAM-$VERSION-$ARCH-$BUILD.txz
