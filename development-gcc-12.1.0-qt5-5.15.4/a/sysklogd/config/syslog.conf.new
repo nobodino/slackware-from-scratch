@@ -1,0 +1,53 @@
+# /etc/syslog.conf
+# For info about the format of this file, see "man syslog.conf"
+# and /usr/doc/sysklogd/README.linux. Note the '-' prefixing some
+# of these entries; this omits syncing the file after every logging.
+# In the event of a crash, some log information might be lost, so
+# if this is a concern to you then you might want to remove the '-'.
+# Be advised this will cause a performance loss if you're using
+# programs that do heavy logging.
+
+# Uncomment to see kernel messages 'err' or higher on the console.
+# Note that this is disabled by default because the kernel has defined
+# the "No irq handler for vector" message as 'emerg' (the highest, your
+# system should be considered unusable) level and will spam the console
+# during boot. But perhaps you can live with that in order to see the
+# other kernel messages...
+#kern.err						/dev/console
+
+# Log anything 'info' or higher, but lower than 'warn'.
+# Exclude authpriv, cron, mail, and news. These are logged elsewhere.
+*.info;*.!warn;\
+	authpriv.none;cron.none;mail.none;news.none	-/var/log/messages
+
+# Log anything 'warn' or higher.
+# Exclude authpriv, cron, mail, and news. These are logged elsewhere.
+*.warn;\
+	authpriv.none;cron.none;mail.none;news.none	-/var/log/syslog
+
+# Debugging information is logged here:
+*.=debug						-/var/log/debug
+
+# Private authentication message logging:
+authpriv.*						-/var/log/secure
+
+# Cron related logs:
+cron.*							-/var/log/cron
+
+# Mail related logs:
+mail.*							-/var/log/maillog
+
+# Emergency level messages go to all users:
+*.emerg							*
+
+# Uncomment to log news and uucp errors:
+#uucp,news.crit						-/var/log/spooler
+
+# Uncomment these if you run a news server and would like to log related
+# messages:
+#news.=crit					-/var/log/news/news.crit
+#news.=err					-/var/log/news/news.err
+#news.notice					-/var/log/news/news.notice
+
+# Include all config files in /etc/syslog.d/:
+include /etc/syslog.d/*.conf

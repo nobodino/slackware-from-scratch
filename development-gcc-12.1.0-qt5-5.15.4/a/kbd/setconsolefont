@@ -1,0 +1,172 @@
+#!/bin/sh
+
+# 06-May-2009
+# Updated by Stuart Winter <mozes@slackware.com>
+# Run 'setfont' in a chroot.  This makes setfont work
+# correctly in the installer.
+# 2010-04-28, add LatKaCyrHeb-14.psfu.gz <volkerdi>
+# 25-Mar-2018, generate font list on the fly <David Woodfall>
+
+if [ "$TMP" = "" ]; then
+  TMP=/var/log/setup/tmp
+fi
+
+get_font_list() {
+  LS_FONTS=$(/bin/ls $T_PX/usr/share/kbd/consolefonts/*.gz \
+    | rev | cut -f 1 -d / | rev | tail -n +10 | sed "s%$% ''%g" | tr '\n' ' ')
+  CP_FONTS="'161.cp.gz -16' '' '162.cp.gz -16' '' '163.cp.gz -16' '' \
+    '164.cp.gz -16' '' '165.cp.gz -16' '' '737.cp.gz -16' '' \
+    '880.cp.gz -16' '' '928.cp.gz -16' '' '972.cp.gz -16' '' "
+  ALL_FONTS="$CP_FONTS$LS_FONTS"
+}
+
+load_font() {
+  if [ ! -z "$T_PX" ]; then
+    CHROOT="chroot $T_PX"
+  fi
+
+  $CHROOT setfont $*
+  if [ ! $? = 0 ]; then
+    if [ -r $T_PX/usr/share/kbd/consolefonts/$1 ]; then
+      $CHROOT setfont $T_PX/usr/share/kbd/consolefonts/$* 1> /dev/null 2> /dev/null
+    elif [ -r $T_PX/usr/lib/kbd/consolefonts/$1 ]; then
+      $CHROOT setfont $T_PX/usr/lib/kbd/consolefonts/$* 1> /dev/null 2> /dev/null
+    elif [ -r /var/adm/mount/live/usr/lib/kbd/consolefonts/$1 ]; then
+      $CHROOT setfont /var/adm/mount/live/usr/lib/kbd/consolefonts/$* 1> /dev/null 2> /dev/null
+    else # load default font
+      $CHROOT setfont
+    fi
+  fi
+}
+
+# Determine effective root path:
+if [ -r $TMP/SeTT_PX ]; then
+  T_PX="`cat $TMP/SeTT_PX`"
+elif [ ! "$1" = "" ]; then
+  T_PX=$1
+else
+  T_PX=/
+fi
+
+if [ ! "$COLOR" = "off" -o -r $TMP/SeTcolor -o -r /tmp/SeTcolor ]; then # use color menus
+  if [ ! "$1" = "" ]; then
+    dialog --title "CONSOLE FONT CONFIGURATION" --defaultno --yesno "Would you like to try \
+out some custom screen fonts?" 5 60
+    if [ $? = 1 ]; then
+      exit
+    fi
+  fi
+
+  get_font_list
+
+  REPLY=`mktemp -q $TMP/temp.XXXXXX`
+  FONT="161.cp.gz -16"
+  while [ 0 ]; do
+    sh -c "dialog --default-item \"$FONT\" --title \"SELECT A SCREEN FONT\" \
+      --menu \"Select one of the following custom fonts. If you decide you \
+like it, you can make it your new default screen font. You'll be able \
+to try as many of these as you like.\" 21 65 12 -- $ALL_FONTS 2> $REPLY"
+    if [ ! $? = 0 ]; then
+      load_font
+      exit
+    fi
+    FONT=`cat $REPLY`
+    rm -f $REPLY
+    load_font $FONT
+    while [ 0 ]; do
+      # Match the dialog colors a little while doing the font test:
+      setterm -background cyan -foreground black -blank 0
+      clear
+      cat << EOF
+
+OK, the new font is now installed. You may now test it by typing
+anything you want. To quit testing the font, enter 1 on a line by
+itself to accept the font and go on, or 2 on a line by itself to
+reject the current font and select a new one.
+
+EOF
+      read REPLY
+      if [ "$REPLY" = "1" -o "$REPLY" = "2" ]; then
+        break;
+      fi
+    done
+    if [ "$REPLY" = "1" ]; then
+      cat << EOF > $T_PX/etc/rc.d/rc.font
+#!/bin/sh
+#
+# This selects your default screen font from among the ones in
+# /usr/share/kbd/consolefonts.
+#
+setfont -v $FONT
+EOF
+      chmod 755 $T_PX/etc/rc.d/rc.font
+      reset
+      exit
+    else
+      load_font
+    fi
+  done
+else # no color!
+  echo
+  echo -n "Would you like to try out some custom screen fonts ([y]es, [n]o)? "
+  read YESNO;
+  if [ "$YESNO" = "n" ]; then
+    exit
+  fi
+  get_font_list
+  while [ 0 ]; do
+    cat << EOF
+
+SELECT A SCREEN FONT.  Your choices are:
+
+$(echo $ALL_FONTS | sed "s/'//g" | sed "s/ -16//g" | sed "s/  / /g" | sed "s/  / /g" | sed "s/  / /g" | tr '\n' ' ' | fold -w $(tput cols) -s)
+
+EOF
+    echo -n "Which font would you like (or ENTER to quit)? "
+    read FONT;
+    if [ "$FONT" = "" ]; then
+      load_font
+      echo
+      exit
+    fi
+    if [ ! -r $T_PX/usr/share/kbd/consolefonts/$FONT -a ! -r \
+         /var/adm/mount/usr/share/kbd/consolefonts/$FONT ]; then
+      cat << EOF
+
+Sorry, I couldn't find that font. Try again.
+
+EOF
+    fi
+    load_font $FONT
+    while [ 0 ]; do
+      cat << EOF
+
+OK, the new font is now installed. You may now test it by typing
+anything you want. To quit testing the font, enter 1 on a line by
+itself to accept the font and go on, or 2 on a line by itself to
+reject the current font and select a new one.
+
+EOF
+      read REPLY
+      if [ "$REPLY" = "1" -o "$REPLY" = "2" ]; then
+        break;
+      fi
+    done
+    if [ "$REPLY" = "1" ]; then
+      cat << EOF > $T_PX/etc/rc.d/rc.font
+#!/bin/sh
+#
+# This selects your default screen font from among the ones in
+# /usr/share/kbd/consolefonts.
+#
+setfont -v $FONT
+EOF
+      chmod 755 $T_PX/etc/rc.d/rc.font
+      reset
+      exit
+    else
+     load_font
+    fi
+    echo
+  done
+fi
