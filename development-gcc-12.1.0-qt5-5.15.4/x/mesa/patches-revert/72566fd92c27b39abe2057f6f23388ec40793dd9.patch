@@ -1,0 +1,42 @@
+From 72566fd92c27b39abe2057f6f23388ec40793dd9 Mon Sep 17 00:00:00 2001
+From: Jesse Natalie <jenatali@microsoft.com>
+Date: Wed, 18 Nov 2020 18:28:49 -0800
+Subject: [PATCH] clover: Support LLVM coming from CMake instead of config-tool
+
+Reviewed-by: Karol Herbst <kherbst@redhat.com>
+Reviewed-by: Francisco Jerez <currojerez@riseup.net>
+Part-of: <https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/7680>
+---
+ src/gallium/frontends/clover/meson.build | 2 +-
+ src/gallium/targets/opencl/meson.build   | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/gallium/frontends/clover/meson.build b/src/gallium/frontends/clover/meson.build
+index 95a100d005c..b946eefff37 100644
+--- a/src/gallium/frontends/clover/meson.build
++++ b/src/gallium/frontends/clover/meson.build
+@@ -71,7 +71,7 @@ libclllvm = static_library(
+     clover_opencl_cpp_args,
+     clover_spirv_cpp_args,
+     '-DCLANG_RESOURCE_DIR="@0@"'.format(join_paths(
+-      dep_llvm.get_configtool_variable('libdir'), 'clang',
++      dep_llvm.get_variable(cmake : 'LLVM_LIBRARY_DIR', configtool: 'libdir'), 'clang',
+       dep_llvm.version(), 'include',
+     )),
+   ],
+diff --git a/src/gallium/targets/opencl/meson.build b/src/gallium/targets/opencl/meson.build
+index dedd8ab7647..e758e4c12d9 100644
+--- a/src/gallium/targets/opencl/meson.build
++++ b/src/gallium/targets/opencl/meson.build
+@@ -29,7 +29,7 @@ if with_ld_version_script
+   opencl_link_deps += files('opencl.sym')
+ endif
+ 
+-llvm_libdir = dep_llvm.get_configtool_variable('libdir')
++llvm_libdir = dep_llvm.get_variable(cmake : 'LLVM_LIBRARY_DIR', configtool: 'libdir')
+ opencl_libname = with_opencl_icd ? 'MesaOpenCL' : 'OpenCL'
+ 
+ polly_dep = null_dep
+-- 
+GitLab
+
