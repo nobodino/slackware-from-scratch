@@ -1,0 +1,229 @@
+#!/bin/bash
+
+# TeXLive build script for Slackware
+
+# Copyright 2009, 2017 - 2022  Patrick J. Volkerding, Sebeka, MN, USA
+# Copyright 2009 - 2014  Robby Workman, Northport, AL, USA
+# Copyright 2016 - 2017  Johannes Schoepfer, Germany
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ''AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# URL: ftp://tug.org/historic/systems/texlive/
+# Testrelease: https://tug.org/texlive/Images/test/
+# Upstream stable fixes: svn://tug.org/texlive/branches/branch2022/Build/source
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=texlive
+SOURCEVERSION=${SOURCEVERSION:-20220321}
+TEXMFVERSION=${TEXMFVERSION:-220522}
+VERSION=${VERSION:-2022.$TEXMFVERSION}
+BUILD=${BUILD:-1_sfs}
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-texlive
+
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) ARCH=i586 ;;
+    arm*) ARCH=arm ;;
+       *) ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+cd $TMP
+rm -rf texlive-$SOURCEVERSION-source
+tar xvf $CWD/texlive-${SOURCEVERSION}-source.tar.xz || exit 1
+cd texlive-$SOURCEVERSION-source || exit 1
+chown -R root:root .
+chmod -R u+w,go-w,a+rX-st .
+
+mkdir build
+cd build
+  CFLAGS="$SLKCFLAGS" \
+  CXXFLAGS="$SLKCFLAGS" \
+  ../configure \
+    --prefix=/usr \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --mandir=/usr/man \
+    --infodir=/usr/info \
+    --with-banner-add=' on Slackware' \
+    --disable-native-texlive-build \
+    --enable-largefile \
+    --enable-shared \
+    --disable-static \
+    --disable-missing \
+    --disable-multiplatform \
+    --disable-debug \
+    --disable-dialog \
+    --disable-xz \
+    --with-x \
+    --enable-xindy \
+    --disable-xindy-docs \
+    --disable-xindy-rules \
+    --with-clisp-runtime=system \
+    --enable-gc=system \
+    --with-system-zlib \
+    --with-system-libpng \
+    --with-system-t1lib \
+    --with-system-gd \
+    --with-system-freetype2 \
+    --with-system-libgs \
+    --with-system-icu \
+    --with-system-pixman \
+    --with-system-cairo \
+    --with-system-gmp \
+    --with-system-mpfr \
+    --with-system-fontconfig \
+    --with-system-ncurses \
+    --with-system-harfbuzz \
+    --disable-linked-scripts \
+    --build=$ARCH-slackware-linux || exit 1
+
+  make $NUMJOBS || make || exit 1
+  make check || exit 1
+  make install-strip DESTDIR=$PKG || exit 1
+
+cd ..
+
+# Don't ship .la files:
+rm -f $PKG/usr/lib${LIBDIRSUFFIX}/*.la
+
+TEXMFROOT=/usr/share
+
+# Remove all files which are covered by tlnet
+rm -rf $PKG$TEXMFROOT $PKG/usr/man $PKG/usr/info
+
+# install the tlnet stuff
+mkdir -p $PKG$TEXMFROOT
+tar xvf $CWD/texlive-base-$TEXMFVERSION.tar.xz -C $PKG$TEXMFROOT || exit 1
+chown -R root:root $PKG
+chmod -R u+w,go-w,a+rX-st $PKG
+ 
+# use symlinks/scripts from tlnet
+mv $PKG$TEXMFROOT/texmf-dist/linked_scripts/* $PKG/usr/bin
+rmdir $PKG$TEXMFROOT/texmf-dist/linked_scripts
+
+# set some paths
+sed -i \
+  -e "s|^TEXMFROOT.*|TEXMFROOT = $TEXMFROOT|" \
+  -e "s|^TEXMFLOCAL.*|TEXMFLOCAL = \$TEXMFROOT/texmf-local|" \
+  -e "s|^OSFONTDIR.*|OSFONTDIR = ~/.fonts:/usr/share/fonts|" \
+  $PKG$TEXMFROOT/texmf-dist/web2c/texmf.cnf
+
+# make ConTeXt work
+sed -i \
+  -e "s|selfautoparent:|$TEXMFROOT/|g" \
+  -e "s|\(TEXMFLOCAL[ ]*=[ ]*\)[^,]*|\1\"$TEXMFROOT/texmf-local\"|" \
+  $PKG$TEXMFROOT/texmf-dist/web2c/texmfcnf.lua
+
+# provide texlive fonts optionally for other system apps
+mkdir -p $PKG/etc/fonts/conf.avail
+cat > $PKG/etc/fonts/conf.avail/09-texlive.conf << EOF
+<?xml version='1.0'?>
+<!DOCTYPE fontconfig SYSTEM 'fonts.dtd'>
+<fontconfig>
+   <dir>$TEXMFROOT/texmf-dist/fonts/opentype</dir>
+   <dir>$TEXMFROOT/texmf-dist/fonts/truetype</dir>
+</fontconfig>
+EOF
+
+# Install the docs while we're still here
+mkdir -p $PKG/usr/doc/texlive-$VERSION
+cp -a ChangeLog README* $PKG/usr/doc/texlive-$VERSION
+# Install index of provided tex packages to the docs
+mv $PKG$TEXMFROOT/texmf-dist/packages.base.gz $PKG/usr/doc/texlive-$VERSION
+
+# Put a symlink to $TEXMFROOT/texmf-dist/doc in our Slackware docdir
+ln -srf $PKG$TEXMFROOT/texmf-dist/doc $PKG/usr/doc/texlive-$VERSION/doc
+
+# We won't make tlmgr easily available; it's still there, but
+# we'll make it harder to void the warranty :-)
+rm -f $PKG/usr/bin/tlmgr
+cat $CWD/README.tlpkg > $PKG/usr/doc/texlive-$VERSION/README.tlpkg
+
+# Create some directories to make it clear that they're owned by this package
+mkdir -p $PKG$TEXMFROOT/{texmf-config,texmf-var,texmf-local}
+
+# install various sty and def files from previous installation 
+mkdir -v $PKG/usr/share/texmf-dist/tex/latex/{adjustbox,etoc,sectsty,tocloft,varwidth,stackengine}
+cp -v $CWD/sectsty.sty $PKG/usr/share/texmf-dist/tex/latex/sectsty/
+cp -v $CWD/tocloft.sty $PKG/usr/share/texmf-dist/tex/latex/tocloft/
+cp -v $CWD/varwidth.sty $PKG/usr/share/texmf-dist/tex/latex/varwidth/
+cp -v $CWD/adjcalc.sty $PKG/usr/share/texmf-dist/tex/latex/adjustbox/
+cp -v $CWD/adjustbox.sty $PKG/usr/share/texmf-dist/tex/latex/adjustbox/
+cp -v $CWD/tc-dvips.def $PKG/usr/share/texmf-dist/tex/latex/adjustbox/
+cp -v $CWD/tc-pdftx.def $PKG/usr/share/texmf-dist/tex/latex/adjustbox/
+cp -v $CWD/tc-pgf.def $PKG/usr/share/texmf-dist/tex/latex/adjustbox/
+cp -v $CWD/tc-xetex.def $PKG/usr/share/texmf-dist/tex/latex/adjustbox/
+cp -v $CWD/trimclip.sty $PKG/usr/share/texmf-dist/tex/latex/adjustbox/
+cp -v $CWD/stackengine.sty $PKG/usr/share/texmf-dist/tex/latex/stackengine/
+cp -v $CWD/etoc.sty $PKG/usr/share/texmf-dist/tex/latex/etoc/
+
+# Add texlive perl modules
+mkdir -p $PKG/usr/share/perl5
+mv $PKG$TEXMFROOT/texmf-dist/scripts/texlive/TeXLive $PKG/usr/share/perl5/
+
+# Move manual pages to the correct place
+mkdir $PKG/usr/man
+mv $PKG$TEXMFROOT/texmf-dist/doc/man/man1 $PKG/usr/man
+mv $PKG$TEXMFROOT/texmf-dist/doc/man/man5 $PKG/usr/man
+rmdir $PKG$TEXMFROOT/texmf-dist/doc/man
+
+# Handle the man pages
+find $PKG/usr/man -type f -exec gzip -9 {} +
+for i in $(find $PKG/usr/man -type l) ; do ln -s $(readlink $i).gz $i.gz ; rm $i ; done
+
+# Handle the GNU info pages
+mv $PKG$TEXMFROOT/texmf-dist/doc/info $PKG/usr
+rm -f $PKG/usr/info/dir
+gzip -9 $PKG/usr/info/*
+
+mkdir -p $PKG/install
+# Don't demand a global lock when running the install script:
+echo "# This install script should not collide with any other script's activities," > $PKG/install/doinst.sh
+echo "# so don't demand a lock by installpkg: NOLOCK" >> $PKG/install/doinst.sh
+zcat $CWD/doinst.sh.gz >> $PKG/install/doinst.sh
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -p -l y -c n $TMP/$PKGNAM-$VERSION-$ARCH-$BUILD.txz
