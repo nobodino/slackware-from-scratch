@@ -35,8 +35,8 @@ tools_sed () {
 
     ./configure --prefix=/tools || exit 1
 
-    make || exit 1
-    make install || exit 1
+	make $NUMJOBS || make || exit 1
+	make $NUMJOBS install || make install || exit 1
     cd ..
     rm -rf sed-"$SEDVER"
 	echo sed-"$SEDVER" >> "$SFS"/tools/etc/tools_version

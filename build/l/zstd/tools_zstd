@@ -33,9 +33,9 @@ tools_zstd () {
     tar xvf zstd-"$ZSTDVER".tar.?z || exit 1
 	cd zstd-"$ZSTDVER" || exit 1 
 
-	make || exit 1
+	make $NUMJOBS || make || exit 1
 
-	make prefix=/tools install || exit 1
+	make prefix=/tools  $NUMJOBS install || make prefix=/tools install || exit 1
     cd ..
     rm -rf zstd-"$ZSTDVER"
     echo zstd-"$ZSTDVER" >> "$SFS"/tools/etc/tools_version

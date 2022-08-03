@@ -30,7 +30,7 @@ tools_linux-headers () {
 #*****************************
 	export LINUXVER=${VERSION:-$(echo linux-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
 
-	tar xvf linux-"$LINUXVER".tar.xz || exit 1  
+	tar xvf linux-"$LINUXVER".tar.?z || exit 1  
 	cd linux-"$LINUXVER" || exit 1 
 	make mrproper || exit 1
 	make INSTALL_HDR_PATH=dest headers_install || exit 1

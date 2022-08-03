@@ -35,8 +35,8 @@ tools_grep () {
 
     ./configure --prefix=/tools || exit 1
 
-    make || exit 1
-    make install || exit 1
+	make $NUMJOBS || make || exit 1
+	make $NUMJOBS install || make install || exit 1
     cd ..
     rm -rf grep-"$GREPVER"
 	echo grep-"$GREPVER" >> "$SFS"/tools/etc/tools_version

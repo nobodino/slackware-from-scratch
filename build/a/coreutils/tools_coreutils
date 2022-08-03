@@ -35,8 +35,8 @@ tools_coreutils () {
 
     ./configure --prefix=/tools --enable-install-program=hostname || exit 1
 
-    make || exit 1
-    make install || exit 1
+	make $NUMJOBS || make || exit 1
+	make $NUMJOBS install || make install || exit 1
     cd ..
     rm -rf coreutils-"$COREVER"
 	echo coreutils-"$COREVER" >> "$SFS"/tools/etc/tools_version

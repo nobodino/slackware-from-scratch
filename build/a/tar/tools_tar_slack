@@ -32,7 +32,7 @@ tools_tar_slack () {
 	cd tar-1.13 || exit 1 
 
     ./configure --prefix=/usr --disable-nls && zcat ../tar-1.13.bzip2.diff.gz | patch -p1 || exit 1
-    make || exit 1
+	make $NUMJOBS || make || exit 1
     cd src || exit 1
 	mv -v tar tar-1.13
     cp -v tar-1.13 /tools/bin/tar-1.13 || exit 1

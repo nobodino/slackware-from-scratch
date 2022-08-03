@@ -44,8 +44,8 @@ tools_glibc () {
 		  --enable-kernel=3.2             \
 		  --with-headers=/tools/include || exit 1  
 
-	make || exit 1
-	make install || exit 1
+	make $NUMJOBS || make || exit 1
+	make $NUMJOBS install || make install || exit 1
 	
 	case $GLIBCVER in
 		2.33 )

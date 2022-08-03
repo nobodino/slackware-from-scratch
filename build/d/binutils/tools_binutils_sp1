@@ -42,13 +42,13 @@ tools_binutils_sp1 () {
     --disable-nls              \
     --disable-werror || exit 1
 
-    make || exit 1
+	make $NUMJOBS || make || exit 1
 
     case $(uname -m) in
         x86_64) mkdir -v /tools/lib && ln -sv lib /tools/lib64 ;;
     esac
 
-    make install || exit 1
+	make $NUMJOBS install || make install || exit 1
     cd ../..
     rm -rf binutils-"$BINUVER"
 }

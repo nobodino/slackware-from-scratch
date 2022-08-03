@@ -34,7 +34,7 @@ tools_perl () {
 	cd perl-"$PERLVER" || exit 1 
 
     sh Configure -des -Dprefix=/tools -Dlibs=-lm -Uloclibpth -Ulocincpth || exit 1
-    make || exit 1
+	make $NUMJOBS || make || exit 1
     cp -v perl cpan/podlators/scripts/pod2man /tools/bin || exit 1
     mkdir -pv /tools/lib/perl5/"$PERLVER" || exit 1
     cp -Rv lib/* /tools/lib/perl5/"$PERLVER" || exit 1

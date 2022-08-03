@@ -35,8 +35,8 @@ tools_bash () {
 
     ./configure --prefix=/tools --without-bash-malloc  || exit 1
 
-    make || exit 1
-    make install || exit 1
+	make $NUMJOBS || make || exit 1
+	make $NUMJOBS install || make install || exit 1
     ln -sv bash /tools/bin/sh || exit 1
     cd ..
     rm -rf bash-"$BASHVER"

@@ -35,8 +35,8 @@ tools_bzip2 () {
 
 	make -f Makefile-libbz2_so
 	make clean
-    make || exit 1
-    make PREFIX=/tools install || exit 1
+	make $NUMJOBS || make || exit 1
+    make PREFIX=/tools $NUMJOBS install || make PREFIX=/tools install || exit 1
 	cp -v bzip2-shared /tools/bin/bzip2
 	cp -av libbz2.so* /tools/lib
 	ln -sv libbz2.so.1.0 /tools/lib/libbz2.so

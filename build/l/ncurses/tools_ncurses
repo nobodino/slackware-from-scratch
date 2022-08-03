@@ -42,8 +42,8 @@ tools_ncurses () {
             	--enable-widec  \
             	--enable-overwrite || exit 1
 
-    make || exit 1
-    make install || exit 1
+	make $NUMJOBS || make || exit 1
+	make $NUMJOBS install || make install || exit 1
     ln -s libncursesw.so /mnt/sfs/tools/lib/libncurses.so
 	cd /mnt/sfs/scripts || exit 1 
     rm -rf ncurses-"$NCURVER"

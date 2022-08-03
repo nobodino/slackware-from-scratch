@@ -35,8 +35,9 @@ tools_python () {
 
     sed -i '/def add_multiarch_paths/a \        return' setup.py || exit 1
     ./configure --prefix=/tools --without-ensurepip || exit 1
-    make || exit 1
-    make install || exit 1
+
+	make $NUMJOBS || make || exit 1
+	make $NUMJOBS install || make install || exit 1
     cd ..
     rm -rf Python-"$PYTHVER"
 	echo Python-"$PYTHVER" >> "$SFS"/tools/etc/tools_version

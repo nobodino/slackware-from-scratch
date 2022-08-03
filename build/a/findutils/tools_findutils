@@ -35,8 +35,8 @@ tools_findutils () {
 
     ./configure --prefix=/tools || exit 1
 
-    make || exit 1
-    make install || exit 1
+	make $NUMJOBS || make || exit 1
+	make $NUMJOBS install || make install || exit 1
     cd ..
     rm -rf findutils-"$FINDVER"
 	echo findutils-"$FINDVER" >> "$SFS"/tools/etc/tools_version

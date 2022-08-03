@@ -47,8 +47,8 @@ tools_texinfo () {
 
     ./configure --prefix=/tools --disable-perl-xs || exit 1
 
-    make || exit 1
-    make install || exit 1
+	make $NUMJOBS || make || exit 1
+	make $NUMJOBS install || make install || exit 1
     cd ..
     rm -rf texinfo-"$TEXINFOVER"
 	echo texinfo-"$TEXINFOVER" >> "$SFS"/tools/etc/tools_version
