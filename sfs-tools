@@ -142,20 +142,20 @@ copy_src () {
     cd $RDIR/l/mpfr || exit 1
 	export MPFRVER=${VERSION:-$(echo mpfr-*.tar.?z | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
     cp -v $RDIR/l/mpfr/mpfr-"$MPFRVER".tar.?z "$RDIR/d/gcc" || exit 1
-	case $(uname -m) in
-		i686 ) 
-			if [ -f $RDIR/others/gnat-gpl-2014-x86-linux-bin.tar.gz ]; then
-				cd $RDIR/others
-				cp -v $RDIR/others/gnat-gpl-2014-x86-linux-bin.tar.gz $RDIR/d/gcc || exit 1
-			fi
-			[ $? != 0 ] && exit 1 ;;
-		x86_64 )
-			if [ -f $RDIR/others/gnat-gpl-2017-x86_64-linux-bin.tar.gz ]; then
-				cd $RDIR/others 
-				cp -v $RDIR/others/gnat-gpl-2017-x86_64-linux-bin.tar.gz $RDIR/d/gcc || exit 1
-			fi
-			[ $? != 0 ] && exit 1 ;;
-	esac
+#	case $(uname -m) in
+#		i686 ) 
+#			if [ -f $RDIR/others/gnat-gpl-2014-x86-linux-bin.tar.gz ]; then
+#				cd $RDIR/others
+#				cp -v $RDIR/others/gnat-gpl-2014-x86-linux-bin.tar.gz $RDIR/d/gcc || exit 1
+#			fi
+#			[ $? != 0 ] && exit 1 ;;
+#		x86_64 )
+#			if [ -f $RDIR/others/gnat-gpl-2017-x86_64-linux-bin.tar.gz ]; then
+#				cd $RDIR/others 
+#				cp -v $RDIR/others/gnat-gpl-2017-x86_64-linux-bin.tar.gz $RDIR/d/gcc || exit 1
+#			fi
+#			[ $? != 0 ] && exit 1 ;;
+#	esac
 }
 
 test_to_go () {
@@ -209,7 +209,7 @@ chown -fR root:root $SFS/source
 #*****************************
 echo_begin
 #*****************************
-ada_choice
+# ada_choice
 copy_src
 test_to_go
 cd "$SRCDIR" || exit 1
@@ -246,19 +246,18 @@ cd $RDIR/a/sed && source tools_sed || exit 1
 cd $RDIR/a/tar && source tools_tar || exit 1
 cd $RDIR/ap/texinfo && source tools_texinfo || exit 1
 cd $RDIR/a/lzip && source tools_lzip || exit 1
-cd $RDIR/a/tar && source tools_tar_slack || exit 1
 cd $RDIR/a/which && source tools_which || exit 1
 cd $RDIR/a/util-linux && source tools_util-linux || exit 1
 cd $RDIR/l/zstd && source tools_zstd || exit 1
 cd $RDIR/l/glibc && source tools_glibc_repair || exit 1
 #*****************************
-if [[ "$ada_enable" = "yes" ]]
-then
-	cd $RDIR/d/gcc && source tools_gnat || exit 1
-elif [[ "$ada_enable" = "no" ]]
- then
-	echo
-fi
+#if [[ "$ada_enable" = "yes" ]]
+#then
+#	cd $RDIR/d/gcc && source tools_gnat || exit 1
+#elif [[ "$ada_enable" = "no" ]]
+# then
+#	echo
+#fi
 #*****************************
 strip_libs
 echo_end
