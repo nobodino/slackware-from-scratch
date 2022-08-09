@@ -1,0 +1,22 @@
+diff -aurN libarchive-3.6.1/libarchive/archive_read_disk_posix.c libarchive-3.6.1-mod/libarchive/archive_read_disk_posix.c
+--- libarchive-3.6.1/libarchive/archive_read_disk_posix.c	2022-04-08 13:40:26.000000000 +0200
++++ libarchive-3.6.1-mod/libarchive/archive_read_disk_posix.c	2022-08-05 12:16:21.625956592 +0200
+@@ -34,9 +34,6 @@
+ #ifdef HAVE_SYS_PARAM_H
+ #include <sys/param.h>
+ #endif
+-#ifdef HAVE_SYS_MOUNT_H
+-#include <sys/mount.h>
+-#endif
+ #ifdef HAVE_SYS_STAT_H
+ #include <sys/stat.h>
+ #endif
+@@ -54,6 +51,8 @@
+ #endif
+ #ifdef HAVE_LINUX_FS_H
+ #include <linux/fs.h>
++#elif HAVE_SYS_MOUNT_H
++#include <sys/mount.h>
+ #endif
+ /*
+  * Some Linux distributions have both linux/ext2_fs.h and ext2fs/ext2_fs.h.
