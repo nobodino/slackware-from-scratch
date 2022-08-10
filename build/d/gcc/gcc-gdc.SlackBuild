@@ -151,6 +151,10 @@ cd gcc-$SRCVER || exit 1
 # Smite the fixincludes:
 zcat $CWD/patches/gcc-no_fixincludes.diff.gz | patch -p1 --verbose --backup --suffix=.orig || exit 1
 
+# Fix compile with glibc-2.36:
+zcat $CWD/patches/2701442d0cf6292f6624443c15813d6d1a3562fe.diff.gz | patch -p1 --verbose --backup --suffix=.orig || exit 1
+zcat $CWD/patches/f35d65517a59565758107c5b1a51a5fa382f8d1a.diff.gz | patch -p1 --verbose --backup --suffix=.orig || exit 1
+
 # Fix perms/owners:
 chown -R root:root .
 find . \
