@@ -1,8 +1,8 @@
 #!/bin/bash
 #######################  list_generator #################################
 #
-# Copyright 2018,2022  J. E. Garrott Sr, Puyallup, WA, USA
-# Copyright 2018,2022  "nobodino", Bordeaux, FRANCE
+# Copyright 2018 to 2022  J. E. Garrott Sr, Puyallup, WA, USA
+# Copyright 2018 to 2022  "nobodino", Bordeaux, FRANCE
 # All rights reserved.
 #
 # Redistribution and use of this script, with or without modification, is
@@ -40,7 +40,6 @@ lists_generator () {
 	generate_slackware_list3
 	generate_slackware_list4
 	generate_slackware_list5
-	generate_slackware_list0
 }
 
 generate_slackware_link_build_list () {
@@ -122,6 +121,7 @@ d python3
 d python-setuptools
 d meson
 n curl
+a coreutils
 l libarchive
 l python-alabaster
 l python-babel
@@ -144,7 +144,7 @@ l python-idna
 l python-sphinx
 d cmake
 n dhcpcd
-a dhcpcd_up
+# a dhcpcd_up
 n cyrus-sasl
 l db48
 l rpcsvc-proto
@@ -172,6 +172,11 @@ n libgpg-error
 n libgcrypt
 a file
 l popt
+d python-setuptools
+l icu4c
+ap sqlite
+d gyp
+l mozilla-nss
 ap rpm
 a cpio
 a rpm2tgz
@@ -1448,13 +1453,6 @@ d gcc
 d gcc_new
 a end4
 EOF
-}
-
-generate_slackware_list0 () {
-#******************************************
-rm "$SFS"/scripts/list0
-cat  "$SFS"/scripts/list1 > "$SFS"/scripts/list0
-sed -i -e "199,204d" "$SFS"/scripts/list0
 }
 
 generate_slackware_list5 () {
