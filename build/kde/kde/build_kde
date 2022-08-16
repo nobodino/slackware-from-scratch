@@ -522,19 +522,24 @@ case $COUNTER in
 		# Keep MIME database current:
 		/usr/bin/update-mime-database /usr/share/mime 1>/dev/null 2>/dev/null &
 
-		cd /source/kde/kcm-fcitx || exit 1
-		chmod +x kcm-fcitx.SlackBuild
-		if ! ./kcm-fcitx.SlackBuild; then
-			touch /tmp/kde_build/kcm-fcitx.failed && exit 1
+		cd /source/kde/fcitx5-configtool || exit 1
+		chmod +x fcitx5-configtool.SlackBuild
+		if ! ./fcitx5-configtool.SlackBuild; then
+			touch /tmp/kde_build/fcitx5-configtool.failed && exit 1
+		fi
+		cd /source/kde/fcitx5-theme-breeze || exit 1
+		chmod +x fcitx5-theme-breeze.SlackBuild
+		if ! ./fcitx5-theme-breeze.SlackBuild; then
+			touch /tmp/kde_build/fcitx5-theme-breeze.failed && exit 1
 		fi
 esac
 
 case $(uname -m) in
 	x86_64 )
-		mv -v /tmp/kcm-fcitx*.txz /slackware64/kde
+		mv -v /tmp/fcitx5*.txz /slackware64/kde
 		mv -v /tmp/kde_build/*.txz /slackware64/kde ;;
 	* )
-		mv -v /tmp/kcm-fcitx*.txz /slackware/kde
+		mv -v /tmp/fcitx5*.txz /slackware/kde
 		mv -v /tmp/kde_build/*.txz /slackware/kde ;;
 esac
 
