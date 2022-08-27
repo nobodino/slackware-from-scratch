@@ -87,7 +87,9 @@ patch -p1 --verbose < $CWD/patches/use-hostname_short-in-dhcpcd.conf.patch || ex
 patch -p1 --verbose < $CWD/patches/dhcpcd.conf-request_ntp_server_by_default.patch || exit 1
 
 # patch to build with glibc-2.36 from https://github.com/NetworkConfiguration/dhcpcd/commit/38befd4e867583002b96ec39df733585d74c4ff5.patch
-cat $CWD/645c32dd1a511527b7eb88443a28dfe7704d5f52.patch | patch -Esp1 --verbose || exit 1
+# and https://github.com/NetworkConfiguration/dhcpcd/commit/38befd4e867583002b96ec39df733585d74c4ff5.patch
+patch -p1 --verbose < $CWD/patches/645c32dd1a511527b7eb88443a28dfe7704d5f52.patch || exit 1
+patch -p1 --verbose < $CWD/patches/38befd4e867583002b96ec39df733585d74c4ff5.patch || exit 1
 
 # At this point, it should be safe to assume that /var will be mounted by the
 # time dhcpcd is called, as all non-root local filesystems are mounted from
