@@ -21,7 +21,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 # Pull a stable branch + patches
-BRANCH=${1:-12}
+BRANCH=${1:-releases/gcc-12.2.0}
 
 # Clear download area:
 rm -rf gcc
@@ -31,7 +31,7 @@ git clone https://github.com/gcc-mirror/gcc.git
 
 # checkout $BRANCH:
 ( cd gcc 
-  git checkout $BRANCH || exit 1
+  git checkout -b local_12.2.0 $BRANCH || exit 1
 )
 
 HEADISAT="$( cd gcc && git log -1 --format=%h )"
