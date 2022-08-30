@@ -1,17 +1,15 @@
 diff -aurN f2fs-tools-1.15.0/fsck/compress.c f2fs-tools-1.15.0-mod/fsck/compress.c
 --- f2fs-tools-1.15.0/fsck/compress.c	2022-05-13 19:50:41.000000000 +0200
-+++ f2fs-tools-1.15.0-mod/fsck/compress.c	2022-08-19 12:15:48.037589094 +0200
-@@ -32,10 +32,10 @@
++++ f2fs-tools-1.15.0-mod/fsck/compress.c	2022-08-30 17:11:36.791628084 +0200
+@@ -32,10 +32,7 @@
  #ifdef HAVE_LIBLZ4
  #define LZ4_MEMORY_USAGE		14
  #define LZ4_MAX_INPUT_SIZE		0x7E000000 /* 2 113 929 216 bytes */
 -#ifndef LZ4_STREAMSIZE
 -#define LZ4_STREAMSIZE			(LZ4_STREAMSIZE_U64 * sizeof(long long))
-+#ifndef LZ4_STREAM_MINSIZE
-+#define LZ4_STREAM_MINSIZE  ((1UL << LZ4_MEMORY_USAGE) + 32)  /* static size, for inter-version compatibility */
- #endif
+-#endif
 -#define LZ4_MEM_COMPRESS		LZ4_STREAMSIZE
-+#define LZ4_MEM_COMPRESS               LZ4_STREAM_MINSIZE 
++#define LZ4_MEM_COMPRESS		sizeof(LZ4_stream_t)
  #define LZ4_ACCELERATION_DEFAULT	1
  #define LZ4_WORK_SIZE			ALIGN_UP(LZ4_MEM_COMPRESS, 8)
  #endif
