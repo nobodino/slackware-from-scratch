@@ -84,7 +84,7 @@ tar xvf $CWD/xine-lib-$VERSION.tar.xz || exit 1
 cd xine-lib-$DIRVER || exit 1
 
 # patch to build xine-lib with binutils-2.39 from BLFS https://wiki.linuxfromscratch.org/blfs/ticket/16940
-sed '/xine_set_flags/s/XINE_PROTECTED//' -i include/xine.h
+cat $CWD/xine-lib-glibc-2.36.patch | patch -Esp1 --verbose || exit 1
 
 chown -R root:root .
 find . \
