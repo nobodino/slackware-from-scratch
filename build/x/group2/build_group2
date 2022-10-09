@@ -225,6 +225,15 @@ for package in \
 	fi
 done
 
+for package in \
+  xorg-sgml-doctools \
+  xorg-docs \
+  ; do
+   	if ! ./x11.SlackBuild doc $package; then
+ 		exit 1
+	fi
+done
+
 case $(uname -m) in
 	x86_64 )
 		if ! ( mv -v /tmp/x11-build/*.txz /slackware64/x ); then
