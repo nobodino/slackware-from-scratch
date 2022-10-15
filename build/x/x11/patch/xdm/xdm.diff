@@ -1,0 +1,67 @@
+diff -aurN xdm-1.1.11/xdm/genauth.c xdm-20220911_468b760/xdm/genauth.c
+--- xdm-1.1.11/xdm/genauth.c	2011-09-25 09:35:47.000000000 +0200
++++ xdm-20220911_468b760/xdm/genauth.c	2022-10-08 06:24:57.000000000 +0200
+@@ -40,6 +40,22 @@
+ 
+ #include <errno.h>
+ 
++#ifdef HAVE_ARC4RANDOM
++# ifdef __linux__
++#  if defined(__GLIBC__) && defined(__GLIBC_PREREQ)
++#   if __GLIBC_PREREQ(2, 36)
++#    include <stdlib.h>
++#   else
++#    include <bsd/stdlib.h>
++#   endif
++#  else
++#   include <bsd/stdlib.h>
++#  endif
++# else
++#  include <stdlib.h>
++# endif
++#endif
++
+ #include <time.h>
+ #define Time_t time_t
+ 
+@@ -372,7 +388,7 @@
+ 	  randomDevice, errno);
+     }
+ #  endif
+-    /*  Try some pseudo-random number genrator daemon next */
++    /*  Try some pseudo-random number generator daemon next */
+     if (prngdSocket != NULL || prngdPort != 0) {
+ 	    if (get_prngd_bytes((char *)tmpkey, sizeof(tmpkey), prngdPort,
+ 		    prngdSocket) == 0) {
+@@ -408,15 +424,20 @@
+     static int	    xdmcpAuthInited;
+     long	    ldata[2];
+ 
+-# ifdef ITIMER_REAL
++# ifndef HAVE_ARC4RANDOM
++#  ifdef ITIMER_REAL
+     struct timeval  now;
+ 
+     X_GETTIMEOFDAY (&now);
+     ldata[0] = now.tv_usec;
+     ldata[1] = now.tv_sec;
+-# else
++#  else
+     ldata[0] = time ((long *) 0);
+     ldata[1] = getpid ();
++#  endif
++# else
++    ldata[0] = arc4random();
++    ldata[1] = arc4random();
+ # endif
+ 
+     longtochars (ldata[0], data+0);
+@@ -462,7 +483,7 @@
+ 	LogError("Cannot open randomDevice \"%s\", errno = %d\n",
+ 		 randomDevice, errno);
+ #  endif /* DEV_RANDOM */
+-    /*  Try some pseudo-random number genrator daemon next */
++    /*  Try some pseudo-random number generator daemon next */
+     if (prngdSocket != NULL || prngdPort != 0) {
+ 	    if (get_prngd_bytes(auth, len, prngdPort, prngdSocket) == 0) {
+ 		    return 1;
