@@ -37,18 +37,17 @@ fi
 
 case $COUNTER in
 	1 )
-		cp gcc.SlackBuild gcc.SlackBuild.old  && cp -v gcc-gdc.SlackBuild gcc.SlackBuild
+		cp gcc.SlackBuild gcc.SlackBuild.old  && mv -v gcc-gdc.SlackBuild gcc.SlackBuild
 		if ! build "$SRCDIR" "$PACKNAME"; then
 			exit 1
 		fi
-		mv gcc.SlackBuild.old gcc.SlackBuild && echo 2 > /source/"$SRCDIR"/"$PACKNAME"/FLAG ;;
+		cd  /source/"$SRCDIR"/"$PACKNAME" || exit 1
+		mv "$PACKNAME".SlackBuild{.old,} && echo 2 > /source/"$SRCDIR"/"$PACKNAME"/FLAG ;;
 	* )
 		if ! build "$SRCDIR" "$PACKNAME"; then
 			exit 1
 		fi ;;
 esac
-
-# test the absence of the gnat compiler in tools, and execute gcc_post if so
 
 cd /scripts || exit 1
 }
