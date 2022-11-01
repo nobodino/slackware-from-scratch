@@ -34,6 +34,8 @@ tools_glibc () {
 	cd glibc-$GLIBCVER  || exit 1
 
     zcat ../glibc.libc.texinfo.no.utf8.patch.gz | patch -p1 --verbose || exit 1
+	# patch to build with make-4.4
+	sed '/MAKEFLAGS :=/s/)r/) -r/' -i Makerules
 
 	mkdir -v build && cd build
 
