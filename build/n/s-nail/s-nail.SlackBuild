@@ -81,7 +81,7 @@ find -L . \
 zcat $CWD/s-nail.no.emptystart.diff.gz | patch -p1 --verbose || exit 1
 
 CFLAGS="$SLKCFLAGS" \
-make $NUMJOBS \
+make "${confopts[@]}" \
   VAL_PREFIX=/usr \
   VAL_SYSCONFDIR=/etc \
   VAL_MANDIR=/usr/man \
@@ -93,8 +93,7 @@ make $NUMJOBS \
   VAL_MAILX=mailx \
   VAL_SYSCONFRC=nail.rc \
   VAL_RANDOM="libgetrandom,sysgetrandom,urandom" \
-  --jobs=1 \
-  config || exit 1
+  config || die
 
 make $NUMJOBS build || exit 1
 make $NUMJOBS test || exit 1

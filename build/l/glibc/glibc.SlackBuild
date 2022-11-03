@@ -153,8 +153,8 @@ apply_patches() {
   zcat $CWD/glibc.ru_RU.CP1251.diff.gz | patch -p1 --verbose || exit 1
   # Don't use AM/PM format for date(1). That's just plain crazy.
   zcat $CWD/glibc-2.32.en_US.no.am.pm.date.format.diff.gz | patch -p1 --verbose || exit 1
-  # patch to build with make-4.4 from https://gitweb.gentoo.org/repo/gentoo.git/plain/sys-libs/glibc/files/2.35/glibc-2.35-make-4.4-MAKEFLAGS.patch
-  cat $CWD/glibc-2.35-make-4.4-MAKEFLAGS.patch | patch -Esp1 --verbose || exit 1
+  # Fix build with make-4.4:
+#  zcat $CWD/glibc-2.35-make-4.4-MAKEFLAGS.patch.gz | patch -p1 --verbose || exit 1
   # Other regression fixes from git:
   for git_patch in $CWD/patches/*.patch.gz ; do
     zcat $git_patch | patch -p1 --verbose || exit 1
@@ -245,13 +245,13 @@ CFLAGS="-g $OPTIMIZ" \
   --without-cvs \
   $TARGET-slackware-linux
 
-make $NUMJOBS || exit 1
-make $NUMJOBS install install_root=$PKG || exit 1
+make "${confopts[@]}" || die 
+make "${confopts[@]}" install install_root=$PKG || die 
 # Don't use this, as it makes the i18n package WAY bigger:
 #make localedata/install-locale-files DESTDIR=$PKG || exit 1
 # This is ugly run in parallel, and seems to hang at the end. But it actually
 # completes much faster. :)
-make $NUMJOBS localedata/install-locales install_root=$PKG DESTDIR=$PKG || exit 1
+make "${confopts[@]}" localedata/install-locales install_root=$PKG DESTDIR=$PKG || die 
 
 # We've always had an sln symlink in /bin, so let's make sure it
 # remains there so as not to break any scripts that might need it:
