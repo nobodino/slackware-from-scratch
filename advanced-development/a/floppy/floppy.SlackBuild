@@ -1,0 +1,125 @@
+#!/bin/bash
+
+# Copyright 2008, 2009, 2010, 2013, 2018, 2021  Patrick J. Volkerding, Sebeka, Minnesota, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=floppy
+VERSION=5.6
+MTOOLS=4.0.42
+BUILD=${BUILD:-1}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+if [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O -fPIC -fcommon"
+  LIBDIRSUFFIX="64"
+else
+  SLKCFLAGS="-O -fcommon"
+  LIBDIRSUFFIX=""
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-floppy
+
+rm -rf $PKG $TMP/fdutils-$VERSION $TMP/mtools-$MTOOLS
+mkdir -p $TMP $PKG/{etc,usr/{bin,info,man/man{1,4,5}}}
+
+cd $TMP
+tar xvf $CWD/fdutils-$VERSION.tar.?z*
+cd fdutils-$VERSION
+#zcat $CWD/fdutils-5.5-20081027.diff.gz | patch -p1 --verbose --backup --suffix=.orig || exit 1
+#zcat $CWD/fdutils.mediaprm.diff.gz | patch -p1 --verbose --backup --suffix=.orig || exit 1
+#zcat $CWD/fdutils.glibc228.diff.gz | patch -p1 --verbose --backup --suffix=.orig || exit 1
+#sed -i 's|<linux/ext2_fs.h>|<ext2fs/ext2_fs.h>|' src/fdmount.c
+CFLAGS="$SLKCFLAGS" \
+./configure \
+  --prefix=/usr \
+  --sysconfdir=/etc \
+  --mandir=/usr/man \
+  --infodir=/usr/info \
+  --build=$ARCH-slackware-linux || exit 1
+make || exit 1
+make install prefix=$PKG/usr exec_prefix=$PKG/usr bindir=$PKG/usr/bin \
+  infodir=$PKG/usr/info mandir=$PKG/usr/man sysconfdir=$PKG/etc
+mkdir -p $PKG/usr/doc/fdutils-$VERSION
+cp -a COPYING CREDITS Changelog INSTALL doc/FAQ.html doc/README \
+  $PKG/usr/doc/fdutils-$VERSION
+chown root:root $PKG/usr/doc/fdutils-$VERSION/*
+chmod 644 $PKG/usr/doc/fdutils-$VERSION/*
+cd $TMP
+tar xvf $CWD/mtools-$MTOOLS.tar.?z*
+cd mtools-$MTOOLS
+CFLAGS="$SLKCFLAGS" \
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --mandir=/usr/man \
+  --infodir=/usr/info \
+  --sysconfdir=/etc \
+  --build=$ARCH-slackware-linux || exit 1
+make all || exit 1
+make install DESTDIR=$PKG || exit 1
+cat $CWD/mtools.conf > $PKG/etc/mtools.conf
+cat $CWD/mediaprm > $PKG/etc/mediaprm
+mkdir -p $PKG/usr/doc/mtools-$MTOOLS
+cp -a COPYING Changelog INSTALL README Release.notes TODO \
+  $PKG/usr/doc/mtools-$MTOOLS
+chown root:root $PKG/usr/doc/mtools-$MTOOLS/*
+chmod 644 $PKG/usr/doc/mtools-$MTOOLS/*
+( cd $PKG/usr/man
+  for manpagedir in $(find . -type d -name "man*") ; do
+    ( cd $manpagedir
+      for eachpage in $( find . -type l -maxdepth 1) ; do
+        ln -s $( readlink $eachpage ).gz $eachpage.gz
+        rm $eachpage
+      done
+      gzip -9 *.*
+    )
+  done
+)
+( cd $PKG/usr/info ; rm -f dir ; gzip -9 * )
+
+# These are obsolete and/or cruft:
+rm -f $PKG/usr/bin/MAKEFLOPPIES $PKG/usr/bin/lz $PKG/usr/bin/mcheck \
+  $PKG/usr/bin/mcomp $PKG/usr/bin/mxtar $PKG/usr/bin/tgz \
+  $PKG/usr/bin/uz $PKG/usr/man/man1/makefloppies.1
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+cd $PKG
+makepkg -l y -c n $TMP/floppy-$VERSION-$ARCH-$BUILD.txz
+

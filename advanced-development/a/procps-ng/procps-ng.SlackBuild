@@ -1,0 +1,258 @@
+#!/bin/bash
+
+# Copyright 2005-2019  Patrick J. Volkerding, Sebeka, Minnesota, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=procps-ng
+VERSION=${VERSION:-4.0.2}
+PSMISCVER=${PSMISCVER:-23.6}
+PROCINFONGVER=${PROCINFONGVER:-2.0.304}
+PROCINFOVER=${PROCINFOVER:-18}
+BUILD=${BUILD:-1}
+
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) ARCH=i586 ;;
+    arm*) ARCH=arm ;;
+       *) ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-$PKGNAM
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i686" ]; then
+  SLKCFLAGS="-O2 -march=i686 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+cd $TMP
+rm -rf $PKGNAM-$VERSION procps-$VERSION
+tar xvf $CWD/$PKGNAM-$VERSION.tar.xz || exit 1
+cd $PKGNAM-$VERSION || exit 1
+tar xvf $CWD/psmisc-$PSMISCVER.tar.xz || exit 1
+tar xvf $CWD/procinfo-ng-$PROCINFONGVER.tar.xz || exit 1
+tar xvf $CWD/procinfo-$PROCINFOVER.tar.xz || exit 1
+chown -R root:root .
+
+find -L . \
+ \( -perm 777 -o -perm 775 -o -perm 750 -o -perm 711 -o -perm 555 \
+  -o -perm 511 \) -exec chmod 755 {} \+ -o \
+ \( -perm 666 -o -perm 664 -o -perm 640 -o -perm 600 -o -perm 444 \
+  -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \+
+
+CFLAGS="$SLKCFLAGS" \
+CXXFLAGS="$SLKCFLAGS" \
+./configure \
+  --prefix=/ \
+  --bindir=/bin \
+  --sbindir=/sbin \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --includedir=/usr/include \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
+  --mandir=/usr/man \
+  --datarootdir=/usr/share \
+  --docdir=/usr/doc/$PKGNAM-$VERSION \
+  --enable-static=no \
+  --disable-silent-rules \
+  --disable-rpath \
+  --enable-watch8bit \
+  --enable-skill \
+  --enable-sigwinch \
+  --enable-w-from \
+  --disable-kill \
+  --without-systemd \
+  --with-elogind \
+  --disable-modern-top \
+  --build=$ARCH-slackware-linux || exit 1
+
+make $NUMJOBS || exit 1
+make install DESTDIR=$PKG || exit 1
+
+# Move the shared library to $PKG/lib${LIBDIRSUFFIX}:
+mkdir -p $PKG/lib${LIBDIRSUFFIX}
+( cd $PKG/usr/lib${LIBDIRSUFFIX}
+  for file in lib*.so.?.* ; do
+    mv $file ../../lib${LIBDIRSUFFIX}
+    ln -sf ../../lib${LIBDIRSUFFIX}/$file .
+  done
+  cp -a lib*.so.? ../../lib${LIBDIRSUFFIX}
+)
+
+# Remove .la file(s):
+rm -f $PKG/usr/lib${LIBDIRSUFFIX}/*.la
+
+# It seems that upstream has shuffled the location of many tools with the
+# 3.3.11 release.  To me, this just doesn't make sense to break any existing
+# scripts that might be using an absolute path, or to move tools that might
+# be needed before /usr is mounted into /usr.  So, we will make sure that
+# everything is moved back to where the Slackware locations have always been.
+# These tools belong in /bin:
+mkdir -p $PKG/bin
+for file in free killall ps ; do
+  find $PKG -name $file -exec mv "{}" $PKG/bin \;
+done
+# These tools belong in /sbin:
+mkdir -p $PKG/sbin
+for file in pidof sysctl ; do
+  find $PKG -name $file -exec mv "{}" $PKG/sbin \;
+done
+mkdir -p $PKG/usr/bin
+# These tools belong in /usr/bin:
+for file in fuser lsdev peekfd pgrep pkill pmap procinfo prtstat pstree pwdx skill slabtop snice socklist tload top uptime vmstat w watch ; do
+  find $PKG -name $file -exec mv "{}" $PKG/usr/bin \;
+done
+# These symlinks belong in /bin:
+rm -f $PKG/bin/pidof
+ln -sf /sbin/pidof $PKG/bin/pidof
+# These symlinks belong in /usr/bin:
+rm -f $PKG/usr/bin/free $PKG/usr/bin/pidof $PKG/usr/bin/ps
+ln -sf /bin/free $PKG/usr/bin/free
+ln -sf /sbin/pidof $PKG/usr/bin/pidof
+ln -sf /bin/ps $PKG/usr/bin/ps
+
+# Create /etc/sysctl.d:
+mkdir -p $PKG/etc/sysctl.d
+
+cd psmisc-$PSMISCVER || exit 1
+
+CFLAGS="$SLKCFLAGS" \
+CXXFLAGS="$SLKCFLAGS" \
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
+  --mandir=/usr/man \
+  --docdir=/usr/doc/psmisc-$PSMISCVER \
+  --disable-silent-rules \
+  --disable-rpath \
+  --build=$ARCH-slackware-linux || exit 1
+
+make $NUMJOBS || exit 1
+make install DESTDIR=$PKG || exit 1
+
+# Move "killall" to the traditional location:
+mv $PKG/usr/bin/killall $PKG/bin
+ln -s /bin/killall $PKG/usr/bin/killall
+
+mkdir -p $PKG/usr/doc/psmisc-$PSMISCVER
+cp -a ChangeLog COPYING* NEWS README* $PKG/usr/doc/psmisc-$PSMISCVER
+
+# If there's a ChangeLog, installing at least part of the recent history
+# is useful, but don't let it get totally out of control:
+if [ -r ChangeLog ]; then
+  DOCSDIR=$PKG/usr/doc/psmisc-$PSMISCVER
+  cat ChangeLog | head -n 1000 > $DOCSDIR/ChangeLog
+  touch -r ChangeLog $DOCSDIR/ChangeLog
+fi
+
+cd ../procinfo-ng-$PROCINFONGVER || exit 1
+CFLAGS="$SLKCFLAGS" \
+CXXFLAGS="$SLKCFLAGS" \
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
+  --mandir=/usr/man \
+  --docdir=/usr/doc/procinfo-ng-$PROCINFONGVER \
+  --enable-maintainer-mode \
+  --build=$ARCH-slackware-linux || exit 1
+
+make $NUMJOBS || exit 1
+make install DESTDIR=$PKG || exit 1
+
+mkdir -p $PKG/usr/doc/procinfo-ng-$PROCINFONGVER
+cp -a GPL-2.txt LGPL-2.1.txt LICENSE.txt COPYING* README* $PKG/usr/doc/procinfo-ng-$PROCINFONGVER
+
+# Now install a couple of scripts from the original procinfo package.
+cd ../procinfo-$PROCINFOVER || exit 1
+install -m 0755 lsdev.pl $PKG/usr/bin/lsdev
+install -m 0755 socklist.pl $PKG/usr/bin/socklist
+install -m 0644 lsdev.8 socklist.8 $PKG/usr/man/man8
+
+# Strip binaries:
+( cd $PKG
+  find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+  find . | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+)
+
+# Compress and link manpages, if any:
+if [ -d $PKG/usr/man ]; then
+  ( cd $PKG/usr/man
+    for manpagedir in $(find . -type d -name "man*") ; do
+      ( cd $manpagedir
+        for eachpage in $( find . -type l -maxdepth 1 | grep -v '\.gz$') ; do
+          ln -s $( readlink $eachpage ).gz $eachpage.gz
+          rm $eachpage
+        done
+        gzip -9 *.?
+      )
+    done
+  )
+fi
+
+# Back to the procps-ng main source directory...
+cd ..
+
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION
+cp -a \
+  AUTHORS ChangeLog COPYING* NEWS README* \
+  $PKG/usr/doc/$PKGNAM-$VERSION
+
+# If there's a ChangeLog, installing at least part of the recent history
+# is useful, but don't let it get totally out of control:
+if [ -r ChangeLog ]; then
+  DOCSDIR=$PKG/usr/doc/$PKGNAM-$VERSION
+  cat ChangeLog | head -n 1000 > $DOCSDIR/ChangeLog
+  touch -r ChangeLog $DOCSDIR/ChangeLog
+fi
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/$PKGNAM-$VERSION-$ARCH-$BUILD.txz
+
