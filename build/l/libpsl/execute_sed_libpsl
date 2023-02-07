@@ -1,5 +1,5 @@
 #!/bin/bash
-########################## execute_sed_perl #######################
+########################## execute_sed_libpsl #######################
 #
 # Copyright 2021 "nobodino", Bordeaux, FRANCE
 # All rights reserved.
@@ -22,15 +22,15 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 ###################################################################
-execute_sed_perl () {
+execute_sed_libpsl () {
 #******************************************************************
-# delete several lines in SlackBuild (disable DBD-mysql build on first pass)
+# delete several lines in SlackBuild
 #******************************************************************
-if [ ! -f perl.SlackBuild.old ]; then
-	cp -v perl.SlackBuild perl.SlackBuild.old
+if [ ! -f libpsl.SlackBuild.old ]; then
+	cp -v libpsl.SlackBuild libpsl.SlackBuild.old
 	(
-		cd "$SLACKSRC"/d/perl || exit 1
-		sed -i -e "239,252d;480,493d" perl.SlackBuild
+		cd "$SLACKSRC"/l/libpsl || exit 1
+		sed -i -e "108,111d;113,114d" libpsl.SlackBuild
 	)
 fi
 }

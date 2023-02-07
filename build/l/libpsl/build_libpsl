@@ -1,5 +1,5 @@
 #!/bin/bash
-########################## execute_sed_perl #######################
+########################## build_libpsl ##############################
 #
 # Copyright 2021 "nobodino", Bordeaux, FRANCE
 # All rights reserved.
@@ -22,17 +22,31 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 ###################################################################
-execute_sed_perl () {
-#******************************************************************
-# delete several lines in SlackBuild (disable DBD-mysql build on first pass)
-#******************************************************************
-if [ ! -f perl.SlackBuild.old ]; then
-	cp -v perl.SlackBuild perl.SlackBuild.old
-	(
-		cd "$SLACKSRC"/d/perl || exit 1
-		sed -i -e "239,252d;480,493d" perl.SlackBuild
-	)
+build_libpsl () {
+###################################################################
+# set -xv
+FLAG=${FLAG:-$(cat FLAG )}
+
+if [[ "$FLAG" -eq 1 ]]; then
+	COUNTER=1
+elif [[ ! "$FLAG" -eq 1 ]]; then
+	COUNTER=2
 fi
+
+case $COUNTER in
+	1 )
+		source execute_sed_"$PACKNAME"
+		if ! build "$SRCDIR" "$PACKNAME"; then
+			exit 1
+		fi
+		cd  /source/"$SRCDIR"/"$PACKNAME" || exit 1
+		mv "$PACKNAME".SlackBuild{.old,} && echo 2 > /source/"$SRCDIR"/"$PACKNAME"/FLAG ;;
+	* )
+		if ! build "$SRCDIR" "$PACKNAME"; then
+			exit 1
+		fi ;;
+esac
+cd /scripts || exit 1
 }
 
-execute_sed_perl
+build_libpsl
