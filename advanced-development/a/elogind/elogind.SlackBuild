@@ -1,0 +1,205 @@
+#!/bin/bash
+
+# Copyright 2016, 2017, 2020  Eric Hameleers, Eindhoven, NL
+# Copyright 2020  Patrick J. Volkerding, Sebeka, Minnesota, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=elogind
+VERSION=${VERSION:-$(echo $PKGNAM-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+BUILD=${BUILD:-1}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$(uname -m)" in
+    i?86) ARCH=i586 ;;
+    arm*) readelf /usr/bin/file -A | grep -E -q "Tag_CPU.*[4,5]" && ARCH=arm || ARCH=armv7hl ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+    *) ARCH=$(uname -m) ;;
+  esac
+  export ARCH
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+NUMJOBS=${NUMJOBS:-" -j $(expr $(nproc) + 1) "}
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i686" ]; then
+  SLKCFLAGS="-O2 -march=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
+elif [ "$ARCH" = "armv7hl" ]; then
+  SLKCFLAGS="-O3 -march=armv7-a -mfpu=vfpv3-d16"
+  LIBDIRSUFFIX=""
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-$PKGNAM
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+
+cd $TMP
+rm -rf $PKGNAM-$VERSION
+tar xvf $CWD/$PKGNAM-$VERSION.tar.?z || exit 1
+cd $PKGNAM-$VERSION || exit 1
+
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \+ -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \+
+
+# Our nobody user has UIDNumber 99, not 65534:
+sed -e "s/65534/99/g" -i $(grep -lr 65534 .)
+
+# Launch elogind when called via DBus and make sure its rundir exists
+# (in Slackware, /run is mounted as a tmpfs):
+sed -i src/login/org.freedesktop.login1.service.in \
+    -e "s,/bin/false,/lib${LIBDIRSUFFIX}/elogind,"
+
+# Merge a pull request for an upstream fix:
+zcat $CWD/elogind-polkit.patch.gz | patch -p1 --verbose || exit 1
+
+# Thanks to Widya Walesa:
+# Slackware still using cgroup v1 or legacy mode. Check the outcome of:
+# [ $(stat -fc %T /sys/fs/cgroup/) = "cgroup2fs" ] && echo "unified" \
+#   || ( [ -e /sys/fs/cgroup/unified/ ] && echo "hybrid" || echo "legacy")
+
+# Configure, build, and install:
+export CFLAGS="$SLKCFLAGS"
+export CXXFLAGS="$SLKCFLAGS"
+mkdir meson-build
+cd meson-build
+meson \
+  --buildtype release \
+  --prefix /usr \
+  --libdir /usr/lib${LIBDIRSUFFIX} \
+  -Drootlibdir="/lib${LIBDIRSUFFIX}" \
+  -Drootlibexecdir="/lib${LIBDIRSUFFIX}/elogind" \
+  -Dudevrulesdir="/lib/udev/rules.d" \
+  -Ddocdir="/usr/doc/$PKGNAM-$VERSION" \
+  -Dhtmldir="/usr/doc/$PKGNAM-$VERSION/html" \
+  -Dmandir="/usr/man" \
+  -Dman=true \
+  -Dhtml=false \
+  -Dbashcompletiondir="/usr/share/bash-completion/completions" \
+  -Dnobody-group=nogroup \
+  -Dpam=true \
+  -Dpamlibdir="/lib${LIBDIRSUFFIX}/security" \
+  -Dpamconfdir="/etc/pam.d" \
+  -Dacl=true \
+  -Dsmack=false \
+  -Dutmp=true \
+  -Ddefault-hierarchy=legacy \
+  -Dcgroup-controller=elogind \
+  -Dhalt-path=/sbin/halt \
+  -Dpoweroff-path=/sbin/poweroff \
+  -Dreboot-path=/sbin/reboot \
+  -Ddefault-kill-user-processes=false \
+  .. || exit 1
+  "${NINJA:=ninja}" $NUMJOBS || exit 1
+  DESTDIR=$PKG $NINJA install || exit 1
+cd ..
+
+# Create symlinks for elogind binaries to /usr/bin/:
+mkdir -p $PKG/usr/bin
+ln -sf /bin/elogind-inhibit $PKG/usr/bin/elogind-inhibit
+ln -sf /bin/loginctl $PKG/usr/bin/loginctl
+
+# Make sure we do not overwrite the user's customizations:
+mv -i $PKG/etc/elogind/logind.conf{,.new}
+
+# Strip binaries:
+find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+
+# Compress manual pages:
+find $PKG/usr/man -type f -exec gzip -9 {} \+
+for i in $( find $PKG/usr/man -type l ) ; do
+  ln -s $( readlink $i ).gz $i.gz
+  rm $i
+done
+
+# Add an rc script:
+mkdir -p $PKG/etc/rc.d
+cat $CWD/rc.elogind \
+  | sed -e "s/@LIBDIRSUFFIX@/${LIBDIRSUFFIX}/g" \
+  > $PKG/etc/rc.d/rc.elogind.new
+chmod 755 $PKG/etc/rc.d/rc.elogind.new
+
+# Create supported dirs in /etc/elogind/ (local config)
+mkdir -p $PKG/etc/elogind/logind.conf.d/ $PKG/etc/elogind/sleep.conf.d/
+
+# Add login1 policy file that allows users in the 'power' group
+# to shutdown/reboot the computer:
+mkdir -p $PKG/usr/share/polkit-1/rules.d
+zcat $CWD/10-enable-elogind-power.rules.gz > \
+  $PKG/usr/share/polkit-1/rules.d/10-enable-session-power.rules
+
+# We don't need the hidden files to make inferior package managers keep dirs:
+find $PKG -type f -name ".keep_dir" -exec rm -f {} \;
+
+# Add a documentation directory:
+mkdir -p $PKG/usr/doc/${PKGNAM}-$VERSION
+cp -a \
+  AUTHORS* ChangeLog CHANGES COPYING* LICENSE* NEWS* README* THANKS* TODO* \
+  $PKG/usr/doc/${PKGNAM}-$VERSION
+
+# If there's a ChangeLog, installing at least part of the recent history
+# is useful, but don't let it get totally out of control:
+if [ -r ChangeLog ]; then
+  DOCSDIR=$(echo $PKG/usr/doc/${PKGNAM}-$VERSION)
+  cat ChangeLog | head -n 1000 > $DOCSDIR/ChangeLog
+  touch -r ChangeLog $DOCSDIR/ChangeLog
+fi
+
+# If there's a CHANGES file, installing at least part of the recent history
+# is useful, but don't let it get totally out of control:
+if [ -r CHANGES ]; then
+  DOCSDIR=$(echo $PKG/usr/doc/${PKGNAM}-$VERSION)
+  cat CHANGES | head -n 1000 > $DOCSDIR/CHANGES
+  touch -r CHANGES $DOCSDIR/CHANGES
+fi
+
+mkdir -p $PKG/install
+zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/$PKGNAM-$VERSION-$ARCH-$BUILD.txz

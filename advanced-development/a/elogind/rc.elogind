@@ -1,0 +1,65 @@
+#!/bin/bash
+#
+# /etc/rc.d/rc.elogind
+#     Initializes the elogind service on Slackware.
+#     There is no need to explicitly start a daemon; this will be taken
+#     care of automatically by dbus when that starts.
+#
+# Author:
+#     Eric Hameleers <alien@slackware.com> 2016
+#     Widya Walesa 2020
+#
+# Description:
+#     We use elogind (standalone subset extracted from systemd) instead of
+#     systemd itself; so we need to initialize a systemd-like state.
+#
+# Note:
+#     Slackware has a tmpfs mounted on /run (see rc.S).
+#
+
+start_elogind() {
+  if [ -x /lib@LIBDIRSUFFIX@/elogind/elogind ]; then
+    if [ ! -d /run/user ]; then
+      mkdir -p /run/user
+    fi
+    if [ ! -d /run/systemd ]; then
+      mkdir -p /run/elogind /sys/fs/cgroup/elogind
+      ( cd /run; rm -rf systemd; ln -sf elogind systemd; )
+      ( cd /sys/fs/cgroup; rm -rf systemd; ln -sf elogind systemd; )
+    fi
+    if pgrep -l -F /run/elogind.pid 2>/dev/null | grep -q elogind; then
+      echo "Elogind is already running"
+    else
+      echo -n "Starting elogind:  "
+      rm -f /run/elogind.pid
+      /lib@LIBDIRSUFFIX@/elogind/elogind --daemon
+      echo "/lib@LIBDIRSUFFIX@/elogind/elogind --daemon"
+    fi
+  fi
+}
+
+stop_elogind() {
+  if pgrep -l -F /run/elogind.pid 2>/dev/null | grep -q elogind; then
+    echo -n "Stopping elogind:  "
+    pkill -F /run/elogind.pid 2>/dev/null
+    echo "DONE"
+  else
+    echo "Elogind is not running"
+  fi
+}
+
+case "$1" in
+  start)
+    start_elogind
+    ;;
+  stop)
+    stop_elogind
+    ;;
+  restart)
+    stop_elogind
+    sleep 1
+    start_elogind
+    ;;
+  *)
+    echo "Usage: $0 start|stop|restart"
+esac

@@ -24,13 +24,13 @@ cd $(dirname $0) ; CWD=$(pwd)
 
 PKGNAM=efibootmgr
 VERSION=${VERSION:-$(echo $PKGNAM-*.tar.?z* | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-4}
 
 # Automatically determine the architecture we're building on:
 if [ -z "$ARCH" ]; then
   case "$(uname -m)" in
     i?86) ARCH=i586 ;;
-    arm*) readelf /usr/bin/file -A | egrep -q "Tag_CPU.*[4,5]" && ARCH=arm || ARCH=armv7hl ;;
+    arm*) readelf /usr/bin/file -A | grep -E -q "Tag_CPU.*[4,5]" && ARCH=arm || ARCH=armv7hl ;;
     # Unless $ARCH is already set, use uname -m for all other archs:
     *) ARCH=$(uname -m) ;;
   esac
@@ -80,7 +80,7 @@ tar xvf $CWD/$PKGNAM-$VERSION.tar.?z* || exit 1
 cd $PKGNAM-$VERSION
 
 # Remove wrong check of opts.reconnect:
-# zcat $CWD/f862d860103511ae953cc2dd1283e1e95bf00376.patch.gz | patch -p1 --verbose || exit 1
+#zcat $CWD/f862d860103511ae953cc2dd1283e1e95bf00376.patch.gz | patch -p1 --verbose || exit 1
 
 chown -R root:root .
 find . \

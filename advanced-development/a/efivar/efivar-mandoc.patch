@@ -1,0 +1,27 @@
+diff -aurN efivar-20230307_90e88b2/Makefile efivar-20230307_90e88b2-new/Makefile
+--- efivar-20230307_90e88b2/Makefile	2023-04-08 13:40:05.000000000 +0200
++++ efivar-20230307_90e88b2-new/Makefile	2023-04-08 13:47:54.037526250 +0200
+@@ -7,7 +7,10 @@
+ include $(TOPDIR)/src/include/coverity.mk
+ include $(TOPDIR)/src/include/scan-build.mk
+ 
+-SUBDIRS := src docs
++SUBDIRS := src
++ifeq ($(ENABLE_DOCS), 1)
++SUBDIRS += docs
++endif
+ 
+ all : | efivar.spec src/include/version.mk prep
+ all clean install prep :
+diff -aurN efivar-20230307_90e88b2/src/include/defaults.mk efivar-20230307_90e88b2-new/src/include/defaults.mk
+--- efivar-20230307_90e88b2/src/include/defaults.mk	2023-04-08 13:40:05.000000000 +0200
++++ efivar-20230307_90e88b2-new/src/include/defaults.mk	2023-04-08 13:47:18.340022274 +0200
+@@ -122,4 +122,8 @@
+ 
+ NAME=efivar
+ 
++# Docs are enabled by default. Set ENABLE_DOCS=0 to disable
++# building/installing docs.
++ENABLE_DOCS ?= 1
++
+ # vim:ft=make
