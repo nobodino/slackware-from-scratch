@@ -1,5 +1,5 @@
 #!/bin/bash
-########################## execute_sed_libpsl #######################
+##################### build_openssl11 ###############################
 #
 # Copyright 2021 "nobodino", Bordeaux, FRANCE
 # All rights reserved.
@@ -22,17 +22,38 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 ###################################################################
-execute_sed_libpsl () {
-#******************************************************************
-# delete several lines in SlackBuild
-#******************************************************************
-if [ ! -f libpsl.SlackBuild.old ]; then
-	cp -v libpsl.SlackBuild libpsl.SlackBuild.old
-	(
-		cd "$SLACKSRC"/l/libpsl || exit 1
-		sed -i -e "108,111d;113,114d" libpsl.SlackBuild
-	)
+build_openssl11 () {
+###################################################################
+INSTALLPRG="upgradepkg --install-new --reinstall"
+
+# every other package treatment
+cd "$SLACKSRC"/"$SRCDIR"/"$PACKNAME" || exit 1
+chmod +x "$PACKNAME".SlackBuild
+if ! ./"$PACKNAME".SlackBuild
+then
+	exit 1
 fi
+# every other package is built in /tmp
+export TERM=xterm && cd /tmp || exit 1
+if ! $INSTALLPRG /tmp/"$PACKNAME"*.t?z;
+then
+	exit 1
+fi
+# mv every built package in its destination directory
+case $(uname -m) in
+	x86_64 )
+		if ! ( mv -v /tmp/"$PACKNAME"-solibs*.t?z /slackware64/a/ && mv -v /tmp/"$PACKNAME"*.t?z /slackware64/"$SRCDIR" ); then
+			exit 1
+		fi ;;
+	* )
+		if ! ( mv -v /tmp/"$PACKNAME"-solibs*.t?z /slackware/a/ && mv -v /tmp/"$PACKNAME"*.t?z /slackware/"$SRCDIR" ); then
+			exit 1
+		fi ;;
+esac
+
+cd /tmp  && rm -rf *
+
+cd /scripts || exit 1
 }
 
-execute_sed_libpsl
+build_openssl11
