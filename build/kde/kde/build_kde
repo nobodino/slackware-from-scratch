@@ -170,6 +170,10 @@ case $COUNTER in
 			touch /tmp/kde_build/kdiagram.failed
 		fi
 
+		if ! ./kde.SlackBuild plasma-extra:ktextaddons; then
+			touch /tmp/kde_build/ktextaddons.failed && exit 1
+		fi
+
 		for package in \
 			akonadi \
 			kpimtextedit \
@@ -303,7 +307,6 @@ case $COUNTER in
 			oxygen-fonts \
 			plasma-wayland-protocols \
 			wacomtablet \
-			ktextaddons \
 		  ; do
 		   	if ! ./kde.SlackBuild plasma-extra:$package; then
 				touch /tmp/kde_build/$package.failed && exit 1
