@@ -174,6 +174,10 @@ case $COUNTER in
 			touch /tmp/kde_build/ktextaddons.failed && exit 1
 		fi
 
+		if ! ./kde.SlackBuild plasma-extra:kirigami-addons; then 
+			touch /tmp/kde_build/kirigami-addons.failed && exit 1
+		fi
+
 		for package in \
 			akonadi \
 			kpimtextedit \
@@ -483,7 +487,7 @@ case $COUNTER in
 			kde-inotify-survey \
 			kdesdk-kio \
 			ksane \
-			ksmith \
+			keysmith \
 			kio-admin \
 			tokodon \
 		  ; do
@@ -513,7 +517,6 @@ case $COUNTER in
 			krename \
 			ktimetracker \
 			kid3 \
-			kirigami-addons \
 		  ; do
 		   	if ! ./kde.SlackBuild applications-extra:$package; then
 				touch /tmp/kde_build/$package.failed && exit 1
