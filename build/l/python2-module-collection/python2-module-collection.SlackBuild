@@ -1,0 +1,498 @@
+#!/bin/bash
+
+# Copyright 2020, 2021  Patrick J. Volkerding, Sebeka, Minnesota, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=python2-module-collection
+VERSION=2.7.18
+BUILD=${BUILD:-6}
+
+# Automatically determine the architecture we're building on:
+if [ -z "$ARCH" ]; then
+  case "$(uname -m)" in
+    i?86) ARCH=i586 ;;
+    arm*) readelf /usr/bin/file -A | grep -E -q "Tag_CPU.*[4,5]" && ARCH=arm || ARCH=armv7hl ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+    *) ARCH=$(uname -m) ;;
+  esac
+  export ARCH
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "$PKGNAM-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i686" ]; then
+  SLKCFLAGS="-O2 -march=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "s390" ]; then
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
+elif [ "$ARCH" = "armv7hl" ]; then
+  SLKCFLAGS="-O3 -march=armv7-a -mfpu=vfpv3-d16"
+  LIBDIRSUFFIX=""
+else
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
+fi
+
+TMP=${TMP:-/tmp}
+PKG=$TMP/package-$PKGNAM
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+
+cd $TMP
+rm -rf $PKGNAM-$VERSION
+mkdir -p $PKGNAM-$VERSION
+# This is a trick to allow the directory to be automatically cleaned up by a cron job here:
+touch $PKGNAM-$VERSION/configure
+
+fix_perms() {
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \+ -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \+
+}
+
+# setuptools-44.0.0:
+cd $TMP/$PKGNAM-$VERSION || exit 1
+tar xf $CWD/modules/setuptools-44.0.0.tar.lz || exit 1
+cd setuptools-44.0.0
+fix_perms
+# Install setuptools to the system if it's not there:
+if [ ! -d /usr/lib${LIBDIRSUFFIX}/python2.7/site-packages/setuptools/version.py ]; then
+  python2 setup.py install --root=/ || exit 1
+fi
+python2 setup.py install --root=$PKG || exit 1
+# Drop the python2 version of easy_install so the python 3.x
+# one is the default:
+rm -f $PKG/usr/bin/easy_install
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/setuptools-44.0.0
+cp -a CHANGES.rst PKG-INFO README.rst docs/*.txt \
+  $PKG/usr/doc/$PKGNAM-$VERSION/setuptools-44.0.0
+find $PKG/usr/doc/$PKGNAM-$VERSION/setuptools-44.0.0 -type f -exec chmod 0644 {} \+
+# If there's a CHANGES.rst, installing at least part of the recent history
+# is useful, but don't let it get totally out of control:
+if [ -r CHANGES.rst ]; then
+  DOCSDIR=$(echo $PKG/usr/doc/${PKGNAM}-$VERSION/setuptools-44.0.0)
+  cat CHANGES.rst | head -n 1000 > $DOCSDIR/CHANGES.rst
+  touch -r CHANGES.rst $DOCSDIR/CHANGES.rst
+fi
+
+# Cython-0.29.16:
+cd $TMP/$PKGNAM-$VERSION || exit 1
+tar xf $CWD/modules/Cython-0.29.16.tar.lz || exit 1
+cd Cython-0.29.16
+fix_perms
+python2 setup.py install --root=$PKG --prefix=/usr || exit 1
+# Rename the python2 version with "2" suffix:
+for i in cython cythonize cygdb; do
+  mv $PKG/usr/bin/$i $PKG/usr/bin/${i}2
+done
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/Cython-0.29.16
+cp -a *.rst *.txt $PKG/usr/doc/$PKGNAM-$VERSION/Cython-0.29.16
+# If there's a CHANGES.rst, installing at least part of the recent history
+# is useful, but don't let it get totally out of control:
+if [ -r CHANGES.rst ]; then
+  DOCSDIR=$(echo $PKG/usr/doc/${PKGNAM}-$VERSION/Cython-0.29.16)
+  cat CHANGES.rst | head -n 1000 > $DOCSDIR/CHANGES.rst
+  touch -r CHANGES.rst $DOCSDIR/CHANGES.rst
+fi
+
+# pip-20.0.2:
+cd $TMP/$PKGNAM-$VERSION || exit 1
+tar xf $CWD/modules/pip-20.0.2.tar.lz || exit 1
+cd pip-20.0.2
+fix_perms
+python2 setup.py install --root=$PKG || exit 1
+# Don't package this. We want /usr/bin/pip in the main python-pip package to be
+# the python3 version:
+rm -f $PKG/usr/bin/pip
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/pip-20.0.2
+cp -a *.txt PKG-INFO README.rst \
+  $PKG/usr/doc/$PKGNAM-$VERSION/pip-20.0.2
+find $PKG/usr/doc/$PKGNAM-$VERSION/pip-20.0.2 -type f -exec chmod 0644 {} \+
+
+# M2Crypto-0.35.2 and typing-3.7.4.1:
+cd $TMP/$PKGNAM-$VERSION || exit 1
+tar xf $CWD/modules/M2Crypto-0.35.2.tar.xz || exit 1
+cd M2Crypto-0.35.2
+fix_perms
+# path to build with gcc-13.1.x
+cat $CWD/ssl_v3.patch | patch -Esp1 --verbose || exit 1
+python2 setup.py install --root=$PKG || exit 1
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/M2Crypto-0.35.2
+cp -a \
+  CHANGES INSTALL* LICENCE* PKG-INFO README* \
+  $PKG/usr/doc/$PKGNAM-$VERSION/M2Crypto-0.35.2
+# Embed required dep typing module:
+cd ..
+rm -rf typing-3.7.4.1
+tar xf $CWD/modules/typing-3.7.4.1.tar.xz || exit 1
+cd typing-3.7.4.1 || exit 1
+fix_perms
+python2 setup.py install --root=$PKG || exit 1
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/typing-3.7.4.1
+cp -a \
+  CHANGES INSTALL* LICENCE* PKG-INFO README* doc/* \
+  $PKG/usr/doc/$PKGNAM-$VERSION/typing-3.7.4.1
+
+# Mako-1.1.2:
+cd $TMP/$PKGNAM-$VERSION || exit 1
+tar xf $CWD/modules/Mako-1.1.2.tar.lz || exit 1
+cd Mako-1.1.2
+fix_perms
+python2 setup.py install --root=$PKG || exit 1
+# Don't package this:
+rm -f $PKG/usr/bin/mako-render
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/Mako-1.1.2
+cp -a AUTHORS CHANGES LICENSE PKG-INFO *.rst *.txt \
+  $PKG/usr/doc/$PKGNAM-$VERSION/Mako-1.1.2
+find $PKG/usr/doc/$PKGNAM-$VERSION/Mako-1.1.2 -type f -exec chmod 0644 {} \+
+
+# pycairo-1.18.2:
+cd $TMP/$PKGNAM-$VERSION || exit 1
+tar xf $CWD/modules/pycairo-1.18.2.tar.lz || exit 1
+cd pycairo-1.18.2
+fix_perms
+python2 setup.py install --root=$PKG || exit 1
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/pycairo-1.18.2
+cp -a \
+  AUTHORS COPYING* INSTALL NEWS PKG-INFO README* \
+  $PKG/usr/doc/$PKGNAM-$VERSION/pycairo-1.18.2
+
+# pycups-1.9.74:
+cd $TMP/$PKGNAM-$VERSION || exit 1
+tar xf $CWD/modules/pycups-1.9.74.tar.lz || exit 1
+cd pycups-1.9.74
+fix_perms
+python2 setup.py install --root=$PKG || exit 1
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/pycups-1.9.74
+cp -a COPYING* NEWS README TODO $PKG/usr/doc/$PKGNAM-$VERSION/pycups-1.9.74
+
+# pycurl-7.43.0.3:
+cd $TMP/$PKGNAM-$VERSION || exit 1
+tar xf $CWD/modules/pycurl-7.43.0.3.tar.lz || exit 1
+cd pycurl-7.43.0.3
+fix_perms
+python2 setup.py --with-openssl install --root=$PKG || exit 1
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/pycurl-7.43.0.3
+cp -a COPYING* NEWS README TODO \
+  $PKG/usr/doc/$PKGNAM-$VERSION/pycurl-7.43.0.3
+rm -rf $PKG/usr/share/doc/pycurl
+rmdir $PKG/usr/share/doc
+rmdir $PKG/usr/share
+
+# pyparsing-2.4.6:
+cd $TMP/$PKGNAM-$VERSION || exit 1
+tar xf $CWD/modules/pyparsing-2.4.6.tar.lz || exit 1
+cd pyparsing-2.4.6
+fix_perms
+python2 setup.py install --root=$PKG || exit 1
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/pyparsing-2.4.6
+cp -a CHANGES LICENSE* PKG-INFO README* docs/HowToUsePyparsing.* \
+  $PKG/usr/doc/$PKGNAM-$VERSION/pyparsing-2.4.6
+# If there's a CHANGES file, installing at least part of the recent history
+# is useful, but don't let it get totally out of control:
+if [ -r CHANGES ]; then
+  DOCSDIR=$(echo $PKG/usr/doc/${PKGNAM}-$VERSION/pyparsing-2.4.6)
+  cat CHANGES | head -n 1000 > $DOCSDIR/CHANGES
+  touch -r CHANGES $DOCSDIR/CHANGES
+fi
+
+# appdirs-1.4.3:
+cd $TMP/$PKGNAM-$VERSION || exit 1
+tar xf $CWD/modules/appdirs-1.4.3.tar.xz || exit 1
+cd appdirs-1.4.3
+fix_perms
+python2 setup.py install --root=$PKG || exit 1
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/appdirs-1.4.3
+cp -a *.rst LICENSE* PKG-INFO \
+  $PKG/usr/doc/$PKGNAM-$VERSION/appdirs-1.4.3
+find $PKG/usr/doc/$PKGNAM-$VERSION/appdirs-1.4.3 -type f -exec chmod 0644 {} \+
+# If there's a CHANGES.rst, installing at least part of the recent history
+# is useful, but don't let it get totally out of control:
+if [ -r CHANGES.rst ]; then
+  DOCSDIR=$(echo $PKG/usr/doc/${PKGNAM}-$VERSION/appdirs-1.4.3)
+  cat CHANGES.rst | head -n 1000 > $DOCSDIR/CHANGES.rst
+  touch -r CHANGES.rst $DOCSDIR/CHANGES.rst
+fi
+
+# certifi-2019.11.28:
+cd $TMP/$PKGNAM-$VERSION || exit 1
+tar xf $CWD/modules/certifi-2019.11.28.tar.lz || exit 1
+cd certifi-2019.11.28
+fix_perms
+python2 setup.py install --root=$PKG || exit 1
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/certifi-2019.11.28
+cp -a *.rst LICENSE PKG-INFO \
+  $PKG/usr/doc/$PKGNAM-$VERSION/certifi-2019.11.28
+find $PKG/usr/doc/$PKGNAM-$VERSION/certifi-2019.11.28 -type f -exec chmod 0644 {} \+
+
+# chardet-3.0.4:
+cd $TMP/$PKGNAM-$VERSION || exit 1
+tar xf $CWD/modules/chardet-3.0.4.tar.xz || exit 1
+cd chardet-3.0.4
+fix_perms
+python2 setup.py install --root=$PKG || exit 1
+mv $PKG/usr/bin/chardetect $PKG/usr/bin/chardetect2
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/chardet-3.0.4
+cp -a *.rst LICENSE* PKG-INFO \
+  $PKG/usr/doc/$PKGNAM-$VERSION/chardet-3.0.4
+find $PKG/usr/doc/$PKGNAM-$VERSION/chardet-3.0.4 -type f -exec chmod 0644 {} \+
+
+# docutils-0.16:
+cd $TMP/$PKGNAM-$VERSION || exit 1
+tar xf $CWD/modules/docutils-0.16.tar.lz || exit 1
+cd docutils-0.16
+fix_perms
+python2 setup.py build --build-lib=build/python install --root=$PKG || exit 1
+# Don't package python2 versions of /usr/bin scripts:
+for file in rst2html.py rst2html4.py rst2html5.py rst2latex.py rst2man.py rst2odt.py rst2odt_prepstyles.py rst2pseudoxml.py rst2s5.py rst2xetex.py rst2xml.py rstpep2html.py ; do
+  rm -f $PKG/usr/bin/$file
+done
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/docutils-0.16
+cp -a *.txt PKG-INFO \
+  $PKG/usr/doc/$PKGNAM-$VERSION/docutils-0.16
+find $PKG/usr/doc/$PKGNAM-$VERSION/docutils-0.16 -type f -exec chmod 0644 {} \+
+# If there's a HISTORY.txt, installing at least part of the recent history
+# is useful, but don't let it get totally out of control:
+if [ -r HISTORY.txt ]; then
+  DOCSDIR=$(echo $PKG/usr/doc/${PKGNAM}-$VERSION/docutils-0.16)
+  cat HISTORY.txt | head -n 1000 > $DOCSDIR/HISTORY.txt
+  touch -r HISTORY.txt $DOCSDIR/HISTORY.txt
+fi
+
+# enum34-1.1.10:
+cd $TMP/$PKGNAM-$VERSION || exit 1
+tar xf $CWD/modules/enum34-1.1.10.tar.gz || exit 1
+cd enum34-1.1.10
+fix_perms
+python2 setup.py install --root=$PKG
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/enum34-1.1.10
+cp -a \
+  PKG-INFO enum/LICENSE enum/README enum/doc/* \
+  $PKG/usr/doc/$PKGNAM-$VERSION/enum34-1.1.10
+
+# future-0.18.2:
+cd $TMP/$PKGNAM-$VERSION || exit 1
+tar xf $CWD/modules/future-0.18.2.tar.lz || exit 1
+cd future-0.18.2
+fix_perms
+python2 setup.py install --root=$PKG || exit 1
+# Move the python2 versions:
+mv $PKG/usr/bin/futurize $PKG/usr/bin/futurize2
+mv $PKG/usr/bin/pasteurize $PKG/usr/bin/pasteurize2
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/future-0.18.2
+cp -a *.rst LICENSE* NOTICE PKG-INFO \
+  $PKG/usr/doc/$PKGNAM-$VERSION/future-0.18.2
+find $PKG/usr/doc/$PKGNAM-$VERSION/future-0.18.2 -type f -exec chmod 0644 {} \+
+
+# idna-2.9:
+cd $TMP/$PKGNAM-$VERSION || exit 1
+tar xf $CWD/modules/idna-2.9.tar.lz || exit 1
+cd idna-2.9
+fix_perms
+python2 setup.py install --root=$PKG || exit 1
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/idna-2.9
+cp -a *.rst PKG-INFO \
+  $PKG/usr/doc/$PKGNAM-$VERSION/idna-2.9
+find $PKG/usr/doc/$PKGNAM-$VERSION/idna-2.9 -type f -exec chmod 0644 {} \+
+# If there's a HISTORY.rst, installing at least part of the recent history
+# is useful, but don't let it get totally out of control:
+if [ -r HISTORY.rst ]; then
+  DOCSDIR=$(echo $PKG/usr/doc/${PKGNAM}-$VERSION/idna-2.9)
+  cat HISTORY.rst | head -n 1000 > $DOCSDIR/HISTORY.rst
+  touch -r HISTORY.rst $DOCSDIR/HISTORY.rst
+fi
+
+# notify2-0.3.1:
+cd $TMP/$PKGNAM-$VERSION || exit 1
+tar xf $CWD/modules/notify2-0.3.1.tar.gz || exit 1
+cd notify2-0.3.1
+fix_perms
+python2 setup.py install --root=$PKG || exit 1
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/notify2-0.3.1
+cp -a *.rst LICENSE PKG-INFO \
+  $PKG/usr/doc/$PKGNAM-$VERSION/notify2-0.3.1
+find $PKG/usr/doc/$PKGNAM-$VERSION/notify2-0.3.1 -type f -exec chmod 0644 {} \+
+
+# packaging-20.3:
+cd $TMP/$PKGNAM-$VERSION || exit 1
+tar xf $CWD/modules/packaging-20.3.tar.lz || exit 1
+cd packaging-20.3
+fix_perms
+python2 setup.py install --root=$PKG || exit 1
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/packaging-20.3
+cp -a *.rst LICENSE* PKG-INFO \
+  $PKG/usr/doc/$PKGNAM-$VERSION/packaging-20.3
+find $PKG/usr/doc/$PKGNAM-$VERSION/packaging-20.3 -type f -exec chmod 0644 {} \+
+# If there's a CHANGELOG.rst, installing at least part of the recent history
+# is useful, but don't let it get totally out of control:
+if [ -r CHANGELOG.rst ]; then
+  DOCSDIR=$(echo $PKG/usr/doc/${PKGNAM}-$VERSION/packaging-20.3)
+  cat CHANGELOG.rst | head -n 1000 > $DOCSDIR/CHANGELOG.rst
+  touch -r CHANGELOG.rst $DOCSDIR/CHANGELOG.rst
+fi
+
+# ply-3.11:
+cd $TMP/$PKGNAM-$VERSION || exit 1
+tar xf $CWD/modules/ply-3.11.tar.lz || exit 1
+cd ply-3.11
+fix_perms
+python2 setup.py install --root=$PKG || exit 1
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/ply-3.11
+cp -a *.rst LICENSE PKG-INFO \
+  $PKG/usr/doc/$PKGNAM-$VERSION/ply-3.11
+find $PKG/usr/doc/$PKGNAM-$VERSION/ply-3.11 -type f -exec chmod 0644 {} \+
+
+# Pygments-2.5.2:
+cd $TMP/$PKGNAM-$VERSION || exit 1
+tar xf $CWD/modules/Pygments-2.5.2.tar.lz || exit 1
+cd Pygments-2.5.2
+fix_perms
+python2 setup.py install --root=$PKG || exit 1
+mv $PKG/usr/bin/pygmentize $PKG/usr/bin/pygmentize2
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/Pygments-2.5.2
+cp -a *.rst LICENSE PKG-INFO \
+  $PKG/usr/doc/$PKGNAM-$VERSION/Pygments-2.5.2
+find $PKG/usr/doc/$PKGNAM-$VERSION/Pygments-2.5.2 -type f -exec chmod 0644 {} \+
+
+# requests-2.23.0:
+cd $TMP/$PKGNAM-$VERSION || exit 1
+tar xf $CWD/modules/requests-2.23.0.tar.lz || exit 1
+cd requests-2.23.0
+fix_perms
+python2 setup.py install --root=$PKG || exit 1
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/requests-2.23.0
+cp -a *.rst LICENSE* NOTICE PKG-INFO \
+  $PKG/usr/doc/$PKGNAM-$VERSION/requests-2.23.0
+find $PKG/usr/doc/$PKGNAM-$VERSION/requests-2.23.0 -type f -exec chmod 0644 {} \+
+# If there's a HISTORY.rst, installing at least part of the recent history
+# is useful, but don't let it get totally out of control:
+if [ -r HISTORY.rst ]; then
+  DOCSDIR=$(echo $PKG/usr/doc/${PKGNAM}-$VERSION/requests-2.23.0)
+  cat HISTORY.rst | head -n 1000 > $DOCSDIR/HISTORY.rst
+  touch -r HISTORY.rst $DOCSDIR/HISTORY.rst
+fi
+
+# Sane-2.8.3:
+cd $TMP/$PKGNAM-$VERSION || exit 1
+tar xf $CWD/modules/Sane-2.8.3.tar.xz || exit 1
+cd Sane-2.8.3
+fix_perms
+python2 setup.py install --root=$PKG || exit 1
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/Sane-2.8.3
+cp -a \
+  *.md *.rst COPYING \
+  $PKG/usr/doc/$PKGNAM-$VERSION/Sane-2.8.3
+
+# six-1.14.0:
+cd $TMP/$PKGNAM-$VERSION || exit 1
+tar xf $CWD/modules/six-1.14.0.tar.lz || exit 1
+cd six-1.14.0
+fix_perms
+python2 setup.py install --root=$PKG || exit 1
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/six-1.14.0
+cp -a LICENSE* PKG-INFO README* $PKG/usr/doc/$PKGNAM-$VERSION/six-1.14.0
+
+# urllib3-1.25.11:
+cd $TMP/$PKGNAM-$VERSION || exit 1
+tar xf $CWD/modules/urllib3-1.25.11.tar.lz || exit 1
+cd urllib3-1.25.11
+fix_perms
+python2 setup.py install --root=$PKG || exit 1
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/urllib3-1.25.11
+cp -a *.rst *.txt PKG-INFO \
+  $PKG/usr/doc/$PKGNAM-$VERSION/urllib3-1.25.11
+find $PKG/usr/doc/$PKGNAM-$VERSION/urllib3-1.25.11 -type f -exec chmod 0644 {} \+
+# If there's a CHANGES.rst, installing at least part of the recent history
+# is useful, but don't let it get totally out of control:
+if [ -r CHANGES.rst ]; then
+  DOCSDIR=$(echo $PKG/usr/doc/${PKGNAM}-$VERSION/urllib3-1.25.11)
+  cat CHANGES.rst | head -n 1000 > $DOCSDIR/CHANGES.rst
+  touch -r CHANGES.rst $DOCSDIR/CHANGES.rst
+fi
+
+# pyxdg-0.26:
+cd $TMP/$PKGNAM-$VERSION || exit 1
+tar xf $CWD/modules/pyxdg-0.26.tar.lz || exit 1
+cd pyxdg-0.26
+fix_perms
+python2 setup.py install --root=$PKG || exit 1
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/pyxdg-0.26
+cp -a \
+  AUTHORS COPYING ChangeLog INSTALL PKG-INFO README TODO \
+  $PKG/usr/doc/$PKGNAM-$VERSION/pyxdg-0.26
+
+# dbus-python-1.2.16:
+cd $TMP/$PKGNAM-$VERSION || exit 1
+tar xf $CWD/modules/dbus-python-1.2.16.tar.lz
+cd dbus-python-1.2.16
+fix_perms
+PYTHON_VERSION=2 \
+./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
+  --docdir=/usr/doc/$PKGNAM-$VERSION \
+  --disable-html-docs \
+  --enable-shared=yes \
+  --enable-static=no \
+  --build=$ARCH-slackware-linux \
+  --host=$ARCH-slackware-linux \
+  || exit 1
+make $NUMJOBS || make || exit 1
+make install DESTDIR=$PKG || exit 1
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/dbus-python-1.2.16
+cp -a \
+  AUTHORS COPYING* INSTALL NEWS README* \
+  $PKG/usr/doc/$PKGNAM-$VERSION/dbus-python-1.2.16
+
+# Remove overlap with main package:
+rm -rf $PKG/usr/include/dbus-1.0
+rm -f $PKG/usr/lib${LIBDIRSUFFIX}/pkgconfig/dbus-python.pc
+
+# Strip binaries:
+find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+
+cd $PKG
+/sbin/makepkg -l y -c n $TMP/$PKGNAM-$VERSION-$ARCH-$BUILD.txz
