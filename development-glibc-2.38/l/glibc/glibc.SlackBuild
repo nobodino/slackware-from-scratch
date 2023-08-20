@@ -1,0 +1,503 @@
+#!/bin/bash
+
+# Copyright 2006, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023  Patrick J. Volkerding, Sebeka, MN, USA
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+cd $(dirname $0) ; CWD=$(pwd)
+
+PKGNAM=glibc
+VERSION=${VERSION:-$(echo glibc-*.tar.xz | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+CHECKOUT=${CHECKOUT:-""}
+BUILD=${BUILD:-1}
+
+# I was considering disabling NSCD, but MoZes talked me out of it.  :)
+#DISABLE_NSCD=" --disable-nscd "
+
+# $ARCH may be preset, otherwise i586 compatibility with i686 binary
+# structuring is the Slackware default.
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) export ARCH=i586 ;;
+    arm*) export ARCH=arm ;;
+    # Unless $ARCH is already set, use uname -m for all other archs:
+       *) export ARCH=$( uname -m ) ;;
+  esac
+fi
+
+# If the variable PRINT_PACKAGE_NAME is set, then this script will report what
+# the name of the created package would be, and then exit. This information
+# could be useful to other scripts.
+if [ ! -z "${PRINT_PACKAGE_NAME}" ]; then
+  echo "glibc-$VERSION-$ARCH-$BUILD.txz"
+  echo "glibc-i18n-$VERSION-$ARCH-$BUILD.txz"
+  echo "glibc-profile-$VERSION-$ARCH-$BUILD.txz"
+  echo "aaa_glibc-solibs-$VERSION-$ARCH-$BUILD.txz"
+  exit 0
+fi
+
+NUMJOBS=${NUMJOBS:-" -j$(expr $(nproc) + 1) "}
+
+# Work around -Werror failure with gcc-10.2.0.
+# NOTE: Until the next glibc release takes care of this issue, this will
+# likely need to be updated with every new gcc release's version. Yes, we
+# could pass --disable-werror by default, but I'd rather not just shove a
+# stick in it like that.
+if [ "$(gcc -dumpversion)" = "10.2.0" ]; then
+  if [ "$VERSION" = "2.30" ]; then
+    WERROR="--disable-werror"
+  fi
+fi
+
+# I'll break this out as an option for fun  :-)
+case $ARCH  in
+  i386)
+    OPTIMIZ="-O3 -march=i386 -mcpu=i686"
+    LIBDIRSUFFIX=""
+    ;;
+  i486)
+    OPTIMIZ="-O3 -march=i486 -mtune=i686"
+    LIBDIRSUFFIX=""
+    ;;
+  i586)
+    OPTIMIZ="-O3 -march=i586 -mtune=i686"
+    LIBDIRSUFFIX=""
+    ;;
+  i686)
+    OPTIMIZ="-O3 -march=i686"
+    LIBDIRSUFFIX=""
+    ;;
+  athlon)
+    OPTIMIZ="-O3 -march=athlon"
+    LIBDIRSUFFIX=""
+    ;;
+  s390)
+    OPTIMIZ="-O3"
+    LIBDIRSUFFIX=""
+    ;;
+  x86_64)
+    OPTIMIZ="-O3 -fPIC"
+    LIBDIRSUFFIX="64"
+    ;;
+  *)
+    OPTIMIZ="-O3"
+    LIBDIRSUFFIX=""
+    ;;
+esac
+
+case $ARCH in
+  x86_64)
+    TARGET=${TARGET:-x86_64}
+    ;;
+  i586)
+    # This should be i586 for all 32-bit x86 arch:
+    TARGET=${TARGET:-i586}
+    ;;
+esac
+
+# Hand off the $ARCH variable to $SLACKWARE_ARCH to avoid confusing glibc:
+SLACKWARE_ARCH=$ARCH
+unset ARCH
+
+CVSVER=${VERSION}${CHECKOUT}
+
+# NOTE!!!  glibc needs to be built against the sanitized kernel headers,
+# which will be installed under /usr/include by the kernel-headers package.
+# Be sure the correct version of the headers package is installed BEFORE
+# building glibc!
+
+TMP=${TMP:-/tmp}
+mkdir -p $TMP
+
+# This function fixes a doinst.sh file for x86_64.
+# With thanks to Fred Emmott.
+fix_doinst() {
+  if [ "x$LIBDIRSUFFIX" = "x" ]; then
+    return;
+  fi;
+  # Fix "( cd usr/lib ;" occurrences
+  sed -i "s#lib ;#lib${LIBDIRSUFFIX} ;#" install/doinst.sh
+  # Fix "lib/" occurrences
+  sed -i "s#lib/#lib${LIBDIRSUFFIX}/#g" install/doinst.sh
+  # Fix "( cd lib" occurrences
+  sed -i "s#( cd lib\$#( cd lib${LIBDIRSUFFIX}#" install/doinst.sh
+
+  if [ "$SLACKWARE_ARCH" = "x86_64" ]; then
+    sed -i 's#ld-linux.so.2#ld-linux-x86-64.so.2#' install/doinst.sh
+  fi
+}
+
+# This is a patch function to put all glibc patches in the build script
+# up near the top.
+apply_patches() {
+  # Use old-style locale directories rather than a single (and strangely
+  # formatted) /usr/lib/locale/locale-archive file:
+  zcat $CWD/glibc.locale.no-archive.diff.gz | patch -p1 --verbose || exit 1
+  # Support ru_RU.CP1251 locale:
+  zcat $CWD/glibc.ru_RU.CP1251.diff.gz | patch -p1 --verbose || exit 1
+  # Don't use AM/PM format for date(1). That's just plain crazy.
+  zcat $CWD/glibc-2.32.en_US.no.am.pm.date.format.diff.gz | patch -p1 --verbose || exit 1
+  # Other regression fixes from git:
+  for git_patch in $CWD/patches/*.patch ; do
+    cat $git_patch | patch -p1 --verbose || exit 1
+  done
+}
+
+# This is going to be the initial $DESTDIR:
+export PKG=$TMP/package-glibc-incoming-tree
+PGLIBC=$TMP/package-glibc
+PSOLIBS=$TMP/package-aaa_glibc-solibs
+PI18N=$TMP/package-glibc-i18n
+PPROFILE=$TMP/package-glibc-profile
+PDEBUG=$TMP/package-glibc-debug
+
+# Empty these locations first:
+for dir in $PKG $PGLIBC $PSOLIBS $PZONE $PI18N $PPROFILE $PDEBUG ; do
+  if [ -d $dir ]; then
+    rm -rf $dir
+  fi
+  mkdir -p $dir
+done
+if [ -d $TMP/glibc-$VERSION ]; then
+  rm -rf $TMP/glibc-$VERSION
+fi
+
+# Create an incoming directory structure for glibc to be built into:
+mkdir -p $PKG/lib${LIBDIRSUFFIX}
+mkdir -p $PKG/sbin
+mkdir -p $PKG/usr/bin
+mkdir -p $PKG/usr/lib${LIBDIRSUFFIX}
+mkdir -p $PKG/usr/sbin
+mkdir -p $PKG/usr/include
+mkdir -p $PKG/usr/doc
+mkdir -p $PKG/usr/man
+mkdir -p $PKG/usr/share
+mkdir -p $PKG/var/db/nscd
+mkdir -p $PKG/var/run/nscd
+
+# Begin extract/compile:
+cd $TMP
+rm -rf glibc-$CVSVER
+tar xvf $CWD/glibc-$CVSVER.tar.xz \
+  || tar xvf $CWD/glibc-$CVSVER.tar.lz \
+  || tar xvf $CWD/glibc-$CVSVER.tar.bz2 \
+  || tar xvf $CWD/glibc-$CVSVER.tar.gz
+cd glibc-$CVSVER
+
+# Apply patches; exit if any fail.
+apply_patches
+if [ ! $? = 0 ]; then
+  exit 1
+fi
+
+# Clean up leftover CVS directories:
+find . -type d -name CVS -exec rm -r {} \+ 2> /dev/null
+
+chown -R root:root .
+find . \
+  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+  -exec chmod 755 {} \+ -o \
+  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+  -exec chmod 644 {} \+
+
+# Make build directory:
+mkdir build-glibc-$VERSION
+cd build-glibc-$VERSION || exit 1
+
+echo "BUILDING DAS NPTL GLIBC"
+# We are setting the variable below so that x86 ISA level is not included
+# in shared libraries. Without this, glibc compiled with -march= may not
+# run on some CPUs that it should be able to support. Needed for glibc-2.33.
+# FIXME: revisit this with future glibc releases!
+libc_cv_include_x86_isa_level=no \
+CFLAGS="-g $OPTIMIZ" \
+../configure \
+  --prefix=/usr \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --enable-kernel=2.6.32 \
+  --with-headers=/usr/include \
+  --enable-add-ons \
+  --enable-profile \
+  --enable-crypt \
+  $DISABLE_NSCD \
+  $WERROR \
+  --infodir=/usr/info \
+  --mandir=/usr/man \
+  --with-tls \
+  --with-__thread \
+  --without-cvs \
+  $TARGET-slackware-linux
+
+make $NUMJOBS || exit 1
+make $NUMJOBS install install_root=$PKG || exit 1
+# Don't use this, as it makes the i18n package WAY bigger:
+#make localedata/install-locale-files DESTDIR=$PKG || exit 1
+# This is ugly run in parallel, and seems to hang at the end. But it actually
+# completes much faster. :)
+make $NUMJOBS localedata/install-locales install_root=$PKG DESTDIR=$PKG || exit 1
+
+# We've always had an sln symlink in /bin, so let's make sure it
+# remains there so as not to break any scripts that might need it:
+mkdir -p $PKG/bin
+( cd $PKG/bin ; ln -sf /sbin/sln sln )
+
+# This bit was mostly copped from Fedora Rawhide's .spec file. I'm not
+# entirely sure how important it is, since I'm not aware of anything
+# we ship trying to link libpthread as static. What it does is make sure
+# that anything linking libpthread static includes all of the functions
+# so that the resulting binary doesn't rely on parts of the library that
+# were not linked in. Optimizing actually working over binary size, so
+# to speak.
+( cd $PKG/usr/lib${LIBDIRSUFFIX}
+  gcc -r -nostdlib -o libpthread.o -Wl,--whole-archive ./libpthread.a
+  rm libpthread.a
+  ar rcs libpthread.a libpthread.o
+  rm libpthread.o
+)
+
+# The prevailing standard seems to be putting unstripped libraries in
+# /usr/lib/debug/ and stripping the debugging symbols from all the other
+# libraries.
+mkdir -p $PKG/usr/lib${LIBDIRSUFFIX}/debug
+cp -a $PKG/lib${LIBDIRSUFFIX}/l*.so* $PKG/usr/lib${LIBDIRSUFFIX}/debug
+cp -a $PKG/usr/lib${LIBDIRSUFFIX}/*.a $PKG/usr/lib${LIBDIRSUFFIX}/debug
+# Don't need debug+profile:
+( cd $PKG/usr/lib${LIBDIRSUFFIX}/debug ; rm -f *_p.* )
+# NOTE:  Is there really a reason for the glibc-debug package?
+# If you're debugging glibc, you can also compile it, right?
+
+## COMMENTED OUT:  There's no reason for profile libs to include -g information.
+## Put back unstripped profiling libraries:
+#mv $PKG/usr/lib${LIBDIRSUFFIX}/debug/*_p.a $PKG/usr/lib${LIBDIRSUFFIX}
+# It might be best to put the unstripped and profiling libraries in glibc-debug and glibc-profile.
+
+# I don't think "strip -g" causes the pthread problems.  It's --strip-unneeded that does.
+strip -g $PKG/lib${LIBDIRSUFFIX}/l*.so*
+strip -g $PKG/usr/lib${LIBDIRSUFFIX}/l*.so*
+strip -g $PKG/usr/lib${LIBDIRSUFFIX}/lib*.a
+
+# Remove the rquota.x and rquota.h include files, as they are provided by
+# the quota package:
+rm -f $PKG/usr/include/rpcsvc/rquota.{h,x}
+
+# Back to the sources dir to add some files/docs:
+cd $TMP/glibc-$CVSVER
+
+# We'll automatically install the config file for the Name Server Cache Daemon.
+# Perhaps this should also have some commented-out startup code in rc.inet2...
+mkdir -p $PKG/etc
+cat nscd/nscd.conf > $PKG/etc/nscd.conf.new
+
+# Install docs:
+( mkdir -p $PKG/usr/doc/glibc-$VERSION
+  cp -a \
+    BUGS CONFORMANCE COPYING* FAQ INSTALL LICENSES NAMESPACE \
+    NEWS NOTES PROJECTS README* \
+    $PKG/usr/doc/glibc-$VERSION
+)
+
+# Trim the NEWS file to omit ancient history:
+if [ -r NEWS ]; then
+  DOCSDIR=$(echo $PKG/usr/doc/glibc-$VERSION)
+  cat NEWS | head -n 1000 > $DOCSDIR/NEWS
+  touch -r NEWS $DOCSDIR/NEWS
+fi
+
+# OK, there are some very old Linux standards that say that any binaries in a /bin or
+# /sbin directory (and the directories themselves) should be group bin rather than
+# group root, unless a specific group is really needed for some reason.
+#
+# I can't find any mention of this in more recent standards docs, and always thought
+# that it was pretty cosmetic anyway (hey, if there's a reason -- fill me in!), so
+# it's possible that this ownership change won't be followed in the near future
+# (it's a PITA, and causes many bug reports when the perms change is occasionally
+# forgotten).
+#
+# But, it's hard to get me to break old habits, so we'll continue the tradition here:
+#
+# No, no we won't.  You know how we love to break traditions.
+
+# Strip most binaries:
+( cd $PKG
+  find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs strip --strip-debug 2> /dev/null
+  find . | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs strip -g 2> /dev/null
+)
+
+# Fix info dir:
+rm $PKG/usr/info/dir
+gzip -9 $PKG/usr/info/*
+
+# This is junk
+rm $PKG/etc/ld.so.cache
+( cd $PKG
+  find . -name "*.orig" -exec rm {} \+
+)
+
+##################################
+# OK, time to make some packages #
+##################################
+
+# glibc-profile:
+cd $PPROFILE
+mkdir -p usr/lib${LIBDIRSUFFIX}
+# Might as well just grab these with 'mv' to simplify things later:
+mv $PKG/usr/lib${LIBDIRSUFFIX}/lib*_p.a usr/lib${LIBDIRSUFFIX}
+# Profile libs should be stripped.  Use the debug libs to debug...
+( cd usr/lib${LIBDIRSUFFIX} ; strip -g *.a )
+mkdir install
+cp -a $CWD/slack-desc.glibc-profile install/slack-desc
+makepkg -l y -c n $TMP/glibc-profile-$VERSION-$SLACKWARE_ARCH-$BUILD.txz
+
+# THIS IS NO LONGER PACKAGED (or is it?  might be better to let it be made, and then ship it or not...)
+# glibc-debug:
+cd $PDEBUG
+mkdir -p usr/lib${LIBDIRSUFFIX}
+# Might as well just grab these with 'mv' to simplify things later:
+mv $PKG/usr/lib${LIBDIRSUFFIX}/debug usr/lib${LIBDIRSUFFIX}
+mkdir install
+cp -a $CWD/slack-desc.glibc-debug install/slack-desc
+## Don't package this:
+#makepkg -l y -c n $TMP/glibc-debug-$VERSION-$SLACKWARE_ARCH-$BUILD.txz
+## INSTEAD, NUKE THESE LIBS
+#rm -rf $PKG/usr/lib${LIBDIRSUFFIX}/debug
+
+# glibc-i18n:
+cd $PI18N
+mkdir -p usr/lib${LIBDIRSUFFIX}/locale
+mv $PKG/usr/lib${LIBDIRSUFFIX}/locale/* usr/lib${LIBDIRSUFFIX}/locale
+mkdir -p usr/share/{i18n,locale}
+mv $PKG/usr/share/i18n/* usr/share/i18n
+mv $PKG/usr/share/locale/* usr/share/locale
+# Leave copies of the C, POSIX, and en_US locales in the main glibc package:
+cp -a usr/lib${LIBDIRSUFFIX}/locale/{C,en_US}* $PKG/usr/lib${LIBDIRSUFFIX}/locale
+mkdir -p $PKG/usr/share/i18n/locales
+cp -a usr/share/i18n/locales/{C,POSIX,en_US} $PKG/usr/share/i18n/locales
+mkdir install
+cp -a $CWD/slack-desc.glibc-i18n install/slack-desc
+makepkg -l y -c n $TMP/glibc-i18n-$VERSION-$SLACKWARE_ARCH-$BUILD.txz
+
+# aaa_glibc-solibs:
+cd $PSOLIBS
+mkdir -p etc/profile.d
+cp -a $CWD/profile.d/* etc/profile.d
+chown -R root:root etc
+chmod 755 etc/profile.d/*
+mkdir -p lib${LIBDIRSUFFIX}
+cp -a $PKG/lib${LIBDIRSUFFIX}/* lib${LIBDIRSUFFIX}
+( cd lib${LIBDIRSUFFIX}
+  mkdir incoming
+  mv *so* incoming
+  mv incoming/libmemusage.so .
+  # Beginning with glibc-2.34, shared objects are using their ABI sonames
+  # directly, which is frankly, a terrible idea. It might help other package
+  # managers, but doesn't do us any favors where we already had a system for
+  # dealing with upgrades (and downgrades!). We'll change these libraries to
+  # use the versioned naming system of glibc-2.33 and earlier so that we don't
+  # have to handle these files differently and so that it's easy to see what
+  # version of glibc is in use at a glance.
+  cd incoming
+  for library in *.so.* ; do
+    mv $library $(echo $library | cut -f 1 -d .)-${VERSION}.so
+  done
+  # This one is a special case. We don't want an $ARCH embedded in the
+  # filename. It prevents using the same install scripts on all $ARCH
+  # and does no good since we'll never have multiple $ARCH libraries
+  # installed in the same directory anyway. So give it the previous name
+  # format:
+  mv ld-linux*-${VERSION}.so ld-${VERSION}.so
+)
+mkdir -p usr
+cp -a $PKG/usr/bin usr
+mv usr/bin/ldd .
+rm usr/bin/*
+mv ldd usr/bin
+mkdir -p usr/lib${LIBDIRSUFFIX}
+# The gconv directory has a lot of stuff, but including it here will save some problems.
+# Seems standard elsewhere.
+cp -a $PKG/usr/lib${LIBDIRSUFFIX}/gconv usr/lib${LIBDIRSUFFIX}
+mkdir -p usr/libexec
+cp -a $PKG/usr/libexec/pt_chown usr/libexec
+# Same usr.bin deal:
+cp -a $PKG/sbin .
+mv sbin/ldconfig .
+rm sbin/*
+mv ldconfig sbin
+mkdir install
+cp -a $CWD/slack-desc.aaa_glibc-solibs install/slack-desc
+cp -a $CWD/doinst.sh-aaa_glibc-solibs install/doinst.sh
+# Fix specific versioning for the symlink creation script. This part of the
+# script would only be used in the case where there is no ldconfig on the
+# running system that's used to install the package. That should never be the
+# case, but we'll leave the code in place anyway just in case.
+sed -i "s/@@VERSION@@/$VERSION/g" install/doinst.sh
+# Call the function to fix doinst.sh where $LIBDIRSUFFIX is needed:
+fix_doinst
+# Only scrub the links in /lib{,64} that will be created by ldconfig:
+find lib${LIBDIRSUFFIX} -type l -exec rm {} \+
+# Build the package:
+makepkg -l y -c n $TMP/aaa_glibc-solibs-$VERSION-$SLACKWARE_ARCH-$BUILD.txz
+
+# And finally, the complete "all-in-one" glibc package is created
+# from whatever was leftover:
+cd $PGLIBC
+mv $PKG/* .
+mkdir -p etc/profile.d
+cp -a $CWD/profile.d/* etc/profile.d
+chown -R root:root etc
+chmod 755 etc/profile.d/*
+# Only scrub the links in /lib{,64} that will be created by ldconfig:
+find lib${LIBDIRSUFFIX} -type l -exec rm {} \+
+mkdir install
+cp -a $CWD/slack-desc.glibc install/slack-desc
+cp -a $CWD/doinst.sh-glibc install/doinst.sh
+# Fix specific versioning for the symlink creation script. This part of the
+# script would only be used in the case where there is no ldconfig on the
+# running system that's used to install the package. That should never be the
+# case, but we'll leave the code in place anyway just in case.
+sed -i "s/@@VERSION@@/$VERSION/g" install/doinst.sh
+# Call the function to fix doinst.sh where $LIBDIRSUFFIX is needed:
+fix_doinst
+( cd lib${LIBDIRSUFFIX}
+  mkdir incoming
+  mv *so* incoming
+  mv incoming/libmemusage.so .
+  # Beginning with glibc-2.34, shared objects are using their ABI sonames
+  # directly, which is frankly, a terrible idea. It might help other package
+  # managers, but doesn't do us any favors where we already had a system for
+  # dealing with upgrades (and downgrades!). We'll change these libraries to
+  # use the versioned naming system of glibc-2.33 and earlier so that we don't
+  # have to handle these files differently and so that it's easy to see what
+  # version of glibc is in use at a glance.
+  cd incoming
+  for library in *.so.* ; do
+    mv $library $(echo $library | cut -f 1 -d .)-${VERSION}.so
+  done
+  # This one is a special case. We don't want an $ARCH embedded in the
+  # filename. It prevents using the same install scripts on all $ARCH
+  # and does no good since we'll never have multiple $ARCH libraries
+  # installed in the same directory anyway. So give it the previous name
+  # format:
+  mv ld-linux*-${VERSION}.so ld-${VERSION}.so
+)
+# Build the package:
+/sbin/makepkg -l y -c n $TMP/glibc-$VERSION-$SLACKWARE_ARCH-$BUILD.txz
+
+# Done!
+echo
+echo "glibc packages built in $TMP!"
