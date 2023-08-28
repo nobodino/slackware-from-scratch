@@ -1,7 +1,7 @@
 #!/bin/bash
-########################## execute_sed_llvm #######################
+########################## execute_sed_shadow ########################
 #
-# Copyright 2021 "nobodino", Bordeaux, FRANCE
+# Copyright 2023 "nobodino", Bordeaux, FRANCE
 # All rights reserved.
 #
 # Redistribution and use of this script, with or without modification, is
@@ -22,24 +22,16 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 ###################################################################
-execute_sed_llvm () {
+execute_sed_shadow () {
 #******************************************************************
-# change "clang++" to "g++" and "clang" to "gcc" in SlackBuild
+# delete 221 to 225 lines in SlackBuild
 #******************************************************************
-if [ ! -f llvm.SlackBuild.old ]; then
-	cp -v llvm.SlackBuild llvm.SlackBuild.old
+if [ ! -f shadow.SlackBuild.old ]; then
+	cp -v shadow.SlackBuild shadow.SlackBuild.old
 	(
-		cd "$SLACKSRC"/d/llvm || exit 1
-		# shellcheck disable=SC2016
-		sed -i -e 's/"clang++"/"g++"/' llvm.SlackBuild
-		sed -i -e 's/"clang"/"gcc"/' llvm.SlackBuild
-		sed -i -e "s/-GNinja/-Wno-dev -GNinja/" llvm.SlackBuild
-		sed -i -e "s/-DBUILD_SHARED_LIBS=ON/-DLLVM_BUILD_LLVM_DYLIB=ON/" llvm.SlackBuild
-		sed -i -e "s/-DLLVM_USE_LINKER=gold/-DLLVM_LINK_LLVM_DYLIB=ON/" llvm.SlackBuild
-		sed -i -e "/-DLLVM_ENABLE_RTTI=ON/d" llvm.SlackBuild
-		sed -i -e "/-DLLVM_ENABLE_ASSERTIONS=OFF/d" llvm.SlackBuild
-		sed -i -e "/-DLLVM_INSTALL_UTILS=ON/d" llvm.SlackBuild
+		cd "$SLACKSRC"/a/shadow || exit 1
+		sed -i -e "221,225d" shadow.SlackBuild
 	)
 fi
 }
-execute_sed_llvm
+execute_sed_shadow

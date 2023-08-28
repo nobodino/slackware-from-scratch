@@ -152,8 +152,7 @@ cd $TMP/$PKGNAM-$VERSION || exit 1
 tar xf $CWD/modules/M2Crypto-0.35.2.tar.xz || exit 1
 cd M2Crypto-0.35.2
 fix_perms
-# path to build with gcc-13.1.x
-cat $CWD/ssl_v3.patch | patch -Esp1 --verbose || exit 1
+cat $CWD/ssl_v3.patch | patch -p1 --verbose || exit 1
 python2 setup.py install --root=$PKG || exit 1
 mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION/M2Crypto-0.35.2
 cp -a \
