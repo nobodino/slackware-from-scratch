@@ -1,0 +1,54 @@
+#!/bin/bash
+########################## tools_libstdc ##########################
+#
+# Copyright 2021 "nobodino", Bordeaux, FRANCE
+# All rights reserved.
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
+#  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+###################################################################
+tools_libstdc () {
+#*****************************
+	export SRCVER=${VERSION:-$(echo gcc-*.tar.?z | rev | cut -f 3- -d . | cut -f 1 -d - | rev)}
+	GCCVER=$(echo "$SRCVER" | cut -f 1 -d _)
+	export GCCVER
+
+	tar xf gcc-"$SRCVER".tar.?z || exit 1  
+	cd gcc-"$SRCVER" || exit 1
+	# apply patches to build with glibc-2.36
+#	zcat ../patches/2701442d0cf6292f6624443c15813d6d1a3562fe.diff.gz | patch -Esp1 --verbose || exit 1
+#	zcat ../patches/f35d65517a59565758107c5b1a51a5fa382f8d1a.diff.gz | patch -Esp1 --verbose || exit 1  
+	mkdir -v build
+	cd build || exit 1 
+
+	../libstdc++-v3/configure           \
+		--host="$SFS_TGT"               \
+		--prefix=/tools                 \
+		--disable-multilib              \
+		--disable-nls                   \
+		--disable-libstdcxx-threads     \
+		--disable-libstdcxx-pch         \
+		--with-gxx-include-dir=/tools/"$SFS_TGT"/include/c++/"$GCCVER" || exit 1
+
+	make || exit 1
+	make install || exit 1
+	cd ../..
+	rm -rf gcc-"$SRCVER"
+}
+
+tools_libstdc
