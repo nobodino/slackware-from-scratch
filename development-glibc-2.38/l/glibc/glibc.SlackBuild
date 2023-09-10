@@ -153,6 +153,8 @@ apply_patches() {
   zcat $CWD/glibc.ru_RU.CP1251.diff.gz | patch -p1 --verbose || exit 1
   # Don't use AM/PM format for date(1). That's just plain crazy.
   zcat $CWD/glibc-2.32.en_US.no.am.pm.date.format.diff.gz | patch -p1 --verbose || exit 1
+  # regression fixes from LFS:
+  cat $CWD/glibc-2.38-memalign_fix-1.patch | patch -p1 --verbose || exit 1
   # Other regression fixes from git:
   for git_patch in $CWD/patches/*.patch ; do
     cat $git_patch | patch -p1 --verbose || exit 1
